@@ -613,8 +613,6 @@ exports.makeModel = function() {
             } else if (y_prev >= y_bottom_prev) {
               y[i] = y_top  + (y_top - yi);
               bounceDirection = -1;
-            } else {
-              console.log("ouch!")
             }
           }
 
@@ -1000,7 +998,7 @@ exports.makeModel = function() {
     },
 
 
-    addObstacle: function(x, y, width, height, color) {
+    addObstacle: function(x, y, width, height, density, color) {
       if (N_obstacles+1 > obstacleX.length) {
         extendObstaclesArray(N_obstacles+1);
       }
@@ -1015,7 +1013,6 @@ exports.makeModel = function() {
 
       obstacleVX[N_obstacles] = 0;
       obstacleVY[N_obstacles] = 0;
-      obstacleMass[N_obstacles] = Infinity;   // to test, change to e.g. 500
 
       if (color) {
         obstacleColorR[N_obstacles] = color[0];
@@ -1026,6 +1023,11 @@ exports.makeModel = function() {
         obstacleColorG[N_obstacles] = defaultProperties.obstacleColor[1];
         obstacleColorB[N_obstacles] = defaultProperties.obstacleColor[2];
       }
+
+      density = parseFloat(density);      // may be string "Infinity"
+      mass = density * width * height;
+
+      obstacleMass[N_obstacles] = mass;
 
       N_obstacles++;
     },
@@ -1128,7 +1130,7 @@ exports.makeModel = function() {
 
       createObstaclesArray(num);
       for (i = 0; i < num; i++) {
-        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.color[i]);
+        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i]);
       }
     },
 

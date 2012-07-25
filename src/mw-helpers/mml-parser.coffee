@@ -59,6 +59,18 @@ parseMML = (mmlString) ->
         x      = parseFloat getProperty $node, 'x'
         y      = parseFloat getProperty $node, 'y'
 
+        density = parseFloat getProperty $node, 'density'
+
+        # authors in MW specify Kg/(mol*A^2), but this gets saved as 100Kg/(mol*A^2)
+        # (e.g. 20 Kg/(mol*A^2) is saved as 0.2)
+        # First convert back to Kg/(mol*A^2)
+        density = density * 100
+        # convert to Daltons/A^2, 1000 Dal = 1 Kg/mol
+        density = density * 1000
+
+        if density isnt density     # if NaN
+          density = "Infinity"
+
         color  = null
         colorDef  = $node.find ".java-awt-Color>int"
         if colorDef and colorDef.length > 0
@@ -73,7 +85,7 @@ parseMML = (mmlString) ->
         [height, width] = toNextgenLengths height, width
         y               = y - height     # flip to lower-left coordinate system
 
-        obstacles.push { x, y, height, width, color }
+        obstacles.push { x, y, height, width, density, color }
 
       obstacles
 
@@ -276,7 +288,7 @@ parseMML = (mmlString) ->
       json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength'
 
     if obstacles.length > 0
-      json.obstacles = unroll obstacles, 'x', 'y', 'height', 'width', 'color'
+      json.obstacles = unroll obstacles, 'x', 'y', 'height', 'width', 'density', 'color'
 
     json.temperature = temperature if temperature
 
