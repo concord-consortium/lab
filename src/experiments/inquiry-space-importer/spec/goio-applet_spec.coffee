@@ -11,9 +11,35 @@ describe "GoIOApplet class", ->
   it "should be a subclass of SensorApplet", ->
     expect( goio.constructor.__super__ ).toBe ISImporter.SensorApplet.prototype
 
-  describe "getHTML method", ->
-    # set appropriate otml file first!
-    it "should construct an appropriate applet tag"
+  describe "when listenerPath and otmlPath properties are set appropriately", ->
+    beforeEach ->
+      goio.listenerPath = '(dummy listener path)'
+      goio.otmlPath = '(dummy otml path)'
+
+    describe "getHTML method", ->
+      it "should construct the appropriate applet tag", ->
+        expect( goio.getHTML() ).toBe [
+          '<applet ',
+              'id="goio-applet" ',
+              'class="applet sensor-applet" ',
+              'archive="org/concord/sensor-native/sensor-native.jar, ',
+                       'org/concord/otrunk/otrunk.jar, ',
+                       'org/concord/framework/framework.jar, ',
+                       'org/concord/frameworkview/frameworkview.jar, ',
+                       'jug/jug/jug.jar, ',
+                       'jdom/jdom/jdom.jar, ',
+                       'org/concord/sensor/sensor.jar, ',
+                       'org/concord/data/data.jar, ',
+                       'org/concord/sensor/sensor-applets/sensor-applets.jar" ',
+              'code="org.concord.sensor.applet.OTSensorApplet" ',
+              'codebase="/jnlp" ',
+              'width="1px" ',
+              'height="1px" ',
+              'MAYSCRIPT="true" >',
+            '<param name="resource" value="(dummy otml path)" />',
+            '<param name="listenerPath" value="(dummy listener path)" />',
+            '<param name="name" value="goio-applet" />',
+          '</applet>'].join('')
 
   describe "testAppletReady method", ->
     it "should call initSensorInterface method of the applet instance"

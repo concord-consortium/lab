@@ -112,4 +112,45 @@ ISImporter.SensorApplet = defineClass({
 
 ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
 
+  // Before appending the applet, set this value with the path to an object that will receive applet callbacks.
+  listenerPath: '',
+
+  // path to otml file configuring the type of sensor
+  otmlPath: '',
+
+  appletId:     'goio-applet',
+  classNames:   'applet sensor-applet',
+
+  jarUrls:     ['org/concord/sensor-native/sensor-native.jar',
+                'org/concord/otrunk/otrunk.jar',
+                'org/concord/framework/framework.jar',
+                'org/concord/frameworkview/frameworkview.jar',
+                'jug/jug/jug.jar',
+                'jdom/jdom/jdom.jar',
+                'org/concord/sensor/sensor.jar',
+                'org/concord/data/data.jar',
+                'org/concord/sensor/sensor-applets/sensor-applets.jar'],
+
+  code:         'org.concord.sensor.applet.OTSensorApplet',
+  codebase:     '/jnlp',
+
+  getHTML: function() {
+    return [
+     '<applet ',
+       'id="',       this.appletId,           '" ',
+       'class="',    this.classNames,         '" ',
+       'archive="',  this.jarUrls.join(', '), '" ',
+       'code="',     this.code,               '" ',
+       'codebase="', this.codebase,            '" ',
+       'width="1px" ',
+       'height="1px" ',
+       'MAYSCRIPT="true" ',
+     '>',
+        '<param name="resource" value="',      this.otmlPath,     '" />',
+        '<param name="listenerPath" value="',  this.listenerPath, '" />',
+        '<param name="name" value="',          this.appletId,     '" />',
+      '</applet>'
+    ].join('');
+  }
+
 });
