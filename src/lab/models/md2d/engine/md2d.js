@@ -135,9 +135,14 @@ exports.OBS_INDICES = OBS_INDICES = {
   Y       :  1,
   WIDTH   :  2,
   HEIGHT  :  3,
-  COLOR_R :  4,
-  COLOR_G :  5,
-  COLOR_B :  6
+  MASS    :  4,
+  VX      :  5,
+  VY      :  6,
+  X_PREV  :  7,
+  Y_PREV  :  8,
+  COLOR_R :  9,
+  COLOR_G :  10,
+  COLOR_B :  11
 };
 
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
@@ -221,8 +226,14 @@ exports.makeModel = function() {
       obstacleY,
       obstacleWidth,
       obstacleHeight,
+      obstacleVX,
+      obstacleVY,
+      obstacleMass,
+      obstacleXPrev,
+      obstacleYPrev,
+      obstacleColor,
 
-      // An array of length 7 which contains obstacles information
+      // An array of length 12 which contains obstacles information
       obstacles,
 
       // Number of actual obstacles
@@ -349,6 +360,11 @@ exports.makeModel = function() {
         obstacles[ind.Y]        = obstacleY      = arrays.create(num, 0, float32);
         obstacles[ind.WIDTH]    = obstacleWidth  = arrays.create(num, 0, float32);
         obstacles[ind.HEIGHT]   = obstacleHeight = arrays.create(num, 0, float32);
+        obstacles[ind.MASS]     = obstacleMass   = arrays.create(num, 0, float32);
+        obstacles[ind.VX]       = obstacleVX     = arrays.create(num, 0, float32);
+        obstacles[ind.VY]       = obstacleVY     = arrays.create(num, 0, float32);
+        obstacles[ind.X_PREV]   = obstacleXPrev  = arrays.create(num, 0, float32);
+        obstacles[ind.Y_PREV]   = obstacleYPrev  = arrays.create(num, 0, float32);
         obstacles[ind.COLOR_R]  = obstacleColorR = arrays.create(num, 0, float32);
         obstacles[ind.COLOR_G]  = obstacleColorG = arrays.create(num, 0, float32);
         obstacles[ind.COLOR_B]  = obstacleColorB = arrays.create(num, 0, float32);
@@ -501,6 +517,17 @@ exports.makeModel = function() {
         y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
       },
 
+      updateObstaclePosition = function(i) {
+        var ob_vx = obstacleVX[i],
+            ob_vy = obstacleVY[i];
+        if (ob_vx || ob_vy) {
+          obstacleXPrev[i] = obstacleX[i];
+          obstacleYPrev[i] = obstacleY[i];
+          obstacleX[i] += ob_vx*dt;
+          obstacleY[i] += ob_vy*dt;
+        }
+      }
+
       // Constrain particle i to the area between the walls by simulating perfectly elastic collisions with the walls.
       // Note this may change the linear and angular momentum.
       bounceOffWalls = function(i) {
@@ -546,7 +573,11 @@ exports.makeModel = function() {
             x_left,
             x_right,
             y_top,
-            y_bottom;
+            y_bottom,
+            mass,
+            obs_mass,
+            totalMass,
+            bounceDirection = 0; // if we bounce horz: 1, vert: -1
 
         r = radius[i];
         xi = x[i];
@@ -559,23 +590,57 @@ exports.makeModel = function() {
           y_top = obstacleY[j] + obstacleHeight[j] + r;
           y_bottom = obstacleY[j] - r;
 
+          x_left_prev = obstacleXPrev[j] - r;
+          x_right_prev = obstacleXPrev[j] + obstacleWidth[j] + r;
+          y_top_prev = obstacleYPrev[j] + obstacleHeight[j] + r;
+          y_bottom_prev = obstacleYPrev[j] - r;
+
+
           if (xi > x_left && xi < x_right && yi > y_bottom && yi < y_top) {
-            if (x_prev <= x_left) {
+            if (x_prev <= x_left_prev) {
               x[i] = x_left - (xi - x_left);
-              vx[i] *= -1;
-              px[i] *= -1;
-            } else if (x_prev >= x_right) {
+              bounceDirection = 1;
+            } else if (x_prev >= x_right_prev) {
               x[i] = x_right + (x_right - xi);
-              vx[i] *= -1;
-              px[i] *= -1;
-            } else if (y_prev <= y_bottom) {
+              bounceDirection = 1;
+            } else if (y_prev <= y_top_prev) {
               y[i] = y_bottom - (yi - y_bottom);
-              vy[i] *= -1;
-              py[i] *= -1;
-            } else /* y_prev >= y_top */ {
+              bounceDirection = -1;
+            } else if (y_prev >= y_bottom_prev) {
               y[i] = y_top  + (y_top - yi);
-              vy[i] *= -1;
-              py[i] *= -1;
+              bounceDirection = -1;
+            } else {
+              console.log("ouch!")
+            }
+          }
+
+          obs_mass = obstacleMass[j];
+
+          if (bounceDirection) {
+            if (obs_mass !== Infinity) {
+              // if we have real mass, perform a perfectly-elastic collision
+              mass = elements[element[i]][0];
+              totalMass = obs_mass + mass;
+              if (bounceDirection === 1) {
+                vxPrev = vx[i];
+                obs_vxPrev = obstacleVX[j];
+
+                vx[i] = (vxPrev * (mass - obs_mass) + (2 * obs_mass * obs_vxPrev)) / totalMass;
+                obstacleVX[j] = (obs_vxPrev * (obs_mass - mass) + (2 * px[i])) / totalMass;
+              } else {
+                vyPrev = vy[i];
+                obs_vyPrev = obstacleVY[j];
+
+                vy[i] = (vyPrev * (mass - obs_mass) + (2 * obs_mass * obs_vyPrev)) / totalMass;
+                obstacleVY[j] = (obs_vyPrev * (obs_mass - mass) + (2 * py[i])) / totalMass;
+              }
+            } else {
+              // if we have infinite mass, just reflect (like a wall)
+              if (bounceDirection === 1) {
+                vx[i] *= -1;
+              } else {
+                vy[i] *= -1;
+              }
             }
           }
         }
@@ -938,8 +1003,15 @@ exports.makeModel = function() {
 
       obstacleX[N_obstacles] = x;
       obstacleY[N_obstacles] = y;
+      obstacleXPrev[N_obstacles] = x;
+      obstacleYPrev[N_obstacles] = y;
+
       obstacleWidth[N_obstacles]  = width;
       obstacleHeight[N_obstacles] = height;
+
+      obstacleVX[N_obstacles] = 0;
+      obstacleVY[N_obstacles] = 0;
+      obstacleMass[N_obstacles] = Infinity;   // to test, change to e.g. 500
 
       obstacleColorR[N_obstacles] = color[0];
       obstacleColorG[N_obstacles] = color[1];
@@ -1128,6 +1200,11 @@ exports.makeModel = function() {
           updatePairwiseAccelerations(i);
         }
 
+        // Move obstacles
+        for (i = 0; i < N_obstacles; i++) {
+          updateObstaclePosition(i);
+        }
+
         // Accumulate accelerations from bonded interactions into a(t+dt)
         updateBondAccelerations();
 
@@ -1141,7 +1218,6 @@ exports.makeModel = function() {
 
         adjustTemperature();
       } // end of integration loop
-
       model.computeOutputState();
     },
 
