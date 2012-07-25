@@ -223,7 +223,7 @@
         beforeEach(function() {
           return spyOn(applet, '_stopSensor');
         });
-        describe("in the 'started' state", function() {
+        describe("when in the 'started' state", function() {
           beforeEach(function() {
             applet._state = 'started';
             return applet.stop();
@@ -235,7 +235,7 @@
             return expect(applet.getState()).toBe('stopped');
           });
         });
-        return describe("not in the 'started' state", function() {
+        return describe("when not in the 'started' state", function() {
           beforeEach(function() {
             applet._state = 'not started';
             return applet.stop();
@@ -250,22 +250,43 @@
       });
     });
     return describe("initially", function() {
-      describe("inAppletCallback method", function() {
-        return it("should return false");
+      describe("getIsInAppletCallback method", function() {
+        return it("should return false", function() {
+          return expect(applet.getIsInAppletCallback()).toBe(false);
+        });
       });
-      describe("after endAppletCallback is called", function() {
-        return it("should throw an error");
+      describe("endAppletCallback method", function() {
+        return it("should throw an error", function() {
+          return expect(applet.endAppletCallback).toThrow();
+        });
       });
       return describe("after startAppletCallback method is called", function() {
-        describe("inAppletCallback method", function() {
-          return it("should return true");
+        beforeEach(function() {
+          return applet.startAppletCallback();
         });
-        describe("after startAppletCallback method is called again", function() {
-          return it("should throw an error");
+        describe("getIsInAppletCallback method", function() {
+          return it("should return true", function() {
+            return expect(applet.getIsInAppletCallback()).toBe(true);
+          });
+        });
+        describe("startAppletCallback method", function() {
+          return it("should throw an error", function() {
+            return expect(applet.startAppletCallback).toThrow();
+          });
         });
         return describe("after endAppletCallback method is called", function() {
-          return describe("inAppletCallack method", function() {
-            return it("should return false");
+          beforeEach(function() {
+            return applet.endAppletCallback();
+          });
+          describe("getIsInAppletCallback method", function() {
+            return it("should return false", function() {
+              return expect(applet.getIsInAppletCallback()).toBe(false);
+            });
+          });
+          return describe("endAppletCallback method", function() {
+            return it("should throw an error", function() {
+              return expect(applet.endAppletCallback).toThrow();
+            });
           });
         });
       });

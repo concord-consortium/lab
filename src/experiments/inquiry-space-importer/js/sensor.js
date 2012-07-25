@@ -5,11 +5,30 @@ if (typeof ISImporter === 'undefined') ISImporter = {};
 ISImporter.SensorApplet = defineClass({
 
   _state: 'not appended',
+  _isInAppletCallback: false,
 
   testAppletReadyInterval: 100,
 
   getState: function() {
     return this._state;
+  },
+
+  getIsInAppletCallback: function() {
+    return this._isInAppletCallback;
+  },
+
+  startAppletCallback: function() {
+    if (this.getIsInAppletCallback()) {
+      throw new Error("SensorApplet.startAppletCallback was called without previous endAppletCallback call");
+    }
+    this._isInAppletCallback = true;
+  },
+
+  endAppletCallback: function() {
+    if (!this.getIsInAppletCallback()) {
+      throw new Error("SensorApplet.endAppletCallback was called without previous startAppletCallback call");
+    }
+    this._isInAppletCallback = false;
   },
 
   on: function(evt, cb) {

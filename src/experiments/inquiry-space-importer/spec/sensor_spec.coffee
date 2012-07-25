@@ -181,7 +181,7 @@ describe "SensorApplet class", ->
       beforeEach ->
         spyOn applet, '_stopSensor'
 
-      describe "in the 'started' state", ->
+      describe "when in the 'started' state", ->
 
         beforeEach ->
           applet._state = 'started'
@@ -193,7 +193,7 @@ describe "SensorApplet class", ->
         it "should go the the 'stopped' state", ->
           expect( applet.getState() ).toBe 'stopped'
 
-      describe "not in the 'started' state", ->
+      describe "when not in the 'started' state", ->
 
         beforeEach ->
           applet._state = 'not started'
@@ -208,22 +208,39 @@ describe "SensorApplet class", ->
 
   describe "initially", ->
 
-    describe "inAppletCallback method", ->
-      it "should return false"
+    describe "getIsInAppletCallback method", ->
+      it "should return false", ->
+        expect( applet.getIsInAppletCallback() ).toBe false
 
-    describe "after endAppletCallback is called", ->
-      it "should throw an error"
+    describe "endAppletCallback method", ->
+      it "should throw an error", ->
+        expect( applet.endAppletCallback ).toThrow()
 
     describe "after startAppletCallback method is called", ->
-      describe "inAppletCallback method", ->
-        it "should return true"
 
-      describe "after startAppletCallback method is called again", ->
-        it "should throw an error"
+      beforeEach ->
+        applet.startAppletCallback()
+
+      describe "getIsInAppletCallback method", ->
+        it "should return true", ->
+          expect( applet.getIsInAppletCallback() ).toBe true
+
+      describe "startAppletCallback method", ->
+        it "should throw an error", ->
+          expect( applet.startAppletCallback ).toThrow()
 
       describe "after endAppletCallback method is called", ->
-        describe "inAppletCallack method", ->
-          it "should return false"
+
+        beforeEach ->
+          applet.endAppletCallback()
+
+        describe "getIsInAppletCallback method", ->
+          it "should return false", ->
+            expect( applet.getIsInAppletCallback() ).toBe false
+
+        describe "endAppletCallback method", ->
+          it "should throw an error", ->
+            expect( applet.endAppletCallback ).toThrow()
 
 
 describe "GoIOApplet class", ->
