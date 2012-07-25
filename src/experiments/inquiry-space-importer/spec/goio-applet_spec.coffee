@@ -101,21 +101,29 @@ describe "GoIOApplet class", ->
       goio.on 'data', dataCb
 
     it "should emit the 'data' event", ->
-      goio.dataReceived()
+      goio.dataReceived null, 1, [1.0]
       expect( dataCb ).toHaveBeenCalled()
 
     describe "the data callback", ->
-
-      it "should be called with the data received from the applet callback", ->
-        goio.dataReceived null, 2, [1.0, 2.0]
-        expect( dataCb ).toHaveBeenCalledWith [1.0, 2.0]
 
       it "should be called while getIsInAppletCallback() returns true", ->
           wasIn = null
           dataCb.andCallFake -> wasIn = goio.getIsInAppletCallback()
 
-          goio.dataReceived()
+          goio.dataReceived null, 1, [1.0]
           expect( wasIn ).toBe true
+
+      describe "when dataReceived is sent an array with a single datum", ->
+        it "should be called with the datum received from the applet callback", ->
+          goio.dataReceived null, 1, [1.0]
+          expect( dataCb ).toHaveBeenCalledWith 1.0
+
+      describe "when dataReceived is sent an array with more than one datum", ->
+        it "should be called once with each datum", ->
+          goio.dataReceived null, 2, [1.0, 2.0]
+          expect( dataCb.callCount ).toBe 2
+          expect( dataCb.argsForCall[0] ).toEqual [1.0]
+          expect( dataCb.argsForCall[1] ).toEqual [2.0]
 
     describe "after dataReceived returns", ->
 

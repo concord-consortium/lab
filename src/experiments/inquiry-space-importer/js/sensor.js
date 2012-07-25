@@ -201,8 +201,11 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
   },
 
   dataReceived: function(type, count, data) {
+    data = data || [];
     this.startAppletCallback();
-    this.emit('data', data);
+    for (var i = 0, len = data.length; i < len; i++) {
+      this.emit('data', data[i]);
+    }
     this.endAppletCallback();
   },
 
