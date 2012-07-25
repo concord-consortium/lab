@@ -80,8 +80,12 @@ ISImporter.SensorApplet = defineClass({
     throw new Error("Override this method!");
   },
 
-  _startSensor: function() {},
+  _startSensor: function() {
+    throw new Error("Override this method!");
+  },
 
-  _stopSensor: function () {}
+  _stopSensor: function () {
+    throw new Error("Override this method!");
+  }
 
 });

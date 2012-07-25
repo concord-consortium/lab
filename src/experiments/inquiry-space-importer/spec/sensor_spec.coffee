@@ -12,13 +12,21 @@ describe "SensorApplet class", ->
     it "should defer to child class implementation", ->
       expect( applet.testAppletReady ).toThrow()
 
-  describe "_appendHTML method", ->
-    it "should exist and be callable", ->
-      expect( typeof applet._appendHTML ).toBe 'function'
-
   describe "getHTML method", ->
     it "should defer to child class implementation", ->
       expect( applet.getHTML ).toThrow()
+
+  describe "_startSensor method", ->
+    it "should defer to child class implementation", ->
+      expect( applet._startSensor ).toThrow()
+
+  describe "_startSensor method", ->
+    it "should defer to child class implementation", ->
+      expect( applet._stopSensor ).toThrow()
+
+  describe "_appendHTML method", ->
+    it "should exist and be callable", ->
+      expect( typeof applet._appendHTML ).toBe 'function'
 
   describe "getState method", ->
     describe "initially", ->

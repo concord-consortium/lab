@@ -15,14 +15,24 @@
         return expect(applet.testAppletReady).toThrow();
       });
     });
-    describe("_appendHTML method", function() {
-      return it("should exist and be callable", function() {
-        return expect(typeof applet._appendHTML).toBe('function');
-      });
-    });
     describe("getHTML method", function() {
       return it("should defer to child class implementation", function() {
         return expect(applet.getHTML).toThrow();
+      });
+    });
+    describe("_startSensor method", function() {
+      return it("should defer to child class implementation", function() {
+        return expect(applet._startSensor).toThrow();
+      });
+    });
+    describe("_startSensor method", function() {
+      return it("should defer to child class implementation", function() {
+        return expect(applet._stopSensor).toThrow();
+      });
+    });
+    describe("_appendHTML method", function() {
+      return it("should exist and be callable", function() {
+        return expect(typeof applet._appendHTML).toBe('function');
       });
     });
     describe("getState method", function() {
