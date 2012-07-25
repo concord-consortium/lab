@@ -6,17 +6,20 @@ ISImporter.sensors = {
 
   distance: new ISImporter.GoIOApplet({
     otmlPath: '/distance.otml',
-    listenerPath: 'ISImporter.sensors.distance'
+    listenerPath: 'ISImporter.sensors.distance',
+    appletId: 'distance-sensor'
   }),
 
   temperature: new ISImporter.GoIOApplet({
     otmlPath: '/temperature.otml',
-    listenerPath: 'ISImporter.sensors.temperature'
+    listenerPath: 'ISImporter.sensors.temperature',
+    appletId: 'temperature-sensor'
   }),
 
   light: new ISImporter.GoIOApplet({
     otmlPath: '/light.otml',
-    listenerPath: 'ISImporter.sensors.light'
+    listenerPath: 'ISImporter.sensors.light',
+    appletId: 'light-sensor'
   })
 };
 
@@ -83,6 +86,8 @@ ISImporter.main = function() {
     var choice = $(this).val();
     if (ISImporter.sensors[choice] && ISImporter.sensors[choice] !== applet) {
       disableButtons();
+
+      if (applet) applet.remove();
 
       applet = ISImporter.sensors[choice];
       applet.append();
