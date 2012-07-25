@@ -130,6 +130,16 @@ exports.INDICES = INDICES = {
   ELEMENT: 11
 };
 
+exports.OBS_INDICES = OBS_INDICES = {
+  X       :  0,
+  Y       :  1,
+  WIDTH   :  2,
+  HEIGHT  :  3,
+  COLOR_R :  4,
+  COLOR_G :  5,
+  COLOR_B :  6
+};
+
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
 
 exports.makeModel = function() {
@@ -212,7 +222,7 @@ exports.makeModel = function() {
       obstacleWidth,
       obstacleHeight,
 
-      // An array of length 4 which contains obstacles information
+      // An array of length 7 which contains obstacles information
       obstacles,
 
       // Number of actual obstacles
@@ -330,14 +340,18 @@ exports.makeModel = function() {
       },
 
       createObstaclesArray = function(num) {
-        var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
+        var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+            ind     = OBS_INDICES;
 
-          obstacles = [];
+        obstacles = model.obstacles = [];
 
-          obstacles[0] = obstacleX      = arrays.create(num, 0, float32);
-          obstacles[1] = obstacleY      = arrays.create(num, 0, float32);
-          obstacles[2] = obstacleWidth  = arrays.create(num, 0, float32);
-          obstacles[3] = obstacleHeight = arrays.create(num, 0, float32);
+        obstacles[ind.X]        = obstacleX      = arrays.create(num, 0, float32);
+        obstacles[ind.Y]        = obstacleY      = arrays.create(num, 0, float32);
+        obstacles[ind.WIDTH]    = obstacleWidth  = arrays.create(num, 0, float32);
+        obstacles[ind.HEIGHT]   = obstacleHeight = arrays.create(num, 0, float32);
+        obstacles[ind.COLOR_R]  = obstacleColorR = arrays.create(num, 0, float32);
+        obstacles[ind.COLOR_G]  = obstacleColorG = arrays.create(num, 0, float32);
+        obstacles[ind.COLOR_B]  = obstacleColorB = arrays.create(num, 0, float32);
       },
 
 
@@ -917,7 +931,7 @@ exports.makeModel = function() {
     },
 
 
-    addObstacle: function(x, y, width, height) {
+    addObstacle: function(x, y, width, height, color) {
       if (N_obstacles+1 > obstacleX.length) {
         extendObstaclesArray(N_obstacles+1);
       }
@@ -926,6 +940,10 @@ exports.makeModel = function() {
       obstacleY[N_obstacles] = y;
       obstacleWidth[N_obstacles]  = width;
       obstacleHeight[N_obstacles] = height;
+
+      obstacleColorR[N_obstacles] = color[0];
+      obstacleColorG[N_obstacles] = color[1];
+      obstacleColorB[N_obstacles] = color[2];
 
       N_obstacles++;
     },
@@ -1028,7 +1046,7 @@ exports.makeModel = function() {
 
       createObstaclesArray(num);
       for (i = 0; i < num; i++) {
-        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i]);
+        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.color[i]);
       }
     },
 

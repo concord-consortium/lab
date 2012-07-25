@@ -211,24 +211,26 @@ layout.moleculeContainer = function(e, options) {
   }
 
   function get_obstacle_x(i) {
-    return obstacles.x[i];
+    return obstacles[model.OBS_INDICES.X][i];
   }
 
   function get_obstacle_y(i) {
-    return obstacles.y[i];
+    return obstacles[model.OBS_INDICES.Y][i];
   }
 
   function get_obstacle_width(i) {
-    return obstacles.width[i];
+    return obstacles[model.OBS_INDICES.WIDTH][i];
   }
 
   function get_obstacle_height(i) {
-    return obstacles.height[i];
+    return obstacles[model.OBS_INDICES.HEIGHT][i];
   }
 
   function get_obstacle_color(i) {
-    var rgb = obstacles.color ? obstacles.color[i] : options.default_obstacle_color;
-    return "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+    return "rgb(" +
+      obstacles[model.OBS_INDICES.COLOR_R][i] + "," +
+      obstacles[model.OBS_INDICES.COLOR_G][i] + "," +
+      obstacles[model.OBS_INDICES.COLOR_B][i] + ")";
   }
 
   function container() {
@@ -608,7 +610,7 @@ layout.moleculeContainer = function(e, options) {
       obstacles = get_obstacles();
       if (!obstacles) return;
 
-      mock_obstacles_array.length = obstacles.x.length;
+      mock_obstacles_array.length = obstacles[0].length;
 
       gradient_container.selectAll("rect").remove();
 

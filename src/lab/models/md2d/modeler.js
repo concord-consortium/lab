@@ -107,6 +107,16 @@ modeler.model = function(initialProperties) {
     ELEMENT  : md2d.INDICES.ELEMENT
   };
 
+  model.OBS_INDICES = {
+    X        : md2d.OBS_INDICES.X,
+    Y        : md2d.OBS_INDICES.Y,
+    WIDTH    : md2d.OBS_INDICES.WIDTH,
+    HEIGHT   : md2d.OBS_INDICES.HEIGHT,
+    COLOR_R  : md2d.OBS_INDICES.COLOR_R,
+    COLOR_G  : md2d.OBS_INDICES.COLOR_G,
+    COLOR_B  : md2d.OBS_INDICES.COLOR_B
+  };
+
   function notifyListeners(listeners) {
     $.unique(listeners);
     for (var i=0, ii=listeners.length; i<ii; i++){
@@ -452,8 +462,8 @@ modeler.model = function(initialProperties) {
   };
 
   model.createObstacles = function(_obstacles) {
-    obstacles = _obstacles;
-    coreModel.initializeObstacles(obstacles);
+    coreModel.initializeObstacles(_obstacles);
+    obstacles = coreModel.obstacles;
     return model;
   };
 
