@@ -90,7 +90,7 @@ ISImporter.SensorApplet = defineClass({
   },
 
   _appendHTML: function(html) {
-    $(document).append(html);
+    $('body').append(html);
     this.appletInstance = $('#'+this.appletId)[0];
   },
 
