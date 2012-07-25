@@ -67,7 +67,7 @@ parseMML = (mmlString) ->
           color[1] = parseInt cheerio(colorDef[1]).text()
           color[2] = parseInt cheerio(colorDef[2]).text()
         else
-          color    = [160, 211, 209]
+          color    = [128, 128, 128]
 
         [x, y]          = toNextgenCoordinates x, y
         [height, width] = toNextgenLengths height, width
