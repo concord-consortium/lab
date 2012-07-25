@@ -1,8 +1,15 @@
 describe "GoIOApplet class", ->
 
-  it "should exist"
+  goio = null
 
-  it "should be a subclass of SensorApplet"
+  beforeEach ->
+    goio = new ISImporter.GoIOApplet()
+
+  it "should exist", ->
+    expect( goio ).toBeDefined()
+
+  it "should be a subclass of SensorApplet", ->
+    expect( goio.constructor.__super__ ).toBe ISImporter.SensorApplet.prototype
 
   describe "getHTML method", ->
     # set appropriate otml file first!

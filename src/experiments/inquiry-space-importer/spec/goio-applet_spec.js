@@ -2,8 +2,17 @@
 (function() {
 
   describe("GoIOApplet class", function() {
-    it("should exist");
-    it("should be a subclass of SensorApplet");
+    var goio;
+    goio = null;
+    beforeEach(function() {
+      return goio = new ISImporter.GoIOApplet();
+    });
+    it("should exist", function() {
+      return expect(goio).toBeDefined();
+    });
+    it("should be a subclass of SensorApplet", function() {
+      return expect(goio.constructor.__super__).toBe(ISImporter.SensorApplet.prototype);
+    });
     describe("getHTML method", function() {
       return it("should construct an appropriate applet tag");
     });

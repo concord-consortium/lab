@@ -108,3 +108,8 @@ ISImporter.SensorApplet = defineClass({
   }
 
 });
+
+
+ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
+
+});
