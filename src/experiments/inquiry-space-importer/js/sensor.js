@@ -151,6 +151,23 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
         '<param name="name" value="',          this.appletId,     '" />',
       '</applet>'
     ].join('');
+  },
+
+  testAppletReady: function() {
+    try {
+      this.appletInstance.initSensorInterface( this.listenerPath );
+    } catch(e) {
+      return false;
+    }
+    return true;
+  },
+
+  // applet callbacks
+
+  sensorsReady: function() {
+    this.startAppletCallback();
+    this.sensorIsReady();
+    this.endAppletCallback();
   }
 
 });

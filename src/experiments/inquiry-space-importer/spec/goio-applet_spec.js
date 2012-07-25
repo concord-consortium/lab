@@ -23,24 +23,60 @@
           return expect(goio.getHTML()).toBe(['<applet ', 'id="goio-applet" ', 'class="applet sensor-applet" ', 'archive="org/concord/sensor-native/sensor-native.jar, ', 'org/concord/otrunk/otrunk.jar, ', 'org/concord/framework/framework.jar, ', 'org/concord/frameworkview/frameworkview.jar, ', 'jug/jug/jug.jar, ', 'jdom/jdom/jdom.jar, ', 'org/concord/sensor/sensor.jar, ', 'org/concord/data/data.jar, ', 'org/concord/sensor/sensor-applets/sensor-applets.jar" ', 'code="org.concord.sensor.applet.OTSensorApplet" ', 'codebase="/jnlp" ', 'width="1px" ', 'height="1px" ', 'MAYSCRIPT="true" >', '<param name="resource" value="(dummy otml path)" />', '<param name="listenerPath" value="(dummy listener path)" />', '<param name="name" value="goio-applet" />', '</applet>'].join(''));
         });
       });
-    });
-    describe("testAppletReady method", function() {
-      it("should call initSensorInterface method of the applet instance");
-      it("should send the 'listenerPath' property to initSensorInterface");
-      describe("if initSensorInterface throws an error", function() {
-        return it("should return false");
+      return describe("testAppletReady method", function() {
+        beforeEach(function() {
+          goio.appletInstance = {
+            initSensorInterface: function() {}
+          };
+          return spyOn(goio.appletInstance, 'initSensorInterface');
+        });
+        it("should pass the listenerPath to the initSensorInterface method of the applet instance", function() {
+          goio.testAppletReady();
+          return expect(goio.appletInstance.initSensorInterface).toHaveBeenCalledWith('(dummy listener path)');
+        });
+        describe("if initSensorInterface does not throw an error", function() {
+          return it("should return true", function() {
+            return expect(goio.testAppletReady()).toBe(true);
+          });
+        });
+        return describe("if initSensorInterface throws an error", function() {
+          beforeEach(function() {
+            return goio.appletInstance.initSensorInterface.andThrow(new Error());
+          });
+          return it("should return false", function() {
+            return expect(goio.testAppletReady()).toBe(false);
+          });
+        });
       });
-      return describe("if initSensorInterface does not throw an error", function() {
-        return it("should return true");
+    });
+    describe("sensorsReady applet callback", function() {
+      it("should call sensorIsReady parent method", function() {
+        spyOn(goio, 'sensorIsReady');
+        goio.sensorsReady();
+        return expect(goio.sensorIsReady).toHaveBeenCalled();
       });
-    });
-    describe("sensorsReadyWhenAppletReady property", function() {
-      return it("should be false");
-    });
-    describe("sensorsReady method", function() {
-      it("should call startAppletCallback");
-      it("should call sensorIsReady method while inAppletCallback is true");
-      return it("should call endAppletCallback");
+      describe("return value of getIsInAppletCallback method", function() {
+        return describe("during sensorIsReady method", function() {
+          var returnValueDuring;
+          returnValueDuring = null;
+          beforeEach(function() {
+            returnValueDuring = null;
+            return spyOn(goio, 'sensorIsReady').andCallFake(function() {
+              return returnValueDuring = goio.getIsInAppletCallback();
+            });
+          });
+          return it("should be true", function() {
+            goio.sensorsReady();
+            return expect(returnValueDuring).toBe(true);
+          });
+        });
+      });
+      return describe("after sensorIsReady returns", function() {
+        return it("should be false", function() {
+          goio.sensorsReady();
+          return expect(goio.getIsInAppletCallback()).toBe(false);
+        });
+      });
     });
     describe("The dataReceived method", function() {
       it("should call startAppletCallback");

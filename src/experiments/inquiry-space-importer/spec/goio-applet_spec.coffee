@@ -41,25 +41,57 @@ describe "GoIOApplet class", ->
             '<param name="name" value="goio-applet" />',
           '</applet>'].join('')
 
-  describe "testAppletReady method", ->
-    it "should call initSensorInterface method of the applet instance"
-    it "should send the 'listenerPath' property to initSensorInterface"
+    describe "testAppletReady method", ->
 
-    describe "if initSensorInterface throws an error", ->
-      it "should return false"
+      beforeEach ->
+        goio.appletInstance =
+          initSensorInterface: ->
+        spyOn goio.appletInstance, 'initSensorInterface'
 
-    describe "if initSensorInterface does not throw an error", ->
-      it "should return true"
+      it "should pass the listenerPath to the initSensorInterface method of the applet instance", ->
+        goio.testAppletReady()
+        expect( goio.appletInstance.initSensorInterface ).toHaveBeenCalledWith '(dummy listener path)'
 
-  describe "sensorsReadyWhenAppletReady property", ->
-    it "should be false"
+      describe "if initSensorInterface does not throw an error", ->
 
-  describe "sensorsReady method", ->
-    it "should call startAppletCallback"
+        it "should return true", ->
+          expect( goio.testAppletReady() ).toBe true
 
-    it "should call sensorIsReady method while inAppletCallback is true"
+      describe "if initSensorInterface throws an error", ->
 
-    it "should call endAppletCallback"
+        beforeEach ->
+          goio.appletInstance.initSensorInterface.andThrow new Error()
+
+        it "should return false", ->
+          expect( goio.testAppletReady() ).toBe false
+
+  describe "sensorsReady applet callback", ->
+
+    it "should call sensorIsReady parent method", ->
+      spyOn goio, 'sensorIsReady'
+      goio.sensorsReady()
+      expect( goio.sensorIsReady ).toHaveBeenCalled()
+
+    describe "return value of getIsInAppletCallback method", ->
+
+      describe "during sensorIsReady method", ->
+
+        returnValueDuring = null
+        beforeEach ->
+          returnValueDuring = null
+          spyOn( goio, 'sensorIsReady' ).andCallFake ->
+            returnValueDuring = goio.getIsInAppletCallback()
+
+        it "should be true", ->
+          goio.sensorsReady()
+          expect( returnValueDuring ).toBe true
+
+    describe "after sensorIsReady returns", ->
+
+      it "should be false", ->
+        goio.sensorsReady()
+        expect( goio.getIsInAppletCallback() ).toBe false
+
 
   describe "The dataReceived method", ->
 
