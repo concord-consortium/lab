@@ -39,9 +39,11 @@ ISImporter.SensorApplet = defineClass({
   },
 
   emit: function(evt) {
+    var args = arguments.length > 1 ? [].splice.call(arguments, 1) : [];
+
     if (this._callbacks && this._callbacks[evt]) {
       for (var i = 0, len = this._callbacks[evt].length; i < len; i++) {
-        this._callbacks[evt][i]();
+        this._callbacks[evt][i].apply(null, args);
       }
     }
   },
