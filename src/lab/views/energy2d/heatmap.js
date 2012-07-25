@@ -97,8 +97,8 @@ energy2d.views.makeHeatmapView = function (html_id) {
               hue = max_hue;
             }
             data[pix_index]     = red_color_table[hue];
-            data[pix_index + 1] = blue_color_table[hue];
-            data[pix_index + 2] = green_color_table[hue];
+            data[pix_index + 1] = green_color_table[hue];
+            data[pix_index + 2] = blue_color_table[hue];
             data[pix_index + 3] = 255;
             pix_index += pix_stride;
           }

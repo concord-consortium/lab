@@ -97,7 +97,7 @@ energy2d.views.utils.setupRGBTemperatureColorTables = function (red, green, blue
   for (i = 0; i < 256; i += 1) {
     rgb = energy2d.views.utils.HSVToRGB(i, 100, 90);
     red[i]   = rgb[0];
-    blue[i]  = rgb[1];
-    green[i] = rgb[2];
+    green[i] = rgb[1];
+    blue[i]  = rgb[2];
   }
 };
