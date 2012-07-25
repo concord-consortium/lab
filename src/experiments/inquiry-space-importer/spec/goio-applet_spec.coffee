@@ -126,25 +126,63 @@ describe "GoIOApplet class", ->
         it "should return false", ->
           expect( goio.getIsInAppletCallback() ).toBe false
 
-
   describe "_stopSensor method", ->
-    describe "if inAppletCallback is true", ->
-      it "should set a timer"
-      describe "when the timer expires", ->
-        it "should call the _stopSensor method again"
 
-    describe "if inAppletCallack is false", ->
-      it "should call the applet method stopCollecting"
+    beforeEach ->
+      goio.appletInstance =
+        stopCollecting: ->
+      spyOn goio.appletInstance, 'stopCollecting'
+
+    describe "when called from outside an applet callback", ->
+      it "should call the applet stopCollecting method", ->
+        goio._stopSensor();
+        expect( goio.appletInstance.stopCollecting ).toHaveBeenCalled()
+
+    describe "when called from within an applet callback", ->
+
+      beforeEach ->
+        goio.startAppletCallback()
+        runs -> goio._stopSensor()
+
+      describe "immediately", ->
+        it "should not have called the applet stopCollecting method", ->
+          runs -> expect( goio.appletInstance.stopCollecting ).not.toHaveBeenCalled()
+
+      describe "after waiting", ->
+        beforeEach ->
+          waits 100
+
+        it "should have called the applet stopCollecting method", ->
+          runs -> expect( goio.appletInstance.stopCollecting ).toHaveBeenCalled()
 
   describe "_startSensor method", ->
-    describe "if inAppletCallback is true", ->
-      it "should set a timer"
 
-      describe "when the timer expires", ->
-        it "should call the _startSensor method again"
+    beforeEach ->
+      goio.appletInstance =
+        startCollecting: ->
+      spyOn goio.appletInstance, 'startCollecting'
 
-    describe "if inAppletCallack is false", ->
-      it "should call the applet method startCollecting"
+    describe "when called from outside an applet callback", ->
+      it "should call the applet startCollecting method", ->
+        goio._startSensor();
+        expect( goio.appletInstance.startCollecting ).toHaveBeenCalled()
+
+    describe "when called from within an applet callback", ->
+
+      beforeEach ->
+        goio.startAppletCallback()
+        runs -> goio._startSensor()
+
+      describe "immediately", ->
+        it "should not have called the applet startCollecting method", ->
+          runs -> expect( goio.appletInstance.startCollecting ).not.toHaveBeenCalled()
+
+      describe "after waiting", ->
+        beforeEach ->
+          waits 100
+
+        it "should have called the applet stopCollecting method", ->
+          runs -> expect( goio.appletInstance.startCollecting ).toHaveBeenCalled()
 
 
 ###

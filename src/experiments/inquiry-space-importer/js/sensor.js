@@ -164,6 +164,33 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
     return true;
   },
 
+  // In some browsers, calling an applet method from within a callback triggered by
+  // an applet seems to cause problems (lock up the browser). Therefore, make sure
+  // not to call the applet's stopCollecting, startCollecting methods within an applet
+  // callback.
+
+  _stopSensor: function() {
+    var self = this;
+
+    if (this.getIsInAppletCallback()) {
+      window.setTimeout(function() { self.appletInstance.stopCollecting(); }, 10);
+    }
+    else {
+      this.appletInstance.stopCollecting();
+    }
+  },
+
+  _startSensor: function() {
+    var self = this;
+
+    if (this.getIsInAppletCallback()) {
+      window.setTimeout(function() { self.appletInstance.startCollecting(); }, 10);
+    }
+    else {
+      this.appletInstance.startCollecting();
+    }
+  },
+
   // applet callbacks
 
   sensorsReady: function() {

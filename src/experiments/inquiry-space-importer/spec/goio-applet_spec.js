@@ -116,25 +116,81 @@
       });
     });
     describe("_stopSensor method", function() {
-      describe("if inAppletCallback is true", function() {
-        it("should set a timer");
-        return describe("when the timer expires", function() {
-          return it("should call the _stopSensor method again");
+      beforeEach(function() {
+        goio.appletInstance = {
+          stopCollecting: function() {}
+        };
+        return spyOn(goio.appletInstance, 'stopCollecting');
+      });
+      describe("when called from outside an applet callback", function() {
+        return it("should call the applet stopCollecting method", function() {
+          goio._stopSensor();
+          return expect(goio.appletInstance.stopCollecting).toHaveBeenCalled();
         });
       });
-      return describe("if inAppletCallack is false", function() {
-        return it("should call the applet method stopCollecting");
+      return describe("when called from within an applet callback", function() {
+        beforeEach(function() {
+          goio.startAppletCallback();
+          return runs(function() {
+            return goio._stopSensor();
+          });
+        });
+        describe("immediately", function() {
+          return it("should not have called the applet stopCollecting method", function() {
+            return runs(function() {
+              return expect(goio.appletInstance.stopCollecting).not.toHaveBeenCalled();
+            });
+          });
+        });
+        return describe("after waiting", function() {
+          beforeEach(function() {
+            return waits(100);
+          });
+          return it("should have called the applet stopCollecting method", function() {
+            return runs(function() {
+              return expect(goio.appletInstance.stopCollecting).toHaveBeenCalled();
+            });
+          });
+        });
       });
     });
     return describe("_startSensor method", function() {
-      describe("if inAppletCallback is true", function() {
-        it("should set a timer");
-        return describe("when the timer expires", function() {
-          return it("should call the _startSensor method again");
+      beforeEach(function() {
+        goio.appletInstance = {
+          startCollecting: function() {}
+        };
+        return spyOn(goio.appletInstance, 'startCollecting');
+      });
+      describe("when called from outside an applet callback", function() {
+        return it("should call the applet startCollecting method", function() {
+          goio._startSensor();
+          return expect(goio.appletInstance.startCollecting).toHaveBeenCalled();
         });
       });
-      return describe("if inAppletCallack is false", function() {
-        return it("should call the applet method startCollecting");
+      return describe("when called from within an applet callback", function() {
+        beforeEach(function() {
+          goio.startAppletCallback();
+          return runs(function() {
+            return goio._startSensor();
+          });
+        });
+        describe("immediately", function() {
+          return it("should not have called the applet startCollecting method", function() {
+            return runs(function() {
+              return expect(goio.appletInstance.startCollecting).not.toHaveBeenCalled();
+            });
+          });
+        });
+        return describe("after waiting", function() {
+          beforeEach(function() {
+            return waits(100);
+          });
+          return it("should have called the applet stopCollecting method", function() {
+            return runs(function() {
+              return expect(goio.appletInstance.startCollecting).toHaveBeenCalled();
+            });
+          });
+        });
       });
     });
   });
