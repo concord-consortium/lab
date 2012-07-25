@@ -203,6 +203,10 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
     this.startAppletCallback();
     this.emit('data', data);
     this.endAppletCallback();
+  },
+
+  // the applet will may call this, so it has to exist
+  dataStreamEvent: function() {
   }
 
 });

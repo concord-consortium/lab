@@ -126,6 +126,14 @@ describe "GoIOApplet class", ->
         it "should return false", ->
           expect( goio.getIsInAppletCallback() ).toBe false
 
+  describe "The dataStreamEvent applet callback", ->
+
+    it "should exist and be callable", ->
+      expect( typeof goio.dataStreamEvent ).toBe 'function'
+
+    it "should not throw an error", ->
+      expect( goio.dataStreamEvent ).not.toThrow()
+
   describe "_stopSensor method", ->
 
     beforeEach ->

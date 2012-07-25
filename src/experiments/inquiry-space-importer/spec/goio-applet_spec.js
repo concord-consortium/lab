@@ -115,6 +115,14 @@
         });
       });
     });
+    describe("The dataStreamEvent applet callback", function() {
+      it("should exist and be callable", function() {
+        return expect(typeof goio.dataStreamEvent).toBe('function');
+      });
+      return it("should not throw an error", function() {
+        return expect(goio.dataStreamEvent).not.toThrow();
+      });
+    });
     describe("_stopSensor method", function() {
       beforeEach(function() {
         goio.appletInstance = {
