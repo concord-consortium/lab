@@ -92,70 +92,83 @@
         };
         applet._appendHTML = function() {};
         applet.testAppletReady = function() {};
-        return applet.testAppletReadyInterval = 50;
-      });
-      it("should call the testAppletReady method in a timeout", function() {
+        applet.testAppletReadyInterval = 50;
         spyOn(applet, 'testAppletReady');
-        runs(function() {
-          applet.append();
-          return expect(applet.testAppletReady).not.toHaveBeenCalled();
-        });
-        waits(100);
         return runs(function() {
-          return expect(applet.testAppletReady).toHaveBeenCalled();
+          return applet.append();
         });
       });
-      return describe("when testAppletReady returns false", function() {
-        beforeEach(function() {
-          return spyOn(applet, 'testAppletReady').andReturn(false);
-        });
-        it("should continue calling testAppletReady", function() {
-          runs(function() {
-            return applet.append();
-          });
-          waits(200);
+      describe("immediately", function() {
+        return it("should not have called testAppletReady", function() {
           return runs(function() {
-            return expect(applet.testAppletReady.callCount).toBeGreaterThan(1);
+            return expect(applet.testAppletReady).not.toHaveBeenCalled();
           });
         });
-        return describe("when testAppletReady subsequently returns true", function() {
-          it("should stop calling testAppletReady", function() {
+      });
+      return describe("and the applet is not yet ready", function() {
+        beforeEach(function() {
+          return runs(function() {
+            return applet.testAppletReady.andReturn(false);
+          });
+        });
+        return describe("after waiting", function() {
+          beforeEach(function() {
+            return waits(100);
+          });
+          it("should call testAppletReady additional times", function() {
             runs(function() {
-              return applet.append();
-            });
-            waits(100);
-            runs(function() {
-              expect(applet.testAppletReady).toHaveBeenCalled();
-              applet.testAppletReady.reset();
-              return applet.testAppletReady.andReturn(true);
-            });
-            waits(100);
-            runs(function() {
-              expect(applet.testAppletReady).toHaveBeenCalled();
               return applet.testAppletReady.reset();
             });
             waits(100);
             return runs(function() {
-              return expect(applet.testAppletReady).not.toHaveBeenCalled();
+              return expect(applet.testAppletReady).toHaveBeenCalled();
             });
           });
-          return it("should transition to the 'applet ready' state and fire the 'appletReady' event", function() {
-            var appletReady;
-            appletReady = jasmine.createSpy('appletReady');
-            applet.on('appletReady', appletReady);
-            runs(function() {
-              return applet.append();
+          return describe("and the applet becomes ready", function() {
+            var appletReadyCallback;
+            appletReadyCallback = null;
+            beforeEach(function() {
+              return runs(function() {
+                appletReadyCallback = jasmine.createSpy('appletReadyCallback');
+                applet.on('appletReady', appletReadyCallback);
+                return applet.testAppletReady.andReturn(true);
+              });
             });
-            waits(100);
-            runs(function() {
-              expect(applet.getState()).toBe('appended');
-              expect(appletReady).not.toHaveBeenCalled();
-              return applet.testAppletReady.andReturn(true);
+            describe("initially", function() {
+              it("should be in the 'appended' state", function() {
+                return runs(function() {
+                  return expect(applet.getState()).toBe('appended');
+                });
+              });
+              return it("should not have fired the appletReady event", function() {
+                return runs(function() {
+                  return expect(appletReadyCallback).not.toHaveBeenCalled();
+                });
+              });
             });
-            waits(100);
-            return runs(function() {
-              expect(applet.getState()).toBe('applet ready');
-              return expect(appletReady).toHaveBeenCalled();
+            return describe("after waiting", function() {
+              beforeEach(function() {
+                return waits(100);
+              });
+              it("should have stopped calling testAppletReady", function() {
+                runs(function() {
+                  return applet.testAppletReady.reset();
+                });
+                waits(100);
+                return runs(function() {
+                  return expect(applet.testAppletReady).not.toHaveBeenCalled();
+                });
+              });
+              it("should be in the 'applet ready' state", function() {
+                return runs(function() {
+                  return expect(applet.getState()).toBe('applet ready');
+                });
+              });
+              return it("should have fired the appletReady event", function() {
+                return runs(function() {
+                  return expect(appletReadyCallback).toHaveBeenCalled();
+                });
+              });
             });
           });
         });
