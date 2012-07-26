@@ -33,6 +33,7 @@ exports.makeFluidSolverGPU = function (model) {
     set_obstacle_boundary_fs = glsl[GLSL_PREFIX + 'set-obstacle-boundary.fs.glsl'],
     set_obstacle_velocity_fs = glsl[GLSL_PREFIX + 'set-obstacle-velocity.fs.glsl'],
     uv_to_u0v0_fs            = glsl[GLSL_PREFIX + 'uv-to-u0v0.fs.glsl'],
+    conserve_step1_fs        = glsl[GLSL_PREFIX + 'conserve-step1.fs.glsl'],
 
     // ========================================================================
     // GLSL Shaders:
@@ -43,6 +44,7 @@ exports.makeFluidSolverGPU = function (model) {
     set_obstacle_boundary_program = new gpu.Shader(basic_vs, set_obstacle_boundary_fs),
     set_obstacle_velocity_program = new gpu.Shader(basic_vs, set_obstacle_velocity_fs),
     uv_to_u0v0_program            = new gpu.Shader(basic_vs, uv_to_u0v0_fs),
+    conserve_step1_program        = new gpu.Shader(basic_vs, conserve_step1_fs),
     // ========================================================================
 
     // Simulation arrays provided by model.
@@ -92,11 +94,7 @@ exports.makeFluidSolverGPU = function (model) {
     i2dy  = 0.5 / delta_y,
     idxsq = 1.0 / (delta_x * delta_x),
     idysq = 1.0 / (delta_y * delta_y),
-
-    nx1 = nx - 1,
-    ny1 = ny - 1,
-    nx2 = nx - 2,
-    ny2 = ny - 2,
+    s     = 0.5 / (idxsq + idysq),
 
     grid_vec = [1 / ny, 1 / nx],
 
@@ -150,6 +148,18 @@ exports.makeFluidSolverGPU = function (model) {
         grid: grid_vec,
       };
       set_obstacle_velocity_program.uniforms(uniforms);
+
+      // Conserve step 1 uniforms.
+      uniforms = {
+        // Texture units.
+        data1_tex: 0,
+        data2_tex: 1,
+        // Uniforms.
+        grid: grid_vec,
+        i2dx: i2dx,
+        i2dy: i2dy
+      };
+      conserve_step1_program.uniforms(uniforms);
 
     },
 
