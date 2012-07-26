@@ -209,6 +209,13 @@ layout.setupScreen = function(forceRender) {
       }
       break;
 
+      // like simple-iframe, but all component position definitions are set from properties
+      case "interactive-iframe":
+      var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      setupInteractiveIFrameScreen();
+      break;
+
       default:
       layout.bodycss.style.fontSize = layout.screen_factor + 'em';
       setupRegularScreen();
@@ -289,7 +296,7 @@ layout.setupScreen = function(forceRender) {
     height = width * 1/modelAspectRatio;
     if (height > pageHeight*0.70) {
       height = pageHeight * 0.70;
-      width * height * modelAspectRatio;
+      width = height * modelAspectRatio;
     }
 
     for (viewType in viewLists) {
@@ -300,6 +307,36 @@ layout.setupScreen = function(forceRender) {
       }
     }
   }
+
+  //
+  // Interactive iframe Screen Layout
+  //
+  function setupInteractiveIFrameScreen() {
+    var i, width, height, mcsize,
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.80;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight * 0.80) {
+      height = pageHeight * 0.80;
+      width = height * modelAspectRatio;
+    }
+    for (viewType in viewLists) {
+      if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
+        i = -1;  while(++i < viewLists[viewType].length) {
+          viewLists[viewType][i].resize(width, height);
+        }
+      }
+    }
+  }
+
+
 
   //
   // Compare Screen Layout
