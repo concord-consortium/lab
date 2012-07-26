@@ -14,6 +14,9 @@ BATCH_POST_PROCESS_MML_CONVERSION = ruby src/mw-helpers/post-batch-processor.rb
 MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
 ENERGY2D_ENGINE_JS_FILES := $(shell find src/lab/models/energy2d/engine -name '*.js' -print)
 
+GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
+LAB_GLSL_FILES := $(shell find src/lab -name '*.glsl' -print)
+
 # targets
 
 HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/server\/public\/\1/' )
@@ -345,6 +348,10 @@ server/public/lab/lab.molecules.js: \
 	src/lab/models/md2d/modeler.js \
 	src/lab/end.js
 
+server/public/lab/lab.glsl.js: \
+	$(LAB_GLSL_FILES)
+	$(GLSL_TO_JS_CONVERTER) $^ -o $@
+
 server/public/lab/lab.models.energy2d.engine.js: \
 	$(ENERGY2D_ENGINE_JS_FILES)
 	$(BROWSERIFY) src/lab/models/energy2d/engine/core-model.js -o server/public/lab/lab.models.energy2d.engine.js
@@ -352,6 +359,7 @@ server/public/lab/lab.models.energy2d.engine.js: \
 server/public/lab/lab.energy2d.js: \
 	src/lab/start.js \
 	src/lab/energy2d-module.js \
+	server/public/lab/lab.glsl.js \
 	server/public/lab/lab.models.energy2d.engine.js \
 	src/lab/models/energy2d/modeler.js \
 	src/lab/utils/energy2d/gpu/init.js \
