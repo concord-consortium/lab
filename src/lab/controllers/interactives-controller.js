@@ -1,13 +1,16 @@
 /*globals controllers model layout Thermometer $ ACTUAL_ROOT */
 
 /*jslint onevar: true*/
-controllers.interactivesController = function(interactive, interactive_view_id) {
+controllers.interactivesController = function(interactive, interactive_view_id, layout_style) {
 
   var controller = {},
       modelController,
       $interactiveContainer,
       propertiesListeners = [],
       actionQueue = [];
+  if (typeof layout_style === 'undefined') {
+    layout_style = 'interactive';
+  }
 
   function actualRootPath(url) {
     if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
@@ -19,7 +22,7 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
 
   function loadModel(modelUrl) {
     var playerConfig = {    // to be removed
-        layoutStyle        : 'interactive',
+        layoutStyle        : layout_style,
         maximum_model_steps: Infinity
       };
     $.get(actualRootPath(modelUrl)).done(function(modelConfig) {

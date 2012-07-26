@@ -225,6 +225,19 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
 
     // ------------------------------------------------------------
     //
+    //  Wire up screen-resize handlers
+    //
+    // ------------------------------------------------------------
+
+    function onresize() {
+      layout.setupScreen();
+    }
+
+    document.onwebkitfullscreenchange = onresize;
+    window.onresize = onresize;
+
+    // ------------------------------------------------------------
+    //
     // Start if autostart is true
     //
     // ------------------------------------------------------------
