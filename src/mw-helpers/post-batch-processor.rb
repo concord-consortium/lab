@@ -1,8 +1,8 @@
 require 'json'
 
-def process_tutorial_dir(tutorial_dir)
-  section_path = tutorial_dir
-  all_cml_files =  Dir["#{tutorial_dir}/*.cml"]
+def process_dir(dir)
+  section_path = dir
+  all_cml_files =  Dir["#{dir}/*.cml"]
   cml_files = []
   mml_files = []
   pages = []
@@ -78,14 +78,19 @@ Dir.chdir(path) do
   dirs.each do |dir|
     model_list.push(process_section(dir, "original-interactives-in-pages/"))
   end
+  dirs = Dir["other-activities/**"]
+  dirs.each do |dir|
+    model_list.push(process_section(dir, "original-interactives-in-pages/"))
+  end
   model_list.push(process_section("potential-tests"))
   model_list.push(process_section("validation"))
-  model_list.push(process_tutorial_dir("tutorial"))
+  model_list.push(process_dir("tutorial"))
   dirs = Dir["tutorial/**"]
   dirs.each do |dir|
-    tutorial_section = process_tutorial_dir(dir)
+    tutorial_section = process_dir(dir)
     model_list.push(tutorial_section) if tutorial_section
   end
+  model_list.push(process_dir("conversion-and-physics-examples"))
 end
 
 model_list_dot_js = "#{path}/model-list.js"
