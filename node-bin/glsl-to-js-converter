@@ -1,17 +1,16 @@
 #!/usr/bin/env node
 
-var
-	fs = require('fs');
+var fs = require('fs');
 
 // Process arguments.
 // Skip node and script paths.
 var args = process.argv.splice(2);
-if (args.length < 3) {
-	throw new Error("Usage: input_file_list -o outputFile");
+if (args.length < 2) {
+	throw new Error("Usage: [input_files_list] -o output_file");
 }
 var outArgs = args.splice(-2);
 if (outArgs[0] !== "-o") {
-	throw new Error("Usage: input_file_list -o outputFile");
+	throw new Error("Usage: [input_files_list] -o output_file");
 }
 // Prepare output.
 var outputFile = outArgs[1];
