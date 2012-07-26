@@ -75,16 +75,19 @@ energy2d.utils.gpu.Shader = function (vertexSource, fragmentSource) {
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      throw 'compile error: ' + gl.getShaderInfoLog(shader);
+      throw new Error('Shader: compile error.\n' + gl.getShaderInfoLog(shader) +
+                      '\nSource:\n' + source);
     }
     return shader;
   }
+
   this.program = gl.createProgram();
   gl.attachShader(this.program, compileSource(gl.VERTEX_SHADER, vertexSource));
   gl.attachShader(this.program, compileSource(gl.FRAGMENT_SHADER, fragmentSource));
   gl.linkProgram(this.program);
   if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
-    throw 'link error: ' + gl.getProgramInfoLog(this.program);
+    throw new Error('Shader: link error.\n' + gl.getProgramInfoLog(this.program) +
+                    '\nSource:\n' + vertexSource + '\n\n' + fragmentSource);
   }
   this.attributes = {};
   this.uniformLocations = {};
@@ -107,11 +110,13 @@ energy2d.utils.gpu.Shader.prototype.uniforms = function (uniforms) {
 
   for (name in uniforms) {
     if (uniforms.hasOwnProperty(name)) {
-      location = this.uniformLocations[name] || gl.getUniformLocation(this.program, name);
-      if (!location) {
+      if (this.uniformLocations[name] === undefined) {
+        this.uniformLocations[name] = gl.getUniformLocation(this.program, name);
+      }
+      location = this.uniformLocations[name];
+      if (location === -1) {
         continue;
       }
-      this.uniformLocations[name] = location;
       value = uniforms[name];
       if (isArray(value)) {
         switch (value.length) {
@@ -132,12 +137,12 @@ energy2d.utils.gpu.Shader.prototype.uniforms = function (uniforms) {
           value[2], value[6], value[10], value[14],
           value[3], value[7], value[11], value[15]
         ])); break;
-        default: throw 'don\'t know how to load uniform "' + name + '" of length ' + value.length;
+        default: throw new Error('Shader: don\'t know how to load uniform "' + name + '" of length ' + value.length);
         }
       } else if (isNumber(value)) {
         (this.isSampler[name] ? gl.uniform1i : gl.uniform1f).call(gl, location, value);
       } else {
-        throw 'attempted to set uniform "' + name + '" to invalid value ' + value;
+        throw new Error('attempted to set uniform "' + name + '" to invalid value ' + value);
       }
     }
   }
