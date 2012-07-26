@@ -164,8 +164,9 @@ server/public: \
 
 server/public/examples:
 	mkdir -p server/public/examples
-	# copy directories, javascript, json, and image resources from src/examples/
-	rsync -aq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --include='*.csv' --filter 'hide,! */' src/examples/ server/public/examples/
+	# copy everything (including symbolic links) except files that are used to generate
+  # resources from src/examples/ to server/public/examples/
+	rsync -aq --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.coffee' src/examples/ server/public/examples/
 
 server/public/doc:
 	mkdir -p server/public/doc
