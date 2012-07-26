@@ -6,15 +6,16 @@
 //
 
 var
-  arrays         = require('./arrays/arrays.js').arrays,
-  heatsolver     = require('./physics-solvers/heat-solver.js'),
-  heatsolver_GPU = require('./physics-solvers-gpu/heat-solver-gpu.js'),
-  fluidsolver    = require('./physics-solvers/fluid-solver.js'),
-  raysolver      = require('./physics-solvers/ray-solver.js'),
-  part           = require('./part.js'),
-  default_config = require('./default-config.js'),
-  gpgpu,      // = energy2d.utils.gpu.gpgpu - assing it only when WebGL requested (initGPGPU), 
-              //   as it is unavailable in the node.js environment.
+  arrays          = require('./arrays/arrays.js').arrays,
+  heatsolver      = require('./physics-solvers/heat-solver.js'),
+  heatsolver_GPU  = require('./physics-solvers-gpu/heat-solver-gpu.js'),
+  fluidsolver     = require('./physics-solvers/fluid-solver.js'),
+  fluidsolver_GPU = require('./physics-solvers-gpu/fluid-solver-gpu.js'),
+  raysolver       = require('./physics-solvers/ray-solver.js'),
+  part            = require('./part.js'),
+  default_config  = require('./default-config.js'),
+  gpgpu,       // = energy2d.utils.gpu.gpgpu - assign it only when WebGL requested (initGPGPU), 
+               //   as it is unavailable in the node.js environment.
 
   array_type = (function () {
     'use strict';
@@ -225,6 +226,8 @@ exports.makeCoreModel = function (model_options) {
       // Create GPU solvers.
       // GPU version of heat solver.
       heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
+      // GPU version of fluid solver.
+      fluid_solver_gpu = fluidsolver_GPU.makeFluidSolverGPU(core_model);
     },
 
     setupMaterialProperties = function () {
