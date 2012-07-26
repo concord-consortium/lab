@@ -63,10 +63,11 @@ parseMML = (mmlString) ->
 
         # authors in MW specify Kg/(mol*A^2), but this gets saved as 100Kg/(mol*A^2)
         # (e.g. 20 Kg/(mol*A^2) is saved as 0.2)
+
         # First convert back to Kg/(mol*A^2)
         density = density * 100
-        # convert to Daltons/A^2, 1000 Dal = 1 Kg/mol
-        density = density * 1000
+        # convert to Daltons/nm^2, 1000 Dal = 1 Kg/mol, 100 A^2 = 1 nm^2
+        density = density * 1000 * 100
 
         if density isnt density     # if NaN
           density = "Infinity"
