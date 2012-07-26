@@ -51,14 +51,22 @@ exports.makeHeatSolverGPU = function (model) {
     relaxation_steps = RELAXATION_STEPS,
 
     // Simulation textures provided by model.
-    // texture pack 0 contains: R: t, G: t0, B: tb, A: conductivity.
-    // texture pack 1 contains: R: q, G: capacity, B: density, A: fluidity.
-    data1_tex = model.getSimulationTexture(0),
-    data2_tex = model.getSimulationTexture(1),
+    // texture 0: 
+    // - R: t
+    // - G: t0
+    // - B: tb
+    // - A: conductivity
+    data0_tex = model.getSimulationTexture(0),
+    // texture 1: 
+    // - R: q
+    // - G: capacity
+    // - B: density
+    // - A: fluidity
+    data1_tex = model.getSimulationTexture(1),
 
     // Convenience variables.  
-    solver_textures_array = [data1_tex, data2_tex],
-    temp_texture_array = [data1_tex],
+    data_0_1_array = [data0_tex, data1_tex],
+    data_0_array = [data0_tex],
     grid_vec = [1 / ny, 1 / nx],
 
     init = function () {
@@ -66,20 +74,21 @@ exports.makeHeatSolverGPU = function (model) {
 
       // Solver program uniforms.
       uniforms = {
+        // Texture units.
+        data0_tex: 0,
+        data1_tex: 1,
+        // Uniforms.
         grid: grid_vec,
         enforce_temp: 0.0,
         hx: 0.5 / (delta_x * delta_x),
         hy: 0.5 / (delta_y * delta_y),
-        inv_timestep: 1.0 / timestep,
-        // Texture units.
-        data1: 0,
-        data2: 1
+        inv_timestep: 1.0 / timestep
       };
       solver_program.uniforms(uniforms);
 
       if (boundary.temperature_at_border) {
         uniforms = {
-          grid: grid_vec,
+          // Additional uniforms.
           enforce_temp: 1.0,
           vN:  boundary.temperature_at_border.upper,
           vS:  boundary.temperature_at_border.lower,
@@ -91,6 +100,9 @@ exports.makeHeatSolverGPU = function (model) {
         solver_program.uniforms(uniforms);
       } else if (boundary.flux_at_border) {
         uniforms = {
+          // Texture units.
+          data0_tex: 0,
+          // Uniforms.
           grid: grid_vec,
           vN: boundary.flux_at_border.upper,
           vS: boundary.flux_at_border.lower,
@@ -111,14 +123,14 @@ exports.makeHeatSolverGPU = function (model) {
         // Store previous values of t in t0.
         gpgpu.executeProgram(
           t_to_t0_program,
-          temp_texture_array,
-          data1_tex
+          data_0_array,
+          data0_tex
         );
         for (k = 0; k < relaxation_steps; k += 1) {
           gpgpu.executeProgram(
             solver_program,
-            solver_textures_array,
-            data1_tex
+            data_0_1_array,
+            data0_tex
           );
           if (boundary.flux_at_border) {
             // Additional program for boundary conditions
@@ -127,8 +139,8 @@ exports.makeHeatSolverGPU = function (model) {
             // conditions are enforced by the solver program.
             gpgpu.executeProgram(
               force_flux_program,
-              temp_texture_array,
-              data1_tex
+              data_0_array,
+              data0_tex
             );
           }
         }

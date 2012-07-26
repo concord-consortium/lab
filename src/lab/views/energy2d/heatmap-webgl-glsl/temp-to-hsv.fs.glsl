@@ -1,7 +1,10 @@
-uniform sampler2D texture;
+// Provided textur contains temperature data in R channel.
+uniform sampler2D heatmap_tex;
+
 uniform float max_hue;
 uniform float max_temp;
 uniform float min_temp;
+
 varying vec2 coord;
 
 vec3 HSVToRGB(float h, float s, float v) {
@@ -46,7 +49,7 @@ vec3 HSVToRGB(float h, float s, float v) {
 }
 
 void main() {
-  float temp = texture2D(texture, coord).r;
+  float temp = texture2D(heatmap_tex, coord).r;
   float scale = max_hue / (max_temp - min_temp);
   float hue = max_hue - scale * (temp - min_temp);
   gl_FragColor = vec4(HSVToRGB(hue, 100., 90.), 1.0);

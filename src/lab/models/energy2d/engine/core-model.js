@@ -125,11 +125,27 @@ exports.makeCoreModel = function (model_options) {
     //
     // [GPGPU] Simulation textures:
     //
+    // texture 0: 
+    // - R: t
+    // - G: t0
+    // - B: tb
+    // - A: conductivity
+    // texture 1: 
+    // - R: q
+    // - G: capacity
+    // - B: density
+    // - A: fluidity
+    // texture 2: 
+    // - R: u
+    // - G: v
+    // - B: u0
+    // - A: v0
+    // texture 3: 
+    // - R: uWind
+    // - G: vWind
+    // - B: undefined
+    // - A: undefined
     texture = [],
-    // texture[0] contains: t, t0, tb, conductivity.
-    // texture[1] contains: q, capacity, density, fluidity.
-    // texture[2] contains: u, v, u0, v0.
-    // texture[3] contains: uWind, vWind, ?, ?
 
 
     // Generate parts array.
@@ -180,18 +196,35 @@ exports.makeCoreModel = function (model_options) {
       texture[2] = gpgpu.createTexture();
       texture[3] = gpgpu.createTexture();
 
+      // Update textures as material properties should be already set.
+      // texture 0: 
+      // - R: t
+      // - G: t0
+      // - B: tb
+      // - A: conductivity
+      gpgpu.writeRGBATexture(texture[0], t, t, tb, conductivity);
+      // texture 1: 
+      // - R: q
+      // - G: capacity
+      // - B: density
+      // - A: fluidity
+      gpgpu.writeRGBATexture(texture[1], q, capacity, density, fluidity);
+      // texture 2: 
+      // - R: u
+      // - G: v
+      // - B: u0
+      // - A: v0
+      gpgpu.writeRGBATexture(texture[2], u, v, u, v);
+      // texture 3: 
+      // - R: uWind
+      // - G: vWind
+      // - B: undefined
+      // - A: undefined
+      gpgpu.writeRGBATexture(texture[3], uWind, vWind, uWind, vWind);
+
+      // Create GPU solvers.
       // GPU version of heat solver.
       heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
-      // Update textures as material properties are set.
-      updateAllTextures();
-    },
-
-    updateAllTextures = function () {
-      gpgpu.writeRGBATexture(texture[0], t, t, tb, conductivity);
-      gpgpu.writeRGBATexture(texture[1], q, capacity, density, fluidity);
-      gpgpu.writeRGBATexture(texture[2], u, v, u, v);
-      // TODO: Send there some useful data. 
-      gpgpu.writeRGBATexture(texture[3], uWind, vWind, uWind, vWind);
     },
 
     setupMaterialProperties = function () {

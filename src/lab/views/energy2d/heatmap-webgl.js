@@ -56,9 +56,9 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
     // Make sure that no FBO is bound and viewport has proper dimensions
     // (it's not obvious as this context is also used for GPGPU calculations).
     setupRenderTarget = function () {
-      // All GPGPU operations should do it after they are finished, but it's a double check.
+      // Ensure that FBO is null, as GPGPU operations which use FBOs also take place.
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      // This is necessary, as GPGPU operations modify viewport size.
+      // This is necessary, as GPGPU operations can modify viewport size.
       gl.viewport(0, 0, canvas_width, canvas_height);
     },
 
@@ -118,7 +118,9 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
   // One-off initialization.
   // Set render program uniforms.
   render_program.uniforms({
-    texture: 0,
+    // Texture units.
+    heatmap_tex: 0,
+    // Uniforms.
     max_hue: 255,
     min_temp: min_temp,
     max_temp: max_temp
