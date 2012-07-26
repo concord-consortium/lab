@@ -141,7 +141,7 @@ parseMML = (mmlString) ->
       name  = type.attribs.id
       $type = cheerio(type)
       id    = parseFloat $type.find("[property=ID] int").text() || 0
-      mass  = parseFloat $type.find("[property=mass] double").text()
+      mass  = parseFloat $type.find("[property=mass] double").text() || 1
       sigma = parseFloat $type.find("[property=sigma] double").text() || 30
       epsilon = parseFloat $type.find("[property=epsilon] double").text() || 0.1
 
