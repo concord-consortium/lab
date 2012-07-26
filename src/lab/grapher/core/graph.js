@@ -9,7 +9,7 @@ grapher.graph = function(elem, options, message) {
     cy = elem.property("clientHeight");
   }
 
-  var svg, vis, plot, viewbox,
+  var svg, vis, visOuter, plot, viewbox,
       title, xlabel, ylabel, xtic, ytic,
       points,
       notification,
@@ -270,8 +270,11 @@ grapher.graph = function(elem, options, message) {
             .attr("width",  cx)
             .attr("height", cy);
 
-        vis = svg.append("g")
+        visOuter = svg.append("g")
+              .attr('class', 'outer')
               .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+        vis = visOuter.append('g');
 
         plot = vis.append("rect")
             .attr("class", "plot")
@@ -312,7 +315,7 @@ grapher.graph = function(elem, options, message) {
 
         // Add the x-axis label
         if (options.xlabel && sizeType.value > 2) {
-          xlabel = vis.append("text")
+          xlabel = visOuter.append("text")
               .attr("class", "axis")
               .style("font-size", sizeType.value/2.6 * 100 + "%")
               .text(options.xlabel)
@@ -324,7 +327,7 @@ grapher.graph = function(elem, options, message) {
 
         // add y-axis label
         if (options.ylabel && sizeType.value > 2) {
-          ylabel = vis.append("g").append("text")
+          ylabel = visOuter.append("g").append("text")
               .attr("class", "axis")
               .style("font-size", sizeType.value/2.6 * 100 + "%")
               .text(options.ylabel)
@@ -521,6 +524,25 @@ grapher.graph = function(elem, options, message) {
             .on("mousedown.drag",  yaxis_drag)
             .on("touchstart.drag", yaxis_drag);
       }
+
+      var getMaximalYCaptionWidth = function(){
+        var max = 0;
+
+        gy.selectAll('text').map(function(){
+          var width = this.getBBox().width;
+          if(width > max){
+            max = width;
+          }
+        });
+
+        return max;
+      };
+
+      var yAxisLeftMargin = getMaximalYCaptionWidth() - 10;
+
+      vis.attr('transform', function(){
+        return ["translate(", yAxisLeftMargin, ",", padding.top, ")"].join('');
+      });
 
       gy.exit().remove();
       plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
