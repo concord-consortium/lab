@@ -115,7 +115,7 @@ energy2d.utils.gpu.Shader.prototype.uniforms = function (uniforms) {
       }
       location = this.uniformLocations[name];
       if (location === null) {
-        console.warn('Shader: uniform ' + name + ' not found.');
+        console.warn('Shader: name ' + name + ' does not correspond to an active uniform variable.');
         continue;
       }
       value = uniforms[name];
@@ -143,7 +143,7 @@ energy2d.utils.gpu.Shader.prototype.uniforms = function (uniforms) {
       } else if (isNumber(value)) {
         (this.isSampler[name] ? gl.uniform1i : gl.uniform1f).call(gl, location, value);
       } else {
-        throw new Error('attempted to set uniform "' + name + '" to invalid value ' + value);
+        throw new Error('Shader: attempted to set uniform "' + name + '" to invalid value ' + value);
       }
     }
   }
