@@ -114,7 +114,8 @@ energy2d.utils.gpu.Shader.prototype.uniforms = function (uniforms) {
         this.uniformLocations[name] = gl.getUniformLocation(this.program, name);
       }
       location = this.uniformLocations[name];
-      if (location === -1) {
+      if (location === null) {
+        console.warn('Shader: uniform ' + name + ' not found.');
         continue;
       }
       value = uniforms[name];
