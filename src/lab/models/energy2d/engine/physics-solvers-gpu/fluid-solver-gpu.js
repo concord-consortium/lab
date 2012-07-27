@@ -30,10 +30,14 @@ exports.makeFluidSolverGPU = function (model) {
     maccormack_step1_fs      = glsl[GLSL_PREFIX + 'maccormack-step1.fs.glsl'],
     maccormack_step2_fs      = glsl[GLSL_PREFIX + 'maccormack-step2.fs.glsl'],
     apply_uv_boundary_fs     = glsl[GLSL_PREFIX + 'apply-uv-boundary.fs.glsl'],
+    apply_u0v0_boundary_fs   = glsl[GLSL_PREFIX + 'apply-u0v0-boundary.fs.glsl'],
     set_obstacle_boundary_fs = glsl[GLSL_PREFIX + 'set-obstacle-boundary.fs.glsl'],
     set_obstacle_velocity_fs = glsl[GLSL_PREFIX + 'set-obstacle-velocity.fs.glsl'],
     uv_to_u0v0_fs            = glsl[GLSL_PREFIX + 'uv-to-u0v0.fs.glsl'],
     conserve_step1_fs        = glsl[GLSL_PREFIX + 'conserve-step1.fs.glsl'],
+    conserve_step2_fs        = glsl[GLSL_PREFIX + 'conserve-step2.fs.glsl'],
+    conserve_step3_fs        = glsl[GLSL_PREFIX + 'conserve-step3.fs.glsl'],
+    diffuse_fs               = glsl[GLSL_PREFIX + 'diffuse.fs.glsl'],
 
     // ========================================================================
     // GLSL Shaders:
@@ -41,10 +45,14 @@ exports.makeFluidSolverGPU = function (model) {
     maccormack_step1_program      = new gpu.Shader(basic_vs, maccormack_step1_fs),
     maccormack_step2_program      = new gpu.Shader(basic_vs, maccormack_step2_fs),
     apply_uv_boundary_program     = new gpu.Shader(basic_vs, apply_uv_boundary_fs),
+    apply_u0v0_boundary_program   = new gpu.Shader(basic_vs, apply_u0v0_boundary_fs),
     set_obstacle_boundary_program = new gpu.Shader(basic_vs, set_obstacle_boundary_fs),
     set_obstacle_velocity_program = new gpu.Shader(basic_vs, set_obstacle_velocity_fs),
     uv_to_u0v0_program            = new gpu.Shader(basic_vs, uv_to_u0v0_fs),
     conserve_step1_program        = new gpu.Shader(basic_vs, conserve_step1_fs),
+    conserve_step2_program        = new gpu.Shader(basic_vs, conserve_step2_fs),
+    conserve_step3_program        = new gpu.Shader(basic_vs, conserve_step3_fs),
+    diffuse_program               = new gpu.Shader(basic_vs, diffuse_fs),
     // ========================================================================
 
     // Simulation arrays provided by model.
@@ -86,7 +94,7 @@ exports.makeFluidSolverGPU = function (model) {
     delta_x = model_options.model_width / model.getGridWidth(),
     delta_y = model_options.model_height / model.getGridHeight(),
 
-    relaxationSteps = RELAXATION_STEPS,
+    relaxation_steps = RELAXATION_STEPS,
     gravity = GRAVITY,
 
     // Convenience variables.   
@@ -95,6 +103,10 @@ exports.makeFluidSolverGPU = function (model) {
     idxsq = 1.0 / (delta_x * delta_x),
     idysq = 1.0 / (delta_y * delta_y),
     s     = 0.5 / (idxsq + idysq),
+
+    hx = timestep * viscosity * idxsq,
+    hy = timestep * viscosity * idysq,
+    dn = 1.0 / (1 + 2 * (hx + hy)),
 
     grid_vec = [1 / ny, 1 / nx],
 
@@ -119,7 +131,7 @@ exports.makeFluidSolverGPU = function (model) {
       maccormack_step1_program.uniforms(uniforms);
       maccormack_step2_program.uniforms(uniforms);
 
-      // Apply UV boundary uniforms.
+      // Apply UV / U0V0 boundary uniforms.
       uniforms = {
         // Texture units.
         data2_tex: 0,
@@ -127,6 +139,7 @@ exports.makeFluidSolverGPU = function (model) {
         grid: grid_vec,
       };
       apply_uv_boundary_program.uniforms(uniforms);
+      apply_u0v0_boundary_program.uniforms(uniforms);
 
       // Set obstacle boundary uniforms.
       uniforms = {
@@ -149,7 +162,7 @@ exports.makeFluidSolverGPU = function (model) {
       };
       set_obstacle_velocity_program.uniforms(uniforms);
 
-      // Conserve step 1 uniforms.
+      // Conserve step 1 and 3 uniforms.
       uniforms = {
         // Texture units.
         data1_tex: 0,
@@ -160,6 +173,33 @@ exports.makeFluidSolverGPU = function (model) {
         i2dy: i2dy
       };
       conserve_step1_program.uniforms(uniforms);
+      conserve_step3_program.uniforms(uniforms);
+
+      // Conserve step 2 uniforms.
+      uniforms = {
+        // Texture units.
+        data1_tex: 0,
+        data2_tex: 1,
+        // Uniforms.
+        grid: grid_vec,
+        s: s,
+        idxsq: idxsq,
+        idysq: idysq
+      };
+      conserve_step2_program.uniforms(uniforms);
+
+      // Diffuse uniforms.
+      uniforms = {
+        // Texture units.
+        data1_tex: 0,
+        data2_tex: 1,
+        // Uniforms.
+        grid: grid_vec,
+        hx: hx,
+        hy: hy,
+        dn: dn
+      };
+      diffuse_program.uniforms(uniforms);
 
     },
 
@@ -190,8 +230,102 @@ exports.makeFluidSolverGPU = function (model) {
       );
     },
 
+    conserve = function () {
+      var k;
+      // Step 1.
+      gpgpu.executeProgram(
+        conserve_step1_program,
+        data_1_2_array,
+        data2_tex
+      );
+      // Apply boundary.
+      gpgpu.executeProgram(
+        apply_u0v0_boundary_program,
+        data_2_array,
+        data2_tex
+      );
+      // Set obstacle boundary.
+      gpgpu.executeProgram(
+        set_obstacle_boundary_program,
+        data_1_2_array,
+        data2_tex
+      );
+      // Relaxation.
+      for (k = 0; k < relaxation_steps; k += 1) {
+        // Step 2.
+        gpgpu.executeProgram(
+          conserve_step2_program,
+          data_1_2_array,
+          data2_tex
+        );
+      }
+      // Step 3.
+      gpgpu.executeProgram(
+        conserve_step3_program,
+        data_1_2_array,
+        data2_tex
+      );
+      // Apply boundary.
+      gpgpu.executeProgram(
+        apply_uv_boundary_program,
+        data_2_array,
+        data2_tex
+      );
+    },
+
+    diffuse = function () {
+      var k;
+      // Copy UV to U0V0.
+      gpgpu.executeProgram(
+        uv_to_u0v0_program,
+        data_2_array,
+        data2_tex
+      );
+      // Relaxation.
+      for (k = 0; k < relaxation_steps; k += 1) {
+        // Step 2.
+        gpgpu.executeProgram(
+          diffuse_program,
+          data_1_2_array,
+          data2_tex
+        );
+      }
+      // Apply boundary.
+      gpgpu.executeProgram(
+        apply_uv_boundary_program,
+        data_2_array,
+        data2_tex
+      );
+    },
+
+    setObstacleVelocity = function () {
+      gpgpu.executeProgram(
+        set_obstacle_velocity_program,
+        data_1_2_3_array,
+        data2_tex
+      );
+    },
+
+    copyUVtoU0V0 = function () {
+      gpgpu.executeProgram(
+        uv_to_u0v0_program,
+        data_2_array,
+        data2_tex
+      );
+    },
+
     fluid_solver_gpu = {
       solve: function () {
+        setObstacleVelocity();
+        if (viscosity > 0) {
+          diffuse();
+          conserve();
+          setObstacleVelocity();
+        }
+        copyUVtoU0V0();
+        macCormack();
+        conserve();
+        setObstacleVelocity();
         // Synchronize. It's not required but it 
         // allows to measure time (for optimization).
         gpgpu.tryFinish();
