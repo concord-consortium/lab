@@ -133,6 +133,9 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       for (i = 0, len = steps_per_frame; i < len; i += 1) {
         modeler.nextStep();
       }
+      // Uncomment to enable velocity visualization:
+      // modeler.updateVelocityArrays();
+
       performance_tools.start('Views update');
       // Update views (only part view is not updated, as it's static).
       updateDynamicViews();

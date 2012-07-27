@@ -349,8 +349,17 @@ exports.makeCoreModel = function (model_options) {
       updateTemperatureArray: function () {
         if (use_WebGL) {
           perf.start('Read temperature texture');
-          gpgpu.readTexture(data_1_tex, t);
+          gpgpu.readTexture(texture[0], t);
           perf.stop('Read temperature texture');
+        }
+      },
+
+      updateVelocityArrays: function () {
+        if (use_WebGL) {
+          perf.start('Read velocity texture');
+          gpgpu.readTexture(texture[2], u, 0);
+          gpgpu.readTexture(texture[2], v, 1);
+          perf.stop('Read velocity texture');
         }
       },
 
