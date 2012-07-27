@@ -22,5 +22,13 @@ var interactivesIndex = {
   "fixed-flux-boundary1024": {
     "name": "Fixed Flux Boundary 1024x1024",
     "path": "interactives/fixed-flux-boundary1024.json"
+  },
+  "vortex100": {
+    "name": "Vortex Street 100x100",
+    "path": "interactives/vortex-street100.json"
+  },
+  "vortex256": {
+    "name": "Vortex Street 256x256",
+    "path": "interactives/vortex-street256.json"
   }
 };
