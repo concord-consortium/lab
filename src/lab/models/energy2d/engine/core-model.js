@@ -6,15 +6,16 @@
 //
 
 var
-  arrays         = require('./arrays/arrays.js').arrays,
-  heatsolver     = require('./physics-solvers/heat-solver.js'),
-  heatsolver_GPU = require('./physics-solvers-gpu/heat-solver-gpu.js'),
-  fluidsolver    = require('./physics-solvers/fluid-solver.js'),
-  raysolver      = require('./physics-solvers/ray-solver.js'),
-  part           = require('./part.js'),
-  default_config = require('./default-config.js'),
-  gpgpu,      // = energy2d.utils.gpu.gpgpu - assing it only when WebGL requested (initGPGPU), 
-              //   as it is unavailable in the node.js environment.
+  arrays          = require('./arrays/arrays.js').arrays,
+  heatsolver      = require('./physics-solvers/heat-solver.js'),
+  heatsolver_GPU  = require('./physics-solvers-gpu/heat-solver-gpu.js'),
+  fluidsolver     = require('./physics-solvers/fluid-solver.js'),
+  fluidsolver_GPU = require('./physics-solvers-gpu/fluid-solver-gpu.js'),
+  raysolver       = require('./physics-solvers/ray-solver.js'),
+  part            = require('./part.js'),
+  default_config  = require('./default-config.js'),
+  gpgpu,       // = energy2d.utils.gpu.gpgpu - assign it only when WebGL requested (initGPGPU), 
+               //   as it is unavailable in the node.js environment.
 
   array_type = (function () {
     'use strict';
@@ -125,11 +126,27 @@ exports.makeCoreModel = function (model_options) {
     //
     // [GPGPU] Simulation textures:
     //
+    // texture 0: 
+    // - R: t
+    // - G: t0
+    // - B: tb
+    // - A: conductivity
+    // texture 1: 
+    // - R: q
+    // - G: capacity
+    // - B: density
+    // - A: fluidity
+    // texture 2: 
+    // - R: u
+    // - G: v
+    // - B: u0
+    // - A: v0
+    // texture 3: 
+    // - R: uWind
+    // - G: vWind
+    // - B: undefined
+    // - A: undefined
     texture = [],
-    // texture[0] contains: t, t0, tb, conductivity.
-    // texture[1] contains: q, capacity, density, fluidity.
-    // texture[2] contains: u, v, u0, v0.
-    // texture[3] contains: uWind, vWind, ?, ?
 
 
     // Generate parts array.
@@ -180,18 +197,37 @@ exports.makeCoreModel = function (model_options) {
       texture[2] = gpgpu.createTexture();
       texture[3] = gpgpu.createTexture();
 
+      // Update textures as material properties should be already set.
+      // texture 0: 
+      // - R: t
+      // - G: t0
+      // - B: tb
+      // - A: conductivity
+      gpgpu.writeRGBATexture(texture[0], t, t, tb, conductivity);
+      // texture 1: 
+      // - R: q
+      // - G: capacity
+      // - B: density
+      // - A: fluidity
+      gpgpu.writeRGBATexture(texture[1], q, capacity, density, fluidity);
+      // texture 2: 
+      // - R: u
+      // - G: v
+      // - B: u0
+      // - A: v0
+      gpgpu.writeRGBATexture(texture[2], u, v, u, v);
+      // texture 3: 
+      // - R: uWind
+      // - G: vWind
+      // - B: undefined
+      // - A: undefined
+      gpgpu.writeRGBATexture(texture[3], uWind, vWind, uWind, vWind);
+
+      // Create GPU solvers.
       // GPU version of heat solver.
       heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
-      // Update textures as material properties are set.
-      updateAllTextures();
-    },
-
-    updateAllTextures = function () {
-      gpgpu.writeRGBATexture(texture[0], t, t, tb, conductivity);
-      gpgpu.writeRGBATexture(texture[1], q, capacity, density, fluidity);
-      gpgpu.writeRGBATexture(texture[2], u, v, u, v);
-      // TODO: Send there some useful data. 
-      gpgpu.writeRGBATexture(texture[3], uWind, vWind, uWind, vWind);
+      // GPU version of fluid solver.
+      fluid_solver_gpu = fluidsolver_GPU.makeFluidSolverGPU(core_model);
     },
 
     setupMaterialProperties = function () {
@@ -264,10 +300,14 @@ exports.makeCoreModel = function (model_options) {
         perf.start('Core model step');
         if (use_WebGL) {
           // GPU solvers.
+          if (opt.convective) {
+            perf.start('Fluid solver GPU');
+            fluid_solver_gpu.solve();
+            perf.stop('Fluid solver GPU');
+          }
           perf.start('Heat solver GPU');
           heat_solver_gpu.solve(opt.convective);
           perf.stop('Heat solver GPU');
-          // Only heat solver is implemented at the moment.
         } else {
           // CPU solvers.
           if (radiative) {
@@ -309,8 +349,17 @@ exports.makeCoreModel = function (model_options) {
       updateTemperatureArray: function () {
         if (use_WebGL) {
           perf.start('Read temperature texture');
-          gpgpu.readTexture(data_1_tex, t);
+          gpgpu.readTexture(texture[0], t);
           perf.stop('Read temperature texture');
+        }
+      },
+
+      updateVelocityArrays: function () {
+        if (use_WebGL) {
+          perf.start('Read velocity texture');
+          gpgpu.readTexture(texture[2], u, 0);
+          gpgpu.readTexture(texture[2], v, 1);
+          perf.stop('Read velocity texture');
         }
       },
 

@@ -40,6 +40,7 @@ energy2d.modeler.makeModeler = function (options) {
     getPhotonsArray: core_model.getPhotonsArray,
     getPartsArray: core_model.getPartsArray,
     updateTemperatureArray: core_model.updateTemperatureArray,
+    updateVelocityArrays: core_model.updateVelocityArrays,
     setPerformanceTools: core_model.setPerformanceTools
   };
 };

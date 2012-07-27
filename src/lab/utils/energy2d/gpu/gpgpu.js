@@ -53,6 +53,7 @@ energy2d.utils.gpu.gpgpu = (function () {
     encode_fragment_shader =
     '\
     uniform sampler2D texture;\
+    uniform float channel;\
     varying vec2 coord;\
     float shift_right(float v, float amt) {\
       v = floor(v) + 0.5;\
@@ -91,7 +92,14 @@ energy2d.utils.gpu.gpgpu = (function () {
     }\
     void main() {\
       vec4 data = texture2D(texture, coord);\
-      gl_FragColor = encode_float(data.r);\
+      if (channel == 0.0)\
+        gl_FragColor = encode_float(data.r);\
+      else if (channel == 1.0)\
+        gl_FragColor = encode_float(data.g);\
+      else if (channel == 2.0)\
+        gl_FragColor = encode_float(data.b);\
+      else\
+        gl_FragColor = encode_float(data.a);\
     }',
 
     copy_fragment_shader =
@@ -229,10 +237,13 @@ energy2d.utils.gpu.gpgpu = (function () {
 
     // Read a floating point texture.
     // Returns Float32Array.
-    readTexture: function (tex, output) {
+    readTexture: function (tex, output, channel) {
       var output_storage, i, j;
       if (!gl || tex.width !== grid_width || tex.height !== grid_height) {
         return new Error(INIT_ERR);
+      }
+      if (channel === undefined) {
+        channel = 0;
       }
       // Use buffer of provided ouput array. So, when result is written there,
       // output is automaticaly updated in a right way.
@@ -240,6 +251,7 @@ energy2d.utils.gpu.gpgpu = (function () {
 
       tex.bind();
       output_texture.setAsRenderTarget();
+      encode_program.uniforms({ channel: channel });
       encode_program.draw(plane);
       // format: gl.RGBA, type: gl.UNSIGNED_BYTE - only this set is accepted by WebGL readPixels.
       gl.readPixels(0, 0, output_texture.width, output_texture.height, output_texture.format, output_texture.type, output_storage);

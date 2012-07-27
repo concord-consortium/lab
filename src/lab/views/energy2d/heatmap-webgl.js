@@ -1,4 +1,4 @@
-/*globals energy2d, $, GL */
+/*globals lab: false, energy2d: false, $: false */
 /*jslint indent: 2, browser: true, es5: true */
 //
 // lab/views/energy2d/heatmap-webgl.js
@@ -18,8 +18,23 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
   'use strict';
   var
     // Dependencies:
+    // - Energy2D GPU namespace.
     gpu = energy2d.utils.gpu,
-    // end.
+    // - GLSL sources.
+    glsl = lab.glsl,
+
+    // Shader sources. One of Lab build steps converts sources to the JavaScript file.
+    GLSL_PREFIX    = 'src/lab/views/energy2d/heatmap-webgl-glsl/',
+    basic_vs       = glsl[GLSL_PREFIX + 'basic.vs.glsl'],
+    temp_to_hsv_fs = glsl[GLSL_PREFIX + 'temp-to-hsv.fs.glsl'],
+
+    // Get WebGL context.
+    gl = gpu.init(),
+    // GLSL Render program.
+    render_program = new gpu.Shader(basic_vs, temp_to_hsv_fs),
+    // Plane used for rendering.
+    plane = gpu.Mesh.plane({ coords: true }),
+
     DEFAULT_ID = 'energy2d-heatmap-webgl-view',
 
     $heatmap_canvas,
@@ -29,80 +44,6 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
     heatmap_tex,
     min_temp = 0,
     max_temp = 50,
-
-    // WebGL context provided by the gpu module.
-    gl,
-    // Plane used for rendering.
-    plane,
-    // GLSL render program.
-    render_program,
-    // Vertex shader source.
-    vertex_shader =
-    '\
-    varying vec2 coord;\
-    void main() {\
-      coord = gl_TexCoord.xy;\
-      gl_Position = vec4(gl_Vertex.xyz, 1.0);\
-    }',
-
-    fragment_shader =
-    '\
-    uniform sampler2D texture;\
-    varying vec2 coord;\
-    uniform float max_hue;\
-    uniform float max_temp;\
-    uniform float min_temp;\
-    vec3 HSVToRGB(float h, float s, float v) {\
-      /* Make sure our arguments stay in-range */\
-      h = max(0., min(360., h));\
-      s = max(0., min(100., s));\
-      v = max(0., min(100., v));\
-      \
-      /*\
-      We accept saturation and value arguments from 0 to 100 because that is\
-      how Photoshop represents those values. Internally, however, the\
-      saturation and value are calculated from a range of 0 to 1. We make\
-      That conversion here.\
-      */\
-      s /= 100.;\
-      v /= 100.;\
-      \
-      if (s == 0.) {\
-        /* Achromatic (grey) */\
-        return vec3(v, v, v);\
-      }\
-      \
-      h /= 60.; /* sector 0 to 5 */\
-      int i = int(floor(h));\
-      float f = h - float(i); /* factorial part of h */\
-      float p = v * (1. - s);\
-      float q = v * (1. - s * f);\
-      float t = v * (1. - s * (1. - f));\
-      \
-      if (i == 0)\
-        return vec3(v, t, p);\
-      \
-      if (i == 1)\
-        return vec3(q, v, p);\
-      \
-      if (i == 2)\
-        return vec3(p, v, t);\
-      \
-      if (i == 3)\
-        return vec3(p, q, v);\
-      \
-      if (i == 4)\
-        return vec3(t, p, v);\
-      \
-      /* i == 5 */\
-      return vec3(v, p, q);\
-    }\
-    void main() {\
-      float temp = texture2D(texture, coord).r;\
-      float scale = max_hue / (max_temp - min_temp);\
-      float hue = max_hue - scale * (temp - min_temp);\
-      gl_FragColor = vec4(HSVToRGB(hue, 100., 90.), 1.0);\
-    }',
 
     // 
     // Private methods.
@@ -115,9 +56,9 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
     // Make sure that no FBO is bound and viewport has proper dimensions
     // (it's not obvious as this context is also used for GPGPU calculations).
     setupRenderTarget = function () {
-      // All GPGPU operations should do it after they are finished, but it's a double check.
+      // Ensure that FBO is null, as GPGPU operations which use FBOs also take place.
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      // This is necessary, as GPGPU operations modify viewport size.
+      // This is necessary, as GPGPU operations can modify viewport size.
       gl.viewport(0, 0, canvas_width, canvas_height);
     },
 
@@ -175,20 +116,18 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
     };
 
   // One-off initialization.
-  // Get WebGL context.
-  gl = gpu.gl;
-  // Create GLSL program for rendering.
-  render_program = new gpu.Shader(vertex_shader, fragment_shader);
+  // Set render program uniforms.
   render_program.uniforms({
-    texture: 0,
+    // Texture units.
+    heatmap_tex: 0,
+    // Uniforms.
     max_hue: 255,
     min_temp: min_temp,
     max_temp: max_temp
   });
-  // Create and setup plane.
-  plane = gpu.Mesh.plane({ coords: true });
   // Setup texture coordinates.
   plane.coords = [[1, 0], [1, 1], [0, 0], [0, 1]];
+  // Update buffers.
   plane.compile();
 
   initHTMLelement();
