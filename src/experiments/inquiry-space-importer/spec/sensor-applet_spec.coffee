@@ -223,6 +223,83 @@ describe "SensorApplet class", ->
         it "should not change state", ->
           expect( applet.getState() ).toBe 'not started'
 
+  describe "remove method", ->
+
+    beforeEach ->
+      applet._removeApplet = ->
+      spyOn applet, '_removeApplet'
+
+    describe "when not in an applet callback", ->
+
+      describe "and the applet is in the 'not appended' state", ->
+
+        beforeEach ->
+          expect( applet.getState() ).toBe 'not appended'
+          applet.remove()
+
+        it "should not call the _removeApplet method", ->
+          expect( applet._removeApplet ).not.toHaveBeenCalled()
+
+      describe "and the applet is not in the 'not appended' state", ->
+
+        beforeEach ->
+          applet._state = 'appended'
+          expect( applet.getState() ).toBe 'appended'
+          applet.remove()
+
+        it "should call the _removeApplet method", ->
+
+          expect( applet._removeApplet ).toHaveBeenCalled()
+
+        it "should transition to the 'not appended' state", ->
+          expect( applet.getState() ).toBe 'not appended'
+
+    describe "when in an applet callback", ->
+
+      beforeEach ->
+        applet.startAppletCallback()
+
+      describe "and the applet is in the 'not appended' state", ->
+
+        beforeEach ->
+          runs ->
+            expect( applet.getState() ).toBe 'not appended'
+            applet.remove()
+
+        describe "after waiting", ->
+
+          beforeEach ->
+            waits 100
+
+          it "should not have called the _removeApplet method", ->
+            runs -> expect( applet._removeApplet ).not.toHaveBeenCalled()
+
+      describe "and the applet is NOT in the 'not appended' state", ->
+
+        beforeEach ->
+          runs ->
+            applet._state = 'stopped'
+            expect( applet.getState() ).toBe 'stopped'
+            applet.remove()
+
+        describe "immediately", ->
+
+            it "should not change state", ->
+              runs -> expect( applet.getState() ).toBe 'stopped'
+
+            it "should not call the _removeApplet method", ->
+              runs -> expect( applet._removeApplet ).not.toHaveBeenCalled()
+
+        describe "after waiting", ->
+
+          beforeEach ->
+            waits 100
+
+          it "should have called the _removeApplet method", ->
+            expect( applet._removeApplet ).toHaveBeenCalled()
+
+          it "should transition to the 'not appended' state", ->
+            expect( applet.getState() ).toBe 'not appended'
 
   describe "initially", ->
 
