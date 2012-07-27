@@ -49,7 +49,7 @@ void main() {
     data2.ba = texture2D(data2_tex, coord + dy).ba;
   }
   // Up.
-  else if (coord.y < grid.y) {
+  else if (coord.y > 1.0 - grid.y) {
     data2.ba = texture2D(data2_tex, coord - dy).ba;
   }
   

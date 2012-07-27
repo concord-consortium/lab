@@ -52,7 +52,7 @@ void main() {
     data2.rg = vec2(-data2_p_dy.r, data2_p_dy.g);
   }
   // Up.
-  else if (coord.y < grid.y) {
+  else if (coord.y > 1.0 - grid.y) {
     vec4 data2_m_dy = texture2D(data2_tex, coord - dy);
     data2.rg = vec2(-data2_m_dy.r, data2_m_dy.g);
   }
