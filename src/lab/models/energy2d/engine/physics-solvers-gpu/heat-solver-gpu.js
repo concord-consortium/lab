@@ -21,20 +21,29 @@ exports.makeHeatSolverGPU = function (model) {
     glsl = lab.glsl,
 
     // Shader sources. One of Lab build steps converts sources to JavaScript file.
-    GLSL_PREFIX   = 'src/lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-glsl/',
-    basic_vs      = glsl[GLSL_PREFIX + 'basic.vs.glsl'],
-    solver_fs     = glsl[GLSL_PREFIX + 'solver.fs.glsl'],
-    force_flux_fs = glsl[GLSL_PREFIX + 'force-flux.fs.glsl'],
-    t_to_t0       = glsl[GLSL_PREFIX + 't-to-t0.fs.glsl'],
+    GLSL_PREFIX = 'src/lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-glsl/',
+    basic_vs            = glsl[GLSL_PREFIX + 'basic.vs.glsl'],
+    solver_fs           = glsl[GLSL_PREFIX + 'solver.fs.glsl'],
+    force_flux_t_fs     = glsl[GLSL_PREFIX + 'force-flux-t.fs.glsl'],
+    force_flux_t0_fs    = glsl[GLSL_PREFIX + 'force-flux-t.fs.glsl'],
+    t_to_t0             = glsl[GLSL_PREFIX + 't-to-t0.fs.glsl'],
+    maccormack_step1_fs = glsl[GLSL_PREFIX + 'maccormack-step1.fs.glsl'],
+    maccormack_step2_fs = glsl[GLSL_PREFIX + 'maccormack-step2.fs.glsl'],
 
     // ========================================================================
     // GLSL Shaders:
     // - Main solver.
-    solver_program = new gpu.Shader(basic_vs, solver_fs),
-    // - Force flux boundary.
-    force_flux_program = new gpu.Shader(basic_vs, force_flux_fs),
+    solver_program           = new gpu.Shader(basic_vs, solver_fs),
+    // - Force flux boundary (for T).
+    force_flux_t_program     = new gpu.Shader(basic_vs, force_flux_t_fs),
+    // - Force flux boundary (for T0).
+    force_flux_t0_program    = new gpu.Shader(basic_vs, force_flux_t0_fs),
     // - Copy single channel of texture (t to t0).
-    t_to_t0_program = new gpu.Shader(basic_vs, t_to_t0),
+    t_to_t0_program          = new gpu.Shader(basic_vs, t_to_t0),
+    // - MacCormack advection step 1.
+    maccormack_step1_program = new gpu.Shader(basic_vs, maccormack_step1_fs),
+    // - MacCormack advection step 2.
+    maccormack_step2_program = new gpu.Shader(basic_vs, maccormack_step2_fs),
     // ========================================================================
 
     // Basic simulation parameters.
@@ -63,8 +72,15 @@ exports.makeHeatSolverGPU = function (model) {
     // - B: density
     // - A: fluidity
     data1_tex = model.getSimulationTexture(1),
+    // texture 2: 
+    // - R: u
+    // - G: v
+    // - B: u0
+    // - A: v0
+    data2_tex = model.getSimulationTexture(2),
 
     // Convenience variables.  
+    data_0_1_2_array = [data0_tex, data1_tex, data2_tex],
     data_0_1_array = [data0_tex, data1_tex],
     data_0_array = [data0_tex],
     grid_vec = [1 / ny, 1 / nx],
@@ -86,6 +102,21 @@ exports.makeHeatSolverGPU = function (model) {
       };
       solver_program.uniforms(uniforms);
 
+      // MacCormack step 1 program uniforms.
+      uniforms = {
+        // Texture units.
+        data0_tex: 0,
+        data1_tex: 1,
+        data2_tex: 2,
+        // Uniforms.
+        grid: grid_vec,
+        enforce_temp: 0.0,
+        tx: 0.5 * timestep / delta_x,
+        ty: 0.5 * timestep / delta_y,
+      };
+      maccormack_step1_program.uniforms(uniforms);
+      maccormack_step2_program.uniforms(uniforms);
+
       if (boundary.temperature_at_border) {
         uniforms = {
           // Additional uniforms.
@@ -95,9 +126,11 @@ exports.makeHeatSolverGPU = function (model) {
           vW:  boundary.temperature_at_border.left,
           vE:  boundary.temperature_at_border.right
         };
-        // Integrate boundary conditions with solver program.
+        // Integrate boundary conditions with other programs.
         // This is optimization that allows to limit render-to-texture calls.
         solver_program.uniforms(uniforms);
+        maccormack_step1_program.uniforms(uniforms);
+        maccormack_step2_program.uniforms(uniforms);
       } else if (boundary.flux_at_border) {
         uniforms = {
           // Texture units.
@@ -112,8 +145,46 @@ exports.makeHeatSolverGPU = function (model) {
           delta_y: delta_y
         };
         // Flux boundary conditions can't be integrated into solver program,
-        // so use separate GLSL program.
-        force_flux_program.uniforms(uniforms);
+        // so use separate GLSL programs.
+        force_flux_t_program.uniforms(uniforms);
+        force_flux_t0_program.uniforms(uniforms);
+      }
+    },
+
+    macCormack = function () {
+      // MacCormack step 1.
+      gpgpu.executeProgram(
+        maccormack_step1_program,
+        data_0_1_2_array,
+        data0_tex
+      );
+      if (boundary.flux_at_border) {
+        // Additional program for boundary conditions
+        // is required only for "flux at border" option.
+        // If "temperature at border" is used, boundary
+        // conditions are enforced by the MacCormack program.
+        gpgpu.executeProgram(
+          force_flux_t0_program,
+          data_0_array,
+          data0_tex
+        );
+      }
+      // MacCormack step 2.
+      gpgpu.executeProgram(
+        maccormack_step2_program,
+        data_0_1_2_array,
+        data0_tex
+      );
+      if (boundary.flux_at_border) {
+        // Additional program for boundary conditions
+        // is required only for "flux at border" option.
+        // If "temperature at border" is used, boundary
+        // conditions are enforced by the MacCormack program.
+        gpgpu.executeProgram(
+          force_flux_t_program,
+          data_0_array,
+          data0_tex
+        );
       }
     },
 
@@ -138,11 +209,14 @@ exports.makeHeatSolverGPU = function (model) {
             // If "temperature at border" is used, boundary
             // conditions are enforced by the solver program.
             gpgpu.executeProgram(
-              force_flux_program,
+              force_flux_t_program,
               data_0_array,
               data0_tex
             );
           }
+        }
+        if (convective) {
+          macCormack();
         }
         // Synchronize. It's not required but it 
         // allows to measure time (for optimization).
