@@ -300,10 +300,14 @@ exports.makeCoreModel = function (model_options) {
         perf.start('Core model step');
         if (use_WebGL) {
           // GPU solvers.
+          if (opt.convective) {
+            perf.start('Fluid solver GPU');
+            fluid_solver_gpu.solve();
+            perf.stop('Fluid solver GPU');
+          }
           perf.start('Heat solver GPU');
           heat_solver_gpu.solve(opt.convective);
           perf.stop('Heat solver GPU');
-          // Only heat solver is implemented at the moment.
         } else {
           // CPU solvers.
           if (radiative) {
