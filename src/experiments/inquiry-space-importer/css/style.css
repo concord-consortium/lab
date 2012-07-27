@@ -74,16 +74,11 @@ td { vertical-align: top; }
    Author:
    ========================================================================== */
 
-body {
-  margin-left: 1em;
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px; }
 }
-
-#data {
-  font-size: 3em;
-  margin: 0.1em;
-}
-
-
 
 /* =============================================================================
    Media Queries
