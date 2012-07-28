@@ -501,8 +501,8 @@ layout.getStyleForSelector = function(selector) {
 // Adapted from getPageSize() by quirksmode.com
 layout.getPageHeight = function() {
   var windowHeight;
-  if (self.innerHeight) { // all except Explorer
-    windowHeight = self.innerHeight;
+  if (window.innerHeight) { // all except Explorer
+    windowHeight = window.innerHeight;
   } else if (document.documentElement && document.documentElement.clientHeight) {
     windowHeight = document.documentElement.clientHeight;
   } else if (document.body) { // other Explorers
@@ -513,8 +513,8 @@ layout.getPageHeight = function() {
 
 layout.getPageWidth = function() {
   var windowWidth;
-  if (self.innerWidth) { // all except Explorer
-    windowWidth = self.innerWidth;
+  if (window.innerWidth) { // all except Explorer
+    windowWidth = window.innerWidth;
   } else if (document.documentElement && document.documentElement.clientWidth) {
     windowWidth = document.documentElement.clientWidth;
   } else if (document.body) { // other Explorers
