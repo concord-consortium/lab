@@ -11,7 +11,7 @@ grapher.graph = function(elem, options, message) {
   }
 
   var svg, vis, plot, viewbox,
-      title, xlabel, ylabel, xtic, ytic,
+      title, xlabel, ylabel,
       points,
       notification,
       margin, padding, size,
@@ -20,7 +20,6 @@ grapher.graph = function(elem, options, message) {
       circleCursorStyle,
       displayProperties,
       emsize, strokeWidth,
-      scaleFactor,
       sizeType = {
         category: "medium",
         value: 3,
@@ -615,9 +614,7 @@ grapher.graph = function(elem, options, message) {
     }
 
     function mousemove() {
-      var p = d3.svg.mouse(vis[0][0]),
-          changex, changey, new_domain,
-          t = d3.event.changedTouches;
+      var p = d3.svg.mouse(vis[0][0]);
 
       d3.event.preventDefault();
       if (dragged && options.dataChange) {
