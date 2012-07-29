@@ -431,21 +431,24 @@ grapher.graph = function(elem, options, message) {
       }
     }
 
-    // update the layout
-    function updateLayout() {
-      padding = {
-       "top":    options.title  ? 40 : 20,
-       "right":                 30,
-       "bottom": options.xlabel ? 60 : 10,
-       "left":   options.ylabel ? 70 : 45
-      };
+    // unused as of commit ef91f20b5abab1f063dc093d41e9dbd4712931f4
+    // (7/27/2012):
 
-      size.width  = cx - padding.left - padding.right;
-      size.height = cy - padding.top  - padding.bottom;
+    // // update the layout
+    // function updateLayout() {
+    //   padding = {
+    //    "top":    options.title  ? 40 : 20,
+    //    "right":                 30,
+    //    "bottom": options.xlabel ? 60 : 10,
+    //    "left":   options.ylabel ? 70 : 45
+    //   };
 
-      plot.attr("width", size.width)
-          .attr("height", size.height);
-    }
+    //   size.width  = cx - padding.left - padding.right;
+    //   size.height = cy - padding.top  - padding.bottom;
+
+    //   plot.attr("width", size.width)
+    //       .attr("height", size.height);
+    // }
 
     // Update the x-scale.
     function updateXScale() {
@@ -528,7 +531,7 @@ grapher.graph = function(elem, options, message) {
     }
 
     function update() {
-      var lines = vis.select("path").attr("d", line(points));
+      vis.select("path").attr("d", line(points));
 
       var circle = vis.select("svg").selectAll("circle")
           .data(points, function(d) { return d; });
@@ -687,15 +690,18 @@ grapher.graph = function(elem, options, message) {
     }
   }
 
-  // The x-accessor for the path generator
-  function X(d) {
-    return xScale(d[0]);
-  }
+  // unused as of commit ef91f20b5abab1f063dc093d41e9dbd4712931f4
+  // (7/27/2012)
 
-  // The y-accessor for the path generator
-  function Y(d) {
-    return yScale(d[1]);
-  }
+  // // The x-accessor for the path generator
+  // function X(d) {
+  //   return xScale(d[0]);
+  // }
+
+  // // The y-accessor for the path generator
+  // function Y(d) {
+  //   return yScale(d[1]);
+  // }
 
   graph.margin = function(_) {
     if (!arguments.length) return margin;
