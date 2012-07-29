@@ -1,5 +1,6 @@
+/*globals grapher d3 layout */
 grapher.graph = function(elem, options, message) {
-  var cx = 600, cy = 300, 
+  var cx = 600, cy = 300,
       node;
 
   if (arguments.length) {
@@ -10,16 +11,15 @@ grapher.graph = function(elem, options, message) {
   }
 
   var svg, vis, plot, viewbox,
-      title, xlabel, ylabel, xtic, ytic,
+      title, xlabel, ylabel,
       points,
       notification,
-      padding, size,
+      margin, padding, size,
       xScale, yScale, xValue, yValue, line,
       stroke, tx, ty, fx, fy,
       circleCursorStyle,
       displayProperties,
       emsize, strokeWidth,
-      scaleFactor,
       sizeType = {
         category: "medium",
         value: 3,
@@ -44,7 +44,7 @@ grapher.graph = function(elem, options, message) {
         "xmax":            60,
         "xmin":             0,
         "ymax":            40,
-        "ymin":             0, 
+        "ymin":             0,
         "circleRadius":    10.0,
         "strokeWidth":      2.0,
         "dataChange":      true,
@@ -206,16 +206,16 @@ grapher.graph = function(elem, options, message) {
       .domain([options.xmin, options.xmax])
       .range([0, size.width]);
 
-    if (options.xscale == "pow") {
-      xScale.exponent(options.xscaleExponent)
+    if (options.xscale === "pow") {
+      xScale.exponent(options.xscaleExponent);
     }
 
     yScale = d3.scale[options.yscale]()
       .domain([options.ymin, options.ymax]).nice()
       .range([size.height, 0]).nice();
 
-    if (options.yscale == "pow") {
-      yScale.exponent(options.yscaleExponent)
+    if (options.yscale === "pow") {
+      yScale.exponent(options.yscaleExponent);
     }
 
     tx = function(d) {
@@ -238,8 +238,8 @@ grapher.graph = function(elem, options, message) {
         .y(function(d, i) { return yScale(points[i][1]); });
 
     // drag axis logic
-    downx = Math.NaN;
-    downy = Math.NaN;
+    downx = NaN;
+    downy = NaN;
     dragged = selected = null;
   }
 
@@ -256,7 +256,7 @@ grapher.graph = function(elem, options, message) {
         size.height = cy - padding.top  - padding.bottom;
       }
 
-      points = options.points
+      points = options.points;
       if (points === "fake") {
         points = fakeDataPoints();
       }
@@ -431,21 +431,24 @@ grapher.graph = function(elem, options, message) {
       }
     }
 
-    // update the layout
-    function updateLayout() {
-      padding = {
-       "top":    options.title  ? 40 : 20,
-       "right":                 30,
-       "bottom": options.xlabel ? 60 : 10,
-       "left":   options.ylabel ? 70 : 45
-      };
+    // unused as of commit ef91f20b5abab1f063dc093d41e9dbd4712931f4
+    // (7/27/2012):
 
-      size.width  = cx - padding.left - padding.right;
-      size.height = cy - padding.top  - padding.bottom;
+    // // update the layout
+    // function updateLayout() {
+    //   padding = {
+    //    "top":    options.title  ? 40 : 20,
+    //    "right":                 30,
+    //    "bottom": options.xlabel ? 60 : 10,
+    //    "left":   options.ylabel ? 70 : 45
+    //   };
 
-      plot.attr("width", size.width)
-          .attr("height", size.height);
-    }
+    //   size.width  = cx - padding.left - padding.right;
+    //   size.height = cy - padding.top  - padding.bottom;
+
+    //   plot.attr("width", size.width)
+    //       .attr("height", size.height);
+    // }
 
     // Update the x-scale.
     function updateXScale() {
@@ -528,7 +531,7 @@ grapher.graph = function(elem, options, message) {
     }
 
     function update() {
-      var lines = vis.select("path").attr("d", line(points));
+      vis.select("path").attr("d", line(points));
 
       var circle = vis.select("svg").selectAll("circle")
           .data(points, function(d) { return d; });
@@ -563,12 +566,13 @@ grapher.graph = function(elem, options, message) {
     }
 
     function plot_drag() {
+      var p;
       d3.event.preventDefault();
       grapher.registerKeyboardHandler(keydown);
       d3.select('body').style("cursor", "move");
       if (d3.event.altKey) {
         if (d3.event.shiftKey && options.addData) {
-          var p = d3.svg.mouse(vis.node());
+          p = d3.svg.mouse(vis.node());
           var newpoint = [];
           newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
           newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
@@ -581,7 +585,7 @@ grapher.graph = function(elem, options, message) {
           selected = newpoint;
           update();
         } else {
-          var p = d3.svg.mouse(vis[0][0]);
+          p = d3.svg.mouse(vis[0][0]);
           downx = xScale.invert(p[0]);
           downy = yScale.invert(p[1]);
           dragged = false;
@@ -613,9 +617,7 @@ grapher.graph = function(elem, options, message) {
     }
 
     function mousemove() {
-      var p = d3.svg.mouse(vis[0][0]),
-          changex, changey, new_domain,
-          t = d3.event.changedTouches;
+      var p = d3.svg.mouse(vis[0][0]);
 
       d3.event.preventDefault();
       if (dragged && options.dataChange) {
@@ -642,11 +644,11 @@ grapher.graph = function(elem, options, message) {
       document.onselectstart = function() { return true; };
       d3.select('body').style("cursor", "auto");
       if (!isNaN(downx)) {
-        downx = Math.NaN;
+        downx = NaN;
         redraw();
       }
       if (!isNaN(downy)) {
-        downy = Math.NaN;
+        downy = NaN;
         redraw();
       }
       dragged = null;
@@ -688,19 +690,18 @@ grapher.graph = function(elem, options, message) {
     }
   }
 
-  // The x-accessor for the path generator
-  function X(d) {
-    return xScale(d[0]);
-  }
+  // unused as of commit ef91f20b5abab1f063dc093d41e9dbd4712931f4
+  // (7/27/2012)
 
-  // The y-accessor for the path generator
-  function Y(d) {
-    return yScale(d[1]);
-  }
+  // // The x-accessor for the path generator
+  // function X(d) {
+  //   return xScale(d[0]);
+  // }
 
-  function gRedraw() {
-    redraw();
-  }
+  // // The y-accessor for the path generator
+  // function Y(d) {
+  //   return yScale(d[1]);
+  // }
 
   graph.margin = function(_) {
     if (!arguments.length) return margin;
