@@ -1,0 +1,65 @@
+
+selection domain
+
+  when set to [x1, x2]
+
+    getter returns [x1, x2]
+    has_selection is true
+
+  when set to []
+
+    getter returns []
+    has_selection is true
+
+  when set to null
+
+    getter returns [-Infinity, Infinity]
+    has_selection is false
+
+
+brush box (find by selector)
+
+  when selection_visible property is true
+
+    is present
+
+  when selection_visible property is false
+
+    is not present (visible?)
+
+
+when selection_enabled is true
+
+
+
+brush events
+
+  when selection_enabled is true
+
+    when the brush extent is [x1, x2]
+
+      calls the selection_domain method with [x1, x2]
+
+  when selection_enabled is false, and the selection_domain is [x3, x4] (x1 != x3, x2 != x4)
+
+    when the brush extent is [x1, x2]
+
+      does not call selection_domain
+
+      does not change the selection_domain
+
+      updates the brush
+
+
+
+selection_listener
+
+  when passed a function
+
+    getter returns that function
+
+  when a brush event changes the selection
+
+
+  when the selection_domain changes
+

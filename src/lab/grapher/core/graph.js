@@ -51,7 +51,15 @@ grapher.graph = function(elem, options, message) {
         "addData":         true,
         "points":          false,
         "notification":    false
-      };
+      },
+
+      selection_region = {
+        xmin: null,
+        xmax: null,
+        ymin: null,
+        ymax: null
+      },
+      has_selection = false;
 
   initialize(options);
 
@@ -850,6 +858,40 @@ grapher.graph = function(elem, options, message) {
       graph.update();
     }
     return graph;
+  };
+
+  // Set or get the extent of the region of selection
+  graph.selection_domain = function(a) {
+    // setter
+    if (arguments.length) {
+      if (a === null) {
+        has_selection = false;
+        selection_region.xmin = -Infinity;
+        selection_region.xmax = Infinity;
+
+      }
+      else if (a.length === 0) {
+        has_selection = true;
+        selection_region.xmin = Infinity;
+        selection_region.xmax = Infinity;
+      }
+      else {
+        has_selection = true;
+        selection_region.xmin = a[0];
+        selection_region.xmax = a[1];
+      }
+    }
+    // getter
+    else {
+      if (selection_region.xmax === Infinity && selection_region.xmin === Infinity ) {
+        return [];
+      }
+      return [selection_region.xmin, selection_region.xmax];
+    }
+  };
+
+  graph.has_selection = function() {
+    return has_selection;
   };
 
   graph.reset = function(options, message) {
