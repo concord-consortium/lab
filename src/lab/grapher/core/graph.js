@@ -1,5 +1,5 @@
 grapher.graph = function(elem, options, message) {
-  var cx = 600, cy = 300, 
+  var cx = 600, cy = 300,
       node;
 
   if (arguments.length) {
@@ -44,7 +44,7 @@ grapher.graph = function(elem, options, message) {
         "xmax":            60,
         "xmin":             0,
         "ymax":            40,
-        "ymin":             0, 
+        "ymin":             0,
         "circleRadius":    10.0,
         "strokeWidth":      2.0,
         "dataChange":      true,
