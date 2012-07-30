@@ -13,6 +13,18 @@ function getBaseGraph() {
   return grapher.graph( $('<div>').width(500).height(500)[0] ).xmin(0).xmax(10);
 }
 
+function graphWithBrushUpdateEvent(graph, extent) {
+  graph.brush_control().extent(extent);
+  graph.brush_listener()();
+  return graph;
+}
+
+function graphWithBrushClearEvent(graph) {
+  graph.brush_control().clear();
+  graph.brush_listener()();
+  return graph;
+}
+
 suite.addBatch({
 
   "initially": {
@@ -125,6 +137,15 @@ suite.addBatch({
         }
       },
 
+      "the brush control": {
+        topic: function(getTopicGraph) {
+          return getTopicGraph().brush_control();
+        },
+        "should listen for brush events": function(topic) {
+          assert.isFunction( topic.on('brush') );
+        }
+      },
+
       "and has_selection subsequently becomes false": {
         topic: function(getTopicGraph) {
           return function() {
@@ -212,7 +233,7 @@ suite.addBatch({
         }
       },
 
-      "and the selection domain is updated to [10, 12]": {
+      "and the selection domain is programmatically updated to [10, 12]": {
         topic: function(getTopicGraph) {
           return function() {
             return getTopicGraph().selection_domain([10, 12]);
@@ -230,6 +251,64 @@ suite.addBatch({
 
         // Note, unfortunately, that you can't directly test for correct updating of element width
         // using jsdom.
+      },
+
+      "and a brush event is fired, with brush extent [11, 13]": {
+        topic: function(getTopicGraph) {
+          return function() {
+            return graphWithBrushUpdateEvent(getTopicGraph(), [11, 13]);
+          };
+        },
+
+        "the selection domain": {
+          topic: function(getTopicGraph) {
+            return getTopicGraph().selection_domain();
+          },
+          "should be updated to [11, 13]": function(topic) {
+            assert.deepEqual( topic, [11, 13] );
+          }
+        }
+      },
+
+      "and a brush event is fired, with the brush extent cleared": {
+        topic: function(getTopicGraph) {
+          return function() {
+            return graphWithBrushClearEvent(getTopicGraph());
+          };
+        },
+
+        "the selection domain": {
+          topic: function(getTopicGraph) {
+            return getTopicGraph().selection_domain();
+          },
+          "should be updated to []": function(topic) {
+            assert.deepEqual( topic, [] );
+          }
+        }
+      },
+
+      "with selection_enabled set to false": {
+        topic: function(getTopicGraph) {
+          return function() {
+            return getTopicGraph().selection_enabled(false);
+          };
+        },
+        "and a brush event is fired, with brush extent [11, 13]": {
+          topic: function(getTopicGraph) {
+            return function() {
+              return graphWithBrushUpdateEvent(getTopicGraph(), [11, 13]);
+            };
+          },
+
+          "the selection domain": {
+            topic: function(getTopicGraph) {
+              return getTopicGraph().selection_domain();
+            },
+            "should remain [15, 16]": function(topic) {
+              assert.deepEqual( topic, [15, 16] );
+            }
+          }
+        }
       }
     }
   },

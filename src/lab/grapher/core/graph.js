@@ -951,11 +951,27 @@ grapher.graph = function(elem, options, message) {
     return brush_control;
   };
 
+  graph.brush_listener = function() {
+    return brush_listener;
+  };
+
+  function brush_listener() {
+    var extent;
+
+    if (selection_enabled) {
+      // Note there is a brush.empty() method, but it still reports true after the
+      // brush extent has been programatically updated.
+      extent = brush_control.extent();
+      graph.selection_domain( extent[0] !== extent[1] ? extent : [] );
+    }
+  }
+
   function show_brush_element() {
     if (!brush_control) {
       brush_control = d3.svg.brush()
         .x(xScale)
-        .extent([selection_region.xmin || 0, selection_region.xmax || 0]);
+        .extent([selection_region.xmin || 0, selection_region.xmax || 0])
+        .on("brush", brush_listener);
     }
 
     brush_element.call(brush_control)
