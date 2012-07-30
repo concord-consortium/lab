@@ -43,7 +43,7 @@ suite.addBatch({
     }
   },
 
-  "when selection domain is set to null": {
+  "when selection domain is set to null, for \"no selection\"": {
     topic: function() {
       return getBaseGraph().selection_domain(null);
     },
@@ -54,10 +54,19 @@ suite.addBatch({
       "should be false": function(topic) {
         assert.strictEqual( topic, false );
       }
+    },
+
+    "selection domain": {
+      topic: function(graph) {
+        return graph.selection_domain();
+      },
+      "should be null": function(topic) {
+        assert.strictEqual( topic, null );
+      }
     }
   },
 
-  "when selection domain is set to []": {
+  "when selection domain is set to [], for \"empty selection\"": {
     topic: function() {
       return getBaseGraph().selection_domain([]);
     },
@@ -264,8 +273,29 @@ suite.addBatch({
           topic: function(getTopicGraph) {
             getTopicGraph(this.callback);
           },
-          "should be called back with [10, 12]": function(extent) {
-            assert.deepEqual( extent, [10, 12] );
+          "should be called back with [10, 12]": function(domain) {
+            assert.deepEqual( domain, [10, 12] );
+          }
+        }
+
+        // Note, unfortunately, that you can't directly test for correct updating of element width
+        // using jsdom.
+      },
+
+
+      "and the selection domain is programmatically updated to null": {
+        topic: function(getTopicGraph) {
+          return function(cb) {
+            return getTopicGraph(cb).selection_domain(null);
+          };
+        },
+
+        "the selection listener": {
+          topic: function(getTopicGraph) {
+            getTopicGraph(this.callback);
+          },
+          "should be called back with null": function(domain) {
+            assert.strictEqual( domain, null );
           }
         }
 
@@ -293,8 +323,8 @@ suite.addBatch({
           topic: function(getTopicGraph) {
             getTopicGraph(this.callback);
           },
-          "should be called back with [11, 13]": function(extent) {
-            assert.deepEqual( extent, [11, 13] );
+          "should be called back with [11, 13]": function(domain) {
+            assert.deepEqual( domain, [11, 13] );
           }
         }
       },
@@ -319,8 +349,8 @@ suite.addBatch({
           topic: function(getTopicGraph) {
             getTopicGraph(this.callback);
           },
-          "should be called back with []": function(extent) {
-            assert.deepEqual( extent, [] );
+          "should be called back with []": function(domain) {
+            assert.deepEqual( domain, [] );
           }
         }
 

@@ -906,6 +906,9 @@ grapher.graph = function(elem, options, message) {
     }
     // getter
     else {
+      if (!has_selection) {
+        return null;
+      }
       if (selection_region.xmax === Infinity && selection_region.xmin === Infinity ) {
         return [];
       }
