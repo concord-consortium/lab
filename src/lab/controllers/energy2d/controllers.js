@@ -207,6 +207,8 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     setupViewComponents = function () {
       var grid_x, grid_y;
 
+      energy2d_scene.setVisualizationOptions(model_options.view);
+      // TODO: move following configuration to energy2d scene.
       grid_x = modeler.getGridWidth();
       grid_y = modeler.getGridHeight();
       velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), grid_x, grid_y, 4);
