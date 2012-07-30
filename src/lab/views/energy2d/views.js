@@ -24,6 +24,12 @@ energy2d.views.makeEnergy2DScene = function (html_id, use_WebGL) {
     DEFAULT_ID = 'energy2d-scene-view',
     DEFAULT_CLASS = 'energy2d-scene-view',
 
+    DEFAULT_VISUALIZATION_OPTIONS = {
+      "color_palette_type": 0,
+      "minimum_temperature": 0.0,
+      "maximum_temperature": 40.0
+    },
+
     heatmap_view,
     velocity_view,
     parts_view,
@@ -103,6 +109,20 @@ energy2d.views.makeEnergy2DScene = function (html_id, use_WebGL) {
 
       getHTMLElement: function () {
         return $scene_view_div;
+      },
+
+      setVisualizationOptions: function (options) {
+        var name;
+        // Fill options with default values if there is such need.
+        for (name in DEFAULT_VISUALIZATION_OPTIONS) {
+          if (DEFAULT_VISUALIZATION_OPTIONS.hasOwnProperty(name) && options[name] === undefined) {
+            options[name] = DEFAULT_VISUALIZATION_OPTIONS[name];
+          }
+        }
+        // Configure "subviews".
+        heatmap_view.setMinTemperature(options.minimum_temperature);
+        heatmap_view.setMaxTemperature(options.maximum_temperature);
+        heatmap_view.setColorPalette(options.color_palette_type);
       }
     };
 

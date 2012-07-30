@@ -20,7 +20,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
   'use strict';
   var
     // Dependencies:
-    view_utils = energy2d.views.utils,
+    ColorPalette = energy2d.views.ColorPalette,
     // end.
     DEFAULT_ID = 'energy2d-heatmap-view',
 
@@ -31,10 +31,8 @@ energy2d.views.makeHeatmapView = function (html_id) {
     canvas_height,
     hq_rendering,
 
-    red_color_table   = [],
-    blue_color_table  = [],
-    green_color_table = [],
-    max_hue,
+    rgb_array,
+    max_rgb_idx,
 
     heatmap,
     grid_width,
@@ -68,7 +66,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
       // Render heat map on the canvas.
       renderHeatmap: function () {
         var
-          scale, hue,
+          scale, rgb_idx, val, color1, color2,
           image_data, data,
           i, j, iny, pix_index, pix_stride;
 
@@ -80,7 +78,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
         // TODO: is it really necessary?
         canvas_ctx.fillStyle = "rgb(0,0,0)";
 
-        scale = max_hue / (max_temp - min_temp);
+        scale = max_rgb_idx / (max_temp - min_temp);
         image_data = canvas_ctx.getImageData(0, 0, grid_width / backing_scale, grid_height / backing_scale);
         data = image_data.data;
 
@@ -90,15 +88,22 @@ energy2d.views.makeHeatmapView = function (html_id) {
           iny = i * grid_height;
           pix_index = 4 * i;
           for (j = 0; j < grid_height; j += 1) {
-            hue =  max_hue - Math.round(scale * (heatmap[iny + j] - min_temp));
-            if (hue < 0) {
-              hue = 0;
-            } else if (hue > max_hue) {
-              hue = max_hue;
+            val = scale * (heatmap[iny + j] - min_temp);
+            rgb_idx = Math.floor(val);
+            // Get fractional part of val.
+            val -= rgb_idx;
+            if (rgb_idx < 0) {
+              rgb_idx = 0;
+              val = 0;
+            } else if (rgb_idx > max_rgb_idx - 1) {
+              rgb_idx = max_rgb_idx - 1;
+              val = 1;
             }
-            data[pix_index]     = red_color_table[hue];
-            data[pix_index + 1] = green_color_table[hue];
-            data[pix_index + 2] = blue_color_table[hue];
+            color1 = rgb_array[rgb_idx];
+            color2 = rgb_array[rgb_idx + 1];
+            data[pix_index]     = color1[0] * (1 - val) + color2[0] * val;
+            data[pix_index + 1] = color1[1] * (1 - val) + color2[1] * val;
+            data[pix_index + 2] = color1[2] * (1 - val) + color2[2] * val;
             data[pix_index + 3] = 255;
             pix_index += pix_stride;
           }
@@ -147,12 +152,15 @@ energy2d.views.makeHeatmapView = function (html_id) {
       },
       setMaxTemperature: function (v) {
         max_temp = v;
+      },
+      setColorPalette: function (id) {
+        rgb_array = ColorPalette.getRGBArray(id);
+        max_rgb_idx = rgb_array.length - 1;
       }
     };
-
   // One-off initialization.
-  view_utils.setupRGBTemperatureColorTables(red_color_table, green_color_table, blue_color_table);
-  max_hue = red_color_table.length - 1;
+  // Set the default color palette.
+  heatmap_view.setColorPalette('DEFAULT');
 
   initHTMLelement();
 

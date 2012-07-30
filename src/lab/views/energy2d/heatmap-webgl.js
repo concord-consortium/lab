@@ -1,4 +1,4 @@
-/*globals lab: false, energy2d: false, $: false */
+/*globals lab: false, energy2d: false, $: false, Uint8Array: false */
 /*jslint indent: 2, browser: true, es5: true */
 //
 // lab/views/energy2d/heatmap-webgl.js
@@ -18,22 +18,26 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
   'use strict';
   var
     // Dependencies:
+    // Color palette utils class.
+    ColorPalette = energy2d.views.ColorPalette,
     // - Energy2D GPU namespace.
     gpu = energy2d.utils.gpu,
     // - GLSL sources.
     glsl = lab.glsl,
 
     // Shader sources. One of Lab build steps converts sources to the JavaScript file.
-    GLSL_PREFIX    = 'src/lab/views/energy2d/heatmap-webgl-glsl/',
-    basic_vs       = glsl[GLSL_PREFIX + 'basic.vs.glsl'],
-    temp_to_hsv_fs = glsl[GLSL_PREFIX + 'temp-to-hsv.fs.glsl'],
+    GLSL_PREFIX      = 'src/lab/views/energy2d/heatmap-webgl-glsl/',
+    basic_vs         = glsl[GLSL_PREFIX + 'basic.vs.glsl'],
+    temp_renderer_fs = glsl[GLSL_PREFIX + 'temp-renderer.fs.glsl'],
 
     // Get WebGL context.
     gl = gpu.init(),
     // GLSL Render program.
-    render_program = new gpu.Shader(basic_vs, temp_to_hsv_fs),
+    render_program = new gpu.Shader(basic_vs, temp_renderer_fs),
     // Plane used for rendering.
     plane = gpu.Mesh.plane({ coords: true }),
+    // Color palette texture (init later).
+    palette_tex,
 
     DEFAULT_ID = 'energy2d-heatmap-webgl-view',
 
@@ -81,7 +85,9 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
 
         gl.clear(gl.COLOR_BUFFER_BIT);
         heatmap_tex.bind(0);
+        palette_tex.bind(1);
         render_program.draw(plane);
+        palette_tex.unbind(1);
         heatmap_tex.unbind(0);
       },
 
@@ -112,16 +118,34 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
         render_program.uniforms({
           max_temp: max_temp
         });
+      },
+      setColorPalette: function (id) {
+        var rgb_array, len, tex_data, i, i4;
+        rgb_array = ColorPalette.getRGBArray(id);
+        len = rgb_array.length;
+        tex_data = new Uint8Array(len * 4);
+        for (i = 0; i < len; i += 1) {
+          i4 = i * 4;
+          tex_data[i4]     = rgb_array[i][0];
+          tex_data[i4 + 1] = rgb_array[i][1];
+          tex_data[i4 + 2] = rgb_array[i][2];
+          tex_data[i4 + 3] = 255;
+        }
+        palette_tex = new gpu.Texture(len, 1, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.LINEAR });
+        gl.bindTexture(gl.TEXTURE_2D, palette_tex.id);
+        gl.texImage2D(gl.TEXTURE_2D, 0, palette_tex.format, len, 1, 0, palette_tex.format, palette_tex.type, tex_data);
       }
     };
 
   // One-off initialization.
+  // Set the default color palette.
+  heatmap_view.setColorPalette('DEFAULT');
   // Set render program uniforms.
   render_program.uniforms({
     // Texture units.
     heatmap_tex: 0,
+    palette_tex: 1,
     // Uniforms.
-    max_hue: 255,
     min_temp: min_temp,
     max_temp: max_temp
   });
