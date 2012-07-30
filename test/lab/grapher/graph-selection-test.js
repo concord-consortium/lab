@@ -95,6 +95,16 @@ suite.addBatch({
       };
     },
 
+    "selection_enabled property": {
+      topic: function(getTopicGraph) {
+        return getTopicGraph().selection_enabled();
+      },
+
+      "should be true": function(topic) {
+        assert.strictEqual( topic, true );
+      }
+    },
+
     "and has_selection is true": {
       topic: function(getTopicGraph) {
         return function() {
@@ -143,6 +153,44 @@ suite.addBatch({
           },
           "should not be visible": function(topic) {
             assert.equal( topic.style('display'), 'none' );
+          }
+        }
+      },
+
+      "and selection_enabled subsequently becomes false": {
+        topic: function(getTopicGraph) {
+          return function() {
+            return getTopicGraph().selection_enabled(false);
+          };
+        },
+        "the brush element": {
+          topic: function(getTopicGraph) {
+            return getTopicGraph().elem.select('.brush');
+          },
+          "should be visible": function(topic) {
+            assert.equal( topic.style('display'), 'inline' );
+          },
+          "should not allow pointer-events": function(topic) {
+            assert.equal( topic.style('pointer-events'), 'none' );
+          }
+        },
+
+        "and selection_enabled subsequently becomes true again": {
+          topic: function(getTopicGraph) {
+            return function() {
+              return getTopicGraph().selection_enabled(true);
+            };
+          },
+          "the brush element": {
+            topic: function(getTopicGraph) {
+              return getTopicGraph().elem.select('.brush');
+            },
+            "should be visible": function(topic) {
+              assert.equal( topic.style('display'), 'inline' );
+            },
+            "should allow pointer-events": function(topic) {
+              assert.equal( topic.style('pointer-events'), 'all' );
+            }
           }
         }
       }

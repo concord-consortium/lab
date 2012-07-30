@@ -61,8 +61,10 @@ grapher.graph = function(elem, options, message) {
       },
       has_selection = false,
       selection_visible = false,
+      selection_enabled = true,
       brush_element,
       brush_control;
+
 
   initialize(options);
 
@@ -925,6 +927,20 @@ grapher.graph = function(elem, options, message) {
     else {
       return selection_visible;
     }
+  };
+
+  graph.selection_enabled = function(val) {
+    if (arguments.length) {
+      if (!val && selection_enabled) {
+        brush_element.style('pointer-events', 'none');
+      }
+      else if (val && !selection_enabled) {
+        brush_element.style('pointer-events', 'all');
+      }
+      selection_enabled = val;
+      return graph;
+    }
+    return selection_enabled;
   };
 
   graph.brush_element = function() {
