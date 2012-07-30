@@ -59,7 +59,9 @@ grapher.graph = function(elem, options, message) {
         ymin: null,
         ymax: null
       },
-      has_selection = false;
+      has_selection = false,
+      selection_visible = false,
+      selection_brush;
 
   initialize(options);
 
@@ -306,6 +308,9 @@ grapher.graph = function(elem, options, message) {
             .attr("class", "line")
             .style("stroke-width", strokeWidth)
             .attr("d", line(points));
+
+        selection_brush = viewbox.append("g")
+              .attr("class", "brush");
 
         // add Chart Title
         if (options.title && sizeType.value > 1) {
@@ -868,20 +873,23 @@ grapher.graph = function(elem, options, message) {
     if (arguments.length) {
       if (a === null) {
         has_selection = false;
+        if (selection_visible) hide_selection_brush();
         selection_region.xmin = -Infinity;
         selection_region.xmax = Infinity;
-
       }
       else if (a.length === 0) {
         has_selection = true;
+        if (selection_visible) show_selection_brush();
         selection_region.xmin = Infinity;
         selection_region.xmax = Infinity;
       }
       else {
         has_selection = true;
+        if (selection_visible) show_selection_brush();
         selection_region.xmin = a[0];
         selection_region.xmax = a[1];
       }
+      return graph;
     }
     // getter
     else {
@@ -895,6 +903,34 @@ grapher.graph = function(elem, options, message) {
   graph.has_selection = function() {
     return has_selection;
   };
+
+  graph.selection_visible = function(val) {
+    // setter
+    if (arguments.length) {
+      if (val && !selection_visible && has_selection) {
+        show_selection_brush();
+      }
+      else if (!val && selection_visible) {
+        hide_selection_brush();
+      }
+      selection_visible = val;
+      return graph;
+    }
+    else {
+      return selection_visible;
+    }
+  };
+
+  function show_selection_brush() {
+    selection_brush.call( d3.svg.brush().x(xScale).extent([0, 10]) )
+      .style("display", "inline")
+      .selectAll("rect")
+        .attr("height", size.height);
+  }
+
+  function hide_selection_brush() {
+    selection_brush.style("display", "none");
+  }
 
   graph.reset = function(options, message) {
     if (arguments.length) {
