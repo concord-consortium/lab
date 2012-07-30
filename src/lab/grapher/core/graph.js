@@ -61,7 +61,8 @@ grapher.graph = function(elem, options, message) {
       },
       has_selection = false,
       selection_visible = false,
-      selection_brush;
+      brush_element,
+      brush_control;
 
   initialize(options);
 
@@ -309,7 +310,7 @@ grapher.graph = function(elem, options, message) {
             .style("stroke-width", strokeWidth)
             .attr("d", line(points));
 
-        selection_brush = viewbox.append("g")
+        brush_element = viewbox.append("g")
               .attr("class", "brush");
 
         // add Chart Title
@@ -873,21 +874,26 @@ grapher.graph = function(elem, options, message) {
     if (arguments.length) {
       if (a === null) {
         has_selection = false;
-        if (selection_visible) hide_selection_brush();
+        if (selection_visible) hide_brush_element();
         selection_region.xmin = -Infinity;
         selection_region.xmax = Infinity;
       }
       else if (a.length === 0) {
         has_selection = true;
-        if (selection_visible) show_selection_brush();
+        if (selection_visible) show_brush_element();
         selection_region.xmin = Infinity;
         selection_region.xmax = Infinity;
       }
       else {
         has_selection = true;
-        if (selection_visible) show_selection_brush();
+        if (selection_visible) show_brush_element();
         selection_region.xmin = a[0];
         selection_region.xmax = a[1];
+      }
+
+      if (brush_control) {
+        brush_control.extent([selection_region.xmin, selection_region.xmax]);
+        brush_element.call(brush_control);
       }
       return graph;
     }
@@ -908,10 +914,10 @@ grapher.graph = function(elem, options, message) {
     // setter
     if (arguments.length) {
       if (val && !selection_visible && has_selection) {
-        show_selection_brush();
+        show_brush_element();
       }
       else if (!val && selection_visible) {
-        hide_selection_brush();
+        hide_brush_element();
       }
       selection_visible = val;
       return graph;
@@ -921,15 +927,29 @@ grapher.graph = function(elem, options, message) {
     }
   };
 
-  function show_selection_brush() {
-    selection_brush.call( d3.svg.brush().x(xScale).extent([0, 10]) )
+  graph.brush_element = function() {
+    return brush_element;
+  };
+
+  graph.brush_control = function() {
+    return brush_control;
+  };
+
+  function show_brush_element() {
+    if (!brush_control) {
+      brush_control = d3.svg.brush()
+        .x(xScale)
+        .extent([selection_region.xmin || 0, selection_region.xmax || 0]);
+    }
+
+    brush_element.call(brush_control)
       .style("display", "inline")
       .selectAll("rect")
         .attr("height", size.height);
   }
 
-  function hide_selection_brush() {
-    selection_brush.style("display", "none");
+  function hide_brush_element() {
+    brush_element.style("display", "none");
   }
 
   graph.reset = function(options, message) {

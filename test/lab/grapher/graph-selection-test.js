@@ -142,6 +142,116 @@ suite.addBatch({
           }
         }
       }
+    },
+
+    "and the graph domain is [10, 20]": {
+      topic: function(getTopicGraph) {
+        return function() {
+          return getTopicGraph().xmin(10).xmax(20);
+        };
+      },
+
+      "and the selection domain is set to [15, 16]": {
+        topic: function(getTopicGraph) {
+          return function() {
+            return getTopicGraph().selection_domain([15, 16]);
+          };
+        },
+
+        "the brush control's extent": {
+          topic: function(getTopicGraph) {
+            return getTopicGraph().brush_control().extent();
+          },
+          "should be [15, 16]": function(topic) {
+            assert.deepEqual( topic, [15, 16] );
+          }
+        },
+
+        "and the selection domain is updated to [10, 12]": {
+          topic: function(getTopicGraph) {
+            return function() {
+              return getTopicGraph().selection_domain([10, 12]);
+            };
+          },
+
+          "the brush control's extent": {
+            topic: function(getTopicGraph) {
+              return getTopicGraph().brush_control().extent();
+            },
+            "should update to [10, 12]": function(topic) {
+              assert.deepEqual( topic, [10, 12] );
+            }
+          }
+
+          // Note, unfortunately, that you can't directly test for correct updating of element width
+          // using jsdom.
+        }
+      }
+    }
+  },
+
+  "when the graph is initialized": {
+    topic: function() {
+      return function() {
+        return getBaseGraph().selection_visible(false);
+      };
+    },
+
+    "and the graph domain is [10, 20]": {
+      topic: function(getTopicGraph) {
+        return function() {
+          return getTopicGraph().xmin(10).xmax(20);
+        };
+      },
+
+      "and the selection domain is [15, 16]": {
+        topic: function(getTopicGraph) {
+          return function() {
+            return getTopicGraph().selection_domain([15, 16]);
+          };
+        },
+
+        "the selection_visible property": {
+          topic: function(getTopicGraph) {
+            return getTopicGraph().selection_visible();
+          },
+          "is false": function(topic) {
+            assert.strictEqual( topic, false );
+          }
+        },
+
+        "the brush control": {
+          topic: function(getTopicGraph) {
+            // Topics that return undefined (equivalently, that don't return a value)
+            // must use this.callback to pass the topic to vows.
+            // Additionally, the first argument to this.callback indicates whether
+            // an error was thrown by the topic function and therefore must be null
+            // see https://github.com/cloudhead/vows/issues/187
+
+            this.callback( null, getTopicGraph().brush_control() );
+          },
+          "should not yet be defined": function(topic) {
+            assert.isUndefined( topic );
+          }
+        },
+
+        "when selection_visible does become true": {
+          topic: function(getTopicGraph) {
+            return function() {
+              return getTopicGraph().selection_visible(true);
+            };
+          },
+
+          "the brush control's extent": {
+            topic: function(getTopicGraph) {
+              return getTopicGraph().brush_control().extent();
+            },
+            "should be [15, 16]": function(topic) {
+              assert.deepEqual( topic, [15, 16] );
+            }
+          }
+        }
+      }
     }
   }
 
