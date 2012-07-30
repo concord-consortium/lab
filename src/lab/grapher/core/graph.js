@@ -297,8 +297,10 @@ grapher.graph = function(elem, options, message) {
             .attr("left", 0)
             .attr("width", size.width)
             .attr("height", size.height)
-            .attr("viewBox", "0 0 "+size.width+" "+size.height)
-            .attr("class", "line");
+            .attr("viewBox", "0 0 "+size.width+" "+size.height);
+
+            // I *assume* this class is superflous -- RPK 7/29/2012
+            //.attr("class", "line");
 
         viewbox.append("path")
             .attr("class", "line")
