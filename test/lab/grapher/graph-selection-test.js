@@ -25,6 +25,7 @@ function graphWithBrushClearEvent(graph) {
   return graph;
 }
 
+
 suite.addBatch({
 
   "initially": {
@@ -219,8 +220,18 @@ suite.addBatch({
 
     "and the selection domain is set to [15, 16]": {
       topic: function(getTopicGraph) {
-        return function() {
-          return getTopicGraph().selection_domain([15, 16]);
+        return function(cb) {
+          var graph = getTopicGraph().selection_domain([15, 16]);
+          // allow topics to pass this.callback to getTopicGraph, and allow the vows
+          // to see the arguments passed to the selection_listener, by making sure
+          // to add null as the 'error' argument to this.callback
+          if (cb) {
+            graph.selection_listener(function cb2() {
+              var args = [].splice.call(arguments, 0);
+              cb.apply(null, [null].concat(args) );
+            });
+          }
+          return graph;
         };
       },
 
@@ -235,8 +246,8 @@ suite.addBatch({
 
       "and the selection domain is programmatically updated to [10, 12]": {
         topic: function(getTopicGraph) {
-          return function() {
-            return getTopicGraph().selection_domain([10, 12]);
+          return function(cb) {
+            return getTopicGraph(cb).selection_domain([10, 12]);
           };
         },
 
@@ -247,6 +258,15 @@ suite.addBatch({
           "should update to [10, 12]": function(topic) {
             assert.deepEqual( topic, [10, 12] );
           }
+        },
+
+        "the selection listener": {
+          topic: function(getTopicGraph) {
+            getTopicGraph(this.callback);
+          },
+          "should be called back with [10, 12]": function(extent) {
+            assert.deepEqual( extent, [10, 12] );
+          }
         }
 
         // Note, unfortunately, that you can't directly test for correct updating of element width
@@ -255,8 +275,8 @@ suite.addBatch({
 
       "and a brush event is fired, with brush extent [11, 13]": {
         topic: function(getTopicGraph) {
-          return function() {
-            return graphWithBrushUpdateEvent(getTopicGraph(), [11, 13]);
+          return function(cb) {
+            return graphWithBrushUpdateEvent(getTopicGraph(cb), [11, 13]);
           };
         },
 
@@ -264,16 +284,25 @@ suite.addBatch({
           topic: function(getTopicGraph) {
             return getTopicGraph().selection_domain();
           },
-          "should be updated to [11, 13]": function(topic) {
+          "should update to [11, 13]": function(topic) {
             assert.deepEqual( topic, [11, 13] );
+          }
+        },
+
+        "the selection listener": {
+          topic: function(getTopicGraph) {
+            getTopicGraph(this.callback);
+          },
+          "should be called back with [11, 13]": function(extent) {
+            assert.deepEqual( extent, [11, 13] );
           }
         }
       },
 
       "and a brush event is fired, with the brush extent cleared": {
         topic: function(getTopicGraph) {
-          return function() {
-            return graphWithBrushClearEvent(getTopicGraph());
+          return function(cb) {
+            return graphWithBrushClearEvent(getTopicGraph(cb));
           };
         },
 
@@ -284,7 +313,17 @@ suite.addBatch({
           "should be updated to []": function(topic) {
             assert.deepEqual( topic, [] );
           }
+        },
+
+        "the selection listener": {
+          topic: function(getTopicGraph) {
+            getTopicGraph(this.callback);
+          },
+          "should be called back with []": function(extent) {
+            assert.deepEqual( extent, [] );
+          }
         }
+
       },
 
       "with selection_enabled set to false": {

@@ -62,6 +62,7 @@ grapher.graph = function(elem, options, message) {
       has_selection = false,
       selection_visible = false,
       selection_enabled = true,
+      selection_listener,
       brush_element,
       brush_control;
 
@@ -897,6 +898,10 @@ grapher.graph = function(elem, options, message) {
         brush_control.extent([selection_region.xmin, selection_region.xmax]);
         brush_element.call(brush_control);
       }
+
+      if (selection_listener) {
+        selection_listener(graph.selection_domain());
+      }
       return graph;
     }
     // getter
@@ -952,7 +957,16 @@ grapher.graph = function(elem, options, message) {
   };
 
   graph.brush_listener = function() {
+    // "read-only"
     return brush_listener;
+  };
+
+  graph.selection_listener = function(cb) {
+    if (arguments.length) {
+      selection_listener = cb;
+      return graph;
+    }
+    return selection_listener;
   };
 
   function brush_listener() {
