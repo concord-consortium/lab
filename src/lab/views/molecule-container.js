@@ -302,6 +302,25 @@ layout.moleculeContainer = function(e, options) {
         playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
 
+      var updateHeatBath = function() {
+        var heatBath = model.get('temperature_control');
+        if (heatBath) {
+          d3.select("#heat_bath").style("display","");
+        }
+        else {
+          d3.select("#heat_bath").style("display","none");
+        }
+      }
+        vis.append("image")
+          .attr("x", 5)
+          .attr("id", "heat_bath")
+          .attr("y", 5)
+          .attr("width", 16)
+          .attr("height", 16)
+          .attr("xlink:href", "../../resources/heatbath.gif")
+      model.addPropertiesListener(["temperature_control"], updateHeatBath);
+      updateHeatBath();
+
       molecule_div = d3.select("#viz").append("div")
           .attr("class", "tooltip")
           .style("opacity", 1e-6);
