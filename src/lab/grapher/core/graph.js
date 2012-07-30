@@ -550,6 +550,9 @@ grapher.graph = function(elem, options, message) {
     }
 
     function update() {
+
+      update_brush_element();
+
       vis.select("path").attr("d", line(points));
 
       var circle = vis.select("svg").selectAll("circle")
@@ -877,22 +880,21 @@ grapher.graph = function(elem, options, message) {
     if (arguments.length) {
       if (a === null) {
         has_selection = false;
-        if (selection_visible) hide_brush_element();
         selection_region.xmin = -Infinity;
         selection_region.xmax = Infinity;
       }
       else if (a.length === 0) {
         has_selection = true;
-        if (selection_visible) show_brush_element();
         selection_region.xmin = Infinity;
         selection_region.xmax = Infinity;
       }
       else {
         has_selection = true;
-        if (selection_visible) show_brush_element();
         selection_region.xmin = a[0];
         selection_region.xmax = a[1];
       }
+
+      update_brush_element();
 
       if (brush_control) {
         brush_control.extent([selection_region.xmin, selection_region.xmax]);
@@ -923,13 +925,11 @@ grapher.graph = function(elem, options, message) {
   graph.selection_visible = function(val) {
     // setter
     if (arguments.length) {
-      if (val && !selection_visible && has_selection) {
-        show_brush_element();
+      val = !!val;
+      if (selection_visible !== val) {
+        selection_visible = val;
+        update_brush_element();
       }
-      else if (!val && selection_visible) {
-        hide_brush_element();
-      }
-      selection_visible = val;
       return graph;
     }
     else {
@@ -939,13 +939,11 @@ grapher.graph = function(elem, options, message) {
 
   graph.selection_enabled = function(val) {
     if (arguments.length) {
-      if (!val && selection_enabled) {
-        brush_element.style('pointer-events', 'none');
+      val = !!val;
+      if (selection_enabled !== val) {
+        selection_enabled = val;
+        update_brush_element();
       }
-      else if (val && !selection_enabled) {
-        brush_element.style('pointer-events', 'all');
-      }
-      selection_enabled = val;
       return graph;
     }
     return selection_enabled;
@@ -983,22 +981,23 @@ grapher.graph = function(elem, options, message) {
     }
   }
 
-  function show_brush_element() {
-    if (!brush_control) {
-      brush_control = d3.svg.brush()
+  function update_brush_element() {
+    if (has_selection && selection_visible) {
+      brush_control = brush_control || d3.svg.brush()
         .x(xScale)
         .extent([selection_region.xmin || 0, selection_region.xmax || 0])
         .on("brush", brush_listener);
+
+      brush_element
+        .call(brush_control.extent([selection_region.xmin || 0, selection_region.xmax || 0]))
+        .style('display', 'inline')
+        .style('pointer-events', selection_enabled ? 'all' : 'none')
+        .selectAll("rect")
+          .attr("height", size.height);
+
+    } else {
+      brush_element.style('display', 'none');
     }
-
-    brush_element.call(brush_control)
-      .style("display", "inline")
-      .selectAll("rect")
-        .attr("height", size.height);
-  }
-
-  function hide_brush_element() {
-    brush_element.style("display", "none");
   }
 
   graph.reset = function(options, message) {
