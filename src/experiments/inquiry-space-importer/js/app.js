@@ -2,6 +2,8 @@
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 
+// Hmm.
+ISImporter.Object = defineClass();
 
 ISImporter.sensors = {
 
@@ -71,6 +73,39 @@ ISImporter.graphController = new ISImporter.GraphController({
   xLabel:  "Time (s)"
 });
 
+
+ISImporter.appController = new ISImporter.Object({
+
+  // could split interface controller from generic app container--but not yet.
+
+  // initialization
+  addSensorTypeSelection: function(value, text) {},
+  setupGraph: function(title, yLabel, yMax, dataset) {},
+  setupRealtimeDisplay: function(units) {},
+
+  // events
+  sensorTypeChanged: function() {},
+  metadataLabelChanged: function(fieldNum) {},
+  metadataValueChanged: function(fieldNum) {},
+  frequencyChanged: function() {},
+  selectionChanged: function() {},
+
+  sensorAppletReady: function() {},
+
+  startClicked: function() {},
+  stopClicked: function() {},
+  resetClicked: function() {},
+  exportClicked: function() {},
+  selectClicked: function() {},
+  cancelClicked: function() {},
+
+  // accessors
+  getSensorTypeSelection: function() {},
+  getMetadataLabel: function(fieldNum) {},
+  getMetadataValue: function(fieldNum) {},
+  getFrequency: function() {}
+
+});
 
 ISImporter.main = function() {
   ISImporter.graphController.initGraph();
