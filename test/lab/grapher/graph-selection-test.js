@@ -25,7 +25,6 @@ function graphWithBrushClearEvent(graph) {
   return graph;
 }
 
-
 suite.addBatch({
 
   "initially": {
@@ -33,12 +32,39 @@ suite.addBatch({
       return getBaseGraph();
     },
 
-    "has_selection property": {
+    "the has_selection property": {
       topic: function(graph) {
         return graph.has_selection();
       },
       "should be false": function(topic) {
         assert.strictEqual( topic, false );
+      }
+    },
+
+    "the selection domain": {
+      topic: function(graph) {
+        return graph.selection_domain();
+      },
+      "should be null": function(topic) {
+        assert.strictEqual( topic, null );
+      }
+    },
+
+    "the selection_visible property": {
+      topic: function(graph) {
+        return graph.selection_visible();
+      },
+      "should be false": function(topic) {
+        assert.strictEqual( topic, false );
+      }
+    },
+
+    "the selection_enabled property": {
+      topic: function(graph) {
+        return graph.selection_enabled();
+      },
+      "should be true": function(topic) {
+        assert.strictEqual( topic, true );
       }
     }
   },
@@ -47,7 +73,7 @@ suite.addBatch({
     topic: function() {
       return getBaseGraph().selection_domain(null);
     },
-    "has_selection property": {
+    "the has_selection property": {
       topic: function(graph) {
         return graph.has_selection();
       },
@@ -55,8 +81,7 @@ suite.addBatch({
         assert.strictEqual( topic, false );
       }
     },
-
-    "selection domain": {
+    "the selection domain": {
       topic: function(graph) {
         return graph.selection_domain();
       },
@@ -70,7 +95,7 @@ suite.addBatch({
     topic: function() {
       return getBaseGraph().selection_domain([]);
     },
-    "has_selection property": {
+    "the has_selection property": {
       topic: function(graph) {
         return graph.has_selection();
       },
@@ -78,7 +103,7 @@ suite.addBatch({
         assert.strictEqual( topic, true );
       }
     },
-    "selection domain": {
+    "the selection domain": {
       topic: function(graph) {
         return graph.selection_domain();
       },
@@ -92,7 +117,7 @@ suite.addBatch({
     topic: function() {
       return getBaseGraph().selection_domain([1, 2]);
     },
-    "has_selection property": {
+    "the has_selection property": {
       topic: function(graph) {
         return graph.has_selection();
       },
@@ -100,7 +125,7 @@ suite.addBatch({
         assert.strictEqual( topic, true );
       }
     },
-    "selection domain": {
+    "the selection domain": {
       topic: function(graph) {
         return graph.selection_domain();
       },
@@ -112,12 +137,16 @@ suite.addBatch({
 
   "when selection_visible is true": {
     topic: function() {
+      // This topic is a *function* that creates a graph (with a particular setup), so that each
+      // subtopic can create an independent graph instance which inherits the setup defined by this
+      // topic. (Without doing this, all subtopics and would mutate a single graph instance set up
+      // by this topic, which leads to chaos, not to mention incorrect test results.)
       return function() {
         return getBaseGraph().selection_visible(true);
       };
     },
 
-    "selection_enabled property": {
+    "the selection_enabled property": {
       topic: function(getTopicGraph) {
         return getTopicGraph().selection_enabled();
       },
@@ -147,16 +176,16 @@ suite.addBatch({
         }
       },
 
-      "the brush control": {
+      "the d3 brush control": {
         topic: function(getTopicGraph) {
           return getTopicGraph().brush_control();
         },
-        "should listen for brush events": function(topic) {
+        "should listen for d3 brush events": function(topic) {
           assert.isFunction( topic.on('brush') );
         }
       },
 
-      "and has_selection subsequently becomes false": {
+      "and when has_selection subsequently becomes false": {
         topic: function(getTopicGraph) {
           return function() {
             return getTopicGraph().selection_domain(null);
@@ -172,7 +201,7 @@ suite.addBatch({
         }
       },
 
-      "and selection_visible subsequently becomes false": {
+      "and when selection_visible subsequently becomes false": {
         topic: function(getTopicGraph) {
           return function() {
             return getTopicGraph().selection_visible(false);
@@ -188,7 +217,7 @@ suite.addBatch({
         }
       },
 
-      "and selection_enabled subsequently becomes false": {
+      "and when selection_enabled subsequently becomes false": {
         topic: function(getTopicGraph) {
           return function() {
             return getTopicGraph().selection_enabled(false);
@@ -198,7 +227,7 @@ suite.addBatch({
           topic: function(getTopicGraph) {
             return getTopicGraph().elem.select('.brush');
           },
-          "should be visible": function(topic) {
+          "should not be visible": function(topic) {
             assert.equal( topic.style('display'), 'inline' );
           },
           "should not allow pointer-events": function(topic) {
@@ -244,7 +273,7 @@ suite.addBatch({
         };
       },
 
-      "the brush control's extent": {
+      "the d3 brush control's extent": {
         topic: function(getTopicGraph) {
           return getTopicGraph().brush_control().extent();
         },
@@ -253,14 +282,14 @@ suite.addBatch({
         }
       },
 
-      "and the selection domain is programmatically updated to [10, 12]": {
+      "and when the selection domain is programmatically updated to [10, 12]": {
         topic: function(getTopicGraph) {
           return function(cb) {
             return getTopicGraph(cb).selection_domain([10, 12]);
           };
         },
 
-        "the brush control's extent": {
+        "the d3 brush control's extent": {
           topic: function(getTopicGraph) {
             return getTopicGraph().brush_control().extent();
           },
@@ -282,8 +311,7 @@ suite.addBatch({
         // using jsdom.
       },
 
-
-      "and the selection domain is programmatically updated to null": {
+      "and when the selection domain is programmatically updated to null": {
         topic: function(getTopicGraph) {
           return function(cb) {
             return getTopicGraph(cb).selection_domain(null);
@@ -400,12 +428,12 @@ suite.addBatch({
         topic: function(getTopicGraph) {
           return getTopicGraph().selection_visible();
         },
-        "is false": function(topic) {
+        "should be false": function(topic) {
           assert.strictEqual( topic, false );
         }
       },
 
-      "the brush control": {
+      "the d3 brush control": {
         topic: function(getTopicGraph) {
           // Topics that return undefined (equivalently, that don't return a value)
           // must use this.callback to pass the topic to vows.
@@ -427,7 +455,7 @@ suite.addBatch({
           };
         },
 
-        "the brush control's extent": {
+        "the d3 brush control's extent": {
           topic: function(getTopicGraph) {
             return getTopicGraph().brush_control().extent();
           },
