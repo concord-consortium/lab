@@ -2,7 +2,6 @@
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 
-var graph;
 
 ISImporter.sensors = {
 
@@ -26,20 +25,56 @@ ISImporter.sensors = {
 };
 
 
+ISImporter.GraphController = defineClass({
+
+  title: "Graph",
+  yLabel: "Y Axis",
+  xLabel: "X Axis",
+
+  element: null,
+  graph: null,
+  dataset: null,
+
+  setTitle: function() {},
+  setYLabel: function() {},
+  setDataset: function() {},
+
+  initGraph: function() {
+    this.graph = grapher.graph(this.element, {
+      title       : this.title,
+      xlabel      : this.xLabel,
+      xmin        : 0,
+      xmax        : 60,
+      ylabel      : this.yLabel,
+      ymin        : 0,
+      ymax        : 40,
+      points      : [ [0,0],[10,10],[15,5] ],
+      circleRadius: false,
+      dataChange  : false
+    });
+  },
+
+  resetGraph: function() {},
+
+  showSelection: function() {},
+  hideSelection: function() {},
+  enableSelection: function() {},
+  disableSelection: function() {},
+
+  getSelectionDataset: function() {}
+});
+
+
+ISImporter.graphController = new ISImporter.GraphController({
+  element: '#graph',
+  title:   "Sensor Graph",
+  xLabel:  "Time (s)"
+});
+
+
 ISImporter.main = function() {
-  graph = grapher.graph('#graph', {
-    title       : "Sensor Graph",
-    xlabel      : "Time (s)",
-    xmin        : 0,
-    xmax        : 60,
-    ylabel      : "Y Axis",
-    ymin        : 0,
-    ymax        : 40,
-    points      : [],
-    circleRadius: false,
-    dataChange  : false
-  });
-  graph.data([[0,0],[10,10],[15,5]]);
+  ISImporter.graphController.initGraph();
+  window.graph = ISImporter.graphController.graph;
 };
 
 $(document).ready(function() {
