@@ -915,11 +915,6 @@ grapher.graph = function(elem, options, message) {
 
     update_brush_element();
 
-    if (brush_control) {
-      brush_control.extent([selection_region.xmin, selection_region.xmax]);
-      brush_element.call(brush_control);
-    }
-
     if (selection_listener) {
       selection_listener(graph.selection_domain());
     }
