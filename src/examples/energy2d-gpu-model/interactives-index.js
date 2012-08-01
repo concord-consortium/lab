@@ -30,5 +30,13 @@ var interactivesIndex = {
   "vortex256": {
     "name": "Vortex Street 256x256",
     "path": "interactives/vortex-street256.json"
+  },
+  "benard100": {
+    "name": "Benard Cell 100x100",
+    "path": "interactives/benard-cell100.json"
+  },
+  "benard256": {
+    "name": "Benard Cell 256x256",
+    "path": "interactives/benard-cell256.json"
   }
 };
