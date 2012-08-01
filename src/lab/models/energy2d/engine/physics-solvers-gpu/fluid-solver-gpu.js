@@ -38,6 +38,7 @@ exports.makeFluidSolverGPU = function (model) {
     conserve_step2_fs        = glsl[GLSL_PREFIX + 'conserve-step2.fs.glsl'],
     conserve_step3_fs        = glsl[GLSL_PREFIX + 'conserve-step3.fs.glsl'],
     diffuse_fs               = glsl[GLSL_PREFIX + 'diffuse.fs.glsl'],
+    apply_buoyancy_fs        = glsl[GLSL_PREFIX + 'apply-buoyancy.fs.glsl'],
 
     // ========================================================================
     // GLSL Shaders:
@@ -53,6 +54,7 @@ exports.makeFluidSolverGPU = function (model) {
     conserve_step2_program        = new gpu.Shader(basic_vs, conserve_step2_fs),
     conserve_step3_program        = new gpu.Shader(basic_vs, conserve_step3_fs),
     diffuse_program               = new gpu.Shader(basic_vs, diffuse_fs),
+    apply_buoyancy_program        = new gpu.Shader(basic_vs, apply_buoyancy_fs),
     // ========================================================================
 
     // Simulation arrays provided by model.
@@ -108,11 +110,15 @@ exports.makeFluidSolverGPU = function (model) {
     hy = timestep * viscosity * idysq,
     dn = 1.0 / (1 + 2 * (hx + hy)),
 
+    g = gravity * timestep,
+    b = thermal_buoyancy * timestep,
+
     grid_vec = [1 / ny, 1 / nx],
 
     // Textures sets.
     data_2_array = [data2_tex],
     data_1_2_array = [data1_tex, data2_tex],
+    data_0_1_2_array = [data0_tex, data1_tex, data2_tex],
     data_1_2_3_array = [data1_tex, data2_tex, data3_tex],
 
     init = function () {
@@ -201,6 +207,26 @@ exports.makeFluidSolverGPU = function (model) {
       };
       diffuse_program.uniforms(uniforms);
 
+      // Apply buoyancy uniforms.
+      uniforms = {
+        // Texture units.
+        data0_tex: 0,
+        data1_tex: 1,
+        data2_tex: 2,
+        // Uniforms.
+        grid: grid_vec,
+        g: g,
+        b: b
+      };
+      apply_buoyancy_program.uniforms(uniforms);
+    },
+
+    applyBuoyancy = function () {
+      gpgpu.executeProgram(
+        apply_buoyancy_program,
+        data_0_1_2_array,
+        data2_tex
+      );
     },
 
     macCormack = function () {
@@ -289,13 +315,14 @@ exports.makeFluidSolverGPU = function (model) {
           data_1_2_array,
           data2_tex
         );
+
+        // Apply boundary.
+        gpgpu.executeProgram(
+          apply_uv_boundary_program,
+          data_2_array,
+          data2_tex
+        );
       }
-      // Apply boundary.
-      gpgpu.executeProgram(
-        apply_uv_boundary_program,
-        data_2_array,
-        data2_tex
-      );
     },
 
     setObstacleVelocity = function () {
@@ -316,6 +343,9 @@ exports.makeFluidSolverGPU = function (model) {
 
     fluid_solver_gpu = {
       solve: function () {
+        if (thermal_buoyancy !== 0) {
+          applyBuoyancy();
+        }
         setObstacleVelocity();
         if (viscosity > 0) {
           diffuse();
