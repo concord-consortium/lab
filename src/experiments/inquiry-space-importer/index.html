@@ -17,11 +17,69 @@
 <body>
 
 <header>
-    <h1>This will be the InquirySpace Data Importer</h1>
+   <h1>InquirySpace Data Collector</h1>
 </header>
 
-<div role="main">
-  <div id="graph" style="width: 960px; height: 500px;"></div>
+<div role="main" class="clearfix">
+
+  <div class="left">
+	  <select id="sensor-type-selector">
+	  	<option value="select-sensor" disabled selected>select sensor...</option>
+	  </select>
+
+	  <div id="graph"></div>
+
+		<div class="centering-container">
+		  <div id="sensor-control-buttons" class="centered">
+			  <a id="start-button" class="button disabled">Start</a>
+			  <a id="stop-button" class="button disabled">Stop</a>
+			  <a id="reset-button" class="button disabled">Reset</a>
+			  <a id="export-data-button" class="button disabled">Export data</a>
+			</div>
+
+		  <form id="frequency-selection-form">
+			  <label for="frequency-selector">Frequency</label>
+			  <select id="frequency-selector">
+			  	<option value="select-frequency" disabled selected>select frequency...</option>
+			  </select>
+			</form>
+
+			<div id="select-data-buttons" class="centered">
+			  <a id="select-data-button" class="button disabled">Select data for analysis...</a>
+			  <a id="cancel-selection-button" class="button disabled hidden">Cancel Selection</a>
+		  </div>
+		</div>
+
+	</div>
+
+  <div class="right">
+
+	  <div id="realtime-display">
+	  	<span class="realtime-value">X.YZ</span> <span class="realtime-units">units</span>
+	  </div>
+
+	  <form id="metadata-fields">
+
+	  	<fieldset id="metadata-1">
+	  		<legend>Measurement 1:</legend>
+		  	<input class="metadata-label" tabindex=1 type="text" placeholder="enter label">
+				<input class="metadata-value" type="text" placeholder="enter value">
+			</fieldset>
+
+	  	<fieldset id="metadata-2">
+	  		<legend>Measurement 2:</legend>
+		  	<input class="metadata-label" type="text" placeholder="enter label">
+				<input class="metadata-value" type="text" placeholder="enter value">
+			</fieldset>
+
+			<fieldset id="metadata-3">
+	  		<legend>Measurement 3:</legend>
+		  	<input class="metadata-label" type="text" placeholder="enter label">
+				<input class="metadata-value" type="text" placeholder="enter value">
+			</fieldset>
+		</form>
+  </div>
+
 </div>
 
 <footer>

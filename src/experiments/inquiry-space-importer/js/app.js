@@ -54,6 +54,9 @@ ISImporter.GraphController = defineClass({
       circleRadius: false,
       dataChange  : false
     });
+
+    // allow title to be styled by CSS
+    d3.select(this.element + ' text.title').style('font-size', null);
   },
 
   resetGraph: function() {},
