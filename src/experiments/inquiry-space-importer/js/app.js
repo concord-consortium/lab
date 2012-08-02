@@ -131,10 +131,26 @@ ISImporter.GraphController = defineClass({
     this.graph.reset();
   },
 
-  showSelection: function() {},
-  hideSelection: function() {},
-  enableSelection: function() {},
-  disableSelection: function() {},
+  startSelection: function() {
+    var self = this;
+
+    if (this.dataset.getSelectionDomain() === null) {
+      this.dataset.select([]);
+    }
+
+    this.graph.selection_domain(this.dataset.getSelectionDomain());
+    this.graph.selection_listener(function(domain) {
+      self.dataset.select(domain);
+    });
+    this.graph.selection_visible(true);
+  },
+
+  stopSelection: function() {
+    // first, make sure to turn off the listener so selection_domain(null) doesn't
+    // change the dataset selection
+    this.graph.selection_listener(null);
+    this.graph.selection_domain(null).selection_visible(false);
+  },
 
   getSelectionDataset: function() {}
 });
@@ -152,6 +168,7 @@ ISImporter.appController = new ISImporter.Object({
   currentApplet: null,
   currentAppletReady: false,
   started: false,
+  selecting: false,
 
   // could split interface controller from generic app container--but not yet.
   $sensorTypeSelector: null,
@@ -186,6 +203,7 @@ ISImporter.appController = new ISImporter.Object({
       self.sensorTypeChanged();
     });
 
+    // Set up button handlers. Surely this boilerplate can be eliminated.
     this.$startButton = $('#start-button');
     this.$startButton.on('click', function() {
       if ($(this).hasClass('disabled')) return false;
@@ -204,38 +222,48 @@ ISImporter.appController = new ISImporter.Object({
       self.reset();
     });
 
+    this.$exportButton = $('#export-data-button');
+    this.$exportButton.on('click', function() {
+      if ($(this).hasClass('disabled')) return false;
+      self.export();
+    });
+
+    this.$selectButton = $('#select-data-button');
+    this.$selectButton.on('click', function() {
+      if ($(this).hasClass('disabled')) return false;
+      self.select();
+    });
+
+    this.$cancelButton = $('#cancel-selection-button');
+    this.$cancelButton.on('click', function() {
+      if ($(this).hasClass('disabled')) return false;
+      self.cancel();
+    });
+
     this.$realtimeDisplayValue = $('#realtime-display .realtime-value');
     this.$realtimeDisplayUnits = $('#realtime-display .realtime-units');
   },
 
   disableControlButtons: function() {
-    this.$startButton.addClass('disabled').removeClass('enabled');
-    this.$stopButton.addClass('disabled').removeClass('enabled');
-    this.$resetButton.addClass('disabled').removeClass('enabled');
+    this.disable(this.$startButton);
+    this.disable(this.$stopButton);
+    this.disable(this.$resetButton);
   },
 
-  enableStartButton: function() {
-    this.$startButton.removeClass('disabled').addClass('enabled');
+  enable: function($button) {
+    $button.removeClass('disabled').addClass('enabled');
   },
 
-  disableStartButton: function() {
-    this.$startButton.removeClass('enabled').addClass('disabled');
+  disable: function($button) {
+    $button.removeClass('enabled').addClass('disabled');
   },
 
-  enableStopButton: function() {
-    this.$stopButton.removeClass('disabled').addClass('enabled');
+  show: function($el) {
+    $el.removeClass('hidden');
   },
 
-  disableStopButton: function() {
-    this.$stopButton.removeClass('enabled').addClass('disabled');
-  },
-
-  enableResetButton: function() {
-    this.$resetButton.removeClass('disabled').addClass('enabled');
-  },
-
-  disableResetButton: function() {
-    this.$resetButton.removeClass('enabled').addClass('disabled');
+  hide: function($el) {
+    $el.addClass('hidden');
   },
 
   // initialization
@@ -320,33 +348,70 @@ ISImporter.appController = new ISImporter.Object({
   sensorAppletReady: function() {
     if (this.currentAppletReady) return;
     this.currentAppletReady = true;
-    this.enableStartButton();
+    this.enable(this.$startButton);
   },
 
   start: function() {
     this.started = true;
     this.currentApplet.start();
-    this.disableStartButton();
-    this.enableStopButton();
+    this.disable(this.$startButton);
+    this.enable(this.$stopButton);
   },
 
   stop: function() {
     this.started = false;
     if (this.currentApplet) this.currentApplet.stop();
-    this.disableStopButton();
-    this.enableResetButton();
+    this.disable(this.$stopButton);
+    this.enable(this.$resetButton);
+
+    if (this.dataset.getLength() > 0) {
+      this.enable(this.$exportButton);
+      this.enable(this.$selectButton);
+    }
   },
 
   reset: function() {
     this.dataset.setDataPoints();   // perhaps this should be a 'clear' convenience method
+    this.dataset.select(null);
     this.dataset.setNextX(0);
-    this.enableStartButton();
-    this.disableResetButton();
+    this.enable(this.$startButton);
+    this.disable(this.$resetButton);
+    this.disable(this.$selectButton);
+    this.disable(this.$exportButton);
   },
 
-  exportClicked: function() {},
-  selectClicked: function() {},
-  cancelClicked: function() {},
+  export: function() {
+    if (this.selecting) {
+      console.log("exporting selected data");
+    } else {
+      console.log("exporting all data");
+    }
+
+    this.selecting = false;
+
+    ISImporter.graphController.stopSelection();
+    this.hide(this.$cancelButton);
+    this.enable(this.$resetButton);
+    this.enable(this.$selectButton);
+  },
+
+  select: function() {
+    this.selecting = true;
+    ISImporter.graphController.startSelection();
+    this.show(this.$cancelButton);
+    this.enable(this.$cancelButton);
+    this.disable(this.$selectButton);
+    this.disable(this.$resetButton);
+  },
+
+  cancel: function() {
+    this.selecting = false;
+    this.dataset.select(null);
+    ISImporter.graphController.stopSelection();
+    this.hide(this.$cancelButton);
+    this.enable(this.$resetButton);
+    this.enable(this.$selectButton);
+  },
 
   // accessors
   getSensorTypeSelection: function() {
