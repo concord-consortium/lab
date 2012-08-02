@@ -51,7 +51,21 @@ grapher.graph = function(elem, options, message) {
         "addData":         true,
         "points":          false,
         "notification":    false
-      };
+      },
+
+      selection_region = {
+        xmin: null,
+        xmax: null,
+        ymin: null,
+        ymax: null
+      },
+      has_selection = false,
+      selection_visible = false,
+      selection_enabled = true,
+      selection_listener,
+      brush_element,
+      brush_control;
+
 
   initialize(options);
 
@@ -289,13 +303,18 @@ grapher.graph = function(elem, options, message) {
             .attr("left", 0)
             .attr("width", size.width)
             .attr("height", size.height)
-            .attr("viewBox", "0 0 "+size.width+" "+size.height)
-            .attr("class", "line");
+            .attr("viewBox", "0 0 "+size.width+" "+size.height);
+
+            // I *assume* this class is superflous -- RPK 7/29/2012
+            //.attr("class", "line");
 
         viewbox.append("path")
             .attr("class", "line")
             .style("stroke-width", strokeWidth)
             .attr("d", line(points));
+
+        brush_element = viewbox.append("g")
+              .attr("class", "brush");
 
         // add Chart Title
         if (options.title && sizeType.value > 1) {
@@ -531,6 +550,9 @@ grapher.graph = function(elem, options, message) {
     }
 
     function update() {
+
+      update_brush_element();
+
       vis.select("path").attr("d", line(points));
 
       var circle = vis.select("svg").selectAll("circle")
@@ -851,6 +873,188 @@ grapher.graph = function(elem, options, message) {
     }
     return graph;
   };
+
+  /**
+    Set or get the selection domain (i.e., the range of x values that are selected).
+
+    Valid domain specifiers:
+      null     no current selection (selection is turned off)
+      []       a current selection exists but is empty (has_selection is true)
+      [x1, x2] the region between x1 and x2 is selected. Any data points between
+               x1 and x2 (inclusive) would be considered to be selected.
+
+    Default value is null.
+  */
+  graph.selection_domain = function(a) {
+
+    if (!arguments.length) {
+      if (!has_selection) {
+        return null;
+      }
+      if (selection_region.xmax === Infinity && selection_region.xmin === Infinity ) {
+        return [];
+      }
+      return [selection_region.xmin, selection_region.xmax];
+    }
+
+    // setter
+
+    if (a === null) {
+      has_selection = false;
+    }
+    else if (a.length === 0) {
+      has_selection = true;
+      selection_region.xmin = Infinity;
+      selection_region.xmax = Infinity;
+    }
+    else {
+      has_selection = true;
+      selection_region.xmin = a[0];
+      selection_region.xmax = a[1];
+    }
+
+    update_brush_element();
+
+    if (selection_listener) {
+      selection_listener(graph.selection_domain());
+    }
+    return graph;
+  };
+
+  /**
+    Get whether the graph currently has a selection region. Default value is false.
+
+    If true, it would be valid to filter the data points to return a subset within the selection
+    region, although this region may be empty!
+
+    If false the graph is not considered to have a selection region.
+
+    Note that even if has_selection is true, the selection region may not be currently shown,
+    and if shown, it may be empty.
+  */
+  graph.has_selection = function() {
+    return has_selection;
+  };
+
+  /**
+    Set or get the visibility of the selection region. Default value is false.
+
+    Has no effect if the graph does not currently have a selection region
+    (selection_domain is null).
+
+    If the selection_enabled property is true, the user will also be able to interact
+    with the selection region.
+  */
+  graph.selection_visible = function(val) {
+    if (!arguments.length) {
+      return selection_visible;
+    }
+
+    // setter
+    val = !!val;
+    if (selection_visible !== val) {
+      selection_visible = val;
+      update_brush_element();
+    }
+    return graph;
+  };
+
+  /**
+    Set or get whether user manipulation of the selection region should be enabled
+    when a selection region exists and is visible. Default value is true.
+
+    Setting the value to true has no effect unless the graph has a selection region
+    (selection_domain is non-null) and the region is visible (selection_visible is true).
+    However, the selection_enabled setting is honored whenever those properties are
+    subsequently updated.
+
+    Setting the value to false does not affect the visibility of the selection region,
+    and does not affect the ability to change the region by calling selection_domain().
+
+    Note that graph panning and zooming are disabled while selection manipulation is enabled.
+  */
+  graph.selection_enabled = function(val) {
+    if (!arguments.length) {
+      return selection_enabled;
+    }
+
+    // setter
+    val = !!val;
+    if (selection_enabled !== val) {
+      selection_enabled = val;
+      update_brush_element();
+    }
+    return graph;
+  };
+
+  /**
+    Set or get the listener to be called when the selection_domain changes.
+
+    Both programatic and interactive updates of the selection region result in
+    notification of the listener.
+
+    The listener is called with the new selection_domain value in the first argument.
+  */
+  graph.selection_listener = function(cb) {
+    if (!arguments.length) {
+      return selection_listener;
+    }
+    // setter
+    selection_listener = cb;
+    return graph;
+  };
+
+  /**
+    Read only getter for the d3 selection referencing the DOM elements containing the d3
+    brush used to implement selection region manipulation.
+  */
+  graph.brush_element = function() {
+    return brush_element;
+  };
+
+  /**
+    Read-only getter for the d3 brush control (d3.svg.brush() function) used to implement
+    selection region manipulation.
+  */
+  graph.brush_control = function() {
+    return brush_control;
+  };
+
+  /**
+    Read-only getter for the internal listener to the d3 'brush' event.
+  */
+  graph.brush_listener = function() {
+    return brush_listener;
+  };
+
+  function brush_listener() {
+    var extent;
+    if (selection_enabled) {
+      // Note there is a brush.empty() method, but it still reports true after the
+      // brush extent has been programatically updated.
+      extent = brush_control.extent();
+      graph.selection_domain( extent[0] !== extent[1] ? extent : [] );
+    }
+  }
+
+  function update_brush_element() {
+    if (has_selection && selection_visible) {
+      brush_control = brush_control || d3.svg.brush()
+        .x(xScale)
+        .extent([selection_region.xmin || 0, selection_region.xmax || 0])
+        .on("brush", brush_listener);
+
+      brush_element
+        .call(brush_control.extent([selection_region.xmin || 0, selection_region.xmax || 0]))
+        .style('display', 'inline')
+        .style('pointer-events', selection_enabled ? 'all' : 'none')
+        .selectAll("rect")
+          .attr("height", size.height);
+
+    } else {
+      brush_element.style('display', 'none');
+    }
+  }
 
   graph.reset = function(options, message) {
     if (arguments.length) {

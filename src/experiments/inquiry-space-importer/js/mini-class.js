@@ -92,7 +92,8 @@
     return ChildConstructor;
   }
 
-  // publish defineClass, extendClass globally:
+  // publish defineClass, extendClass, and mixin globally:
   window.defineClass = defineClass;
   window.extendClass = extendClass;
+  window.mixin = mixin;
 }());

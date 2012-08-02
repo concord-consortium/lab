@@ -1,4 +1,4 @@
-/*globals defineClass extendClass */
+/*globals defineClass extendClass mixin */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 
@@ -29,23 +29,6 @@ ISImporter.SensorApplet = defineClass({
       throw new Error("SensorApplet.endAppletCallback was called without previous startAppletCallback call");
     }
     this._isInAppletCallback = false;
-  },
-
-  on: function(evt, cb) {
-    if (!this._callbacks) this._callbacks = {};
-    if (!this._callbacks[evt]) this._callbacks[evt] = [];
-
-    this._callbacks[evt].push(cb);
-  },
-
-  emit: function(evt) {
-    var args = arguments.length > 1 ? [].splice.call(arguments, 1) : [];
-
-    if (this._callbacks && this._callbacks[evt]) {
-      for (var i = 0, len = this._callbacks[evt].length; i < len; i++) {
-        this._callbacks[evt][i].apply(null, args);
-      }
-    }
   },
 
   append: function () {
@@ -134,6 +117,7 @@ ISImporter.SensorApplet = defineClass({
 
 });
 
+mixin( ISImporter.SensorApplet.prototype, ISImporter.EventEmitter );
 
 ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
 

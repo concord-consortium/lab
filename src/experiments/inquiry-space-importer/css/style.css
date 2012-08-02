@@ -15,10 +15,10 @@ body { margin: 0; font-size: 1em; line-height: 1.4; }
 ::selection { background: #fe57a1; color: #fff; text-shadow: none; }
 
 a { color: #00e; }
-a:visited { color: #551a8b; }
+/*a:visited { color: #551a8b; }
 a:hover { color: #06e; }
 a:focus { outline: thin dotted; }
-a:hover, a:active { outline: 0; }
+a:hover, a:active { outline: 0; }*/
 
 abbr[title] { border-bottom: 1px dotted; }
 b, strong { font-weight: bold; }
@@ -51,7 +51,7 @@ form { margin: 0; }
 fieldset { border: 0; margin: 0; padding: 0; }
 label { cursor: pointer; }
 legend { border: 0; *margin-left: -7px; padding: 0; white-space: normal; }
-button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
+input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
 button, input { line-height: normal; }
 button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; *overflow: visible; }
 button[disabled], input[disabled] { cursor: default; }
@@ -68,22 +68,162 @@ td { vertical-align: top; }
 
 .chromeframe { margin: 0.2em 0; background: #ccc; color: black; padding: 0.2em 0; }
 
-
-
 /* ===== Primary Styles ========================================================
    Author:
    ========================================================================== */
 
+
+/* custom button styles generated using http://css-tricks.com/examples/ButtonMaker/
+   and tweaked slightly to deal with cascade problems from above CSS */
+
+.button {
+   border-top: 1px solid #96d1f8;
+   background: #65a9d7;
+   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+   background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+   background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+   background: -o-linear-gradient(top, #3e779d, #65a9d7);
+   padding: 5px 10px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 14px;
+   font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
+   text-decoration: none;
+   vertical-align: middle;
+   height: 16px;
+   cursor: pointer;
+   display: inline-block;
+}
+
+.button.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.button.enabled:hover {
+   border-top-color: #28597a;
+   background: #28597a;
+   color: #ccc;
+}
+
+.button.enabled:active {
+   border-top-color: #1b435e;
+   background: #1b435e;
+}
+
+/* graph styles */
+
+#graph .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+#graph .brush .extent {
+  stroke: #ccc;
+  fill-opacity: 0.05;
+}
+
+#graph .title {
+  font-size: 1em;
+}
+
+#graph .graph-notification {
+  font-size: 1.5em;
+  opacity: 0.2;
+}
+
+/* InquirySpace layout styles */
+
 body {
-  margin-left: 1em;
+  width: 512px;
+  margin: 0 auto;
+  background-image: url("../images/farmer.png");
+  font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
 }
 
-#data {
-  font-size: 3em;
-  margin: 0.1em;
+header h1 {
+  margin-bottom: 0.4em;
+  margin-top: 0.4em;
+  text-align: center;
 }
 
+.left {
+  width: 68%;
+  float: left;
+  padding-top: 2em;
+  position: relative;
+}
 
+.right {
+  width: 28%;
+  float: right;
+  padding-top: 2em;
+  position: relative;
+}
+
+.centering-container {
+  width: 100%;
+  text-align: center;
+}
+
+.centered {
+  display: inline-block;
+}
+
+#sensor-type-selector {
+  position: absolute;
+  top: 0.4em;
+  left: 1.25em;
+  width: 90%;
+}
+
+#realtime-display {
+  position: absolute;
+  top: 0;
+
+  font-size: 1.6em;
+  line-height: 1.2;
+  color: fireBrick;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+#graph {
+  height: 15.4em;
+  margin-top: 0.5em;
+}
+
+#metadata-fields {
+  font-size: 0.9em;
+}
+
+#metadata-fields input, #metadata-fields legend {
+  width: 90%
+}
+
+#metadata-fields legend {
+  padding-top: 1em;
+}
+
+#sensor-control-buttons {
+  margin-top: 0.5em;
+}
+
+#frequency-selection-form {
+  margin-top: 0.8em;
+}
+
+#select-data-buttons {
+  margin-top: 0.8em;
+}
 
 /* =============================================================================
    Media Queries
@@ -91,6 +231,13 @@ body {
 
 @media only screen and (min-width: 35em) {
 	/* Style adjustments for viewports that meet the condition */
+}
+
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  body {
+    background-image: url("../images/farmer_@2X.png");
+    background-size: 349px 349px;
+  }
 }
 
 /* =============================================================================
