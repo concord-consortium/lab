@@ -2,6 +2,23 @@
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 
+/**
+  Quick & dirty fixed-digit formatter. Should work for reasonable ranges of numbers.
+*/
+ISImporter.fixed = function(d, n) {
+  var str;
+
+  // round and right zero pad
+  str = ""+Math.round(d*Math.pow(10, n));
+
+  // left zero pad
+  while (str.length < n+1) {
+    str = '0' + str;
+  }
+  // And put the decimal point in the right place
+  return str.slice(0, str.length-n) + '.' + str.slice(-n);
+};
+
 // Hmm.
 ISImporter.Object = defineClass();
 
@@ -12,7 +29,10 @@ ISImporter.sensors = {
       otmlPath: '/distance.otml',
       listenerPath: 'ISImporter.sensors.distance.applet',
       appletId: 'distance-sensor'
-    })
+    }),
+    title: "Distance",
+    yMax: 5,
+    units: "m"
   },
 
   temperature: {
@@ -20,7 +40,10 @@ ISImporter.sensors = {
       otmlPath: '/temperature.otml',
       listenerPath: 'ISImporter.sensors.temperature.applet',
       appletId: 'temperature-sensor'
-    })
+    }),
+    title: "Temperature",
+    yMax: 100,
+    units: "°C"
   },
 
   light: {
@@ -28,7 +51,10 @@ ISImporter.sensors = {
       otmlPath: '/light.otml',
       listenerPath: 'ISImporter.sensors.light.applet',
       appletId: 'light-sensor'
-    })
+    }),
+    title: "Light Intensity",
+    yMax: 2000,
+    units: "lux"
   }
 };
 
@@ -43,9 +69,41 @@ ISImporter.GraphController = defineClass({
   graph: null,
   dataset: null,
 
-  setTitle: function() {},
+  setTitle: function(title) {
+    this.title = title;
+    this.graph.title(title);
+  },
+
+  setYMax: function(yMax) {
+    this.yMax = yMax;
+    this.graph.ymax(yMax);
+  },
+
   setYLabel: function() {},
-  setDataset: function() {},
+
+  setDataset: function(dataset) {
+    if (this.dataset) {
+      this.dataset.removeListener('data', this.dataListener);
+      this.dataset.removeListener('dataReset', this.dataResetListener);
+    }
+    this.dataset = dataset;
+    this.dataset.on('data', this.dataListener);
+    this.dataset.on('dataReset', this.dataResetListener);
+    this.dataResetListener();
+  },
+
+  init: function() {
+    var self = this;
+    this.initGraph();
+
+    this.dataListener = function(d) {
+      self.graph.add_data(d);
+    };
+
+    this.dataResetListener = function() {
+      self.graph.data(self.dataset.getDataPoints());
+    };
+  },
 
   initGraph: function() {
     this.graph = grapher.graph(this.element, {
@@ -69,7 +127,9 @@ ISImporter.GraphController = defineClass({
     this.graph.notify('');
   },
 
-  resetGraph: function() {},
+  resetGraph: function() {
+    this.graph.reset();
+  },
 
   showSelection: function() {},
   hideSelection: function() {},
@@ -91,9 +151,24 @@ ISImporter.appController = new ISImporter.Object({
 
   currentApplet: null,
   currentAppletReady: false,
+  started: false,
 
   // could split interface controller from generic app container--but not yet.
   $sensorTypeSelector: null,
+  $startButton: null,
+  $stopButton: null,
+  $resetButton: null,
+  $realtimeDisplayValue: null,
+  $realtimeDisplayUnits: null,
+
+  init: function() {
+    var self = this;
+    this.appletDataListener = function(y) {
+      self.dataset.add(y);
+    };
+
+    this.initInterface();
+  },
 
   initInterface: function() {
     var self = this,
@@ -110,6 +185,57 @@ ISImporter.appController = new ISImporter.Object({
     this.$sensorTypeSelector.on('change', function() {
       self.sensorTypeChanged();
     });
+
+    this.$startButton = $('#start-button');
+    this.$startButton.on('click', function() {
+      if ($(this).hasClass('disabled')) return false;
+      self.start();
+    });
+
+    this.$stopButton = $('#stop-button');
+    this.$stopButton.on('click', function() {
+      if ($(this).hasClass('disabled')) return false;
+      self.stop();
+    });
+
+    this.$resetButton = $('#reset-button');
+    this.$resetButton.on('click', function() {
+      if ($(this).hasClass('disabled')) return false;
+      self.reset();
+    });
+
+    this.$realtimeDisplayValue = $('#realtime-display .realtime-value');
+    this.$realtimeDisplayUnits = $('#realtime-display .realtime-units');
+  },
+
+  disableControlButtons: function() {
+    this.$startButton.addClass('disabled').removeClass('enabled');
+    this.$stopButton.addClass('disabled').removeClass('enabled');
+    this.$resetButton.addClass('disabled').removeClass('enabled');
+  },
+
+  enableStartButton: function() {
+    this.$startButton.removeClass('disabled').addClass('enabled');
+  },
+
+  disableStartButton: function() {
+    this.$startButton.removeClass('enabled').addClass('disabled');
+  },
+
+  enableStopButton: function() {
+    this.$stopButton.removeClass('disabled').addClass('enabled');
+  },
+
+  disableStopButton: function() {
+    this.$stopButton.removeClass('enabled').addClass('disabled');
+  },
+
+  enableResetButton: function() {
+    this.$resetButton.removeClass('disabled').addClass('enabled');
+  },
+
+  disableResetButton: function() {
+    this.$resetButton.removeClass('enabled').addClass('disabled');
   },
 
   // initialization
@@ -118,27 +244,69 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   setupGraph: function(title, yLabel, yMax, dataset) {},
-  setupRealtimeDisplay: function(units) {},
+
+  setupRealtimeDisplay: function(units) {
+    var self = this;
+
+    this.$realtimeDisplayValue.text('');
+    self.$realtimeDisplayUnits.text(units).hide();
+
+    this.dataset.on('data', function(d) {
+      self.$realtimeDisplayValue.text(ISImporter.fixed(d[1], 1));
+      self.$realtimeDisplayUnits.show();
+    });
+
+    this.dataset.on('dataReset', function(d) {
+      var length = self.dataset.getLength(),
+          text;
+
+      if (length > 0) {
+        text = ISImporter.fixed(self.dataset.getDataPoints()[length-1], 1);
+      } else {
+        text = '';
+        self.$realtimeDisplayUnits.hide();
+      }
+      self.$realtimeDisplayValue.text(text);
+    });
+  },
 
   // events
   sensorTypeChanged: function() {
-    var val = this.getSensorTypeSelection(),
-        self = this;
+    var val        = this.getSensorTypeSelection(),
+        sensorInfo = ISImporter.sensors[val],
+        self       = this;
 
-    if (this.currentApplet === ISImporter.sensors[val].applet) {
+    if (this.currentApplet === sensorInfo.applet) {
       return;
     }
 
-    if (this.currentApplet) this.currentApplet.remove();
+    if (this.started) this.stop();
 
-    this.currentApplet = ISImporter.sensors[val].applet;
+    if (this.currentApplet) {
+      this.currentApplet.removeListener('data', this.appletDataListener);
+      this.currentApplet.remove();
+    }
+
+    this.currentApplet = sensorInfo.applet;
     this.currentAppletReady = false;
     this.currentApplet.on('sensorReady', function() {
       self.sensorAppletReady();
     });
 
+    this.dataset = new ISImporter.Dataset();
+    this.dataset.setXIncrement(0.1);
+
+    this.setupRealtimeDisplay(sensorInfo.units);
+
+    ISImporter.graphController.setDataset( this.dataset );
+    ISImporter.graphController.setYMax( sensorInfo.yMax );
+    ISImporter.graphController.setTitle( sensorInfo.title + " Graph");
+
+    this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.append();
 
+    // we'll skip explicit state management... for now.
+    this.disableControlButtons();
     ISImporter.graphController.removeNotification();
   },
 
@@ -152,13 +320,30 @@ ISImporter.appController = new ISImporter.Object({
   sensorAppletReady: function() {
     if (this.currentAppletReady) return;
     this.currentAppletReady = true;
-
-    console.log("Hello!");
+    this.enableStartButton();
   },
 
-  startClicked: function() {},
-  stopClicked: function() {},
-  resetClicked: function() {},
+  start: function() {
+    this.started = true;
+    this.currentApplet.start();
+    this.disableStartButton();
+    this.enableStopButton();
+  },
+
+  stop: function() {
+    this.started = false;
+    if (this.currentApplet) this.currentApplet.stop();
+    this.disableStopButton();
+    this.enableResetButton();
+  },
+
+  reset: function() {
+    this.dataset.setDataPoints();   // perhaps this should be a 'clear' convenience method
+    this.dataset.setNextX(0);
+    this.enableStartButton();
+    this.disableResetButton();
+  },
+
   exportClicked: function() {},
   selectClicked: function() {},
   cancelClicked: function() {},
@@ -175,8 +360,8 @@ ISImporter.appController = new ISImporter.Object({
 });
 
 ISImporter.main = function() {
-  ISImporter.graphController.initGraph();
-  ISImporter.appController.initInterface();
+  ISImporter.graphController.init();
+  ISImporter.appController.init();
 
   window.graph = ISImporter.graphController.graph;
 };
