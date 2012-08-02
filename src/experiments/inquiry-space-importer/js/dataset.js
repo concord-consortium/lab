@@ -106,6 +106,9 @@ ISImporter.Dataset = defineClass({
 
   add: function(y) {
     var x = this.getNextX();
+    if (!this._x) this._x = [];
+    if (!this._y) this._y = [];
+
     this._x[this._length] = x;
     this._y[this._length] = y;
     this.setNextX( x + this.getXIncrement() );

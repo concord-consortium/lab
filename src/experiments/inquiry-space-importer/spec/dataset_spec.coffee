@@ -58,6 +58,11 @@ describe "ISImporter.Dataset", ->
         it "should be 1", ->
           expect( dataset.getXIncrement() ).toBe 1
 
+      it "should be possible to add data without calling setDataPoints", ->
+        dataset.add 1
+        expect( dataset ).toHaveData [[0, 1]]
+
+
     describe "its setDataPoints method", ->
       describe "when called with arguments [1,2] and [3,4]", ->
         dataResetSpy = null

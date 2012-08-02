@@ -81,10 +81,14 @@
             return expect(dataset.getNextX()).toBe(0);
           });
         });
-        return describe("its x increment", function() {
+        describe("its x increment", function() {
           return it("should be 1", function() {
             return expect(dataset.getXIncrement()).toBe(1);
           });
+        });
+        return it("should be possible to add data without calling setDataPoints", function() {
+          dataset.add(1);
+          return expect(dataset).toHaveData([[0, 1]]);
         });
       });
       describe("its setDataPoints method", function() {
