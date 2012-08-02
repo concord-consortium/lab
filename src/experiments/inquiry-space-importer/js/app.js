@@ -1,4 +1,4 @@
-/*globals defineClass extendClass grapher */
+/*globals defineClass extendClass grapher d3 */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 
@@ -7,23 +7,29 @@ ISImporter.Object = defineClass();
 
 ISImporter.sensors = {
 
-  distance: new ISImporter.GoIOApplet({
-    otmlPath: '/distance.otml',
-    listenerPath: 'ISImporter.sensors.distance',
-    appletId: 'distance-sensor'
-  }),
+  distance: {
+    applet: new ISImporter.GoIOApplet({
+      otmlPath: '/distance.otml',
+      listenerPath: 'ISImporter.sensors.distance.applet',
+      appletId: 'distance-sensor'
+    })
+  },
 
-  temperature: new ISImporter.GoIOApplet({
-    otmlPath: '/temperature.otml',
-    listenerPath: 'ISImporter.sensors.temperature',
-    appletId: 'temperature-sensor'
-  }),
+  temperature: {
+    applet: new ISImporter.GoIOApplet({
+      otmlPath: '/temperature.otml',
+      listenerPath: 'ISImporter.sensors.temperature.applet',
+      appletId: 'temperature-sensor'
+    })
+  },
 
-  light: new ISImporter.GoIOApplet({
-    otmlPath: '/light.otml',
-    listenerPath: 'ISImporter.sensors.light',
-    appletId: 'light-sensor'
-  })
+  light: {
+    applet: new ISImporter.GoIOApplet({
+      otmlPath: '/light.otml',
+      listenerPath: 'ISImporter.sensors.light.applet',
+      appletId: 'light-sensor'
+    })
+  }
 };
 
 
@@ -50,13 +56,17 @@ ISImporter.GraphController = defineClass({
       ylabel      : this.yLabel,
       ymin        : 0,
       ymax        : 40,
-      points      : [ [0,0],[10,10],[15,5] ],
+      points      : [],
       circleRadius: false,
       dataChange  : false
-    });
+    }, "Select a sensor type");
 
     // allow title to be styled by CSS
     d3.select(this.element + ' text.title').style('font-size', null);
+  },
+
+  removeNotification: function() {
+    this.graph.notify('');
   },
 
   resetGraph: function() {},
@@ -79,21 +89,72 @@ ISImporter.graphController = new ISImporter.GraphController({
 
 ISImporter.appController = new ISImporter.Object({
 
+  currentApplet: null,
+  currentAppletReady: false,
+
   // could split interface controller from generic app container--but not yet.
+  $sensorTypeSelector: null,
+
+  initInterface: function() {
+    var self = this,
+        key;
+
+    this.$sensorTypeSelector = $('#sensor-type-selector');
+
+    for (key in ISImporter.sensors) {
+      if (ISImporter.sensors.hasOwnProperty(key)) {
+        this.addSensorTypeSelection(key, key);
+      }
+    }
+
+    this.$sensorTypeSelector.on('change', function() {
+      self.sensorTypeChanged();
+    });
+  },
 
   // initialization
-  addSensorTypeSelection: function(value, text) {},
+  addSensorTypeSelection: function(value, text) {
+    this.$sensorTypeSelector.append('<option value="' + value + '">' + text + '</option>');
+  },
+
   setupGraph: function(title, yLabel, yMax, dataset) {},
   setupRealtimeDisplay: function(units) {},
 
   // events
-  sensorTypeChanged: function() {},
+  sensorTypeChanged: function() {
+    var val = this.getSensorTypeSelection(),
+        self = this;
+
+    if (this.currentApplet === ISImporter.sensors[val].applet) {
+      return;
+    }
+
+    if (this.currentApplet) this.currentApplet.remove();
+
+    this.currentApplet = ISImporter.sensors[val].applet;
+    this.currentAppletReady = false;
+    this.currentApplet.on('sensorReady', function() {
+      self.sensorAppletReady();
+    });
+
+    this.currentApplet.append();
+
+    ISImporter.graphController.removeNotification();
+  },
+
   metadataLabelChanged: function(fieldNum) {},
   metadataValueChanged: function(fieldNum) {},
   frequencyChanged: function() {},
-  selectionChanged: function() {},
+  selectionChanged: function() {
 
-  sensorAppletReady: function() {},
+  },
+
+  sensorAppletReady: function() {
+    if (this.currentAppletReady) return;
+    this.currentAppletReady = true;
+
+    console.log("Hello!");
+  },
 
   startClicked: function() {},
   stopClicked: function() {},
@@ -103,7 +164,10 @@ ISImporter.appController = new ISImporter.Object({
   cancelClicked: function() {},
 
   // accessors
-  getSensorTypeSelection: function() {},
+  getSensorTypeSelection: function() {
+    return this.$sensorTypeSelector.val();
+  },
+
   getMetadataLabel: function(fieldNum) {},
   getMetadataValue: function(fieldNum) {},
   getFrequency: function() {}
@@ -112,6 +176,8 @@ ISImporter.appController = new ISImporter.Object({
 
 ISImporter.main = function() {
   ISImporter.graphController.initGraph();
+  ISImporter.appController.initInterface();
+
   window.graph = ISImporter.graphController.graph;
 };
 

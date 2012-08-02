@@ -134,6 +134,10 @@ td { vertical-align: top; }
   font-size: 1em;
 }
 
+#graph .graph-notification {
+  font-size: 1.5em;
+  opacity: 0.2;
+}
 
 /* InquirySpace layout styles */
 
