@@ -32,7 +32,9 @@ exports.rmin = function(sigma) {
   Helper function that returns the correct atomic radius for a given sigma
 */
 exports.radius = function(sigma) {
-  return 0.5 * exports.rmin(sigma);
+  // See line 637 of Atom.java (org.concord.mw2d.models.Atom)
+  // This assumes the "VdW percentage" is 100%. In classic MW the VdW percentage is settable.
+  return 0.5 * sigma;
 }
 
 /**
