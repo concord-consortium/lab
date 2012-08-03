@@ -27,6 +27,7 @@ ISImporter.sensors = {
   distance: {
     applet: new ISImporter.GoIOApplet({
       otmlPath: '/distance.otml',
+      codebase: '../../jnlp',
       listenerPath: 'ISImporter.sensors.distance.applet',
       appletId: 'distance-sensor'
     }),
@@ -38,6 +39,7 @@ ISImporter.sensors = {
   temperature: {
     applet: new ISImporter.GoIOApplet({
       otmlPath: '/temperature.otml',
+      codebase: '../../jnlp',
       listenerPath: 'ISImporter.sensors.temperature.applet',
       appletId: 'temperature-sensor'
     }),
@@ -49,6 +51,7 @@ ISImporter.sensors = {
   light: {
     applet: new ISImporter.GoIOApplet({
       otmlPath: '/light.otml',
+      codebase: '../../jnlp',
       listenerPath: 'ISImporter.sensors.light.applet',
       appletId: 'light-sensor'
     }),
