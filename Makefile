@@ -97,7 +97,7 @@ clean:
 	rm -rf lab
 	rm -rf node_modules
 	git submodule update --init --recursive
-	rm -f src/vendor/jquery/jquery.min.js
+	rm -f src/vendor/jquery/dist/jquery.min.js
 	rm -f src/vendor/lightgl.js/lightgl.js
 
 clean-jnlp:
@@ -199,7 +199,7 @@ server/public/resources:
 server/public/vendor: \
 	server/public/vendor/d3 \
 	server/public/vendor/d3-plugins \
-	server/public/vendor/jquery \
+	server/public/vendor/jquery/jquery.min.js \
 	server/public/vendor/jquery-ui \
 	server/public/vendor/science.js \
 	server/public/vendor/modernizr \
@@ -237,11 +237,15 @@ server/public/vendor/d3-plugins:
 	cp src/vendor/d3-plugins/cie/*.js server/public/vendor/d3-plugins/cie
 	cp src/vendor/d3-plugins/cie/README.md server/public/vendor/d3-plugins/cie/README.md
 
-server/public/vendor/jquery: src/vendor/jquery/jquery.min.js
-	mkdir -p server/public/vendor/jquery
+server/public/vendor/jquery/jquery.min.js: \
+	src/vendor/jquery/dist/jquery.min.js \
+	server/public/vendor/jquery
 	cp src/vendor/jquery/dist/jquery.min.js server/public/vendor/jquery/jquery.min.js
 	cp src/vendor/jquery/MIT-LICENSE.txt server/public/vendor/jquery
 	cp src/vendor/jquery/README.md server/public/vendor/jquery
+
+server/public/vendor/jquery: 
+	mkdir -p server/public/vendor/jquery
 
 server/public/vendor/science.js:
 	mkdir -p server/public/vendor/science.js
@@ -300,7 +304,7 @@ server/public/favicon:
 src/vendor/lightgl.js/lightgl.js:
 	cd src/vendor/lightgl.js; python build.py
 
-src/vendor/jquery/jquery.min.js: src/vendor/jquery
+src/vendor/jquery/dist/jquery.min.js: src/vendor/jquery
 	cd src/vendor/jquery; npm install; ./node_modules/grunt/bin/grunt
 
 src/vendor/jquery:
