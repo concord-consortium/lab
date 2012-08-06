@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'json'
 
 def process_dir(dir)

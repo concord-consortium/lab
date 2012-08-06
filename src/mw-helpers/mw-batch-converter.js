@@ -14,9 +14,10 @@ var parseMML = require('./mml-parser'),
     path = require('path'),
     jade = require('jade'),
     util = require('util'),
-    legacyFolderPath = './imports/legacy-mw-content/',
-    convertedFolderPath = 'server/public/imports/legacy-mw-content/converted/',
-    templatePath = './imports/legacy-mw-content/legacyMMLRunnables.jade';
+    rootPath = require.main ? path.dirname(require.main.filename) : process.cwd(),
+    legacyFolderPath = path.normalize(rootPath + '/../imports/legacy-mw-content/'),
+    convertedFolderPath = path.normalize(rootPath + '/../server/public/imports/legacy-mw-content/converted/'),
+    templatePath = legacyFolderPath + 'legacyMMLRunnables.jade';
 
 // example mmlFileName:
 // 'sam-activities/chemical-reactions/original-interactives-in-pages/page1/page1$0.mml'
@@ -143,3 +144,4 @@ createCmlJsonIndex = function(outputFile) {
 exports.convertMMLFile = convertMMLFile;
 exports.convertMMLFolder = convertMMLFolder;
 exports.createCmlJsonIndex = createCmlJsonIndex;
+exports.collectAllMMLFiles = collectAllMMLFiles;
