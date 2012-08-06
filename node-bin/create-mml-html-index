@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+require('../src/mw-helpers/mw-batch-converter');
+var fs        = require('fs'),
+    path      = require('path'), 
+	indexFile = path.normalize(path.dirname(require.main.filename) + 
+		          '/../server/public/imports/legacy-mw-content/legacyMMLRunnables.html');
+
+createCmlJsonIndex( indexFile );
