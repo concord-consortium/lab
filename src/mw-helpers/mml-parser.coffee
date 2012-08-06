@@ -258,10 +258,6 @@ parseMML = (mmlString) ->
     element = (atom.elemId for atom in atoms)
 
     id = atoms[0]?.elemId || 0
-    # for now, just use the first atom's element epsilon
-    epsilon = elemTypes[id].epsilon
-    # for now use first atom's element sigma
-    sigma   = elemTypes[id].sigma
 
     ### Convert array of hashes to a hash of arrays, for use by MD2D ###
     unroll = (array, props...) ->
