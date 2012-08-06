@@ -210,7 +210,7 @@ server/public/vendor: \
 	server/public/vendor/codemirror2 \
 	server/public/vendor/dsp.js \
 	server/public/vendor/lightgl.js \
-  server/public/favicon
+	server/public/favicon.ico
 
 server/public/vendor/dsp.js:
 	mkdir -p server/public/vendor/dsp.js
@@ -298,7 +298,7 @@ server/public/vendor/codemirror2:
 	rm -rf server/public/vendor/codemirror2/mode/rst
 	rm -rf server/public/vendor/codemirror2/mode/verilog
 
-server/public/favicon:
+server/public/favicon.ico:
 	cp -f src/favicon.ico server/public/favicon.ico
 
 src/vendor/lightgl.js/lightgl.js:
