@@ -82,7 +82,7 @@ energy2d.utils.gpu.Mesh = function (options) {
   if (options.colors) {
     this.addVertexBuffer('colors', 'gl_Color');
   }
-  if (options.triangles === undefined || options.triangles) {
+  if (options.lines === undefined || options.triangles) {
     this.addIndexBuffer('triangles');
   }
   if (options.lines) {
