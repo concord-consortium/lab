@@ -211,14 +211,15 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       // TODO: move following configuration to energy2d scene.
       grid_x = modeler.getGridWidth();
       grid_y = modeler.getGridHeight();
-      velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), grid_x, grid_y, 4);
       parts_view.bindPartsArray(modeler.getPartsArray(), modeler.getWidth(), modeler.getHeight());
       photons_view.bindPhotonsArray(modeler.getPhotonsArray(), modeler.getWidth(), modeler.getHeight());
 
       if (use_WebGL) {
         heatmap_view.bindHeatmapTexture(modeler.getTemperatureTexture());
+        velocity_view.bindVectormapTexture(modeler.getVelocityTexture(), grid_x, grid_y, 4);
       } else {
         heatmap_view.bindHeatmap(modeler.getTemperatureArray(), grid_x, grid_y);
+        velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), grid_x, grid_y, 4);
       }
 
       // Bind performance tools model.

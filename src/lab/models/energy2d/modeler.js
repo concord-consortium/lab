@@ -37,6 +37,7 @@ energy2d.modeler.makeModeler = function (options) {
     getTemperatureTexture: core_model.getTemperatureTexture,
     getUVelocityArray: core_model.getUVelocityArray,
     getVVelocityArray: core_model.getVVelocityArray,
+    getVelocityTexture: core_model.getVelocityTexture,
     getPhotonsArray: core_model.getPhotonsArray,
     getPartsArray: core_model.getPartsArray,
     updateTemperatureArray: core_model.updateTemperatureArray,

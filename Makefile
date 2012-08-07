@@ -374,6 +374,7 @@ server/public/lab/lab.energy2d.js: \
 	src/lab/views/energy2d/heatmap.js \
 	src/lab/views/energy2d/heatmap-webgl.js \
 	src/lab/views/energy2d/vectormap.js \
+	src/lab/views/energy2d/vectormap-webgl.js \
 	src/lab/views/energy2d/description.js \
 	src/lab/views/energy2d/performance.js \
 	src/lab/views/energy2d/views.js \

@@ -24,6 +24,7 @@ energy2d.views.makeVectormapView = function (html_id) {
     WING_COS = Math.cos(0.523598776),
     WING_SIN = Math.sin(0.523598776),
     WING_LEN = 4,
+    ARROW_COLOR = "rgb(175,175,175)",
 
     $vectormap_canvas,
     canvas_ctx,
@@ -93,7 +94,7 @@ energy2d.views.makeVectormapView = function (html_id) {
         dy = canvas_height / grid_height;
 
         canvas_ctx.clearRect(0, 0, canvas_width, canvas_height);
-        canvas_ctx.strokeStyle = "rgb(175,175,175)";
+        canvas_ctx.strokeStyle = ARROW_COLOR;
         canvas_ctx.lineWidth = 1;
 
         for (i = 1; i < grid_width - 1; i += spacing) {

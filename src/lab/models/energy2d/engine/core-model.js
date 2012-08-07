@@ -529,6 +529,9 @@ exports.makeCoreModel = function (model_options) {
       getTemperatureTexture: function () {
         return texture[0];
       },
+      getVelocityTexture: function () {
+        return texture[2];
+      },
       getSimulationTexture: function (id) {
         return texture[id];
       }

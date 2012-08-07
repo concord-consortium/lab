@@ -126,15 +126,21 @@ energy2d.views.makeEnergy2DScene = function (html_id, use_WebGL) {
       }
     };
 
+  // One-off initialization.
   if (use_WebGL) {
     heatmap_view = energy2d.views.makeHeatmapWebGLView();
+    velocity_view = energy2d.views.makeVectormapWebGLView();
+
+    // Both VectormapWebGL and HeatmapWebGL use common canvas,
+    // so it's enough to set it only once as the next layer.
+    setAsNextLayer(velocity_view);
   } else {
     heatmap_view = energy2d.views.makeHeatmapView();
-  }
-  setAsNextLayer(heatmap_view);
+    velocity_view = energy2d.views.makeVectormapView();
 
-  velocity_view = energy2d.views.makeVectormapView();
-  setAsNextLayer(velocity_view);
+    setAsNextLayer(heatmap_view);
+    setAsNextLayer(velocity_view);
+  }
 
   photons_view = energy2d.views.makePhotonsView();
   setAsNextLayer(photons_view);
