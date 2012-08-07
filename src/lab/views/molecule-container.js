@@ -90,15 +90,6 @@ layout.moleculeContainer = function(e, options) {
   function scale(w, h) {
     var modelSize = model.size(),
         aspectRatio = modelSize[0] / modelSize[1];
-    if (!arguments.length) {
-      cy = elem.property("clientHeight");
-      cx = cy * aspectRatio;
-    } else {
-      cy = h;
-      node.style.height = cy +"px";
-      cx = cy * aspectRatio;
-    }
-    node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
     padding = {
        "top":    options.title  ? 40 * layout.screen_factor : 20,
@@ -114,16 +105,24 @@ layout.moleculeContainer = function(e, options) {
     if (options.playback_controller || options.play_only_controller) {
       padding.bottom += (40  * scale_factor);
     }
-
-    height = cy - padding.top  - padding.bottom;
-    width  = cx - padding.left  - padding.right;
-
+    if (!arguments.length) {
+      cy = elem.property("clientHeight");
+      height = cy - padding.top  - padding.bottom;
+      width = height * aspectRatio;
+      cx = width + padding.left  + padding.right;
+    } else {
+      width  = w;
+      height = h;
+      cx = width + padding.left  + padding.right;
+      cy = height + padding.top  + padding.bottom;
+      node.style.height = cy +"px";
+    }
+    node.style.width = cx +"px";
     size = {
       "width":  width,
       "height": height
     };
 
-    offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
     if (options.playback_controller) {
       pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;

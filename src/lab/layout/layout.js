@@ -251,27 +251,27 @@ layout.setupScreen = function(forceRender) {
     mcsize = viewLists.moleculeContainers[0].scale();
     modelAspectRatio = mcsize[0] / mcsize[1];
     widthToPageRatio = mcsize[0] / pageWidth;
-    width = pageWidth * 0.46;
+    width = pageWidth * 0.40;
     height = width * 1/modelAspectRatio;
-    if (height > pageHeight*0.70) {
-      height = pageHeight * 0.70;
-      width * height * modelAspectRatio;
+    if (height > pageHeight * 0.55) {
+      height = pageHeight * 0.55;
+      width = height * modelAspectRatio;
     }
     // HACK that will normally only work with one moleculeContainer
     // or if all the moleculeContainers end up the same width
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(width, height);
     }
-    rightQuarterWidth = (pageWidth - width) * 0.415;
-    rightHeight = height * 0.42;
+    rightQuarterWidth = (pageWidth - width) * 0.35;
+    rightHeight = height * 0.52;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
       viewLists.potentialCharts[i].resize(rightQuarterWidth, rightHeight);
     }
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
       viewLists.speedDistributionCharts[i].resize(rightQuarterWidth, rightHeight);
     }
-    rightHalfWidth = (pageWidth - width) * 0.86;
-    rightHeight = height * 0.57;
+    rightHalfWidth = (pageWidth - width) * 0.72;
+    rightHeight = height * 0.76;
     i = -1;  while(++i < viewLists.energyCharts.length) {
       viewLists.energyCharts[i].resize(rightHalfWidth, rightHeight);
     }
@@ -321,10 +321,10 @@ layout.setupScreen = function(forceRender) {
     mcsize = viewLists.moleculeContainers[0].scale();
     modelAspectRatio = mcsize[0] / mcsize[1];
     widthToPageRatio = mcsize[0] / pageWidth;
-    width = pageWidth * 0.80;
+    width = pageWidth * 0.70
     height = width * 1/modelAspectRatio;
-    if (height > pageHeight * 0.80) {
-      height = pageHeight * 0.80;
+    if (height > pageHeight * 0.70) {
+      height = pageHeight * 0.70;
       width = height * modelAspectRatio;
     }
     for (viewType in viewLists) {
@@ -405,12 +405,12 @@ layout.setupScreen = function(forceRender) {
   function simpleScreen() {
     var i, width, height, mcsize, widthToPageRatio;
 
-    height = Math.min(layout.display.page.height * 0.50, layout.display.page.width * 0.53);
+    height = Math.min(layout.display.page.height * 0.45, layout.display.page.width * 0.50);
     viewLists.moleculeContainers[0].resize(height, height);
     mcsize = viewLists.moleculeContainers[0].scale();
     widthToPageRatio = mcsize[0] / layout.display.page.width;
-    if (widthToPageRatio > 0.53) {
-      height *= (0.53 / widthToPageRatio);
+    if (widthToPageRatio > 0.50) {
+      height *= (0.50 / widthToPageRatio);
       viewLists.moleculeContainers[0].resize(height, height);
     }
     viewLists.thermometers[0].resize();
@@ -423,12 +423,12 @@ layout.setupScreen = function(forceRender) {
     var i, width, height, mcsize, widthToPageRatio,
         description_right = document.getElementById("description-right");
 
-    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
+    height = Math.min(layout.display.page.height * 0.65, layout.display.page.width * 0.50);
     viewLists.moleculeContainers[0].resize(height, height);
     mcsize = viewLists.moleculeContainers[0].scale();
     widthToPageRatio = mcsize[0] / layout.display.page.width;
-    if (widthToPageRatio > 0.53) {
-      height *= (0.53 / widthToPageRatio);
+    if (widthToPageRatio > 0.50) {
+      height *= (0.50 / widthToPageRatio);
       viewLists.moleculeContainers[0].resize(height, height);
       // if (description_right !== null) {
       //   description_right.style.width = (layout.display.page.width - mcsize[0]) * 0.50 + "px";
@@ -450,10 +450,10 @@ layout.setupScreen = function(forceRender) {
     mcsize = viewLists.moleculeContainers[0].scale();
     modelAspectRatio = mcsize[0] / mcsize[1];
     widthToPageRatio = mcsize[0] / pageWidth;
-    width = pageWidth * 0.80;
+    width = pageWidth * 0.70;
     height = width * 1/modelAspectRatio;
-    if (height > pageHeight * 0.80) {
-      height = pageHeight * 0.80;
+    if (height > pageHeight * 0.70) {
+      height = pageHeight * 0.70;
       width * height * modelAspectRatio;
     }
     viewLists.moleculeContainers[0].resize(width, height);
@@ -465,8 +465,22 @@ layout.setupScreen = function(forceRender) {
   // Simple Full Screen Layout
   //
   function setupSimpleFullScreenMoleculeContainer() {
-    var height = layout.display.page.height * 0.70;
-    viewLists.moleculeContainers[0].resize(height, height);
+    var i, width, height, mcsize,
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.60;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight * 0.60) {
+      height = pageHeight * 0.60;
+      width * height * modelAspectRatio;
+    }
+    viewLists.moleculeContainers[0].resize(width, height);
   }
 
   function setupFullScreenDescriptionRight() {
