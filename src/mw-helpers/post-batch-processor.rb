@@ -2,102 +2,124 @@
 
 require 'json'
 
-def process_dir(dir)
-  section_path = dir
-  all_cml_files =  Dir["#{dir}/*.cml"]
-  cml_files = []
-  mml_files = []
-  pages = []
-  all_cml_files.each do |cml_file|
+module ProcessMML
+  def process_mml_files(name, cml_file, mml_files)
     index = 0
     index_str = ""
-    cml_base = cml_file.gsub(".cml", "")
-    name = File.basename(cml_base)
-    matching_mml_files = Dir["#{cml_base}*.mml"]
-    matching_mml_files.each do |mml_file|
-      if matching_mml_files.length > 1
+    mml_files.each do |mml_file|
+      if mml_files.length > 1
         index += 1
         index_str = "-#{index}"
       end
       page = {
         "name" => name + index_str,
-        "path" => section_path + "/",
+        "path" => @section_path + "/",
         "cml" => cml_file,
         "mml" => mml_file,
         "json" => 'converted/' + mml_file.gsub(".mml", ".json")
       }
-      pages.push(page)
+      @pages.push(page)
     end
   end
-  section = { "section" => section_path }
-  section["content"] = pages
-  pages.length > 0 ? section : false
 end
 
-def process_page_dir(page_dir)
-  section_path = File.dirname(page_dir)
-  name = File.basename(page_dir)
-  cml_file =  Dir["#{page_dir}/*.cml"][0]
-  mml_files = Dir["#{page_dir}/*.mml"]
-  page_index = mml_files.length
-  index = 0
-  index_str = ""
-  pages = []
-  mml_files.each do |mml_file|
-    if mml_files.length > 1
-      index += 1
-      index_str = "-#{index}"
+#
+# MD2DDirectory
+#
+class MD2DDirectory
+  include ProcessMML
+  attr_reader :section
+  def initialize(dir, special_path="")
+    @section_path = dir
+    @section = { "section" => @section_path }
+    @all_cml_files =  Dir["#{@section_path}/*.cml"]
+    @cml_files = []
+    @mml_files = []
+    @pages = []
+    @all_cml_files.each do |cml_file|
+      cml_base = cml_file.gsub(".cml", "")
+      name = File.basename(cml_base)
+      matching_mml_files = Dir["#{cml_base}*.mml"]
+      process_mml_files(name, cml_file, matching_mml_files)
     end
-    page = {
-      "name" => name + index_str,
-      "path" => section_path + "/",
-      "cml" => cml_file,
-      "mml" => mml_file,
-      "json" => 'converted/' + mml_file.gsub(".mml", ".json")
-    }
-    pages.push(page)
+    @section["content"] = @pages
+    if @pages.length == 0
+      @section = false
+    end
   end
-  pages
 end
 
-def process_section(dir, special_path="")
-  section_path = dir
-  section = { "section" => section_path }
-  page_directories = Dir["#{dir}/#{special_path}**"]
-  page_directories = page_directories.find_all { |d| Dir["#{d}/*.mml"].length > 0 }
-  section["content"] = []
-  page_directories.each do |page_dir|
-    section["content"] += process_page_dir(page_dir)
+#
+# MD2DSection
+#
+# An class for representing and extracting the content
+# from a legacy Java Energy2D page
+#
+class MD2DSection
+  include ProcessMML
+  attr_reader :section, :page_directories
+  def initialize(dir, special_path="")
+    @section_path = dir
+    @section = { "section" => @section_path }
+    @page_directories = Dir["#{@section_path}/#{special_path}**"]
+    @page_directories = @page_directories.find_all { |d| Dir["#{d}/*.mml"].length > 0 }
+    @section["content"] = []
+    @page_directories.each do |page_dir|
+      @section["content"] += process_page_dir(page_dir)
+    end
   end
-  section
+
+  def process_page_dir(page_dir)
+    @section_path = File.dirname(page_dir)
+    name = File.basename(page_dir)
+    cml_file =  Dir["#{page_dir}/*.cml"][0]
+    mml_files = Dir["#{page_dir}/*.mml"]
+    @pages = []
+    process_mml_files(name, cml_file, mml_files)
+    @pages
+  end
 end
 
-model_list = []
-path = "server/public/imports/legacy-mw-content"
+#
+# MD2DImports
+#
+# An class for representing and extracting the content
+# from a legacy Java Energy2D page
+#
+class MD2DImports
+  attr_reader :model_list, :model_list_dot_js
+  def initialize()
+    @model_list = []
+    @path = "server/public/imports/legacy-mw-content"
+    @model_list_dot_js = "#{@path}/model-list.js"
+    Dir.chdir(@path) do
+      @dirs = Dir["sam-activities/**"]
+      @dirs.each do |dir|
+        @model_list.push(MD2DSection.new(dir, "original-interactives-in-pages/").section)
+      end
+      @dirs = Dir["other-activities/**"]
+      @dirs.each do |dir|
+        model_list.push(MD2DSection.new(dir, "original-interactives-in-pages/").section)
+      end
+      @model_list.push(MD2DSection.new("potential-tests").section)
+      @model_list.push(MD2DSection.new("validation").section)
+      @model_list.push(MD2DDirectory.new("tutorial").section)
+      @model_list.push(MD2DDirectory.new("visual/Recycling").section)
+      @dirs = Dir["tutorial/**"]
+      @dirs.each do |dir|
+        @tutorial_section = MD2DDirectory.new(dir).section
+        @model_list.push(@tutorial_section) if @tutorial_section
+      end
+      @model_list.push(MD2DDirectory.new("conversion-and-physics-examples").section)
+    end
+  end
 
-Dir.chdir(path) do
-  dirs = Dir["sam-activities/**"]
-  dirs.each do |dir|
-    model_list.push(process_section(dir, "original-interactives-in-pages/"))
+  def write_model_list
+    File.open(@model_list_dot_js, "w") { |f| f.write("modelList = " + JSON.pretty_generate(@model_list)) }
+    puts "created: #{@model_list_dot_js}"
   end
-  dirs = Dir["other-activities/**"]
-  dirs.each do |dir|
-    model_list.push(process_section(dir, "original-interactives-in-pages/"))
-  end
-  model_list.push(process_section("visual"))
-  model_list.push(process_section("potential-tests"))
-  model_list.push(process_section("validation"))
-  model_list.push(process_dir("tutorial"))
-  dirs = Dir["tutorial/**"]
-  dirs.each do |dir|
-    tutorial_section = process_dir(dir)
-    model_list.push(tutorial_section) if tutorial_section
-  end
-  model_list.push(process_dir("conversion-and-physics-examples"))
+
 end
 
-model_list_dot_js = "#{path}/model-list.js"
-
-File.open(model_list_dot_js, "w") {|f| f.write("modelList = " + JSON.pretty_generate(model_list)) }
-
-puts "created: #{model_list_dot_js}"
+md2d_imports = MD2DImports.new
+md2d_imports.write_model_list
