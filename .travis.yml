@@ -11,6 +11,10 @@ notifications:
       - sfentress@concord.org
       - rpk@pobox.com
       - janikpiotrek@gmail.com
+
+language: node_js
+node_js:
+  - 0.8
 language: ruby
 rvm:
   - 1.9.3
