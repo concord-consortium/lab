@@ -7,6 +7,7 @@ CONVERTED_DIR = $(LEGACY_MW_CONTENT_DIR)/converted
 CONVERT_MML = $(PROJECT_ROOT)/node-bin/convert-mml.coffee
 CREATE_MML_HTML_INDEX = $(PROJECT_ROOT)/node-bin/create-mml-html-index
 CREATE_MML_JS_INDEX = src/mw-helpers/post-batch-processor.rb
+COFFEE = $(PROJECT_ROOT)/node_modules/.bin/coffee
 
 # targets and sources
 MML_FILES := $(shell find . -name '*.mml' -print)
@@ -37,7 +38,7 @@ $(LEGACY_MW_CONTENT_DIR)/legacyMMLRunnables.html: $(CONVERTED_FILES) \
 $(CONVERTED_FILES): %.json : %.mml \
 	$(PROJECT_ROOT)/src/mw-helpers/mml-parser.coffee
 	mkdir -p `dirname $(CONVERTED_DIR)/'$*'`
-	$(CONVERT_MML) '$<' $(CONVERTED_DIR)/'$@'
+	$(COFFEE) $(CONVERT_MML) '$<' $(CONVERTED_DIR)/'$@'
 
 .PHONY: targets
 targets:
