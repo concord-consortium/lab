@@ -35,7 +35,6 @@ var ROOT = "/examples",
 
       hash, modelUrl, fragment,
       initialHash = "#" + "/imports/legacy-mw-content/converted/potential-tests/two-atoms-two-elements/two-atoms-two-elements$0.json",
-      changedModelSelection = false,
       opts,
       timer;
 
@@ -127,11 +126,7 @@ var ROOT = "/examples",
 
   $(window).bind('hashchange', function() {
     if (document.location.hash !== hash) {
-      if (changedModelSelection) {
-        location.reload();
-      } else {
-        changedModelSelection = true;
-      }
+      location.reload();
     }
   });
 
