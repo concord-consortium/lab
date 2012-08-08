@@ -16,7 +16,7 @@ energy2d.utils.gpu.gpgpu = (function () {
     gl,
 
     // GPGPU utils must know dimensions of data (grid).
-    // This assumtion that all the textures will have the same dimensions is 
+    // This assumption that all the textures will have the same dimensions is 
     // caused by performance reasons (helps avoiding recreating data structures).
     // To set grid dimensions and initialize WebGL context, call init(grid_width, grid_height).
     grid_width,
@@ -35,6 +35,9 @@ energy2d.utils.gpu.gpgpu = (function () {
 
     // Flag which determines if synchronization is allowed or not.
     sync_allowed = false,
+
+    // Flag which determines if WebGL context and necessary objects are initialized.
+    WebGL_initialized = false,
 
     // Special shader for encoding floats based on: 
     // https://github.com/cscheid/facet/blob/master/src/shade/bits/encode_float.js
@@ -116,14 +119,9 @@ energy2d.utils.gpu.gpgpu = (function () {
     //
     // Private methods.
     //
-    initWebGL = function (gl_ctx) {
-      if (gl_ctx) {
-        // Use provided context.
-        gl = gl_ctx;
-      } else {
-        // Setup WebGL context.
-        gl = gpu.init();
-      }
+    initWebGL = function () {
+      // Setup WebGL context.
+      gl = gpu.init();
       // Check if OES_texture_float is available.
       if (!gl.getExtension('OES_texture_float')) {
         throw new Error("GPGPU: OES_texture_float is not supported!");
@@ -133,6 +131,8 @@ energy2d.utils.gpu.gpgpu = (function () {
       plane = gpu.Mesh.plane();
       encode_program = new gpu.Shader(basic_vertex_shader, encode_fragment_shader);
       copy_program = new gpu.Shader(basic_vertex_shader, copy_fragment_shader);
+      // Initialization successful.
+      WebGL_initialized = true;
     },
 
     packRGBAData = function (R, G, B, A, storage) {
@@ -156,9 +156,9 @@ energy2d.utils.gpu.gpgpu = (function () {
   //
   return {
     // Setups rendering context (only during first call) and necessary storage (texture, array).
-    init: function (width, height, gl_ctx) {
-      if (gl === undefined) {
-        initWebGL(gl_ctx);
+    init: function (width, height) {
+      if (!WebGL_initialized) {
+        initWebGL();
       }
       // Set dimensions.
       grid_width = width;
