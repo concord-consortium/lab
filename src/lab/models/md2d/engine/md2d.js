@@ -41,6 +41,7 @@ var arrays       = require('./arrays/arrays').arrays,
 
     INDICES,
     ELEMENT_INDICES,
+    OBS_INDICES,
     SAVEABLE_INDICES,
 
     cross = function(a0, a1, b0, b1) {
@@ -231,7 +232,9 @@ exports.makeModel = function() {
       obstacleMass,
       obstacleXPrev,
       obstacleYPrev,
-      obstacleColor,
+      obstacleColorR,
+      obstacleColorG,
+      obstacleColorB,
 
       // An array of length 12 which contains obstacles information
       obstacles,
@@ -451,13 +454,15 @@ exports.makeModel = function() {
         }
       },
 
-      // Adds the center-of-mass linear velocity and the system angular velocity back into the velocity vectors
-      addTranslationAndRotationToVelocities = function() {
-        for (var i = 0; i < N; i++) {
-          addVelocity(i, vx_CM, vy_CM);
-          addAngularVelocity(i, omega_CM);
-        }
-      },
+      // currently unused, implementation saved here for future reference:
+
+      // // Adds the center-of-mass linear velocity and the system angular velocity back into the velocity vectors
+      // addTranslationAndRotationToVelocities = function() {
+      //   for (var i = 0; i < N; i++) {
+      //     addVelocity(i, vx_CM, vy_CM);
+      //     addAngularVelocity(i, omega_CM);
+      //   }
+      // },
 
       // Subroutine that calculates the position and velocity of the center of mass, leaving these in x_CM, y_CM,
       // vx_CM, and vy_CM, and that then computes the system angular velocity around the center of mass, leaving it
@@ -526,7 +531,7 @@ exports.makeModel = function() {
           obstacleX[i] += ob_vx*dt;
           obstacleY[i] += ob_vy*dt;
         }
-      }
+      },
 
       // Constrain particle i to the area between the walls by simulating perfectly elastic collisions with the walls.
       // Note this may change the linear and angular momentum.
@@ -574,6 +579,14 @@ exports.makeModel = function() {
             x_right,
             y_top,
             y_bottom,
+            x_left_prev,
+            x_right_prev,
+            y_top_prev,
+            y_bottom_prev,
+            vxPrev,
+            vyPrev,
+            obs_vxPrev,
+            obs_vyPrev,
             mass,
             obs_mass,
             totalMass,
@@ -995,6 +1008,8 @@ exports.makeModel = function() {
 
 
     addObstacle: function(x, y, width, height, density, color) {
+      var mass;
+
       if (N_obstacles+1 > obstacleX.length) {
         extendObstaclesArray(N_obstacles+1);
       }
@@ -1018,7 +1033,6 @@ exports.makeModel = function() {
       obstacleColorR[N_obstacles] = color[0];
       obstacleColorG[N_obstacles] = color[1];
       obstacleColorB[N_obstacles] = color[2];
-
 
       N_obstacles++;
     },
