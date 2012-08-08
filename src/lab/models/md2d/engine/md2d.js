@@ -162,6 +162,9 @@ exports.makeModel = function() {
       // Whether to simulate Coulomb forces between particles.
       useCoulombInteraction = false,
 
+      // Whether any atoms actually have charges
+      hasChargedAtoms = false,
+
       // Whether to simulate Lennard Jones forces between particles.
       useLennardJonesInteraction = true,
 
@@ -396,7 +399,7 @@ exports.makeModel = function() {
 
       // Dynamically determine an appropriate window size for use when measuring a windowed average of the temperature.
       getWindowSize = function() {
-        return useCoulombInteraction ? 1000 : 1000;
+        return useCoulombInteraction && hasChargedAtoms ? 1000 : 1000;
       },
 
       // Whether or not the thermostat is not being used, begins transiently adjusting the system temperature; this
@@ -692,7 +695,7 @@ exports.makeModel = function() {
             f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq);
           }
 
-          if (useCoulombInteraction) {
+          if (useCoulombInteraction && hasChargedAtoms) {
             f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
           }
 
@@ -981,6 +984,8 @@ exports.makeModel = function() {
       ay[N]      = 0;
       speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
       charge[N]  = atom_charge;
+
+      if (atom_charge) hasChargedAtoms = true;
 
       totalMass += mass;
       N++;
@@ -1276,7 +1281,7 @@ exports.makeModel = function() {
           if (useLennardJonesInteraction) {
             PE += -ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
           }
-          if (useCoulombInteraction) {
+          if (useCoulombInteraction && hasChargedAtoms) {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
@@ -1356,7 +1361,7 @@ exports.makeModel = function() {
             }
           }
 
-          if (useCoulombInteraction && testCharge) {
+          if (useCoulombInteraction && hasChargedAtoms && testCharge) {
             r = Math.sqrt(r_sq);
             PE += -coulomb.potential(r, testCharge, charge[i]);
             if (calculateGradient) {
