@@ -1,0 +1,38 @@
+{
+  "model": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0.json",
+  "components": [
+    {
+      "type": "button",
+      "id": "abs-zero",
+      "text": "Set to absolute zero",
+      "action": "model.set({temperature: 0.00001});"
+    },
+    {
+      "type": "button",
+      "id": "add-heat",
+      "text": "Add lots of heat",
+      "action": [
+                "var curTemp = model.get('temperature'), newTemp = curTemp + 2500;",
+                "if (newTemp > 4000) {",
+                "  newTemp = 4000;",
+                "}",
+                "model.set({temperature: newTemp});"
+              ]
+    },
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": 200,
+      "max": 4000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "abs-zero",
+      "add-heat"
+    ]
+  }
+}
