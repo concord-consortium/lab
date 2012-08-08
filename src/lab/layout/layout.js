@@ -348,7 +348,7 @@ layout.setupScreen = function(forceRender) {
 
     mcsize = viewLists.moleculeContainers[0].scale();
     modelAspectRatio = mcsize[0] / mcsize[1];
-    width = pageWidth * 0.44;
+    width = pageWidth * 0.40;
     height = width * 1/modelAspectRatio;
     // HACK that will normally only work with one moleculeContainer
     // or if all the moleculeContainers end up the same width
