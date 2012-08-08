@@ -51,6 +51,9 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     },
     performance_view,
 
+    // WebGL status view.
+    WebGL_status_view,
+
     // All attached HTML elements.
     $html_elements,
 
@@ -91,6 +94,12 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       return performance_view;
     },
 
+    createWebGLStatusView = function (component_def) {
+      WebGL_status_view = views_ns.makeWebGLStatusView(component_def.id);
+
+      return WebGL_status_view;
+    },
+
     createSimulationDescription = function (component_def) {
       simulation_description_view = views_ns.makeSimulationDescription(component_def);
       // Bind itself (public API).
@@ -110,6 +119,8 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         return createSimulationPlayer(component_def);
       case 'energy2d-performance-view':
         return createPerformanceView(component_def);
+      case 'energy2d-webgl-status-view':
+        return createWebGLStatusView(component_def);
       default:
         throw new Error('Interactive controller: unknow type of component.');
       }
@@ -227,6 +238,11 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         performance_tools = performance_ns.makePerformanceTools();
         performance_view.bindModel(performance_tools);
         modeler.setPerformanceTools(performance_tools);
+      }
+
+      if (WebGL_status_view) {
+        WebGL_status_view.bindModel(modeler);
+        WebGL_status_view.updateAndRender();
       }
 
       updateDynamicViews();

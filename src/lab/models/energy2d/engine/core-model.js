@@ -57,6 +57,8 @@ exports.makeCoreModel = function (model_options) {
 
     // WebGL GPGPU optimization.
     use_WebGL = opt.use_WebGL,
+    // This variable holds possible error message connected with WebGL.
+    WebGL_error,
 
     // Simulation grid dimensions.
     nx = opt.grid_width,
@@ -187,6 +189,8 @@ exports.makeCoreModel = function (model_options) {
       } catch (e) {
         // If WebGL initialization fails, just use CPU.
         use_WebGL = false;
+        // Set error message.
+        WebGL_error = e.message;
         // TODO: inform better.
         console.warn("WebGL initialization failed. Energy2D will use CPU solvers.");
         return;
@@ -344,6 +348,10 @@ exports.makeCoreModel = function (model_options) {
 
       isWebGLActive: function () {
         return use_WebGL;
+      },
+
+      getWebGLError: function () {
+        return WebGL_error;
       },
 
       updateTemperatureArray: function () {
