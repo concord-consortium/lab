@@ -356,6 +356,9 @@
   </void>
  </object>
  <object class="org.concord.mw2d.models.Atom">
+  <void property="charge">
+    <double>0.75</double>
+  </void>
   <void property="rx">
    <double>259.0</double>
   </void>
@@ -364,6 +367,9 @@
   </void>
  </object>
  <object class="org.concord.mw2d.models.Atom">
+  <void property="charge">
+    <double>-0.75</double>
+  </void>
   <void property="rx">
    <double>180.0</double>
   </void>

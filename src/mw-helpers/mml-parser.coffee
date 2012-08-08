@@ -197,22 +197,28 @@ parseMML = (mmlString) ->
           {...
         ]
     ###
-    atoms = []
-    atomNodes = $mml(".org-concord-mw2d-models-Atom")
-    for node in atomNodes
-      $node = getNode(cheerio(node))
-      elemId = parseInt $node.find("[property=ID] int").text() || 0
-      x  = parseFloat $node.find("[property=rx]").text()
-      y  = parseFloat $node.find("[property=ry]").text()
-      vx = parseFloat $node.find("[property=vx]").text() || 0
-      vy = parseFloat $node.find("[property=vy]").text() || 0
+    parseAtoms = ->
+      atoms = []
+      atomNodes = $mml(".org-concord-mw2d-models-Atom")
 
-      [x, y] = toNextgenCoordinates x, y
+      for node in atomNodes
+        $node = getNode(cheerio(node))
 
-      vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
-      vy = -vy / 100
+        elemId = parseInt   $node.find("[property=ID] int").text() || 0
+        x      = parseFloat $node.find("[property=rx]").text()
+        y      = parseFloat $node.find("[property=ry]").text()
+        vx     = parseFloat $node.find("[property=vx]").text() || 0
+        vy     = parseFloat $node.find("[property=vy]").text() || 0
+        charge = parseFloat $node.find("[property=charge]").text() || 0
 
-      atoms.push elemId: elemId, x: x, y: y, vx: vx, vy: vy, charge: 0
+        [x, y] = toNextgenCoordinates x, y
+
+        vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
+        vy = -vy / 100
+
+        atoms.push { elemId, x, y, vx, vy, charge }
+
+      atoms
 
     ###
       radial bonds
@@ -250,6 +256,8 @@ parseMML = (mmlString) ->
       temperature = parseFloat heatBath.find("double").text()
 
     ### Put everything together into Lab's JSON format ###
+    atoms = parseAtoms()
+
     x  = (atom.x for atom in atoms)
     y  = (atom.y for atom in atoms)
     vx = (atom.vx for atom in atoms)
