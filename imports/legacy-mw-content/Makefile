@@ -14,7 +14,7 @@ MML_FILES := $(shell find . -name '*.mml' -print)
 CML_FILES := $(shell find . -name '*.cml' -print)
 CONVERTED_FILES := $(shell echo '$(MML_FILES)' | perl -pe 's|\./(.*?)\.mml|\1.json|g')
 
-# We keep the list of converted files clean, with no path prefix, so '%.json'->'%.mml' type 
+# We keep the list of converted files clean, with no path prefix, so '%.json'->'%.mml' type
 # substitutions work correctly when we treat the converted files as targets.
 # However, when we treat them as dependencies for targets like 'all', we need make to acknowledge
 # that they're actually to be found in the $(CONVERTED_DIR) directory. So use vpath.
@@ -42,8 +42,8 @@ $(CONVERTED_FILES): %.json : %.mml \
 
 .PHONY: targets
 targets:
-	echo '$(CONVERTED_FILES)'
+	@echo '$(CONVERTED_FILES)'
 
 .PHONY: sources
 sources:
-	echo '$(MML_FILES)'
+	@echo '$(MML_FILES)'
