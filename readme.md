@@ -1384,13 +1384,14 @@ The capistrano commands take the form:
 
 The basic command to update a server:
 
-    can <deploy-taget> deploy:update
+    cap <deploy-target> deploy:update
 
 Here are the list of current Capistrano deploy commands:
 
     $ cap -T deploy:
     cap deploy:clean_and_update # clean and update server
     cap deploy:setup            # setup server
+    cap deploy:status           # display last commit on deployed server
     cap deploy:update           # update server
     cap deploy:update_jnlps     # update public/jnlp dir on server
 

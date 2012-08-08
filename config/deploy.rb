@@ -60,4 +60,9 @@ namespace :deploy do
     run "cd /var/www/app; script/build-and-deploy-jars.rb"
   end
 
+  desc "display last commit on deployed server"
+  task :status do
+    run "cd /var/www/app; git log -1"
+  end
+
 end
