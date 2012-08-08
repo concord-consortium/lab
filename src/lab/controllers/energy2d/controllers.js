@@ -216,10 +216,10 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
 
       if (use_WebGL) {
         heatmap_view.bindHeatmapTexture(modeler.getTemperatureTexture());
-        velocity_view.bindVectormapTexture(modeler.getVelocityTexture(), grid_x, grid_y, 4);
+        velocity_view.bindVectormapTexture(modeler.getVelocityTexture(), grid_x, grid_y, 25);
       } else {
         heatmap_view.bindHeatmap(modeler.getTemperatureArray(), grid_x, grid_y);
-        velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), grid_x, grid_y, 4);
+        velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), grid_x, grid_y, 25);
       }
 
       // Bind performance tools model.

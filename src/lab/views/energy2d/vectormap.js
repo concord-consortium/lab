@@ -113,7 +113,7 @@ energy2d.views.makeVectormapView = function (html_id) {
       },
 
       // Bind vector map to the view.
-      bindVectormap: function (new_vectormap_u, new_vectormap_v, new_grid_width, new_grid_height, new_spacing) {
+      bindVectormap: function (new_vectormap_u, new_vectormap_v, new_grid_width, new_grid_height, arrows_per_row) {
         if (new_grid_width * new_grid_height !== new_vectormap_u.length) {
           throw new Error("Heatmap: provided U component of vectormap has wrong dimensions.");
         }
@@ -124,7 +124,7 @@ energy2d.views.makeVectormapView = function (html_id) {
         vectormap_v = new_vectormap_v;
         grid_width = new_grid_width;
         grid_height = new_grid_height;
-        spacing = new_spacing;
+        spacing = Math.round(new_grid_width / arrows_per_row);
       },
 
       getHTMLElement: function () {
