@@ -35,9 +35,6 @@ vpath %.coffee src
 MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/server\/public\/\1.html/' )
 vpath %.md src
 
-MML_IMPORT_FILES := $(shell find imports/legacy-mw-content -name '*.mml' -exec echo {} \; | sed s'/imports\/legacy-mw-content\/\(.*\)/server\/public\/imports\/legacy-mw-content\/converted\/\1/' )
-vpath %.mml imports/legacy-mw-content
-
 LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.benchmark.js \
