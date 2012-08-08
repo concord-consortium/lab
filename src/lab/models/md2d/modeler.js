@@ -62,7 +62,7 @@ modeler.model = function(initialProperties) {
 
       properties = {
         temperature           : 300,
-        coulomb_forces        : false,
+        coulomb_forces        : true,
         lennard_jones_forces  : true,
         temperature_control   : true,
 
