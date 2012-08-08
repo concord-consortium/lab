@@ -2,8 +2,6 @@
   "width": 3.5,
   "height": 1.3,
   "temperature_control": false,
-  "lennard_jones_forces": true,
-  "coulomb_forces": false,
   "elements": [
       {
           "mass": 20,
