@@ -115,14 +115,14 @@ modeler.model = function(initialProperties) {
     ELEMENT  : md2d.INDICES.ELEMENT
   };
 
-  model.OBS_INDICES = {
-    X        : md2d.OBS_INDICES.X,
-    Y        : md2d.OBS_INDICES.Y,
-    WIDTH    : md2d.OBS_INDICES.WIDTH,
-    HEIGHT   : md2d.OBS_INDICES.HEIGHT,
-    COLOR_R  : md2d.OBS_INDICES.COLOR_R,
-    COLOR_G  : md2d.OBS_INDICES.COLOR_G,
-    COLOR_B  : md2d.OBS_INDICES.COLOR_B
+  model.OBSTACLE_INDICES = {
+    X        : md2d.OBSTACLE_INDICES.X,
+    Y        : md2d.OBSTACLE_INDICES.Y,
+    WIDTH    : md2d.OBSTACLE_INDICES.WIDTH,
+    HEIGHT   : md2d.OBSTACLE_INDICES.HEIGHT,
+    COLOR_R  : md2d.OBSTACLE_INDICES.COLOR_R,
+    COLOR_G  : md2d.OBSTACLE_INDICES.COLOR_G,
+    COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B
   };
 
   function notifyListeners(listeners) {

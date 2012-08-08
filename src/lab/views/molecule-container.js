@@ -209,26 +209,26 @@ layout.moleculeContainer = function(e, options) {
   }
 
   function get_obstacle_x(i) {
-    return obstacles[model.OBS_INDICES.X][i];
+    return obstacles[model.OBSTACLE_INDICES.X][i];
   }
 
   function get_obstacle_y(i) {
-    return obstacles[model.OBS_INDICES.Y][i];
+    return obstacles[model.OBSTACLE_INDICES.Y][i];
   }
 
   function get_obstacle_width(i) {
-    return obstacles[model.OBS_INDICES.WIDTH][i];
+    return obstacles[model.OBSTACLE_INDICES.WIDTH][i];
   }
 
   function get_obstacle_height(i) {
-    return obstacles[model.OBS_INDICES.HEIGHT][i];
+    return obstacles[model.OBSTACLE_INDICES.HEIGHT][i];
   }
 
   function get_obstacle_color(i) {
     return "rgb(" +
-      obstacles[model.OBS_INDICES.COLOR_R][i] + "," +
-      obstacles[model.OBS_INDICES.COLOR_G][i] + "," +
-      obstacles[model.OBS_INDICES.COLOR_B][i] + ")";
+      obstacles[model.OBSTACLE_INDICES.COLOR_R][i] + "," +
+      obstacles[model.OBSTACLE_INDICES.COLOR_G][i] + "," +
+      obstacles[model.OBSTACLE_INDICES.COLOR_B][i] + ")";
   }
 
   function container() {

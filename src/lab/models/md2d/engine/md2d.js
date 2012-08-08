@@ -41,7 +41,7 @@ var arrays       = require('./arrays/arrays').arrays,
 
     INDICES,
     ELEMENT_INDICES,
-    OBS_INDICES,
+    OBSTACLE_INDICES,
     SAVEABLE_INDICES,
 
     cross = function(a0, a1, b0, b1) {
@@ -131,7 +131,7 @@ exports.INDICES = INDICES = {
   ELEMENT: 11
 };
 
-exports.OBS_INDICES = OBS_INDICES = {
+exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
   X       :  0,
   Y       :  1,
   WIDTH   :  2,
@@ -355,7 +355,7 @@ exports.makeModel = function() {
 
       createObstaclesArray = function(num) {
         var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-            ind     = OBS_INDICES;
+            ind     = OBSTACLE_INDICES;
 
         obstacles = model.obstacles = [];
 
