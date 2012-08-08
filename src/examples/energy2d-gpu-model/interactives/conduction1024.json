@@ -12,6 +12,10 @@
     {
       "type": "energy2d-performance-view",
       "id": "energy2d-performance-id"
+    },
+    {
+      "type": "energy2d-webgl-status-view",
+      "id": "energy2d-webgl-status-id"
     }
   ],
   "description": {
@@ -36,6 +40,9 @@
     },
     "energy2d-performance-id": {
       "container": "#performance"
+    },
+    "energy2d-webgl-status-id": {
+      "container": "#webgl-status"
     }
   }
 }

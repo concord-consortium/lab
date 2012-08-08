@@ -28,11 +28,13 @@
         .top
           #interactive-description            
           #interactive-container  
-          #performance
-            %h2
-              %input{:id => "enable-WebGL", :type => "checkbox"} Enable WebGL
-            %h2
-              %input{:id => "force-WebGL-sync", :type => "checkbox"} Force WebGL synchronization
+          #right-panel
+            #performance
+              %h2
+                %input{:id => "enable-WebGL", :type => "checkbox"} Enable WebGL
+              %h2
+                %input{:id => "force-WebGL-sync", :type => "checkbox"} Force WebGL synchronization
+            #webgl-status
 
     %script{:src => "../../lab/lab.energy2d.js", :type => "text/javascript"}
     %script{:src => "interactives-index.js", :type => "text/javascript"}

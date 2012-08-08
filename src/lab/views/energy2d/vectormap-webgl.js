@@ -134,11 +134,11 @@ energy2d.views.makeVectormapWebGLView = function (html_id) {
       },
 
       // Bind vectormap to the view.
-      bindVectormapTexture: function (new_vectormap_tex, new_grid_width, new_grid_height, new_spacing) {
+      bindVectormapTexture: function (new_vectormap_tex, new_grid_width, new_grid_height, arrows_per_row) {
         vectormap_tex = new_vectormap_tex;
         grid_width = new_grid_width;
         grid_height = new_grid_height;
-        spacing = new_spacing;
+        spacing = Math.round(grid_width / arrows_per_row);
 
         initGeometry();
       },
