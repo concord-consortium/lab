@@ -614,7 +614,7 @@ layout.moleculeContainer = function(e, options) {
             .attr("x", "-0.31em")
             .attr("y", "0.31em")
             .text(function(d, i) {
-              if (model.get("coulomb_forces")) {
+              if (model.get("coulomb_forces") && x(get_charge(i))) {
                 return (x(get_charge(i)) > 0) ? "+" : "–";
               } else {
                 return;    // ""
