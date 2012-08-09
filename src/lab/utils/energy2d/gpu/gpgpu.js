@@ -126,6 +126,14 @@ energy2d.utils.gpu.gpgpu = (function () {
       if (!gl.getExtension('OES_texture_float')) {
         throw new Error("GPGPU: OES_texture_float is not supported!");
       }
+      // Check if rendering to FLOAT textures is supported.
+      temp_texture = new gpu.Texture(1, 1, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
+      temp_texture.setAsRenderTarget();
+      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        throw new Error("GPGPU: FLOAT texture as render target is not supported!");
+      }
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       // Configure WebGL context and create necessary objects and structures.
       gl.disable(gl.DEPTH_TEST);
       plane = gpu.Mesh.plane();
