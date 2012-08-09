@@ -61,7 +61,6 @@ all: \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	server/public/index.css
-	$(MAKE) -C imports/legacy-mw-content
 
 .PHONY: everything
 everything:
@@ -186,6 +185,9 @@ server/public/jnlp:
 server/public/imports:
 	mkdir -p server/public/imports
 	rsync -aq imports/ server/public/imports/
+	./node-bin/convert-mml-files
+	./node-bin/create-mml-html-index
+	./src/mw-helpers/post-batch-processor.rb
 
 server/public/resources:
 	cp -R ./src/resources ./server/public/
