@@ -45,6 +45,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.components.js \
 	server/public/lab/lab.controllers.js \
+	server/public/lab/lab.deprecated-controllers.js \
 	server/public/lab/lab.js
 
 all: \
@@ -325,7 +326,8 @@ server/public/lab/lab.js: \
 	server/public/lab/lab.layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.components.js \
-  server/public/lab/lab.controllers.js
+  server/public/lab/lab.controllers.js \
+  server/public/lab/lab.deprecated-controllers.js
 
 server/public/lab/lab.grapher.js: \
 	src/lab/start.js \
@@ -416,11 +418,15 @@ server/public/lab/lab.views.js: \
 server/public/lab/lab.controllers.js: \
 	src/lab/start.js \
 	src/lab/controllers/controllers.js \
-	src/lab/controllers/simple-model-controller.js \
-	src/lab/controllers/compare-models-controller.js \
-	src/lab/controllers/complex-model-controller.js \
-	src/lab/controllers/interactives-controller.js \
 	src/lab/controllers/model-controller.js \
+	src/lab/controllers/interactives-controller.js \
+	src/lab/controllers/compare-models-controller.js \
+	src/lab/end.js
+
+server/public/lab/lab.deprecated-controllers.js: \
+	src/lab/start.js \
+	src/lab/controllers/deprecated/simple-model-controller.js \
+	src/lab/controllers/deprecated/complex-model-controller.js \
 	src/lab/end.js
 
 server/public/lab/lab.components.js: src/lab/components/*.coffee
