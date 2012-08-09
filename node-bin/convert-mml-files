@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+converter = require('../src/mw-helpers/mw-batch-converter');
+
+// Convert outdated mml files only
+converter.convertMMLFolder(true);
