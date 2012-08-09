@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 
-converter = require('../src/mw-helpers/mw-batch-converter');
+var converter = require('../src/mw-helpers/mw-batch-converter'),
+    sys = require('sys'),
+    nConverted;
 
+sys.print("converting MML files...");
 // Convert outdated mml files only
-converter.convertMMLFolder(true);
+nConverted = converter.convertMMLFolder(true, true);
+sys.print("converted " + nConverted + " MML files.\n");

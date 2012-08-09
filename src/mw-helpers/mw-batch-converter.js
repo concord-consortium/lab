@@ -15,7 +15,7 @@ var parseMML = require('./mml-parser').parseMML,
     fs = require('fs'),
     path = require('path'),
     jade = require('jade'),
-    util = require('util'),
+    sys = require('sys'),
 
     rootPath = require.main ? path.dirname(require.main.filename) : process.cwd(),
     legacyFolderPath = path.normalize(rootPath + '/../imports/legacy-mw-content/'),
@@ -126,7 +126,7 @@ function collectAllMMLFiles(searchPath, baseDir) {
 
   @returns The number of files converted.
 */
-function convertMMLFolder(onlyOutdated) {
+function convertMMLFolder(onlyOutdated, showProgress) {
 
   var mmlFiles = collectAllMMLFiles(legacyFolderPath),
       converted,
@@ -136,6 +136,7 @@ function convertMMLFolder(onlyOutdated) {
   for (i=0; i < mmlFiles.length; i++) {
     converted = convertMMLFile(legacyFolderPath, mmlFiles[i], convertedFolderPath, !!onlyOutdated);
     if (converted) nConverted++;
+    if (showProgress && nConverted > 0 && nConverted % 10 === 0) sys.print('.');
   }
 
   return nConverted;
