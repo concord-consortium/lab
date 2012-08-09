@@ -52,31 +52,35 @@ energy2d.views.makeWebGLStatusView = function (html_id) {
       var gl, temp_texture;
       // Clear features lists.
       features = {};
-      // WebGL main tests.
+      // 1. WebGL main tests.
       try {
         gl = gpu.init();
         features['WebGL context'] = true;
       } catch (e) {
         features['WebGL context'] = false;
+        // WebGL is not available, so don't test other features.
         return;
       }
 
-      // OES_texture_float.
+      // 2. OES_texture_float.
       if (gl.getExtension('OES_texture_float')) {
         features['OES_texture_float extension'] = true;
       } else {
         features['OES_texture_float extension'] = false;
       }
 
-      // Float texture as render target.
-      temp_texture = new gpu.Texture(10, 10, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
-      temp_texture.setAsRenderTarget();
-      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE) {
-        features['FLOAT texture as render target'] = true;
-      } else {
-        features['FLOAT texture as render target'] = false;
+      // 3. Float texture as render target.
+      //    Test it only if float textures are available.
+      if (features['OES_texture_float extension']) {
+        temp_texture = new gpu.Texture(1, 1, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
+        temp_texture.setAsRenderTarget();
+        if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE) {
+          features['FLOAT texture as render target'] = true;
+        } else {
+          features['FLOAT texture as render target'] = false;
+        }
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       }
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     },
 
     render = function () {
