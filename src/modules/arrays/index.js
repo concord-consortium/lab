@@ -7,7 +7,7 @@
 
 var arrays;
 
-arrays = exports.arrays = {};
+arrays = {};
 
 arrays.version = '0.0.1';
 arrays.webgl = (typeof window !== 'undefined') && !!window.WebGLRenderingContext;
@@ -204,3 +204,8 @@ arrays.average = function(array) {
   }
   return acc / length;
 };
+
+// publish everything to exports
+for (var key in arrays) {
+  if (arrays.hasOwnProperty(key)) exports[key] = arrays[key];
+}

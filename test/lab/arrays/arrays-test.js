@@ -1,10 +1,10 @@
 require("../../env")();
-require("../../../server/public/lab/lab.arrays");
+arrays = require("arrays");
 
 var vows = require("vows"),
     assert = require("assert");
 
-var suite = vows.describe("lab.arrays");
+var suite = vows.describe("arrays module");
 
 suite.addBatch({
   "create": {

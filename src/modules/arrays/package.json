@@ -1,0 +1,12 @@
+{
+  "author": "Stephen Bannasch <sbannasch@gmail.com>",
+  "name": "arrays",
+  "description": "Utilities for creating and manipulating Typed Arrays",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

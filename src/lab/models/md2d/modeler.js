@@ -4,8 +4,8 @@
 // modeler.js
 //
 
-var md2d = require('/md2d'),
-    arrays = require('/arrays/arrays').arrays,
+var md2d   = require('/md2d'),
+    arrays = require('arrays'),
     coreModel;
 
 modeler = {};

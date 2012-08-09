@@ -3,7 +3,7 @@
 
 if (typeof window === 'undefined') window = {};
 
-var arrays       = require('./arrays/arrays').arrays,
+var arrays       = require('arrays'),
     constants    = require('./constants'),
     unit         = constants.unit,
     math         = require('./math'),

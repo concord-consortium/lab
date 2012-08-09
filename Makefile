@@ -40,7 +40,6 @@ LAB_JS_FILES = \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
 	server/public/lab/lab.views.js \
-	server/public/lab/lab.arrays.js \
 	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.components.js \
@@ -112,7 +111,8 @@ node_modules: node_modules/coffee-script \
 	node_modules/browserify \
 	node_modules/cherrio \
 	node_modules/jade \
-	node_modules/mkdirp
+	node_modules/mkdirp \
+	node_modules/arrays
 	npm install
 
 node_modules/coffee-script:
@@ -147,6 +147,9 @@ node_modules/jade:
 
 node_modules/mkdirp:
 	npm install
+
+node_modules/arrays:
+	npm install src/modules/arrays
 
 bin:
 	bundle install --binstubs
@@ -322,7 +325,6 @@ server/public/lab/lab.js: \
 	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.benchmark.js \
-	server/public/lab/lab.arrays.js \
 	server/public/lab/lab.layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.components.js \
@@ -387,11 +389,6 @@ server/public/lab/lab.energy2d.js: \
 server/public/lab/lab.benchmark.js: \
 	src/lab/start.js \
 	src/lab/benchmark/benchmark.js \
-	src/lab/end.js
-
-server/public/lab/lab.arrays.js: \
-	src/lab/start.js \
-	src/lab/arrays/arrays.js \
 	src/lab/end.js
 
 server/public/lab/lab.layout.js: \
