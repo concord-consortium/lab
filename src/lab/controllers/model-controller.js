@@ -4,8 +4,6 @@
 
   modeler
   ModelPlayer
-  Thermometer
-  SliderComponent
   layout
   DEVELOPMENT
   $
@@ -45,9 +43,9 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
     //
     // ------------------------------------------------------------
 
-    function model_listener(e) {
+    function model_listener() {
       molecule_container.update_drawable_positions();
-      if (step_counter >= model.stepCounter()) { modelStop(); }
+      if (step_counter >= model.stepCounter()) modelStop();
     }
 
 
@@ -157,7 +155,7 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
           get_num_atoms:        function() { return model.get_num_atoms(); },
           get_obstacles:        function() { return model.get_obstacles(); }
         }
-      )
+      );
 
       // FIXME: should not be here
       layout.setupScreen(true);
@@ -201,7 +199,7 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       if (firstTime) {
         setupModelPlayer();
       } else {
-        resetModelPlayer()
+        resetModelPlayer();
       }
     }
 
