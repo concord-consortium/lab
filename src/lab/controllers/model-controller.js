@@ -26,7 +26,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       mol_number,
       temperature_control,
       temperature,
-      coulomb_forces,
       width,
       height,
       radialBonds,
@@ -64,7 +63,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       mol_number          = modelConfig.mol_number;
       temperature_control = modelConfig.temperature_control;
       temperature         = modelConfig.temperature;
-      coulomb_forces      = modelConfig.coulomb_forces;
       width               = modelConfig.width;
       height              = modelConfig.height;
       radialBonds         = modelConfig.radialBonds;
@@ -83,8 +81,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           elements            : elements,
           model_listener      : tickHandler,
           temperature         : temperature,
-          lennard_jones_forces: true,
-          coulomb_forces      : coulomb_forces,
           temperature_control : temperature_control,
           width               : width,
           height              : height
