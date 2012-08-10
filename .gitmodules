@@ -34,3 +34,6 @@
 [submodule "src/vendor/lightgl.js"]
 	path = src/vendor/lightgl.js
 	url = git://github.com/evanw/lightgl.js.git
+[submodule "src/vendor/requirejs"]
+	path = src/vendor/requirejs
+	url = git://github.com/jrburke/requirejs.git
