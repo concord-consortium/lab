@@ -37,3 +37,6 @@
 [submodule "src/vendor/requirejs"]
 	path = src/vendor/requirejs
 	url = git://github.com/jrburke/requirejs.git
+[submodule "src/vendor/text"]
+	path = src/vendor/text
+	url = git://github.com/requirejs/text.git
