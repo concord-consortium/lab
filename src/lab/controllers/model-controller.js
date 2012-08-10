@@ -12,15 +12,17 @@
   model_player: true
 */
 /*jslint onevar: true*/
-controllers.modelController = function(molecule_view_id, modelConfig, playerConfig) {
-  var controller          = {},
+controllers.modelController = function(moleculeViewId, modelConfig, playerConfig) {
+  var controller = {},
 
+      // properties read from the playerConfig hash
       layoutStyle,
       autostart,
       maximum_model_steps,
 
+      // properties read from the modelConfig hash
       elements,
-      atoms_properties,
+      atoms,
       mol_number,
       temperature_control,
       temperature,
@@ -30,10 +32,7 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       radialBonds,
       obstacles,
 
-      nodes,
-
-      molecule_container,
-      step_counter;
+      moleculeContainer;
 
     // ------------------------------------------------------------
     //
@@ -43,9 +42,9 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
     //
     // ------------------------------------------------------------
 
-    function model_listener() {
-      molecule_container.update_drawable_positions();
-      if (step_counter >= model.stepCounter()) modelStop();
+    function tickHandler() {
+      moleculeContainer.update_drawable_positions();
+      if (model.stepCounter() > maximum_model_steps) modelStop();
     }
 
 
@@ -61,7 +60,7 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       maximum_model_steps = playerConfig.maximum_model_steps;
 
       elements            = modelConfig.elements;
-      atoms_properties    = modelConfig.atoms;
+      atoms               = modelConfig.atoms;
       mol_number          = modelConfig.mol_number;
       temperature_control = modelConfig.temperature_control;
       temperature         = modelConfig.temperature;
@@ -81,23 +80,23 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
     function createModel() {
       initializeLocalVariables();
       model = modeler.model({
-          elements: elements,
-          model_listener: model_listener,
-          temperature: temperature,
+          elements            : elements,
+          model_listener      : tickHandler,
+          temperature         : temperature,
           lennard_jones_forces: true,
-          coulomb_forces: coulomb_forces,
-          temperature_control: temperature_control,
-          width: width,
-          height: height
+          coulomb_forces      : coulomb_forces,
+          temperature_control : temperature_control,
+          width               : width,
+          height              : height
         });
 
-      if (atoms_properties) {
-        model.createNewAtoms(atoms_properties);
+      if (atoms) {
+        model.createNewAtoms(atoms);
       } else if (mol_number) {
         model.createNewAtoms(mol_number);
         model.relax();
       } else {
-        throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
+        throw new Error("ModelController: tried to create a model without atoms or mol_number.");
       }
 
       if (radialBonds) model.createRadialBonds(radialBonds);
@@ -121,20 +120,20 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       layout.selection = layoutStyle;
 
       model_player = new ModelPlayer(model, autostart);
-      molecule_container = layout.moleculeContainer(molecule_view_id,
+      moleculeContainer = layout.moleculeContainer(moleculeViewId,
         {
-          xmax:                 width,
-          ymax:                 height,
-          get_nodes:            function() { return model.get_nodes(); },
-          get_num_atoms:        function() { return model.get_num_atoms(); },
-          get_obstacles:        function() { return model.get_obstacles(); }
+          xmax:          width,
+          ymax:          height,
+          get_nodes:     function() { return model.get_nodes(); },
+          get_num_atoms: function() { return model.get_num_atoms(); },
+          get_obstacles: function() { return model.get_obstacles(); }
         }
       );
 
-      molecule_container.updateMoleculeRadius();
-      molecule_container.setup_drawables();
+      moleculeContainer.updateMoleculeRadius();
+      moleculeContainer.setup_drawables();
 
-      layout.addView('moleculeContainers', molecule_container);
+      layout.addView('moleculeContainers', moleculeContainer);
 
       // FIXME: should not be here
       layout.setupScreen();
@@ -148,14 +147,13 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       //
       // ------------------------------------------------------------
 
-      molecule_container.reset({
-          xmax:                 width,
-          ymax:                 height,
-          get_nodes:            function() { return model.get_nodes(); },
-          get_num_atoms:        function() { return model.get_num_atoms(); },
-          get_obstacles:        function() { return model.get_obstacles(); }
-        }
-      );
+      moleculeContainer.reset({
+        xmax:          width,
+        ymax:          height,
+        get_nodes:     function() { return model.get_nodes(); },
+        get_num_atoms: function() { return model.get_num_atoms(); },
+        get_obstacles: function() { return model.get_obstacles(); }
+      });
 
       // FIXME: should not be here
       layout.setupScreen(true);
@@ -172,7 +170,7 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
     }
 
     function modelGo() {
-      model.on("tick", model_listener);
+      model.on('tick', tickHandler);
       if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
         model.resume();
       }
@@ -184,13 +182,9 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
     //
 
     function setupModel() {
-      nodes = model.get_nodes();
-
       model.resetTime();
-
       modelStop();
-      model.on("tick", model_listener);
-      step_counter = model.stepCounter();
+      model.on('tick', tickHandler);
     }
 
     function finishSetup(firstTime) {
@@ -204,10 +198,9 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
     }
 
     function reload(newModelConfig, newPlayerConfig) {
-      // ****
-       modelConfig = newModelConfig;
-       playerConfig = newPlayerConfig;
-       finishSetup(false);
+      modelConfig = newModelConfig;
+      playerConfig = newPlayerConfig;
+      finishSetup(false);
     }
 
     if (typeof DEVELOPMENT === 'undefined') {
@@ -248,6 +241,3 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
 
     return controller;
 };
-
-
-
