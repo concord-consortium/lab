@@ -11,13 +11,6 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       propertiesListeners = [],
       actionQueue = [];
 
-  function actualRootPath(url) {
-    if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
-      return url;
-    } else {
-      return ACTUAL_ROOT + url;
-    }
-  }
   /**
     Load the model from the url specified in the 'model' key.
     Calls 'modelLoaded' if modelController was previously undefined.
@@ -25,13 +18,13 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     @param: modelUrl
   */
   function loadModel(modelUrl) {
-    $.get(actualRootPath(modelUrl)).done(function(modelConfig) {
 
     var playerConfig = {
           layoutStyle : layoutStyle,
           maximum_model_steps: Infinity
         };
 
+    $.get(modelUrl).done(function(modelConfig) {
 
       // Deal with the servers that return the json as text/plain
       modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;

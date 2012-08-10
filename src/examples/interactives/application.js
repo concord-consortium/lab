@@ -3,10 +3,6 @@
 
 DEVELOPMENT = true;
 
-var ROOT = '/examples',
-    ROOT_REGEX = new RegExp(ROOT + '/.*$'),
-    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
-
 (function() {
 
   var interactiveDefinitionLoaded = $.Deferred(),
