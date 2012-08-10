@@ -1,7 +1,7 @@
 {
-  "author": "Stephen Bannasch <sbannasch@gmail.com>",
+  "author": "Stephen Bannasch <sbannasch@concord.org>",
   "name": "arrays",
-  "description": "Utilities for creating and manipulating Typed Arrays",
+  "description": "Utilities for creating and manipulating Typed or Regular Arrays",
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {},
