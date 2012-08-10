@@ -110,8 +110,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       // ------------------------------------------------------------
 
       layout.selection = layoutStyle;
-
-      model_player = new ModelPlayer(model, autostart);
+      model_player = new ModelPlayer(model, false);
       moleculeContainer = layout.moleculeContainer(moleculeViewId,
         {
           xmax:          width,
@@ -154,25 +153,12 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     // ------------------------------------------------------------
     //
-    // Model Controller
-    //
-    // ------------------------------------------------------------
-    function modelStop() {
-      model.stop();
-    }
-
-    function modelGo() {
-      model.on('tick', tickHandler);
-    }
-
-    // ------------------------------------------------------------
-    //
     //   Molecular Model Setup
     //
 
     function setupModel() {
       model.resetTime();
-      modelStop();
+      model.stop();
       model.on('tick', tickHandler);
     }
 
@@ -215,16 +201,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     document.onwebkitfullscreenchange = onresize;
     window.onresize = onresize;
-
-    // ------------------------------------------------------------
-    //
-    // Start if autostart is true
-    //
-    // ------------------------------------------------------------
-
-    if (autostart) {
-      modelGo();
-    }
 
     controller.reload = reload;
 
