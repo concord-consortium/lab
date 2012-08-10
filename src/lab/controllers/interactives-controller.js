@@ -20,8 +20,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   function loadModel(modelUrl) {
 
     var playerConfig = {
-          layoutStyle : layoutStyle,
-          maximum_model_steps: Infinity
+          layoutStyle : layoutStyle
         };
 
     $.get(modelUrl).done(function(modelConfig) {

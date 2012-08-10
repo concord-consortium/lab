@@ -18,7 +18,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       // properties read from the playerConfig hash
       layoutStyle,
       autostart,
-      maximum_model_steps,
 
       // properties read from the modelConfig hash
       elements,
@@ -43,7 +42,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function tickHandler() {
       moleculeContainer.update_drawable_positions();
-      if (model.stepCounter() > maximum_model_steps) modelStop();
     }
 
 
@@ -56,7 +54,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
     function initializeLocalVariables() {
       layoutStyle         = playerConfig.layoutStyle;
       autostart           = playerConfig.autostart;
-      maximum_model_steps = playerConfig.maximum_model_steps;
 
       elements            = modelConfig.elements;
       atoms               = modelConfig.atoms;
@@ -166,9 +163,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function modelGo() {
       model.on('tick', tickHandler);
-      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
-        model.resume();
-      }
     }
 
     // ------------------------------------------------------------
