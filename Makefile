@@ -9,6 +9,7 @@ EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
 
+LAB_SRC_FILES := $(shell find src/lab -type f -print)
 MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
 ENERGY2D_ENGINE_JS_FILES := $(shell find src/lab/models/energy2d/engine -name '*.js' -print)
 
@@ -82,6 +83,7 @@ src: \
 	$(SASS_DOC_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
+	server/public/lab-amd
 
 jnlp-all: clean-jnlp \
 	server/public/jnlp
@@ -156,6 +158,7 @@ bin:
 
 server/public: \
 	server/public/lab \
+	server/public/lab-amd \
 	server/public/vendor \
 	server/public/resources \
 	server/public/examples \
@@ -174,6 +177,10 @@ server/public/doc:
 	mkdir -p server/public/doc
 	# copy directories, javascript, json, and image resources from src/examples/
 	rsync -aq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ server/public/doc/
+
+server/public/lab-amd: $(LAB_SRC_FILES)
+	mkdir -p server/public/lab-amd
+	rsync -aq src/lab/* server/public/lab-amd
 
 .PHONY: server/public/experiments
 server/public/experiments:
