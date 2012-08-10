@@ -210,6 +210,8 @@ server/public/vendor: \
 	server/public/vendor/codemirror2 \
 	server/public/vendor/dsp.js \
 	server/public/vendor/lightgl.js \
+	server/public/vendor/requirejs \
+	server/public/vendor/text \
 	server/public/favicon.ico
 
 server/public/vendor/dsp.js:
@@ -284,6 +286,18 @@ server/public/vendor/mathjax:
 server/public/vendor/fonts:
 	mkdir -p server/public/vendor/fonts
 	cp -R src/vendor/fonts server/public/vendor/
+
+server/public/vendor/requirejs:
+	mkdir -p server/public/vendor/requirejs
+	cp src/vendor/requirejs/require.js server/public/vendor/requirejs
+	cp src/vendor/requirejs/LICENSE server/public/vendor/requirejs
+	cp src/vendor/requirejs/README.md server/public/vendor/requirejs
+
+server/public/vendor/text:
+	mkdir -p server/public/vendor/text
+	cp src/vendor/text/text.js server/public/vendor/text
+	cp src/vendor/text/LICENSE server/public/vendor/text
+	cp src/vendor/text/README.md server/public/vendor/text
 
 server/public/vendor/codemirror2:
 	mkdir -p server/public/vendor/codemirror2
