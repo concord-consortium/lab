@@ -79,7 +79,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       initializeLocalVariables();
       model = modeler.model({
           elements            : elements,
-          model_listener      : tickHandler,
           temperature         : temperature,
           temperature_control : temperature_control,
           width               : width,
