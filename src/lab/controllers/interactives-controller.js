@@ -1,16 +1,15 @@
-/*globals controllers model layout Thermometer $ ACTUAL_ROOT */
+/*globals controllers model layout Thermometer $ */
+controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
 
-/*jslint onevar: true*/
-controllers.interactivesController = function(interactive, interactive_view_id, layout_style) {
+  if (typeof layoutStyle === 'undefined') {
+    layoutStyle = 'interactive';
+  }
 
   var controller = {},
       modelController,
       $interactiveContainer,
       propertiesListeners = [],
       actionQueue = [];
-  if (typeof layout_style === 'undefined') {
-    layout_style = 'interactive';
-  }
 
   function actualRootPath(url) {
     if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
@@ -19,14 +18,24 @@ controllers.interactivesController = function(interactive, interactive_view_id, 
       return ACTUAL_ROOT + url;
     }
   }
+  /**
+    Load the model from the url specified in the 'model' key.
+    Calls 'modelLoaded' if modelController was previously undefined.
 
+    @param: modelUrl
+  */
   function loadModel(modelUrl) {
-    var playerConfig = {    // to be removed
-        layoutStyle        : layout_style,
-        maximum_model_steps: Infinity
-      };
     $.get(actualRootPath(modelUrl)).done(function(modelConfig) {
-      if (typeof modelConfig === "string") { modelConfig = JSON.parse(modelConfig); }
+
+    var playerConfig = {
+          layoutStyle : layoutStyle,
+          maximum_model_steps: Infinity
+        };
+
+
+      // Deal with the servers that return the json as text/plain
+      modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
+
       if (modelController) {
         modelController.reload(modelConfig, playerConfig);
       } else {
@@ -38,9 +47,9 @@ controllers.interactivesController = function(interactive, interactive_view_id, 
 
   function createComponent(component) {
     switch (component.type) {
-      case "button":
+      case 'button':
         return createButton(component);
-      case "thermometer":
+      case 'thermometer':
         return createThermometer(component);
     }
   }
@@ -48,14 +57,14 @@ controllers.interactivesController = function(interactive, interactive_view_id, 
   function createButton(component) {
     var $button, scriptStr, script;
 
-    $button = $("<button>").attr('id', component.id).html(component.text);
+    $button = $('<button>').attr('id', component.id).html(component.text);
 
-    if (typeof component.action === "string") {
+    if (typeof component.action === 'string') {
       scriptStr = component.action;
     } else {
       scriptStr = component.action.join('\n');
     }
-    eval("script = function() {"+scriptStr+"}");
+    eval('script = function() {'+scriptStr+'}');
     $button.click(script);
 
     return $button;
@@ -64,15 +73,15 @@ controllers.interactivesController = function(interactive, interactive_view_id, 
   function createThermometer(component) {
     var $therm = $('<div>').attr('id', component.id),
         thermometer = new Thermometer($therm, 0, component.min, component.max),
-        $wrapper = $('<div>').css("padding-bottom", "4em")
+        $wrapper = $('<div>').css('padding-bottom', '4em')
           .append($therm)
-          .append($('<div>').text("Thermometer"));
+          .append($('<div>').text('Thermometer'));
 
     function updateTherm() {
-      thermometer.add_value(model.get("temperature"));
+      thermometer.add_value(model.get('temperature'));
     }
 
-    queuePropertiesListener(["temperature"], updateTherm);
+    queuePropertiesListener(['temperature'], updateTherm);
     queueActionOnModelLoad(function() {
       thermometer.resize();
       updateTherm();
@@ -83,7 +92,7 @@ controllers.interactivesController = function(interactive, interactive_view_id, 
   }
 
   function queuePropertiesListener(properties, func) {
-    if (typeof model !== "undefined") {
+    if (typeof model !== 'undefined') {
       model.addPropertiesListener(properties, func);
     } else {
       propertiesListeners.push([properties, func]);
@@ -91,13 +100,17 @@ controllers.interactivesController = function(interactive, interactive_view_id, 
   }
 
   function queueActionOnModelLoad(action) {
-    if (typeof model !== "undefined") {
+    if (typeof model !== 'undefined') {
       action();
     } else {
       actionQueue.push(action);
     }
   }
 
+  /**
+    Call this after the model loads, to process any queued resize and update events
+    that depend on the model's properties.
+  */
   function modelLoaded() {
     var listener,
         action;
@@ -111,7 +124,19 @@ controllers.interactivesController = function(interactive, interactive_view_id, 
     }
   }
 
-  function loadInteractive(newInteractive, interactive_view_id) {
+  /**
+    The main method called when this controller is created.
+
+    Populates the element pointed to by viewSelector with divs to contain the
+    molecule container (view) and the various components specified in the interactive
+    definition, and
+
+    @param newInteractive
+      hash representing the interactive specification
+    @param viewSelector
+      jQuery selector that finds the element to put the interactive view into
+  */
+  function loadInteractive(newInteractive, viewSelector) {
     var componentJsons,
         components = {},
         component,
@@ -122,7 +147,7 @@ controllers.interactivesController = function(interactive, interactive_view_id, 
         i, ii;
 
     interactive = newInteractive;
-    $interactiveContainer = $(interactive_view_id);
+    $interactiveContainer = $(viewSelector);
     if ($interactiveContainer.children().length === 0) {
       $top = $('<div class="top" id="top"/>');
       $top.append('<div id="molecule-container"/>');
@@ -176,7 +201,7 @@ controllers.interactivesController = function(interactive, interactive_view_id, 
   }
 
   // run this when controller is created
-  loadInteractive(interactive, interactive_view_id);
+  loadInteractive(interactive, viewSelector);
 
   // make these private variables and functions available
   controller.loadInteractive = loadInteractive;
