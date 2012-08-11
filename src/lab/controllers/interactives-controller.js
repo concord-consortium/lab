@@ -88,15 +88,14 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     }
   }
 
-
   /**
-    Given a script string, return a function that executes that script in a context
-    containing *only* the bindings to names we supply.
+    Given a script string, return a function that executes that script in a
+    context containing *only* the bindings to names we supply.
 
-    This isn't intended for XSS protection (in particular it relies on strict mode)
-    Rather, it's so script authors don't get too clever and start relying on
-    accidentally exposed functionality, before we've made decisions about what
-    scripting API and semantics we want to support.
+    This isn't intended for XSS protection (in particular it relies on strict
+    mode.) Rather, it's so script authors don't get too clever and start relying
+    on accidentally exposed functionality, before we've made decisions about
+    what scripting API and semantics we want to support.
   */
   function evalInScriptContext(scriptSource) {
     var prop,
@@ -104,7 +103,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         whitelistedObjectsArray,
         safedScriptSource;
 
-    // Construct parallel arrays of the keys and values above
+    // Construct parallel arrays of the keys and values of the scripting API
     whitelistedNames = [];
     whitelistedObjectsArray = [];
 
@@ -126,10 +125,11 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           scriptArgumentList,
           safedScript;
 
-      // Blacklist all globals, except those we have whitelisted
-      // (Don't move the construction of 'blacklistedNames' to the enclosing scope,
-      // because new globals -- in particular, 'model' -- are created in between the
-      // time the enclosing function executes and the time this function executes.)
+      // Blacklist all globals, except those we have whitelisted. (Don't move
+      // the construction of 'blacklistedNames' to the enclosing scope, because
+      // new globals -- in particular, 'model' -- are created in between the
+      // time the enclosing function executes and the time this function
+      // executes.)
       blacklistedNames = [];
       for (prop in window) {
         if (window.hasOwnProperty(prop) && !scriptingAPI.hasOwnProperty(prop)) {
@@ -137,16 +137,22 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         }
       }
 
-      // Here's the key. The Function constructor acccepts a list of argument names
-      // followed by the source of the function to construct.
-      // We supply the whitelist names, followed by the "blacklist" of globals, followed
-      // by the script source. But we will only provide values for the whitelisted
-      // names -- the "blacklist" names will be undefined
+      // Here's the key. The Function constructor acccepts a list of argument
+      // names followed by the source of the *body* of the function to
+      // construct. We supply the whitelist names, followed by the "blacklist"
+      // of globals, followed by the script source. But when we invoke the
+      // function thus created, we will only provide values for the whitelisted
+      // names -- all of the "blacklist" names will therefore have the value
+      // 'undefined' inside the function body.
+      //
+      // (Additionally, remember that functions created by the Function
+      // constructor execute in the global context -- they don't capture names
+      // from the scope they were created in.)
       scriptArgumentList = whitelistedNames.concat(blacklistedNames).concat(safedScriptSource);
 
-      // TODO: obvious optimization: cache the result of the Function constructor and
-      // don't reinvoke the Function constructor unless the blacklistedNames array has
-      // changed. Create a unit test for this scenario.
+      // TODO: obvious optimization: cache the result of the Function constructor
+      // and don't reinvoke the Function constructor unless the blacklistedNames array
+      // has changed. Create a unit test for this scenario.
       try {
         safedScript = Function.apply(null, scriptArgumentList);
       } catch (e) {
@@ -157,11 +163,10 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         // invoke the script, passing only enough arguments for the whitelisted names
         safedScript.apply(null, whitelistedObjectsArray);
       } catch (e) {
-        alert("Error running script: " + e.toString());
+        alert("Error running script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
       }
     };
   }
-
 
   function createButton(component) {
     var $button, scriptStr;
