@@ -5,18 +5,18 @@
       "type": "button",
       "id": "abs-zero",
       "text": "Set to absolute zero",
-      "action": "model.set({temperature_control: true, temperature: 0.00001});"
+      "action": "set({temperature_control: true, temperature: 0.00001});"
     },
     {
       "type": "button",
       "id": "add-heat",
       "text": "Add lots of heat",
       "action": [
-        "var curTemp = model.get('temperature'), newTemp = curTemp + 200;",
+        "var curTemp = get('temperature'), newTemp = curTemp + 200;",
         "if (newTemp > 4000) {",
         "  newTemp = 4000;",
         "}",
-        "model.set({temperature_control: true, temperature: newTemp});"
+        "set({temperature_control: true, temperature: newTemp});"
       ]
     },
     {
@@ -24,11 +24,11 @@
       "id": "subtract-heat",
       "text": "Subtract some heat",
       "action": [
-        "var curTemp = model.get('temperature'), newTemp = curTemp - 50;",
+        "var curTemp = get('temperature'), newTemp = curTemp - 50;",
         "if (newTemp < 1) {",
         "  newTemp = 1;",
         "}",
-        "model.set({temperature_control: true, temperature: newTemp});"
+        "set({temperature_control: true, temperature: newTemp});"
       ]
     }
   ]

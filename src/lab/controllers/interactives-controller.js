@@ -1,4 +1,4 @@
-/*globals controllers model layout Thermometer $ */
+/*globals controllers model layout Thermometer $ alert */
 controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
 
   if (typeof layoutStyle === 'undefined') {
@@ -46,8 +46,97 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     }
   }
 
+  /**
+    Given a script string, return a function that executes that script in a context
+    containing *only* the bindings to names we supply.
+  */
+  function evalInScriptContext(scriptSource) {
+    var prop,
+        whitelistedObjects,
+        whitelistedNames,
+        whitelistedObjectsArray,
+        safedScriptSource;
+
+    // The keys of the object below will be exposed to the script as if they were local vars
+    // TODO: move this (which effectively defines the scripting API, an important
+    // piece of Next Gen MW!) to its own home.
+    whitelistedObjects = {
+      // the methods we want to expose...
+      addAtom: function addAtom() {
+        return model.addRandomAtom.apply(model, arguments);
+      },
+
+      addRandomAtom: function addRandomAtom() {
+        return model.addRandomAtom.apply(model, arguments);
+      },
+
+      get: function get() {
+        return model.get.apply(model, arguments);
+      },
+
+      set: function set() {
+        return model.set.apply(model, arguments);
+      },
+
+      console: window.console
+    };
+
+    // Construct parallel arrays of the keys and values above
+    whitelistedNames = [];
+    whitelistedObjectsArray = [];
+
+    for (prop in whitelistedObjects) {
+      if (whitelistedObjects.hasOwnProperty(prop)) {
+        whitelistedNames.push(prop);
+        whitelistedObjectsArray.push( whitelistedObjects[prop] );
+      }
+    }
+
+    // Make sure the script runs in strict mode, so undeclared variables don't
+    // escape to the toplevel scope.
+    safedScriptSource =  "'use strict';" + scriptSource;
+
+    // This function runs the script will all globals shadowed:
+    return function() {
+      var prop,
+          blacklistedNames,
+          scriptArgumentList,
+          safedScript;
+
+      // Blacklist all globals, except those we have whitelisted
+      blacklistedNames = [];
+      for (prop in window) {
+        if (window.hasOwnProperty(prop) && whitelistedNames.indexOf(prop) < 0) {
+          blacklistedNames.push(prop);
+        }
+      }
+
+      // Here's the key. The Function constructor acccepts a list of argument names
+      // followed by the source of the function to construct.
+      // We supply the whitelist names, followed by the "blacklist" of globals, followed
+      // by the script source. But we will only provide bindings for the whitelisted
+      // names -- the "blacklist" names will be undefined
+      scriptArgumentList = whitelistedNames.concat(blacklistedNames).concat(safedScriptSource);
+
+      try {
+        // make the script with the whitelist names, blacklist names, and source
+        safedScript = Function.apply(null, scriptArgumentList);
+      } catch (e) {
+        alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
+      }
+
+      try {
+        // invoke the script, passing only enough arguments for the whitelisted names
+        safedScript.apply(null, whitelistedObjectsArray);
+      } catch (e) {
+        alert("Error running script: " + e.toString());
+      }
+    };
+  }
+
+
   function createButton(component) {
-    var $button, scriptStr, script;
+    var $button, scriptStr;
 
     $button = $('<button>').attr('id', component.id).html(component.text);
 
@@ -56,8 +145,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     } else {
       scriptStr = component.action.join('\n');
     }
-    eval('script = function() {'+scriptStr+'}');
-    $button.click(script);
+
+    $button.click(evalInScriptContext(scriptStr));
 
     return $button;
   }

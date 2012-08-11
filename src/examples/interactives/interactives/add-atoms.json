@@ -5,7 +5,7 @@
       "type": "button",
       "id": "add-atom",
       "text": "Add an atom",
-      "action": "model.addAtom(0, 0, 0, 0.001, 0.001)"
+      "action": "addAtom(0, 0, 0, 0.001, 0.001)"
     }
   ]
 }

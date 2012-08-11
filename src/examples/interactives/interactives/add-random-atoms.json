@@ -5,7 +5,7 @@
       "type": "button",
       "id": "add-atom",
       "text": "Add a random atom",
-      "action": "model.addRandomAtom()"
+      "action": "addRandomAtom()"
     }
   ]
 }
