@@ -271,12 +271,12 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     interactive = newInteractive;
     $interactiveContainer = $(viewSelector);
     if ($interactiveContainer.children().length === 0) {
-      $top = $('<div class="top" id="top"/>');
+      $top = $('<div class="interactive-top" id="top"/>');
       $top.append('<div id="molecule-container"/>');
       $right = $('<div id="right"/>');
       $top.append($right);
       $interactiveContainer.append($top);
-      $interactiveContainer.append('<div class="bottom" id="bottom"/>');
+      $interactiveContainer.append('<div class="interactive-bottom" id="bottom"/>');
     } else {
       $('#bottom').html('');
       $('#right').html('');
