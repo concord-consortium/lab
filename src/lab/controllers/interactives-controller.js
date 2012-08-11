@@ -1,4 +1,5 @@
 /*globals controllers model layout Thermometer $ alert */
+/*jshint eqnull: true*/
 controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
 
   if (typeof layoutStyle === 'undefined') {
@@ -9,7 +10,48 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       modelController,
       $interactiveContainer,
       propertiesListeners = [],
-      actionQueue = [];
+      actionQueue = [],
+
+      //
+      // Define the scripting API used by 'action' scripts on interactive elements.
+      //
+      // The properties of the object below will be exposed to the interactive's
+      // 'action' scripts as if they were local vars. All other names (including
+      // all globals, but exluding Javascript builtins) will be unavailable in the
+      // script context; and scripts are run in strict mode so they don't
+      // accidentally expose or read globals.
+      //
+      // TODO: move construction of this object to its own file.
+      //
+
+      scriptingAPI = {
+
+        addAtom: function addAtom() {
+          return model.addRandomAtom.apply(model, arguments);
+        },
+
+        addRandomAtom: function addRandomAtom() {
+          return model.addRandomAtom.apply(model, arguments);
+        },
+
+        get: function get() {
+          return model.get.apply(model, arguments);
+        },
+
+        set: function set() {
+          return model.set.apply(model, arguments);
+        },
+
+        // rudimentary debugging functionality
+        alert: alert,
+
+        console: window.console != null ? window.console : {
+          log: function() {},
+          error: function() {},
+          warn: function() {},
+          dir: function() {}
+        }
+      };
 
   /**
     Load the model from the url specified in the 'model' key.
@@ -46,49 +88,30 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     }
   }
 
+
   /**
     Given a script string, return a function that executes that script in a context
     containing *only* the bindings to names we supply.
+
+    This isn't intended for XSS protection (in particular it relies on strict mode)
+    Rather, it's so script authors don't get too clever and start relying on
+    accidentally exposed functionality, before we've made decisions about what
+    scripting API and semantics we want to support.
   */
   function evalInScriptContext(scriptSource) {
     var prop,
-        whitelistedObjects,
         whitelistedNames,
         whitelistedObjectsArray,
         safedScriptSource;
-
-    // The keys of the object below will be exposed to the script as if they were local vars
-    // TODO: move this (which effectively defines the scripting API, an important
-    // piece of Next Gen MW!) to its own home.
-    whitelistedObjects = {
-      // the methods we want to expose...
-      addAtom: function addAtom() {
-        return model.addRandomAtom.apply(model, arguments);
-      },
-
-      addRandomAtom: function addRandomAtom() {
-        return model.addRandomAtom.apply(model, arguments);
-      },
-
-      get: function get() {
-        return model.get.apply(model, arguments);
-      },
-
-      set: function set() {
-        return model.set.apply(model, arguments);
-      },
-
-      console: window.console
-    };
 
     // Construct parallel arrays of the keys and values above
     whitelistedNames = [];
     whitelistedObjectsArray = [];
 
-    for (prop in whitelistedObjects) {
-      if (whitelistedObjects.hasOwnProperty(prop)) {
+    for (prop in scriptingAPI) {
+      if (scriptingAPI.hasOwnProperty(prop)) {
         whitelistedNames.push(prop);
-        whitelistedObjectsArray.push( whitelistedObjects[prop] );
+        whitelistedObjectsArray.push( scriptingAPI[prop] );
       }
     }
 
@@ -96,7 +119,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     // escape to the toplevel scope.
     safedScriptSource =  "'use strict';" + scriptSource;
 
-    // This function runs the script will all globals shadowed:
+    // This function runs the script with all globals shadowed:
     return function() {
       var prop,
           blacklistedNames,
@@ -104,9 +127,12 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           safedScript;
 
       // Blacklist all globals, except those we have whitelisted
+      // (Don't move the construction of 'blacklistedNames' to the enclosing scope,
+      // because new globals -- in particular, 'model' -- are created in between the
+      // time the enclosing function executes and the time this function executes.)
       blacklistedNames = [];
       for (prop in window) {
-        if (window.hasOwnProperty(prop) && whitelistedNames.indexOf(prop) < 0) {
+        if (window.hasOwnProperty(prop) && !scriptingAPI.hasOwnProperty(prop)) {
           blacklistedNames.push(prop);
         }
       }
@@ -114,12 +140,14 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       // Here's the key. The Function constructor acccepts a list of argument names
       // followed by the source of the function to construct.
       // We supply the whitelist names, followed by the "blacklist" of globals, followed
-      // by the script source. But we will only provide bindings for the whitelisted
+      // by the script source. But we will only provide values for the whitelisted
       // names -- the "blacklist" names will be undefined
       scriptArgumentList = whitelistedNames.concat(blacklistedNames).concat(safedScriptSource);
 
+      // TODO: obvious optimization: cache the result of the Function constructor and
+      // don't reinvoke the Function constructor unless the blacklistedNames array has
+      // changed. Create a unit test for this scenario.
       try {
-        // make the script with the whitelist names, blacklist names, and source
         safedScript = Function.apply(null, scriptArgumentList);
       } catch (e) {
         alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
