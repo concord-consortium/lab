@@ -42,6 +42,14 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           return model.set.apply(model, arguments);
         },
 
+        adjustTemperature: function adjustTemperature(fraction) {
+          model.set({temperature: fraction * model.get('temperature')});
+        },
+
+        limitHighTemperature: function limitHighTemperature(t) {
+          if (model.get('temperature') > t) model.set({temperature: t});
+        },
+
         // rudimentary debugging functionality
         alert: alert,
 
