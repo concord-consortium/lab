@@ -1,7 +1,5 @@
 {
   "temperature_control": false,
-  "lennard_jones_forces": true,
-  "coulomb_forces": false,
   "width": 4,
   "height": 2.5,
   "elements": [
@@ -54,6 +52,30 @@
     ],
     "ELEMENT": [
       3
+    ]
+  },
+  "obstacles": {
+    "x": [
+      3.48
+    ],
+    "y": [
+      0.050000000000000266
+    ],
+    "height": [
+      2.42
+    ],
+    "width": [
+      0.41
+    ],
+    "density": [
+      "Infinity"
+    ],
+    "color": [
+      [
+        128,
+        128,
+        128
+      ]
     ]
   }
 }

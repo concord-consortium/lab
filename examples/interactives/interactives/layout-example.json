@@ -5,18 +5,18 @@
       "type": "button",
       "id": "abs-zero",
       "text": "Set to absolute zero",
-      "action": "model.set({temperature: 0.00001});"
+      "action": "set({temperature: 0.00001});"
     },
     {
       "type": "button",
       "id": "add-heat",
       "text": "Add lots of heat",
       "action": [
-                "var curTemp = model.get('temperature'), newTemp = curTemp + 2500;",
+                "var curTemp = get('temperature'), newTemp = curTemp + 2500;",
                 "if (newTemp > 4000) {",
                 "  newTemp = 4000;",
                 "}",
-                "model.set({temperature: newTemp});"
+                "set({temperature: newTemp});"
               ]
     },
     {

@@ -41,9 +41,9 @@ A live version of the readme is always available here:
 <ul id="markdown-toc">
   <li><a href="#licensing">Licensing</a></li>
   <li><a href="#examples">Examples</a>    <ul>
-      <li><a href="#molecular-modeling-examples">Molecular Modeling Examples:</a></li>
-      <li><a href="#energy2d-examples">Energy2D Examples:</a></li>
-      <li><a href="#graphing-examples">Graphing examples:</a></li>
+      <li><a href="#molecular-modeling-examples">Molecular Modeling Examples</a></li>
+      <li><a href="#energy2d-examples">Energy2D Examples</a></li>
+      <li><a href="#graphing-examples">Graphing examples</a></li>
       <li><a href="#probeware-examples">Probeware Examples</a></li>
     </ul>
   </li>
@@ -53,6 +53,14 @@ A live version of the readme is always available here:
           <li><a href="#rvm-ruby-19-and-the-rubygem-bundler">RVM, Ruby 1.9 and the RubyGem bundler</a></li>
           <li><a href="#nodejs-and-npm-the-node-package-manager">nodejs and npm, the Node Package Manager</a></li>
           <li><a href="#couchdb">CouchDB</a></li>
+          <li><a href="#java">Java</a>            <ul>
+              <li><a href="#customize-maven-mirror">Customize Maven mirror</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#linux-ubuntu">Linux (Ubuntu)</a>        <ul>
+          <li><a href="#nodejs-and-npm-and-couchdb">nodejs and npm and couchdb</a></li>
         </ul>
       </li>
       <li><a href="#use-git-to-create-a-local-clone-of-the-lab-repository">Use git to create a local clone of the Lab repository.</a></li>
@@ -63,7 +71,8 @@ A live version of the readme is always available here:
               <li><a href="#entering-the-rails-lab-server-console">Entering the Rails Lab server console</a></li>
             </ul>
           </li>
-          <li><a href="#building-the-legacy-java-applications-and-the-sensor-java-applet">Building the Legacy Java applications and the Sensor Java Applet</a>            <ul>
+          <li><a href="#building-the-classic-java-applications-and-the-sensor-java-applet">Building the Classic Java applications and the Sensor Java Applet</a>            <ul>
+              <li><a href="#running-the-classic-java-molecular-workbench-and-energy2d-as-applications">Running the Classic Java Molecular Workbench and Energy2D as Applications</a></li>
               <li><a href="#java-code-signing-certificate-and-keystore">Java Code-Signing Certificate and Keystore</a></li>
               <li><a href="#building-the-java-resources">Building the Java Resources</a></li>
             </ul>
@@ -209,7 +218,7 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
 <h2 id="examples">Examples</h2>
 
-<h3 id="molecular-modeling-examples">Molecular Modeling Examples:</h3>
+<h3 id="molecular-modeling-examples">Molecular Modeling Examples</h3>
 
 <ul>
   <li><a href="examples/simple-atoms-model/simple-atoms-model.html">Simple Atoms Model</a></li>
@@ -217,13 +226,13 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
   <li><a href="examples/interactives/interactives.html">Authorable Atoms Model</a></li>
 </ul>
 
-<h3 id="energy2d-examples">Energy2D Examples:</h3>
+<h3 id="energy2d-examples">Energy2D Examples</h3>
 
 <ul>
   <li><a href="examples/energy2d-model/energy2d-model.html">Energy2D Models</a></li>
 </ul>
 
-<h3 id="graphing-examples">Graphing examples:</h3>
+<h3 id="graphing-examples">Graphing examples</h3>
 
 <ul>
   <li><a href="examples/grapher/grapher.html">Graphing Samples</a></li>
@@ -344,7 +353,155 @@ $ npm -v
   </li>
 </ol>
 
-<p><strong>Linux</strong></p>
+<h4 id="java">Java</h4>
+
+<p>Java is needed for compiling the invisible sensor applet as well as the legacy Java applications we are porting to HTML5.</p>
+
+<p>Test to see if Java is installed and available:</p>
+
+<pre><code>$ java -version
+java version "1.6.0_33"
+Java(TM) SE Runtime Environment (build 1.6.0_33-b03-424-11M3720)
+Java HotSpot(TM) 64-Bit Server VM (build 20.8-b03-424, mixed mode)
+</code></pre>
+
+<p>On Mac OS X 10.7 and later Java is not automatically installed. However running the command
+<code>java -version</code> when Java is not installed will bring up an operating system dialog enabling
+Java to be installed.</p>
+
+<h5 id="customize-maven-mirror">Customize Maven mirror</h5>
+
+<p><strong>Note:</strong> Currently in order to compile OTrunk a very old version of the maven jarjar plugin is
+needed (v0.4). Only newer versions of the jarjar plugin are available in the public Maven artifact 
+repositories. Until OTrunk is updated you will need to include the Concord nexus Maven mirror
+(which has v0.4 of the maven jarjar plugin) in <code>~/.m2/settings.xml</code>.</p>
+
+<p>A minimal working <code>~/.m2/settings.xml</code> will look like this:</p>
+
+<pre><code>&lt;?xml version="1.0"?&gt;
+&lt;settings&gt;
+  &lt;mirrors&gt;
+    &lt;mirror&gt;
+      &lt;id&gt;nexus&lt;/id&gt;
+      &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+      &lt;url&gt;http://source.concord.org/nexus/content/groups/public&lt;/url&gt;
+    &lt;/mirror&gt;
+  &lt;/mirrors&gt;
+&lt;/settings&gt;
+</code></pre>
+
+<h3 id="linux-ubuntu">Linux (Ubuntu)</h3>
+
+<p>Before any of this make sure that “run command as login shell” is checked. if it isn’t go to edit-profile
+preferences-Title and Command, and check Run command as a login shell.</p>
+
+<p>To <a href="https://rvm.io/rvm/install/">Install RVM</a> you need to have curl:</p>
+
+<pre><code>$ sudo apt-get install curl &lt;/code&gt;&lt;/pre&gt;
+</code></pre>
+
+<p>Install RVM using curl with:</p>
+
+<pre><code>$ curl -L https://get.rvm.io | bash -s stable --ruby
+</code></pre>
+
+<p>After RVM has finnished installing it will ask you to run a command similar to</p>
+
+<pre><code>$ source /home/user_name/.rvm/scripts/rvm
+</code></pre>
+
+<p>After installation you should see something like the following:</p>
+
+<pre><code>$  ruby -v
+ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-linux]
+</code></pre>
+
+<p>RVM has some additional dependancies, to view these type:</p>
+
+<pre><code>$ rvm requirements
+</code></pre>
+
+<p>Under additional dependancies and ruby, copy the list of dependancies and paste them in to your terminal
+and install them using <code>sudo</code>. The command will look something like this:</p>
+
+<pre><code>sudo /usr/bin/apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
+
+<p>Becouse of some unknown bugs RVM doesn’t recognise readline without being explictly pointed to it.
+To do this I’ve had to reinstall ruby 1.9.3-p194.</p>
+
+<p>$ rvm reinstall 1.9.3-p194 –with-zlib1g-dev</p>
+
+<p><a href="http://gembundler.com/">ruby gem bundler</a> should be installed. To check if it has been try:</p>
+
+<pre><code>$ gem list bundler
+
+*** LOCAL GEMS ***
+
+bundler (1.1.4)
+</code></pre>
+
+<p>If it doesn’t return anything install Bundler:</p>
+
+<pre><code>$ gem install bundler
+</code></pre>
+
+<h4 id="nodejs-and-npm-and-couchdb">nodejs and npm and couchdb</h4>
+
+<p><a href="http://nodejs.org/">nodejs</a> and <a href="http://npmjs.org/">npm</a>, the Node Package Manager are additional
+development dependencies.</p>
+
+<p><a href="http://npmjs.org/">npm</a>, the Node Package Manager has been included as part of <a href="http://nodejs.org/">nodejs</a>
+since version 0.6.3.</p>
+
+<p>The nosql document-oriented <a href="http://couchdb.apache.org/">CouchDB</a> database server is installed to support persistence for the Lab server.</p>
+
+<p>To install the latest stable versions of node and couchdb you first need to add these PPA repositories:</p>
+
+<ol>
+  <li><a href="https://launchpad.net/~chris-lea/+archive/node.js/">node PPA repo</a></li>
+  <li><a href="https://launchpad.net/~longsleep/+archive/couchdb">couchdb PPA repo</a></li>
+</ol>
+
+<p>For these to work as intended python software properties must also be installed.</p>
+
+<pre><code>$ sudo apt-get install python-software-properties
+$ sudo apt-add-repository ppa:chris-lea/node.js
+$ sudo apt-add-repository ppa:longsleep/couchdb
+$ sudo apt-get update
+</code></pre>
+
+<p>Now install node and couchdb:</p>
+
+<pre><code>$ sudo apt-get install couchdb nodejs npm
+</code></pre>
+
+<p>Currently development is being done with these versions of node and npm:</p>
+
+<pre><code>$ node -v
+v0.8.2
+
+$ npm -v
+1.1.37
+</code></pre>
+
+<p>Neither the Java run time environment nor the Java development kit are installed by
+default, both of which are used for the java projects.</p>
+
+<pre><code>sudo apt-get install  default-jre openjdk-6-jdk
+</code></pre>
+
+<p>The Ruby Gem Nokogiri requires libxslt and libxml2, install them with:</p>
+
+<pre><code>sudo apt-get install libxslt-dev libxml2-dev
+</code></pre>
+
+<p>Final note, before you <code>make everything</code> setup the project configurations files by copying the
+configuration samples:</p>
+
+<pre><code>cp config/config_sample.yml config/config.yml
+cp server/config/couchdb.sample.yml server/config/couchdb.yml
+</code></pre>
 
 <h3 id="use-git-to-create-a-local-clone-of-the-lab-repository">Use git to create a local clone of the Lab repository.</h3>
 
@@ -470,7 +627,7 @@ thin start
 rails console
 </code></pre>
 
-<h4 id="building-the-legacy-java-applications-and-the-sensor-java-applet">Building the Legacy Java applications and the Sensor Java Applet</h4>
+<h4 id="building-the-classic-java-applications-and-the-sensor-java-applet">Building the Classic Java applications and the Sensor Java Applet</h4>
 
 <p>The Lab repository can build the legacy Java applications Molecular Workbench and Energy2D we
 are converting to HTML5.</p>
@@ -481,6 +638,26 @@ of the HTML5 versions of these applications to the Java versions running in he b
 <p>In addition we can create the Java resources to run the invisible Java applet needed for communicating
 with Vernier GoIO probware in the browser however the Java resources for communicating with the
 Vernier GoIO Probeware need to be digitally signed.</p>
+
+<h5 id="running-the-classic-java-molecular-workbench-and-energy2d-as-applications">Running the Classic Java Molecular Workbench and Energy2D as Applications</h5>
+
+<p>After building the Java resources the Java applications Molecular Workbench and Energy2D can be
+run as applications from the command line:</p>
+
+<ol>
+  <li>
+    <p>Molecular Workbench</p>
+
+    <pre><code> bin/mw
+</code></pre>
+  </li>
+  <li>
+    <p>Energy2D</p>
+
+    <pre><code> bin/energy2d
+</code></pre>
+  </li>
+</ol>
 
 <h5 id="java-code-signing-certificate-and-keystore">Java Code-Signing Certificate and Keystore</h5>
 
@@ -539,6 +716,8 @@ Enter keystore password:
 
 <h5 id="building-the-java-resources">Building the Java Resources</h5>
 
+<p><strong>Note:</strong> Currently in order to compile OTrunk you need to include the Concord nexus Maven mirror in <code>~/.m2/settings.xml</code>. See <a href="#customize_aven_mirror">Customize Maven mirror</a></p>
+
 <p>Run <code>make jnlp-all</code> to erase, build, package, sign and deploy all the Java resurces.</p>
 
 <p>The first time this task is run it:</p>
@@ -561,52 +740,78 @@ the command again with the <code>--maven-update</code> argument:</p>
 <pre><code>script/build-and-deploy-jars.rb --maven-update
 </code></pre>
 
-<p>Details about each project, where the repository is located, what branch is compiled, what specific
-compilation details are all contained in <code>config/java-projects.rb/</code>.</p>
+<p>Details about each Java project, where the repository is located, what branch is compiled, the specific
+compilation details are all contained in this Ruby file:
+<a href="https://github.com/concord-consortium/lab/blob/master/config/java-projects.rb"><code>config/java-projects.rb</code></a></p>
 
 <h4 id="java-builddeploy-integration">Java build/deploy integration</h4>
 
-<p>There is a configuration file expressed in Ruby code here <code>config/java-projects.rb</code> for all the
-Java projects that will be checked-out, built, packed, signed if neede, and deployed.</p>
+<p>There is a configuration file expressed in Ruby code here which defines build specifications
+for each Java project:
+<a href="https://github.com/concord-consortium/lab/blob/master/config/java-projects.rb"><code>config/java-projects.rb</code></a></p>
 
-<p>In this configuration file projects are specified like this:</p>
-
-<pre><code>'otrunk'         =&gt; { :repository =&gt; 'git://github.com/concord-consortium/otrunk.git',
-                      :branch =&gt; 'trunk',
-                      :path =&gt; 'org/concord/otrunk',
-                      :build_type =&gt; :maven,
-                      :build =&gt; MAVEN_STD_CLEAN_BUILD,
-                      :has_applet_class =&gt; true,
-                      :sign =&gt; true },
-</code></pre>
-
-<p>The ‘trunk’ branch of this repo will be checked out into ./java/otrunk and will be built using Maven.
-Becuase the otrunk jar is used with the sensor-applet code it must be signed.</p>
+<p>The specification indicates whether the Java Jar resource will be directly downloaded or whether the
+source code will be checked-out and compiled to create the Jar.</p>
 
 <h5 id="java-projects-build-strategies">Java Projects Build Strategies</h5>
 
-<p>The <code>:build_type</code> option is used to specify the  Java Projects Build Strategy
-Four different kinds of build strategies can be used. Each strategy includes
+<p>The <code>:build_type</code> option is used to specify the Java Projects Build Strategy.
+Five different kinds of build strategies are available. Each strategy includes
 additional build information in the <code>:build</code> option.</p>
 
 <ol>
-  <li><code>:maven</code></li>
+  <li>
+    <p><code>:maven</code></p>
+
+    <p>Concord’s OTrunk framework uses the <code>:maven</code> build strategy:</p>
+
+    <pre><code> 'otrunk' =&gt; { :repository =&gt; 'git://github.com/concord-consortium/otrunk.git',
+               :branch =&gt; 'trunk',
+               :path =&gt; 'org/concord/otrunk',
+               :build_type =&gt; :maven,
+               :build =&gt; MAVEN_STD_CLEAN_BUILD,
+               :has_applet_class =&gt; true,
+               :sign =&gt; true },
+</code></pre>
+
+    <p>The <code>trunk</code> branch of the otrunk repo will be checked out into <code>./java/otrunk</code> and be built using Maven.
+ Because the otrunk jar is used with the sensor-applet code (which uses a native library) it must also be signed.</p>
+  </li>
   <li><code>:ant</code></li>
-  <li><code>:custom</code></li>
+  <li>
+    <p><code>:custom</code></p>
+
+    <p>For Energy2D a <code>:custom</code> build strategy is used and the command line invocation necessary is in the
+ <code>MANUAL_JAR_BUILD</code> constant.</p>
+
+    <pre><code> 'energy2d' =&gt; { :repository =&gt; 'git://github.com/concord-consortium/energy2d.git',
+                 :branch =&gt; 'trunk',
+                 :path =&gt; 'org/concord/energy2d',
+                 :build_type =&gt; :custom,
+                 :version =&gt; '0.1.0',
+                 :build =&gt; MANUAL_JAR_BUILD,
+                 :has_applet_class =&gt; true,
+                 :sign =&gt; false }
+</code></pre>
+
+    <p>In this case <code>MANUAL_JAR_BUILD</code> has been defined as:</p>
+
+    <pre><code> MANUAL_JAR_BUILD = "rm -rf bin; mkdir bin; find src -name *.java | xargs javac -target 5 -sourcepath src -d bin"
+</code></pre>
+  </li>
   <li><code>:copy_jars</code></li>
+  <li>
+    <p><code>:download</code></p>
+
+    <p>JDom uses the <code>:download</code> build strategy:</p>
+
+    <p>‘jdom’           =&gt; { :build_type =&gt; :download,
+                       :url =&gt; ‘http://repo1.maven.org/maven2/jdom/jdom/1.0/jdom-1.0.jar’,
+                       :path =&gt; ‘jdom/jdom’,
+                       :version =&gt; ‘1.0’,
+                       :sign =&gt; true }</p>
+  </li>
 </ol>
-
-<p>For Energy2D a <code>:custom</code> build strategy is used and the command line invocation necessary is in the
-<code>MANUAL_JAR_BUILD</code> constant.</p>
-
-<p>‘energy2d’       =&gt; { :repository =&gt; ‘git://github.com/concord-consortium/energy2d.git’,
-                        :branch =&gt; ‘trunk’,
-                        :path =&gt; ‘org/concord/energy2d’,
-                        :build_type =&gt; :custom,
-                        :version =&gt; ‘0.1.0’,
-                        :build =&gt; MANUAL_JAR_BUILD,
-                        :has_applet_class =&gt; true,
-                        :sign =&gt; false },</p>
 
 <p>The script that runs the checkout-build-pack-sign-deploy can either operate on ALL projects specified or on a smaller number.</p>
 
@@ -617,7 +822,8 @@ additional build information in the <code>:build</code> option.</p>
 <pre><code>script/build-and-deploy-jars.rb sensor sensor-applets
 </code></pre>
 
-<p>The deployed resources have a timestamp in the deployed artifact so unless you specifically request an earlier version you will always get the latest deployed version.</p>
+<p>The Jar resources deployed to the <code>server/public/jnlp</code> directory include a timestamp in the deployed artifact so unless you specifically
+request an earlier version you will always get the latest version deployed.</p>
 
 <h5 id="jnlpapp-rack-application-service">JnlpApp Rack Application Service</h5>
 
@@ -1528,7 +1734,7 @@ tasks to update a remote server.</p>
 
 <p>The basic command to update a server:</p>
 
-<pre><code>can &lt;deploy-taget&gt; deploy:update
+<pre><code>cap &lt;deploy-target&gt; deploy:update
 </code></pre>
 
 <p>Here are the list of current Capistrano deploy commands:</p>
@@ -1536,6 +1742,7 @@ tasks to update a remote server.</p>
 <pre><code>$ cap -T deploy:
 cap deploy:clean_and_update # clean and update server
 cap deploy:setup            # setup server
+cap deploy:status           # display last commit on deployed server
 cap deploy:update           # update server
 cap deploy:update_jnlps     # update public/jnlp dir on server
 </code></pre>

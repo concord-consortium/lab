@@ -1,0 +1,48 @@
+{
+  "model": "models/benard-cell100.json",
+  "components": [
+    {
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
+    },
+    {
+      "type": "energy2d-scene-view",
+      "id": "energy2d-scene-id"
+    },
+    {
+      "type": "energy2d-performance-view",
+      "id": "energy2d-performance-id"
+    },
+    {
+      "type": "energy2d-webgl-status-view",
+      "id": "energy2d-webgl-status-id"
+    }
+  ],
+  "description": {
+    "title": "Bénard Convection Cells",
+    "tagline": "A Self-Organizing Pattern of Fluid Flow",
+    "content": "Rayleigh-Bénard convection is a type of natural convection, occurring in a plane of fluid heated from below, \nin which the fluid develops a regular pattern of convection cells known as the Bénard cells. The following model shows this.",
+    "footnote": ""
+  },
+  "layout": {
+    "energy2d-scene-id": {
+      "css": {
+        "width": "600px",
+        "height": "600px"
+      }
+    },
+    "energy2d-player-id": {
+      "class": "component_group",
+      "css": {
+        "text-align": "center",
+        "margin": "0.2em"
+      }
+    },
+    "energy2d-performance-id": {
+      "container": "#performance"
+    },
+    "energy2d-webgl-status-id": {
+      "container": "#webgl-status"
+    }
+  }
+}

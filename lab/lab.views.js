@@ -170,10 +170,13 @@ layout.moleculeContainer = function(e, options) {
       particle, label, labelEnter, tail,
       molRadius,
       molecule_div, molecule_div_pre,
-      atoms,
+      mock_atoms_array = [],
       get_num_atoms,
       nodes,
       get_nodes,
+      obstacle,
+      get_obstacles,
+      mock_obstacles_array = [],
       default_options = {
         title:                false,
         xlabel:               false,
@@ -191,41 +194,40 @@ layout.moleculeContainer = function(e, options) {
         ymax:                 10
       };
 
-  if (options) {
-    for(var p in default_options) {
-      if (options[p] === undefined) {
-        options[p] = default_options[p];
-      }
-    }
-  } else {
-    options = default_options;
-  }
-
-  // The get_nodes option allows us to update 'nodes' array every model tick.
-  get_nodes = options.get_nodes;
-  nodes = get_nodes();
-
-  get_num_atoms = options.get_num_atoms;
-  (atoms=[]).length = get_num_atoms();
-
+  processOptions();
   scale(cx, cy);
 
   tx = function(d, i) { return "translate(" + x(d) + ",0)"; };
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
+  function processOptions(newOptions) {
+    if (newOptions) {
+      options = newOptions;
+    }
+    if (options) {
+      for(var p in default_options) {
+        if (options[p] === undefined) {
+          options[p] = default_options[p];
+        }
+      }
+    } else {
+      options = default_options;
+    }
+
+    // The get_nodes option allows us to update 'nodes' array every model tick.
+    get_nodes = options.get_nodes;
+    nodes = get_nodes();
+
+    get_num_atoms = options.get_num_atoms;
+    mock_atoms_array.length = get_num_atoms();
+
+    get_obstacles = options.get_obstacles;
+  };
+
   function scale(w, h) {
     var modelSize = model.size(),
         aspectRatio = modelSize[0] / modelSize[1];
-    if (!arguments.length) {
-      cy = elem.property("clientHeight");
-      cx = cy * aspectRatio;
-    } else {
-      cy = h;
-      node.style.height = cy +"px";
-      cx = cy * aspectRatio;
-    }
-    node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
     padding = {
        "top":    options.title  ? 40 * layout.screen_factor : 20,
@@ -241,16 +243,24 @@ layout.moleculeContainer = function(e, options) {
     if (options.playback_controller || options.play_only_controller) {
       padding.bottom += (40  * scale_factor);
     }
-
-    height = cy - padding.top  - padding.bottom;
-    width  = cx - padding.left  - padding.right;
-
+    if (!arguments.length) {
+      cy = elem.property("clientHeight");
+      height = cy - padding.top  - padding.bottom;
+      width = height * aspectRatio;
+      cx = width + padding.left  + padding.right;
+    } else {
+      width  = w;
+      height = h;
+      cx = width + padding.left  + padding.right;
+      cy = height + padding.top  + padding.bottom;
+      node.style.height = cy +"px";
+    }
+    node.style.width = cx +"px";
     size = {
       "width":  width,
       "height": height
     };
 
-    offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
     if (options.playback_controller) {
       pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
@@ -274,6 +284,13 @@ layout.moleculeContainer = function(e, options) {
     // y-scale (inverted domain)
     y = d3.scale.linear()
         .domain([options.ymax, options.ymin])
+        .nice()
+        .range([0, mh])
+        .nice();
+
+    // y-scale for defining heights without inverting the domain
+    y_flip = d3.scale.linear()
+        .domain([options.ymin, options.ymax])
         .nice()
         .range([0, mh])
         .nice();
@@ -327,6 +344,29 @@ layout.moleculeContainer = function(e, options) {
 
   function get_charge(i) {
     return nodes[model.INDICES.CHARGE][i];
+  }
+
+  function get_obstacle_x(i) {
+    return obstacles[model.OBSTACLE_INDICES.X][i];
+  }
+
+  function get_obstacle_y(i) {
+    return obstacles[model.OBSTACLE_INDICES.Y][i];
+  }
+
+  function get_obstacle_width(i) {
+    return obstacles[model.OBSTACLE_INDICES.WIDTH][i];
+  }
+
+  function get_obstacle_height(i) {
+    return obstacles[model.OBSTACLE_INDICES.HEIGHT][i];
+  }
+
+  function get_obstacle_color(i) {
+    return "rgb(" +
+      obstacles[model.OBSTACLE_INDICES.COLOR_R][i] + "," +
+      obstacles[model.OBSTACLE_INDICES.COLOR_G][i] + "," +
+      obstacles[model.OBSTACLE_INDICES.COLOR_B][i] + ")";
   }
 
   function container() {
@@ -398,6 +438,25 @@ layout.moleculeContainer = function(e, options) {
       if (options.play_only_controller) {
         playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
+
+      var updateHeatBath = function() {
+        var heatBath = model.get('temperature_control');
+        if (heatBath) {
+          d3.select("#heat_bath").style("display","");
+        }
+        else {
+          d3.select("#heat_bath").style("display","none");
+        }
+      }
+        vis.append("image")
+          .attr("x", 5)
+          .attr("id", "heat_bath")
+          .attr("y", 5)
+          .attr("width", 16)
+          .attr("height", 16)
+          .attr("xlink:href", "../../resources/heatbath.gif")
+      model.addPropertiesListener(["temperature_control"], updateHeatBath);
+      updateHeatBath();
 
       molecule_div = d3.select("#viz").append("div")
           .attr("class", "tooltip")
@@ -472,6 +531,13 @@ layout.moleculeContainer = function(e, options) {
         label.attr("transform", function(d, i) {
           return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
         });
+      }
+
+      if (obstacle) {
+        obstacle.attr("x", function(d, i) {return x(get_obstacle_x(i)); })
+                .attr("y", function(d, i) {return y(get_obstacle_y(i) + get_obstacle_height(i)); })
+                .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
+                .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); });
       }
 
       if (options.playback_controller || options.play_only_controller) {
@@ -597,7 +663,7 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function updateMoleculeRadius() {
-      vis.selectAll("circle").data(atoms).attr("r",  function(d, i) { return x(get_radius(i)); });
+      vis.selectAll("circle").data(mock_atoms_array).attr("r",  function(d, i) { return x(get_radius(i)); });
       // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
     }
 
@@ -611,7 +677,7 @@ layout.moleculeContainer = function(e, options) {
           .attr("cy", function(d, i) { return y(get_y(i)); })
           .style("cursor", "crosshair")
           .style("fill", function(d, i) {
-            if (model.get("coulomb_forces")) {
+            if (model.get("coulomb_forces") && x(get_charge(i))) {
               return (x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
             } else {
               element = get_element(i) % 4;
@@ -623,17 +689,29 @@ layout.moleculeContainer = function(e, options) {
           .on("mouseout", molecule_mouseout);
     }
 
+    function rectEnter(obstacle) {
+      obstacle.enter().append("rect")
+          .attr("x", function(d, i) {return x(get_obstacle_x(i)); })
+          .attr("y", function(d, i) {return y(get_obstacle_y(i) + get_obstacle_height(i)); })
+          .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
+          .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); })
+          .style("fill", function(d, i) {return get_obstacle_color(i); })
+          .style("stroke-width", 0.2)
+          .style("stroke", "black");
+    }
+
+    function setup_drawables() {
+      setup_particles();
+      setup_obstacles();
+    }
+
     function setup_particles() {
       // The get_nodes option allows us to update 'nodes' array every model tick.
       get_nodes = options.get_nodes;
       nodes = get_nodes();
 
       get_num_atoms = options.get_num_atoms;
-      (atoms=[]).length = get_num_atoms();
-
-      if (typeof atoms == "undefined" || !atoms){
-        return;
-      }
+      mock_atoms_array.length = get_num_atoms();
 
       var ljf = model.getLJCalculator()[0][0].coefficients();
       // // molRadius = ljf.rmin * 0.5;
@@ -642,7 +720,7 @@ layout.moleculeContainer = function(e, options) {
       gradient_container.selectAll("circle").remove();
       gradient_container.selectAll("g").remove();
 
-      particle = gradient_container.selectAll("circle").data(atoms);
+      particle = gradient_container.selectAll("circle").data(mock_atoms_array);
 
       circlesEnter(particle);
 
@@ -650,7 +728,7 @@ layout.moleculeContainer = function(e, options) {
       if (model.get('mol_number') > 100) { font_size *= 0.9; }
 
       label = gradient_container.selectAll("g.label")
-          .data(atoms);
+          .data(mock_atoms_array);
 
       labelEnter = label.enter().append("g")
           .attr("class", "label")
@@ -674,13 +752,26 @@ layout.moleculeContainer = function(e, options) {
             .attr("x", "-0.31em")
             .attr("y", "0.31em")
             .text(function(d, i) {
-              if (model.get("coulomb_forces")) {
+              if (model.get("coulomb_forces") && x(get_charge(i))) {
                 return (x(get_charge(i)) > 0) ? "+" : "–";
               } else {
                 return;    // ""
               }
             });
       }
+    }
+
+    function setup_obstacles() {
+      obstacles = get_obstacles();
+      if (!obstacles) return;
+
+      mock_obstacles_array.length = obstacles[0].length;
+
+      gradient_container.selectAll("rect").remove();
+
+      obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
+
+      rectEnter(obstacle);
     }
 
     function mousedown() {
@@ -737,9 +828,14 @@ layout.moleculeContainer = function(e, options) {
       }
     }
 
+    function update_drawable_positions() {
+      update_molecule_positions();
+      updateObstaclePositions();
+    }
+
     function update_molecule_positions() {
 
-      (atoms = []).length = get_num_atoms();
+      mock_atoms_array.length = get_num_atoms();
       nodes = get_nodes();
 
       // update model time display
@@ -747,13 +843,13 @@ layout.moleculeContainer = function(e, options) {
         time_label.text(modelTimeLabel());
       }
 
-      label = elem.selectAll("g.label").data(atoms);
+      label = elem.selectAll("g.label").data(mock_atoms_array);
 
       label.attr("transform", function(d, i) {
           return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
         });
 
-      particle = gradient_container.selectAll("circle").data(atoms);
+      particle = gradient_container.selectAll("circle").data(mock_atoms_array);
       circlesEnter(particle);
 
       particle.attr("cx", function(d, i) {
@@ -765,6 +861,19 @@ layout.moleculeContainer = function(e, options) {
       if ((typeof(atom_tooltip_on) === "number")) {
         render_atom_tooltip(atom_tooltip_on);
       }
+    }
+
+    function updateObstaclePositions() {
+      obstacles = get_obstacles();
+      if (!obstacles) return;
+
+      mock_obstacles_array.length = obstacles[0].length;
+
+      gradient_container.selectAll("rect").remove();
+
+      obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
+
+      rectEnter(obstacle);
     }
 
     // ------------------------------------------------------------
@@ -814,18 +923,26 @@ layout.moleculeContainer = function(e, options) {
     // make these private variables and functions available
     container.node = node;
     container.updateMoleculeRadius = updateMoleculeRadius;
-    container.setup_particles = setup_particles;
-    container.update_molecule_positions = update_molecule_positions;
+    container.setup_drawables = setup_drawables;
+    container.update_drawable_positions = update_drawable_positions;
     container.scale = scale;
     container.playback_component = playback_component;
+    container.options = options;
+    container.processOptions = processOptions;
   }
 
   container.resize = function(w, h) {
     container.scale(w, h);
     container();
-    container.setup_particles();
+    container.setup_drawables();
   };
 
+  container.reset = function(newOptions) {
+    container.processOptions(newOptions);
+    container();
+    container.setup_drawables();
+    container.updateMoleculeRadius();
+  };
 
  if (node) { container(); }
 

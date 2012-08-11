@@ -1,7 +1,5 @@
 {
   "temperature_control": true,
-  "lennard_jones_forces": true,
-  "coulomb_forces": false,
   "width": 4,
   "height": 2.5,
   "elements": [
@@ -43,6 +41,40 @@
     "VY": [],
     "CHARGE": [],
     "ELEMENT": []
+  },
+  "obstacles": {
+    "x": [
+      1.23,
+      1.24
+    ],
+    "y": [
+      1.5699999999999998,
+      0.030000000000000027
+    ],
+    "height": [
+      0.91,
+      0.97
+    ],
+    "width": [
+      0.57,
+      0.57
+    ],
+    "density": [
+      "Infinity",
+      "Infinity"
+    ],
+    "color": [
+      [
+        255,
+        255,
+        255
+      ],
+      [
+        128,
+        128,
+        128
+      ]
+    ]
   },
   "temperature": 500
 }

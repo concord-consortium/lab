@@ -1,0 +1,4 @@
+{
+  "framework": "jasmine",
+  "src_files": ["js/mini-class.js", "js/event-emitter.js", "js/sensor.js", "js/dataset.js", "spec/**/*spec.js"]
+}

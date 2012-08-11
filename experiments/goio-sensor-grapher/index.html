@@ -16,7 +16,7 @@
   <body>
     <p class="sensor-selector">Select a Vernier GoIO Sensor Type:
       <select id="sensor-type-selector">
-        <option disabled selected>select sensor ...</option>
+        <option value="select-sensor" disabled selected>select sensor ...</option>
         <option value="temperature">temperature</option>
         <option value="light">light</option>
         <option value="distance">distance</option>
@@ -166,6 +166,7 @@
         applet = document.getElementById("sensor-applet");
         applet_grapher = new sensor.AppletGrapher(applet, vis, graph, sensorType, "applet_grapher.JsListener()", graph.notify);
       }
+      sensorTypeSelector.value = "select-sensor";
       sensorTypeSelector.onchange = sensorTypeSelectorHandler;
     </script>
   </body>

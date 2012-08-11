@@ -1,0 +1,1674 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"d",
+				"d"
+			],
+			[
+				"y",
+				"y"
+			],
+			[
+				"if",
+				"if	If"
+			],
+			[
+				"graphWith",
+				"graphWithBrushClearEvent"
+			],
+			[
+				"topic",
+				"topic"
+			],
+			[
+				"elem",
+				"element"
+			],
+			[
+				"reset",
+				"reset"
+			],
+			[
+				"sensorReady",
+				"sensorReady"
+			],
+			[
+				"vy",
+				"vy"
+			],
+			[
+				"model",
+				"model"
+			],
+			[
+				"w",
+				"w"
+			],
+			[
+				"radia",
+				"radialBondAtom1Index"
+			],
+			[
+				"radius",
+				"radius"
+			],
+			[
+				"j",
+				"j"
+			],
+			[
+				"conver",
+				"convertAllVelocitiesToRealCoordinates"
+			],
+			[
+				"KE",
+				"KE_to_T"
+			],
+			[
+				"converAll",
+				"convertAllVelocitiesToInternalCoordinates"
+			],
+			[
+				"update",
+				"updateAccelerationsFunc"
+			],
+			[
+				"updateP",
+				"updatePairwiseAccelerations"
+			],
+			[
+				"make",
+				"makeLennardJonesCalculator"
+			],
+			[
+				"getLJ",
+				"getLJCutoffDistance"
+			],
+			[
+				"MW_",
+				"MW_ENERGY_UNIT"
+			],
+			[
+				"BOL",
+				"BOLTZMANN_CONSTANT_IN_JOULES"
+			],
+			[
+				"BOLT",
+				"BOLTZMANN_CONSTANT_IN_JOULES"
+			],
+			[
+				"VELOCITY",
+				"VELOCITY"
+			],
+			[
+				"FE",
+				"FEMTOSECONDS_PER_SECOND"
+			],
+			[
+				"KIL",
+				"KILOGRAMS_PER_DALTON"
+			],
+			[
+				"COUL",
+				"COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ"
+			],
+			[
+				"coulom",
+				"coulomb_forces"
+			],
+			[
+				"dr",
+				"dr"
+			],
+			[
+				"for",
+				"forceOverDistanceFromSquaredDistance"
+			],
+			[
+				"cuto",
+				"cutoffDistance_Coulomb"
+			],
+			[
+				"maxLJ",
+				"maxLJRepulsion"
+			],
+			[
+				"rela",
+				"relaxToTemperature"
+			],
+			[
+				"num",
+				"num"
+			],
+			[
+				"temp",
+				"temperature"
+			],
+			[
+				"inte",
+				"integratorOutputState"
+			],
+			[
+				"break",
+				"breakOnTargetTemperature"
+			],
+			[
+				"abstract",
+				"abstract_to_real_temperature"
+			],
+			[
+				"set",
+				"set_lennard_jones_forces"
+			],
+			[
+				"temper",
+				"temperature_to_speed"
+			],
+			[
+				"tem",
+				"temperature"
+			],
+			[
+				"tempera",
+				"temperature_control"
+			],
+			[
+				"integ",
+				"integrate"
+			],
+			[
+				"in",
+				"initial_x"
+			],
+			[
+				"aver",
+				"average_speed"
+			],
+			[
+				"set_l",
+				"set_lennard_jones_forces"
+			],
+			[
+				"set_temp",
+				"set_temperature_control"
+			],
+			[
+				"max_",
+				"max_coulomb_force"
+			],
+			[
+				"max_coul",
+				"max_coulomb_force"
+			],
+			[
+				"max",
+				"max_ljf_repulsion"
+			],
+			[
+				"pten",
+				"potential"
+			],
+			[
+				"molecul",
+				"molecules_lennard_jones"
+			],
+			[
+				"ran",
+				"ranTestLJPotential"
+			],
+			[
+				"mol",
+				"molecules_lennard_jones"
+			],
+			[
+				"po",
+				"potential"
+			],
+			[
+				"min_",
+				"min_ljf_distance"
+			],
+			[
+				"molecu",
+				"molecules_lennard_jones"
+			],
+			[
+				"sett",
+				"setterMediatedState"
+			],
+			[
+				"len",
+				"lennard_jones_forces"
+			],
+			[
+				"coul",
+				"coulomb_forces"
+			],
+			[
+				"spe",
+				"speed_max"
+			],
+			[
+				"av",
+				"ave_speed_min"
+			],
+			[
+				"ave_sp",
+				"ave_speed_max"
+			],
+			[
+				"yax",
+				"yaxis2"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "js/app.js",
+			"settings":
+			{
+				"buffer_size": 10923,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 38 files for \".select\" (case sensitive)\n\n/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/js/app.js:\n  121  \n  122      // allow title to be styled by CSS\n  123:     d3.select(this.element + ' text.title').style('font-size', null);\n  124    },\n  125  \n  ...\n  136  \n  137      if (this.dataset.getSelectionDomain() === null) {\n  138:       this.dataset.select([]);\n  139      }\n  140  \n  141:     this.graph.selection_domain(this.dataset.getSelectionDomain());\n  142:     this.graph.selection_listener(function(domain) {\n  143:       self.dataset.select(domain);\n  144      });\n  145:     this.graph.selection_visible(true);\n  146    },\n  147  \n  148    stopSelection: function() {\n  149:     this.graph.selection_domain(null).selection_visible(false);\n  150:     this.graph.selection_listener(null);\n  151    },\n  152  \n  ...\n  229      this.$selectButton.on('click', function() {\n  230        if ($(this).hasClass('disabled')) return false;\n  231:       self.select();\n  232      });\n  233  \n  ...\n  394  \n  395    cancel: function() {\n  396:     this.dataset.select(null);\n  397      ISImporter.graphController.stopSelection();\n  398      this.hide(this.$cancelButton);\n\n/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher/graph.js:\n    5  \n    6    if (arguments.length) {\n    7:     elem = d3.select(elem);\n    8      node = elem.node();\n    9      cx = elem.property(\"clientWidth\");\n   ..\n  262      selection.each(function() {\n  263  \n  264:       elem = d3.select(this);\n  265  \n  266        if (this.clientWidth && this.clientHeight) {\n  ...\n  319          // add Chart Title\n  320          if (options.title && sizeType.value > 1) {\n  321:           title = vis.selectAll(\"text\")\n  322              .data(titles, function(d) { return d; });\n  323            title.enter().append(\"text\")\n  ...\n  352          }\n  353  \n  354:         d3.select(node)\n  355              .on(\"mousemove.drag\", mousemove)\n  356              .on(\"touchmove.drag\", mousemove)\n  ...\n  384          if (options.title && sizeType.value > 1) {\n  385              title.each(function(d, i) {\n  386:               d3.select(this).attr(\"x\", size.width/2);\n  387:               d3.select(this).attr(\"dy\", function(d, i) { return 1.4 * i - titles.length + \"em\"; });\n  388              });\n  389          }\n  ...\n  485  \n  486        // Regenerate x-ticks…\n  487:       var gx = vis.selectAll(\"g.x\")\n  488            .data(xScale.ticks(options.xTicCount), String)\n  489            .attr(\"transform\", tx);\n  ...\n  507              .text(fx)\n  508              .style(\"cursor\", \"ew-resize\")\n  509:             .on(\"mouseover\", function(d) { d3.select(this).style(\"font-weight\", \"bold\");})\n  510:             .on(\"mouseout\",  function(d) { d3.select(this).style(\"font-weight\", \"normal\");})\n  511              .on(\"mousedown.drag\",  xaxis_drag)\n  512              .on(\"touchstart.drag\", xaxis_drag);\n  ...\n  516  \n  517        // Regenerate y-ticks…\n  518:       var gy = vis.selectAll(\"g.y\")\n  519            .data(yScale.ticks(options.yTicCount), String)\n  520            .attr(\"transform\", ty);\n  ...\n  539              .text(fy)\n  540              .style(\"cursor\", \"ns-resize\")\n  541:             .on(\"mouseover\", function(d) { d3.select(this).style(\"font-weight\", \"bold\");})\n  542:             .on(\"mouseout\",  function(d) { d3.select(this).style(\"font-weight\", \"normal\");})\n  543              .on(\"mousedown.drag\",  yaxis_drag)\n  544              .on(\"touchstart.drag\", yaxis_drag);\n  ...\n  554        update_brush_element();\n  555  \n  556:       vis.select(\"path\").attr(\"d\", line(points));\n  557  \n  558:       var circle = vis.select(\"svg\").selectAll(\"circle\")\n  559            .data(points, function(d) { return d; });\n  560  \n  ...\n  592        d3.event.preventDefault();\n  593        grapher.registerKeyboardHandler(keydown);\n  594:       d3.select('body').style(\"cursor\", \"move\");\n  595        if (d3.event.altKey) {\n  596          if (d3.event.shiftKey && options.addData) {\n  ...\n  649  \n  650        if (!isNaN(downx)) {\n  651:         d3.select('body').style(\"cursor\", \"ew-resize\");\n  652          xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));\n  653          redraw();\n  ...\n  656  \n  657        if (!isNaN(downy)) {\n  658:         d3.select('body').style(\"cursor\", \"ns-resize\");\n  659          yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));\n  660          redraw();\n  ...\n  665      function mouseup() {\n  666        document.onselectstart = function() { return true; };\n  667:       d3.select('body').style(\"cursor\", \"auto\");\n  668        if (!isNaN(downx)) {\n  669          downx = NaN;\n  ...\n  823    graph.elem = function(_) {\n  824      if (!arguments.length) return elem;\n  825:     elem = d3.select(_);\n  826      elem.call(graph);\n  827      return graph;\n  ...\n  886      Default value is null.\n  887    */\n  888:   graph.selection_domain = function(a) {\n  889  \n  890      if (!arguments.length) {\n  ...\n  917  \n  918      if (selection_listener) {\n  919:       selection_listener(graph.selection_domain());\n  920      }\n  921      return graph;\n  ...\n  946      with the selection region.\n  947    */\n  948:   graph.selection_visible = function(val) {\n  949      if (!arguments.length) {\n  950        return selection_visible;\n  ...\n  974      Note that graph panning and zooming are disabled while selection manipulation is enabled.\n  975    */\n  976:   graph.selection_enabled = function(val) {\n  977      if (!arguments.length) {\n  978        return selection_enabled;\n  ...\n  996      The listener is called with the new selection_domain value in the first argument.\n  997    */\n  998:   graph.selection_listener = function(cb) {\n  999      if (!arguments.length) {\n 1000        return selection_listener;\n ....\n 1034        // brush extent has been programatically updated.\n 1035        extent = brush_control.extent();\n 1036:       graph.selection_domain( extent[0] !== extent[1] ? extent : [] );\n 1037      }\n 1038    }\n ....\n 1049          .style('display', 'inline')\n 1050          .style('pointer-events', selection_enabled ? 'all' : 'none')\n 1051:         .selectAll(\"rect\")\n 1052            .attr(\"height\", size.height);\n 1053  \n\n/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher/real-time-graph.js:\n    1  grapher.realTimeGraph = function(e, options) {\n    2:   var elem = d3.select(e),\n    3        node = elem.node(),\n    4        cx = elem.property(\"clientWidth\"),\n    .\n  314        // add Chart Title\n  315        if (options.title && sizeType.value > 1) {\n  316:         title = vis.selectAll(\"text\")\n  317            .data(titles, function(d) { return d; });\n  318          title.enter().append(\"text\")\n  ...\n  349        }\n  350  \n  351:       d3.select(node)\n  352            .on(\"mousemove.drag\", mousemove)\n  353            .on(\"touchmove.drag\", mousemove)\n  ...\n  378        if (options.title && sizeType.value > 1) {\n  379            title.each(function(d, i) {\n  380:             d3.select(this).attr(\"x\", size.width/2);\n  381:             d3.select(this).attr(\"dy\", function(d, i) { return 1.4 * i - titles.length + \"em\"; });\n  382            });\n  383        }\n  ...\n  394        }\n  395  \n  396:       vis.selectAll(\"g.x\").remove();\n  397:       vis.selectAll(\"g.y\").remove();\n  398  \n  399        resize_canvas();\n  ...\n  411  \n  412        // Regenerate x-ticks\n  413:       var gx = vis.selectAll(\"g.x\")\n  414            .data(xScale.ticks(options.xTicCount), String)\n  415            .attr(\"transform\", tx);\n  ...\n  433              .style(\"cursor\", \"ew-resize\")\n  434              .text(fx)\n  435:             .on(\"mouseover\", function(d) { d3.select(this).style(\"font-weight\", \"bold\");})\n  436:             .on(\"mouseout\",  function(d) { d3.select(this).style(\"font-weight\", \"normal\");})\n  437              .on(\"mousedown.drag\",  xaxis_drag)\n  438              .on(\"touchstart.drag\", xaxis_drag);\n  ...\n  442  \n  443        // Regenerate y-ticks\n  444:       var gy = vis.selectAll(\"g.y\")\n  445            .data(yScale.ticks(options.yTicCount), String)\n  446            .attr(\"transform\", ty);\n  ...\n  465              .style(\"cursor\", \"ns-resize\")\n  466              .text(fy)\n  467:             .on(\"mouseover\", function(d) { d3.select(this).style(\"font-weight\", \"bold\");})\n  468:             .on(\"mouseout\",  function(d) { d3.select(this).style(\"font-weight\", \"normal\");})\n  469              .on(\"mousedown.drag\",  yaxis_drag)\n  470              .on(\"touchstart.drag\", yaxis_drag);\n  ...\n  485        update_canvas(currentSample);\n  486  \n  487:       if (graph.selectable_points) {\n  488:         var circle = vis.selectAll(\"circle\")\n  489              .data(points, function(d) { return d; });\n  490  \n  ...\n  555        d3.event.preventDefault();\n  556        if (!isNaN(downx)) {\n  557:         d3.select('body').style(\"cursor\", \"ew-resize\");\n  558          xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));\n  559          redraw();\n  ...\n  561        }\n  562        if (!isNaN(downy)) {\n  563:         d3.select('body').style(\"cursor\", \"ns-resize\");\n  564          yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));\n  565          redraw();\n  ...\n  569  \n  570      function mouseup() {\n  571:       d3.select('body').style(\"cursor\", \"auto\");\n  572        document.onselectstart = function() { return true; };\n  573        if (!isNaN(downx)) {\n  ...\n  731  \n  732      function show_canvas() {\n  733:       vis.select(\"path.line\").attr(\"d\", []);\n  734        gcanvas.style.zIndex = 100;\n  735      }\n\n/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher/register-keyboard-handler.js:\n    1  grapher.registerKeyboardHandler = function(callback) {\n    2:   d3.select(window).on(\"keydown\", callback);\n    3  };\n    4  \n\n/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher-test/graph-selection-test.js:\n   44      \"the selection domain\": {\n   45        topic: function(graph) {\n   46:         return graph.selection_domain();\n   47        },\n   48        \"should be null\": function(topic) {\n   ..\n   53      \"the selection_visible property\": {\n   54        topic: function(graph) {\n   55:         return graph.selection_visible();\n   56        },\n   57        \"should be false\": function(topic) {\n   ..\n   62      \"the selection_enabled property\": {\n   63        topic: function(graph) {\n   64:         return graph.selection_enabled();\n   65        },\n   66        \"should be true\": function(topic) {\n   ..\n   72    \"when selection domain is set to null, for \\\"no selection\\\"\": {\n   73      topic: function() {\n   74:       return getBaseGraph().selection_domain(null);\n   75      },\n   76      \"the has_selection property\": {\n   ..\n   84      \"the selection domain\": {\n   85        topic: function(graph) {\n   86:         return graph.selection_domain();\n   87        },\n   88        \"should be null\": function(topic) {\n   ..\n   94    \"when selection domain is set to [], for \\\"empty selection\\\"\": {\n   95      topic: function() {\n   96:       return getBaseGraph().selection_domain([]);\n   97      },\n   98      \"the has_selection property\": {\n   ..\n  106      \"the selection domain\": {\n  107        topic: function(graph) {\n  108:         return graph.selection_domain();\n  109        },\n  110        \"should be []\": function(topic) {\n  ...\n  116    \"when selection domain is set to [1, 2]\": {\n  117      topic: function() {\n  118:       return getBaseGraph().selection_domain([1, 2]);\n  119      },\n  120      \"the has_selection property\": {\n  ...\n  128      \"the selection domain\": {\n  129        topic: function(graph) {\n  130:         return graph.selection_domain();\n  131        },\n  132        \"should be [1, 2]\": function(topic) {\n  ...\n  143        // by this topic, which leads to chaos, not to mention incorrect test results.)\n  144        return function() {\n  145:         return getBaseGraph().selection_visible(true);\n  146        };\n  147      },\n  ...\n  149      \"the selection_enabled property\": {\n  150        topic: function(getTopicGraph) {\n  151:         return getTopicGraph().selection_enabled();\n  152        },\n  153  \n  ...\n  160        topic: function(getTopicGraph) {\n  161          return function() {\n  162:           return getTopicGraph().selection_domain([1,2]);\n  163          };\n  164        },\n  ...\n  166        \"the brush element\": {\n  167          topic: function(getTopicGraph) {\n  168:           return getTopicGraph().elem.select('.brush');\n  169          },\n  170          \"should be visible\": function(topic) {\n  ...\n  189          topic: function(getTopicGraph) {\n  190            return function() {\n  191:             return getTopicGraph().selection_domain(null);\n  192            };\n  193          },\n  194          \"the brush element\": {\n  195            topic: function(getTopicGraph) {\n  196:             return getTopicGraph().elem.select('.brush');\n  197            },\n  198            \"should not be visible\": function(topic) {\n  ...\n  205          topic: function(getTopicGraph) {\n  206            return function() {\n  207:             return getTopicGraph().selection_visible(false);\n  208            };\n  209          },\n  210          \"the brush element\": {\n  211            topic: function(getTopicGraph) {\n  212:             return getTopicGraph().elem.select('.brush');\n  213            },\n  214            \"should not be visible\": function(topic) {\n  ...\n  221          topic: function(getTopicGraph) {\n  222            return function() {\n  223:             return getTopicGraph().selection_enabled(false);\n  224            };\n  225          },\n  226          \"the brush element\": {\n  227            topic: function(getTopicGraph) {\n  228:             return getTopicGraph().elem.select('.brush');\n  229            },\n  230            \"should not be visible\": function(topic) {\n  ...\n  239            topic: function(getTopicGraph) {\n  240              return function() {\n  241:               return getTopicGraph().selection_enabled(true);\n  242              };\n  243            },\n  244            \"the brush element\": {\n  245              topic: function(getTopicGraph) {\n  246:               return getTopicGraph().elem.select('.brush');\n  247              },\n  248              \"should be visible\": function(topic) {\n  ...\n  260        topic: function(getTopicGraph) {\n  261          return function(cb) {\n  262:           var graph = getTopicGraph().selection_domain([15, 16]);\n  263            // allow topics to pass this.callback to getTopicGraph, and allow the vows\n  264            // to see the arguments passed to the selection_listener, by making sure\n  265            // to add null as the 'error' argument to this.callback\n  266            if (cb) {\n  267:             graph.selection_listener(function cb2() {\n  268                var args = [].splice.call(arguments, 0);\n  269                cb.apply(null, [null].concat(args) );\n  ...\n  286          topic: function(getTopicGraph) {\n  287            return function(cb) {\n  288:             return getTopicGraph(cb).selection_domain([10, 12]);\n  289            };\n  290          },\n  ...\n  315          topic: function(getTopicGraph) {\n  316            return function(cb) {\n  317:             return getTopicGraph(cb).selection_domain(null);\n  318            };\n  319          },\n  ...\n  341          \"the selection domain\": {\n  342            topic: function(getTopicGraph) {\n  343:             return getTopicGraph().selection_domain();\n  344            },\n  345            \"should update to [11, 13]\": function(topic) {\n  ...\n  367          \"the selection domain\": {\n  368            topic: function(getTopicGraph) {\n  369:             return getTopicGraph().selection_domain();\n  370            },\n  371            \"should be updated to []\": function(topic) {\n  ...\n  388          topic: function(getTopicGraph) {\n  389            return function() {\n  390:             return getTopicGraph().selection_enabled(false);\n  391            };\n  392          },\n  ...\n  400            \"the selection domain\": {\n  401              topic: function(getTopicGraph) {\n  402:               return getTopicGraph().selection_domain();\n  403              },\n  404              \"should remain [15, 16]\": function(topic) {\n  ...\n  414      topic: function() {\n  415        return function() {\n  416:         return getBaseGraph().selection_visible(false);\n  417        };\n  418      },\n  ...\n  421        topic: function(getTopicGraph) {\n  422          return function() {\n  423:           return getTopicGraph().selection_domain([15, 16]);\n  424          };\n  425        },\n  ...\n  427        \"the selection_visible property\": {\n  428          topic: function(getTopicGraph) {\n  429:           return getTopicGraph().selection_visible();\n  430          },\n  431          \"should be false\": function(topic) {\n  ...\n  452          topic: function(getTopicGraph) {\n  453            return function() {\n  454:             return getTopicGraph().selection_visible(true);\n  455            };\n  456          },\n\n/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/reference/goio-sensor-grapher/index.html:\n  162          sensorConfig = sensorConfigurations[sensorType];\n  163          graph.reset(sensorConfig.graphOptions, appletLoadingStr);\n  164:         d3.selectAll(\".sensorbuttons\").remove();\n  165          appletContainer.innerHTML = sensorConfig.appletString;\n  166          applet = document.getElementById(\"sensor-applet\");\n\n/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/reference/goio-sensor-grapher/style.css:\n   38    fill-opacity: 0.2;\n   39    cursor: move; }\n   40:   circle.selected {\n   41      fill: #ff7f0e;\n   42      stroke: #ff7f0e; }\n   ..\n   44      fill: #ff7f0e;\n   45      stroke: #707f0e; }\n   46:   circle.selected:hover {\n   47      fill: #ff7f0e;\n   48      stroke: #ff7f0e; }\n\n/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/dataset_spec.coffee:\n  218          describe \"after selecting null\", ->\n  219            beforeEach ->\n  220:             dataset.select null\n  221  \n  222            describe \"the selection domain\", ->\n  ...\n  231          describe \"after selecting []\", ->\n  232            beforeEach ->\n  233:             dataset.select []\n  234  \n  235            describe \"the selection domain\", ->\n  ...\n  244          describe \"after selecting the region [2,6]\", ->\n  245            beforeEach ->\n  246:             dataset.select [2, 6]\n  247  \n  248            describe \"the selection domain\", ->\n  ...\n  256            describe \"when the selection domain lower boundary equals a data point x value (select([1,6]))\", ->\n  257              beforeEach ->\n  258:               dataset.select [1, 6]\n  259  \n  260              describe \"the selected data\", ->\n  ...\n  264            describe \"when the selection domain upper boundary equals a data point x value (select([2,7]))\", ->\n  265              beforeEach ->\n  266:               dataset.select [2, 7]\n  267  \n  268              describe \"the selected data\", ->\n  ...\n  272            describe \"when the select method is called with [xmax, xmin] with xmax > xmin: select([6,2])\", ->\n  273              beforeEach ->\n  274:               dataset.select [6,2]\n  275  \n  276              describe \"the selection domain\", ->\n\n/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/dataset_spec.js:\n  266            describe(\"after selecting null\", function() {\n  267              beforeEach(function() {\n  268:               return dataset.select(null);\n  269              });\n  270              describe(\"the selection domain\", function() {\n  ...\n  281            describe(\"after selecting []\", function() {\n  282              beforeEach(function() {\n  283:               return dataset.select([]);\n  284              });\n  285              describe(\"the selection domain\", function() {\n  ...\n  296            return describe(\"after selecting the region [2,6]\", function() {\n  297              beforeEach(function() {\n  298:               return dataset.select([2, 6]);\n  299              });\n  300              describe(\"the selection domain\", function() {\n  ...\n  310              describe(\"when the selection domain lower boundary equals a data point x value (select([1,6]))\", function() {\n  311                beforeEach(function() {\n  312:                 return dataset.select([1, 6]);\n  313                });\n  314                return describe(\"the selected data\", function() {\n  ...\n  320              describe(\"when the selection domain upper boundary equals a data point x value (select([2,7]))\", function() {\n  321                beforeEach(function() {\n  322:                 return dataset.select([2, 7]);\n  323                });\n  324                return describe(\"the selected data\", function() {\n  ...\n  330              return describe(\"when the select method is called with [xmax, xmin] with xmax > xmin: select([6,2])\", function() {\n  331                beforeEach(function() {\n  332:                 return dataset.select([6, 2]);\n  333                });\n  334                describe(\"the selection domain\", function() {\n\n/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/dataset_spec.txt:\n   87   * is the part to be implemented now sufficient to export data from the graph after the selection changes?\n   88  \n   89:    graph.selection_listener(function(domain) {\n   90:      dataset.select(domain);\n   91     });\n   92  \n   ..\n   99   * will this be sufficient to allow a graph to be streamed with 'selection'?\n  100  \n  101:    graph1.selection_listener(function(domain) {\n  102:      dataset.select(domain);\n  103     });\n  104  \n\n110 matches across 10 files\n",
+			"settings":
+			{
+				"buffer_size": 21819,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 2959,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "css/style.css",
+			"settings":
+			{
+				"buffer_size": 8637,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/event-emitter.js",
+			"settings":
+			{
+				"buffer_size": 1215,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/dataset.js",
+			"settings":
+			{
+				"buffer_size": 3218,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "spec/dataset_spec.coffee",
+			"settings":
+			{
+				"buffer_size": 9313,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/sensor.js",
+			"settings":
+			{
+				"buffer_size": 5726,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "reference/goio-sensor-grapher/index.html",
+			"settings":
+			{
+				"buffer_size": 9272,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"PACKA",
+				"Package Control: Discover Packages"
+			],
+			[
+				"packa",
+				"Package Control: Add Repository"
+			],
+			[
+				"",
+				"About"
+			],
+			[
+				"indent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"fold",
+				"Code Folding: Unfold All"
+			],
+			[
+				"align",
+				"Preferences: Alignment Key Bindings – User"
+			],
+			[
+				"case",
+				"Convert Case: Upper Case"
+			],
+			[
+				"print",
+				"Package Control: Install Package"
+			],
+			[
+				"inde",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"tabs",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"spac",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"spaces",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"alignment",
+				"Preferences: Alignment File Settings – Syntax Specific – User"
+			],
+			[
+				"inspac",
+				"Package Control: Install Package"
+			],
+			[
+				"reind",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"javas",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"ins p",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 593.0
+	},
+	"console":
+	{
+		"height": 609.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": true,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/rklancer/dev/lab/.git/MERGE_MSG",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/reference/goio-sensor-grapher/index.html",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/testem.json",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher/graph.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/js/dataset.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/dataset_spec.coffee",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/js/event-emitter.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/graph-controller_spec.txt",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/js/dataset_spec.txt",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/js/mini-class.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/index.html",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/js/sensor.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/js/event.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/goio-applet_spec.coffee",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/js/app.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/css/style.css",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/images/readme.txt",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher-test/graph-selection-test.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher/axis.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher-test/graph-selection-test.txt",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher/real-time-graph.js",
+		"/Users/rklancer/dev/lab/src/vendor/d3/Makefile",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/graph-selection_spec.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher-test/core/axis-test.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/lab/grapher-test/core/data-test.js",
+		"/Users/rklancer/dev/lab/Makefile",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/graph-selection_spec.coffee",
+		"/Users/rklancer/dev/lab/server/public/lab/lab.layout.js",
+		"/Users/rklancer/dev/lab/test/lab/grapher/graph-selection",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/grapher-test.html",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/reference/goio-sensor-grapher/style.css",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/mini-class_spec.coffee",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/sensor-applet_spec.coffee",
+		"/Users/rklancer/dev/lab/.m2/settings.xml",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/goio-applet_spec.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/sensor_spec.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/sensor_spec.coffee",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/sensor.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/mini-class_spec.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/spec/mini-class_spec.txt",
+		"/Users/rklancer/dev/lab/.git/COMMIT_EDITMSG",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/test/mini-class_spec.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/js/lab.layout-shim.js",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/jshint-config.json",
+		"/Users/rklancer/dev/lab/src/experiments/inquiry-space-importer/inquiry-space-importer.sublime-project",
+		"/Users/rklancer/dev/lab/readme.md",
+		"/Users/rklancer/dev/lab/src/examples/interactives/interactives/add-atoms.json",
+		"/Users/rklancer/dev/lab/src/examples/interactives/application.js",
+		"/Users/rklancer/dev/lab/src/lab/controllers/interactives-controller.js",
+		"/Users/rklancer/dev/lab/src/examples/interactives/interactives.html.haml",
+		"/Users/rklancer/dev/lab/src/lab/controllers/model-controller.js",
+		"/Users/rklancer/dev/lab/src/lab/controllers/simple-model-controller.js",
+		"/tmp/subl stdin he8Urz.txt",
+		"/Users/rklancer/dev/lab/src/lab/models/md2d/modeler.js",
+		"/Users/rklancer/dev/lab/docs/css classes for molecules view.txt",
+		"/Users/rklancer/Documents/responsive computation.txt",
+		"/Users/rklancer/dev/Smartgraphs/.rvmrc",
+		"/Users/rklancer/dev/smartgraph-demos/.git/COMMIT_EDITMSG",
+		"/Users/rklancer/dev/lab/src/lab/controllers/energy2d/controllers.js",
+		"/Users/rklancer/dev/lab/src/lab/models/md2d/engine/md2d.js",
+		"/Users/rklancer/dev/lab/src/examples/css-layout/application.coffee",
+		"/Users/rklancer/dev/lab/src/examples/css-layout/molecules-view.scss",
+		"/Users/rklancer/dev/lab/src/examples/css-layout/application.scss",
+		"/Users/rklancer/dev/lab/src/examples/css-layout/index.html",
+		"/Users/rklancer/dev/lab/src/examples/css-layout/new-molecules-view.js",
+		"/Users/rklancer/dev/lab/src/examples/css-layout/molecules-view.js",
+		"/Users/rklancer/dev/lab/script/rklancer-gh-pages.sh",
+		"/Users/rklancer/dev/lab/script/gh-pages.sh",
+		"/Users/rklancer/dev/lab/.git/config",
+		"/Users/rklancer/dev/lab/src/examples/css-layout/molecule-container.js",
+		"/Users/rklancer/dev/lab/src/lab/controllers/compare-models-controller.js",
+		"/Users/rklancer/dev/lab/src/lab/layout/layout.js",
+		"/Users/rklancer/dev/lab/src/lab/controllers/complex-model-controller.js",
+		"/Users/rklancer/dev/lab/src/lab/models/md2d/engine/math/index.js",
+		"/Users/rklancer/dev/lab/src/examples/complex-atoms-model/application.sass",
+		"/Users/rklancer/dev/lab/src/examples/css-layout/style.scss",
+		"/Users/rklancer/dev/lab/src/examples/complex-atoms-model/complex-atoms-model.html.haml",
+		"/Users/rklancer/dev/lab/Guardfile",
+		"/Users/rklancer/dev/lab/src/experiments/css-layout/application.coffee",
+		"/Users/rklancer/dev/lab/src/experiments/css-layout/style.scss",
+		"/Users/rklancer/dev/lab/src/experiments/css-layout/index.html",
+		"/Users/rklancer/dev/lab/src/experiments/css-layout/style.css",
+		"/Users/rklancer/dev/lab/src/experiments/css-layout/h5bp-initializr-3.0.zip",
+		"/Users/rklancer/dev/lab/test/lab/components/components-test.js",
+		"/Users/rklancer/dev/lab/lab.sublime-project",
+		"/Users/rklancer/dev/lab/script/build-and-deploy-jars.rb",
+		"/Users/rklancer/dev/lab/src/md-engine/constants/index.js",
+		"/Users/rklancer/dev/lab/src/md-engine/constants/units.js",
+		"/Users/rklancer/dev/lab/src/md-engine/constants/constants.txt",
+		"/Users/rklancer/dev/lab/docs/what next.txt",
+		"/Users/rklancer/dev/lab/src/md-engine/md2d.js",
+		"/Users/rklancer/Desktop/times.txt",
+		"/Users/rklancer/dev/lab/src/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar",
+		"/Users/rklancer/.rvm/gems/ruby-1.9.3-p194@lab/gems/fog-1.3.1/lib/fog/core/service.rb",
+		"/Users/rklancer/.fog",
+		"/Users/rklancer/dev/lab/config/config.yml",
+		"/Users/rklancer/dev/lab/script/aws-lab-server.rb",
+		"/Users/rklancer/dev/lab/docs/terminal-capture.txt",
+		"/Users/rklancer/.rvm/gems/ruby-1.9.3-p194@lab/gems/fog-1.3.1/lib/fog/compute.rb",
+		"/Users/rklancer/dev/lab/imports/legacy-mw-content/conversion-and-physics-examples/one-radial-bond.cml",
+		"/Users/rklancer/dev/lab/src/mw-helpers/mml-parser.coffee",
+		"/Users/rklancer/dev/lab/test/mml-conversions/input-mml/two-diatomic-molecules.mml",
+		"/Users/rklancer/dev/lab/test/mml-conversions/expected-json/two-diatomic-molecules.json",
+		"/Users/rklancer/dev/lab/script/put-remote.sh",
+		"/Users/rklancer/.ssh/known_hosts",
+		"/Users/rklancer/dev/lab/lab.server/README.md",
+		"/Users/rklancer/dev/lab/lab.server/readme",
+		"/Users/rklancer/dev/lab/lab.server/re",
+		"/Users/rklancer/dev/lab/src/lab/molecules/modeler.js",
+		"/Users/rklancer/dev/lab/script/put.sh",
+		"/Users/rklancer/dev/lab/node-bin/convert.coffee",
+		"/Users/rklancer/dev/lab/bond-strength-test.json",
+		"/Users/rklancer/dev/lab/docs/figuring out MW gradient-force conversion constant.txt",
+		"/Users/rklancer/dev/lab/test/mml-conversions/expected-json/two-charged-atoms.json",
+		"/Users/rklancer/dev/lab/test/mml-conversions/expected-json/no-atoms.json",
+		"/Users/rklancer/dev/lab/test/mml-conversions/expected-json/heatbath.json",
+		"/Users/rklancer/dev/lab/src/mw-helpers/mml-parser.js",
+		"/Users/rklancer/dev/lab/src/examples/interactives/interactives/add-random-atoms.json",
+		"/Users/rklancer/dev/lab/src/lab/views/benchmarks.js",
+		"/tmp/subl stdin 6WZpjE.txt",
+		"/Users/rklancer/dev/lab/src/lab/benchmark/benchmark.js",
+		"/tmp/subl stdin H9qUBV.txt",
+		"/Users/rklancer/dev/lab/src/examples/complex-atoms-model/application.js",
+		"/Users/rklancer/dev/lab/src/examples/mw5-css-layout/index.html",
+		"/Users/rklancer/dev/lab/src/examples/mw5-css-layout/application.js",
+		"/Users/rklancer/Desktop/robot-email.txt",
+		"/Users/rklancer/dev/lab/dist",
+		"/Users/rklancer/dev/lab/test/lab/molecules/molecules-test.js"
+	],
+	"find":
+	{
+		"height": 100.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"",
+			"/Users/rklancer/dev/lab/src/",
+			"*.js",
+			"/Users/rklancer/dev/lab/**/*.js",
+			"/Users/rklancer/dev/lab/src/**/*.js",
+			"/Users/rklancer/dev/lab/src",
+			"/Users/rklancer/dev/lab/test",
+			"/Users/rklancer/dev/lab/src",
+			"/Users/rklancer/dev/lab/tests",
+			"/Users/rklancer/dev/lab/src",
+			"/Users/rklancer/dev/lab/test",
+			"/Users/rklancer/dev/lab/src",
+			"/Users/rklancer/dev/lab/test",
+			"/Users/rklancer/dev/lab/src",
+			"/Users/rklancer/dev/lab/test",
+			"/Users/rklancer/dev/lab/src",
+			"/Users/rklancer/dev/lab/test",
+			"/Users/rklancer/dev/lab/src/",
+			"/Users/rklancer/dev/lab/test/",
+			"/Users/rklancer/dev/lab/src/",
+			"/Users/rklancer/dev/lab/test/",
+			"/Users/rklancer/dev/lab/src/",
+			"/Users/rklancer/dev/lab/test/",
+			"/Users/rklancer/dev/lab/src/",
+			"/Users/rklancer/dev/lab/test",
+			"/Users/rklancer/dev/lab/src",
+			"",
+			"/Users/rklancer/dev/lab/src",
+			"<open files>",
+			"<open files>,/Users/rklancer/dev/lab/src",
+			"<open files>",
+			"/Users/rklancer/dev/lab/src",
+			"/Users/rklancer/dev/lab/mdlj.c",
+			"/Users/rklancer/devlab/mdlj.c",
+			"/Users/rklancer/dev/lab/src/mdlj.c",
+			"/Users/rklancer/dev/lab/src/",
+			"/Users/rklancer/dev/lab/src/**/*",
+			"/Users/rklancer/dev/lab/src",
+			"",
+			"src",
+			"src/*.js",
+			"src/**",
+			"",
+			"src/",
+			"src",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			".select",
+			"stopSelection",
+			"this.disable",
+			"this.enable",
+			"this.disable",
+			"enable",
+			"stop",
+			"X.YZ",
+			"reset",
+			"_listeners",
+			"_callbacks",
+			"scale",
+			"autoscale",
+			"notif",
+			"Select a Sensor",
+			"Select A Sensor",
+			"[]",
+			"[p]",
+			"jasmine.createSpy",
+			"cursor",
+			"calculateSizeType",
+			"type",
+			"h1",
+			"float",
+			"brush control",
+			"brush controld3 ",
+			"brush control",
+			"      \"with selection_enabled set to false\": {\n",
+			"selection_enabled",
+			"update_brush",
+			".remove()",
+			"tx",
+			"translate",
+			"brush_element",
+			"update_brush",
+			"brush_element",
+			"update_brush",
+			"update",
+			"update_brush",
+			"selection_enabled",
+			"redraw",
+			"update_brush_element",
+			"selection_visible",
+			"brush_control",
+			"pointer-events",
+			"show_brush_element",
+			"debugger",
+			"redraw",
+			"zoom",
+			"axisProcessDrag",
+			"updateXScale",
+			"xScale",
+			"show_brush",
+			"graph.redraw",
+			"update",
+			"show_brush",
+			"brush_element",
+			"redraw",
+			"brush",
+			"mousemove",
+			"xaxis_drag",
+			"drag",
+			"redraw",
+			"drag",
+			"zoom",
+			"d3.behavior",
+			"null",
+			"selection_domain",
+			"null",
+			"this.callback",
+			"brush_listener",
+			"console.log",
+			"brush",
+			"debugger",
+			".on",
+			"graphWithBrush",
+			"Listen",
+			"brush_control",
+			"selection_domain",
+			"assert.close",
+			"rect",
+			"domain",
+			"getGraph",
+			"(getGrap",
+			"selection_brush",
+			"(",
+			"brush",
+			"getGra",
+			"getGrap",
+			"getGraph",
+			"has_selection",
+			"hide_selection_brush",
+			"extent",
+			"selection_",
+			"selection_visible",
+			"selection_domain",
+			"has_selection",
+			"selection_brush",
+			"selection_visible",
+			"has_selection",
+			"selection_visible",
+			"doStuff",
+			"brush",
+			"selectAll g",
+			"selectAll",
+			"viewbox",
+			"selection_brush",
+			"viewbox.append",
+			"selection_brush.call",
+			"selection_brush",
+			"brush",
+			"sel",
+			"sel,",
+			"sel",
+			"brushse",
+			"brush",
+			"viewBox",
+			"plot",
+			"height",
+			"xScale",
+			"plot =",
+			"redraw",
+			"rescale",
+			"xScale",
+			"scale",
+			"line =",
+			"xDomain",
+			"vis"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"_ee_listeners",
+			"_listeners",
+			"getTopicGraph",
+			"brush_element",
+			"ChildConstructor",
+			"NewConstructor",
+			"extend",
+			"mixin",
+			"interactiveDefinitionLoaded",
+			"NaN",
+			"N_radialBonds",
+			"dontDispatchTickEvent",
+			"atoms",
+			"md2d.getTotalMass()",
+			"getNumAtoms",
+			"getNodes",
+			"ljCalculator",
+			"ljCalulator",
+			"sigma",
+			"epsilon",
+			"circlesEnter",
+			"enterParticleCircles",
+			"enteraParticleCircles",
+			"enterCircle",
+			"computeTemperature",
+			"</h3>",
+			"<h3",
+			"time_suffix",
+			"time_prefix",
+			"removeTranslationAndRotationFromVelocities",
+			"addTranslationAndRotationToVelocities",
+			"halfUpdateVelocity",
+			"lj_epsilon_min = -0.4",
+			"lj_epsilon_min = -4",
+			"lj_epsilon_max = -0.01034",
+			"Intermolecular Attraction",
+			"rescalingFactor",
+			"rescaleVelocity",
+			"convertVelocityToInternalCoordinates",
+			"convertVelocityToRealCoordinates",
+			"beginTransientTemperatureChange",
+			"modelOutputState",
+			"twoKE_internal",
+			"thermostatCouplingFactor",
+			"MW_ENERGY_UNIT",
+			"MASS",
+			"halfMass",
+			"ljfLimitsNeedToBeUpdated",
+			"close",
+			"ANGSTROMS_PER_NANOMETER",
+			"ljfLimitsNeedCalculating",
+			"model",
+			"model\nmodel",
+			"md2d",
+			"forceOverDistanceFromSquaredDistance",
+			"",
+			"forceOverDistanceFromSquaredDistance",
+			"forceOverDistanceFromDistanceSquared",
+			"node_properties_length",
+			"v_CM_initial",
+			"CM_initial",
+			"T_windowed",
+			"getT_windowed",
+			"vRescalingFactor",
+			"useLennardJonesInteraction",
+			"useCoulombInteraction",
+			"modeler.math",
+			"modeler.mat",
+			"T_target",
+			"y_initial",
+			"x_initial",
+			"fy",
+			"fx",
+			"setOnceState",
+			"integratorOutputState",
+			"model.INDICES.SPEED",
+			"model.INDICES.HALFMASS",
+			"model.INDICES.AY",
+			"model.INDICES.AX",
+			"model.INDICES.MASS",
+			"model.INDICES.PY",
+			"model.INDICES.PX",
+			"model.INDICES.VY",
+			"model.INDICES.VX",
+			"model.INDICES.CHARGE",
+			"model.INDICES.Y",
+			"model.INDICES.X",
+			"model.INDICES.RADIUS",
+			"get_charge(i)",
+			"get_radius(i)",
+			"get_y(i)",
+			"get_x(i)",
+			"function(d, i)",
+			"NaN"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "js/app.js",
+					"settings":
+					{
+						"buffer_size": 10923,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1252,
+								1252
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"settings":
+					{
+						"buffer_size": 21819,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										192,
+										199
+									],
+									[
+										376,
+										383
+									],
+									[
+										431,
+										438
+									],
+									[
+										506,
+										513
+									],
+									[
+										570,
+										577
+									],
+									[
+										623,
+										630
+									],
+									[
+										727,
+										734
+									],
+									[
+										750,
+										757
+									],
+									[
+										798,
+										805
+									],
+									[
+										984,
+										991
+									],
+									[
+										1085,
+										1092
+									],
+									[
+										1344,
+										1351
+									],
+									[
+										1511,
+										1518
+									],
+									[
+										1718,
+										1725
+									],
+									[
+										1892,
+										1899
+									],
+									[
+										2144,
+										2151
+									],
+									[
+										2206,
+										2213
+									],
+									[
+										2406,
+										2413
+									],
+									[
+										2665,
+										2672
+									],
+									[
+										2763,
+										2770
+									],
+									[
+										2995,
+										3002
+									],
+									[
+										3254,
+										3261
+									],
+									[
+										3352,
+										3359
+									],
+									[
+										3576,
+										3583
+									],
+									[
+										3654,
+										3661
+									],
+									[
+										3668,
+										3675
+									],
+									[
+										3872,
+										3879
+									],
+									[
+										4073,
+										4080
+									],
+									[
+										4314,
+										4321
+									],
+									[
+										4610,
+										4617
+									],
+									[
+										4822,
+										4829
+									],
+									[
+										4954,
+										4961
+									],
+									[
+										5120,
+										5127
+									],
+									[
+										5250,
+										5257
+									],
+									[
+										5495,
+										5502
+									],
+									[
+										5732,
+										5739
+									],
+									[
+										5978,
+										5985
+									],
+									[
+										6202,
+										6209
+									],
+									[
+										6448,
+										6455
+									],
+									[
+										6661,
+										6668
+									],
+									[
+										6827,
+										6834
+									],
+									[
+										7069,
+										7076
+									],
+									[
+										7129,
+										7136
+									],
+									[
+										7295,
+										7302
+									],
+									[
+										7339,
+										7346
+									],
+									[
+										7479,
+										7486
+									],
+									[
+										7738,
+										7745
+									],
+									[
+										7836,
+										7843
+									],
+									[
+										8067,
+										8074
+									],
+									[
+										8326,
+										8333
+									],
+									[
+										8424,
+										8431
+									],
+									[
+										8660,
+										8667
+									],
+									[
+										8713,
+										8720
+									],
+									[
+										8900,
+										8907
+									],
+									[
+										9148,
+										9155
+									],
+									[
+										9385,
+										9392
+									],
+									[
+										9593,
+										9600
+									],
+									[
+										9862,
+										9869
+									],
+									[
+										10129,
+										10136
+									],
+									[
+										10333,
+										10340
+									],
+									[
+										10539,
+										10546
+									],
+									[
+										10770,
+										10777
+									],
+									[
+										10960,
+										10967
+									],
+									[
+										11191,
+										11198
+									],
+									[
+										11379,
+										11386
+									],
+									[
+										11587,
+										11594
+									],
+									[
+										11779,
+										11786
+									],
+									[
+										12035,
+										12042
+									],
+									[
+										12227,
+										12234
+									],
+									[
+										12399,
+										12406
+									],
+									[
+										12593,
+										12600
+									],
+									[
+										12816,
+										12823
+									],
+									[
+										13013,
+										13020
+									],
+									[
+										13244,
+										13251
+									],
+									[
+										13443,
+										13450
+									],
+									[
+										13674,
+										13681
+									],
+									[
+										13873,
+										13880
+									],
+									[
+										14110,
+										14117
+									],
+									[
+										14318,
+										14325
+									],
+									[
+										14550,
+										14557
+									],
+									[
+										14885,
+										14892
+									],
+									[
+										15179,
+										15186
+									],
+									[
+										15382,
+										15389
+									],
+									[
+										15583,
+										15590
+									],
+									[
+										15826,
+										15833
+									],
+									[
+										16061,
+										16068
+									],
+									[
+										16270,
+										16277
+									],
+									[
+										16482,
+										16489
+									],
+									[
+										16665,
+										16672
+									],
+									[
+										16870,
+										16877
+									],
+									[
+										17094,
+										17101
+									],
+									[
+										17418,
+										17425
+									],
+									[
+										17766,
+										17773
+									],
+									[
+										17911,
+										17918
+									],
+									[
+										18183,
+										18190
+									],
+									[
+										18369,
+										18376
+									],
+									[
+										18567,
+										18574
+									],
+									[
+										18827,
+										18834
+									],
+									[
+										19086,
+										19093
+									],
+									[
+										19343,
+										19350
+									],
+									[
+										19647,
+										19654
+									],
+									[
+										19895,
+										19902
+									],
+									[
+										20162,
+										20169
+									],
+									[
+										20484,
+										20491
+									],
+									[
+										20814,
+										20821
+									],
+									[
+										21149,
+										21156
+									],
+									[
+										21482,
+										21489
+									],
+									[
+										21540,
+										21547
+									],
+									[
+										21693,
+										21700
+									],
+									[
+										21751,
+										21758
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								513,
+								513
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 2959,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								364,
+								364
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "css/style.css",
+					"settings":
+					{
+						"buffer_size": 8637,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5628,
+								5628
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3072.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "js/event-emitter.js",
+					"settings":
+					{
+						"buffer_size": 1215,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								111,
+								111
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "js/dataset.js",
+					"settings":
+					{
+						"buffer_size": 3218,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								843,
+								843
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "spec/dataset_spec.coffee",
+					"settings":
+					{
+						"buffer_size": 9313,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1806,
+								1806
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CoffeeScript.tmbundle/Syntaxes/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "js/sensor.js",
+					"settings":
+					{
+						"buffer_size": 5726,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3633,
+								3625
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1957.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "reference/goio-sensor-grapher/index.html",
+					"settings":
+					{
+						"buffer_size": 9272,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								474,
+								474
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 35.0
+	},
+	"input":
+	{
+		"height": 41.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 229.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"modeler.js",
+				"src/lab/molecules/modeler.js"
+			],
+			[
+				"model",
+				"vendor/mathjax/docs/html/model.html"
+			],
+			[
+				"mol-test",
+				"test/lab/molecules/molecules-test.js"
+			],
+			[
+				"b",
+				"src/lab/layout/benchmarks.js"
+			],
+			[
+				"benh",
+				"src/examples/integration-methods/benchmark.js"
+			],
+			[
+				"moleu",
+				"src/lab/layout/molecule-container.js"
+			],
+			[
+				"molecu",
+				"src/lab/layout/molecule-container.js"
+			],
+			[
+				"closures",
+				"src/tests/simple-graphs-closures/simple-graph.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 213.0,
+	"status_bar_visible": true
+}

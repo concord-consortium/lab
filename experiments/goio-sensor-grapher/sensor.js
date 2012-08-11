@@ -199,7 +199,7 @@ sensor.AppletGrapher.prototype.AddButtons = function() {
   sensor.AppletGrapher.prototype.clearButtonHandler = function() {
     var self = this;
     return function() {
-      // applet.stopCollecting();
+      applet.stopCollecting();
       self.graph.data([]);
       self.time = 0;
       self.graph.reset();

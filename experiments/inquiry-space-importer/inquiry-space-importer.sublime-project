@@ -1,0 +1,27 @@
+{
+  "folders":
+  [
+    {
+      "path": ".",
+      "folder_exclude_patterns": [],
+      "file_exclude_patterns": ["*.sublime-workspace"]
+    }
+  ],
+  "settings":
+  {
+    "trim_trailing_white_space_on_save": true,
+    "tab_size": 2,
+    "translate_tabs_to_spaces": true
+  },
+  "build_systems":
+  [
+    {
+      "name": "JSHint",
+      // without shelling out I could not get jshint to respect the --config setting
+      "shell": true,
+      "cmd": ["$project_path/../../../node_modules/.bin/jshint $file --config $project_path/jshint-config.json --show-non-errors"],
+      "file_regex": "(.+js).+((?<=line\\s)\\d+).+((?<=col\\s)\\d+),\\s(.+$)",
+      "selector": "source.js"
+    }
+  ]
+}

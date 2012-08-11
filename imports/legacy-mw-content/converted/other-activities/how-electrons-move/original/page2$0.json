@@ -1,7 +1,5 @@
 {
   "temperature_control": false,
-  "lennard_jones_forces": true,
-  "coulomb_forces": false,
   "width": 3.5,
   "height": 2,
   "elements": [
@@ -54,8 +52,8 @@
       0
     ],
     "CHARGE": [
-      0,
-      0
+      -1,
+      1
     ],
     "ELEMENT": [
       2,

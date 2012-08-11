@@ -35,6 +35,1070 @@ energy2d.namespace = function (ns_string) {
   }
   return parent;
 };
+var lab = lab || {};
+lab.glsl = {};
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl'] = '\
+// texture 0: \n\
+// - R: t\n\
+// - G: t0\n\
+// - B: tb\n\
+// - A: conductivity\n\
+uniform sampler2D data0_tex;\n\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float g;\n\
+uniform float b;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  float fluidity = texture2D(data1_tex, coord).a;\n\
+  \n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n\
+      fluidity == 1.0) {\n\
+    \n\
+    vec2 dx = vec2(grid.x, 0.0);\n\
+    vec2 dy = vec2(0.0, grid.y);\n\
+    \n\
+    float t = texture2D(data0_tex, coord).r;\n\
+    // Get average column temperature.\n\
+\n\
+    float avg_t = t;\n\
+    float count = 1.0;\n\
+    vec2 n_coord = coord - dx;\n\
+    // Silly while(true) loop (almost).\n\
+    // While loops are not allowed.\n\
+    // For loops with non-constant expressions also.\n\
+    for (int i = 1; i != 0; i++) {\n\
+      if (n_coord.x > 0.0 && texture2D(data1_tex, n_coord).a == 1.0) {\n\
+        avg_t += texture2D(data0_tex, n_coord).r;\n\
+        count += 1.0;\n\
+        n_coord -= dx;\n\
+      } else {\n\
+        break;\n\
+      }\n\
+    }\n\
+    n_coord = coord + dx;\n\
+    // Silly while(true) loop (almost).\n\
+    // While loops are not allowed.\n\
+    // For loops with non-constant expressions also.\n\
+    for (int i = 1; i != 0; i++) {\n\
+      if (n_coord.x < 1.0 && texture2D(data1_tex, n_coord).a == 1.0) {\n\
+        avg_t += texture2D(data0_tex, n_coord).r;\n\
+        count += 1.0;\n\
+        n_coord += dx;\n\
+      } else {\n\
+        break;\n\
+      }\n\
+    }\n\
+    avg_t /= count;\n\
+\n\
+    // Update velocity V component.\n\
+    data2.g += (g - b) * t + b * avg_t;\n\
+  }\n\
+\n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl'] = '\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  vec2 dx = vec2(grid.x, 0.0);\n\
+  vec2 dy = vec2(0.0, grid.y);\n\
+  // Process corners.\n\
+  // TODO: values from previous step are used for corners.\n\
+  if (coord.x < grid.x && coord.y < grid.y) {  \n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    data2.ba = 0.5 * (data2_p_dy.ba + data2_p_dx.ba);\n\
+  }\n\
+  else if (coord.x > 1.0 - grid.x && coord.y < grid.y) {  \n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    data2.ba = 0.5 * (data2_p_dy.ba + data2_m_dx.ba);\n\
+  }\n\
+  else if (coord.x > 1.0 - grid.x && coord.y > 1.0 - grid.y) {  \n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    data2.ba = 0.5 * (data2_m_dy.ba + data2_m_dx.ba);\n\
+  }\n\
+  else if (coord.x < grid.x && coord.y > 1.0 - grid.y) {  \n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    data2.ba = 0.5 * (data2_m_dy.ba + data2_p_dx.ba);\n\
+  }\n\
+  // Process boundaries.\n\
+  // Left.\n\
+  else if (coord.x < grid.x) {\n\
+    data2.ba = texture2D(data2_tex, coord + dx).ba;\n\
+  }\n\
+  // Right.\n\
+  else if (coord.x > 1.0 - grid.x) {\n\
+    data2.ba = texture2D(data2_tex, coord - dx).ba;\n\
+  }\n\
+  // Down.\n\
+  else if (coord.y < grid.y) {\n\
+    data2.ba = texture2D(data2_tex, coord + dy).ba;\n\
+  }\n\
+  // Up.\n\
+  else if (coord.y > 1.0 - grid.y) {\n\
+    data2.ba = texture2D(data2_tex, coord - dy).ba;\n\
+  }\n\
+  \n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl'] = '\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  vec2 dx = vec2(grid.x, 0.0);\n\
+  vec2 dy = vec2(0.0, grid.y);\n\
+  // Process corners.\n\
+  // TODO: values from previous step are used for corners.\n\
+  if (coord.x < grid.x && coord.y < grid.y) {  \n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    data2.rg = 0.5 * (data2_p_dy.rg + data2_p_dx.rg);\n\
+  }\n\
+  else if (coord.x > 1.0 - grid.x && coord.y < grid.y) {  \n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    data2.rg = 0.5 * (data2_p_dy.rg + data2_m_dx.rg);\n\
+  }\n\
+  else if (coord.x > 1.0 - grid.x && coord.y > 1.0 - grid.y) {  \n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    data2.rg = 0.5 * (data2_m_dy.rg + data2_m_dx.rg);\n\
+  }\n\
+  else if (coord.x < grid.x && coord.y > 1.0 - grid.y) {  \n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    data2.rg = 0.5 * (data2_m_dy.rg + data2_p_dx.rg);\n\
+  }\n\
+  // Process boundaries.\n\
+  // Left.\n\
+  else if (coord.x < grid.x) {\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    data2.rg = vec2(data2_p_dx.r, -data2_p_dx.g);\n\
+  }\n\
+  // Right.\n\
+  else if (coord.x > 1.0 - grid.x) {\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    data2.rg = vec2(data2_m_dx.r, -data2_m_dx.g);\n\
+  }\n\
+  // Down.\n\
+  else if (coord.y < grid.y) {\n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    data2.rg = vec2(-data2_p_dy.r, data2_p_dy.g);\n\
+  }\n\
+  // Up.\n\
+  else if (coord.y > 1.0 - grid.y) {\n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    data2.rg = vec2(-data2_m_dy.r, data2_m_dy.g);\n\
+  }\n\
+  \n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl'] = '\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  coord = gl_Vertex.xy * 0.5 + 0.5;\n\
+  gl_Position = vec4(gl_Vertex.xy, 0.0, 1.0);\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl'] = '\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float i2dx;\n\
+uniform float i2dy;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  float fluidity = texture2D(data1_tex, coord).a;\n\
+  \n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n\
+      fluidity == 1.0) {\n\
+    \n\
+    vec2 dx = vec2(grid.x, 0.0);\n\
+    vec2 dy = vec2(0.0, grid.y);\n\
+    \n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    \n\
+    // Phi.\n\
+    data2.b = 0.0;\n\
+    // Div.\n\
+    data2.a = (data2_p_dy.r - data2_m_dy.r) * i2dx + (data2_p_dx.g - data2_m_dx.g) * i2dy;\n\
+  }\n\
+\n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl'] = '\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float s;\n\
+uniform float idxsq;\n\
+uniform float idysq;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  float fluidity = texture2D(data1_tex, coord).a;\n\
+  \n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n\
+      fluidity == 1.0) {\n\
+    \n\
+    vec2 dx = vec2(grid.x, 0.0);\n\
+    vec2 dy = vec2(0.0, grid.y);\n\
+    \n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    \n\
+    // Phi.\n\
+    data2.b = s * ((data2_m_dy.b + data2_p_dy.b) * idxsq + (data2_m_dx.b + data2_p_dx.b) * idysq - data2.a);\n\
+  }\n\
+\n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl'] = '\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float i2dx;\n\
+uniform float i2dy;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  float fluidity = texture2D(data1_tex, coord).a;\n\
+  \n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n\
+      fluidity == 1.0) {\n\
+    \n\
+    vec2 dx = vec2(grid.x, 0.0);\n\
+    vec2 dy = vec2(0.0, grid.y);\n\
+    \n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    \n\
+    // U.\n\
+    data2.r -= (data2_p_dy.b - data2_m_dy.b) * i2dx;\n\
+    // V.\n\
+    data2.g -= (data2_p_dx.b - data2_m_dx.b) * i2dy;\n\
+  }\n\
+\n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl'] = '\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float hx;\n\
+uniform float hy;\n\
+uniform float dn;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  float fluidity = texture2D(data1_tex, coord).a;\n\
+  \n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n\
+      fluidity == 1.0) {\n\
+    \n\
+    vec2 dx = vec2(grid.x, 0.0);\n\
+    vec2 dy = vec2(0.0, grid.y);\n\
+    \n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    // Update velocity UV components.\n\
+    data2.rg = (data2.ba + hx * (data2_m_dy.rg + data2_p_dy.rg)\n\
+                         + hy * (data2_m_dx.rg + data2_p_dx.rg)) * dn;\n\
+  }\n\
+\n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl'] = '\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float tx;\n\
+uniform float ty;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  float fluidity = texture2D(data1_tex, coord).a;\n\
+  \n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n\
+      fluidity == 1.0) {\n\
+    \n\
+    vec2 dx = vec2(grid.x, 0.0);\n\
+    vec2 dy = vec2(0.0, grid.y);\n\
+    \n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    // Update velocity UV components.\n\
+    data2.rg = data2.ba - tx * (data2_p_dy.bb * data2_p_dy.ba - data2_m_dy.bb * data2_m_dy.ba)\n\
+              - ty * (data2_p_dx.aa * data2_p_dx.ba - data2_m_dx.aa * data2_m_dx.ba);\n\
+  }\n\
+\n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl'] = '\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float tx;\n\
+uniform float ty;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  float fluidity = texture2D(data1_tex, coord).a;\n\
+  \n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n\
+      fluidity == 1.0) {\n\
+    \n\
+    vec2 dx = vec2(grid.x, 0.0);\n\
+    vec2 dy = vec2(0.0, grid.y);\n\
+    \n\
+    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n\
+    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n\
+    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n\
+    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n\
+    // Update velocity UV components.\n\
+    data2.rg = 0.5 * (data2.ba + data2.rg) \n\
+            - 0.5 * tx * data2.bb * (data2_p_dy.rg - data2_m_dy.rg)\n\
+            - 0.5 * ty * data2.aa * (data2_p_dx.rg - data2_m_dx.rg);\n\
+  }\n\
+\n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl'] = '\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  float fluidity = texture2D(data1_tex, coord).a;\n\
+  \n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n\
+      fluidity == 0.0) {\n\
+    \n\
+    vec2 dx = vec2(grid.x, 0.0);\n\
+    vec2 dy = vec2(0.0, grid.y);\n\
+\n\
+    if (texture2D(data1_tex, coord - dy).a == 1.0) {\n\
+      data2.ba = texture2D(data2_tex, coord - dy).ba;\n\
+    } \n\
+    else if (texture2D(data1_tex, coord + dy).a == 1.0) {\n\
+      data2.ba = texture2D(data2_tex, coord + dy).ba;\n\
+    } \n\
+\n\
+    if (texture2D(data1_tex, coord - dx).a == 1.0) {\n\
+      data2.ba = texture2D(data2_tex, coord - dx).ba;\n\
+    } \n\
+    else if (texture2D(data1_tex, coord + dx).a == 1.0) {\n\
+      data2.ba = texture2D(data2_tex, coord + dx).ba;\n\
+    } \n\
+  }\n\
+\n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl'] = '\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+// texture 3: \n\
+// - R: uWind\n\
+// - G: vWind\n\
+// - B: undefined\n\
+// - A: undefined\n\
+uniform sampler2D data3_tex;\n\
+\n\
+uniform vec2 grid;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data2 = texture2D(data2_tex, coord);\n\
+  float fluidity = texture2D(data1_tex, coord).a;\n\
+\n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n\
+      fluidity == 0.0) {\n\
+    \n\
+    vec2 dx = vec2(grid.x, 0.0);\n\
+    vec2 dy = vec2(0.0, grid.y);\n\
+\n\
+    int count = 0;\n\
+\n\
+    if (texture2D(data1_tex, coord - dy).a == 1.0) {\n\
+      count += 1;\n\
+      vec2 data2_m_dy = texture2D(data2_tex, coord - dy).rg;\n\
+      data2.rg = texture2D(data3_tex, coord).rg + vec2(-data2_m_dy.r, data2_m_dy.g);\n\
+    } \n\
+    else if (texture2D(data1_tex, coord + dy).a == 1.0) {\n\
+      count += 1;\n\
+      vec2 data2_p_dy = texture2D(data2_tex, coord + dy).rg;\n\
+      data2.rg = texture2D(data3_tex, coord).rg + vec2(-data2_p_dy.r, data2_p_dy.g);\n\
+    } \n\
+\n\
+    if (texture2D(data1_tex, coord - dx).a == 1.0) {\n\
+      count += 1;\n\
+      vec2 data2_m_dx = texture2D(data2_tex, coord - dx).rg;\n\
+      data2.rg = texture2D(data3_tex, coord).rg + vec2(data2_m_dx.r, -data2_m_dx.g);\n\
+    } \n\
+    else if (texture2D(data1_tex, coord + dx).a == 1.0) {\n\
+      count += 1;\n\
+      vec2 data2_p_dx = texture2D(data2_tex, coord + dx).rg;\n\
+      data2.rg = texture2D(data3_tex, coord).rg + vec2(data2_p_dx.r, -data2_p_dx.g);\n\
+    } \n\
+\n\
+    if (count == 0) {\n\
+      data2.rg = texture2D(data3_tex, coord).rg;\n\
+    }\n\
+  }\n\
+  \n\
+  gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl'] = '\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+	vec4 data2 = texture2D(data2_tex, coord);\n\
+	data2.ba = data2.rg;\n\
+	gl_FragColor = data2;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl'] = '\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  coord = gl_Vertex.xy * 0.5 + 0.5;\n\
+  gl_Position = vec4(gl_Vertex.xy, 0.0, 1.0);\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'] = '\
+// texture 0: \n\
+// - R: t\n\
+// - G: t0\n\
+// - B: tb\n\
+// - A: conductivity\n\
+uniform sampler2D data0_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float vN;\n\
+uniform float vS;\n\
+uniform float vW;\n\
+uniform float vE;\n\
+uniform float delta_x;\n\
+uniform float delta_y;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data0 = texture2D(data0_tex, coord);\n\
+  vec2 dx = vec2(grid.x, 0.0);\n\
+  vec2 dy = vec2(0.0, grid.y);\n\
+  if (coord.x < grid.x) {\n\
+    data0.r = texture2D(data0_tex, coord + dx).r\n\
+            + vN * delta_y / data0.a;\n\
+  } else if (coord.x > 1.0 - grid.x) {\n\
+    data0.r = texture2D(data0_tex, coord - dx).r\n\
+            - vS * delta_y / data0.a;\n\
+  } else if (coord.y < grid.y) {\n\
+    data0.r = texture2D(data0_tex, coord + dy).r\n\
+            - vW * delta_x / data0.a;\n\
+  } else if (coord.y > 1.0 - grid.y) {\n\
+    data0.r = texture2D(data0_tex, coord - dy).r\n\
+            + vE * delta_x / data0.a;\n\
+  }\n\
+  gl_FragColor = data0;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-glsl/force-flux-t0.fs.glsl'] = '\
+// texture 0: \n\
+// - R: t\n\
+// - G: t0\n\
+// - B: tb\n\
+// - A: conductivity\n\
+uniform sampler2D data0_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float vN;\n\
+uniform float vS;\n\
+uniform float vW;\n\
+uniform float vE;\n\
+uniform float delta_x;\n\
+uniform float delta_y;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data0 = texture2D(data0_tex, coord);\n\
+  vec2 dx = vec2(grid.x, 0.0);\n\
+  vec2 dy = vec2(0.0, grid.y);\n\
+  if (coord.x < grid.x) {\n\
+    data0.g = texture2D(data0_tex, coord + dx).r\n\
+            + vN * delta_y / data0.a;\n\
+  } else if (coord.x > 1.0 - grid.x) {\n\
+    data0.g = texture2D(data0_tex, coord - dx).r\n\
+            - vS * delta_y / data0.a;\n\
+  } else if (coord.y < grid.y) {\n\
+    data0.g = texture2D(data0_tex, coord + dy).r\n\
+            - vW * delta_x / data0.a;\n\
+  } else if (coord.y > 1.0 - grid.y) {\n\
+    data0.g = texture2D(data0_tex, coord - dy).r\n\
+            + vE * delta_x / data0.a;\n\
+  }\n\
+  gl_FragColor = data0;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl'] = '\
+// texture 0: \n\
+// - R: t\n\
+// - G: t0\n\
+// - B: tb\n\
+// - A: conductivity\n\
+uniform sampler2D data0_tex;\n\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float tx;\n\
+uniform float ty;\n\
+\n\
+// Boundary conditions uniforms.\n\
+uniform float enforce_temp;\n\
+uniform float vN;\n\
+uniform float vS;\n\
+uniform float vW;\n\
+uniform float vE;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data0 = texture2D(data0_tex, coord);\n\
+  \n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n\
+    \n\
+    float fluidity = texture2D(data1_tex, coord).a;\n\
+    if (fluidity == 1.0) {\n\
+      vec2 dx = vec2(grid.x, 0.0);\n\
+      vec2 dy = vec2(0.0, grid.y);\n\
+\n\
+      // Temperature.\n\
+      float t_m_dy = texture2D(data0_tex, coord - dy).r;\n\
+      float t_p_dy = texture2D(data0_tex, coord + dy).r;\n\
+      float t_m_dx = texture2D(data0_tex, coord - dx).r;\n\
+      float t_p_dx = texture2D(data0_tex, coord + dx).r;\n\
+      // Velocity.\n\
+      float u_m_dy = texture2D(data2_tex, coord - dy).r;\n\
+      float u_p_dy = texture2D(data2_tex, coord + dy).r;\n\
+      float v_m_dx = texture2D(data2_tex, coord - dx).g;\n\
+      float v_p_dx = texture2D(data2_tex, coord + dx).g;\n\
+      // Update T0.\n\
+      data0.g = data0.r - tx * (u_p_dy * t_p_dy - u_m_dy * t_m_dy)\n\
+                        - ty * (v_p_dx * t_p_dx - v_m_dx * t_m_dx);\n\
+    }\n\
+  } else if (enforce_temp == 1.0) {\n\
+    // "temperature at border" boundary conditions are\n\
+    // integrated into this shader.\n\
+    if (coord.x < grid.x) {\n\
+      data0.g = vN;\n\
+    } else if (coord.x > 1.0 - grid.x) {\n\
+      data0.g = vS;\n\
+    } else if (coord.y < grid.y) {\n\
+      data0.g = vW;\n\
+    } else if (coord.y > 1.0 - grid.y) {\n\
+      data0.g = vE;\n\
+    }\n\
+  }\n\
+  gl_FragColor = data0;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl'] = '\
+// texture 0: \n\
+// - R: t\n\
+// - G: t0\n\
+// - B: tb\n\
+// - A: conductivity\n\
+uniform sampler2D data0_tex;\n\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+// texture 2: \n\
+// - R: u\n\
+// - G: v\n\
+// - B: u0\n\
+// - A: v0\n\
+uniform sampler2D data2_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float tx;\n\
+uniform float ty;\n\
+\n\
+// Boundary conditions uniforms.\n\
+uniform float enforce_temp;\n\
+uniform float vN;\n\
+uniform float vS;\n\
+uniform float vW;\n\
+uniform float vE;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data0 = texture2D(data0_tex, coord);\n\
+  \n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n\
+    \n\
+    float fluidity = texture2D(data1_tex, coord).a;\n\
+    if (fluidity == 1.0) {\n\
+      vec2 dx = vec2(grid.x, 0.0);\n\
+      vec2 dy = vec2(0.0, grid.y);\n\
+\n\
+      // Temperature t0.\n\
+      float t0_m_dy = texture2D(data0_tex, coord - dy).g;\n\
+      float t0_p_dy = texture2D(data0_tex, coord + dy).g;\n\
+      float t0_m_dx = texture2D(data0_tex, coord - dx).g;\n\
+      float t0_p_dx = texture2D(data0_tex, coord + dx).g;\n\
+      // Velocity.\n\
+      float u = texture2D(data2_tex, coord).r;\n\
+      float v = texture2D(data2_tex, coord).g;\n\
+      // Update T.\n\
+      data0.r = 0.5 * (data0.r + data0.g)\n\
+              - 0.5 * tx * u * (t0_p_dy - t0_m_dy)\n\
+              - 0.5 * ty * v * (t0_p_dx - t0_m_dx);\n\
+    }\n\
+  } else if (enforce_temp == 1.0) {\n\
+    // "temperature at border" boundary conditions are\n\
+    // integrated into this shader.\n\
+    if (coord.x < grid.x) {\n\
+      data0.r = vN;\n\
+    } else if (coord.x > 1.0 - grid.x) {\n\
+      data0.r = vS;\n\
+    } else if (coord.y < grid.y) {\n\
+      data0.r = vW;\n\
+    } else if (coord.y > 1.0 - grid.y) {\n\
+      data0.r = vE;\n\
+    }\n\
+  }\n\
+  gl_FragColor = data0;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl'] = '\
+// texture 0: \n\
+// - R: t\n\
+// - G: t0\n\
+// - B: tb\n\
+// - A: conductivity\n\
+uniform sampler2D data0_tex;\n\
+// texture 1: \n\
+// - R: q\n\
+// - G: capacity\n\
+// - B: density\n\
+// - A: fluidity\n\
+uniform sampler2D data1_tex;\n\
+\n\
+uniform vec2 grid;\n\
+uniform float hx;\n\
+uniform float hy;\n\
+uniform float inv_timestep;\n\
+\n\
+// Boundary conditions uniforms\n\
+uniform float enforce_temp;\n\
+uniform float vN;\n\
+uniform float vS;\n\
+uniform float vW;\n\
+uniform float vE;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  vec4 data0 = texture2D(data0_tex, coord);\n\
+  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n\
+      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n\
+    vec2 dx = vec2(grid.x, 0.0);\n\
+    vec2 dy = vec2(0.0, grid.y);\n\
+    float tb = data0.b;\n\
+    // Check if tb is NaN. isnan() function is not available\n\
+    // in OpenGL ES GLSL, so use some tricks. IEEE 754 spec defines\n\
+    // that NaN != NaN, however this seems to not work on Windows.\n\
+    // So, also check if the value is outside [-3.4e38, 3.4e38] (3.4e38\n\
+    // is close to 32Float max value), as such values are not expected.\n\
+    if (tb != tb || tb < -3.4e38 || tb > 3.4e38) {\n\
+      vec4 data1 = texture2D(data1_tex, coord);\n\
+      vec4 data0_m_dy = texture2D(data0_tex, coord - dy);\n\
+      vec4 data0_p_dy = texture2D(data0_tex, coord + dy);\n\
+      vec4 data0_m_dx = texture2D(data0_tex, coord - dx);\n\
+      vec4 data0_p_dx = texture2D(data0_tex, coord + dx);\n\
+      float sij = data1.g * data1.b * inv_timestep;\n\
+      float rij = data0.a;\n\
+      float axij = hx * (rij + data0_m_dy.a);\n\
+      float bxij = hx * (rij + data0_p_dy.a);\n\
+      float ayij = hy * (rij + data0_m_dx.a);\n\
+      float byij = hy * (rij + data0_p_dx.a);\n\
+      data0.r = (data0.g * sij + data1.r\n\
+                 + axij * data0_m_dy.r\n\
+                 + bxij * data0_p_dy.r\n\
+                 + ayij * data0_m_dx.r\n\
+                 + byij * data0_p_dx.r)\n\
+                 / (sij + axij + bxij + ayij + byij);\n\
+    } else {\n\
+      data0.r = tb;\n\
+    }\n\
+  } else if (enforce_temp == 1.0) {\n\
+    // "temperature at border" boundary conditions are\n\
+    // integrated into this shader.\n\
+    if (coord.x < grid.x) {\n\
+      data0.r = vN;\n\
+    } else if (coord.x > 1.0 - grid.x) {\n\
+      data0.r = vS;\n\
+    } else if (coord.y < grid.y) {\n\
+      data0.r = vW;\n\
+    } else if (coord.y > 1.0 - grid.y) {\n\
+      data0.r = vE;\n\
+    }\n\
+  }\n\
+  gl_FragColor = data0;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl'] = '\
+// texture 0: \n\
+// - R: t\n\
+// - G: t0\n\
+// - B: tb\n\
+// - A: conductivity\n\
+uniform sampler2D data0_tex;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+	vec4 data0 = texture2D(data0_tex, coord);\n\
+	data0.g = data0.r;\n\
+	gl_FragColor = data0;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/views/energy2d/heatmap-webgl-glsl/basic.vs.glsl'] = '\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  coord = gl_TexCoord.xy;\n\
+  gl_Position = vec4(gl_Vertex.xyz, 1.0);\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/views/energy2d/heatmap-webgl-glsl/temp-renderer.fs.glsl'] = '\
+// Provided textur contains temperature data in R channel.\n\
+uniform sampler2D heatmap_tex;\n\
+uniform sampler2D palette_tex;\n\
+\n\
+uniform float max_temp;\n\
+uniform float min_temp;\n\
+\n\
+varying vec2 coord;\n\
+\n\
+void main() {\n\
+  float temp = texture2D(heatmap_tex, coord).r;\n\
+  float scaled_temp = (temp - min_temp) / (max_temp - min_temp);\n\
+  gl_FragColor = texture2D(palette_tex, vec2(scaled_temp, 0.5));\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/views/energy2d/vectormap-webgl-glsl/vectormap.fs.glsl'] = '\
+uniform vec4 color;\n\
+\n\
+void main() {\n\
+  gl_FragColor = color;\n\
+}\n\
+\n\
+';
+
+lab.glsl['src/lab/views/energy2d/vectormap-webgl-glsl/vectormap.vs.glsl'] = '\
+// Provided texture contains vector data in RG channels.\n\
+attribute vec2 origin;\n\
+\n\
+uniform sampler2D vectormap_tex;\n\
+uniform float base_length;\n\
+uniform float vector_scale;\n\
+uniform vec2 scale;\n\
+\n\
+void main() {\n\
+  // Read vector which should be visualized.\n\
+  vec2 vec = texture2D(vectormap_tex, gl_TexCoord.xy).xy;\n\
+  vec.y = -vec.y;\n\
+\n\
+  if (length(vec) < 1e-15) {\n\
+    // Do not draw to small vectors.\n\
+    // Set position outside [-1, 1] region, which is rendered.\n\
+    gl_Position = vec4(2.0);\n\
+    return;\n\
+  }\n\
+\n\
+  // Test which part of the vector arrow is being processed. \n\
+  if (gl_Vertex.x == 0.0 && gl_Vertex.y == 0.0) {\n\
+    // Origin of the arrow is being processed.\n\
+    // Just transform its coordinates.\n\
+    gl_Position = vec4(origin, 0.0, 1.0);\n\
+  } else {\n\
+    // Other parts of arrow are being processed.\n\
+    // Set proper length of the arrow, rotate it, scale\n\
+    // and finally transform.\n\
+\n\
+    // Calculate arrow length.\n\
+    vec2 new_pos = gl_Vertex.xy;\n\
+    new_pos.x += base_length + vector_scale * length(vec);\n\
+\n\
+    // Calculate angle between reference arrow (horizontal).\n\
+    vec = normalize(vec);\n\
+    float angle = acos(dot(vec, vec2(1.0, 0.0)));\n\
+    if (vec.y < 0.0) {\n\
+      angle = -angle;\n\
+    }\n\
+    // Prepare rotation matrix.\n\
+    // See: http://en.wikipedia.org/wiki/Rotation_matrix\n\
+    mat2 rot_m = mat2(\n\
+      cos(angle), sin(angle),\n\
+     -sin(angle), cos(angle)\n\
+    );\n\
+    // Rotate.\n\
+    new_pos = rot_m * new_pos;\n\
+    // Scale.\n\
+    new_pos = new_pos * scale;\n\
+    // Transform.\n\
+    gl_Position = vec4(new_pos + origin, 0.0, 1.0);\n\
+  }\n\
+}\n\
+\n\
+';
+
 var require = function (file, cwd) {
     var resolved = require.resolve(file, cwd || '/');
     var mod = require.modules[resolved];
@@ -597,7 +1661,7 @@ require.define("/physics-solvers/heat-solver.js", function (require, module, exp
 // JSLint report: OK
 // TODO: fix loops (nx vs ny)
 //
-// lab/models/energy2d/engines/heat-solver.js
+// lab/models/energy2d/engine/physics-solvers/heat-solver.js
 //
 
 var
@@ -771,11 +1835,244 @@ exports.makeHeatSolver = function (model) {
 
 });
 
+require.define("/physics-solvers-gpu/heat-solver-gpu.js", function (require, module, exports, __dirname, __filename) {
+/*globals lab: false, energy2d: false */
+/*jslint indent: 2, node: true, browser: true, es5: true */
+//
+// lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-gpu.js
+//
+
+var
+  arrays = require('../arrays/arrays.js').arrays,
+  RELAXATION_STEPS = 10;
+
+exports.makeHeatSolverGPU = function (model) {
+  'use strict';
+  var
+    // Dependencies:
+    // - Energy2D GPU namespace.
+    gpu = energy2d.utils.gpu,
+    // - GPGPU utilities. It's a singleton instance.
+    //   It should have been previously initialized by core-model.
+    gpgpu = energy2d.utils.gpu.gpgpu,
+    // - GLSL sources.
+    glsl = lab.glsl,
+
+    // Shader sources. One of Lab build steps converts sources to JavaScript file.
+    GLSL_PREFIX = 'src/lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-glsl/',
+    basic_vs            = glsl[GLSL_PREFIX + 'basic.vs.glsl'],
+    solver_fs           = glsl[GLSL_PREFIX + 'solver.fs.glsl'],
+    force_flux_t_fs     = glsl[GLSL_PREFIX + 'force-flux-t.fs.glsl'],
+    force_flux_t0_fs    = glsl[GLSL_PREFIX + 'force-flux-t.fs.glsl'],
+    t_to_t0             = glsl[GLSL_PREFIX + 't-to-t0.fs.glsl'],
+    maccormack_step1_fs = glsl[GLSL_PREFIX + 'maccormack-step1.fs.glsl'],
+    maccormack_step2_fs = glsl[GLSL_PREFIX + 'maccormack-step2.fs.glsl'],
+
+    // ========================================================================
+    // GLSL Shaders:
+    // - Main solver.
+    solver_program           = new gpu.Shader(basic_vs, solver_fs),
+    // - Force flux boundary (for T).
+    force_flux_t_program     = new gpu.Shader(basic_vs, force_flux_t_fs),
+    // - Force flux boundary (for T0).
+    force_flux_t0_program    = new gpu.Shader(basic_vs, force_flux_t0_fs),
+    // - Copy single channel of texture (t to t0).
+    t_to_t0_program          = new gpu.Shader(basic_vs, t_to_t0),
+    // - MacCormack advection step 1.
+    maccormack_step1_program = new gpu.Shader(basic_vs, maccormack_step1_fs),
+    // - MacCormack advection step 2.
+    maccormack_step2_program = new gpu.Shader(basic_vs, maccormack_step2_fs),
+    // ========================================================================
+
+    // Basic simulation parameters.
+    nx = model.getGridWidth(),
+    ny = model.getGridHeight(),
+
+    model_options = model.getModelOptions(),
+    timestep = model_options.timestep,
+    boundary = model_options.boundary,
+
+    delta_x = model_options.model_width / model.getGridWidth(),
+    delta_y = model_options.model_height / model.getGridHeight(),
+
+    relaxation_steps = RELAXATION_STEPS,
+
+    // Simulation textures provided by model.
+    // texture 0: 
+    // - R: t
+    // - G: t0
+    // - B: tb
+    // - A: conductivity
+    data0_tex = model.getSimulationTexture(0),
+    // texture 1: 
+    // - R: q
+    // - G: capacity
+    // - B: density
+    // - A: fluidity
+    data1_tex = model.getSimulationTexture(1),
+    // texture 2: 
+    // - R: u
+    // - G: v
+    // - B: u0
+    // - A: v0
+    data2_tex = model.getSimulationTexture(2),
+
+    // Convenience variables.  
+    data_0_1_2_array = [data0_tex, data1_tex, data2_tex],
+    data_0_1_array = [data0_tex, data1_tex],
+    data_0_array = [data0_tex],
+    grid_vec = [1 / ny, 1 / nx],
+
+    init = function () {
+      var uniforms;
+
+      // Solver program uniforms.
+      uniforms = {
+        // Texture units.
+        data0_tex: 0,
+        data1_tex: 1,
+        // Uniforms.
+        grid: grid_vec,
+        enforce_temp: 0.0,
+        hx: 0.5 / (delta_x * delta_x),
+        hy: 0.5 / (delta_y * delta_y),
+        inv_timestep: 1.0 / timestep
+      };
+      solver_program.uniforms(uniforms);
+
+      // MacCormack step 1 program uniforms.
+      uniforms = {
+        // Texture units.
+        data0_tex: 0,
+        data1_tex: 1,
+        data2_tex: 2,
+        // Uniforms.
+        grid: grid_vec,
+        enforce_temp: 0.0,
+        tx: 0.5 * timestep / delta_x,
+        ty: 0.5 * timestep / delta_y,
+      };
+      maccormack_step1_program.uniforms(uniforms);
+      maccormack_step2_program.uniforms(uniforms);
+
+      if (boundary.temperature_at_border) {
+        uniforms = {
+          // Additional uniforms.
+          enforce_temp: 1.0,
+          vN:  boundary.temperature_at_border.upper,
+          vS:  boundary.temperature_at_border.lower,
+          vW:  boundary.temperature_at_border.left,
+          vE:  boundary.temperature_at_border.right
+        };
+        // Integrate boundary conditions with other programs.
+        // This is optimization that allows to limit render-to-texture calls.
+        solver_program.uniforms(uniforms);
+        maccormack_step1_program.uniforms(uniforms);
+        maccormack_step2_program.uniforms(uniforms);
+      } else if (boundary.flux_at_border) {
+        uniforms = {
+          // Texture units.
+          data0_tex: 0,
+          // Uniforms.
+          grid: grid_vec,
+          vN: boundary.flux_at_border.upper,
+          vS: boundary.flux_at_border.lower,
+          vW: boundary.flux_at_border.left,
+          vE: boundary.flux_at_border.right,
+          delta_x: delta_x,
+          delta_y: delta_y
+        };
+        // Flux boundary conditions can't be integrated into solver program,
+        // so use separate GLSL programs.
+        force_flux_t_program.uniforms(uniforms);
+        force_flux_t0_program.uniforms(uniforms);
+      }
+    },
+
+    macCormack = function () {
+      // MacCormack step 1.
+      gpgpu.executeProgram(
+        maccormack_step1_program,
+        data_0_1_2_array,
+        data0_tex
+      );
+      if (boundary.flux_at_border) {
+        // Additional program for boundary conditions
+        // is required only for "flux at border" option.
+        // If "temperature at border" is used, boundary
+        // conditions are enforced by the MacCormack program.
+        gpgpu.executeProgram(
+          force_flux_t0_program,
+          data_0_array,
+          data0_tex
+        );
+      }
+      // MacCormack step 2.
+      gpgpu.executeProgram(
+        maccormack_step2_program,
+        data_0_1_2_array,
+        data0_tex
+      );
+      if (boundary.flux_at_border) {
+        // Additional program for boundary conditions
+        // is required only for "flux at border" option.
+        // If "temperature at border" is used, boundary
+        // conditions are enforced by the MacCormack program.
+        gpgpu.executeProgram(
+          force_flux_t_program,
+          data_0_array,
+          data0_tex
+        );
+      }
+    },
+
+    heat_solver_gpu = {
+      solve: function (convective) {
+        var k;
+        // Store previous values of t in t0.
+        gpgpu.executeProgram(
+          t_to_t0_program,
+          data_0_array,
+          data0_tex
+        );
+        for (k = 0; k < relaxation_steps; k += 1) {
+          gpgpu.executeProgram(
+            solver_program,
+            data_0_1_array,
+            data0_tex
+          );
+          if (boundary.flux_at_border) {
+            // Additional program for boundary conditions
+            // is required only for "flux at border" option.
+            // If "temperature at border" is used, boundary
+            // conditions are enforced by the solver program.
+            gpgpu.executeProgram(
+              force_flux_t_program,
+              data_0_array,
+              data0_tex
+            );
+          }
+        }
+        if (convective) {
+          macCormack();
+        }
+        // Synchronize. It's not required but it 
+        // allows to measure time (for optimization).
+        gpgpu.tryFinish();
+      }
+    };
+  // One-off initialization.
+  init();
+  return heat_solver_gpu;
+};
+
+});
+
 require.define("/physics-solvers/fluid-solver.js", function (require, module, exports, __dirname, __filename) {
 /*jslint indent: 2 */
 // JSLint report: OK
 //
-// lab/models/energy2d/engines/fluid-solver.js
+// lab/models/energy2d/engine/physics-solvers/fluid-solver.js
 //
 var
   arrays = require('../arrays/arrays.js').arrays,
@@ -1193,6 +2490,987 @@ exports.makeFluidSolver = function (model) {
 };
 });
 
+require.define("/physics-solvers-gpu/fluid-solver-gpu.js", function (require, module, exports, __dirname, __filename) {
+/*globals lab: false, energy2d: false */
+/*jslint indent: 2, node: true, browser: true, es5: true */
+//
+// lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-gpu.js
+//
+
+var
+  arrays = require('../arrays/arrays.js').arrays,
+  RELAXATION_STEPS = 10,
+  GRAVITY = 0,
+
+  BUOYANCY_AVERAGE_ALL = 0,
+  BUOYANCY_AVERAGE_COLUMN = 1;
+
+exports.makeFluidSolverGPU = function (model) {
+  'use strict';
+  var
+    // Dependencies:
+    // - Energy2D GPU namespace.
+    gpu = energy2d.utils.gpu,
+    // - GPGPU utilities. It's a singleton instance.
+    //   It should have been previously initialized by core-model.
+    gpgpu = energy2d.utils.gpu.gpgpu,
+    // - GLSL sources.
+    glsl = lab.glsl,
+
+    // Shader sources. One of Lab build steps converts sources to JavaScript file.
+    GLSL_PREFIX = 'src/lab/models/energy2d/engine/physics-solvers-gpu/fluid-solver-glsl/',
+    basic_vs                 = glsl[GLSL_PREFIX + 'basic.vs.glsl'],
+    maccormack_step1_fs      = glsl[GLSL_PREFIX + 'maccormack-step1.fs.glsl'],
+    maccormack_step2_fs      = glsl[GLSL_PREFIX + 'maccormack-step2.fs.glsl'],
+    apply_uv_boundary_fs     = glsl[GLSL_PREFIX + 'apply-uv-boundary.fs.glsl'],
+    apply_u0v0_boundary_fs   = glsl[GLSL_PREFIX + 'apply-u0v0-boundary.fs.glsl'],
+    set_obstacle_boundary_fs = glsl[GLSL_PREFIX + 'set-obstacle-boundary.fs.glsl'],
+    set_obstacle_velocity_fs = glsl[GLSL_PREFIX + 'set-obstacle-velocity.fs.glsl'],
+    uv_to_u0v0_fs            = glsl[GLSL_PREFIX + 'uv-to-u0v0.fs.glsl'],
+    conserve_step1_fs        = glsl[GLSL_PREFIX + 'conserve-step1.fs.glsl'],
+    conserve_step2_fs        = glsl[GLSL_PREFIX + 'conserve-step2.fs.glsl'],
+    conserve_step3_fs        = glsl[GLSL_PREFIX + 'conserve-step3.fs.glsl'],
+    diffuse_fs               = glsl[GLSL_PREFIX + 'diffuse.fs.glsl'],
+    apply_buoyancy_fs        = glsl[GLSL_PREFIX + 'apply-buoyancy.fs.glsl'],
+
+    // ========================================================================
+    // GLSL Shaders:
+    // - MacCormack advection, first step.
+    maccormack_step1_program      = new gpu.Shader(basic_vs, maccormack_step1_fs),
+    maccormack_step2_program      = new gpu.Shader(basic_vs, maccormack_step2_fs),
+    apply_uv_boundary_program     = new gpu.Shader(basic_vs, apply_uv_boundary_fs),
+    apply_u0v0_boundary_program   = new gpu.Shader(basic_vs, apply_u0v0_boundary_fs),
+    set_obstacle_boundary_program = new gpu.Shader(basic_vs, set_obstacle_boundary_fs),
+    set_obstacle_velocity_program = new gpu.Shader(basic_vs, set_obstacle_velocity_fs),
+    uv_to_u0v0_program            = new gpu.Shader(basic_vs, uv_to_u0v0_fs),
+    conserve_step1_program        = new gpu.Shader(basic_vs, conserve_step1_fs),
+    conserve_step2_program        = new gpu.Shader(basic_vs, conserve_step2_fs),
+    conserve_step3_program        = new gpu.Shader(basic_vs, conserve_step3_fs),
+    diffuse_program               = new gpu.Shader(basic_vs, diffuse_fs),
+    apply_buoyancy_program        = new gpu.Shader(basic_vs, apply_buoyancy_fs),
+    // ========================================================================
+
+    // Simulation arrays provided by model.
+    // texture 0: 
+    // - R: t
+    // - G: t0
+    // - B: tb
+    // - A: conductivity
+    data0_tex = model.getSimulationTexture(0),
+    // texture 1: 
+    // - R: q
+    // - G: capacity
+    // - B: density
+    // - A: fluidity
+    data1_tex = model.getSimulationTexture(1),
+    // texture 2: 
+    // - R: u
+    // - G: v
+    // - B: u0
+    // - A: v0
+    data2_tex = model.getSimulationTexture(2),
+    // texture 3: 
+    // - R: uWind
+    // - G: vWind
+    // - B: undefined
+    // - A: undefined
+    data3_tex = model.getSimulationTexture(3),
+
+    // Basic simulation parameters.
+    nx = model.getGridWidth(),
+    ny = model.getGridHeight(),
+
+    model_options          = model.getModelOptions(),
+    timestep               = model_options.timestep,
+    thermal_buoyancy       = model_options.thermal_buoyancy,
+    buoyancy_approximation = model_options.buoyancy_approximation,
+    viscosity              = model_options.background_viscosity,
+
+    delta_x = model_options.model_width / model.getGridWidth(),
+    delta_y = model_options.model_height / model.getGridHeight(),
+
+    relaxation_steps = RELAXATION_STEPS,
+    gravity = GRAVITY,
+
+    // Convenience variables.   
+    i2dx  = 0.5 / delta_x,
+    i2dy  = 0.5 / delta_y,
+    idxsq = 1.0 / (delta_x * delta_x),
+    idysq = 1.0 / (delta_y * delta_y),
+    s     = 0.5 / (idxsq + idysq),
+
+    hx = timestep * viscosity * idxsq,
+    hy = timestep * viscosity * idysq,
+    dn = 1.0 / (1 + 2 * (hx + hy)),
+
+    g = gravity * timestep,
+    b = thermal_buoyancy * timestep,
+
+    grid_vec = [1 / ny, 1 / nx],
+
+    // Textures sets.
+    data_2_array = [data2_tex],
+    data_1_2_array = [data1_tex, data2_tex],
+    data_0_1_2_array = [data0_tex, data1_tex, data2_tex],
+    data_1_2_3_array = [data1_tex, data2_tex, data3_tex],
+
+    init = function () {
+      var uniforms;
+
+      // MacCormack step 1 and 2 uniforms.
+      uniforms = {
+        // Texture units.
+        data1_tex: 0,
+        data2_tex: 1,
+        // Uniforms.
+        grid: grid_vec,
+        tx: 0.5 * timestep / delta_x,
+        ty: 0.5 * timestep / delta_y
+      };
+      maccormack_step1_program.uniforms(uniforms);
+      maccormack_step2_program.uniforms(uniforms);
+
+      // Apply UV / U0V0 boundary uniforms.
+      uniforms = {
+        // Texture units.
+        data2_tex: 0,
+        // Uniforms.
+        grid: grid_vec,
+      };
+      apply_uv_boundary_program.uniforms(uniforms);
+      apply_u0v0_boundary_program.uniforms(uniforms);
+
+      // Set obstacle boundary uniforms.
+      uniforms = {
+        // Texture units.
+        data1_tex: 0,
+        data2_tex: 1,
+        // Uniforms.
+        grid: grid_vec,
+      };
+      set_obstacle_boundary_program.uniforms(uniforms);
+
+      // Set obstacle velocity uniforms.
+      uniforms = {
+        // Texture units.
+        data1_tex: 0,
+        data2_tex: 1,
+        data3_tex: 2,
+        // Uniforms.
+        grid: grid_vec,
+      };
+      set_obstacle_velocity_program.uniforms(uniforms);
+
+      // Conserve step 1 and 3 uniforms.
+      uniforms = {
+        // Texture units.
+        data1_tex: 0,
+        data2_tex: 1,
+        // Uniforms.
+        grid: grid_vec,
+        i2dx: i2dx,
+        i2dy: i2dy
+      };
+      conserve_step1_program.uniforms(uniforms);
+      conserve_step3_program.uniforms(uniforms);
+
+      // Conserve step 2 uniforms.
+      uniforms = {
+        // Texture units.
+        data1_tex: 0,
+        data2_tex: 1,
+        // Uniforms.
+        grid: grid_vec,
+        s: s,
+        idxsq: idxsq,
+        idysq: idysq
+      };
+      conserve_step2_program.uniforms(uniforms);
+
+      // Diffuse uniforms.
+      uniforms = {
+        // Texture units.
+        data1_tex: 0,
+        data2_tex: 1,
+        // Uniforms.
+        grid: grid_vec,
+        hx: hx,
+        hy: hy,
+        dn: dn
+      };
+      diffuse_program.uniforms(uniforms);
+
+      // Apply buoyancy uniforms.
+      uniforms = {
+        // Texture units.
+        data0_tex: 0,
+        data1_tex: 1,
+        data2_tex: 2,
+        // Uniforms.
+        grid: grid_vec,
+        g: g,
+        b: b
+      };
+      apply_buoyancy_program.uniforms(uniforms);
+    },
+
+    applyBuoyancy = function () {
+      gpgpu.executeProgram(
+        apply_buoyancy_program,
+        data_0_1_2_array,
+        data2_tex
+      );
+    },
+
+    macCormack = function () {
+      // Step 1.
+      gpgpu.executeProgram(
+        maccormack_step1_program,
+        data_1_2_array,
+        data2_tex
+      );
+      // Apply boundary.
+      gpgpu.executeProgram(
+        apply_uv_boundary_program,
+        data_2_array,
+        data2_tex
+      );
+      // Step 2.
+      gpgpu.executeProgram(
+        maccormack_step2_program,
+        data_1_2_array,
+        data2_tex
+      );
+      // Apply boundary again.
+      gpgpu.executeProgram(
+        apply_uv_boundary_program,
+        data_2_array,
+        data2_tex
+      );
+    },
+
+    conserve = function () {
+      var k;
+      // Step 1.
+      gpgpu.executeProgram(
+        conserve_step1_program,
+        data_1_2_array,
+        data2_tex
+      );
+      // Apply boundary.
+      gpgpu.executeProgram(
+        apply_u0v0_boundary_program,
+        data_2_array,
+        data2_tex
+      );
+      // Set obstacle boundary.
+      gpgpu.executeProgram(
+        set_obstacle_boundary_program,
+        data_1_2_array,
+        data2_tex
+      );
+      // Relaxation.
+      for (k = 0; k < relaxation_steps; k += 1) {
+        // Step 2.
+        gpgpu.executeProgram(
+          conserve_step2_program,
+          data_1_2_array,
+          data2_tex
+        );
+      }
+      // Step 3.
+      gpgpu.executeProgram(
+        conserve_step3_program,
+        data_1_2_array,
+        data2_tex
+      );
+      // Apply boundary.
+      gpgpu.executeProgram(
+        apply_uv_boundary_program,
+        data_2_array,
+        data2_tex
+      );
+    },
+
+    diffuse = function () {
+      var k;
+      // Copy UV to U0V0.
+      gpgpu.executeProgram(
+        uv_to_u0v0_program,
+        data_2_array,
+        data2_tex
+      );
+      // Relaxation.
+      for (k = 0; k < relaxation_steps; k += 1) {
+        // Step 2.
+        gpgpu.executeProgram(
+          diffuse_program,
+          data_1_2_array,
+          data2_tex
+        );
+
+        // Apply boundary.
+        gpgpu.executeProgram(
+          apply_uv_boundary_program,
+          data_2_array,
+          data2_tex
+        );
+      }
+    },
+
+    setObstacleVelocity = function () {
+      gpgpu.executeProgram(
+        set_obstacle_velocity_program,
+        data_1_2_3_array,
+        data2_tex
+      );
+    },
+
+    copyUVtoU0V0 = function () {
+      gpgpu.executeProgram(
+        uv_to_u0v0_program,
+        data_2_array,
+        data2_tex
+      );
+    },
+
+    fluid_solver_gpu = {
+      solve: function () {
+        if (thermal_buoyancy !== 0) {
+          applyBuoyancy();
+        }
+        setObstacleVelocity();
+        if (viscosity > 0) {
+          diffuse();
+          conserve();
+          setObstacleVelocity();
+        }
+        copyUVtoU0V0();
+        macCormack();
+        conserve();
+        setObstacleVelocity();
+        // Synchronize. It's not required but it 
+        // allows to measure time (for optimization).
+        gpgpu.tryFinish();
+      }
+    };
+
+  // One-off initialization.
+  init();
+
+  return fluid_solver_gpu;
+};
+
+});
+
+require.define("/physics-solvers/ray-solver.js", function (require, module, exports, __dirname, __filename) {
+/*jslint indent: 2 */
+//
+// lab/models/energy2d/engine/physics-solvers/ray-solver.js
+//
+
+var
+  arrays = require('../arrays/arrays.js').arrays,
+  Photon = require('../photon.js').Photon;
+
+exports.makeRaySolver = function (model) {
+  'use strict';
+  var
+    nx = model.getGridWidth(),
+    ny = model.getGridHeight(),
+
+    // Basic simulation parameters.
+    model_options = model.getModelOptions(),
+    lx = model_options.model_width,
+    ly = model_options.model_height,
+    timestep = model_options.timestep,
+    sun_angle = Math.PI - model_options.sun_angle,
+    ray_count = model_options.solar_ray_count,
+    solar_power_density = model_options.solar_power_density,
+    ray_power = model_options.solar_power_density,
+    ray_speed = model_options.solar_ray_speed,
+    photon_emission_interval = model_options.photon_emission_interval,
+
+    delta_x = model_options.model_width / model.getGridWidth(),
+    delta_y = model_options.model_height / model.getGridHeight(),
+
+    // Simulation arrays provided by model.
+    q       = model.getPowerArray(),
+    parts   = model.getPartsArray(),
+    photons = model.getPhotonsArray(),
+
+    // Convenience variables.  
+    nx1 = nx - 1,
+    ny1 = ny - 1,
+    nx2 = nx - 2,
+    ny2 = ny - 2,
+
+    //
+    // Private methods
+    //
+
+    // TODO: implement something efficient. Linked list?
+    cleanupPhotonsArray = function () {
+      var i = 0;
+      while (i < photons.length) {
+        if (photons[i] === undefined) {
+          photons.splice(i, 1);
+        } else {
+          i += 1;
+        }
+      }
+    },
+
+    applyBoundary = function () {
+      var i, len, photon;
+      for (i = 0, len = photons.length; i < len; i += 1) {
+        if (!photons[i].isContained(0, lx, 0, ly)) {
+          photons[i] = undefined;
+        }
+      }
+      cleanupPhotonsArray();
+    },
+
+    isContained = function (x, y) {
+      var
+        i, len, part;
+      for (i = 0, len = parts.length; i < len; i += 1) {
+        if (parts[i].contains(x, y)) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    shootAtAngle = function (dx, dy) {
+      var
+        m = Math.floor(lx / dx),
+        n = Math.floor(ly / dy),
+        x, y, i;
+      if (sun_angle >= 0 && sun_angle < 0.5 * Math.PI) {
+        y = 0;
+        for (i = 1; i <= m; i += 1) {
+          x = dx * i;
+          if (!isContained(x, y)) {
+            photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+          }
+        }
+        x = 0;
+        for (i = 0; i <= n; i += 1) {
+          y = dy * i;
+          if (!isContained(x, y)) {
+            photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+          }
+        }
+      } else if (sun_angle < 0 && sun_angle >= -0.5 * Math.PI) {
+        y = ly;
+        for (i = 1; i <= m; i += 1) {
+          x = dx * i;
+          if (!isContained(x, y)) {
+            photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+          }
+        }
+        x = 0;
+        for (i = 0; i <= n; i += 1) {
+          y = ly - dy * i;
+          if (!isContained(x, y)) {
+            photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+          }
+        }
+      } else if (sun_angle < Math.PI + 0.001 && sun_angle >= 0.5 * Math.PI) {
+        y = 0;
+        for (i = 0; i <= m; i += 1) {
+          x = lx - dx * i;
+          if (!isContained(x, y)) {
+            photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+          }
+        }
+        x = lx;
+        for (i = 1; i <= n; i += 1) {
+          y = dy * i;
+          if (!isContained(x, y)) {
+            photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+          }
+        }
+      } else if (sun_angle >= -Math.PI && sun_angle < -0.5 * Math.PI) {
+        y = ly;
+        for (i = 0; i <= m; i += 1) {
+          x = lx - dx * i;
+          if (!isContained(x, y)) {
+            photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+          }
+        }
+        x = lx;
+        for (i = 1; i <= n; i += 1) {
+          y = ly - dy * i;
+          if (!isContained(x, y)) {
+            photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+          }
+        }
+      }
+    };
+
+  return {
+    solve: function () {
+      var
+        factor = 1.0 / (timestep * photon_emission_interval),
+        idx = 1.0 / delta_x,
+        idy = 1.0 / delta_y,
+        photon, part, x, y,
+        i, j, photons_len, parts_len;
+
+      for (i = 0, photons_len = photons.length; i < photons_len; i += 1) {
+        photon = photons[i];
+        photon.move(timestep);
+
+        for (j = 0, parts_len = parts.length; j < parts_len; j += 1) {
+          part = parts[j];
+          if (part.reflect(photon, timestep)) {
+            break;
+          } else if (part.absorb(photon)) {
+            x = Math.max(Math.min(Math.round(photon.x * idx), nx1), 0);
+            y = Math.max(Math.min(Math.round(photon.y * idy), ny1), 0);
+            q[x * ny + y] = photon.energy * factor;
+            // Remove photon.
+            photons[i] = undefined;
+            break;
+          }
+        }
+      }
+      // Clean up absorbed photons.
+      cleanupPhotonsArray();
+      // Remove photons that are out of bounds.
+      applyBoundary();
+    },
+
+    radiate: function () {
+      var part, i, len;
+      for (i = 0, len = parts.length; i < len; i += 1) {
+        part = parts[i];
+        if (part.emissivity > 0) {
+          part.radiate(model);
+        }
+      }
+    },
+
+    sunShine: function () {
+      var s, c, spacing;
+      if (sun_angle < 0) {
+        return;
+      }
+      s = Math.abs(Math.sin(sun_angle));
+      c = Math.abs(Math.cos(sun_angle));
+      spacing = s * ly < c * lx ? ly / c : lx / s;
+      spacing /= ray_count;
+      shootAtAngle(spacing / s, spacing / c);
+    }
+  };
+};
+
+});
+
+require.define("/photon.js", function (require, module, exports, __dirname, __filename) {
+/*jslint indent: 2 */
+//
+// lab/models/energy2d/engine/photon.js
+//
+
+var
+  hypot     = require('./utils/math.js').hypot,
+  Line      = require('./utils/shape.js').Line,
+  Rectangle = require('./utils/shape.js').Rectangle;
+
+// 
+// Photon class.
+//
+var Photon = exports.Photon = function (x, y, energy, c, angle) {
+  'use strict';
+  this.x = x;
+  this.y = y;
+  this.energy = energy;
+  this.c = c;
+
+  if (angle !== undefined) {
+    this.vx = Math.cos(angle) * c;
+    this.vy = Math.sin(angle) * c;
+  }
+};
+
+Photon.prototype.isContained = function (xmin, xmax, ymin, ymax) {
+  'use strict';
+  return this.x >= xmin && this.x <= xmax && this.y >= ymin && this.y <= ymax;
+};
+
+Photon.prototype.move = function (dt) {
+  'use strict';
+  this.x += this.vx * dt;
+  this.y += this.vy * dt;
+};
+
+Photon.prototype.reflectFromLine = function (line, time_step) {
+  'use strict';
+  var
+    x1 = this.x,
+    y1 = this.y,
+    x2 = this.x - this.vx * time_step,
+    y2 = this.y - this.vy * time_step,
+    photon_line = new Line(x1, y1, x2, y2),
+    vx = this.vx,
+    vy = this.vy,
+    r12, sin, cos, u, w;
+
+  if (photon_line.intersectsLine(line)) {
+    x1 = line.x1;
+    y1 = line.y1;
+    x2 = line.x2;
+    y2 = line.y2;
+    r12 = 1.0 / hypot(x1 - x2, y1 - y2);
+    sin = (y2 - y1) * r12;
+    cos = (x2 - x1) * r12;
+    // Velocity component parallel to the line.
+    u = vx * cos + vy * sin;
+    // Velocity component perpendicular to the line.
+    w = vy * cos - vx * sin;
+    // Update velocities.
+    this.vx = u * cos + w * sin;
+    this.vy = u * sin - w * cos;
+    return true;
+  }
+  return false;
+};
+
+Photon.prototype.reflectFromRectangle = function (rectangle, time_step) {
+  'use strict';
+  var
+    x0 = rectangle.x,
+    y0 = rectangle.y,
+    x1 = rectangle.x + rectangle.width,
+    y1 = rectangle.y + rectangle.height,
+    dx, dy;
+
+  dx = this.vx * time_step;
+  if (this.x - dx < x0) {
+    this.vx = -Math.abs(this.vx);
+  } else if (this.x - dx > x1) {
+    this.vx = Math.abs(this.vx);
+  }
+  dy = this.vy * time_step;
+  if (this.y - dy < y0) {
+    this.vy = -Math.abs(this.vy);
+  } else if (this.y - dy > y1) {
+    this.vy = Math.abs(this.vy);
+  }
+};
+
+Photon.prototype.reflectFromPolygon = function (polygon, time_step) {
+  'use strict';
+  var
+    line = new Line(), // no params, as this object will be reused many times
+    i, len;
+
+  for (i = 0, len = polygon.count - 1; i < len; i += 1) {
+    line.x1 = polygon.x_coords[i];
+    line.y1 = polygon.y_coords[i];
+    line.x2 = polygon.x_coords[i + 1];
+    line.y2 = polygon.y_coords[i + 1];
+    if (this.reflectFromLine(line, time_step)) {
+      return;
+    }
+  }
+  line.x1 = polygon.x_coords[polygon.count - 1];
+  line.y1 = polygon.y_coords[polygon.count - 1];
+  line.x2 = polygon.x_coords[0];
+  line.y2 = polygon.y_coords[0];
+  this.reflectFromLine(line, time_step);
+};
+
+Photon.prototype.reflect = function (shape, time_step) {
+  'use strict';
+  // Check if part contains a photon BEFORE possible polygonization.
+  if (!shape.contains(this.x, this.y)) {
+    return false;
+  }
+
+  if (shape instanceof Rectangle) {
+    // Rectangle also can be polygonized, but for performance reasons
+    // use separate method.
+    this.reflectFromRectangle(shape, time_step);
+  } else {
+    // Other shapes (ellipses, rings, polygons) - polygonize() first
+    // (polygonize() for polygon returns itself).
+    this.reflectFromPolygon(shape.polygonize(), time_step);
+  }
+  return true;
+};
+
+});
+
+require.define("/utils/math.js", function (require, module, exports, __dirname, __filename) {
+/*jslint indent: 2 */
+//
+// lab/models/energy2d/engine/utils/math.js
+//
+
+exports.hypot = function (x, y) {
+  'use strict';
+  var t;
+  x = Math.abs(x);
+  y = Math.abs(y);
+  t = Math.min(x, y);
+  x = Math.max(x, y);
+  y = t;
+  return x * Math.sqrt(1 + (y / x) * (y / x));
+};
+});
+
+require.define("/utils/shape.js", function (require, module, exports, __dirname, __filename) {
+/*jslint indent: 2 */
+//
+// lab/models/energy2d/engine/utils/shape.js
+//
+
+// Based on: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+// It is optional to repeat the first vertex at the end of list of polygon vertices.
+exports.pointInsidePolygon = function (nvert, vertx, verty, testx, testy) {
+  'use strict';
+  var c = 0, i, j;
+  for (i = 0, j = nvert - 1; i < nvert; j = i, i += 1) {
+    if (((verty[i] > testy) !== (verty[j] > testy)) &&
+        (testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i])) {
+      c = !c;
+    }
+  }
+  return !!c;
+};
+
+//
+// Line in 2D.
+// 
+// It is defined by two points - (x1, y1) and (x2, y2).
+var Line = exports.Line = function (x1, y1, x2, y2) {
+  'use strict';
+  this.x1 = x1;
+  this.y1 = y1;
+  this.x2 = x2;
+  this.y2 = y2;
+};
+
+Line.prototype.intersectsLine = function (line) {
+  'use strict';
+  var
+    result,
+    a1 = {x: this.x1, y: this.y1},
+    a2 = {x: this.x2, y: this.y2},
+    b1 = {x: line.x1, y: line.y1},
+    b2 = {x: line.x2, y: line.y2},
+    ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x),
+    ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x),
+    u_b  = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y),
+    ua, ub;
+
+  if (u_b !== 0) {
+    ua = ua_t / u_b;
+    ub = ub_t / u_b;
+
+    if (0 <= ua && ua <= 1 && 0 <= ub && ub <= 1) {
+      result = true;
+    } else {
+      result = false;
+    }
+  } else {
+    if (ua_t === 0 || ub_t === 0) {
+      result = true;  // Coincident.
+    } else {
+      result = false; // Parallel.
+    }
+  }
+  return result;
+};
+
+//
+// Polygon.
+//
+// Implements Shape2D interface:
+// - polygonize()
+// - contains(x, y)
+var Polygon = exports.Polygon = function (count, x_coords, y_coords) {
+  'use strict';
+  this.count = count;
+  this.x_coords = x_coords;
+  this.y_coords = y_coords;
+};
+
+Polygon.prototype.polygonize = function () {
+  'use strict';
+  return this;
+};
+
+// Based on: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+// It is optional to repeat the first vertex at the end of list of polygon vertices.
+Polygon.prototype.contains = function (x, y) {
+  'use strict';
+  var
+    x_coords = this.x_coords,
+    y_coords = this.y_coords,
+    count = this.count,
+    c = 0, i, j;
+
+  for (i = 0, j = count - 1; i < count; j = i, i += 1) {
+    if (((y_coords[i] > y) !== (y_coords[j] > y)) &&
+        (x < (x_coords[j] - x_coords[i]) * (y - y_coords[i]) / (y_coords[j] - y_coords[i]) + x_coords[i])) {
+      c = !c;
+    }
+  }
+  // Convert to Boolean.
+  return !!c;
+};
+
+//
+// Rectangle.
+// x, y - left-top corner
+//
+// Implements Shape2D interface:
+// - polygonize()
+// - contains(x, y)
+var Rectangle = exports.Rectangle = function (x, y, width, height) {
+  'use strict';
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.polygon_cache = undefined;
+};
+
+Rectangle.prototype.polygonize = function () {
+  'use strict';
+  var
+    x, y, w, h;
+
+  if (!this.polygon_cache) {
+    x = this.x;
+    y = this.y;
+    w = this.width;
+    h = this.height;
+    this.polygon_cache = new Polygon(4, [x, x + w, x + w, x], [y, y, y + h, y + h]);
+  }
+  return this.polygon_cache;
+};
+
+Rectangle.prototype.contains = function (x, y) {
+  'use strict';
+  return x >= this.x && x <= this.x + this.width &&
+         y >= this.y && y <= this.y + this.height;
+};
+
+// Helper function, used by Ellipse and Ring.
+var polygonizeEllipse = function (x, y, ra, rb, segments) {
+  'use strict';
+  var
+    vx = new Array(segments),
+    vy = new Array(segments),
+    delta = 2 * Math.PI / segments,
+    theta, i;
+
+  for (i = 0; i < segments; i += 1) {
+    theta = delta * i;
+    vx[i] = x + ra * Math.cos(theta);
+    vy[i] = y + rb * Math.sin(theta);
+  }
+  return new Polygon(segments, vx, vy);
+};
+
+//
+// Ellipse.
+// x, y - center
+// a, b - diameter (not radius)
+//
+// Implements Shape2D interface:
+// - polygonize()
+// - contains(x, y)
+var Ellipse = exports.Ellipse = function (x, y, a, b) {
+  'use strict';
+  this.x = x;
+  this.y = y;
+  this.a = a;
+  this.b = b;
+  this.polygon_cache = undefined;
+};
+
+Ellipse.prototype.POLYGON_SEGMENTS = 50;
+
+Ellipse.prototype.polygonize = function () {
+  'use strict';
+  if (!this.polygon_cache) {
+    this.polygon_cache = polygonizeEllipse(this.x, this.y, this.a * 0.5, this.b * 0.5, this.POLYGON_SEGMENTS);
+  }
+  return this.polygon_cache;
+};
+
+Ellipse.prototype.contains = function (x, y) {
+  'use strict';
+  var
+    px = x - this.x,
+    py = y - this.y,
+    ra = this.a * 0.5,
+    rb = this.b * 0.5;
+
+  return px * px / (ra * ra) + py * py / (rb * rb) <= 1;
+};
+
+//
+// Ring.
+// x, y - center
+// inner, outer - diameter (not radius)
+//
+// Implements Shape2D interface:
+// - polygonize()
+// - contains(x, y)
+var Ring = exports.Ring = function (x, y, inner, outer) {
+  'use strict';
+  this.x = x;
+  this.y = y;
+  this.inner = inner;
+  this.outer = outer;
+  this.polygon_cache = undefined;
+};
+
+Ring.prototype.POLYGON_SEGMENTS = 50;
+
+// Returns OUTER circle polygonization.
+Ring.prototype.polygonize = function () {
+  'use strict';
+  if (!this.polygon_cache) {
+    this.polygon_cache = polygonizeEllipse(this.x, this.y, this.outer * 0.5, this.outer * 0.5, this.POLYGON_SEGMENTS);
+  }
+  return this.polygon_cache;
+};
+
+// Returns INNER circle polygonization.
+Ring.prototype.polygonizeInner = function () {
+  'use strict';
+  var x, y, r, vx, vy, line, delta, theta, i, len;
+
+  if (!this.polygon_cache_inner) {
+    this.polygon_cache_inner = polygonizeEllipse(this.x, this.y, this.inner * 0.5, this.inner * 0.5, this.POLYGON_SEGMENTS);
+  }
+  return this.polygon_cache_inner;
+};
+
+Ring.prototype.contains = function (x, y) {
+  'use strict';
+  var
+    px = x - this.x,
+    py = y - this.y,
+    ra_outer = this.outer * 0.5,
+    rb_outer = this.outer * 0.5,
+    ra_inner = this.inner * 0.5,
+    rb_inner = this.inner * 0.5;
+
+  return (px * px / (ra_outer * ra_outer) + py * py / (rb_outer * rb_outer) <= 1) &&
+         (px * px / (ra_inner * ra_inner) + py * py / (rb_inner * rb_inner) >= 1);
+};
+});
+
 require.define("/part.js", function (require, module, exports, __dirname, __filename) {
 /*jslint indent: 2 */
 // JSLint report: OK (complaining only about Array(size) constructor)
@@ -1200,25 +3478,30 @@ require.define("/part.js", function (require, module, exports, __dirname, __file
 // lab/models/energy2d/engines/this.js
 //
 
-// Based on: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-// It is optional to repeat the first vertex at the end of list of polygon vertices.
 var
   default_config = require('./default-config.js'),
+  constants      = require('./constants.js'),
+  Photon         = require('./photon.js').Photon,
+  hypot          = require('./utils/math.js').hypot,
+  shape_utils    = require('./utils/shape.js'),
+  Line           = require('./utils/shape.js').Line,
+  Polygon        = require('./utils/shape.js').Polygon,
+  Rectangle      = require('./utils/shape.js').Rectangle,
+  Ellipse        = require('./utils/shape.js').Ellipse,
+  Ring           = require('./utils/shape.js').Ring,
 
-  pointInsidePolygon = function (nvert, vertx, verty, testx, testy) {
-    'use strict';
-    var c = 0, i, j;
-    for (i = 0, j = nvert - 1; i < nvert; j = i += 1) {
-      if (((verty[i] > testy) !== (verty[j] > testy)) && (testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i])) {
-        c = !c;
-      }
-    }
-    return c;
-  };
+  // Part's constants.
+  RADIATOR_SPACING = 0.5,
+  MINIMUM_RADIATING_TEMPERATUE = 20,
+  UNIT_SURFACE_AREA = 100,
+  SIN30 = Math.sin(Math.PI / 6),
+  COS30 = Math.cos(Math.PI / 6),
+  SIN60 = Math.sin(Math.PI / 3),
+  COS60 = Math.cos(Math.PI / 3);
 
-exports.Part = function (options) {
+var Part = exports.Part = function (options) {
   'use strict';
-  var count, i;
+  var count, i, s;
 
   options = default_config.fillWithDefaultValues(options, default_config.DEFAULT_VALUES.part);
 
@@ -1226,26 +3509,32 @@ exports.Part = function (options) {
 
   // Check shape
   if (options.rectangle) {
-    this.rectangle = options.rectangle;
+    s = this.rectangle = options.rectangle;
+    this.shape = new Rectangle(s.x, s.y, s.width, s.height);
   } else if (options.ellipse) {
-    this.ellipse = options.ellipse;
+    s = this.ellipse = options.ellipse;
+    this.shape = new Ellipse(s.x, s.y, s.a, s.b);
   } else if (options.ring) {
-    this.ring = options.ring;
+    s = this.ring = options.ring;
+    this.shape = new Ring(s.x, s.y, s.inner, s.outer);
   } else if (options.polygon) {
     this.polygon = options.polygon;
+    if (typeof (this.polygon.vertices) === "string") {
+      count = this.polygon.count;
+      this.polygon.vertices = this.polygon.vertices.split(', ');
+      this.polygon.x_coords = [];
+      this.polygon.y_coords = [];
+      if (count * 2 !== this.polygon.vertices.length) {
+        throw new Error("Part: polygon contains different vertices count than declared in the count parameter.");
+      }
+      for (i = 0; i < count; i += 1) {
+        this.polygon.x_coords[i] = this.polygon.vertices[2 * i]     = Number(this.polygon.vertices[2 * i]);
+        this.polygon.y_coords[i] = this.polygon.vertices[2 * i + 1] = Number(this.polygon.vertices[2 * i + 1]);
+      }
+      this.shape = new Polygon(count, this.polygon.x_coords, this.polygon.y_coords);
+    }
   } else {
     throw new Error("Part: shape not defined.");
-  }
-
-  if (this.polygon && typeof (this.polygon.vertices) === "string") {
-    count = this.polygon.count;
-    this.polygon.vertices = this.polygon.vertices.split(', ');
-    if (count * 2 !== this.polygon.vertices.length) {
-      throw new Error("Part: polygon contains different vertices count than declared in the count parameter.");
-    }
-    for (i = 0; i < count * 2; i += 1) {
-      this.polygon.vertices[i] = Number(this.polygon.vertices[i]);
-    }
   }
 
   // source properties
@@ -1258,6 +3547,12 @@ exports.Part = function (options) {
   this.wind_speed = options.wind_speed;
   this.wind_angle = options.wind_angle;
 
+  // optics properties
+  this.transmission = options.transmission;
+  this.reflection = options.reflection;
+  this.absorption = options.absorption;
+  this.emissivity = options.emissivity;
+
   // visual properties
   this.visible = options.visible;
   this.filled = options.filled;
@@ -1266,7 +3561,7 @@ exports.Part = function (options) {
   this.label = options.label;
 };
 
-exports.Part.prototype.getLabel = function () {
+Part.prototype.getLabel = function () {
   'use strict';
   var label = this.label, s;
 
@@ -1310,7 +3605,8 @@ exports.Part.prototype.getLabel = function () {
 //   ny - grid rows count
 //   lx - grid width
 //   ly - grid height
-exports.Part.prototype.getGridCells = function (nx, ny, lx, ly) {
+// TODO: refactor it, probably using contains method.
+Part.prototype.getGridCells = function (nx, ny, lx, ly) {
   'use strict';
   var
     nx1 = nx - 1,
@@ -1439,7 +3735,7 @@ exports.Part.prototype.getGridCells = function (nx, ny, lx, ly) {
       idx = 0;
       for (i = i0; i <= i_max; i += 1) {
         for (j = j0; j <= j_max; j += 1) {
-          if (pointInsidePolygon(count, x_coords, y_coords, i, j)) {
+          if (shape_utils.pointInsidePolygon(count, x_coords, y_coords, i, j)) {
             indices[idx += 1] = i * ny + j;
           }
         }
@@ -1462,6 +3758,140 @@ exports.Part.prototype.getGridCells = function (nx, ny, lx, ly) {
   throw new Error("Part: unknown shape.");
 };
 
+// Tests if the specified coordinates are inside the boundary of the Part.
+Part.prototype.contains = function (x, y) {
+  'use strict';
+  return this.shape.contains(x, y);
+};
+
+// Test whether part reflects given Photon p.
+Part.prototype.reflect = function (p, time_step) {
+  'use strict';
+  // Try to reflect when part's reflection equals ~1.
+  if (Math.abs(this.reflection - 1) < 0.001) {
+    return p.reflect(this.shape, time_step);
+  }
+  // Other case.
+  return false;
+};
+
+// Test whether part absorbs given Photon p.
+Part.prototype.absorb = function (p) {
+  'use strict';
+  // Absorb when absorption equals ~1 and photon is inside part's shape.
+  if (Math.abs(this.absorption - 1) < 0.001) {
+    return this.shape.contains(p.x, p.y);
+  }
+  // Other case.
+  return false;
+};
+
+Part.prototype.getIrradiance = function (temperature) {
+  'use strict';
+  var t2;
+  if (this.emissivity === 0) {
+    return 0;
+  }
+  t2 = 273 + temperature;
+  t2 *= t2;
+  return this.emissivity * constants.STEFAN_CONSTANT * UNIT_SURFACE_AREA * t2 * t2;
+};
+
+// Emit photons if part meets radiation conditions.
+Part.prototype.radiate = function (model) {
+  'use strict';
+  var
+    // The shape is polygonized and radiateFromLine() is called for each line.
+    poly = this.shape.polygonize(),
+    line = new Line(),
+    i, len;
+
+  if (this.emissivity === 0) {
+    return;
+  }
+  // Must follow the clockwise direction in setting lines.
+  for (i = 0, len = poly.count - 1; i < len; i += 1) {
+    line.x1 = poly.x_coords[i];
+    line.y1 = poly.y_coords[i];
+    line.x2 = poly.x_coords[i + 1];
+    line.y2 = poly.y_coords[i + 1];
+    this.radiateFromLine(model, line);
+  }
+  line.x1 = poly.x_coords[poly.count - 1];
+  line.y1 = poly.y_coords[poly.count - 1];
+  line.x2 = poly.x_coords[0];
+  line.y2 = poly.y_coords[0];
+  this.radiateFromLine(model, line);
+};
+
+// Helper function for radiate() method.
+Part.prototype.radiateFromLine = function (model, line) {
+  'use strict';
+  var options, length, cos, sin, n, x, y, p, d, vx, vy, vxi, vyi, nray, ir,
+    i, k;
+
+  if (this.emissivity === 0) {
+    return;
+  }
+  options = model.getModelOptions();
+  length = hypot(line.x1 - line.x2, line.y1 - line.y2);
+  cos = (line.x2 - line.x1) / length;
+  sin = (line.y2 - line.y1) / length;
+  n = Math.max(1, Math.round(length / RADIATOR_SPACING));
+  vx = options.solar_ray_speed * sin;
+  vy = -options.solar_ray_speed * cos;
+  if (n === 1) {
+    d = 0.5 * length;
+    x = line.x1 + d * cos;
+    y = line.y1 + d * sin;
+    d = model.getAverageTemperatureAt(x, y);
+    if (d > MINIMUM_RADIATING_TEMPERATUE) {
+      d = model.getTemperatureAt(x, y);
+      p = new Photon(x, y, this.getIrradiance(d), options.solar_ray_speed);
+      p.vx = vx;
+      p.vy = vy;
+      model.addPhoton(p);
+      if (!this.constant_temperature) {
+        model.setTemperatureAt(x, y, d - p.energy / this.specific_heat);
+      }
+    }
+  } else {
+    vxi = new Array(4);
+    vyi = new Array(4);
+    vxi[0] = vx * COS30 - vy * SIN30;
+    vyi[0] = vx * SIN30 + vy * COS30;
+    vxi[1] = vy * SIN30 + vx * COS30;
+    vyi[1] = vy * COS30 - vx * SIN30;
+    vxi[2] = vx * COS60 - vy * SIN60;
+    vyi[2] = vx * SIN60 + vy * COS60;
+    vxi[3] = vy * SIN60 + vx * COS60;
+    vyi[3] = vy * COS60 - vx * SIN60;
+    nray = 1 + vxi.length;
+    for (i = 0; i < n; i += 1) {
+      d = (i + 0.5) * RADIATOR_SPACING;
+      x = line.x1 + d * cos;
+      y = line.y1 + d * sin;
+      d = model.getAverageTemperatureAt(x, y);
+      ir = this.getIrradiance(d) / nray;
+      if (d > MINIMUM_RADIATING_TEMPERATUE) {
+        p = new Photon(x, y, ir, options.solar_ray_speed);
+        p.vx = vx;
+        p.vy = vy;
+        model.addPhoton(p);
+        for (k = 0; k < nray - 1; k += 1) {
+          p = new Photon(x, y, ir, options.solar_ray_speed);
+          p.vx = vxi[k];
+          p.vy = vyi[k];
+          model.addPhoton(p);
+        }
+        if (!this.constant_temperature) {
+          model.changeAverageTemperatureAt(x, y, -ir * nray / this.specific_heat);
+        }
+      }
+    }
+  }
+};
+
 });
 
 require.define("/default-config.js", function (require, module, exports, __dirname, __filename) {
@@ -1479,6 +3909,10 @@ var constants = require('./constants.js');
 exports.DEFAULT_VALUES = {
   // Default model properties.
   "model": {
+    "use_WebGL": false,
+    "grid_width": 100,
+    "grid_height": 100,
+
     "model_width": 10,
     "model_height": 10,
     "timestep": 1,
@@ -1505,12 +3939,12 @@ exports.DEFAULT_VALUES = {
     "measurement_interval": 500,        // unnecessary
     "viewupdate_interval": 100,         // unnecessary
     "stoptime": undefined,              // unnecessary
-    "sunny": true,                      // unnecessary (ray solver not implemented)
-    "sun_angle": 1.5707964,             // unnecessary (ray solver not implemented)
-    "solar_power_density": 2000,        // unnecessary (ray solver not implemented)
-    "solar_ray_count": 24,              // unnecessary (ray solver not implemented)
-    "solar_ray_speed": 0.1,             // unnecessary (ray solver not implemented)
-    "photon_emission_interval": 20,     // unnecessary (ray solver not implemented)
+    "sunny": false,
+    "sun_angle": 1.5707964,
+    "solar_power_density": 2000,
+    "solar_ray_count": 24,
+    "solar_ray_speed": 0.1,
+    "photon_emission_interval": 20,
 
     "structure": undefined
     // Structure can be undefined.
@@ -1532,10 +3966,10 @@ exports.DEFAULT_VALUES = {
     "thermal_conductivity": 1,
     "specific_heat": 1300,
     "density": 25,
-    "transmission": 0,  // unnecessary, optical properties (not implemented)    
-    "reflection": 0,    // unnecessary, optical properties (not implemented)
-    "absorption": 1,    // unnecessary, optical properties (not implemented)
-    "emissivity": 0,    // unnecessary, optical properties (not implemented)
+    "transmission": 0,
+    "reflection": 0,
+    "absorption": 1,
+    "emissivity": 0,
     "temperature": 0,
     "constant_temperature": false,
     "power": 0,
@@ -1637,37 +4071,41 @@ exports.AIR_DENSITY = 1.204;                    // Air's density = 1.204 kg/m^3 
 // By default, air's kinematic viscosity = 1.568 x 10^-5 m^2/s at 27 C is
 // used. It can be set to zero for inviscid fluid.
 exports.AIR_VISCOSITY = 0.00001568;
+
+
+// Stefan's constant unit J/(s*m^2*K^-4)
+exports.STEFAN_CONSTANT = 0.0000000567;
 });
 
 require.define("/core-model.js", function (require, module, exports, __dirname, __filename) {
-    /*globals Float64Array */
-/*jslint indent: 2 */
+    /*globals Float32Array: false, energy2d: false */
+/*jslint indent: 2, node: true, browser: true */
 // JSLint report: OK (complains about 'new' for side effect and Array(size) constructor)
 //
 // lab/models/energy2d/engines/core-model.js
 //
 
 var
-  arrays         = require('./arrays/arrays.js').arrays,
-  heatsolver     = require('./physics-solvers/heat-solver.js'),
-  fluidsolver    = require('./physics-solvers/fluid-solver.js'),
-  part           = require('./part.js'),
-  default_config = require('./default-config.js'),
+  arrays          = require('./arrays/arrays.js').arrays,
+  heatsolver      = require('./physics-solvers/heat-solver.js'),
+  heatsolver_GPU  = require('./physics-solvers-gpu/heat-solver-gpu.js'),
+  fluidsolver     = require('./physics-solvers/fluid-solver.js'),
+  fluidsolver_GPU = require('./physics-solvers-gpu/fluid-solver-gpu.js'),
+  raysolver       = require('./physics-solvers/ray-solver.js'),
+  part            = require('./part.js'),
+  default_config  = require('./default-config.js'),
+  gpgpu,       // = energy2d.utils.gpu.gpgpu - assign it only when WebGL requested (initGPGPU), 
+               //   as it is unavailable in the node.js environment.
 
   array_type = (function () {
     'use strict';
     try {
-      new Float64Array();
+      new Float32Array();
     } catch (e) {
       return 'regular';
     }
-    return 'Float64Array';
-  }()),
-
-  // Local constants 
-  NX = 100,
-  NY = 100,
-  ARRAY_SIZE = NX * NY;
+    return 'Float32Array';
+  }());
 
 // Core Energy2D model.
 // 
@@ -1697,42 +4135,101 @@ exports.makeCoreModel = function (model_options) {
       return model_options;
     }()),
 
+    // WebGL GPGPU optimization.
+    use_WebGL = opt.use_WebGL,
+    // This variable holds possible error message connected with WebGL.
+    WebGL_error,
+
     // Simulation grid dimensions.
-    nx = NX,
-    ny = NY,
+    nx = opt.grid_width,
+    ny = opt.grid_height,
+    array_size = nx * ny,
+
+    // Spacing.
+    delta_x = opt.model_width / nx,
+    delta_y = opt.model_height / ny,
 
     // Simulation steps counter.
     indexOfStep = 0,
 
-    // Physics solvers 
+    // Physics solvers
     // (initialized later, when core model object is built).
     heatSolver,
     fluidSolver,
+    ray_solver,
+
+    // GPU versions of solvers.
+    heat_solver_gpu,
+    fluid_solver_gpu,
+
+    // Optimization flags.
+    radiative,
+    has_part_power,
+
+    // Performance model.
+    // By default, mock this object.
+    // To measure performance, set valid object
+    // using core_model.setPerformanceTools(tools);
+    perf = {
+      start: function () {},
+      stop: function () {},
+      startFPS: function () {},
+      updateFPS: function () {},
+      stopFPS: function () {}
+    },
 
     //
     // Simulation arrays:
     //
     // - temperature array
-    t = arrays.create(ARRAY_SIZE, opt.background_temperature, array_type),
+    t = arrays.create(array_size, opt.background_temperature, array_type),
     // - internal temperature boundary array
-    tb = arrays.create(ARRAY_SIZE, NaN, array_type),
+    tb = arrays.create(array_size, NaN, array_type),
     // - velocity x-component array (m/s)
-    u = arrays.create(ARRAY_SIZE, 0, array_type),
+    u = arrays.create(array_size, 0, array_type),
     // - velocity y-component array (m/s)
-    v = arrays.create(ARRAY_SIZE, 0, array_type),
+    v = arrays.create(array_size, 0, array_type),
     // - internal heat generation array
-    q = arrays.create(ARRAY_SIZE, 0, array_type),
+    q = arrays.create(array_size, 0, array_type),
     // - wind speed
-    uWind = arrays.create(ARRAY_SIZE, 0, array_type),
-    vWind = arrays.create(ARRAY_SIZE, 0, array_type),
+    uWind = arrays.create(array_size, 0, array_type),
+    vWind = arrays.create(array_size, 0, array_type),
     // - conductivity array
-    conductivity = arrays.create(ARRAY_SIZE, opt.background_conductivity, array_type),
+    conductivity = arrays.create(array_size, opt.background_conductivity, array_type),
     // - specific heat capacity array
-    capacity = arrays.create(ARRAY_SIZE, opt.background_specific_heat, array_type),
+    capacity = arrays.create(array_size, opt.background_specific_heat, array_type),
     // - density array
-    density = arrays.create(ARRAY_SIZE, opt.background_density, array_type),
+    density = arrays.create(array_size, opt.background_density, array_type),
     // - fluid cell array
-    fluidity = arrays.create(ARRAY_SIZE, true, array_type),
+    fluidity = arrays.create(array_size, true, array_type),
+    // - photons array
+    photons = [],
+
+    //
+    // [GPGPU] Simulation textures:
+    //
+    // texture 0: 
+    // - R: t
+    // - G: t0
+    // - B: tb
+    // - A: conductivity
+    // texture 1: 
+    // - R: q
+    // - G: capacity
+    // - B: density
+    // - A: fluidity
+    // texture 2: 
+    // - R: u
+    // - G: v
+    // - B: u0
+    // - A: v0
+    // texture 3: 
+    // - R: uWind
+    // - G: vWind
+    // - B: undefined
+    // - A: undefined
+    texture = [],
+
 
     // Generate parts array.
     parts = (function () {
@@ -1758,6 +4255,65 @@ exports.makeCoreModel = function (model_options) {
     //  
     // Private methods  
     //      
+    initGPGPU = function () {
+      // Make sure that environment is a browser.
+      if (typeof window === 'undefined') {
+        throw new Error("Core model: WebGL GPGPU unavailable in the node.js environment.");
+      }
+      // Request GPGPU utilities.
+      gpgpu = energy2d.utils.gpu.gpgpu;
+      // Init module.
+      // Width is ny, height is nx (due to data organization).
+      try {
+        gpgpu.init(ny, nx);
+      } catch (e) {
+        // If WebGL initialization fails, just use CPU.
+        use_WebGL = false;
+        // Set error message.
+        WebGL_error = e.message;
+        // TODO: inform better.
+        console.warn("WebGL initialization failed. Energy2D will use CPU solvers.");
+        return;
+      }
+      // Create simulation textures.
+      texture[0] = gpgpu.createTexture();
+      texture[1] = gpgpu.createTexture();
+      texture[2] = gpgpu.createTexture();
+      texture[3] = gpgpu.createTexture();
+
+      // Update textures as material properties should be already set.
+      // texture 0: 
+      // - R: t
+      // - G: t0
+      // - B: tb
+      // - A: conductivity
+      gpgpu.writeRGBATexture(texture[0], t, t, tb, conductivity);
+      // texture 1: 
+      // - R: q
+      // - G: capacity
+      // - B: density
+      // - A: fluidity
+      gpgpu.writeRGBATexture(texture[1], q, capacity, density, fluidity);
+      // texture 2: 
+      // - R: u
+      // - G: v
+      // - B: u0
+      // - A: v0
+      gpgpu.writeRGBATexture(texture[2], u, v, u, v);
+      // texture 3: 
+      // - R: uWind
+      // - G: vWind
+      // - B: undefined
+      // - A: undefined
+      gpgpu.writeRGBATexture(texture[3], uWind, vWind, uWind, vWind);
+
+      // Create GPU solvers.
+      // GPU version of heat solver.
+      heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
+      // GPU version of fluid solver.
+      fluid_solver_gpu = fluidsolver_GPU.makeFluidSolverGPU(core_model);
+    },
+
     setupMaterialProperties = function () {
       var
         lx = opt.model_width,
@@ -1795,18 +4351,106 @@ exports.makeCoreModel = function (model_options) {
       }
     },
 
+    refreshPowerArray = function () {
+      var part, x, y, i, iny, j, k, len;
+      for (i = 0; i < nx; i += 1) {
+        x = i * delta_x;
+        iny = i * ny;
+        for (j = 0; j < ny; j += 1) {
+          y = j * delta_y;
+          q[iny + j] = 0;
+          if (has_part_power) {
+            for (k = 0, len = parts.length; k < len; k += 1) {
+              part = parts[k];
+              if (part.power !== 0 && part.shape.contains(x, y)) {
+                // No overlap of parts will be allowed.
+                q[iny + j] = part.getPower();
+                break;
+              }
+            }
+          }
+        }
+      }
+    },
+
     //
     // Public API
     //
     core_model = {
+      // !!!
       // Performs next step of a simulation.
+      // !!!
       nextStep: function () {
-        if (opt.convective) {
-          fluidSolver.solve(u, v);
+        perf.start('Core model step');
+        if (use_WebGL) {
+          // GPU solvers.
+          if (opt.convective) {
+            perf.start('Fluid solver GPU');
+            fluid_solver_gpu.solve();
+            perf.stop('Fluid solver GPU');
+          }
+          perf.start('Heat solver GPU');
+          heat_solver_gpu.solve(opt.convective);
+          perf.stop('Heat solver GPU');
+        } else {
+          // CPU solvers.
+          if (radiative) {
+            perf.start('Ray solver CPU');
+            if (indexOfStep % opt.photon_emission_interval === 0) {
+              refreshPowerArray();
+              if (opt.sunny) {
+                ray_solver.sunShine();
+              }
+              ray_solver.radiate();
+            }
+            ray_solver.solve();
+            perf.stop('Ray solver CPU');
+          }
+          if (opt.convective) {
+            perf.start('Fluid solver CPU');
+            fluidSolver.solve(u, v);
+            perf.stop('Fluid solver CPU');
+          }
+          perf.start('Heat solver CPU');
+          heatSolver.solve(opt.convective, t, q);
+          perf.stop('Heat solver CPU');
         }
-        heatSolver.solve(opt.convective, t, q);
         indexOfStep += 1;
+        perf.stop('Core model step');
       },
+
+      // Sets performance tools.
+      // It's expected to be an object created by
+      // energy2d.utils.performance.makePerformanceTools
+      setPerformanceTools: function (perf_tools) {
+        perf = perf_tools;
+      },
+
+      isWebGLActive: function () {
+        return use_WebGL;
+      },
+
+      getWebGLError: function () {
+        return WebGL_error;
+      },
+
+      updateTemperatureArray: function () {
+        if (use_WebGL) {
+          perf.start('Read temperature texture');
+          gpgpu.readTexture(texture[0], t);
+          perf.stop('Read temperature texture');
+        }
+      },
+
+      updateVelocityArrays: function () {
+        if (use_WebGL) {
+          perf.start('Read velocity texture');
+          gpgpu.readTexture(texture[2], u, 0);
+          gpgpu.readTexture(texture[2], v, 1);
+          perf.stop('Read velocity texture');
+        }
+      },
+
       getIndexOfStep: function () {
         return indexOfStep;
       },
@@ -1814,6 +4458,107 @@ exports.makeCoreModel = function (model_options) {
       getModelOptions: function () {
         return opt;
       },
+
+      // Temperature manipulation.
+      getTemperatureAt: function (x, y) {
+        var
+          i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+          j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0);
+
+        return t[i * ny + j];
+      },
+
+      setTemperatureAt: function (x, y, temperature) {
+        var
+          i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+          j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0);
+
+        t[i * ny + j] = temperature;
+      },
+
+      getAverageTemperatureAt: function (x, y) {
+        var
+          temp = 0,
+          nx1 = nx - 1,
+          ny1 = ny - 1,
+          i0 = Math.round(x / delta_x),
+          j0 = Math.round(y / delta_y),
+          i, j;
+
+        i = Math.max(Math.min(nx1, i0), 0);
+        j = Math.max(Math.min(ny1, j0), 0);
+        temp += t[i * ny + j];
+        i = Math.max(Math.min(nx1, i0 + 1), 0);
+        j = Math.max(Math.min(ny1, j0), 0);
+        temp += t[i * ny + j];
+        i = Math.max(Math.min(nx1, i0 - 1), 0);
+        j = Math.max(Math.min(ny1, j0), 0);
+        temp += t[i * ny + j];
+        i = Math.max(Math.min(nx1, i0), 0);
+        j = Math.max(Math.min(ny1, j0 + 1), 0);
+        temp += t[i * ny + j];
+        i = Math.max(Math.min(nx1, i0), 0);
+        j = Math.max(Math.min(ny1, j0 - 1), 0);
+        temp += t[i * ny + j];
+        return temp * 0.2;
+      },
+
+      // TODO: based on Java version, check it as the logic seems to be weird.
+      changeAverageTemperatureAt: function (x, y, increment) {
+        var
+          nx1 = nx - 1,
+          ny1 = ny - 1,
+          i0 = Math.round(x / delta_x),
+          j0 = Math.round(y / delta_y),
+          i, j;
+
+        increment *= 0.2;
+        i = Math.min(nx1, i0);
+        j = Math.min(ny1, j0);
+        if (i >= 0 && j >= 0) {
+          t[i * ny + j] += increment;
+        }
+        i = Math.min(nx1, i0 + 1);
+        j = Math.min(ny1, j0);
+        if (i >= 0 && j >= 0) {
+          t[i * ny + j] += increment;
+        }
+        i = Math.min(nx1, i0 - 1);
+        j = Math.min(ny1, j0);
+        if (i >= 0 && j >= 0) {
+          t[i * ny + j] += increment;
+        }
+        i = Math.min(nx1, i0);
+        j = Math.min(ny1, j0 + 1);
+        if (i >= 0 && j >= 0) {
+          t[i * ny + j] += increment;
+        }
+        i = Math.min(nx1, i0);
+        j = Math.min(ny1, j0 - 1);
+        if (i >= 0 && j >= 0) {
+          t[i * ny + j] += increment;
+        }
+      },
+
+      addPhoton: function (photon) {
+        photons.push(photon);
+      },
+
+      removePhoton: function (photon) {
+        var idx = photons.indexOf(photon);
+        if (idx !== -1) {
+          photons.splice(idx, 1);
+        }
+      },
+
+      copyTextureToArray: function (tex, array) {
+        gpgpu.readTexture(tex, array);
+      },
+
+      copyArrayToTexture: function (array, tex) {
+        gpgpu.writeTexture(tex, array);
+      },
+
       // Simple getters.
       getArrayType: function () {
         // return module variable
@@ -1824,6 +4569,9 @@ exports.makeCoreModel = function (model_options) {
       },
       getGridHeight: function () {
         return ny;
+      },
+      getPerformanceModel: function () {
+        return perf;
       },
       // Arrays.
       getTemperatureArray: function () {
@@ -1859,18 +4607,62 @@ exports.makeCoreModel = function (model_options) {
       getFluidityArray: function () {
         return fluidity;
       },
+      getPhotonsArray: function () {
+        return photons;
+      },
       getPartsArray: function () {
         return parts;
+      },
+       // Textures.
+      getTemperatureTexture: function () {
+        return texture[0];
+      },
+      getVelocityTexture: function () {
+        return texture[2];
+      },
+      getSimulationTexture: function (id) {
+        return texture[id];
       }
     };
 
   // 
   // One-off initialization.
   //
-  heatSolver = heatsolver.makeHeatSolver(core_model);
-  fluidSolver = fluidsolver.makeFluidSolver(core_model);
+
+  // Setup optimization flags.
+  radiative = (function () {
+    var i, len;
+    if (opt.sunny) {
+      return true;
+    }
+    for (i = 0, len = parts.length; i < len; i += 1) {
+      if (parts[i].emissivity > 0) {
+        return true;
+      }
+    }
+    return false;
+  }());
+
+  has_part_power = (function () {
+    var i, len;
+    for (i = 0, len = parts.length; i < len; i += 1) {
+      if (parts[i].power > 0) {
+        return true;
+      }
+    }
+    return false;
+  }());
 
   setupMaterialProperties();
+
+  // CPU version of solvers.
+  heatSolver = heatsolver.makeHeatSolver(core_model);
+  fluidSolver = fluidsolver.makeFluidSolver(core_model);
+  ray_solver = raysolver.makeRaySolver(core_model);
+
+  if (use_WebGL) {
+    initGPGPU();
+  }
 
   // Finally, return public API object.
   return core_model;
@@ -1879,7 +4671,7 @@ exports.makeCoreModel = function (model_options) {
 });
 require("/core-model.js");
 /*globals energy2d */
-/*jslint indent: 2 */
+/*jslint indent: 2, node: true */
 // JSLint report: OK
 //
 // lab/models/energy2d/modeler.js
@@ -1909,13 +4701,1001 @@ energy2d.modeler.makeModeler = function (options) {
     getTime: function () {
       return core_model.getModelOptions().timestep * core_model.getIndexOfStep();
     },
+    isWebGLActive: core_model.isWebGLActive,
+    getWebGLError: core_model.getWebGLError,
     getIndexOfStep: core_model.getIndexOfStep,
     getGridWidth: core_model.getGridWidth,
     getGridHeight: core_model.getGridHeight,
     getTemperatureArray: core_model.getTemperatureArray,
+    getTemperatureTexture: core_model.getTemperatureTexture,
     getUVelocityArray: core_model.getUVelocityArray,
     getVVelocityArray: core_model.getVVelocityArray,
-    getPartsArray: core_model.getPartsArray
+    getVelocityTexture: core_model.getVelocityTexture,
+    getPhotonsArray: core_model.getPhotonsArray,
+    getPartsArray: core_model.getPartsArray,
+    updateTemperatureArray: core_model.updateTemperatureArray,
+    updateVelocityArrays: core_model.updateVelocityArrays,
+    setPerformanceTools: core_model.setPerformanceTools
+  };
+};
+/*globals energy2d: false */
+/*jslint indent: 2, browser: true */
+//
+// lab/utils/energy2d/gpu/init.js
+//
+
+// define namespace
+energy2d.namespace('energy2d.utils.gpu');
+
+
+// The internal `gl` variable holds the current WebGL context.
+// It's used by other energy2d.utils.gpu classes and modules.
+var gl;
+
+// WebGL Context manager.
+//
+// It provides access to one, global WebGL context.
+// All clients interested in WebGL context should call:
+// energy2d.utils.gpu.gl.getContext()
+// If WebGL is not available, an appropriate error will be thrown.
+energy2d.utils.gpu.init = function () {
+  'use strict';
+  var canvas = document.createElement('canvas');
+  try {
+    gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  } catch (e) {}
+  if (!gl) {
+    throw new Error('GL: WebGL not supported.');
+  }
+  // Self-defining function.
+  // During next call just return initialized context.
+  energy2d.utils.gpu.init = function () {
+    return gl;
+  };
+  // Export WebGL context.
+  energy2d.utils.gpu.gl = gl;
+  return gl;
+};
+
+// Helper functions which checks if WebGL Context is ready and initialized.
+energy2d.utils.gpu.assertInitialized = function () {
+  'use strict';
+  if (!gl) {
+    throw new Error("GPU: WebGL not initialized. Call energy2d.utils.gpu.init().");
+  }
+};/*globals energy2d: false, gl: false, Float32Array: false, Uint16Array: false */
+/*jslint indent: 2, browser: true */
+//
+// lab/utils/energy2d/gpu/mesh.js
+//
+
+// define namespace
+energy2d.namespace('energy2d.utils.gpu');
+
+
+//
+// Local, private classes and utilities.
+//
+
+// Provides a simple method of uploading data to a GPU buffer. Example usage:
+// 
+//     var vertices = new GL.Buffer(gl.ARRAY_BUFFER, Float32Array);
+//     var indices = new GL.Buffer(gl.ELEMENT_ARRAY_BUFFER, Uint16Array);
+//     vertices.data = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [1, 1, 0]];
+//     indices.data = [[0, 1, 2], [2, 1, 3]];
+//     vertices.compile();
+//     indices.compile();
+// 
+function Buffer(target, type) {
+  'use strict';
+  this.buffer = null;
+  this.target = target;
+  this.type = type;
+  this.data = [];
+}
+
+// Upload the contents of `data` to the GPU in preparation for rendering. The
+// data must be a list of lists where each inner list has the same length. For
+// example, each element of data for vertex normals would be a list of length three.
+// This will remember the data length and element length for later use by shaders.
+// The type can be either `gl.STATIC_DRAW` or `gl.DYNAMIC_DRAW`, and defaults to
+// `gl.STATIC_DRAW`.
+// 
+// This could have used `[].concat.apply([], this.data)` to flatten
+// the array but Google Chrome has a maximum number of arguments so the
+// concatenations are chunked to avoid that limit.
+Buffer.prototype.compile = function (type) {
+  'use strict';
+  var data = [], i, chunk, spacing;
+  for (i = 0, chunk = 10000; i < this.data.length; i += chunk) {
+    data = Array.prototype.concat.apply(data, this.data.slice(i, i + chunk));
+  }
+  spacing = this.data.length ? data.length / this.data.length : 0;
+  if (spacing !== Math.round(spacing)) {
+    throw new Error('Mesh: buffer elements not of consistent size, average size is ' + spacing);
+  }
+  this.buffer = this.buffer || gl.createBuffer();
+  this.buffer.length = data.length;
+  this.buffer.spacing = spacing;
+  gl.bindBuffer(this.target, this.buffer);
+  gl.bufferData(this.target, new this.type(data), type || gl.STATIC_DRAW);
+};
+
+
+// Represents a collection of vertex buffers and index buffers. Each vertex
+// buffer maps to one attribute in GLSL and has a corresponding property set
+// on the Mesh instance. There is one vertex buffer by default: `vertices`,
+// which maps to `gl_Vertex`. The `coords`, `normals`, and `colors` vertex
+// buffers map to `gl_TexCoord`, `gl_Normal`, and `gl_Color` respectively,
+// and can be enabled by setting the corresponding options to true. There are
+// two index buffers, `triangles` and `lines`, which are used for rendering
+// `gl.TRIANGLES` and `gl.LINES`, respectively. Only `triangles` is enabled by
+// default, although `computeWireframe()` will add a normal buffer if it wasn't
+// initially enabled.
+energy2d.utils.gpu.Mesh = function (options) {
+  'use strict';
+  options = options || {};
+  this.vertexBuffers = {};
+  this.indexBuffers = {};
+  this.addVertexBuffer('vertices', 'gl_Vertex');
+  if (options.coords) {
+    this.addVertexBuffer('coords', 'gl_TexCoord');
+  }
+  if (options.normals) {
+    this.addVertexBuffer('normals', 'gl_Normal');
+  }
+  if (options.colors) {
+    this.addVertexBuffer('colors', 'gl_Color');
+  }
+  if (options.lines === undefined || options.triangles) {
+    this.addIndexBuffer('triangles');
+  }
+  if (options.lines) {
+    this.addIndexBuffer('lines');
+  }
+};
+
+// Add a new vertex buffer with a list as a property called `name` on this object
+// and map it to the attribute called `attribute` in all shaders that draw this mesh.
+energy2d.utils.gpu.Mesh.prototype.addVertexBuffer = function (name, attribute) {
+  'use strict';
+  var buffer = this.vertexBuffers[attribute] = new Buffer(gl.ARRAY_BUFFER, Float32Array);
+  buffer.name = name;
+  this[name] = [];
+};
+
+// Add a new index buffer with a list as a property called `name` on this object.
+energy2d.utils.gpu.Mesh.prototype.addIndexBuffer = function (name) {
+  'use strict';
+  var buffer = this.indexBuffers[name] = new Buffer(gl.ELEMENT_ARRAY_BUFFER, Uint16Array);
+  this[name] = [];
+};
+
+// Upload all attached buffers to the GPU in preparation for rendering. This
+// doesn't need to be called every frame, only needs to be done when the data
+// changes.
+energy2d.utils.gpu.Mesh.prototype.compile = function () {
+  'use strict';
+  var attribute, name, buffer;
+  for (attribute in this.vertexBuffers) {
+    if (this.vertexBuffers.hasOwnProperty(attribute)) {
+      buffer = this.vertexBuffers[attribute];
+      buffer.data = this[buffer.name];
+      buffer.compile();
+    }
+  }
+
+  for (name in this.indexBuffers) {
+    if (this.indexBuffers.hasOwnProperty(name)) {
+      buffer = this.indexBuffers[name];
+      buffer.data = this[name];
+      buffer.compile();
+    }
+  }
+};
+
+// Generates a square 2x2 mesh the xy plane centered at the origin. The
+// `options` argument specifies options to pass to the mesh constructor.
+// Additional options include `detailX` and `detailY`, which set the tesselation
+// in x and y, and `detail`, which sets both `detailX` and `detailY` at once.
+// Two triangles are generated by default.
+// Example usage:
+// 
+//     var mesh1 = GL.Mesh.plane();
+//     var mesh2 = GL.Mesh.plane({ detail: 5 });
+//     var mesh3 = GL.Mesh.plane({ detailX: 20, detailY: 40 });
+// 
+energy2d.utils.gpu.Mesh.plane = function (options) {
+  'use strict';
+  var mesh, detailX, detailY, x, y, t, s, i;
+  options = options || {};
+  mesh = new energy2d.utils.gpu.Mesh(options);
+  detailX = options.detailX || options.detail || 1;
+  detailY = options.detailY || options.detail || 1;
+
+  for (y = 0; y <= detailY; y += 1) {
+    t = y / detailY;
+    for (x = 0; x <= detailX; x += 1) {
+      s = x / detailX;
+      mesh.vertices.push([2 * s - 1, 2 * t - 1, 0]);
+      if (mesh.coords) {
+        mesh.coords.push([s, t]);
+      }
+      if (mesh.normals) {
+        mesh.normals.push([0, 0, 1]);
+      }
+      if (x < detailX && y < detailY) {
+        i = x + y * (detailX + 1);
+        mesh.triangles.push([i, i + 1, i + detailX + 1]);
+        mesh.triangles.push([i + detailX + 1, i + 1, i + detailX + 2]);
+      }
+    }
+  }
+
+  mesh.compile();
+  return mesh;
+};/*globals energy2d: false, gl: false */
+/*jslint indent: 2, browser: true, es5: true */
+//
+// lab/utils/energy2d/gpu/shader.js
+//
+
+// define namespace
+energy2d.namespace('energy2d.utils.gpu');
+
+//
+// Local, private functions.
+//
+function regexMap(regex, text, callback) {
+  'use strict';
+  var result;
+  while ((result = regex.exec(text)) !== null) {
+    callback(result);
+  }
+}
+
+function isArray(obj) {
+  'use strict';
+  var str = Object.prototype.toString.call(obj);
+  return str === '[object Array]' || str === '[object Float32Array]';
+}
+
+function isNumber(obj) {
+  'use strict';
+  var str = Object.prototype.toString.call(obj);
+  return str === '[object Number]' || str === '[object Boolean]';
+}
+
+// Compiles a shader program using the provided vertex and fragment shaders.
+energy2d.utils.gpu.Shader = function (vertexSource, fragmentSource) {
+  'use strict';
+  var
+    // Headers are prepended to the sources to provide some automatic functionality.
+    vertexHeader =
+    '\
+    attribute vec4 gl_Vertex;\
+    attribute vec4 gl_TexCoord;\
+    attribute vec3 gl_Normal;\
+    attribute vec4 gl_Color;\
+    ',
+    fragmentHeader =
+    '\
+    precision highp float;\
+    ',
+
+    // The `gl_` prefix must be substituted for something else to avoid compile
+    // errors, since it's a reserved prefix. This prefixes all reserved names with
+    // `_`. The header is inserted after any extensions, since those must come
+    // first.
+    fix = function (header, source) {
+      var replaced = {}, match;
+      match = /^((\s*\/\/.*\n|\s*#extension.*\n)+)[^]*$/.exec(source);
+      source = match ? match[1] + header + source.substr(match[1].length) : header + source;
+      regexMap(/\bgl_\w+\b/g, header, function (result) {
+        if (replaced[result] === undefined) {
+          source = source.replace(new RegExp('\\b' + result + '\\b', 'g'), '_' + result);
+          replaced[result] = true;
+        }
+      });
+      return source;
+    },
+
+    isSampler = {};
+
+  vertexSource = fix(vertexHeader, vertexSource);
+  fragmentSource = fix(fragmentHeader, fragmentSource);
+
+  // Compile and link errors are thrown as strings.
+  function compileSource(type, source) {
+    var shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      throw new Error('Shader: compile error.\n' + gl.getShaderInfoLog(shader) +
+                      '\nSource:\n' + source);
+    }
+    return shader;
+  }
+
+  this.program = gl.createProgram();
+  gl.attachShader(this.program, compileSource(gl.VERTEX_SHADER, vertexSource));
+  gl.attachShader(this.program, compileSource(gl.FRAGMENT_SHADER, fragmentSource));
+  gl.linkProgram(this.program);
+  if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
+    throw new Error('Shader: link error.\n' + gl.getProgramInfoLog(this.program) +
+                    '\nSource:\n' + vertexSource + '\n\n' + fragmentSource);
+  }
+  this.attributes = {};
+  this.uniformLocations = {};
+
+  // Sampler uniforms need to be uploaded using `gl.uniform1i()` instead of `gl.uniform1f()`.
+  // To do this automatically, we detect and remember all uniform samplers in the source code.
+  regexMap(/uniform\s+sampler(1D|2D|3D|Cube)\s+(\w+)\s*;/g, vertexSource + fragmentSource, function (groups) {
+    isSampler[groups[2]] = 1;
+  });
+  this.isSampler = isSampler;
+};
+
+// Set a uniform for each property of `uniforms`. The correct `gl.uniform*()` method is
+// inferred from the value types and from the stored uniform sampler flags.
+energy2d.utils.gpu.Shader.prototype.uniforms = function (uniforms) {
+  'use strict';
+  var name, location, value;
+
+  gl.useProgram(this.program);
+
+  for (name in uniforms) {
+    if (uniforms.hasOwnProperty(name)) {
+      if (this.uniformLocations[name] === undefined) {
+        this.uniformLocations[name] = gl.getUniformLocation(this.program, name);
+      }
+      location = this.uniformLocations[name];
+      if (location === null) {
+        console.warn('Shader: name ' + name + ' does not correspond to an active uniform variable.');
+        continue;
+      }
+      value = uniforms[name];
+      if (isArray(value)) {
+        switch (value.length) {
+        case 1: gl.uniform1fv(location, new Float32Array(value)); break;
+        case 2: gl.uniform2fv(location, new Float32Array(value)); break;
+        case 3: gl.uniform3fv(location, new Float32Array(value)); break;
+        case 4: gl.uniform4fv(location, new Float32Array(value)); break;
+        // Matrices are automatically transposed, since WebGL uses column-major
+        // indices instead of row-major indices.
+        case 9: gl.uniformMatrix3fv(location, false, new Float32Array([
+          value[0], value[3], value[6],
+          value[1], value[4], value[7],
+          value[2], value[5], value[8]
+        ])); break;
+        case 16: gl.uniformMatrix4fv(location, false, new Float32Array([
+          value[0], value[4], value[8], value[12],
+          value[1], value[5], value[9], value[13],
+          value[2], value[6], value[10], value[14],
+          value[3], value[7], value[11], value[15]
+        ])); break;
+        default: throw new Error('Shader: don\'t know how to load uniform "' + name + '" of length ' + value.length);
+        }
+      } else if (isNumber(value)) {
+        (this.isSampler[name] ? gl.uniform1i : gl.uniform1f).call(gl, location, value);
+      } else {
+        throw new Error('Shader: attempted to set uniform "' + name + '" to invalid value ' + value);
+      }
+    }
+  }
+
+  return this;
+};
+
+// Sets all uniform matrix attributes, binds all relevant buffers, and draws the
+// mesh geometry as indexed triangles or indexed lines. Set `mode` to `gl.LINES`
+// (and either add indices to `lines` or call `computeWireframe()`) to draw the
+// mesh in wireframe.
+energy2d.utils.gpu.Shader.prototype.draw = function (mesh, mode) {
+  'use strict';
+  gl.useProgram(this.program);
+
+  this.drawBuffers(mesh.vertexBuffers,
+    mesh.indexBuffers[mode === gl.LINES ? 'lines' : 'triangles'],
+    arguments.length < 2 ? gl.TRIANGLES : mode);
+};
+
+// Sets all uniform matrix attributes, binds all relevant buffers, and draws the
+// indexed mesh geometry. The `vertexBuffers` argument is a map from attribute
+// names to `Buffer` objects of type `gl.ARRAY_BUFFER`, `indexBuffer` is a `Buffer`
+// object of type `gl.ELEMENT_ARRAY_BUFFER`, and `mode` is a WebGL primitive mode
+// like `gl.TRIANGLES` or `gl.LINES`. This method automatically creates and caches
+// vertex attribute pointers for attributes as needed.
+energy2d.utils.gpu.Shader.prototype.drawBuffers = function (vertexBuffers, indexBuffer, mode) {
+  'use strict';
+  // Create and enable attribute pointers as necessary.
+  var length = 0, attribute, buffer, location;
+
+  for (attribute in vertexBuffers) {
+    if (vertexBuffers.hasOwnProperty(attribute)) {
+      buffer = vertexBuffers[attribute];
+      if (this.attributes[attribute] === undefined) {
+        this.attributes[attribute] = gl.getAttribLocation(this.program, attribute.replace(/^gl_/, '_gl_'));
+      }
+      location = this.attributes[attribute];
+      if (location === -1 || !buffer.buffer) {
+        continue;
+      }
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer.buffer);
+      gl.enableVertexAttribArray(location);
+      gl.vertexAttribPointer(location, buffer.buffer.spacing, gl.FLOAT, false, 0, 0);
+      length = buffer.buffer.length / buffer.buffer.spacing;
+    }
+  }
+
+  // Disable unused attribute pointers.
+  for (attribute in this.attributes) {
+    if (this.attributes.hasOwnProperty(attribute)) {
+      if (vertexBuffers[attribute] === undefined) {
+        gl.disableVertexAttribArray(this.attributes[attribute]);
+      }
+    }
+  }
+
+  // Draw the geometry.
+  if (length && (!indexBuffer || indexBuffer.buffer)) {
+    if (indexBuffer) {
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.buffer);
+      gl.drawElements(mode, indexBuffer.buffer.length, gl.UNSIGNED_SHORT, 0);
+    } else {
+      gl.drawArrays(mode, 0, length);
+    }
+  }
+};
+/*globals energy2d: false, gl: false */
+/*jslint indent: 2, browser: true */
+//
+// lab/utils/energy2d/gpu/texture.js
+//
+
+// define namespace
+energy2d.namespace('energy2d.utils.gpu');
+
+// Simple wrapper around WebGL textures that supports render-to-texture.
+//
+// The arguments `width` and `height` give the size of the texture in texels.
+// WebGL texture dimensions must be powers of two unless `filter` is set to
+// either `gl.NEAREST` or `gl.REPEAT` and `wrap` is set to `gl.CLAMP_TO_EDGE`
+// (which they are by default).
+//
+// Texture parameters can be passed in via the `options` argument.
+// Example usage:
+// 
+//     var t = new energy2d.utils.gpu.Texture(256, 256, {
+//       // Defaults to gl.LINEAR, set both at once with "filter"
+//       mag_filter: gl.NEAREST,
+//       min_filter: gl.LINEAR,
+// 
+//       // Defaults to gl.CLAMP_TO_EDGE, set both at once with "wrap"
+//       wrap_s: gl.REPEAT,
+//       wrap_t: gl.REPEAT,
+// 
+//       format: gl.RGB, // Defaults to gl.RGBA
+//       type: gl.FLOAT  // Defaults to gl.UNSIGNED_BYTE
+//     });
+energy2d.utils.gpu.Texture = function (width, height, options) {
+  'use strict';
+  energy2d.utils.gpu.assertInitialized();
+
+  options = options || {};
+  // Basic texture params.
+  this.id = gl.createTexture();
+  this.width = width;
+  this.height = height;
+  this.format = options.format || gl.RGBA;
+  this.type = options.type || gl.UNSIGNED_BYTE;
+  // Number of texture unit which contains this texture (if any).
+  this.tex_unit = null;
+  // Render target params.
+  this.fbo = null;
+
+  // Set parameters.
+  gl.bindTexture(gl.TEXTURE_2D, this.id);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, options.mag_filter || options.filter || gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, options.min_filter || options.filter || gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, options.wrap || options.wrap_s || gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, options.wrap || options.wrap_t || gl.CLAMP_TO_EDGE);
+  gl.texImage2D(gl.TEXTURE_2D, 0, this.format, width, height, 0, this.format, this.type, null);
+};
+
+// Set texture as render target.
+// After this call user can render to texture.
+energy2d.utils.gpu.Texture.prototype.setAsRenderTarget = function () {
+  'use strict';
+  if (this.fbo === null) {
+    // FBO initialization during first call.
+    this.fbo = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.id, 0);
+    gl.viewport(0, 0, this.width, this.height);
+  } else {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+    gl.viewport(0, 0, this.width, this.height);
+  }
+};
+
+// Bind this texture to the given texture unit (0-7, defaults to 0).
+energy2d.utils.gpu.Texture.prototype.bind = function (unit) {
+  'use strict';
+  this.tex_unit = unit || 0;
+  gl.activeTexture(gl.TEXTURE0 + this.tex_unit);
+  gl.bindTexture(gl.TEXTURE_2D, this.id);
+};
+
+// Unbind this texture.
+energy2d.utils.gpu.Texture.prototype.unbind = function (unit) {
+  'use strict';
+  if (this.tex_unit === null) {
+    return;
+  }
+  gl.activeTexture(gl.TEXTURE0 + this.tex_unit);
+  gl.bindTexture(gl.TEXTURE_2D, null);
+  this.tex_unit = null;
+};
+
+// Render all draw calls in `callback` to this texture. It also temporarily
+// changes the viewport to the size of the texture.
+energy2d.utils.gpu.Texture.prototype.drawTo = function (callback) {
+  'use strict';
+  if (this.fbo === null) {
+    throw new Error("Texture: call setupAsRenderTarget() method first.");
+  }
+  gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+  gl.viewport(0, 0, this.width, this.height);
+
+  callback();
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+};
+
+
+// Switch this texture with 'other', useful for the ping-pong rendering
+// technique used in multi-stage rendering.
+// Textures should have identical dimensions, types and in general - parameters.
+// Only ID, FBO and active texture unit values are swapped.
+energy2d.utils.gpu.Texture.prototype.swapWith = function (other) {
+  'use strict';
+  var temp;
+  // Swap ID.
+  temp = other.id;
+  other.id = this.id;
+  this.id = temp;
+  // Swap active texture unit.
+  temp = other.tex_unit;
+  other.tex_unit = this.tex_unit;
+  this.tex_unit = temp;
+  // Swap FBO.
+  temp = other.fbo;
+  other.fbo = this.fbo;
+  this.fbo = temp;
+};/*globals energy2d: false, Uint8Array: false, Float32Array: false */
+/*jslint indent: 2, node: true, es5: true */
+//
+// lab/utils/energy2d/gpu/gpgpu.js
+//
+
+// define namespace
+energy2d.namespace('energy2d.utils.gpu');
+
+// GPGPU Utils (singleton, one instance in the environment).
+energy2d.utils.gpu.gpgpu = (function () {
+  'use strict';
+  var
+    gpu = energy2d.utils.gpu,
+    // Enhanced WebGL context (enhanced by lightgl).
+    gl,
+
+    // GPGPU utils must know dimensions of data (grid).
+    // This assumption that all the textures will have the same dimensions is 
+    // caused by performance reasons (helps avoiding recreating data structures).
+    // To set grid dimensions and initialize WebGL context, call init(grid_width, grid_height).
+    grid_width,
+    grid_height,
+
+    // Framebuffer object.
+    framebuffer,
+    // Texture used as a temporary storage (Float, RGBA).
+    temp_texture,
+    // Texture used for Float to RGBA conversion (Unsigned Byte, RGBA).
+    output_texture,
+    // Array (Float32Array) used as temporal storage during writing RGBA textures.
+    temp_storage,
+    // Mesh used for rendering.
+    plane,
+
+    // Flag which determines if synchronization is allowed or not.
+    sync_allowed = false,
+
+    // Flag which determines if WebGL context and necessary objects are initialized.
+    WebGL_initialized = false,
+
+    // Special shader for encoding floats based on: 
+    // https://github.com/cscheid/facet/blob/master/src/shade/bits/encode_float.js
+    encode_program,
+    copy_program,
+
+    // GLSL sources.
+    basic_vertex_shader =
+    '\
+    varying vec2 coord;\
+    void main() {\
+      coord = gl_Vertex.xy * 0.5 + 0.5;\
+      gl_Position = vec4(gl_Vertex.xyz, 1.0);\
+    }',
+
+    encode_fragment_shader =
+    '\
+    uniform sampler2D texture;\
+    uniform float channel;\
+    varying vec2 coord;\
+    float shift_right(float v, float amt) {\
+      v = floor(v) + 0.5;\
+      return floor(v / exp2(amt));\
+    }\
+    float shift_left(float v, float amt) {\
+      return floor(v * exp2(amt) + 0.5);\
+    }\
+    \
+    float mask_last(float v, float bits) {\
+      return mod(v, shift_left(1.0, bits));\
+    }\
+    float extract_bits(float num, float from, float to) {\
+      from = floor(from + 0.5);\
+      to = floor(to + 0.5);\
+      return mask_last(shift_right(num, from), to - from);\
+    }\
+    vec4 encode_float(float val) {\
+      if (val == 0.0)\
+        return vec4(0, 0, 0, 0);\
+      float sign = val > 0.0 ? 0.0 : 1.0;\
+      val = abs(val);\
+      float exponent = floor(log2(val));\
+      float biased_exponent = exponent + 127.0;\
+      float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0;\
+      \
+      float t = biased_exponent / 2.0;\
+      float last_bit_of_biased_exponent = fract(t) * 2.0;\
+      float remaining_bits_of_biased_exponent = floor(t);\
+      \
+      float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0;\
+      float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0;\
+      float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0;\
+      float byte1 = (sign * 128.0 + remaining_bits_of_biased_exponent) / 255.0;\
+      return vec4(byte4, byte3, byte2, byte1);\
+    }\
+    void main() {\
+      vec4 data = texture2D(texture, coord);\
+      if (channel == 0.0)\
+        gl_FragColor = encode_float(data.r);\
+      else if (channel == 1.0)\
+        gl_FragColor = encode_float(data.g);\
+      else if (channel == 2.0)\
+        gl_FragColor = encode_float(data.b);\
+      else\
+        gl_FragColor = encode_float(data.a);\
+    }',
+
+    copy_fragment_shader =
+    '\
+    uniform sampler2D texture;\
+    varying vec2 coord;\
+    void main() {\
+      gl_FragColor = texture2D(texture, coord);\
+    }',
+
+    // Common error messages.
+    INIT_ERR = 'GPGPU: call init(grid_width, grid_height) with proper dimensions first!',
+
+    //
+    // Private methods.
+    //
+    initWebGL = function () {
+      // Setup WebGL context.
+      gl = gpu.init();
+      // Check if OES_texture_float is available.
+      if (!gl.getExtension('OES_texture_float')) {
+        throw new Error("GPGPU: OES_texture_float is not supported!");
+      }
+      // Check if rendering to FLOAT textures is supported.
+      temp_texture = new gpu.Texture(1, 1, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
+      temp_texture.setAsRenderTarget();
+      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        throw new Error("GPGPU: FLOAT texture as render target is not supported!");
+      }
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      // Configure WebGL context and create necessary objects and structures.
+      gl.disable(gl.DEPTH_TEST);
+      plane = gpu.Mesh.plane();
+      encode_program = new gpu.Shader(basic_vertex_shader, encode_fragment_shader);
+      copy_program = new gpu.Shader(basic_vertex_shader, copy_fragment_shader);
+      // Initialization successful.
+      WebGL_initialized = true;
+    },
+
+    packRGBAData = function (R, G, B, A, storage) {
+      var res, i, i4, len;
+
+      if (R.length !== G.length || R.length !== B.length || R.length !== A.length ||
+          storage.length !== R.length * 4) {
+        throw new Error("GPGPU: Invalid input data length.");
+      }
+      for (i = 0, len = R.length; i < len; i += 1) {
+        i4 = i * 4;
+        storage[i4]     = R[i];
+        storage[i4 + 1] = G[i];
+        storage[i4 + 2] = B[i];
+        storage[i4 + 3] = A[i];
+      }
+    };
+
+  //
+  // Public API.
+  //
+  return {
+    // Setups rendering context (only during first call) and necessary storage (texture, array).
+    init: function (width, height) {
+      if (!WebGL_initialized) {
+        initWebGL();
+      }
+      // Set dimensions.
+      grid_width = width;
+      grid_height = height;
+
+      // Setup storage for given dimensions.
+      temp_texture   = new gpu.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
+      output_texture = new gpu.Texture(grid_width, grid_height, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.LINEAR });
+      temp_storage   = new Float32Array(grid_width * grid_height * 4);
+    },
+
+    getWebGLContext: function () {
+      if (gl === undefined) {
+        initWebGL();
+      }
+      return gl;
+    },
+
+    // Creates a floating point texture with proper parameters.
+    createTexture: function () {
+      var tex;
+      if (!grid_width || !grid_height) {
+        return new Error(INIT_ERR);
+      }
+      // Use RGBA format as this is the safest option. Single channel textures aren't well supported
+      // as render targets attached to FBO.
+      tex = new gpu.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
+
+      return tex;
+    },
+
+    // Convert given array to the RGBA FLoat32Array (which can be used
+    // in the writeTexture function) and fill one of its channel.
+    // Channel should be between 0 and 3, where 0 = R, 1 = G, 2 = B and 3 = A.
+    convertToRGBA: function (data, channel, output) {
+      var rgba, i, len, i4;
+
+      if (data.length !== grid_width * grid_height) {
+        throw new Error("GPGPU: Invalid input data length.");
+      }
+
+      if (output === undefined) {
+        rgba = new Float32Array(data.length * 4);
+      } else {
+        rgba = output;
+      }
+
+      if (channel === undefined) {
+        channel = 0;
+      }
+
+      // Fill RGBA array.
+      for (i = 0, len = data.length; i < len; i += 1) {
+        i4 = i * 4;
+        rgba[i4] = rgba[i4 + 1] = rgba[i4 + 2] = rgba[i4 + 3] = 0;
+        rgba[i4 + channel] = data[i];
+      }
+
+      return rgba;
+    },
+
+    // Write a texture.
+    writeTexture: function (tex, input) {
+      var rgba = this.convertToRGBA(input, 0, temp_storage);
+      // Make sure that texture is bound.
+      gl.bindTexture(gl.TEXTURE_2D, tex.id);
+      gl.texImage2D(gl.TEXTURE_2D, 0, tex.format, tex.width, tex.height, 0, tex.format, tex.type, rgba);
+    },
+
+    writeRGBATexture: function (tex, R, G, B, A) {
+      packRGBAData(R, G, B, A, temp_storage);
+      // Make sure that texture is bound.
+      gl.bindTexture(gl.TEXTURE_2D, tex.id);
+      gl.texImage2D(gl.TEXTURE_2D, 0, tex.format, tex.width, tex.height, 0, tex.format, tex.type, temp_storage);
+    },
+
+    // Read a floating point texture.
+    // Returns Float32Array.
+    readTexture: function (tex, output, channel) {
+      var output_storage, i, j;
+      if (!gl || tex.width !== grid_width || tex.height !== grid_height) {
+        return new Error(INIT_ERR);
+      }
+      if (channel === undefined) {
+        channel = 0;
+      }
+      // Use buffer of provided ouput array. So, when result is written there,
+      // output is automaticaly updated in a right way.
+      output_storage = new Uint8Array(output.buffer);
+
+      tex.bind();
+      output_texture.setAsRenderTarget();
+      encode_program.uniforms({ channel: channel });
+      encode_program.draw(plane);
+      // format: gl.RGBA, type: gl.UNSIGNED_BYTE - only this set is accepted by WebGL readPixels.
+      gl.readPixels(0, 0, output_texture.width, output_texture.height, output_texture.format, output_texture.type, output_storage);
+    },
+
+    copyTexture: function (src_tex, dst_tex) {
+      src_tex.bind();
+      dst_tex.setAsRenderTarget();
+      copy_program.draw(plane);
+    },
+
+    // Execute a GLSL program.
+    // Arguments:
+    // - program - GL.Shader
+    // - textures - array of GL.Texture
+    // - output - output texture
+    executeProgram: function (program, textures, output) {
+      var i, len;
+      // Bind textures for reading.
+      for (i = 0, len = textures.length; i < len; i += 1) {
+        textures[i].bind(i);
+      }
+      // Use temp texture as writing and reading from the same texture is impossible.
+      temp_texture.setAsRenderTarget();
+      // Draw simple plane (coordinates x/y from -1 to 1 to cover whole viewport).
+      program.draw(plane);
+      // Unbind textures.
+      for (i = 0, len = textures.length; i < len; i += 1) {
+        textures[i].unbind(i);
+      }
+      output.swapWith(temp_texture);
+    },
+
+    // Synchronization can be useful for debugging.
+    setSynchronizationAllowed: function (b) {
+      sync_allowed = b;
+    },
+
+    // Block until all GL execution is complete if synchronization is allowed.
+    tryFinish: function () {
+      if (sync_allowed) {
+        gl.finish();
+      }
+    }
+  };
+
+}());
+/*globals energy2d: false*/
+/*jslint indent: 2 */
+//
+// lab/utils/energy2d/performance/performance.js
+//
+
+// Simple tools for measurement of performance.
+// Automatically detects nested calls of start()
+// and creates appropriate tree_root.
+// E.g.:
+// var perf = makePerformanceTools();
+// ...
+// perf.start('database read');
+// ...
+//   perf.start('connection');
+//   ...
+//   perf.stop('connection');
+//   ...
+//   perf.start('parsing');
+//   ...
+//   perf.stop('parsing');
+// ...
+// perf.stop('database read')
+// 
+// wiil create a tree_root:
+// database read
+//  |.. connection 
+//  |.. parsing
+
+// define namespace
+energy2d.namespace('energy2d.utils.performance');
+
+energy2d.utils.performance.makePerformanceTools = function () {
+  'use strict';
+  var
+    // Holds avg time data.
+    tree_root = {
+      id: undefined,
+      data: undefined,
+      parent: undefined,
+      children: {}
+    },
+    act_node = tree_root,
+
+    // Holds FPS counters.
+    fps_data = {},
+
+    goToNode = function (id_string) {
+      if (!act_node.children[id_string]) {
+        act_node.children[id_string] = {
+          id: id_string,
+          data: { sum: 0, count: 0, avg: 0 },
+          parent: act_node,
+          children: {}
+        };
+      }
+      act_node = act_node.children[id_string];
+      return act_node;
+    };
+
+  //
+  // Public API.
+  //
+  return {
+    // Start measurement.
+    start: function (id_string) {
+      goToNode(id_string);
+      act_node.start_time = new Date().getTime();
+    },
+    // Stop measurement.
+    stop: function (id_string) {
+      var time = new Date().getTime();
+      if (act_node.id !== id_string) {
+        throw new Error("Performance: there is another active counter: " + act_node.name);
+      }
+      // Collect data.
+      act_node.data.sum += time - act_node.start_time;
+      act_node.data.count += 1;
+      act_node.data.avg = act_node.data.sum / act_node.data.count;
+      // Move one level up.
+      act_node = act_node.parent;
+    },
+    // FPS counter start
+    startFPS: function (id_string) {
+      fps_data[id_string] = {
+        start_time: new Date().getTime(),
+        count: 0,
+        fps: 0
+      };
+    },
+    // FPS update.
+    updateFPS: function (id_string) {
+      var
+        data = fps_data[id_string],
+        time = new Date().getTime();
+
+      if (!data) {
+        return;
+      }
+      data.count += 1;
+      data.fps = data.count / ((time - data.start_time) / 1000);
+    },
+    // FPS counter start
+    stopFPS: function (id_string) {
+      delete fps_data[id_string];
+    },
+    // Get tree with stats.
+    getTree: function () {
+      return tree_root;
+    },
+    // Get FPS data.
+    getFPSData: function () {
+      return fps_data;
+    }
   };
 };
 /*globals energy2d, $ */
@@ -2017,11 +5797,45 @@ energy2d.views.utils.setupRGBTemperatureColorTables = function (red, green, blue
   for (i = 0; i < 256; i += 1) {
     rgb = energy2d.views.utils.HSVToRGB(i, 100, 90);
     red[i]   = rgb[0];
-    blue[i]  = rgb[1];
-    green[i] = rgb[2];
+    green[i] = rgb[1];
+    blue[i]  = rgb[2];
   }
 };/*globals energy2d, $ */
 /*jslint indent: 2 */
+//
+// lab/views/energy2d/color-palette.js
+//
+
+// define namespace
+energy2d.namespace('energy2d.views.ColorPalette');
+
+// Object with available color palettes. It is not exported to the namespace.
+var color_palette = {};
+color_palette['0'] = color_palette['RAINBOW']  = [[ 0, 0, 128 ], [ 20, 50, 120 ], [ 20, 100, 200 ], [ 10, 150, 150 ], [ 120, 180, 50 ], [ 220, 200, 10 ], [ 240, 160, 36 ], [ 225, 50, 50 ], [ 230, 85, 110 ], [ 250, 250, 250 ], [ 255, 255, 255 ] ];
+color_palette['1'] = color_palette['IRON']     = [ [ 40, 20, 100 ], [ 80, 20, 150 ], [ 150, 20, 150 ], [ 200, 50, 120 ], [ 220, 80, 80 ], [ 230, 120, 30 ], [ 240, 200, 20 ], [ 240, 220, 80 ], [ 255, 255, 125 ], [ 250, 250, 250 ], [ 255, 255, 255 ] ];
+color_palette['2'] = color_palette['GRAY']     = [ [ 50, 50, 50 ], [ 75, 75, 75 ], [ 100, 100, 100 ], [ 125, 125, 125 ], [ 150, 150, 150 ], [ 175, 175, 175 ], [ 200, 200, 200 ], [ 225, 225, 225 ], [ 250, 250, 250 ], [ 255, 255, 255 ] ];
+color_palette['3'] = color_palette['RAINBOW2'] = (function () {
+  'use strict';
+  var
+    HSVToRGB = energy2d.views.utils.HSVToRGB,
+    length = 256,
+    rgb = new Array(length),
+    i;
+
+  for (i = 0; i < length; i += 1) {
+    rgb[i] = energy2d.views.utils.HSVToRGB(length - 1 - i, 100, 90);
+  }
+  return rgb;
+}());
+
+energy2d.views.ColorPalette.getRGBArray = function (color_palette_id) {
+  'use strict';
+  if (color_palette_id === undefined || color_palette_id === 'DEFAULT') {
+    return color_palette['RAINBOW'];
+  }
+  return color_palette[color_palette_id];
+};/*globals energy2d, $ */
+/*jslint indent: 2, browser: true */
 //
 // lab/views/energy2d/heatmap.js
 //
@@ -2042,20 +5856,19 @@ energy2d.views.makeHeatmapView = function (html_id) {
   'use strict';
   var
     // Dependencies:
-    view_utils = energy2d.views.utils,
+    ColorPalette = energy2d.views.ColorPalette,
     // end.
     DEFAULT_ID = 'energy2d-heatmap-view',
 
     $heatmap_canvas,
     canvas_ctx,
+    backing_scale,
     canvas_width,
     canvas_height,
     hq_rendering,
 
-    red_color_table   = [],
-    blue_color_table  = [],
-    green_color_table = [],
-    max_hue,
+    rgb_array,
+    max_rgb_idx,
 
     heatmap,
     grid_width,
@@ -2070,6 +5883,16 @@ energy2d.views.makeHeatmapView = function (html_id) {
       $heatmap_canvas = $('<canvas />');
       $heatmap_canvas.attr('id', html_id || DEFAULT_ID);
       canvas_ctx = $heatmap_canvas[0].getContext('2d');
+      // If we are being rendered on a retina display with doubled pixels
+      // we need to make the actual canvas half the requested size;
+      // Google: window.devicePixelRatio webkitBackingStorePixelRatio
+      // See: https://www.khronos.org/webgl/public-mailing-list/archives/1206/msg00193.html
+      if (window.devicePixelRatio > 1 &&
+          (canvas_ctx.webkitBackingStorePixelRatio > 1 || (typeof canvas_ctx.webkitBackingStorePixelRatio === "undefined"))) {
+        backing_scale = window.devicePixelRatio;
+      } else {
+        backing_scale = 1;
+      }
     },
 
     //
@@ -2079,7 +5902,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
       // Render heat map on the canvas.
       renderHeatmap: function () {
         var
-          scale, hue,
+          scale, rgb_idx, val, color1, color2,
           image_data, data,
           i, j, iny, pix_index, pix_stride;
 
@@ -2091,8 +5914,8 @@ energy2d.views.makeHeatmapView = function (html_id) {
         // TODO: is it really necessary?
         canvas_ctx.fillStyle = "rgb(0,0,0)";
 
-        scale = max_hue / (max_temp - min_temp);
-        image_data = canvas_ctx.getImageData(0, 0, grid_width, grid_height);
+        scale = max_rgb_idx / (max_temp - min_temp);
+        image_data = canvas_ctx.getImageData(0, 0, grid_width / backing_scale, grid_height / backing_scale);
         data = image_data.data;
 
         pix_index = 0;
@@ -2101,15 +5924,22 @@ energy2d.views.makeHeatmapView = function (html_id) {
           iny = i * grid_height;
           pix_index = 4 * i;
           for (j = 0; j < grid_height; j += 1) {
-            hue =  max_hue - Math.round(scale * (heatmap[iny + j] - min_temp));
-            if (hue < 0) {
-              hue = 0;
-            } else if (hue > max_hue) {
-              hue = max_hue;
+            val = scale * (heatmap[iny + j] - min_temp);
+            rgb_idx = Math.floor(val);
+            // Get fractional part of val.
+            val -= rgb_idx;
+            if (rgb_idx < 0) {
+              rgb_idx = 0;
+              val = 0;
+            } else if (rgb_idx > max_rgb_idx - 1) {
+              rgb_idx = max_rgb_idx - 1;
+              val = 1;
             }
-            data[pix_index]     = red_color_table[hue];
-            data[pix_index + 1] = blue_color_table[hue];
-            data[pix_index + 2] = green_color_table[hue];
+            color1 = rgb_array[rgb_idx];
+            color2 = rgb_array[rgb_idx + 1];
+            data[pix_index]     = color1[0] * (1 - val) + color2[0] * val;
+            data[pix_index + 1] = color1[1] * (1 - val) + color2[1] * val;
+            data[pix_index + 2] = color1[2] * (1 - val) + color2[2] * val;
             data[pix_index + 3] = 255;
             pix_index += pix_stride;
           }
@@ -2125,8 +5955,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
         heatmap = new_heatmap;
         grid_width = new_grid_width;
         grid_height = new_grid_height;
-        $heatmap_canvas.attr('width', grid_width);
-        $heatmap_canvas.attr('height', grid_height);
+        this.setCanvasSize(grid_width, grid_height);
       },
 
       getHTMLElement: function () {
@@ -2140,9 +5969,13 @@ energy2d.views.makeHeatmapView = function (html_id) {
           $heatmap_canvas.attr('width', canvas_width);
           $heatmap_canvas.attr('height', canvas_height);
         } else {
-          $heatmap_canvas.attr('width', grid_width);
-          $heatmap_canvas.attr('height', grid_height);
+          this.setCanvasSize(grid_width, grid_height);
         }
+      },
+
+      setCanvasSize: function (w, h) {
+        $heatmap_canvas.attr('width',  w / backing_scale);
+        $heatmap_canvas.attr('height', h / backing_scale);
       },
 
       setHQRenderingEnabled: function (v) {
@@ -2155,12 +5988,175 @@ energy2d.views.makeHeatmapView = function (html_id) {
       },
       setMaxTemperature: function (v) {
         max_temp = v;
+      },
+      setColorPalette: function (id) {
+        rgb_array = ColorPalette.getRGBArray(id);
+        max_rgb_idx = rgb_array.length - 1;
+      }
+    };
+  // One-off initialization.
+  // Set the default color palette.
+  heatmap_view.setColorPalette('DEFAULT');
+
+  initHTMLelement();
+
+  return heatmap_view;
+};
+/*globals lab: false, energy2d: false, $: false, Uint8Array: false */
+/*jslint indent: 2, browser: true, es5: true */
+//
+// lab/views/energy2d/heatmap-webgl.js
+//
+
+// define namespace
+energy2d.namespace('energy2d.views');
+
+// Heatmap WebGL view.
+//
+// It uses HTML5 Canvas and WebGL for rendering.
+// getHTMLElement() returns jQuery object with the canvas used for rendering.
+// Before use, this view should be bound with a heatmap texture using bindHeapmapTexture(heatmap_tex).
+// To render the heatmap use renderHeatmapTexture() method. 
+// Set size of the heatmap using CSS rules.
+energy2d.views.makeHeatmapWebGLView = function (html_id) {
+  'use strict';
+  var
+    // Dependencies:
+    // Color palette utils class.
+    ColorPalette = energy2d.views.ColorPalette,
+    // - Energy2D GPU namespace.
+    gpu = energy2d.utils.gpu,
+    // - GLSL sources.
+    glsl = lab.glsl,
+
+    // Shader sources. One of Lab build steps converts sources to the JavaScript file.
+    GLSL_PREFIX      = 'src/lab/views/energy2d/heatmap-webgl-glsl/',
+    basic_vs         = glsl[GLSL_PREFIX + 'basic.vs.glsl'],
+    temp_renderer_fs = glsl[GLSL_PREFIX + 'temp-renderer.fs.glsl'],
+
+    // Get WebGL context.
+    gl = gpu.init(),
+    // GLSL Render program.
+    render_program = new gpu.Shader(basic_vs, temp_renderer_fs),
+    // Plane used for rendering.
+    plane = gpu.Mesh.plane({ coords: true }),
+    // Color palette texture (init later).
+    palette_tex,
+
+    DEFAULT_ID = 'energy2d-heatmap-webgl-view',
+
+    $heatmap_canvas,
+    canvas_width,
+    canvas_height,
+
+    heatmap_tex,
+    min_temp = 0,
+    max_temp = 50,
+
+    // 
+    // Private methods.
+    //
+    initHTMLelement = function () {
+      $heatmap_canvas = $(gl.canvas);
+      $heatmap_canvas.attr('id', html_id || DEFAULT_ID);
+    },
+
+    // Make sure that no FBO is bound and viewport has proper dimensions
+    // (it's not obvious as this context is also used for GPGPU calculations).
+    setupRenderTarget = function () {
+      // Ensure that FBO is null, as GPGPU operations which use FBOs also take place.
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      // This is necessary, as GPGPU operations can modify viewport size.
+      gl.viewport(0, 0, canvas_width, canvas_height);
+    },
+
+    //
+    // Public API.
+    //
+    heatmap_view = {
+      // Render heat map on the canvas.
+      renderHeatmap: function () {
+
+        if (!heatmap_tex) {
+          throw new Error("Heatmap: bind heatmap texture before rendering.");
+        }
+        // Follow size of the canvas defined by CSS rules.
+        if (canvas_width !== $heatmap_canvas.width() || canvas_height !== $heatmap_canvas.height()) {
+          this.updateCanvasSize();
+        }
+
+        setupRenderTarget();
+
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        heatmap_tex.bind(0);
+        palette_tex.bind(1);
+        render_program.draw(plane);
+        palette_tex.unbind(1);
+        heatmap_tex.unbind(0);
+      },
+
+      updateCanvasSize: function () {
+        canvas_width = $heatmap_canvas.width();
+        canvas_height = $heatmap_canvas.height();
+        $heatmap_canvas.attr('width', canvas_width);
+        $heatmap_canvas.attr('height', canvas_height);
+      },
+
+      // Bind heatmap to the view.
+      bindHeatmapTexture: function (new_heatmap_tex) {
+        heatmap_tex = new_heatmap_tex;
+      },
+
+      getHTMLElement: function () {
+        return $heatmap_canvas;
+      },
+
+      setMinTemperature: function (v) {
+        min_temp = v;
+        render_program.uniforms({
+          min_temp: min_temp
+        });
+      },
+      setMaxTemperature: function (v) {
+        max_temp = v;
+        render_program.uniforms({
+          max_temp: max_temp
+        });
+      },
+      setColorPalette: function (id) {
+        var rgb_array, len, tex_data, i, i4;
+        rgb_array = ColorPalette.getRGBArray(id);
+        len = rgb_array.length;
+        tex_data = new Uint8Array(len * 4);
+        for (i = 0; i < len; i += 1) {
+          i4 = i * 4;
+          tex_data[i4]     = rgb_array[i][0];
+          tex_data[i4 + 1] = rgb_array[i][1];
+          tex_data[i4 + 2] = rgb_array[i][2];
+          tex_data[i4 + 3] = 255;
+        }
+        palette_tex = new gpu.Texture(len, 1, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.LINEAR });
+        gl.bindTexture(gl.TEXTURE_2D, palette_tex.id);
+        gl.texImage2D(gl.TEXTURE_2D, 0, palette_tex.format, len, 1, 0, palette_tex.format, palette_tex.type, tex_data);
       }
     };
 
   // One-off initialization.
-  view_utils.setupRGBTemperatureColorTables(red_color_table, green_color_table, blue_color_table);
-  max_hue = red_color_table.length - 1;
+  // Set the default color palette.
+  heatmap_view.setColorPalette('DEFAULT');
+  // Set render program uniforms.
+  render_program.uniforms({
+    // Texture units.
+    heatmap_tex: 0,
+    palette_tex: 1,
+    // Uniforms.
+    min_temp: min_temp,
+    max_temp: max_temp
+  });
+  // Setup texture coordinates.
+  plane.coords = [[1, 0], [1, 1], [0, 0], [0, 1]];
+  // Update buffers.
+  plane.compile();
 
   initHTMLelement();
 
@@ -2192,6 +6188,7 @@ energy2d.views.makeVectormapView = function (html_id) {
     WING_COS = Math.cos(0.523598776),
     WING_SIN = Math.sin(0.523598776),
     WING_LEN = 4,
+    ARROW_COLOR = "rgb(175,175,175)",
 
     $vectormap_canvas,
     canvas_ctx,
@@ -2261,7 +6258,7 @@ energy2d.views.makeVectormapView = function (html_id) {
         dy = canvas_height / grid_height;
 
         canvas_ctx.clearRect(0, 0, canvas_width, canvas_height);
-        canvas_ctx.strokeStyle = "rgb(175,175,175)";
+        canvas_ctx.strokeStyle = ARROW_COLOR;
         canvas_ctx.lineWidth = 1;
 
         for (i = 1; i < grid_width - 1; i += spacing) {
@@ -2280,7 +6277,7 @@ energy2d.views.makeVectormapView = function (html_id) {
       },
 
       // Bind vector map to the view.
-      bindVectormap: function (new_vectormap_u, new_vectormap_v, new_grid_width, new_grid_height, new_spacing) {
+      bindVectormap: function (new_vectormap_u, new_vectormap_v, new_grid_width, new_grid_height, arrows_per_row) {
         if (new_grid_width * new_grid_height !== new_vectormap_u.length) {
           throw new Error("Heatmap: provided U component of vectormap has wrong dimensions.");
         }
@@ -2291,7 +6288,7 @@ energy2d.views.makeVectormapView = function (html_id) {
         vectormap_v = new_vectormap_v;
         grid_width = new_grid_width;
         grid_height = new_grid_height;
-        spacing = new_spacing;
+        spacing = Math.round(new_grid_width / arrows_per_row);
       },
 
       getHTMLElement: function () {
@@ -2307,6 +6304,171 @@ energy2d.views.makeVectormapView = function (html_id) {
     };
 
   // One-off initialization.
+  initHTMLelement();
+
+  return vectormap_view;
+};
+/*globals lab: false, energy2d: false, $: false, Uint8Array: false */
+/*jslint indent: 2, browser: true, es5: true */
+//
+// lab/views/energy2d/heatmap-webgl.js
+//
+
+// define namespace
+energy2d.namespace('energy2d.views');
+
+// Vectormap WebGL view.
+//
+// It uses HTML5 Canvas and WebGL for rendering.
+// getHTMLElement() returns jQuery object with the canvas used for rendering.
+// Before use, this view should be bound with a heatmap texture using bindHeapmapTexture(vectormap_tex).
+// To render the heatmap use renderVectormapTexture() method. 
+// Set size of the heatmap using CSS rules.
+energy2d.views.makeVectormapWebGLView = function (html_id) {
+  'use strict';
+  var
+    // Dependencies:
+    // - Energy2D GPU namespace.
+    gpu = energy2d.utils.gpu,
+    // - GLSL sources.
+    glsl = lab.glsl,
+
+    // Shader sources. One of Lab build steps converts sources to the JavaScript file.
+    GLSL_PREFIX  = 'src/lab/views/energy2d/vectormap-webgl-glsl/',
+    vectormap_vs = glsl[GLSL_PREFIX + 'vectormap.vs.glsl'],
+    vectormap_fs = glsl[GLSL_PREFIX + 'vectormap.fs.glsl'],
+
+    // Get WebGL context.
+    gl = gpu.init(),
+    // GLSL Render program.
+    render_program = new gpu.Shader(vectormap_vs, vectormap_fs),
+    // Plane used for rendering.
+    arrows = new gpu.Mesh({ coords: true, lines: true }),
+
+    DEFAULT_ID = 'energy2d-vectormap-webgl-view',
+    VECTOR_SCALE = 100,
+    VECTOR_BASE_LEN = 8,
+    ARROW_COLOR = [0.7, 0.7, 0.7, 1.0],
+
+    $vectormap_canvas,
+    canvas_width,
+    canvas_height,
+
+    vectormap_tex,
+    grid_width,
+    grid_height,
+    spacing,
+
+    // 
+    // Private methods.
+    //
+    initGeometry = function () {
+      var i, j, h, idx, origin, coord,
+        gdx = 2.0 / grid_width,
+        gdy = 2.0 / grid_height,
+        tdx = 1.0 / grid_width,
+        tdy = 1.0 / grid_height;
+
+      arrows.addVertexBuffer('origins', 'origin');
+      arrows.vertices = [];
+      arrows.origins = [];
+      arrows.coords = [];
+      arrows.lines = [];
+
+      idx = 0;
+      for (i = 1; i < grid_width - 1; i += spacing) {
+        for (j = 1; j < grid_height - 1; j += spacing) {
+          // Base arrows vertices. Origin, front and two wings. The unit is pixel.
+          // Base length is 0.01 px - just for convenience (it distinguish front of the arrows from the origin).
+          arrows.vertices.push([0, 0, 0], [0.01, 0, 0], [-3, 2, 0], [-3, -2, 0]);
+          // All of these vertices have to know which vector they are representing.
+          origin = [-1.0 + (i + 0.5) * gdx, 1.0 - (j + 0.5) * gdy, 0];
+          arrows.origins.push(origin, origin, origin, origin);
+          // Texture coordinates.
+          coord = [(j + 0.5) * tdy, (i + 0.5) * tdx];
+          arrows.coords.push(coord, coord, coord, coord);
+          // Draw three lines. From origin to the fron of the arrows + two wings.
+          arrows.lines.push([idx, idx + 1], [idx + 1, idx + 2], [idx + 1, idx + 3]);
+          idx += 4;
+        }
+      }
+      // Update buffers.
+      arrows.compile();
+    },
+
+    initHTMLelement = function () {
+      $vectormap_canvas = $(gl.canvas);
+      $vectormap_canvas.attr('id', html_id || DEFAULT_ID);
+    },
+
+    // Make sure that no FBO is bound and viewport has proper dimensions
+    // (it's not obvious as this context is also used for GPGPU calculations).
+    setupRenderTarget = function () {
+      // Ensure that FBO is null, as GPGPU operations which use FBOs also take place.
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      // This is necessary, as GPGPU operations can modify viewport size.
+      gl.viewport(0, 0, canvas_width, canvas_height);
+    },
+
+    //
+    // Public API.
+    //
+    vectormap_view = {
+      // Render heat map on the canvas.
+      renderVectormap: function () {
+
+        if (!vectormap_tex) {
+          throw new Error("Vectormap: bind heatmap texture before rendering.");
+        }
+        // Follow size of the canvas defined by CSS rules.
+        if (canvas_width !== $vectormap_canvas.width() || canvas_height !== $vectormap_canvas.height()) {
+          this.updateCanvasSize();
+        }
+
+        setupRenderTarget();
+
+        vectormap_tex.bind(0);
+        render_program.draw(arrows, gl.LINES);
+        vectormap_tex.unbind(0);
+      },
+
+      updateCanvasSize: function () {
+        canvas_width = $vectormap_canvas.width();
+        canvas_height = $vectormap_canvas.height();
+        $vectormap_canvas.attr('width', canvas_width);
+        $vectormap_canvas.attr('height', canvas_height);
+        // Render ara has dimensions from -1.0 to 1.0, so its width/height is 2.0.
+        render_program.uniforms({
+          scale: [2.0 / canvas_width, 2.0 / canvas_height]
+        });
+      },
+
+      // Bind vectormap to the view.
+      bindVectormapTexture: function (new_vectormap_tex, new_grid_width, new_grid_height, arrows_per_row) {
+        vectormap_tex = new_vectormap_tex;
+        grid_width = new_grid_width;
+        grid_height = new_grid_height;
+        spacing = Math.round(grid_width / arrows_per_row);
+
+        initGeometry();
+      },
+
+      getHTMLElement: function () {
+        return $vectormap_canvas;
+      },
+    };
+
+  // One-off initialization.
+  // Set render program uniforms.
+  render_program.uniforms({
+    // Texture units.
+    vectormap_tex: 0,
+    // Uniforms.
+    base_length: VECTOR_BASE_LEN,
+    vector_scale: VECTOR_SCALE,
+    color: ARROW_COLOR
+  });
+
   initHTMLelement();
 
   return vectormap_view;
@@ -2383,6 +6545,250 @@ energy2d.views.makeSimulationDescription = function (description) {
 /*globals energy2d, $ */
 /*jslint indent: 2 */
 //
+// lab/views/energy2d/perofrmance.js
+//
+
+// define namespace
+energy2d.namespace('energy2d.views');
+
+// Description.
+//
+// getHTMLElement() method returns JQuery object with DIV that contains description.
+// If you want to style its components:
+// Default div id = "energy2d-description",
+// Title class: "energy2d-description-title", Content class: "energy2d-description-content".
+energy2d.views.makePerformanceView = function (html_id) {
+  'use strict';
+  var
+    DEFAULT_ID = 'energy2d-performance',
+    DEFAULT_CLASS = 'energy2d-performance',
+
+    $performance_div,
+    $stats,
+    $fps,
+
+    performance_model,
+
+    //
+    // Private methods.
+    //
+    initHTMLelement = function () {
+      $performance_div = $('<div />');
+      $fps = $('<pre />');
+      $stats = $('<pre />');
+
+      $performance_div.append('<h2>FPS Counters:</h2>');
+      $performance_div.append($fps);
+      $performance_div.append('<h2>Stats (average time):</h2>');
+      $performance_div.append($stats);
+    },
+
+    addChildren = function (children, level) {
+      var name, child, i;
+
+      for (name in children) {
+        if (children.hasOwnProperty(name)) {
+          child = children[name];
+          for (i = 0; i < level; i += 1) {
+            $stats.append('  ');
+          }
+          $stats.append(child.id + ': ' + child.data.avg.toFixed(2) + 'ms\n');
+          addChildren(child.children, level + 1);
+        }
+      }
+    },
+
+    renderTime = function (tree) {
+      // Reset view.
+      $stats.html('');
+      addChildren(tree.children, 0);
+    },
+
+    renderFPS = function (fps_data) {
+      var name;
+      $fps.html('');
+      for (name in fps_data) {
+        if (fps_data.hasOwnProperty(name)) {
+          $fps.append(name + ': ' + fps_data[name].fps.toFixed(2) + ' fps');
+        }
+      }
+    },
+
+    //
+    // Public API.
+    //
+    performance_view = {
+      bindModel: function (model) {
+        performance_model = model;
+      },
+
+      update: function () {
+        // Update stats.
+        renderFPS(performance_model.getFPSData())
+        renderTime(performance_model.getTree());
+      },
+
+      getHTMLElement: function () {
+        return $performance_div;
+      }
+    };
+
+  // One-off initialization.
+  initHTMLelement();
+
+  return performance_view;
+};
+/*globals energy2d, $ */
+/*jslint indent: 2 */
+//
+// lab/views/energy2d/perofrmance.js
+//
+
+// define namespace
+energy2d.namespace('energy2d.views');
+
+// Description.
+//
+// getHTMLElement() method returns JQuery object with DIV that contains description.
+// If you want to style its components:
+// Default div id = "energy2d-description",
+// Title class: "energy2d-description-title", Content class: "energy2d-description-content".
+energy2d.views.makeWebGLStatusView = function (html_id) {
+  'use strict';
+  var
+    // Dependencies:
+    // - Energy2D GPU namespace.
+    gpu = energy2d.utils.gpu,
+
+    DEFAULT_ID = 'energy2d-webgl-status',
+
+    $WebGL_status_div,
+    $solvers_p,
+    $error_p,
+    $features_ul,
+
+    // Energy2D modeler.
+    energy2d_modeler,
+    // List of WebGL features.
+    features,
+
+    //
+    // Private methods.
+    //
+    initHTMLelement = function () {
+      $WebGL_status_div = $('<div />');
+      $WebGL_status_div.attr('id', html_id || DEFAULT_ID);
+      $WebGL_status_div.append('<h2>WebGL status</h2>');
+      $solvers_p = $('<p />');
+      $WebGL_status_div.append($solvers_p);
+      $features_ul = $('<ul />');
+      $WebGL_status_div.append($features_ul);
+      $error_p = $('<p />');
+      $error_p.css('color', 'orange');
+      $WebGL_status_div.append($error_p);
+    },
+
+    testFeatures = function () {
+      var gl, temp_texture;
+      // Clear features lists.
+      features = {};
+      // 1. WebGL main tests.
+      try {
+        gl = gpu.init();
+        features['WebGL context'] = true;
+      } catch (e) {
+        features['WebGL context'] = false;
+        // WebGL is not available, so don't test other features.
+        return;
+      }
+
+      // 2. OES_texture_float.
+      if (gl.getExtension('OES_texture_float')) {
+        features['OES_texture_float extension'] = true;
+      } else {
+        features['OES_texture_float extension'] = false;
+      }
+
+      // 3. Float texture as render target.
+      //    Test it only if float textures are available.
+      if (features['OES_texture_float extension']) {
+        temp_texture = new gpu.Texture(1, 1, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
+        temp_texture.setAsRenderTarget();
+        if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE) {
+          features['FLOAT texture as render target'] = true;
+        } else {
+          features['FLOAT texture as render target'] = false;
+        }
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      }
+    },
+
+    render = function () {
+      var name, $val, $line, error;
+      // Render status of GPU solvers.
+      $solvers_p.html('Energy2D GPU solvers: ');
+      if (energy2d_modeler.isWebGLActive()) {
+        $val = $('<span>active</span>');
+        $val.css('color', 'green');
+      } else {
+        $val = $('<span>inactive</span>');
+        $val.css('color', 'orange');
+      }
+      $solvers_p.append($val);
+
+      // Render WebGL features lists.
+      $features_ul.html('');
+      for (name in features) {
+        if (features.hasOwnProperty(name)) {
+          if (features[name]) {
+            $val = $('<span>available</span>');
+            $val.css('color', 'green');
+          } else {
+            $val = $('<span>not available</span>');
+            $val.css('color', 'red');
+          }
+          $line = $('<li>' + name + ': </li>');
+          $line.append($val);
+          $features_ul.append($line);
+        }
+      }
+
+      // Render errors.
+      $error_p.html('');
+      error = energy2d_modeler.getWebGLError();
+      if (error !== undefined) {
+        $error_p.append(error);
+      }
+    },
+
+    //
+    // Public API.
+    //
+    WebGL_status_view = {
+      bindModel: function (model) {
+        energy2d_modeler = model;
+      },
+
+      updateAndRender: function () {
+        // Test and update WebGL features.
+        testFeatures();
+        // Render status.
+        render();
+      },
+
+      getHTMLElement: function () {
+        return $WebGL_status_div;
+      }
+    };
+
+  // One-off initialization.
+  initHTMLelement();
+
+  return WebGL_status_view;
+};
+/*globals energy2d, $ */
+/*jslint indent: 2 */
+//
 // lab/views/energy2d/views.js
 //
 
@@ -2400,15 +6806,22 @@ energy2d.namespace('energy2d.views');
 // Constructor sets only necessary style options.
 // If you want to resize Energy2D scene view use CSS rule for wrapping DIV.
 // Do not resize manually internal views (heatmap, velocity or parts)!
-energy2d.views.makeEnergy2DScene = function (html_id) {
+energy2d.views.makeEnergy2DScene = function (html_id, use_WebGL) {
   'use strict';
   var
     DEFAULT_ID = 'energy2d-scene-view',
     DEFAULT_CLASS = 'energy2d-scene-view',
 
+    DEFAULT_VISUALIZATION_OPTIONS = {
+      "color_palette_type": 0,
+      "minimum_temperature": 0.0,
+      "maximum_temperature": 40.0
+    },
+
     heatmap_view,
     velocity_view,
     parts_view,
+    photons_view,
     time_view,
 
     $scene_view_div,
@@ -2427,6 +6840,7 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
 
       $scene_view_div.append(heatmap_view.getHTMLElement());
       $scene_view_div.append(velocity_view.getHTMLElement());
+      $scene_view_div.append(photons_view.getHTMLElement());
       $scene_view_div.append(parts_view.getHTMLElement());
       $scene_view_div.append(time_view.getHTMLElement());
     },
@@ -2473,20 +6887,51 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
         return parts_view;
       },
 
+      getPhotonsView: function () {
+        return photons_view;
+      },
+
       getTimeView: function () {
         return time_view;
       },
 
       getHTMLElement: function () {
         return $scene_view_div;
+      },
+
+      setVisualizationOptions: function (options) {
+        var name;
+        // Fill options with default values if there is such need.
+        for (name in DEFAULT_VISUALIZATION_OPTIONS) {
+          if (DEFAULT_VISUALIZATION_OPTIONS.hasOwnProperty(name) && options[name] === undefined) {
+            options[name] = DEFAULT_VISUALIZATION_OPTIONS[name];
+          }
+        }
+        // Configure "subviews".
+        heatmap_view.setMinTemperature(options.minimum_temperature);
+        heatmap_view.setMaxTemperature(options.maximum_temperature);
+        heatmap_view.setColorPalette(options.color_palette_type);
       }
     };
 
-  heatmap_view = energy2d.views.makeHeatmapView();
-  setAsNextLayer(heatmap_view);
+  // One-off initialization.
+  if (use_WebGL) {
+    heatmap_view = energy2d.views.makeHeatmapWebGLView();
+    velocity_view = energy2d.views.makeVectormapWebGLView();
 
-  velocity_view = energy2d.views.makeVectormapView();
-  setAsNextLayer(velocity_view);
+    // Both VectormapWebGL and HeatmapWebGL use common canvas,
+    // so it's enough to set it only once as the next layer.
+    setAsNextLayer(velocity_view);
+  } else {
+    heatmap_view = energy2d.views.makeHeatmapView();
+    velocity_view = energy2d.views.makeVectormapView();
+
+    setAsNextLayer(heatmap_view);
+    setAsNextLayer(velocity_view);
+  }
+
+  photons_view = energy2d.views.makePhotonsView();
+  setAsNextLayer(photons_view);
 
   parts_view = energy2d.views.makePartsView();
   setAsNextLayer(parts_view);
@@ -2536,10 +6981,13 @@ energy2d.views.makePartsView = function (html_id) {
       $parts_canvas.addClass(DEFAULT_CLASS);
 
       canvas_ctx = $parts_canvas[0].getContext('2d');
+    },
+
+    setCanvasStyle = function () {
       canvas_ctx.strokeStyle = "black";
       canvas_ctx.lineCap = "round";
       canvas_ctx.lineJoin = "round";
-      canvas_ctx.lineWidth = 2;
+      canvas_ctx.lineWidth = 1;
       canvas_ctx.font = "12px sans-serif";
       canvas_ctx.textBaseline = "middle";
     },
@@ -2569,28 +7017,6 @@ energy2d.views.makePartsView = function (html_id) {
       textures.push($texture_canvas[0]);
     },
 
-    drawEllipse = function (ellipse) {
-      var
-        px = ellipse.x * scale_x,
-        py = ellipse.y * scale_y,
-        pa = ellipse.a * scale_x * 0.5,
-        pb = ellipse.b * scale_y * 0.5,
-        x_pos, y_pos, t;
-
-      canvas_ctx.beginPath();
-      for (t = 0; t < 2 * Math.PI; t += 0.1) {
-        x_pos = px + (pa * Math.cos(t));
-        y_pos = py + (pb * Math.sin(t));
-
-        if (t === 0) {
-          canvas_ctx.moveTo(x_pos, y_pos);
-        } else {
-          canvas_ctx.lineTo(x_pos, y_pos);
-        }
-      }
-      canvas_ctx.closePath();
-    },
-
     drawRectangle = function (rectangle) {
       var
         px = rectangle.x * scale_x - 1,        // "- 1 / + 2" too keep positions
@@ -2611,15 +7037,16 @@ energy2d.views.makePartsView = function (html_id) {
 
     drawPolygon = function (polygon) {
       var
-        verts = polygon.vertices,
+        x_coords = polygon.x_coords,
+        y_coords = polygon.y_coords,
         label_x = 0,
         label_y = 0,
         i, len;
 
       canvas_ctx.beginPath();
-      canvas_ctx.moveTo(verts[0] * scale_x, verts[1] * scale_y);
+      canvas_ctx.moveTo(x_coords[0] * scale_x, y_coords[0] * scale_y);
       for (i = 1, len = polygon.count; i < len; i += 1) {
-        canvas_ctx.lineTo(verts[i * 2] * scale_x, verts[i * 2 + 1] * scale_y);
+        canvas_ctx.lineTo(x_coords[i] * scale_x, y_coords[i] * scale_y);
       }
       canvas_ctx.closePath();
     },
@@ -2666,7 +7093,7 @@ energy2d.views.makePartsView = function (html_id) {
         if (typeof part.color === 'string') {
           color = part.color;
         } else {
-          color = part.color.toString(16);
+          color = part.color.toString();
           while (color.length < 6) {
             color = '0' + color;
           }
@@ -2712,20 +7139,16 @@ energy2d.views.makePartsView = function (html_id) {
             continue;
           }
           // Step 1. Draw path on the canvas.
+          drawPolygon(part.shape.polygonize());
           if (part.rectangle) {
-            drawRectangle(part.rectangle);
-          } else if (part.polygon) {
-            drawPolygon(part.polygon);
-          } else if (part.ellipse) {
-            drawEllipse(part.ellipse);
-          } else if (part.ring) {
-            // Draw a circle, its interior will be deleted later.
-            drawEllipse({
-              x: part.ring.x,
-              y: part.ring.y,
-              a: part.ring.outer,
-              b: part.ring.outer
-            });
+            // Special case for rectangle to draw in the same manner
+            // as original Energy2D.
+            drawRectangle(part.shape);
+          } else {
+            // Polygonize ellipses, rings and... polygons
+            // (which returns itself when polygonize() is called).
+            // Polygonize for rings returns OUTER circle.
+            drawPolygon(part.shape.polygonize());
           }
           // Step 2. Fill.
           if (part.filled) {
@@ -2742,12 +7165,7 @@ energy2d.views.makePartsView = function (html_id) {
 
           // Step 4. Special case for rings, remove inner circle.
           if (part.ring) {
-            drawEllipse({
-              x: part.ring.x,
-              y: part.ring.y,
-              a: part.ring.inner,
-              b: part.ring.inner
-            });
+            drawPolygon(part.shape.polygonizeInner());
             last_composite_op = canvas_ctx.globalCompositeOperation;
             canvas_ctx.globalCompositeOperation = 'destination-out';
             canvas_ctx.fill();
@@ -2783,14 +7201,126 @@ energy2d.views.makePartsView = function (html_id) {
         scale_y = canvas_height / scene_height;
         $parts_canvas.attr('width', canvas_width);
         $parts_canvas.attr('height', canvas_height);
+        // Need to do it after canvas size change.
+        setCanvasStyle();
       }
     };
 
   // One-off initialization.
   initHTMLelement();
+  setCanvasStyle();
   initTextures();
 
   return parts_view;
+};
+
+// Energy2D photons view.
+//
+// It uses HTML5 Canvas for rendering.
+// getHTMLElement() returns jQuery object with canvas used for rendering.
+// Before use, this view should be bound with the parts array using bindPhotonsArray(photons).
+// To render parts use renderPhotons() method.
+// Set size of the parts view using CSS rules. The view fits canvas dimensions to the real
+// size of the HTML element to avoid low quality scaling.
+energy2d.views.makePhotonsView = function (html_id) {
+  'use strict';
+  var
+    DEFAULT_ID = 'energy2d-photons-view',
+    DEFAULT_CLASS = 'energy2d-photons-view',
+
+    PHOTON_LENGTH = 10,
+
+    $photons_canvas,
+    canvas_ctx,
+    canvas_width,
+    canvas_height,
+
+    photons,
+    scale_x,
+    scale_y,
+    scene_width,
+    scene_height,
+
+    //
+    // Private methods.
+    //
+    initHTMLelement = function () {
+      $photons_canvas = $('<canvas />');
+      $photons_canvas.attr('id', html_id || DEFAULT_ID);
+      $photons_canvas.addClass(DEFAULT_CLASS);
+
+      canvas_ctx = $photons_canvas[0].getContext('2d');
+    },
+
+    setCanvasStyle = function () {
+      canvas_ctx.strokeStyle = "rgba(255,255,255,128)";
+      canvas_ctx.lineWidth = 0.5;
+    },
+
+    //
+    // Public API.
+    //
+    photons_view = {
+      // Render vectormap on the canvas.
+      renderPhotons: function () {
+        var
+          photon, sx, sy, r,
+          i, len;
+
+        if (!photons) {
+          throw new Error("Photons view: bind parts array before rendering.");
+        }
+
+        // Follow size of the canvas defined by CSS rules.
+        if (canvas_width !== $photons_canvas.width() || canvas_height !== $photons_canvas.height()) {
+          this.updateCanvasSize();
+        }
+
+        canvas_ctx.clearRect(0, 0, canvas_width, canvas_height);
+        for (i = 0, len = photons.length; i < len; i += 1) {
+          photon = photons[i];
+
+          sx = photon.x * scale_x;
+          sy = photon.y * scale_y;
+          r = 1 / Math.sqrt(photon.vx * photon.vx + photon.vy * photon.vy);
+
+          canvas_ctx.beginPath();
+          canvas_ctx.moveTo(sx, sy);
+          canvas_ctx.lineTo(sx + PHOTON_LENGTH * photon.vx * r, sy + PHOTON_LENGTH * photon.vy * r);
+          canvas_ctx.stroke();
+        }
+      },
+
+      // Bind vector map to the view.
+      bindPhotonsArray: function (new_photons, new_scene_width, new_scene_height) {
+        photons = new_photons;
+        scene_width = new_scene_width;
+        scene_height = new_scene_height;
+        scale_x = canvas_width / scene_width;
+        scale_y = canvas_height / scene_height;
+      },
+
+      getHTMLElement: function () {
+        return $photons_canvas;
+      },
+
+      updateCanvasSize: function () {
+        canvas_width = $photons_canvas.width();
+        canvas_height = $photons_canvas.height();
+        scale_x = canvas_width / scene_width;
+        scale_y = canvas_height / scene_height;
+        $photons_canvas.attr('width', canvas_width);
+        $photons_canvas.attr('height', canvas_height);
+
+        setCanvasStyle();
+      }
+    };
+
+  // One-off initialization.
+  initHTMLelement();
+  setCanvasStyle();
+
+  return photons_view;
 };
 
 // Simple player.
@@ -2927,8 +7457,8 @@ energy2d.views.makeTimeView = function (html_id) {
   return simulation_time;
 };
 
-/*globals energy2d, $ */
-/*jslint indent: 2 */
+/*globals energy2d, $, ACTUAL_ROOT */
+/*jslint indent: 2, browser: true */
 //
 // lab/controllers/energy2d/controllers.js
 //
@@ -2946,43 +7476,64 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     // Dependencies:
     modeler_ns = energy2d.modeler,
     views_ns = energy2d.views,
+    performance_ns = energy2d.utils.performance,
     // end.
 
     // Object with public API.
     controller,
     // Energy2D model.
     modeler,
+    model_options,
+    // Parameters.
+    use_WebGL,
+    steps_per_frame = 4,
 
-    // Views:
+    // TODO: refactor views support, probably using events and more general approach.
+    // Required views.
     energy2d_scene,
     heatmap_view,
     velocity_view,
     parts_view,
+    photons_view,
     time_view,
     simulation_player_view,
     simulation_description_view,
 
-    // Parameters:
-    last_options,
+    // Performance tools and view.
+    // By default mock tools.
+    performance_tools = {
+      start: function () {},
+      stop: function () {},
+      startFPS: function () {},
+      updateFPS: function () {},
+      stopFPS: function () {}
+    },
+    performance_view,
+
+    // WebGL status view.
+    WebGL_status_view,
+
+    // All attached HTML elements.
+    $html_elements,
+
     interval_id,
-    steps_per_frame = 4,
 
     //
-    // Private methods
+    // Private methods.
     //
-    actualRootPath = function(url) {
+    actualRootPath = function (url) {
       if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
         return url;
-      } else {
-        return ACTUAL_ROOT + url;
       }
+      return ACTUAL_ROOT + url;
     },
 
     createEnergy2DScene = function (component_def) {
-      energy2d_scene = views_ns.makeEnergy2DScene(component_def.id);
+      energy2d_scene = views_ns.makeEnergy2DScene(component_def.id, use_WebGL);
       heatmap_view = energy2d_scene.getHeatmapView();
       velocity_view = energy2d_scene.getVelocityView();
       parts_view = energy2d_scene.getPartsView();
+      photons_view = energy2d_scene.getPhotonsView();
       time_view = energy2d_scene.getTimeView();
 
       return energy2d_scene;
@@ -2994,6 +7545,18 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       simulation_player_view.bindSimulationController(controller);
 
       return simulation_player_view;
+    },
+
+    createPerformanceView = function (component_def) {
+      performance_view = views_ns.makePerformanceView(component_def.id);
+
+      return performance_view;
+    },
+
+    createWebGLStatusView = function (component_def) {
+      WebGL_status_view = views_ns.makeWebGLStatusView(component_def.id);
+
+      return WebGL_status_view;
     },
 
     createSimulationDescription = function (component_def) {
@@ -3013,27 +7576,53 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         return createEnergy2DScene(component_def);
       case 'energy2d-simulation-player':
         return createSimulationPlayer(component_def);
+      case 'energy2d-performance-view':
+        return createPerformanceView(component_def);
+      case 'energy2d-webgl-status-view':
+        return createWebGLStatusView(component_def);
       default:
         throw new Error('Interactive controller: unknow type of component.');
       }
     },
 
-    nextStep = function () {
-      var i = steps_per_frame;
-      while (i > 0) {
-        i -= 1;
-        modeler.nextStep();
-      }
+    updateDynamicViews = function () {
       heatmap_view.renderHeatmap();
       velocity_view.renderVectormap();
+      photons_view.renderPhotons();
       time_view.renderTime(modeler.getTime());
-    };
 
-  //
-  // Public API
-  //
-  controller = {
-    loadInteractive: function (interactive, interactive_container_id, description_container_id) {
+      if (performance_view) {
+        performance_view.update();
+      }
+    },
+
+    nextStep = function () {
+      var i, len;
+      performance_tools.stop('Gap between frames');
+      performance_tools.start('Frame (inc. ' + steps_per_frame + ' model steps)');
+      for (i = 0, len = steps_per_frame; i < len; i += 1) {
+        modeler.nextStep();
+      }
+      // Uncomment to enable velocity visualization:
+      // modeler.updateVelocityArrays();
+
+      performance_tools.start('Views update');
+      // Update views (only part view is not updated, as it's static).
+      updateDynamicViews();
+      performance_tools.stop('Views update');
+
+      performance_tools.stop('Frame (inc. ' + steps_per_frame + ' model steps)');
+      performance_tools.start('Gap between frames');
+
+      performance_tools.updateFPS('Model update and rendering');
+    },
+
+    createModeler = function () {
+      modeler = modeler_ns.makeModeler(model_options.model);
+      use_WebGL = modeler.isWebGLActive();
+    },
+
+    createViewComponents = function () {
       var
         components = interactive.components || [],
         description = interactive.description || {},
@@ -3041,6 +7630,8 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         component, component_layout, $html_element,
         i, len;
 
+      $html_elements = [];
+      // Load standard view components.
       for (i = 0, len = components.length; i < len; i += 1) {
         component = createComponent(components[i]);
 
@@ -3054,47 +7645,100 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         if (component_layout.class) {
           $html_element.addClass(component_layout.class);
         }
-        // Append.
+        // Append to container (interactive container is a default choice).
         if (component_layout.container) {
           $html_element.appendTo(component_layout.container);
         } else {
           $html_element.appendTo(interactive_container_id);
         }
+        // Add HTML element to the list.
+        $html_elements.push($html_element);
       }
+      // Add description.
       if (description) {
         component = createSimulationDescription(description);
         $html_element = component.getHTMLElement();
         $html_element.appendTo(description_container_id);
+        // Add HTML element to the list.
+        $html_elements.push($html_element);
       }
-
-      // Finally, load scene model.
-      controller.loadSceneModelFromURL(interactive.model);
     },
 
-    loadSceneModelFromURL: function (options_url) {
-      $.get(actualRootPath(options_url))
+    removeViewComponents = function () {
+      var i, len;
+      // Remove components.
+      for (i = 0, len = $html_elements.length; i < len; i += 1) {
+        $html_elements[i].remove();
+      }
+      // Reset list.
+      $html_elements = [];
+    },
+
+    setupViewComponents = function () {
+      var grid_x, grid_y;
+
+      energy2d_scene.setVisualizationOptions(model_options.view);
+      // TODO: move following configuration to energy2d scene.
+      grid_x = modeler.getGridWidth();
+      grid_y = modeler.getGridHeight();
+      parts_view.bindPartsArray(modeler.getPartsArray(), modeler.getWidth(), modeler.getHeight());
+      photons_view.bindPhotonsArray(modeler.getPhotonsArray(), modeler.getWidth(), modeler.getHeight());
+
+      if (use_WebGL) {
+        heatmap_view.bindHeatmapTexture(modeler.getTemperatureTexture());
+        velocity_view.bindVectormapTexture(modeler.getVelocityTexture(), grid_x, grid_y, 25);
+      } else {
+        heatmap_view.bindHeatmap(modeler.getTemperatureArray(), grid_x, grid_y);
+        velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), grid_x, grid_y, 25);
+      }
+
+      // Bind performance tools model.
+      if (performance_view) {
+        performance_tools = performance_ns.makePerformanceTools();
+        performance_view.bindModel(performance_tools);
+        modeler.setPerformanceTools(performance_tools);
+      }
+
+      if (WebGL_status_view) {
+        WebGL_status_view.bindModel(modeler);
+        WebGL_status_view.updateAndRender();
+      }
+
+      updateDynamicViews();
+      parts_view.renderParts();
+    },
+
+    loadInteractive = function () {
+      // Download model options (located at interactive.model attribute).
+      $.get(actualRootPath(interactive.model))
         .success(function (data) {
-          if (typeof data === "string") { data = JSON.parse(data); }
-          controller.loadSceneModel(data);
+          // When they are ready, save them, create modeler, load components and setup them.
+          if (typeof data === "string") {
+            data = JSON.parse(data);
+          }
+          model_options = data;
+
+          createModeler();
+          createViewComponents();
+          setupViewComponents();
         })
         .error(function (jqXHR, textStatus, errorThrown) {
           throw new Error("Interactive controller: loading scene options failed - " + textStatus);
         });
-    },
+    };
 
-    loadSceneModel: function (options) {
-      var grid_x, grid_y;
-      modeler = modeler_ns.makeModeler(options.model);
-      last_options = options;
-
-      grid_x = modeler.getGridWidth();
-      grid_y = modeler.getGridHeight();
-      heatmap_view.bindHeatmap(modeler.getTemperatureArray(), grid_x, grid_y);
-      velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), grid_x, grid_y, 4);
-      parts_view.bindPartsArray(modeler.getPartsArray(), modeler.getWidth(), modeler.getHeight());
-
-      heatmap_view.renderHeatmap();
-      parts_view.renderParts();
+  //
+  // Public API
+  //
+  controller = {
+    // Overwrite WebGL optimization option.
+    setWebGLEnabled: function (b) {
+      controller.simulationStop();
+      model_options.model.use_WebGL = b;
+      createModeler();
+      removeViewComponents();
+      createViewComponents();
+      setupViewComponents();
     },
 
     //
@@ -3103,15 +7747,23 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     simulationPlay: function () {
       if (!interval_id) {
         interval_id = setInterval(nextStep, 0);
+        performance_tools.start('Gap between frames');
+        performance_tools.startFPS('Model update and rendering');
       }
     },
 
     simulationStep: function () {
-      nextStep();
+      if (!interval_id) {
+        performance_tools.start('Gap between frames');
+        nextStep();
+        performance_tools.stop('Gap between frames');
+      }
     },
 
     simulationStop: function () {
       if (interval_id !== undefined) {
+        performance_tools.stop('Gap between frames');
+        performance_tools.stopFPS('Model update and rendering');
         clearInterval(interval_id);
         interval_id = undefined;
       }
@@ -3120,12 +7772,13 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     simulationReset: function () {
       controller.simulationStop();
       // TODO: use modeler.reset()
-      controller.loadSceneModel(last_options);
+      createModeler();
+      setupViewComponents();
     }
   };
 
   // One-off initialization.
-  controller.loadInteractive(interactive, interactive_container_id, description_container_id);
+  loadInteractive();
 
   return controller;
 };

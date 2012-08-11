@@ -1,7 +1,5 @@
 {
   "temperature_control": false,
-  "lennard_jones_forces": true,
-  "coulomb_forces": false,
   "width": 4,
   "height": 1.5,
   "elements": [
@@ -13,7 +11,7 @@
     },
     {
       "id": 1,
-      "mass": null,
+      "mass": 120,
       "sigma": 0.3,
       "epsilon": -0.009999999776482582
     },

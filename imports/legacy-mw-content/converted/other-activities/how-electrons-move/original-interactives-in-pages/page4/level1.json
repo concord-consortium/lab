@@ -1,7 +1,5 @@
 {
   "temperature_control": false,
-  "lennard_jones_forces": true,
-  "coulomb_forces": false,
   "width": 7.5,
   "height": 4,
   "elements": [
@@ -43,5 +41,89 @@
     "VY": [],
     "CHARGE": [],
     "ELEMENT": []
+  },
+  "obstacles": {
+    "x": [
+      7.3,
+      0.2,
+      7.3,
+      0.2,
+      3.81,
+      5.65,
+      null
+    ],
+    "y": [
+      null,
+      0,
+      0,
+      null,
+      1.94,
+      0.59,
+      null
+    ],
+    "height": [
+      1.8,
+      0.2,
+      1.8,
+      0.2,
+      0.87,
+      0.87,
+      4
+    ],
+    "width": [
+      0.2,
+      7.1,
+      0.2,
+      7.1,
+      0.21,
+      0.21,
+      0.2
+    ],
+    "density": [
+      "Infinity",
+      "Infinity",
+      "Infinity",
+      "Infinity",
+      "Infinity",
+      "Infinity",
+      "Infinity"
+    ],
+    "color": [
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ]
+    ]
   }
 }

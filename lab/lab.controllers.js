@@ -20,59 +20,33 @@ controllers = { version: "0.0.1" };
 
   modeler
   ModelPlayer
-  Thermometer
-  SliderComponent
   layout
+  DEVELOPMENT
   $
   alert
   model: true
   model_player: true
 */
 /*jslint onevar: true*/
-controllers.simpleModelController = function(molecule_view_id, modelConfig, playerConfig) {
+controllers.modelController = function(moleculeViewId, modelConfig, playerConfig) {
+  var controller = {},
 
-  var layoutStyle,
+      // properties read from the playerConfig hash
+      layoutStyle,
       autostart,
-      maximum_model_steps,
-      lj_epsilon_max,
-      lj_epsilon_min,
 
+      // properties read from the modelConfig hash
       elements,
-      atoms_properties,
+      atoms,
       mol_number,
       temperature_control,
       temperature,
-      coulomb_forces,
       width,
       height,
+      radialBonds,
+      obstacles,
 
-      nodes,
-
-      molecule_container,
-      model_listener,
-      step_counter,
-      therm,
-      epsilon_slider;
-
-  function controller() {
-
-
-    function initializeLocalVariables() {
-      layoutStyle         = playerConfig.layoutStyle;
-      autostart           = playerConfig.autostart;
-      maximum_model_steps = playerConfig.maximum_model_steps;
-      lj_epsilon_max      = playerConfig.lj_epsilon_max;
-      lj_epsilon_min      = playerConfig.lj_epsilon_min;
-
-      elements            = modelConfig.elements;
-      atoms_properties    = modelConfig.atoms;
-      mol_number          = modelConfig.mol_number;
-      temperature_control = modelConfig.temperature_control;
-      temperature         = modelConfig.temperature;
-      coulomb_forces      = modelConfig.coulomb_forces;
-      width               = modelConfig.width;
-      height              = modelConfig.height;
-    }
+      moleculeContainer;
 
     // ------------------------------------------------------------
     //
@@ -82,10 +56,31 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     //
     // ------------------------------------------------------------
 
-    model_listener = function(e) {
-      molecule_container.update_molecule_positions();
-      if (step_counter >= model.stepCounter()) { modelStop(); }
-    };
+    function tickHandler() {
+      moleculeContainer.update_drawable_positions();
+    }
+
+
+    // ------------------------------------------------------------
+    //
+    // Initialize (or update) local variables based on playerConfig and modelConfig objects
+    //
+    // ------------------------------------------------------------
+
+    function initializeLocalVariables() {
+      layoutStyle         = playerConfig.layoutStyle;
+      autostart           = playerConfig.autostart;
+
+      elements            = modelConfig.elements;
+      atoms               = modelConfig.atoms;
+      mol_number          = modelConfig.mol_number;
+      temperature_control = modelConfig.temperature_control;
+      temperature         = modelConfig.temperature;
+      width               = modelConfig.width;
+      height              = modelConfig.height;
+      radialBonds         = modelConfig.radialBonds;
+      obstacles           = modelConfig.obstacles;
+    }
 
     // ------------------------------------------------------------
     //
@@ -94,36 +89,35 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     // ------------------------------------------------------------
 
     function createModel() {
+      initializeLocalVariables();
       model = modeler.model({
-          elements: elements,
-          model_listener: model_listener,
-          temperature: temperature,
-          lennard_jones_forces: true,
-          coulomb_forces: coulomb_forces,
-          temperature_control: temperature_control,
-          width: width,
-          height: height
+          elements            : elements,
+          temperature         : temperature,
+          temperature_control : temperature_control,
+          width               : width,
+          height              : height
         });
 
-      if (atoms_properties) {
-        model.createNewAtoms(atoms_properties);
+      if (atoms) {
+        model.createNewAtoms(atoms);
       } else if (mol_number) {
-        model.createNewAtoms({
-          num: mol_number,
-          relax: true
-        });
+        model.createNewAtoms(mol_number);
+        model.relax();
       } else {
-        throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
+        throw new Error("ModelController: tried to create a model without atoms or mol_number.");
       }
+
+      if (radialBonds) model.createRadialBonds(radialBonds);
+      if (obstacles) model.createObstacles(obstacles);
     }
 
     // ------------------------------------------------------------
     //
-    // Create Views
+    // Create Model Player
     //
     // ------------------------------------------------------------
 
-    function setupViews() {
+    function setupModelPlayer() {
 
       // ------------------------------------------------------------
       //
@@ -132,94 +126,46 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       // ------------------------------------------------------------
 
       layout.selection = layoutStyle;
-
-      model_player = new ModelPlayer(model, autostart);
-      molecule_container = layout.moleculeContainer(molecule_view_id,
+      model_player = new ModelPlayer(model, false);
+      moleculeContainer = layout.moleculeContainer(moleculeViewId,
         {
-          xmax:                 width,
-          ymax:                 height,
-          get_nodes:            function() { return model.get_nodes(); },
-          get_num_atoms:        function() { return model.get_num_atoms(); }
+          xmax:          width,
+          ymax:          height,
+          get_nodes:     function() { return model.get_nodes(); },
+          get_num_atoms: function() { return model.get_num_atoms(); },
+          get_obstacles: function() { return model.get_obstacles(); }
         }
       );
 
-      molecule_container.updateMoleculeRadius();
-      molecule_container.setup_particles();
+      moleculeContainer.updateMoleculeRadius();
+      moleculeContainer.setup_drawables();
 
-      // ------------------------------------------------------------
-      // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
-      // ------------------------------------------------------------
+      layout.addView('moleculeContainers', moleculeContainer);
 
-      therm = new Thermometer('#thermometer', model.temperature(), 200, 4000);
-
-      model.addPropertiesListener(["temperature"], updateTherm);
-      therm.resize();
-      updateTherm();
-
-      // ------------------------------------------------------------
-      // Setup heat and cool buttons
-      // ------------------------------------------------------------
-
-      layout.heatCoolButtons("#heat_button", "#cool_button", 0, 3800, model, function (t) { therm.add_value(t); });
-
-      // ------------------------------------------------------------
-      // Add listener for coulomb_forces checkbox
-      // ------------------------------------------------------------
-
-      // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-
-      model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
-      updateCoulombCheckbox();
-
-      // ------------------------------------------------------------
-      //
-      // Setup list of views used by layout system
-      //
-      // ------------------------------------------------------------
-
-      layout.addView('moleculeContainers', molecule_container);
-      layout.addView('thermometers', therm);
-
+      // FIXME: should not be here
       layout.setupScreen();
-
     }
 
-    // ------------------------------------------------------------
-    //
-    // Model Controller
-    //
-    // ------------------------------------------------------------
+    function resetModelPlayer() {
 
-    function updateCoulombCheckbox() {
-      $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-      molecule_container.setup_particles();
+      // ------------------------------------------------------------
+      //
+      // reset player and container view for model
+      //
+      // ------------------------------------------------------------
+
+      moleculeContainer.reset({
+        xmax:          width,
+        ymax:          height,
+        get_nodes:     function() { return model.get_nodes(); },
+        get_num_atoms: function() { return model.get_num_atoms(); },
+        get_obstacles: function() { return model.get_obstacles(); }
+      });
+
+      // FIXME: should not be here
+      layout.setupScreen(true);
     }
 
-    function updateTherm(){
-      therm.add_value(model.get("temperature"));
-    }
-
-    function modelStop() {
-      model.stop();
-    }
-
-    function modelGo() {
-      model.on("tick", model_listener);
-      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
-        model.resume();
-      }
-    }
-
-    function modelStepBack() {
-      modelStop();
-      model.stepBack();
-    }
-
-    function modelStepForward() {
-      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
-        model.stepForward();
-      }
-    }
 
     // ------------------------------------------------------------
     //
@@ -227,45 +173,25 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     //
 
     function setupModel() {
-      nodes = model.get_nodes();
-
       model.resetTime();
-
-      modelStop();
-      model.on("tick", model_listener);
-      step_counter = model.stepCounter();
+      model.stop();
+      model.on('tick', tickHandler);
     }
-
-    // ------------------------------------------------------------
-    //
-    //  Wire up screen-resize handlers
-    //
-    // ------------------------------------------------------------
-
-    function onresize() {
-      layout.setupScreen();
-      therm.resize();
-      updateTherm();
-    }
-
-    document.onwebkitfullscreenchange = onresize;
-    window.onresize = onresize;
-
-    // ------------------------------------------------------------
-    //
-    // Reset the model after everything else ...
-    //
-    // ------------------------------------------------------------
 
     function finishSetup(firstTime) {
-      initializeLocalVariables();
       createModel();
       setupModel();
       if (firstTime) {
-        setupViews();
+        setupModelPlayer();
       } else {
-        updateLayout();
+        resetModelPlayer();
       }
+    }
+
+    function reload(newModelConfig, newPlayerConfig) {
+      modelConfig = newModelConfig;
+      playerConfig = newPlayerConfig;
+      finishSetup(false);
     }
 
     if (typeof DEVELOPMENT === 'undefined') {
@@ -279,41 +205,312 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       finishSetup(true);
     }
 
-    function updateLayout() {
-      layout.setupScreen(true);
-    }
-
-    function reload(newModelConfig, newPlayerConfig) {
-       modelConfig = newModelConfig;
-       playerConfig = newPlayerConfig;
-       finishSetup(false);
-    }
-
-    // epsilon_slider = new SliderComponent('#attraction_slider',
-    //   function (v) {
-    //     model.set({epsilon: v} );
-    //   }, lj_epsilon_max, lj_epsilon_min, epsilon);
-
-    // function updateEpsilon(){
-    //   epsilon_slider.set_scaled_value(model.get("epsilon"));
-    // }
-
-    // model.addPropertiesListener(["epsilon"], updateEpsilon);
-    // updateEpsilon();
-
     // ------------------------------------------------------------
     //
-    // Start if autostart is true
+    //  Wire up screen-resize handlers
     //
     // ------------------------------------------------------------
 
-    if (autostart) {
-      modelGo();
+    function onresize() {
+      layout.setupScreen();
     }
-    controller.updateLayout = updateLayout;
+
+    document.onwebkitfullscreenchange = onresize;
+    window.onresize = onresize;
+
     controller.reload = reload;
+
+    return controller;
+};
+/*globals controllers model layout Thermometer $ alert */
+controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
+
+  if (typeof layoutStyle === 'undefined') {
+    layoutStyle = 'interactive';
   }
-  controller();
+
+  var controller = {},
+      modelController,
+      $interactiveContainer,
+      propertiesListeners = [],
+      actionQueue = [];
+
+  /**
+    Load the model from the url specified in the 'model' key.
+    Calls 'modelLoaded' if modelController was previously undefined.
+
+    @param: modelUrl
+  */
+  function loadModel(modelUrl) {
+
+    var playerConfig = {
+          layoutStyle : layoutStyle
+        };
+
+    $.get(modelUrl).done(function(modelConfig) {
+
+      // Deal with the servers that return the json as text/plain
+      modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
+
+      if (modelController) {
+        modelController.reload(modelConfig, playerConfig);
+      } else {
+        modelController = controllers.modelController('#molecule-container', modelConfig, playerConfig);
+        modelLoaded();
+      }
+    });
+  }
+
+  function createComponent(component) {
+    switch (component.type) {
+      case 'button':
+        return createButton(component);
+      case 'thermometer':
+        return createThermometer(component);
+    }
+  }
+
+  /**
+    Given a script string, return a function that executes that script in a context
+    containing *only* the bindings to names we supply.
+  */
+  function evalInScriptContext(scriptSource) {
+    var prop,
+        whitelistedObjects,
+        whitelistedNames,
+        whitelistedObjectsArray,
+        safedScriptSource;
+
+    // The keys of the object below will be exposed to the script as if they were local vars
+    // TODO: move this (which effectively defines the scripting API, an important
+    // piece of Next Gen MW!) to its own home.
+    whitelistedObjects = {
+      // the methods we want to expose...
+      addAtom: function addAtom() {
+        return model.addRandomAtom.apply(model, arguments);
+      },
+
+      addRandomAtom: function addRandomAtom() {
+        return model.addRandomAtom.apply(model, arguments);
+      },
+
+      get: function get() {
+        return model.get.apply(model, arguments);
+      },
+
+      set: function set() {
+        return model.set.apply(model, arguments);
+      },
+
+      console: window.console
+    };
+
+    // Construct parallel arrays of the keys and values above
+    whitelistedNames = [];
+    whitelistedObjectsArray = [];
+
+    for (prop in whitelistedObjects) {
+      if (whitelistedObjects.hasOwnProperty(prop)) {
+        whitelistedNames.push(prop);
+        whitelistedObjectsArray.push( whitelistedObjects[prop] );
+      }
+    }
+
+    // Make sure the script runs in strict mode, so undeclared variables don't
+    // escape to the toplevel scope.
+    safedScriptSource =  "'use strict';" + scriptSource;
+
+    // This function runs the script will all globals shadowed:
+    return function() {
+      var prop,
+          blacklistedNames,
+          scriptArgumentList,
+          safedScript;
+
+      // Blacklist all globals, except those we have whitelisted
+      blacklistedNames = [];
+      for (prop in window) {
+        if (window.hasOwnProperty(prop) && whitelistedNames.indexOf(prop) < 0) {
+          blacklistedNames.push(prop);
+        }
+      }
+
+      // Here's the key. The Function constructor acccepts a list of argument names
+      // followed by the source of the function to construct.
+      // We supply the whitelist names, followed by the "blacklist" of globals, followed
+      // by the script source. But we will only provide bindings for the whitelisted
+      // names -- the "blacklist" names will be undefined
+      scriptArgumentList = whitelistedNames.concat(blacklistedNames).concat(safedScriptSource);
+
+      try {
+        // make the script with the whitelist names, blacklist names, and source
+        safedScript = Function.apply(null, scriptArgumentList);
+      } catch (e) {
+        alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
+      }
+
+      try {
+        // invoke the script, passing only enough arguments for the whitelisted names
+        safedScript.apply(null, whitelistedObjectsArray);
+      } catch (e) {
+        alert("Error running script: " + e.toString());
+      }
+    };
+  }
+
+
+  function createButton(component) {
+    var $button, scriptStr;
+
+    $button = $('<button>').attr('id', component.id).html(component.text);
+
+    if (typeof component.action === 'string') {
+      scriptStr = component.action;
+    } else {
+      scriptStr = component.action.join('\n');
+    }
+
+    $button.click(evalInScriptContext(scriptStr));
+
+    return $button;
+  }
+
+  function createThermometer(component) {
+    var $therm = $('<div>').attr('id', component.id),
+        thermometer = new Thermometer($therm, 0, component.min, component.max),
+        $wrapper = $('<div>').css('padding-bottom', '4em')
+          .append($therm)
+          .append($('<div>').text('Thermometer'));
+
+    function updateTherm() {
+      thermometer.add_value(model.get('temperature'));
+    }
+
+    queuePropertiesListener(['temperature'], updateTherm);
+    queueActionOnModelLoad(function() {
+      thermometer.resize();
+      updateTherm();
+    });
+
+    layout.addView('thermometers', thermometer);
+    return $wrapper;
+  }
+
+  function queuePropertiesListener(properties, func) {
+    if (typeof model !== 'undefined') {
+      model.addPropertiesListener(properties, func);
+    } else {
+      propertiesListeners.push([properties, func]);
+    }
+  }
+
+  function queueActionOnModelLoad(action) {
+    if (typeof model !== 'undefined') {
+      action();
+    } else {
+      actionQueue.push(action);
+    }
+  }
+
+  /**
+    Call this after the model loads, to process any queued resize and update events
+    that depend on the model's properties.
+  */
+  function modelLoaded() {
+    var listener,
+        action;
+
+    while (propertiesListeners.length > 0) {
+      listener = propertiesListeners.pop();
+      model.addPropertiesListener(listener[0], listener[1]);
+    }
+    while (actionQueue.length > 0) {
+      action = actionQueue.pop()();
+    }
+  }
+
+  /**
+    The main method called when this controller is created.
+
+    Populates the element pointed to by viewSelector with divs to contain the
+    molecule container (view) and the various components specified in the interactive
+    definition, and
+
+    @param newInteractive
+      hash representing the interactive specification
+    @param viewSelector
+      jQuery selector that finds the element to put the interactive view into
+  */
+  function loadInteractive(newInteractive, viewSelector) {
+    var componentJsons,
+        components = {},
+        component,
+        divArray,
+        div,
+        componentId,
+        $top, $right,
+        i, ii;
+
+    interactive = newInteractive;
+    $interactiveContainer = $(viewSelector);
+    if ($interactiveContainer.children().length === 0) {
+      $top = $('<div class="top" id="top"/>');
+      $top.append('<div id="molecule-container"/>');
+      $right = $('<div id="right"/>');
+      $top.append($right);
+      $interactiveContainer.append($top);
+      $interactiveContainer.append('<div class="bottom" id="bottom"/>');
+    } else {
+      $('#bottom').html('');
+      $('#right').html('');
+      $interactiveContainer.append('<div id="bottom"/>');
+    }
+
+    if (interactive.model) {
+      loadModel(interactive.model);
+    }
+
+    componentJsons = interactive.components;
+
+    for (i = 0, ii=componentJsons.length; i<ii; i++) {
+      component = createComponent(componentJsons[i]);
+      components[componentJsons[i].id] = component;
+    }
+
+
+    // look at each div defined in layout, and add any components in that
+    // array to that div. Then rm the component from components so we can
+    // add the remainder to #bottom at the end
+    if (interactive.layout) {
+      for (div in interactive.layout) {
+        if (interactive.layout.hasOwnProperty(div)) {
+          divArray = interactive.layout[div];
+          for (i = 0, ii = divArray.length; i<ii; i++) {
+            componentId = divArray[i];
+            if (components[componentId]) {
+              $('#'+div).append(components[componentId]);
+              delete components[componentId];
+            }
+          }
+        }
+      }
+    }
+
+    // add the remaining components to #bottom
+    for (componentId in components) {
+      if (components.hasOwnProperty(componentId)) {
+        $('#bottom').append(components[componentId]);
+      }
+    }
+
+  }
+
+  // run this when controller is created
+  loadInteractive(interactive, viewSelector);
+
+  // make these private variables and functions available
+  controller.loadInteractive = loadInteractive;
+
   return controller;
 };
 /*globals
@@ -325,10 +522,9 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   Thermometer
   SliderComponent
   layout
-
+  DEVELOPMENT
   $
   alert
-
   model: true
   model_player: true
 */
@@ -349,6 +545,8 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       coulomb_forces      = modelConfig.coulomb_forces,
       width               = modelConfig.width,
       height              = modelConfig.height,
+      radialBonds         = modelConfig.radialBonds,
+      obstacles           = modelConfig.obstacles,
 
       nodes,
 
@@ -376,7 +574,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
 
     function modelListener(e) {
-      molecule_container.update_molecule_positions();
+      molecule_container.update_drawable_positions();
     }
 
     // ------------------------------------------------------------
@@ -407,6 +605,8 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
+      if (radialBonds) model.createRadialBonds(radialBonds);
+      if (obstacles) model.createObstacles(obstacles);
     }
 
     // ------------------------------------------------------------
@@ -437,12 +637,13 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
           xmax:                 width,
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
-          get_num_atoms:        function() { return model.get_num_atoms(); }
+          get_num_atoms:        function() { return model.get_num_atoms(); },
+          get_obstacles:        function() { return model.get_obstacles(); }
         }
       );
 
       molecule_container.updateMoleculeRadius();
-      molecule_container.setup_particles();
+      molecule_container.setup_drawables();
 
       // ------------------------------------------------------------
       //
@@ -681,912 +882,4 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
   controller();
   return controller;
 };
-/*globals
-
-  controllers
-
-  modeler
-  ModelPlayer
-  Thermometer
-  SliderComponent
-  layout
-
-  model: true
-  model_player: true
-*/
-/*jslint onevar: true*/
-controllers.complexModelController =
-    function(molecule_view_id,
-             energy_graph_view_id,
-             lj_potential_chart_id,
-             speed_distribution_chart_id,
-             modelConfig,
-             playerConfig) {
-
-  var layoutStyle         = playerConfig.layoutStyle,
-      autostart           = playerConfig.autostart,
-      maximum_model_steps = playerConfig.maximum_model_steps,
-      lj_epsilon_max      = playerConfig.lj_epsilon_max,
-      lj_epsilon_min      = playerConfig.lj_epsilon_min,
-      lj_sigma_max        = 2.0,
-      lj_sigma_min        = 0.1,
-
-      elements            = modelConfig.elements,
-      atoms_properties    = modelConfig.atoms,
-      radialBonds         = modelConfig.radialBonds,
-      mol_number          = modelConfig.mol_number,
-      temperature         = modelConfig.temperature,
-      temperature_control = modelConfig.temperature_control,
-      coulomb_forces      = modelConfig.coulomb_forces,
-      width               = modelConfig.width,
-      height              = modelConfig.height,
-
-      moleculeContainer,
-      model_listener,
-      step_counter,
-      ljCalculator,
-      kechart, energyGraph, energyGraph_options,
-      energy_data,
-      model_controls,
-      model_controls_inputs,
-      select_molecule_number,
-      mol_number_to_ke_yxais_map,
-      mol_number_to_speed_yaxis_map,
-      potentialChart,
-      speedDistributionChart,
-      select_molecule_number,
-      radio_randomize_pos_vel,
-
-      nodes;
-
-  function controller() {
-
-    // ------------------------------------------------------------
-    //
-    // Main callback from model process
-    //
-    // Pass this function to be called by the model on every model step
-    //
-    // ------------------------------------------------------------
-
-    function modelListener(e) {
-      var ke = model.ke(),
-          pe = model.pe(),
-          te = ke + pe;
-
-      speedDistributionChart.update();
-
-      moleculeContainer.update_molecule_positions();
-
-      if (model.isNewStep()) {
-        energy_data[0].push(ke);
-        energy_data[1].push(pe);
-        energy_data[2].push(te);
-        energyGraph.add_points([ke, pe, te]);
-      } else {
-        energyGraph.update(model.stepCounter());
-      }
-      if (step_counter >= maximum_model_steps) { modelStop(); }
-      layout.displayStats();
-      if (layout.datatable_visible) { layout.render_datatable(); }
-    }
-
-    function resetEnergyData(index) {
-      var modelsteps = model.stepCounter();
-      if (index) {
-        for (i = 0, len = energy_data.length; i < len; i++) {
-          energy_data[i].length = modelsteps
-        }
-      } else {
-        ke = model.ke();
-        pe = model.pe();
-        te = ke + pe;
-        energy_data = [[ke], [pe], [te]];
-      }
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Create model and pass in properties
-    //
-    // ------------------------------------------------------------
-
-    function createModel() {
-      model = modeler.model({
-          elements: elements,
-          model_listener: modelListener,
-          temperature: temperature,
-          lennard_jones_forces: true,
-          coulomb_forces: coulomb_forces,
-          temperature_control: temperature_control,
-          width: width,
-          height: height
-        });
-
-      if (atoms_properties) {
-        model.createNewAtoms(atoms_properties);
-        if (radialBonds) model.createRadialBonds(radialBonds);
-      } else if (mol_number) {
-        model.createNewAtoms({
-          num: mol_number,
-          relax: true
-        });
-      } else {
-        throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
-      }
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Create Views
-    //
-    // ------------------------------------------------------------
-
-    function setupViews() {
-      // ------------------------------------------------------------
-      //
-      // Create player and container view for model
-      //
-      // ------------------------------------------------------------
-
-      layout.selection = layoutStyle;
-
-      model_player = new ModelPlayer(model, autostart);
-      moleculeContainer = layout.moleculeContainer(molecule_view_id,
-        {
-          title:               "Simple Molecules",
-          xlabel:              "X position (nm)",
-          ylabel:              "Y position (nm)",
-          playback_controller:  true,
-          play_only_controller: false,
-          model_time_label:     true,
-          grid_lines:           true,
-          xunits:               true,
-          yunits:               true,
-          atom_mubers:          false,
-          xmin:                 0,
-          xmax:                 width,
-          ymin:                 0,
-          ymax:                 height,
-          get_nodes:            function() { return model.get_nodes(); },
-          get_num_atoms:        function() { return model.get_num_atoms(); }
-        }
-      );
-
-      model.addPropertiesListener(["sigma"], moleculeContainer.updateMoleculeRadius);
-
-      // ------------------------------------------------------------
-      //
-      // Average Kinetic Energy Graph
-      //
-      // ------------------------------------------------------------
-
-      // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
-
-      resetEnergyData();
-
-      energyGraph = grapher.realTimeGraph(energy_graph_view_id, {
-        title:     "Energy of the System (KE:red, PE:green, TE:blue)",
-        xlabel:    "Model Time (ps)",
-        xmin:      0,
-        xmax:     100,
-        sample:    0.1,
-        ylabel:    "eV",
-        ymin:      -5.0,
-        ymax:      5.0,
-        dataset:   energy_data
-      });
-
-      energyGraph.new_data(energy_data);
-
-      model.on('play', function() {
-        var i, len;
-
-        if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
-          resetEnergyData(model.stepCounter());
-          energyGraph.new_data(energy_data);
-        }
-        energyGraph.show_canvas();
-      });
-
-      model.on('stop', function() {
-      });
-
-      // Right now this action is acting as an indication of model reset ...
-      // This should be refactoring to distinguish the difference between reset
-      // and seek to location in model history.
-      model.on('seek', function() {
-        modelsteps = model.stepCounter();
-        if (modelsteps > 0) {
-          resetEnergyData(modelsteps);
-          energyGraph.new_data(energy_data);
-        } else {
-          resetEnergyData();
-          energyGraph.new_data(energy_data);
-        }
-      });
-
-      // ------------------------------------------------------------
-      //
-      // Speed Distribution Histogram
-      //
-      // ------------------------------------------------------------
-
-      speedDistributionChart = layout.speedDistributionChart(speed_distribution_chart_id, {
-        title    : "Distribution of Speeds",
-        xlabel   : null,
-        ylabel   : "Count",
-        xmax     : 2,
-        xmin     : 0,
-        ymax     : 15,
-        ymin     : 0,
-        quantile : 0.01
-      });
-
-      // ------------------------------------------------------------
-      //
-      // Lennard-Jones Chart
-      //
-      // ------------------------------------------------------------
-
-      // FIXME: The potential chart needs refactoring to handle multiple
-      // elements and pairwise potentials
-      potentialChart = layout.potentialChart(lj_potential_chart_id, model, {
-          title   : "Lennard-Jones potential",
-          xlabel  : "Radius",
-          ylabel  : "Potential Energy",
-          epsilon_max:     lj_epsilon_max,
-          epsilon_min:     lj_epsilon_min,
-          epsilon:         elements[0].epsilon,
-          sigma_max:       lj_sigma_max,
-          sigma_min:       lj_sigma_min,
-          sigma:           elements[0].sigma
-        });
-
-      model.addPropertiesListener(["epsilon"], potentialChart.ljUpdate);
-      model.addPropertiesListener(["sigma"], potentialChart.ljUpdate);
-
-      // ------------------------------------------------------------
-      //
-      // Coulomb Forces Checkbox
-      //
-      // ------------------------------------------------------------
-
-      function updateCoulombCheckbox() {
-        $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-        moleculeContainer.setup_particles();
-      }
-
-      model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
-      updateCoulombCheckbox();
-
-      // ------------------------------------------------------------
-      //
-      // Setup list of views used by layout sustem
-      //
-      // ------------------------------------------------------------
-
-      layout.addView('moleculeContainers', moleculeContainer);
-      layout.addView('potentialCharts', potentialChart);
-      layout.addView('speedDistributionCharts', speedDistributionChart);
-      layout.addView('energyCharts', energyGraph);
-
-      // ------------------------------------------------------------
-      //
-      // Get a few DOM elements
-      //
-      // ------------------------------------------------------------
-
-      model_controls = document.getElementById("model-controls");
-
-      if (model_controls) {
-        model_controls_inputs = model_controls.getElementsByTagName("input");
-        model_controls.onchange = modelController;
-      }
-
-      // ------------------------------------------------------------
-      //
-      // Molecule Number Selector
-      //
-      // ------------------------------------------------------------
-
-      select_molecule_number = document.getElementById("select-molecule-number");
-      radio_randomize_pos_vel = document.getElementById("radio-randomize-pos-vel");
-      checkbox_thermalize = document.getElementById("checkbox-thermalize");
-
-      function selectMoleculeNumberChange() {
-        mol_number = +select_molecule_number.value;
-        modelReset();
-        radio_randomize_pos_vel.checked = false
-        updateMolNumberViewDependencies();
-      }
-
-      mol_number_to_ke_yxais_map = {
-        2:   0.02 * 50 * 2,
-        5:   0.05 * 50 * 5,
-        10:  0.01 * 50 * 10,
-        20:  0.01 * 50 * 20,
-        50:  120,
-        100: 0.05 * 50 * 100,
-        200: 0.1 * 50 * 200,
-        500: 0.2 * 50 * 500
-      };
-
-      mol_number_to_speed_yaxis_map = {
-        2: 2,
-        5: 2,
-        10: 5,
-        20: 5,
-        50: 10,
-        100: 15,
-        200: 20,
-        500: 40
-      };
-
-      function updateMolNumberViewDependencies() {
-        energyGraph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
-        potentialChart.redraw();
-        // speedDistributionChart.ymax = mol_number_to_speed_yaxis_map[mol_number];
-        speedDistributionChart.redraw();
-      }
-
-      select_molecule_number.onchange = selectMoleculeNumberChange;
-      radio_randomize_pos_vel.onclick = selectMoleculeNumberChange;
-
-      select_molecule_number.value = mol_number;
-
-    }
-
-    // ------------------------------------------------------------
-    //
-    //   Molecular Model Setup
-    //
-    // ------------------------------------------------------------
-
-    function setupModel() {
-      nodes = model.get_nodes();
-
-      model.resetTime();
-      resetEnergyData();
-
-      moleculeContainer.setup_particles();
-      moleculeContainer.updateMoleculeRadius();
-      layout.setupScreen();
-      step_counter = model.stepCounter();
-      select_molecule_number.value = model.get_num_atoms();
-
-      modelStop();
-      model.on("tick", modelListener);
-    }
-
-
-    // ------------------------------------------------------------
-    //
-    // Model Controller
-    //
-    // ------------------------------------------------------------
-
-    function modelStop() {
-      model.stop();
-      // energyGraph.hide_canvas();
-      moleculeContainer.playback_component.action('stop');
-      if (model_controls) {
-        model_controls_inputs[0].checked = true;
-      }
-    }
-
-    function modelStep() {
-      model.stop();
-      if (model.stepCounter() < maximum_model_steps) {
-        model.stepForward();
-        // energyGraph.hide_canvas();
-        if (model_controls) {
-          model_controls_inputs[0].checked = true;
-        }
-      } else {
-        if (model_controls) {
-          model_controls_inputs[0].checked = false;
-        }
-      }
-    }
-
-    function modelGo() {
-      model.on("tick", modelListener);
-      if (model.stepCounter() < maximum_model_steps) {
-        energyGraph.show_canvas();
-        model.resume();
-        if (model_controls) {
-          model_controls_inputs[0].checked = true;
-        }
-      } else {
-        if (model_controls) {
-          model_controls_inputs[0].checked = false;
-        }
-      }
-    }
-
-    function modelStepBack() {
-      modelStop();
-      model.stepBack();
-      energyGraph.showMarker(model.stepCounter());
-    }
-
-    function modelStepForward() {
-      if (model.stepCounter() < maximum_model_steps) {
-        model.stepForward();
-        // energyGraph.showMarker(model.stepCounter());
-      } else {
-        if (model_controls) {
-          model_controls_inputs[0].checked = true;
-        }
-      }
-    }
-
-    function modelReset() {
-      var dontRelaxRandom = !checkbox_thermalize.checked;
-      mol_number = +select_molecule_number.value;
-      model.createNewAtoms(mol_number, dontRelaxRandom);
-      setupModel();
-      moleculeContainer.update_molecule_positions();
-      step_counter = model.stepCounter();
-      layout.displayStats();
-      if (layout.datatable_visible) {
-        layout.render_datatable(true);
-      } else {
-        layout.hide_datatable();
-      }
-      resetEnergyData();
-      energyGraph.new_data(energy_data);
-      if (model_controls) {
-        model_controls_inputs[0].checked = true;
-      }
-    }
-
-    // ------------------------------------------------------------
-    //
-    //  Wire up screen-resize handlers
-    //
-    // ------------------------------------------------------------
-
-    function onresize() {
-      layout.setupScreen();
-    }
-
-    document.onwebkitfullscreenchange = onresize;
-    window.onresize = onresize;
-
-    // ------------------------------------------------------------
-    //
-    // Reset the model after everything else ...
-    //
-    // ------------------------------------------------------------
-
-    function finishSetup() {
-      createModel();
-      setupViews();
-      setupModel();
-    }
-
-    if (typeof DEVELOPMENT === 'undefined') {
-      try {
-        finishSetup()
-      } catch(e) {
-        alert(e);
-        throw new Error(e);
-      }
-    } else {
-      finishSetup()
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Start if autostart is true after everything else ...
-    //
-    // ------------------------------------------------------------
-
-    if (autostart) {
-      modelGo();
-    }
-
-    controller.modelListener = modelListener;
-    controller.modelGo = modelGo;
-    controller.modelStop = modelStop;
-    controller.modelReset = modelReset;
-    controller.resetEnergyData = resetEnergyData;
-    controller.energyGraph = energyGraph;
-    controller.moleculeContainer = moleculeContainer;
-  }
-
-  controller();
-  return controller;
-};/*globals controllers model layout Thermometer $ */
-
-/*jslint onevar: true*/
-controllers.interactivesController = function(interactive, interactive_view_id) {
-
-  var controller = {},
-      modelController,
-      $interactiveContainer,
-      propertiesListeners = [],
-      actionQueue = [];
-
-  function actualRootPath(url) {
-    if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
-      return url;
-    } else {
-      return ACTUAL_ROOT + url;
-    }
-  }
-
-  function loadModel(modelUrl) {
-    var playerConfig = {    // to be removed
-        layoutStyle        : 'interactive',
-        maximum_model_steps: Infinity
-      };
-    $.get(actualRootPath(modelUrl)).done(function(modelConfig) {
-      if (typeof modelConfig === "string") { modelConfig = JSON.parse(modelConfig); }
-      if (modelController) {
-        modelController.reload(modelConfig, playerConfig);
-      } else {
-        modelController = controllers.modelController('#molecule-container', modelConfig, playerConfig);
-        modelLoaded();
-      }
-    });
-  }
-
-  function createComponent(component) {
-    switch (component.type) {
-      case "button":
-        return createButton(component);
-      case "thermometer":
-        return createThermometer(component);
-    }
-  }
-
-  function createButton(component) {
-    var $button, scriptStr, script;
-
-    $button = $("<button>").attr('id', component.id).html(component.text);
-
-    if (typeof component.action === "string") {
-      scriptStr = component.action;
-    } else {
-      scriptStr = component.action.join('\n');
-    }
-    eval("script = function() {"+scriptStr+"}");
-    $button.click(script);
-
-    return $button;
-  }
-
-  function createThermometer(component) {
-    var $therm = $('<div>').attr('id', component.id),
-        thermometer = new Thermometer($therm, 0, component.min, component.max),
-        $wrapper = $('<div>').css("padding-bottom", "4em")
-          .append($therm)
-          .append($('<div>').text("Thermometer"));
-
-    function updateTherm() {
-      thermometer.add_value(model.get("temperature"));
-    }
-
-    queuePropertiesListener(["temperature"], updateTherm);
-    queueActionOnModelLoad(function() {
-      thermometer.resize();
-      updateTherm();
-    });
-
-    layout.addView('thermometers', thermometer);
-    return $wrapper;
-  }
-
-  function queuePropertiesListener(properties, func) {
-    if (typeof model !== "undefined") {
-      model.addPropertiesListener(properties, func);
-    } else {
-      propertiesListeners.push([properties, func]);
-    }
-  }
-
-  function queueActionOnModelLoad(action) {
-    if (typeof model !== "undefined") {
-      action();
-    } else {
-      actionQueue.push(action);
-    }
-  }
-
-  function modelLoaded() {
-    var listener,
-        action;
-
-    while (propertiesListeners.length > 0) {
-      listener = propertiesListeners.pop();
-      model.addPropertiesListener(listener[0], listener[1]);
-    }
-    while (actionQueue.length > 0) {
-      action = actionQueue.pop()();
-    }
-  }
-
-  function loadInteractive(newInteractive, interactive_view_id) {
-    var componentJsons,
-        components = {},
-        component,
-        divArray,
-        div,
-        componentId,
-        $top, $right,
-        i, ii;
-
-    interactive = newInteractive;
-    $interactiveContainer = $(interactive_view_id);
-    if ($interactiveContainer.children().length === 0) {
-      $top = $('<div class="top" id="top"/>');
-      $top.append('<div id="molecule-container"/>');
-      $right = $('<div id="right"/>');
-      $top.append($right);
-      $interactiveContainer.append($top);
-      $interactiveContainer.append('<div class="bottom" id="bottom"/>');
-    } else {
-      $('#bottom').html('');
-      $('#right').html('');
-      $interactiveContainer.append('<div id="bottom"/>');
-    }
-
-    if (interactive.model) {
-      loadModel(interactive.model);
-    }
-
-    componentJsons = interactive.components;
-
-    for (i = 0, ii=componentJsons.length; i<ii; i++) {
-      component = createComponent(componentJsons[i]);
-      components[componentJsons[i].id] = component;
-    }
-
-
-    // look at each div defined in layout, and add any components in that
-    // array to that div. Then rm the component from components so we can
-    // add the remainder to #bottom at the end
-    if (interactive.layout) {
-      for (div in interactive.layout) {
-        if (interactive.layout.hasOwnProperty(div)) {
-          divArray = interactive.layout[div];
-          for (i = 0, ii = divArray.length; i<ii; i++) {
-            componentId = divArray[i];
-            if (components[componentId]) {
-              $('#'+div).append(components[componentId]);
-              delete components[componentId];
-            }
-          }
-        }
-      }
-    }
-
-    // add the remaining components to #bottom
-    for (componentId in components) {
-      if (components.hasOwnProperty(componentId)) {
-        $('#bottom').append(components[componentId]);
-      }
-    }
-
-
-  }
-
-  function updateLayout() {
-    layout.setupScreen(true);
-  }
-
-  // run this when controller is created
-  loadInteractive(interactive, interactive_view_id);
-
-  // make these private variables and functions available
-  controller.loadInteractive = loadInteractive;
-  controller.updateLayout = updateLayout;
-
-  return controller;
-};
-/*globals
-
-  controllers
-
-  modeler
-  ModelPlayer
-  Thermometer
-  SliderComponent
-  layout
-  $
-  alert
-  model: true
-  model_player: true
-*/
-/*jslint onevar: true*/
-controllers.modelController = function(molecule_view_id, modelConfig, playerConfig) {
-  var controller          = {},
-
-      layoutStyle         = playerConfig.layoutStyle,
-      autostart           = playerConfig.autostart,
-      maximum_model_steps = playerConfig.maximum_model_steps,
-
-      elements            = modelConfig.elements,
-      atoms_properties    = modelConfig.atoms,
-      mol_number          = modelConfig.mol_number,
-      temperature_control = modelConfig.temperature_control,
-      temperature         = modelConfig.temperature,
-      coulomb_forces      = modelConfig.coulomb_forces,
-      width               = modelConfig.width,
-      height              = modelConfig.height,
-
-      nodes,
-
-      molecule_container,
-      step_counter,
-      therm,
-      epsilon_slider;
-
-    // ------------------------------------------------------------
-    //
-    // Main callback from model process
-    //
-    // Pass this function to be called by the model on every model step
-    //
-    // ------------------------------------------------------------
-
-    function model_listener(e) {
-      molecule_container.update_molecule_positions();
-      if (step_counter >= model.stepCounter()) { modelStop(); }
-    }
-
-
-    // ------------------------------------------------------------
-    //
-    // Create model and pass in properties
-    //
-    // ------------------------------------------------------------
-
-    function createModel() {
-      model = modeler.model({
-          elements: elements,
-          model_listener: model_listener,
-          temperature: temperature,
-          lennard_jones_forces: true,
-          coulomb_forces: coulomb_forces,
-          temperature_control: temperature_control,
-          width: width,
-          height: height
-        });
-
-
-      if (atoms_properties) {
-        model.createNewAtoms(atoms_properties);
-      } else if (mol_number) {
-        model.createNewAtoms(mol_number);
-        model.relax();
-      } else {
-        throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
-      }
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Create Model Player
-    //
-    // ------------------------------------------------------------
-
-    function setupModelPlayer() {
-
-      // ------------------------------------------------------------
-      //
-      // Create player and container view for model
-      //
-      // ------------------------------------------------------------
-
-      layout.selection = layoutStyle;
-
-      model_player = new ModelPlayer(model, autostart);
-      molecule_container = layout.moleculeContainer(molecule_view_id,
-        {
-          xmax:                 width,
-          ymax:                 height,
-          get_nodes:            function() { return model.get_nodes(); },
-          get_num_atoms:        function() { return model.get_num_atoms(); }
-        }
-      );
-
-      molecule_container.updateMoleculeRadius();
-      molecule_container.setup_particles();
-
-      layout.addView('moleculeContainers', molecule_container);
-
-      // FIXME: should not be here
-      layout.setupScreen();
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Model Controller
-    //
-    // ------------------------------------------------------------
-    function modelStop() {
-      model.stop();
-    }
-
-    function modelGo() {
-      model.on("tick", model_listener);
-      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
-        model.resume();
-      }
-    }
-
-    function modelStepBack() {
-      modelStop();
-      model.stepBack();
-    }
-
-    function modelStepForward() {
-      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
-        model.stepForward();
-      }
-    }
-
-    // ------------------------------------------------------------
-    //
-    //   Molecular Model Setup
-    //
-
-    function setupModel() {
-      nodes = model.get_nodes();
-
-      model.resetTime();
-
-      modelStop();
-      model.on("tick", model_listener);
-      step_counter = model.stepCounter();
-    }
-
-    function finishSetup(firstTime) {
-      createModel();
-      setupModel();
-      if (firstTime) {
-        setupModelPlayer();
-      } else {
-        layout.setupScreen(true);
-      }
-    }
-
-    function reload(newModelConfig, newPlayerConfig) {
-       modelConfig = newModelConfig;
-       playerConfig = newPlayerConfig;
-       finishSetup(false);
-    }
-
-    if (typeof DEVELOPMENT === 'undefined') {
-      try {
-        finishSetup(true);
-      } catch(e) {
-        alert(e);
-        throw new Error(e);
-      }
-    } else {
-      finishSetup(true);
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Start if autostart is true
-    //
-    // ------------------------------------------------------------
-
-    if (autostart) {
-      modelGo();
-    }
-
-    controller.reload = reload;
-
-    return controller;
-};
-
-
-
 })();

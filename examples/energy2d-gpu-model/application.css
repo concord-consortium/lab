@@ -1,0 +1,84 @@
+#content {
+  margin-left: 2em; }
+
+.top {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  -webkit-box-orient: inline-axis;
+  -moz-box-orient: inline-axis;
+  box-orient: inline-axis;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  box-pack: start;
+  -webkit-box-align: stretch;
+  -moz-box-align: stretch;
+  box-align: stretch;
+  margin-top: 0.5em; }
+
+.component_group {
+  display: block; }
+
+#interactive-description {
+  display: inline-box;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  position: relative;
+  margin: 0.5em 1em;
+  width: 25em; }
+
+#interactive-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  -webkit-box-orient: inline-axis;
+  -moz-box-orient: inline-axis;
+  box-orient: inline-axis;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  box-pack: start;
+  -webkit-box-align: stretch;
+  -moz-box-align: stretch;
+  box-align: stretch;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  box-orient: vertical;
+  position: relative; }
+
+#right-panel {
+  margin: 2em; }
+
+#right-panel div {
+  margin-bottom: 2em; }
+
+.energy2d-scene-view {
+  display: inline-block;
+  position: relative; }
+
+.energy2d-simulation-player {
+  width: auto; }
+
+.energy2d-description {
+  margin: 0em 2em;
+  display: inline;
+  position: relative;
+  vertical-align: top; }
+
+.energy2d-description-title {
+  font-size: 120%;
+  font-weight: bold;
+  margin: 0em 0em 0.7em 0em; }
+
+.energy2d-description-tagline {
+  font-size: 110%;
+  margin: 0.5em 0em 0.5em 0em; }
+
+.energy2d-description-content {
+  font-size: 95%;
+  margin: 0.5em 0em 1em 0em; }
+
+.energy2d-description-footnote {
+  font-size: 90%;
+  font-style: italic;
+  margin: 1em 0em 1em 0em; }

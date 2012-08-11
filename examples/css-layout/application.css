@@ -1,0 +1,97 @@
+@import url('molecules-view.css');
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+/*
+  Implementation of "Complex Atoms Model" with layout & model initialization redone from scratch as
+  much as possible.
+*/
+body {
+  font-family: Cambria, "Hoefler Text", Georgia, "Times New Roman", serif;
+  margin: 0;
+  min-width: 30em; }
+
+#main {
+  /* 30em * 95% */
+  width: 28.5em;
+  margin: 0 auto; }
+
+#molecules {
+  width: 100%;
+  margin-top: 0.5em; }
+  #molecules .label {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.2em; }
+  #molecules .title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2em; }
+  #molecules .positioning-container {
+    margin-top: 2.5em;
+    margin-bottom: 2em;
+    margin-left: 2.2em; }
+
+#description {
+  margin-left: 1em;
+  font-size: 1.1em; }
+
+/* Chrome zoom levels are:
+   50%, 67%, 75%, 90%, 100%, 110%, 125%, 175%, 200%, 250%, 300%, 400%, 500% */
+@media screen and (min-width: 48em) {
+  #main {
+    /* 48em * 95% */
+    width: 45.6em; }
+
+  #molecules {
+    float: right;
+    width: 58%;
+    padding: 0 1%; }
+    #molecules .label {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.1em; }
+    #molecules .title {
+      font-size: 1.8em; }
+    #molecules .positioning-container {
+      margin-top: 2.3em;
+      margin-bottom: 1.8em;
+      margin-left: 2em; }
+
+  #description {
+    float: left;
+    width: 38%;
+    padding: 0 1%;
+    margin-top: 1em;
+    margin-left: 0; } }
+@media screen and (min-width: 64em) {
+  #main {
+    /* 64em * 95% */
+    width: 60.8em; }
+
+  #molecules {
+    width: 63%; }
+    #molecules .label {
+      font-size: 1.3em; }
+    #molecules .title {
+      font-size: 2.2em; }
+    #molecules .positioning-container {
+      margin-top: 2.5em;
+      margin-bottom: 2.2em;
+      margin-left: 2.5em; }
+
+  #description {
+    width: 33%; } }
+@media screen and (min-width: 80em) {
+  #main {
+    /* 80em * 95% */
+    width: 76em; }
+
+  #molecules {
+    width: 68%; }
+    #molecules .label {
+      font-size: 1.5em; }
+    #molecules .title {
+      font-size: 2.5em; }
+    #molecules .positioning-container {
+      margin-top: 3em;
+      margin-bottom: 2.5em;
+      margin-left: 3em; }
+
+  #description {
+    width: 28%; } }

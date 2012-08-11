@@ -1,0 +1,48 @@
+{
+  "model": "models/conduction512.json",
+  "components": [
+    {
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
+    },
+    {
+      "type": "energy2d-scene-view",
+      "id": "energy2d-scene-id"
+    },
+    {
+      "type": "energy2d-performance-view",
+      "id": "energy2d-performance-id"
+    },
+    {
+      "type": "energy2d-webgl-status-view",
+      "id": "energy2d-webgl-status-id"
+    }
+  ],
+  "description": {
+    "title": "Conduction",
+    "tagline": "Thermal Conductivity: The Ability to Conduct Heat",
+    "content": "Which conducts heat more quickly from a frying pan to your hand, a wood handle or a metal one? The following model compares heat conduction through two materials of different thermal conductivities.",
+    "footnote": ""
+  },
+  "layout": {
+    "energy2d-scene-id": {
+      "css": {
+        "width": "600px",
+        "height": "600px"
+      }
+    },
+    "energy2d-player-id": {
+      "class": "component_group",
+      "css": {
+        "text-align": "center",
+        "margin": "0.2em"
+      }
+    },
+    "energy2d-performance-id": {
+      "container": "#performance"
+    },
+    "energy2d-webgl-status-id": {
+      "container": "#webgl-status"
+    }
+  }
+}

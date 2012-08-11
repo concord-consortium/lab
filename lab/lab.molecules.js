@@ -353,7 +353,11 @@ exports.extname = function(path) {
 
 });
 
-require.define("/arrays/arrays.js", function (require, module, exports, __dirname, __filename) {
+require.define("/node_modules/arrays/package.json", function (require, module, exports, __dirname, __filename) {
+module.exports = {}
+});
+
+require.define("/node_modules/arrays/index.js", function (require, module, exports, __dirname, __filename) {
 /*globals window Uint8Array Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
 /*jshint newcap: false */
 
@@ -363,7 +367,7 @@ require.define("/arrays/arrays.js", function (require, module, exports, __dirnam
 
 var arrays;
 
-arrays = exports.arrays = {};
+arrays = {};
 
 arrays.version = '0.0.1';
 arrays.webgl = (typeof window !== 'undefined') && !!window.WebGLRenderingContext;
@@ -560,6 +564,11 @@ arrays.average = function(array) {
   }
   return acc / length;
 };
+
+// publish everything to exports
+for (var key in arrays) {
+  if (arrays.hasOwnProperty(key)) exports[key] = arrays[key];
+}
 });
 
 require.define("/constants/index.js", function (require, module, exports, __dirname, __filename) {
@@ -839,8 +848,6 @@ require.define("/math/index.js", function (require, module, exports, __dirname, 
 exports.normal              = require('./distributions').normal;
 exports.getWindowedAverager = require('./utils').getWindowedAverager;
 exports.minimize            = require('./minimizer').minimize;
-
-if (window) window.minimize = exports.minimize;
 
 });
 
@@ -1131,7 +1138,9 @@ exports.rmin = function(sigma) {
   Helper function that returns the correct atomic radius for a given sigma
 */
 exports.radius = function(sigma) {
-  return 0.5 * exports.rmin(sigma);
+  // See line 637 of Atom.java (org.concord.mw2d.models.Atom)
+  // This assumes the "VdW percentage" is 100%. In classic MW the VdW percentage is settable.
+  return 0.5 * sigma;
 }
 
 /**
@@ -1268,12 +1277,12 @@ exports.newLJCalculator = function(params, cb) {
 });
 
 require.define("/md2d.js", function (require, module, exports, __dirname, __filename) {
-     /*globals Float32Array window:true */
-/*jslint eqnull: true, boss: true */
+    /*globals Float32Array window:true */
+/*jslint eqnull: true, boss: true, loopfunc: true*/
 
 if (typeof window === 'undefined') window = {};
 
-var arrays       = require('./arrays/arrays').arrays,
+var arrays       = require('arrays'),
     constants    = require('./constants'),
     unit         = constants.unit,
     math         = require('./math'),
@@ -1311,6 +1320,7 @@ var arrays       = require('./arrays/arrays').arrays,
 
     INDICES,
     ELEMENT_INDICES,
+    OBSTACLE_INDICES,
     SAVEABLE_INDICES,
 
     cross = function(a0, a1, b0, b1) {
@@ -1400,6 +1410,21 @@ exports.INDICES = INDICES = {
   ELEMENT: 11
 };
 
+exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
+  X       :  0,
+  Y       :  1,
+  WIDTH   :  2,
+  HEIGHT  :  3,
+  MASS    :  4,
+  VX      :  5,
+  VY      :  6,
+  X_PREV  :  7,
+  Y_PREV  :  8,
+  COLOR_R :  9,
+  COLOR_G :  10,
+  COLOR_B :  11
+};
+
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
 
 exports.makeModel = function() {
@@ -1415,6 +1440,9 @@ exports.makeModel = function() {
 
       // Whether to simulate Coulomb forces between particles.
       useCoulombInteraction = false,
+
+      // Whether any atoms actually have charges
+      hasChargedAtoms = false,
 
       // Whether to simulate Lennard Jones forces between particles.
       useLennardJonesInteraction = true,
@@ -1433,9 +1461,6 @@ exports.makeModel = function() {
 
       // System dimensions as [x, y] in nanometers. Default value can be changed until particles are created.
       size = [10, 10],
-
-      // Wall locations in nm
-      topwall, rightwall, bottomwall, leftwall,
 
       // The current model time, in femtoseconds.
       time = 0,
@@ -1478,6 +1503,26 @@ exports.makeModel = function() {
 
       // Number of actual radial bonds (may be smaller than the length of the property arrays)
       N_radialBonds = 0,
+
+      // Individual properties for the obstacles
+      obstacleX,
+      obstacleY,
+      obstacleWidth,
+      obstacleHeight,
+      obstacleVX,
+      obstacleVY,
+      obstacleMass,
+      obstacleXPrev,
+      obstacleYPrev,
+      obstacleColorR,
+      obstacleColorG,
+      obstacleColorB,
+
+      // An array of length 12 which contains obstacles information
+      obstacles,
+
+      // Number of actual obstacles
+      N_obstacles = 0,
 
       // The location of the center of mass, in nanometers.
       x_CM, y_CM,
@@ -1573,7 +1618,6 @@ exports.makeModel = function() {
         radialBonds[3] = radialBondStrength   = arrays.create(num, 0, float32);
       },
 
-
       // Make the 'radialBonds' array bigger. FIXME: needs to be factored
       // into a common pattern with 'extendAtomsArray'
       extendRadialBondsArray = function(num) {
@@ -1591,12 +1635,50 @@ exports.makeModel = function() {
         }
       },
 
+      createObstaclesArray = function(num) {
+        var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+            ind     = OBSTACLE_INDICES;
+
+        obstacles = model.obstacles = [];
+
+        obstacles[ind.X]        = obstacleX      = arrays.create(num, 0, float32);
+        obstacles[ind.Y]        = obstacleY      = arrays.create(num, 0, float32);
+        obstacles[ind.WIDTH]    = obstacleWidth  = arrays.create(num, 0, float32);
+        obstacles[ind.HEIGHT]   = obstacleHeight = arrays.create(num, 0, float32);
+        obstacles[ind.MASS]     = obstacleMass   = arrays.create(num, 0, float32);
+        obstacles[ind.VX]       = obstacleVX     = arrays.create(num, 0, float32);
+        obstacles[ind.VY]       = obstacleVY     = arrays.create(num, 0, float32);
+        obstacles[ind.X_PREV]   = obstacleXPrev  = arrays.create(num, 0, float32);
+        obstacles[ind.Y_PREV]   = obstacleYPrev  = arrays.create(num, 0, float32);
+        obstacles[ind.COLOR_R]  = obstacleColorR = arrays.create(num, 0, float32);
+        obstacles[ind.COLOR_G]  = obstacleColorG = arrays.create(num, 0, float32);
+        obstacles[ind.COLOR_B]  = obstacleColorB = arrays.create(num, 0, float32);
+      },
+
+
+      extendObstaclesArray = function(num) {
+        var savedArrays = [],
+            i;
+
+        for (i = 0; i < obstacles.length; i++) {
+          savedArrays[i] = obstacles[i];
+        }
+
+        createObstaclesArray(num);
+
+        for (i = 0; i < obstacles.length; i++) {
+          arrays.copy(savedArrays[i], obstacles[i]);
+        }
+      },
+
+
+
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
       T_windowed,
 
       // Dynamically determine an appropriate window size for use when measuring a windowed average of the temperature.
       getWindowSize = function() {
-        return useCoulombInteraction ? 1000 : 1000;
+        return useCoulombInteraction && hasChargedAtoms ? 1000 : 1000;
       },
 
       // Whether or not the thermostat is not being used, begins transiently adjusting the system temperature; this
@@ -1654,13 +1736,15 @@ exports.makeModel = function() {
         }
       },
 
-      // Adds the center-of-mass linear velocity and the system angular velocity back into the velocity vectors
-      addTranslationAndRotationToVelocities = function() {
-        for (var i = 0; i < N; i++) {
-          addVelocity(i, vx_CM, vy_CM);
-          addAngularVelocity(i, omega_CM);
-        }
-      },
+      // currently unused, implementation saved here for future reference:
+
+      // // Adds the center-of-mass linear velocity and the system angular velocity back into the velocity vectors
+      // addTranslationAndRotationToVelocities = function() {
+      //   for (var i = 0; i < N; i++) {
+      //     addVelocity(i, vx_CM, vy_CM);
+      //     addAngularVelocity(i, omega_CM);
+      //   }
+      // },
 
       // Subroutine that calculates the position and velocity of the center of mass, leaving these in x_CM, y_CM,
       // vx_CM, and vy_CM, and that then computes the system angular velocity around the center of mass, leaving it
@@ -1720,9 +1804,26 @@ exports.makeModel = function() {
         y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
       },
 
+      updateObstaclePosition = function(i) {
+        var ob_vx = obstacleVX[i],
+            ob_vy = obstacleVY[i];
+        if (ob_vx || ob_vy) {
+          obstacleXPrev[i] = obstacleX[i];
+          obstacleYPrev[i] = obstacleY[i];
+          obstacleX[i] += ob_vx*dt;
+          obstacleY[i] += ob_vy*dt;
+        }
+      },
+
       // Constrain particle i to the area between the walls by simulating perfectly elastic collisions with the walls.
       // Note this may change the linear and angular momentum.
       bounceOffWalls = function(i) {
+        var r = radius[i],
+            leftwall = r,
+            bottomwall = r,
+            rightwall = size[0] - r,
+            topwall = size[1] - r;
+
         // Bounce off vertical walls.
         if (x[i] < leftwall) {
           x[i]  = leftwall + (leftwall - x[i]);
@@ -1745,6 +1846,99 @@ exports.makeModel = function() {
           py[i] *= -1;
         }
       },
+
+      bounceOffObstacles = function(i, x_prev, y_prev) {
+        // fast path if no obstacles
+        if (N_obstacles < 1) return;
+
+        var r,
+            xi,
+            yi,
+
+            j,
+
+            x_left,
+            x_right,
+            y_top,
+            y_bottom,
+            x_left_prev,
+            x_right_prev,
+            y_top_prev,
+            y_bottom_prev,
+            vxPrev,
+            vyPrev,
+            obs_vxPrev,
+            obs_vyPrev,
+            mass,
+            obs_mass,
+            totalMass,
+            bounceDirection = 0; // if we bounce horz: 1, vert: -1
+
+        r = radius[i];
+        xi = x[i];
+        yi = y[i];
+
+        for (j = 0; j < N_obstacles; j++) {
+
+          x_left = obstacleX[j] - r;
+          x_right = obstacleX[j] + obstacleWidth[j] + r;
+          y_top = obstacleY[j] + obstacleHeight[j] + r;
+          y_bottom = obstacleY[j] - r;
+
+          x_left_prev = obstacleXPrev[j] - r;
+          x_right_prev = obstacleXPrev[j] + obstacleWidth[j] + r;
+          y_top_prev = obstacleYPrev[j] + obstacleHeight[j] + r;
+          y_bottom_prev = obstacleYPrev[j] - r;
+
+
+          if (xi > x_left && xi < x_right && yi > y_bottom && yi < y_top) {
+            if (x_prev <= x_left_prev) {
+              x[i] = x_left - (xi - x_left);
+              bounceDirection = 1;
+            } else if (x_prev >= x_right_prev) {
+              x[i] = x_right + (x_right - xi);
+              bounceDirection = 1;
+            } else if (y_prev <= y_top_prev) {
+              y[i] = y_bottom - (yi - y_bottom);
+              bounceDirection = -1;
+            } else if (y_prev >= y_bottom_prev) {
+              y[i] = y_top  + (y_top - yi);
+              bounceDirection = -1;
+            }
+          }
+
+          obs_mass = obstacleMass[j];
+
+          if (bounceDirection) {
+            if (obs_mass !== Infinity) {
+              // if we have real mass, perform a perfectly-elastic collision
+              mass = elements[element[i]][0];
+              totalMass = obs_mass + mass;
+              if (bounceDirection === 1) {
+                vxPrev = vx[i];
+                obs_vxPrev = obstacleVX[j];
+
+                vx[i] = (vxPrev * (mass - obs_mass) + (2 * obs_mass * obs_vxPrev)) / totalMass;
+                obstacleVX[j] = (obs_vxPrev * (obs_mass - mass) + (2 * px[i])) / totalMass;
+              } else {
+                vyPrev = vy[i];
+                obs_vyPrev = obstacleVY[j];
+
+                vy[i] = (vyPrev * (mass - obs_mass) + (2 * obs_mass * obs_vyPrev)) / totalMass;
+                obstacleVY[j] = (obs_vyPrev * (obs_mass - mass) + (2 * py[i])) / totalMass;
+              }
+            } else {
+              // if we have infinite mass, just reflect (like a wall)
+              if (bounceDirection === 1) {
+                vx[i] *= -1;
+              } else {
+                vy[i] *= -1;
+              }
+            }
+          }
+        }
+      },
+
 
       // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
       // call once when a = a(t) and once when a = a(t+dt)
@@ -1780,7 +1974,7 @@ exports.makeModel = function() {
             f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq);
           }
 
-          if (useCoulombInteraction) {
+          if (useCoulombInteraction && hasChargedAtoms) {
             f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
           }
 
@@ -2070,6 +2264,8 @@ exports.makeModel = function() {
       speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
       charge[N]  = atom_charge;
 
+      if (atom_charge) hasChargedAtoms = true;
+
       totalMass += mass;
       N++;
     },
@@ -2083,7 +2279,7 @@ exports.makeModel = function() {
     addRadialBond: function(atomIndex1, atomIndex2, bondLength, bondStrength) {
 
       if (N_radialBonds+1 > radialBondAtom1Index.length) {
-        extendRadialBondsArray(N+1);
+        extendRadialBondsArray(N_radialBonds+1);
       }
 
       radialBondAtom1Index[N_radialBonds] = atomIndex1;
@@ -2093,6 +2289,38 @@ exports.makeModel = function() {
 
       N_radialBonds++;
     },
+
+
+    addObstacle: function(x, y, width, height, density, color) {
+      var mass;
+
+      if (N_obstacles+1 > obstacleX.length) {
+        extendObstaclesArray(N_obstacles+1);
+      }
+
+      obstacleX[N_obstacles] = x;
+      obstacleY[N_obstacles] = y;
+      obstacleXPrev[N_obstacles] = x;
+      obstacleYPrev[N_obstacles] = y;
+
+      obstacleWidth[N_obstacles]  = width;
+      obstacleHeight[N_obstacles] = height;
+
+      obstacleVX[N_obstacles] = 0;
+      obstacleVY[N_obstacles] = 0;
+
+      density = parseFloat(density);      // may be string "Infinity"
+      mass = density * width * height;
+
+      obstacleMass[N_obstacles] = mass;
+
+      obstacleColorR[N_obstacles] = color[0];
+      obstacleColorG[N_obstacles] = color[1];
+      obstacleColorB[N_obstacles] = color[2];
+
+      N_obstacles++;
+    },
+
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
@@ -2185,11 +2413,21 @@ exports.makeModel = function() {
       model.computeOutputState();
     },
 
+    initializeObstacles: function (props) {
+      var num = props.x.length,
+          i;
+
+      createObstaclesArray(num);
+      for (i = 0; i < num; i++) {
+        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i]);
+      }
+    },
+
     initializeRadialBonds: function(props) {
       var num = props.atom1Index.length,
           i;
 
-      createRadialBondsArray(props.atom1Index.length);
+      createRadialBondsArray(num);
 
       for (i = 0; i < num; i++) {
         model.addRadialBond(
@@ -2232,23 +2470,25 @@ exports.makeModel = function() {
       // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
       // assuming just one radius as below
       radius = elements[element[0]][ELEMENT_INDICES.RADIUS];
-      leftwall   = radius;
-      bottomwall = radius;
-      rightwall  = size[0] - radius;
-      topwall    = size[1] - radius;
 
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
           iloop,
-          i;
+          i,
+          x_prev,
+          y_prev;
 
       for (iloop = 1; iloop <= n_steps; iloop++) {
         time = t_start + iloop*dt;
 
         for (i = 0; i < N; i++) {
+          x_prev = x[i];
+          y_prev = y[i];
+
           // Update r(t+dt) using v(t) and a(t)
           updatePosition(i);
           bounceOffWalls(i);
+          bounceOffObstacles(i, x_prev, y_prev);
 
           // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
           halfUpdateVelocity(i);
@@ -2259,6 +2499,11 @@ exports.makeModel = function() {
           // Accumulate accelerations for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i) won't be
           // usable until this loop completes; it won't have contributions from a(t+dt, k) for k > i
           updatePairwiseAccelerations(i);
+        }
+
+        // Move obstacles
+        for (i = 0; i < N_obstacles; i++) {
+          updateObstaclePosition(i);
         }
 
         // Accumulate accelerations from bonded interactions into a(t+dt)
@@ -2274,7 +2519,6 @@ exports.makeModel = function() {
 
         adjustTemperature();
       } // end of integration loop
-
       model.computeOutputState();
     },
 
@@ -2316,7 +2560,7 @@ exports.makeModel = function() {
           if (useLennardJonesInteraction) {
             PE += -ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
           }
-          if (useCoulombInteraction) {
+          if (useCoulombInteraction && hasChargedAtoms) {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
@@ -2396,7 +2640,7 @@ exports.makeModel = function() {
             }
           }
 
-          if (useCoulombInteraction && testCharge) {
+          if (useCoulombInteraction && hasChargedAtoms && testCharge) {
             r = Math.sqrt(r_sq);
             PE += -coulomb.potential(r, testCharge, charge[i]);
             if (calculateGradient) {
@@ -2487,13 +2731,14 @@ exports.makeModel = function() {
 };
 });
 require("/md2d.js");
-/*globals $ modeler:true, require, d3, arrays, benchmark, molecule_container */
+/*globals $ modeler:true, require, d3, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
 //
 
-var md2d = require('/md2d'),
+var md2d   = require('/md2d'),
+    arrays = require('arrays'),
     coreModel;
 
 modeler = {};
@@ -2536,11 +2781,21 @@ modeler.model = function(initialProperties) {
       //
       nodes,
 
+      // list of obstacles
+      obstacles,
+
+      default_obstacle_properties = {
+        vx: 0,
+        vy: 0,
+        density: Infinity,
+        color: [128, 128, 128]
+      },
+
       listeners = {},
 
       properties = {
         temperature           : 300,
-        coulomb_forces        : false,
+        coulomb_forces        : true,
         lennard_jones_forces  : true,
         temperature_control   : true,
 
@@ -2591,6 +2846,16 @@ modeler.model = function(initialProperties) {
     AY       : md2d.INDICES.AY,
     CHARGE   : md2d.INDICES.CHARGE,
     ELEMENT  : md2d.INDICES.ELEMENT
+  };
+
+  model.OBSTACLE_INDICES = {
+    X        : md2d.OBSTACLE_INDICES.X,
+    Y        : md2d.OBSTACLE_INDICES.Y,
+    WIDTH    : md2d.OBSTACLE_INDICES.WIDTH,
+    HEIGHT   : md2d.OBSTACLE_INDICES.HEIGHT,
+    COLOR_R  : md2d.OBSTACLE_INDICES.COLOR_R,
+    COLOR_G  : md2d.OBSTACLE_INDICES.COLOR_G,
+    COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B
   };
 
   function notifyListeners(listeners) {
@@ -2937,6 +3202,27 @@ modeler.model = function(initialProperties) {
     return model;
   };
 
+  model.createObstacles = function(_obstacles) {
+    var numObstacles = _obstacles.x.length;
+
+    // ensure that every property either has a value or the default value
+    for (var i = 0; i < numObstacles; i++) {
+      for (prop in default_obstacle_properties) {
+        if (!default_obstacle_properties.hasOwnProperty(prop)) continue;
+        if (!_obstacles[prop]) {
+          _obstacles[prop] = [];
+        }
+        if (typeof _obstacles[prop][i] === "undefined") {
+          _obstacles[prop][i] = default_obstacle_properties[prop];
+        }
+      }
+    }
+
+    coreModel.initializeObstacles(_obstacles);
+    obstacles = coreModel.obstacles;
+    return model;
+  };
+
   // The next four functions assume we're are doing this for
   // all the atoms will need to be changed when different atoms
   // can have different LJ sigma values
@@ -2974,7 +3260,7 @@ modeler.model = function(initialProperties) {
     calculateGradient = !!calculateGradient;
 
     return coreModel.newPotentialCalculator(element, charge, calculateGradient);
-  },
+  };
 
   model.resetTime = function() {
     coreModel.setTime(0);
@@ -3089,6 +3375,10 @@ modeler.model = function(initialProperties) {
     return nodes[0].length;
   };
 
+  model.get_obstacles = function() {
+    return obstacles;
+  };
+
   model.on = function(type, listener) {
     dispatch.on(type, listener);
     return model;
@@ -3176,6 +3466,15 @@ modeler.model = function(initialProperties) {
 
   model.get = function(property) {
     return properties[property];
+  };
+
+  /**
+    Set the 'model_listener' function, which is called on tick events.
+  */
+  model.setModelListener = function(listener) {
+    model_listener = listener;
+    model.on('tick', model_listener);
+    return model;
   };
 
   // Add a listener that will be notified any time any of the properties

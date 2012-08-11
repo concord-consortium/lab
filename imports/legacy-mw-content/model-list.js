@@ -643,6 +643,123 @@ modelList = [
     ]
   },
   {
+    "section": "other-activities/how-electrons-move",
+    "content": [
+      {
+        "name": "page1",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page1/page1.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page1/page1$0.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page1/page1$0.json"
+      },
+      {
+        "name": "page2-1",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page2/page2.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page2/page2$0.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page2/page2$0.json"
+      },
+      {
+        "name": "page2-2",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page2/page2.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page2/page2$1.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page2/page2$1.json"
+      },
+      {
+        "name": "page3-1",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/page3.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/example1.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page3/example1.json"
+      },
+      {
+        "name": "page3-2",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/page3.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/example2.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page3/example2.json"
+      },
+      {
+        "name": "page3-3",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/page3.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/example3.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page3/example3.json"
+      },
+      {
+        "name": "page3-4",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/page3.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/example4.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page3/example4.json"
+      },
+      {
+        "name": "page3-5",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/page3.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/modelWithInstructions.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page3/modelWithInstructions.json"
+      },
+      {
+        "name": "page3-6",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/page3.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page3/page3$0.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page3/page3$0.json"
+      },
+      {
+        "name": "page4-1",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page4/page4.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page4/level1.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page4/level1.json"
+      },
+      {
+        "name": "page4-2",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page4/page4.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page4/level2.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page4/level2.json"
+      },
+      {
+        "name": "page4-3",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page4/page4.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page4/page4$0.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page4/page4$0.json"
+      },
+      {
+        "name": "page5",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page5/page5.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page5/page5$0.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page5/page5$0.json"
+      },
+      {
+        "name": "page7",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page7/page7.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page7/page7$0.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page7/page7$0.json"
+      },
+      {
+        "name": "page8-1",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page8/page8.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page8/page8$0.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page8/page8$0.json"
+      },
+      {
+        "name": "page8-2",
+        "path": "other-activities/how-electrons-move/original-interactives-in-pages/",
+        "cml": "other-activities/how-electrons-move/original-interactives-in-pages/page8/page8.cml",
+        "mml": "other-activities/how-electrons-move/original-interactives-in-pages/page8/page8$1.mml",
+        "json": "converted/other-activities/how-electrons-move/original-interactives-in-pages/page8/page8$1.json"
+      }
+    ]
+  },
+  {
     "section": "potential-tests",
     "content": [
       {
@@ -2342,6 +2459,18 @@ modelList = [
         "cml": "tutorial/tips/sticky.cml",
         "mml": "tutorial/tips/sticky$1.mml",
         "json": "converted/tutorial/tips/sticky$1.json"
+      }
+    ]
+  },
+  {
+    "section": "conversion-and-physics-examples",
+    "content": [
+      {
+        "name": "one-radial-bond",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/one-radial-bond.cml",
+        "mml": "conversion-and-physics-examples/one-radial-bond$0.mml",
+        "json": "converted/conversion-and-physics-examples/one-radial-bond$0.json"
       }
     ]
   }
