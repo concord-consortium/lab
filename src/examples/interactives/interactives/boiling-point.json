@@ -3,27 +3,21 @@
   "components": [
     {
       "type": "button",
-      "id": "abs-zero",
-      "text": "Set to absolute zero",
-      "action": "set({temperature: 0.00001});"
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
     },
     {
       "type": "button",
-      "id": "add-heat",
-      "text": "Add lots of heat",
-      "action": [
-                "var curTemp = get('temperature'), newTemp = curTemp + 2500;",
-                "if (newTemp > 4000) {",
-                "  newTemp = 4000;",
-                "}",
-                "set({temperature: newTemp});"
-              ]
+      "id": "heat",
+      "text": "Heat",
+      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
     },
     {
       "type": "thermometer",
       "id": "thermometer",
-      "min": 200,
-      "max": 4000
+      "min": 0,
+      "max": 2000
     }
   ],
   "layout": {
