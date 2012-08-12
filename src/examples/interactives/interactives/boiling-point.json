@@ -1,5 +1,10 @@
 {
-  "model": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
+    "viewOptions": {
+      "controlButtons": ["play", "reset"]
+    }
+  },
   "components": [
     {
       "type": "button",

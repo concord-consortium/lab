@@ -1,6 +1,6 @@
 /*globals controllers model layout Thermometer $ alert */
 /*jshint eqnull: true*/
-controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
+controllers.interactivesController = function(interactive, viewSelector) {
 
   var controller = {},
       modelController,
@@ -8,6 +8,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       propertiesListeners = [],
       actionQueue = [],
       thermometer,
+      controlButtons = ["play"],
 
       //
       // Define the scripting API used by 'action' scripts on interactive elements.
@@ -67,6 +68,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   function loadModel(modelUrl) {
 
     var playerConfig = {
+          controlButtons: controlButtons
         };
 
     $.get(modelUrl).done(function(modelConfig) {
@@ -236,6 +238,16 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   }
 
   /**
+    Call if the interactive definitions has a toplevel key 'viewOptions', to set
+    the view options for the model.
+  */
+  function processModelViewOptions(options) {
+    if (options.controlButtons) {
+      controlButtons = options.controlButtons;
+    }
+  }
+
+  /**
     The main method called when this controller is created.
 
     Populates the element pointed to by viewSelector with divs to contain the
@@ -248,7 +260,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       jQuery selector that finds the element to put the interactive view into
   */
   function loadInteractive(newInteractive, viewSelector) {
-    var componentJsons,
+    var modelUrl,
+        componentJsons,
         components = {},
         component,
         divArray,
@@ -272,9 +285,14 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       $interactiveContainer.append('<div id="bottom"/>');
     }
 
-    if (interactive.model) {
-      loadModel(interactive.model);
+    if (typeof (interactive.model) === 'string') {
+      modelUrl = interactive.model;
+    } else if (interactive.model != null) {
+      modelUrl = interactive.model.url;
+      processModelViewOptions(interactive.model.viewOptions);
     }
+
+    if (modelUrl) loadModel(modelUrl);
 
     componentJsons = interactive.components;
 

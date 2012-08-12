@@ -16,7 +16,11 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
       // properties read from the playerConfig hash
       layoutStyle,
-      autostart,
+      controlButtons,
+
+      // inferred from controlButtons
+      play_only_controller,
+      playback_controller,
 
       // properties read from the modelConfig hash
       elements,
@@ -52,7 +56,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function initializeLocalVariables() {
       layoutStyle         = playerConfig.layoutStyle;
-      autostart           = playerConfig.autostart;
+      controlButtons      = playerConfig.controlButtons;
 
       elements            = modelConfig.elements;
       atoms               = modelConfig.atoms;
@@ -67,12 +71,32 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     // ------------------------------------------------------------
     //
+    // Fake an understanding of the controlButtons list. Full
+    // implementation will require a better model for control button
+    // views.
+    //
+    // ------------------------------------------------------------
+    function parseControlButtons() {
+      play_only_controller = false;
+      playback_controller = false;
+
+      if (controlButtons.length === 1 && controlButtons[0] === 'play') {
+        play_only_controller = true;
+      }
+      else if (controlButtons.length > 1) {
+        playback_controller = true;
+      }
+    }
+
+    // ------------------------------------------------------------
+    //
     // Create model and pass in properties
     //
     // ------------------------------------------------------------
 
     function createModel() {
       initializeLocalVariables();
+      parseControlButtons();
       model = modeler.model({
           elements            : elements,
           temperature         : temperature,
@@ -109,15 +133,16 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       // ------------------------------------------------------------
 
       model_player = new ModelPlayer(model, false);
-      moleculeContainer = Lab.moleculeContainer(moleculeViewId,
-        {
-          xmax:          width,
-          ymax:          height,
-          get_nodes:     function() { return model.get_nodes(); },
-          get_num_atoms: function() { return model.get_num_atoms(); },
-          get_obstacles: function() { return model.get_obstacles(); }
-        }
-      );
+      moleculeContainer = Lab.moleculeContainer(moleculeViewId, {
+        xmax:          width,
+        ymax:          height,
+        get_nodes:     function() { return model.get_nodes(); },
+        get_num_atoms: function() { return model.get_num_atoms(); },
+        get_obstacles: function() { return model.get_obstacles(); },
+
+        play_only_controller: play_only_controller,
+        playback_controller:  playback_controller
+      });
 
       moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_drawables();
@@ -136,7 +161,10 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         ymax:          height,
         get_nodes:     function() { return model.get_nodes(); },
         get_num_atoms: function() { return model.get_num_atoms(); },
-        get_obstacles: function() { return model.get_obstacles(); }
+        get_obstacles: function() { return model.get_obstacles(); },
+
+        play_only_controller: play_only_controller,
+        playback_controller:  playback_controller
       });
     }
 
