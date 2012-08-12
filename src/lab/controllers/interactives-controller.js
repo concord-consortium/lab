@@ -207,7 +207,6 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   }
 
   function updateThermometerValue() {
-    console.log('updateThermometerValue');
     thermometer.add_value(model.get('temperature'));
   }
 
