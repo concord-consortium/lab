@@ -1,0 +1,390 @@
+{
+  "collection_name" : "Data Sheets",
+  "cases" : [
+    {
+      "id" : "P02",
+      "narrative" : true,
+      "case_coherence" : true,
+      "nesting_present" : true,
+      "nesting_levels" : 1,
+      "spatial_match" : "one table per segment",
+      "contents" : {
+        "collection_name" : "DS Attributes",
+        "cases" : [
+          {
+            "name" : "date",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "label?"
+          },
+          {
+            "name" : "time",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "label?"
+          },
+          {
+            "name" : "segment",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "label?"
+          },
+          {
+            "name" : "lane_width",
+            "present" : false,
+            "named" : "",
+            "units" : "",
+            "repetitive_entry" : "",
+            "encoding" : ""
+          },
+          {
+            "name" : "direction",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : true,
+            "encoding" : "label?"
+          },
+          {
+            "name" : "vehicle_type",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : true,
+            "encoding" : "label"
+          },
+          {
+            "name" : "speed",
+            "present" : true,
+            "named" : false,
+            "units" : true,
+            "repetitive_entry" : "",
+            "encoding" : "value"
+          },
+          {
+            "name" : "distance",
+            "present" : true,
+            "named" : false,
+            "units" : true,
+            "repetitive_entry" : "",
+            "encoding" : "value"
+          }
+        ]
+      }
+    },
+    {
+      "id" : "P03",
+      "narrative" : false,
+      "case_coherence" : true,
+      "nesting_present" : true,
+      "nesting_levels" : 2,
+      "spatial_match" : "one table per segment",
+      "contents" : {
+        "collection_name" : "DS Attributes",
+        "cases" : [
+          {
+            "name" : "date",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "set"
+          },
+          {
+            "name" : "time",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "set"
+          },
+          {
+            "name" : "segment",
+            "present" : false,
+            "named" : "",
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "label"
+          },
+          {
+            "name" : "lane_width",
+            "present" : false,
+            "named" : "",
+            "units" : "",
+            "repetitive_entry" : "",
+            "encoding" : ""
+          },
+          {
+            "name" : "direction",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "label"
+          },
+          {
+            "name" : "vehicle_type",
+            "present" : true,
+            "named" : true,
+            "units" : "",
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          },
+          {
+            "name" : "speed",
+            "present" : true,
+            "named" : true,
+            "units" : false,
+            "repetitive_entry" : "",
+            "encoding" : "value"
+          },
+          {
+            "name" : "distance",
+            "present" : true,
+            "named" : true,
+            "units" : true,
+            "repetitive_entry" : "",
+            "encoding" : "value"
+          }
+        ]
+      }
+    },
+    {
+      "id" : "P13",
+      "narrative" : true,
+      "case_coherence" : true,
+      "nesting_present" : true,
+      "nesting_levels" : 1,
+      "spatial_match" : "none?",
+      "contents" : {
+        "collection_name" : "DS Attributes",
+        "cases" : [
+          {
+            "name" : "date",
+            "present" : false,
+            "named" : "",
+            "units" : "",
+            "repetitive_entry" : "",
+            "encoding" : ""
+          },
+          {
+            "name" : "time",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "set"
+          },
+          {
+            "name" : "segment",
+            "present" : false,
+            "named" : "",
+            "units" : "",
+            "repetitive_entry" : "",
+            "encoding" : ""
+          },
+          {
+            "name" : "lane_width",
+            "present" : false,
+            "named" : "",
+            "units" : "",
+            "repetitive_entry" : "",
+            "encoding" : ""
+          },
+          {
+            "name" : "direction",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "set"
+          },
+          {
+            "name" : "vehicle_type",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          },
+          {
+            "name" : "speed",
+            "present" : true,
+            "named" : false,
+            "units" : true,
+            "repetitive_entry" : "",
+            "encoding" : "value"
+          },
+          {
+            "name" : "distance",
+            "present" : true,
+            "named" : false,
+            "units" : false,
+            "repetitive_entry" : "",
+            "encoding" : "value"
+          }
+        ]
+      }
+    },
+    {
+      "id" : "P15",
+      "narrative" : false,
+      "case_coherence" : true,
+      "nesting_present" : false,
+      "nesting_levels" : 0,
+      "spatial_match" : "none",
+      "contents" : {
+        "collection_name" : "DS Attributes",
+        "cases" : [
+          {
+            "name" : "date",
+            "present" : true,
+            "named" : true,
+            "units" : "",
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          },
+          {
+            "name" : "time",
+            "present" : true,
+            "named" : true,
+            "units" : "",
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          },
+          {
+            "name" : "segment",
+            "present" : true,
+            "named" : true,
+            "units" : "",
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          },
+          {
+            "name" : "lane_width",
+            "present" : true,
+            "named" : true,
+            "units" : true,
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          },
+          {
+            "name" : "direction",
+            "present" : true,
+            "named" : true,
+            "units" : "",
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          },
+          {
+            "name" : "vehicle_type",
+            "present" : true,
+            "named" : true,
+            "units" : "",
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          },
+          {
+            "name" : "speed",
+            "present" : true,
+            "named" : true,
+            "units" : true,
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          },
+          {
+            "name" : "distance",
+            "present" : true,
+            "named" : true,
+            "units" : true,
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          }
+        ]
+      }
+    },
+    {
+      "id" : "P16",
+      "narrative" : false,
+      "case_coherence" : true,
+      "nesting_present" : true,
+      "nesting_levels" : 2,
+      "spatial_match" : "mirrored",
+      "contents" : {
+        "collection_name" : "DS Attributes",
+        "cases" : [
+          {
+            "name" : "date",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "set"
+          },
+          {
+            "name" : "time",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "set"
+          },
+          {
+            "name" : "segment",
+            "present" : true,
+            "named" : "no?",
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "set"
+          },
+          {
+            "name" : "lane_width",
+            "present" : false,
+            "named" : "",
+            "units" : "",
+            "repetitive_entry" : "",
+            "encoding" : ""
+          },
+          {
+            "name" : "direction",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : false,
+            "encoding" : "set"
+          },
+          {
+            "name" : "vehicle_type",
+            "present" : true,
+            "named" : false,
+            "units" : "",
+            "repetitive_entry" : true,
+            "encoding" : "label"
+          },
+          {
+            "name" : "speed",
+            "present" : true,
+            "named" : true,
+            "units" : false,
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          },
+          {
+            "name" : "distance",
+            "present" : true,
+            "named" : true,
+            "units" : true,
+            "repetitive_entry" : true,
+            "encoding" : "value"
+          }
+        ]
+      }
+    }
+  ]
+}
