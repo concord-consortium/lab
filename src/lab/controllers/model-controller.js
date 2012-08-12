@@ -125,9 +125,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       moleculeContainer.setup_drawables();
 
       layout.addView('moleculeContainers', moleculeContainer);
-
-      // FIXME: should not be here
-      layout.setupScreen();
     }
 
     function resetModelPlayer() {
@@ -145,9 +142,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_num_atoms: function() { return model.get_num_atoms(); },
         get_obstacles: function() { return model.get_obstacles(); }
       });
-
-      // FIXME: should not be here
-      layout.setupScreen(true);
     }
 
 
