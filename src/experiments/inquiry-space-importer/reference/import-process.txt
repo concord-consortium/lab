@@ -11,6 +11,7 @@ steps to import this data
 ---
 
 1. initGame with dimensions and DataContext (see Importer.initImporterAsGame)
+  (name is "Importer")
 
 2. "parent collection kludge"
   createCollection
