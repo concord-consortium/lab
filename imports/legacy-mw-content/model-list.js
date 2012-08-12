@@ -422,11 +422,18 @@ modelList = [
         "name": "page3-3",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3.cml",
+        "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.mml",
+        "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json"
+      },
+      {
+        "name": "page3-4",
+        "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
+        "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0.json"
       },
       {
-        "name": "page3-4",
+        "name": "page3-5",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.mml",

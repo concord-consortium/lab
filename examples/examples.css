@@ -79,10 +79,10 @@ h3 {
     margin: 0px;
     padding: 0px; }
   .thermometer .thermometer_fill {
+    position: absolute;
     width: 70%;
-    vertical-align: bottom;
-    margin-left: auto;
-    margin-right: auto;
+    left: 15%;
+    bottom: 0;
     background: #e16a3e;
     -moz-border-radius-topleft: 0.5em;
     -webkit-border-top-left-radius: 0.5em;

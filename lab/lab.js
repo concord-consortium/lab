@@ -13916,12 +13916,7 @@ layout.setupScreen = function(forceRender) {
 
       // like full-static-screen, but all component position definitions are set from properties
       case "interactive":
-      if (layout.not_rendered) {
-        var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
-        layout.bodycss.style.fontSize = emsize + 'em';
-        setupInteractiveScreen();
-        layout.not_rendered = false;
-      }
+      throw new Error("DO NOT USE LAYOUT.JS FOR INTERACTIVES.");
       break;
 
       // like simple-iframe, but all component position definitions are set from properties
@@ -13989,37 +13984,6 @@ layout.setupScreen = function(forceRender) {
     rightHeight = height * 0.76;
     i = -1;  while(++i < viewLists.energyCharts.length) {
       viewLists.energyCharts[i].resize(rightHalfWidth, rightHeight);
-    }
-  }
-
-  /**
-    At the moment, this just finds every view in viewlist and calls resize()
-    on it. Eventually this should work out which div each component wants to
-    be in and resize it in some intelligent way
-  **/
-  function setupInteractiveScreen() {
-    var i, width, height, mcsize,
-        rightHeight, rightHalfWidth, rightQuarterWidth,
-        widthToPageRatio, modelAspectRatio,
-        pageWidth = layout.display.page.width,
-        pageHeight = layout.display.page.height;
-
-    mcsize = viewLists.moleculeContainers[0].scale();
-    modelAspectRatio = mcsize[0] / mcsize[1];
-    widthToPageRatio = mcsize[0] / pageWidth;
-    width = pageWidth * 0.46;
-    height = width * 1/modelAspectRatio;
-    if (height > pageHeight*0.70) {
-      height = pageHeight * 0.70;
-      width = height * modelAspectRatio;
-    }
-
-    for (viewType in viewLists) {
-      if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
-        i = -1;  while(++i < viewLists[viewType].length) {
-          viewLists[viewType][i].resize(width, height);
-        }
-      }
     }
   }
 
@@ -14477,7 +14441,10 @@ layout.appletContainer = function(e, options) {
 //
 // ------------------------------------------------------------
 
-layout.moleculeContainer = function(e, options) {
+if (typeof layout === 'undefined') layout = {};
+if (typeof Lab === 'undefined') Lab = {};
+
+Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   var elem = d3.select(e),
       node = elem.node(),
       cx = elem.property("clientWidth"),
@@ -17811,116 +17778,34 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
 
   Thermometer = (function() {
 
-    function Thermometer(dom_id, initial_value, min, max) {
-      this.dom_id = dom_id != null ? dom_id : "#thermometer";
+    function Thermometer(dom_selector, value, min, max) {
+      this.dom_selector = dom_selector != null ? dom_selector : "#thermometer";
+      this.value = value;
       this.min = min;
       this.max = max;
       this.resize = __bind(this.resize, this);
-      this.dom_element = typeof this.dom_id === "string" ? $(this.dom_id) : this.dom_id;
+      this.dom_element = typeof this.dom_selector === "string" ? $(this.dom_selector) : this.dom_selector;
       this.dom_element.addClass('thermometer');
-      this.samples = [];
-      this.samples.push(initial_value);
-      this.value = initial_value;
-      this.first_sample = true;
-      this.last_draw_time = new Date().getTime();
-      this.sample_interval_ms = 250;
-      this.last_draw_time -= this.sample_interval_ms;
-      this.init_view();
-    }
-
-    Thermometer.prototype.init_view = function() {
-      var midpoint;
-      this.width = this.dom_element.width();
-      this.height = this.dom_element.height();
-      midpoint = this.width / 2;
-      this.y1 = this.height;
-      this.y2 = 0;
-      this.x1 = this.x2 = midpoint;
-      this.init_thermometer_fill();
-      return d3.select('#therm_text').attr('class', 'therm_text');
-    };
-
-    Thermometer.prototype.init_thermometer_fill = function() {
       this.thermometer_fill = $('<div>').addClass('thermometer_fill');
       this.dom_element.append(this.thermometer_fill);
-      return this.redraw();
-    };
+      this.redraw();
+    }
 
-    Thermometer.prototype.resize = function() {
-      var midpoint;
-      this.width = this.dom_element.width();
-      this.height = this.dom_element.height();
-      midpoint = this.width / 2;
-      this.y1 = this.height;
-      this.y2 = 0;
-      this.x1 = this.x2 = midpoint;
+    Thermometer.prototype.add_value = function(value) {
+      this.value = value;
       return this.redraw();
-    };
-
-    Thermometer.prototype.set_scaled_value = function(v) {
-      var results;
-      results = this.value;
-      results = results * (this.max - this.min);
-      results = results + this.min;
-      return results;
     };
 
     Thermometer.prototype.scaled_value = function() {
-      var results;
-      results = this.value;
-      results = results * (this.max - this.min);
-      results = results + this.min;
-      return results;
+      return (this.value - this.min) / (this.max - this.min);
     };
 
-    Thermometer.prototype.time_to_redraw = function() {
-      var timestamp;
-      timestamp = new Date().getTime();
-      return timestamp > this.last_draw_time + this.sample_interval_ms;
-    };
-
-    Thermometer.prototype.add_value = function(new_value) {
-      this.samples.push(new_value);
-      this.value = new_value;
-      if (this.time_to_redraw() || this.first_sample) {
-        this.first_sample = false;
-        this.redraw();
-        return this.samples = [];
-      }
-    };
-
-    Thermometer.prototype.get_avg = function() {
-      var sample, total, _i, _len, _ref;
-      if (this.samples.length > 0) {
-        total = 0;
-        _ref = this.samples;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          sample = _ref[_i];
-          total = total + sample;
-        }
-        return this.value = total / this.samples.length;
-      } else {
-        return this.value;
-      }
-    };
-
-    Thermometer.prototype.scaled_display_value = function() {
-      return (this.get_avg() / (this.max - this.min)) * this.height;
+    Thermometer.prototype.resize = function() {
+      return this.redraw();
     };
 
     Thermometer.prototype.redraw = function() {
-      var midpoint, value;
-      this.width = this.dom_element.width();
-      this.height = this.dom_element.height();
-      midpoint = this.width / 2;
-      this.y1 = this.height;
-      this.y2 = 0;
-      this.x1 = this.x2 = midpoint;
-      value = this.scaled_display_value();
-      this.thermometer_fill.css("bottom", "" + (value - this.height) + "px");
-      this.thermometer_fill.height("" + value + "px");
-      this.last_draw_time = new Date().getTime();
-      return d3.select('#therm_text').text("Temperature");
+      return this.thermometer_fill.height("" + (this.scaled_value() * this.dom_element.height()) + "px");
     };
 
     return Thermometer;
@@ -17951,10 +17836,9 @@ controllers = { version: "0.0.1" };
 /*globals
 
   controllers
-
+  Lab
   modeler
   ModelPlayer
-  layout
   DEVELOPMENT
   $
   alert
@@ -17965,9 +17849,16 @@ controllers = { version: "0.0.1" };
 controllers.modelController = function(moleculeViewId, modelConfig, playerConfig) {
   var controller = {},
 
+      // event dispatcher
+      dispatch = d3.dispatch('modelReset'),
+
       // properties read from the playerConfig hash
       layoutStyle,
-      autostart,
+      controlButtons,
+
+      // inferred from controlButtons
+      play_only_controller,
+      playback_controller,
 
       // properties read from the modelConfig hash
       elements,
@@ -17980,7 +17871,28 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       radialBonds,
       obstacles,
 
-      moleculeContainer;
+      moleculeContainer,
+
+      // We pass this object to the "ModelPlayer" to intercept messages for the model
+      // instead of allowing the ModelPlayer to talk to the model directly.
+      // In particular, we want to treat seek(1) as a reset event
+      modelProxy = {
+        resume: function() {
+          model.resume();
+        },
+
+        stop: function() {
+          model.stop();
+        },
+
+        seek: function(n) {
+          // Special case assumption: This is to intercept the "reset" button
+          // of PlaybackComponentSVG, which calls seek(1) on the ModelPlayer
+          if (n === 1) {
+            reload(modelConfig, playerConfig);
+          }
+        }
+      };
 
     // ------------------------------------------------------------
     //
@@ -18003,7 +17915,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function initializeLocalVariables() {
       layoutStyle         = playerConfig.layoutStyle;
-      autostart           = playerConfig.autostart;
+      controlButtons      = playerConfig.controlButtons;
 
       elements            = modelConfig.elements;
       atoms               = modelConfig.atoms;
@@ -18018,12 +17930,32 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     // ------------------------------------------------------------
     //
+    // Fake an understanding of the controlButtons list. Full
+    // implementation will require a better model for control button
+    // views.
+    //
+    // ------------------------------------------------------------
+    function parseControlButtons() {
+      play_only_controller = false;
+      playback_controller = false;
+
+      if (controlButtons.length === 1 && controlButtons[0] === 'play') {
+        play_only_controller = true;
+      }
+      else if (controlButtons.length > 1) {
+        playback_controller = true;
+      }
+    }
+
+    // ------------------------------------------------------------
+    //
     // Create model and pass in properties
     //
     // ------------------------------------------------------------
 
     function createModel() {
       initializeLocalVariables();
+      parseControlButtons();
       model = modeler.model({
           elements            : elements,
           temperature         : temperature,
@@ -18043,6 +17975,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
       if (radialBonds) model.createRadialBonds(radialBonds);
       if (obstacles) model.createObstacles(obstacles);
+
+      dispatch.modelReset();
     }
 
     // ------------------------------------------------------------
@@ -18059,25 +17993,24 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       //
       // ------------------------------------------------------------
 
-      layout.selection = layoutStyle;
-      model_player = new ModelPlayer(model, false);
-      moleculeContainer = layout.moleculeContainer(moleculeViewId,
-        {
-          xmax:          width,
-          ymax:          height,
-          get_nodes:     function() { return model.get_nodes(); },
-          get_num_atoms: function() { return model.get_num_atoms(); },
-          get_obstacles: function() { return model.get_obstacles(); }
-        }
-      );
+      model_player = new ModelPlayer(modelProxy, false);
+      // disable its 'forward' and 'back' actions:
+      model_player.forward = function() {},
+      model_player.back = function() {},
+
+      moleculeContainer = Lab.moleculeContainer(moleculeViewId, {
+        xmax:          width,
+        ymax:          height,
+        get_nodes:     function() { return model.get_nodes(); },
+        get_num_atoms: function() { return model.get_num_atoms(); },
+        get_obstacles: function() { return model.get_obstacles(); },
+
+        play_only_controller: play_only_controller,
+        playback_controller:  playback_controller
+      });
 
       moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_drawables();
-
-      layout.addView('moleculeContainers', moleculeContainer);
-
-      // FIXME: should not be here
-      layout.setupScreen();
     }
 
     function resetModelPlayer() {
@@ -18093,11 +18026,11 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         ymax:          height,
         get_nodes:     function() { return model.get_nodes(); },
         get_num_atoms: function() { return model.get_num_atoms(); },
-        get_obstacles: function() { return model.get_obstacles(); }
-      });
+        get_obstacles: function() { return model.get_obstacles(); },
 
-      // FIXME: should not be here
-      layout.setupScreen(true);
+        play_only_controller: play_only_controller,
+        playback_controller:  playback_controller
+      });
     }
 
 
@@ -18141,44 +18074,87 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     // ------------------------------------------------------------
     //
-    //  Wire up screen-resize handlers
+    // Public methods
     //
     // ------------------------------------------------------------
 
-    function onresize() {
-      layout.setupScreen();
-    }
-
-    document.onwebkitfullscreenchange = onresize;
-    window.onresize = onresize;
-
+    controller.on = function(type, listener) {
+      dispatch.on(type, listener);
+    };
     controller.reload = reload;
 
     return controller;
 };
-/*globals controllers model layout Thermometer $ alert */
-controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
-
-  if (typeof layoutStyle === 'undefined') {
-    layoutStyle = 'interactive';
-  }
+/*globals controllers model Thermometer $ alert */
+/*jshint eqnull: true*/
+controllers.interactivesController = function(interactive, viewSelector) {
 
   var controller = {},
       modelController,
       $interactiveContainer,
       propertiesListeners = [],
-      actionQueue = [];
+      thermometer,
+      controlButtons = ["play"],
+
+      //
+      // Define the scripting API used by 'action' scripts on interactive elements.
+      //
+      // The properties of the object below will be exposed to the interactive's
+      // 'action' scripts as if they were local vars. All other names (including
+      // all globals, but exluding Javascript builtins) will be unavailable in the
+      // script context; and scripts are run in strict mode so they don't
+      // accidentally expose or read globals.
+      //
+      // TODO: move construction of this object to its own file.
+      //
+
+      scriptingAPI = {
+
+        addAtom: function addAtom() {
+          return model.addAtom.apply(model, arguments);
+        },
+
+        addRandomAtom: function addRandomAtom() {
+          return model.addRandomAtom.apply(model, arguments);
+        },
+
+        get: function get() {
+          return model.get.apply(model, arguments);
+        },
+
+        set: function set() {
+          return model.set.apply(model, arguments);
+        },
+
+        adjustTemperature: function adjustTemperature(fraction) {
+          model.set({temperature: fraction * model.get('temperature')});
+        },
+
+        limitHighTemperature: function limitHighTemperature(t) {
+          if (model.get('temperature') > t) model.set({temperature: t});
+        },
+
+        // rudimentary debugging functionality
+        alert: alert,
+
+        console: window.console != null ? window.console : {
+          log: function() {},
+          error: function() {},
+          warn: function() {},
+          dir: function() {}
+        }
+      };
 
   /**
-    Load the model from the url specified in the 'model' key.
-    Calls 'modelLoaded' if modelController was previously undefined.
+    Load the model from the url specified in the 'model' key. 'modelLoaded' is called
+    after the model loads.
 
     @param: modelUrl
   */
   function loadModel(modelUrl) {
 
     var playerConfig = {
-          layoutStyle : layoutStyle
+          controlButtons: controlButtons
         };
 
     $.get(modelUrl).done(function(modelConfig) {
@@ -18191,6 +18167,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       } else {
         modelController = controllers.modelController('#molecule-container', modelConfig, playerConfig);
         modelLoaded();
+        // also be sure to get notified when the underlying model changes
+        modelController.on('modelReset', modelLoaded);
       }
     });
   }
@@ -18205,48 +18183,28 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   }
 
   /**
-    Given a script string, return a function that executes that script in a context
-    containing *only* the bindings to names we supply.
+    Given a script string, return a function that executes that script in a
+    context containing *only* the bindings to names we supply.
+
+    This isn't intended for XSS protection (in particular it relies on strict
+    mode.) Rather, it's so script authors don't get too clever and start relying
+    on accidentally exposed functionality, before we've made decisions about
+    what scripting API and semantics we want to support.
   */
   function evalInScriptContext(scriptSource) {
     var prop,
-        whitelistedObjects,
         whitelistedNames,
         whitelistedObjectsArray,
         safedScriptSource;
 
-    // The keys of the object below will be exposed to the script as if they were local vars
-    // TODO: move this (which effectively defines the scripting API, an important
-    // piece of Next Gen MW!) to its own home.
-    whitelistedObjects = {
-      // the methods we want to expose...
-      addAtom: function addAtom() {
-        return model.addRandomAtom.apply(model, arguments);
-      },
-
-      addRandomAtom: function addRandomAtom() {
-        return model.addRandomAtom.apply(model, arguments);
-      },
-
-      get: function get() {
-        return model.get.apply(model, arguments);
-      },
-
-      set: function set() {
-        return model.set.apply(model, arguments);
-      },
-
-      console: window.console
-    };
-
-    // Construct parallel arrays of the keys and values above
+    // Construct parallel arrays of the keys and values of the scripting API
     whitelistedNames = [];
     whitelistedObjectsArray = [];
 
-    for (prop in whitelistedObjects) {
-      if (whitelistedObjects.hasOwnProperty(prop)) {
+    for (prop in scriptingAPI) {
+      if (scriptingAPI.hasOwnProperty(prop)) {
         whitelistedNames.push(prop);
-        whitelistedObjectsArray.push( whitelistedObjects[prop] );
+        whitelistedObjectsArray.push( scriptingAPI[prop] );
       }
     }
 
@@ -18254,30 +18212,42 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     // escape to the toplevel scope.
     safedScriptSource =  "'use strict';" + scriptSource;
 
-    // This function runs the script will all globals shadowed:
+    // This function runs the script with all globals shadowed:
     return function() {
       var prop,
           blacklistedNames,
           scriptArgumentList,
           safedScript;
 
-      // Blacklist all globals, except those we have whitelisted
+      // Blacklist all globals, except those we have whitelisted. (Don't move
+      // the construction of 'blacklistedNames' to the enclosing scope, because
+      // new globals -- in particular, 'model' -- are created in between the
+      // time the enclosing function executes and the time this function
+      // executes.)
       blacklistedNames = [];
       for (prop in window) {
-        if (window.hasOwnProperty(prop) && whitelistedNames.indexOf(prop) < 0) {
+        if (window.hasOwnProperty(prop) && !scriptingAPI.hasOwnProperty(prop)) {
           blacklistedNames.push(prop);
         }
       }
 
-      // Here's the key. The Function constructor acccepts a list of argument names
-      // followed by the source of the function to construct.
-      // We supply the whitelist names, followed by the "blacklist" of globals, followed
-      // by the script source. But we will only provide bindings for the whitelisted
-      // names -- the "blacklist" names will be undefined
+      // Here's the key. The Function constructor acccepts a list of argument
+      // names followed by the source of the *body* of the function to
+      // construct. We supply the whitelist names, followed by the "blacklist"
+      // of globals, followed by the script source. But when we invoke the
+      // function thus created, we will only provide values for the whitelisted
+      // names -- all of the "blacklist" names will therefore have the value
+      // 'undefined' inside the function body.
+      //
+      // (Additionally, remember that functions created by the Function
+      // constructor execute in the global context -- they don't capture names
+      // from the scope they were created in.)
       scriptArgumentList = whitelistedNames.concat(blacklistedNames).concat(safedScriptSource);
 
+      // TODO: obvious optimization: cache the result of the Function constructor
+      // and don't reinvoke the Function constructor unless the blacklistedNames array
+      // has changed. Create a unit test for this scenario.
       try {
-        // make the script with the whitelist names, blacklist names, and source
         safedScript = Function.apply(null, scriptArgumentList);
       } catch (e) {
         alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
@@ -18287,11 +18257,10 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         // invoke the script, passing only enough arguments for the whitelisted names
         safedScript.apply(null, whitelistedObjectsArray);
       } catch (e) {
-        alert("Error running script: " + e.toString());
+        alert("Error running script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
       }
     };
   }
-
 
   function createButton(component) {
     var $button, scriptStr;
@@ -18310,24 +18279,18 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   }
 
   function createThermometer(component) {
-    var $therm = $('<div>').attr('id', component.id),
-        thermometer = new Thermometer($therm, 0, component.min, component.max),
-        $wrapper = $('<div>').css('padding-bottom', '4em')
-          .append($therm)
-          .append($('<div>').text('Thermometer'));
+    var $thermometer = $('<div>').attr('id', component.id);
 
-    function updateTherm() {
-      thermometer.add_value(model.get('temperature'));
-    }
+    thermometer = new Thermometer($thermometer, null, component.min, component.max);
+    queuePropertiesListener(['temperature'], updateThermometerValue);
 
-    queuePropertiesListener(['temperature'], updateTherm);
-    queueActionOnModelLoad(function() {
-      thermometer.resize();
-      updateTherm();
-    });
+    return $('<div class="interactive-thermometer">')
+             .append($thermometer)
+             .append($('<p class="label">').text('Thermometer'));
+  }
 
-    layout.addView('thermometers', thermometer);
-    return $wrapper;
+  function updateThermometerValue() {
+    thermometer.add_value(model.get('temperature'));
   }
 
   function queuePropertiesListener(properties, func) {
@@ -18338,28 +18301,32 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     }
   }
 
-  function queueActionOnModelLoad(action) {
-    if (typeof model !== 'undefined') {
-      action();
-    } else {
-      actionQueue.push(action);
+  /**
+    Call this after the model loads, to process any queued resize and update events
+    that depend on the model's properties, then draw the screen.
+  */
+  function modelLoaded() {
+    var i, listener;
+
+    for(i = 0; i < propertiesListeners.length; i++) {
+      listener = propertiesListeners[i];
+      model.addPropertiesListener(listener[0], listener[1]);
+    }
+
+    // TODO. Of course, this should happen automatically
+    if (thermometer) {
+      thermometer.resize();
+      updateThermometerValue();
     }
   }
 
   /**
-    Call this after the model loads, to process any queued resize and update events
-    that depend on the model's properties.
+    Call if the interactive definitions has a toplevel key 'viewOptions', to set
+    the view options for the model.
   */
-  function modelLoaded() {
-    var listener,
-        action;
-
-    while (propertiesListeners.length > 0) {
-      listener = propertiesListeners.pop();
-      model.addPropertiesListener(listener[0], listener[1]);
-    }
-    while (actionQueue.length > 0) {
-      action = actionQueue.pop()();
+  function processModelViewOptions(options) {
+    if (options.controlButtons) {
+      controlButtons = options.controlButtons;
     }
   }
 
@@ -18376,7 +18343,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       jQuery selector that finds the element to put the interactive view into
   */
   function loadInteractive(newInteractive, viewSelector) {
-    var componentJsons,
+    var modelUrl,
+        componentJsons,
         components = {},
         component,
         divArray,
@@ -18388,21 +18356,26 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     interactive = newInteractive;
     $interactiveContainer = $(viewSelector);
     if ($interactiveContainer.children().length === 0) {
-      $top = $('<div class="top" id="top"/>');
+      $top = $('<div class="interactive-top" id="top"/>');
       $top.append('<div id="molecule-container"/>');
       $right = $('<div id="right"/>');
       $top.append($right);
       $interactiveContainer.append($top);
-      $interactiveContainer.append('<div class="bottom" id="bottom"/>');
+      $interactiveContainer.append('<div class="interactive-bottom" id="bottom"/>');
     } else {
       $('#bottom').html('');
       $('#right').html('');
       $interactiveContainer.append('<div id="bottom"/>');
     }
 
-    if (interactive.model) {
-      loadModel(interactive.model);
+    if (typeof (interactive.model) === 'string') {
+      modelUrl = interactive.model;
+    } else if (interactive.model != null) {
+      modelUrl = interactive.model.url;
+      processModelViewOptions(interactive.model.viewOptions);
     }
+
+    if (modelUrl) loadModel(modelUrl);
 
     componentJsons = interactive.components;
 

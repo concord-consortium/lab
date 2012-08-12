@@ -1353,116 +1353,34 @@
 
   Thermometer = (function() {
 
-    function Thermometer(dom_id, initial_value, min, max) {
-      this.dom_id = dom_id != null ? dom_id : "#thermometer";
+    function Thermometer(dom_selector, value, min, max) {
+      this.dom_selector = dom_selector != null ? dom_selector : "#thermometer";
+      this.value = value;
       this.min = min;
       this.max = max;
       this.resize = __bind(this.resize, this);
-      this.dom_element = typeof this.dom_id === "string" ? $(this.dom_id) : this.dom_id;
+      this.dom_element = typeof this.dom_selector === "string" ? $(this.dom_selector) : this.dom_selector;
       this.dom_element.addClass('thermometer');
-      this.samples = [];
-      this.samples.push(initial_value);
-      this.value = initial_value;
-      this.first_sample = true;
-      this.last_draw_time = new Date().getTime();
-      this.sample_interval_ms = 250;
-      this.last_draw_time -= this.sample_interval_ms;
-      this.init_view();
-    }
-
-    Thermometer.prototype.init_view = function() {
-      var midpoint;
-      this.width = this.dom_element.width();
-      this.height = this.dom_element.height();
-      midpoint = this.width / 2;
-      this.y1 = this.height;
-      this.y2 = 0;
-      this.x1 = this.x2 = midpoint;
-      this.init_thermometer_fill();
-      return d3.select('#therm_text').attr('class', 'therm_text');
-    };
-
-    Thermometer.prototype.init_thermometer_fill = function() {
       this.thermometer_fill = $('<div>').addClass('thermometer_fill');
       this.dom_element.append(this.thermometer_fill);
-      return this.redraw();
-    };
+      this.redraw();
+    }
 
-    Thermometer.prototype.resize = function() {
-      var midpoint;
-      this.width = this.dom_element.width();
-      this.height = this.dom_element.height();
-      midpoint = this.width / 2;
-      this.y1 = this.height;
-      this.y2 = 0;
-      this.x1 = this.x2 = midpoint;
+    Thermometer.prototype.add_value = function(value) {
+      this.value = value;
       return this.redraw();
-    };
-
-    Thermometer.prototype.set_scaled_value = function(v) {
-      var results;
-      results = this.value;
-      results = results * (this.max - this.min);
-      results = results + this.min;
-      return results;
     };
 
     Thermometer.prototype.scaled_value = function() {
-      var results;
-      results = this.value;
-      results = results * (this.max - this.min);
-      results = results + this.min;
-      return results;
+      return (this.value - this.min) / (this.max - this.min);
     };
 
-    Thermometer.prototype.time_to_redraw = function() {
-      var timestamp;
-      timestamp = new Date().getTime();
-      return timestamp > this.last_draw_time + this.sample_interval_ms;
-    };
-
-    Thermometer.prototype.add_value = function(new_value) {
-      this.samples.push(new_value);
-      this.value = new_value;
-      if (this.time_to_redraw() || this.first_sample) {
-        this.first_sample = false;
-        this.redraw();
-        return this.samples = [];
-      }
-    };
-
-    Thermometer.prototype.get_avg = function() {
-      var sample, total, _i, _len, _ref;
-      if (this.samples.length > 0) {
-        total = 0;
-        _ref = this.samples;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          sample = _ref[_i];
-          total = total + sample;
-        }
-        return this.value = total / this.samples.length;
-      } else {
-        return this.value;
-      }
-    };
-
-    Thermometer.prototype.scaled_display_value = function() {
-      return (this.get_avg() / (this.max - this.min)) * this.height;
+    Thermometer.prototype.resize = function() {
+      return this.redraw();
     };
 
     Thermometer.prototype.redraw = function() {
-      var midpoint, value;
-      this.width = this.dom_element.width();
-      this.height = this.dom_element.height();
-      midpoint = this.width / 2;
-      this.y1 = this.height;
-      this.y2 = 0;
-      this.x1 = this.x2 = midpoint;
-      value = this.scaled_display_value();
-      this.thermometer_fill.css("bottom", "" + (value - this.height) + "px");
-      this.thermometer_fill.height("" + value + "px");
-      this.last_draw_time = new Date().getTime();
-      return d3.select('#therm_text').text("Temperature");
+      return this.thermometer_fill.height("" + (this.scaled_value() * this.dom_element.height()) + "px");
     };
 
     return Thermometer;
