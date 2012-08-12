@@ -49,11 +49,9 @@ class Thermometer
   add_value: (new_value) ->
     @samples.push new_value
     @value = new_value
-    if this.time_to_redraw() || @first_sample
-      @first_sample = false
-      this.redraw()
-      @samples = []
-
+    @first_sample = false
+    this.redraw()
+    @samples = []
 
   scaled_display_value: ->
     @scaled_value() * @height
