@@ -11,6 +11,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       $interactiveContainer,
       propertiesListeners = [],
       actionQueue = [],
+      thermometer,
 
       //
       // Define the scripting API used by 'action' scripts on interactive elements.
@@ -62,8 +63,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       };
 
   /**
-    Load the model from the url specified in the 'model' key.
-    Calls 'modelLoaded' if modelController was previously undefined.
+    Load the model from the url specified in the 'model' key. 'modelLoaded' is called
+    after the model loads.
 
     @param: modelUrl
   */
@@ -82,8 +83,9 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         modelController.reload(modelConfig, playerConfig);
       } else {
         modelController = controllers.modelController('#molecule-container', modelConfig, playerConfig);
-        modelLoaded();
       }
+
+      modelLoaded();
     });
   }
 
@@ -193,24 +195,20 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   }
 
   function createThermometer(component) {
-    var $therm = $('<div>').attr('id', component.id),
-        thermometer = new Thermometer($therm, 0, component.min, component.max),
-        $wrapper = $('<div>').css('padding-bottom', '4em')
-          .append($therm)
-          .append($('<div>').text('Thermometer'));
+    var $thermometer = $('<div>').attr('id', component.id);
 
-    function updateTherm() {
-      thermometer.add_value(model.get('temperature'));
-    }
-
-    queuePropertiesListener(['temperature'], updateTherm);
-    queueActionOnModelLoad(function() {
-      thermometer.resize();
-      updateTherm();
-    });
-
+    thermometer = new Thermometer($thermometer, null, component.min, component.max);
+    queuePropertiesListener(['temperature'], updateThermometerValue);
     layout.addView('thermometers', thermometer);
-    return $wrapper;
+
+    return $('<div>').css('padding-bottom', '4em')
+             .append($thermometer)
+             .append($('<div>').text('Thermometer'));
+  }
+
+  function updateThermometerValue() {
+    console.log('updateThermometerValue');
+    thermometer.add_value(model.get('temperature'));
   }
 
   function queuePropertiesListener(properties, func) {
@@ -221,17 +219,9 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     }
   }
 
-  function queueActionOnModelLoad(action) {
-    if (typeof model !== 'undefined') {
-      action();
-    } else {
-      actionQueue.push(action);
-    }
-  }
-
   /**
     Call this after the model loads, to process any queued resize and update events
-    that depend on the model's properties.
+    that depend on the model's properties, then draw the screen.
   */
   function modelLoaded() {
     var listener,
@@ -244,6 +234,10 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     while (actionQueue.length > 0) {
       action = actionQueue.pop()();
     }
+
+    layout.setupScreen();
+    thermometer.resize();
+    updateThermometerValue();
   }
 
   /**
