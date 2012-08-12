@@ -62,17 +62,9 @@ class Thermometer
       this.redraw()
       @samples = []
 
-  get_avg: ->
-    if @samples.length > 0
-      total = 0
-      for sample in @samples
-        total = total + sample
-      @value = total / @samples.length
-    else
-      @value
 
   scaled_display_value: ->
-    (this.get_avg() / (@max - @min)) * @height
+    @scaled_value() * @height
 
   redraw: ->
     @width  = @dom_element.width()
@@ -81,7 +73,6 @@ class Thermometer
     @y1 = @height
     @y2 = 0
     @x1 = @x2 = midpoint
-    # avg = this.get_avg().toFixed(4)
     value = this.scaled_display_value()
     @thermometer_fill.css("bottom", "#{value-@height}px")
     @thermometer_fill.height("#{value}px")
