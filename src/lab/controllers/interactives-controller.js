@@ -236,8 +236,12 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     }
 
     layout.setupScreen();
-    thermometer.resize();
-    updateThermometerValue();
+
+    // TODO. Of course, this should happen automatically
+    if (thermometer) {
+      thermometer.resize();
+      updateThermometerValue();
+    }
   }
 
   /**
