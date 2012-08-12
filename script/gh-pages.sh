@@ -13,16 +13,6 @@ exit
 fi
 if git diff --exit-code --quiet && git diff --cached --exit-code --quiet
 then
-cat <<heredoc
-
-*** uncommitted changes in your working directory
-
-    please commit or stash changes in your working dir before updating the gh-pages branch
-
-heredoc
-git status
-exit
-fi
 cd server/public
 git fetch
 git reset --hard origin/gh-pages
@@ -31,3 +21,13 @@ git add .
 git commit -am "gh-pages generated from `git --git-dir ../../.git log -1 --format=%H`"
 git push origin gh-pages
 cd ../..
+else
+cat <<heredoc
+
+*** uncommitted changes in your working directory
+
+    please commit or stash changes in your working dir before updating the gh-pages branch
+
+heredoc
+git status
+fi
