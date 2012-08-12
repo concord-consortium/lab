@@ -12,6 +12,7 @@ heredoc
 exit
 fi
 if git diff --exit-code --quiet && git diff --cached --exit-code --quiet
+then
 cat <<heredoc
 
 *** uncommitted changes in your working directory
