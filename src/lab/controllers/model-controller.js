@@ -33,7 +33,28 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       radialBonds,
       obstacles,
 
-      moleculeContainer;
+      moleculeContainer,
+
+      // We pass this object to the "ModelPlayer" to intercept messages for the model
+      // instead of allowing the ModelPlayer to talk to the model directly.
+      // In particular, we want to treat seek(1) as a reset event
+      modelProxy = {
+        resume: function() {
+          model.resume();
+        },
+
+        stop: function() {
+          model.stop();
+        },
+
+        seek: function(n) {
+          // Special case assumption: This is to intercept the "reset" button
+          // of PlaybackComponentSVG, which calls seek(1) on the ModelPlayer
+          if (n === 1) {
+            reload(modelConfig, playerConfig);
+          }
+        }
+      };
 
     // ------------------------------------------------------------
     //
@@ -132,7 +153,11 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       //
       // ------------------------------------------------------------
 
-      model_player = new ModelPlayer(model, false);
+      model_player = new ModelPlayer(modelProxy, false);
+      // disable its 'forward' and 'back' actions:
+      model_player.forward = function() {},
+      model_player.back = function() {},
+
       moleculeContainer = Lab.moleculeContainer(moleculeViewId, {
         xmax:          width,
         ymax:          height,
