@@ -195,9 +195,9 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     thermometer = new Thermometer($thermometer, null, component.min, component.max);
     queuePropertiesListener(['temperature'], updateThermometerValue);
 
-    return $('<div>').css('padding-bottom', '4em')
+    return $('<div class="interactive-thermometer">')
              .append($thermometer)
-             .append($('<div>').text('Thermometer'));
+             .append($('<p class="label">').text('Thermometer'));
   }
 
   function updateThermometerValue() {
