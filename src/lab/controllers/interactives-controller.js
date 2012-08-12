@@ -28,7 +28,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       scriptingAPI = {
 
         addAtom: function addAtom() {
-          return model.addRandomAtom.apply(model, arguments);
+          return model.addAtom.apply(model, arguments);
         },
 
         addRandomAtom: function addRandomAtom() {
