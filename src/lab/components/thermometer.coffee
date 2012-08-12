@@ -38,17 +38,9 @@ class Thermometer
     @x1 = @x2 = midpoint
     this.redraw()
 
-  set_scaled_value: (v) ->
-    results = @value
-    results = results * (@max - @min)
-    results = results + @min
-    results
-
+  # return @value, scaled to 0..1 where 0 corresponds to @min, 1 corresponds to @max
   scaled_value: ->
-    results = @value
-    results = results * (@max - @min)
-    results = results + @min
-    results
+    (@value - @min) / (@max - @min)
 
   time_to_redraw: ->
     timestamp = new Date().getTime()
