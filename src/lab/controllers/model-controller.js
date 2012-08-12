@@ -14,6 +14,9 @@
 controllers.modelController = function(moleculeViewId, modelConfig, playerConfig) {
   var controller = {},
 
+      // event dispatcher
+      dispatch = d3.dispatch('modelReset'),
+
       // properties read from the playerConfig hash
       layoutStyle,
       controlButtons,
@@ -137,6 +140,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
       if (radialBonds) model.createRadialBonds(radialBonds);
       if (obstacles) model.createObstacles(obstacles);
+
+      dispatch.modelReset();
     }
 
     // ------------------------------------------------------------
@@ -234,14 +239,13 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     // ------------------------------------------------------------
     //
-    //  Wire up screen-resize handlers
+    // Public methods
     //
     // ------------------------------------------------------------
 
-
-    document.onwebkitfullscreenchange = onresize;
-    window.onresize = onresize;
-
+    controller.on = function(type, listener) {
+      dispatch.on(type, listener);
+    };
     controller.reload = reload;
 
     return controller;
