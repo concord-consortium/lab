@@ -1,4 +1,4 @@
-/*globals controllers model layout Thermometer $ alert */
+/*globals controllers model Thermometer $ alert */
 /*jshint eqnull: true*/
 controllers.interactivesController = function(interactive, viewSelector) {
 
@@ -6,7 +6,6 @@ controllers.interactivesController = function(interactive, viewSelector) {
       modelController,
       $interactiveContainer,
       propertiesListeners = [],
-      actionQueue = [],
       thermometer,
       controlButtons = ["play"],
 
@@ -80,9 +79,10 @@ controllers.interactivesController = function(interactive, viewSelector) {
         modelController.reload(modelConfig, playerConfig);
       } else {
         modelController = controllers.modelController('#molecule-container', modelConfig, playerConfig);
+        modelLoaded();
+        // also be sure to get notified when the underlying model changes
+        modelController.on('modelReset', modelLoaded);
       }
-
-      modelLoaded();
     });
   }
 
@@ -219,15 +219,11 @@ controllers.interactivesController = function(interactive, viewSelector) {
     that depend on the model's properties, then draw the screen.
   */
   function modelLoaded() {
-    var listener,
-        action;
+    var i, listener;
 
-    while (propertiesListeners.length > 0) {
-      listener = propertiesListeners.pop();
+    for(i = 0; i < propertiesListeners.length; i++) {
+      listener = propertiesListeners[i];
       model.addPropertiesListener(listener[0], listener[1]);
-    }
-    while (actionQueue.length > 0) {
-      action = actionQueue.pop()();
     }
 
     // TODO. Of course, this should happen automatically
