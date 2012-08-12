@@ -2,10 +2,6 @@
 /*jshint eqnull: true*/
 controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
 
-  if (typeof layoutStyle === 'undefined') {
-    layoutStyle = 'interactive';
-  }
-
   var controller = {},
       modelController,
       $interactiveContainer,
@@ -71,7 +67,6 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   function loadModel(modelUrl) {
 
     var playerConfig = {
-          layoutStyle : layoutStyle
         };
 
     $.get(modelUrl).done(function(modelConfig) {
@@ -199,7 +194,6 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
 
     thermometer = new Thermometer($thermometer, null, component.min, component.max);
     queuePropertiesListener(['temperature'], updateThermometerValue);
-    layout.addView('thermometers', thermometer);
 
     return $('<div>').css('padding-bottom', '4em')
              .append($thermometer)
@@ -233,8 +227,6 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     while (actionQueue.length > 0) {
       action = actionQueue.pop()();
     }
-
-    layout.setupScreen();
 
     // TODO. Of course, this should happen automatically
     if (thermometer) {

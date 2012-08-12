@@ -4,7 +4,10 @@
 //
 // ------------------------------------------------------------
 
-layout.moleculeContainer = function(e, options) {
+if (typeof layout === 'undefined') layout = {};
+if (typeof Lab === 'undefined') Lab = {};
+
+Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   var elem = d3.select(e),
       node = elem.node(),
       cx = elem.property("clientWidth"),

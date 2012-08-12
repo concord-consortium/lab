@@ -1,10 +1,9 @@
 /*globals
 
   controllers
-
+  Lab
   modeler
   ModelPlayer
-  layout
   DEVELOPMENT
   $
   alert
@@ -109,9 +108,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       //
       // ------------------------------------------------------------
 
-      layout.selection = layoutStyle;
       model_player = new ModelPlayer(model, false);
-      moleculeContainer = layout.moleculeContainer(moleculeViewId,
+      moleculeContainer = Lab.moleculeContainer(moleculeViewId,
         {
           xmax:          width,
           ymax:          height,
@@ -123,8 +121,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
       moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_drawables();
-
-      layout.addView('moleculeContainers', moleculeContainer);
     }
 
     function resetModelPlayer() {
@@ -189,9 +185,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
     //
     // ------------------------------------------------------------
 
-    function onresize() {
-      layout.setupScreen();
-    }
 
     document.onwebkitfullscreenchange = onresize;
     window.onresize = onresize;
