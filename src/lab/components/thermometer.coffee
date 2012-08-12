@@ -1,77 +1,27 @@
 class Thermometer
 
-  constructor: (@dom_id="#thermometer", initial_value, @min, @max) ->
-    @dom_element = if typeof @dom_id == "string" then $(@dom_id) else @dom_id
+  constructor: (@dom_selector="#thermometer", @value, @min, @max) ->
+    @dom_element = if typeof @dom_selector is "string" then $(@dom_selector) else @dom_selector
     @dom_element.addClass('thermometer')
-    @samples = []
-    @samples.push initial_value if initial_value?
-    @value = initial_value
-    @first_sample = true
-    @last_draw_time = new Date().getTime()
-    @sample_interval_ms = 250
-    @last_draw_time -= @sample_interval_ms
-    this.init_view()
-
-  init_view: ->
-    @width  = @dom_element.width()
-    @height = @dom_element.height()
-    midpoint = @width/2
-    @y1 = @height
-    @y2 = 0
-    @x1 = @x2 = midpoint
-    this.init_thermometer_fill()
-    # @dom_element.onresize this.resize
-    d3.select('#therm_text').attr('class','therm_text')
-
-  init_thermometer_fill: ->
     @thermometer_fill = $('<div>').addClass('thermometer_fill')
     @dom_element.append(@thermometer_fill)
-    # @thermometer_fill.addClass('vertical')
-    this.redraw()
+    @redraw()
 
-  resize: =>
-    @width  = @dom_element.width()
-    @height = @dom_element.height()
-    midpoint = @width/2
-    @y1 = @height
-    @y2 = 0
-    @x1 = @x2 = midpoint
-    this.redraw()
+  add_value: (@value) ->
+    @redraw()
 
   # return @value, scaled to 0..1 where 0 corresponds to @min, 1 corresponds to @max
   scaled_value: ->
     (@value - @min) / (@max - @min)
 
-  time_to_redraw: ->
-    timestamp = new Date().getTime()
-    timestamp > @last_draw_time + @sample_interval_ms
-
-  add_value: (new_value) ->
-    @samples.push new_value
-    @value = new_value
-    @first_sample = false
-    this.redraw()
-    @samples = []
-
-  scaled_display_value: ->
-    @scaled_value() * @height
+  resize: =>
+    @redraw()
 
   redraw: ->
-    @width  = @dom_element.width()
-    @height = @dom_element.height()
-    midpoint = @width/2
-    @y1 = @height
-    @y2 = 0
-    @x1 = @x2 = midpoint
-    value = this.scaled_display_value()
-    @thermometer_fill.css("bottom", "#{value-@height}px")
-    @thermometer_fill.height("#{value}px")
-    @last_draw_time = new Date().getTime()
-    d3.select('#therm_text').text("Temperature")
+    @thermometer_fill.height("#{@scaled_value() * @dom_element.height()}px")
 
 # make this class available globally as Thermometer
 # use like:
 #  meter = new Thermometer();
 root = exports ? this
 root.Thermometer = Thermometer
-
