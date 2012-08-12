@@ -4,7 +4,7 @@ class Thermometer
     @dom_element = if typeof @dom_id == "string" then $(@dom_id) else @dom_id
     @dom_element.addClass('thermometer')
     @samples = []
-    @samples.push initial_value
+    @samples.push initial_value if initial_value?
     @value = initial_value
     @first_sample = true
     @last_draw_time = new Date().getTime()
