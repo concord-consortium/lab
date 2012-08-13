@@ -170,6 +170,7 @@ controllers.complexModelController =
           xmax:                 width,
           ymin:                 0,
           ymax:                 height,
+          get_radial_bonds:     function() { return model.get_radial_bonds(); },
           get_nodes:            function() { return model.get_nodes(); },
           get_num_atoms:        function() { return model.get_num_atoms(); },
           get_obstacles:        function() { return model.get_obstacles(); }

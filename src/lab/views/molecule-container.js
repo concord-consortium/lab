@@ -42,6 +42,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       obstacle,
       get_obstacles,
       mock_obstacles_array = [],
+      mock_radial_bond_array = [],
+      radialBond,
+      getRadialBonds,
+      bondColorArray,
       default_options = {
         title:                false,
         xlabel:               false,
@@ -88,6 +92,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     mock_atoms_array.length = get_num_atoms();
 
     get_obstacles = options.get_obstacles;
+    getRadialBonds = options.get_radial_bonds;
   };
 
   function scale(w, h) {
@@ -232,6 +237,21 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       obstacles[model.OBSTACLE_INDICES.COLOR_R][i] + "," +
       obstacles[model.OBSTACLE_INDICES.COLOR_G][i] + "," +
       obstacles[model.OBSTACLE_INDICES.COLOR_B][i] + ")";
+  }
+  function get_radial_bond_atom_1(i) {
+    return radialBonds[model.RADIAL_INDICES.ATOM1][i];
+  }
+
+  function get_radial_bond_atom_2(i) {
+    return radialBonds[model.RADIAL_INDICES.ATOM2][i];
+  }
+
+  function get_radial_bond_length(i) {
+    return radialBonds[model.RADIAL_INDICES.LENGTH][i];
+  }
+
+  function get_radial_bond_strength(i) {
+    return radialBonds[model.RADIAL_INDICES.STRENGTH][i];
   }
 
   function container() {
@@ -397,12 +417,21 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
         });
       }
-
       if (obstacle) {
         obstacle.attr("x", function(d, i) {return x(get_obstacle_x(i)); })
                 .attr("y", function(d, i) {return y(get_obstacle_y(i) + get_obstacle_height(i)); })
                 .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
                 .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); });
+      }
+      if (radialBond) {
+/*
+          radialBond.attr("x1", function(d, i) {return x(get_x(get_radial_bond_atom_1()) + get_radius(get_radial_bond_atom_1()))})
+                    .attr("y1", function(d, i) {return y(get_x(get_radial_bond_atom_1()) - get_radius(get_radial_bond_atom_1()))})
+                    .attr("x2", function(d, i) {return x(get_x(get_radial_bond_atom_2()) + get_radius(get_radial_bond_atom_2()))})
+                    .attr("y2", function(d, i) {return y(get_x(get_radial_bond_atom_2()) - get_radius(get_radial_bond_atom_2()))})
+                    .style("stroke-width", 2)
+                    .style("stroke", "black")
+*/
       }
 
       if (options.playback_controller || options.play_only_controller) {
@@ -502,6 +531,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       create_radial_gradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", gradient_container);
 
       element_gradient_array = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
+      bondColorArray = ["green", "purple", "aqua", "orange"];
     }
 
     function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
@@ -526,6 +556,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("stop-color", medColor)
           .attr("offset", "100%");
     }
+
 
     function updateMoleculeRadius() {
       vis.selectAll("circle").data(mock_atoms_array).attr("r",  function(d, i) { return x(get_radius(i)); });
@@ -565,9 +596,45 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .style("stroke", "black");
     }
 
+    function radBondEnter(radialBond) {
+        radialBond.enter().append("line")
+                    .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
+                    .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
+                    .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+                    .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+                    .style("stroke-width", 15)
+                    .style("stroke", function(d, i) {
+                if (model.get("coulomb_forces")) {
+                    return (x(get_charge(get_radial_bond_atom_1(i))) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
+                } else {
+                    element = get_element(get_radial_bond_atom_1(i)) % 4;
+                    grad = bondColorArray[element];
+                    return grad;
+                }
+            })
+                    .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
+        radialBond.enter().append("line")
+                    .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+                    .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+                    .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
+                    .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
+                    .style("stroke-width", 15)
+                    .style("stroke", function(d, i) {
+                if (model.get("coulomb_forces")) {
+                    return (x(get_charge(get_radial_bond_atom_2(i))) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
+                } else {
+                    element = get_element(get_radial_bond_atom_2(i)) % 4;
+                    grad = bondColorArray[element];
+                    return grad;
+                }
+            })
+                    .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i)) > 0.3 ) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
+    }
+
     function setup_drawables() {
-      setup_particles();
       setup_obstacles();
+      setup_radial_bonds();
+      setup_particles();
     }
 
     function setup_particles() {
@@ -639,6 +706,19 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       rectEnter(obstacle);
     }
 
+    function setup_radial_bonds() {
+      radialBonds = getRadialBonds();
+      if (!radialBonds) return;
+
+      mock_radial_bond_array.length = radialBonds[0].length;
+
+      gradient_container.selectAll("line").remove();
+
+      radialBond = gradient_container.selectAll("line").data(mock_radial_bond_array);
+
+      radBondEnter(radialBond);
+    }
+
     function mousedown() {
       node.focus();
     }
@@ -693,11 +773,19 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
     }
 
-    function update_drawable_positions() {
+      function update_drawable_positions() {
+          setup_obstacles();
+          setup_radial_bonds();
+          setup_particles();
+/*Commented these function calls and definition as these functions also perform the same task as setup_obstacles(); setup_radial_bonds(); setup_particles(); and code was redundant */
+/*
       update_molecule_positions();
       updateObstaclePositions();
+      updateRadialBondPositions();
+*/
     }
 
+/*
     function update_molecule_positions() {
 
       mock_atoms_array.length = get_num_atoms();
@@ -740,6 +828,20 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       rectEnter(obstacle);
     }
+
+      function updateRadialBondPositions() {
+        radialBonds = getRadialBonds();
+        if (!radialBonds) return;
+
+        mock_radial_bond_array.length = radialBonds[0].length;
+
+        gradient_container.selectAll("line").remove();
+
+        radialBond = gradient_container.selectAll("line").data(mock_radial_bond_array);
+
+        radBondEnter(radialBond);
+    }
+*/
 
     // ------------------------------------------------------------
     //
