@@ -304,15 +304,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
 
-      var updateHeatBath = function() {
-        var heatBath = model.get('temperature_control');
-        if (heatBath) {
-          d3.select("#heat_bath").style("display","");
-        }
-        else {
-          d3.select("#heat_bath").style("display","none");
-        }
-      }
         vis.append("image")
           .attr("x", 5)
           .attr("id", "heat_bath")
@@ -526,6 +517,20 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("stop-color", medColor)
           .attr("offset", "100%");
     }
+
+      /*Function : updateHeatBath
+       *
+       * Controls display of Heat Bath icon based on value of temperature_control property for model.
+       * */
+      function updateHeatBath() {
+          var heatBath = model.get('temperature_control');
+          if (heatBath) {
+              d3.select("#heat_bath").style("display","");
+          }
+          else {
+              d3.select("#heat_bath").style("display","none");
+          }
+      }
 
     function updateMoleculeRadius() {
       vis.selectAll("circle").data(mock_atoms_array).attr("r",  function(d, i) { return x(get_radius(i)); });
