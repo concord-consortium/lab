@@ -57,7 +57,6 @@ controllers.complexModelController =
       speedDistributionChart,
       select_molecule_number,
       radio_randomize_pos_vel,
-
       nodes;
 
   function controller() {
@@ -518,6 +517,7 @@ controllers.complexModelController =
     controller.resetEnergyData = resetEnergyData;
     controller.energyGraph = energyGraph;
     controller.moleculeContainer = moleculeContainer;
+    controller.energy_data = energy_data;
   }
 
   controller();
