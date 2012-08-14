@@ -20,10 +20,7 @@ var ROOT = "/examples",
     interactive_url,
     interactive_options,
     controller,
-    select = $("#select-interactive"),
-    loadInteractive = function () {
-
-    };
+    select = $("#select-interactive");
 
   $.each(interactivesIndex, function (key, value) {
     select.append($("<option>")
@@ -49,7 +46,7 @@ var ROOT = "/examples",
   });
 
   $.when(window_loaded, options_loaded).done(function () {
-    controller = energy2d.controllers.makeInteractiveController(interactive_options, '#interactive-container', '#interactive-description');
+    controller = energy2d.InteractiveController(interactive_options, '#interactive-container', '#interactive-description');
   });
 
   select.change(function (option) {

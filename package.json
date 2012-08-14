@@ -32,7 +32,8 @@
     "browserify": "1.10.12",
     "cheerio": "0.x",
     "jade": "*",
-    "mkdirp": "0.3.2"
+    "mkdirp": "0.3.2",
+    "requirejs": "*"
   },
   "directories": {
     "bin": "node-bin"

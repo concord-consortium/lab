@@ -21,12 +21,7 @@ var ROOT = "/examples",
     interactive_options,
     controller,
     select = $("#select-interactive"),
-    enable_WebGL_checkbox = $('#enable-WebGL'),
-    force_WebGL_sync_checkbox = $('#force-WebGL-sync'),
-
-    loadInteractive = function () {
-
-    };
+    enable_WebGL_checkbox = $('#enable-WebGL');
 
   $.each(interactivesIndex, function (key, value) {
     select.append($("<option>")
@@ -52,7 +47,7 @@ var ROOT = "/examples",
   });
 
   $.when(window_loaded, options_loaded).done(function () {
-    controller = energy2d.controllers.makeInteractiveController(
+    controller = energy2d.InteractiveController(
       interactive_options, 
       '#interactive-container', 
       '#interactive-description'
@@ -65,11 +60,6 @@ var ROOT = "/examples",
 
   enable_WebGL_checkbox.change(function(){
     controller.setWebGLEnabled($(this).attr("checked"));
-  });
-
-  force_WebGL_sync_checkbox.change(function(){
-    energy2d.utils.gpu.gpgpu.setSynchronizationAllowed($(this).attr("checked"));
-    controller.simulationReset();
   });
 
   $(window).bind('hashchange', function () {

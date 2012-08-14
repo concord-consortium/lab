@@ -11,7 +11,6 @@ BROWSERIFY = ./node_modules/.bin/browserify
 
 LAB_SRC_FILES := $(shell find src/lab -type f -print)
 MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
-ENERGY2D_ENGINE_JS_FILES := $(shell find src/lab/models/energy2d/engine -name '*.js' -print)
 
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
 LAB_GLSL_FILES := $(shell find src/lab -name '*.glsl' -print)
@@ -42,7 +41,6 @@ LAB_JS_FILES = \
 	server/public/lab/lab.layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.molecules.js \
-	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.components.js \
 	server/public/lab/lab.controllers.js \
 	server/public/lab/lab.deprecated-controllers.js \
@@ -344,7 +342,6 @@ server/public/lab:
 server/public/lab/lab.js: \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.molecules.js \
-	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
 	server/public/lab/lab.views.js \
@@ -372,39 +369,6 @@ server/public/lab/lab.molecules.js: \
 	src/lab/start.js \
 	server/public/lab/lab.md2d.js \
 	src/lab/models/md2d/modeler.js \
-	src/lab/end.js
-
-server/public/lab/lab.glsl.js: \
-	$(LAB_GLSL_FILES)
-	$(GLSL_TO_JS_CONVERTER) $^ -o $@
-
-server/public/lab/lab.models.energy2d.engine.js: \
-	$(ENERGY2D_ENGINE_JS_FILES)
-	$(BROWSERIFY) src/lab/models/energy2d/engine/core-model.js -o server/public/lab/lab.models.energy2d.engine.js
-
-server/public/lab/lab.energy2d.js: \
-	src/lab/start.js \
-	src/lab/energy2d-module.js \
-	server/public/lab/lab.glsl.js \
-	server/public/lab/lab.models.energy2d.engine.js \
-	src/lab/models/energy2d/modeler.js \
-	src/lab/utils/energy2d/gpu/init.js \
-	src/lab/utils/energy2d/gpu/mesh.js \
-	src/lab/utils/energy2d/gpu/shader.js \
-	src/lab/utils/energy2d/gpu/texture.js \
-	src/lab/utils/energy2d/gpu/gpgpu.js \
-	src/lab/utils/energy2d/performance/performance-tools.js \
-	src/lab/views/energy2d/utils-color.js \
-	src/lab/views/energy2d/color-palette.js \
-	src/lab/views/energy2d/heatmap.js \
-	src/lab/views/energy2d/heatmap-webgl.js \
-	src/lab/views/energy2d/vectormap.js \
-	src/lab/views/energy2d/vectormap-webgl.js \
-	src/lab/views/energy2d/description.js \
-	src/lab/views/energy2d/performance.js \
-	src/lab/views/energy2d/webgl-status.js \
-	src/lab/views/energy2d/views.js \
-	src/lab/controllers/energy2d/controllers.js \
 	src/lab/end.js
 
 server/public/lab/lab.benchmark.js: \
