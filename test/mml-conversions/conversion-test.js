@@ -30,7 +30,7 @@ suite.addBatch({
         expectedModelJson = fs.readFileSync(testDir + "expected-json/" + modelName + ".json").toString();
         expectedModel = JSON.parse(expectedModelJson);
 
-        assert.deepEqual(convertedModel, expectedModel);
+        assert.deepEqual(convertedModel, expectedModel, "The file "+modelName+" does not match");
       }
     }
   }

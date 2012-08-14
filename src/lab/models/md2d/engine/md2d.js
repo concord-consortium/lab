@@ -146,6 +146,13 @@ exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
   COLOR_B :  11
 };
 
+exports.RADIAL_INDICES = RADIAL_INDICES = {
+  ATOM1   :  0,
+  ATOM2   :  1,
+  LENGTH  :  2,
+  STRENGTH:  3
+};
+
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
 
 exports.makeModel = function() {
@@ -329,14 +336,14 @@ exports.makeModel = function() {
 
       createRadialBondsArray = function(num) {
       var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
+          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular', radialIndices = RADIAL_INDICES;
 
-        radialBonds = [];
+        radialBonds = model.radialBonds = [];
 
-        radialBonds[0] = radialBondAtom1Index = arrays.create(num, 0, uint16);
-        radialBonds[1] = radialBondAtom2Index = arrays.create(num, 0, uint16);
-        radialBonds[2] = radialBondLength     = arrays.create(num, 0, float32);
-        radialBonds[3] = radialBondStrength   = arrays.create(num, 0, float32);
+        radialBonds[radialIndices.ATOM1] = radialBondAtom1Index = arrays.create(num, 0, uint16);
+        radialBonds[radialIndices.ATOM2] = radialBondAtom2Index = arrays.create(num, 0, uint16);
+        radialBonds[radialIndices.LENGTH] = radialBondLength     = arrays.create(num, 0, float32);
+        radialBonds[radialIndices.STRENGTH] = radialBondStrength   = arrays.create(num, 0, float32);
       },
 
       // Make the 'radialBonds' array bigger. FIXME: needs to be factored

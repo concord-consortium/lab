@@ -158,17 +158,20 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       //
       // ------------------------------------------------------------
 
+      layout.selection = layoutStyle;
+
       model_player = new ModelPlayer(modelProxy, false);
       // disable its 'forward' and 'back' actions:
       model_player.forward = function() {},
       model_player.back = function() {},
 
       moleculeContainer = Lab.moleculeContainer(moleculeViewId, {
-        xmax:          width,
-        ymax:          height,
-        get_nodes:     function() { return model.get_nodes(); },
-        get_num_atoms: function() { return model.get_num_atoms(); },
-        get_obstacles: function() { return model.get_obstacles(); },
+        xmax:                 width,
+        ymax:                 height,
+        get_radial_bonds:     function() { return model.get_radial_bonds(); },
+        get_nodes:            function() { return model.get_nodes(); },
+        get_num_atoms:        function() { return model.get_num_atoms(); },
+        get_obstacles:        function() { return model.get_obstacles(); },
 
         play_only_controller: play_only_controller,
         playback_controller:  playback_controller

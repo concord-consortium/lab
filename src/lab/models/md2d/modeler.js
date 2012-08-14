@@ -50,6 +50,8 @@ modeler.model = function(initialProperties) {
 
       // list of obstacles
       obstacles,
+      // Radial Bonds
+      radialBonds,
 
       default_obstacle_properties = {
         vx: 0,
@@ -123,6 +125,13 @@ modeler.model = function(initialProperties) {
     COLOR_R  : md2d.OBSTACLE_INDICES.COLOR_R,
     COLOR_G  : md2d.OBSTACLE_INDICES.COLOR_G,
     COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B
+  };
+  
+  model.RADIAL_INDICES = {
+    ATOM1     : md2d.RADIAL_INDICES.ATOM1,
+    ATOM2     : md2d.RADIAL_INDICES.ATOM2,
+    LENGTH    : md2d.RADIAL_INDICES.LENGTH,
+    STRENGTH  : md2d.RADIAL_INDICES.STRENGTH,
   };
 
   function notifyListeners(listeners) {
@@ -463,8 +472,9 @@ modeler.model = function(initialProperties) {
     return model;
   };
 
-  model.createRadialBonds = function(radialBonds) {
-    coreModel.initializeRadialBonds(radialBonds);
+  model.createRadialBonds = function(_radialBonds) {
+    coreModel.initializeRadialBonds(_radialBonds);
+    radialBonds = coreModel.radialBonds;
     readModelState();
     return model;
   };
@@ -644,6 +654,9 @@ modeler.model = function(initialProperties) {
 
   model.get_obstacles = function() {
     return obstacles;
+  };
+  model.get_radial_bonds = function() {
+    return radialBonds;
   };
 
   model.on = function(type, listener) {
