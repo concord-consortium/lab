@@ -596,7 +596,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .style("stroke", "black");
     }
 
-    function radBondEnter(radialBond) {
+    function radialBondEnter(radialBond) {
         radialBond.enter().append("line")
                     .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
                     .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
@@ -746,7 +746,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       radialBond = gradient_container.selectAll("line").data(mock_radial_bond_array);
 
-      radBondEnter(radialBond);
+       radialBondEnter(radialBond);
     }
 
     function mousedown() {
@@ -807,72 +807,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           setup_obstacles();
           setup_radial_bonds();
           setup_particles();
-/*Commented these function calls and definition as these functions also perform the same task as setup_obstacles(); setup_radial_bonds(); setup_particles(); and code was redundant */
-/*
-      update_molecule_positions();
-      updateObstaclePositions();
-      updateRadialBondPositions();
-*/
-    }
-
-/*
-    function update_molecule_positions() {
-
-      mock_atoms_array.length = get_num_atoms();
-      nodes = get_nodes();
-
-      // update model time display
-      if (options.model_time_label) {
-        time_label.text(modelTimeLabel());
       }
-
-      label = elem.selectAll("g.label").data(mock_atoms_array);
-
-      label.attr("transform", function(d, i) {
-          return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
-        });
-
-      particle = gradient_container.selectAll("circle").data(mock_atoms_array);
-      circlesEnter(particle);
-
-      particle.attr("cx", function(d, i) {
-          return x(nodes[model.INDICES.X][i]); })
-        .attr("cy", function(d, i) {
-          return y(nodes[model.INDICES.Y][i]); })
-        .attr("r",  function(d, i) {
-          return x(nodes[model.INDICES.RADIUS][i]); });
-      if ((typeof(atom_tooltip_on) === "number")) {
-        render_atom_tooltip(atom_tooltip_on);
-      }
-    }
-
-    function updateObstaclePositions() {
-      obstacles = get_obstacles();
-      if (!obstacles) return;
-
-      mock_obstacles_array.length = obstacles[0].length;
-
-      gradient_container.selectAll("rect").remove();
-
-      obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
-
-      rectEnter(obstacle);
-    }
-
-      function updateRadialBondPositions() {
-        radialBonds = getRadialBonds();
-        if (!radialBonds) return;
-
-        mock_radial_bond_array.length = radialBonds[0].length;
-
-        gradient_container.selectAll("line").remove();
-
-        radialBond = gradient_container.selectAll("line").data(mock_radial_bond_array);
-
-        radBondEnter(radialBond);
-    }
-*/
-
     // ------------------------------------------------------------
     //
     // Handle keyboard shortcuts for model operation
