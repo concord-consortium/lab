@@ -11,6 +11,7 @@ notifications:
       - sfentress@concord.org
       - rpk@pobox.com
       - janikpiotrek@gmail.com
+      - er.kamal.paul@gmail.com
 
 language: node_js
 node_js:
