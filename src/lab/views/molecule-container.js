@@ -626,7 +626,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                     .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
                     .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
                     .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
-                    .style("stroke-width", 15)
+                    .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75})
                     .style("stroke", function(d, i) {
                 if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
                     return "#000000";
@@ -657,7 +657,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                     .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
                     .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
                     .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
-                    .style("stroke-width", 15)
+                    .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
                     .style("stroke", function(d, i) {
                 if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
                     return "#000000";
