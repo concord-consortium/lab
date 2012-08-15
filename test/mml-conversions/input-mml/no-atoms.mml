@@ -355,5 +355,8 @@
    </void>
   </void>
  </object>
+ <void property="chargeShading">
+  <boolean>true</boolean>
+ </void>
  <object class="org.concord.mw2d.models.MolecularModel$State"/>
 </java>

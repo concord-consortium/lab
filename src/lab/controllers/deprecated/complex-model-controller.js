@@ -39,6 +39,7 @@ controllers.complexModelController =
       coulomb_forces      = modelConfig.coulomb_forces,
       width               = modelConfig.width,
       height              = modelConfig.height,
+      chargeShading       = modelConfig.chargeShading,
       radialBonds         = modelConfig.radialBonds,
       obstacles           = modelConfig.obstacles,
 
@@ -120,7 +121,8 @@ controllers.complexModelController =
           coulomb_forces: coulomb_forces,
           temperature_control: temperature_control,
           width: width,
-          height: height
+          height: height,
+          chargeShading: chargeShading
         });
 
       if (atoms_properties) {
@@ -169,6 +171,7 @@ controllers.complexModelController =
           xmax:                 width,
           ymin:                 0,
           ymax:                 height,
+          chargeShading:        chargeShading,
           get_radial_bonds:     function() { return model.get_radial_bonds(); },
           get_nodes:            function() { return model.get_nodes(); },
           get_num_atoms:        function() { return model.get_num_atoms(); },

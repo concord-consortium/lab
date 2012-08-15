@@ -97,7 +97,11 @@ parseMML = (mmlString) ->
     viewProps = $mml(".org-concord-mw2d-models-RectangularBoundary-Delegate")
     width  = parseInt viewProps.find("[property=width] double").text()
     height = parseInt viewProps.find("[property=height] double").text()
-
+    ###
+      Find the chargeShading
+    ###
+    viewChargeShadingProps = $mml(".java-beans-XMLDecoder")
+    chargeShading  = viewChargeShadingProps.find("[property=chargeShading] boolean").text()
     ###
       Find the view-port size
     ###
@@ -278,6 +282,7 @@ parseMML = (mmlString) ->
       temperature_control : !!temperature
       width               : width
       height              : height
+      chargeShading       : !!chargeShading
       elements            : elemTypes
       atoms :
         X : x

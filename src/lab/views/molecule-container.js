@@ -253,6 +253,15 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   function get_radial_bond_strength(i) {
     return radialBonds[model.RADIAL_INDICES.STRENGTH][i];
   }
+    function chargeShadingMode() {
+//        alert(options.chargeShading);
+        if (options.chargeShading) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
   function container() {
     // if (node.clientWidth && node.clientHeight) {
@@ -520,6 +529,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", gradient_container);
       create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", gradient_container);
       create_radial_gradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", gradient_container);
+      create_radial_gradient("custom-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", gradient_container);
 
       element_gradient_array = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
       bondColorArray = ["#538f2f", "#aa2bb1", "#2cb6af", "#b3831c", "#7781c2", "#ee7171"];
@@ -577,8 +587,18 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("cy", function(d, i) { return y(get_y(i)); })
           .style("cursor", "crosshair")
           .style("fill", function(d, i) {
-            if (model.get("coulomb_forces") && x(get_charge(i))) {
-              return (x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
+            if (chargeShadingMode()) {
+                if (get_charge(i) > 0){
+                    return  "url(#pos-grad)";
+                }
+                else if (get_charge(i) < 0){
+                    return  "url(#neg-grad)";
+                }
+                else {
+                    element = get_element(i) % 4;
+                    grad = element_gradient_array[element];
+                    return "url(#custom-grad)";
+                }
             } else {
               element = get_element(i) % 4;
               grad = element_gradient_array[element];
@@ -612,7 +632,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                     return "#000000";
                 }
                 else {
-                    if (model.get("coulomb_forces")) {
+                    if (chargeShadingMode()) {
                         if (get_charge(get_radial_bond_atom_1(i)) > 0){
                             return  bondColorArray[4];
                         }
@@ -620,9 +640,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                             return  bondColorArray[5];
                         }
                         else {
-                            element = get_element(get_radial_bond_atom_1(i)) % 4;
-                            grad = bondColorArray[element];
-                            return grad;
+                            //element = get_element(get_radial_bond_atom_1(i)) % 4;
+                            //grad = bondColorArray[element];
+                            return "#A4A4A4";
                         }
                     } else {
                         element = get_element(get_radial_bond_atom_1(i)) % 4;
@@ -643,7 +663,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                     return "#000000";
                 }
                 else {
-                    if (model.get("coulomb_forces")) {
+                    if (chargeShadingMode()) {
                         if (get_charge(get_radial_bond_atom_2(i)) > 0){
                             return  bondColorArray[4];
                         }
@@ -651,9 +671,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                             return  bondColorArray[5];
                         }
                         else {
-                            element = get_element(get_radial_bond_atom_2(i)) % 4;
-                            grad = bondColorArray[element];
-                            return grad;
+                            //element = get_element(get_radial_bond_atom_2(i)) % 4;
+                            //grad = bondColorArray[element];
+                            return "#A4A4A4";
                         }
                     } else {
                         element = get_element(get_radial_bond_atom_2(i)) % 4;
@@ -718,12 +738,16 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("x", "-0.31em")
             .attr("y", "0.31em")
             .text(function(d, i) {
-              if (model.get("coulomb_forces") && x(get_charge(i))) {
-                return (x(get_charge(i)) > 0) ? "+" : "–";
-              } else {
-                return;    // ""
-              }
-            });
+                if (chargeShadingMode()) {
+                    if (get_charge(i) > 0){
+                        return  "+";
+                    } else if (get_charge(i) < 0){
+                        return  "-";
+                    } else {
+                        return;
+                    }
+                }
+            })
       }
     }
 

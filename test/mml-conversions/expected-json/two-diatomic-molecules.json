@@ -2,6 +2,7 @@
   "temperature_control": false,
   "width": 5,
   "height": 5,
+  "chargeShading": false,
   "elements": [
     {
       "id": 0,

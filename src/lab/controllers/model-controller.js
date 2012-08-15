@@ -33,6 +33,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       temperature,
       width,
       height,
+      chargeShading,
       radialBonds,
       obstacles,
 
@@ -66,7 +67,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
     // Pass this function to be called by the model on every model step
     //
     // ------------------------------------------------------------
-
     function tickHandler() {
       moleculeContainer.update_drawable_positions();
     }
@@ -89,6 +89,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       temperature         = modelConfig.temperature;
       width               = modelConfig.width;
       height              = modelConfig.height;
+      chargeShading       = modelConfig.chargeShading;
       radialBonds         = modelConfig.radialBonds;
       obstacles           = modelConfig.obstacles;
     }
@@ -126,7 +127,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           temperature         : temperature,
           temperature_control : temperature_control,
           width               : width,
-          height              : height
+          height              : height,
+          chargeShading       : chargeShading
         });
 
       if (atoms) {
@@ -168,6 +170,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       moleculeContainer = Lab.moleculeContainer(moleculeViewId, {
         xmax:                 width,
         ymax:                 height,
+        chargeShading:        chargeShading,
         get_radial_bonds:     function() { return model.get_radial_bonds(); },
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },

@@ -2,6 +2,7 @@
   "width": 9.11,
   "height": 1.18,
   "temperature_control": false,
+  "chargeShading": false,
   "elements": [
       {
           "mass": 20,
