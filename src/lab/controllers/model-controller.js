@@ -195,6 +195,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       moleculeContainer.reset({
         xmax:          width,
         ymax:          height,
+        chargeShading:        chargeShading,
+        get_radial_bonds: function() { return model.get_radial_bonds(); },
         get_nodes:     function() { return model.get_nodes(); },
         get_num_atoms: function() { return model.get_num_atoms(); },
         get_obstacles: function() { return model.get_obstacles(); },
@@ -202,6 +204,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         play_only_controller: play_only_controller,
         playback_controller:  playback_controller
       });
+      moleculeContainer.updateMoleculeRadius();
+      moleculeContainer.setup_drawables();
     }
 
 
