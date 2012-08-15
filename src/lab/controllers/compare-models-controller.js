@@ -123,7 +123,8 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
           get_num_atoms:        function() { return model.get_num_atoms(); },
-          get_obstacles:        function() { return model.get_obstacles(); }
+          get_obstacles:        function() { return model.get_obstacles(); },
+          get_radial_bonds:     function() { return model.get_radial_bonds(); }
         }
       );
 
