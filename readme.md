@@ -127,17 +127,17 @@ If Bundler is not installed install it now:
 development dependencies.
 
 [npm](http://npmjs.org/), the Node Package Manager has been included as part of [nodejs](http://nodejs.org/)
-since version 0.6.3.
+since version 0.8.7.
 
 Install the latest stable version of node (currently v0.6.18) with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
 
 Currently development is being done with these versions of node and npm:
 
     $ node -v
-    v0.6.18
+    v0.8.7
 
     $ npm -v
-    1.1.21
+    1.1.49
 
 #### CouchDB
 
@@ -174,12 +174,12 @@ Java to be installed.
 ##### Customize Maven mirror
 
 **Note:** Currently in order to compile OTrunk a very old version of the maven jarjar plugin is
-needed (v0.4). Only newer versions of the jarjar plugin are available in the public Maven artifact 
+needed (v0.4). Only newer versions of the jarjar plugin are available in the public Maven artifact
 repositories. Until OTrunk is updated you will need to include the Concord nexus Maven mirror
 (which has v0.4 of the maven jarjar plugin) in `~/.m2/settings.xml`.
 
 A minimal working `~/.m2/settings.xml` will look like this:
-    
+
     <?xml version="1.0"?>
     <settings>
       <mirrors>
@@ -470,7 +470,7 @@ The self-signed `lab-sample-keystore,jks` keystore was generated with the Java k
 ##### Building the Java Resources
 
 **Note:** Currently in order to compile OTrunk you need to include the Concord nexus Maven mirror in `~/.m2/settings.xml`. See [Customize Maven mirror](#customize_aven_mirror)
-    
+
 Run `make jnlp-all` to erase, build, package, sign and deploy all the Java resurces.
 
 The first time this task is run it:
@@ -522,7 +522,7 @@ additional build information in the `:build` option.
 
     The `trunk` branch of the otrunk repo will be checked out into `./java/otrunk` and be built using Maven.
     Because the otrunk jar is used with the sensor-applet code (which uses a native library) it must also be signed.
-    
+
 2. `:ant`
 3. `:custom`
 
@@ -541,7 +541,7 @@ additional build information in the `:build` option.
     In this case `MANUAL_JAR_BUILD` has been defined as:
 
         MANUAL_JAR_BUILD = "rm -rf bin; mkdir bin; find src -name *.java | xargs javac -target 5 -sourcepath src -d bin"
-        
+
 4. `:copy_jars`
 5. `:download`
 
@@ -621,7 +621,7 @@ Restart the server and the request should now suceed:
     Content-Type: application/java-archive
     Content-Length: 34632
     content-encoding: pack200-gzip
-    
+
 ## Contributing to Lab
 
 If you think you'd like to contribute to Lab as an external developer:
@@ -1320,7 +1320,7 @@ AWS account.**
     by CC the `lab.dev` security group is used.
 5.  Edit the `:deploy` section of `config/config.yml` using values in `config/config_sample.yml`
     as a guide.
-    
+
     Here's an example from the `:deploy` section of a working `config.yml`:
 
         :deploy:
@@ -1338,11 +1338,11 @@ AWS account.**
     There is one deploy target named `lab-dev` associated with a server running at `lab.dev.concord.org`.
     Deployments to `lab-dev` use the master branch of the repository. The `lab.dev` security group is
     used when new servers are created or existing sever are re-created.
-    
+
     When a whole new server is created the DNS entry is created in the `concord.org.` zone domain and
     when searching for an existing DNS entry for a `deploy-target` the zone record name `dev.concord.org`
     is used.
-    
+
     Besides the AWS Access Key ID and AWS Secret Access Key security credentials copyied locally to
     to the file `~/.fog` the `lab-dev.pem` file saved in the directory: `~/.ec2` is also used when
     communicating with AWS.
