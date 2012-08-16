@@ -43,16 +43,27 @@ class ModelControllerComponent
 
     @vertical_padding = (@height - @unit_width) / 2
     @stroke_width     = @unit_width / 10
+
     this.init_view()
+    this.setup_buttons()
+
+    if @playable.playing
+      this.hide(@play)
+    else
+      this.hide(@stop)
 
   # return pixel offset of button (key)
-  offset: (key) ->
-    return @offsets[key] * (@unit_width * 2)  + @unit_width
+  offset: (offset) ->
+    return offset * (@unit_width * 2)  + @unit_width
+
+  # overwrite this function to define buttons
+  setup_buttons: ->
 
   # TODO: make a button class
-  make_button: (button_name, type, point_set) ->
+  make_button: ({action, offset, type, point_set}) ->
+    type ?= "svg:polyline"
     button_group = @group.append('svg:g')
-    xoffset = this.offset(button_name)
+    offset = this.offset(offset)
     button_group
       .attr("class", "component playbacksvgbutton")
       .attr('x', x)
@@ -63,7 +74,7 @@ class ModelControllerComponent
     # button background
     button_bg = button_group.append('rect')
     button_bg.attr('class', 'bg')
-      .attr('x', xoffset)
+      .attr('x', offset)
       .attr('y', @vertical_padding/3)
       .attr('width', @unit_width*2)
       .attr('height', @unit_width*1.5)
@@ -71,14 +82,14 @@ class ModelControllerComponent
     # button symbol
     for points in point_set
       art = button_group.append(type)
-      art.attr('class', "#{button_name} button-art")
+      art.attr('class', "#{action} button-art")
       points_string = ""
       for point in points
-        x = xoffset + 10 + point['x'] * @unit_width
+        x = offset + 10 + point['x'] * @unit_width
         y = @vertical_padding/.75 + point['y'] * @unit_width
         points_string = points_string + " #{x},#{y}"
         art.attr('points',points_string)
-      if button_name == 'stop'
+      if action == 'stop'
         art2 = button_group.append('rect')
         art2.attr('class','pause-center')
           .attr('x',x + @unit_width/3)
@@ -88,12 +99,12 @@ class ModelControllerComponent
     # button highlight
     button_highlight = button_group.append('rect')
     button_highlight.attr('class', 'highlight')
-      .attr('x', xoffset + 1)
+      .attr('x', offset + 1)
       .attr('y', @vertical_padding/1.85)
       .attr('width', @unit_width*2-2)
       .attr('height', @unit_width/1.4)
       .attr('rx', '0')
-    button_group.on 'click',  => this.action(button_name)
+    button_group.on 'click',  => this.action(action)
     return button_group
 
   action: (action)->
@@ -109,37 +120,6 @@ class ModelControllerComponent
     else console.log("no @playable defined")
     this.update_ui()
 
-  # |>
-  init_play_button: ->
-    points = [[
-      {x: 0, y: 0  },
-      {x: 1, y: 0.5},
-      {x: 0, y: 1  }
-    ]]
-    @play = this.make_button('play', 'svg:polygon', points)
-
-  # []
-  init_stop_button: ->
-    points = [[
-      {x: 0, y: 0  },
-      {x: 1, y: 0  },
-      {x: 1, y: 1  },
-      {x: 0, y: 1  },
-      {x: 0, y: 0  }
-    ]]
-    @stop = this.make_button('stop', 'svg:polygon', points)
-
-  # ||
-  init_pause_button: ->
-    points = [[
-      {x: .5, y: .5  },
-      {x: .5, y: 0  },
-      {x: .5, y: 1  },
-      {x: 0, y: 1  },
-      {x: 0, y: 0  }
-    ]]
-    @pause = this.make_button('pause', 'svg:polygon', points)
-
   init_view: ->
     @svg = @svg_element.append("svg:svg")
       .attr("class", "component model-controller playbacksvg")
@@ -150,13 +130,6 @@ class ModelControllerComponent
         .attr("transform", "scale(" + @scale + "," + @scale + ")")
         .attr("width", @width)
         .attr("height",@height);
-
-    this.init_play_button()
-    this.init_stop_button()
-    if @playable.playing
-      this.hide(@play)
-    else
-      this.hide(@stop)
 
   position: (xpos, ypos, scale) ->
     @xpos = xpos
