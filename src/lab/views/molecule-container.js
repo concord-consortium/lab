@@ -338,13 +338,14 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
 
-        vis.append("image")
-          .attr("x", 5)
-          .attr("id", "heat_bath")
-          .attr("y", 5)
-          .attr("width", 16)
-          .attr("height", 16)
-          .attr("xlink:href", "../../resources/heatbath.gif")
+      vis.append("image")
+        .attr("x", 5)
+        .attr("id", "heat_bath")
+        .attr("y", 5)
+        .attr("width", 16)
+        .attr("height", 16)
+        .attr("xlink:href", "../../resources/heatbath.gif")
+
       model.addPropertiesListener(["temperature_control"], updateHeatBath);
       updateHeatBath();
 
