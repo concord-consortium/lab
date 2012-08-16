@@ -40,3 +40,6 @@
 [submodule "src/vendor/text"]
 	path = src/vendor/text
 	url = git://github.com/requirejs/text.git
+[submodule "src/vendor/almond"]
+	path = src/vendor/almond
+	url = git://github.com/jrburke/almond.git
