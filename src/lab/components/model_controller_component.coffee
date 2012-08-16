@@ -68,7 +68,7 @@ class ModelControllerComponent
     button_group = @group.append('svg:g')
     button_group
       .attr("class", "component playbacksvgbutton")
-      .attr('x', x)
+      .attr('x', offset)
       .attr('y',@vertical_padding)
       .attr('width',@unit_width)
       .attr('height',@unit_width*2)
@@ -171,12 +171,15 @@ class ModelControllerComponent
         {x: 0, y: 0  }
       ]]
     reset: [[
-        {x: 0,    y: 0}
-        {x: 0,    y: 1}
-        {x: 1,    y: 1}
-        {x: 1,    y: 0}
-        {x: 0.25, y: 0}
-        {x: 0.5,  y: 0.25}
+        {x: 1  , y: 0    }
+        {x: 0.3, y: 0.5  }
+        {x: 1,   y: 1    }
+      ], [
+        {x: 0, y: 0  }
+        {x: 0.3, y: 0  }
+        {x: 0.3, y: 1  }
+        {x: 0, y: 1  }
+        {x: 0, y: 0  }
       ]]
     back: [[
         {x: 0.5, y: 0    }
