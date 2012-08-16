@@ -2,7 +2,7 @@
   "model": {
     "url": "/imports/legacy-mw-content/converted/visual/Recycling/ceramicforcesimple$0.json",
     "viewOptions": {
-      "controlButtons": ["play", "reset"]
+      "controlButtons": "play_reset_step"
     }
   },
   "components": [

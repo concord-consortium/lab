@@ -2,7 +2,7 @@
   "model": {
     "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json",
     "viewOptions": {
-      "controlButtons": ["play"]
+      "controlButtons": "play"
     }
   },
   "components": [
