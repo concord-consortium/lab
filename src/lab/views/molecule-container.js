@@ -338,8 +338,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("x", 5)
         .attr("id", "heat_bath")
         .attr("y", 5)
-        .attr("width", 16)
-        .attr("height", 16)
+        .attr("width", "3%")
+        .attr("height", "3%")
         .attr("xlink:href", "../../resources/heatbath.gif")
 
       model.addPropertiesListener(["temperature_control"], updateHeatBath);
