@@ -136,7 +136,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
     };
     if (options.play_only_controller) {
-      pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
+      pc_xpos = padding.left + (size.width - (75 * scale_factor))/2;
     }
     pc_ypos = cy - 42 * scale_factor;
     mw = size.width;
