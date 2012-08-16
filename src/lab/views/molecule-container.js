@@ -50,8 +50,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         title:                false,
         xlabel:               false,
         ylabel:               false,
-        playback_controller:  false,
-        play_only_controller: true,
+        control_buttons:      "play",
         model_time_label:     false,
         grid_lines:           false,
         xunits:               false,
@@ -110,8 +109,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       padding.bottom += (35  * scale_factor);
     }
 
-    if (options.playback_controller || options.play_only_controller) {
+    if (options.control_buttons) {
       padding.bottom += (40  * scale_factor);
+    } else {
+      padding.bottom += (15  * scale_factor);
     }
     if (!arguments.length) {
       cy = elem.property("clientHeight");
@@ -132,12 +133,19 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     };
 
     offset_top = node.offsetTop + padding.top;
-    if (options.playback_controller) {
-      pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
-    };
-    if (options.play_only_controller) {
-      pc_xpos = padding.left + (size.width - (75 * scale_factor))/2;
+
+    switch (options.control_buttons) {
+      case "play":
+        pc_xpos = padding.left + (size.width - (75 * scale_factor))/2;
+        break;
+      case "play_reset":
+        pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
+        break;
+      case "play_reset_step":
+      default:
+        pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
     }
+
     pc_ypos = cy - 42 * scale_factor;
     mw = size.width;
     mh = size.height;
@@ -436,7 +444,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 */
       }
 
-      if (options.playback_controller || options.play_only_controller) {
+      if (options.playback_controller) {
         playback_component.position(pc_xpos, pc_ypos, scale_factor);
       }
       redraw();
@@ -445,11 +453,18 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     // Process options that always have to be recreated when container is reloaded
     d3.select('.model-controller').remove();
-    if (options.playback_controller) {
-      playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
-    }
-    if (options.play_only_controller) {
-      playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+    switch (options.control_buttons) {
+      case "play":
+        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+        break;
+      case "play_reset":
+        playback_component = new PlayResetComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+        break;
+      case "play_reset_step":
+        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+        break;
+      default:
+        playback_component = null;
     }
 
     function redraw() {

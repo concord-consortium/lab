@@ -21,10 +21,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       layoutStyle,
       controlButtons,
 
-      // inferred from controlButtons
-      play_only_controller,
-      playback_controller,
-
       // properties read from the modelConfig hash
       elements,
       atoms,
@@ -96,32 +92,12 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     // ------------------------------------------------------------
     //
-    // Fake an understanding of the controlButtons list. Full
-    // implementation will require a better model for control button
-    // views.
-    //
-    // ------------------------------------------------------------
-    function parseControlButtons() {
-      play_only_controller = false;
-      playback_controller = false;
-
-      if (controlButtons.length === 1 && controlButtons[0] === 'play') {
-        play_only_controller = true;
-      }
-      else if (controlButtons.length > 1) {
-        playback_controller = true;
-      }
-    }
-
-    // ------------------------------------------------------------
-    //
     // Create model and pass in properties
     //
     // ------------------------------------------------------------
 
     function createModel() {
       initializeLocalVariables();
-      parseControlButtons();
       model = modeler.model({
           elements            : elements,
           temperature         : temperature,
@@ -176,8 +152,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_num_atoms:        function() { return model.get_num_atoms(); },
         get_obstacles:        function() { return model.get_obstacles(); },
 
-        play_only_controller: play_only_controller,
-        playback_controller:  playback_controller
+        control_buttons:      controlButtons
       });
 
       moleculeContainer.updateMoleculeRadius();
@@ -193,16 +168,15 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       // ------------------------------------------------------------
 
       moleculeContainer.reset({
-        xmax:          width,
-        ymax:          height,
+        xmax:                 width,
+        ymax:                 height,
         chargeShading:        chargeShading,
-        get_radial_bonds: function() { return model.get_radial_bonds(); },
-        get_nodes:     function() { return model.get_nodes(); },
-        get_num_atoms: function() { return model.get_num_atoms(); },
-        get_obstacles: function() { return model.get_obstacles(); },
+        get_radial_bonds:     function() { return model.get_radial_bonds(); },
+        get_nodes:            function() { return model.get_nodes(); },
+        get_num_atoms:        function() { return model.get_num_atoms(); },
+        get_obstacles:        function() { return model.get_obstacles(); },
 
-        play_only_controller: play_only_controller,
-        playback_controller:  playback_controller
+        control_buttons:      controlButtons
       });
       moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_drawables();

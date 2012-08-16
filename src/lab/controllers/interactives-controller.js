@@ -7,7 +7,7 @@ controllers.interactivesController = function(interactive, viewSelector) {
       $interactiveContainer,
       propertiesListeners = [],
       thermometer,
-      controlButtons = ["play"],
+      controlButtons = "play",
 
       //
       // Define the scripting API used by 'action' scripts on interactive elements.
@@ -238,7 +238,7 @@ controllers.interactivesController = function(interactive, viewSelector) {
     the view options for the model.
   */
   function processModelViewOptions(options) {
-    if (options.controlButtons) {
+    if (typeof options.controlButtons === "string") {
       controlButtons = options.controlButtons;
     }
   }

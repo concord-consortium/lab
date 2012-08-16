@@ -113,8 +113,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       model_player = new ModelPlayer(model, autostart);
       molecule_container = layout.moleculeContainer(molecule_view_id,
         {
-          playback_controller:  false,
-          play_only_controller: false,
+          control_buttons:      "",
           model_time_label:     true,
           grid_lines:           true,
           xunits:               true,
