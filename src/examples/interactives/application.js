@@ -33,6 +33,7 @@ DEVELOPMENT = true;
   if (hash = document.location.hash) {
     interactiveUrl = hash.substr(1, hash.length);
     selectInteractive.value = interactiveUrl;
+    $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
     $.get(interactiveUrl).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
