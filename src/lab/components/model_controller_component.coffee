@@ -62,8 +62,10 @@ class ModelControllerComponent
   # TODO: make a button class
   make_button: ({action, offset, type, point_set}) ->
     type ?= "svg:polyline"
-    button_group = @group.append('svg:g')
+    point_set ?= @icon_shapes[action]
     offset = this.offset(offset)
+
+    button_group = @group.append('svg:g')
     button_group
       .attr("class", "component playbacksvgbutton")
       .attr('x', x)
@@ -154,6 +156,46 @@ class ModelControllerComponent
     thing.style('visibility', 'hidden')
   show: (thing) ->
     thing.style('visibility', 'visible')
+
+  icon_shapes:
+    play: [[
+        {x: 0, y: 0  }
+        {x: 1, y: 0.5}
+        {x: 0, y: 1  }
+      ]]
+    stop: [[
+        {x: 0, y: 0  }
+        {x: 1, y: 0  }
+        {x: 1, y: 1  }
+        {x: 0, y: 1  }
+        {x: 0, y: 0  }
+      ]]
+    reset: [[
+        {x: 0,    y: 0}
+        {x: 0,    y: 1}
+        {x: 1,    y: 1}
+        {x: 1,    y: 0}
+        {x: 0.25, y: 0}
+        {x: 0.5,  y: 0.25}
+      ]]
+    back: [[
+        {x: 0.5, y: 0    }
+        {x: 0,   y: 0.5  }
+        {x: 0.5, y: 1    }
+      ],[
+        {x: 1  , y: 0    }
+        {x: 0.5, y: 0.5  }
+        {x: 1,   y: 1    }
+      ]]
+    forward: [[
+        {x: 0.5, y: 0    }
+        {x: 1,   y: 0.5  }
+        {x: 0.5, y: 1    }
+      ], [
+        {x: 0,   y: 0    }
+        {x: 0.5, y: 0.5  }
+        {x: 0,   y: 1    }
+      ]]
 
 # these next lines make the classes available on the window.
 # use like this:
