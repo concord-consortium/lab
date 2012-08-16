@@ -49,6 +49,7 @@
       "width": [ 1.11 ],
       "height": [ 0.56 ],
       "density": [ "Infinity" ],
-      "color": [ [0, 0, 255] ]
+      "color": [ [0, 0, 255] ],
+      "visible": [ true ]
   }
 }

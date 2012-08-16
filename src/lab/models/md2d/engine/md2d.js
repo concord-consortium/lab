@@ -143,7 +143,8 @@ exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
   Y_PREV  :  8,
   COLOR_R :  9,
   COLOR_G :  10,
-  COLOR_B :  11
+  COLOR_B :  11,
+  VISIBLE :  12
 };
 
 exports.RADIAL_INDICES = RADIAL_INDICES = {
@@ -365,6 +366,7 @@ exports.makeModel = function() {
 
       createObstaclesArray = function(num) {
         var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+            uint8   = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
             ind     = OBSTACLE_INDICES;
 
         obstacles = model.obstacles = [];
@@ -381,6 +383,7 @@ exports.makeModel = function() {
         obstacles[ind.COLOR_R]  = obstacleColorR = arrays.create(num, 0, float32);
         obstacles[ind.COLOR_G]  = obstacleColorG = arrays.create(num, 0, float32);
         obstacles[ind.COLOR_B]  = obstacleColorB = arrays.create(num, 0, float32);
+        obstacles[ind.VISIBLE]  = obstacleVisible = arrays.create(num, 0, uint8);
       },
 
 
@@ -1019,7 +1022,7 @@ exports.makeModel = function() {
     },
 
 
-    addObstacle: function(x, y, width, height, density, color) {
+    addObstacle: function(x, y, width, height, density, color, visible) {
       var mass;
 
       if (N_obstacles+1 > obstacleX.length) {
@@ -1045,6 +1048,8 @@ exports.makeModel = function() {
       obstacleColorR[N_obstacles] = color[0];
       obstacleColorG[N_obstacles] = color[1];
       obstacleColorB[N_obstacles] = color[2];
+
+      obstacleVisible[N_obstacles] = visible;
 
       N_obstacles++;
     },
@@ -1147,7 +1152,7 @@ exports.makeModel = function() {
 
       createObstaclesArray(num);
       for (i = 0; i < num; i++) {
-        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i]);
+        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i], props.visible[i]);
       }
     },
 

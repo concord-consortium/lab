@@ -33,6 +33,13 @@ parseMML = (mmlString) ->
     getProperty = ($node, propertyName) ->
       $node.find("[property=#{propertyName}]").text()
 
+    parseBoolean = (str, defaultOption) ->
+      bool = str.replace(/^\s+|\s+$/g, '')
+      if defaultOption
+        ! (bool == "false")
+      else
+        bool == true
+
     ### Scale MML length units to nextgen length units ###
     toNextgenLengths = (ls...) -> l/100 for l in ls
 
@@ -54,10 +61,12 @@ parseMML = (mmlString) ->
       for node in obstacleNodes
         $node = getNode cheerio node
 
-        height = parseFloat getProperty $node, 'height'
-        width  = parseFloat getProperty $node, 'width'
-        x      = parseFloat getProperty $node, 'x'
-        y      = parseFloat getProperty $node, 'y'
+        height  = parseFloat getProperty $node, 'height'
+        width   = parseFloat getProperty $node, 'width'
+        x       = parseFloat getProperty $node, 'x'
+        y       = parseFloat getProperty $node, 'y'
+
+        visible = parseBoolean (getProperty $node, 'visible'), true
 
         density = parseFloat getProperty $node, 'density'
 
@@ -86,7 +95,7 @@ parseMML = (mmlString) ->
         [height, width] = toNextgenLengths height, width
         y               = y - height     # flip to lower-left coordinate system
 
-        obstacles.push { x, y, height, width, density, color }
+        obstacles.push { x, y, height, width, density, color, visible }
 
       obstacles
 
@@ -296,7 +305,7 @@ parseMML = (mmlString) ->
       json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength'
 
     if obstacles.length > 0
-      json.obstacles = unroll obstacles, 'x', 'y', 'height', 'width', 'density', 'color'
+      json.obstacles = unroll obstacles, 'x', 'y', 'height', 'width', 'density', 'color', 'visible'
 
     json.temperature = temperature if temperature
 

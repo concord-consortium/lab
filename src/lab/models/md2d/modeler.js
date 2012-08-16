@@ -124,7 +124,8 @@ modeler.model = function(initialProperties) {
     HEIGHT   : md2d.OBSTACLE_INDICES.HEIGHT,
     COLOR_R  : md2d.OBSTACLE_INDICES.COLOR_R,
     COLOR_G  : md2d.OBSTACLE_INDICES.COLOR_G,
-    COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B
+    COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B,
+    VISIBLE  : md2d.OBSTACLE_INDICES.VISIBLE,
   };
   
   model.RADIAL_INDICES = {

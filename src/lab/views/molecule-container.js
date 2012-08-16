@@ -238,6 +238,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       obstacles[model.OBSTACLE_INDICES.COLOR_G][i] + "," +
       obstacles[model.OBSTACLE_INDICES.COLOR_B][i] + ")";
   }
+
+  function get_obstacle_visible(i) {
+    return obstacles[model.OBSTACLE_INDICES.VISIBLE][i];
+  }
+
   function get_radial_bond_atom_1(i) {
     return radialBonds[model.RADIAL_INDICES.ATOM1][i];
   }
@@ -615,8 +620,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("y", function(d, i) {return y(get_obstacle_y(i) + get_obstacle_height(i)); })
           .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
           .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); })
-          .style("fill", function(d, i) {return get_obstacle_color(i); })
-          .style("stroke-width", 0.2)
+          .style("fill", function(d, i) {
+            return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; })
+          .style("stroke-width", function(d, i) {return get_obstacle_visible(i) ? 0.2 : 0.0})
           .style("stroke", "black");
     }
 
