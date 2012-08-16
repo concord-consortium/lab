@@ -276,6 +276,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     //   size.height = cy - padding.top  - padding.bottom;
     // }
     scale();
+
+    // create container, or update properties if it already exists
     if (vis === undefined) {
       vis1 = d3.select(node).append("svg")
         .attr("width", cx)
@@ -330,12 +332,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("y", size.height)
             .attr("dy","2.4em")
             .style("text-anchor","start");
-      }
-      if (options.playback_controller) {
-        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
-      }
-      if (options.play_only_controller) {
-        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
 
       vis.append("image")
@@ -445,6 +441,15 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
       redraw();
 
+    }
+
+    // Process options that always have to be recreated when container is reloaded
+    d3.select('.model-controller').remove();
+    if (options.playback_controller) {
+      playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+    }
+    if (options.play_only_controller) {
+      playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
     }
 
     function redraw() {

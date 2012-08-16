@@ -113,7 +113,7 @@ class PlayOnlyComponentSVG
 
   init_view: ->
     @svg = @svg_element.append("svg:svg")
-      .attr("class", "component playbacksvg")
+      .attr("class", "component model-controller playbacksvg")
       .attr("x", @xpos)
       .attr("y", @ypos);
 
