@@ -712,6 +712,39 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                     .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
     }
 
+    function drawAttractionForces(){
+        /*Logic for drawing attraction forces between atoms */
+        for(var atom1 = 0;atom1 < mock_atoms_array.length;atom1++){
+            for(var atom2 =0 ;atom2<atom1;atom2++) {
+                var xs = (x(get_x(atom1))-x(get_x(atom2)));
+                var ys = (y(get_y(atom1))-y(get_y(atom2)));
+                var dist;
+                xs = xs * xs;
+                ys = ys * ys;
+                dist =  Math.sqrt( xs + ys );
+                if (dist <= 70 &&
+                    (((get_charge(atom1) == 0) && (get_charge(atom2) == 0))
+                        || ((get_charge(atom1) == 0) && (get_charge(atom2) < 0))
+                        || ((get_charge(atom1) == 0) && (get_charge(atom2) > 0))
+                        || ((get_charge(atom1) < 0) && (get_charge(atom2) == 0))
+                        || ((get_charge(atom1) > 0) && (get_charge(atom2) == 0))
+                        || (((get_charge(atom1) > 0) && (get_charge(atom2) < 0))
+                        || (get_charge(atom1) < 0) && (get_charge(atom2) > 0))))
+                {
+                    gradient_container.append("line")
+                        .attr("x1", x(get_x(atom1)))
+                        .attr("y1", y(get_y(atom1)))
+                        .attr("x2", x(get_x(atom2)))
+                        .attr("y2", y(get_y(atom2)))
+                        .style("stroke-width", 1)
+                        .style("stroke", "#000000")
+                        .style("stroke-dasharray", "5 3");
+                }
+            }
+        }
+        /*Logic for drawing attraction forces between atoms */
+    }
+
     function setup_drawables() {
       setup_obstacles();
       setup_radial_bonds();
@@ -801,7 +834,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       radialBond = gradient_container.selectAll("line").data(mock_radial_bond_array);
 
-       radialBondEnter(radialBond);
+      drawAttractionForces();
+      radialBondEnter(radialBond);
     }
 
     function mousedown() {
