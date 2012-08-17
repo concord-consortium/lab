@@ -43,3 +43,6 @@
 [submodule "src/vendor/almond"]
 	path = src/vendor/almond
 	url = git://github.com/jrburke/almond.git
+[submodule "src/vendor/domReady"]
+	path = src/vendor/domReady
+	url = git://github.com/requirejs/domReady.git

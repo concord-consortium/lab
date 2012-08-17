@@ -43,7 +43,9 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 15. [text](https://github.com/requirejs/text): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-16. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
+16. [domReady](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+    and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
+17. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
     Codemirror2 includes a number of modules from third parties. All of the modules are licensed under either the MIT or BSD
     license except for the following which are excluded during the Make process where resources from `src/vendor/` are
     generated and copied to `server/public/vendor/`.

@@ -8,8 +8,10 @@ JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
+R_OPTIMIZER = ./node_modules/.bin/r.js
 
 LAB_SRC_FILES := $(shell find src/lab -type f -print)
+ENERGY2D_SRC_FILES := $(shell find src/lab/energy2d -type f -print)
 MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
 
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
@@ -41,6 +43,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.molecules.js \
+	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.components.js \
 	server/public/lab/lab.controllers.js \
 	server/public/lab/lab.deprecated-controllers.js \
@@ -217,6 +220,7 @@ server/public/vendor: \
 	server/public/vendor/lightgl.js \
 	server/public/vendor/requirejs \
 	server/public/vendor/text \
+	server/public/vendor/domReady \
 	server/public/favicon.ico
 
 server/public/vendor/dsp.js:
@@ -304,6 +308,12 @@ server/public/vendor/text:
 	cp src/vendor/text/LICENSE server/public/vendor/text
 	cp src/vendor/text/README.md server/public/vendor/text
 
+server/public/vendor/domReady:
+	mkdir -p server/public/vendor/domReady
+	cp src/vendor/domReady/domReady.js server/public/vendor/domReady
+	cp src/vendor/domReady/LICENSE server/public/vendor/domReady
+	cp src/vendor/domReady/README.md server/public/vendor/domReady
+
 server/public/vendor/codemirror2:
 	mkdir -p server/public/vendor/codemirror2
 	cp src/vendor/codemirror2/LICENSE server/public/vendor/codemirror2
@@ -348,6 +358,9 @@ server/public/lab/lab.js: \
 	server/public/lab/lab.components.js \
   server/public/lab/lab.controllers.js \
   server/public/lab/lab.deprecated-controllers.js
+
+server/public/lab/lab.energy2d.js: $(ENERGY2D_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/energy2d/energy2d.build.js
 
 server/public/lab/lab.grapher.js: \
 	src/lab/start.js \
