@@ -2,19 +2,13 @@
 # A simplistic player-wrapper for the model
 ############################################
 class ModelPlayer
-  constructor: (@model, playing)->
-    if (arguments.length > 1)
-      @playing = playing
-    else
-      @playing = true
+  constructor: (@model)->
 
   play: ->
     @model.resume()
-    @playing = true
 
   stop: ->
     @model.stop()
-    @playing = false
 
   forward: ->
     this.stop()
@@ -27,6 +21,9 @@ class ModelPlayer
   seek: (float_index) ->
     this.stop()
     @model.seek(float_index)
+
+  isPlaying: ->
+    !@model.is_stopped()
 
 ############################################
 # The player UI
@@ -47,10 +44,13 @@ class ModelControllerComponent
     this.init_view()
     this.setup_buttons()
 
-    if @playable.playing
+    if @playable.isPlaying()
       this.hide(@play)
     else
       this.hide(@stop)
+
+
+    model.addPropertiesListener(["play", "stop"], => this.update_ui())
 
   # return pixel offset of button (key)
   offset: (offset) ->
@@ -145,7 +145,7 @@ class ModelControllerComponent
 
   update_ui: ->
     if @playable
-      if @playable.playing
+      if @playable.isPlaying()
         this.hide(@play)
         this.show(@stop)
       else

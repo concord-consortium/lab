@@ -53,6 +53,10 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           if (n === 1) {
             reload(modelConfig, playerConfig);
           }
+        },
+
+        is_stopped: function() {
+          return model.is_stopped();
         }
       };
 
