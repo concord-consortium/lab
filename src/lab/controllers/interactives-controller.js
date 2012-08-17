@@ -48,6 +48,7 @@ controllers.interactivesController = function(interactive, viewSelector) {
         },
 
         loadModel: function loadModel(modelUrl) {
+          model.stop();
           controller.loadModel(modelUrl);
         },
 
