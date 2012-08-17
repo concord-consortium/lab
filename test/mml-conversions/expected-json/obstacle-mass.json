@@ -3,6 +3,7 @@
   "height": 1.18,
   "temperature_control": false,
   "chargeShading": false,
+  "showVDWLines": false,
   "elements": [
       {
           "mass": 20,

@@ -3,6 +3,7 @@
   "width": 5,
   "height": 5,
   "chargeShading": false,
+  "showVDWLines": false,
   "elements": [
     {
       "id": 0,

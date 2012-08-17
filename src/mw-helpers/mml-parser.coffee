@@ -38,7 +38,7 @@ parseMML = (mmlString) ->
       if defaultOption
         ! (bool == "false")
       else
-        bool == true
+        bool == "true"
 
     ### Scale MML length units to nextgen length units ###
     toNextgenLengths = (ls...) -> l/100 for l in ls
@@ -111,6 +111,11 @@ parseMML = (mmlString) ->
     ###
     viewChargeShadingProps = $mml(".java-beans-XMLDecoder")
     chargeShading  = viewChargeShadingProps.find("[property=chargeShading] boolean").text()
+    ###
+      Show VDW Lines?
+    ###
+    showVDWLines = parseBoolean($mml("[property=showVDWLines] boolean").text(), false)
+
     ###
       Find the view-port size
     ###
@@ -292,6 +297,7 @@ parseMML = (mmlString) ->
       width               : width
       height              : height
       chargeShading       : !!chargeShading
+      showVDWLines        : !!showVDWLines
       elements            : elemTypes
       atoms :
         X : x
