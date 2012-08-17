@@ -702,6 +702,7 @@ modeler.model = function(initialProperties) {
   model.stop = function() {
     stopped = true;
     dispatch.stop();
+    notifyListenersOfEvents("stop");
     return model;
   };
 
