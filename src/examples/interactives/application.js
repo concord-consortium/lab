@@ -27,7 +27,7 @@ DEVELOPMENT = true;
   selectInteractive.onchange = selectInteractiveHandler;
 
   if (!document.location.hash) {
-     document.location.hash = '#interactives/heat-and-cool-example.json';
+    selectInteractiveHandler();
   }
 
   if (hash = document.location.hash) {
