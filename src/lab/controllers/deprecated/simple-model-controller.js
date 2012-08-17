@@ -31,6 +31,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       width,
       height,
       chargeShading,
+      showVDWLines,
       radialBonds,
       obstacles,
 
@@ -61,6 +62,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       width               = modelConfig.width;
       height              = modelConfig.height;
       chargeShading       = modelConfig.chargeShading;
+      showVDWLines        = modelConfig.showVDWLines;
       radialBonds         = modelConfig.radialBonds;
       obstacles           = modelConfig.obstacles;
     }
@@ -94,8 +96,8 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
           temperature_control: temperature_control,
           width: width,
           height: height,
-          chargeShading: chargeShading
-
+          chargeShading: chargeShading,
+          showVDWLines: showVDWLines
       });
 
       if (atoms_properties) {

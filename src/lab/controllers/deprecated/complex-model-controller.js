@@ -40,6 +40,7 @@ controllers.complexModelController =
       width               = modelConfig.width,
       height              = modelConfig.height,
       chargeShading       = modelConfig.chargeShading,
+      showVDWLines        = modelConfig.showVDWLines,
       radialBonds         = modelConfig.radialBonds,
       obstacles           = modelConfig.obstacles,
 
@@ -122,7 +123,8 @@ controllers.complexModelController =
           temperature_control: temperature_control,
           width: width,
           height: height,
-          chargeShading: chargeShading
+          chargeShading: chargeShading,
+          showVDWLines: showVDWLines
         });
 
       if (atoms_properties) {
@@ -171,6 +173,7 @@ controllers.complexModelController =
           ymin:                 0,
           ymax:                 height,
           chargeShading:        chargeShading,
+          showVDWLines:         showVDWLines,
           get_radial_bonds:     function() { return model.get_radial_bonds(); },
           get_nodes:            function() { return model.get_nodes(); },
           get_num_atoms:        function() { return model.get_num_atoms(); },

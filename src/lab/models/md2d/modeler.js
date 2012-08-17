@@ -16,6 +16,7 @@ modeler.model = function(initialProperties) {
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
+      chargeShading, showVDWLines,
       lennard_jones_forces, coulomb_forces,
       stopped = true,
       tick_history_list = [],
@@ -67,6 +68,8 @@ modeler.model = function(initialProperties) {
         coulomb_forces        : true,
         lennard_jones_forces  : true,
         temperature_control   : true,
+        chargeShading         : false,
+        showVDWLines          : false,
 
         set_temperature: function(t) {
           this.temperature = t;
@@ -280,7 +283,9 @@ modeler.model = function(initialProperties) {
         // look for set method first, otherwise just set the property
         if (properties["set_"+property]) {
           properties["set_"+property](hash[property]);
-        } else if (properties[property]) {
+        // why was the property not set if the default value property is false ??
+        // } else if (properties[property]) {
+        } else {
           properties[property] = hash[property];
         }
         propsChanged.push(property);
@@ -445,6 +450,8 @@ modeler.model = function(initialProperties) {
     // Initialize properties
     temperature_control = properties.temperature_control;
     temperature         = properties.temperature;
+    chargeShading       = properties.chargeShading;
+    showVDWLines        = properties.showVDWLines;
 
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);
