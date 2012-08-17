@@ -136,6 +136,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
           xmax:                 width,
           ymax:                 height,
           chargeShading:        chargeShading,
+          showVDWLines:         showVDWLines,
           get_radial_bonds:     function() { return model.get_radial_bonds(); },
           get_nodes:            function() { return model.get_nodes(); },
           get_num_atoms:        function() { return model.get_num_atoms(); },

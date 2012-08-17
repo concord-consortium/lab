@@ -4,6 +4,7 @@
   "temperature_control": false,
   "chargeShading": false,
   "showVDWLines": false,
+  "VDWLinesRatio": 1.99,
   "elements": [
       {
           "mass": 20,

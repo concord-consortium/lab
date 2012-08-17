@@ -16,7 +16,7 @@ modeler.model = function(initialProperties) {
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
-      chargeShading, showVDWLines,
+      chargeShading, showVDWLines,VDWLinesRatio,
       lennard_jones_forces, coulomb_forces,
       stopped = true,
       tick_history_list = [],
@@ -70,6 +70,7 @@ modeler.model = function(initialProperties) {
         temperature_control   : true,
         chargeShading         : false,
         showVDWLines          : false,
+        VDWLinesRatio         : 1.99,
 
         set_temperature: function(t) {
           this.temperature = t;
@@ -452,6 +453,7 @@ modeler.model = function(initialProperties) {
     temperature         = properties.temperature;
     chargeShading       = properties.chargeShading;
     showVDWLines        = properties.showVDWLines;
+    VDWLinesRatio       = properties.VDWLinesRatio;
 
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);

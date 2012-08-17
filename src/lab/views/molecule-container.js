@@ -267,8 +267,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     return radialBonds[model.RADIAL_INDICES.STRENGTH][i];
   }
     function chargeShadingMode() {
-//        alert(options.chargeShading);
-        if (options.chargeShading) {
+        if (model.get("chargeShading")) {
             return true;
         }
         else {
@@ -723,7 +722,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                 ys = ys * ys;
                 dist =  Math.sqrt( xs + ys );
                 if (dist <= 70 &&
-                    (((get_charge(atom1) == 0) && (get_charge(atom2) == 0))
+                          (((get_charge(atom1) == 0) && (get_charge(atom2) == 0))
                         || ((get_charge(atom1) == 0) && (get_charge(atom2) < 0))
                         || ((get_charge(atom1) == 0) && (get_charge(atom2) > 0))
                         || ((get_charge(atom1) < 0) && (get_charge(atom2) == 0))
@@ -835,7 +834,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       radialBond = gradient_container.selectAll("line").data(mock_radial_bond_array);
 
-      drawAttractionForces();
+      if(model.get("showVDWLines")){
+          drawAttractionForces();
+      }
       radialBondEnter(radialBond);
     }
 

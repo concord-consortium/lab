@@ -328,6 +328,9 @@
   </void>
  </object>
  <object class="org.concord.mw2d.AtomisticView$State">
+   <void property="VDWLinesRatio">
+    <float>1.67</float>
+   </void>
   <void property="colorCode">
    <string>None</string>
   </void>

@@ -115,6 +115,8 @@ parseMML = (mmlString) ->
       Show VDW Lines?
     ###
     showVDWLines = parseBoolean($mml("[property=showVDWLines] boolean").text(), false)
+    VDWLinesRatio = $mml("[property=VDWLinesRatio] float")
+    VDWLinesRatio = if VDWLinesRatio.length != 0 then parseFloat(VDWLinesRatio.text()) else 1.99
 
     ###
       Find the view-port size
@@ -298,6 +300,7 @@ parseMML = (mmlString) ->
       height              : height
       chargeShading       : !!chargeShading
       showVDWLines        : !!showVDWLines
+      VDWLinesRatio       : VDWLinesRatio
       elements            : elemTypes
       atoms :
         X : x
