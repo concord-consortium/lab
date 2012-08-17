@@ -812,12 +812,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function setup_obstacles() {
+      gradient_container.selectAll("rect").remove();
+
       obstacles = get_obstacles();
       if (!obstacles) return;
 
       mock_obstacles_array.length = obstacles[0].length;
-
-      gradient_container.selectAll("rect").remove();
 
       obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
 
@@ -825,12 +825,13 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function setup_radial_bonds() {
+      gradient_container.selectAll("line").remove();
+
       radialBonds = getRadialBonds();
+
       if (!radialBonds) return;
 
       mock_radial_bond_array.length = radialBonds[0].length;
-
-      gradient_container.selectAll("line").remove();
 
       radialBond = gradient_container.selectAll("line").data(mock_radial_bond_array);
 

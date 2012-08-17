@@ -47,6 +47,11 @@ controllers.interactivesController = function(interactive, viewSelector) {
           if (model.get('temperature') > t) model.set({temperature: t});
         },
 
+        loadModel: function loadModel(modelUrl) {
+          model.stop();
+          controller.loadModel(modelUrl);
+        },
+
         // rudimentary debugging functionality
         alert: alert,
 
@@ -330,6 +335,7 @@ controllers.interactivesController = function(interactive, viewSelector) {
 
   // make these private variables and functions available
   controller.loadInteractive = loadInteractive;
+  controller.loadModel = loadModel;
 
   return controller;
 };
