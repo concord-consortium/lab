@@ -111,8 +111,8 @@ var
     // Use traditional approach.
     // Assume that dependencies are injected somehow (e.g. using HTML script tag).
 
-    // Use jQuery(window).ready as it's available when RequireJS is not used.
-    $(window).ready(applicationCallback);
+    // Use jQuery(window).load as it's available when RequireJS is not used.
+    $(window).load(applicationCallback);
   }
 
 }());
