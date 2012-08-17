@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*globals define: false, $: false*/
 
 // Description.
 //
@@ -8,10 +8,8 @@
 // Default div id = "energy2d-description",
 // Title class: "energy2d-description-title", Content class: "energy2d-description-content".
 
-define(function (require) {
+define(function () {
   'use strict';
-  // Dependencies.
-  var $ = require('jquery');
 
   return function DescriptionView(description) {
     var

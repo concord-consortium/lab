@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*globals define: false, $: false*/
 
 // Simulation time.
 //
@@ -7,10 +7,8 @@
 // If you want to style its components:
 // Default div id = "energy2d-time"
 
-define(function (require) {
+define(function () {
   'use strict';
-  // Dependencies.
-  var $ = require('jquery');
 
   return function TimeView(html_id) {
     var

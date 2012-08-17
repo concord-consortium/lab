@@ -24,7 +24,7 @@
 //  |.. connection 
 //  |.. parsing
 
-define(function (require) {
+define(function () {
   'use strict';
 
   return function PerformanceMonitor() {

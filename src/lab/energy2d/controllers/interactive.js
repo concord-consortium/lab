@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, ACTUAL_ROOT: false */
+/*globals define: false, $: false, ACTUAL_ROOT: false */
 
 // Basic Energy2D controller.
 //
@@ -10,7 +10,6 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    $ = require('jquery'),
     Modeler                = require('modeler'),
     PerformanceMonitor     = require('utils/performance-monitor'),
     PerformanceView        = require('views/performance'),

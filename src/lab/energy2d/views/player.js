@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*globals define: false, $: false*/
 
 // Simple player.
 //
@@ -14,10 +14,8 @@
 // Default div id = "energy2d-simulation-player",
 // Buttons ids: "sim-play", "sim-step", "sim-stop", "sim-reset".
 
-define(function (require) {
+define(function () {
   'use strict';
-  // Dependencies.
-  var $ = require('jquery');
 
   return function SimulationPlayerView(html_id) {
     var

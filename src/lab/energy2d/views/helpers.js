@@ -2,7 +2,7 @@
 /*globals define: false*/
 
 
-define(function (require) {
+define(function () {
   'use strict';
 
   // Return module with functions.

@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*globals define: false, $: false*/
 
 // Heatmap view.
 //
@@ -15,7 +15,6 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    $ = require('jquery'),
     ColorPalette = require('views/color-palette');
 
   return function HeatmapView(html_id) {

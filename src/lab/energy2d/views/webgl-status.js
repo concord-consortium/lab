@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*globals define: false, $: false*/
 
 // WebGL Status.
 // Presents available WebGL features.
@@ -10,7 +10,6 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    $ = require('jquery'),
     context = require('gpu/context'),
     Texture = require('gpu/texture');
 

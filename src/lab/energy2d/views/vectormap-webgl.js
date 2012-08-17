@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*globals define: false, $: false*/
 
 // Vectormap WebGL view.
 //
@@ -13,7 +13,6 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    $ = require('jquery'),
     context = require('gpu/context'),
     Shader  = require('gpu/shader'),
     Mesh    = require('gpu/mesh'),

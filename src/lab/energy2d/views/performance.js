@@ -1,14 +1,12 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*globals define: false, $: false*/
 
 // Performance Monitor View.
 //
 // getHTMLElement() method returns JQuery object with DIV that contains performance data.
 
-define(function (require) {
+define(function () {
   'use strict';
-  // Dependencies.
-  var $ = require('jquery');
 
   return function PerformanceView(html_id) {
     var

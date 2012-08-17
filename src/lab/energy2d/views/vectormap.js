@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*globals define: false, $: false*/
 
 // Vector map view.
 //
@@ -10,10 +10,8 @@
 // Set size of the vectormap using CSS rules. The view fits canvas dimensions to the real 
 // size of the HTML element to avoid low quality CSS scaling.
 
-define(function (require) {
+define(function () {
   'use strict';
-  // Dependencies.
-  var $ = require('jquery');
 
   return function VectormapView(html_id) {
     var

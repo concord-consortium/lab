@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, Uint8Array: false */
+/*globals define: false, Uint8Array: false, $: false */
 
 // Heatmap WebGL view.
 //
@@ -12,7 +12,6 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    $ = require('jquery'),
     context      = require('gpu/context'),
     Texture      = require('gpu/texture'),
     Shader       = require('gpu/shader'),

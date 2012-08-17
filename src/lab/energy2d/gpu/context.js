@@ -7,7 +7,7 @@
 // All clients interested in WebGL context should call:
 // getWebGLContext() function. If WebGL is not available, 
 // an appropriate error will be thrown.
-define(function (require) {
+define(function () {
   'use strict';
   // The internal `gl` variable holds the current WebGL context.
   var gl;

@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true, sub: true */
-/*globals define: false*/
+/*globals define: false, $: false*/
 
 define(function (require) {
   'use strict';

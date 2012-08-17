@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*globals define: false, $: false*/
 
 // Main Energy2D visualization container.
 //
@@ -18,7 +18,6 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    $ = require('jquery'),
     HeatmapView        = require('views/heatmap'),
     HeatmapWebGLView   = require('views/heatmap-webgl'),
     VectormapView      = require('views/vectormap'),
