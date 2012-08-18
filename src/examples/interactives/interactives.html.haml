@@ -44,7 +44,10 @@
         %option{:value => "interactives/recycling-plasticforces.json"} Recycling: Plastic Forces
         %option{:value => "interactives/recycling-metalforces.json"} Recycling: Metal Forces
         %option{:value => "interactives/recycling-tireforces.json"} Recycling: Tire Forces
-      %a#embeddable-link{:href => "../interactives-embeddable/interactives.html"} embeddable link
+
+      %a#embeddable-link{:href => "../interactives-embeddable/interactives.html", :class => "opens-in-new-window", :target => "_blank"} Embeddable
+      %a#java-mw-link{:href => "../../imports/legacy-mw-content/converted/", :class => "opens-in-new-window"} Java MW
+
 
     #content
       #viz
@@ -58,5 +61,6 @@
         %textarea#interactive-text-area
 
     %script{:src => "../../lab/lab.js", :type => "text/javascript"}
+    %script{:src => "../../imports/legacy-mw-content/model-list.js", :type => "text/javascript"}
     %script{:src => "application.js", :type => "text/javascript"}
 
