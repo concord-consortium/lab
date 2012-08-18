@@ -7,16 +7,17 @@ require 'optparse'
 require 'tempfile'
 
 puts <<HEREDOC
-
   JAVA_ROOT          #{JAVA_ROOT}
   PUBLIC_ROOT        #{PUBLIC_ROOT}
   JNLP_ROOT          #{JNLP_ROOT}
-
 HEREDOC
 
 @maven_update = ""
+@skip_build = false
+
 opts = OptionParser.new
 opts.on("--maven-update")	{ |val| @maven_update = " -U " }
+opts.on("--skip-build")	{ |val| @skip_build = true }
 project_names = opts.parse(ARGV)
 projects = {}
 
@@ -42,15 +43,16 @@ def checkout_project(project_path, project, options)
     Dir.chdir(project_path) do
       case options[:build_type]
       when :download
-        name = "#{project}-#{options[:version]}.jar"
-        `curl #{options[:url]} -o #{name}` unless File.exists? name
-        print <<-HEREDOC
+        unless @skip_build
+          name = "#{project}-#{options[:version]}.jar"
+          `curl #{options[:url]} -o #{name}` unless File.exists? name
+          print <<-HEREDOC
 
   from:    #{options[:url]}
   version: #{options[:version]}
   located: #{project_path}
-
-        HEREDOC
+          HEREDOC
+        end
       else
         `git checkout #{options[:branch]}`
         `git pull origin #{options[:branch]}`
@@ -108,10 +110,12 @@ def prep_project(project, options, project_path)
       name = "#{project}-#{options[:version]}.jar"
       return [ { :source => File.join(project_path, name), :version_template => options[:version] } ]
     when :maven
-      print "\nbuilding maven project: #{project} ... \n\n"
-      start = Time.now
-      system(options[:build] + @maven_update)
-      puts sprintf("%d.1s", Time.now-start)
+      unless @skip_build
+        print "\nbuilding maven project: #{project} ... \n\n"
+        start = Time.now
+        system(options[:build] + @maven_update)
+        puts sprintf("%d.1s", Time.now-start)
+      end
       source = Dir["#{project_path}/target/#{project}*SNAPSHOT.jar"][0]
       if source
         version_template = source[/#{project}-(.*?)-SNAPSHOT/, 1]
@@ -120,29 +124,33 @@ def prep_project(project, options, project_path)
         return nil
       end
     when :ant
-      print "\nbuilding ant project: #{project} ... \n\n"
-      start = Time.now
-      system(options[:build])
-      puts sprintf("%d.1s", Time.now-start)
+      unless @skip_build
+        print "\nbuilding ant project: #{project} ... \n\n"
+        start = Time.now
+        system(options[:build])
+        puts sprintf("%d.1s", Time.now-start)
+      end
       source = Dir["#{project_path}/bin/#{project}.jar"][0]
       source = "#{project_path}/dist/#{project}.jar"
       version_template = options[:version]
       return [ { :source => source, :version_template => version_template } ]
     when :custom
-      print "\nbuilding project: #{project} ... \n\n"
-      start = Time.now
-      system(options[:build])
-      puts sprintf("%d.1s", Time.now-start)
-      print "\ncreating jar:: #{project}.jar ... \n\n"
-      version_template = options[:version]
-      start = Time.now
-      jar_name = "#{project}-#{version_template}.jar"
-      `jar cf #{project}-#{version_template}.jar -C bin .`
-      if options[:main_class]
-        manifest_path = main_class(options[:main_class])
-        `jar umf #{manifest_path} #{project}-#{version_template}.jar`
+      unless @skip_build
+        print "\nbuilding project: #{project} ... \n\n"
+        start = Time.now
+        system(options[:build])
+        puts sprintf("%d.1s", Time.now-start)
+        print "\ncreating jar:: #{project}.jar ... \n\n"
+        version_template = options[:version]
+        start = Time.now
+        jar_name = "#{project}-#{version_template}.jar"
+        `jar cf #{project}-#{version_template}.jar -C bin .`
+        if options[:main_class]
+          manifest_path = main_class(options[:main_class])
+          `jar umf #{manifest_path} #{project}-#{version_template}.jar`
+        end
+        puts sprintf("%d.1s", Time.now-start)
       end
-      puts sprintf("%d.1s", Time.now-start)
       source = "#{project_path}/#{jar_name}"
       return [ { :source => source, :version_template => version_template } ]
     when :copy_jars
