@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+">
+  <information>
+    <title>Molecular Workbench</title>
+    <vendor>Concord Consortium, Inc.</vendor>
+    <homepage href="index.html"/>
+    <description>The Advanced Educational Modeling Laboratory</description>
+    <icon href="mwlogo.gif"/>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.5+"/>
+    <jar href="org/concord/modeler/mw.jar"/>
+    <property name="apple.awt.brushMetalLook" value="true"/>
+    <property name="apple.laf.useScreenMenuBar" value="true"/>
+    <property name="mw.jar.noupdate" value="true"/>
+  </resources>
+  <security>
+    <all-permissions/>
+  </security>
+  <application-desc main-class="org.concord.modeler.ModelerLauncher">
+  </application-desc>
+</jnlp>

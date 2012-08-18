@@ -4,6 +4,7 @@ module Rack
     PACK_GZ = '.pack.gz'
     JAR_PACK_GZ = 'jar.pack.gz'
     NO_JAR_PACK_GZ = 'jar.no.pack.gz'
+    JNLP_ARGS = 'jnlp-args'
     BYTESIZE = "".respond_to?(:bytesize)
 
     JNLP_APP_PATH_ERROR = <<-HEREDOC
@@ -26,11 +27,18 @@ module Rack
       end
     end
 
-    def add_jnlp_codebase(body, codebase, assembled_body=[], length=0)
+    def process_jnlp(body, codebase, assembled_body=[], jnlp_args)
+      length = 0
+      if jnlp_args && jnlp_args.length > 0
+        jnlp_args = jnlp_args.split(",").collect { |arg| "    <argument>#{arg}</argument>\n" }.join
+      end
       body.each do |line|
         line = line.to_s # call down the stack
         if line[/^<jnlp.*?>/] && !line[/codebase/]
           line.gsub!(/^(<jnlp.*?)>(.*)/) { |m| "#{$1} codebase='#{codebase}'>#{$2}" }
+        end
+        if jnlp_args
+          line.gsub!(/(<application-desc.*?>)(.*)?(^\s*<\/application-desc>)/m)  { |m| "#{$1}#{$2}#{jnlp_args}#{$3}" }
         end
         assembled_body << line
         if BYTESIZE
@@ -58,7 +66,8 @@ module Rack
 
     def call env
       path = env["PATH_INFO"]
-      version_id = env["QUERY_STRING"][/version-id=(.*)/, 1]
+      query = Hash[*env["QUERY_STRING"].split(/=|&/).flatten]
+      version_id = query["version-id"]
       pack200_gzip = versioned_jar_path = jnlp_path = false
       jnlp_path = path[/\.jnlp$/]
       snapshot_path, suffix = jar_request(path)
@@ -86,6 +95,14 @@ module Rack
           env["PATH_INFO"] = snapshot_path
         end
       end
+      if jnlp_path
+        if version_id
+          versioned_jnlp_path = path.gsub(/(.*?)(\.jnlp$)/, "\\1__V#{version_id}\\2")
+          env["PATH_INFO"] = versioned_jnlp_path
+        else
+          env["PATH_INFO"] = path
+        end
+      end
       status, headers, body = @app.call env
       if snapshot_path
         headers['Content-Type'] = 'application/java-archive'
@@ -95,7 +112,7 @@ module Rack
         headers['Content-Type'] = 'application/x-java-jnlp-file'
         headers['Cache-Control'] = 'no-cache'
         codebase = jnlp_codebase(env)
-        body, length = add_jnlp_codebase(body, codebase)
+        body, length = process_jnlp(body, codebase, query[JNLP_ARGS])
         headers['Content-Length'] = length.to_s
       end
       [status, headers, body]
