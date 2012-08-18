@@ -21,7 +21,7 @@ layout.appletContainer = function(e, options) {
         code:                 "org.concord.modeler.MwApplet",
         width:                "100%",
         height:               "100%",
-        archive:              "org/concord/modeler/mw.jar",
+        archive:              "org/concord/modeler/unsigned/mw.jar",
         align:                "left",
         hspace:               "5",
         vspace:               "5",
