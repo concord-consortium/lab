@@ -19,6 +19,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
       // properties read from the playerConfig hash
       controlButtons,
+      fit_to_parent,
 
       // properties read from the modelConfig hash
       elements,
@@ -80,6 +81,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function initializeLocalVariables() {
       controlButtons      = playerConfig.controlButtons;
+      fit_to_parent       = playerConfig.fit_to_parent;
 
       elements            = modelConfig.elements;
       atoms               = modelConfig.atoms;
@@ -109,7 +111,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           width               : width,
           height              : height,
           chargeShading       : chargeShading,
-          showVDWLines: showVDWLines
+          showVDWLines        : showVDWLines
         });
 
       if (atoms) {
@@ -147,6 +149,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       model_player.back = function() {},
 
       moleculeContainer = Lab.moleculeContainer(moleculeViewId, {
+        fit_to_parent:        fit_to_parent,
         xmax:                 width,
         ymax:                 height,
         chargeShading:        chargeShading,
@@ -171,6 +174,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       // ------------------------------------------------------------
 
       moleculeContainer.reset({
+        fit_to_parent:        fit_to_parent,
         xmax:                 width,
         ymax:                 height,
         chargeShading:        chargeShading,

@@ -47,6 +47,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       getRadialBonds,
       bondColorArray,
       default_options = {
+        fit_to_parent:        false,
         title:                false,
         xlabel:               false,
         ylabel:               false,
@@ -63,7 +64,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       };
 
   processOptions();
-  scale(cx, cy);
+
+  if ( !options.fit_to_parent ) {
+    scale(cx, cy);
+  }
 
   tx = function(d, i) { return "translate(" + x(d) + ",0)"; };
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
@@ -114,19 +118,32 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     } else {
       padding.bottom += (15  * scale_factor);
     }
-    if (!arguments.length) {
+
+    if (options.fit_to_parent) {
+
+      // In 'fit-to-parent' mode, we allow the viewBox parameter to fit the svg
+      // node into the containing element and allow the containing element to be
+      // sized by CSS (or Javascript)
+      cx = 500;
+      width = cx - padding.left - padding.right;
+      height = width / aspectRatio;
+      cy = height + padding.top + padding.bottom;
+    }
+    else if (!arguments.length) {
       cy = elem.property("clientHeight");
       height = cy - padding.top  - padding.bottom;
       width = height * aspectRatio;
       cx = width + padding.left  + padding.right;
+      node.style.width = cx +"px";
     } else {
       width  = w;
       height = h;
       cx = width + padding.left  + padding.right;
       cy = height + padding.top  + padding.bottom;
       node.style.height = cy +"px";
+      node.style.width = cx +"px";
     }
-    node.style.width = cx +"px";
+
     size = {
       "width":  width,
       "height": height
@@ -282,13 +299,30 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     //   size.width  = cx - padding.left - padding.right;
     //   size.height = cy - padding.top  - padding.bottom;
     // }
+
     scale();
 
     // create container, or update properties if it already exists
     if (vis === undefined) {
-      vis1 = d3.select(node).append("svg")
-        .attr("width", cx)
-        .attr("height", cy);
+
+      if (options.fit_to_parent) {
+        elem = d3.select(e)
+          .append('div').attr('class', 'positioning-container')
+          .append('div').attr('class', 'molecules-view-aspect-container')
+            .attr('style', 'padding-top: ' + Math.round(cy/cx * 100) + '%')
+          .append('div').attr('class', 'molecules-view-svg-container');
+
+        node = elem.node();
+
+        vis1 = d3.select(node).append("svg")
+          .attr('viewBox', '0 0 ' + cx + ' ' + cy)
+          .attr('preserveAspectRatio', 'xMinYMin meet');
+
+      } else {
+        vis1 = d3.select(node).append("svg")
+          .attr("width", cx)
+          .attr("height", cy);
+      }
 
       vis = vis1.append("g")
           .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -369,9 +403,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     } else {
 
-      d3.select(node).select("svg")
-          .attr("width", cx)
-          .attr("height", cy);
+      if ( !options.fit_to_parent ) {
+        d3.select(node).select("svg")
+            .attr("width", cx)
+            .attr("height", cy);
+      }
 
       vis.select("svg")
           .attr("width", cx)
@@ -964,7 +1000,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   }
 
   container.resize = function(w, h) {
-    container.scale(w, h);
+    if ( !options.fit_to_parent ) container.scale(w, h);
     container();
     container.setup_drawables();
   };

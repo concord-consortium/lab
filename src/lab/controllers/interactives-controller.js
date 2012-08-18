@@ -88,7 +88,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   function loadModel(modelUrl) {
 
     var playerConfig = {
-          controlButtons: controlButtons
+          controlButtons: controlButtons,
+          fit_to_parent: !layoutStyle
         };
 
     $.get(modelUrl).done(function(modelConfig) {
