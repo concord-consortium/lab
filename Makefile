@@ -8,9 +8,11 @@ JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
+R_OPTIMIZER = ./node_modules/.bin/r.js
 
+LAB_SRC_FILES := $(shell find src/lab -type f -print)
+ENERGY2D_SRC_FILES := $(shell find src/lab/energy2d -type f -print)
 MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
-ENERGY2D_ENGINE_JS_FILES := $(shell find src/lab/models/energy2d/engine -name '*.js' -print)
 
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
 LAB_GLSL_FILES := $(shell find src/lab -name '*.glsl' -print)
@@ -82,6 +84,7 @@ src: \
 	$(SASS_DOC_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
+	server/public/lab-amd
 
 jnlp-all: clean-jnlp \
 	server/public/jnlp
@@ -156,6 +159,7 @@ bin:
 
 server/public: \
 	server/public/lab \
+	server/public/lab-amd \
 	server/public/vendor \
 	server/public/resources \
 	server/public/examples \
@@ -174,6 +178,10 @@ server/public/doc:
 	mkdir -p server/public/doc
 	# copy directories, javascript, json, and image resources from src/examples/
 	rsync -aq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ server/public/doc/
+
+server/public/lab-amd: $(LAB_SRC_FILES)
+	mkdir -p server/public/lab-amd
+	rsync -aq src/lab/* server/public/lab-amd
 
 .PHONY: server/public/experiments
 server/public/experiments:
@@ -210,6 +218,9 @@ server/public/vendor: \
 	server/public/vendor/codemirror2 \
 	server/public/vendor/dsp.js \
 	server/public/vendor/lightgl.js \
+	server/public/vendor/requirejs \
+	server/public/vendor/text \
+	server/public/vendor/domReady \
 	server/public/favicon.ico
 
 server/public/vendor/dsp.js:
@@ -285,6 +296,24 @@ server/public/vendor/fonts:
 	mkdir -p server/public/vendor/fonts
 	cp -R src/vendor/fonts server/public/vendor/
 
+server/public/vendor/requirejs:
+	mkdir -p server/public/vendor/requirejs
+	cp src/vendor/requirejs/require.js server/public/vendor/requirejs
+	cp src/vendor/requirejs/LICENSE server/public/vendor/requirejs
+	cp src/vendor/requirejs/README.md server/public/vendor/requirejs
+
+server/public/vendor/text:
+	mkdir -p server/public/vendor/text
+	cp src/vendor/text/text.js server/public/vendor/text
+	cp src/vendor/text/LICENSE server/public/vendor/text
+	cp src/vendor/text/README.md server/public/vendor/text
+
+server/public/vendor/domReady:
+	mkdir -p server/public/vendor/domReady
+	cp src/vendor/domReady/domReady.js server/public/vendor/domReady
+	cp src/vendor/domReady/LICENSE server/public/vendor/domReady
+	cp src/vendor/domReady/README.md server/public/vendor/domReady
+
 server/public/vendor/codemirror2:
 	mkdir -p server/public/vendor/codemirror2
 	cp src/vendor/codemirror2/LICENSE server/public/vendor/codemirror2
@@ -323,13 +352,15 @@ server/public/lab:
 server/public/lab/lab.js: \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.molecules.js \
-	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.components.js \
   server/public/lab/lab.controllers.js \
   server/public/lab/lab.deprecated-controllers.js
+
+server/public/lab/lab.energy2d.js: $(ENERGY2D_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/energy2d/energy2d.build.js
 
 server/public/lab/lab.grapher.js: \
 	src/lab/start.js \
@@ -351,39 +382,6 @@ server/public/lab/lab.molecules.js: \
 	src/lab/start.js \
 	server/public/lab/lab.md2d.js \
 	src/lab/models/md2d/modeler.js \
-	src/lab/end.js
-
-server/public/lab/lab.glsl.js: \
-	$(LAB_GLSL_FILES)
-	$(GLSL_TO_JS_CONVERTER) $^ -o $@
-
-server/public/lab/lab.models.energy2d.engine.js: \
-	$(ENERGY2D_ENGINE_JS_FILES)
-	$(BROWSERIFY) src/lab/models/energy2d/engine/core-model.js -o server/public/lab/lab.models.energy2d.engine.js
-
-server/public/lab/lab.energy2d.js: \
-	src/lab/start.js \
-	src/lab/energy2d-module.js \
-	server/public/lab/lab.glsl.js \
-	server/public/lab/lab.models.energy2d.engine.js \
-	src/lab/models/energy2d/modeler.js \
-	src/lab/utils/energy2d/gpu/init.js \
-	src/lab/utils/energy2d/gpu/mesh.js \
-	src/lab/utils/energy2d/gpu/shader.js \
-	src/lab/utils/energy2d/gpu/texture.js \
-	src/lab/utils/energy2d/gpu/gpgpu.js \
-	src/lab/utils/energy2d/performance/performance-tools.js \
-	src/lab/views/energy2d/utils-color.js \
-	src/lab/views/energy2d/color-palette.js \
-	src/lab/views/energy2d/heatmap.js \
-	src/lab/views/energy2d/heatmap-webgl.js \
-	src/lab/views/energy2d/vectormap.js \
-	src/lab/views/energy2d/vectormap-webgl.js \
-	src/lab/views/energy2d/description.js \
-	src/lab/views/energy2d/performance.js \
-	src/lab/views/energy2d/webgl-status.js \
-	src/lab/views/energy2d/views.js \
-	src/lab/controllers/energy2d/controllers.js \
 	src/lab/end.js
 
 server/public/lab/lab.benchmark.js: \

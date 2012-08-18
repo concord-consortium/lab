@@ -1,81 +1,118 @@
-/*globals energy2d, document interactivesIndex window location $ */
-/*jslint indent: 2 */
+/*jslint indent: 2, browser: true */
+/*globals lab: false, $: false, interactivesIndex: false, require: false */
 // ------------------------------------------------------------
 //
 // Energy2D Demo
 //
 // ------------------------------------------------------------
 
-var ROOT = "/examples",
-    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
-    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
+var
+  ROOT = "/examples",
+  ROOT_REGEX = new RegExp(ROOT + "/.*$"),
+  ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
 
 (function () {
   'use strict';
-  var
-    DEFAULT_INTERACTIVE = "fixed-flux-boundary512",
-    window_loaded = $.Deferred(),
-    options_loaded = $.Deferred(),
-    hash,
-    interactive_url,
-    interactive_options,
-    controller,
-    select = $("#select-interactive"),
-    enable_WebGL_checkbox = $('#enable-WebGL'),
-    force_WebGL_sync_checkbox = $('#force-WebGL-sync'),
 
-    loadInteractive = function () {
+  // Application logic.
+  var applicationCallback = function () {
+    var
+      DEFAULT_INTERACTIVE = "fixed-flux-boundary512",
+      hash,
+      interactive_url,
+      interactive_options,
+      controller,
+      select = $("#select-interactive"),
+      enable_WebGL_checkbox = $('#enable-WebGL');
 
-    };
+    // Build interactive selection.
+    $.each(interactivesIndex, function (key, value) {
+      select.append($("<option>")
+        .attr('value', key)
+        .text(value.name)
+        .attr('data-path', value.path));
+    });
 
-  $.each(interactivesIndex, function (key, value) {
-    select.append($("<option>")
-      .attr('value', key)
-      .text(value.name)
-      .attr('data-path', value.path));
-  });
+    // Handle hash.
+    hash = document.location.hash || "#" + interactivesIndex[DEFAULT_INTERACTIVE].path;
+    document.location.hash = hash;
+    interactive_url = hash.substr(1, hash.length);
 
-  hash = document.location.hash || "#" + interactivesIndex[DEFAULT_INTERACTIVE].path;
-  document.location.hash = hash;
-  interactive_url = hash.substr(1, hash.length);
+    select.find("option[data-path='" + interactive_url + "']").attr('selected', true);
 
-  select.find("option[data-path='" + interactive_url + "']").attr('selected', true);
+    // Download interactive options and create Energy2D Interactive Controller.
+    $.get(interactive_url).done(function (results) {
+      if (typeof results === "string") { results = JSON.parse(results); }
+      interactive_options = results;
 
-  $.get(interactive_url).done(function (results) {
-    if (typeof results === "string") { results = JSON.parse(results); }
-    interactive_options = results;
-    options_loaded.resolve();
-  });
+      controller = lab.energy2d.InteractiveController(
+        interactive_options,
+        '#interactive-container',
+        '#interactive-description'
+      );
+    });
 
-  $(window).load(function () {
-    window_loaded.resolve();
-  });
+    // Implement events callbacks.
+    select.change(function (option) {
+      document.location.hash = "#" + $(select.find("option:selected")[0]).data('path');
+    });
 
-  $.when(window_loaded, options_loaded).done(function () {
-    controller = energy2d.controllers.makeInteractiveController(
-      interactive_options, 
-      '#interactive-container', 
-      '#interactive-description'
-    );
-  });
+    enable_WebGL_checkbox.change(function () {
+      controller.setWebGLEnabled($(this).attr("checked"));
+    });
 
-  select.change(function (option) {
-    document.location.hash = "#" + $(select.find("option:selected")[0]).data('path');
-  });
+    $(window).bind('hashchange', function () {
+      if (document.location.hash !== hash) {
+        location.reload();
+      }
+    });
+  };
 
-  enable_WebGL_checkbox.change(function(){
-    controller.setWebGLEnabled($(this).attr("checked"));
-  });
+  if (typeof require === 'function') {
+    // Use RequireJS if it's available.
 
-  force_WebGL_sync_checkbox.change(function(){
-    energy2d.utils.gpu.gpgpu.setSynchronizationAllowed($(this).attr("checked"));
-    controller.simulationReset();
-  });
+    // Config for Energy2D application.
+    require.config({
+      baseUrl: "../../lab-amd/energy2d",
+      paths: {
+        jquery: "../../vendor/jquery/jquery.min",
+        domReady: "../../vendor/domReady/domReady",
+        // Text RequireJS plugin is required by Energy2D application.
+        text: "../../vendor/text/text"
+      }
+    });
 
-  $(window).bind('hashchange', function () {
-    if (document.location.hash !== hash) {
-      location.reload();
-    }
-  });
+    // Finally, call require to resolve dependencies and run application callback.
+    require([
+      // Dependencies:
+
+      // Use domReady RequireJS plugin, as jquery(document).ready() doesn't work
+      // with RequireJS asynchronous module loading.
+      // See: http://requirejs.org/docs/api.html#pageload
+      'domReady!',
+
+      // Load jQuery.
+      'jquery',
+
+      // This file creates global variable called interactivesIndex.
+      // To load local file, not RequireJS module, add .js suffix
+      // (RequireJS won't use baseUrl defined above in the config).
+      'interactives-index.js',
+
+      // Energy2D Public API.
+      // It exposes public API to lab.energy2d global object.
+      // Note that particular classes can be loaded directly, e.g.:
+      // 'controller/interactive'
+      // but to keep consistency with optimized built, use 
+      // global namespace.
+      'public-api'
+    ], applicationCallback);
+  } else {
+    // Use traditional approach.
+    // Assume that dependencies are injected somehow (e.g. using HTML script tag).
+
+    // Use jQuery(window).load as it's available when RequireJS is not used.
+    $(window).load(applicationCallback);
+  }
 
 }());

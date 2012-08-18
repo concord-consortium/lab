@@ -34,3 +34,15 @@
 [submodule "src/vendor/lightgl.js"]
 	path = src/vendor/lightgl.js
 	url = git://github.com/evanw/lightgl.js.git
+[submodule "src/vendor/requirejs"]
+	path = src/vendor/requirejs
+	url = git://github.com/jrburke/requirejs.git
+[submodule "src/vendor/text"]
+	path = src/vendor/text
+	url = git://github.com/requirejs/text.git
+[submodule "src/vendor/almond"]
+	path = src/vendor/almond
+	url = git://github.com/jrburke/almond.git
+[submodule "src/vendor/domReady"]
+	path = src/vendor/domReady
+	url = git://github.com/requirejs/domReady.git

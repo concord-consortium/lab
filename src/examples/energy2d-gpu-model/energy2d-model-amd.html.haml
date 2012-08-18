@@ -25,10 +25,13 @@
 
       #viz
         .top
-          #interactive-description
-          #interactive-container
+          #interactive-description            
+          #interactive-container  
+          #right-panel
+            #performance
+              %h2
+                %input{:id => "enable-WebGL", :type => "checkbox"} Enable WebGL
+            #webgl-status
 
-    %script{:src => "../../vendor/jquery/jquery.min.js"}
-    %script{:src => "../../lab/lab.energy2d.js"}
-    %script{:src => "interactives-index.js"}
-    %script{:src => "application.js"}
+
+    %script{:"data-main" => "application", :src => "../../vendor/requirejs/require.js"}
