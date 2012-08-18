@@ -161,6 +161,10 @@ def prep_project(project, options, project_path)
   end
 end
 
+def pack_and_sign(jarpath, options="")
+  system("ruby #{SCRIPT_PATH}/pack-and-resign-jars.rb #{jarpath} #{options}")
+end
+
 projects.each do |project, options|
   project_path = File.join(JAVA_ROOT, project)
   puts "\n************************************************************\n"
@@ -196,11 +200,19 @@ Location: #{destination}
         puts "\ncopy: #{source} \nto:   #{destination}"
         FileUtils.mkdir_p(to_path) unless File.exists?(to_path)
         FileUtils.cp(source, destination)
-        pack_and_sign_cmd = "ruby #{SCRIPT_PATH}/pack-and-resign-jars.rb #{versioned_name}"
+        pack_and_sign_cmd = "ruby #{SCRIPT_PATH}/pack-and-resign-jars.rb"
         if options[:sign]
-          system(pack_and_sign_cmd)
+          pack_and_sign(versioned_name)
+          if options[:also_unsigned]
+            unsigned_to_path = File.join(to_path, 'unsigned')
+            unsigned_versioned_name = File.join('unsigned', versioned_name)
+            unsigned_destination = File.join(to_path, unsigned_versioned_name)
+            FileUtils.mkdir_p(unsigned_to_path) unless File.exists?(unsigned_to_path)
+            FileUtils.cp(source, unsigned_destination)
+            pack_and_sign(unsigned_versioned_name, '--nosign')
+          end
         else
-          system(pack_and_sign_cmd + ' --nosign')
+          pack_and_sign(versioned_name, '--nosign')
         end
       end
       if options[:main_class]

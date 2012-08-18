@@ -508,6 +508,21 @@ The `:build_type` option is used to specify the Java Projects Build Strategy.
 Five different kinds of build strategies are available. Each strategy includes
 additional build information in the `:build` option.
 
+The `:maven`, `:custom`, and `:ant` build strategies all expect to be able to get the source
+code to build projects from git repositories.
+
+Most of Concord Consportium's open source Java codebase is published at our public Subversion
+repository: [svn.concord.org/svn/projects/trunk](http://svn.concord.org/svn/projects/trunk)
+however all of the legacy Java code the Lab project references is also mirrored to separate git
+repositories at: [github.com/concord-consortium/](https://github.com/concord-consortium/).
+
+The `trunk` branches in the git mirrors we maintain such as:
+[concord-consortium/otrunk](https://github.com/concord-consortium/otrunk/tree/trunk) always represent
+the latest code checked into the Subversion `trunk` branch.
+
+We have made small changes to the Molecular Workbench codebase and we are maintaining these in
+the `master` branch of the git mirror here: [concord-consortium/mw](https://github.com/concord-consortium/mw).
+
 1. `:maven`
 
     Concord's OTrunk framework uses the `:maven` build strategy:
@@ -523,8 +538,29 @@ additional build information in the `:build` option.
     The `trunk` branch of the otrunk repo will be checked out into `./java/otrunk` and be built using Maven.
     Because the otrunk jar is used with the sensor-applet code (which uses a native library) it must also be signed.
 
-2. `:ant`
-3. `:custom`
+    **Deploying both signed and unsigned jars**
+
+    Concord's Molecular Workbench also uses the `:maven` build strategy however when running
+    it as a Java Web Start jnlp it needs to be signed while normally when run as an applet it
+    should be unsigned.
+    
+        'mw'             => { :build_type => :maven,
+                              :build => MAVEN_STD_CLEAN_BUILD,
+                              :repository => 'git://github.com/concord-consortium/mw.git',
+                              :branch => 'master',
+                              :path => 'org/concord/modeler',
+                              :main_class => "org.concord.modeler.ModelerLauncher",
+                              :has_applet_class => true,
+                              :sign => true,
+                              :also_unsigned => true }
+
+    By setting both the `:sign` and `:also_unsigned` options to `true` two jars will be deployed:
+    
+    - `jnlp/org/concord/modeler/mw.jar`
+    - `jnlp/org/concord/modeler/unsigned/mw.jar`
+
+3. `:ant`
+4. `:custom`
 
     For Energy2D a `:custom` build strategy is used and the command line invocation necessary is in the
     `MANUAL_JAR_BUILD` constant.

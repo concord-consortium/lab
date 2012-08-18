@@ -113,7 +113,8 @@ PROJECT_LIST = {
                         :path => 'org/concord/modeler',
                         :main_class => "org.concord.modeler.ModelerLauncher",
                         :has_applet_class => true,
-                        :sign => true },
+                        :sign => true,
+                        :also_unsigned => true },
 
   'NetLogoLite'         => { :build_type => :download,
                         :url => 'http://ccl.northwestern.edu/netlogo/5.0.1/NetLogoLite.jar',
