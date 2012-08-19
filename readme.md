@@ -1425,6 +1425,7 @@ The basic command to update a server:
 Here are the list of current Capistrano deploy commands:
 
     $ cap -T deploy:
+    cap deploy:restart          # restart rails app
     cap deploy:clean_and_update # clean and update server
     cap deploy:setup            # setup server
     cap deploy:status           # display last commit on deployed server

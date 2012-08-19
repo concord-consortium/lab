@@ -25,6 +25,11 @@ end
 
 namespace :deploy do
 
+  desc "restart rails app"
+  task :restart do
+    run "touch /var/www/app/server/tmp/restart.txt"
+  end
+
   desc "setup server"
   task :setup do
     run "cd /var/www/app; git checkout master; git pull origin master"
