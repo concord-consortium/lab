@@ -543,7 +543,7 @@ the `master` branch of the git mirror here: [concord-consortium/mw](https://gith
     Concord's Molecular Workbench also uses the `:maven` build strategy however when running
     it as a Java Web Start jnlp it needs to be signed while normally when run as an applet it
     should be unsigned.
-    
+
         'mw'             => { :build_type => :maven,
                               :build => MAVEN_STD_CLEAN_BUILD,
                               :repository => 'git://github.com/concord-consortium/mw.git',
@@ -555,7 +555,7 @@ the `master` branch of the git mirror here: [concord-consortium/mw](https://gith
                               :also_unsigned => true }
 
     By setting both the `:sign` and `:also_unsigned` options to `true` two jars will be deployed:
-    
+
     - `jnlp/org/concord/modeler/mw.jar`
     - `jnlp/org/concord/modeler/unsigned/mw.jar`
 
@@ -1343,18 +1343,21 @@ AWS account.**
 
 1.  AWS account. For deployment to the lab servers managed by CC you will need an AWS
     account managed by concord.org.
-2.  Copy your AWS Access Key ID and AWS Secret Access Key to the following yaml configuration
+2.  Created your AWS Access Key ID and AWS Secret Access Key. To do this, go to the IAM Dashboard in
+    AWS (Services -> IAM), click 'Users', click the checkbox by your username, and select User Actions ->
+    Manage Access Keys
+3.  Copy your AWS Access Key ID and AWS Secret Access Key to the following yaml configuration
     file `.fog` in your home directory:
 
         :default:
           :aws_access_key_id: YOUR_AWS_ACCESS_KEY_ID
           :aws_secret_access_key: YOUR_AWS_SECRET_ACCESS_KEY
 
-3.  Place a copy of a the appropriate AWS PEM file on your local files system. For deployment
+4.  Place a copy of a the appropriate AWS PEM file on your local files system. For deployment
     to the lab servers managed by CC use the `lab-dev` pem.
-4.  Create or identify an appropriate AWS security group. For deployment to the lab servers managed
+5.  Create or identify an appropriate AWS security group. For deployment to the lab servers managed
     by CC the `lab.dev` security group is used.
-5.  Edit the `:deploy` section of `config/config.yml` using values in `config/config_sample.yml`
+6.  Edit the `:deploy` section of `config/config.yml` using values in `config/config_sample.yml`
     as a guide.
 
     Here's an example from the `:deploy` section of a working `config.yml`:
@@ -1382,7 +1385,7 @@ AWS account.**
     Besides the AWS Access Key ID and AWS Secret Access Key security credentials copyied locally to
     to the file `~/.fog` the `lab-dev.pem` file saved in the directory: `~/.ec2` is also used when
     communicating with AWS.
-6.  List the deploy targets described in `config/config.yml` with the task: `thor cloud:list_targets`
+7.  List the deploy targets described in `config/config.yml` with the task: `thor cloud:list_targets`
     to confirm the configuration is valid:
 
         $ thor cloud:list_targets
@@ -1392,7 +1395,7 @@ AWS account.**
         ------------------------------------------------------------------------------------------
           lab-dev                 lab.dev.concord.org           master
 
-7.  Generate specific Capistrano deploy tasks and littlechef nodes using `deploy-targets`
+8.  Generate specific Capistrano deploy tasks and littlechef nodes using `deploy-targets`
     specified in `config/config.yml`. Run this `thor` task whenever you change the `:deploy`
     section in `config/config.yml` to generate the Ruby Capastrano configuration files in
     `config/deployment/<deploy-target>.rb` and the littlechef JSON configurations in
@@ -1400,7 +1403,7 @@ AWS account.**
 
         $ thor cloud:setup
 
-8.  List the running AWS server instances to confirm that your local AWS security credentials
+9.  List the running AWS server instances to confirm that your local AWS security credentials
     are setup correctly:
 
         $ thor cloud:list
