@@ -317,21 +317,21 @@
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
-    <string>one-radial-bond$0.mml</string> 
+    <string>one-radial-bond_different_elllements$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1345487861000</long> 
+     <long>1345048933000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/one-radial-bond$0.mml</string> 
+    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/one-radial-bond_different_elllements$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>10802</long> 
+    <long>10747</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -377,14 +377,20 @@
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
+   <int>3</int> 
+  </void> 
   <void property="radical"> 
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>100.0</double> 
+   <double>100.00154876708984</double> 
   </void> 
   <void property="ry"> 
    <double>100.0</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-1.5318751684390008E-4</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -392,10 +398,13 @@
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>111.0</double> 
+   <double>124.99380493164062</double> 
   </void> 
   <void property="ry"> 
    <double>100.0</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.127500673756003E-4</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.MolecularModel$State"> 
@@ -407,14 +416,14 @@
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom2"> 
+  <void property="atom1"> 
    <int>1</int> 
   </void> 
   <void property="bondLength"> 
-   <double>10.0</double> 
+   <double>20.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>1.0</double> 
+   <double>0.2</double> 
   </void> 
  </object> 
 </java> 
