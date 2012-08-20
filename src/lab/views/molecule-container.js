@@ -721,14 +721,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                 xs = xs * xs;
                 ys = ys * ys;
                 dist =  Math.sqrt( xs + ys );
-                if (dist <= 70 &&
-                          (((get_charge(atom1) == 0) && (get_charge(atom2) == 0))
-                        || ((get_charge(atom1) == 0) && (get_charge(atom2) < 0))
-                        || ((get_charge(atom1) == 0) && (get_charge(atom2) > 0))
-                        || ((get_charge(atom1) < 0) && (get_charge(atom2) == 0))
-                        || ((get_charge(atom1) > 0) && (get_charge(atom2) == 0))
-                        || (((get_charge(atom1) > 0) && (get_charge(atom2) < 0))
-                        || (get_charge(atom1) < 0) && (get_charge(atom2) > 0))))
+                if (dist <= 70 && !isChargeSame(atom1,atom2))
                 {
                     gradient_container.append("line")
                         .attr("x1", x(get_x(atom1)))
@@ -742,6 +735,16 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             }
         }
         /*Logic for drawing attraction forces between atoms */
+    }
+    function isChargeSame(atom1,atom2) {
+      var atomCharge1 =  get_charge(atom1);
+      var atomCharge2 =  get_charge(atom2);
+      if((atomCharge1 > 0) &&  (atomCharge2 > 0) || (atomCharge1 < 0) &&  (atomCharge2 < 0)){
+        return true;
+      }
+      else {
+        return false;
+      }
     }
 
     function setup_drawables() {
@@ -833,7 +836,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       mock_radial_bond_array.length = radialBonds[0].length;
 
       radialBond = gradient_container.selectAll("line").data(mock_radial_bond_array);
-
       if(model.get("showVDWLines")){
           drawAttractionForces();
       }
