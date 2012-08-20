@@ -72,7 +72,11 @@ file: ~/.fog
         external_dns = "missing"
         target = { :name => "missing", :path => "missing" }
       end
-      sprintf(SERVER_FORMAT_STR, target[:name], external_dns, ls.state, ls.public_ip_address, ls.id, ls.dns_name)
+      if target
+        sprintf(SERVER_FORMAT_STR, target[:name], external_dns, ls.state, ls.public_ip_address, ls.id, ls.dns_name)
+      else
+        sprintf(SERVER_FORMAT_STR, "missing", external_dns, ls.state, ls.public_ip_address, ls.id, ls.dns_name)
+      end
     }
     puts result.join("\n")
     puts
