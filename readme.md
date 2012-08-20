@@ -1343,7 +1343,7 @@ AWS account.**
 
 1.  AWS account. For deployment to the lab servers managed by CC you will need an AWS
     account managed by concord.org.
-2.  Created your AWS Access Key ID and AWS Secret Access Key. To do this, go to the IAM Dashboard in
+2.  Create your AWS Access Key ID and AWS Secret Access Key. To do this, go to the IAM Dashboard in
     AWS (Services -> IAM), click 'Users', click the checkbox by your username, and select User Actions ->
     Manage Access Keys
 3.  Copy your AWS Access Key ID and AWS Secret Access Key to the following yaml configuration
