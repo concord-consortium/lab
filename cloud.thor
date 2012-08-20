@@ -27,6 +27,7 @@ class Cloud < Thor
     aws = AwsLabServer.new
     aws.setup_capistrano_deploy_scripts
     aws.setup_littlechef_nodes
+    aws.setup_ssh
   end
 
   desc "create (hostname)", "create a new server instance using this hostname"
@@ -57,6 +58,12 @@ class Cloud < Thor
   def start(ec2_id)
     aws = AwsLabServer.new
     aws.start(ec2_id)
+  end
+
+  desc "setup_ssh (hostname)", "setup ssh configuration for communication to hostname"
+  def setup_ssh(hostname)
+    aws = AwsLabServer.new
+    aws.setup_ssh(hostname)
   end
 
 end

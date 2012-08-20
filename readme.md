@@ -1412,6 +1412,14 @@ AWS account.**
         ------------------------------------------------------------------------------------------------------------------------------------------------------
           lab-dev             lab.dev.concord.org.          running       107.22.184.173      i-f844ec81      ec2-107-22-184-173.compute-1.amazonaws.com
 
+10. If you are working with an existing host that has already been setup such as `lab.dev.concord.org`
+    generate the proper ssh configuration and add the remote host key to `~/.ssh/known_hosts`.
+    This adds a local **`ubuntu`** user in `~/ssh/config` and connects to the remote host to add the key.
+
+    Example of setting up SSH configuration with the existing remote AWS host: `lab..dev.concord.org`:
+
+        $ thor cloud:setup_ssh lab.dev.concord.org
+
 ### Using Capstrano to deploy new code to an existing server
 
 After testing, committing, and pushing code to a public repository use the Capistrano
@@ -1517,6 +1525,7 @@ There are a set of [thor](#thor) tasks for managing, creating, and re-creating A
     thor cloud:list_targets         # list existing deploy targets
     thor cloud:recreate (hostname)  # recreate a new server instance for this hostname by destroying and rebuilding an existing server
     thor cloud:setup                # setup capistrano deploy tasks and littlechef nodes using targets in config/config.yml
+    thor cloud:setup_ssh (hostname)  # setup ssh configuration for communication to hostname
     thor cloud:start (ec2_id)       # start a stopped existing server instance at this hostname
     thor cloud:stop (hostname)      # stop a running existing server instance at this hostname
 

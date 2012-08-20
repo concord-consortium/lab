@@ -56,6 +56,13 @@ file: ~/.fog
     @zone = dns.zones.find { |z| z.domain == ZONE_DOMAIN }
   end
 
+  def setup_ssh(hostname)
+    @name = @options[:name] = hostname
+    add_hostname_to_ssh_config
+    erase_existing_host_key
+    add_new_host_key
+  end
+
   def list
     @lab_servers = @compute.servers.all('group-name' => GROUP_NAME).reject { |ls| ls.state == 'terminated' }
     @lab_servers.sort! { |a,b| a.state <=> b.state }
