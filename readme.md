@@ -1354,7 +1354,8 @@ AWS account.**
           :aws_secret_access_key: YOUR_AWS_SECRET_ACCESS_KEY
 
 4.  Place a copy of a the appropriate AWS PEM file on your local files system. For deployment
-    to the lab servers managed by CC use the `lab-dev` pem.
+    to the lab servers managed by CC use the `lab-dev` pem. This can be found in CC's Google Docs/Drive.
+    This file should have its permissions set to 600, and the folder it is in (e.g. ~/.ec2) should be 700.
 5.  Create or identify an appropriate AWS security group. For deployment to the lab servers managed
     by CC the `lab.dev` security group is used.
 6.  Edit the `:deploy` section of `config/config.yml` using values in `config/config_sample.yml`
