@@ -2,7 +2,7 @@
   "model": {
     "url": "/imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
     "viewOptions": {
-      "controlButtons": "play_reset"
+      "controlButtons": ""
     }
   },
   "components": [
