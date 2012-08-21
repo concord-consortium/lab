@@ -295,9 +295,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       $interactiveContainer.append('<div id="bottom"/>');
     }
 
-    if (typeof (interactive.model) === 'string') {
-      modelUrl = interactive.model;
-    } else if (interactive.model != null) {
+    if (interactive.model != null) {
       modelUrl = interactive.model.url;
       processModelViewOptions(interactive.model.viewOptions);
     }
