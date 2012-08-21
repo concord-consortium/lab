@@ -295,16 +295,16 @@
   <void property="boundary"> 
    <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
     <void property="height"> 
-     <double>250.0</double> 
+     <double>100.0</double> 
     </void> 
     <void property="viewSize"> 
      <object class="java.awt.Dimension"> 
-      <int>250</int> 
-      <int>250</int> 
+      <int>100</int> 
+      <int>100</int> 
      </object> 
     </void> 
     <void property="width"> 
-     <double>250.0</double> 
+     <double>100.0</double> 
     </void> 
    </object> 
   </void> 
@@ -317,21 +317,21 @@
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
-    <string>one-radial-bond_different_elllements$0.mml</string> 
+    <string>one-radial-bond_different_elements$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1345048933000</long> 
+     <long>1345499687000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/one-radial-bond_different_elllements$0.mml</string> 
+    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/one-radial-bond_different_elements$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>10747</long> 
+    <long>11202</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -351,9 +351,6 @@
  <object class="org.concord.mw2d.AtomisticView$State"> 
   <void property="colorCode"> 
    <string>None</string> 
-  </void> 
-  <void property="energizer"> 
-   <boolean>true</boolean> 
   </void> 
   <void property="forceFlavor"> 
    <void property="color"> 
@@ -384,10 +381,10 @@
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>100.00154876708984</double> 
+   <double>38.001548767089844</double> 
   </void> 
   <void property="ry"> 
-   <double>100.0</double> 
+   <double>45.0</double> 
   </void> 
   <void property="vx"> 
    <double>-1.5318751684390008E-4</double> 
@@ -398,10 +395,10 @@
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>124.99380493164062</double> 
+   <double>62.993804931640625</double> 
   </void> 
   <void property="ry"> 
-   <double>100.0</double> 
+   <double>45.0</double> 
   </void> 
   <void property="vx"> 
    <double>6.127500673756003E-4</double> 
