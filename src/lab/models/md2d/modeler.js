@@ -131,7 +131,7 @@ modeler.model = function(initialProperties) {
     COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B,
     VISIBLE  : md2d.OBSTACLE_INDICES.VISIBLE,
   };
-  
+
   model.RADIAL_INDICES = {
     ATOM1     : md2d.RADIAL_INDICES.ATOM1,
     ATOM2     : md2d.RADIAL_INDICES.ATOM2,
@@ -629,6 +629,20 @@ modeler.model = function(initialProperties) {
     }
     // return false on failure
     return false;
+  },
+
+  model.setAtomProperty = function(i, props, checkLocation) {
+    if (checkLocation) {
+      var x  = typeof props.x === "number" ? props.x : coreModel.atoms[model.INDICES.X][i],
+          y  = typeof props.y === "number" ? props.y : coreModel.atoms[model.INDICES.Y][i],
+          el = typeof props.element === "number" ? props.y : coreModel.atoms[model.INDICES.ELEMENT][i];
+      if (model.getPotentialFunction(el, 0, false)(x, y) > 0) {
+        console.log("too close");
+        return false;
+      }
+    }
+    coreModel.setAtomProperties(i, props, checkLocation);
+    return true;
   },
 
   // return a copy of the array of speeds
