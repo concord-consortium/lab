@@ -1,11 +1,11 @@
-/*globals
+/*global
 
   controllers
   Lab
   modeler
   ModelPlayer
   DEVELOPMENT
-  $
+  d3
   alert
   model: true
   model_player: true
@@ -18,7 +18,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       dispatch = d3.dispatch('modelReset'),
 
       // properties read from the playerConfig hash
-      layoutStyle,
       controlButtons,
 
       // properties read from the modelConfig hash
@@ -80,7 +79,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
     // ------------------------------------------------------------
 
     function initializeLocalVariables() {
-      layoutStyle         = playerConfig.layoutStyle;
       controlButtons      = playerConfig.controlButtons;
 
       elements            = modelConfig.elements;
@@ -142,8 +140,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       // Create player and container view for model
       //
       // ------------------------------------------------------------
-
-      layout.selection = layoutStyle;
 
       model_player = new ModelPlayer(modelProxy, false);
       // disable its 'forward' and 'back' actions:
@@ -238,6 +234,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       dispatch.on(type, listener);
     };
     controller.reload = reload;
+    controller.moleculeContainer = moleculeContainer;
 
     return controller;
 };

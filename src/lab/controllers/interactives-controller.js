@@ -1,6 +1,6 @@
-/*globals controllers model Thermometer $ alert */
+/*global controllers model Thermometer layout $ alert */
 /*jshint eqnull: true*/
-controllers.interactivesController = function(interactive, viewSelector) {
+controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
 
   var controller = {},
       modelController,
@@ -225,6 +225,15 @@ controllers.interactivesController = function(interactive, viewSelector) {
   */
   function modelLoaded() {
     var i, listener;
+
+    if (layoutStyle) {
+      layout.selection = layoutStyle;
+      layout.addView('moleculeContainers', modelController.moleculeContainer);
+      if (thermometer) layout.addView('thermometers', thermometer);
+      layout.setupScreen();
+      $(window).unbind('resize');
+      $(window).on('resize', layout.setupScreen);
+    }
 
     for(i = 0; i < propertiesListeners.length; i++) {
       listener = propertiesListeners[i];
