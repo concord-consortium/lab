@@ -1,4 +1,6 @@
-/*global console: true*/
+/*jshint eqnull: true */
+/*global console: true */
+
 if (typeof ISImporter === 'undefined') ISImporter = {};
 
 if (typeof console === 'undefined') console = { log: function() {} };
@@ -12,11 +14,12 @@ ISImporter.DGExporter = {
   width: null,
   height: null,
   run: 1,
+  nMetadataLabels: 0,
+  metadataLabelPositions: {},
 
   init: function(width, height) {
     this.width = width;
     this.height = height;
-    this.run = 1;
   },
 
   mockDGController: {
@@ -44,16 +47,31 @@ ISImporter.DGExporter = {
   },
 
   exportData: function(sensorType, data, metadata) {
-    var metadataLabels = [],
+    var label,
+        value,
+        position,
+        metadataLabels = [],
         metadataValues = [],
         dgCase,
         parentCollectionValues,
         i;
 
-    // extract metadata in the forms needed for export.
+    // Extract metadata in the forms needed for export, ie values need to be an array of values,
+    // labels need to be an array of {name: label} objects.
+    // Furthermore note that during a DG session, the value for a given label needs to be in the
+    // same position in the array every time the DG collection is 'created' (or reopened as the
+    // case may be.)
     for (i = 0; i < metadata.length; i++) {
-      metadataLabels.push({ name: metadata[i].label });
-      metadataValues.push( metadata[i].value );
+      label = metadata[i].label;
+      value = metadata[i].value;
+
+      if ( this.metadataLabelPositions(label) == null ) {
+        this.metadataLabelPositions[label] = this.nMetadataLabels++;
+      }
+      position = this.metadataLabelPositions[label];
+
+      metadataLabels[position] = { name: label };
+      metadataValues[position] = value;
     }
 
     // Step 1. Tell DG we're a "game".
