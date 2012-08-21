@@ -1,4 +1,4 @@
-/*globals defineClass extendClass grapher d3 */
+/*global defineClass extendClass grapher d3 */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 (function() {
@@ -195,7 +195,7 @@ ISImporter.appController = new ISImporter.Object({
     };
 
     this.initInterface();
-    ISImporter.DGExporter.init($('div[role="main"]').width(), $('div[role="main"]').height())
+    ISImporter.DGExporter.init($(document.body).width() + 10, $(document.body).height() + 50);
   },
 
   initInterface: function() {
