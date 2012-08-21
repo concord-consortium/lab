@@ -10,7 +10,7 @@
       "type": "button",
       "id": "bond-div-4",
       "text": "Bond 1/4",
-      "action": "var values = getRadialBond(0); values[3] = 2000 / 8; setRadialBond(0, values)"
+      "action": "var values = getRadialBond(0); values[3] = 2000 / 4; setRadialBond(0, values)"
     },
     {
       "type": "button",
