@@ -1,3 +1,4 @@
+/*global console: true*/
 if (typeof ISImporter === 'undefined') ISImporter = {};
 
 if (typeof console === 'undefined') console = { log: function() {} };
@@ -5,7 +6,8 @@ if (typeof console === 'undefined') console = { log: function() {} };
 ISImporter.DGExporter = {
 
   gameName: 'InquirySpace Importer',
-  collectionName: 'Sensor Data',
+  parentCollectionName: 'InquirySpace Sensor Data',
+  childCollectionName: 'Sensor Readings',
 
   width: null,
   height: null,
@@ -18,9 +20,9 @@ ISImporter.DGExporter = {
   },
 
   mockDGController: {
-    doCommand: function(action, args) {
-      console.log("action: ", action);
-      console.log("args: ", args);
+    doCommand: function(obj) {
+      console.log("action: ", obj.action);
+      console.log("args: ", obj.args);
       return { caseID: 0 };
     }
   },
@@ -42,10 +44,10 @@ ISImporter.DGExporter = {
   },
 
   exportData: function(sensorType, data, metadata) {
-    var cases,
-        metadataLabels = [],
+    var metadataLabels = [],
         metadataValues = [],
         dgCase,
+        parentCollectionValues,
         i;
 
     // extract metadata in the forms needed for export.
@@ -55,50 +57,51 @@ ISImporter.DGExporter = {
     }
 
     // Step 1. Tell DG we're a "game".
-    this.doCommand( {
-      action: 'initGame',
-      args: {
-        name: this.gameName,
-        dimensions: { width: this.width, height: this.height }
-      }
+    this.doCommand('initGame', {
+      name: this.gameName,
+      dimensions: { width: this.width, height: this.height }
     });
 
-    // Step 2. "parent collection kludge". See DataGames' Importer "game".
+    // Step 2. Create a parent collection each "row" of which has the metadata and run number
+    // (It seems to be ok to call this multiple times in a single DG collection)
     this.doCommand('createCollection', {
-      name: 'Import',
-      attrs: [{name: 'cases'}],
-      childAttrName: 'import'
+      name: this.parentCollectionName,
+      attrs: [{name: 'Run'}, {name: 'Sensor Type'}].concat(metadataLabels).concat({name: 'Number of Readings'}),
+      childAttrName: 'contents'
     });
 
-    // Step 3. Create Sensor Data collection
+    // Step 3. Create a collection to be the child of the parent collection; each row of the child
+    // has a single (time, value) sensor reading.
     this.doCommand('createCollection', {
-      name: this.collectionName,
-      attrs: [{name: 'run'}, {name: 'sensor type'}].concat(metadataLabels).concat([{ name: 'time' }, { name: 'reading' }])
+      name: this.childCollectionName,
+      attrs: [{name: 'Time'}, {name: 'Reading'}]
     });
 
-    // Step 4. Create "pseudo case"
+    // Step 4. Open a case in the parent collection. This will contain the individual sensor readings
+    // as children.
+    parentCollectionValues = [this.run, sensorType].concat(metadataValues).concat(data.length);
     dgCase = this.doCommand('openCase', {
-      collection: 'Import',
-      values: ['pseudo-case']
+      collection: this.parentCollectionName,
+      values: parentCollectionValues
     });
 
-    // Step 5. Create cases for each data point.
-    cases = [];
-    for (i = 0; i < data.length; i++) {
-      cases.push( [this.run, sensorType].concat(metadataValues).concat(data[i][0], data[i][1]) );
-    }
+    // Step 5. Create cases in the child collection for each data point. Using 'createCases' we can
+    // do this inline, so we don't need to call openCase, closeCase for each one.
     this.doCommand('createCases', {
-      collection: this.collectionName,
-      values: cases,
-      parent: dgCase.caseID
+      collection: this.childCollectionName,
+      values: data,
+      parent: dgCase.caseID,
+      log: false
     });
-    this.run++;
 
     // Step 6. Close the case.
     this.doCommand('closeCase', {
-      collection: 'Import',
-      values: ['pseudo-case'],
+      collection: this.parentCollectionName,
+      values: parentCollectionValues,
       caseID: dgCase.caseID
     });
+
+    // Finally, we've finished a "run"; increment the value,.
+    this.run++;
   }
 };
