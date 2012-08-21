@@ -19,9 +19,6 @@
 [submodule "src/vendor/mathjax"]
 	path = src/vendor/mathjax
 	url = git://github.com/mathjax/MathJax.git
-[submodule "src/vendor/codemirror2"]
-	path = src/vendor/codemirror2
-	url = git://github.com/marijnh/CodeMirror2.git
 [submodule "config/littlechef"]
 	path = config/littlechef
 	url = git://github.com/concord-consortium/littlechef-servers.git
@@ -46,3 +43,6 @@
 [submodule "src/vendor/domReady"]
 	path = src/vendor/domReady
 	url = git://github.com/requirejs/domReady.git
+[submodule "src/vendor/codemirror"]
+	path = src/vendor/codemirror
+	url = git://github.com/marijnh/CodeMirror.git
