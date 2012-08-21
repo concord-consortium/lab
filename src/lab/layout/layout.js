@@ -285,7 +285,7 @@ layout.setupScreen = function(forceRender) {
     mcsize = viewLists.moleculeContainers[0].scale();
     modelAspectRatio = mcsize[0] / mcsize[1];
     widthToPageRatio = mcsize[0] / pageWidth;
-    width = pageWidth * 0.70
+    width = pageWidth * 0.6;
     height = width * 1/modelAspectRatio;
     if (height > pageHeight * 0.70) {
       height = pageHeight * 0.70;
