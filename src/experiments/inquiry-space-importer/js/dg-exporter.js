@@ -65,7 +65,7 @@ ISImporter.DGExporter = {
       label = metadata[i].label;
       value = metadata[i].value;
 
-      if ( this.metadataLabelPositions(label) == null ) {
+      if ( this.metadataLabelPositions[label] == null ) {
         this.metadataLabelPositions[label] = this.nMetadataLabels++;
       }
       position = this.metadataLabelPositions[label];
@@ -84,7 +84,7 @@ ISImporter.DGExporter = {
     // (It seems to be ok to call this multiple times in a single DG collection)
     this.doCommand('createCollection', {
       name: this.parentCollectionName,
-      attrs: [{name: 'Run'}, {name: 'Sensor Type'}].concat(metadataLabels).concat({name: 'Number of Readings'}),
+      attrs: [{name: 'Run'}, {name: 'Sensor Type'}, {name: 'Number of Readings'}].concat(metadataLabels),
       childAttrName: 'contents'
     });
 
@@ -97,7 +97,7 @@ ISImporter.DGExporter = {
 
     // Step 4. Open a case in the parent collection. This will contain the individual sensor readings
     // as children.
-    parentCollectionValues = [this.run, sensorType].concat(metadataValues).concat(data.length);
+    parentCollectionValues = [this.run, sensorType, data.length].concat(metadataValues);
     dgCase = this.doCommand('openCase', {
       collection: this.parentCollectionName,
       values: parentCollectionValues
