@@ -652,6 +652,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                     .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
                     .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
                     .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+                    .attr("class", "radialbond")
                     .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75})
                     .style("stroke", function(d, i) {
                 if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
@@ -683,6 +684,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                     .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
                     .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
                     .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
+                    .attr("class", "radialbond")
                     .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
                     .style("stroke", function(d, i) {
                 if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
@@ -712,7 +714,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function drawAttractionForces(){
-        /*Logic for drawing attraction forces between atoms */
+      gradient_container.selectAll("line.attractionforce").remove();
         for(var atom1 = 0;atom1 < mock_atoms_array.length;atom1++){
             for(var atom2 =0 ;atom2<atom1;atom2++) {
                 var xs = (x(get_x(atom1))-x(get_x(atom2)));
@@ -728,14 +730,15 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                         .attr("y1", y(get_y(atom1)))
                         .attr("x2", x(get_x(atom2)))
                         .attr("y2", y(get_y(atom2)))
+                        .attr("class", "attractionforce")
                         .style("stroke-width", 1)
                         .style("stroke", "#000000")
                         .style("stroke-dasharray", "5 3");
                 }
             }
         }
-        /*Logic for drawing attraction forces between atoms */
     }
+
     function isChargeSame(atom1,atom2) {
       var atomCharge1 =  get_charge(atom1);
       var atomCharge2 =  get_charge(atom2);
@@ -749,6 +752,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function setup_drawables() {
       setup_obstacles();
+      if(model.get("showVDWLines")){
+        drawAttractionForces();
+      }
       setup_radial_bonds();
       setup_particles();
     }
@@ -827,7 +833,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function setup_radial_bonds() {
-      gradient_container.selectAll("line").remove();
+      gradient_container.selectAll("line.radialbond").remove();
 
       radialBonds = getRadialBonds();
 
@@ -835,10 +841,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       mock_radial_bond_array.length = radialBonds[0].length;
 
-      radialBond = gradient_container.selectAll("line").data(mock_radial_bond_array);
-      if(model.get("showVDWLines")){
-          drawAttractionForces();
-      }
+      radialBond = gradient_container.selectAll("line.radialbond").data(mock_radial_bond_array);
+
       radialBondEnter(radialBond);
     }
 
@@ -896,10 +900,13 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
     }
 
-      function update_drawable_positions() {
-          setup_obstacles();
-          setup_radial_bonds();
-          setup_particles();
+    function update_drawable_positions() {
+      setup_obstacles();
+      if(model.get("showVDWLines")){
+        drawAttractionForces();
+      }
+      setup_radial_bonds();
+      setup_particles();
       }
     // ------------------------------------------------------------
     //
