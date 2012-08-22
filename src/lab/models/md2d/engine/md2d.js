@@ -1068,19 +1068,30 @@ exports.makeModel = function() {
 
     /**
       Checks to see if an uncharged atom could be placed at location x,y
-      without increasing the PE (i.e. overlapping with another atom).
+      without increasing the PE (i.e. overlapping with another atom), and
+      without being on an obstacle.
 
       Optionally, an atom index i can be included which will tell the function
       to ignore the existance of atom i. (Used when moving i around.)
     */
     canPlaceAtom: function(element, _x, _y, i) {
-      var orig_x, orig_y, PEAtLocation;
+      var orig_x, orig_y, r, PEAtLocation;
       if (typeof i === "number") {
         orig_x = x[i];
         orig_y = y[i];
         x[i] = y[i] = Infinity;   // move i atom away
       }
 
+      // first do the simpler check to see if we're on an obstacle
+      r = radius[i]
+      for (j = 0; j < N_obstacles; j++) {
+        if (_x > (obstacleX[j] - r) && _x < (obstacleX[j] + obstacleWidth[j] + r)
+            && _y > (obstacleY[j] - r) && _y < (obstacleY[j] + obstacleHeight[j] + r)) {
+          return false;
+        }
+      }
+
+      // then check PE at location
       PEAtLocation = coreModel.newPotentialCalculator(element, 0, false)(_x, _y);
 
       if (typeof i === "number") {
