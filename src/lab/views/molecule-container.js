@@ -26,6 +26,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       time_prefix = "time: ",
       time_suffix = " (ps)",
       gradient_container,
+      VDWLines_container,
       red_gradient,
       blue_gradient,
       green_gradient,
@@ -576,6 +577,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function create_gradients() {
+      VDWLines_container = vis.append("g");
+      VDWLines_container.attr("class", "VDWLines_container");
+
       gradient_container = vis.append("svg")
           .attr("class", "container")
           .attr("top", 0)
@@ -720,7 +724,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                     .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
                     .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
                     .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
-                    .attr("class", "radialbond")
+                    .attr("class", "radialbond1")
                     .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
                     .style("stroke", function(d, i) {
                 if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
@@ -750,7 +754,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function drawAttractionForces(){
-      gradient_container.selectAll("line.attractionforce").remove();
+      VDWLines_container.selectAll("line.attractionforce").remove();
         for(var atom1 = 0;atom1 < mock_atoms_array.length;atom1++){
             for(var atom2 =0 ;atom2<atom1;atom2++) {
                 var xs = (x(get_x(atom1))-x(get_x(atom2)));
@@ -761,7 +765,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                 dist =  Math.sqrt( xs + ys );
                 if (dist <= 70 && !isChargeSame(atom1,atom2))
                 {
-                    gradient_container.append("line")
+                  VDWLines_container.append("line")
                         .attr("x1", x(get_x(atom1)))
                         .attr("y1", y(get_y(atom1)))
                         .attr("x2", x(get_x(atom2)))
@@ -870,6 +874,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function setup_radial_bonds() {
       gradient_container.selectAll("line.radialbond").remove();
+      gradient_container.selectAll("line.radialbond1").remove();
 
       radialBonds = getRadialBonds();
 
@@ -941,9 +946,54 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       if(model.get("showVDWLines")){
         drawAttractionForces();
       }
-      setup_radial_bonds();
-      setup_particles();
+      update_radial_bonds();
+      update_molecule_positions();
       }
+
+    function update_molecule_positions() {
+
+      mock_atoms_array.length = get_num_atoms();
+      nodes = get_nodes();
+
+      // update model time display
+      if (options.model_time_label) {
+        time_label.text(modelTimeLabel());
+      }
+
+      label = elem.selectAll("g.label").data(mock_atoms_array);
+
+      label.attr("transform", function(d, i) {
+        return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
+      });
+
+      particle = gradient_container.selectAll("circle").data(mock_atoms_array);
+      if (mock_atoms_array.length !== gradient_container.selectAll("circle")[0].length){
+        circlesEnter(particle);
+      }
+      particle
+        .attr("cx", function(d, i) {return x(nodes[model.INDICES.X][i]); })
+        .attr("cy", function(d, i) {return y(nodes[model.INDICES.Y][i]); })
+        .attr("r",  function(d, i) {return x(nodes[model.INDICES.RADIUS][i]); });
+
+      if ((typeof(atom_tooltip_on) === "number")) {
+        render_atom_tooltip(atom_tooltip_on);
+      }
+    }
+
+    function update_radial_bonds() {
+      gradient_container.selectAll("line.radialbond")
+        .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
+        .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
+        .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+        .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+
+      gradient_container.selectAll("line.radialbond1")
+        .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+        .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+        .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
+        .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
+    }
+
     // ------------------------------------------------------------
     //
     // Handle keyboard shortcuts for model operation
