@@ -11,18 +11,9 @@
       "id": "shake",
       "text": "Shake up the oil and water mixture",
       "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json');"
-    },
-    {
-      "type": "thermometer",
-      "id": "thermometer",
-      "min": 0,
-      "max": 2000
     }
   ],
   "layout": {
-    "right": [
-      "thermometer"
-    ],
     "bottom": [
       "shake"
     ]
