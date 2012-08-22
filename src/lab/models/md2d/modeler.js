@@ -542,13 +542,6 @@ modeler.model = function(initialProperties) {
     return coreModel.getLJCalculator();
   };
 
-  model.getPotentialFunction = function(element, charge, calculateGradient) {
-    if (charge == null) charge = 0;
-    calculateGradient = !!calculateGradient;
-
-    return coreModel.newPotentialCalculator(element, charge, calculateGradient);
-  };
-
   model.resetTime = function() {
     coreModel.setTime(0);
   };
@@ -617,7 +610,7 @@ modeler.model = function(initialProperties) {
     if (y > size[1]-radius) y = size[1]-radius;
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-    if (model.getPotentialFunction(el, 0, false)(x, y) <= 0) {
+    if (coreModel.canPlaceAtom(el, x, y)) {
       coreModel.addAtom(el, x, y, vx, vy, charge);
 
       // reassign nodes to possibly-reallocated atoms array
@@ -641,23 +634,11 @@ modeler.model = function(initialProperties) {
     */
   model.setAtomProperties = function(i, props, checkLocation) {
     if (checkLocation) {
-      var orig_x = coreModel.atoms[model.INDICES.X][i],
-          orig_y = coreModel.atoms[model.INDICES.Y][i],
-          x  = typeof props.x === "number" ? props.x : orig_x,
+      var x  = typeof props.x === "number" ? props.x : orig_x,
           y  = typeof props.y === "number" ? props.y : orig_y,
-          el = typeof props.element === "number" ? props.y : coreModel.atoms[model.INDICES.ELEMENT][i],
-          canPlace;
+          el = typeof props.element === "number" ? props.y : coreModel.atoms[model.INDICES.ELEMENT][i];
 
-      // temporarily move the atom we're concerned with away
-      nodes[model.INDICES.X][i] = nodes[model.INDICES.X][i] = Infinity;
-
-      canPlace = model.getPotentialFunction(el, 0, false)(x, y) > 0;
-
-      // move atom back
-      nodes[model.INDICES.X][i] = orig_x;
-      nodes[model.INDICES.Y][i] = orig_y;
-
-      if (canPlace) {
+      if (!coreModel.canPlaceAtom(el, x, y, i)) {
         return false;
       }
     }
