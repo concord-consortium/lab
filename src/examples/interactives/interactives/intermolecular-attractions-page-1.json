@@ -2,27 +2,8 @@
   "model": {
     "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page1/page1$0.json",
     "viewOptions": {
-      "controlButtons": "play_reset_step"
+      "controlButtons": ""
     }
   },
-  "components": [
-    {
-      "type": "button",
-      "id": "cool",
-      "text": "Cool",
-      "action": "adjustTemperature(0.9);"
-    },
-    {
-      "type": "button",
-      "id": "heat",
-      "text": "Heat",
-      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
-    }
-  ],
-  "layout": {
-    "bottom": [
-      "cool",
-      "heat"
-    ]
-  }
+  "components": []
 }
