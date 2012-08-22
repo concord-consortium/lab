@@ -631,17 +631,37 @@ modeler.model = function(initialProperties) {
     return false;
   },
 
-  model.setAtomProperty = function(i, props, checkLocation) {
+  /**
+      A generic method to set properties on a single existing atom.
+
+      This can optionally check the new location of the atom to see if it would
+      overlap with another another atom (i.e. if it would increase the PE).
+
+      Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
+    */
+  model.setAtomProperties = function(i, props, checkLocation) {
     if (checkLocation) {
-      var x  = typeof props.x === "number" ? props.x : coreModel.atoms[model.INDICES.X][i],
-          y  = typeof props.y === "number" ? props.y : coreModel.atoms[model.INDICES.Y][i],
-          el = typeof props.element === "number" ? props.y : coreModel.atoms[model.INDICES.ELEMENT][i];
-      if (model.getPotentialFunction(el, 0, false)(x, y) > 0) {
-        console.log("too close");
+      var orig_x = coreModel.atoms[model.INDICES.X][i],
+          orig_y = coreModel.atoms[model.INDICES.Y][i],
+          x  = typeof props.x === "number" ? props.x : orig_x,
+          y  = typeof props.y === "number" ? props.y : orig_y,
+          el = typeof props.element === "number" ? props.y : coreModel.atoms[model.INDICES.ELEMENT][i],
+          canPlace;
+
+      // temporarily move the atom we're concerned with away
+      nodes[model.INDICES.X][i] = nodes[model.INDICES.X][i] = Infinity;
+
+      canPlace = model.getPotentialFunction(el, 0, false)(x, y) > 0;
+
+      // move atom back
+      nodes[model.INDICES.X][i] = orig_x;
+      nodes[model.INDICES.Y][i] = orig_y;
+
+      if (canPlace) {
         return false;
       }
     }
-    coreModel.setAtomProperties(i, props, checkLocation);
+    coreModel.setAtomProperties(i, props);
     return true;
   },
 

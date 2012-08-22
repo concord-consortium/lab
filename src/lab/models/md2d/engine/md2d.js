@@ -1002,6 +1002,18 @@ exports.makeModel = function() {
     },
 
     /**
+      The generic method to set properties on a single existing atom.
+
+      Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
+    */
+    setAtomProperties: function(i, props) {
+      for (prop in props) {
+        if (!props.hasOwnProperty(prop)) continue;
+        this[prop][i] = props[prop];
+      }
+    },
+
+    /**
       The canonical method for adding a radial bond to the collection of radial bonds.
 
       If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
