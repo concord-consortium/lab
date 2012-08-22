@@ -21,6 +21,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       x, downscalex, downx,
       y, downscaley, downy,
       dragged,
+      drag_origin,
       pc_xpos, pc_ypos,
       model_time_formatter = d3.format("5.2f"),
       time_prefix = "time: ",
@@ -40,6 +41,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       get_num_atoms,
       nodes,
       get_nodes,
+      set_atom_properties,
+      is_stopped,
       obstacle,
       get_obstacles,
       mock_obstacles_array = [],
@@ -97,6 +100,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     get_obstacles = options.get_obstacles;
     getRadialBonds = options.get_radial_bonds;
+    set_atom_properties = options.set_atom_properties;
+    is_stopped = options.is_stopped;
   };
 
   function scale(w, h) {
@@ -180,9 +185,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     // y-scale (inverted domain)
     y = d3.scale.linear()
         .domain([options.ymax, options.ymin])
-        .nice()
-        .range([0, mh])
-        .nice();
+        .range([0, mh]);
 
     // y-scale for defining heights without inverting the domain
     y_flip = d3.scale.linear()
@@ -212,6 +215,14 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
   function get_y(i) {
     return nodes[model.INDICES.Y][i];
+  }
+
+  function set_position(i, x, y, checkPosition) {
+    return set_atom_properties(i, {x: x, y: y}, checkPosition);
+  }
+
+  function set_y(i, y) {
+    nodes[model.INDICES.Y][i] = y;
   }
 
   function get_radius(i) {
@@ -489,6 +500,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     // Process options that always have to be recreated when container is reloaded
     d3.select('.model-controller').remove();
+
     switch (options.control_buttons) {
       case "play":
         playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
@@ -647,10 +659,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     */
     function circlesEnter(particle) {
       particle.enter().append("circle")
+          .attr("class", "draggable")
           .attr("r",  function(d, i) { return x(get_radius(i)); })
           .attr("cx", function(d, i) { return x(get_x(i)); })
           .attr("cy", function(d, i) { return y(get_y(i)); })
-          .style("cursor", "crosshair")
           .style("fill", function(d, i) {
             if (chargeShadingMode()) {
                 if (get_charge(i) > 0){
@@ -671,7 +683,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             }
           })
           .on("mousedown", molecule_mousedown)
-          .on("mouseout", molecule_mouseout);
+          .on("mouseout", molecule_mouseout)
+          .call(d3.behavior.drag()
+            .on("dragstart", node_dragstart)
+            .on("drag", node_drag)
+            .on("dragend", node_dragend)
+          );
     }
 
     function rectEnter(obstacle) {
@@ -993,6 +1010,47 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
         .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
     }
+
+    function node_dragstart(d, i) {
+      console.log("starting to drag "+i)
+      console.log("started at "+get_x(i) +","+ get_y(i))
+      if (!is_stopped()) return;
+
+      drag_origin = [get_x(i), get_y(i)];
+    }
+
+    function node_drag(d, i){
+      if (!is_stopped()) return;
+
+      var dragTarget = d3.select(this),
+          new_x, new_y;
+
+      dragTarget
+        .attr("cx", function(){return d3.event.x})
+        .attr("cy", function(){return d3.event.y});
+
+      new_x = x.invert(dragTarget.attr('cx'));
+      new_y = y.invert(dragTarget.attr('cy'));
+      set_position(i, new_x, new_y);
+
+      update_drawable_positions();
+    };
+
+    function node_dragend(d, i){
+      if (!is_stopped()) return;
+
+      var dragTarget = d3.select(this),
+          new_x, new_y;
+
+      new_x = x.invert(dragTarget.attr('cx'));
+      new_y = y.invert(dragTarget.attr('cy'));
+      if (!set_position(i, new_x, new_y, true)) {
+        alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
+        set_position(i, drag_origin[0], drag_origin[1]);
+      }
+
+      update_drawable_positions();
+    };
 
     // ------------------------------------------------------------
     //
