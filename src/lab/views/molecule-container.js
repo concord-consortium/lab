@@ -1012,8 +1012,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function node_dragstart(d, i) {
-      console.log("starting to drag "+i)
-      console.log("started at "+get_x(i) +","+ get_y(i))
       if (!is_stopped()) return;
 
       drag_origin = [get_x(i), get_y(i)];

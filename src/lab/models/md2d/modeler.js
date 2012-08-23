@@ -634,8 +634,8 @@ modeler.model = function(initialProperties) {
     */
   model.setAtomProperties = function(i, props, checkLocation) {
     if (checkLocation) {
-      var x  = typeof props.x === "number" ? props.x : orig_x,
-          y  = typeof props.y === "number" ? props.y : orig_y,
+      var x  = typeof props.x === "number" ? props.x : coreModel.atoms[model.INDICES.X][i],
+          y  = typeof props.y === "number" ? props.y : coreModel.atoms[model.INDICES.Y][i],
           el = typeof props.element === "number" ? props.y : coreModel.atoms[model.INDICES.ELEMENT][i];
 
       if (!coreModel.canPlaceAtom(el, x, y, i)) {
