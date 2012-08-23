@@ -181,8 +181,8 @@ header h1 {
 #sensor-type-selector {
   position: absolute;
   top: 0.4em;
-  left: 1.25em;
-  width: 90%;
+  left: 3.5em;
+  width: 80%;
 }
 
 #realtime-display {
