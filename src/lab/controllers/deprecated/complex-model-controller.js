@@ -296,9 +296,28 @@ controllers.complexModelController =
         $("#lennard-jones-forces-checkbox").prop("checked", model.get("lennard_jones_forces"))
       });
 
+      // ------------------------------------------------------------
+      //
+      // View Property Checkboxs
+      //
+      // ------------------------------------------------------------
 
-      model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
-      updateCoulombCheckbox();
+      $("#show-vdw-lines-checkbox").click(function() {
+        model.set({ showVDWLines: this.checked });
+      })
+
+      model.addPropertiesListener(["showVDWLines"], function() {
+        $("#show-vdw-lines-checkbox").prop("checked", model.get("showVDWLines"))
+      });
+
+      $("#show-charge-shading-checkbox").click(function() {
+        model.set({ chargeShading: this.checked });
+      })
+
+      model.addPropertiesListener(["chargeShading"], function() {
+        $("#show-charge-shading-checkbox").prop("checked", model.get("chargeShading"))
+        moleculeContainer.setup_drawables();
+      });
 
       // ------------------------------------------------------------
       //

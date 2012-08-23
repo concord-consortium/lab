@@ -37,7 +37,7 @@
           #controls.left
             %ul
               %li
-                %fieldset
+                %fieldset{:style => "min-width:22em;"}
                   %legend Setup Random Atoms
                   %select(id="select-molecule-number")
                     %option(value="2") 2
@@ -55,7 +55,7 @@
                     Randomize Velocity
                     %input(id="radio-randomize-pos-vel" type="radio")
               %li
-                %fieldset
+                %fieldset{:style => "min-width:16em;"}
                   %legend Temperature Control
                   %input(id="temperature-control-checkbox" type="checkbox")
                   %select(id="select-temperature")
@@ -68,12 +68,19 @@
                     %option(value="200" selected) 200
                     %option(value="0") 0
               %li
-                %fieldset
+                %fieldset{:style => "min-width:18em;"}
                   %legend Particle Force Interactions
                   %label{:for=>"lennard-jones-forces-checkbox"} Lennard-Jones
                   %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
                   %label{:for=>"coulomb-forces-checkbox"} Coulomb Forces
                   %input(id="coulomb-forces-checkbox" type="checkbox")
+              %li
+                %fieldset{:style => "min-width:16em;"}
+                  %legend View Options
+                  %label{:for=>"show-vdw-lines-checkbox"} VDW Lines
+                  %input(id="show-vdw-lines-checkbox" type="checkbox")
+                  %label{:for=>"show-charge-shading-checkbox"} Charge Shading
+                  %input(id="show-charge-shading-checkbox" type="checkbox")
               %li
                 %button{:id=>"save-button", :class=>"component button", :style=> "width: 5em; display: block"}
                   Save
@@ -81,16 +88,9 @@
               %br
               %ul
                 %li
-                  %fieldset#stats-container
+                  %fieldset#stats-container{:style => "min-width:60em;"}
                     %legend Stats
                     %pre#stats
-
-    #datatable
-      %ul
-        %li
-          %button#toggle-datatable Show Data Table
-        %li
-          %table#datatable-table
 
     #benchmarks
       %ul
@@ -98,6 +98,13 @@
           %button#start-benchmarks Run Benchmarks
         %li
           %table#benchmarks-table
+
+    #datatable
+      %ul
+        %li
+          %button#toggle-datatable Show Data Table
+        %li
+          %table#datatable-table
 
     .description
       %h2 About the Simple Molecules model
