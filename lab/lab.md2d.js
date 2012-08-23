@@ -2800,13 +2800,15 @@ exports.makeModel = function() {
     */
     getBondedAtoms: function(i) {
       var bondedAtoms = [];
-      for (j = 0, jj = radialBonds[0].length; j < jj; j++) {
-        // console.log("looking at bond from "+radialBonds)
-        if (radialBondAtom1Index[j] === i) {
-          bondedAtoms.push(radialBondAtom2Index[j]);
-        }
-        if (radialBondAtom2Index[j] === i) {
-          bondedAtoms.push(radialBondAtom1Index[j]);
+      if (radialBonds) {
+        for (j = 0, jj = radialBonds[0].length; j < jj; j++) {
+          // console.log("looking at bond from "+radialBonds)
+          if (radialBondAtom1Index[j] === i) {
+            bondedAtoms.push(radialBondAtom2Index[j]);
+          }
+          if (radialBondAtom2Index[j] === i) {
+            bondedAtoms.push(radialBondAtom1Index[j]);
+          }
         }
       }
       return bondedAtoms;
