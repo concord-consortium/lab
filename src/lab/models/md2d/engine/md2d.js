@@ -1501,6 +1501,7 @@ exports.makeModel = function() {
 
     /**
       Returns all atoms in the same molecule as atom i
+      (not including i itself)
     */
     getMoleculeAtoms: function(i) {
       this.atomsInMolecule.push(i);
