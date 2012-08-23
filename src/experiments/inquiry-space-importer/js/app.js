@@ -410,7 +410,7 @@ ISImporter.appController = new ISImporter.Object({
       data = this.dataset.getDataPoints();
     }
 
-    for (var i = 0, len = this.getMetadataItemCount(); i < len; i++) {
+    for (var i = 1, len = this.getMetadataItemCount(); i <= len; i++) {
       label = this.getMetadataLabel(i);
       if (label) {
         metadata.push({ label: label, value: this.getMetadataValue(i) });
