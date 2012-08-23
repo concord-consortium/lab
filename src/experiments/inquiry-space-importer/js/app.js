@@ -41,8 +41,7 @@ ISImporter.sensors = {
     title: "Distance",
     yMax: 3,
     units: "m",
-    xMax: 20,
-    units: "s"
+    xMax: 20
   },
 
   temperature: {
@@ -55,8 +54,7 @@ ISImporter.sensors = {
     title: "Temperature",
     yMax: 100,
     units: "°C",
-    xMax: 60,
-    units: "s"
+    xMax: 60
   },
 
   light: {
@@ -69,8 +67,7 @@ ISImporter.sensors = {
     title: "Light Intensity",
     yMax: 2000,
     units: "lux",
-    xMax: 60,
-    units: "s"
+    xMax: 60
   }
 };
 
