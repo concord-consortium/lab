@@ -92,6 +92,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           fit_to_parent: !layoutStyle
         };
 
+    modelUrl = ACTUAL_ROOT + modelUrl;
+
     $.get(modelUrl).done(function(modelConfig) {
 
       // Deal with the servers that return the json as text/plain
