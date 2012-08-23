@@ -121,6 +121,21 @@ modeler.model = function(initialProperties) {
     ELEMENT  : md2d.INDICES.ELEMENT
   };
 
+  model.ATOM_PROPERTIES = {
+    RADIUS   : md2d.ATOM_PROPERTIES.RADIUS,
+    PX       : md2d.ATOM_PROPERTIES.PX,
+    PY       : md2d.ATOM_PROPERTIES.PY,
+    X        : md2d.ATOM_PROPERTIES.X,
+    Y        : md2d.ATOM_PROPERTIES.Y,
+    VX       : md2d.ATOM_PROPERTIES.VX,
+    VY       : md2d.ATOM_PROPERTIES.VY,
+    SPEED    : md2d.ATOM_PROPERTIES.SPEED,
+    AX       : md2d.ATOM_PROPERTIES.AX,
+    AY       : md2d.ATOM_PROPERTIES.AY,
+    CHARGE   : md2d.ATOM_PROPERTIES.CHARGE,
+    ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT
+  };
+
   model.OBSTACLE_INDICES = {
     X        : md2d.OBSTACLE_INDICES.X,
     Y        : md2d.OBSTACLE_INDICES.Y,

@@ -131,6 +131,21 @@ exports.INDICES = INDICES = {
   ELEMENT: 11
 };
 
+exports.ATOM_PROPERTIES = {
+  RADIUS :  "radius",
+  PX     :  "px",
+  PY     :  "py",
+  X      :  "x",
+  Y      :  "y",
+  VX     :  "vx",
+  VY     :  "vy",
+  SPEED  :  "speed",
+  AX     :  "ax",
+  AY     :  "ay",
+  CHARGE :  "charge",
+  ELEMENT:  "element"
+};
+
 exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
   X       :  0,
   Y       :  1,
