@@ -627,12 +627,32 @@ modeler.model = function(initialProperties) {
   /**
       A generic method to set properties on a single existing atom.
 
+      Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
+
       This can optionally check the new location of the atom to see if it would
       overlap with another another atom (i.e. if it would increase the PE).
 
-      Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
+      This can also optionally apply the same dx, dy to any atoms in the same
+      molecule (if x and y are being changed), and check the location of all
+      the bonded atoms together.
     */
-  model.setAtomProperties = function(i, props, checkLocation) {
+  model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
+    if (moveMolecule) {
+      atoms = coreModel.getMoleculeAtoms(i);
+      if (atoms.length > 0) {
+        dx = typeof props.x === "number" ? props.x - coreModel.atoms[model.INDICES.X][i] : 0;
+        dy = typeof props.y === "number" ? props.y - coreModel.atoms[model.INDICES.Y][i] : 0;
+        for (var j = 0, jj=atoms.length; j<jj; j++) {
+          new_x = coreModel.atoms[model.INDICES.X][atoms[j]] + dx;
+          new_y = coreModel.atoms[model.INDICES.Y][atoms[j]] + dy;
+          if (new_x == Infinity || new_x == -Infinity || new_y == Infinity || new_y == -Infinity) debugger;
+          if (!model.setAtomProperties(atoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
+            return false;
+          }
+        }
+      }
+    }
+
     if (checkLocation) {
       var x  = typeof props.x === "number" ? props.x : coreModel.atoms[model.INDICES.X][i],
           y  = typeof props.y === "number" ? props.y : coreModel.atoms[model.INDICES.Y][i],

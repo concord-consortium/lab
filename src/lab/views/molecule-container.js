@@ -217,8 +217,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     return nodes[model.INDICES.Y][i];
   }
 
-  function set_position(i, x, y, checkPosition) {
-    return set_atom_properties(i, {x: x, y: y}, checkPosition);
+  function set_position(i, x, y, checkPosition, moveMolecule) {
+    return set_atom_properties(i, {x: x, y: y}, checkPosition, moveMolecule);
   }
 
   function set_y(i, y) {
@@ -1029,7 +1029,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       new_x = x.invert(dragTarget.attr('cx'));
       new_y = y.invert(dragTarget.attr('cy'));
-      set_position(i, new_x, new_y);
+      set_position(i, new_x, new_y, false, true);
 
       update_drawable_positions();
     };
@@ -1042,9 +1042,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       new_x = x.invert(dragTarget.attr('cx'));
       new_y = y.invert(dragTarget.attr('cy'));
-      if (!set_position(i, new_x, new_y, true)) {
+      if (!set_position(i, new_x, new_y, true, true)) {
         alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
-        set_position(i, drag_origin[0], drag_origin[1]);
+        set_position(i, drag_origin[0], drag_origin[1], false, true);
       }
 
       update_drawable_positions();

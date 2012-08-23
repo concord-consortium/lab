@@ -157,7 +157,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
         get_obstacles:        function() { return model.get_obstacles(); },
-        set_atom_properties:  function(i, props, check) { return model.setAtomProperties(i, props, check); },
+        set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments);  },
         is_stopped:           function() { return model.is_stopped() },
 
         control_buttons:      controlButtons
@@ -184,7 +184,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
         get_obstacles:        function() { return model.get_obstacles(); },
-        set_atom_properties:  function(i, props, check) { return model.setAtomProperties(i, props, check); },
+        set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments); },
         is_stopped:           function() { return model.is_stopped() },
 
         control_buttons:      controlButtons
