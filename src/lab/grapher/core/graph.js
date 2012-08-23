@@ -172,7 +172,7 @@ grapher.graph = function(elem, options, message) {
        "top":    options.title  ? 25 : 15,
        "right":  15,
        "bottom": 20,
-       "left":   20
+       "left":   60
       };
       break;
 
@@ -181,7 +181,7 @@ grapher.graph = function(elem, options, message) {
        "top":    options.title  ? 30 : 20,
        "right":                   30,
        "bottom": options.xlabel ? 60 : 10,
-       "left":   options.ylabel ? 80 : 45
+       "left":   options.ylabel ? 90 : 60
       };
       break;
 
@@ -190,7 +190,7 @@ grapher.graph = function(elem, options, message) {
        "top":    options.title  ? 40 : 20,
        "right":                   30,
        "bottom": options.xlabel ? 60 : 10,
-       "left":   options.ylabel ? 80 : 45
+       "left":   options.ylabel ? 90 : 60
       };
       break;
     }
