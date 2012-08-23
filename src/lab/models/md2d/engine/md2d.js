@@ -1076,11 +1076,6 @@ exports.makeModel = function() {
     */
     canPlaceAtom: function(element, _x, _y, i) {
       var orig_x, orig_y, r, PEAtLocation;
-      if (typeof i === "number") {
-        orig_x = x[i];
-        orig_y = y[i];
-        x[i] = y[i] = Infinity;   // move i atom away
-      }
 
       // first do the simpler check to see if we're on an obstacle
       r = radius[i]
@@ -1092,6 +1087,12 @@ exports.makeModel = function() {
       }
 
       // then check PE at location
+      if (typeof i === "number") {
+        orig_x = x[i];
+        orig_y = y[i];
+        x[i] = y[i] = Infinity;   // move i atom away
+      }
+
       PEAtLocation = coreModel.newPotentialCalculator(element, 0, false)(_x, _y);
 
       if (typeof i === "number") {
