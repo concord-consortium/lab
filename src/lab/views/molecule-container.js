@@ -854,6 +854,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("style", "font-weight: bold; opacity: .7")
             .attr("x", 0)
             .attr("y", "0.31em")
+            .attr("pointer-events", "none")
             .text(function(d) { return d.index; });
       } else {
         labelEnter.append("text")
@@ -862,6 +863,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("style", "font-weight: bold; opacity: .7")
             .attr("x", "-0.31em")
             .attr("y", "0.31em")
+            .attr("pointer-events", "none")
             .text(function(d, i) {
                 if (chargeShadingMode()) {
                     if (get_charge(i) > 0){
