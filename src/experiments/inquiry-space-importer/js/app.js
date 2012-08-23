@@ -39,8 +39,10 @@ ISImporter.sensors = {
       appletId: 'distance-sensor'
     }),
     title: "Distance",
-    yMax: 5,
-    units: "m"
+    yMax: 3,
+    units: "m",
+    xMax: 20,
+    units: "s"
   },
 
   temperature: {
@@ -52,7 +54,9 @@ ISImporter.sensors = {
     }),
     title: "Temperature",
     yMax: 100,
-    units: "°C"
+    units: "°C",
+    xMax: 60,
+    units: "s"
   },
 
   light: {
@@ -64,7 +68,9 @@ ISImporter.sensors = {
     }),
     title: "Light Intensity",
     yMax: 2000,
-    units: "lux"
+    units: "lux",
+    xMax: 60,
+    units: "s"
   }
 };
 
@@ -120,10 +126,10 @@ ISImporter.GraphController = defineClass({
       title       : this.title,
       xlabel      : this.xLabel,
       xmin        : 0,
-      xmax        : 60,
+      xmax        : 20,
       ylabel      : this.yLabel,
       ymin        : 0,
-      ymax        : 40,
+      ymax        : 2,
       points      : [],
       circleRadius: false,
       dataChange  : false
