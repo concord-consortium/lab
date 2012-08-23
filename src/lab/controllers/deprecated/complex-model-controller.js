@@ -276,14 +276,26 @@ controllers.complexModelController =
 
       // ------------------------------------------------------------
       //
-      // Coulomb Forces Checkbox
+      // Force Interaction Checkboxs
       //
       // ------------------------------------------------------------
 
-      function updateCoulombCheckbox() {
-        $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-        moleculeContainer.setup_drawables();
-      }
+      $("#coulomb-forces-checkbox").click(function() {
+        model.set({ coulomb_forces: this.checked });
+      })
+
+      model.addPropertiesListener(["coulomb_forces"], function() {
+        $("#coulomb-forces-checkbox").prop("checked", model.get("coulomb_forces"))
+      });
+
+      $("#lennard-jones-forces-checkbox").click(function() {
+        model.set({ lennard_jones_forces: this.checked });
+      })
+
+      model.addPropertiesListener(["lennard_jones_forces"], function() {
+        $("#lennard-jones-forces-checkbox").prop("checked", model.get("lennard_jones_forces"))
+      });
+
 
       model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
       updateCoulombCheckbox();

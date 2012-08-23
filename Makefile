@@ -405,7 +405,6 @@ server/public/lab/lab.views.js: \
 	src/lab/views/benchmarks.js \
 	src/lab/views/datatable.js \
 	src/lab/views/temperature-control.js \
-	src/lab/views/force-interaction-controls.js \
 	src/lab/views/display-stats.js \
 	src/lab/views/heat-cool-buttons.js \
 	src/lab/end.js

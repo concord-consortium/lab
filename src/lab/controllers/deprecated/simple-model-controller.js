@@ -164,13 +164,13 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       layout.heatCoolButtons("#heat_button", "#cool_button", 0, 3800, model, function (t) { therm.add_value(t); });
 
       // ------------------------------------------------------------
-      // Add listener for coulomb_forces checkbox
+      // Add model listener for coulomb_forces checkbox
       // ------------------------------------------------------------
 
-      // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-
-      model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
-      updateCoulombCheckbox();
+      model.addPropertiesListener(["coulomb_forces"], function() {
+        $("#coulomb-forces-checkbox").prop("checked", model.get("coulomb_forces"))
+        molecule_container.setup_drawables();
+      });
 
       // ------------------------------------------------------------
       //
@@ -191,10 +191,16 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     //
     // ------------------------------------------------------------
 
-    function updateCoulombCheckbox() {
-      $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-      molecule_container.setup_drawables();
-    }
+    // ------------------------------------------------------------
+    //
+    // Coulomb Forces Checkbox
+    //
+    // ------------------------------------------------------------
+
+    $("#coulomb-forces-checkbox").click(function() {
+      model.set({ chargeShading: this.checked });
+      model.set({ coulomb_forces: this.checked });
+    })
 
     function updateTherm(){
       therm.add_value(model.get("temperature"));
