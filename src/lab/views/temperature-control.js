@@ -13,7 +13,7 @@ layout.setupTemperature = function(model) {
       var temp_range = document.createElement("input");
       temp_range.type = "range";
       temp_range.min = "0";
-      temp_range.max = "1000";
+      temp_range.max = "5000";
       temp_range.step = "20";
       temp_range.value = model.get("temperature");
       select_temperature.parentNode.replaceChild(temp_range, select_temperature);
