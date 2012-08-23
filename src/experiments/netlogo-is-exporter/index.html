@@ -11,9 +11,13 @@
     </div>
 
     <script type="text/javascript">
+    var ROOT = "/experiments",
+        ROOT_REGEX = new RegExp(ROOT + "/.*$"),
+        ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
+    
     var appletString = ['<applet id="netlogo-applet" code="org.nlogo.lite.Applet"',
                      '     width="754" height="450" MAYSCRIPT="true"',
-                     '     archive="/jnlp/org/nlogo/NetLogoLite.jar"',
+                     '     archive="' + ACTUAL_ROOT + '/jnlp/org/nlogo/NetLogoLite.jar"',
                      '     MAYSCRIPT="true">',
                      '  <param name="DefaultModel" value="models/IS-harmonic-motion-model.v2.2.nlogo"/>',
                      '  <param name="java_arguments" value="-Djnlp.packEnabled=true">',
