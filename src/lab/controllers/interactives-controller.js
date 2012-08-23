@@ -68,6 +68,27 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           controller.loadModel(modelUrl);
         },
 
+        /**
+          Sets individual atom properties using human-readable hash.
+          e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
+        */
+        setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule) {
+          return model.setAtomProperties(i, props, checkLocation, moveMolecule);
+        },
+
+        /**
+          Returns atom properties as a human-readable hash.
+          e.g. getAtomProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
+        */
+        getAtomProperties: function getAtomProperties(i) {
+          var props = {},
+              atoms = model.get_nodes();
+          for (property in model.ATOM_PROPERTIES) {
+            props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
+          }
+          return props;
+        },
+
         // rudimentary debugging functionality
         alert: alert,
 
