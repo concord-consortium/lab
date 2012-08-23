@@ -1496,6 +1496,50 @@ exports.makeModel = function() {
       return res[1];
     },
 
+    atomsInMolecule: [],
+    depth: 0,
+
+    /**
+      Returns all atoms in the same molecule as atom i
+    */
+    getMoleculeAtoms: function(i) {
+      this.atomsInMolecule.push(i);
+      var moleculeAtoms = [];
+      var bondedAtoms = this.getBondedAtoms(i);
+      var depth = this.depth;
+      this.depth++;
+      for (var j=0, jj=bondedAtoms.length; j<jj; j++) {
+        var atomNo = bondedAtoms[j];
+        if (!~this.atomsInMolecule.indexOf(atomNo)) {
+          moleculeAtoms = moleculeAtoms.concat(this.getMoleculeAtoms(atomNo)); // recurse
+        }
+      }
+      if (depth === 0) {
+        this.depth = 0;
+        this.atomsInMolecule = [];
+      } else {
+        moleculeAtoms.push(i)
+      }
+      return moleculeAtoms;
+    },
+
+    /**
+      Returns all atoms directly bonded to atom i
+    */
+    getBondedAtoms: function(i) {
+      var bondedAtoms = [];
+      for (j = 0, jj = radialBonds[0].length; j < jj; j++) {
+        // console.log("looking at bond from "+radialBonds)
+        if (radialBondAtom1Index[j] === i) {
+          bondedAtoms.push(radialBondAtom2Index[j]);
+        }
+        if (radialBondAtom2Index[j] === i) {
+          bondedAtoms.push(radialBondAtom1Index[j]);
+        }
+      }
+      return bondedAtoms;
+    },
+
     serialize: function() {
       var serializedData = {},
           prop,
