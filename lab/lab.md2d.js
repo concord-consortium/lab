@@ -1230,7 +1230,8 @@ exports.newLJCalculator = function(params, cb) {
       minimum is at r=rmin, V(rmin) = 0
     */
     potentialFromSquaredDistance: function(r_sq) {
-       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3);
+      if (!r_sq) return -Infinity
+      return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3);
     },
 
     /**
@@ -1413,7 +1414,15 @@ exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
   Y_PREV  :  8,
   COLOR_R :  9,
   COLOR_G :  10,
-  COLOR_B :  11
+  COLOR_B :  11,
+  VISIBLE :  12
+};
+
+exports.RADIAL_INDICES = RADIAL_INDICES = {
+  ATOM1   :  0,
+  ATOM2   :  1,
+  LENGTH  :  2,
+  STRENGTH:  3
 };
 
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
@@ -1599,14 +1608,14 @@ exports.makeModel = function() {
 
       createRadialBondsArray = function(num) {
       var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
+          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular', radialIndices = RADIAL_INDICES;
 
-        radialBonds = [];
+        radialBonds = model.radialBonds = [];
 
-        radialBonds[0] = radialBondAtom1Index = arrays.create(num, 0, uint16);
-        radialBonds[1] = radialBondAtom2Index = arrays.create(num, 0, uint16);
-        radialBonds[2] = radialBondLength     = arrays.create(num, 0, float32);
-        radialBonds[3] = radialBondStrength   = arrays.create(num, 0, float32);
+        radialBonds[radialIndices.ATOM1] = radialBondAtom1Index = arrays.create(num, 0, uint16);
+        radialBonds[radialIndices.ATOM2] = radialBondAtom2Index = arrays.create(num, 0, uint16);
+        radialBonds[radialIndices.LENGTH] = radialBondLength     = arrays.create(num, 0, float32);
+        radialBonds[radialIndices.STRENGTH] = radialBondStrength   = arrays.create(num, 0, float32);
       },
 
       // Make the 'radialBonds' array bigger. FIXME: needs to be factored
@@ -1628,6 +1637,7 @@ exports.makeModel = function() {
 
       createObstaclesArray = function(num) {
         var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+            uint8   = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
             ind     = OBSTACLE_INDICES;
 
         obstacles = model.obstacles = [];
@@ -1644,6 +1654,7 @@ exports.makeModel = function() {
         obstacles[ind.COLOR_R]  = obstacleColorR = arrays.create(num, 0, float32);
         obstacles[ind.COLOR_G]  = obstacleColorG = arrays.create(num, 0, float32);
         obstacles[ind.COLOR_B]  = obstacleColorB = arrays.create(num, 0, float32);
+        obstacles[ind.VISIBLE]  = obstacleVisible = arrays.create(num, 0, uint8);
       },
 
 
@@ -2262,6 +2273,18 @@ exports.makeModel = function() {
     },
 
     /**
+      The generic method to set properties on a single existing atom.
+
+      Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
+    */
+    setAtomProperties: function(i, props) {
+      for (prop in props) {
+        if (!props.hasOwnProperty(prop)) continue;
+        this[prop][i] = props[prop];
+      }
+    },
+
+    /**
       The canonical method for adding a radial bond to the collection of radial bonds.
 
       If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
@@ -2282,7 +2305,7 @@ exports.makeModel = function() {
     },
 
 
-    addObstacle: function(x, y, width, height, density, color) {
+    addObstacle: function(x, y, width, height, density, color, visible) {
       var mass;
 
       if (N_obstacles+1 > obstacleX.length) {
@@ -2309,9 +2332,47 @@ exports.makeModel = function() {
       obstacleColorG[N_obstacles] = color[1];
       obstacleColorB[N_obstacles] = color[2];
 
+      obstacleVisible[N_obstacles] = visible;
+
       N_obstacles++;
     },
 
+    /**
+      Checks to see if an uncharged atom could be placed at location x,y
+      without increasing the PE (i.e. overlapping with another atom), and
+      without being on an obstacle.
+
+      Optionally, an atom index i can be included which will tell the function
+      to ignore the existance of atom i. (Used when moving i around.)
+    */
+    canPlaceAtom: function(element, _x, _y, i) {
+      var orig_x, orig_y, r, PEAtLocation;
+
+      // first do the simpler check to see if we're on an obstacle
+      r = radius[i]
+      for (j = 0; j < N_obstacles; j++) {
+        if (_x > (obstacleX[j] - r) && _x < (obstacleX[j] + obstacleWidth[j] + r)
+            && _y > (obstacleY[j] - r) && _y < (obstacleY[j] + obstacleHeight[j] + r)) {
+          return false;
+        }
+      }
+
+      // then check PE at location
+      if (typeof i === "number") {
+        orig_x = x[i];
+        orig_y = y[i];
+        x[i] = y[i] = Infinity;   // move i atom away
+      }
+
+      PEAtLocation = coreModel.newPotentialCalculator(element, 0, false)(_x, _y);
+
+      if (typeof i === "number") {
+        x[i] = orig_x;
+        y[i] = orig_y;
+      }
+
+      return PEAtLocation <= 0;
+    },
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
@@ -2410,7 +2471,7 @@ exports.makeModel = function() {
 
       createObstaclesArray(num);
       for (i = 0; i < num; i++) {
-        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i]);
+        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i], props.visible[i]);
       }
     },
 
@@ -2704,6 +2765,51 @@ exports.makeModel = function() {
 
       if (res.error) return false;
       return res[1];
+    },
+
+    atomsInMolecule: [],
+    depth: 0,
+
+    /**
+      Returns all atoms in the same molecule as atom i
+      (not including i itself)
+    */
+    getMoleculeAtoms: function(i) {
+      this.atomsInMolecule.push(i);
+      var moleculeAtoms = [];
+      var bondedAtoms = this.getBondedAtoms(i);
+      var depth = this.depth;
+      this.depth++;
+      for (var j=0, jj=bondedAtoms.length; j<jj; j++) {
+        var atomNo = bondedAtoms[j];
+        if (!~this.atomsInMolecule.indexOf(atomNo)) {
+          moleculeAtoms = moleculeAtoms.concat(this.getMoleculeAtoms(atomNo)); // recurse
+        }
+      }
+      if (depth === 0) {
+        this.depth = 0;
+        this.atomsInMolecule = [];
+      } else {
+        moleculeAtoms.push(i)
+      }
+      return moleculeAtoms;
+    },
+
+    /**
+      Returns all atoms directly bonded to atom i
+    */
+    getBondedAtoms: function(i) {
+      var bondedAtoms = [];
+      for (j = 0, jj = radialBonds[0].length; j < jj; j++) {
+        // console.log("looking at bond from "+radialBonds)
+        if (radialBondAtom1Index[j] === i) {
+          bondedAtoms.push(radialBondAtom2Index[j]);
+        }
+        if (radialBondAtom2Index[j] === i) {
+          bondedAtoms.push(radialBondAtom1Index[j]);
+        }
+      }
+      return bondedAtoms;
     },
 
     serialize: function() {

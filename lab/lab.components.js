@@ -1,5 +1,5 @@
 (function() {
-  var ButtonBarComponent, ButtonComponent, Component, JSliderComponent, ModelPlayer, PlayOnlyComponentSVG, PlaybackBarComponent, PlaybackComponent, PlaybackComponentSVG, SliderComponent, Thermometer, ToggleButtonComponent, root,
+  var ButtonBarComponent, ButtonComponent, Component, JSliderComponent, ModelControllerComponent, ModelPlayer, PlayOnlyComponentSVG, PlayResetComponentSVG, PlaybackBarComponent, PlaybackComponentSVG, SliderComponent, Thermometer, ToggleButtonComponent, root,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -365,229 +365,18 @@
 
   root.JSliderComponent = JSliderComponent;
 
-  PlayOnlyComponentSVG = (function() {
-
-    function PlayOnlyComponentSVG(svg_element, playable, xpos, ypos, scale) {
-      this.svg_element = svg_element;
-      this.playable = playable != null ? playable : null;
-      this.offsets = {
-        'play': 1,
-        'stop': 1
-      };
-      this.width = 200;
-      this.height = 34;
-      this.xpos = xpos;
-      this.ypos = ypos;
-      this.scale = scale || 1;
-      this.unit_width = this.width / 9;
-      this.vertical_padding = (this.height - this.unit_width) / 2;
-      this.stroke_width = this.unit_width / 10;
-      this.init_view();
-    }
-
-    PlayOnlyComponentSVG.prototype.offset = function(key) {
-      return this.offsets[key] * (this.unit_width * 2) + this.unit_width;
-    };
-
-    PlayOnlyComponentSVG.prototype.make_button = function(button_name, type, point_set) {
-      var art, art2, button_bg, button_group, button_highlight, point, points, points_string, x, y, _i, _j, _len, _len2,
-        _this = this;
-      button_group = this.group.append('svg:g');
-      x = this.offset(button_name);
-      button_group.attr("class", "component playbacksvgbutton").attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
-      button_bg = button_group.append('rect');
-      button_bg.attr('class', 'bg').attr('x', this.offset(button_name) / 1.20).attr('y', this.vertical_padding / 3).attr('width', this.unit_width * 2).attr('height', this.unit_width * 1.5).attr('rx', '0');
-      for (_i = 0, _len = point_set.length; _i < _len; _i++) {
-        points = point_set[_i];
-        art = button_group.append(type);
-        art.attr('class', "" + button_name + " button-art");
-        points_string = "";
-        for (_j = 0, _len2 = points.length; _j < _len2; _j++) {
-          point = points[_j];
-          x = this.offset(button_name) + point['x'] * this.unit_width;
-          y = this.vertical_padding / .75 + point['y'] * this.unit_width;
-          points_string = points_string + (" " + x + "," + y);
-          art.attr('points', points_string);
-        }
-        if (button_name === 'stop') {
-          art2 = button_group.append('rect');
-          art2.attr('class', 'pause-center').attr('x', x + this.unit_width / 3).attr('y', this.vertical_padding / .75 - 1).attr('width', this.unit_width / 3).attr('height', this.unit_width + 2);
-        }
-      }
-      button_highlight = button_group.append('rect');
-      button_highlight.attr('class', 'highlight').attr('x', this.offset(button_name) / 1.20 + 1).attr('y', this.vertical_padding / 1.85).attr('width', this.unit_width * 2 - 2).attr('height', this.unit_width / 1.4).attr('rx', '0');
-      button_group.on('click', function() {
-        return _this.action(button_name);
-      });
-      return button_group;
-    };
-
-    PlayOnlyComponentSVG.prototype.action = function(action) {
-      console.log("running " + action + " ");
-      if (this.playable) {
-        switch (action) {
-          case 'play':
-            this.playable.play();
-            break;
-          case 'stop':
-            this.playable.stop();
-            break;
-          case 'forward':
-            this.playable.forward();
-            break;
-          case 'back':
-            this.playable.back();
-            break;
-          case 'reset':
-            this.playable.seek(1);
-            break;
-          default:
-            console.log("cant find action for " + action);
-        }
-      } else {
-        console.log("no @playable defined");
-      }
-      return this.update_ui();
-    };
-
-    PlayOnlyComponentSVG.prototype.init_play_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0,
-            y: 0
-          }, {
-            x: 1,
-            y: 0.5
-          }, {
-            x: 0,
-            y: 1
-          }
-        ]
-      ];
-      return this.play = this.make_button('play', 'svg:polygon', points);
-    };
-
-    PlayOnlyComponentSVG.prototype.init_stop_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0,
-            y: 0
-          }, {
-            x: 1,
-            y: 0
-          }, {
-            x: 1,
-            y: 1
-          }, {
-            x: 0,
-            y: 1
-          }, {
-            x: 0,
-            y: 0
-          }
-        ]
-      ];
-      return this.stop = this.make_button('stop', 'svg:polygon', points);
-    };
-
-    PlayOnlyComponentSVG.prototype.init_pause_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: .5,
-            y: .5
-          }, {
-            x: .5,
-            y: 0
-          }, {
-            x: .5,
-            y: 1
-          }, {
-            x: 0,
-            y: 1
-          }, {
-            x: 0,
-            y: 0
-          }
-        ]
-      ];
-      return this.pause = this.make_button('pause', 'svg:polygon', points);
-    };
-
-    PlayOnlyComponentSVG.prototype.init_view = function() {
-      this.svg = this.svg_element.append("svg:svg").attr("class", "component playbacksvg").attr("x", this.xpos).attr("y", this.ypos);
-      this.group = this.svg.append("g").attr("transform", "scale(" + this.scale + "," + this.scale + ")").attr("width", this.width).attr("height", this.height);
-      this.init_play_button();
-      this.init_stop_button();
-      if (this.playable.playing) {
-        return this.hide(this.play);
-      } else {
-        return this.hide(this.stop);
-      }
-    };
-
-    PlayOnlyComponentSVG.prototype.position = function(xpos, ypos, scale) {
-      this.xpos = xpos;
-      this.ypos = ypos;
-      this.scale = scale || 1;
-      this.svg.attr("x", this.xpos).attr("y", this.ypos);
-      return this.group.attr("transform", "scale(" + this.scale + "," + this.scale + ")").attr("width", this.width).attr("height", this.height);
-    };
-
-    PlayOnlyComponentSVG.prototype.update_ui = function() {
-      if (this.playable) {
-        if (this.playable.playing) {
-          this.hide(this.play);
-          return this.show(this.stop);
-        } else {
-          this.hide(this.stop);
-          return this.show(this.play);
-        }
-      }
-    };
-
-    PlayOnlyComponentSVG.prototype.hide = function(thing) {
-      return thing.style('visibility', 'hidden');
-    };
-
-    PlayOnlyComponentSVG.prototype.show = function(thing) {
-      return thing.style('visibility', 'visible');
-    };
-
-    return PlayOnlyComponentSVG;
-
-  })();
-
-  root = typeof exports !== "undefined" && exports !== null ? exports : this;
-
-  root.PlayOnlyComponentSVG = PlayOnlyComponentSVG;
-
-  root.ModelPlayer = ModelPlayer;
-
   ModelPlayer = (function() {
 
-    function ModelPlayer(model, playing) {
+    function ModelPlayer(model) {
       this.model = model;
-      if (arguments.length > 1) {
-        this.playing = playing;
-      } else {
-        this.playing = true;
-      }
     }
 
     ModelPlayer.prototype.play = function() {
-      this.model.resume();
-      return this.playing = true;
+      return this.model.resume();
     };
 
     ModelPlayer.prototype.stop = function() {
-      this.model.stop();
-      return this.playing = false;
+      return this.model.stop();
     };
 
     ModelPlayer.prototype.forward = function() {
@@ -605,276 +394,20 @@
       return this.model.seek(float_index);
     };
 
+    ModelPlayer.prototype.isPlaying = function() {
+      return !this.model.is_stopped();
+    };
+
     return ModelPlayer;
 
   })();
 
-  PlaybackComponent = (function() {
+  ModelControllerComponent = (function() {
 
-    function PlaybackComponent(dom_id, playable) {
-      this.dom_id = dom_id != null ? dom_id : "#playback";
-      this.playable = playable != null ? playable : null;
-      this.dom_element = d3.select(this.dom_id).attr('class', 'component playback');
-      this.offsets = {
-        'reset': 0,
-        'back': 1,
-        'play': 2,
-        'stop': 2,
-        'forward': 3
-      };
-      this.width = parseInt(this.dom_element.style("width"));
-      this.height = parseInt(this.dom_element.style("height"));
-      this.unit_width = this.width / 9;
-      if (this.height < this.unit_width) {
-        this.height = this.unit_width + 2;
-        this.dom_element.style("height", this.height + "px");
-      }
-      this.vertical_padding = (this.height - this.unit_width) / 2;
-      this.stroke_width = this.unit_width / 10;
-      this.init_view();
-    }
-
-    PlaybackComponent.prototype.offset = function(key) {
-      return this.offsets[key] * (this.unit_width * 2) + this.unit_width;
-    };
-
-    PlaybackComponent.prototype.make_button = function(button_name, type, point_set) {
-      var art, button_group, point, points, points_string, x, y, _i, _j, _len, _len2,
-        _this = this;
-      button_group = this.svg.append('svg:g');
-      x = this.offset(button_name);
-      button_group.attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width);
-      for (_i = 0, _len = point_set.length; _i < _len; _i++) {
-        points = point_set[_i];
-        art = button_group.append(type);
-        art.attr('class', "" + button_name + " button-art");
-        points_string = "";
-        for (_j = 0, _len2 = points.length; _j < _len2; _j++) {
-          point = points[_j];
-          x = this.offset(button_name) + point['x'] * this.unit_width;
-          y = this.vertical_padding + point['y'] * this.unit_width;
-          points_string = points_string + (" " + x + "," + y);
-          art.attr('points', points_string);
-        }
-      }
-      button_group.on('click', function() {
-        return _this.action(button_name);
-      });
-      return button_group;
-    };
-
-    PlaybackComponent.prototype.action = function(action) {
-      console.log("running " + action + " ");
-      if (this.playable) {
-        switch (action) {
-          case 'play':
-            this.playable.play();
-            break;
-          case 'stop':
-            this.playable.stop();
-            break;
-          case 'forward':
-            this.playable.forward();
-            break;
-          case 'back':
-            this.playable.back();
-            break;
-          case 'reset':
-            this.playable.seek(1);
-            break;
-          default:
-            console.log("cant find action for " + action);
-        }
-      } else {
-        console.log("no @playable defined");
-      }
-      return this.update_ui();
-    };
-
-    PlaybackComponent.prototype.init_reset_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0,
-            y: 0
-          }, {
-            x: 0,
-            y: 1
-          }, {
-            x: 1,
-            y: 1
-          }, {
-            x: 1,
-            y: 0
-          }, {
-            x: 0.25,
-            y: 0
-          }, {
-            x: 0.5,
-            y: 0.25
-          }
-        ]
-      ];
-      return this.reset = this.make_button('reset', 'svg:polyline', points);
-    };
-
-    PlaybackComponent.prototype.init_play_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0,
-            y: 0
-          }, {
-            x: 1,
-            y: 0.5
-          }, {
-            x: 0,
-            y: 1
-          }
-        ]
-      ];
-      return this.play = this.make_button('play', 'svg:polygon', points);
-    };
-
-    PlaybackComponent.prototype.init_stop_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0,
-            y: 0
-          }, {
-            x: 1,
-            y: 0
-          }, {
-            x: 1,
-            y: 1
-          }, {
-            x: 0,
-            y: 1
-          }, {
-            x: 0,
-            y: 0
-          }
-        ]
-      ];
-      return this.stop = this.make_button('stop', 'svg:polygon', points);
-    };
-
-    PlaybackComponent.prototype.init_back_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0.5,
-            y: 0
-          }, {
-            x: 0,
-            y: 0.5
-          }, {
-            x: 0.5,
-            y: 1
-          }
-        ], [
-          {
-            x: 1,
-            y: 0
-          }, {
-            x: 0.5,
-            y: 0.5
-          }, {
-            x: 1,
-            y: 1
-          }
-        ]
-      ];
-      return this.back = this.make_button('back', 'svg:polyline', points);
-    };
-
-    PlaybackComponent.prototype.init_forward_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0.5,
-            y: 0
-          }, {
-            x: 1,
-            y: 0.5
-          }, {
-            x: 0.5,
-            y: 1
-          }
-        ], [
-          {
-            x: 0,
-            y: 0
-          }, {
-            x: 0.5,
-            y: 0.5
-          }, {
-            x: 0,
-            y: 1
-          }
-        ]
-      ];
-      return this.forward = this.make_button('forward', 'svg:polyline', points);
-    };
-
-    PlaybackComponent.prototype.init_view = function() {
-      this.svg = this.dom_element.append("svg:svg").attr("width", this.width).attr("height", this.height);
-      this.init_reset_button();
-      this.init_play_button();
-      this.init_stop_button();
-      this.init_forward_button();
-      this.init_back_button();
-      return this.hide(this.play);
-    };
-
-    PlaybackComponent.prototype.update_ui = function() {
-      if (this.playable) {
-        if (this.playable.playing) {
-          this.hide(this.play);
-          return this.show(this.stop);
-        } else {
-          this.hide(this.stop);
-          return this.show(this.play);
-        }
-      }
-    };
-
-    PlaybackComponent.prototype.hide = function(thing) {
-      return thing.style('visibility', 'hidden');
-    };
-
-    PlaybackComponent.prototype.show = function(thing) {
-      return thing.style('visibility', 'visible');
-    };
-
-    return PlaybackComponent;
-
-  })();
-
-  root = typeof exports !== "undefined" && exports !== null ? exports : this;
-
-  root.PlaybackComponent = PlaybackComponent;
-
-  root.ModelPlayer = ModelPlayer;
-
-  PlaybackComponentSVG = (function() {
-
-    function PlaybackComponentSVG(svg_element, playable, xpos, ypos, scale) {
+    function ModelControllerComponent(svg_element, playable, xpos, ypos, scale) {
+      var _this = this;
       this.svg_element = svg_element;
       this.playable = playable != null ? playable : null;
-      this.offsets = {
-        'reset': 0,
-        'back': 1,
-        'play': 2,
-        'stop': 2,
-        'forward': 3
-      };
       this.width = 200;
       this.height = 34;
       this.xpos = xpos;
@@ -884,46 +417,60 @@
       this.vertical_padding = (this.height - this.unit_width) / 2;
       this.stroke_width = this.unit_width / 10;
       this.init_view();
+      this.setup_buttons();
+      if (this.playable.isPlaying()) {
+        this.hide(this.play);
+      } else {
+        this.hide(this.stop);
+      }
+      model.addPropertiesListener(["play", "stop"], function() {
+        return _this.update_ui();
+      });
     }
 
-    PlaybackComponentSVG.prototype.offset = function(key) {
-      return this.offsets[key] * (this.unit_width * 2) + this.unit_width;
+    ModelControllerComponent.prototype.offset = function(offset) {
+      return offset * (this.unit_width * 2) + this.unit_width;
     };
 
-    PlaybackComponentSVG.prototype.make_button = function(button_name, type, point_set) {
-      var art, art2, button_bg, button_group, button_highlight, point, points, points_string, x, xoffset, y, _i, _j, _len, _len2,
+    ModelControllerComponent.prototype.setup_buttons = function() {};
+
+    ModelControllerComponent.prototype.make_button = function(_arg) {
+      var action, art, art2, button_bg, button_group, button_highlight, offset, point, point_set, points, points_string, type, x, y, _i, _j, _len, _len2,
         _this = this;
+      action = _arg.action, offset = _arg.offset, type = _arg.type, point_set = _arg.point_set;
+      if (type == null) type = "svg:polyline";
+      if (point_set == null) point_set = this.icon_shapes[action];
+      offset = this.offset(offset);
       button_group = this.group.append('svg:g');
-      xoffset = this.offset(button_name);
-      button_group.attr("class", "component playbacksvgbutton").attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
+      button_group.attr("class", "component playbacksvgbutton").attr('x', offset).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
       button_bg = button_group.append('rect');
-      button_bg.attr('class', 'bg').attr('x', xoffset).attr('y', this.vertical_padding / 3).attr('width', this.unit_width * 2).attr('height', this.unit_width * 1.5).attr('rx', '0');
+      button_bg.attr('class', 'bg').attr('x', offset).attr('y', this.vertical_padding / 3).attr('width', this.unit_width * 2).attr('height', this.unit_width * 1.5).attr('rx', '0');
       for (_i = 0, _len = point_set.length; _i < _len; _i++) {
         points = point_set[_i];
         art = button_group.append(type);
-        art.attr('class', "" + button_name + " button-art");
+        art.attr('class', "" + action + " button-art");
         points_string = "";
         for (_j = 0, _len2 = points.length; _j < _len2; _j++) {
           point = points[_j];
-          x = xoffset + 8 + point['x'] * this.unit_width;
+          x = offset + 10 + point['x'] * this.unit_width;
           y = this.vertical_padding / .75 + point['y'] * this.unit_width;
           points_string = points_string + (" " + x + "," + y);
           art.attr('points', points_string);
         }
-        if (button_name === 'stop') {
+        if (action === 'stop') {
           art2 = button_group.append('rect');
           art2.attr('class', 'pause-center').attr('x', x + this.unit_width / 3).attr('y', this.vertical_padding / .75 - 1).attr('width', this.unit_width / 3).attr('height', this.unit_width + 2);
         }
       }
       button_highlight = button_group.append('rect');
-      button_highlight.attr('class', 'highlight').attr('x', xoffset + 1).attr('y', this.vertical_padding / 1.85).attr('width', this.unit_width * 2 - 2).attr('height', this.unit_width / 1.4).attr('rx', '0');
+      button_highlight.attr('class', 'highlight').attr('x', offset + 1).attr('y', this.vertical_padding / 1.85).attr('width', this.unit_width * 2 - 2).attr('height', this.unit_width / 1.4).attr('rx', '0');
       button_group.on('click', function() {
-        return _this.action(button_name);
+        return _this.action(action);
       });
       return button_group;
     };
 
-    PlaybackComponentSVG.prototype.action = function(action) {
+    ModelControllerComponent.prototype.action = function(action) {
       console.log("running " + action + " ");
       if (this.playable) {
         switch (action) {
@@ -951,179 +498,12 @@
       return this.update_ui();
     };
 
-    PlaybackComponentSVG.prototype.init_reset_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0,
-            y: 0
-          }, {
-            x: 0,
-            y: 1
-          }, {
-            x: 1,
-            y: 1
-          }, {
-            x: 1,
-            y: 0
-          }, {
-            x: 0.25,
-            y: 0
-          }, {
-            x: 0.5,
-            y: 0.25
-          }
-        ]
-      ];
-      return this.reset = this.make_button('reset', 'svg:polyline', points);
+    ModelControllerComponent.prototype.init_view = function() {
+      this.svg = this.svg_element.append("svg:svg").attr("class", "component model-controller playbacksvg").attr("x", this.xpos).attr("y", this.ypos);
+      return this.group = this.svg.append("g").attr("transform", "scale(" + this.scale + "," + this.scale + ")").attr("width", this.width).attr("height", this.height);
     };
 
-    PlaybackComponentSVG.prototype.init_play_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0,
-            y: 0
-          }, {
-            x: 1,
-            y: 0.5
-          }, {
-            x: 0,
-            y: 1
-          }
-        ]
-      ];
-      return this.play = this.make_button('play', 'svg:polygon', points);
-    };
-
-    PlaybackComponentSVG.prototype.init_stop_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0,
-            y: 0
-          }, {
-            x: 1,
-            y: 0
-          }, {
-            x: 1,
-            y: 1
-          }, {
-            x: 0,
-            y: 1
-          }, {
-            x: 0,
-            y: 0
-          }
-        ]
-      ];
-      return this.stop = this.make_button('stop', 'svg:polygon', points);
-    };
-
-    PlaybackComponentSVG.prototype.init_pause_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: .5,
-            y: .5
-          }, {
-            x: .5,
-            y: 0
-          }, {
-            x: .5,
-            y: 1
-          }, {
-            x: 0,
-            y: 1
-          }, {
-            x: 0,
-            y: 0
-          }
-        ]
-      ];
-      return this.pause = this.make_button('pause', 'svg:polygon', points);
-    };
-
-    PlaybackComponentSVG.prototype.init_back_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0.5,
-            y: 0
-          }, {
-            x: 0,
-            y: 0.5
-          }, {
-            x: 0.5,
-            y: 1
-          }
-        ], [
-          {
-            x: 1,
-            y: 0
-          }, {
-            x: 0.5,
-            y: 0.5
-          }, {
-            x: 1,
-            y: 1
-          }
-        ]
-      ];
-      return this.back = this.make_button('back', 'svg:polyline', points);
-    };
-
-    PlaybackComponentSVG.prototype.init_forward_button = function() {
-      var points;
-      points = [
-        [
-          {
-            x: 0.5,
-            y: 0
-          }, {
-            x: 1,
-            y: 0.5
-          }, {
-            x: 0.5,
-            y: 1
-          }
-        ], [
-          {
-            x: 0,
-            y: 0
-          }, {
-            x: 0.5,
-            y: 0.5
-          }, {
-            x: 0,
-            y: 1
-          }
-        ]
-      ];
-      return this.forward = this.make_button('forward', 'svg:polyline', points);
-    };
-
-    PlaybackComponentSVG.prototype.init_view = function() {
-      this.svg = this.svg_element.append("svg:svg").attr("class", "component playbacksvg").attr("x", this.xpos).attr("y", this.ypos);
-      this.group = this.svg.append("g").attr("transform", "scale(" + this.scale + "," + this.scale + ")").attr("width", this.width).attr("height", this.height);
-      this.init_reset_button();
-      this.init_back_button();
-      this.init_play_button();
-      this.init_stop_button();
-      this.init_forward_button();
-      if (this.playable.playing) {
-        return this.hide(this.play);
-      } else {
-        return this.hide(this.stop);
-      }
-    };
-
-    PlaybackComponentSVG.prototype.position = function(xpos, ypos, scale) {
+    ModelControllerComponent.prototype.position = function(xpos, ypos, scale) {
       this.xpos = xpos;
       this.ypos = ypos;
       this.scale = scale || 1;
@@ -1131,9 +511,9 @@
       return this.group.attr("transform", "scale(" + this.scale + "," + this.scale + ")").attr("width", this.width).attr("height", this.height);
     };
 
-    PlaybackComponentSVG.prototype.update_ui = function() {
+    ModelControllerComponent.prototype.update_ui = function() {
       if (this.playable) {
-        if (this.playable.playing) {
+        if (this.playable.isPlaying()) {
           this.hide(this.play);
           return this.show(this.stop);
         } else {
@@ -1143,23 +523,238 @@
       }
     };
 
-    PlaybackComponentSVG.prototype.hide = function(thing) {
+    ModelControllerComponent.prototype.hide = function(thing) {
       return thing.style('visibility', 'hidden');
     };
 
-    PlaybackComponentSVG.prototype.show = function(thing) {
+    ModelControllerComponent.prototype.show = function(thing) {
       return thing.style('visibility', 'visible');
     };
 
-    return PlaybackComponentSVG;
+    ModelControllerComponent.prototype.icon_shapes = {
+      play: [
+        [
+          {
+            x: 0,
+            y: 0
+          }, {
+            x: 1,
+            y: 0.5
+          }, {
+            x: 0,
+            y: 1
+          }
+        ]
+      ],
+      stop: [
+        [
+          {
+            x: 0,
+            y: 0
+          }, {
+            x: 1,
+            y: 0
+          }, {
+            x: 1,
+            y: 1
+          }, {
+            x: 0,
+            y: 1
+          }, {
+            x: 0,
+            y: 0
+          }
+        ]
+      ],
+      reset: [
+        [
+          {
+            x: 1,
+            y: 0
+          }, {
+            x: 0.3,
+            y: 0.5
+          }, {
+            x: 1,
+            y: 1
+          }
+        ], [
+          {
+            x: 0,
+            y: 0
+          }, {
+            x: 0.3,
+            y: 0
+          }, {
+            x: 0.3,
+            y: 1
+          }, {
+            x: 0,
+            y: 1
+          }, {
+            x: 0,
+            y: 0
+          }
+        ]
+      ],
+      back: [
+        [
+          {
+            x: 0.5,
+            y: 0
+          }, {
+            x: 0,
+            y: 0.5
+          }, {
+            x: 0.5,
+            y: 1
+          }
+        ], [
+          {
+            x: 1,
+            y: 0
+          }, {
+            x: 0.5,
+            y: 0.5
+          }, {
+            x: 1,
+            y: 1
+          }
+        ]
+      ],
+      forward: [
+        [
+          {
+            x: 0.5,
+            y: 0
+          }, {
+            x: 1,
+            y: 0.5
+          }, {
+            x: 0.5,
+            y: 1
+          }
+        ], [
+          {
+            x: 0,
+            y: 0
+          }, {
+            x: 0.5,
+            y: 0.5
+          }, {
+            x: 0,
+            y: 1
+          }
+        ]
+      ]
+    };
+
+    return ModelControllerComponent;
 
   })();
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-  root.PlaybackComponentSVG = PlaybackComponentSVG;
+  root.PlayOnlyComponentSVG = PlayOnlyComponentSVG;
 
   root.ModelPlayer = ModelPlayer;
+
+  PlayOnlyComponentSVG = (function(_super) {
+
+    __extends(PlayOnlyComponentSVG, _super);
+
+    function PlayOnlyComponentSVG() {
+      PlayOnlyComponentSVG.__super__.constructor.apply(this, arguments);
+    }
+
+    PlayOnlyComponentSVG.prototype.setup_buttons = function() {
+      this.play = this.make_button({
+        action: 'play',
+        offset: 0
+      });
+      return this.stop = this.make_button({
+        action: 'stop',
+        offset: 0
+      });
+    };
+
+    return PlayOnlyComponentSVG;
+
+  })(ModelControllerComponent);
+
+  root = typeof exports !== "undefined" && exports !== null ? exports : this;
+
+  root.PlayOnlyComponentSVG = PlayOnlyComponentSVG;
+
+  PlayResetComponentSVG = (function(_super) {
+
+    __extends(PlayResetComponentSVG, _super);
+
+    function PlayResetComponentSVG() {
+      PlayResetComponentSVG.__super__.constructor.apply(this, arguments);
+    }
+
+    PlayResetComponentSVG.prototype.setup_buttons = function() {
+      this.reset = this.make_button({
+        action: 'reset',
+        offset: 0
+      });
+      this.play = this.make_button({
+        action: 'play',
+        offset: 1
+      });
+      return this.stop = this.make_button({
+        action: 'stop',
+        offset: 1
+      });
+    };
+
+    return PlayResetComponentSVG;
+
+  })(ModelControllerComponent);
+
+  root = typeof exports !== "undefined" && exports !== null ? exports : this;
+
+  root.PlayResetComponentSVG = PlayResetComponentSVG;
+
+  PlaybackComponentSVG = (function(_super) {
+
+    __extends(PlaybackComponentSVG, _super);
+
+    function PlaybackComponentSVG() {
+      PlaybackComponentSVG.__super__.constructor.apply(this, arguments);
+    }
+
+    PlaybackComponentSVG.prototype.setup_buttons = function() {
+      this.reset = this.make_button({
+        action: 'reset',
+        offset: 0
+      });
+      this.back = this.make_button({
+        action: 'back',
+        offset: 1
+      });
+      this.play = this.make_button({
+        action: 'play',
+        offset: 2
+      });
+      this.stop = this.make_button({
+        action: 'stop',
+        offset: 2
+      });
+      return this.forward = this.make_button({
+        action: 'forward',
+        offset: 3
+      });
+    };
+
+    return PlaybackComponentSVG;
+
+  })(ModelControllerComponent);
+
+  root = typeof exports !== "undefined" && exports !== null ? exports : this;
+
+  root.PlaybackComponentSVG = PlaybackComponentSVG;
 
   SliderComponent = (function() {
 

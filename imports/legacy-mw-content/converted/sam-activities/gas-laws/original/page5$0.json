@@ -2,6 +2,9 @@
   "temperature_control": true,
   "width": 3.6,
   "height": 2.5,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 1.67,
   "elements": [
     {
       "id": 0,
@@ -250,6 +253,9 @@
         255,
         255
       ]
+    ],
+    "visible": [
+      true
     ]
   },
   "temperature": 400

@@ -1,0 +1,83 @@
+This seems to work in the importer:
+
+Sensor Data
+run, type, metadata, time, reading
+1, light, 10, 1, 20
+1, light, 10, 2, 22
+1, light, 10, 3, 21
+
+
+steps to import this data
+---
+
+1. initGame with dimensions and DataContext (see Importer.initImporterAsGame)
+  (name is "Importer")
+
+2. "parent collection kludge"
+  createCollection
+  args:
+    name: "Import"
+    attrs: [{name: "cases"}]
+    childAttrName: "import"
+
+3. createCollection
+   args:
+     name: "Sensor Data"
+     attrs: [{name: "run"}, {name: "type"}, {name: "metadata"}, {name: "time}, {name: "reading"}]
+     childAttrName: undefined
+
+4. openCase
+   args:
+     collection: "Import"
+     values: "pseudo-case"
+
+5. createCases
+   args:
+     collection: "Sensor Data"
+     values: [ [1, light, 10, 1, 20], [1, light, 10, 2, 22], [1, light, 10, 3, 21] ]
+     parent: (value of 'caseID' property of result of openCase)
+
+6. closeCase
+   args:
+     collection: "Import"
+     values: ["pseudo-case"]
+     caeID: (value of 'caseID' property of result of openCase)
+
+
+
+
+
+
+Sensor Data
+run, type, metadata, time, reading
+2, light, 10, 1, 10
+2, light, 10, 2, 12
+2, light, 10, 3, 11
+
+
+{
+  "collection_name": "Sensor Data",
+  "cases": [{
+       "Run Number": 1,
+       "Sensor Type": "light"
+       "Metadat 1": 10,
+       "time": 10,
+       "reading": 20
+    },
+    {
+       "Run Number": 1,
+       "Sensor Type": "light"
+       "Metadat 1": 10,
+       "time": 11,
+       "reading": 21
+    },
+    {
+       "Run Number": 1,
+       "Sensor Type": "light"
+       "Metadat 1": 10,
+       "time": 12,
+       "reading": 19
+    }]
+}
+
+

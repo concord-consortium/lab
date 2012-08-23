@@ -518,8 +518,7 @@ applet {
     stroke: transparent;
     stroke-width: 1;
     fill: white;
-    fill-opacity: 1;
-    cursor: move; }
+    fill-opacity: 1; }
     #molecule-container circle.selected {
       fill: #ff7f0e;
       stroke: #ff7f0e; }
@@ -727,6 +726,9 @@ div.tooltip {
 
 #benchmark-results {
   margin-left: 2em; }
+
+.draggable {
+  cursor: move; }
 
 #header {
   background-color: #3a878b;

@@ -14,14 +14,14 @@
 // ------------------------------------------------------------
 
 controllers = { version: "0.0.1" };
-/*globals
+/*global
 
   controllers
   Lab
   modeler
   ModelPlayer
   DEVELOPMENT
-  $
+  d3
   alert
   model: true
   model_player: true
@@ -34,12 +34,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       dispatch = d3.dispatch('modelReset'),
 
       // properties read from the playerConfig hash
-      layoutStyle,
       controlButtons,
-
-      // inferred from controlButtons
-      play_only_controller,
-      playback_controller,
+      fit_to_parent,
 
       // properties read from the modelConfig hash
       elements,
@@ -49,6 +45,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       temperature,
       width,
       height,
+      chargeShading,
+      showVDWLines,
       radialBonds,
       obstacles,
 
@@ -72,6 +70,10 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           if (n === 1) {
             reload(modelConfig, playerConfig);
           }
+        },
+
+        is_stopped: function() {
+          return model.is_stopped();
         }
       };
 
@@ -82,7 +84,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
     // Pass this function to be called by the model on every model step
     //
     // ------------------------------------------------------------
-
     function tickHandler() {
       moleculeContainer.update_drawable_positions();
     }
@@ -95,8 +96,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
     // ------------------------------------------------------------
 
     function initializeLocalVariables() {
-      layoutStyle         = playerConfig.layoutStyle;
       controlButtons      = playerConfig.controlButtons;
+      fit_to_parent       = playerConfig.fit_to_parent;
 
       elements            = modelConfig.elements;
       atoms               = modelConfig.atoms;
@@ -105,27 +106,10 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       temperature         = modelConfig.temperature;
       width               = modelConfig.width;
       height              = modelConfig.height;
+      chargeShading       = modelConfig.chargeShading;
+      showVDWLines        = modelConfig.showVDWLines;
       radialBonds         = modelConfig.radialBonds;
       obstacles           = modelConfig.obstacles;
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Fake an understanding of the controlButtons list. Full
-    // implementation will require a better model for control button
-    // views.
-    //
-    // ------------------------------------------------------------
-    function parseControlButtons() {
-      play_only_controller = false;
-      playback_controller = false;
-
-      if (controlButtons.length === 1 && controlButtons[0] === 'play') {
-        play_only_controller = true;
-      }
-      else if (controlButtons.length > 1) {
-        playback_controller = true;
-      }
     }
 
     // ------------------------------------------------------------
@@ -136,13 +120,14 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function createModel() {
       initializeLocalVariables();
-      parseControlButtons();
       model = modeler.model({
           elements            : elements,
           temperature         : temperature,
           temperature_control : temperature_control,
           width               : width,
-          height              : height
+          height              : height,
+          chargeShading       : chargeShading,
+          showVDWLines        : showVDWLines
         });
 
       if (atoms) {
@@ -180,14 +165,18 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       model_player.back = function() {},
 
       moleculeContainer = Lab.moleculeContainer(moleculeViewId, {
-        xmax:          width,
-        ymax:          height,
-        get_nodes:     function() { return model.get_nodes(); },
-        get_num_atoms: function() { return model.get_num_atoms(); },
-        get_obstacles: function() { return model.get_obstacles(); },
+        fit_to_parent:        fit_to_parent,
+        xmax:                 width,
+        ymax:                 height,
+        chargeShading:        chargeShading,
+        get_radial_bonds:     function() { return model.get_radial_bonds(); },
+        get_nodes:            function() { return model.get_nodes(); },
+        get_num_atoms:        function() { return model.get_num_atoms(); },
+        get_obstacles:        function() { return model.get_obstacles(); },
+        set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments);  },
+        is_stopped:           function() { return model.is_stopped() },
 
-        play_only_controller: play_only_controller,
-        playback_controller:  playback_controller
+        control_buttons:      controlButtons
       });
 
       moleculeContainer.updateMoleculeRadius();
@@ -203,15 +192,21 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       // ------------------------------------------------------------
 
       moleculeContainer.reset({
-        xmax:          width,
-        ymax:          height,
-        get_nodes:     function() { return model.get_nodes(); },
-        get_num_atoms: function() { return model.get_num_atoms(); },
-        get_obstacles: function() { return model.get_obstacles(); },
+        fit_to_parent:        fit_to_parent,
+        xmax:                 width,
+        ymax:                 height,
+        chargeShading:        chargeShading,
+        get_radial_bonds:     function() { return model.get_radial_bonds(); },
+        get_nodes:            function() { return model.get_nodes(); },
+        get_num_atoms:        function() { return model.get_num_atoms(); },
+        get_obstacles:        function() { return model.get_obstacles(); },
+        set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments); },
+        is_stopped:           function() { return model.is_stopped() },
 
-        play_only_controller: play_only_controller,
-        playback_controller:  playback_controller
+        control_buttons:      controlButtons
       });
+      moleculeContainer.updateMoleculeRadius();
+      moleculeContainer.setup_drawables();
     }
 
 
@@ -263,19 +258,20 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       dispatch.on(type, listener);
     };
     controller.reload = reload;
+    controller.moleculeContainer = moleculeContainer;
 
     return controller;
 };
-/*globals controllers model Thermometer $ alert */
+/*global controllers model Thermometer layout $ alert */
 /*jshint eqnull: true*/
-controllers.interactivesController = function(interactive, viewSelector) {
+controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
 
   var controller = {},
       modelController,
       $interactiveContainer,
       propertiesListeners = [],
       thermometer,
-      controlButtons = ["play"],
+      controlButtons = "play",
 
       //
       // Define the scripting API used by 'action' scripts on interactive elements.
@@ -290,6 +286,22 @@ controllers.interactivesController = function(interactive, viewSelector) {
       //
 
       scriptingAPI = {
+
+        getRadialBond: function getRadialBond(i) {
+          return [
+            model.get_radial_bonds()[0][i],
+            model.get_radial_bonds()[1][i],
+            model.get_radial_bonds()[2][i],
+            model.get_radial_bonds()[3][i]
+          ];
+        },
+
+        setRadialBond: function setRadialBond(i, values) {
+          model.get_radial_bonds()[0][i] = values[0];
+          model.get_radial_bonds()[1][i] = values[1];
+          model.get_radial_bonds()[2][i] = values[2];
+          model.get_radial_bonds()[3][i] = values[3];
+        },
 
         addAtom: function addAtom() {
           return model.addAtom.apply(model, arguments);
@@ -315,6 +327,11 @@ controllers.interactivesController = function(interactive, viewSelector) {
           if (model.get('temperature') > t) model.set({temperature: t});
         },
 
+        loadModel: function loadModel(modelUrl) {
+          model.stop();
+          controller.loadModel(modelUrl);
+        },
+
         // rudimentary debugging functionality
         alert: alert,
 
@@ -335,8 +352,11 @@ controllers.interactivesController = function(interactive, viewSelector) {
   function loadModel(modelUrl) {
 
     var playerConfig = {
-          controlButtons: controlButtons
+          controlButtons: controlButtons,
+          fit_to_parent: !layoutStyle
         };
+
+    modelUrl = ACTUAL_ROOT + modelUrl;
 
     $.get(modelUrl).done(function(modelConfig) {
 
@@ -489,6 +509,15 @@ controllers.interactivesController = function(interactive, viewSelector) {
   function modelLoaded() {
     var i, listener;
 
+    if (layoutStyle) {
+      layout.selection = layoutStyle;
+      layout.addView('moleculeContainers', modelController.moleculeContainer);
+      if (thermometer) layout.addView('thermometers', thermometer);
+      layout.setupScreen();
+      $(window).unbind('resize');
+      $(window).on('resize', layout.setupScreen);
+    }
+
     for(i = 0; i < propertiesListeners.length; i++) {
       listener = propertiesListeners[i];
       model.addPropertiesListener(listener[0], listener[1]);
@@ -506,7 +535,7 @@ controllers.interactivesController = function(interactive, viewSelector) {
     the view options for the model.
   */
   function processModelViewOptions(options) {
-    if (options.controlButtons) {
+    if (typeof options.controlButtons === "string") {
       controlButtons = options.controlButtons;
     }
   }
@@ -549,9 +578,7 @@ controllers.interactivesController = function(interactive, viewSelector) {
       $interactiveContainer.append('<div id="bottom"/>');
     }
 
-    if (typeof (interactive.model) === 'string') {
-      modelUrl = interactive.model;
-    } else if (interactive.model != null) {
+    if (interactive.model != null) {
       modelUrl = interactive.model.url;
       processModelViewOptions(interactive.model.viewOptions);
     }
@@ -591,6 +618,15 @@ controllers.interactivesController = function(interactive, viewSelector) {
       }
     }
 
+    // Finally, make sure there's room for the right side. This is needed because the
+    // right side is absolutely positioned (the only way to get its height to stretch to the
+    // same height as the molecule container.) Perhaps there's a better way.
+    if ($('#right').children().length > 0) {
+      $('.interactive-top').addClass('push-right');
+    } else {
+      $('.interactive-top').removeClass('push-right');
+    }
+
   }
 
   // run this when controller is created
@@ -598,6 +634,7 @@ controllers.interactivesController = function(interactive, viewSelector) {
 
   // make these private variables and functions available
   controller.loadInteractive = loadInteractive;
+  controller.loadModel = loadModel;
 
   return controller;
 };
@@ -716,8 +753,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       model_player = new ModelPlayer(model, autostart);
       molecule_container = layout.moleculeContainer(molecule_view_id,
         {
-          playback_controller:  false,
-          play_only_controller: false,
+          control_buttons:      "",
           model_time_label:     true,
           grid_lines:           true,
           xunits:               true,
@@ -726,7 +762,8 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
           get_num_atoms:        function() { return model.get_num_atoms(); },
-          get_obstacles:        function() { return model.get_obstacles(); }
+          get_obstacles:        function() { return model.get_obstacles(); },
+          get_radial_bonds:     function() { return model.get_radial_bonds(); }
         }
       );
 

@@ -48,7 +48,7 @@
           <div class='left' id='controls'>
             <ul>
               <li>
-                <fieldset>
+                <fieldset style='min-width:22em;'>
                   <legend>Setup Random Atoms</legend>
                   <select id='select-molecule-number'>
                     <option value='2'>2</option>
@@ -71,10 +71,12 @@
                 </fieldset>
               </li>
               <li>
-                <fieldset>
+                <fieldset style='min-width:16em;'>
                   <legend>Temperature Control</legend>
                   <input id='temperature-control-checkbox' type='checkbox' />
                   <select id='select-temperature'>
+                    <option value='1000'>5000</option>
+                    <option value='1000'>2000</option>
                     <option value='1000'>1000</option>
                     <option value='800'>800</option>
                     <option value='600'>600</option>
@@ -85,12 +87,21 @@
                 </fieldset>
               </li>
               <li>
-                <fieldset>
+                <fieldset style='min-width:18em;'>
                   <legend>Particle Force Interactions</legend>
                   <label for='lennard-jones-forces-checkbox'>Lennard-Jones</label>
                   <input checked='checked' id='lennard-jones-forces-checkbox' type='checkbox' />
                   <label for='coulomb-forces-checkbox'>Coulomb Forces</label>
                   <input id='coulomb-forces-checkbox' type='checkbox' />
+                </fieldset>
+              </li>
+              <li>
+                <fieldset style='min-width:16em;'>
+                  <legend>View Options</legend>
+                  <label for='show-vdw-lines-checkbox'>VDW Lines</label>
+                  <input id='show-vdw-lines-checkbox' type='checkbox' />
+                  <label for='show-charge-shading-checkbox'>Charge Shading</label>
+                  <input id='show-charge-shading-checkbox' type='checkbox' />
                 </fieldset>
               </li>
               <li>
@@ -102,7 +113,7 @@
               <br />
               <ul>
                 <li>
-                  <fieldset id='stats-container'>
+                  <fieldset id='stats-container' style='min-width:60em;'>
                     <legend>Stats</legend>
                     <pre id='stats'></pre>
                   </fieldset>
@@ -113,16 +124,6 @@
         </div>
       </div>
     </div>
-    <div id='datatable'>
-      <ul>
-        <li>
-          <button id='toggle-datatable'>Show Data Table</button>
-        </li>
-        <li>
-          <table id='datatable-table'></table>
-        </li>
-      </ul>
-    </div>
     <div id='benchmarks'>
       <ul>
         <li>
@@ -130,6 +131,16 @@
         </li>
         <li>
           <table id='benchmarks-table'></table>
+        </li>
+      </ul>
+    </div>
+    <div id='datatable'>
+      <ul>
+        <li>
+          <button id='toggle-datatable'>Show Data Table</button>
+        </li>
+        <li>
+          <table id='datatable-table'></table>
         </li>
       </ul>
     </div>

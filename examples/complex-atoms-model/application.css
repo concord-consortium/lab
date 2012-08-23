@@ -7,7 +7,7 @@ body {
 
 #content {
   width: 97%;
-  height: 50em; }
+  height: auto; }
 
 #viz {
   width: 100%; }
@@ -43,6 +43,7 @@ body {
   margin: 0em;
   padding: 0em 1em;
   text-align: center;
+  font-size: 90%;
   width: 95%; }
   #controls ul {
     display: inline-block;
@@ -51,12 +52,14 @@ body {
     #controls ul li {
       line-height: 1em;
       display: inline-table;
-      vertical-align: middle;
-      padding: 0.2em 1em 0.2em 0em; }
+      vertical-align: middle; }
       #controls ul li input {
         vertical-align: middle; }
       #controls ul li fieldset {
         height: 2.2em;
+        vertical-align: middle; }
+      #controls ul li button {
+        height: 3em;
         vertical-align: middle; }
   #controls ul.right {
     float: right; }
@@ -65,7 +68,8 @@ body {
   text-align: left; }
 
 #stats-container {
-  width: 100%; }
+  width: 100%;
+  font-size: 90%; }
   #stats-container ul {
     display: inline-block;
     list-style-type: none;

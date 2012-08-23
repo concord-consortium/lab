@@ -373,6 +373,9 @@
     <int>255</int> 
    </object> 
   </void> 
+  <void property="chargeShading"> 
+   <boolean>true</boolean> 
+  </void> 
   <void property="colorCode"> 
    <string>None</string> 
   </void> 

@@ -1239,7 +1239,8 @@ exports.newLJCalculator = function(params, cb) {
       minimum is at r=rmin, V(rmin) = 0
     */
     potentialFromSquaredDistance: function(r_sq) {
-       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3);
+      if (!r_sq) return -Infinity
+      return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3);
     },
 
     /**
@@ -1422,7 +1423,15 @@ exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
   Y_PREV  :  8,
   COLOR_R :  9,
   COLOR_G :  10,
-  COLOR_B :  11
+  COLOR_B :  11,
+  VISIBLE :  12
+};
+
+exports.RADIAL_INDICES = RADIAL_INDICES = {
+  ATOM1   :  0,
+  ATOM2   :  1,
+  LENGTH  :  2,
+  STRENGTH:  3
 };
 
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
@@ -1608,14 +1617,14 @@ exports.makeModel = function() {
 
       createRadialBondsArray = function(num) {
       var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
+          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular', radialIndices = RADIAL_INDICES;
 
-        radialBonds = [];
+        radialBonds = model.radialBonds = [];
 
-        radialBonds[0] = radialBondAtom1Index = arrays.create(num, 0, uint16);
-        radialBonds[1] = radialBondAtom2Index = arrays.create(num, 0, uint16);
-        radialBonds[2] = radialBondLength     = arrays.create(num, 0, float32);
-        radialBonds[3] = radialBondStrength   = arrays.create(num, 0, float32);
+        radialBonds[radialIndices.ATOM1] = radialBondAtom1Index = arrays.create(num, 0, uint16);
+        radialBonds[radialIndices.ATOM2] = radialBondAtom2Index = arrays.create(num, 0, uint16);
+        radialBonds[radialIndices.LENGTH] = radialBondLength     = arrays.create(num, 0, float32);
+        radialBonds[radialIndices.STRENGTH] = radialBondStrength   = arrays.create(num, 0, float32);
       },
 
       // Make the 'radialBonds' array bigger. FIXME: needs to be factored
@@ -1637,6 +1646,7 @@ exports.makeModel = function() {
 
       createObstaclesArray = function(num) {
         var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+            uint8   = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
             ind     = OBSTACLE_INDICES;
 
         obstacles = model.obstacles = [];
@@ -1653,6 +1663,7 @@ exports.makeModel = function() {
         obstacles[ind.COLOR_R]  = obstacleColorR = arrays.create(num, 0, float32);
         obstacles[ind.COLOR_G]  = obstacleColorG = arrays.create(num, 0, float32);
         obstacles[ind.COLOR_B]  = obstacleColorB = arrays.create(num, 0, float32);
+        obstacles[ind.VISIBLE]  = obstacleVisible = arrays.create(num, 0, uint8);
       },
 
 
@@ -2271,6 +2282,18 @@ exports.makeModel = function() {
     },
 
     /**
+      The generic method to set properties on a single existing atom.
+
+      Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
+    */
+    setAtomProperties: function(i, props) {
+      for (prop in props) {
+        if (!props.hasOwnProperty(prop)) continue;
+        this[prop][i] = props[prop];
+      }
+    },
+
+    /**
       The canonical method for adding a radial bond to the collection of radial bonds.
 
       If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
@@ -2291,7 +2314,7 @@ exports.makeModel = function() {
     },
 
 
-    addObstacle: function(x, y, width, height, density, color) {
+    addObstacle: function(x, y, width, height, density, color, visible) {
       var mass;
 
       if (N_obstacles+1 > obstacleX.length) {
@@ -2318,9 +2341,47 @@ exports.makeModel = function() {
       obstacleColorG[N_obstacles] = color[1];
       obstacleColorB[N_obstacles] = color[2];
 
+      obstacleVisible[N_obstacles] = visible;
+
       N_obstacles++;
     },
 
+    /**
+      Checks to see if an uncharged atom could be placed at location x,y
+      without increasing the PE (i.e. overlapping with another atom), and
+      without being on an obstacle.
+
+      Optionally, an atom index i can be included which will tell the function
+      to ignore the existance of atom i. (Used when moving i around.)
+    */
+    canPlaceAtom: function(element, _x, _y, i) {
+      var orig_x, orig_y, r, PEAtLocation;
+
+      // first do the simpler check to see if we're on an obstacle
+      r = radius[i]
+      for (j = 0; j < N_obstacles; j++) {
+        if (_x > (obstacleX[j] - r) && _x < (obstacleX[j] + obstacleWidth[j] + r)
+            && _y > (obstacleY[j] - r) && _y < (obstacleY[j] + obstacleHeight[j] + r)) {
+          return false;
+        }
+      }
+
+      // then check PE at location
+      if (typeof i === "number") {
+        orig_x = x[i];
+        orig_y = y[i];
+        x[i] = y[i] = Infinity;   // move i atom away
+      }
+
+      PEAtLocation = coreModel.newPotentialCalculator(element, 0, false)(_x, _y);
+
+      if (typeof i === "number") {
+        x[i] = orig_x;
+        y[i] = orig_y;
+      }
+
+      return PEAtLocation <= 0;
+    },
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
@@ -2419,7 +2480,7 @@ exports.makeModel = function() {
 
       createObstaclesArray(num);
       for (i = 0; i < num; i++) {
-        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i]);
+        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i], props.visible[i]);
       }
     },
 
@@ -2715,6 +2776,51 @@ exports.makeModel = function() {
       return res[1];
     },
 
+    atomsInMolecule: [],
+    depth: 0,
+
+    /**
+      Returns all atoms in the same molecule as atom i
+      (not including i itself)
+    */
+    getMoleculeAtoms: function(i) {
+      this.atomsInMolecule.push(i);
+      var moleculeAtoms = [];
+      var bondedAtoms = this.getBondedAtoms(i);
+      var depth = this.depth;
+      this.depth++;
+      for (var j=0, jj=bondedAtoms.length; j<jj; j++) {
+        var atomNo = bondedAtoms[j];
+        if (!~this.atomsInMolecule.indexOf(atomNo)) {
+          moleculeAtoms = moleculeAtoms.concat(this.getMoleculeAtoms(atomNo)); // recurse
+        }
+      }
+      if (depth === 0) {
+        this.depth = 0;
+        this.atomsInMolecule = [];
+      } else {
+        moleculeAtoms.push(i)
+      }
+      return moleculeAtoms;
+    },
+
+    /**
+      Returns all atoms directly bonded to atom i
+    */
+    getBondedAtoms: function(i) {
+      var bondedAtoms = [];
+      for (j = 0, jj = radialBonds[0].length; j < jj; j++) {
+        // console.log("looking at bond from "+radialBonds)
+        if (radialBondAtom1Index[j] === i) {
+          bondedAtoms.push(radialBondAtom2Index[j]);
+        }
+        if (radialBondAtom2Index[j] === i) {
+          bondedAtoms.push(radialBondAtom1Index[j]);
+        }
+      }
+      return bondedAtoms;
+    },
+
     serialize: function() {
       var serializedData = {},
           prop,
@@ -2749,6 +2855,7 @@ modeler.model = function(initialProperties) {
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
+      chargeShading, showVDWLines,VDWLinesRatio,
       lennard_jones_forces, coulomb_forces,
       stopped = true,
       tick_history_list = [],
@@ -2783,6 +2890,8 @@ modeler.model = function(initialProperties) {
 
       // list of obstacles
       obstacles,
+      // Radial Bonds
+      radialBonds,
 
       default_obstacle_properties = {
         vx: 0,
@@ -2798,6 +2907,9 @@ modeler.model = function(initialProperties) {
         coulomb_forces        : true,
         lennard_jones_forces  : true,
         temperature_control   : true,
+        chargeShading         : false,
+        showVDWLines          : false,
+        VDWLinesRatio         : 1.99,
 
         set_temperature: function(t) {
           this.temperature = t;
@@ -2855,7 +2967,15 @@ modeler.model = function(initialProperties) {
     HEIGHT   : md2d.OBSTACLE_INDICES.HEIGHT,
     COLOR_R  : md2d.OBSTACLE_INDICES.COLOR_R,
     COLOR_G  : md2d.OBSTACLE_INDICES.COLOR_G,
-    COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B
+    COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B,
+    VISIBLE  : md2d.OBSTACLE_INDICES.VISIBLE,
+  };
+
+  model.RADIAL_INDICES = {
+    ATOM1     : md2d.RADIAL_INDICES.ATOM1,
+    ATOM2     : md2d.RADIAL_INDICES.ATOM2,
+    LENGTH    : md2d.RADIAL_INDICES.LENGTH,
+    STRENGTH  : md2d.RADIAL_INDICES.STRENGTH,
   };
 
   function notifyListeners(listeners) {
@@ -3003,7 +3123,9 @@ modeler.model = function(initialProperties) {
         // look for set method first, otherwise just set the property
         if (properties["set_"+property]) {
           properties["set_"+property](hash[property]);
-        } else if (properties[property]) {
+        // why was the property not set if the default value property is false ??
+        // } else if (properties[property]) {
+        } else {
           properties[property] = hash[property];
         }
         propsChanged.push(property);
@@ -3168,6 +3290,9 @@ modeler.model = function(initialProperties) {
     // Initialize properties
     temperature_control = properties.temperature_control;
     temperature         = properties.temperature;
+    chargeShading       = properties.chargeShading;
+    showVDWLines        = properties.showVDWLines;
+    VDWLinesRatio       = properties.VDWLinesRatio;
 
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);
@@ -3196,8 +3321,9 @@ modeler.model = function(initialProperties) {
     return model;
   };
 
-  model.createRadialBonds = function(radialBonds) {
-    coreModel.initializeRadialBonds(radialBonds);
+  model.createRadialBonds = function(_radialBonds) {
+    coreModel.initializeRadialBonds(_radialBonds);
+    radialBonds = coreModel.radialBonds;
     readModelState();
     return model;
   };
@@ -3253,13 +3379,6 @@ modeler.model = function(initialProperties) {
 
   model.getLJCalculator = function() {
     return coreModel.getLJCalculator();
-  };
-
-  model.getPotentialFunction = function(element, charge, calculateGradient) {
-    if (charge == null) charge = 0;
-    calculateGradient = !!calculateGradient;
-
-    return coreModel.newPotentialCalculator(element, charge, calculateGradient);
   };
 
   model.resetTime = function() {
@@ -3330,7 +3449,7 @@ modeler.model = function(initialProperties) {
     if (y > size[1]-radius) y = size[1]-radius;
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-    if (model.getPotentialFunction(el, 0, false)(x, y) <= 0) {
+    if (coreModel.canPlaceAtom(el, x, y)) {
       coreModel.addAtom(el, x, y, vx, vy, charge);
 
       // reassign nodes to possibly-reallocated atoms array
@@ -3342,6 +3461,48 @@ modeler.model = function(initialProperties) {
     }
     // return false on failure
     return false;
+  },
+
+  /**
+      A generic method to set properties on a single existing atom.
+
+      Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
+
+      This can optionally check the new location of the atom to see if it would
+      overlap with another another atom (i.e. if it would increase the PE).
+
+      This can also optionally apply the same dx, dy to any atoms in the same
+      molecule (if x and y are being changed), and check the location of all
+      the bonded atoms together.
+    */
+  model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
+    if (moveMolecule) {
+      atoms = coreModel.getMoleculeAtoms(i);
+      if (atoms.length > 0) {
+        dx = typeof props.x === "number" ? props.x - coreModel.atoms[model.INDICES.X][i] : 0;
+        dy = typeof props.y === "number" ? props.y - coreModel.atoms[model.INDICES.Y][i] : 0;
+        for (var j = 0, jj=atoms.length; j<jj; j++) {
+          new_x = coreModel.atoms[model.INDICES.X][atoms[j]] + dx;
+          new_y = coreModel.atoms[model.INDICES.Y][atoms[j]] + dy;
+          if (new_x == Infinity || new_x == -Infinity || new_y == Infinity || new_y == -Infinity) debugger;
+          if (!model.setAtomProperties(atoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
+            return false;
+          }
+        }
+      }
+    }
+
+    if (checkLocation) {
+      var x  = typeof props.x === "number" ? props.x : coreModel.atoms[model.INDICES.X][i],
+          y  = typeof props.y === "number" ? props.y : coreModel.atoms[model.INDICES.Y][i],
+          el = typeof props.element === "number" ? props.y : coreModel.atoms[model.INDICES.ELEMENT][i];
+
+      if (!coreModel.canPlaceAtom(el, x, y, i)) {
+        return false;
+      }
+    }
+    coreModel.setAtomProperties(i, props);
+    return true;
   },
 
   // return a copy of the array of speeds
@@ -3377,6 +3538,9 @@ modeler.model = function(initialProperties) {
 
   model.get_obstacles = function() {
     return obstacles;
+  };
+  model.get_radial_bonds = function() {
+    return radialBonds;
   };
 
   model.on = function(type, listener) {
@@ -3421,6 +3585,7 @@ modeler.model = function(initialProperties) {
   model.stop = function() {
     stopped = true;
     dispatch.stop();
+    notifyListenersOfEvents("stop");
     return model;
   };
 

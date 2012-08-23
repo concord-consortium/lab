@@ -1,0 +1,34 @@
+/***
+  Default positioning and size styles that applications might wish to customize in order to make
+  the molecule view behave well with their stylesheet.
+***/
+/***
+  Styles used internally by the molecules view to make it behave like an img tag.
+***/
+/* Inner container whose height scales linearly with its layout width.
+   Must have 0 margin in order to scale correctly, so apply margins, positioning to its parent. */
+.molecules-view-aspect-container {
+  position: relative;
+  /* A trick that sets this div's height to 100% of its width, by making use of the fact that
+     padding is represented in units of this element's width.
+
+     The value below represents a 1:1 aspect ratio and is here only for illustrative purposes.
+     In practice, the molecule view sets an inline style on the div.molecules-view-aspect-container
+     to make the child div.molecules-view-svg-container's aspect ratio to match the actual aspect
+     ratio of the model, with padding taken into account.
+  */
+  margin: 0;
+  padding-top: 100%;
+  height: 0;
+  top: 0;
+  left: 0;
+  right: 0; }
+
+/* Inner container for the svg element, which expands to fill its parent's (scaled) padding.
+   Applying these styles directly to the svg element does not have the intended effect. */
+.molecules-view-svg-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0; }

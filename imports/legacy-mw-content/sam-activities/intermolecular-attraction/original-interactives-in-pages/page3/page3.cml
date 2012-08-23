@@ -46,8 +46,8 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body marginwidth=&quot;5&quot; marginheight=&quot;10&quot;&gt;
-    &lt;font size=&quot;4&quot; face=&quot;Verdana,Arial,Helvetica,sans-serif&quot;&gt;To the left are 
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;font face=&quot;Verdana,Arial,Helvetica,sans-serif&quot; size=&quot;4&quot;&gt;To the left are 
     two tiny drops of liquid, one polar and the other non-polar. By heating up 
     these liquids you can vaporize them (or boil them), causing the molecules 
     to break free of their intermolecular attractions. You know that something 
@@ -56,8 +56,8 @@
     temperature of these liquids.&lt;/font&gt;
 
     &lt;p align=&quot;center&quot;&gt;
-      &lt;font size=&quot;4&quot; face=&quot;Verdana,Arial,Helvetica,sans-serif&quot;&gt;&lt;strong&gt;Try 
-      heating the liquids slowly to see which one will vaporize first.&lt;/strong&gt; 
+      &lt;strong&gt;&lt;font face=&quot;Verdana,Arial,Helvetica,sans-serif&quot; size=&quot;4&quot;&gt;Try 
+      heating the liquids slowly to see which one will vaporize first.&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana,Arial,Helvetica,sans-serif&quot; size=&quot;4&quot;&gt; 
       &lt;/font&gt;
     &lt;/p&gt;
   &lt;/body&gt;
@@ -140,20 +140,20 @@
           known that &amp;quot;oil and water don&apos;t mix&amp;quot;, but why is that the case? &lt;/font&gt;
         &lt;/td&gt;
         &lt;td&gt;
-          &lt;img src=&quot;oilWaterComp.png&quot; height=&quot;51&quot; width=&quot;131&quot;&gt;
+          &lt;img width=&quot;131&quot; height=&quot;51&quot; src=&quot;oilWaterComp.png&quot;&gt;
           
         &lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td colspan=&quot;2&quot;&gt;
-          &lt;font size=&quot;4&quot; face=&quot;Verdana,Arial,Helvetica,sans-serif&quot;&gt;The model 
+          &lt;font face=&quot;Verdana,Arial,Helvetica,sans-serif&quot; size=&quot;4&quot;&gt;The model 
           to the left shows polar water and non-polar oil in a container 
           together. Press &amp;quot;run&amp;quot; to see how they interact.&lt;/font&gt;
         &lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;
     &lt;p&gt;
-      &lt;font size=&quot;4&quot; face=&quot;Verdana,Arial,Helvetica,sans-serif&quot;&gt;Salad dressing 
+      &lt;font face=&quot;Verdana,Arial,Helvetica,sans-serif&quot; size=&quot;4&quot;&gt;Salad dressing 
       is typically made from oil and vinegar (primarily water). Use the button 
       below to &amp;quot;shake up the dressing&amp;quot; and watch what happens to the oil and 
       water as you let it &amp;quot;settle&amp;quot;.&lt;/font&gt;
@@ -169,8 +169,8 @@
 
 </paragraph>
 <paragraph start="20" end="26">
-<Alignment>1</Alignment>
 <SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
 <content start="20" end="21">
 <component><class>org.concord.modeler.PageTextBox</class>
 <width>354.0</width>
@@ -181,10 +181,10 @@
   &lt;/head&gt;
   &lt;body&gt;
     &lt;map name=&quot;Map&quot;&gt;
-      &lt;area shape=&quot;rect&quot; href=&quot;script:mw:2:run;if (%shaken); set textbox[0].text &lt;t&gt;Oil and Water Settling&lt;/t&gt;; set textbox[0].x 9.9; set textbox[1].y 30; endif; script:textbox:3:load stop.html;&quot; coords=&quot;85,5,137,29&quot;&gt;&lt;/area&gt;
-      &lt;area shape=&quot;rect&quot; href=&quot;script:mw:2:reset;&quot; coords=&quot;207,5,266,29&quot;&gt;&lt;/area&gt;
+      &lt;area coords=&quot;85,5,137,29&quot; href=&quot;script:mw:2:run;if (%shaken); set textbox[0].text &lt;t&gt;Oil and Water Settling&lt;/t&gt;; set textbox[0].x 9.9; set textbox[1].y 30; endif; script:textbox:3:load stop.html;&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area coords=&quot;207,5,266,29&quot; shape=&quot;rect&quot; href=&quot;script:mw:2:reset;&quot;&gt;&lt;/area&gt;
     &lt;/map&gt;
-    &lt;img width=&quot;354&quot; usemap=&quot;#Map&quot; src=&quot;run.png&quot; border=&quot;0&quot; height=&quot;39&quot;&gt;
+    &lt;img src=&quot;run.png&quot; usemap=&quot;#Map&quot; border=&quot;0&quot; height=&quot;39&quot; width=&quot;354&quot;&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </title>
@@ -195,7 +195,7 @@
 </content>
 
 <content start="24" end="25">
-<component><class>org.concord.modeler.PageTextBox</class>
+<size>8</size><component><class>org.concord.modeler.PageTextBox</class>
 <width>385.0</width>
 <height>39.0</height>
 <title>&lt;html&gt;
@@ -204,21 +204,21 @@
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div align=&quot;center&quot;&gt;
-      &lt;input name=&quot;Submit&quot; value=&quot;shake up the oil and water mixture&quot; script=&quot;script:mw:2:load oilAndWaterMix.mml; set %shaken 1; script:textbox:9:load run.html;&quot; type=&quot;submit&quot;&gt;
+      &lt;input value=&quot;shake up the oil and water mixture&quot; script=&quot;script:mw:2:load oilAndWaterMix.mml; set %shaken 1; script:textbox:9:load run.html;&quot; name=&quot;Submit&quot; type=&quot;submit&quot;&gt;
     &lt;/div&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </title>
 <opaque>false</opaque>
-</component><size>8</size></content>
+</component></content>
 
 <content start="25" end="26">
 </content>
 
 </paragraph>
 <paragraph start="26" end="27">
-<Alignment>1</Alignment>
 <SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
 <content start="26" end="27">
 </content>
 

@@ -318,17 +318,17 @@ Successfully installed bundler-1.1.3
 development dependencies.</p>
 
 <p><a href="http://npmjs.org/">npm</a>, the Node Package Manager has been included as part of <a href="http://nodejs.org/">nodejs</a>
-since version 0.6.3.</p>
+since version 0.8.7.</p>
 
 <p>Install the latest stable version of node (currently v0.6.18) with installers available here: <a href="http://nodejs.org/#download">http://nodejs.org/#download</a></p>
 
 <p>Currently development is being done with these versions of node and npm:</p>
 
 <pre><code>$ node -v
-v0.6.18
+v0.8.7
 
 $ npm -v
-1.1.21
+1.1.49
 </code></pre>
 
 <h4 id="couchdb">CouchDB</h4>
@@ -372,7 +372,7 @@ Java to be installed.</p>
 <h5 id="customize-maven-mirror">Customize Maven mirror</h5>
 
 <p><strong>Note:</strong> Currently in order to compile OTrunk a very old version of the maven jarjar plugin is
-needed (v0.4). Only newer versions of the jarjar plugin are available in the public Maven artifact 
+needed (v0.4). Only newer versions of the jarjar plugin are available in the public Maven artifact
 repositories. Until OTrunk is updated you will need to include the Concord nexus Maven mirror
 (which has v0.4 of the maven jarjar plugin) in <code>~/.m2/settings.xml</code>.</p>
 
@@ -759,6 +759,21 @@ source code will be checked-out and compiled to create the Jar.</p>
 Five different kinds of build strategies are available. Each strategy includes
 additional build information in the <code>:build</code> option.</p>
 
+<p>The <code>:maven</code>, <code>:custom</code>, and <code>:ant</code> build strategies all expect to be able to get the source
+code to build projects from git repositories.</p>
+
+<p>Most of Concord Consportium’s open source Java codebase is published at our public Subversion
+repository: <a href="http://svn.concord.org/svn/projects/trunk">svn.concord.org/svn/projects/trunk</a>
+however all of the legacy Java code the Lab project references is also mirrored to separate git
+repositories at: <a href="https://github.com/concord-consortium/">github.com/concord-consortium/</a>.</p>
+
+<p>The <code>trunk</code> branches in the git mirrors we maintain such as:
+<a href="https://github.com/concord-consortium/otrunk/tree/trunk">concord-consortium/otrunk</a> always represent
+the latest code checked into the Subversion <code>trunk</code> branch.</p>
+
+<p>We have made small changes to the Molecular Workbench codebase and we are maintaining these in
+the <code>master</code> branch of the git mirror here: <a href="https://github.com/concord-consortium/mw">concord-consortium/mw</a>.</p>
+
 <ol>
   <li>
     <p><code>:maven</code></p>
@@ -776,6 +791,30 @@ additional build information in the <code>:build</code> option.</p>
 
     <p>The <code>trunk</code> branch of the otrunk repo will be checked out into <code>./java/otrunk</code> and be built using Maven.
  Because the otrunk jar is used with the sensor-applet code (which uses a native library) it must also be signed.</p>
+
+    <p><strong>Deploying both signed and unsigned jars</strong></p>
+
+    <p>Concord’s Molecular Workbench also uses the <code>:maven</code> build strategy however when running
+ it as a Java Web Start jnlp it needs to be signed while normally when run as an applet it
+ should be unsigned.</p>
+
+    <pre><code> 'mw'             =&gt; { :build_type =&gt; :maven,
+                       :build =&gt; MAVEN_STD_CLEAN_BUILD,
+                       :repository =&gt; 'git://github.com/concord-consortium/mw.git',
+                       :branch =&gt; 'master',
+                       :path =&gt; 'org/concord/modeler',
+                       :main_class =&gt; "org.concord.modeler.ModelerLauncher",
+                       :has_applet_class =&gt; true,
+                       :sign =&gt; true,
+                       :also_unsigned =&gt; true }
+</code></pre>
+
+    <p>By setting both the <code>:sign</code> and <code>:also_unsigned</code> options to <code>true</code> two jars will be deployed:</p>
+
+    <ul>
+      <li><code>jnlp/org/concord/modeler/mw.jar</code></li>
+      <li><code>jnlp/org/concord/modeler/unsigned/mw.jar</code></li>
+    </ul>
   </li>
   <li><code>:ant</code></li>
   <li>
@@ -1643,6 +1682,9 @@ AWS account.</strong></p>
 <ol>
   <li>AWS account. For deployment to the lab servers managed by CC you will need an AWS
 account managed by concord.org.</li>
+  <li>Create your AWS Access Key ID and AWS Secret Access Key. To do this, go to the IAM Dashboard in
+AWS (Services -&gt; IAM), click ‘Users’, click the checkbox by your username, and select User Actions -&gt;
+Manage Access Keys</li>
   <li>
     <p>Copy your AWS Access Key ID and AWS Secret Access Key to the following yaml configuration
 file <code>.fog</code> in your home directory:</p>
@@ -1653,7 +1695,8 @@ file <code>.fog</code> in your home directory:</p>
 </code></pre>
   </li>
   <li>Place a copy of a the appropriate AWS PEM file on your local files system. For deployment
-to the lab servers managed by CC use the <code>lab-dev</code> pem.</li>
+to the lab servers managed by CC use the <code>lab-dev</code> pem. This can be found in CC’s Google Docs/Drive.
+This file should have its permissions set to 600, and the folder it is in (e.g. ~/.ec2) should be 700.</li>
   <li>Create or identify an appropriate AWS security group. For deployment to the lab servers managed
 by CC the <code>lab.dev</code> security group is used.</li>
   <li>
@@ -1720,6 +1763,16 @@ are setup correctly:</p>
   lab-dev             lab.dev.concord.org.          running       107.22.184.173      i-f844ec81      ec2-107-22-184-173.compute-1.amazonaws.com
 </code></pre>
   </li>
+  <li>
+    <p>If you are working with an existing host that has already been setup such as <code>lab.dev.concord.org</code>
+generate the proper ssh configuration and add the remote host key to <code>~/.ssh/known_hosts</code>.
+This adds a local <strong><code>ubuntu</code></strong> user in <code>~/ssh/config</code> and connects to the remote host to add the key.</p>
+
+    <p>Example of setting up SSH configuration with the existing remote AWS host: <code>lab..dev.concord.org</code>:</p>
+
+    <pre><code>$ thor cloud:setup_ssh lab.dev.concord.org
+</code></pre>
+  </li>
 </ol>
 
 <h3 id="using-capstrano-to-deploy-new-code-to-an-existing-server">Using Capstrano to deploy new code to an existing server</h3>
@@ -1740,6 +1793,7 @@ tasks to update a remote server.</p>
 <p>Here are the list of current Capistrano deploy commands:</p>
 
 <pre><code>$ cap -T deploy:
+cap deploy:restart          # restart rails app
 cap deploy:clean_and_update # clean and update server
 cap deploy:setup            # setup server
 cap deploy:status           # display last commit on deployed server
@@ -1833,6 +1887,7 @@ thor cloud:list                 # list existing servers
 thor cloud:list_targets         # list existing deploy targets
 thor cloud:recreate (hostname)  # recreate a new server instance for this hostname by destroying and rebuilding an existing server
 thor cloud:setup                # setup capistrano deploy tasks and littlechef nodes using targets in config/config.yml
+thor cloud:setup_ssh (hostname)  # setup ssh configuration for communication to hostname
 thor cloud:start (ec2_id)       # start a stopped existing server instance at this hostname
 thor cloud:stop (hostname)      # stop a running existing server instance at this hostname
 </code></pre>

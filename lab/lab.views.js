@@ -37,7 +37,7 @@ layout.appletContainer = function(e, options) {
         code:                 "org.concord.modeler.MwApplet",
         width:                "100%",
         height:               "100%",
-        archive:              "org/concord/modeler/mw.jar",
+        archive:              "org/concord/modeler/unsigned/mw.jar",
         align:                "left",
         hspace:               "5",
         vspace:               "5",
@@ -159,11 +159,13 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       x, downscalex, downx,
       y, downscaley, downy,
       dragged,
+      drag_origin,
       pc_xpos, pc_ypos,
       model_time_formatter = d3.format("5.2f"),
       time_prefix = "time: ",
       time_suffix = " (ps)",
       gradient_container,
+      VDWLines_container,
       red_gradient,
       blue_gradient,
       green_gradient,
@@ -177,15 +179,21 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       get_num_atoms,
       nodes,
       get_nodes,
+      set_atom_properties,
+      is_stopped,
       obstacle,
       get_obstacles,
       mock_obstacles_array = [],
+      mock_radial_bond_array = [],
+      radialBond,
+      getRadialBonds,
+      bondColorArray,
       default_options = {
+        fit_to_parent:        false,
         title:                false,
         xlabel:               false,
         ylabel:               false,
-        playback_controller:  false,
-        play_only_controller: true,
+        control_buttons:      "play",
         model_time_label:     false,
         grid_lines:           false,
         xunits:               false,
@@ -198,7 +206,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       };
 
   processOptions();
-  scale(cx, cy);
+
+  if ( !options.fit_to_parent ) {
+    scale(cx, cy);
+  }
 
   tx = function(d, i) { return "translate(" + x(d) + ",0)"; };
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
@@ -226,6 +237,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     mock_atoms_array.length = get_num_atoms();
 
     get_obstacles = options.get_obstacles;
+    getRadialBonds = options.get_radial_bonds;
+    set_atom_properties = options.set_atom_properties;
+    is_stopped = options.is_stopped;
   };
 
   function scale(w, h) {
@@ -243,34 +257,56 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       padding.bottom += (35  * scale_factor);
     }
 
-    if (options.playback_controller || options.play_only_controller) {
+    if (options.control_buttons) {
       padding.bottom += (40  * scale_factor);
+    } else {
+      padding.bottom += (15  * scale_factor);
     }
-    if (!arguments.length) {
+
+    if (options.fit_to_parent) {
+
+      // In 'fit-to-parent' mode, we allow the viewBox parameter to fit the svg
+      // node into the containing element and allow the containing element to be
+      // sized by CSS (or Javascript)
+      cx = 500;
+      width = cx - padding.left - padding.right;
+      height = width / aspectRatio;
+      cy = height + padding.top + padding.bottom;
+    }
+    else if (!arguments.length) {
       cy = elem.property("clientHeight");
       height = cy - padding.top  - padding.bottom;
       width = height * aspectRatio;
       cx = width + padding.left  + padding.right;
+      node.style.width = cx +"px";
     } else {
       width  = w;
       height = h;
       cx = width + padding.left  + padding.right;
       cy = height + padding.top  + padding.bottom;
       node.style.height = cy +"px";
+      node.style.width = cx +"px";
     }
-    node.style.width = cx +"px";
+
     size = {
       "width":  width,
       "height": height
     };
 
     offset_top = node.offsetTop + padding.top;
-    if (options.playback_controller) {
-      pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
-    };
-    if (options.play_only_controller) {
-      pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
+
+    switch (options.control_buttons) {
+      case "play":
+        pc_xpos = padding.left + (size.width - (75 * scale_factor))/2;
+        break;
+      case "play_reset":
+        pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
+        break;
+      case "play_reset_step":
+      default:
+        pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
     }
+
     pc_ypos = cy - 42 * scale_factor;
     mw = size.width;
     mh = size.height;
@@ -287,9 +323,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     // y-scale (inverted domain)
     y = d3.scale.linear()
         .domain([options.ymax, options.ymin])
-        .nice()
-        .range([0, mh])
-        .nice();
+        .range([0, mh]);
 
     // y-scale for defining heights without inverting the domain
     y_flip = d3.scale.linear()
@@ -319,6 +353,14 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
   function get_y(i) {
     return nodes[model.INDICES.Y][i];
+  }
+
+  function set_position(i, x, y, checkPosition, moveMolecule) {
+    return set_atom_properties(i, {x: x, y: y}, checkPosition, moveMolecule);
+  }
+
+  function set_y(i, y) {
+    nodes[model.INDICES.Y][i] = y;
   }
 
   function get_radius(i) {
@@ -372,6 +414,34 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       obstacles[model.OBSTACLE_INDICES.COLOR_B][i] + ")";
   }
 
+  function get_obstacle_visible(i) {
+    return obstacles[model.OBSTACLE_INDICES.VISIBLE][i];
+  }
+
+  function get_radial_bond_atom_1(i) {
+    return radialBonds[model.RADIAL_INDICES.ATOM1][i];
+  }
+
+  function get_radial_bond_atom_2(i) {
+    return radialBonds[model.RADIAL_INDICES.ATOM2][i];
+  }
+
+  function get_radial_bond_length(i) {
+    return radialBonds[model.RADIAL_INDICES.LENGTH][i];
+  }
+
+  function get_radial_bond_strength(i) {
+    return radialBonds[model.RADIAL_INDICES.STRENGTH][i];
+  }
+    function chargeShadingMode() {
+        if (model.get("chargeShading")) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
   function container() {
     // if (node.clientWidth && node.clientHeight) {
     //   cx = node.clientWidth;
@@ -379,11 +449,30 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     //   size.width  = cx - padding.left - padding.right;
     //   size.height = cy - padding.top  - padding.bottom;
     // }
+
     scale();
+
+    // create container, or update properties if it already exists
     if (vis === undefined) {
-      vis1 = d3.select(node).append("svg")
-        .attr("width", cx)
-        .attr("height", cy);
+
+      if (options.fit_to_parent) {
+        elem = d3.select(e)
+          .append('div').attr('class', 'positioning-container')
+          .append('div').attr('class', 'molecules-view-aspect-container')
+            .attr('style', 'padding-top: ' + Math.round(cy/cx * 100) + '%')
+          .append('div').attr('class', 'molecules-view-svg-container');
+
+        node = elem.node();
+
+        vis1 = d3.select(node).append("svg")
+          .attr('viewBox', '0 0 ' + cx + ' ' + cy)
+          .attr('preserveAspectRatio', 'xMinYMin meet');
+
+      } else {
+        vis1 = d3.select(node).append("svg")
+          .attr("width", cx)
+          .attr("height", cy);
+      }
 
       vis = vis1.append("g")
           .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -435,29 +524,15 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("dy","2.4em")
             .style("text-anchor","start");
       }
-      if (options.playback_controller) {
-        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
-      }
-      if (options.play_only_controller) {
-        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
-      }
 
-      var updateHeatBath = function() {
-        var heatBath = model.get('temperature_control');
-        if (heatBath) {
-          d3.select("#heat_bath").style("display","");
-        }
-        else {
-          d3.select("#heat_bath").style("display","none");
-        }
-      }
-        vis.append("image")
-          .attr("x", 5)
-          .attr("id", "heat_bath")
-          .attr("y", 5)
-          .attr("width", 16)
-          .attr("height", 16)
-          .attr("xlink:href", "../../resources/heatbath.gif")
+      vis.append("image")
+        .attr("x", 5)
+        .attr("id", "heat_bath")
+        .attr("y", 5)
+        .attr("width", "3%")
+        .attr("height", "3%")
+        .attr("xlink:href", "../../resources/heatbath.gif")
+
       model.addPropertiesListener(["temperature_control"], updateHeatBath);
       updateHeatBath();
 
@@ -478,9 +553,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     } else {
 
-      d3.select(node).select("svg")
-          .attr("width", cx)
-          .attr("height", cy);
+      if ( !options.fit_to_parent ) {
+        d3.select(node).select("svg")
+            .attr("width", cx)
+            .attr("height", cy);
+      }
 
       vis.select("svg")
           .attr("width", cx)
@@ -535,19 +612,45 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
         });
       }
-
       if (obstacle) {
         obstacle.attr("x", function(d, i) {return x(get_obstacle_x(i)); })
                 .attr("y", function(d, i) {return y(get_obstacle_y(i) + get_obstacle_height(i)); })
                 .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
                 .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); });
       }
+      if (radialBond) {
+/*
+          radialBond.attr("x1", function(d, i) {return x(get_x(get_radial_bond_atom_1()) + get_radius(get_radial_bond_atom_1()))})
+                    .attr("y1", function(d, i) {return y(get_x(get_radial_bond_atom_1()) - get_radius(get_radial_bond_atom_1()))})
+                    .attr("x2", function(d, i) {return x(get_x(get_radial_bond_atom_2()) + get_radius(get_radial_bond_atom_2()))})
+                    .attr("y2", function(d, i) {return y(get_x(get_radial_bond_atom_2()) - get_radius(get_radial_bond_atom_2()))})
+                    .style("stroke-width", 2)
+                    .style("stroke", "black")
+*/
+      }
 
-      if (options.playback_controller || options.play_only_controller) {
+      if (options.playback_controller) {
         playback_component.position(pc_xpos, pc_ypos, scale_factor);
       }
       redraw();
 
+    }
+
+    // Process options that always have to be recreated when container is reloaded
+    d3.select('.model-controller').remove();
+
+    switch (options.control_buttons) {
+      case "play":
+        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+        break;
+      case "play_reset":
+        playback_component = new PlayResetComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+        break;
+      case "play_reset_step":
+        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+        break;
+      default:
+        playback_component = null;
     }
 
     function redraw() {
@@ -624,6 +727,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function create_gradients() {
+      VDWLines_container = vis.append("g");
+      VDWLines_container.attr("class", "VDWLines_container");
+
       gradient_container = vis.append("svg")
           .attr("class", "container")
           .attr("top", 0)
@@ -638,8 +744,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", gradient_container);
       create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", gradient_container);
       create_radial_gradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", gradient_container);
+      create_radial_gradient("custom-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", gradient_container);
 
       element_gradient_array = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
+      bondColorArray = ["#538f2f", "#aa2bb1", "#2cb6af", "#b3831c", "#7781c2", "#ee7171"];
     }
 
     function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
@@ -665,6 +773,20 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("offset", "100%");
     }
 
+      /*Function : updateHeatBath
+       *
+       * Controls display of Heat Bath icon based on value of temperature_control property for model.
+       * */
+      function updateHeatBath() {
+          var heatBath = model.get('temperature_control');
+          if (heatBath) {
+              d3.select("#heat_bath").style("display","");
+          }
+          else {
+              d3.select("#heat_bath").style("display","none");
+          }
+      }
+
     function updateMoleculeRadius() {
       vis.selectAll("circle").data(mock_atoms_array).attr("r",  function(d, i) { return x(get_radius(i)); });
       // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
@@ -675,13 +797,23 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     */
     function circlesEnter(particle) {
       particle.enter().append("circle")
+          .attr("class", "draggable")
           .attr("r",  function(d, i) { return x(get_radius(i)); })
           .attr("cx", function(d, i) { return x(get_x(i)); })
           .attr("cy", function(d, i) { return y(get_y(i)); })
-          .style("cursor", "crosshair")
           .style("fill", function(d, i) {
-            if (model.get("coulomb_forces") && x(get_charge(i))) {
-              return (x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
+            if (chargeShadingMode()) {
+                if (get_charge(i) > 0){
+                    return  "url(#pos-grad)";
+                }
+                else if (get_charge(i) < 0){
+                    return  "url(#neg-grad)";
+                }
+                else {
+                    element = get_element(i) % 4;
+                    grad = element_gradient_array[element];
+                    return "url(#custom-grad)";
+                }
             } else {
               element = get_element(i) % 4;
               grad = element_gradient_array[element];
@@ -689,7 +821,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             }
           })
           .on("mousedown", molecule_mousedown)
-          .on("mouseout", molecule_mouseout);
+          .on("mouseout", molecule_mouseout)
+          .call(d3.behavior.drag()
+            .on("dragstart", node_dragstart)
+            .on("drag", node_drag)
+            .on("dragend", node_dragend)
+          );
     }
 
     function rectEnter(obstacle) {
@@ -698,14 +835,123 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("y", function(d, i) {return y(get_obstacle_y(i) + get_obstacle_height(i)); })
           .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
           .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); })
-          .style("fill", function(d, i) {return get_obstacle_color(i); })
-          .style("stroke-width", 0.2)
+          .style("fill", function(d, i) {
+            return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; })
+          .style("stroke-width", function(d, i) {return get_obstacle_visible(i) ? 0.2 : 0.0})
           .style("stroke", "black");
     }
 
+    function radialBondEnter(radialBond) {
+        radialBond.enter().append("line")
+                    .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
+                    .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
+                    .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+                    .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+                    .attr("class", "radialbond")
+                    .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75})
+                    .style("stroke", function(d, i) {
+                if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
+                    return "#000000";
+                }
+                else {
+                    if (chargeShadingMode()) {
+                        if (get_charge(get_radial_bond_atom_1(i)) > 0){
+                            return  bondColorArray[4];
+                        }
+                        else if (get_charge(get_radial_bond_atom_1(i)) < 0){
+                            return  bondColorArray[5];
+                        }
+                        else {
+                            //element = get_element(get_radial_bond_atom_1(i)) % 4;
+                            //grad = bondColorArray[element];
+                            return "#A4A4A4";
+                        }
+                    } else {
+                        element = get_element(get_radial_bond_atom_1(i)) % 4;
+                        grad = bondColorArray[element];
+                        return grad;
+                    }
+                }
+            })
+            .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
+        radialBond.enter().append("line")
+                    .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+                    .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+                    .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
+                    .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
+                    .attr("class", "radialbond1")
+                    .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
+                    .style("stroke", function(d, i) {
+                if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
+                    return "#000000";
+                }
+                else {
+                    if (chargeShadingMode()) {
+                        if (get_charge(get_radial_bond_atom_2(i)) > 0){
+                            return  bondColorArray[4];
+                        }
+                        else if (get_charge(get_radial_bond_atom_2(i)) < 0){
+                            return  bondColorArray[5];
+                        }
+                        else {
+                            //element = get_element(get_radial_bond_atom_2(i)) % 4;
+                            //grad = bondColorArray[element];
+                            return "#A4A4A4";
+                        }
+                    } else {
+                        element = get_element(get_radial_bond_atom_2(i)) % 4;
+                        grad = bondColorArray[element];
+                        return grad;
+                    }
+                }
+    })
+                    .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
+    }
+
+    function drawAttractionForces(){
+      VDWLines_container.selectAll("line.attractionforce").remove();
+        for(var atom1 = 0;atom1 < mock_atoms_array.length;atom1++){
+            for(var atom2 =0 ;atom2<atom1;atom2++) {
+                var xs = (x(get_x(atom1))-x(get_x(atom2)));
+                var ys = (y(get_y(atom1))-y(get_y(atom2)));
+                var dist;
+                xs = xs * xs;
+                ys = ys * ys;
+                dist =  Math.sqrt( xs + ys );
+                if (dist <= 70 && !isChargeSame(atom1,atom2))
+                {
+                  VDWLines_container.append("line")
+                        .attr("x1", x(get_x(atom1)))
+                        .attr("y1", y(get_y(atom1)))
+                        .attr("x2", x(get_x(atom2)))
+                        .attr("y2", y(get_y(atom2)))
+                        .attr("class", "attractionforce")
+                        .style("stroke-width", 1)
+                        .style("stroke", "#000000")
+                        .style("stroke-dasharray", "5 3");
+                }
+            }
+        }
+    }
+
+    function isChargeSame(atom1,atom2) {
+      var atomCharge1 =  get_charge(atom1);
+      var atomCharge2 =  get_charge(atom2);
+      if((atomCharge1 > 0) &&  (atomCharge2 > 0) || (atomCharge1 < 0) &&  (atomCharge2 < 0)){
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
     function setup_drawables() {
-      setup_particles();
       setup_obstacles();
+      if(model.get("showVDWLines")){
+        drawAttractionForces();
+      }
+      setup_radial_bonds();
+      setup_particles();
     }
 
     function setup_particles() {
@@ -746,6 +992,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("style", "font-weight: bold; opacity: .7")
             .attr("x", 0)
             .attr("y", "0.31em")
+            .attr("pointer-events", "none")
             .text(function(d) { return d.index; });
       } else {
         labelEnter.append("text")
@@ -754,27 +1001,47 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("style", "font-weight: bold; opacity: .7")
             .attr("x", "-0.31em")
             .attr("y", "0.31em")
+            .attr("pointer-events", "none")
             .text(function(d, i) {
-              if (model.get("coulomb_forces") && x(get_charge(i))) {
-                return (x(get_charge(i)) > 0) ? "+" : "–";
-              } else {
-                return;    // ""
-              }
-            });
+                if (chargeShadingMode()) {
+                    if (get_charge(i) > 0){
+                        return  "+";
+                    } else if (get_charge(i) < 0){
+                        return  "-";
+                    } else {
+                        return;
+                    }
+                }
+            })
       }
     }
 
     function setup_obstacles() {
+      gradient_container.selectAll("rect").remove();
+
       obstacles = get_obstacles();
       if (!obstacles) return;
 
       mock_obstacles_array.length = obstacles[0].length;
 
-      gradient_container.selectAll("rect").remove();
-
       obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
 
       rectEnter(obstacle);
+    }
+
+    function setup_radial_bonds() {
+      gradient_container.selectAll("line.radialbond").remove();
+      gradient_container.selectAll("line.radialbond1").remove();
+
+      radialBonds = getRadialBonds();
+
+      if (!radialBonds) return;
+
+      mock_radial_bond_array.length = radialBonds[0].length;
+
+      radialBond = gradient_container.selectAll("line.radialbond").data(mock_radial_bond_array);
+
+      radialBondEnter(radialBond);
     }
 
     function mousedown() {
@@ -832,9 +1099,13 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function update_drawable_positions() {
+      setup_obstacles();
+      if(model.get("showVDWLines")){
+        drawAttractionForces();
+      }
+      update_radial_bonds();
       update_molecule_positions();
-      updateObstaclePositions();
-    }
+      }
 
     function update_molecule_positions() {
 
@@ -849,35 +1120,75 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       label = elem.selectAll("g.label").data(mock_atoms_array);
 
       label.attr("transform", function(d, i) {
-          return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
-        });
+        return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
+      });
 
       particle = gradient_container.selectAll("circle").data(mock_atoms_array);
-      circlesEnter(particle);
+      if (mock_atoms_array.length !== gradient_container.selectAll("circle")[0].length){
+        circlesEnter(particle);
+      }
+      particle
+        .attr("cx", function(d, i) {return x(nodes[model.INDICES.X][i]); })
+        .attr("cy", function(d, i) {return y(nodes[model.INDICES.Y][i]); })
+        .attr("r",  function(d, i) {return x(nodes[model.INDICES.RADIUS][i]); });
 
-      particle.attr("cx", function(d, i) {
-          return x(nodes[model.INDICES.X][i]); })
-        .attr("cy", function(d, i) {
-          return y(nodes[model.INDICES.Y][i]); })
-        .attr("r",  function(d, i) {
-          return x(nodes[model.INDICES.RADIUS][i]); });
       if ((typeof(atom_tooltip_on) === "number")) {
         render_atom_tooltip(atom_tooltip_on);
       }
     }
 
-    function updateObstaclePositions() {
-      obstacles = get_obstacles();
-      if (!obstacles) return;
+    function update_radial_bonds() {
+      gradient_container.selectAll("line.radialbond")
+        .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
+        .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
+        .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+        .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
 
-      mock_obstacles_array.length = obstacles[0].length;
-
-      gradient_container.selectAll("rect").remove();
-
-      obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
-
-      rectEnter(obstacle);
+      gradient_container.selectAll("line.radialbond1")
+        .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+        .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+        .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
+        .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
     }
+
+    function node_dragstart(d, i) {
+      if (!is_stopped()) return;
+
+      drag_origin = [get_x(i), get_y(i)];
+    }
+
+    function node_drag(d, i){
+      if (!is_stopped()) return;
+
+      var dragTarget = d3.select(this),
+          new_x, new_y;
+
+      dragTarget
+        .attr("cx", function(){return d3.event.x})
+        .attr("cy", function(){return d3.event.y});
+
+      new_x = x.invert(dragTarget.attr('cx'));
+      new_y = y.invert(dragTarget.attr('cy'));
+      set_position(i, new_x, new_y, false, true);
+
+      update_drawable_positions();
+    };
+
+    function node_dragend(d, i){
+      if (!is_stopped()) return;
+
+      var dragTarget = d3.select(this),
+          new_x, new_y;
+
+      new_x = x.invert(dragTarget.attr('cx'));
+      new_y = y.invert(dragTarget.attr('cy'));
+      if (!set_position(i, new_x, new_y, true, true)) {
+        alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
+        set_position(i, drag_origin[0], drag_origin[1], false, true);
+      }
+
+      update_drawable_positions();
+    };
 
     // ------------------------------------------------------------
     //
@@ -935,7 +1246,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   }
 
   container.resize = function(w, h) {
-    container.scale(w, h);
+    if ( !options.fit_to_parent ) container.scale(w, h);
     container();
     container.setup_drawables();
   };
@@ -1982,7 +2293,7 @@ layout.setupTemperature = function(model) {
       var temp_range = document.createElement("input");
       temp_range.type = "range";
       temp_range.min = "0";
-      temp_range.max = "1000";
+      temp_range.max = "5000";
       temp_range.step = "20";
       temp_range.value = model.get("temperature");
       select_temperature.parentNode.replaceChild(temp_range, select_temperature);
@@ -2034,38 +2345,6 @@ if (layout.temperature_control_checkbox) {
   layout.temperature_control_checkbox.onchange = layout.temperatureControlHandler;
 }
 // ------------------------------------------------------------
-//
-// Force Interaction Controls
-//
-// ------------------------------------------------------------
-
-layout.lennard_jones_forces_checkbox = document.getElementById("lennard-jones-forces-checkbox");
-
-function lennardJonesInteractionHandler() {
-    if (layout.lennard_jones_forces_checkbox.checked) {
-      model.set_lennard_jones_forces(true);
-    } else {
-      model.set_lennard_jones_forces(false);
-    };
-};
-
-if (layout.lennard_jones_forces_checkbox) {
-  layout.lennard_jones_forces_checkbox.onchange = lennardJonesInteractionHandler;
-}
-
-layout.coulomb_forces_checkbox = document.getElementById("coulomb-forces-checkbox");
-
-function coulombForcesInteractionHandler() {
-    if (layout.coulomb_forces_checkbox.checked) {
-      model.set({coulomb_forces: true});
-    } else {
-      model.set({coulomb_forces: false});
-    };
-};
-
-if (layout.coulomb_forces_checkbox) {
-  layout.coulomb_forces_checkbox.onchange = coulombForcesInteractionHandler;
-}// ------------------------------------------------------------
 //
 // Display Model Statistics
 //

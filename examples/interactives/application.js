@@ -3,6 +3,10 @@
 
 DEVELOPMENT = true;
 
+var ROOT = "/examples",
+    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
+    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
+
 (function() {
 
   var interactiveDefinitionLoaded = $.Deferred(),
@@ -19,7 +23,8 @@ DEVELOPMENT = true;
       foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder),
       interactiveUrl,
       interactive,
-      hash;
+      hash,
+      jsonModelPath, contentItems, mmlPath, cmlPath;
 
   function selectInteractiveHandler() {
     document.location.hash = '#' + selectInteractive.value;
@@ -27,7 +32,20 @@ DEVELOPMENT = true;
   selectInteractive.onchange = selectInteractiveHandler;
 
   if (!document.location.hash) {
-     document.location.hash = '#interactives/heat-and-cool-example.json';
+    selectInteractiveHandler();
+  }
+
+  function getObjects(obj, key, val) {
+    var objects = [];
+    for (var i in obj) {
+      if (!obj.hasOwnProperty(i)) continue;
+      if (typeof obj[i] == 'object') {
+        objects = objects.concat(getObjects(obj[i], key, val));
+      } else if (i == key && obj[key] == val) {
+        objects.push(obj);
+      }
+    }
+    return objects;
   }
 
   if (hash = document.location.hash) {
@@ -38,6 +56,21 @@ DEVELOPMENT = true;
       if (typeof results === 'string') results = JSON.parse(results);
       interactive = results;
 
+      // construct link to embeddable version of Interactive
+      $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
+
+      // construct Java MW link for running Interactive via jnlp
+      // uses generated resource list: /imports/legacy-mw-content/model-list.js
+      jsonModelPath = interactive.model.url;
+      mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml")
+      contentItems = getObjects(modelList, "mml", mmlPath);
+      if (contentItems.length > 0) {
+        $("#java-mw-link").attr("href", function(i, href) {
+          return "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," + window.location.origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
+        });
+      }
+
+      // Copy Interactive json to code editor
       interactiveTextArea.textContent = JSON.stringify(interactive, null, indent);
       editor = CodeMirror.fromTextArea(interactiveTextArea, {
         mode: 'javascript',

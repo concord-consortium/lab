@@ -1,7 +1,8 @@
 { "global_temperatures":
-	{
-		"global_surface_temperature_1961_1990": 14.0,
-		"temperature_anomolies": [
+  {
+    "global_surface_temperature_1961_1990": 14.0,
+    "about": "These data are based on the [Mann surface temperature reconstruction, 500-2009](http://www.ncdc.noaa.gov/paleo/pubs/mann2009b/mann2009b.html). Mann's original paper [Global Signatures and Dynamical Origins of the Little Ice Age and Medieval Climate Anomaly](http://www.meteo.psu.edu/~mann/shared/articles/MannetalScience09.pdf). Mann's data are the temperature anomalies from the 30 year global average from 1961 through 1999 of 14.0 degrees C developed by Jones et al, 1999 [SURFACE AIR TEMPERATURE AND ITS CHANGES OVER THE PAST 150 YEARS](http://seaice.apl.washington.edu/Papers/JonesEtal99-SAT150.pdf).",
+    "temperature_anomolies": [
       [5.0000000e+02, -7.8868754e-02],
       [5.0100000e+02, -8.0449214e-02],
       [5.0200000e+02, -8.2978461e-02],
@@ -1509,6 +1510,6 @@
       [2.0040000e+03, 3.9568192e-01],
       [2.0050000e+03, 4.0293797e-01],
       [2.0060000e+03, 4.0713867e-01]
-		]
-	}
+    ]
+  }
 }

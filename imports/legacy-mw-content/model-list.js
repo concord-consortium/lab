@@ -767,6 +767,39 @@ modelList = [
     ]
   },
   {
+    "section": "visual",
+    "content": [
+      {
+        "name": "Recycling-1",
+        "path": "visual/",
+        "cml": "visual/Recycling/ceramicforcesimple.cml",
+        "mml": "visual/Recycling/ceramicforcesimple$0.mml",
+        "json": "converted/visual/Recycling/ceramicforcesimple$0.json"
+      },
+      {
+        "name": "Recycling-2",
+        "path": "visual/",
+        "cml": "visual/Recycling/ceramicforcesimple.cml",
+        "mml": "visual/Recycling/metalforcesimple$0.mml",
+        "json": "converted/visual/Recycling/metalforcesimple$0.json"
+      },
+      {
+        "name": "Recycling-3",
+        "path": "visual/",
+        "cml": "visual/Recycling/ceramicforcesimple.cml",
+        "mml": "visual/Recycling/plasticforcesimple$0.mml",
+        "json": "converted/visual/Recycling/plasticforcesimple$0.json"
+      },
+      {
+        "name": "Recycling-4",
+        "path": "visual/",
+        "cml": "visual/Recycling/ceramicforcesimple.cml",
+        "mml": "visual/Recycling/tireforcesimple$0.mml",
+        "json": "converted/visual/Recycling/tireforcesimple$0.json"
+      }
+    ]
+  },
+  {
     "section": "potential-tests",
     "content": [
       {
@@ -2473,11 +2506,46 @@ modelList = [
     "section": "conversion-and-physics-examples",
     "content": [
       {
-        "name": "one-radial-bond",
+        "name": "force-lines-long",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/force-lines-long.cml",
+        "mml": "conversion-and-physics-examples/force-lines-long$0.mml",
+        "json": "converted/conversion-and-physics-examples/force-lines-long$0.json"
+      },
+      {
+        "name": "force-lines-medium",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/force-lines-medium.cml",
+        "mml": "conversion-and-physics-examples/force-lines-medium$0.mml",
+        "json": "converted/conversion-and-physics-examples/force-lines-medium$0.json"
+      },
+      {
+        "name": "force-lines-short",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/force-lines-short.cml",
+        "mml": "conversion-and-physics-examples/force-lines-short$0.mml",
+        "json": "converted/conversion-and-physics-examples/force-lines-short$0.json"
+      },
+      {
+        "name": "one-radial-bond-1",
         "path": "conversion-and-physics-examples/",
         "cml": "conversion-and-physics-examples/one-radial-bond.cml",
         "mml": "conversion-and-physics-examples/one-radial-bond$0.mml",
         "json": "converted/conversion-and-physics-examples/one-radial-bond$0.json"
+      },
+      {
+        "name": "one-radial-bond-2",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/one-radial-bond.cml",
+        "mml": "conversion-and-physics-examples/one-radial-bond_different_elements$0.mml",
+        "json": "converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json"
+      },
+      {
+        "name": "one-radial-bond_different_elements",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/one-radial-bond_different_elements.cml",
+        "mml": "conversion-and-physics-examples/one-radial-bond_different_elements$0.mml",
+        "json": "converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json"
       }
     ]
   }

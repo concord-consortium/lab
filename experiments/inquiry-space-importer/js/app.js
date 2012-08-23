@@ -1,6 +1,7 @@
-/*globals defineClass extendClass grapher d3 */
+/*global defineClass extendClass grapher d3 */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
+(function() {
 
 /**
   Quick & dirty fixed-digit formatter. Should work for reasonable ranges of numbers.
@@ -19,6 +20,12 @@ ISImporter.fixed = function(d, n) {
   return str.slice(0, str.length-n) + '.' + str.slice(-n);
 };
 
+// Returns true if the argument is a string that represents a valid, finite number (or is a valid, finite number)
+function isNumeric(val) {
+  // see http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric/1830844#1830844
+  return !isNaN(parseFloat(val)) && isFinite(val);
+}
+
 // Hmm.
 ISImporter.Object = defineClass();
 
@@ -32,8 +39,9 @@ ISImporter.sensors = {
       appletId: 'distance-sensor'
     }),
     title: "Distance",
-    yMax: 5,
-    units: "m"
+    yMax: 3,
+    units: "m",
+    xMax: 20
   },
 
   temperature: {
@@ -45,7 +53,8 @@ ISImporter.sensors = {
     }),
     title: "Temperature",
     yMax: 100,
-    units: "°C"
+    units: "°C",
+    xMax: 60
   },
 
   light: {
@@ -57,7 +66,8 @@ ISImporter.sensors = {
     }),
     title: "Light Intensity",
     yMax: 2000,
-    units: "lux"
+    units: "lux",
+    xMax: 60
   }
 };
 
@@ -113,10 +123,10 @@ ISImporter.GraphController = defineClass({
       title       : this.title,
       xlabel      : this.xLabel,
       xmin        : 0,
-      xmax        : 60,
+      xmax        : 20,
       ylabel      : this.yLabel,
       ymin        : 0,
-      ymax        : 40,
+      ymax        : 2,
       points      : [],
       circleRadius: false,
       dataChange  : false
@@ -188,6 +198,7 @@ ISImporter.appController = new ISImporter.Object({
     };
 
     this.initInterface();
+    ISImporter.DGExporter.init($(document.body).width() + 10, $(document.body).height() + 50);
   },
 
   initInterface: function() {
@@ -228,7 +239,7 @@ ISImporter.appController = new ISImporter.Object({
     this.$exportButton = $('#export-data-button');
     this.$exportButton.on('click', function() {
       if ($(this).hasClass('disabled')) return false;
-      self.export();
+      self.exportData();
     });
 
     this.$selectButton = $('#select-data-button');
@@ -307,6 +318,8 @@ ISImporter.appController = new ISImporter.Object({
         sensorInfo = ISImporter.sensors[val],
         self       = this;
 
+    this.sensorType = val;
+
     if (this.currentApplet === sensorInfo.applet) {
       return;
     }
@@ -383,12 +396,25 @@ ISImporter.appController = new ISImporter.Object({
     this.disable(this.$exportButton);
   },
 
-  export: function() {
+  exportData: function() {
+    var data,
+        label,
+        metadata = [];
+
     if (this.selecting) {
-      console.log("exporting selected data");
+      data = this.dataset.getSelectedDataPoints();
     } else {
-      console.log("exporting all data");
+      data = this.dataset.getDataPoints();
     }
+
+    for (var i = 1, len = this.getMetadataItemCount(); i <= len; i++) {
+      label = this.getMetadataLabel(i);
+      if (label) {
+        metadata.push({ label: label, value: this.getMetadataValue(i) });
+      }
+    }
+
+    ISImporter.DGExporter.exportData(this.sensorType, data, metadata);
 
     this.selecting = false;
 
@@ -421,8 +447,20 @@ ISImporter.appController = new ISImporter.Object({
     return this.$sensorTypeSelector.val();
   },
 
-  getMetadataLabel: function(fieldNum) {},
-  getMetadataValue: function(fieldNum) {},
+  getMetadataItemCount: function() {
+    return $('#metadata-fields .metadata-value').length;
+  },
+
+  getMetadataLabel: function(fieldNum) {
+    return $.trim( $('#metadata-' + fieldNum + ' .metadata-label').val() );
+  },
+
+  getMetadataValue: function(fieldNum) {
+    var val = $('#metadata-' + fieldNum + ' .metadata-value').val();
+    if (isNumeric(val)) return parseFloat(val);
+    return val;
+  },
+
   getFrequency: function() {}
 
 });
@@ -437,3 +475,5 @@ ISImporter.main = function() {
 $(document).ready(function() {
   ISImporter.main();
 });
+
+}());
