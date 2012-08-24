@@ -85,7 +85,7 @@ var ROOT = "/experiments",
       dgPayload = [{
         "name": $(selectInteractive).find("option:selected").text(),
         "dimensions": interactive.model.viewOptions.dimensions,
-        "url": "DataGames/Games/concord-lab" + "/examples/interactives/embeddable.html#" +  interactiveUrl
+        "url": "DataGames/Games/concord-lab" + "/experiments/netlogo-is-exporter/models.html#" +  interactiveUrl
       }];
       dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
       return encodeURI(dgUrl)
