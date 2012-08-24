@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html;charset=utf-8' http-equiv='Content-Type' />
+    <title>NetLogo DataGames Wrapper</title>
+    <link href='../../examples/examples.css' rel='stylesheet' type='text/css' />
+    <script src='../../vendor/jquery/jquery.min.js' type='text/javascript'></script>
+    <link href='models.css' rel='stylesheet' type='text/css' />
+    <script src='http://use.typekit.com/hdw8ayt.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      try{Typekit.load();}catch(e){}
+    </script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css' />
+  </head>
+  <body>
+    <div id='header'>
+      <a href='http://www.concord.org/' id='logo'>
+        <img src='../../resources/layout/cc-logo.png' />
+      </a>
+      <h1>
+        NetLogo DataGames Wrapper
+      </h1>
+      Select NetLogo Model:
+      <select id='select-interactive'>
+        <option value='interactives/IS-harmonic-motion-model.json'>IS Motion</option>
+      </select>
+
+      <a class='opens-in-new-window' href='embeddable.html' id='embeddable-link' target='_blank'>Embeddable</a>
+      <a class='opens-in-new-window' href='embeddable.html' id='datagames-link' target='_blank'>DataGames</a>
+    </div>
+    <div id='content'>
+      <div id='viz'>
+        <div class='top'>
+          <div id='applet-container'></div>
+        </div>
+      </div>
+    </div>
+    <script src='application.js' type='text/javascript'></script>
+    <script type="text/javascript">
+
+    var appletString = ['<applet id="netlogo-applet" code="org.nlogo.lite.Applet"',
+                     '     width="754" height="450" MAYSCRIPT="true"',
+                     '     archive="' + ACTUAL_ROOT + '/jnlp/org/nlogo/NetLogoLite.jar"',
+                     '     MAYSCRIPT="true">',
+                     '  <param name="DefaultModel" value="models/IS-harmonic-motion-model.v2.2.nlogo"/>',
+                     '  <param name="java_arguments" value="-Djnlp.packEnabled=true">',
+                     '  <param name="MAYSCRIPT" value="true"/>',
+                     '  Your browser is completely ignoring the applet tag!',
+                     '</applet>'].join('\n')
+    
+      document.getElementById("applet-container").innerHTML = appletString;
+    </script>
+  </body>
+</html>
