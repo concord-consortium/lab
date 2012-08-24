@@ -24,17 +24,74 @@ var ROOT = "/examples",
       interactiveUrl,
       interactive,
       hash,
-      jsonModelPath, contentItems, mmlPath, cmlPath;
+      jsonModelPath, contentItems, mmlPath, cmlPath,
+      viewType;
 
+  if (!document.location.hash) {
+    if (selectInteractive) {
+      selectInteractiveHandler();
+    } else {
+      document.location.hash = '#interactives/heat-and-cool-example.json';
+    }
+  }
+
+  if (hash = document.location.hash) {
+    interactiveUrl = hash.substr(1, hash.length);
+
+    $.get(interactiveUrl).done(function(results) {
+      if (typeof results === 'string') results = JSON.parse(results);
+      interactive = results;
+
+      // Use the presense of selectInteractive as a proxy indicating that the
+      // rest of the elements on the non-iframe-embeddable version of the page
+      // are present and should be setup.
+      if (selectInteractive) {
+        setupFullPage();
+      } else {
+        viewType = 'interactive-iframe';
+      }
+
+      interactiveDefinitionLoaded.resolve();
+    });
+  }
+
+  $(window).load(function() {
+    windowLoaded.resolve();
+  });
+
+  $.when(interactiveDefinitionLoaded, windowLoaded).done(function(results) {
+    controller = controllers.interactivesController(interactive, '#interactive-container', viewType);
+  });
+
+  $(window).bind('hashchange', function() {
+    if (document.location.hash !== hash) {
+      location.reload();
+    }
+  });
+
+  //
+  // The following functions are only used when rendering the
+  // non-embeddable Interactive page
+  //
   function selectInteractiveHandler() {
     document.location.hash = '#' + selectInteractive.value;
   }
-  selectInteractive.onchange = selectInteractiveHandler;
 
-  if (!document.location.hash) {
-    selectInteractiveHandler();
+  function updateInteractiveHandler() {
+    interactive = JSON.parse(editor.getValue());
+    controller.loadInteractive(interactive, '#interactive-container');
   }
 
+  function getSelectedRange() {
+    return { from: editor.getCursor(true), to: editor.getCursor(false) };
+  }
+
+  function autoFormatSelection() {
+    var range = getSelectedRange();
+    editor.autoFormatRange(range.from, range.to);
+  }
+
+  // used to extract values from nested object: modelList
   function getObjects(obj, key, val) {
     var objects = [];
     for (var i in obj) {
@@ -48,69 +105,35 @@ var ROOT = "/examples",
     return objects;
   }
 
-  if (hash = document.location.hash) {
-    interactiveUrl = hash.substr(1, hash.length);
+  function setupFullPage() {
     selectInteractive.value = interactiveUrl;
+    // construct link to embeddable version of Interactive
+    $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
-    $.get(interactiveUrl).done(function(results) {
-      if (typeof results === 'string') results = JSON.parse(results);
-      interactive = results;
-
-      // construct link to embeddable version of Interactive
-      $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
-
-      // construct Java MW link for running Interactive via jnlp
-      // uses generated resource list: /imports/legacy-mw-content/model-list.js
-      jsonModelPath = interactive.model.url;
-      mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml")
-      contentItems = getObjects(modelList, "mml", mmlPath);
-      if (contentItems.length > 0) {
-        $("#java-mw-link").attr("href", function(i, href) {
-          return "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," + window.location.origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
-        });
-      }
-
-      // Copy Interactive json to code editor
-      interactiveTextArea.textContent = JSON.stringify(interactive, null, indent);
-      editor = CodeMirror.fromTextArea(interactiveTextArea, {
-        mode: 'javascript',
-        indentUnit: indent,
-        lineNumbers: true,
-        lineWrapping: false,
-        onGutterClick: foldFunc
+    // construct Java MW link for running Interactive via jnlp
+    // uses generated resource list: /imports/legacy-mw-content/model-list.js
+    jsonModelPath = interactive.model.url;
+    mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml")
+    contentItems = getObjects(modelList, "mml", mmlPath);
+    if (contentItems.length > 0) {
+      $("#java-mw-link").attr("href", function(i, href) {
+        return "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," + window.location.origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
       });
-      interactiveDefinitionLoaded.resolve();
-    });
-  }
-
-  function getSelectedRange() {
-    return { from: editor.getCursor(true), to: editor.getCursor(false) };
-  }
-
-  function autoFormatSelection() {
-    var range = getSelectedRange();
-    editor.autoFormatRange(range.from, range.to);
-  }
-  autoFormatSelectionButton.onclick = autoFormatSelection;
-
-  function updateInteractiveHandler() {
-    interactive = JSON.parse(editor.getValue());
-    controller.loadInteractive(interactive, '#interactive-container');
-  }
-  updateInteractiveButton.onclick = updateInteractiveHandler;
-
-  $(window).load(function() {
-    windowLoaded.resolve();
-  });
-
-  $.when(interactiveDefinitionLoaded, windowLoaded).done(function(results) {
-    controller = controllers.interactivesController(interactive, '#interactive-container');
-  });
-
-  $(window).bind('hashchange', function() {
-    if (document.location.hash !== hash) {
-      location.reload();
     }
-  });
+
+    // Copy Interactive json to code editor
+    interactiveTextArea.textContent = JSON.stringify(interactive, null, indent);
+    editor = CodeMirror.fromTextArea(interactiveTextArea, {
+      mode: 'javascript',
+      indentUnit: indent,
+      lineNumbers: true,
+      lineWrapping: false,
+      onGutterClick: foldFunc
+    });
+
+    selectInteractive.onchange = selectInteractiveHandler;
+    updateInteractiveButton.onclick = updateInteractiveHandler;
+    autoFormatSelectionButton.onclick = autoFormatSelection;
+  }
 
 }());
