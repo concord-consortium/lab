@@ -89,12 +89,25 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           return props;
         },
 
+        start: function start() {
+          model.start();
+        },
+
+        stop: function stop() {
+          model.stop();
+        },
+
+        reset: function reset() {
+          model.stop();
+          modelController.reload();
+        },
+
         tick: function tick() {
           model.tick();
         },
 
         repaint: function repaint() {
-          modelController.moleculeContainer.update_drawable_positions()
+          modelController.moleculeContainer.update_drawable_positions();
         },
 
         // rudimentary debugging functionality
