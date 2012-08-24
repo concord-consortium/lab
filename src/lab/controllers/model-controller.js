@@ -215,9 +215,13 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       }
     }
 
+    /**
+      Note: newModelConfig, newPlayerConfig are optional. Calling this without
+      arguments will simply reload the current model.
+    */
     function reload(newModelConfig, newPlayerConfig) {
-      modelConfig = newModelConfig;
-      playerConfig = newPlayerConfig;
+      modelConfig = newModelConfig || modelConfig;
+      playerConfig = newPlayerConfig || playerConfig;
       finishSetup(false);
     }
 
