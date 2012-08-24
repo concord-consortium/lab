@@ -156,6 +156,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     switch (component.type) {
       case 'button':
         return createButton(component);
+      case 'pulldown':
+        return createPulldown(component);
       case 'thermometer':
         return createThermometer(component);
     }
@@ -241,20 +243,55 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     };
   }
 
+  /**
+    Generic function that accepts either a string or an array of strings,
+    and returns the complete string
+  */
+  function getStringFromArray(str) {
+    if (typeof str === 'string') {
+      return str
+    }
+    return str.join('\n');
+  }
+
   function createButton(component) {
     var $button, scriptStr;
 
     $button = $('<button>').attr('id', component.id).html(component.text);
 
-    if (typeof component.action === 'string') {
-      scriptStr = component.action;
-    } else {
-      scriptStr = component.action.join('\n');
-    }
+    scriptStr = getStringFromArray(component.action);
 
     $button.click(evalInScriptContext(scriptStr));
 
     return $button;
+  }
+
+  function createPulldown(component) {
+    var $pulldown, $option,
+        options = component.options || [],
+        option,
+        i, ii;
+
+    $pulldown = $('<select>').attr('id', component.id);
+
+    for (i=0, ii=options.length; i<ii; i++) {
+      option = options[i];
+      $option = $('<option>').html(option.text);
+      $pulldown.append($option);
+    }
+
+    $pulldown.change(function() {
+      var index = $(this).prop('selectedIndex'),
+          action = component.options[index].action,
+          scriptStr;
+
+      if (action){
+        scriptStr = getStringFromArray(action);
+        evalInScriptContext(scriptStr)();
+      }
+    });
+
+    return $pulldown;
   }
 
   function createThermometer(component) {

@@ -37,6 +37,21 @@
       "id": "throw-error",
       "text": "Throw an error",
       "action": "x = 1;"
+    },
+
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Option 1",
+          "action": "alert('You selected option 1!');"
+        },
+        {
+          "text": "Option 2",
+          "action": "alert('You selected option 2!');"
+        }
+      ]
     }
   ]
 }
