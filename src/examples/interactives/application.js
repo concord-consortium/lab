@@ -25,7 +25,8 @@ var ROOT = "/examples",
       interactive,
       hash,
       jsonModelPath, contentItems, mmlPath, cmlPath,
-      viewType;
+      viewType,
+      dgPaylod, dgUrl;
 
   if (!document.location.hash) {
     if (selectInteractive) {
@@ -107,6 +108,7 @@ var ROOT = "/examples",
 
   function setupFullPage() {
     selectInteractive.value = interactiveUrl;
+
     // construct link to embeddable version of Interactive
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
@@ -120,6 +122,20 @@ var ROOT = "/examples",
         return "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," + window.location.origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
       });
     }
+
+    // construct link to DataGames embeddable version of Interactive
+    $("#datagames-link").attr("href", function(i, href) {
+      dgPayload = [{
+        "name": $(selectInteractive).find("option:selected").text(),
+        "dimensions": {
+          "width": 600,
+          "height":400
+        },
+        "url": "DataGames/Games/concord-lab" + "/examples/interactives/embeddable.html#" +  interactiveUrl
+      }];
+      dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
+      return encodeURI(dgUrl)
+    });
 
     // Copy Interactive json to code editor
     interactiveTextArea.textContent = JSON.stringify(interactive, null, indent);
