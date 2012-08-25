@@ -30,25 +30,25 @@ class Cloud < Thor
     aws.setup_ssh
   end
 
-  desc "create (hostname)", "create a new server instance using this hostname"
+  desc "create hostname", "create a new server instance using this hostname"
   def create(hostname)
     aws = AwsLabServer.new
     aws.create(hostname)
   end
 
-  desc "recreate (hostname)", "recreate a new server instance for this hostname by destroying and rebuilding an existing server"
+  desc "recreate hostname", "recreate a new server instance for this hostname by destroying and rebuilding an existing server"
   def recreate(hostname)
     aws = AwsLabServer.new
     aws.recreate(hostname)
   end
 
-  desc "delete (hostname)", "delete an existing server instance running at this hostname"
+  desc "delete hostname", "delete an existing server instance running at this hostname"
   def delete(hostname)
     aws = AwsLabServer.new
     aws.delete(hostname)
   end
 
-  desc "stop (reference)", "stop a running existing server instance at this hostname or ec2-id"
+  desc "stop reference", "stop a running existing server instance at this hostname or ec2-id"
   def stop(reference)
     aws = AwsLabServer.new
     aws.stop(reference)
@@ -60,7 +60,7 @@ class Cloud < Thor
     aws.start(ec2_id)
   end
 
-  desc "find_dns_record (hostname)", "find dns record for hostname"
+  desc "find_dns_record hostname", "find dns record for hostname"
   def find_dns_record(hostname)
     aws = AwsLabServer.new
     record = aws.find_dns_record(hostname)
@@ -73,7 +73,7 @@ class Cloud < Thor
     record = aws.update_dns_record(hostname, ipaddress)
   end
 
-  desc "setup_ssh (hostname)", "setup ssh configuration for communication to hostname"
+  desc "setup_ssh hostname", "setup ssh configuration for communication to hostname"
   def setup_ssh(hostname)
     aws = AwsLabServer.new
     aws.setup_ssh(hostname)
