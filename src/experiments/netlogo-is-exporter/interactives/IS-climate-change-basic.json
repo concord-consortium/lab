@@ -4,12 +4,12 @@
     "url": "models/IS-climate-change-basic-v2.nlogo",
     "viewOptions": {
       "dimensions": {
-        "width": 890,
-        "height": 490
+        "width": 900,
+        "height": 500
       },
       "appletDimensions": {
-        "width": 865,
-        "height": 444
+        "width": 875,
+        "height": 454
       }
     }
   },

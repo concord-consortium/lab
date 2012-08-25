@@ -4,12 +4,12 @@
     "url": "models/IS-harmonic-motion-model-v2.2.nlogo",
     "viewOptions": {
       "dimensions": {
-        "width": 780,
-        "height": 500
+        "width": 790,
+        "height": 510
       },
       "appletDimensions": {
-        "width": 754,
-        "height": 450
+        "width": 764,
+        "height": 460
       }
     }
   },
