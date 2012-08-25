@@ -1,7 +1,7 @@
 {
   "model": {
     "modelType": "netlogo-applet",
-    "url": "models/IS-harmonic-motion-model.v2.2.nlogo",
+    "url": "models/IS-harmonic-motion-model-v2.2.nlogo",
     "viewOptions": {
       "dimensions": {
         "width": 780,
