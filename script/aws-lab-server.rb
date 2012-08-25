@@ -233,6 +233,16 @@ Host #{@name}
     record = @zone.records.get(hostname)
   end
 
+  # update ipaddress for dns record: hostname
+  def update_dns_record(hostname, ipaddress)
+    if record = find_dns_record(hostname)
+      puts "\n*** Updating IP address for DNS record: #{record.name} from #{record.value} => #{ipaddress}" if @options[:verbose]
+      record.modify(:value => [ipaddress])
+    else
+      puts "\n*** DNS record: #{hostname} not found" if @options[:verbose]
+    end
+  end
+
   def aquire_elastic_ip_address
     # either use an available elastic IP address or create a new one
     available_addresses = compute.addresses.all({"instance-id" => ""})

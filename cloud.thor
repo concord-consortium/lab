@@ -66,6 +66,13 @@ class Cloud < Thor
     record = aws.find_dns_record(hostname)
     puts "\n*** Record: #{record.inspect}"
   end
+
+  desc "update_dns_record hostname ipaddress", "updating IP address for DNS record hostname to ipaddress"
+  def update_dns_record(hostname, ipaddress)
+    aws = AwsLabServer.new
+    record = aws.update_dns_record(hostname, ipaddress)
+  end
+
   desc "setup_ssh (hostname)", "setup ssh configuration for communication to hostname"
   def setup_ssh(hostname)
     aws = AwsLabServer.new
