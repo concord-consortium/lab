@@ -56,11 +56,18 @@ file: ~/.fog
     @zone = dns.zones.find { |z| z.domain == ZONE_DOMAIN }
   end
 
-  def setup_ssh(hostname)
-    @name = @options[:name] = hostname
-    add_hostname_to_ssh_config
-    erase_existing_host_key
-    add_new_host_key
+  def setup_ssh(hostname=false)
+    if hostname
+      hostname = [hostname]
+    else
+      hostnames = CONFIG[:deploy][:targets].collect { |target| target[:url] }
+    end
+    hostnames.each do |hostname|
+      @name = @options[:name] = hostname
+      add_hostname_to_ssh_config
+      erase_existing_host_key
+      add_new_host_key
+    end
   end
 
   def list
