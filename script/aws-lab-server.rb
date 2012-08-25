@@ -228,6 +228,11 @@ Host #{@name}
     @zone.records.create({ :value => @ipaddress, :name => @name, :type => 'A' })
   end
 
+  # find dns record for the hostname
+  def find_dns_record(hostname)
+    record = @zone.records.get(hostname)
+  end
+
   def aquire_elastic_ip_address
     # either use an available elastic IP address or create a new one
     available_addresses = compute.addresses.all({"instance-id" => ""})

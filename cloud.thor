@@ -60,6 +60,12 @@ class Cloud < Thor
     aws.start(ec2_id)
   end
 
+  desc "find_dns_record (hostname)", "find dns record for hostname"
+  def find_dns_record(hostname)
+    aws = AwsLabServer.new
+    record = aws.find_dns_record(hostname)
+    puts "\n*** Record: #{record.inspect}"
+  end
   desc "setup_ssh (hostname)", "setup ssh configuration for communication to hostname"
   def setup_ssh(hostname)
     aws = AwsLabServer.new
