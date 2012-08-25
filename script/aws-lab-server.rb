@@ -188,9 +188,16 @@ To finish deploying the application code and seting up #{@name}.
 
   def start(ec2_id)
     @server = @compute.servers.get(ec2_id)
-    if @server && @server.state == "stopped"
-      puts "\n*** starting server: #{@server.id}" if @options[:verbose]
-      @server.start
+    if @server
+      case @server.state
+      when "stopped"
+        puts "\n*** starting server: #{@server.id}" if @options[:verbose]
+        @server.start
+      when "running"
+        puts "\n*** server: #{@server.id} already running" if @options[:verbose]
+      else
+        puts "\n*** server: #{@server.id} in in state: #{@server.state}" if @options[:verbose]
+      end
     end
   end
 

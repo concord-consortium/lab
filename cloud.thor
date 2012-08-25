@@ -54,7 +54,7 @@ class Cloud < Thor
     aws.stop(reference)
   end
 
-  desc "start (ec2_id)", "start a stopped existing server instance at this hostname"
+  desc "start ec2_id", "start a stopped existing server instance using the ec2-id"
   def start(ec2_id)
     aws = AwsLabServer.new
     aws.start(ec2_id)
