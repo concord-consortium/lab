@@ -99,13 +99,13 @@ file: ~/.fog
   def create(hostname)
     @name = @options[:name] = hostname
     @options[:server][:tags]["Name"] = @name
-    puts "*** creating new server: #{@name}" if @options[:verbose]
+    puts "\n*** creating new server: #{@name}" if @options[:verbose]
     @server = @compute.servers.create(@options[:server])
-    puts "*** waiting for server: #{@server.id} to be ready ..." if @options[:verbose]
+    puts "\n*** waiting for server: #{@server.id} to be ready ..." if @options[:verbose]
     @server.wait_for { ready? }
     @server.reload
     @ipaddress = aquire_elastic_ip_address
-    puts "*** associating server: #{@server.id}, #{@server.dns_name} with ipaddress: #{@ipaddress}"  if @options[:verbose]
+    puts "\n*** associating server: #{@server.id}, #{@server.dns_name} with ipaddress: #{@ipaddress}"  if @options[:verbose]
     @compute.associate_address(@server.id, @ipaddress)
     @dnsrecord = new_dns_record
     add_hostname_to_ssh_config
@@ -119,7 +119,7 @@ file: ~/.fog
     @ipaddress = IPSocket::getaddress(@name)
     @server = @compute.servers.all({ 'ip-address' => @ipaddress }).first
     if @server
-      puts "*** terminating server: #{@server.id}, #{@server.dns_name}"  if @options[:verbose]
+      puts "\n*** terminating server: #{@server.id}, #{@server.dns_name}"  if @options[:verbose]
       @server.destroy
     end
   end
@@ -128,12 +128,12 @@ file: ~/.fog
     @name = @options[:name] = hostname
     @options[:server][:tags]["Name"] = @name
     self.delete(@name)
-    puts "*** re-creating server: #{@name}" if @options[:verbose]
+    puts "\n*** re-creating server: #{@name}" if @options[:verbose]
     @server = @compute.servers.create(@options[:server])
-    puts "*** waiting for server: #{@server.id} to be ready ..." if @options[:verbose]
+    puts "\n*** waiting for server: #{@server.id} to be ready ..." if @options[:verbose]
     @server.wait_for { ready? }
     @server.reload
-    puts "*** associating server: #{@server.id}, #{@server.dns_name} with ipaddress: #{@ipaddress}"  if @options[:verbose]
+    puts "\n*** associating server: #{@server.id}, #{@server.dns_name} with ipaddress: #{@ipaddress}"  if @options[:verbose]
     @compute.associate_address(@server.id, @ipaddress)
     erase_existing_host_key
     add_new_host_key
@@ -169,7 +169,7 @@ To finish deploying the application code and seting up #{@name}.
     @ipaddress = IPSocket::getaddress(@name)
     @server = @compute.servers.all({ 'ip-address' => @ipaddress }).first
     if @server && @server.state == "running"
-      puts "*** stopping server: #{@server.id}, #{@server.dns_name}" if @options[:verbose]
+      puts "\n*** stopping server: #{@server.id}, #{@server.dns_name}" if @options[:verbose]
       @server.stop
     end
   end
@@ -177,7 +177,7 @@ To finish deploying the application code and seting up #{@name}.
   def start(ec2_id)
     @server = @compute.servers.get(ec2_id)
     if @server && @server.state == "stopped"
-      puts "*** starting server: #{@server.id}" if @options[:verbose]
+      puts "\n*** starting server: #{@server.id}" if @options[:verbose]
       @server.start
     end
   end
@@ -206,13 +206,13 @@ Host #{@name}
   end
 
   def run_local_command(cmd)
-    puts "*** running local command: #{cmd}" if @options[:verbose]
+    puts "\n*** running local command: #{cmd}" if @options[:verbose]
     system(cmd)
   end
 
   # Create a new dns record for the server and point it to the public IP address
   def new_dns_record
-    puts "*** Creating new Type A DNS record: #{@name} => #{@ipaddress}" if @options[:verbose]
+    puts "\n*** Creating new Type A DNS record: #{@name} => #{@ipaddress}" if @options[:verbose]
     @zone.records.create({ :value => @ipaddress, :name => @name, :type => 'A' })
   end
 
@@ -257,7 +257,7 @@ Host #{@name}
     @json_node = JSON.pretty_generate(@node)
     # write this to the nodes/ directory in the littlechef-server repository
     node_name = "#{@name}.json"
-    puts "*** updating littlechef node: #{node_name}" if @options[:verbose]
+    puts "\n*** updating littlechef node: #{node_name}" if @options[:verbose]
     littlechef_nodes_path = File.join(@options[:littlechef_path], 'nodes')
     FileUtils.mkdir_p littlechef_nodes_path
     File.open(File.join(littlechef_nodes_path, node_name), 'w') { |f| f.write @json_node }
@@ -277,7 +277,7 @@ Host #{@name}
     deploy_scripts_path = File.join(CONFIG_PATH, 'deploy')
     FileUtils.mkdir_p deploy_scripts_path
     deploy_script_path = File.join(deploy_scripts_path, deploy_script_name)
-    puts "*** updating capistrano deploy script: #{deploy_script_path}" if @options[:verbose]
+    puts "\n*** updating capistrano deploy script: #{deploy_script_path}" if @options[:verbose]
     deploy_script_content = <<-HEREDOC
 server "#{@name}", :app, :primary => true
 set :branch, "#{target[:branch]}"
