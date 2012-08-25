@@ -4,8 +4,8 @@
     "url": "models/IS-climate-change-basic-v2.nlogo",
     "viewOptions": {
       "dimensions": {
-        "width": 980,
-        "height": 520
+        "width": 890,
+        "height": 490
       },
       "appletDimensions": {
         "width": 865,
