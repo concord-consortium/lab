@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 gem "rake",               "~> 0.9.2"
 gem "thor",               "~> 0.15.2"
-gem "fog",                "~> 1.3.1"
+gem "fog",                "~> 1.5.0"
 gem "librarian",          "~> 0.0.23"
 
 gem 'rails',              "~> 3.2.3"
