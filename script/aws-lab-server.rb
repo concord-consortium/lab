@@ -163,14 +163,26 @@ To finish deploying the application code and seting up #{@name}.
     end
   end
 
-  def stop(hostname)
-    @name = @options[:name] = hostname
+
+  # Call with hostname or ec2 instance-id 
+  def stop(reference)
+    @name = @options[:name] = reference
     @options[:server][:tags]["Name"] = @name
     @ipaddress = IPSocket::getaddress(@name)
     @server = @compute.servers.all({ 'ip-address' => @ipaddress }).first
-    if @server && @server.state == "running"
-      puts "\n*** stopping server: #{@server.id}, #{@server.dns_name}" if @options[:verbose]
-      @server.stop
+    begin
+      @server = @compute.servers.get(reference) unless @server
+    rescue Fog::Compute::AWS::Error
+    end
+    if @server
+      if @server.state == "running"
+        puts "\n*** stopping server: #{@server.id}, #{@server.dns_name}" if @options[:verbose]
+        @server.stop
+      else
+        puts "\n*** server not running: #{@server.id}, #{@server.dns_name}" if @options[:verbose]
+      end
+    else
+      puts "\n*** can't locate: #{reference}" if @options[:verbose]
     end
   end
 

@@ -48,10 +48,10 @@ class Cloud < Thor
     aws.delete(hostname)
   end
 
-  desc "stop (hostname)", "stop a running existing server instance at this hostname"
-  def stop(hostname)
+  desc "stop (reference)", "stop a running existing server instance at this hostname or ec2-id"
+  def stop(reference)
     aws = AwsLabServer.new
-    aws.stop(hostname)
+    aws.stop(reference)
   end
 
   desc "start (ec2_id)", "start a stopped existing server instance at this hostname"
