@@ -22,7 +22,8 @@ var ROOT = "/experiments",
       hash,
       jsonModelPath, contentItems, mmlPath, cmlPath,
       viewType,
-      dgPaylod, dgUrl;
+      dgPaylod, dgUrl,
+      appletString;
 
   if (!document.location.hash) {
     if (selectInteractive) {
@@ -48,6 +49,19 @@ var ROOT = "/experiments",
         viewType = 'interactive-iframe';
       }
 
+      if (interactive.model.modelType == "netlogo-applet") {
+        appletString = ['<applet id="netlogo-applet" code="org.nlogo.lite.Applet"',
+                        '     width="' + interactive.model.viewOptions.appletDimensions.width + '" height="' + interactive.model.viewOptions.appletDimensions.height + '" MAYSCRIPT="true"',
+                        '     archive="' + ACTUAL_ROOT + '/jnlp/org/nlogo/NetLogoLite.jar"',
+                        '     MAYSCRIPT="true">',
+                        '  <param name="DefaultModel" value="' + interactive.model.url + '"/>',
+                        '  <param name="java_arguments" value="-Djnlp.packEnabled=true">',
+                        '  <param name="MAYSCRIPT" value="true"/>',
+                        '  Your browser is completely ignoring the applet tag!',
+                        '</applet>'].join('\n')
+
+        document.getElementById("applet-container").innerHTML = appletString;
+      }
       interactiveDefinitionLoaded.resolve();
     });
   }

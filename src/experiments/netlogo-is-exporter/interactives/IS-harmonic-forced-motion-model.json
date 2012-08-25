@@ -1,15 +1,15 @@
 {
   "model": {
     "modelType": "netlogo-applet",
-    "url": "models/IS-harmonic-motion-model.v2.2.nlogo",
+    "url": "models/IS-harmonic-forced-motion-model.v3.2.nlogo",
     "viewOptions": {
       "dimensions": {
         "width": 780,
-        "height": 500
+        "height": 520
       },
       "appletDimensions": {
-        "width": 754,
-        "height": 450
+        "width": 758,
+        "height": 468
       }
     }
   },
