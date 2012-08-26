@@ -1419,25 +1419,25 @@ to export-data  ; puts data into Jason data format and tells DG that it is avail
   let temp [ ]             ; initialize the temporary variable as a list
   if length preamble > 0 [    ; attach the special first pair
     set temp first preamble
-    set output (word output " \"" first temp "\":\"" last temp "\",\n")
+    set output (word output " \"" first temp "\": \"" last temp "\",\n")
 ;    set output word output "  {\n"
     set preamble butfirst preamble ]
-  set output word output "  \"cases\":[\n   {\n"
+  set output word output "  \"cases\" : [\n     {\n"
   while [length preamble > 0] [     ; attach all the remaining key-value pairs in the preamble
     set temp first preamble 
-    set output (word output "    \"" first temp "\":" last temp ",\n")
+    set output (word output "      \"" first temp "\": " last temp ",\n")
     set preamble butfirst preamble ]
-  set output word output "    \"contents\":{\n     \"collection_name\":\"Position\",\n     \"cases\":[\n" 
+  set output word output "      \"contents\": {\n        \"collection_name\": \"Position\",\n        \"cases\": [\n" 
   
   let data-pairs data-pair-maker    ; then make a data list consisting of lists of time, value pairs  
   while [length data-pairs > 0 ][
     set temp first data-pairs
-    set output (word output "      {\"" x-name "\":" (first temp) ",\"" y-name "\":" (last temp) "}")
+    set output (word output "          { \"" x-name "\": " (first temp) ", \"" y-name "\": " (last temp) " }")
     ifelse (length data-pairs != 1 )                 ; do not put a comma at the end of the last pair
       [set output word output ",\n"]
       [set output word output "\n"]
     set data-pairs butfirst data-pairs ]
-  set output word output "    ]\n   }\n  }\n ]\n}"
+  set output word output "        ]\n      }\n    }\n  ]\n}"
   set DG-output output
   clear-output output-print output set ; STEPHEN REMOVE THIS LINE
   DG-data-ready? false 
@@ -2584,7 +2584,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0
+NetLogo 5.0.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
