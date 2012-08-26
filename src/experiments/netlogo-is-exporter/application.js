@@ -77,6 +77,7 @@ var ROOT = "/experiments",
           appletReady();
         }, 250);
       }
+      ISNetLogo.DGExporter.init(interactive.model.viewOptions.dimensions);
       interactiveDefinitionLoaded.resolve();
     });
   }
@@ -140,20 +141,7 @@ var ROOT = "/experiments",
     return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
   }
 
-  function setupNetLogo() {
-    var globalsStr;
-    nl_obj_panel     = applet.panel();                                           // org.nlogo.lite.Applet object
-    nl_obj_workspace = nl_obj_panel.workspace();                                 // org.nlogo.lite.LiteWorkspace
-    nl_obj_world     = nl_obj_workspace.org$nlogo$lite$LiteWorkspace$$world;     // org.nlogo.agent.World
-    nl_obj_program   = nl_obj_world.program();                                   // org.nlogo.api.Program
-    nl_obj_observer  = nl_obj_world.observer();
-    nl_obj_globals   = nl_obj_program.globals();
-    globalsStr = nl_obj_globals.toString();
-    nlGlobals = globalsStr.substr(1, globalsStr.length-2).split(",").map(function(e) { return stripWhiteSpace(e); });
-  }
-
   function nl_cmd_execute(cmd) {
-    if (!applet) { setupNetLogo(); }
     nl_obj_panel.commandLater(cmd);
   }
 
@@ -162,7 +150,6 @@ var ROOT = "/experiments",
   }
 
   function dgDataReady() {
-    if (!applet) { setupNetLogo(); }
     return nl_read_global("DG-DATA-READY?");
   }
 
@@ -184,6 +171,7 @@ var ROOT = "/experiments",
         exportedData.textContent = data;
       } else {
         console.log(data);
+        ISNetLogo.DGExporter.exportData(data);
       }
     }
   }
