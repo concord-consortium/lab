@@ -1742,23 +1742,6 @@ InquirySpace Forced Motion Model
 105.0
 1
 
-BUTTON
-851
-531
-955
-564
-Export Data
-Export-data
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 MONITOR
 445
 412
@@ -1849,13 +1832,6 @@ Model Controls\n
 14
 0.0
 1
-
-OUTPUT
-748
-14
-1057
-524
-9
 
 SLIDER
 445
@@ -2637,7 +2613,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.1
+NetLogo 5.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
