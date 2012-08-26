@@ -54,6 +54,7 @@ ISNetLogo.DGExporter = {
         childKey = '',
         childName = '',
         firstChildCase,
+        theCase,
         values;
 
     $.each(mainCase, function(key, value) {
@@ -72,10 +73,11 @@ ISNetLogo.DGExporter = {
     });
 
     // extract data from child cases
-    $.each(childCases, function(theCase) {
+    for(var i = 0; i < childCases.length; i++) {
+      theCase = childCases[i];
       values = $.map(theCase, function(value) { return value; });
       data.push(values);
-    });
+    }
 
     // Step 1. Tell DG we're a "game".
     this.doCommand('initGame', {
