@@ -2,6 +2,17 @@
 
 .top { width: auto; }
 
+#export {
+  margin: 0.5em;
+  padding: 0.5em; }
+
+#exported-data {
+  margin: 0.5em 0em;
+  padding: 0.5em;
+  font-size: 80%;
+  width: 80%;
+  background-color: #eee; }
+
 #applet-container {
   display: inline-block;
   top: 0;
