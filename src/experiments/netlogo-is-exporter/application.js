@@ -171,7 +171,7 @@ var ROOT = "/experiments",
         exportedData.textContent = data;
       } else {
         console.log(data);
-        ISNetLogo.DGExporter.exportData(data);
+        ISNetLogo.DGExporter.exportData(JSON.parse(data));
       }
     }
   }
