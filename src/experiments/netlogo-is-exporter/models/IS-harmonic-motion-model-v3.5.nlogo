@@ -67,8 +67,7 @@ globals [
   ; Two globals for communication with DataGames
   DG-output            ; the output string that DG needs
   DG-data-ready?       ; logical that says whether there are valid data ready to be exported
-  
-  Force-amplitude force-frequency force-period
+  force-amplitude force-frequency
   
   grid-params ; see below
   walk-params ; see below
@@ -186,8 +185,9 @@ to startup
   reset-ticks                                     ; clear everything
 ;  set observations "Enter here information about this run--what you changed, what your strategy was, what you noticed, or anything else that you want to save. "
   ; initialize globals   
-  set force-amplitude 0 set force-period 0
   set DG-data-ready? false
+  set force-frequency 0
+  set force-amplitude 0
   set N-points 500          ; the number of points in each dataset
   set grid-separation 30    ; the target number of pixels between grid lines
   set actor-size  6         ; controls the size of actors
@@ -245,7 +245,7 @@ to startup
     create-shaft-with arrowhead w]
   ask shafts [set thickness .8 set color force-color]
     
-  create-spring 2 25  ; create spring numner 2 with 25 loops but make it invisible
+  if stage = "Vertical" [create-spring 2 25]  ; create spring numner 2 with 25 loops but make it invisible
  
   ; get ready to draw grid by creating grid-params, which contains all the information needed to draw the grid
 
@@ -314,7 +314,7 @@ to-report layout  ; uses the global 'stage' and the screen boundaries to locate 
     let vwMax max-pycor - edge
     let vwMin vwMax - (walk-width + 2)
     let vMax vwMin - edge+
-    set stage-center .5 * (uwmax + uwmin)
+    set stage-center .5 * (vwmax + vwmin)
     let s-b (list uMin uMax vMin vMax)
     set selected-box s-b                          ; default selection box
     let sw-b (list uwMin uwMax vwMin vwMax)
@@ -402,22 +402,22 @@ to start-at-center
   let m first trans                         ; these are the vertical transformation numbers for the walk
   let c item 1 trans 
   if stage? and stage = "Vertical" [                                  ; if there is no stage, ignore this button   
-    let u (umin + umax) / 2   
+    let u stage-center  
     let v m * center-position + c    
-    if in-stage? u v [             ;    
-      ask actors with [number = 2 and color = cNum ][
-        setxy u v ]
-        show-spring 2 7 u pivot-center-v v ; n cnum u-center v-top v-bottom. Use light gray. 
+    if in-stage? u v [        
+      draw-actor-on-stage 2 center-position pivot-center-y 0  ;    
+;      ask actors with [number = 2 and color = cNum ][
+;        setxy u v ]
+;        show-spring 2 7 u pivot-center-v v ; n cnum u-center v-top v-bottom. Use light gray. 
       ]]
 
   if stage? and stage = "Horizontal" [        ; if there is a stage and it is horizontal...
     let u m * center-position + c  
-    let v (umin + umax) / 2
+    let v stage-center
     if in-stage? u v [             ;    
       ask actors with [number = 2 and color = cNum ][
         setxy u v ]]]
   tick
-  show center-position
 end
 
 to run-model                      ; run the model--called by a user button click
@@ -491,14 +491,18 @@ to run-model                      ; run the model--called by a user button click
 
     let vel 0  let h dt / mass    
     set pos pos + .5 * vel * dt  ; position gets a half-step ahead. 
+    set min-of-run pos set max-of-run pos  ; used to calculate the amplitude
     while [t <= Run-duration-in-sec ][  ; repeat until t-max is reached
       if stop? [set stop? false
+        set DG-data-ready? true
         calculate-period stop]   ; allows the user to abort a run
       set vel vel + (force-pend pos vel) * h
       set pos pos + vel * dt
       let pos-end pos - .5 * vel * dt
       set force force-pend pos vel  ; calculate the new force
       set t t + dt 
+      if pos > max-of-run [set max-of-run pos]
+      if pos < min-of-run [set min-of-run pos]
     
       ; now update the graph, vector, and model
       add-position-point pos-end t cnum  
@@ -693,10 +697,10 @@ to draw-actor-on-stage [num y pivot-y force]  ; places actor num at y on the sta
   
   if stage = "Horizontal" [ 
     set u last convert-to-screen 0 0 y      ; place at location x converted to screen coordinates
-    set v stage-center             ; set the two vertically in the stage
+    set v stage-center             ; set the mass vertically in the stage
     ask actors [ 
       ifelse in-stage? u v                   ; if u, v is in the stage.....
-        [setxy u v st                           ;    move the actor there and show it
+        [  setxy u v st                           ;    move the actor there and show it
           set color read-from-string graph-color]
         [ht]]]
                 
@@ -1462,7 +1466,7 @@ to-report preamble-maker; generates a list of lists of name, value pairs.
     set output lput list "Force amplitude (m)" force-amplitude output 
         ]
   set output lput list "Starting position (m)" (precision starting-position 3)  output
-  set output lput list "Max amplitude (m)" (precision (max-of-run - min-of-run) 2 )  output
+  set output lput list "Max amplitude (m)" (precision (.5 * (max-of-run - min-of-run)) 2 )  output
   report output
 end
 
@@ -1481,11 +1485,6 @@ to reset
     [ask dots [die]]
 end
    
-    
-    
-;      DG-output            ; the output string that DG needs
-;  DG-data-ready?       ; logical that says whether there are valid data ready to be exported
-;  DG-exported?         ; logical that stores whether the current data have been exported
     
     
     
@@ -1618,7 +1617,7 @@ Mass-in-grams
 Mass-in-grams
 1
 500
-50
+161
 1
 1
 g
@@ -1633,7 +1632,7 @@ Spring-constant
 Spring-constant
 .05
 10
-2.13
+4.76
 .01
 1
 N/m
@@ -1648,7 +1647,7 @@ Friction
 Friction
 0
 .2
-0.0010
+0
 .001
 1
 NIL
@@ -1684,7 +1683,7 @@ Pendulum-length
 Pendulum-length
 0.01
 3
-1.95
+1.51
 .01
 1
 m
@@ -1735,10 +1734,10 @@ NIL
 1
 
 TEXTBOX
-89
-11
-329
-37
+100
+14
+408
+40
 InquirySpace Motion Model
 18
 105.0
@@ -1868,7 +1867,7 @@ MONITOR
 705
 457
 Max amplitide
-word (precision (max-of-run - min-of-run) 2 ) \" m\"
+word (.5 * (precision (max-of-run - min-of-run) 2 )) \" m\"
 1
 1
 11

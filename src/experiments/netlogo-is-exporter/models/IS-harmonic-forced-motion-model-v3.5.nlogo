@@ -311,7 +311,7 @@ to-report layout  ; uses the global 'stage' and the screen boundaries to locate 
     let vwMax max-pycor - edge
     let vwMin vwMax - (walk-width + 2)
     let vMax vwMin - edge+
-    set stage-center .5 * (uwmax + uwmin)
+    set stage-center .5 * (vwmax + vwmin)
     let s-b (list uMin uMax vMin vMax)
     set selected-box s-b                          ; default selection box
     let sw-b (list uwMin uwMax vwMin vwMax)
@@ -399,22 +399,22 @@ to start-at-center
   let m first trans                         ; these are the vertical transformation numbers for the walk
   let c item 1 trans 
   if stage? and stage = "Vertical" [                                  ; if there is no stage, ignore this button   
-    let u (umin + umax) / 2   
+    let u stage-center  
     let v m * center-position + c    
-    if in-stage? u v [             ;    
-      ask actors with [number = 2 and color = cNum ][
-        setxy u v ]
-        show-spring 2 7 u pivot-center-v v ; n cnum u-center v-top v-bottom. Use light gray. 
+    if in-stage? u v [        
+      draw-actor-on-stage 2 center-position pivot-center-y 0  ;    
+;      ask actors with [number = 2 and color = cNum ][
+;        setxy u v ]
+;        show-spring 2 7 u pivot-center-v v ; n cnum u-center v-top v-bottom. Use light gray. 
       ]]
 
   if stage? and stage = "Horizontal" [        ; if there is a stage and it is horizontal...
     let u m * center-position + c  
-    let v (umin + umax) / 2
+    let v stage-center
     if in-stage? u v [             ;    
       ask actors with [number = 2 and color = cNum ][
         setxy u v ]]]
   tick
-  show center-position
 end
 
 to run-model                      ; run the model--called by a user button click
@@ -488,14 +488,18 @@ to run-model                      ; run the model--called by a user button click
 
     let vel 0  let h dt / mass    
     set pos pos + .5 * vel * dt  ; position gets a half-step ahead. 
+    set min-of-run pos set max-of-run pos  ; used to calculate the amplitude
     while [t <= Run-duration-in-sec ][  ; repeat until t-max is reached
       if stop? [set stop? false
+        set DG-data-ready? true
         calculate-period stop]   ; allows the user to abort a run
       set vel vel + (force-pend pos vel) * h
       set pos pos + vel * dt
       let pos-end pos - .5 * vel * dt
       set force force-pend pos vel  ; calculate the new force
       set t t + dt 
+      if pos > max-of-run [set max-of-run pos]
+      if pos < min-of-run [set min-of-run pos]
     
       ; now update the graph, vector, and model
       add-position-point pos-end t cnum  
@@ -691,7 +695,6 @@ to draw-actor-on-stage [num y pivot-y force]  ; places actor num at y on the sta
   if stage = "Horizontal" [ 
     set u last convert-to-screen 0 0 y      ; place at location x converted to screen coordinates
     set v stage-center             ; set the mass vertically in the stage
-;    show (list u v in-stage? u v )
     ask actors [ 
       ifelse in-stage? u v                   ; if u, v is in the stage.....
         [  setxy u v st                           ;    move the actor there and show it
@@ -1460,7 +1463,7 @@ to-report preamble-maker; generates a list of lists of name, value pairs.
     set output lput list "Force amplitude (m)" force-amplitude output 
         ]
   set output lput list "Starting position (m)" (precision starting-position 3)  output
-  set output lput list "Max amplitude (m)" (precision (max-of-run - min-of-run) 2 )  output
+  set output lput list "Max amplitude (m)" (precision (.5 * (max-of-run - min-of-run)) 2 )  output
   report output
 end
 
@@ -1479,11 +1482,6 @@ to reset
     [ask dots [die]]
 end
    
-    
-    
-;      DG-output            ; the output string that DG needs
-;  DG-data-ready?       ; logical that says whether there are valid data ready to be exported
-;  DG-exported?         ; logical that stores whether the current data have been exported
     
     
     
@@ -1568,7 +1566,7 @@ INPUTBOX
 732
 138
 Run-duration-in-sec
-10
+5
 1
 0
 Number
@@ -1616,7 +1614,7 @@ Mass-in-grams
 Mass-in-grams
 1
 500
-50
+22
 1
 1
 g
@@ -1631,7 +1629,7 @@ Spring-constant
 Spring-constant
 .05
 10
-2.13
+9.84
 .01
 1
 N/m
@@ -1842,7 +1840,7 @@ Force-amplitude
 Force-amplitude
 0
 .1
-0.013
+0
 .001
 1
 m
@@ -1857,7 +1855,7 @@ Force-frequency
 Force-frequency
 30
 100
-61.1
+30
 .1
 1
 per min
@@ -1896,7 +1894,7 @@ MONITOR
 705
 457
 Max amplitide
-word (precision (max-of-run - min-of-run) 2 ) \" m\"
+word (.5 * (precision (max-of-run - min-of-run) 2 )) \" m\"
 1
 1
 11

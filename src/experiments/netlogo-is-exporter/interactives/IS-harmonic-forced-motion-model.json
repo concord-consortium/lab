@@ -1,7 +1,7 @@
 {
   "model": {
     "modelType": "netlogo-applet",
-    "url": "models/IS-harmonic-forced-motion-model-v3.4.nlogo",
+    "url": "models/IS-harmonic-forced-motion-model-v3.5.nlogo",
     "viewOptions": {
       "dimensions": {
         "width": 808,
