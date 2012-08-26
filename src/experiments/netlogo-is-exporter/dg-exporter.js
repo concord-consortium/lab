@@ -114,7 +114,7 @@ ISNetLogo.DGExporter = {
     // Step 6. Close the case.
     this.doCommand('closeCase', {
       collection: this.parentCollectionName,
-      values: parentCollectionValues,
+      values: attributes,
       caseID: dgCase.caseID
     });
 
