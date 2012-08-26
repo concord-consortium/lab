@@ -1673,7 +1673,7 @@ CHOOSER
 Model-type
 Model-type
 "Pendulum" "Spring and mass" "None"
-0
+1
 
 SLIDER
 445
