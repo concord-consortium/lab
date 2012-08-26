@@ -10,6 +10,7 @@ clouds-own [ cloud-num ]
 globals [ sky-top earth-top temperature num-CO2 num-clouds
   year
   smooth-temperature
+  v-smooth-temp
   time-step  ; the number of years advanced per tick
   alpha beta  ; used in smoothing the temperature
   n-add-co2   ; number of CO2 atoms added or subtracted per click
@@ -25,6 +26,7 @@ to startup
   setup-world
   set temperature 14
   set smooth-temperature temperature
+  set v-smooth-temp temperature
   set time-step .002
   set alpha time-step / 10  ; the 1/(number of steps in a decade)
   set beta 1 - alpha
@@ -45,6 +47,7 @@ to execute
   set year year + time-step
   if (ticks mod 500 = 0) and (year > 2010) [         ; at the beginning of each year after 2011
     set data-pairs lput list round year precision smooth-temperature 2 data-pairs    ; generate data pairs for export to DG
+    set v-smooth-temp .99 * v-smooth-temp + .01 * smooth-temperature
     if year > 2030 [set DG-data-ready? true]]     ; permit export after 20 years of data are generated. 
   if go-slow [wait .1]
   tick
@@ -442,6 +445,13 @@ Num-CO2
 3
 1
 11
+
+OUTPUT
+867
+10
+1196
+620
+10
 
 SWITCH
 287
@@ -847,7 +857,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0
+NetLogo 5.0.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

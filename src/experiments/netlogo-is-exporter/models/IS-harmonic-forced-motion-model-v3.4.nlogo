@@ -1,9 +1,18 @@
 ; Harmonic Motion software
-; Started Sept 2010
+; SmartGraph started Sept 2010
 ; Bob Tinker
 
-; Aug 23: Tweeks. Generated different outputs for the pendulum and spring-mass.
+; Aug 25, 2012. IS_Harmonic_Motion_Model.V3.3
 ; Got the pivot placed correctly, finally. Bug fixes.
+; Added automatic amplitude calculations
+
+; The logic of the interface that exports data to DataGames has been simplified. It now works as follows: 
+;   The user presses an "export data" button in external exporting software
+;   This button is active only if the NetLogo logical DG-data-ready? is true, otherwise the button is gray.
+;   The exporter software calls the NL method "export-data"
+;   When DG-data-ready? is false (export-data does this when it is finished, which can take a second) the exporter reads the NL global DG-output 
+
+; Aug 23: Tweeks. Generated different outputs for the pendulum and spring-mass. Moved UI elements
 
 ; Aug 22: Converted to forced harmonic motion by adding a movable pivot
 ; Also wrote some physical-to-screen and screen-to-physical coordinate transformations. I should retro fit these throughout.
@@ -55,10 +64,9 @@
 ; The x,y values of data are saved in turtles called dots in x-val and y-val. Setuv converts these into screen coordinates and shows the resulting dots
 
 globals [
-  ; Three globals for communication with DataGames
+  ; Two globals for communication with DataGames
   DG-output            ; the output string that DG needs
   DG-data-ready?       ; logical that says whether there are valid data ready to be exported
-  DG-exported?         ; logical that stores whether the current data have been exported
   
   grid-params ; see below
   walk-params ; see below
@@ -67,29 +75,28 @@ globals [
   dot-size
   grid-separation
   selected-box  ; the boundary of the selection box
-  min-x max-x min-y max-y
-  actor-1 actor-2
+  min-x max-x min-y max-y  ; these used to be supplied directly by the user, they are computed
+  actor-2
   force-color f-scale
   show-force?
   x-label y-label
   starting-position
+  max-of-run min-of-run  ; used to calculate the maximum amplitude during a run
 
-  frequency
 
   stage-center      ; in screen coordinates
   pivot-center-v    ; the center around which the pivot moves--in screen coordinates
   pivot-center-y    ; the center around which the pivot moves--in problem coordinates
   pivot-displacement
 
-  tag?          ; tells whether a tag or data was selected using the select tool
   stage?        ; tells whether there is a stage
   dot0 dot1 dot2 dot3   ; the turtles that define the select box
   dpoints       ; the distance between points in problem coordinates
-  period        ; the calculated value of the period
+  period        ; the calculated value of the period in sec
+  frequency     ; calculated from period, in cycles per minute
   pendulum-length-s  ; the length of the pendulum in screen coords used in the model graphics
-  stage
-  w w1 w2 w3        ; used to store who-values between calls
-
+  stage         ; contains "Vertical" or "Horizontal" or "None" for spring-mass, pendulum, or ? 
+  w w1 w2 w3    ; used to store who-values between calls. Used to connect dots. 
   ]
 
 breed [handles handle]           ; these are used to indicate handles that allow the user to move a sketched graph
@@ -167,8 +174,9 @@ spring-parts-own [spring-number]
 ; Packaging the parameters this way makes it easy to re-configure the screen and add new graphs or stages. 
 
 to setup         ;called by the button of the same name
-  if DG-exported?  or     ; check whether the user wants to lose the current data. 
-     user-yes-or-no? "Erase your data without exporting?" [startup]
+  ifelse DG-data-ready? 
+     [if user-yes-or-no? "Erase your data without exporting?" [startup]]
+     [startup]
 end
 
 to startup
@@ -177,8 +185,6 @@ to startup
 ;  set observations "Enter here information about this run--what you changed, what your strategy was, what you noticed, or anything else that you want to save. "
   ; initialize globals   
   set DG-data-ready? false
-  set DG-exported? true   ; is set true when data are successfully exported to DG
-  
   set N-points 500          ; the number of points in each dataset
   set grid-separation 30    ; the target number of pixels between grid lines
   set actor-size  6         ; controls the size of actors
@@ -187,13 +193,16 @@ to startup
   if model-type = "Pendulum" [set stage "Horizontal"]    ; this is a legacy because the old code used "horizontal" and "vertical" for the two setups. 
   if model-type = "None" [set stage "None"]
   set min-x 0
-  set max-x Run-duration-in-sec
+  set max-x run-duration-in-sec ; a user input  
+  set min-y center-position - amplitude   ; these replace user inputs for y-min and y-max
+  set max-y center-position + amplitude 
   set stop? false
-  set actor-1 "none" set actor-2 "mass"
+  set actor-2 "mass"
   set force-color red
   set show-force? false
   set x-label "time (s)"
   set y-label "   position (m)"
+  set pivot-displacement 0
     
   create-box-dots 4 [ht set color violet set size dot-size set shape "dot"] ; used with the selector tool
   set dot0 box-dot 0  
@@ -233,12 +242,11 @@ to startup
     create-shaft-with arrowhead w]
   ask shafts [set thickness .8 set color force-color]
     
-  create-spring 2 25  ; create spring numner 1 with 25 loops but make it invisible
+  if stage = "Vertical" [create-spring 2 25]  ; create spring numner 2 with 25 loops but make it invisible
  
   ; get ready to draw grid by creating grid-params, which contains all the information needed to draw the grid
 
-  set min-y center-position - amplitude
-  set max-y center-position + amplitude 
+
   let bounds layout         ; the screen boundarys for the screen and stage are set in the procedure "layout" which returns a list of two lists
   let s-bounds first bounds
   let sw-bounds last bounds
@@ -258,11 +266,14 @@ to startup
   draw-view ; creates everything in the view--all graphs and actors
     ; once executed, everything needed to draw the view is contained in grid-params and walk-params
     
-  if stage = "Vertical" [
+  if stage = "Vertical" [                  ; for the spring-mass model, create a pivot--the thing that holds the upper end of the spring.
     set pivot-center-v .75 * max-pycor
+    set pivot-center-y last convert-to-problem 0 0 pivot-center-v  ; convert the pivot center to problem coordinates
     create-pivots 1 [set shape "pivot" set size 4 
       set color read-from-string graph-color 
-      setxy stage-center pivot-center-v]]
+      setxy stage-center pivot-center-v]
+    let y last convert-to-problem 0 0 min-y
+    draw-actor-on-stage 2 y pivot-center-y 0]
     
   reset-ticks
 end
@@ -330,7 +341,7 @@ to draw-view
   if stage? [
     scale-stage                         ; update the transformation coefficients for the walk scale
     draw-stage                          ; draw the walk (or stage) scale
-    place-actors]       
+    draw-actor-on-stage 2 (first item 1 walk-params) pivot-center-y 0  ]     ; place actor 2 at the bottom of the stage with no force
   ask dots [setuv]                      ; put the data on the new grid
   wait .2 ; needed b/c Logo seems to move the turtles in a separate thread that doesn't finish in time. 
 end
@@ -358,7 +369,7 @@ to set-starting-position
       if mouse-down? [
         ask actors with [number = 2 and color = cNum ][
           set ycor mouse-ycor ]
-        show-spring 2 7 u (.95 * max-pycor) mouse-ycor ; n cnum u-center v-top v-bottom. Use light gray. 
+        show-spring 2 7 u pivot-center-v mouse-ycor ; n cnum u-center v-top v-bottom. Use light gray. 
         tick wait .03 ]]]
 
   if stage? and stage = "Horizontal" [        ; if there is a stage and it is horizontal...
@@ -393,7 +404,7 @@ to start-at-center
     if in-stage? u v [             ;    
       ask actors with [number = 2 and color = cNum ][
         setxy u v ]
-        show-spring 2 7 u (.95 * max-pycor) v ; n cnum u-center v-top v-bottom. Use light gray. 
+        show-spring 2 7 u pivot-center-v v ; n cnum u-center v-top v-bottom. Use light gray. 
       ]]
 
   if stage? and stage = "Horizontal" [        ; if there is a stage and it is horizontal...
@@ -407,41 +418,37 @@ to start-at-center
 end
 
 to run-model                      ; run the model--called by a user button click
-  if not DG-exported? [
+  if DG-data-ready? [
     if not user-yes-or-no? "Collect new data without exporting your old data?" [stop]]
   set DG-data-ready? false
-  set DG-exported? false             ; the user now has data which have not been exported.
   hide-vector 1 hide-vector 2
 
   let cnum read-from-string graph-color           ; read the color to be used for this run  
-  let trans item 3 walk-params     ; get the minimum and max of the vertical scale
-  let m first trans                ; get the y-to-v transformation coefs ( v = ym*y + yc)
-  let c item 1 trans               ;     conversely y = (v - yc)/ym
                                      
   ask actors with [number = 2] [set color cnum]
-  ask dots with [color = cnum] [die]
+  ask dots with [dot-color = cnum] [die]
   ask dots with [color = force-color] [die]  ; it gets too confusing with multiple force graphs...
-  ask pivots [st]
   
   ; get ready to integrate and display results
   set period 0 set frequency 0
-  let mass .001 * mass-in-grams
+  let mass .001 * mass-in-grams 
   let dt .03                     ; the integration step size in sec
   let t 0    reset-timer          ; start at t=0
   
   if stage = "Vertical" [
-    let v [pycor] of one-of actors with [number = 2] ; find the vertical position at which the model-mass starts
-    set starting-position (v - c) / m       ; the starting position of the model is current position translated into the y-coordinate system
+    let v [ycor] of one-of actors  ; find the vertical position at which the model-mass starts
+    set starting-position last convert-to-problem 0 0 v  ; the starting position of the model is current position translated into the y-coordinate system
     let pos starting-position
     let force force-spring pos 0            ; the initial force in Nt--no velocity (assuming that the spring constant is in Nt/meter)
 ;    let f-max abs (max-y - min-y) / 4       ; the maximum length of the force vector in position units
 ;    set f-scale f-max / abs force           ; a scaling factor that converts the force to a size that fits on the graph
     add-position-point pos 0 cnum           ; place a dot on the graph for the initial position
 ;    add-force-point force  0                ; place a dot on the graph for the initial force
-    draw-actor-on-stage 2 pos force   
+    draw-actor-on-stage 2 pos pivot-center-y force   ; draw mass, spring, and pivot
     let vel 0 
     let h 1000 * dt / mass-in-grams    
     set pos pos + .5 * vel * dt             ; move the position a half-step ahead
+    set min-of-run pos set max-of-run pos  ; used to calculate the amplitude
     while [t <= run-duration-in-sec ][                ; repeat until t-max is reached
       if stop? [
         calculate-period
@@ -449,34 +456,35 @@ to run-model                      ; run the model--called by a user button click
         set stop? false stop]             ; allows the user to abort a run
       set pivot-displacement force-amplitude * sin (6 * force-frequency * t )  ; that 6 is 360 degrees per cycle / 60 sec per minute
       let pivot-y pivot-center-y + pivot-displacement
-      let pivot-u last convert-to-screen 0 0 pivot-y 
       set vel vel + (force-spring pos vel) * h     ; jump velocity ahead to the end of the interval
       let pos-end pos + .5 * vel * dt
       set pos pos + vel * dt                       ; jump position from lagging by half to leading by half
       set force force-spring pos vel  ; calculate the new force
       set t t + dt 
+      if pos > max-of-run [set max-of-run pos]
+      if pos < min-of-run [set min-of-run pos]
     
-      ; now update the graph, vector, and model
+      ; now update the graph, vector, mass, pivot, and spring
       add-position-point pos-end t cnum  
 ;      add-force-point force t
-      draw-actor-on-stage 2 pos-end force
-      if in-view? stage-center pivot-u [
-        ask pivots [setxy stage-center pivot-u]]
+      draw-actor-on-stage 2 pos-end pivot-y force
+;      if in-view? stage-center pivot-u [
+;        ask pivots [setxy stage-center pivot-u]]
       ; if all this has been done in less than dt (in real time) idle so that the actor moves in real time
       while [timer - t < dt] [ ]  ; wait until dt has passed
       tick              ; update the screen and repeat
     ]]
 
   if stage = "Horizontal" [
-    let u [pxcor] of one-of actors with [number = 2] ; find the horizontal position at which the model-mass starts
-    set starting-position (u - c) / m           ; the starting position of the model is current position translated into the x-coordinate system
+    let u [xcor] of one-of actors with [number = 2] ; find the horizontal position at which the model-mass starts
+    set starting-position last convert-to-problem 0 0 u  ; the starting position of the model is current position translated into the y-coordinate system
     let pos starting-position
     let force force-pend pos 0      ; the initial force in Nt--no velocity (assuming that the spring constant is in Nt/meter)
     let f-max abs (max-y - min-y) / 4       ; the maximum length of the force vector in position units
 ;    set f-scale f-max / abs force     ; a scaling factor that converts the force to a size that fits on the graph
     add-position-point pos 0 cnum              ; place a dot on the graph for the initial position
 ;    add-force-point force  0                    ; place a dot on the graph for the initial force
-    draw-actor-on-stage 2 pos force   
+    draw-actor-on-stage 2 pos 0 force   
 
     let vel 0  let h dt / mass    
     set pos pos + .5 * vel * dt  ; position gets a half-step ahead. 
@@ -491,8 +499,8 @@ to run-model                      ; run the model--called by a user button click
     
       ; now update the graph, vector, and model
       add-position-point pos-end t cnum  
-      add-force-point force t
-      draw-actor-on-stage 2 pos-end force
+;      add-force-point force t
+      draw-actor-on-stage 2 pos-end 0 force
       ; if all this has been done in less than dt (in real time) idle so that the actor moves in real time
       while [timer - t < dt] [ ]  ; wait until dt has passed
       tick              ; update the screen and repeat
@@ -543,9 +551,9 @@ end
 ;;;;;;;; Frequency and period calculations ;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to calculate-period ; reports the period of the selected dots in current graph (assumed to be periodic)
+to calculate-period ; reports the period of the selected dots in current graph (assumed to be periodic) 
   ; the rountine looks for x-values where the graph crosses the center-position (a global) and assumes that a pair of these is one period
-  ; it looks for multiple pairs. 
+  ; it looks for multiple pairs.
   let cNum read-from-string graph-color         ; cNum is the color number used in Logo for the graph-color that the user selected  
   let p 0                                       ; p will be the period
   if (count dots with [color = cNum and selected?]) > 3 [     ; at least four points are needed for one period--skip to end if not
@@ -638,48 +646,63 @@ end
 ;;;;;;;;;;; Supporting actors  ;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to place-actors ; sets actor at the beginning of the stage. 
-  if stage? [
-    let xmin first item 1 walk-params
-    ask actors with [number = 2] [set color read-from-string graph-color]
-    draw-actor-on-stage 2 xMin 0  ; place the second actor at the end of the walking scale
-  ]
-end
+;to place-actors ; sets actor at the beginning of the stage. 
+;  if stage? [
+;    let xmin first item 1 walk-params
+;    ask actors with [number = 2] [set color read-from-string graph-color]
+;    draw-actor-on-stage 2 xMin 0  ; place the second actor at the end of the walking scale
+;    let temp last convert-to-screen 0 0 xMin  ; get xMin in screen coordinates
+;    show-spring 2 7 stage-center pivot-center-v temp        ;n cnum u-center v-top v-bottom
+;  ]
+;end
 
-to draw-actor-on-stage [num x force]  ; places actor num at x (or if vertical, y) on the stage, showing the force, if show-force? is true
+to draw-actor-on-stage [num y pivot-y force]  ; places actor num at y on the stage
+  ; if vertical, the actor is at y attached to a pivot at stage-center (in screen coordinates) and pivot-y in problem coordinates
+  ; draws the spring between them
+  ; shows the force, if show-force? is true
   ; actors can be distinguished using their varialbe 'number', which is 1 for the first, 2 for the second
-  ; only number 2 is used to represent the model
+  ; only number 2 is used to represent the mass in this model
   ; this routine works for both the vertical and horizontal scales
   
-  let s-bounds first walk-params             ; extract the stage boundaries
-  let umin first s-bounds
-  let umax item 1 s-bounds
-  let vmin item 2 s-bounds
-  let vmax item 3 s-bounds
-  let trans item 3 walk-params               ; extract the transformation coeficients 
-  let m first trans
-  let c item 1 trans
+;  let s-bounds first walk-params             ; extract the stage boundaries
+;  let umin first s-bounds
+;  let umax item 1 s-bounds
+;  let vmin item 2 s-bounds
+;  let vmax item 3 s-bounds
+;  let trans item 3 walk-params               ; extract the transformation coeficients 
+;  let m first trans
+;  let c item 1 trans
   let u 0 let v 0                            ; initialize u v
   
   if stage = "Vertical" [
-    set u  ( umin + umax ) / 2             ; place in center of stage
-    set v  m * x + c                        ; convert x from problem coordinates to vertical screen location
-    show-spring num 7 u pivot-center-v v]     ;spring num, white, center, top, bottom
+    set u stage-center                   ; place in center of stage
+    set v last convert-to-screen 0 0 y         ; convert the vertical position of the actor in screen coordinates
+    let pivot-v last convert-to-screen 0 0 pivot-y  ; convert the vertical position of the pivot
+    let out-of-view? false 
+    ifelse in-view? u v 
+      [ask actors [st setxy u v set color read-from-string graph-color]]
+      [ask actors [ht] set out-of-view? true]
+    ifelse in-view? u pivot-v 
+      [ask pivots [st setxy u pivot-v set color read-from-string graph-color]]
+      [ask pivots [ht] set out-of-view? true]
+    if not out-of-view? [
+      show-spring num 7 u pivot-v v]]     ; connect actor and pivot with spring. Variables: num, color, center, top, bottom
   
   if stage = "Horizontal" [ 
-    set u m * x + c                         ; place in center of the stage
-    set v  ( vmin + vmax ) / 2 ]            ; set the two vertically in the stage
-  
-  ask actors with [number = num ][ 
-    ifelse in-stage? u v                   ; if u, v is in the stage.....
-      [setxy u v st                           ;    move the actor there and show it
-        set color read-from-string graph-color
-        if show-force? [
-          let angle 0
-          if stage = "Horizontal" [set angle 90]
-          draw-vector num (m * f-scale) force angle u v force-color ] ; Draw-vector requires pixel units
-        if force = 0 [hide-vector num]]
-      [ht]]                                   ;    otherwise hide it.                     
+    set u last convert-to-screen 0 0 y      ; place at location x converted to screen coordinates
+    set v stage-center             ; set the mass vertically in the stage
+;    show (list u v in-stage? u v )
+    ask actors [ 
+      ifelse in-stage? u v                   ; if u, v is in the stage.....
+        [  setxy u v st                           ;    move the actor there and show it
+          set color read-from-string graph-color]
+        [ht]]]
+                
+   if show-force? [
+     let angle 0 if stage = "Horizontal" [set angle 90]
+     let temp last convert-to-screen 0 0 f-scale
+     draw-vector num temp force angle u v force-color  ; Draw-vector requires screen units
+     if force = 0 [hide-vector num]] ;    otherwise hide it.                     
 end
 
 
@@ -795,6 +818,7 @@ to select-and-zoom  ; a simplified selector that simply shows a region and zooms
   draw-view
   ask box-dots [ht setxy 0 0]                       ; the easy way to hide the lines is to put all the turtles on top of one another
   calculate-period
+  set DG-data-ready? true
   tick
 end
       
@@ -1205,22 +1229,23 @@ to create-spring [n L]  ; creates an ur-spring n that contains L links
   set vert vert + 2
   set u lput 0 u set v lput vert v
   set w 0 set w1 0
-  create-spring-ends 1 [ht   ; create the first spring end
+  create-spring-ends 1 [ ht ; create the first spring end
     set w who set number n
     set u-fraction 0 set v-fraction 0]
   let i 1
   while [i < vert ][           ; create the remaining spring ends and connect them
-    create-spring-ends 1 [ht
+    create-spring-ends 1 [ ht
       set w1 who set number n
       set u-fraction first u 
       set v-fraction first v / vert
       create-spring-part-with spring-end w] ; connect to the previous spring end 
     set u bf u set v bf v
-    ask spring-part w w1 [
+    ask spring-part w w1 [ 
       set thickness .5
       set spring-number n]
     set w w1
     set i i + 1 ]
+  ask spring-ends [st set color 7]
 end
 
 to show-spring [n cnum u-center v-top v-bottom]  
@@ -1236,16 +1261,6 @@ end
 to hide-springs
   ask spring-ends [
     setxy 0 0 ht] 
-end
-
-to test-springs
-  reset-timer
-  while [timer < 10][
-    show-spring 1 red 3 10 * sin (timer * 72) -50 
-    show-spring 2 green -3 * sin (timer * 36) 30 * cos (timer * 1000) -40
-    tick
-  ]
-  hide-springs
 end
 
 to show-cursor  ; creates a vertical cursor and labels all of its intersections with graphs
@@ -1388,41 +1403,10 @@ end
 ;;;;;;;;;;;;;;;;  Data export  ;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to export-data-to-file
-  ; Data will be exported as a single comma-deliminated text string surrounded by double quotes. 
-  ; The data will be in the following order
-  ; <model type>, <comment>, "parameter1", <name>, <value>, "parameter2", <name>, <value>, .... "data", <data format>, 
-  ; <x1 value>, <y1 value>, <x2 value>, <y2 value>.........
-  let preamble (word model-type ", " "blank" )
-  set preamble (word preamble ", period, " (precision period 3 ))
-  let f precision (60 / period) 3
-  set preamble (word preamble ", frequency (per sec), " f)
-  set preamble (word preamble ", Mass in grams, " mass-in-grams)
-  set preamble (word preamble ", friction, " friction)
-  set preamble (word preamble ", Spring constant (N/m), " spring-constant)
-  set preamble (word preamble ", Pendulum length (m), " pendulum-length)
-  set preamble (word preamble ", Starting position (m), " (precision starting-position 3)) 
-  set preamble (word preamble ", Data type, " 2) ; indicates that pairs follow
-  
-  let data-pairs ", "   ; select the selected dots of color c in order of ascending x-value
-  let c read-from-string graph-color 
-  foreach sort-on [xcor] dots with [color = c and selected? ][
-    ask ? [  
-      set data-pairs (word data-pairs 
-        precision x-val 3 "," precision y-val 3 ", ")]]
-  set data-pairs but-last but-last data-pairs  ; eliminate the last comma and space!
-
-  let output word preamble data-pairs
-  if file-exists? "model-export.txt"[ 
-    file-delete "model-export.txt"]  ; out with the old
-  file-open "model-export.txt" 
-  file-write output
-  file-close
-  set DG-exported? true
-end
 
 to export-data  ; puts data into Jason data format and tells DG that it is available
-;  if not DG-data-ready? [stop]       ; DG-data-ready? is a flag for DG to read
+  if not DG-data-ready? [stop]
+  
   let x-name "time (sec)" let y-name "position (m)"
   let preamble preamble-maker   ; first make a preamble that is a list of lists of name, value pairs
   let output "{\n" ; the first lines of Jason data are an open curley bracket, cr and quote
@@ -1449,9 +1433,8 @@ to export-data  ; puts data into Jason data format and tells DG that it is avail
     set data-pairs butfirst data-pairs ]
   set output word output "    ]\n   }\n  }\n ]\n}"
   set DG-output output
-  output-print output
-  set DG-exported? false
-  set DG-data-ready? true
+  clear-output output-print output set ; STEPHEN REMOVE THIS LINE
+  DG-data-ready? false 
 end
 
 to-report preamble-maker; generates a list of lists of name, value pairs. 
@@ -1473,11 +1456,11 @@ to-report preamble-maker; generates a list of lists of name, value pairs.
     set output lput list "Mass in grams" mass-in-grams output
     set output lput list "Friction" friction   output 
     set output lput list "Spring constant (N/m)" spring-constant output 
-    set output lput list "Force frequency (cpm)" friction   output 
-    set output lput list "Force amplitude (m)" spring-constant output 
-    set output lput list "Mass amplitude (m)" final-amplitude output 
+    set output lput list "Force frequency (cpm)" force-frequency output 
+    set output lput list "Force amplitude (m)" force-amplitude output 
         ]
   set output lput list "Starting position (m)" (precision starting-position 3)  output
+  set output lput list "Max amplitude (m)" (precision (max-of-run - min-of-run) 2 )  output
   report output
 end
 
@@ -1490,10 +1473,10 @@ to-report data-pair-maker; generates a list of [time value] pairs.
 end
 
 to reset
-  if DG-exported?  or     ; check whether the user wants to lose the current data. 
-     user-yes-or-no? "Erase your data without exporting?" [
-       ask dots [die]
-     set DG-exported? true ]
+  ifelse DG-data-ready?     ; check whether the user wants to lose the current data. 
+    [if user-yes-or-no? "Erase your data without exporting?" 
+      [ask dots [die] set DG-data-ready? false ]]
+    [ask dots [die]]
 end
    
     
@@ -1568,7 +1551,7 @@ BUTTON
 486
 77
 Setup
-; set DG-exported? true\nsetup
+setup
 NIL
 1
 T
@@ -1585,7 +1568,7 @@ INPUTBOX
 732
 138
 Run-duration-in-sec
-20
+10
 1
 0
 Number
@@ -1608,9 +1591,9 @@ NIL
 1
 
 BUTTON
-144
+132
 424
-232
+247
 458
 Start
 Run-model
@@ -1663,16 +1646,16 @@ Friction
 Friction
 0
 .2
-0
+0.0010
 .001
 1
 NIL
 HORIZONTAL
 
 MONITOR
-537
+532
 412
-623
+618
 457
 Period
 word (precision period 3) \" sec\"
@@ -1691,15 +1674,15 @@ Model-type
 1
 
 SLIDER
-446
+445
 271
-704
+703
 304
 Pendulum-length
 Pendulum-length
 0.01
 3
-3
+1.95
 .01
 1
 m
@@ -1716,9 +1699,9 @@ Variables
 1
 
 BUTTON
-320
+336
 424
-394
+410
 457
 Reset
 reset
@@ -1750,19 +1733,36 @@ NIL
 1
 
 TEXTBOX
-20
-10
-328
-36
+60
+14
+368
+40
 InquirySpace Forced Motion Model
 18
 105.0
 1
 
+BUTTON
+851
+531
+955
+564
+Export Data
+Export-data
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
 MONITOR
-450
+445
 412
-537
+532
 457
 Frequency
 word (precision (60 / period) 1) \" per min\"
@@ -1787,15 +1787,15 @@ INPUTBOX
 605
 137
 Amplitude
-2
+0.5
 1
 0
 Number
 
 SWITCH
-231
+247
 424
-321
+337
 457
 Stop?
 Stop?
@@ -1824,9 +1824,9 @@ Results
 1
 
 BUTTON
-20
+10
 390
-232
+222
 424
 Move to any starting position
 Set-starting-position
@@ -1841,60 +1841,56 @@ NIL
 1
 
 TEXTBOX
-241
+231
 402
-367
+357
 422
 Model Controls\n
 14
 0.0
 1
 
+OUTPUT
+748
+14
+1057
+524
+9
+
 SLIDER
 445
-303
+314
 704
-336
+347
 Force-amplitude
 Force-amplitude
 0
-.2
-0.03
-.01
+.1
+0.013
+.001
 1
 m
 HORIZONTAL
 
 SLIDER
 445
-337
+347
 704
-370
+380
 Force-frequency
 Force-frequency
-0
-600
-60
-1
+30
+100
+61.1
+.1
 1
 per min
 HORIZONTAL
 
-INPUTBOX
-622
-397
-719
-457
-Final-amplitude
-0.31
-1
-0
-Number
-
 BUTTON
-20
+10
 424
-144
+134
 458
 Move to center
 start-at-center
@@ -1917,6 +1913,17 @@ Graph Tools
 14
 0.0
 1
+
+MONITOR
+617
+412
+705
+457
+Max amplitide
+word (precision (max-of-run - min-of-run) 2 ) \" m\"
+1
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -2630,7 +2637,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0
+NetLogo 5.0.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

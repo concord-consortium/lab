@@ -60,9 +60,9 @@ globals [
   show-force?
   x-label y-label
   starting-position
-  NetLogo-output          ;used to communicate with Data Games
+  DG-output          ;used to communicate with Data Games
   frequency
-  data-ready?
+  DG-data-ready?    
 
   tag?          ; tells whether a tag or data was selected using the select tool
   stage?        ; tells whether there is a stage
@@ -1339,6 +1339,7 @@ to export-data  ; puts data into Jason data format
     set data-pairs butfirst data-pairs ]
   set output word output "    ]\n   }\n  }\n ]\n}"
   set NetLogo-output output
+  output-print output
   set exported? true
   set data-ready? false
 end
@@ -1482,7 +1483,7 @@ INPUTBOX
 728
 136
 Run-duration-in-sec
-12
+10
 1
 0
 Number
@@ -1613,9 +1614,9 @@ Variables
 1
 
 BUTTON
-206
+189
 375
-280
+263
 408
 Reset
 reset
@@ -1657,10 +1658,10 @@ InquirySpace Motion Model
 1
 
 BUTTON
-292
-375
-396
-408
+875
+545
+979
+578
 Export Data
 Export-data
 NIL
@@ -1690,7 +1691,7 @@ INPUTBOX
 511
 136
 Center-position
-77
+6
 1
 0
 Number
@@ -1701,16 +1702,16 @@ INPUTBOX
 603
 136
 Amplitude
-30
+1
 1
 0
 Number
 
 SWITCH
-108
-375
-198
-408
+100
+376
+190
+409
 Stop?
 Stop?
 1
@@ -1738,11 +1739,11 @@ Results
 1
 
 BUTTON
-468
-133
-655
-166
-Move mass to starting position
+261
+375
+399
+409
+Set starting position
 Set-starting-position
 NIL
 1
@@ -1756,13 +1757,20 @@ NIL
 
 TEXTBOX
 182
-359
+357
 244
-377
+375
 Controls\n
 14
 0.0
 1
+
+OUTPUT
+734
+10
+1067
+529
+16
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -2476,7 +2484,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0
+NetLogo 5.0.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
