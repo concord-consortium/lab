@@ -72,6 +72,7 @@ ISNetLogo.DGExporter = {
         });
       } else {
         attributeKeys.push({ name: key});
+        attributeValues.push(value);
         attributeObject = {};
         attributeObject[key] = value;
         attributeObjects.push(attributeObject);
@@ -133,7 +134,7 @@ ISNetLogo.DGExporter = {
       type: 'DG.TableView',
       log: false
     });
-    
+
     function extractValues(obj) {
       return $.map(obj, function(value) { return value; });
     }
