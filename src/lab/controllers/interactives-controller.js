@@ -288,6 +288,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       if (action){
         scriptStr = getStringFromArray(action);
         evalInScriptContext(scriptStr)();
+      } else if (component.options[index].loadModel){
+        loadModel(component.options[index].loadModel);
       }
     });
 

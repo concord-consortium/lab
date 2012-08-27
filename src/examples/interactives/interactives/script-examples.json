@@ -1,6 +1,6 @@
 {
   "model": {
-    "url": "/imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
+    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
     "viewOptions": {
       "controlButtons": "play_reset"
     }
@@ -50,6 +50,22 @@
         {
           "text": "Option 2",
           "action": "alert('You selected option 2!');"
+        }
+      ]
+    },
+
+    {
+      "type": "pulldown",
+      "id": "pulldown2",
+      "options": [
+        {},
+        {
+          "text": "Load Oil and Water",
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json"
+        },
+        {
+          "text": "Load Oil and Water Mixed",
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json"
         }
       ]
     }
