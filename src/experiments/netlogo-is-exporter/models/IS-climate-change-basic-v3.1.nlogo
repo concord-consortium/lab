@@ -17,7 +17,7 @@ globals [ sky-top earth-top temperature num-CO2 num-clouds
   data-pairs  ; saved annual year-temperature data
   DG-output            ; the output string that DG needs
   DG-data-ready?       ; logical that says whether there are valid data ready to be exported
-;  DG-exported?         ; logical that stores whether the current data have been exported
+  DG-exported?         ; logical that stores whether the current data have been exported
 
   ]
 
@@ -48,7 +48,7 @@ to execute
   if (ticks mod 500 = 0) and (year > 2010) [         ; at the beginning of each year after 2011
     set data-pairs lput list round year precision smooth-temperature 2 data-pairs    ; generate data pairs for export to DG
     set v-smooth-temp .99 * v-smooth-temp + .01 * smooth-temperature
-    if year > 2030 [set DG-data-ready? true]]     ; permit export after 20 years of data are generated. 
+    set DG-data-ready? true]     ; permit export after 20 years of data are generated. 
   if go-slow [wait .1]
   tick
 end
@@ -202,6 +202,8 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to export-data  ; puts data into Jason data format and tells DG that it is available
+  let d-pairs data-pairs
+  set DG-exported? false
   let x-name "Year" let y-name "Temperature (C)"
   let preamble preamble-maker   ; first make a preamble that is a list of lists of name, value pairs
   let output "{\n" ; the first lines of Jason data are an open curley bracket, cr and quote
@@ -218,15 +220,17 @@ to export-data  ; puts data into Jason data format and tells DG that it is avail
     set preamble butfirst preamble ]
   set output word output "    \"contents\":{\n     \"collection_name\":\"Position\",\n     \"cases\":[\n" 
   
-  while [length data-pairs > 0 ][
-    set temp first data-pairs
+  while [length d-pairs > 0 ][
+    set temp first d-pairs
     set output (word output "      {\"" x-name "\":" (first temp) ",\"" y-name "\":" (last temp) "}")
-    ifelse (length data-pairs != 1 )                 ; do not put a comma at the end of the last pair
+    ifelse (length d-pairs != 1 )                 ; do not put a comma at the end of the last pair
       [set output word output ",\n"]
       [set output word output "\n"]
-    set data-pairs butfirst data-pairs ]
+    set d-pairs butfirst d-pairs ]
   set output word output "    ]\n   }\n  }\n ]\n}"
   set DG-output output
+  set dg-data-ready? false
+  set DG-exported? true
 end
 
 to-report preamble-maker; generates a list of lists of name, value pairs. 
@@ -456,10 +460,10 @@ Go-slow
 -1000
 
 MONITOR
-190
-15
-247
-60
+198
+68
+255
+113
 Year
 Year
 0
@@ -848,7 +852,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.1
+NetLogo 5.0.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

@@ -67,6 +67,9 @@ globals [
   ; Two globals for communication with DataGames
   DG-output            ; the output string that DG needs
   DG-data-ready?       ; logical that says whether there are valid data ready to be exported
+  DG-exported?         ; set to false when export-data starts, true when method is complete
+
+  force-amplitude force-frequency
   
   grid-params ; see below
   walk-params ; see below
@@ -185,6 +188,8 @@ to startup
 ;  set observations "Enter here information about this run--what you changed, what your strategy was, what you noticed, or anything else that you want to save. "
   ; initialize globals   
   set DG-data-ready? false
+  set force-frequency 0
+  set force-amplitude 0
   set N-points 500          ; the number of points in each dataset
   set grid-separation 30    ; the target number of pixels between grid lines
   set actor-size  6         ; controls the size of actors
@@ -1409,6 +1414,7 @@ end
 
 to export-data  ; puts data into Jason data format and tells DG that it is available
   if not DG-data-ready? [stop]
+  set DG-exported? false
   
   let x-name "time (sec)" let y-name "position (m)"
   let preamble preamble-maker   ; first make a preamble that is a list of lists of name, value pairs
@@ -1436,8 +1442,8 @@ to export-data  ; puts data into Jason data format and tells DG that it is avail
     set data-pairs butfirst data-pairs ]
   set output word output "        ]\n      }\n    }\n  ]\n}"
   set DG-output output
-  clear-output output-print output set ; STEPHEN REMOVE THIS LINE
-  DG-data-ready? false 
+  set DG-data-ready? false
+  set DG-exported? true
 end
 
 to-report preamble-maker; generates a list of lists of name, value pairs. 
@@ -1566,7 +1572,7 @@ INPUTBOX
 732
 138
 Run-duration-in-sec
-5
+10
 1
 0
 Number
@@ -1614,7 +1620,7 @@ Mass-in-grams
 Mass-in-grams
 1
 500
-22
+161
 1
 1
 g
@@ -1629,7 +1635,7 @@ Spring-constant
 Spring-constant
 .05
 10
-9.84
+4.76
 .01
 1
 N/m
@@ -1644,7 +1650,7 @@ Friction
 Friction
 0
 .2
-0.0010
+0
 .001
 1
 NIL
@@ -1680,7 +1686,7 @@ Pendulum-length
 Pendulum-length
 0.01
 3
-1.95
+1.51
 .01
 1
 m
@@ -1731,11 +1737,11 @@ NIL
 1
 
 TEXTBOX
-60
+100
 14
-368
+408
 40
-InquirySpace Forced Motion Model
+InquirySpace Motion Model
 18
 105.0
 1
@@ -1830,36 +1836,6 @@ Model Controls\n
 14
 0.0
 1
-
-SLIDER
-445
-314
-704
-347
-Force-amplitude
-Force-amplitude
-0
-.1
-0
-.001
-1
-m
-HORIZONTAL
-
-SLIDER
-445
-347
-704
-380
-Force-frequency
-Force-frequency
-30
-100
-30
-.1
-1
-per min
-HORIZONTAL
 
 BUTTON
 10

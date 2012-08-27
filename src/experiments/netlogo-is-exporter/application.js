@@ -163,8 +163,8 @@ var ROOT = "/experiments",
   }
 
   function exportDataReadyCallback() {
-    var dataReady = nl_read_global("DG-DATA-READY?");
-    if (!dataReady) {
+    var dgExportDone = nl_read_global("DG-EXPORTED?");
+    if (dgExportDone) {
       clearInterval(clearDataReady);
       data = nl_read_global("DG-OUTPUT");
       if (exportedData) {
