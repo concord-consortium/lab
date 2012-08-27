@@ -102,14 +102,14 @@ ISNetLogo.DGExporter = {
     // Step 4. Open a case in the parent collection. This will contain the individual sensor readings
     // as children.
     dgCase = this.doCommand('openCase', {
-      collection: this.parentCollectionName,
+      collection: parentCollectionName,
       values: attributes
     });
 
     // Step 5. Create cases in the child collection for each data point. Using 'createCases' we can
     // do this inline, so we don't need to call openCase, closeCase for each one.
     this.doCommand('createCases', {
-      collection: this.childCollectionName,
+      collection: childCollectionName,
       values: data,
       parent: dgCase.caseID,
       log: false
@@ -117,7 +117,7 @@ ISNetLogo.DGExporter = {
 
     // Step 6. Close the case.
     this.doCommand('closeCase', {
-      collection: this.parentCollectionName,
+      collection: parentCollectionName,
       values: attributes,
       caseID: dgCase.caseID
     });
