@@ -68,7 +68,7 @@ ISNetLogo.DGExporter = {
         childCases = value.cases;
         firstChildCase = childCases[0];
         $.each(firstChildCase, function(key2, value2) {
-          childAttributes.push({ name: key2, type: numeric, precision: 3 });
+          childAttributes.push({ name: key2, type: 'numeric', precision: 3 });
         });
       } else {
         attributeKeys.push({ name: key, type: 'numeric', precision: 3 });
