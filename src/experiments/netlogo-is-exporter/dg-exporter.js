@@ -71,7 +71,7 @@ ISNetLogo.DGExporter = {
           childAttributes.push({ name: key2, type: numeric, precision: 3 });
         });
       } else {
-        attributeKeys.push({ name: key, type: numeric, precision: 3 });
+        attributeKeys.push({ name: key, type: 'numeric', precision: 3 });
         attributeValues.push(value);
         attributeObject = {};
         attributeObject[key] = value;
