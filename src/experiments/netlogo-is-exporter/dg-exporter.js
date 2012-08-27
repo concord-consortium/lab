@@ -47,7 +47,8 @@ ISNetLogo.DGExporter = {
 
         dgCase,
 
-        attributes = [],
+        attributeKeys = [],
+        attributeValues = [],
         attributeObject = {},
         attributeObjects = [],
         childAttributes = [],
@@ -70,7 +71,7 @@ ISNetLogo.DGExporter = {
           childAttributes.push({ name: key2 });
         });
       } else {
-        attributes.push({ name: key});
+        attributeKeys.push({ name: key});
         attributeObject = {};
         attributeObject[key] = value;
         attributeObjects.push(attributeObject);
@@ -80,7 +81,7 @@ ISNetLogo.DGExporter = {
     // extract data from child cases
     for(var i = 0; i < childCases.length; i++) {
       theCase = childCases[i];
-      values = $.map(theCase, function(value) { return value; });
+      values = extractValues(theCase);
       data.push(values);
     }
 
@@ -93,7 +94,7 @@ ISNetLogo.DGExporter = {
     // Step 2. Create a parent collection with the main attributes
     this.doCommand('createCollection', {
       name: parentCollectionName,
-      attrs: attributes,
+      attrs: attributeKeys,
       childAttrName: childKey
     });
 
@@ -108,7 +109,7 @@ ISNetLogo.DGExporter = {
     // as children.
     dgCase = this.doCommand('openCase', {
       collection: parentCollectionName,
-      values: attributeObjects
+      values: attributeValues
     });
 
     // Step 5. Create cases in the child collection for each data point. Using 'createCases' we can
@@ -123,7 +124,7 @@ ISNetLogo.DGExporter = {
     // Step 6. Close the case.
     this.doCommand('closeCase', {
       collection: parentCollectionName,
-      values: attributes,
+      values: attributeKeys,
       caseID: dgCase.caseID
     });
 
@@ -132,5 +133,9 @@ ISNetLogo.DGExporter = {
       type: 'DG.TableView',
       log: false
     });
+    
+    function extractValues(obj) {
+      return $.map(obj, function(value) { return value; });
+    }
   }
 };
