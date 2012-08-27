@@ -48,6 +48,7 @@ ISNetLogo.DGExporter = {
         dgCase,
 
         attributes = [],
+        attributeKeysAndValues = [],
         childAttributes = [],
         data = [],
         child = {},
@@ -69,6 +70,7 @@ ISNetLogo.DGExporter = {
         });
       } else {
         attributes.push({ name: key});
+        attributeKeysAndValues.push({ key: value });
       }
     });
 
@@ -103,7 +105,7 @@ ISNetLogo.DGExporter = {
     // as children.
     dgCase = this.doCommand('openCase', {
       collection: parentCollectionName,
-      values: attributes
+      values: attributeKeysAndValues
     });
 
     // Step 5. Create cases in the child collection for each data point. Using 'createCases' we can
@@ -124,7 +126,7 @@ ISNetLogo.DGExporter = {
 
     // Step 7. Create Table.
     this.doCommand('createComponent', {
-      type: DG.TableView,
+      type: 'DG.TableView',
       log: false
     });
   }
