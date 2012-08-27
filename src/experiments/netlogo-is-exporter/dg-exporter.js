@@ -48,7 +48,8 @@ ISNetLogo.DGExporter = {
         dgCase,
 
         attributes = [],
-        attributeKeysAndValues = [],
+        attributeObject = {},
+        attributeObjects = [],
         childAttributes = [],
         data = [],
         child = {},
@@ -70,7 +71,9 @@ ISNetLogo.DGExporter = {
         });
       } else {
         attributes.push({ name: key});
-        attributeKeysAndValues.push({ key: value });
+        attributeObject = {};
+        attributeObject[key] = value;
+        attributeKeysAndValues.push(attributeObject);
       }
     });
 
