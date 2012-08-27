@@ -73,7 +73,7 @@ ISNetLogo.DGExporter = {
         attributes.push({ name: key});
         attributeObject = {};
         attributeObject[key] = value;
-        attributeKeysAndValues.push(attributeObject);
+        attributeObjects.push(attributeObject);
       }
     });
 
@@ -108,7 +108,7 @@ ISNetLogo.DGExporter = {
     // as children.
     dgCase = this.doCommand('openCase', {
       collection: parentCollectionName,
-      values: attributeKeysAndValues
+      values: attributeObjects
     });
 
     // Step 5. Create cases in the child collection for each data point. Using 'createCases' we can
