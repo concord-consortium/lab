@@ -227,8 +227,6 @@ to export-data  ; puts data into Jason data format and tells DG that it is avail
     set data-pairs butfirst data-pairs ]
   set output word output "    ]\n   }\n  }\n ]\n}"
   set DG-output output
-  output-print output   ; STEPHEN REMOVE THIS LINE
-;  set DG-exported? false
 end
 
 to-report preamble-maker; generates a list of lists of name, value pairs. 
@@ -850,7 +848,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0
+NetLogo 5.0.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

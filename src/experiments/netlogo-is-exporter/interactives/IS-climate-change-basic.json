@@ -1,7 +1,7 @@
 {
   "model": {
     "modelType": "netlogo-applet",
-    "url": "models/IS-climate-change-basic-v2.nlogo",
+    "url": "models/IS-climate-change-basic-v3.nlogo",
     "viewOptions": {
       "dimensions": {
         "width": 900,
