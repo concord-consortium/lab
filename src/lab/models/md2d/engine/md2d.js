@@ -1312,9 +1312,6 @@ exports.makeModel = function() {
         // Accumulate accelerations from bonded interactions into a(t+dt)
         updateBondAccelerations();
 
-        // Accumulate accelerations from spring forces
-        updateSpringAccelerations();
-
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
           halfUpdateVelocity(i);
