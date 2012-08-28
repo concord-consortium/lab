@@ -1,6 +1,7 @@
 /*globals grapher*/
 
 require("../../env");
+require("d3");
 require("../../../server/public/lab/lab.grapher");
 require("../../../server/public/lab/lab.layout");
 
@@ -30,7 +31,6 @@ function graphWithBrushClearEvent(graph) {
 
 // When this problem is fixed, uncomment the test below:
 
-/*
 suite.addBatch({
 
   "initially": {
@@ -476,5 +476,3 @@ suite.addBatch({
 });
 
 suite.export(module);
-
-*/
