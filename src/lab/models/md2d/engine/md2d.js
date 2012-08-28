@@ -44,6 +44,7 @@ var arrays       = require('arrays'),
     OBSTACLE_INDICES,
     SAVEABLE_INDICES,
     RADIAL_INDICES,
+    VDW_INDICES,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -168,6 +169,11 @@ exports.RADIAL_INDICES = RADIAL_INDICES = {
   ATOM2   :  1,
   LENGTH  :  2,
   STRENGTH:  3
+};
+
+exports.VDW_INDICES = VDW_INDICES = {
+  ATOM1   :  0,
+  ATOM2   :  1
 };
 
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
@@ -364,7 +370,8 @@ exports.makeModel = function() {
         radialBonds[radialIndices.STRENGTH] = radialBondStrength   = arrays.create(num, 0, float32);
       },
 
-      // Make the 'radialBonds' array bigger. FIXME: needs to be factored
+
+  // Make the 'radialBonds' array bigger. FIXME: needs to be factored
       // into a common pattern with 'extendAtomsArray'
       extendRadialBondsArray = function(num) {
         var savedArrays = [],
@@ -1242,6 +1249,58 @@ exports.makeModel = function() {
       }
     },
 
+    createVdwLinesArray : function(num, radialBonds) {
+    var uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
+      vdwIndices = VDW_INDICES,numradialBonds = radialBonds.atom1Index.length,
+      numAtoms = (((num.CHARGE.length)+(num.CHARGE.length+1))/2);
+
+    vdwLines = model.vdwLines = [];
+
+    vdwLines[vdwIndices.ATOM1] = vdwLineAtom1Index = arrays.create(numAtoms, 0, uint16);
+    vdwLines[vdwIndices.ATOM2] = vdwLineAtom2Index = arrays.create(numAtoms, 0, uint16);
+
+    var i, j,
+      i1, i2,
+      dx, dy,
+      r_sq,
+      VDWLines = [],
+      VDWLineAtom1Index = [],
+      VDWLineAtom2Index = [],
+      VDWLinesNum;
+
+    for (i = 0; i < N; i++) {
+      // pairwise interactions
+      for (j = i+1; j < N; j++) {
+        dx = x[j] - x[i];
+        dy = y[j] - y[i];
+        r_sq = dx*dx + dy*dy;
+
+        if(!(((charge[i] > 0) &&  (charge[j] > 0)) || ((charge[j] < 0) &&  (charge[j] < 0))) && (r_sq >= 2.00)){
+          VDWLineAtom1Index.push(i);
+          VDWLineAtom2Index.push(j);
+        }
+      }
+    }
+    VDWLinesNum = VDWLineAtom1Index.length;
+    console.log(VDWLinesNum);
+    for (i = 0; i < VDWLinesNum; i++) {
+      //console.log("aaaaaaai : "+i+" j :"+j+" N_radialBonds : "+N_radialBonds);
+      // pairwise interactions
+      for (j = 0; j < numradialBonds; j++) {
+        console.log("i : "+i+" j :"+j);
+        i1 = radialBonds.atom1Index[j];
+        i2 = radialBonds.atom1Index[j];
+        if((VDWLineAtom1Index[i] == i1) && (VDWLineAtom2Index[i] == i2)){
+          VDWLineAtom1Index.pop(i);
+          VDWLineAtom2Index.pop(j);
+        }
+      }
+    }
+    VDWLines.push(VDWLineAtom1Index, VDWLineAtom2Index);
+  },
+
+
+
     relaxToTemperature: function(T) {
 
       // FIXME this method needs to be modified. It should rescale velocities only periodically
@@ -1405,6 +1464,7 @@ exports.makeModel = function() {
       outputState.vCM      = [vx_CM, vy_CM];
       outputState.omega_CM = omega_CM;
     },
+
 
     /**
       Given a test element and charge, returns a function that returns for a location (x, y) in nm:

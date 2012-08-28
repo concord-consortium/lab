@@ -53,6 +53,8 @@ modeler.model = function(initialProperties) {
       obstacles,
       // Radial Bonds
       radialBonds,
+      // VDW Lines
+      vdwLines,
 
       default_obstacle_properties = {
         vx: 0,
@@ -152,6 +154,11 @@ modeler.model = function(initialProperties) {
     ATOM2     : md2d.RADIAL_INDICES.ATOM2,
     LENGTH    : md2d.RADIAL_INDICES.LENGTH,
     STRENGTH  : md2d.RADIAL_INDICES.STRENGTH
+  };
+
+  model.VDW_INDICES = {
+    ATOM1     : md2d.VDW_INDICES.ATOM1,
+    ATOM2     : md2d.VDW_INDICES.ATOM2
   };
 
   function notifyListeners(listeners) {
@@ -502,6 +509,13 @@ modeler.model = function(initialProperties) {
     radialBonds = coreModel.radialBonds;
     readModelState();
     return model;
+  };
+
+  model.createVdwLines = function(_vdwLines, _radialBonds) {
+    coreModel.createVdwLinesArray(_vdwLines, _radialBonds);
+    vdwLines = coreModel.vdwLines;
+    //readModelState();
+    //return model;
   };
 
   model.createObstacles = function(_obstacles) {

@@ -32,6 +32,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       chargeShading,
       showVDWLines,
       radialBonds,
+      vdwLines,
       obstacles,
 
       moleculeContainer,
@@ -124,6 +125,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       }
 
       if (radialBonds) model.createRadialBonds(radialBonds);
+      if (showVDWLines) model.createVdwLines(atoms, radialBonds);
       if (obstacles) model.createObstacles(obstacles);
 
       dispatch.modelReset();
