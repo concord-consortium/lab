@@ -1,4 +1,6 @@
+*~
 /bin
+/server/bin
 .bundle
 .sass-cache
 /node_modules
