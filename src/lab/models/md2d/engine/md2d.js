@@ -43,6 +43,7 @@ var arrays       = require('arrays'),
     ELEMENT_INDICES,
     OBSTACLE_INDICES,
     SAVEABLE_INDICES,
+    RADIAL_INDICES,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -261,6 +262,7 @@ exports.makeModel = function() {
       obstacleColorR,
       obstacleColorG,
       obstacleColorB,
+      obstacleVisible,
 
       // An array of length 12 which contains obstacles information
       obstacles,
@@ -1022,6 +1024,8 @@ exports.makeModel = function() {
       Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
     */
     setAtomProperties: function(i, props) {
+      var prop;
+
       for (prop in props) {
         if (!props.hasOwnProperty(prop)) continue;
         this[prop][i] = props[prop];
@@ -1090,13 +1094,16 @@ exports.makeModel = function() {
       to ignore the existance of atom i. (Used when moving i around.)
     */
     canPlaceAtom: function(element, _x, _y, i) {
-      var orig_x, orig_y, r, PEAtLocation;
+      var r,
+          orig_x, orig_y,
+          PEAtLocation,
+          j;
 
       // first do the simpler check to see if we're on an obstacle
-      r = radius[i]
+      r = radius[i];
       for (j = 0; j < N_obstacles; j++) {
-        if (_x > (obstacleX[j] - r) && _x < (obstacleX[j] + obstacleWidth[j] + r)
-            && _y > (obstacleY[j] - r) && _y < (obstacleY[j] + obstacleHeight[j] + r)) {
+        if (_x > (obstacleX[j] - r) && _x < (obstacleX[j] + obstacleWidth[j] + r) &&
+            _y > (obstacleY[j] - r) && _y < (obstacleY[j] + obstacleHeight[j] + r)) {
           return false;
         }
       }
@@ -1108,7 +1115,7 @@ exports.makeModel = function() {
         x[i] = y[i] = Infinity;   // move i atom away
       }
 
-      PEAtLocation = coreModel.newPotentialCalculator(element, 0, false)(_x, _y);
+      PEAtLocation = model.newPotentialCalculator(element, 0, false)(_x, _y);
 
       if (typeof i === "number") {
         x[i] = orig_x;
@@ -1304,6 +1311,9 @@ exports.makeModel = function() {
 
         // Accumulate accelerations from bonded interactions into a(t+dt)
         updateBondAccelerations();
+
+        // Accumulate accelerations from spring forces
+        updateSpringAccelerations();
 
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
@@ -1520,12 +1530,17 @@ exports.makeModel = function() {
     */
     getMoleculeAtoms: function(i) {
       this.atomsInMolecule.push(i);
-      var moleculeAtoms = [];
-      var bondedAtoms = this.getBondedAtoms(i);
-      var depth = this.depth;
+
+      var moleculeAtoms = [],
+          bondedAtoms = this.getBondedAtoms(i),
+          depth = this.depth,
+          j, jj,
+          atomNo;
+
       this.depth++;
-      for (var j=0, jj=bondedAtoms.length; j<jj; j++) {
-        var atomNo = bondedAtoms[j];
+
+      for (j=0, jj=bondedAtoms.length; j<jj; j++) {
+        atomNo = bondedAtoms[j];
         if (!~this.atomsInMolecule.indexOf(atomNo)) {
           moleculeAtoms = moleculeAtoms.concat(this.getMoleculeAtoms(atomNo)); // recurse
         }
@@ -1534,7 +1549,7 @@ exports.makeModel = function() {
         this.depth = 0;
         this.atomsInMolecule = [];
       } else {
-        moleculeAtoms.push(i)
+        moleculeAtoms.push(i);
       }
       return moleculeAtoms;
     },
@@ -1543,7 +1558,8 @@ exports.makeModel = function() {
       Returns all atoms directly bonded to atom i
     */
     getBondedAtoms: function(i) {
-      var bondedAtoms = [];
+      var bondedAtoms = [],
+          j, jj;
       if (radialBonds) {
         for (j = 0, jj = radialBonds[0].length; j < jj; j++) {
           // console.log("looking at bond from "+radialBonds)
