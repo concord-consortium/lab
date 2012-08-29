@@ -19,7 +19,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       padding, size,
       mw, mh, tx, ty, stroke,
       x, downscalex, downx,
-      y, downscaley, downy,
+      y, downscaley, downy, y_flip,
       dragged,
       drag_origin,
       pc_xpos, pc_ypos,
@@ -1014,13 +1014,25 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function node_dragstart(d, i) {
-      if (!is_stopped()) return;
-
-      drag_origin = [get_x(i), get_y(i)];
+      if (!is_stopped()) {
+        // if we're running, add a spring force
+        model.addSpringForce(i, get_x(i), get_y(i), 0.1);
+      } else {
+        // if we're stopped, drag the atom
+        drag_origin = [get_x(i), get_y(i)];
+      }
     }
 
     function node_drag(d, i){
-      if (!is_stopped()) return;
+      if (!is_stopped()) {
+        var click_x = x.invert(d3.event.x),
+            click_y = y.invert(d3.event.y);
+
+        // here we just assume we are updating the one and only spring force.
+        // This assumption will have to change if we can have more than one
+        model.updateSpringForce(0, click_x, click_y);
+        return;
+      }
 
       var dragTarget = d3.select(this),
           new_x, new_y;
@@ -1037,7 +1049,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     };
 
     function node_dragend(d, i){
-      if (!is_stopped()) return;
+      if (!is_stopped()) {
+        // here we just assume we are removing the one and only spring force.
+        // This assumption will have to change if we can have more than one
+        model.removeSpringForce(0);
+        return;
+      }
 
       var dragTarget = d3.select(this),
           new_x, new_y;
