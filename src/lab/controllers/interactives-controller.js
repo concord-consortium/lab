@@ -6,8 +6,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       modelController,
       $interactiveContainer,
       propertiesListeners = [],
+      playerConfig,
       thermometer,
-      controlButtons = "play",
 
       //
       // Define the scripting API used by 'action' scripts on interactive elements.
@@ -128,11 +128,6 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     @param: modelUrl
   */
   function loadModel(modelUrl) {
-
-    var playerConfig = {
-          controlButtons: controlButtons,
-          fit_to_parent: !layoutStyle
-        };
 
     modelUrl = ACTUAL_ROOT + modelUrl;
 
@@ -348,16 +343,6 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   }
 
   /**
-    Call if the interactive definitions has a toplevel key 'viewOptions', to set
-    the view options for the model.
-  */
-  function processModelViewOptions(options) {
-    if (typeof options.controlButtons === "string") {
-      controlButtons = options.controlButtons;
-    }
-  }
-
-  /**
     The main method called when this controller is created.
 
     Populates the element pointed to by viewSelector with divs to contain the
@@ -397,7 +382,12 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
 
     if (interactive.model != null) {
       modelUrl = interactive.model.url;
-      processModelViewOptions(interactive.model.viewOptions);
+      if (interactive.model.viewOptions) {
+        playerConfig = interactive.model.viewOptions;
+      } else {
+        playerConfig = { controlButtons: 'play' };
+      }
+      playerConfig.fit_to_parent = !layoutStyle
     }
 
     if (modelUrl) loadModel(modelUrl);
