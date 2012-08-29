@@ -1,0 +1,46 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
+    %title Energy2D: JavaScript and WebGL
+    %script{:src => "vendor/modernizr/modernizr.js", :type => "text/javascript"}
+    %script{:src => "vendor/d3/d3.v2.js", :type => "text/javascript"}
+    %script{:src => "vendor/jquery/jquery.min.js", :type => "text/javascript"}
+    %script{:src => "http://use.typekit.com/hdw8ayt.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      try{Typekit.load();}catch(e){}
+      $(document).ready(function() { if (!Modernizr.svg) { $('body').prepend('<div class="warning">Sorry, but you\'ll need to upgrade your browser to use the models and visualizations. <a href="browser-upgrade.html">Learn more</a> &raquo;</div>'); } });
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "index.css", :rel => "stylesheet", :type => "text/css"}/
+
+  %body
+    #header
+      %a#logo(href="http://www.concord.org/")
+        %img(src="resources/layout/cc-logo.png")
+      %h1 Energy2D: JavaScript and WebGL
+
+    #under-header-links
+      %a{:href => 'readme.html'} Read Me
+      &nbsp;&nbsp;
+      %a{:href => 'license.html'} License
+      &nbsp;&nbsp;
+      %a{:href => 'https://github.com/concord-consortium/lab'} Github Repository
+      &nbsp;&nbsp;
+      %a{:href => 'https://github.com/concord-consortium/lab/issues'} Github Issues
+      &nbsp;&nbsp;
+      %a{:href => 'https://www.pivotaltracker.com/projects/442903'} Pivotal Tracker Project
+      &nbsp;&nbsp;
+      %a{:href => 'https://groups.google.com/group/lab-models'} Developer Mail List
+      &nbsp;&nbsp;
+      %a{:href => 'experiments/navigator/index.html'} Browser Check
+
+
+      %div.column1
+        %div.item-list
+          %h2 Energy2D Examples
+          %ul
+            %li
+              %a{:href => 'examples/energy2d-model/energy2d-model.html'} Energy2D
+            %li
+              %a{:href => 'examples/energy2d-gpu-model/energy2d-model.html'} Energy2D with WebGL support
+
