@@ -61,7 +61,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         xunits:               false,
         yunits:               false,
         atom_mubers:          false,
-        enableAtomToolTips:   false,
+        enableAtomTooltips:   false,
         xmin:                 0,
         xmax:                 10,
         ymin:                 0,
@@ -920,7 +920,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function molecule_mousedown(d, i) {
       node.focus();
-      if (options.enableAtomToolTips) {
+      if (options.enableAtomTooltips) {
         if (atom_tooltip_on) {
           molecule_div.style("opacity", 1e-6);
           molecule_div.style("display", "none");
