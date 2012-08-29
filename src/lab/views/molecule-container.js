@@ -921,7 +921,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     function molecule_mousedown(d, i) {
       node.focus();
       if (options.enableAtomTooltips) {
-        if (atom_tooltip_on) {
+        if (atom_tooltip_on !== false) {
           molecule_div.style("opacity", 1e-6);
           molecule_div.style("display", "none");
           atom_tooltip_on = false;
@@ -959,7 +959,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function molecule_mouseout() {
-      if (typeof(atom_tooltip_on) !== "number") {
+      if (atom_tooltip_on === false) {
         molecule_div.style("opacity", 1e-6);
       }
     }
@@ -998,7 +998,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("cy", function(d, i) {return y(nodes[model.INDICES.Y][i]); })
         .attr("r",  function(d, i) {return x(nodes[model.INDICES.RADIUS][i]); });
 
-      if ((typeof(atom_tooltip_on) === "number")) {
+      if (atom_tooltip_on !== false) {
         render_atom_tooltip(atom_tooltip_on);
       }
     }
