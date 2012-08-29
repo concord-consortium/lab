@@ -685,6 +685,18 @@ modeler.model = function(initialProperties) {
     return true;
   },
 
+  model.addSpringForce = function(atomIndex, x, y, strength) {
+    coreModel.addSpringForce(atomIndex, x, y, strength);
+  },
+
+  model.updateSpringForce = function(i, x, y) {
+    coreModel.updateSpringForce(i, x, y);
+  },
+
+  model.removeSpringForce = function(i) {
+    coreModel.removeSpringForce(i);
+  },
+
   // return a copy of the array of speeds
   model.get_speed = function() {
     return arrays.copy(coreModel.speed, []);

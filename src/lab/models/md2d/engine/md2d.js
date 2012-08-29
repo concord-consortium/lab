@@ -25,7 +25,7 @@ var arrays       = require('arrays'),
     }()),
 
     // make at least 2 atoms
-    N_MIN = 2,
+    N_MIN = 1,
 
     // make no more than this many atoms:
     N_MAX = 1000,
@@ -249,6 +249,16 @@ exports.makeModel = function() {
       // Number of actual radial bonds (may be smaller than the length of the property arrays)
       N_radialBonds = 0,
 
+      // Arrays for spring forces, which are forces defined between an atom and a point in space
+      springForceAtomIndex,
+      springForceX,
+      springForceY,
+      springForceStrength,
+
+      springForces,
+
+      N_springForces = 0,
+
       // Individual properties for the obstacles
       obstacleX,
       obstacleY,
@@ -378,6 +388,35 @@ exports.makeModel = function() {
 
         for (i = 0; i < radialBonds.length; i++) {
           arrays.copy(savedArrays[i], radialBonds[i]);
+        }
+      },
+
+      createSpringForcesArray = function(num) {
+      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
+
+        springForces = model.springForces = [];
+
+        springForces[0] = springForceAtomIndex  = arrays.create(num, 0, uint16);
+        springForces[1] = springForceX          = arrays.create(num, 0, float32);
+        springForces[2] = springForceY          = arrays.create(num, 0, float32);
+        springForces[3] = springForceStrength   = arrays.create(num, 0, float32);
+      },
+
+      extendSpringForcesArray = function(num) {
+        var savedArrays = [],
+            i;
+
+        if (springForces) {
+          for (i = 0; i < springForces.length; i++) {
+            savedArrays[i] = springForces[i];
+          }
+        }
+
+        createSpringForcesArray(num);
+
+        for (i = 0; i < savedArrays.length; i++) {
+          arrays.copy(savedArrays[i], springForces[i]);
         }
       },
 
@@ -803,6 +842,43 @@ exports.makeModel = function() {
         }
       },
 
+      updateSpringAccelerations = function() {
+        if (N_springForces < 1) return;
+
+        var i,
+            mass_inv,
+            dx, dy,
+            r, r_sq,
+            k,
+            f_over_r,
+            fx, fy,
+            a;
+
+        for (i = 0; i < N_springForces; i++) {
+          a = springForceAtomIndex[i];
+          mass_inv = 1/elements[element[a]][0];
+
+          dx = springForceX[i] - x[a];
+          dy = springForceY[i] - y[a];
+
+          if (dx === 0 && dy === 0) continue;   // force will be zero
+
+          r_sq = dx*dx + dy*dy;
+          r = Math.sqrt(r_sq);
+
+          // eV/nm^2
+          k = springForceStrength[i];
+
+          f_over_r = constants.convert(k*r, { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+          fx = f_over_r * dx;
+          fy = f_over_r * dy;
+
+          ax[a] += fx * mass_inv;
+          ay[a] += fy * mass_inv;
+        }
+      },
+
       adjustTemperature = function(target, forceAdjustment) {
         var rescalingFactor,
             i;
@@ -1052,6 +1128,49 @@ exports.makeModel = function() {
       N_radialBonds++;
     },
 
+    /**
+      Adds a spring force between an atom and an x, y location.
+    */
+    addSpringForce: function(atomIndex, x, y, strength) {
+      extendSpringForcesArray(N_springForces+1);
+
+      springForceAtomIndex[N_springForces]  = atomIndex;
+      springForceX[N_springForces]          = x;
+      springForceY[N_springForces]          = y;
+      springForceStrength[N_springForces]   = strength;
+
+      N_springForces++;
+    },
+
+    updateSpringForce: function(i, x, y) {
+      springForceX[i] = x;
+      springForceY[i] = y;
+    },
+
+    removeSpringForce: function(i) {
+      if (i >= N_springForces) return;
+
+      N_springForces--;
+
+      if (N_springForces === 0) {
+        createSpringForcesArray(0);
+      } else {
+        var savedArrays = [],
+            j;
+
+        for (j = 0; j < springForces.length; j++) {
+          if (j !== i) {
+            savedArrays.push(springForces[i]);
+          }
+        }
+
+        createSpringForcesArray(N_springForces);
+
+        for (j = 0; j < springForces.length; j++) {
+          arrays.copy(savedArrays[i], springForces[i]);
+        }
+      }
+    },
 
     addObstacle: function(x, y, width, height, density, color, visible) {
       var mass;
@@ -1311,6 +1430,9 @@ exports.makeModel = function() {
 
         // Accumulate accelerations from bonded interactions into a(t+dt)
         updateBondAccelerations();
+
+        // Accumulate accelerations from spring forces
+        updateSpringAccelerations();
 
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
