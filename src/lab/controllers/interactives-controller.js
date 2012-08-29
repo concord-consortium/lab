@@ -284,6 +284,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         scriptStr = getStringFromArray(action);
         evalInScriptContext(scriptStr)();
       } else if (component.options[index].loadModel){
+        model.stop();
         loadModel(component.options[index].loadModel);
       }
     });
