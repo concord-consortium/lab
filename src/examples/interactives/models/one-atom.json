@@ -1,0 +1,60 @@
+{
+  "temperature_control": false,
+  "width": 0.5,
+  "height": 0.5,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 1.99,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 20,
+      "sigma": 0.07,
+      "epsilon": -0.0010000000474974513
+    },
+    {
+      "id": 1,
+      "mass": 40,
+      "sigma": 0.14,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 60,
+      "sigma": 0.21,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 80,
+      "sigma": 0.28,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      0.285
+    ],
+    "Y": [
+      0.27
+    ],
+    "VX": [
+      0
+    ],
+    "VY": [
+      0
+    ],
+    "CHARGE": [
+      0
+    ],
+    "ELEMENT": [
+      0
+    ]
+  }
+}
