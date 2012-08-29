@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4.38,
   "height": 2.88,
-  "chargeShading": true,
+  "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.99,
   "elements":[
@@ -39,18 +39,32 @@
   ],
   "atoms": {
     "X": [
+      2.53,
+      1.74
     ],
     "Y": [
+      1.39,
+      1.4
     ],
     "VX": [
+      0,
+      0
     ],
     "VY": [
+      0,
+      0
     ],
     "CHARGE": [
+      0.75,
+      -0.75
     ],
     "ELEMENT": [
+      0,
+      0
     ],
     "PINNED": [
+      0,
+      1
     ]
   }
 }

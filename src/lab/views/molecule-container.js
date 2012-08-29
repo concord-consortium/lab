@@ -1020,7 +1020,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     function node_dragstart(d, i) {
       if (!is_stopped()) {
         // if we're running, add a spring force
-        model.addSpringForce(i, get_x(i), get_y(i), 0.1);
+        model.addSpringForce(i, get_x(i), get_y(i), 0.2);
       } else {
         // if we're stopped, drag the atom
         drag_origin = [get_x(i), get_y(i)];
