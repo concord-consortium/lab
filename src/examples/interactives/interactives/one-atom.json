@@ -2,7 +2,8 @@
   "model": {
     "url": "models/one-atom.json",
     "viewOptions": {
-      "controlButtons": "play_reset"
+      "controlButtons": "play_reset",
+      "enableAtomTooltips": true
     }
   },
   "components": [
