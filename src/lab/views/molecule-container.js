@@ -155,7 +155,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       "height": height
     };
 
-    offset_top = node.offsetTop + padding.top;
+    offset_top  = node.offsetTop + padding.top;
+    offset_left = node.offsetLeft + padding.left;
 
     switch (options.control_buttons) {
       case "play":
@@ -1040,6 +1041,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       dragTarget
         .attr("cx", function(){return d3.event.x})
         .attr("cy", function(){return d3.event.y});
+
+      molecule_div
+            .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 16 + "px")
+            .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px")
 
       new_x = x.invert(dragTarget.attr('cx'));
       new_y = y.invert(dragTarget.attr('cy'));
