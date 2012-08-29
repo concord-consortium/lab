@@ -615,7 +615,7 @@ modeler.model = function(initialProperties) {
 
     Otherwise, returns true.
   */
-  model.addAtom = function(el, x, y, vx, vy, charge) {
+  model.addAtom = function(el, x, y, vx, vy, charge, pinned) {
     var size      = model.size(),
         radius    = coreModel.getRadiusOfElement(el);
 
@@ -627,7 +627,7 @@ modeler.model = function(initialProperties) {
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
     if (coreModel.canPlaceAtom(el, x, y)) {
-      coreModel.addAtom(el, x, y, vx, vy, charge);
+      coreModel.addAtom(el, x, y, vx, vy, charge, pinned);
 
       // reassign nodes to possibly-reallocated atoms array
       nodes = coreModel.atoms;

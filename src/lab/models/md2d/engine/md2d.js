@@ -129,7 +129,8 @@ exports.INDICES = INDICES = {
   AX     :  8,
   AY     :  9,
   CHARGE : 10,
-  ELEMENT: 11
+  ELEMENT: 11,
+  PINNED : 12
 };
 
 exports.ATOM_PROPERTIES = {
@@ -144,7 +145,8 @@ exports.ATOM_PROPERTIES = {
   AX     :  "ax",
   AY     :  "ay",
   CHARGE :  "charge",
-  ELEMENT:  "element"
+  ELEMENT:  "element",
+  PINNED :  "pinned"
 };
 
 exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
@@ -170,7 +172,7 @@ exports.RADIAL_INDICES = RADIAL_INDICES = {
   STRENGTH:  3
 };
 
-exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED"];
 
 exports.makeModel = function() {
 
@@ -231,7 +233,7 @@ exports.makeModel = function() {
       elements,
 
       // Individual property arrays for the atoms, indexed by atom number
-      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, pinned,
 
       // An array of length max(INDICES)+1 which contains the above property arrays
       atoms,
@@ -737,6 +739,13 @@ exports.makeModel = function() {
         py[i] = mass * vy[i];
       },
 
+      clearPinnedAcceleration = function(i) {
+        if (pinned[i]) {
+          ax[i] = 0;
+          ay[i] = 0;
+        }
+      },
+
       // Accumulate accelerations into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between particles i and j
       // where j < i. Note a(t, i) and a(t, j) (accelerations from the previous time step) should be cleared from arrays
       // ax and ay before calling this function.
@@ -1054,6 +1063,7 @@ exports.makeModel = function() {
       ay      = model.ay      = atoms[INDICES.AY]      = arrays.create(num, 0, float32);
       charge  = model.charge  = atoms[INDICES.CHARGE]  = arrays.create(num, 0, float32);
       element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8);
+      pinned  = model.pinned  = atoms[INDICES.PINNED]  = arrays.create(num, 0, uint8);
 
       N = 0;
       totalMass = 0;
@@ -1065,7 +1075,7 @@ exports.makeModel = function() {
       If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
-    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, is_pinned) {
       var el, mass;
 
       if (N+1 > atoms[0].length) {
@@ -1087,6 +1097,7 @@ exports.makeModel = function() {
       ay[N]      = 0;
       speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
       charge[N]  = atom_charge;
+      pinned[N]  = is_pinned;
 
       if (atom_charge) hasChargedAtoms = true;
 
@@ -1246,7 +1257,7 @@ exports.makeModel = function() {
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var x, y, vx, vy, charge, element,
+      var x, y, vx, vy, charge, element, pinned,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -1265,8 +1276,9 @@ exports.makeModel = function() {
         vx = props.VX[i];
         vy = props.VY[i];
         charge = props.CHARGE ? props.CHARGE[i] : 0;
+        pinned = props.PINNED ? props.PINNED[i] : 0;
 
-        model.addAtom(element, x, y, vx, vy, charge);
+        model.addAtom(element, x, y, vx, vy, charge, pinned);
       }
 
       // Publish the current state
@@ -1314,7 +1326,7 @@ exports.makeModel = function() {
 
           charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          model.addAtom(element, x, y, vx, vy, charge);
+          model.addAtom(element, x, y, vx, vy, charge, 0);
         }
       }
 
@@ -1408,6 +1420,7 @@ exports.makeModel = function() {
           y_prev = y[i];
 
           // Update r(t+dt) using v(t) and a(t)
+          clearPinnedAcceleration(i);
           updatePosition(i);
           bounceOffWalls(i);
           bounceOffObstacles(i, x_prev, y_prev);
@@ -1436,6 +1449,7 @@ exports.makeModel = function() {
 
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
+          clearPinnedAcceleration(i);
           halfUpdateVelocity(i);
 
           // Now that we have velocity, update speed
