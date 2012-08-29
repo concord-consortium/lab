@@ -998,7 +998,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("cy", function(d, i) {return y(nodes[model.INDICES.Y][i]); })
         .attr("r",  function(d, i) {return x(nodes[model.INDICES.RADIUS][i]); });
 
-      if (atom_tooltip_on !== false) {
+      if (atom_tooltip_on === 0 || atom_tooltip_on > 0) {
         render_atom_tooltip(atom_tooltip_on);
       }
     }
