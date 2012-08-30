@@ -251,6 +251,8 @@ exports.makeModel = function() {
       // An array of length 4 which contains the above 4 property arrays.
       // Left undefined if no radial bonds are defined.
       radialBonds,
+      //Ordered Radial Bond hash
+      radialBondsHash,
 
       // Number of actual radial bonds (may be smaller than the length of the property arrays)
       N_radialBonds = 0,
@@ -902,14 +904,12 @@ exports.makeModel = function() {
       for (i = 0; i < elements.length; i++) {
         epsilon_i = elements[i][ELEMENT_INDICES.EPSILON];
         sigma_i   = elements[i][ELEMENT_INDICES.SIGMA];
-
         // the radius is derived from sigma
         elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius(sigma_i);
 
         for (j = i; j < elements.length; j++) {
           epsilon_j = elements[j][ELEMENT_INDICES.EPSILON];
           sigma_j   = elements[j][ELEMENT_INDICES.SIGMA];
-
           epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
           sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
 
@@ -1046,7 +1046,15 @@ exports.makeModel = function() {
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
     addRadialBond: function(atomIndex1, atomIndex2, bondLength, bondStrength) {
-
+      var smallerIndex, largerIndex;
+      if(atomIndex1 < atomIndex2) {
+        smallerIndex = atomIndex1;
+        largerIndex = atomIndex2;
+      }
+      else {
+        smallerIndex = atomIndex2;
+        largerIndex = atomIndex1;
+      }
       if (N_radialBonds+1 > radialBondAtom1Index.length) {
         extendRadialBondsArray(N_radialBonds+1);
       }
@@ -1055,6 +1063,11 @@ exports.makeModel = function() {
       radialBondAtom2Index[N_radialBonds] = atomIndex2;
       radialBondLength[N_radialBonds]     = bondLength;
       radialBondStrength[N_radialBonds]   = bondStrength;
+
+      if (!radialBondsHash[smallerIndex]) {
+        radialBondsHash[smallerIndex] = {};
+      }
+      radialBondsHash[smallerIndex][largerIndex] = true;
 
       N_radialBonds++;
     },
@@ -1236,7 +1249,7 @@ exports.makeModel = function() {
     initializeRadialBonds: function(props) {
       var num = props.atom1Index.length,
           i;
-
+      radialBondsHash = {};
       createRadialBondsArray(num);
 
       for (i = 0; i < num; i++) {
@@ -1249,57 +1262,42 @@ exports.makeModel = function() {
       }
     },
 
-    createVdwLinesArray : function(num, radialBonds) {
-    var uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
-      vdwIndices = VDW_INDICES,numradialBonds = radialBonds.atom1Index.length,
-      numAtoms = (((num.CHARGE.length)+(num.CHARGE.length+1))/2);
+    createVdwPairsArray: function(num) {
+      var uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
+        vdwIndices = VDW_INDICES,
+        numAtoms = num.ELEMENT.length;
+      var maxNumPairs = (((numAtoms)*(numAtoms-1))/2);
 
-    vdwLines = model.vdwLines = [];
+      vdwPairs = model.vdwPairs = [];
 
-    vdwLines[vdwIndices.ATOM1] = vdwLineAtom1Index = arrays.create(numAtoms, 0, uint16);
-    vdwLines[vdwIndices.ATOM2] = vdwLineAtom2Index = arrays.create(numAtoms, 0, uint16);
+      vdwPairs[vdwIndices.ATOM1] = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, uint16);
+      vdwPairs[vdwIndices.ATOM2] = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, uint16);
+      model.updateVdwPairsArray();
 
-    var i, j,
-      i1, i2,
-      dx, dy,
-      r_sq,
-      VDWLines = [],
-      VDWLineAtom1Index = [],
-      VDWLineAtom2Index = [],
-      VDWLinesNum;
+    },
 
-    for (i = 0; i < N; i++) {
-      // pairwise interactions
-      for (j = i+1; j < N; j++) {
-        dx = x[j] - x[i];
-        dy = y[j] - y[i];
-        r_sq = dx*dx + dy*dy;
+    updateVdwPairsArray: function(){
+      var i, j,
+        dx, dy,
+        r_sq,
+        vdwPairNum = 0;
 
-        if(!(((charge[i] > 0) &&  (charge[j] > 0)) || ((charge[j] < 0) &&  (charge[j] < 0))) && (r_sq >= 2.00)){
-          VDWLineAtom1Index.push(i);
-          VDWLineAtom2Index.push(j);
+      for (i = 0; i < N; i++) {
+        // pairwise interactions
+        for (j = i+1; j < N; j++) {
+          if (radialBondsHash[i] && radialBondsHash[i][j]) continue;
+          dx = x[j] - x[i];
+          dy = y[j] - y[i];
+          r_sq = dx*dx + dy*dy;
+          if(!(((charge[i] > 0) &&  (charge[j] > 0)) || ((charge[j] < 0) &&  (charge[j] < 0))) && (r_sq <= (0.4*0.4))){
+            //console.log("adding "+i+", "+j)
+            vdwPairAtom1Index[vdwPairNum] = i;
+            vdwPairAtom2Index[vdwPairNum] = j;
+            vdwPairNum++;
+          }
         }
       }
-    }
-    VDWLinesNum = VDWLineAtom1Index.length;
-    console.log(VDWLinesNum);
-    for (i = 0; i < VDWLinesNum; i++) {
-      //console.log("aaaaaaai : "+i+" j :"+j+" N_radialBonds : "+N_radialBonds);
-      // pairwise interactions
-      for (j = 0; j < numradialBonds; j++) {
-        console.log("i : "+i+" j :"+j);
-        i1 = radialBonds.atom1Index[j];
-        i2 = radialBonds.atom1Index[j];
-        if((VDWLineAtom1Index[i] == i1) && (VDWLineAtom2Index[i] == i2)){
-          VDWLineAtom1Index.pop(i);
-          VDWLineAtom2Index.pop(j);
-        }
-      }
-    }
-    VDWLines.push(VDWLineAtom1Index, VDWLineAtom2Index);
-  },
-
-
+    },
 
     relaxToTemperature: function(T) {
 

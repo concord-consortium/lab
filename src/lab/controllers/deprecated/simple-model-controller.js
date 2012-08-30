@@ -111,6 +111,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
       if (radialBonds) model.createRadialBonds(radialBonds);
+      if (showVDWLines) model.createVdwPairs(atoms_properties);
       if (obstacles) model.createObstacles(obstacles);
     }
 
@@ -138,6 +139,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
           chargeShading:        chargeShading,
           showVDWLines:         showVDWLines,
           get_radial_bonds:     function() { return model.get_radial_bonds(); },
+          get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
           get_nodes:            function() { return model.get_nodes(); },
           get_num_atoms:        function() { return model.get_num_atoms(); },
           get_obstacles:        function() { return model.get_obstacles(); }

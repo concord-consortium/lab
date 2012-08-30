@@ -32,7 +32,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       chargeShading,
       showVDWLines,
       radialBonds,
-      vdwLines,
       obstacles,
 
       moleculeContainer,
@@ -125,7 +124,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       }
 
       if (radialBonds) model.createRadialBonds(radialBonds);
-      if (showVDWLines) model.createVdwLines(atoms, radialBonds);
+      if (showVDWLines) model.createVdwPairs(atoms);
       if (obstacles) model.createObstacles(obstacles);
 
       dispatch.modelReset();
@@ -159,6 +158,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
         get_obstacles:        function() { return model.get_obstacles(); },
+        get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments);  },
         is_stopped:           function() { return model.is_stopped() },
 
@@ -185,6 +185,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_radial_bonds:     function() { return model.get_radial_bonds(); },
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
+        get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
         get_obstacles:        function() { return model.get_obstacles(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments); },
         is_stopped:           function() { return model.is_stopped() },
