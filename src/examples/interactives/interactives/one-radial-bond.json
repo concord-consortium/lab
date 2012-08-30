@@ -8,9 +8,15 @@
   "components": [
     {
       "type": "button",
-      "id": "bond-div-4",
-      "text": "Bond 1/4",
-      "action": "var values = getRadialBond(0); values[3] = 10000 / 4; setRadialBond(0, values)"
+      "id": "bond-div-256",
+      "text": "Bond 1/256",
+      "action": "var values = getRadialBond(0); values[3] = 10000 / 256; setRadialBond(0, values)"
+    },
+    {
+      "type": "button",
+      "id": "bond-div-32",
+      "text": "Bond 1/32",
+      "action": "var values = getRadialBond(0); values[3] = 10000 / 32; setRadialBond(0, values)"
     },
     {
       "type": "button",
