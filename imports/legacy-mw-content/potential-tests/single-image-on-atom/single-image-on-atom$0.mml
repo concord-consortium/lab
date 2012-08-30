@@ -322,7 +322,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1346336736000</long> 
+     <long>1346336983000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -331,11 +331,11 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>13557</long> 
+    <long>13459</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/potential-tests/single-image-on-atom</string> 
+    <string>/imports/legacy-mw-content/potential-tests/single-image-on-atom</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
