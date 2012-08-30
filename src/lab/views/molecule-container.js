@@ -794,29 +794,22 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function drawAttractionForces(){
       var vdwPairs = mock_vdw_pairs_array.length;
+      var atom1;
+      var atom2;
       for(var i = 0;i < vdwPairs;i++){
-        if(!(get_vdw_line_atom_1(i) == 0 && get_vdw_line_atom_2(i) == 0)) {
+        atom1 = get_vdw_line_atom_1(i);
+        atom2 = get_vdw_line_atom_2(i);
+        if(!(atom1 == 0 && atom2 == 0)) {
           VDWLines_container.append("line")
-            .attr("x1", x(get_x(get_vdw_line_atom_1(i))))
-            .attr("y1", y(get_y(get_vdw_line_atom_1(i))))
-            .attr("x2", x(get_x(get_vdw_line_atom_2(i))))
-            .attr("y2", y(get_y(get_vdw_line_atom_2(i))))
+            .attr("x1", x(get_x(atom1)))
+            .attr("y1", y(get_y(atom1)))
+            .attr("x2", x(get_x(atom2)))
+            .attr("y2", y(get_y(atom2)))
             .attr("class", "attractionforce")
-            .style("stroke-width", 1)
+            .style("stroke-width", 0.3)
             .style("stroke", "#000000")
             .style("stroke-dasharray", "5 3");
         }
-      }
-    }
-
-    function isChargeSame(atom1,atom2) {
-      var atomCharge1 =  get_charge(atom1);
-      var atomCharge2 =  get_charge(atom2);
-      if((atomCharge1 > 0) &&  (atomCharge2 > 0) || (atomCharge1 < 0) &&  (atomCharge2 < 0)){
-        return true;
-      }
-      else {
-        return false;
       }
     }
 
@@ -928,7 +921,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       mock_vdw_pairs_array.length = vdwPairs[0].length;
 
-      drawAttractionForces()
+      drawAttractionForces();
     }
 
     function mousedown() {

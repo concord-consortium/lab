@@ -1411,24 +1411,47 @@ exports.makeModel = function() {
       var i, j,
         dx, dy,
         r_sq,
+        localSigma_i, localEpsilon_i,
+        localSigma_j, localEpsilon_j,
+        sig, eps,
         vdwPairNum = 0;
 
       for (i = 0; i < N; i++) {
         // pairwise interactions
         for (j = i+1; j < N; j++) {
           if (radialBondsHash[i] && radialBondsHash[i][j]) continue;
-          dx = x[j] - x[i];
-          dy = y[j] - y[i];
-          r_sq = dx*dx + dy*dy;
-          if(!(((charge[i] > 0) &&  (charge[j] > 0)) || ((charge[j] < 0) &&  (charge[j] < 0))) && (r_sq <= (0.4*0.4))){
-            //console.log("adding "+i+", "+j)
-            vdwPairAtom1Index[vdwPairNum] = i;
-            vdwPairAtom2Index[vdwPairNum] = j;
-            vdwPairNum++;
+          if(!(model.isChargeSame(i,j))){
+            dx = x[j] - x[i];
+            dy = y[j] - y[i];
+            r_sq = dx*dx + dy*dy;
+            localSigma_i =  elements[atoms[11][i]][ELEMENT_INDICES.SIGMA];
+            localEpsilon_i =   elements[atoms[11][i]][ELEMENT_INDICES.EPSILON];
+            localSigma_j =  elements[atoms[11][j]][ELEMENT_INDICES.SIGMA];
+            localEpsilon_j =   elements[atoms[11][j]][ELEMENT_INDICES.EPSILON];
+            sig = 0.5*(localSigma_i+localSigma_j);
+            sig *= sig;
+            eps = localEpsilon_i*localEpsilon_j;
+            if (r_sq < sig * (2*2) && eps > 0) {
+              vdwPairAtom1Index[vdwPairNum] = i;
+              vdwPairAtom2Index[vdwPairNum] = j;
+              vdwPairNum++;
+            }
           }
         }
       }
     },
+
+    isChargeSame: function(atom1,atom2) {
+      var atomCharge1 =  charge[atom1];
+      var atomCharge2 =  charge[atom2];
+      if((atomCharge1 > 0) &&  (atomCharge2 > 0) || (atomCharge1 < 0) &&  (atomCharge2 < 0)){
+        return true;
+      }
+      else {
+        return false;
+      }
+    },
+
 
     relaxToTemperature: function(T) {
 
