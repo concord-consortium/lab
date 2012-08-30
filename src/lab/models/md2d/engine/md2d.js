@@ -748,7 +748,8 @@ exports.makeModel = function() {
         py[i] = mass * vy[i];
       },
 
-      clearPinnedAcceleration = function(i) {
+      // Sets the acceleration of atom i to zero if i is pinned
+      clearAccelerationIfPinned = function(i) {
         if (pinned[i]) {
           ax[i] = 0;
           ay[i] = 0;
@@ -1500,7 +1501,6 @@ exports.makeModel = function() {
           y_prev = y[i];
 
           // Update r(t+dt) using v(t) and a(t)
-          clearPinnedAcceleration(i);
           updatePosition(i);
           bounceOffWalls(i);
           bounceOffObstacles(i, x_prev, y_prev);
@@ -1528,8 +1528,11 @@ exports.makeModel = function() {
         updateSpringAccelerations();
 
         for (i = 0; i < N; i++) {
+          // Clearing the acceleration here from pinned atoms will cause the acceleration
+          // to be zero for both halfUpdateVelocity methods and updatePosition, freezing the atom
+          clearAccelerationIfPinned(i);
+
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
-          clearPinnedAcceleration(i);
           halfUpdateVelocity(i);
 
           // Now that we have velocity, update speed

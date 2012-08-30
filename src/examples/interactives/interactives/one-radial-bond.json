@@ -7,34 +7,62 @@
   },
   "components": [
     {
-      "type": "button",
-      "id": "bond-div-4",
-      "text": "Bond 1/4",
-      "action": "var values = getRadialBond(0); values[3] = 10000 / 4; setRadialBond(0, values)"
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select Radial Bond Strength ...",
+          "disabled": true
+        },
+        {
+          "text": "Bond x1",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 ; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "increase bond strength",
+          "disabled": true
+        },
+        {
+          "text": "Bond x2",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 * 2; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond x4",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 * 4; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "decrease bond strength",
+          "disabled": true
+        },
+        {
+          "text": "Bond x 1/2",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 2; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond x 1/32",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 32; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond x 1/256",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 256; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond x 1/8192",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 8192; setRadialBond(0, values); start();"
+        }
+      ]
     },
     {
       "type": "button",
-      "id": "bond-div-2",
-      "text": "Bond 1/2",
-      "action": "var values = getRadialBond(0); values[3] = 10000 / 2; setRadialBond(0, values)"
+      "id": "add-velocity",
+      "text": "Add X Velocity",
+      "action": "var props = getAtomProperties(0); props.vx += 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx += 0.00002; setAtomProperties(1, props); start();"
     },
     {
       "type": "button",
-      "id": "bond-mul-1",
-      "text": "Bond x1",
-      "action": "var values = getRadialBond(0); values[3] = 10000 ; setRadialBond(0, values)"
-    },
-    {
-      "type": "button",
-      "id": "bond-mul-2",
-      "text": "Bond x2",
-      "action": "var values = getRadialBond(0); values[3] = 10000 * 2; setRadialBond(0, values)"
-    },
-    {
-      "type": "button",
-      "id": "bond-mul-4",
-      "text": "Bond x4",
-      "action": "var values = getRadialBond(0); values[3] = 10000 * 4; setRadialBond(0, values)"
+      "id": "subtract-velocity",
+      "text": "Subtract X Velocity",
+      "action": "var props = getAtomProperties(0); props.vx -= 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx -= 0.00002; setAtomProperties(1, props); start();"
     }
   ]
 }
