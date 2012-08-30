@@ -35,6 +35,12 @@
       "id": "bond-mul-4",
       "text": "Bond x4",
       "action": "var values = getRadialBond(0); values[3] = 10000 * 4; setRadialBond(0, values)"
+    },
+    {
+      "type": "button",
+      "id": "start-moving",
+      "text": "Start Moving",
+      "action": "var props = getAtomProperties(0); props.vx += 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx += 0.00002; setAtomProperties(1, props); start();"
     }
   ]
 }
