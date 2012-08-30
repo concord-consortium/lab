@@ -306,7 +306,11 @@
    </object> 
   </void> 
   <void property="heatBath"> 
-   <object class="org.concord.mw2d.models.HeatBath"/> 
+   <object class="org.concord.mw2d.models.HeatBath"> 
+    <void property="expectedTemperature"> 
+     <double>101.0</double> 
+    </void> 
+   </object> 
   </void> 
   <void property="lightSource"> 
    <object class="org.concord.mw2d.models.LightSource"/> 
@@ -322,7 +326,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1346336983000</long> 
+     <long>1346345787000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -331,11 +335,11 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>13459</long> 
+    <long>13581</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/imports/legacy-mw-content/potential-tests/single-image-on-atom</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/potential-tests/single-image-on-atom</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -415,15 +419,15 @@ print starting temp is %temperature;</string>
    <double>130.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.02</double> 
+   <double>0.010334228655160798</double> 
   </void> 
   <void property="vy"> 
-   <double>0.02</double> 
+   <double>0.010334228655160798</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>3</int> 
+   <int>1</int> 
   </void> 
   <void property="rx"> 
    <double>89.0</double> 
@@ -432,15 +436,15 @@ print starting temp is %temperature;</string>
    <double>78.0</double> 
   </void> 
   <void property="vx"> 
-   <double>-0.023754657051725938</double> 
+   <double>-0.012274302879873186</double> 
   </void> 
   <void property="vy"> 
-   <double>0.014695375048283494</double> 
+   <double>0.007593268296115313</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>3</int> 
+   <int>1</int> 
   </void> 
   <void property="rx"> 
    <double>256.0</double> 
@@ -449,15 +453,15 @@ print starting temp is %temperature;</string>
    <double>60.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.021044498193879345</double> 
+   <double>0.010873932813433379</double> 
   </void> 
   <void property="vy"> 
-   <double>0.018367549515997905</double> 
+   <double>0.009490722826665519</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>3</int> 
+   <int>1</int> 
   </void> 
   <void property="rx"> 
    <double>309.0</double> 
@@ -466,15 +470,15 @@ print starting temp is %temperature;</string>
    <double>103.0</double> 
   </void> 
   <void property="vx"> 
-   <double>-0.018004421925877614</double> 
+   <double>-0.00930309064930049</double> 
   </void> 
   <void property="vy"> 
-   <double>-0.02135599612684464</double> 
+   <double>-0.011034887356677046</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>3</int> 
+   <int>1</int> 
   </void> 
   <void property="rx"> 
    <double>295.0</double> 
@@ -483,15 +487,15 @@ print starting temp is %temperature;</string>
    <double>209.0</double> 
   </void> 
   <void property="vx"> 
-   <double>-0.015380686863077801</double> 
+   <double>-0.007947376745823692</double> 
   </void> 
   <void property="vy"> 
-   <double>-0.023316780461177994</double> 
+   <double>-0.012048047039399951</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>3</int> 
+   <int>1</int> 
   </void> 
   <void property="rx"> 
    <double>177.0</double> 
@@ -500,15 +504,15 @@ print starting temp is %temperature;</string>
    <double>261.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.02790175720658098</double> 
+   <double>0.014417156942679423</double> 
   </void> 
   <void property="vy"> 
-   <double>-0.001315189811332291</double> 
+   <double>-6.795736117622843E-4</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>3</int> 
+   <int>1</int> 
   </void> 
   <void property="rx"> 
    <double>79.0</double> 
@@ -517,10 +521,10 @@ print starting temp is %temperature;</string>
    <double>192.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.02292891990352456</double> 
+   <double>0.011847635054944513</double> 
   </void> 
   <void property="vy"> 
-   <double>-0.015953131714888494</double> 
+   <double>-0.00824316554537776</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.MolecularModel$State"/> 
