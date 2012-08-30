@@ -35,7 +35,11 @@
         },
         {
           "text": "Bond x 1/256",
-          "action": "var values = getRadialBond(0); values[3] = 10000 / 64; setRadialBond(0, values)"
+          "action": "var values = getRadialBond(0); values[3] = 10000 / 256; setRadialBond(0, values)"
+        },
+        {
+          "text": "Bond x 1/8192",
+          "action": "var values = getRadialBond(0); values[3] = 10000 / 8192; setRadialBond(0, values)"
         }
       ]
     },
