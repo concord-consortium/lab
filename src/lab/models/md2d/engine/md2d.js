@@ -25,7 +25,7 @@ var arrays       = require('arrays'),
     }()),
 
     // make at least 2 atoms
-    N_MIN = 2,
+    N_MIN = 1,
 
     // make no more than this many atoms:
     N_MAX = 1000,
@@ -130,7 +130,8 @@ exports.INDICES = INDICES = {
   AX     :  8,
   AY     :  9,
   CHARGE : 10,
-  ELEMENT: 11
+  ELEMENT: 11,
+  PINNED : 12
 };
 
 exports.ATOM_PROPERTIES = {
@@ -145,7 +146,8 @@ exports.ATOM_PROPERTIES = {
   AX     :  "ax",
   AY     :  "ay",
   CHARGE :  "charge",
-  ELEMENT:  "element"
+  ELEMENT:  "element",
+  PINNED :  "pinned"
 };
 
 exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
@@ -176,7 +178,7 @@ exports.VDW_INDICES = VDW_INDICES = {
   ATOM2   :  1
 };
 
-exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED"];
 
 exports.makeModel = function() {
 
@@ -237,7 +239,7 @@ exports.makeModel = function() {
       elements,
 
       // Individual property arrays for the atoms, indexed by atom number
-      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, pinned,
 
       // An array of length max(INDICES)+1 which contains the above property arrays
       atoms,
@@ -256,6 +258,16 @@ exports.makeModel = function() {
 
       // Number of actual radial bonds (may be smaller than the length of the property arrays)
       N_radialBonds = 0,
+
+      // Arrays for spring forces, which are forces defined between an atom and a point in space
+      springForceAtomIndex,
+      springForceX,
+      springForceY,
+      springForceStrength,
+
+      springForces,
+
+      N_springForces = 0,
 
       // Individual properties for the obstacles
       obstacleX,
@@ -387,6 +399,35 @@ exports.makeModel = function() {
 
         for (i = 0; i < radialBonds.length; i++) {
           arrays.copy(savedArrays[i], radialBonds[i]);
+        }
+      },
+
+      createSpringForcesArray = function(num) {
+      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
+
+        springForces = model.springForces = [];
+
+        springForces[0] = springForceAtomIndex  = arrays.create(num, 0, uint16);
+        springForces[1] = springForceX          = arrays.create(num, 0, float32);
+        springForces[2] = springForceY          = arrays.create(num, 0, float32);
+        springForces[3] = springForceStrength   = arrays.create(num, 0, float32);
+      },
+
+      extendSpringForcesArray = function(num) {
+        var savedArrays = [],
+            i;
+
+        if (springForces) {
+          for (i = 0; i < springForces.length; i++) {
+            savedArrays[i] = springForces[i];
+          }
+        }
+
+        createSpringForcesArray(num);
+
+        for (i = 0; i < savedArrays.length; i++) {
+          arrays.copy(savedArrays[i], springForces[i]);
         }
       },
 
@@ -707,6 +748,13 @@ exports.makeModel = function() {
         py[i] = mass * vy[i];
       },
 
+      clearPinnedAcceleration = function(i) {
+        if (pinned[i]) {
+          ax[i] = 0;
+          ay[i] = 0;
+        }
+      },
+
       // Accumulate accelerations into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between particles i and j
       // where j < i. Note a(t, i) and a(t, j) (accelerations from the previous time step) should be cleared from arrays
       // ax and ay before calling this function.
@@ -809,6 +857,43 @@ exports.makeModel = function() {
           ay[i1] += fy * mass1_inv;
           ax[i2] -= fx * mass2_inv;
           ay[i2] -= fy * mass2_inv;
+        }
+      },
+
+      updateSpringAccelerations = function() {
+        if (N_springForces < 1) return;
+
+        var i,
+            mass_inv,
+            dx, dy,
+            r, r_sq,
+            k,
+            f_over_r,
+            fx, fy,
+            a;
+
+        for (i = 0; i < N_springForces; i++) {
+          a = springForceAtomIndex[i];
+          mass_inv = 1/elements[element[a]][0];
+
+          dx = springForceX[i] - x[a];
+          dy = springForceY[i] - y[a];
+
+          if (dx === 0 && dy === 0) continue;   // force will be zero
+
+          r_sq = dx*dx + dy*dy;
+          r = Math.sqrt(r_sq);
+
+          // eV/nm^2
+          k = springForceStrength[i];
+
+          f_over_r = constants.convert(k*r, { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+          fx = f_over_r * dx;
+          fy = f_over_r * dy;
+
+          ax[a] += fx * mass_inv;
+          ay[a] += fy * mass_inv;
         }
       },
 
@@ -985,6 +1070,7 @@ exports.makeModel = function() {
       ay      = model.ay      = atoms[INDICES.AY]      = arrays.create(num, 0, float32);
       charge  = model.charge  = atoms[INDICES.CHARGE]  = arrays.create(num, 0, float32);
       element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8);
+      pinned  = model.pinned  = atoms[INDICES.PINNED]  = arrays.create(num, 0, uint8);
 
       N = 0;
       totalMass = 0;
@@ -996,7 +1082,7 @@ exports.makeModel = function() {
       If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
-    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, is_pinned) {
       var el, mass;
 
       if (N+1 > atoms[0].length) {
@@ -1018,6 +1104,7 @@ exports.makeModel = function() {
       ay[N]      = 0;
       speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
       charge[N]  = atom_charge;
+      pinned[N]  = is_pinned;
 
       if (atom_charge) hasChargedAtoms = true;
 
@@ -1072,6 +1159,49 @@ exports.makeModel = function() {
       N_radialBonds++;
     },
 
+    /**
+      Adds a spring force between an atom and an x, y location.
+    */
+    addSpringForce: function(atomIndex, x, y, strength) {
+      extendSpringForcesArray(N_springForces+1);
+
+      springForceAtomIndex[N_springForces]  = atomIndex;
+      springForceX[N_springForces]          = x;
+      springForceY[N_springForces]          = y;
+      springForceStrength[N_springForces]   = strength;
+
+      N_springForces++;
+    },
+
+    updateSpringForce: function(i, x, y) {
+      springForceX[i] = x;
+      springForceY[i] = y;
+    },
+
+    removeSpringForce: function(i) {
+      if (i >= N_springForces) return;
+
+      N_springForces--;
+
+      if (N_springForces === 0) {
+        createSpringForcesArray(0);
+      } else {
+        var savedArrays = [],
+            j;
+
+        for (j = 0; j < springForces.length; j++) {
+          if (j !== i) {
+            savedArrays.push(springForces[i]);
+          }
+        }
+
+        createSpringForcesArray(N_springForces);
+
+        for (j = 0; j < springForces.length; j++) {
+          arrays.copy(savedArrays[i], springForces[i]);
+        }
+      }
+    },
 
     addObstacle: function(x, y, width, height, density, color, visible) {
       var mass;
@@ -1147,7 +1277,7 @@ exports.makeModel = function() {
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var x, y, vx, vy, charge, element,
+      var x, y, vx, vy, charge, element, pinned,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -1166,8 +1296,9 @@ exports.makeModel = function() {
         vx = props.VX[i];
         vy = props.VY[i];
         charge = props.CHARGE ? props.CHARGE[i] : 0;
+        pinned = props.PINNED ? props.PINNED[i] : 0;
 
-        model.addAtom(element, x, y, vx, vy, charge);
+        model.addAtom(element, x, y, vx, vy, charge, pinned);
       }
 
       // Publish the current state
@@ -1215,7 +1346,7 @@ exports.makeModel = function() {
 
           charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          model.addAtom(element, x, y, vx, vy, charge);
+          model.addAtom(element, x, y, vx, vy, charge, 0);
         }
       }
 
@@ -1346,6 +1477,7 @@ exports.makeModel = function() {
           y_prev = y[i];
 
           // Update r(t+dt) using v(t) and a(t)
+          clearPinnedAcceleration(i);
           updatePosition(i);
           bounceOffWalls(i);
           bounceOffObstacles(i, x_prev, y_prev);
@@ -1369,8 +1501,12 @@ exports.makeModel = function() {
         // Accumulate accelerations from bonded interactions into a(t+dt)
         updateBondAccelerations();
 
+        // Accumulate accelerations from spring forces
+        updateSpringAccelerations();
+
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
+          clearPinnedAcceleration(i);
           halfUpdateVelocity(i);
 
           // Now that we have velocity, update speed

@@ -7,29 +7,22 @@
   },
   "components": [
     {
-      "type": "button",
-      "id": "pull-non-polar",
-      "text": "Pull apart two non-polar molecules",
-      "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json');"
-    },
-    {
-      "type": "button",
-      "id": "pull-polar",
-      "text": "Pull apart two polar molecules",
-      "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.json');"
-    },
-    {
-      "type": "button",
-      "id": "pull-non-polar-and-polar",
-      "text": "Pull apart a non-polar and polar molecules",
-      "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json');"
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Pull apart two non-polar molecules",
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json"
+        },
+        {
+          "text": "Pull apart two polar molecules",
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.json"
+        },
+        {
+          "text": "Pull apart a non-polar and polar molecules",
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json"
+        }
+      ]
     }
-  ],
-  "layout": {
-    "bottom": [
-      "pull-non-polar",
-      "pull-polar",
-      "pull-non-polar-and-polar"
-    ]
-  }
+  ]
 }

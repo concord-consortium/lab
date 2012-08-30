@@ -19,7 +19,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       padding, size,
       mw, mh, tx, ty, stroke,
       x, downscalex, downx,
-      y, downscaley, downy,
+      y, downscaley, downy, y_flip,
       dragged,
       drag_origin,
       pc_xpos, pc_ypos,
@@ -64,6 +64,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         xunits:               false,
         yunits:               false,
         atom_mubers:          false,
+        enableAtomTooltips:   false,
         xmin:                 0,
         xmax:                 10,
         ymin:                 0,
@@ -159,7 +160,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       "height": height
     };
 
-    offset_top = node.offsetTop + padding.top;
+    offset_top  = node.offsetTop + padding.top;
+    offset_left = node.offsetLeft + padding.left;
 
     switch (options.control_buttons) {
       case "play":
@@ -941,17 +943,19 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function molecule_mousedown(d, i) {
       node.focus();
-      if (atom_tooltip_on) {
-        molecule_div.style("opacity", 1e-6);
-        molecule_div.style("display", "none");
-        atom_tooltip_on = false;
-      } else {
-        if (d3.event.shiftKey) {
-          atom_tooltip_on = i;
-        } else {
+      if (options.enableAtomTooltips) {
+        if (atom_tooltip_on !== false) {
+          molecule_div.style("opacity", 1e-6);
+          molecule_div.style("display", "none");
           atom_tooltip_on = false;
+        } else {
+          if (d3.event.shiftKey) {
+            atom_tooltip_on = i;
+          } else {
+            atom_tooltip_on = false;
+          }
+          render_atom_tooltip(i);
         }
-        render_atom_tooltip(i);
       }
     }
 
@@ -978,7 +982,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function molecule_mouseout() {
-      if (typeof(atom_tooltip_on) !== "number") {
+      if (atom_tooltip_on === false) {
         molecule_div.style("opacity", 1e-6);
       }
     }
@@ -1017,7 +1021,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("cy", function(d, i) {return y(nodes[model.INDICES.Y][i]); })
         .attr("r",  function(d, i) {return x(nodes[model.INDICES.RADIUS][i]); });
 
-      if ((typeof(atom_tooltip_on) === "number")) {
+      if (atom_tooltip_on === 0 || atom_tooltip_on > 0) {
         render_atom_tooltip(atom_tooltip_on);
       }
     }
@@ -1037,13 +1041,25 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function node_dragstart(d, i) {
-      if (!is_stopped()) return;
-
-      drag_origin = [get_x(i), get_y(i)];
+      if (!is_stopped()) {
+        // if we're running, add a spring force
+        model.addSpringForce(i, get_x(i), get_y(i), 0.9);
+      } else {
+        // if we're stopped, drag the atom
+        drag_origin = [get_x(i), get_y(i)];
+      }
     }
 
     function node_drag(d, i){
-      if (!is_stopped()) return;
+      if (!is_stopped()) {
+        var click_x = x.invert(d3.event.x),
+            click_y = y.invert(d3.event.y);
+
+        // here we just assume we are updating the one and only spring force.
+        // This assumption will have to change if we can have more than one
+        model.updateSpringForce(0, click_x, click_y);
+        return;
+      }
 
       var dragTarget = d3.select(this),
           new_x, new_y;
@@ -1051,6 +1067,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       dragTarget
         .attr("cx", function(){return d3.event.x})
         .attr("cy", function(){return d3.event.y});
+
+      molecule_div
+            .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 16 + "px")
+            .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px")
 
       new_x = x.invert(dragTarget.attr('cx'));
       new_y = y.invert(dragTarget.attr('cy'));
@@ -1060,7 +1080,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     };
 
     function node_dragend(d, i){
-      if (!is_stopped()) return;
+      if (!is_stopped()) {
+        // here we just assume we are removing the one and only spring force.
+        // This assumption will have to change if we can have more than one
+        model.removeSpringForce(0);
+        return;
+      }
 
       var dragTarget = d3.select(this),
           new_x, new_y;

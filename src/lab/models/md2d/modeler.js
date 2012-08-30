@@ -629,7 +629,7 @@ modeler.model = function(initialProperties) {
 
     Otherwise, returns true.
   */
-  model.addAtom = function(el, x, y, vx, vy, charge) {
+  model.addAtom = function(el, x, y, vx, vy, charge, pinned) {
     var size      = model.size(),
         radius    = coreModel.getRadiusOfElement(el);
 
@@ -641,7 +641,7 @@ modeler.model = function(initialProperties) {
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
     if (coreModel.canPlaceAtom(el, x, y)) {
-      coreModel.addAtom(el, x, y, vx, vy, charge);
+      coreModel.addAtom(el, x, y, vx, vy, charge, pinned);
 
       // reassign nodes to possibly-reallocated atoms array
       nodes = coreModel.atoms;
@@ -697,6 +697,18 @@ modeler.model = function(initialProperties) {
     }
     coreModel.setAtomProperties(i, props);
     return true;
+  },
+
+  model.addSpringForce = function(atomIndex, x, y, strength) {
+    coreModel.addSpringForce(atomIndex, x, y, strength);
+  },
+
+  model.updateSpringForce = function(i, x, y) {
+    coreModel.updateSpringForce(i, x, y);
+  },
+
+  model.removeSpringForce = function(i) {
+    coreModel.removeSpringForce(i);
   },
 
   // return a copy of the array of speeds
