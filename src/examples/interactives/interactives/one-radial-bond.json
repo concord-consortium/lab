@@ -10,12 +10,18 @@
       "type": "pulldown",
       "id": "pulldown1",
       "options": [
-        { "text": "Select Radial Bond Strength ..." },
+        {
+          "text": "Select Radial Bond Strength ...",
+          "disabled": true
+        },
         {
           "text": "Bond x1",
           "action": "var values = getRadialBond(0); values[3] = 10000 ; setRadialBond(0, values)"
         },
-        { "text": "increase bond strength" },
+        {
+          "text": "increase bond strength",
+          "disabled": true
+        },
         {
           "text": "Bond x2",
           "action": "var values = getRadialBond(0); values[3] = 10000 * 2; setRadialBond(0, values)"
@@ -24,7 +30,10 @@
           "text": "Bond x4",
           "action": "var values = getRadialBond(0); values[3] = 10000 * 4; setRadialBond(0, values)"
         },
-        { "text": "decrease bond strength" },
+        {
+          "text": "decrease bond strength",
+          "disabled": true
+        },
         {
           "text": "Bond x 1/2",
           "action": "var values = getRadialBond(0); values[3] = 10000 / 2; setRadialBond(0, values)"

@@ -272,6 +272,12 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     for (i=0, ii=options.length; i<ii; i++) {
       option = options[i];
       $option = $('<option>').html(option.text);
+      if (option.disabled) {
+        $option.attr("disabled", option.disabled);
+      }
+      if (option.selected) {
+        $option.attr("selected", option.selected);
+      }
       $pulldown.append($option);
     }
 
