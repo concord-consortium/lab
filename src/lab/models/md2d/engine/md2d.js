@@ -740,7 +740,7 @@ exports.makeModel = function() {
       },
 
       // Sets the acceleration of atom i to zero if i is pinned
-      clearPinnedAcceleration = function(i) {
+      clearAccelerationIfPinned = function(i) {
         if (pinned[i]) {
           ax[i] = 0;
           ay[i] = 0;
@@ -1450,7 +1450,7 @@ exports.makeModel = function() {
         for (i = 0; i < N; i++) {
           // Clearing the acceleration here from pinned atoms will cause the acceleration
           // to be zero for both halfUpdateVelocity methods and updatePosition, freezing the atom
-          clearPinnedAcceleration(i);
+          clearAccelerationIfPinned(i);
 
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
           halfUpdateVelocity(i);
