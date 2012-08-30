@@ -16,7 +16,7 @@
         },
         {
           "text": "Bond x1",
-          "action": "var values = getRadialBond(0); values[3] = 10000 ; setRadialBond(0, values)"
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 ; setRadialBond(0, values); start();"
         },
         {
           "text": "increase bond strength",
@@ -24,11 +24,11 @@
         },
         {
           "text": "Bond x2",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 2; setRadialBond(0, values)"
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 * 2; setRadialBond(0, values); start();"
         },
         {
           "text": "Bond x4",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 4; setRadialBond(0, values)"
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 * 4; setRadialBond(0, values); start();"
         },
         {
           "text": "decrease bond strength",
@@ -36,27 +36,33 @@
         },
         {
           "text": "Bond x 1/2",
-          "action": "var values = getRadialBond(0); values[3] = 10000 / 2; setRadialBond(0, values)"
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 2; setRadialBond(0, values); start();"
         },
         {
           "text": "Bond x 1/32",
-          "action": "var values = getRadialBond(0); values[3] = 10000 / 32; setRadialBond(0, values)"
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 32; setRadialBond(0, values); start();"
         },
         {
           "text": "Bond x 1/256",
-          "action": "var values = getRadialBond(0); values[3] = 10000 / 256; setRadialBond(0, values)"
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 256; setRadialBond(0, values); start();"
         },
         {
           "text": "Bond x 1/8192",
-          "action": "var values = getRadialBond(0); values[3] = 10000 / 8192; setRadialBond(0, values)"
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 8192; setRadialBond(0, values); start();"
         }
       ]
     },
     {
       "type": "button",
-      "id": "start-moving",
-      "text": "Start Moving",
+      "id": "add-velocity",
+      "text": "Add X Velocity",
       "action": "var props = getAtomProperties(0); props.vx += 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx += 0.00002; setAtomProperties(1, props); start();"
+    },
+    {
+      "type": "button",
+      "id": "subtract-velocity",
+      "text": "Subtract X Velocity",
+      "action": "var props = getAtomProperties(0); props.vx -= 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx -= 0.00002; setAtomProperties(1, props); start();"
     }
   ]
 }
