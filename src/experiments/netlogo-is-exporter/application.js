@@ -96,7 +96,7 @@ var ROOT = "/experiments",
       applet.ready = true;
       window.setInterval(buttonStatusCallback, 250);
     } catch (e) {
-      applet.checked_more_than_once = window.setTimer(function() { appletReady(); }, 250);
+      applet.checked_more_than_once = window.setTimeout(function() { appletReady(); }, 250);
     }
     return applet.ready;
   }

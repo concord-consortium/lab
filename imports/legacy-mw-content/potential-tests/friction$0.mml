@@ -316,64 +316,57 @@
    <object class="org.concord.mw2d.models.LightSource"/> 
   </void> 
   <void property="numberOfParticles"> 
-   <int>5</int> 
-  </void> 
-  <void property="obstacles"> 
-   <void method="add"> 
-    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
-     <void property="fillMode"> 
-      <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
-       <void property="color"> 
-        <object class="java.awt.Color"> 
-         <int>204</int> 
-         <int>204</int> 
-         <int>204</int> 
-         <int>255</int> 
-        </object> 
-       </void> 
-      </object> 
-     </void> 
-     <void property="height"> 
-      <double>281.0</double> 
-     </void> 
-     <void property="width"> 
-      <double>23.0</double> 
-     </void> 
-     <void property="x"> 
-      <double>205.0</double> 
-     </void> 
-     <void property="y"> 
-      <double>10.0</double> 
-     </void> 
-    </object> 
-   </void> 
+   <int>4</int> 
   </void> 
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
-    <string>image-layers$0.mml</string> 
+    <string>friction$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1346368107000</long> 
+     <long>1346368923000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/potential-tests/image-layers/image-layers$0.mml</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/potential-tests/friction$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>13415</long> 
+    <long>12040</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/potential-tests/image-layers</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/potential-tests</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
    <object class="org.concord.mw2d.models.QuantumRule"/> 
+  </void> 
+  <void property="tasks"> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string></string> 
+     </void> 
+     <void property="name"> 
+      <string>output_vel</string> 
+     </void> 
+     <void property="script"> 
+      <string>set %v %atom[0].vx;
+store 0 %v;
+set %v %atom[1].vx;
+store 1 %v;
+set %v %atom[2].vx;
+store 2 %v;
+set %v %atom[3].vx;
+store 3 %v;
+</string> 
+     </void> 
+    </object> 
+   </void> 
   </void> 
   <void property="timeStep"> 
    <double>1.0</double> 
@@ -389,13 +382,6 @@
   <void property="energizer"> 
    <boolean>true</boolean> 
   </void> 
-  <void property="fillMode"> 
-   <object class="org.concord.modeler.draw.FillMode$ImageFill"> 
-    <void property="URL"> 
-     <string>background-image.png</string> 
-    </void> 
-   </object> 
-  </void> 
   <void property="forceFlavor"> 
    <void property="color"> 
     <object class="java.awt.Color"> 
@@ -405,83 +391,6 @@
      <int>255</int> 
     </object> 
    </void> 
-  </void> 
-  <void property="images"> 
-   <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="4"> 
-    <void index="0"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>above-bottom.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="x"> 
-       <double>12.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>45.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="1"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>above-top.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>1</byte> 
-      </void> 
-      <void property="x"> 
-       <double>173.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>24.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="2"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beneath-bottom.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>2</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>2</byte> 
-      </void> 
-      <void property="x"> 
-       <double>18.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>172.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="3"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beneath-top.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>2</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>3</byte> 
-      </void> 
-      <void property="x"> 
-       <double>188.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>158.0</double> 
-      </void> 
-     </object> 
-    </void> 
-   </array> 
   </void> 
   <void property="momentumFlavor"> 
    <void property="color"> 
@@ -496,152 +405,71 @@
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>3</int> 
+   <int>2</int> 
+  </void> 
+  <void property="friction"> 
+   <float>0.49</float> 
   </void> 
   <void property="rx"> 
-   <double>126.69779155182745</double> 
+   <double>52.0</double> 
   </void> 
   <void property="ry"> 
-   <double>67.90918290529663</double> 
+   <double>65.0</double> 
   </void> 
   <void property="vx"> 
-   <double>-0.07728959027961448</double> 
-  </void> 
-  <void property="vy"> 
-   <double>-0.07019612854822051</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.Atom"> 
-  <void property="ID"> 
-   <int>3</int> 
-  </void> 
-  <void property="rx"> 
-   <double>70.79376595129699</double> 
-  </void> 
-  <void property="ry"> 
-   <double>185.75078100239915</double> 
-  </void> 
-  <void property="vx"> 
-   <double>-0.12389530613610641</double> 
-  </void> 
-  <void property="vy"> 
-   <double>-0.14127888923623957</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.Atom"> 
-  <void property="ID"> 
-   <int>1</int> 
-  </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="rx"> 
-   <double>276.1388423015648</double> 
-  </void> 
-  <void property="ry"> 
-   <double>268.8498222626573</double> 
-  </void> 
-  <void property="vx"> 
-   <double>0.055157081080542764</double> 
-  </void> 
-  <void property="vy"> 
-   <double>0.045975905955863226</double> 
+   <double>0.060000000000000005</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
    <int>2</int> 
   </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
+  <void property="friction"> 
+   <float>0.5</float> 
   </void> 
   <void property="rx"> 
-   <double>282.232927063234</double> 
+   <double>52.0</double> 
   </void> 
   <void property="ry"> 
-   <double>250.01575650448802</double> 
+   <double>118.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.025076003939323674</double> 
-  </void> 
-  <void property="vy"> 
-   <double>-0.004354655814790132</double> 
+   <double>0.060000000000000005</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>1</int> 
+   <int>2</int> 
   </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
+  <void property="friction"> 
+   <float>0.75</float> 
   </void> 
   <void property="rx"> 
-   <double>274.1559435860856</double> 
+   <double>52.0</double> 
   </void> 
   <void property="ry"> 
-   <double>231.49692094476677</double> 
+   <double>170.0</double> 
   </void> 
   <void property="vx"> 
-   <double>-0.05533282358543802</double> 
-  </void> 
-  <void property="vy"> 
-   <double>0.029993891979294227</double> 
+   <double>0.060000000000000005</double> 
   </void> 
  </object> 
- <object class="org.concord.mw2d.models.MolecularModel$State"> 
-  <void property="molecularTorque"> 
-   <array class="org.concord.mw2d.models.MolecularTorque" length="1"/> 
-  </void> 
-  <void property="numberOfBends"> 
-   <int>1</int> 
-  </void> 
-  <void property="numberOfBonds"> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
    <int>2</int> 
   </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>2</int> 
+  <void property="friction"> 
+   <float>1.0</float> 
   </void> 
-  <void property="atom2"> 
-   <int>3</int> 
+  <void property="rx"> 
+   <double>52.0</double> 
   </void> 
-  <void property="bondLength"> 
-   <double>20.0</double> 
+  <void property="ry"> 
+   <double>222.0</double> 
   </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
+  <void property="vx"> 
+   <double>0.060000000000000005</double> 
   </void> 
  </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>4</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>3</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>20.0</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
-  <void property="atom1"> 
-   <int>2</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>4</int> 
-  </void> 
-  <void property="atom3"> 
-   <int>3</int> 
-  </void> 
-  <void property="bondAngle"> 
-   <double>2.0943951023931953</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>2.0</double> 
-  </void> 
- </object> 
+ <object class="org.concord.mw2d.models.MolecularModel$State"/> 
 </java> 

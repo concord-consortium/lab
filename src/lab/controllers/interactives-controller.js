@@ -253,6 +253,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     var $button, scriptStr;
 
     $button = $('<button>').attr('id', component.id).html(component.text);
+    $button.addClass("component");
 
     scriptStr = getStringFromArray(component.action);
 
@@ -268,6 +269,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         i, ii;
 
     $pulldown = $('<select>').attr('id', component.id);
+    $pulldown.addClass("component");
 
     for (i=0, ii=options.length; i<ii; i++) {
       option = options[i];
