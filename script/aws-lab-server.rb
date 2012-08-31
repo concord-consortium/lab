@@ -281,11 +281,12 @@ Host #{@name}
 
   def aquire_elastic_ip_address
     # either use an available elastic IP address or create a new one
-    available_addresses = compute.addresses.all({"instance-id" => ""})
+    available_addresses = @compute.addresses.all({"instance-id" => ""})
     if available_addresses.empty?
       # Allocate a new elastic ip
       elasticip = compute.allocate_address
-      ipaddress = allocate.body.public_ip
+      # TODO: check this -- which only happens when no elastic ips are available
+      ipaddress = elasticip.public_ip
     else
       # else use an available one
       ipaddress = available_addresses.last.public_ip
