@@ -117,6 +117,11 @@ parseMML = (mmlString) ->
     showVDWLines = parseBoolean($mml("[property=showVDWLines] boolean").text(), false)
     VDWLinesRatio = $mml("[property=VDWLinesRatio] float")
     VDWLinesRatio = if VDWLinesRatio.length != 0 then parseFloat(VDWLinesRatio.text()) else 1.99
+    ###
+      Viscosity
+    ###
+    universeProps = $mml(".org-concord-mw2d-models-Universe")
+    viscosity = parseFloat universeProps.find("[property=viscosity] float").text() || 0
 
     ###
       Find the view-port size
@@ -300,6 +305,7 @@ parseMML = (mmlString) ->
       temperature_control : !!temperature
       width               : width
       height              : height
+      viscosity           : viscosity
       chargeShading       : !!chargeShading
       showVDWLines        : !!showVDWLines
       VDWLinesRatio       : VDWLinesRatio

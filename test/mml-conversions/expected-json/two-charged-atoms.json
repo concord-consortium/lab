@@ -2,6 +2,7 @@
   "temperature_control": false,
   "width": 4.38,
   "height": 2.88,
+  "viscosity": 0,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.99,
