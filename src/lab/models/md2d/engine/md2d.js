@@ -1412,8 +1412,8 @@ exports.makeModel = function() {
       var i, j,
         dx, dy,
         r_sq,
-        localSigma_i, localEpsilon_i,
-        localSigma_j, localEpsilon_j,
+        sigma_i, epsilon_i,
+        sigma_j, epsilon_j,
         sig, eps,
         vdwPairNum = 0;
 
@@ -1425,13 +1425,13 @@ exports.makeModel = function() {
             dx = x[j] - x[i];
             dy = y[j] - y[i];
             r_sq = dx*dx + dy*dy;
-            localSigma_i =  elements[atoms[11][i]][ELEMENT_INDICES.SIGMA];
-            localEpsilon_i =   elements[atoms[11][i]][ELEMENT_INDICES.EPSILON];
-            localSigma_j =  elements[atoms[11][j]][ELEMENT_INDICES.SIGMA];
-            localEpsilon_j =   elements[atoms[11][j]][ELEMENT_INDICES.EPSILON];
-            sig = 0.5*(localSigma_i+localSigma_j);
+            sigma_i = elements[element[i]][ELEMENT_INDICES.SIGMA];
+            epsilon_i = elements[element[i]][ELEMENT_INDICES.EPSILON];
+            sigma_j = elements[element[j]][ELEMENT_INDICES.SIGMA];
+            epsilon_j = elements[element[j]][ELEMENT_INDICES.EPSILON];
+            sig = 0.5*(sigma_i+sigma_j);
             sig *= sig;
-            eps = localEpsilon_i*localEpsilon_j;
+            eps = epsilon_i*epsilon_j;
             if (r_sq < sig * (2*2) && eps > 0) {
               vdwPairAtom1Index[vdwPairNum] = i;
               vdwPairAtom2Index[vdwPairNum] = j;
