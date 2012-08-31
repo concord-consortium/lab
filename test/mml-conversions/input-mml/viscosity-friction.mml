@@ -373,6 +373,9 @@
   <void property="ry">
    <double>155.0</double>
   </void>
+  <void property="friction">
+   <float>1.0</float>
+  </void>
  </object>
  <object class="org.concord.mw2d.models.Atom">
   <void property="rx">
@@ -380,6 +383,9 @@
   </void>
   <void property="ry">
    <double>154.0</double>
+  </void>
+  <void property="friction">
+   <float>1.0</float>
   </void>
  </object>
  <object class="org.concord.mw2d.models.MolecularModel$State"/>

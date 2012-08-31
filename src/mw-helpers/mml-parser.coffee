@@ -235,6 +235,7 @@ parseMML = (mmlString) ->
         vx     = parseFloat $node.find("[property=vx]").text() || 0
         vy     = parseFloat $node.find("[property=vy]").text() || 0
         charge = parseFloat $node.find("[property=charge]").text() || 0
+        friction = parseFloat $node.find("[property=friction]").text() || 0
         pinned = if $node.find("[property=movable]").text() then 1 else 0
 
         [x, y] = toNextgenCoordinates x, y
@@ -242,7 +243,7 @@ parseMML = (mmlString) ->
         vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
         vy = -vy / 100
 
-        atoms.push { elemId, x, y, vx, vy, charge, pinned }
+        atoms.push { elemId, x, y, vx, vy, charge, friction, pinned }
 
       atoms
 
@@ -289,6 +290,7 @@ parseMML = (mmlString) ->
     vx = (atom.vx for atom in atoms)
     vy = (atom.vy for atom in atoms)
     charge = (atom.charge for atom in atoms)
+    friction = (atom.friction for atom in atoms)
     element = (atom.elemId for atom in atoms)
     pinned = (atom.pinned for atom in atoms)
 
@@ -316,7 +318,8 @@ parseMML = (mmlString) ->
         VX: vx
         VY: vy
         CHARGE: charge
-        ELEMENT: element,
+        FRICTION: friction
+        ELEMENT: element
         PINNED: pinned
 
     if radialBonds.length > 0
