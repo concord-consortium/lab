@@ -209,6 +209,9 @@ exports.makeModel = function() {
       // System dimensions as [x, y] in nanometers. Default value can be changed until particles are created.
       size = [10, 10],
 
+      // Viscosity of the medium of the model
+      viscosity,
+
       // The current model time, in femtoseconds.
       time = 0,
 
@@ -1712,6 +1715,10 @@ exports.makeModel = function() {
         }
       }
       return bondedAtoms;
+    },
+
+    setViscosity: function(v) {
+      viscosity = v;
     },
 
     serialize: function() {

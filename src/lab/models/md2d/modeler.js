@@ -54,6 +54,8 @@ modeler.model = function(initialProperties) {
       // Radial Bonds
       radialBonds,
 
+      viscosity,
+
       default_obstacle_properties = {
         vx: 0,
         vy: 0,
@@ -71,6 +73,7 @@ modeler.model = function(initialProperties) {
         chargeShading         : false,
         showVDWLines          : false,
         VDWLinesRatio         : 1.99,
+        viscosity             : 0,
 
         set_temperature: function(t) {
           this.temperature = t;
@@ -469,10 +472,12 @@ modeler.model = function(initialProperties) {
     chargeShading       = properties.chargeShading;
     showVDWLines        = properties.showVDWLines;
     VDWLinesRatio       = properties.VDWLinesRatio;
+    viscosity           = properties.viscosity;
 
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(temperature_control);
+    coreModel.setViscosity(viscosity);
 
     coreModel.setTargetTemperature(temperature);
 
