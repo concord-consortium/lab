@@ -401,7 +401,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
 
     if (modelUrl) loadModel(modelUrl);
 
-    componentJsons = interactive.components;
+    componentJsons = interactive.components || [];
 
     for (i = 0, ii=componentJsons.length; i<ii; i++) {
       component = createComponent(componentJsons[i]);
