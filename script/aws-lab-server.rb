@@ -64,9 +64,13 @@ file: ~/.fog
     end
     hostnames.each do |hostname|
       @name = @options[:name] = hostname
-      add_hostname_to_ssh_config
-      erase_existing_host_key
-      add_new_host_key
+      # unless we can already connect with ssh
+      unless run_local_command("ssh ubuntu@#{@name} exit")
+        # setup ssh communicatiopnb
+        add_hostname_to_ssh_config
+        erase_existing_host_key
+        add_new_host_key
+      end
     end
   end
 
