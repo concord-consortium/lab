@@ -842,6 +842,10 @@ exports.makeModel = function() {
             f_over_r -= ljCalculator[el1][el2].forceOverDistanceFromSquaredDistance(r_sq);
           }
 
+          if (useCoulombInteraction && hasChargedAtoms) {
+            f_over_r -= coulomb.forceOverDistanceFromSquaredDistance(r_sq, charge[i1], charge[i2]);
+          }
+
           fx = f_over_r * dx;
           fy = f_over_r * dy;
 
