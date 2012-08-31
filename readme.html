@@ -1881,15 +1881,17 @@ server/public/jnlp/
 <pre><code>$ thor -T
 cloud
 -----
-thor cloud:create (hostname)    # create a new server instance using this hostname
-thor cloud:delete (hostname)    # delete an existing server instance running at this hostname
-thor cloud:list                 # list existing servers
-thor cloud:list_targets         # list existing deploy targets
-thor cloud:recreate (hostname)  # recreate a new server instance for this hostname by destroying and rebuilding an existing server
-thor cloud:setup                # setup capistrano deploy tasks and littlechef nodes using targets in config/config.yml
-thor cloud:setup_ssh (hostname)  # setup ssh configuration for communication to hostname
-thor cloud:start (ec2_id)       # start a stopped existing server instance at this hostname
-thor cloud:stop (hostname)      # stop a running existing server instance at this hostname
+thor cloud:create_hostname hostname              # create a new server instance using this hostname
+thor cloud:delete hostname                       # delete an existing server instance running at this hostname
+thor cloud:find_dns_record hostname              # find dns record for hostname
+thor cloud:list                                  # list existing servers
+thor cloud:list_targets                          # list existing deploy targets
+thor cloud:recreate hostname                     # recreate a new server instance for this hostname by destroying and rebuilding an existing server
+thor cloud:setup                                 # setup capistrano deploy tasks and littlechef nodes using targets in config/config.yml
+thor cloud:setup_ssh hostname                    # setup ssh configuration for communication to hostname
+thor cloud:start ec2_id hostname                 # start a stopped existing server instance using the ec2-id
+thor cloud:stop reference                        # stop a running existing server instance at this hostname or ec2-id
+thor cloud:update_dns_record hostname ipaddress  # updating IP address for DNS record hostname to ipaddress
 </code></pre>
 
 <p>There is more work to do to generalize these deployment systems to work with multiple servers.</p>

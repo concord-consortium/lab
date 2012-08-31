@@ -25,6 +25,24 @@
               ]
     },
     {
+      "type": "button",
+      "id": "start",
+      "text": "Start",
+      "action": "start();"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
       "type": "thermometer",
       "id": "thermometer",
       "min": 200,
@@ -36,6 +54,9 @@
       "thermometer"
     ],
     "bottom": [
+      "start",
+      "stop",
+      "reset",
       "abs-zero",
       "add-heat"
     ]

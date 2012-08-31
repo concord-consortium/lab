@@ -81,6 +81,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function initializeLocalVariables() {
       controlButtons      = playerConfig.controlButtons;
+      enableAtomTooltips  = playerConfig.enableAtomTooltips || false;
       fit_to_parent       = playerConfig.fit_to_parent;
 
       elements            = modelConfig.elements;
@@ -153,6 +154,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         xmax:                 width,
         ymax:                 height,
         chargeShading:        chargeShading,
+        enableAtomTooltips:   enableAtomTooltips,
         get_radial_bonds:     function() { return model.get_radial_bonds(); },
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
@@ -215,9 +217,13 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       }
     }
 
+    /**
+      Note: newModelConfig, newPlayerConfig are optional. Calling this without
+      arguments will simply reload the current model.
+    */
     function reload(newModelConfig, newPlayerConfig) {
-      modelConfig = newModelConfig;
-      playerConfig = newPlayerConfig;
+      modelConfig = newModelConfig || modelConfig;
+      playerConfig = newPlayerConfig || playerConfig;
       finishSetup(false);
     }
 

@@ -121,6 +121,21 @@ modeler.model = function(initialProperties) {
     ELEMENT  : md2d.INDICES.ELEMENT
   };
 
+  model.ATOM_PROPERTIES = {
+    RADIUS   : md2d.ATOM_PROPERTIES.RADIUS,
+    PX       : md2d.ATOM_PROPERTIES.PX,
+    PY       : md2d.ATOM_PROPERTIES.PY,
+    X        : md2d.ATOM_PROPERTIES.X,
+    Y        : md2d.ATOM_PROPERTIES.Y,
+    VX       : md2d.ATOM_PROPERTIES.VX,
+    VY       : md2d.ATOM_PROPERTIES.VY,
+    SPEED    : md2d.ATOM_PROPERTIES.SPEED,
+    AX       : md2d.ATOM_PROPERTIES.AX,
+    AY       : md2d.ATOM_PROPERTIES.AY,
+    CHARGE   : md2d.ATOM_PROPERTIES.CHARGE,
+    ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT
+  };
+
   model.OBSTACLE_INDICES = {
     X        : md2d.OBSTACLE_INDICES.X,
     Y        : md2d.OBSTACLE_INDICES.Y,
@@ -129,14 +144,14 @@ modeler.model = function(initialProperties) {
     COLOR_R  : md2d.OBSTACLE_INDICES.COLOR_R,
     COLOR_G  : md2d.OBSTACLE_INDICES.COLOR_G,
     COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B,
-    VISIBLE  : md2d.OBSTACLE_INDICES.VISIBLE,
+    VISIBLE  : md2d.OBSTACLE_INDICES.VISIBLE
   };
 
   model.RADIAL_INDICES = {
     ATOM1     : md2d.RADIAL_INDICES.ATOM1,
     ATOM2     : md2d.RADIAL_INDICES.ATOM2,
     LENGTH    : md2d.RADIAL_INDICES.LENGTH,
-    STRENGTH  : md2d.RADIAL_INDICES.STRENGTH,
+    STRENGTH  : md2d.RADIAL_INDICES.STRENGTH
   };
 
   function notifyListeners(listeners) {
@@ -490,10 +505,11 @@ modeler.model = function(initialProperties) {
   };
 
   model.createObstacles = function(_obstacles) {
-    var numObstacles = _obstacles.x.length;
+    var numObstacles = _obstacles.x.length,
+        i, prop;
 
     // ensure that every property either has a value or the default value
-    for (var i = 0; i < numObstacles; i++) {
+    for (i = 0; i < numObstacles; i++) {
       for (prop in default_obstacle_properties) {
         if (!default_obstacle_properties.hasOwnProperty(prop)) continue;
         if (!_obstacles[prop]) {
@@ -599,7 +615,7 @@ modeler.model = function(initialProperties) {
 
     Otherwise, returns true.
   */
-  model.addAtom = function(el, x, y, vx, vy, charge) {
+  model.addAtom = function(el, x, y, vx, vy, charge, pinned) {
     var size      = model.size(),
         radius    = coreModel.getRadiusOfElement(el);
 
@@ -611,7 +627,7 @@ modeler.model = function(initialProperties) {
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
     if (coreModel.canPlaceAtom(el, x, y)) {
-      coreModel.addAtom(el, x, y, vx, vy, charge);
+      coreModel.addAtom(el, x, y, vx, vy, charge, pinned);
 
       // reassign nodes to possibly-reallocated atoms array
       nodes = coreModel.atoms;
@@ -637,6 +653,10 @@ modeler.model = function(initialProperties) {
       the bonded atoms together.
     */
   model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
+    var atoms,
+        dx, dy,
+        new_x, new_y;
+
     if (moveMolecule) {
       atoms = coreModel.getMoleculeAtoms(i);
       if (atoms.length > 0) {
@@ -645,7 +665,6 @@ modeler.model = function(initialProperties) {
         for (var j = 0, jj=atoms.length; j<jj; j++) {
           new_x = coreModel.atoms[model.INDICES.X][atoms[j]] + dx;
           new_y = coreModel.atoms[model.INDICES.Y][atoms[j]] + dy;
-          if (new_x == Infinity || new_x == -Infinity || new_y == Infinity || new_y == -Infinity) debugger;
           if (!model.setAtomProperties(atoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
             return false;
           }
@@ -664,6 +683,18 @@ modeler.model = function(initialProperties) {
     }
     coreModel.setAtomProperties(i, props);
     return true;
+  },
+
+  model.addSpringForce = function(atomIndex, x, y, strength) {
+    coreModel.addSpringForce(atomIndex, x, y, strength);
+  },
+
+  model.updateSpringForce = function(i, x, y) {
+    coreModel.updateSpringForce(i, x, y);
+  },
+
+  model.removeSpringForce = function(i) {
+    coreModel.removeSpringForce(i);
   },
 
   // return a copy of the array of speeds

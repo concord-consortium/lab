@@ -61,6 +61,10 @@
     "ELEMENT": [
       2,
       3
+    ],
+    "PINNED": [
+      0,
+      1
     ]
   },
   "obstacles": {

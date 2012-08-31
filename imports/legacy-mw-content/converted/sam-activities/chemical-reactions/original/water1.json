@@ -61,6 +61,10 @@
     "ELEMENT": [
       2,
       2
+    ],
+    "PINNED": [
+      0,
+      0
     ]
   },
   "radialBonds": {

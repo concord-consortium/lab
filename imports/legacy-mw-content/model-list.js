@@ -803,6 +803,20 @@ modelList = [
     "section": "potential-tests",
     "content": [
       {
+        "name": "boiling-point-non-polar-only",
+        "path": "potential-tests/",
+        "cml": "potential-tests/boiling-point-non-polar-only/boiling-point-non-polar-only.cml",
+        "mml": "potential-tests/boiling-point-non-polar-only/boiling-point-non-polar-only$0.mml",
+        "json": "converted/potential-tests/boiling-point-non-polar-only/boiling-point-non-polar-only$0.json"
+      },
+      {
+        "name": "boiling-point-polar-only",
+        "path": "potential-tests/",
+        "cml": "potential-tests/boiling-point-polar-only/boiling-point-polar-only.cml",
+        "mml": "potential-tests/boiling-point-polar-only/boiling-point-polar-only$0.mml",
+        "json": "converted/potential-tests/boiling-point-polar-only/boiling-point-polar-only$0.json"
+      },
+      {
         "name": "converging-equilibrium-series-1",
         "path": "potential-tests/",
         "cml": "potential-tests/converging-equilibrium-series/converging-equilibrium-0-description.cml",
@@ -838,6 +852,20 @@ modelList = [
         "json": "converted/potential-tests/converging-equilibrium-series/converging-equilibrium-5$0.json"
       },
       {
+        "name": "friction",
+        "path": "potential-tests/",
+        "cml": "potential-tests/friction/friction.cml",
+        "mml": "potential-tests/friction/friction$0.mml",
+        "json": "converted/potential-tests/friction/friction$0.json"
+      },
+      {
+        "name": "image-layers",
+        "path": "potential-tests/",
+        "cml": "potential-tests/image-layers/image-layers.cml",
+        "mml": "potential-tests/image-layers/image-layers$0.mml",
+        "json": "converted/potential-tests/image-layers/image-layers$0.json"
+      },
+      {
         "name": "simple-atoms-in-classic",
         "path": "potential-tests/",
         "cml": "potential-tests/simple-atoms-in-classic/simpleAtomsModel.cml",
@@ -866,11 +894,25 @@ modelList = [
         "json": "converted/potential-tests/single-element-neutral/single-element-neutral$0.json"
       },
       {
+        "name": "single-image-on-atom",
+        "path": "potential-tests/",
+        "cml": "potential-tests/single-image-on-atom/single-image-on-atom.cml",
+        "mml": "potential-tests/single-image-on-atom/single-image-on-atom$0.mml",
+        "json": "converted/potential-tests/single-image-on-atom/single-image-on-atom$0.json"
+      },
+      {
         "name": "static-coulomb-test",
         "path": "potential-tests/",
         "cml": "potential-tests/static-coulomb-test/testingForces.cml",
         "mml": "potential-tests/static-coulomb-test/testingForces$0.mml",
         "json": "converted/potential-tests/static-coulomb-test/testingForces$0.json"
+      },
+      {
+        "name": "static-non-coulomb-test",
+        "path": "potential-tests/",
+        "cml": "potential-tests/static-non-coulomb-test/static-non-coulomb-test.cml",
+        "mml": "potential-tests/static-non-coulomb-test/static-non-coulomb-test$0.mml",
+        "json": "converted/potential-tests/static-non-coulomb-test/static-non-coulomb-test$0.json"
       },
       {
         "name": "three-atoms-three-elements-1",

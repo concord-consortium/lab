@@ -8,33 +8,66 @@
   "components": [
     {
       "type": "button",
-      "id": "bond-div-4",
-      "text": "Bond 1/4",
-      "action": "var values = getRadialBond(0); values[3] = 10000 / 4; setRadialBond(0, values)"
+      "id": "subtract-velocity",
+      "text": "&#8656; Subtract X Velocity",
+      "action": "var props = getAtomProperties(0); props.vx -= 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx -= 0.00002; setAtomProperties(1, props); start();"
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select Radial Bond Strength ...",
+          "disabled": true
+        },
+        {
+          "text": "Bond Strength x 4",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 * 4; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond Strength x 2",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 * 2; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond Strength x 1",
+          "selected": true,
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 ; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond Strength x 1/2",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 2; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond Strength x 1/10",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 10; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond Strength x 1/250",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 250; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond Strength x 1/1,000",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 1000; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond Strength x 1/10,000",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 10000; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond Strength x 1/100,000",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 100000; setRadialBond(0, values); start();"
+        },
+        {
+          "text": "Bond Strength x 1/1,000,000",
+          "action": "reset(); var values = getRadialBond(0); values[3] = 10000 / 1000000; setRadialBond(0, values); start();"
+        }
+      ]
     },
     {
       "type": "button",
-      "id": "bond-div-2",
-      "text": "Bond 1/2",
-      "action": "var values = getRadialBond(0); values[3] = 10000 / 2; setRadialBond(0, values)"
-    },
-    {
-      "type": "button",
-      "id": "bond-mul-1",
-      "text": "Bond x1",
-      "action": "var values = getRadialBond(0); values[3] = 10000 ; setRadialBond(0, values)"
-    },
-    {
-      "type": "button",
-      "id": "bond-mul-2",
-      "text": "Bond x2",
-      "action": "var values = getRadialBond(0); values[3] = 10000 * 2; setRadialBond(0, values)"
-    },
-    {
-      "type": "button",
-      "id": "bond-mul-4",
-      "text": "Bond x4",
-      "action": "var values = getRadialBond(0); values[3] = 10000 * 4; setRadialBond(0, values)"
+      "id": "add-velocity",
+      "text": "Add X Velocity &#8658;",
+      "action": "var props = getAtomProperties(0); props.vx += 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx += 0.00002; setAtomProperties(1, props); start();"
     }
   ]
 }

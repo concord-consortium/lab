@@ -43,6 +43,7 @@
     "VX": [],
     "VY": [],
     "CHARGE": [],
-    "ELEMENT": []
+    "ELEMENT": [],
+    "PINNED": []
   }
 }

@@ -6,8 +6,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       modelController,
       $interactiveContainer,
       propertiesListeners = [],
+      playerConfig,
       thermometer,
-      controlButtons = "play",
 
       //
       // Define the scripting API used by 'action' scripts on interactive elements.
@@ -68,6 +68,48 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           controller.loadModel(modelUrl);
         },
 
+        /**
+          Sets individual atom properties using human-readable hash.
+          e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
+        */
+        setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule) {
+          return model.setAtomProperties(i, props, checkLocation, moveMolecule);
+        },
+
+        /**
+          Returns atom properties as a human-readable hash.
+          e.g. getAtomProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
+        */
+        getAtomProperties: function getAtomProperties(i) {
+          var props = {},
+              atoms = model.get_nodes();
+          for (property in model.ATOM_PROPERTIES) {
+            props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
+          }
+          return props;
+        },
+
+        start: function start() {
+          model.start();
+        },
+
+        stop: function stop() {
+          model.stop();
+        },
+
+        reset: function reset() {
+          model.stop();
+          modelController.reload();
+        },
+
+        tick: function tick() {
+          model.tick();
+        },
+
+        repaint: function repaint() {
+          modelController.moleculeContainer.update_drawable_positions();
+        },
+
         // rudimentary debugging functionality
         alert: alert,
 
@@ -86,11 +128,6 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     @param: modelUrl
   */
   function loadModel(modelUrl) {
-
-    var playerConfig = {
-          controlButtons: controlButtons,
-          fit_to_parent: !layoutStyle
-        };
 
     modelUrl = ACTUAL_ROOT + modelUrl;
 
@@ -114,6 +151,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     switch (component.type) {
       case 'button':
         return createButton(component);
+      case 'pulldown':
+        return createPulldown(component);
       case 'thermometer':
         return createThermometer(component);
     }
@@ -199,20 +238,66 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     };
   }
 
+  /**
+    Generic function that accepts either a string or an array of strings,
+    and returns the complete string
+  */
+  function getStringFromArray(str) {
+    if (typeof str === 'string') {
+      return str
+    }
+    return str.join('\n');
+  }
+
   function createButton(component) {
     var $button, scriptStr;
 
     $button = $('<button>').attr('id', component.id).html(component.text);
+    $button.addClass("component");
 
-    if (typeof component.action === 'string') {
-      scriptStr = component.action;
-    } else {
-      scriptStr = component.action.join('\n');
-    }
+    scriptStr = getStringFromArray(component.action);
 
     $button.click(evalInScriptContext(scriptStr));
 
     return $button;
+  }
+
+  function createPulldown(component) {
+    var $pulldown, $option,
+        options = component.options || [],
+        option,
+        i, ii;
+
+    $pulldown = $('<select>').attr('id', component.id);
+    $pulldown.addClass("component");
+
+    for (i=0, ii=options.length; i<ii; i++) {
+      option = options[i];
+      $option = $('<option>').html(option.text);
+      if (option.disabled) {
+        $option.attr("disabled", option.disabled);
+      }
+      if (option.selected) {
+        $option.attr("selected", option.selected);
+      }
+      $pulldown.append($option);
+    }
+
+    $pulldown.change(function() {
+      var index = $(this).prop('selectedIndex'),
+          action = component.options[index].action,
+          scriptStr;
+
+      if (action){
+        scriptStr = getStringFromArray(action);
+        evalInScriptContext(scriptStr)();
+      } else if (component.options[index].loadModel){
+        model.stop();
+        loadModel(component.options[index].loadModel);
+      }
+    });
+
+    return $pulldown;
   }
 
   function createThermometer(component) {
@@ -267,16 +352,6 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   }
 
   /**
-    Call if the interactive definitions has a toplevel key 'viewOptions', to set
-    the view options for the model.
-  */
-  function processModelViewOptions(options) {
-    if (typeof options.controlButtons === "string") {
-      controlButtons = options.controlButtons;
-    }
-  }
-
-  /**
     The main method called when this controller is created.
 
     Populates the element pointed to by viewSelector with divs to contain the
@@ -316,7 +391,12 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
 
     if (interactive.model != null) {
       modelUrl = interactive.model.url;
-      processModelViewOptions(interactive.model.viewOptions);
+      if (interactive.model.viewOptions) {
+        playerConfig = interactive.model.viewOptions;
+      } else {
+        playerConfig = { controlButtons: 'play' };
+      }
+      playerConfig.fit_to_parent = !layoutStyle
     }
 
     if (modelUrl) loadModel(modelUrl);

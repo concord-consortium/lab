@@ -1041,6 +1041,9 @@ var
 constants = require('../constants'),
 unit      = constants.unit,
 
+// Classic MW uses a value for Coulomb's constant that is effectively 0.346 of the real value
+CLASSIC_MW_FUDGE_FACTOR = 0.346;
+
 COULOMB_CONSTANT_IN_METERS_PER_FARAD = constants.COULOMB_CONSTANT.as( constants.unit.METERS_PER_FARAD ),
 
 NANOMETERS_PER_METER = constants.ratio(unit.NANOMETER, { per: unit.METER }),
@@ -1050,13 +1053,15 @@ EV_PER_JOULE = constants.ratio(unit.EV, { per: unit.JOULE }),
 MW_FORCE_UNITS_PER_NEWTON = constants.ratio(unit.MW_FORCE_UNIT, { per: unit.NEWTON }),
 
 // Coulomb constant for expressing potential in eV given elementary charges, nanometers
-k_ePotential = COULOMB_CONSTANT_IN_METERS_PER_FARAD *
+k_ePotential = CLASSIC_MW_FUDGE_FACTOR *
+               COULOMB_CONSTANT_IN_METERS_PER_FARAD *
                COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ *
                NANOMETERS_PER_METER *
                EV_PER_JOULE,
 
 // Coulomb constant for expressing force in Dalton*nm/fs^2 given elementary charges, nanometers
-k_eForce = COULOMB_CONSTANT_IN_METERS_PER_FARAD *
+k_eForce = CLASSIC_MW_FUDGE_FACTOR *
+           COULOMB_CONSTANT_IN_METERS_PER_FARAD *
            COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ *
            NANOMETERS_PER_METER *
            NANOMETERS_PER_METER *
@@ -1305,7 +1310,7 @@ var arrays       = require('arrays'),
     }()),
 
     // make at least 2 atoms
-    N_MIN = 2,
+    N_MIN = 1,
 
     // make no more than this many atoms:
     N_MAX = 1000,
@@ -1323,6 +1328,7 @@ var arrays       = require('arrays'),
     ELEMENT_INDICES,
     OBSTACLE_INDICES,
     SAVEABLE_INDICES,
+    RADIAL_INDICES,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -1408,7 +1414,24 @@ exports.INDICES = INDICES = {
   AX     :  8,
   AY     :  9,
   CHARGE : 10,
-  ELEMENT: 11
+  ELEMENT: 11,
+  PINNED : 12
+};
+
+exports.ATOM_PROPERTIES = {
+  RADIUS :  "radius",
+  PX     :  "px",
+  PY     :  "py",
+  X      :  "x",
+  Y      :  "y",
+  VX     :  "vx",
+  VY     :  "vy",
+  SPEED  :  "speed",
+  AX     :  "ax",
+  AY     :  "ay",
+  CHARGE :  "charge",
+  ELEMENT:  "element",
+  PINNED :  "pinned"
 };
 
 exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
@@ -1434,7 +1457,7 @@ exports.RADIAL_INDICES = RADIAL_INDICES = {
   STRENGTH:  3
 };
 
-exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED"];
 
 exports.makeModel = function() {
 
@@ -1495,7 +1518,7 @@ exports.makeModel = function() {
       elements,
 
       // Individual property arrays for the atoms, indexed by atom number
-      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, pinned,
 
       // An array of length max(INDICES)+1 which contains the above property arrays
       atoms,
@@ -1513,6 +1536,16 @@ exports.makeModel = function() {
       // Number of actual radial bonds (may be smaller than the length of the property arrays)
       N_radialBonds = 0,
 
+      // Arrays for spring forces, which are forces defined between an atom and a point in space
+      springForceAtomIndex,
+      springForceX,
+      springForceY,
+      springForceStrength,
+
+      springForces,
+
+      N_springForces = 0,
+
       // Individual properties for the obstacles
       obstacleX,
       obstacleY,
@@ -1526,6 +1559,7 @@ exports.makeModel = function() {
       obstacleColorR,
       obstacleColorG,
       obstacleColorB,
+      obstacleVisible,
 
       // An array of length 12 which contains obstacles information
       obstacles,
@@ -1641,6 +1675,35 @@ exports.makeModel = function() {
 
         for (i = 0; i < radialBonds.length; i++) {
           arrays.copy(savedArrays[i], radialBonds[i]);
+        }
+      },
+
+      createSpringForcesArray = function(num) {
+      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
+
+        springForces = model.springForces = [];
+
+        springForces[0] = springForceAtomIndex  = arrays.create(num, 0, uint16);
+        springForces[1] = springForceX          = arrays.create(num, 0, float32);
+        springForces[2] = springForceY          = arrays.create(num, 0, float32);
+        springForces[3] = springForceStrength   = arrays.create(num, 0, float32);
+      },
+
+      extendSpringForcesArray = function(num) {
+        var savedArrays = [],
+            i;
+
+        if (springForces) {
+          for (i = 0; i < springForces.length; i++) {
+            savedArrays[i] = springForces[i];
+          }
+        }
+
+        createSpringForcesArray(num);
+
+        for (i = 0; i < savedArrays.length; i++) {
+          arrays.copy(savedArrays[i], springForces[i]);
         }
       },
 
@@ -1961,6 +2024,14 @@ exports.makeModel = function() {
         py[i] = mass * vy[i];
       },
 
+      // Sets the acceleration of atom i to zero if i is pinned
+      clearAccelerationIfPinned = function(i) {
+        if (pinned[i]) {
+          ax[i] = 0;
+          ay[i] = 0;
+        }
+      },
+
       // Accumulate accelerations into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between particles i and j
       // where j < i. Note a(t, i) and a(t, j) (accelerations from the previous time step) should be cleared from arrays
       // ax and ay before calling this function.
@@ -2063,6 +2134,43 @@ exports.makeModel = function() {
           ay[i1] += fy * mass1_inv;
           ax[i2] -= fx * mass2_inv;
           ay[i2] -= fy * mass2_inv;
+        }
+      },
+
+      updateSpringAccelerations = function() {
+        if (N_springForces < 1) return;
+
+        var i,
+            mass_inv,
+            dx, dy,
+            r, r_sq,
+            k,
+            f_over_r,
+            fx, fy,
+            a;
+
+        for (i = 0; i < N_springForces; i++) {
+          a = springForceAtomIndex[i];
+          mass_inv = 1/elements[element[a]][0];
+
+          dx = springForceX[i] - x[a];
+          dy = springForceY[i] - y[a];
+
+          if (dx === 0 && dy === 0) continue;   // force will be zero
+
+          r_sq = dx*dx + dy*dy;
+          r = Math.sqrt(r_sq);
+
+          // eV/nm^2
+          k = springForceStrength[i];
+
+          f_over_r = constants.convert(k*r, { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+          fx = f_over_r * dx;
+          fy = f_over_r * dy;
+
+          ax[a] += fx * mass_inv;
+          ay[a] += fy * mass_inv;
         }
       },
 
@@ -2241,6 +2349,7 @@ exports.makeModel = function() {
       ay      = model.ay      = atoms[INDICES.AY]      = arrays.create(num, 0, float32);
       charge  = model.charge  = atoms[INDICES.CHARGE]  = arrays.create(num, 0, float32);
       element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8);
+      pinned  = model.pinned  = atoms[INDICES.PINNED]  = arrays.create(num, 0, uint8);
 
       N = 0;
       totalMass = 0;
@@ -2252,7 +2361,7 @@ exports.makeModel = function() {
       If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
-    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, is_pinned) {
       var el, mass;
 
       if (N+1 > atoms[0].length) {
@@ -2274,6 +2383,7 @@ exports.makeModel = function() {
       ay[N]      = 0;
       speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
       charge[N]  = atom_charge;
+      pinned[N]  = is_pinned;
 
       if (atom_charge) hasChargedAtoms = true;
 
@@ -2287,6 +2397,8 @@ exports.makeModel = function() {
       Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
     */
     setAtomProperties: function(i, props) {
+      var prop;
+
       for (prop in props) {
         if (!props.hasOwnProperty(prop)) continue;
         this[prop][i] = props[prop];
@@ -2313,6 +2425,49 @@ exports.makeModel = function() {
       N_radialBonds++;
     },
 
+    /**
+      Adds a spring force between an atom and an x, y location.
+    */
+    addSpringForce: function(atomIndex, x, y, strength) {
+      extendSpringForcesArray(N_springForces+1);
+
+      springForceAtomIndex[N_springForces]  = atomIndex;
+      springForceX[N_springForces]          = x;
+      springForceY[N_springForces]          = y;
+      springForceStrength[N_springForces]   = strength;
+
+      N_springForces++;
+    },
+
+    updateSpringForce: function(i, x, y) {
+      springForceX[i] = x;
+      springForceY[i] = y;
+    },
+
+    removeSpringForce: function(i) {
+      if (i >= N_springForces) return;
+
+      N_springForces--;
+
+      if (N_springForces === 0) {
+        createSpringForcesArray(0);
+      } else {
+        var savedArrays = [],
+            j;
+
+        for (j = 0; j < springForces.length; j++) {
+          if (j !== i) {
+            savedArrays.push(springForces[i]);
+          }
+        }
+
+        createSpringForcesArray(N_springForces);
+
+        for (j = 0; j < springForces.length; j++) {
+          arrays.copy(savedArrays[i], springForces[i]);
+        }
+      }
+    },
 
     addObstacle: function(x, y, width, height, density, color, visible) {
       var mass;
@@ -2355,13 +2510,16 @@ exports.makeModel = function() {
       to ignore the existance of atom i. (Used when moving i around.)
     */
     canPlaceAtom: function(element, _x, _y, i) {
-      var orig_x, orig_y, r, PEAtLocation;
+      var r,
+          orig_x, orig_y,
+          PEAtLocation,
+          j;
 
       // first do the simpler check to see if we're on an obstacle
-      r = radius[i]
+      r = radius[i];
       for (j = 0; j < N_obstacles; j++) {
-        if (_x > (obstacleX[j] - r) && _x < (obstacleX[j] + obstacleWidth[j] + r)
-            && _y > (obstacleY[j] - r) && _y < (obstacleY[j] + obstacleHeight[j] + r)) {
+        if (_x > (obstacleX[j] - r) && _x < (obstacleX[j] + obstacleWidth[j] + r) &&
+            _y > (obstacleY[j] - r) && _y < (obstacleY[j] + obstacleHeight[j] + r)) {
           return false;
         }
       }
@@ -2373,7 +2531,7 @@ exports.makeModel = function() {
         x[i] = y[i] = Infinity;   // move i atom away
       }
 
-      PEAtLocation = coreModel.newPotentialCalculator(element, 0, false)(_x, _y);
+      PEAtLocation = model.newPotentialCalculator(element, 0, false)(_x, _y);
 
       if (typeof i === "number") {
         x[i] = orig_x;
@@ -2385,7 +2543,7 @@ exports.makeModel = function() {
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var x, y, vx, vy, charge, element,
+      var x, y, vx, vy, charge, element, pinned,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -2404,8 +2562,9 @@ exports.makeModel = function() {
         vx = props.VX[i];
         vy = props.VY[i];
         charge = props.CHARGE ? props.CHARGE[i] : 0;
+        pinned = props.PINNED ? props.PINNED[i] : 0;
 
-        model.addAtom(element, x, y, vx, vy, charge);
+        model.addAtom(element, x, y, vx, vy, charge, pinned);
       }
 
       // Publish the current state
@@ -2453,7 +2612,7 @@ exports.makeModel = function() {
 
           charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          model.addAtom(element, x, y, vx, vy, charge);
+          model.addAtom(element, x, y, vx, vy, charge, 0);
         }
       }
 
@@ -2570,7 +2729,14 @@ exports.makeModel = function() {
         // Accumulate accelerations from bonded interactions into a(t+dt)
         updateBondAccelerations();
 
+        // Accumulate accelerations from spring forces
+        updateSpringAccelerations();
+
         for (i = 0; i < N; i++) {
+          // Clearing the acceleration here from pinned atoms will cause the acceleration
+          // to be zero for both halfUpdateVelocity methods and updatePosition, freezing the atom
+          clearAccelerationIfPinned(i);
+
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
           halfUpdateVelocity(i);
 
@@ -2785,12 +2951,17 @@ exports.makeModel = function() {
     */
     getMoleculeAtoms: function(i) {
       this.atomsInMolecule.push(i);
-      var moleculeAtoms = [];
-      var bondedAtoms = this.getBondedAtoms(i);
-      var depth = this.depth;
+
+      var moleculeAtoms = [],
+          bondedAtoms = this.getBondedAtoms(i),
+          depth = this.depth,
+          j, jj,
+          atomNo;
+
       this.depth++;
-      for (var j=0, jj=bondedAtoms.length; j<jj; j++) {
-        var atomNo = bondedAtoms[j];
+
+      for (j=0, jj=bondedAtoms.length; j<jj; j++) {
+        atomNo = bondedAtoms[j];
         if (!~this.atomsInMolecule.indexOf(atomNo)) {
           moleculeAtoms = moleculeAtoms.concat(this.getMoleculeAtoms(atomNo)); // recurse
         }
@@ -2799,7 +2970,7 @@ exports.makeModel = function() {
         this.depth = 0;
         this.atomsInMolecule = [];
       } else {
-        moleculeAtoms.push(i)
+        moleculeAtoms.push(i);
       }
       return moleculeAtoms;
     },
@@ -2808,7 +2979,8 @@ exports.makeModel = function() {
       Returns all atoms directly bonded to atom i
     */
     getBondedAtoms: function(i) {
-      var bondedAtoms = [];
+      var bondedAtoms = [],
+          j, jj;
       if (radialBonds) {
         for (j = 0, jj = radialBonds[0].length; j < jj; j++) {
           // console.log("looking at bond from "+radialBonds)
@@ -2962,6 +3134,21 @@ modeler.model = function(initialProperties) {
     ELEMENT  : md2d.INDICES.ELEMENT
   };
 
+  model.ATOM_PROPERTIES = {
+    RADIUS   : md2d.ATOM_PROPERTIES.RADIUS,
+    PX       : md2d.ATOM_PROPERTIES.PX,
+    PY       : md2d.ATOM_PROPERTIES.PY,
+    X        : md2d.ATOM_PROPERTIES.X,
+    Y        : md2d.ATOM_PROPERTIES.Y,
+    VX       : md2d.ATOM_PROPERTIES.VX,
+    VY       : md2d.ATOM_PROPERTIES.VY,
+    SPEED    : md2d.ATOM_PROPERTIES.SPEED,
+    AX       : md2d.ATOM_PROPERTIES.AX,
+    AY       : md2d.ATOM_PROPERTIES.AY,
+    CHARGE   : md2d.ATOM_PROPERTIES.CHARGE,
+    ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT
+  };
+
   model.OBSTACLE_INDICES = {
     X        : md2d.OBSTACLE_INDICES.X,
     Y        : md2d.OBSTACLE_INDICES.Y,
@@ -2970,14 +3157,14 @@ modeler.model = function(initialProperties) {
     COLOR_R  : md2d.OBSTACLE_INDICES.COLOR_R,
     COLOR_G  : md2d.OBSTACLE_INDICES.COLOR_G,
     COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B,
-    VISIBLE  : md2d.OBSTACLE_INDICES.VISIBLE,
+    VISIBLE  : md2d.OBSTACLE_INDICES.VISIBLE
   };
 
   model.RADIAL_INDICES = {
     ATOM1     : md2d.RADIAL_INDICES.ATOM1,
     ATOM2     : md2d.RADIAL_INDICES.ATOM2,
     LENGTH    : md2d.RADIAL_INDICES.LENGTH,
-    STRENGTH  : md2d.RADIAL_INDICES.STRENGTH,
+    STRENGTH  : md2d.RADIAL_INDICES.STRENGTH
   };
 
   function notifyListeners(listeners) {
@@ -3331,10 +3518,11 @@ modeler.model = function(initialProperties) {
   };
 
   model.createObstacles = function(_obstacles) {
-    var numObstacles = _obstacles.x.length;
+    var numObstacles = _obstacles.x.length,
+        i, prop;
 
     // ensure that every property either has a value or the default value
-    for (var i = 0; i < numObstacles; i++) {
+    for (i = 0; i < numObstacles; i++) {
       for (prop in default_obstacle_properties) {
         if (!default_obstacle_properties.hasOwnProperty(prop)) continue;
         if (!_obstacles[prop]) {
@@ -3440,7 +3628,7 @@ modeler.model = function(initialProperties) {
 
     Otherwise, returns true.
   */
-  model.addAtom = function(el, x, y, vx, vy, charge) {
+  model.addAtom = function(el, x, y, vx, vy, charge, pinned) {
     var size      = model.size(),
         radius    = coreModel.getRadiusOfElement(el);
 
@@ -3452,7 +3640,7 @@ modeler.model = function(initialProperties) {
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
     if (coreModel.canPlaceAtom(el, x, y)) {
-      coreModel.addAtom(el, x, y, vx, vy, charge);
+      coreModel.addAtom(el, x, y, vx, vy, charge, pinned);
 
       // reassign nodes to possibly-reallocated atoms array
       nodes = coreModel.atoms;
@@ -3478,6 +3666,10 @@ modeler.model = function(initialProperties) {
       the bonded atoms together.
     */
   model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
+    var atoms,
+        dx, dy,
+        new_x, new_y;
+
     if (moveMolecule) {
       atoms = coreModel.getMoleculeAtoms(i);
       if (atoms.length > 0) {
@@ -3486,7 +3678,6 @@ modeler.model = function(initialProperties) {
         for (var j = 0, jj=atoms.length; j<jj; j++) {
           new_x = coreModel.atoms[model.INDICES.X][atoms[j]] + dx;
           new_y = coreModel.atoms[model.INDICES.Y][atoms[j]] + dy;
-          if (new_x == Infinity || new_x == -Infinity || new_y == Infinity || new_y == -Infinity) debugger;
           if (!model.setAtomProperties(atoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
             return false;
           }
@@ -3505,6 +3696,18 @@ modeler.model = function(initialProperties) {
     }
     coreModel.setAtomProperties(i, props);
     return true;
+  },
+
+  model.addSpringForce = function(atomIndex, x, y, strength) {
+    coreModel.addSpringForce(atomIndex, x, y, strength);
+  },
+
+  model.updateSpringForce = function(i, x, y) {
+    coreModel.updateSpringForce(i, x, y);
+  },
+
+  model.removeSpringForce = function(i) {
+    coreModel.removeSpringForce(i);
   },
 
   // return a copy of the array of speeds
