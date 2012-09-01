@@ -305,15 +305,6 @@
     </void> 
    </object> 
   </void> 
-  <void property="fields"> 
-   <void method="add"> 
-    <object class="org.concord.mw2d.models.GravitationalField"> 
-     <void property="intensity"> 
-      <double>2.0E-4</double> 
-     </void> 
-    </object> 
-   </void> 
-  </void> 
   <void property="lightSource"> 
    <object class="org.concord.mw2d.models.LightSource"/> 
   </void> 
