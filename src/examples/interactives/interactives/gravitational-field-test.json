@@ -1,0 +1,44 @@
+{
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/gravitational-field-test$0.json",
+    "viewOptions": {
+      "controlButtons": "play_reset",
+      "modelTimeLabel": true
+    }
+  },
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select Gravitational Field Strength ...",
+          "disabled": true
+        },
+        {
+          "text": "Gravitational Field Off",
+          "action": "reset(); set({ 'gravitationalField' : false });"
+        },
+        {
+          "text": "Gravitational Field: 100",
+          "action": "reset(); set({ 'gravitationalField' : 0.005 });"
+        },
+        {
+          "text": "Gravitational Field: 200 (default)",
+          "selected": true,
+          "action": "reset(); set({ 'gravitationalField' : 0.01 });"
+        },
+        {
+          "text": "Gravitational Field: 400",
+          "action": "reset(); set({ 'gravitationalField' : 0.02 });"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "button1",
+      "text": "Reset",
+      "action": "reset();"
+    }
+  ]
+}

@@ -122,6 +122,15 @@ parseMML = (mmlString) ->
     ###
     universeProps = $mml(".org-concord-mw2d-models-Universe")
     viscosity = parseFloat universeProps.find("[property=viscosity] float").text() || 0
+    ###
+      GravitationalField
+    ###
+    gravitationalProps = $mml(".org-concord-mw2d-models-GravitationalField")
+    if (gravitationalProps.length > 0)
+      gravitationalField = parseFloat gravitationalProps.find("[property=intensity] double").text() || 0.010
+    else
+      gravitationalField = false
+
 
     ###
       Find the view-port size
@@ -311,6 +320,7 @@ parseMML = (mmlString) ->
       chargeShading       : !!chargeShading
       showVDWLines        : !!showVDWLines
       VDWLinesRatio       : VDWLinesRatio
+      gravitationalField  : gravitationalField,
       elements            : elemTypes
       atoms :
         X : x

@@ -18,6 +18,7 @@ modeler.model = function(initialProperties) {
       temperature_control,
       chargeShading, showVDWLines,VDWLinesRatio,
       lennard_jones_forces, coulomb_forces,
+      gravitationalField = false,
       stopped = true,
       tick_history_list = [],
       tick_history_list_index = 0,
@@ -70,6 +71,7 @@ modeler.model = function(initialProperties) {
         coulomb_forces        : true,
         lennard_jones_forces  : true,
         temperature_control   : true,
+        gravitationalField    : false,
         chargeShading         : false,
         showVDWLines          : false,
         VDWLinesRatio         : 1.99,
@@ -102,6 +104,13 @@ modeler.model = function(initialProperties) {
 
         set_sigma: function(s) {
           console.log("set_sigma: This method is temporarily deprecated");
+        },
+
+        set_gravitationalField: function(gf) {
+          this.gravitationalField = gf;
+          if (coreModel) {
+            coreModel.setGravitationalField(gf);
+          }
         }
       };
 
@@ -475,11 +484,13 @@ modeler.model = function(initialProperties) {
     showVDWLines        = properties.showVDWLines;
     VDWLinesRatio       = properties.VDWLinesRatio;
     viscosity           = properties.viscosity;
+    gravitationalField  = properties.gravitationalField;
 
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(temperature_control);
     coreModel.setViscosity(viscosity);
+    coreModel.setGravitationalField(gravitationalField);
 
     coreModel.setTargetTemperature(temperature);
 

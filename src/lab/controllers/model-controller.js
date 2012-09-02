@@ -96,6 +96,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       radialBonds         = modelConfig.radialBonds;
       obstacles           = modelConfig.obstacles;
       viscosity           = modelConfig.viscosity;
+      gravitationalField  = modelConfig.gravitationalField;
     }
 
     // ------------------------------------------------------------
@@ -114,7 +115,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           height              : height,
           chargeShading       : chargeShading,
           showVDWLines        : showVDWLines,
-          viscosity           : viscosity
+          viscosity           : viscosity,
+          gravitationalField  : gravitationalField
         });
 
       if (atoms) {

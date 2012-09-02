@@ -43,6 +43,7 @@ controllers.complexModelController =
       showVDWLines        = modelConfig.showVDWLines,
       radialBonds         = modelConfig.radialBonds,
       obstacles           = modelConfig.obstacles,
+      gravitationalField  = modelConfig.gravitationalField,
 
       moleculeContainer,
       model_listener,
@@ -124,7 +125,8 @@ controllers.complexModelController =
           width: width,
           height: height,
           chargeShading: chargeShading,
-          showVDWLines: showVDWLines
+          showVDWLines: showVDWLines,
+          gravitationalField : gravitationalField
         });
 
       if (atoms_properties) {

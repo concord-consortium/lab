@@ -39,6 +39,19 @@ var arrays       = require('arrays'),
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
+    /**
+      from the Java MW:
+        final static float GF_CONVERSION_CONSTANT = 0.008f;
+
+      https://github.com/concord-consortium/mw/blob/master/src/org/concord/mw2d/models/MDModel.java#L141-147
+        converts energy gradient unit into force unit:
+        1.6E-19 [J] / ( E-11 [m] x 120E-3 / 6E23 [kg] ) / ( E-11 / ( E-15) ^ 2 ) [m/s^2]
+
+      However in order to get similar gravitational effect our constant is 100 time smaller
+      TODO: find out why ???
+    */
+    GF_CONVERSION_CONSTANT = 0.00008,
+
     INDICES,
     ELEMENT_INDICES,
     OBSTACLE_INDICES,
@@ -198,6 +211,10 @@ exports.makeModel = function() {
 
       // Whether to use the thermostat to maintain the system temperature near T_target.
       useThermostat = false,
+
+      // If a numeric value include gravitational field in force calculations,
+      // otherwise value should be false
+      gravitationalField = false,
 
       // Whether a transient temperature change is in progress.
       temperatureChangeInProgress = false,
@@ -791,6 +808,16 @@ exports.makeModel = function() {
         }
       },
 
+      updateGravitationalAcceleration = function() {
+        // fast path if there is no gravitationalField
+        if (!gravitationalField) return;
+        var i,
+            gf = gravitationalField * GF_CONVERSION_CONSTANT;
+        for (i = 0; i < N; i++) {
+          ay[i] -= gf;
+        }
+      },
+
       updateBondAccelerations = function() {
         // fast path if no radial bonds have been defined
         if (N_radialBonds < 1) return;
@@ -934,6 +961,14 @@ exports.makeModel = function() {
 
     useThermostat: function(v) {
       useThermostat = !!v;
+    },
+
+    setGravitationalField: function(gf) {
+      if (typeof gf === "number" && gf !== 0) {
+        gravitationalField = gf;
+      } else {
+        gravitationalField = false;
+      }
     },
 
     setTargetTemperature: function(v) {
@@ -1458,6 +1493,9 @@ exports.makeModel = function() {
 
         // Accumulate accelerations from spring forces
         updateSpringAccelerations();
+
+        // Accumulate optional gravitational accelerations
+        updateGravitationalAcceleration();
 
         for (i = 0; i < N; i++) {
           // Clearing the acceleration here from pinned atoms will cause the acceleration

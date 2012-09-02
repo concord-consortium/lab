@@ -6,6 +6,7 @@
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.99,
+  "gravitationalField": false,
   "elements": [
     {
       "id": 0,

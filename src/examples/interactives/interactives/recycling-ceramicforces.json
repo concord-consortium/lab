@@ -2,27 +2,42 @@
   "model": {
     "url": "/imports/legacy-mw-content/converted/visual/Recycling/ceramicforcesimple$0.json",
     "viewOptions": {
-      "controlButtons": "play_reset"
+      "controlButtons": "play_reset",
+      "enableAtomTooltips": true
     }
   },
   "components": [
     {
       "type": "button",
-      "id": "cool",
-      "text": "Cool",
-      "action": "adjustTemperature(0.9);"
+      "id": "no-force",
+      "text": "No force",
+      "action": " set({ 'gravitationalField' : false });"
     },
     {
       "type": "button",
-      "id": "heat",
-      "text": "Heat",
-      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
+      "id": "small-force",
+      "text": "Small force",
+      "action": " set({ 'gravitationalField' : 0.001 });"
+    },
+    {
+      "type": "button",
+      "id": "med-force",
+      "text": "Medium force",
+      "action": " set({ 'gravitationalField' : 0.0015 });"
+    },
+    {
+      "type": "button",
+      "id": "large-force",
+      "text": "Large force",
+      "action": " set({ 'gravitationalField' : 0.004 });"
     }
   ],
   "layout": {
     "bottom": [
-      "cool",
-      "heat"
+      "no-force",
+      "small-force",
+      "med-force",
+      "large-force"
     ]
   }
 }
