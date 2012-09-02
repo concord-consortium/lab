@@ -255,6 +255,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     return nodes[model.INDICES.CHARGE][i];
   }
 
+  function get_visible(i) {
+    return nodes[model.INDICES.VISIBLE][i];
+  }
+
   function get_obstacle_x(i) {
     return obstacles[model.OBSTACLE_INDICES.X][i];
   }
@@ -666,6 +670,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("cx", function(d, i) { return x(get_x(i)); })
           .attr("cy", function(d, i) { return y(get_y(i)); })
           .style("fill", function(d, i) {
+            if (!get_visible(i)) { return "#eeeeee"; }
             if (chargeShadingMode()) {
                 if (get_charge(i) > 0){
                     return  "url(#pos-grad)";
