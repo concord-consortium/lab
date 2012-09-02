@@ -20,6 +20,30 @@
           "action": "reset(); set({ 'gravitationalField' : false });"
         },
         {
+          "text": "Gravitational Field: 1",
+          "action": "reset(); set({ 'gravitationalField' : 0.000025 });"
+        },
+        {
+          "text": "Gravitational Field: 2",
+          "action": "reset(); set({ 'gravitationalField' : 0.0001 });"
+        },
+        {
+          "text": "Gravitational Field: 5",
+          "action": "reset(); set({ 'gravitationalField' : 0.00025 });"
+        },
+        {
+          "text": "Gravitational Field: 10",
+          "action": "reset(); set({ 'gravitationalField' : 0.0005 });"
+        },
+        {
+          "text": "Gravitational Field: 20",
+          "action": "reset(); set({ 'gravitationalField' : 0.001 });"
+        },
+        {
+          "text": "Gravitational Field: 50",
+          "action": "reset(); set({ 'gravitationalField' : 0.0025 });"
+        },
+        {
           "text": "Gravitational Field: 100",
           "action": "reset(); set({ 'gravitationalField' : 0.005 });"
         },
