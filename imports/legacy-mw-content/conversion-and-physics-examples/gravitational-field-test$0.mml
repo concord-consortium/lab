@@ -324,7 +324,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1346529019000</long> 
+     <long>1346529315000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -333,11 +333,11 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>10972</long> 
+    <long>10872</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/imports/legacy-mw-content/conversion-and-physics-examples</string> 
+    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
