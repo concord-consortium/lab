@@ -167,6 +167,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
         break;
       case "play_reset_step":
+        pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
+        break;
       default:
         pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
     }
@@ -399,7 +401,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("y", 5)
         .attr("width", "3%")
         .attr("height", "3%")
-        .attr("xlink:href", "../../resources/heatbath.gif")
+        .attr("xlink:href", "../../resources/heatbath.gif");
 
       model.addPropertiesListener(["temperature_control"], updateHeatBath);
       updateHeatBath();
@@ -711,70 +713,77 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function radialBondEnter(radialBond) {
-        radialBond.enter().append("line")
-                    .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
-                    .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
-                    .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
-                    .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
-                    .attr("class", "radialbond")
-                    .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75})
-                    .style("stroke", function(d, i) {
-                if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
-                    return "#000000";
-                }
-                else {
-                    if (chargeShadingMode()) {
-                        if (get_charge(get_radial_bond_atom_1(i)) > 0){
-                            return  bondColorArray[4];
-                        }
-                        else if (get_charge(get_radial_bond_atom_1(i)) < 0){
-                            return  bondColorArray[5];
-                        }
-                        else {
-                            //element = get_element(get_radial_bond_atom_1(i)) % 4;
-                            //grad = bondColorArray[element];
-                            return "#A4A4A4";
-                        }
+      radialBond.enter().append("line")
+          .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
+          .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
+          .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+          .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+          .attr("class", "radialbond")
+          .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75})
+          .style("stroke", function(d, i) {
+              if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
+                return "#000000";
+              } else {
+                if (chargeShadingMode()) {
+                    if (get_charge(get_radial_bond_atom_1(i)) > 0) {
+                        return  bondColorArray[4];
+                    } else if (get_charge(get_radial_bond_atom_1(i)) < 0){
+                        return  bondColorArray[5];
                     } else {
-                        element = get_element(get_radial_bond_atom_1(i)) % 4;
-                        grad = bondColorArray[element];
-                        return grad;
+                      //element = get_element(get_radial_bond_atom_1(i)) % 4;
+                      //grad = bondColorArray[element];
+                      return "#A4A4A4";
                     }
+                } else {
+                  element = get_element(get_radial_bond_atom_1(i)) % 4;
+                  grad = bondColorArray[element];
+                  return grad;
                 }
+              }
             })
-            .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
-        radialBond.enter().append("line")
-                    .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
-                    .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
-                    .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
-                    .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
-                    .attr("class", "radialbond1")
-                    .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
-                    .style("stroke", function(d, i) {
-                if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
-                    return "#000000";
+            .style("stroke-dasharray", function (d, i) {
+                if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
+                  return "5 5"
+                } else {
+                  return "";
                 }
-                else {
-                    if (chargeShadingMode()) {
-                        if (get_charge(get_radial_bond_atom_2(i)) > 0){
-                            return  bondColorArray[4];
-                        }
-                        else if (get_charge(get_radial_bond_atom_2(i)) < 0){
-                            return  bondColorArray[5];
-                        }
-                        else {
-                            //element = get_element(get_radial_bond_atom_2(i)) % 4;
-                            //grad = bondColorArray[element];
-                            return "#A4A4A4";
-                        }
-                    } else {
-                        element = get_element(get_radial_bond_atom_2(i)) % 4;
-                        grad = bondColorArray[element];
-                        return grad;
-                    }
+              });
+
+      radialBond.enter().append("line")
+          .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+          .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+          .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
+          .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
+          .attr("class", "radialbond1")
+          .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
+          .style("stroke", function(d, i) {
+              if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
+                return "#000000";
+              } else {
+                if (chargeShadingMode()) {
+                  if (get_charge(get_radial_bond_atom_2(i)) > 0) {
+                      return  bondColorArray[4];
+                  } else if (get_charge(get_radial_bond_atom_2(i)) < 0){
+                      return  bondColorArray[5];
+                  } else {
+                    //element = get_element(get_radial_bond_atom_2(i)) % 4;
+                    //grad = bondColorArray[element];
+                    return "#A4A4A4";
+                  }
+                } else {
+                  element = get_element(get_radial_bond_atom_2(i)) % 4;
+                  grad = bondColorArray[element];
+                  return grad;
                 }
-    })
-                    .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
+              }
+          })
+          .style("stroke-dasharray", function (d, i) {
+            if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { 
+              return "5 5"
+            } else {
+              return "";
+            }
+          });
     }
 
     function drawAttractionForces(){
@@ -981,6 +990,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
 
     function update_molecule_positions() {
+      var gradientBoolean = gradient_container.selectAll("circle")[0].length;
 
       mock_atoms_array.length = get_num_atoms();
       nodes = get_nodes();
@@ -997,9 +1007,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       });
 
       particle = gradient_container.selectAll("circle").data(mock_atoms_array);
-      if (mock_atoms_array.length !== gradient_container.selectAll("circle")[0].length){
+      if (mock_atoms_array.length !== gradientBoolean) {
         circlesEnter(particle);
       }
+
       particle
         .attr("cx", function(d, i) {return x(nodes[model.INDICES.X][i]); })
         .attr("cy", function(d, i) {return y(nodes[model.INDICES.Y][i]); })
@@ -1061,7 +1072,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       set_position(i, new_x, new_y, false, true);
 
       update_drawable_positions();
-    };
+    }
 
     function node_dragend(d, i){
       if (!is_stopped()) {
@@ -1082,7 +1093,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
 
       update_drawable_positions();
-    };
+    }
 
     // ------------------------------------------------------------
     //
