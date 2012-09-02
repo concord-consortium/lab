@@ -7,6 +7,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       $interactiveContainer,
       propertiesListeners = [],
       playerConfig,
+      componentCallbacks = [],
       thermometer,
 
       //
@@ -259,7 +260,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
 
     $button.click(evalInScriptContext(scriptStr));
 
-    return $button;
+    return { elem: $button };
   }
 
   function createPulldown(component) {
@@ -297,7 +298,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       }
     });
 
-    return $pulldown;
+    return { elem: $pulldown };
   }
 
   function createThermometer(component) {
@@ -306,9 +307,15 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     thermometer = new Thermometer($thermometer, null, component.min, component.max);
     queuePropertiesListener(['temperature'], updateThermometerValue);
 
-    return $('<div class="interactive-thermometer">')
-             .append($thermometer)
-             .append($('<p class="label">').text('Thermometer'));
+    return {
+      elem: $('<div class="interactive-thermometer">')
+                .append($thermometer)
+                .append($('<p class="label">').text('Thermometer')),
+      callback: function() {
+        thermometer.resize();
+        updateThermometerValue();
+      }
+    };
   }
 
   function updateThermometerValue() {
@@ -344,10 +351,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       model.addPropertiesListener(listener[0], listener[1]);
     }
 
-    // TODO. Of course, this should happen automatically
-    if (thermometer) {
-      thermometer.resize();
-      updateThermometerValue();
+    for(i = 0; i < componentCallbacks.length; i++) {
+      componentCallbacks[i]();
     }
   }
 
@@ -419,7 +424,10 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           for (i = 0, ii = divArray.length; i<ii; i++) {
             componentId = divArray[i];
             if (components[componentId]) {
-              $('#'+div).append(components[componentId]);
+              $('#'+div).append(components[componentId].elem);
+              if (components[componentId].callback) {
+                componentCallbacks.push(components[componentId].callback);
+              }
               delete components[componentId];
             }
           }
@@ -430,7 +438,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     // add the remaining components to #bottom
     for (componentId in components) {
       if (components.hasOwnProperty(componentId)) {
-        $('#bottom').append(components[componentId]);
+        $('#bottom').append(components[componentId].elem);
       }
     }
 
