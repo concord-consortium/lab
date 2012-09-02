@@ -348,13 +348,13 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           sample:    0.1,
           ylabel:    "eV",
           ymin:      -5.0,
-          ymax:      5.0,
-          dataset:   energyData
+          ymax:      5.0
         };
+        resetEnergyData();
+        options.dataset = energyData;
         if (thisComponent.options) {
           $.extend(options, thisComponent.options);
         }
-        resetEnergyData();
         model.on("tick.energyGraph", updateEnergyGraph);
         model.on('play.energyGraph', function() {
           var i, len;
