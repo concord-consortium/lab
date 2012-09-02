@@ -114,7 +114,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       molecule_container = layout.moleculeContainer(molecule_view_id,
         {
           control_buttons:      "",
-          model_time_label:     true,
+          modelTimeLabel:       true,
           grid_lines:           true,
           xunits:               true,
           yunits:               true,
