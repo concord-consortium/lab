@@ -413,9 +413,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       }
       return index;
     } else {
-      energyData = [[],[],[]];
-      updateEnergyData();
-      return 1;
+      energyData = [[0],[0],[0]];
+      return 0;
     }
   }
 
