@@ -340,6 +340,20 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       elem: $('<div>').attr('id',"ke-chart"),
       callback: function() {
         var thisComponent = component;
+        var options = {
+          title:     "Energy of the System (KE:red, PE:green, TE:blue)",
+          xlabel:    "Model Time (ps)",
+          xmin:      0,
+          xmax:     100,
+          sample:    0.1,
+          ylabel:    "eV",
+          ymin:      -5.0,
+          ymax:      5.0,
+          dataset:   energyData
+        };
+        if (thisComponent.options) {
+          $.extend(options, thisComponent.options);
+        }
         resetEnergyData();
         model.on("tick.energyGraph", updateEnergyGraph);
         model.on('play.energyGraph', function() {
@@ -366,18 +380,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           }
           energyGraph.new_data(energyData);
         });
-        energyGraph = grapher.realTimeGraph('#ke-chart', {
-          title:     "Energy of the System (KE:red, PE:green, TE:blue)",
-          xlabel:    "Model Time (ps)",
-          xmin:      0,
-          xmax:     100,
-          sample:    0.1,
-          ylabel:    "eV",
-          ymin:      -5.0,
-          ymax:      5.0,
-          sizeType:  "small",
-          dataset:   energyData
-        });
+        energyGraph = grapher.realTimeGraph('#ke-chart', options);
         if (thisComponent.dimensions) {
           energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
         }

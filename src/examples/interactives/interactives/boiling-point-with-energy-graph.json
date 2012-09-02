@@ -22,7 +22,8 @@
     {
       "type": "energyGraph",
       "id": "ke-chart",
-      "dimensions": { "width": 500, "height": 296 }
+      "dimensions": { "width": 500, "height": 296 },
+      "options": { "ymin": -30, "ymax": 30.0 }
     }
   ],
   "layout": {
