@@ -2,7 +2,8 @@
   "model": {
     "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
     "viewOptions": {
-      "controlButtons": "play_reset"
+      "controlButtons": "play_reset",
+      "modelTimeLabel": true
     }
   },
   "components": [
@@ -20,7 +21,8 @@
     },
     {
       "type": "energyGraph",
-      "id": "ke-chart"
+      "id": "ke-chart",
+      "dimensions": { "width": 500, "height": 296 }
     }
   ],
   "layout": {

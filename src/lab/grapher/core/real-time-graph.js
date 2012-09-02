@@ -317,7 +317,7 @@ grapher.realTimeGraph = function(e, options) {
           .data(titles, function(d) { return d; });
         title.enter().append("text")
             .attr("class", "title")
-            .style("font-size", sizeType.value/2.4 * 100 + "%")
+            .style("font-size", sizeType.value/3.2 * 100 + "%")
             .text(function(d) { return d; })
             .attr("x", size.width/2)
             .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })

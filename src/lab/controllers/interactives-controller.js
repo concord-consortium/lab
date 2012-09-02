@@ -339,6 +339,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     return  {
       elem: $('<div>').attr('id',"ke-chart"),
       callback: function() {
+        var thisComponent = component;
         resetEnergyData();
         model.on("tick.energyGraph", updateEnergyGraph);
         model.on('play.energyGraph', function() {
@@ -374,8 +375,12 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           ylabel:    "eV",
           ymin:      -5.0,
           ymax:      5.0,
+          sizeType:  "small",
           dataset:   energyData
         });
+        if (thisComponent.dimensions) {
+          energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
+        }
       }
     };
   }
