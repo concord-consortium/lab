@@ -65,6 +65,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       showVDWLines        = modelConfig.showVDWLines;
       radialBonds         = modelConfig.radialBonds;
       obstacles           = modelConfig.obstacles;
+      viscosity           = modelConfig.viscosity;
       gravitationalField  = modelConfig.gravitationalField;
     }
 
@@ -99,6 +100,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
           height: height,
           chargeShading: chargeShading,
           showVDWLines: showVDWLines,
+          viscosity : viscosity,
           gravitationalField : gravitationalField
       });
 
