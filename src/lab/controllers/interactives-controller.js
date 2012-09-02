@@ -367,6 +367,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         model.on('reset.energyGraph', function() {
           resetEnergyData();
           energyGraph.new_data(energyData);
+          energyGraph.reset();
         });
         // Right now this action is acting as an indication of model reset ...
         // This should be refactoring to distinguish the difference between reset
