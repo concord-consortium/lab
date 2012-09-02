@@ -112,9 +112,11 @@ var ROOT = "/examples",
     // construct link to embeddable version of Interactive
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
+    jsonModelPath = interactive.model.url;
+    $("#json-model-link").attr("href", window.location.origin + ACTUAL_ROOT + jsonModelPath);
+
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
-    jsonModelPath = interactive.model.url;
     mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml")
     contentItems = getObjects(modelList, "mml", mmlPath);
     if (contentItems.length > 0) {
