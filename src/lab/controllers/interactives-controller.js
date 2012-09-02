@@ -336,8 +336,9 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
 
   // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
   function createEnergyGraph(component) {
+    var elem = $('<div>').attr('id', component.id);
     return  {
-      elem: $('<div>').attr('id', component.id),
+      elem: elem,
       callback: function() {
         var thisComponent = component;
         var options = {
@@ -468,6 +469,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         $top, $right,
         i, ii;
 
+    componentCallbacks = [];
     interactive = newInteractive;
     $interactiveContainer = $(viewSelector);
     if ($interactiveContainer.children().length === 0) {
