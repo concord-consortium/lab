@@ -49,6 +49,11 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           model.stop();
         },
 
+        reset: function() {
+          model.stop();
+          model.reset();
+        },
+
         seek: function(n) {
           // Special case assumption: This is to intercept the "reset" button
           // of PlaybackComponentSVG, which calls seek(1) on the ModelPlayer

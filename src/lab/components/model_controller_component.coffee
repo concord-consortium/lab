@@ -22,6 +22,9 @@ class ModelPlayer
     this.stop()
     @model.seek(float_index)
 
+  reset: ->
+    @model.reset()
+
   isPlaying: ->
     !@model.is_stopped()
 
@@ -117,7 +120,8 @@ class ModelControllerComponent
         when 'stop'    then @playable.stop()
         when 'forward' then @playable.forward()
         when 'back'    then @playable.back()
-        when 'reset'   then @playable.seek(1)
+        when 'seek'    then @playable.seek(1)
+        when 'reset'   then @playable.reset()
         else console.log("cant find action for #{action}")
     else console.log("no @playable defined")
     this.update_ui()

@@ -578,6 +578,11 @@ modeler.model = function(initialProperties) {
     return coreModel.getLJCalculator();
   };
 
+  model.reset = function() {
+    model.resetTime();
+    dispatch.reset();
+  };
+
   model.resetTime = function() {
     coreModel.setTime(0);
   };
