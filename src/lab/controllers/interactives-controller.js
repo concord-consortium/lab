@@ -337,7 +337,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
   function createEnergyGraph(component) {
     return  {
-      elem: $('<div>').attr('id',"ke-chart"),
+      elem: $('<div>').attr('id', component.id),
       callback: function() {
         var thisComponent = component;
         var options = {
@@ -380,7 +380,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           }
           energyGraph.new_data(energyData);
         });
-        energyGraph = grapher.realTimeGraph('#ke-chart', options);
+        energyGraph = grapher.realTimeGraph('#' + thisComponent.id, options);
         if (thisComponent.dimensions) {
           energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
         }
