@@ -9,6 +9,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       playerConfig,
       componentCallbacks = [],
       thermometer,
+      energyGraph,
+      energyData = [[],[],[]],
 
       //
       // Define the scripting API used by 'action' scripts on interactive elements.
@@ -84,7 +86,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         getAtomProperties: function getAtomProperties(i) {
           var props = {},
               atoms = model.get_nodes();
-          for (property in model.ATOM_PROPERTIES) {
+          for (var property in model.ATOM_PROPERTIES) {
             props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
           }
           return props;
@@ -156,6 +158,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         return createPulldown(component);
       case 'thermometer':
         return createThermometer(component);
+      case 'energyGraph':
+        return createEnergyGraph(component);
     }
   }
 
@@ -245,7 +249,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   */
   function getStringFromArray(str) {
     if (typeof str === 'string') {
-      return str
+      return str;
     }
     return str.join('\n');
   }
@@ -330,6 +334,83 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     }
   }
 
+  // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
+  function createEnergyGraph(component) {
+    return  {
+      elem: $('<div>').attr('id',"ke-chart"),
+      callback: function() {
+        resetEnergyData();
+        model.on("tick.energyGraph", updateEnergyGraph);
+        model.on('play.energyGraph', function() {
+          var i, len;
+          if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
+            resetEnergyData(model.stepCounter());
+            energyGraph.new_data(energyData);
+          }
+          energyGraph.show_canvas();
+        });
+        model.on('reset.energyGraph', function() {
+          resetEnergyData();
+          energyGraph.new_data(energyData);
+        });
+        // Right now this action is acting as an indication of model reset ...
+        // This should be refactoring to distinguish the difference between reset
+        // and seek to location in model history.
+        model.on('seek.energyGraph', function() {
+          var modelsteps = model.stepCounter();
+          if (modelsteps > 0) {
+            resetEnergyData(modelsteps);
+          } else {
+            resetEnergyData();
+          }
+          energyGraph.new_data(energyData);
+        });
+        energyGraph = grapher.realTimeGraph('#ke-chart', {
+          title:     "Energy of the System (KE:red, PE:green, TE:blue)",
+          xlabel:    "Model Time (ps)",
+          xmin:      0,
+          xmax:     100,
+          sample:    0.1,
+          ylabel:    "eV",
+          ymin:      -5.0,
+          ymax:      5.0,
+          dataset:   energyData
+        });
+      }
+    };
+  }
+
+  function updateEnergyGraph() {
+    energyGraph.add_points(updateEnergyData());
+  }
+
+  // Add another sample of model KE, PE, and TE to the arrays in energyData
+  function updateEnergyData() {
+    var ke = model.ke(),
+        pe = model.pe(),
+        te = ke + pe;
+    energyData[0].push(ke);
+    energyData[1].push(pe);
+    energyData[2].push(te);
+    return [ke, pe, te];
+  }
+
+  // Reset the energyData arrays to a specific length by passing in an index value,
+  // or empty the energyData arrays an initialize the first sample.
+  function resetEnergyData(index) {
+    var modelsteps = model.stepCounter();
+    if (index) {
+      for (i = 0, len = energyData.length; i < len; i++) {
+        energyData[i].length = modelsteps;
+      }
+      return index;
+    } else {
+      energyData = [[],[],[]];
+      updateEnergyData();
+      return 1;
+    }
+  }
+
   /**
     Call this after the model loads, to process any queued resize and update events
     that depend on the model's properties, then draw the screen.
@@ -401,7 +482,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       } else {
         playerConfig = { controlButtons: 'play' };
       }
-      playerConfig.fit_to_parent = !layoutStyle
+      playerConfig.fit_to_parent = !layoutStyle;
     }
 
     if (modelUrl) loadModel(modelUrl);

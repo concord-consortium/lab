@@ -1,0 +1,35 @@
+{
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
+    "viewOptions": {
+      "controlButtons": "play_reset"
+    }
+  },
+  "components": [
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "Heat",
+      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
+    },
+    {
+      "type": "energyGraph",
+      "id": "ke-chart"
+    }
+  ],
+  "layout": {
+    "right": [
+      "ke-chart"
+    ],
+    "bottom": [
+      "abs-zero",
+      "add-heat"
+    ]
+  }
+}
