@@ -206,7 +206,7 @@ layout.setupScreen = function(forceRender) {
 
       // like simple-iframe, but all component position definitions are set from properties
       case "interactive-iframe":
-      var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+      var emsize = Math.min(layout.screen_factor_width * 1.2, layout.screen_factor_height * 1.2);
       layout.bodycss.style.fontSize = emsize + 'em';
       setupInteractiveIFrameScreen();
       break;
@@ -285,10 +285,10 @@ layout.setupScreen = function(forceRender) {
     mcsize = viewLists.moleculeContainers[0].scale();
     modelAspectRatio = mcsize[0] / mcsize[1];
     widthToPageRatio = mcsize[0] / pageWidth;
-    width = pageWidth * 0.6;
+    width = pageWidth * 0.70;
     height = width * 1/modelAspectRatio;
-    if (height > pageHeight * 0.70) {
-      height = pageHeight * 0.70;
+    if (height > pageHeight * 0.75) {
+      height = pageHeight * 0.75;
       width = height * modelAspectRatio;
     }
     for (viewType in viewLists) {
