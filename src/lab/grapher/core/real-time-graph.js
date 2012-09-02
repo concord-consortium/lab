@@ -45,9 +45,11 @@ grapher.realTimeGraph = function(e, options) {
         xscale  : 'linear',
         yscale  : 'linear',
         xTicCount: 10,
-        yTicCount: 8,
+        yTicCount: 10,
         xscaleExponent: 0.5,
         yscaleExponent: 0.5,
+        xFormatter: "3.2r",
+        yFormatter: "3.2r",
         xmax:       10,
         xmin:       0,
         ymax:       10,
@@ -235,11 +237,8 @@ grapher.realTimeGraph = function(e, options) {
       yScale.exponent(options.yscaleExponent)
     }
 
-    // fx = d3.format(".3r");
-    // fy = d3.format(".2f");
-
-    fx = xScale.tickFormat(options.xTicCount);
-    fy = yScale.tickFormat(options.yTicCount);
+    fx = d3.format(options.xFormatter);
+    fy = d3.format(options.yFormatter);
 
     line = d3.svg.line()
           .x(function(d, i) { return xScale(points[i].x ); })
