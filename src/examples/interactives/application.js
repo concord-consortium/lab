@@ -252,10 +252,13 @@ var ROOT = "/examples",
         column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'CHARGE', 'RADIUS', 'ELEMENT'],
         i_formatter = d3.format(" 2d"),
         charge_formatter = d3.format(" 1.1f"),
-        f_formatter = d3.format(" 3.4f"),
+        radius_formatter = d3.format(" 1.2f"),
+        r_formatter = d3.format(" 3.4r  "),
+        f_formatter = d3.format(" 3.4f  "),
+        e_formatter = d3.format(" 3.4e  "),
         formatters = [f_formatter, f_formatter, f_formatter, 
-                      f_formatter, f_formatter, f_formatter, f_formatter, 
-                      f_formatter, f_formatter, charge_formatter, f_formatter, 
+                      f_formatter, e_formatter, e_formatter, e_formatter, 
+                      e_formatter, e_formatter, charge_formatter, radius_formatter, 
                       i_formatter];
 
     atoms.length = nodes[0].length;
