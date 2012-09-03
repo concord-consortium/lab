@@ -24,6 +24,11 @@ var ROOT = "/examples",
       $benchmarksContent = $("#benchmarks-content"),
       $runBenchmarksButton = $("#run-benchmarks-button"),
       benchmarksToRun,
+
+      $showModelDatatable = $("#show-model-datatable"),
+      $modelDatatableContent = $("#model-datatable-content"),
+      $modelDatatableResults = $("#model-datatable-results"),
+
       editor,
       controller,
       indent = 2,
@@ -228,6 +233,104 @@ var ROOT = "/examples",
       benchmark.run(document.getElementById("benchmark-results"), benchmarksToRun);
     });
 
+    $showModelDatatable.change(function() {
+      if (this.checked) {
+        renderModelDatatable(true);
+        $modelDatatableContent.show(100);
+      } else {
+        $modelDatatableContent.hide(100);
+      }
+    }).change();
   }
 
+  function renderModelDatatable(reset) {
+    var i,
+        nodes = model.get_nodes(),
+        atoms = [],
+        titlerows = $modelDatatableResults.find(".title"),
+        datarows = $modelDatatableResults.find(".data"),
+        column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'CHARGE', 'RADIUS', 'ELEMENT'],
+        i_formatter = d3.format(" 2d"),
+        charge_formatter = d3.format(" 1.1f"),
+        f_formatter = d3.format(" 3.4f"),
+        formatters = [f_formatter, f_formatter, f_formatter, 
+                      f_formatter, f_formatter, f_formatter, f_formatter, 
+                      f_formatter, f_formatter, charge_formatter, f_formatter, 
+                      i_formatter];
+
+    atoms.length = nodes[0].length;
+    reset = reset || false;
+
+    function empty_table() {
+      return $modelDatatableResults.find("<tr>").length === 0;
+    }
+
+    function add_row(kind) {
+      kind = kind || "data";
+      var $row = $("<tr>");
+      $row.addClass(kind);
+      $modelDatatableResults.append($row);
+      return $row;
+    }
+
+    function add_data(row, content, el, colspan) {
+      el = el || "<td>";
+      colspan = colspan || 1;
+      var $el = $(el);
+      $el.text(content);
+      $el.attr("colSpan", colspan);
+      $(row).append($el);
+    }
+
+    function add_molecule_data(row, index, el) {
+      el = el || "<td>";
+      var $cells = $(row).find(el),
+          i = 0;
+      if ($cells.length > 0) {
+        $cells[0].text(index);
+        while (++i < $cells.length) {
+          $cells[i].text(formatters[i](nodes[model.INDICES[column_titles[i-1]]][index]));
+        }
+      }
+      i--;
+      add_data(row, index);
+      while (++i < column_titles.length) {
+        add_data(row, formatters[i](nodes[model.INDICES[column_titles[i]]][index]));
+      }
+    }
+
+    function add_column_headings($title_row, titles, colspan) {
+      colspan = colspan || 1;
+      var i;
+      add_data($title_row, "atom", "<th>", colspan);
+      i = -1; while (++i < titles.length) {
+        add_data($title_row, titles[i], "<th>", colspan);
+      }
+    }
+
+    function add_data_rows(n) {
+      var i = -1, j = datarows.length;
+      while (++i < n) {
+        if (i >= j) {
+          add_row();
+        }
+      }
+      while (--j >= i) {
+        $modelDatatableResults.remove($datarows[i]);
+      }
+      return $modelDatatableResults.find(".data");
+    }
+
+    if (titlerows.length === 0) {
+      var $title_row = add_row("title");
+      add_column_headings($title_row, column_titles);
+      datarows = add_data_rows(atoms.length);
+    }
+    if (reset) {
+      datarows = add_data_rows(model.get_num_atoms());
+    }
+    i = -1; while (++i < atoms.length) {
+      add_molecule_data(datarows[i], i);
+    }
+  }
 }());

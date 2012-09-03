@@ -98,6 +98,14 @@
                 Run
             .benchmark-results
               %table#benchmark-results.benchmark-results
+        #model-datatable.extras-item
+          .extras-item-banner
+            %input#show-model-datatable{:type => "checkbox", :checked => false}
+            Atoms Datatable
+          #model-datatable-content.extras-item-content
+            .extras-item-controls
+            .model-datatable-results
+              %table#model-datatable-results
 
 
     %script{:src => "../../lab/lab.js", :type => "text/javascript"}
