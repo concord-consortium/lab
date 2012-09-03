@@ -230,7 +230,7 @@ var ROOT = "/examples",
     ];
 
     $runBenchmarksButton.click(function() {
-      benchmark.run(document.getElementById("benchmark-results"), benchmarksToRun);
+      benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun);
     });
 
     $showModelDatatable.change(function() {
