@@ -76,11 +76,12 @@
         .top
           #interactive-container
       #editor-bottom
-        %button#update-interactive-button
-          Update Interactive
-        %button#autoformat-selection-button
-          AutoFormat Selection
-        %a#json-model-link{:href => "", :class => "opens-in-new-window", :target => "_blank"} Model JSON
+        #editor-controls
+          %button#update-interactive-button
+            Update Interactive
+          %button#autoformat-selection-button
+            AutoFormat Selection
+          %a#json-model-link{:href => "", :class => "opens-in-new-window", :target => "_blank"} Model JSON
 
         %textarea#interactive-text-area
 
