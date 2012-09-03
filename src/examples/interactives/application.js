@@ -17,6 +17,13 @@ var ROOT = "/examples",
       updateInteractiveButton = document.getElementById('update-interactive-button'),
       autoFormatSelectionButton = document.getElementById('autoformat-selection-button'),
 
+      $showEditor = $("#show-editor"),
+      $editorContent = $("#editor-content"),
+
+      $showBenchmarks = $("#show-benchmarks"),
+      $benchmarksContent = $("#benchmarks-content"),
+      $runBenchmarksButton = $("#run-benchmarks-button"),
+      benchmarksToRun,
       editor,
       controller,
       indent = 2,
@@ -117,7 +124,7 @@ var ROOT = "/examples",
 
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
-    mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml")
+    mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml");
     contentItems = getObjects(modelList, "mml", mmlPath);
     if (contentItems.length > 0) {
       $("#java-mw-link").attr("href", function(i, href) {
@@ -136,7 +143,7 @@ var ROOT = "/examples",
         "url": "DataGames/Games/concord-lab" + "/examples/interactives/embeddable.html#" +  interactiveUrl
       }];
       dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
-      return encodeURI(dgUrl)
+      return encodeURI(dgUrl);
     });
 
     // Copy Interactive json to code editor
@@ -152,6 +159,75 @@ var ROOT = "/examples",
     selectInteractive.onchange = selectInteractiveHandler;
     updateInteractiveButton.onclick = updateInteractiveHandler;
     autoFormatSelectionButton.onclick = autoFormatSelection;
+
+    $showEditor.change(function() {
+      if (this.checked) {
+        $editorContent.show(100);
+      } else {
+        $editorContent.hide(100);
+      }
+    }).change();
+
+    $showBenchmarks.change(function() {
+      if (this.checked) {
+        $benchmarksContent.show(100);
+      } else {
+        $benchmarksContent.hide(100);
+      }
+    }).change();
+
+    benchmarksToRun = [
+      {
+        name: "molecules",
+        run: function() {
+          return model.get_num_atoms();
+        }
+      },
+      {
+        name: "temperature",
+        run: function() {
+          return model.get("temperature");
+        }
+      },
+      {
+        name: "100 Steps (steps/s)",
+        run: function() {
+          model.stop();
+          var start = +Date.now();
+          var i = -1;
+          while (i++ < 100) {
+            // advance model 1 tick, but don't paint the display
+            model.tick(1, { dontDispatchTickEvent: true });
+          }
+          elapsed = Date.now() - start;
+          return d3.format("5.1f")(100/elapsed*1000);
+        }
+      },
+      {
+        name: "100 Steps w/graphics",
+        run: function() {
+          model.stop();
+          var start = +Date.now();
+          var i = -1;
+          while (i++ < 100) {
+            model.tick();
+          }
+          elapsed = Date.now() - start;
+          return d3.format("5.1f")(100/elapsed*1000);
+        }
+      },
+      {
+        name: "interactive",
+        run: function() {
+          return window.location.pathname + window.location.hash;
+        }
+      }
+    ];
+
+    $runBenchmarksButton.click(function() {
+      benchmark.run(document.getElementById("benchmark-results"), benchmarksToRun);
+    });
+
   }
 
 }());
