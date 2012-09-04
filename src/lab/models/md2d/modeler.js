@@ -14,12 +14,13 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
-      dispatch = d3.dispatch("tick", "play", "stop", "stepForward", "stepBack", "seek"),
+      dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
       chargeShading, showVDWLines,VDWLinesRatio,
       lennard_jones_forces, coulomb_forces,
       gravitationalField = false,
       stopped = true,
+      catchRemainingTimerTick = false,
       tick_history_list = [],
       tick_history_list_index = 0,
       tick_counter = 0,
@@ -208,32 +209,40 @@ modeler.model = function(initialProperties) {
 
   function tick(elapsedTime, dontDispatchTickEvent) {
     var t;
+    if (catchRemainingTimerTick) {
+      catchRemainingTimerTick = false;
+    } else {
 
-    coreModel.integrate();
+      coreModel.integrate();
 
-    pressure = modelOutputState.pressure;
-    pe       = modelOutputState.PE;
-    ke       = modelOutputState.KE;
-    time     = modelOutputState.time;
+      pressure = modelOutputState.pressure;
+      pe       = modelOutputState.PE;
+      ke       = modelOutputState.KE;
+      time     = modelOutputState.time;
 
-    pressures.push(pressure);
-    pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
+      pressures.push(pressure);
+      pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
-    tick_history_list_push();
+      tick_history_list_push();
 
-    if (!stopped) {
-      t = Date.now();
-      if (sample_time) {
-        sample_time  = t - sample_time;
-        if (sample_time) { sample_times.push(sample_time); }
-        sample_time = t;
-        sample_times.splice(0, sample_times.length - 128);
-      } else {
-        sample_time = t;
+      if (!stopped) {
+        t = Date.now();
+        if (sample_time) {
+          sample_time  = t - sample_time;
+          if (sample_time) { sample_times.push(sample_time); }
+          sample_time = t;
+          sample_times.splice(0, sample_times.length - 128);
+        } else {
+          sample_time = t;
+        }
       }
-    }
 
-    if (!dontDispatchTickEvent) dispatch.tick();
+      if (!dontDispatchTickEvent) {
+        catchRemainingTimerTick = false;
+        dispatch.tick();
+      }
+
+    }
     return stopped;
   }
 
@@ -261,9 +270,16 @@ modeler.model = function(initialProperties) {
       time:     modelOutputState.time
     });
     if (tick_history_list_index > 1000) {
-      tick_history_list.splice(0,1);
+      tick_history_list.splice(1,1);
       tick_history_list_index = 1000;
     }
+  }
+
+  function restoreFirstStateinTicHistory() {
+    tick_history_list_index = 0;
+    tick_counter = 0;
+    tick_history_list.length = 1;
+    tick_history_list_extract(tick_history_list_index);
   }
 
   function reset_tick_history_list() {
@@ -576,6 +592,14 @@ modeler.model = function(initialProperties) {
 
   model.getLJCalculator = function() {
     return coreModel.getLJCalculator();
+  };
+
+  model.reset = function() {
+    catchRemainingTimerTick = true;
+    model.resetTime();
+    restoreFirstStateinTicHistory();
+    dispatch.reset();
+    notifyListenersOfEvents("reset");
   };
 
   model.resetTime = function() {
