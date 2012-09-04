@@ -20,7 +20,6 @@ modeler.model = function(initialProperties) {
       lennard_jones_forces, coulomb_forces,
       gravitationalField = false,
       stopped = true,
-      catchRemainingTimerTick = false,
       tick_history_list = [],
       tick_history_list_index = 0,
       tick_counter = 0,
@@ -214,42 +213,38 @@ modeler.model = function(initialProperties) {
     return s/n;
   }
 
+
+
   function tick(elapsedTime, dontDispatchTickEvent) {
     var t;
-    if (catchRemainingTimerTick) {
-      catchRemainingTimerTick = false;
-    } else {
+    coreModel.integrate();
 
-      coreModel.integrate();
+    pressure = modelOutputState.pressure;
+    pe       = modelOutputState.PE;
+    ke       = modelOutputState.KE;
+    time     = modelOutputState.time;
 
-      pressure = modelOutputState.pressure;
-      pe       = modelOutputState.PE;
-      ke       = modelOutputState.KE;
-      time     = modelOutputState.time;
+    pressures.push(pressure);
+    pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
-      pressures.push(pressure);
-      pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
+    tick_history_list_push();
 
-      tick_history_list_push();
-
-      if (!stopped) {
-        t = Date.now();
-        if (sample_time) {
-          sample_time  = t - sample_time;
-          if (sample_time) { sample_times.push(sample_time); }
-          sample_time = t;
-          sample_times.splice(0, sample_times.length - 128);
-        } else {
-          sample_time = t;
-        }
+    if (!stopped) {
+      t = Date.now();
+      if (sample_time) {
+        sample_time  = t - sample_time;
+        if (sample_time) { sample_times.push(sample_time); }
+        sample_time = t;
+        sample_times.splice(0, sample_times.length - 128);
+      } else {
+        sample_time = t;
       }
-
-      if (!dontDispatchTickEvent) {
-        catchRemainingTimerTick = false;
-        dispatch.tick();
-      }
-
     }
+
+    if (!dontDispatchTickEvent) {
+      dispatch.tick();
+    }
+
     return stopped;
   }
 
@@ -611,7 +606,6 @@ modeler.model = function(initialProperties) {
   };
 
   model.reset = function() {
-    catchRemainingTimerTick = true;
     model.resetTime();
     restoreFirstStateinTickHistory();
     dispatch.reset();
@@ -833,7 +827,17 @@ modeler.model = function(initialProperties) {
 
   model.resume = function() {
     stopped = false;
-    d3.timer(tick);
+
+    d3.timer(function timerTick(elapsedTime) {
+      // Cancel the timer and refuse to to step the model, if the model is stopped.
+      // This is necessary because there is no direct way to cancel a d3 timer.
+      // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
+      if (stopped) return true;
+
+      tick(elapsedTime, false);
+      return false;
+    });
+
     dispatch.play();
     return model;
   };
