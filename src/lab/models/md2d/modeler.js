@@ -178,14 +178,14 @@ modeler.model = function(initialProperties) {
     ATOM2     : md2d.VDW_INDICES.ATOM2
   };
 
-  function notifyListeners(listeners) {
+  function notifyPropertyListeners(listeners) {
     $.unique(listeners);
     for (var i=0, ii=listeners.length; i<ii; i++){
       listeners[i]();
     }
   }
 
-  function notifyListenersOfEvents(events) {
+  function notifyPropertyListenersOfEvents(events) {
     var evt,
         evts,
         waitingToBeNotified = [],
@@ -205,7 +205,7 @@ modeler.model = function(initialProperties) {
     if (listeners["all"]){      // listeners that want to be notified on any change
       waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
     }
-    notifyListeners(waitingToBeNotified);
+    notifyPropertyListeners(waitingToBeNotified);
   }
 
   function average_speed() {
@@ -282,7 +282,7 @@ modeler.model = function(initialProperties) {
     }
   }
 
-  function restoreFirstStateinTicHistory() {
+  function restoreFirstStateinTickHistory() {
     tick_history_list_index = 0;
     tick_counter = 0;
     tick_history_list.length = 1;
@@ -346,7 +346,7 @@ modeler.model = function(initialProperties) {
         propsChanged.push(property);
       }
     }
-    notifyListenersOfEvents(propsChanged);
+    notifyPropertyListenersOfEvents(propsChanged);
   }
 
   function readModelState() {
@@ -426,7 +426,6 @@ modeler.model = function(initialProperties) {
     tick_counter = location;
     tick_history_list_extract(tick_history_list_index);
     dispatch.seek();
-    notifyListenersOfEvents("seek");
     if (model_listener) { model_listener(); }
     return tick_counter;
   };
@@ -536,6 +535,9 @@ modeler.model = function(initialProperties) {
     tick_counter = 0;
     new_step = true;
 
+    // Listeners should consider resetting the atoms a 'reset' event
+    dispatch.reset();
+
     // return model, for chaining (if used)
     return model;
   };
@@ -611,9 +613,8 @@ modeler.model = function(initialProperties) {
   model.reset = function() {
     catchRemainingTimerTick = true;
     model.resetTime();
-    restoreFirstStateinTicHistory();
+    restoreFirstStateinTickHistory();
     dispatch.reset();
-    notifyListenersOfEvents("reset");
   };
 
   model.resetTime = function() {
@@ -834,14 +835,12 @@ modeler.model = function(initialProperties) {
     stopped = false;
     d3.timer(tick);
     dispatch.play();
-    notifyListenersOfEvents("play");
     return model;
   };
 
   model.stop = function() {
     stopped = true;
     dispatch.stop();
-    notifyListenersOfEvents("stop");
     return model;
   };
 

@@ -344,23 +344,36 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     return  {
       elem: elem,
       callback: function() {
-        var thisComponent = component;
-        var options = {
-          title:     "Energy of the System (KE:red, PE:green, TE:blue)",
-          xlabel:    "Model Time (ps)",
-          xmin:      0,
-          xmax:     100,
-          sample:    0.1,
-          ylabel:    "eV",
-          ymin:      -5.0,
-          ymax:      5.0
-        };
+
+        var thisComponent = component,
+            options = {
+              title:     "Energy of the System (KE:red, PE:green, TE:blue)",
+              xlabel:    "Model Time (ps)",
+              xmin:      0,
+              xmax:     100,
+              sample:    0.1,
+              ylabel:    "eV",
+              ymin:      -5.0,
+              ymax:      5.0
+            };
+
         resetEnergyData();
-        options.dataset = energyData;
-        if (thisComponent.options) {
-          $.extend(options, thisComponent.options);
+
+        // Draw the energyGraph only if it hasn't been drawn before:
+        if (!energyGraph) {
+          $.extend(options, thisComponent.options || []);
+          renderEnergyGraph(thisComponent.id, options);
         }
-        model.on("tick.energyGraph", updateEnergyGraph);
+
+        if (thisComponent.dimensions) {
+          energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
+        }
+
+        // This method is called whenever a model loads (i.e., a new model object is created.)
+        // Always request event notifications from the new model object.
+
+        model.on('tick.energyGraph', updateEnergyGraph);
+
         model.on('play.energyGraph', function() {
           if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
             resetEnergyData(model.stepCounter());
@@ -368,14 +381,13 @@ controllers.interactivesController = function(interactive, viewSelector, applica
           }
           energyGraph.show_canvas();
         });
+
         model.on('reset.energyGraph', function() {
           resetEnergyData();
           energyGraph.new_data(energyData);
           energyGraph.reset();
         });
-        // Right now this action is acting as an indication of model reset ...
-        // This should be refactoring to distinguish the difference between reset
-        // and seek to location in model history.
+
         model.on('seek.energyGraph', function() {
           var modelsteps = model.stepCounter();
           if (modelsteps > 0) {
@@ -385,12 +397,15 @@ controllers.interactivesController = function(interactive, viewSelector, applica
           }
           energyGraph.new_data(energyData);
         });
-        energyGraph = grapher.realTimeGraph('#' + thisComponent.id, options);
-        if (thisComponent.dimensions) {
-          energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
-        }
+
       }
     };
+  }
+
+  function renderEnergyGraph(id, options) {
+    options = options || {};
+    options.dataset = energyData;
+    energyGraph = grapher.realTimeGraph('#' + id, options);
   }
 
   function updateEnergyGraph() {
