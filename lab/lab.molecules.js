@@ -1324,6 +1324,19 @@ var arrays       = require('arrays'),
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
+    /**
+      from the Java MW:
+        final static float GF_CONVERSION_CONSTANT = 0.008f;
+
+      https://github.com/concord-consortium/mw/blob/master/src/org/concord/mw2d/models/MDModel.java#L141-147
+        converts energy gradient unit into force unit:
+        1.6E-19 [J] / ( E-11 [m] x 120E-3 / 6E23 [kg] ) / ( E-11 / ( E-15) ^ 2 ) [m/s^2]
+
+      However in order to get similar gravitational effect our constant is 100 time smaller
+      TODO: find out why ???
+    */
+    GF_CONVERSION_CONSTANT = 0.00008,
+
     INDICES,
     ELEMENT_INDICES,
     OBSTACLE_INDICES,
@@ -1415,7 +1428,9 @@ exports.INDICES = INDICES = {
   AY     :  9,
   CHARGE : 10,
   ELEMENT: 11,
-  PINNED : 12
+  PINNED : 12,
+  FRICTION: 13,
+  VISIBLE : 14
 };
 
 exports.ATOM_PROPERTIES = {
@@ -1431,7 +1446,9 @@ exports.ATOM_PROPERTIES = {
   AY     :  "ay",
   CHARGE :  "charge",
   ELEMENT:  "element",
-  PINNED :  "pinned"
+  PINNED :  "pinned",
+  FRICTION: "friction",
+  VISIBLE:  "visible"
 };
 
 exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
@@ -1457,7 +1474,7 @@ exports.RADIAL_INDICES = RADIAL_INDICES = {
   STRENGTH:  3
 };
 
-exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED"];
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE"];
 
 exports.makeModel = function() {
 
@@ -1482,6 +1499,10 @@ exports.makeModel = function() {
       // Whether to use the thermostat to maintain the system temperature near T_target.
       useThermostat = false,
 
+      // If a numeric value include gravitational field in force calculations,
+      // otherwise value should be false
+      gravitationalField = false,
+
       // Whether a transient temperature change is in progress.
       temperatureChangeInProgress = false,
 
@@ -1493,6 +1514,9 @@ exports.makeModel = function() {
 
       // System dimensions as [x, y] in nanometers. Default value can be changed until particles are created.
       size = [10, 10],
+
+      // Viscosity of the medium of the model
+      viscosity,
 
       // The current model time, in femtoseconds.
       time = 0,
@@ -1518,7 +1542,7 @@ exports.makeModel = function() {
       elements,
 
       // Individual property arrays for the atoms, indexed by atom number
-      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, pinned,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, visible,
 
       // An array of length max(INDICES)+1 which contains the above property arrays
       atoms,
@@ -2071,6 +2095,16 @@ exports.makeModel = function() {
         }
       },
 
+      updateGravitationalAcceleration = function() {
+        // fast path if there is no gravitationalField
+        if (!gravitationalField) return;
+        var i,
+            gf = gravitationalField * GF_CONVERSION_CONSTANT;
+        for (i = 0; i < N; i++) {
+          ay[i] -= gf;
+        }
+      },
+
       updateBondAccelerations = function() {
         // fast path if no radial bonds have been defined
         if (N_radialBonds < 1) return;
@@ -2125,6 +2159,10 @@ exports.makeModel = function() {
 
           if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el1][el2]) {
             f_over_r -= ljCalculator[el1][el2].forceOverDistanceFromSquaredDistance(r_sq);
+          }
+
+          if (useCoulombInteraction && hasChargedAtoms) {
+            f_over_r -= coulomb.forceOverDistanceFromSquaredDistance(r_sq, charge[i1], charge[i2]);
           }
 
           fx = f_over_r * dx;
@@ -2210,6 +2248,14 @@ exports.makeModel = function() {
 
     useThermostat: function(v) {
       useThermostat = !!v;
+    },
+
+    setGravitationalField: function(gf) {
+      if (typeof gf === "number" && gf !== 0) {
+        gravitationalField = gf;
+      } else {
+        gravitationalField = false;
+      }
     },
 
     setTargetTemperature: function(v) {
@@ -2348,8 +2394,10 @@ exports.makeModel = function() {
       ax      = model.ax      = atoms[INDICES.AX]      = arrays.create(num, 0, float32);
       ay      = model.ay      = atoms[INDICES.AY]      = arrays.create(num, 0, float32);
       charge  = model.charge  = atoms[INDICES.CHARGE]  = arrays.create(num, 0, float32);
+      friction= model.friction= atoms[INDICES.FRICTION]= arrays.create(num, 0, float32);
       element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8);
       pinned  = model.pinned  = atoms[INDICES.PINNED]  = arrays.create(num, 0, uint8);
+      visible = model.visible = atoms[INDICES.VISIBLE] = arrays.create(num, 0, uint8);
 
       N = 0;
       totalMass = 0;
@@ -2361,7 +2409,7 @@ exports.makeModel = function() {
       If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
-    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, is_pinned) {
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, is_pinned, is_visible) {
       var el, mass;
 
       if (N+1 > atoms[0].length) {
@@ -2383,7 +2431,9 @@ exports.makeModel = function() {
       ay[N]      = 0;
       speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
       charge[N]  = atom_charge;
+      friction[N]= atom_friction;
       pinned[N]  = is_pinned;
+      visible[N] = is_visible;
 
       if (atom_charge) hasChargedAtoms = true;
 
@@ -2543,7 +2593,7 @@ exports.makeModel = function() {
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var x, y, vx, vy, charge, element, pinned,
+      var x, y, vx, vy, charge, element, friction, pinned, visible,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -2563,8 +2613,10 @@ exports.makeModel = function() {
         vy = props.VY[i];
         charge = props.CHARGE ? props.CHARGE[i] : 0;
         pinned = props.PINNED ? props.PINNED[i] : 0;
+        visible = props.VISIBLE ? props.VISIBLE[i] : 1;
+        friction = props.FRICTION ? props.FRICTION[i] : 0;
 
-        model.addAtom(element, x, y, vx, vy, charge, pinned);
+        model.addAtom(element, x, y, vx, vy, charge, friction, pinned, visible);
       }
 
       // Publish the current state
@@ -2585,7 +2637,7 @@ exports.makeModel = function() {
 
           i, r, c, rowSpacing, colSpacing,
           vMagnitude, vDirection,
-          x, y, vx, vy, charge, element;
+          x, y, vx, vy, charge, friction, element;
 
       validateTemperature(temperature);
 
@@ -2612,7 +2664,7 @@ exports.makeModel = function() {
 
           charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          model.addAtom(element, x, y, vx, vy, charge, 0);
+          model.addAtom(element, x, y, vx, vy, charge, 0, 0);
         }
       }
 
@@ -2731,6 +2783,9 @@ exports.makeModel = function() {
 
         // Accumulate accelerations from spring forces
         updateSpringAccelerations();
+
+        // Accumulate optional gravitational accelerations
+        updateGravitationalAcceleration();
 
         for (i = 0; i < N; i++) {
           // Clearing the acceleration here from pinned atoms will cause the acceleration
@@ -2995,6 +3050,10 @@ exports.makeModel = function() {
       return bondedAtoms;
     },
 
+    setViscosity: function(v) {
+      viscosity = v;
+    },
+
     serialize: function() {
       var serializedData = {},
           prop,
@@ -3031,6 +3090,7 @@ modeler.model = function(initialProperties) {
       temperature_control,
       chargeShading, showVDWLines,VDWLinesRatio,
       lennard_jones_forces, coulomb_forces,
+      gravitationalField = false,
       stopped = true,
       tick_history_list = [],
       tick_history_list_index = 0,
@@ -3067,6 +3127,8 @@ modeler.model = function(initialProperties) {
       // Radial Bonds
       radialBonds,
 
+      viscosity,
+
       default_obstacle_properties = {
         vx: 0,
         vy: 0,
@@ -3081,9 +3143,11 @@ modeler.model = function(initialProperties) {
         coulomb_forces        : true,
         lennard_jones_forces  : true,
         temperature_control   : true,
+        gravitationalField    : false,
         chargeShading         : false,
         showVDWLines          : false,
         VDWLinesRatio         : 1.99,
+        viscosity             : 0,
 
         set_temperature: function(t) {
           this.temperature = t;
@@ -3112,6 +3176,13 @@ modeler.model = function(initialProperties) {
 
         set_sigma: function(s) {
           console.log("set_sigma: This method is temporarily deprecated");
+        },
+
+        set_gravitationalField: function(gf) {
+          this.gravitationalField = gf;
+          if (coreModel) {
+            coreModel.setGravitationalField(gf);
+          }
         }
       };
 
@@ -3131,6 +3202,8 @@ modeler.model = function(initialProperties) {
     AX       : md2d.INDICES.AX,
     AY       : md2d.INDICES.AY,
     CHARGE   : md2d.INDICES.CHARGE,
+    FRICTION : md2d.INDICES.FRICTION,
+    VISIBLE  : md2d.INDICES.VISIBLE,
     ELEMENT  : md2d.INDICES.ELEMENT
   };
 
@@ -3146,6 +3219,8 @@ modeler.model = function(initialProperties) {
     AX       : md2d.ATOM_PROPERTIES.AX,
     AY       : md2d.ATOM_PROPERTIES.AY,
     CHARGE   : md2d.ATOM_PROPERTIES.CHARGE,
+    FRICTION : md2d.ATOM_PROPERTIES.FRICTION,
+    VISIBLE  : md2d.ATOM_PROPERTIES.VISIBLE,
     ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT
   };
 
@@ -3482,10 +3557,14 @@ modeler.model = function(initialProperties) {
     chargeShading       = properties.chargeShading;
     showVDWLines        = properties.showVDWLines;
     VDWLinesRatio       = properties.VDWLinesRatio;
+    viscosity           = properties.viscosity;
+    gravitationalField  = properties.gravitationalField;
 
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(temperature_control);
+    coreModel.setViscosity(viscosity);
+    coreModel.setGravitationalField(gravitationalField);
 
     coreModel.setTargetTemperature(temperature);
 
@@ -3571,6 +3650,11 @@ modeler.model = function(initialProperties) {
     return coreModel.getLJCalculator();
   };
 
+  model.reset = function() {
+    model.resetTime();
+    dispatch.reset();
+  };
+
   model.resetTime = function() {
     coreModel.setTime(0);
   };
@@ -3610,7 +3694,7 @@ modeler.model = function(initialProperties) {
       // findMinimimuPELocation will return false if minimization doesn't converge, in which case
       // try again from a different x, y
       loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
-      if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge)) return true;
+      if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge, 0, 0)) return true;
     } while (++numTries < maxTries);
 
     return false;
@@ -3628,7 +3712,7 @@ modeler.model = function(initialProperties) {
 
     Otherwise, returns true.
   */
-  model.addAtom = function(el, x, y, vx, vy, charge, pinned) {
+  model.addAtom = function(el, x, y, vx, vy, charge, friction, pinned, visible) {
     var size      = model.size(),
         radius    = coreModel.getRadiusOfElement(el);
 
@@ -3640,7 +3724,7 @@ modeler.model = function(initialProperties) {
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
     if (coreModel.canPlaceAtom(el, x, y)) {
-      coreModel.addAtom(el, x, y, vx, vy, charge, pinned);
+      coreModel.addAtom(el, x, y, vx, vy, charge, friction, pinned, visible);
 
       // reassign nodes to possibly-reallocated atoms array
       nodes = coreModel.atoms;

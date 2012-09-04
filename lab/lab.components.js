@@ -394,6 +394,10 @@
       return this.model.seek(float_index);
     };
 
+    ModelPlayer.prototype.reset = function() {
+      return this.model.reset();
+    };
+
     ModelPlayer.prototype.isPlaying = function() {
       return !this.model.is_stopped();
     };
@@ -486,8 +490,11 @@
           case 'back':
             this.playable.back();
             break;
-          case 'reset':
+          case 'seek':
             this.playable.seek(1);
+            break;
+          case 'reset':
+            this.playable.reset();
             break;
           default:
             console.log("cant find action for " + action);

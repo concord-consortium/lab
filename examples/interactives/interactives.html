@@ -39,6 +39,7 @@
           <option value='interactives/one-atom.json'>one atom</option>
           <option value='interactives/layout-example.json'>layout example</option>
           <option value='interactives/script-examples.json'>script examples</option>
+          <option value='interactives/boiling-point-with-energy-graph.json'>Energy Graph test</option>
         </optgroup>
         <optgroup label='Science of Atoms and Molecules: Intermolecular Attractions'>
           <option selected='selected' value='interactives/oil-and-water-shake.json'>Oil and Water</option>
@@ -72,6 +73,8 @@
           <option value='interactives/single-image-on-atom.json'>Single Image on Atom</option>
           <option value='interactives/image-layers.json'>Multiple Images in Multiple Layers</option>
           <option value='interactives/friction.json'>Friction</option>
+          <option value='interactives/gravitational-field-test.json'>Gravitational Field Test</option>
+          <option value='interactives/visible-and-invisible.json'>Visible and Invisible Atoms</option>
         </optgroup>
       </select>
       <a class='opens-in-new-window' href='embeddable.html' id='embeddable-link' target='_blank'>Embeddable</a>
@@ -84,14 +87,46 @@
           <div id='interactive-container'></div>
         </div>
       </div>
-      <div id='editor-right'>
-        <button id='update-interactive-button'>
-          Update Interactive
-        </button>
-        <button id='autoformat-selection-button'>
-          AutoFormat Selection
-        </button>
-        <textarea id='interactive-text-area'></textarea>
+      <div id='extras-bottom'>
+        <div id='extras-bottom-banner'>Extras</div>
+        <div class='extras-item' id='editor'>
+          <div class='extras-item-banner'>
+            <input id='show-editor' type='checkbox'>Interactive Editor</input>
+          </div>
+          <div class='extras-item-content' id='editor-content'>
+            <div class='extras-item-controls'>
+              <button id='update-interactive-button'>Update Interactive</button>
+              <button id='autoformat-selection-button'>AutoFormat Selection</button>
+              <a class='opens-in-new-window' href='' id='json-model-link' target='_blank'>Model JSON</a>
+            </div>
+            <textarea id='interactive-text-area'></textarea>
+          </div>
+        </div>
+        <div class='extras-item' id='benchmark'>
+          <div class='extras-item-banner'>
+            <input id='show-benchmarks' type='checkbox'>Benchmarks</input>
+          </div>
+          <div class='extras-item-content' id='benchmarks-content'>
+            <div class='extras-item-controls'>
+              <button class='extras-item-controls' id='run-benchmarks-button'>Run Benchmarks</button>
+              Collect performance data by first running just the model and then runing the model and the graphics for 100 steps.
+            </div>
+            <div class='model-benchmark-results'>
+              <table class='model-benchmark-results' id='model-benchmark-results'></table>
+            </div>
+          </div>
+        </div>
+        <div class='extras-item' id='model-datatable'>
+          <div class='extras-item-banner'>
+            <input id='show-model-datatable' type='checkbox'>Atoms Datatable</input>
+          </div>
+          <div class='extras-item-content' id='model-datatable-content'>
+            <div class='extras-item-controls' id='model-datatable-stats'></div>
+            <div class='model-datatable-results'>
+              <table id='model-datatable-results'></table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <script src='../../lab/lab.js' type='text/javascript'></script>

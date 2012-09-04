@@ -2,9 +2,11 @@
   "temperature_control": true,
   "width": 4,
   "height": 2.1,
+  "viscosity": 0,
   "chargeShading": true,
   "showVDWLines": true,
   "VDWLinesRatio": 1.99,
+  "gravitationalField": false,
   "elements": [
     {
       "id": 0,
@@ -135,6 +137,30 @@
       -0.00008479628642641319
     ],
     "CHARGE": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "FRICTION": [
       0,
       0,
       0,

@@ -2569,6 +2569,13 @@ modelList = [
         "json": "converted/conversion-and-physics-examples/force-lines-short$0.json"
       },
       {
+        "name": "gravitational-field-test",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/gravitational-field-test.cml",
+        "mml": "conversion-and-physics-examples/gravitational-field-test$0.mml",
+        "json": "converted/conversion-and-physics-examples/gravitational-field-test$0.json"
+      },
+      {
         "name": "one-radial-bond-1",
         "path": "conversion-and-physics-examples/",
         "cml": "conversion-and-physics-examples/one-radial-bond.cml",
@@ -2588,6 +2595,13 @@ modelList = [
         "cml": "conversion-and-physics-examples/one-radial-bond_different_elements.cml",
         "mml": "conversion-and-physics-examples/one-radial-bond_different_elements$0.mml",
         "json": "converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json"
+      },
+      {
+        "name": "visible-and-invisible",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/visible-and-invisible.cml",
+        "mml": "conversion-and-physics-examples/visible-and-invisible$0.mml",
+        "json": "converted/conversion-and-physics-examples/visible-and-invisible$0.json"
       }
     ]
   }

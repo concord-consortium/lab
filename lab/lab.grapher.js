@@ -108,6 +108,8 @@ grapher.graph = function(elem, options, message) {
         "yscale":         "linear",
         "xTicCount":       10,
         "yTicCount":        8,
+        "xFormatter":     "3.3r",
+        "yFormatter":     "3.3r",
         "xscaleExponent": 0.5,
         "yscaleExponent": 0.5,
         "xmax":            60,
@@ -313,8 +315,8 @@ grapher.graph = function(elem, options, message) {
       return d ? "#ccc" : "#666";
     };
 
-    fx = xScale.tickFormat(options.xTicCount);
-    fy = yScale.tickFormat(options.yTicCount);
+    fx = d3.format(options.xFormatter);
+    fy = d3.format(options.yFormatter);
 
     line = d3.svg.line()
         .x(function(d, i) { return xScale(points[i][0]); })
@@ -1195,9 +1197,11 @@ grapher.realTimeGraph = function(e, options) {
         xscale  : 'linear',
         yscale  : 'linear',
         xTicCount: 10,
-        yTicCount: 8,
+        yTicCount: 10,
         xscaleExponent: 0.5,
         yscaleExponent: 0.5,
+        xFormatter: "3.2r",
+        yFormatter: "3.2r",
         xmax:       10,
         xmin:       0,
         ymax:       10,
@@ -1385,11 +1389,8 @@ grapher.realTimeGraph = function(e, options) {
       yScale.exponent(options.yscaleExponent)
     }
 
-    // fx = d3.format(".3r");
-    // fy = d3.format(".2f");
-
-    fx = xScale.tickFormat(options.xTicCount);
-    fy = yScale.tickFormat(options.yTicCount);
+    fx = d3.format(options.xFormatter);
+    fy = d3.format(options.yFormatter);
 
     line = d3.svg.line()
           .x(function(d, i) { return xScale(points[i].x ); })
@@ -1467,7 +1468,7 @@ grapher.realTimeGraph = function(e, options) {
           .data(titles, function(d) { return d; });
         title.enter().append("text")
             .attr("class", "title")
-            .style("font-size", sizeType.value/2.4 * 100 + "%")
+            .style("font-size", sizeType.value/3.2 * 100 + "%")
             .text(function(d) { return d; })
             .attr("x", size.width/2)
             .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })

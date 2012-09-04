@@ -108,6 +108,8 @@ grapher.graph = function(elem, options, message) {
         "yscale":         "linear",
         "xTicCount":       10,
         "yTicCount":        8,
+        "xFormatter":     "3.3r",
+        "yFormatter":     "3.3r",
         "xscaleExponent": 0.5,
         "yscaleExponent": 0.5,
         "xmax":            60,
@@ -313,8 +315,8 @@ grapher.graph = function(elem, options, message) {
       return d ? "#ccc" : "#666";
     };
 
-    fx = xScale.tickFormat(options.xTicCount);
-    fy = yScale.tickFormat(options.yTicCount);
+    fx = d3.format(options.xFormatter);
+    fy = d3.format(options.yFormatter);
 
     line = d3.svg.line()
         .x(function(d, i) { return xScale(points[i][0]); })
@@ -1195,9 +1197,11 @@ grapher.realTimeGraph = function(e, options) {
         xscale  : 'linear',
         yscale  : 'linear',
         xTicCount: 10,
-        yTicCount: 8,
+        yTicCount: 10,
         xscaleExponent: 0.5,
         yscaleExponent: 0.5,
+        xFormatter: "3.2r",
+        yFormatter: "3.2r",
         xmax:       10,
         xmin:       0,
         ymax:       10,
@@ -1385,11 +1389,8 @@ grapher.realTimeGraph = function(e, options) {
       yScale.exponent(options.yscaleExponent)
     }
 
-    // fx = d3.format(".3r");
-    // fy = d3.format(".2f");
-
-    fx = xScale.tickFormat(options.xTicCount);
-    fy = yScale.tickFormat(options.yTicCount);
+    fx = d3.format(options.xFormatter);
+    fy = d3.format(options.yFormatter);
 
     line = d3.svg.line()
           .x(function(d, i) { return xScale(points[i].x ); })
@@ -1467,7 +1468,7 @@ grapher.realTimeGraph = function(e, options) {
           .data(titles, function(d) { return d; });
         title.enter().append("text")
             .attr("class", "title")
-            .style("font-size", sizeType.value/2.4 * 100 + "%")
+            .style("font-size", sizeType.value/3.2 * 100 + "%")
             .text(function(d) { return d; })
             .attr("x", size.width/2)
             .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })
@@ -3477,6 +3478,19 @@ var arrays       = require('arrays'),
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
+    /**
+      from the Java MW:
+        final static float GF_CONVERSION_CONSTANT = 0.008f;
+
+      https://github.com/concord-consortium/mw/blob/master/src/org/concord/mw2d/models/MDModel.java#L141-147
+        converts energy gradient unit into force unit:
+        1.6E-19 [J] / ( E-11 [m] x 120E-3 / 6E23 [kg] ) / ( E-11 / ( E-15) ^ 2 ) [m/s^2]
+
+      However in order to get similar gravitational effect our constant is 100 time smaller
+      TODO: find out why ???
+    */
+    GF_CONVERSION_CONSTANT = 0.00008,
+
     INDICES,
     ELEMENT_INDICES,
     OBSTACLE_INDICES,
@@ -3568,7 +3582,9 @@ exports.INDICES = INDICES = {
   AY     :  9,
   CHARGE : 10,
   ELEMENT: 11,
-  PINNED : 12
+  PINNED : 12,
+  FRICTION: 13,
+  VISIBLE : 14
 };
 
 exports.ATOM_PROPERTIES = {
@@ -3584,7 +3600,9 @@ exports.ATOM_PROPERTIES = {
   AY     :  "ay",
   CHARGE :  "charge",
   ELEMENT:  "element",
-  PINNED :  "pinned"
+  PINNED :  "pinned",
+  FRICTION: "friction",
+  VISIBLE:  "visible"
 };
 
 exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
@@ -3610,7 +3628,7 @@ exports.RADIAL_INDICES = RADIAL_INDICES = {
   STRENGTH:  3
 };
 
-exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED"];
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE"];
 
 exports.makeModel = function() {
 
@@ -3635,6 +3653,10 @@ exports.makeModel = function() {
       // Whether to use the thermostat to maintain the system temperature near T_target.
       useThermostat = false,
 
+      // If a numeric value include gravitational field in force calculations,
+      // otherwise value should be false
+      gravitationalField = false,
+
       // Whether a transient temperature change is in progress.
       temperatureChangeInProgress = false,
 
@@ -3646,6 +3668,9 @@ exports.makeModel = function() {
 
       // System dimensions as [x, y] in nanometers. Default value can be changed until particles are created.
       size = [10, 10],
+
+      // Viscosity of the medium of the model
+      viscosity,
 
       // The current model time, in femtoseconds.
       time = 0,
@@ -3671,7 +3696,7 @@ exports.makeModel = function() {
       elements,
 
       // Individual property arrays for the atoms, indexed by atom number
-      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, pinned,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, visible,
 
       // An array of length max(INDICES)+1 which contains the above property arrays
       atoms,
@@ -4224,6 +4249,16 @@ exports.makeModel = function() {
         }
       },
 
+      updateGravitationalAcceleration = function() {
+        // fast path if there is no gravitationalField
+        if (!gravitationalField) return;
+        var i,
+            gf = gravitationalField * GF_CONVERSION_CONSTANT;
+        for (i = 0; i < N; i++) {
+          ay[i] -= gf;
+        }
+      },
+
       updateBondAccelerations = function() {
         // fast path if no radial bonds have been defined
         if (N_radialBonds < 1) return;
@@ -4278,6 +4313,10 @@ exports.makeModel = function() {
 
           if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el1][el2]) {
             f_over_r -= ljCalculator[el1][el2].forceOverDistanceFromSquaredDistance(r_sq);
+          }
+
+          if (useCoulombInteraction && hasChargedAtoms) {
+            f_over_r -= coulomb.forceOverDistanceFromSquaredDistance(r_sq, charge[i1], charge[i2]);
           }
 
           fx = f_over_r * dx;
@@ -4363,6 +4402,14 @@ exports.makeModel = function() {
 
     useThermostat: function(v) {
       useThermostat = !!v;
+    },
+
+    setGravitationalField: function(gf) {
+      if (typeof gf === "number" && gf !== 0) {
+        gravitationalField = gf;
+      } else {
+        gravitationalField = false;
+      }
     },
 
     setTargetTemperature: function(v) {
@@ -4501,8 +4548,10 @@ exports.makeModel = function() {
       ax      = model.ax      = atoms[INDICES.AX]      = arrays.create(num, 0, float32);
       ay      = model.ay      = atoms[INDICES.AY]      = arrays.create(num, 0, float32);
       charge  = model.charge  = atoms[INDICES.CHARGE]  = arrays.create(num, 0, float32);
+      friction= model.friction= atoms[INDICES.FRICTION]= arrays.create(num, 0, float32);
       element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8);
       pinned  = model.pinned  = atoms[INDICES.PINNED]  = arrays.create(num, 0, uint8);
+      visible = model.visible = atoms[INDICES.VISIBLE] = arrays.create(num, 0, uint8);
 
       N = 0;
       totalMass = 0;
@@ -4514,7 +4563,7 @@ exports.makeModel = function() {
       If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
-    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, is_pinned) {
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, is_pinned, is_visible) {
       var el, mass;
 
       if (N+1 > atoms[0].length) {
@@ -4536,7 +4585,9 @@ exports.makeModel = function() {
       ay[N]      = 0;
       speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
       charge[N]  = atom_charge;
+      friction[N]= atom_friction;
       pinned[N]  = is_pinned;
+      visible[N] = is_visible;
 
       if (atom_charge) hasChargedAtoms = true;
 
@@ -4696,7 +4747,7 @@ exports.makeModel = function() {
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var x, y, vx, vy, charge, element, pinned,
+      var x, y, vx, vy, charge, element, friction, pinned, visible,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -4716,8 +4767,10 @@ exports.makeModel = function() {
         vy = props.VY[i];
         charge = props.CHARGE ? props.CHARGE[i] : 0;
         pinned = props.PINNED ? props.PINNED[i] : 0;
+        visible = props.VISIBLE ? props.VISIBLE[i] : 1;
+        friction = props.FRICTION ? props.FRICTION[i] : 0;
 
-        model.addAtom(element, x, y, vx, vy, charge, pinned);
+        model.addAtom(element, x, y, vx, vy, charge, friction, pinned, visible);
       }
 
       // Publish the current state
@@ -4738,7 +4791,7 @@ exports.makeModel = function() {
 
           i, r, c, rowSpacing, colSpacing,
           vMagnitude, vDirection,
-          x, y, vx, vy, charge, element;
+          x, y, vx, vy, charge, friction, element;
 
       validateTemperature(temperature);
 
@@ -4765,7 +4818,7 @@ exports.makeModel = function() {
 
           charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          model.addAtom(element, x, y, vx, vy, charge, 0);
+          model.addAtom(element, x, y, vx, vy, charge, 0, 0);
         }
       }
 
@@ -4884,6 +4937,9 @@ exports.makeModel = function() {
 
         // Accumulate accelerations from spring forces
         updateSpringAccelerations();
+
+        // Accumulate optional gravitational accelerations
+        updateGravitationalAcceleration();
 
         for (i = 0; i < N; i++) {
           // Clearing the acceleration here from pinned atoms will cause the acceleration
@@ -5148,6 +5204,10 @@ exports.makeModel = function() {
       return bondedAtoms;
     },
 
+    setViscosity: function(v) {
+      viscosity = v;
+    },
+
     serialize: function() {
       var serializedData = {},
           prop,
@@ -5184,6 +5244,7 @@ modeler.model = function(initialProperties) {
       temperature_control,
       chargeShading, showVDWLines,VDWLinesRatio,
       lennard_jones_forces, coulomb_forces,
+      gravitationalField = false,
       stopped = true,
       tick_history_list = [],
       tick_history_list_index = 0,
@@ -5220,6 +5281,8 @@ modeler.model = function(initialProperties) {
       // Radial Bonds
       radialBonds,
 
+      viscosity,
+
       default_obstacle_properties = {
         vx: 0,
         vy: 0,
@@ -5234,9 +5297,11 @@ modeler.model = function(initialProperties) {
         coulomb_forces        : true,
         lennard_jones_forces  : true,
         temperature_control   : true,
+        gravitationalField    : false,
         chargeShading         : false,
         showVDWLines          : false,
         VDWLinesRatio         : 1.99,
+        viscosity             : 0,
 
         set_temperature: function(t) {
           this.temperature = t;
@@ -5265,6 +5330,13 @@ modeler.model = function(initialProperties) {
 
         set_sigma: function(s) {
           console.log("set_sigma: This method is temporarily deprecated");
+        },
+
+        set_gravitationalField: function(gf) {
+          this.gravitationalField = gf;
+          if (coreModel) {
+            coreModel.setGravitationalField(gf);
+          }
         }
       };
 
@@ -5284,6 +5356,8 @@ modeler.model = function(initialProperties) {
     AX       : md2d.INDICES.AX,
     AY       : md2d.INDICES.AY,
     CHARGE   : md2d.INDICES.CHARGE,
+    FRICTION : md2d.INDICES.FRICTION,
+    VISIBLE  : md2d.INDICES.VISIBLE,
     ELEMENT  : md2d.INDICES.ELEMENT
   };
 
@@ -5299,6 +5373,8 @@ modeler.model = function(initialProperties) {
     AX       : md2d.ATOM_PROPERTIES.AX,
     AY       : md2d.ATOM_PROPERTIES.AY,
     CHARGE   : md2d.ATOM_PROPERTIES.CHARGE,
+    FRICTION : md2d.ATOM_PROPERTIES.FRICTION,
+    VISIBLE  : md2d.ATOM_PROPERTIES.VISIBLE,
     ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT
   };
 
@@ -5635,10 +5711,14 @@ modeler.model = function(initialProperties) {
     chargeShading       = properties.chargeShading;
     showVDWLines        = properties.showVDWLines;
     VDWLinesRatio       = properties.VDWLinesRatio;
+    viscosity           = properties.viscosity;
+    gravitationalField  = properties.gravitationalField;
 
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(temperature_control);
+    coreModel.setViscosity(viscosity);
+    coreModel.setGravitationalField(gravitationalField);
 
     coreModel.setTargetTemperature(temperature);
 
@@ -5724,6 +5804,11 @@ modeler.model = function(initialProperties) {
     return coreModel.getLJCalculator();
   };
 
+  model.reset = function() {
+    model.resetTime();
+    dispatch.reset();
+  };
+
   model.resetTime = function() {
     coreModel.setTime(0);
   };
@@ -5763,7 +5848,7 @@ modeler.model = function(initialProperties) {
       // findMinimimuPELocation will return false if minimization doesn't converge, in which case
       // try again from a different x, y
       loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
-      if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge)) return true;
+      if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge, 0, 0)) return true;
     } while (++numTries < maxTries);
 
     return false;
@@ -5781,7 +5866,7 @@ modeler.model = function(initialProperties) {
 
     Otherwise, returns true.
   */
-  model.addAtom = function(el, x, y, vx, vy, charge, pinned) {
+  model.addAtom = function(el, x, y, vx, vy, charge, friction, pinned, visible) {
     var size      = model.size(),
         radius    = coreModel.getRadiusOfElement(el);
 
@@ -5793,7 +5878,7 @@ modeler.model = function(initialProperties) {
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
     if (coreModel.canPlaceAtom(el, x, y)) {
-      coreModel.addAtom(el, x, y, vx, vy, charge, pinned);
+      coreModel.addAtom(el, x, y, vx, vy, charge, friction, pinned, visible);
 
       // reassign nodes to possibly-reallocated atoms array
       nodes = coreModel.atoms;
@@ -6506,7 +6591,7 @@ layout.setupScreen = function(forceRender) {
 
       // like simple-iframe, but all component position definitions are set from properties
       case "interactive-iframe":
-      var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+      var emsize = Math.min(layout.screen_factor_width * 1.2, layout.screen_factor_height * 1.2);
       layout.bodycss.style.fontSize = emsize + 'em';
       setupInteractiveIFrameScreen();
       break;
@@ -6585,10 +6670,10 @@ layout.setupScreen = function(forceRender) {
     mcsize = viewLists.moleculeContainers[0].scale();
     modelAspectRatio = mcsize[0] / mcsize[1];
     widthToPageRatio = mcsize[0] / pageWidth;
-    width = pageWidth * 0.6;
+    width = pageWidth * 0.70;
     height = width * 1/modelAspectRatio;
-    if (height > pageHeight * 0.70) {
-      height = pageHeight * 0.70;
+    if (height > pageHeight * 0.75) {
+      height = pageHeight * 0.75;
       width = height * modelAspectRatio;
     }
     for (viewType in viewLists) {
@@ -7045,9 +7130,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       dragged,
       drag_origin,
       pc_xpos, pc_ypos,
-      model_time_formatter = d3.format("5.2f"),
-      time_prefix = "time: ",
-      time_suffix = " (ps)",
+      model_time_formatter = d3.format("5.0f"),
+      time_prefix = "",
+      time_suffix = " (fs)",
       gradient_container,
       VDWLines_container,
       red_gradient,
@@ -7077,8 +7162,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         title:                false,
         xlabel:               false,
         ylabel:               false,
-        control_buttons:      "play",
-        model_time_label:     false,
+        controlButtons:      "play",
+        modelTimeLabel:       false,
         grid_lines:           false,
         xunits:               false,
         yunits:               false,
@@ -7125,7 +7210,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     getRadialBonds = options.get_radial_bonds;
     set_atom_properties = options.set_atom_properties;
     is_stopped = options.is_stopped;
-  };
+  }
 
   function scale(w, h) {
     var modelSize = model.size(),
@@ -7138,11 +7223,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
        "left":   options.ylabel ? 60  * layout.screen_factor : 25
     };
 
-    if (options.xlabel || options.model_time_label) {
+    if (options.xlabel) {
       padding.bottom += (35  * scale_factor);
     }
 
-    if (options.control_buttons) {
+    if (options.controlButtons) {
       padding.bottom += (40  * scale_factor);
     } else {
       padding.bottom += (15  * scale_factor);
@@ -7181,7 +7266,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     offset_top  = node.offsetTop + padding.top;
     offset_left = node.offsetLeft + padding.left;
 
-    switch (options.control_buttons) {
+    switch (options.controlButtons) {
       case "play":
         pc_xpos = padding.left + (size.width - (75 * scale_factor))/2;
         break;
@@ -7189,6 +7274,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
         break;
       case "play_reset_step":
+        pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
+        break;
       default:
         pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
     }
@@ -7226,7 +7313,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   }
 
   function modelTimeLabel() {
-    return time_prefix + model_time_formatter(model.getTime() / 1000) + time_suffix;
+    return time_prefix + model_time_formatter(model.getTime()) + time_suffix;
   }
 
   function get_element(i) {
@@ -7275,6 +7362,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
   function get_charge(i) {
     return nodes[model.INDICES.CHARGE][i];
+  }
+
+  function get_visible(i) {
+    return nodes[model.INDICES.VISIBLE][i];
   }
 
   function get_obstacle_x(i) {
@@ -7401,12 +7492,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
 
       // add model time display
-      if (options.model_time_label) {
+      if (options.modelTimeLabel) {
         time_label = vis.append("text")
-            .attr("class", "model_time_label")
+            .attr("class", "modelTimeLabel")
             .text(modelTimeLabel())
-            .attr("x", size.width - 100)
-            .attr("y", size.height)
+            .attr("x", 10)
+            .attr("y", size.height - 35)
             .attr("dy","2.4em")
             .style("text-anchor","start");
       }
@@ -7417,7 +7508,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("y", 5)
         .attr("width", "3%")
         .attr("height", "3%")
-        .attr("xlink:href", "../../resources/heatbath.gif")
+        .attr("xlink:href", "../../resources/heatbath.gif");
 
       model.addPropertiesListener(["temperature_control"], updateHeatBath);
       updateHeatBath();
@@ -7478,10 +7569,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
-      if (options.model_time_label) {
+      if (options.modelTimeLabel) {
         time_label.text(modelTimeLabel())
-            .attr("x", size.width - 100)
-            .attr("y", size.height);
+            .attr("x", 10)
+            .attr("y", size.height - 35);
       }
 
       vis.selectAll("g.x").remove();
@@ -7525,7 +7616,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     // Process options that always have to be recreated when container is reloaded
     d3.select('.model-controller').remove();
 
-    switch (options.control_buttons) {
+    switch (options.controlButtons) {
       case "play":
         playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
         break;
@@ -7604,7 +7695,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .text(fy);
 
         // update model time display
-        if (options.model_time_label) {
+        if (options.modelTimeLabel) {
           time_label.text(modelTimeLabel());
         }
 
@@ -7688,6 +7779,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("cx", function(d, i) { return x(get_x(i)); })
           .attr("cy", function(d, i) { return y(get_y(i)); })
           .style("fill", function(d, i) {
+            if (!get_visible(i)) { return "#eeeeee"; }
             if (chargeShadingMode()) {
                 if (get_charge(i) > 0){
                     return  "url(#pos-grad)";
@@ -7728,70 +7820,77 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function radialBondEnter(radialBond) {
-        radialBond.enter().append("line")
-                    .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
-                    .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
-                    .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
-                    .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
-                    .attr("class", "radialbond")
-                    .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75})
-                    .style("stroke", function(d, i) {
-                if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
-                    return "#000000";
-                }
-                else {
-                    if (chargeShadingMode()) {
-                        if (get_charge(get_radial_bond_atom_1(i)) > 0){
-                            return  bondColorArray[4];
-                        }
-                        else if (get_charge(get_radial_bond_atom_1(i)) < 0){
-                            return  bondColorArray[5];
-                        }
-                        else {
-                            //element = get_element(get_radial_bond_atom_1(i)) % 4;
-                            //grad = bondColorArray[element];
-                            return "#A4A4A4";
-                        }
+      radialBond.enter().append("line")
+          .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
+          .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
+          .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+          .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+          .attr("class", "radialbond")
+          .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75})
+          .style("stroke", function(d, i) {
+              if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
+                return "#000000";
+              } else {
+                if (chargeShadingMode()) {
+                    if (get_charge(get_radial_bond_atom_1(i)) > 0) {
+                        return  bondColorArray[4];
+                    } else if (get_charge(get_radial_bond_atom_1(i)) < 0){
+                        return  bondColorArray[5];
                     } else {
-                        element = get_element(get_radial_bond_atom_1(i)) % 4;
-                        grad = bondColorArray[element];
-                        return grad;
+                      //element = get_element(get_radial_bond_atom_1(i)) % 4;
+                      //grad = bondColorArray[element];
+                      return "#A4A4A4";
                     }
+                } else {
+                  element = get_element(get_radial_bond_atom_1(i)) % 4;
+                  grad = bondColorArray[element];
+                  return grad;
                 }
+              }
             })
-            .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
-        radialBond.enter().append("line")
-                    .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
-                    .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
-                    .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
-                    .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
-                    .attr("class", "radialbond1")
-                    .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
-                    .style("stroke", function(d, i) {
-                if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
-                    return "#000000";
+            .style("stroke-dasharray", function (d, i) {
+                if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
+                  return "5 5"
+                } else {
+                  return "";
                 }
-                else {
-                    if (chargeShadingMode()) {
-                        if (get_charge(get_radial_bond_atom_2(i)) > 0){
-                            return  bondColorArray[4];
-                        }
-                        else if (get_charge(get_radial_bond_atom_2(i)) < 0){
-                            return  bondColorArray[5];
-                        }
-                        else {
-                            //element = get_element(get_radial_bond_atom_2(i)) % 4;
-                            //grad = bondColorArray[element];
-                            return "#A4A4A4";
-                        }
-                    } else {
-                        element = get_element(get_radial_bond_atom_2(i)) % 4;
-                        grad = bondColorArray[element];
-                        return grad;
-                    }
+              });
+
+      radialBond.enter().append("line")
+          .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+          .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+          .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
+          .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
+          .attr("class", "radialbond1")
+          .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
+          .style("stroke", function(d, i) {
+              if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
+                return "#000000";
+              } else {
+                if (chargeShadingMode()) {
+                  if (get_charge(get_radial_bond_atom_2(i)) > 0) {
+                      return  bondColorArray[4];
+                  } else if (get_charge(get_radial_bond_atom_2(i)) < 0){
+                      return  bondColorArray[5];
+                  } else {
+                    //element = get_element(get_radial_bond_atom_2(i)) % 4;
+                    //grad = bondColorArray[element];
+                    return "#A4A4A4";
+                  }
+                } else {
+                  element = get_element(get_radial_bond_atom_2(i)) % 4;
+                  grad = bondColorArray[element];
+                  return grad;
                 }
-    })
-                    .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
+              }
+          })
+          .style("stroke-dasharray", function (d, i) {
+            if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { 
+              return "5 5"
+            } else {
+              return "";
+            }
+          });
     }
 
     function drawAttractionForces(){
@@ -7962,13 +8061,15 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       molecule_div
             .style("opacity", 1.0)
             .style("display", "inline")
-            .style("background", "rgba(100%, 100%, 100%, 0.5)")
+            .style("background", "rgba(100%, 100%, 100%, 0.7)")
             .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 16 + "px")
             .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px")
+            .style("zIndex", 100)
             .transition().duration(250);
 
       molecule_div_pre.text(
-          modelTimeLabel() + "\n" +
+          "atom: " + i + "\n" +
+          "time: " + modelTimeLabel() + "\n" +
           "speed: " + d3.format("+6.3e")(get_speed(i)) + "\n" +
           "vx:    " + d3.format("+6.3e")(get_vx(i))    + "\n" +
           "vy:    " + d3.format("+6.3e")(get_vy(i))    + "\n" +
@@ -7982,7 +8083,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function molecule_mouseout() {
       if (atom_tooltip_on === false) {
-        molecule_div.style("opacity", 1e-6);
+        molecule_div.style("opacity", 1e-6).style("zIndex" -1);
       }
     }
 
@@ -7996,12 +8097,13 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
 
     function update_molecule_positions() {
+      var gradientBoolean = gradient_container.selectAll("circle")[0].length;
 
       mock_atoms_array.length = get_num_atoms();
       nodes = get_nodes();
 
       // update model time display
-      if (options.model_time_label) {
+      if (options.modelTimeLabel) {
         time_label.text(modelTimeLabel());
       }
 
@@ -8012,9 +8114,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       });
 
       particle = gradient_container.selectAll("circle").data(mock_atoms_array);
-      if (mock_atoms_array.length !== gradient_container.selectAll("circle")[0].length){
+      if (mock_atoms_array.length !== gradientBoolean) {
         circlesEnter(particle);
       }
+
       particle
         .attr("cx", function(d, i) {return x(nodes[model.INDICES.X][i]); })
         .attr("cy", function(d, i) {return y(nodes[model.INDICES.Y][i]); })
@@ -8076,7 +8179,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       set_position(i, new_x, new_y, false, true);
 
       update_drawable_positions();
-    };
+    }
 
     function node_dragend(d, i){
       if (!is_stopped()) {
@@ -8097,7 +8200,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
 
       update_drawable_positions();
-    };
+    }
 
     // ------------------------------------------------------------
     //
@@ -9708,6 +9811,10 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
       return this.model.seek(float_index);
     };
 
+    ModelPlayer.prototype.reset = function() {
+      return this.model.reset();
+    };
+
     ModelPlayer.prototype.isPlaying = function() {
       return !this.model.is_stopped();
     };
@@ -9800,8 +9907,11 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
           case 'back':
             this.playable.back();
             break;
-          case 'reset':
+          case 'seek':
             this.playable.seek(1);
+            break;
+          case 'reset':
+            this.playable.reset();
             break;
           default:
             console.log("cant find action for " + action);
@@ -10338,6 +10448,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
       // properties read from the playerConfig hash
       controlButtons,
+      modelTimeLabel,
       fit_to_parent,
 
       // properties read from the modelConfig hash
@@ -10365,6 +10476,11 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
         stop: function() {
           model.stop();
+        },
+
+        reset: function() {
+          model.stop();
+          model.reset();
         },
 
         seek: function(n) {
@@ -10400,6 +10516,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function initializeLocalVariables() {
       controlButtons      = playerConfig.controlButtons;
+      modelTimeLabel      = playerConfig.modelTimeLabel;
       enableAtomTooltips  = playerConfig.enableAtomTooltips || false;
       fit_to_parent       = playerConfig.fit_to_parent;
 
@@ -10414,6 +10531,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       showVDWLines        = modelConfig.showVDWLines;
       radialBonds         = modelConfig.radialBonds;
       obstacles           = modelConfig.obstacles;
+      viscosity           = modelConfig.viscosity;
+      gravitationalField  = modelConfig.gravitationalField;
     }
 
     // ------------------------------------------------------------
@@ -10431,7 +10550,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           width               : width,
           height              : height,
           chargeShading       : chargeShading,
-          showVDWLines        : showVDWLines
+          showVDWLines        : showVDWLines,
+          viscosity           : viscosity,
+          gravitationalField  : gravitationalField
         });
 
       if (atoms) {
@@ -10481,7 +10602,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments);  },
         is_stopped:           function() { return model.is_stopped() },
 
-        control_buttons:      controlButtons
+        controlButtons:      controlButtons,
+        modelTimeLabel:      modelTimeLabel
       });
 
       moleculeContainer.updateMoleculeRadius();
@@ -10508,7 +10630,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments); },
         is_stopped:           function() { return model.is_stopped() },
 
-        control_buttons:      controlButtons
+        controlButtons:      controlButtons,
+        modelTimeLabel:      modelTimeLabel
       });
       moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_drawables();
@@ -10573,14 +10696,17 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 };
 /*global controllers model Thermometer layout $ alert */
 /*jshint eqnull: true*/
-controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
+controllers.interactivesController = function(interactive, viewSelector, applicationCallbacks, layoutStyle) {
 
   var controller = {},
       modelController,
       $interactiveContainer,
       propertiesListeners = [],
       playerConfig,
+      componentCallbacks = [],
       thermometer,
+      energyGraph,
+      energyData = [[],[],[]],
 
       //
       // Define the scripting API used by 'action' scripts on interactive elements.
@@ -10656,7 +10782,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         getAtomProperties: function getAtomProperties(i) {
           var props = {},
               atoms = model.get_nodes();
-          for (property in model.ATOM_PROPERTIES) {
+          for (var property in model.ATOM_PROPERTIES) {
             props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
           }
           return props;
@@ -10728,6 +10854,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         return createPulldown(component);
       case 'thermometer':
         return createThermometer(component);
+      case 'energyGraph':
+        return createEnergyGraph(component);
     }
   }
 
@@ -10817,7 +10945,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   */
   function getStringFromArray(str) {
     if (typeof str === 'string') {
-      return str
+      return str;
     }
     return str.join('\n');
   }
@@ -10832,7 +10960,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
 
     $button.click(evalInScriptContext(scriptStr));
 
-    return $button;
+    return { elem: $button };
   }
 
   function createPulldown(component) {
@@ -10870,7 +10998,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       }
     });
 
-    return $pulldown;
+    return { elem: $pulldown };
   }
 
   function createThermometer(component) {
@@ -10879,9 +11007,15 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     thermometer = new Thermometer($thermometer, null, component.min, component.max);
     queuePropertiesListener(['temperature'], updateThermometerValue);
 
-    return $('<div class="interactive-thermometer">')
-             .append($thermometer)
-             .append($('<p class="label">').text('Thermometer'));
+    return {
+      elem: $('<div class="interactive-thermometer">')
+                .append($thermometer)
+                .append($('<p class="label">').text('Thermometer')),
+      callback: function() {
+        thermometer.resize();
+        updateThermometerValue();
+      }
+    };
   }
 
   function updateThermometerValue() {
@@ -10893,6 +11027,92 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       model.addPropertiesListener(properties, func);
     } else {
       propertiesListeners.push([properties, func]);
+    }
+  }
+
+  // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
+  function createEnergyGraph(component) {
+    var elem = $('<div>').attr('id', component.id);
+    return  {
+      elem: elem,
+      callback: function() {
+        var thisComponent = component;
+        var options = {
+          title:     "Energy of the System (KE:red, PE:green, TE:blue)",
+          xlabel:    "Model Time (ps)",
+          xmin:      0,
+          xmax:     100,
+          sample:    0.1,
+          ylabel:    "eV",
+          ymin:      -5.0,
+          ymax:      5.0
+        };
+        resetEnergyData();
+        options.dataset = energyData;
+        if (thisComponent.options) {
+          $.extend(options, thisComponent.options);
+        }
+        model.on("tick.energyGraph", updateEnergyGraph);
+        model.on('play.energyGraph', function() {
+          var i, len;
+          if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
+            resetEnergyData(model.stepCounter());
+            energyGraph.new_data(energyData);
+          }
+          energyGraph.show_canvas();
+        });
+        model.on('reset.energyGraph', function() {
+          resetEnergyData();
+          energyGraph.new_data(energyData);
+          energyGraph.reset();
+        });
+        // Right now this action is acting as an indication of model reset ...
+        // This should be refactoring to distinguish the difference between reset
+        // and seek to location in model history.
+        model.on('seek.energyGraph', function() {
+          var modelsteps = model.stepCounter();
+          if (modelsteps > 0) {
+            resetEnergyData(modelsteps);
+          } else {
+            resetEnergyData();
+          }
+          energyGraph.new_data(energyData);
+        });
+        energyGraph = grapher.realTimeGraph('#' + thisComponent.id, options);
+        if (thisComponent.dimensions) {
+          energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
+        }
+      }
+    };
+  }
+
+  function updateEnergyGraph() {
+    energyGraph.add_points(updateEnergyData());
+  }
+
+  // Add another sample of model KE, PE, and TE to the arrays in energyData
+  function updateEnergyData() {
+    var ke = model.ke(),
+        pe = model.pe(),
+        te = ke + pe;
+    energyData[0].push(ke);
+    energyData[1].push(pe);
+    energyData[2].push(te);
+    return [ke, pe, te];
+  }
+
+  // Reset the energyData arrays to a specific length by passing in an index value,
+  // or empty the energyData arrays an initialize the first sample.
+  function resetEnergyData(index) {
+    var modelsteps = model.stepCounter();
+    if (index) {
+      for (i = 0, len = energyData.length; i < len; i++) {
+        energyData[i].length = modelsteps;
+      }
+      return index;
+    } else {
+      energyData = [[0],[0],[0]];
+      return 0;
     }
   }
 
@@ -10917,10 +11137,14 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       model.addPropertiesListener(listener[0], listener[1]);
     }
 
-    // TODO. Of course, this should happen automatically
-    if (thermometer) {
-      thermometer.resize();
-      updateThermometerValue();
+    for(i = 0; i < componentCallbacks.length; i++) {
+      componentCallbacks[i]();
+    }
+
+    if (applicationCallbacks) {
+      for(i = 0; i < applicationCallbacks.length; i++) {
+        applicationCallbacks[i]();
+      }
     }
   }
 
@@ -10947,6 +11171,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         $top, $right,
         i, ii;
 
+    componentCallbacks = [];
     interactive = newInteractive;
     $interactiveContainer = $(viewSelector);
     if ($interactiveContainer.children().length === 0) {
@@ -10969,12 +11194,12 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       } else {
         playerConfig = { controlButtons: 'play' };
       }
-      playerConfig.fit_to_parent = !layoutStyle
+      playerConfig.fit_to_parent = !layoutStyle;
     }
 
     if (modelUrl) loadModel(modelUrl);
 
-    componentJsons = interactive.components;
+    componentJsons = interactive.components || [];
 
     for (i = 0, ii=componentJsons.length; i<ii; i++) {
       component = createComponent(componentJsons[i]);
@@ -10992,7 +11217,10 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           for (i = 0, ii = divArray.length; i<ii; i++) {
             componentId = divArray[i];
             if (components[componentId]) {
-              $('#'+div).append(components[componentId]);
+              $('#'+div).append(components[componentId].elem);
+              if (components[componentId].callback) {
+                componentCallbacks.push(components[componentId].callback);
+              }
               delete components[componentId];
             }
           }
@@ -11003,7 +11231,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     // add the remaining components to #bottom
     for (componentId in components) {
       if (components.hasOwnProperty(componentId)) {
-        $('#bottom').append(components[componentId]);
+        $('#bottom').append(components[componentId].elem);
       }
     }
 
@@ -11143,7 +11371,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       molecule_container = layout.moleculeContainer(molecule_view_id,
         {
           control_buttons:      "",
-          model_time_label:     true,
+          modelTimeLabel:       true,
           grid_lines:           true,
           xunits:               true,
           yunits:               true,
@@ -11473,6 +11701,8 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       showVDWLines        = modelConfig.showVDWLines;
       radialBonds         = modelConfig.radialBonds;
       obstacles           = modelConfig.obstacles;
+      viscosity           = modelConfig.viscosity;
+      gravitationalField  = modelConfig.gravitationalField;
     }
 
     // ------------------------------------------------------------
@@ -11505,7 +11735,9 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
           width: width,
           height: height,
           chargeShading: chargeShading,
-          showVDWLines: showVDWLines
+          showVDWLines: showVDWLines,
+          viscosity : viscosity,
+          gravitationalField : gravitationalField
       });
 
       if (atoms_properties) {
@@ -11776,6 +12008,8 @@ controllers.complexModelController =
       showVDWLines        = modelConfig.showVDWLines,
       radialBonds         = modelConfig.radialBonds,
       obstacles           = modelConfig.obstacles,
+      viscosity           = modelConfig.viscosity,
+      gravitationalField  = modelConfig.gravitationalField,
 
       moleculeContainer,
       model_listener,
@@ -11857,7 +12091,9 @@ controllers.complexModelController =
           width: width,
           height: height,
           chargeShading: chargeShading,
-          showVDWLines: showVDWLines
+          showVDWLines: showVDWLines,
+          viscosity : viscosity,
+          gravitationalField : gravitationalField
         });
 
       if (atoms_properties) {
@@ -11895,8 +12131,8 @@ controllers.complexModelController =
           title:               "Simple Molecules",
           xlabel:              "X position (nm)",
           ylabel:              "Y position (nm)",
-          control_buttons:     "play_reset_step",
-          model_time_label:     true,
+          controlButtons:       "play_reset_step",
+          modelTimeLabel:       true,
           grid_lines:           true,
           xunits:               true,
           yunits:               true,

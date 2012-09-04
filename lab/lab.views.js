@@ -161,9 +161,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       dragged,
       drag_origin,
       pc_xpos, pc_ypos,
-      model_time_formatter = d3.format("5.2f"),
-      time_prefix = "time: ",
-      time_suffix = " (ps)",
+      model_time_formatter = d3.format("5.0f"),
+      time_prefix = "",
+      time_suffix = " (fs)",
       gradient_container,
       VDWLines_container,
       red_gradient,
@@ -193,8 +193,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         title:                false,
         xlabel:               false,
         ylabel:               false,
-        control_buttons:      "play",
-        model_time_label:     false,
+        controlButtons:      "play",
+        modelTimeLabel:       false,
         grid_lines:           false,
         xunits:               false,
         yunits:               false,
@@ -241,7 +241,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     getRadialBonds = options.get_radial_bonds;
     set_atom_properties = options.set_atom_properties;
     is_stopped = options.is_stopped;
-  };
+  }
 
   function scale(w, h) {
     var modelSize = model.size(),
@@ -254,11 +254,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
        "left":   options.ylabel ? 60  * layout.screen_factor : 25
     };
 
-    if (options.xlabel || options.model_time_label) {
+    if (options.xlabel) {
       padding.bottom += (35  * scale_factor);
     }
 
-    if (options.control_buttons) {
+    if (options.controlButtons) {
       padding.bottom += (40  * scale_factor);
     } else {
       padding.bottom += (15  * scale_factor);
@@ -297,7 +297,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     offset_top  = node.offsetTop + padding.top;
     offset_left = node.offsetLeft + padding.left;
 
-    switch (options.control_buttons) {
+    switch (options.controlButtons) {
       case "play":
         pc_xpos = padding.left + (size.width - (75 * scale_factor))/2;
         break;
@@ -305,6 +305,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
         break;
       case "play_reset_step":
+        pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
+        break;
       default:
         pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
     }
@@ -342,7 +344,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   }
 
   function modelTimeLabel() {
-    return time_prefix + model_time_formatter(model.getTime() / 1000) + time_suffix;
+    return time_prefix + model_time_formatter(model.getTime()) + time_suffix;
   }
 
   function get_element(i) {
@@ -391,6 +393,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
   function get_charge(i) {
     return nodes[model.INDICES.CHARGE][i];
+  }
+
+  function get_visible(i) {
+    return nodes[model.INDICES.VISIBLE][i];
   }
 
   function get_obstacle_x(i) {
@@ -517,12 +523,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
 
       // add model time display
-      if (options.model_time_label) {
+      if (options.modelTimeLabel) {
         time_label = vis.append("text")
-            .attr("class", "model_time_label")
+            .attr("class", "modelTimeLabel")
             .text(modelTimeLabel())
-            .attr("x", size.width - 100)
-            .attr("y", size.height)
+            .attr("x", 10)
+            .attr("y", size.height - 35)
             .attr("dy","2.4em")
             .style("text-anchor","start");
       }
@@ -533,7 +539,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("y", 5)
         .attr("width", "3%")
         .attr("height", "3%")
-        .attr("xlink:href", "../../resources/heatbath.gif")
+        .attr("xlink:href", "../../resources/heatbath.gif");
 
       model.addPropertiesListener(["temperature_control"], updateHeatBath);
       updateHeatBath();
@@ -594,10 +600,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
-      if (options.model_time_label) {
+      if (options.modelTimeLabel) {
         time_label.text(modelTimeLabel())
-            .attr("x", size.width - 100)
-            .attr("y", size.height);
+            .attr("x", 10)
+            .attr("y", size.height - 35);
       }
 
       vis.selectAll("g.x").remove();
@@ -641,7 +647,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     // Process options that always have to be recreated when container is reloaded
     d3.select('.model-controller').remove();
 
-    switch (options.control_buttons) {
+    switch (options.controlButtons) {
       case "play":
         playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
         break;
@@ -720,7 +726,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .text(fy);
 
         // update model time display
-        if (options.model_time_label) {
+        if (options.modelTimeLabel) {
           time_label.text(modelTimeLabel());
         }
 
@@ -804,6 +810,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("cx", function(d, i) { return x(get_x(i)); })
           .attr("cy", function(d, i) { return y(get_y(i)); })
           .style("fill", function(d, i) {
+            if (!get_visible(i)) { return "#eeeeee"; }
             if (chargeShadingMode()) {
                 if (get_charge(i) > 0){
                     return  "url(#pos-grad)";
@@ -844,70 +851,77 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function radialBondEnter(radialBond) {
-        radialBond.enter().append("line")
-                    .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
-                    .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
-                    .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
-                    .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
-                    .attr("class", "radialbond")
-                    .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75})
-                    .style("stroke", function(d, i) {
-                if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
-                    return "#000000";
-                }
-                else {
-                    if (chargeShadingMode()) {
-                        if (get_charge(get_radial_bond_atom_1(i)) > 0){
-                            return  bondColorArray[4];
-                        }
-                        else if (get_charge(get_radial_bond_atom_1(i)) < 0){
-                            return  bondColorArray[5];
-                        }
-                        else {
-                            //element = get_element(get_radial_bond_atom_1(i)) % 4;
-                            //grad = bondColorArray[element];
-                            return "#A4A4A4";
-                        }
+      radialBond.enter().append("line")
+          .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
+          .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
+          .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+          .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+          .attr("class", "radialbond")
+          .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75})
+          .style("stroke", function(d, i) {
+              if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
+                return "#000000";
+              } else {
+                if (chargeShadingMode()) {
+                    if (get_charge(get_radial_bond_atom_1(i)) > 0) {
+                        return  bondColorArray[4];
+                    } else if (get_charge(get_radial_bond_atom_1(i)) < 0){
+                        return  bondColorArray[5];
                     } else {
-                        element = get_element(get_radial_bond_atom_1(i)) % 4;
-                        grad = bondColorArray[element];
-                        return grad;
+                      //element = get_element(get_radial_bond_atom_1(i)) % 4;
+                      //grad = bondColorArray[element];
+                      return "#A4A4A4";
                     }
+                } else {
+                  element = get_element(get_radial_bond_atom_1(i)) % 4;
+                  grad = bondColorArray[element];
+                  return grad;
                 }
+              }
             })
-            .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
-        radialBond.enter().append("line")
-                    .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
-                    .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
-                    .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
-                    .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
-                    .attr("class", "radialbond1")
-                    .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
-                    .style("stroke", function(d, i) {
-                if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )){
-                    return "#000000";
+            .style("stroke-dasharray", function (d, i) {
+                if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
+                  return "5 5"
+                } else {
+                  return "";
                 }
-                else {
-                    if (chargeShadingMode()) {
-                        if (get_charge(get_radial_bond_atom_2(i)) > 0){
-                            return  bondColorArray[4];
-                        }
-                        else if (get_charge(get_radial_bond_atom_2(i)) < 0){
-                            return  bondColorArray[5];
-                        }
-                        else {
-                            //element = get_element(get_radial_bond_atom_2(i)) % 4;
-                            //grad = bondColorArray[element];
-                            return "#A4A4A4";
-                        }
-                    } else {
-                        element = get_element(get_radial_bond_atom_2(i)) % 4;
-                        grad = bondColorArray[element];
-                        return grad;
-                    }
+              });
+
+      radialBond.enter().append("line")
+          .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
+          .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+          .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
+          .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
+          .attr("class", "radialbond1")
+          .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
+          .style("stroke", function(d, i) {
+              if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
+                return "#000000";
+              } else {
+                if (chargeShadingMode()) {
+                  if (get_charge(get_radial_bond_atom_2(i)) > 0) {
+                      return  bondColorArray[4];
+                  } else if (get_charge(get_radial_bond_atom_2(i)) < 0){
+                      return  bondColorArray[5];
+                  } else {
+                    //element = get_element(get_radial_bond_atom_2(i)) % 4;
+                    //grad = bondColorArray[element];
+                    return "#A4A4A4";
+                  }
+                } else {
+                  element = get_element(get_radial_bond_atom_2(i)) % 4;
+                  grad = bondColorArray[element];
+                  return grad;
                 }
-    })
-                    .style("stroke-dasharray", function (d, i) {if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { return "5 5"} else {return "";}});
+              }
+          })
+          .style("stroke-dasharray", function (d, i) {
+            if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { 
+              return "5 5"
+            } else {
+              return "";
+            }
+          });
     }
 
     function drawAttractionForces(){
@@ -1078,13 +1092,15 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       molecule_div
             .style("opacity", 1.0)
             .style("display", "inline")
-            .style("background", "rgba(100%, 100%, 100%, 0.5)")
+            .style("background", "rgba(100%, 100%, 100%, 0.7)")
             .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 16 + "px")
             .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px")
+            .style("zIndex", 100)
             .transition().duration(250);
 
       molecule_div_pre.text(
-          modelTimeLabel() + "\n" +
+          "atom: " + i + "\n" +
+          "time: " + modelTimeLabel() + "\n" +
           "speed: " + d3.format("+6.3e")(get_speed(i)) + "\n" +
           "vx:    " + d3.format("+6.3e")(get_vx(i))    + "\n" +
           "vy:    " + d3.format("+6.3e")(get_vy(i))    + "\n" +
@@ -1098,7 +1114,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function molecule_mouseout() {
       if (atom_tooltip_on === false) {
-        molecule_div.style("opacity", 1e-6);
+        molecule_div.style("opacity", 1e-6).style("zIndex" -1);
       }
     }
 
@@ -1112,12 +1128,13 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
 
     function update_molecule_positions() {
+      var gradientBoolean = gradient_container.selectAll("circle")[0].length;
 
       mock_atoms_array.length = get_num_atoms();
       nodes = get_nodes();
 
       // update model time display
-      if (options.model_time_label) {
+      if (options.modelTimeLabel) {
         time_label.text(modelTimeLabel());
       }
 
@@ -1128,9 +1145,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       });
 
       particle = gradient_container.selectAll("circle").data(mock_atoms_array);
-      if (mock_atoms_array.length !== gradient_container.selectAll("circle")[0].length){
+      if (mock_atoms_array.length !== gradientBoolean) {
         circlesEnter(particle);
       }
+
       particle
         .attr("cx", function(d, i) {return x(nodes[model.INDICES.X][i]); })
         .attr("cy", function(d, i) {return y(nodes[model.INDICES.Y][i]); })
@@ -1192,7 +1210,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       set_position(i, new_x, new_y, false, true);
 
       update_drawable_positions();
-    };
+    }
 
     function node_dragend(d, i){
       if (!is_stopped()) {
@@ -1213,7 +1231,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
 
       update_drawable_positions();
-    };
+    }
 
     // ------------------------------------------------------------
     //

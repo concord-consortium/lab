@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="utf-8">
     <title>CodeMirror: sTeX mode</title>
     <link rel="stylesheet" href="../../lib/codemirror.css">
     <script src="../../lib/codemirror.js"></script>
@@ -239,6 +240,18 @@
         null,      ' ',
         null,      'I');
 
+    </script>
+
+    <h2>New Commands</h2>
+
+    Should be able to define a new command that happens to be a method on Array
+    (e.g. <tt>pop</tt>):
+    <script language="javascript">
+      MT.test('\\newcommand{\\pop}',
+        'tag', '\\newcommand',
+        'bracket', '{',
+        'tag', '\\pop',
+        'bracket', '}');
     </script>
 
     <h2>Summary</h2>

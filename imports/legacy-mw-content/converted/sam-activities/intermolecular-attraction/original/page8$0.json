@@ -2,9 +2,11 @@
   "temperature_control": false,
   "width": 3.5,
   "height": 3,
+  "viscosity": 0,
   "chargeShading": true,
   "showVDWLines": true,
   "VDWLinesRatio": 1.99,
+  "gravitationalField": false,
   "elements": [
     {
       "id": 0,
@@ -118,6 +120,22 @@
       0,
       0
     ],
+    "FRICTION": [
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25
+    ],
     "ELEMENT": [
       0,
       0,
@@ -148,6 +166,22 @@
       0,
       0,
       0,
+      0
+    ],
+    "VISIBLE": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
       0
     ]
   },

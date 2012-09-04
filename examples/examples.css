@@ -433,7 +433,6 @@ h3 {
 #content {
   margin: 0em;
   padding: 0em;
-  height: 45em;
   position: relative;
   display: inline-block; }
 
@@ -539,8 +538,8 @@ text.xlabel {
 text.ylabel {
   font-size: 0.85em; }
 
-text.model_time_label {
-  font-size: 0.85em; }
+text.modelTimeLabel {
+  font-size: 0.75em; }
 
 g.y {
   font-size: 0.75em; }
@@ -832,6 +831,11 @@ a {
   color: #3a878b; }
   a:hover {
     color: #da5936; }
+
+#content.a {
+  color: #336644; }
+  #content.a:hover {
+    color: #88eecc; }
 
 ul {
   margin: 1em 0em 1em 0em;

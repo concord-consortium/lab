@@ -147,6 +147,7 @@ A live version of the readme is always available here:
       <li><a href="#using-capstrano-to-deploy-new-code-to-an-existing-server">Using Capstrano to deploy new code to an existing server</a></li>
       <li><a href="#updating-the-java-jar-resources-on-a-remote-rerver">Updating the Java jar resources on a remote rerver</a></li>
       <li><a href="#managing-aws-servers-with-thor-tasks">Managing AWS servers with thor tasks</a></li>
+      <li><a href="#creating-a-new-aws-lab-server">Creating a new AWS Lab Server</a></li>
     </ul>
   </li>
   <li><a href="#references">References</a>    <ul>
@@ -1881,7 +1882,7 @@ server/public/jnlp/
 <pre><code>$ thor -T
 cloud
 -----
-thor cloud:create_hostname hostname              # create a new server instance using this hostname
+thor cloud:create hostname                       # create a new server instance using this hostname
 thor cloud:delete hostname                       # delete an existing server instance running at this hostname
 thor cloud:find_dns_record hostname              # find dns record for hostname
 thor cloud:list                                  # list existing servers
@@ -1889,24 +1890,101 @@ thor cloud:list_targets                          # list existing deploy targets
 thor cloud:recreate hostname                     # recreate a new server instance for this hostname by destroying and rebuilding an existing server
 thor cloud:setup                                 # setup capistrano deploy tasks and littlechef nodes using targets in config/config.yml
 thor cloud:setup_ssh hostname                    # setup ssh configuration for communication to hostname
-thor cloud:start ec2_id hostname                 # start a stopped existing server instance using the ec2-id
+thor cloud:start ec2_id                          # start a stopped existing server instance using the ec2-id
 thor cloud:stop reference                        # stop a running existing server instance at this hostname or ec2-id
+thor cloud:update reference                      # update server &lt;ec2_id|hostname&gt; provisioning with littlechef 'lab-server' role
 thor cloud:update_dns_record hostname ipaddress  # updating IP address for DNS record hostname to ipaddress
 </code></pre>
 
-<p>There is more work to do to generalize these deployment systems to work with multiple servers.</p>
+<h3 id="creating-a-new-aws-lab-server">Creating a new AWS Lab Server</h3>
 
-<p>Create a new Amazon EC2 instance as described in the readme in the <strong>ruby-lab-server</strong> branch in
-Concord Consortium’s <a href="https://github.com/concord-consortium/littlechef-servers">littlechef-servers</a>
-repository. Make sure the security group you choose has port 80 open.</p>
+<p>Creating a new Lab server on AWS consists of three steps:</p>
 
-<p>Modify the value of the <code>:host</code> key in the configuration file <code>config/config.yml</code> to reference
-the domain name of the new server.</p>
+<ol>
+  <li>
+    <p>Creating a new hostname, server, and provisioning the server with thor:</p>
 
-<pre><code>$ cap &lt;deploy-target&gt; deploy:setup
+    <pre><code> $ thor cloud:create &lt;hostname&gt;
 </code></pre>
 
-<p>Will do an initial deploy and build of all the project resources to the server.</p>
+    <p>This task will create a new <strong>hostname</strong> as a DNS A record if the <strong>hostname</strong> does not already exists.</p>
+
+    <p>If the hostname already exists as a CNAME first login to the <a href="https://console.aws.amazon.com/route53/home">AWS:Route53</a>
+   service and delete the existing host name.</p>
+
+    <p>If the new DNS entry for <strong>hostname</strong> is not properly propogated when the hostname is created or
+   changed you will get an error that looks something like this:</p>
+
+    <pre><code> *** running local command: echo '
+ Host &lt;hostname&gt;
+   User ubuntu
+   IdentityFile ~/.ec2/lab-dev.pem
+ ' &gt;&gt; ~/.ssh/config
+
+ *** running local command: ssh-keygen -R &lt;hostname&gt;
+ /Users/stephen/.ssh/known_hosts updated.
+ Original contents retained as /Users/stephen/.ssh/known_hosts.old
+
+ *** running local command: ssh ubuntu@&lt;hostname&gt; -o StrictHostKeyChecking=no exit
+ ssh: Could not resolve hostname &lt;hostname&gt;: nodename nor servname provided, or not known
+
+ *** updating littlechef node: &lt;hostname&gt;.json
+
+ *** provisioning &lt;hostname&gt; with littlechef role: lab-server
+     &lt;ec2-id&gt;, &lt;ec2-hostname&gt;, &lt;new-ip-address&gt;
+     command: cd /Users/stephen/dev/concord/lab/config/littlechef &amp;&amp; fix node:&lt;hostname&gt; role:lab-server
+
+
+ == Applying role 'lab-server' to &lt;hostname&gt; ==
+
+ Fatal error: Name lookup failed for &lt;hostname&gt;
+
+ Underlying exception:
+     nodename nor servname provided, or not known
+</code></pre>
+
+    <p>You will need to resolve the issue with getting the correct DNS record for <strong>hostname</strong> before
+   continuing. After this is resolved you can follow these steps to continue the initial setup and
+   provisioning:</p>
+
+    <pre><code> $ ssh-keygen -R &lt;hostname&gt;
+ $ ssh ubuntu@&lt;hostname&gt; -o StrictHostKeyChecking=no exit
+ $ thor cloud:update  &lt;hostname&gt;
+</code></pre>
+  </li>
+  <li>
+    <p>Optionally configure the server to use a valid Java code-siging certificate.</p>
+
+    <p>If you wish to support the integration of the optional Java resources that are required to be signed to work:</p>
+
+    <ul>
+      <li>legacy Molecular Worbench and Energy2D Java Web Start applications</li>
+      <li>Java-based Vernier GoIO browser-sensor applet integration</li>
+    </ul>
+
+    <p>You should put copy of a valid Java siging certificate keystore on <strong>hostname</strong> and edit
+   <code>config/config.yml</code> to reference this keystore before running <code>cap &lt;deploy-target&gt; deploy:setup</code></p>
+
+    <p>The one supplied with the repository is a sample self-signed certificate and end user will be warned that it
+   is not valid.</p>
+
+    <p>Here is one way to acomplish this:</p>
+
+    <pre><code> $ scp &lt;path-to-keystore&gt; deploy@&lt;hostname&gt;:/var/www/app/config/&lt;new-keystore-name&gt;.jks
+</code></pre>
+
+    <p>Now ssh to the new host and edit the <a href="https://github.com/concord-consortium/lab/blob/master/config/config_sample.yml#L2-6">java section</a>
+   of <code>/var/www/app/config/config.yml</code> to update the values for <code>:password</code>, <code>:alias</code>, and <code>:keystore_path</code>.</p>
+  </li>
+  <li>
+    <p>Finishing the setup of the server with a capistrano task</p>
+
+    <pre><code> $ cap &lt;deploy-target&gt; deploy:setup
+</code></pre>
+
+    <p>This completes the initial deploy and builds of all the project resources to the server.</p>
+  </li>
+</ol>
 
 <h2 id="references">References</h2>
 

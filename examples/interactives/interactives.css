@@ -2,21 +2,53 @@
 #content {
   width: 100%;
   white-space: nowrap; }
+  #content a.opens-in-new-window {
+    color: #333333;
+    font-size: 90%;
+    padding-left: 1em; }
 
-#editor-right {
-  display: inline-block;
-  vertical-align: top;
+#extras-bottom {
+  border: 1px solid gray;
+  margin: 1.5em 1em 0.5em 1em;
+  padding: 0em;
   min-width: 40em;
-  padding: 1em 1em 0.5em 0.5em; }
+  background: #eeeeee; }
+
+#extras-bottom-banner {
+  font-size: 110%;
+  margin: 0.5em; }
+
+.extras-item {
+  border: 1px dashed gray;
+  margin: 0.5em;
+  min-width: 40em;
+  padding: 0.5em;
+  background: #dddddd; }
+
+.extras-item-controls {
+  margin-left: 1em;
+  font-size: 90%; }
+
+button.extras-item-controls {
+  font-size: 100%;
+  margin: 0em 1em; }
+
+.extras-item-content {
+  margin: 0.5em 0em;
+  padding: 0em; }
 
 #interactive-text-area {
   background: white;
-  margin-top: 1em;
-  padding: 0.5em 1em;
+  margin: 0.7em 0.5em;
+  padding: 0.5em;
   height: 40em; }
 
+.CodeMirror {
+  background: white;
+  margin: 0.7em 0.5em; }
+
 .CodeMirror-scroll {
-  height: 43em;
+  height: 45em;
   overflow: auto; }
 
 .interactive-top {
@@ -54,3 +86,38 @@ a.opens-in-new-window {
   color: white;
   font-size: 90%;
   padding-left: 1em; }
+
+.model-benchmark-results {
+  font-size: 70%;
+  margin: 0em;
+  padding: 1em;
+  overflow: auto; }
+  .model-benchmark-results table {
+    background: #eeeeee;
+    font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    overflow: auto; }
+  .model-benchmark-results th {
+    padding: 0 1em;
+    text-align: left; }
+  .model-benchmark-results td {
+    border-top: 1px solid #cccccc;
+    padding: 0 1em; }
+
+.model-datatable-results {
+  font-size: 70%;
+  margin: 0em;
+  padding: 1em;
+  overflow: auto; }
+  .model-datatable-results table {
+    background: #eeeeee;
+    font: 10px/24px Verdana, Arial, Helvetica, sans-serif;
+    border-collapse: collapse; }
+  .model-datatable-results th {
+    padding: 0em 1em;
+    text-align: center; }
+  .model-datatable-results td {
+    border-top: 1px solid #cccccc;
+    padding: 0em 1em 0em 0.5em;
+    text-align: right;
+    width: 4em; }

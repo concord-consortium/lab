@@ -19,6 +19,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
       // properties read from the playerConfig hash
       controlButtons,
+      modelTimeLabel,
       fit_to_parent,
 
       // properties read from the modelConfig hash
@@ -46,6 +47,11 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
         stop: function() {
           model.stop();
+        },
+
+        reset: function() {
+          model.stop();
+          model.reset();
         },
 
         seek: function(n) {
@@ -81,6 +87,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function initializeLocalVariables() {
       controlButtons      = playerConfig.controlButtons;
+      modelTimeLabel      = playerConfig.modelTimeLabel;
       enableAtomTooltips  = playerConfig.enableAtomTooltips || false;
       fit_to_parent       = playerConfig.fit_to_parent;
 
@@ -95,6 +102,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       showVDWLines        = modelConfig.showVDWLines;
       radialBonds         = modelConfig.radialBonds;
       obstacles           = modelConfig.obstacles;
+      viscosity           = modelConfig.viscosity;
+      gravitationalField  = modelConfig.gravitationalField;
     }
 
     // ------------------------------------------------------------
@@ -112,7 +121,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           width               : width,
           height              : height,
           chargeShading       : chargeShading,
-          showVDWLines        : showVDWLines
+          showVDWLines        : showVDWLines,
+          viscosity           : viscosity,
+          gravitationalField  : gravitationalField
         });
 
       if (atoms) {
@@ -162,7 +173,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments);  },
         is_stopped:           function() { return model.is_stopped() },
 
-        control_buttons:      controlButtons
+        controlButtons:      controlButtons,
+        modelTimeLabel:      modelTimeLabel
       });
 
       moleculeContainer.updateMoleculeRadius();
@@ -189,7 +201,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments); },
         is_stopped:           function() { return model.is_stopped() },
 
-        control_buttons:      controlButtons
+        controlButtons:      controlButtons,
+        modelTimeLabel:      modelTimeLabel
       });
       moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_drawables();

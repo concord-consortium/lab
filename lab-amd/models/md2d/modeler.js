@@ -18,6 +18,7 @@ modeler.model = function(initialProperties) {
       temperature_control,
       chargeShading, showVDWLines,VDWLinesRatio,
       lennard_jones_forces, coulomb_forces,
+      gravitationalField = false,
       stopped = true,
       tick_history_list = [],
       tick_history_list_index = 0,
@@ -54,6 +55,8 @@ modeler.model = function(initialProperties) {
       // Radial Bonds
       radialBonds,
 
+      viscosity,
+
       default_obstacle_properties = {
         vx: 0,
         vy: 0,
@@ -68,9 +71,11 @@ modeler.model = function(initialProperties) {
         coulomb_forces        : true,
         lennard_jones_forces  : true,
         temperature_control   : true,
+        gravitationalField    : false,
         chargeShading         : false,
         showVDWLines          : false,
         VDWLinesRatio         : 1.99,
+        viscosity             : 0,
 
         set_temperature: function(t) {
           this.temperature = t;
@@ -99,6 +104,13 @@ modeler.model = function(initialProperties) {
 
         set_sigma: function(s) {
           console.log("set_sigma: This method is temporarily deprecated");
+        },
+
+        set_gravitationalField: function(gf) {
+          this.gravitationalField = gf;
+          if (coreModel) {
+            coreModel.setGravitationalField(gf);
+          }
         }
       };
 
@@ -118,6 +130,8 @@ modeler.model = function(initialProperties) {
     AX       : md2d.INDICES.AX,
     AY       : md2d.INDICES.AY,
     CHARGE   : md2d.INDICES.CHARGE,
+    FRICTION : md2d.INDICES.FRICTION,
+    VISIBLE  : md2d.INDICES.VISIBLE,
     ELEMENT  : md2d.INDICES.ELEMENT
   };
 
@@ -133,6 +147,8 @@ modeler.model = function(initialProperties) {
     AX       : md2d.ATOM_PROPERTIES.AX,
     AY       : md2d.ATOM_PROPERTIES.AY,
     CHARGE   : md2d.ATOM_PROPERTIES.CHARGE,
+    FRICTION : md2d.ATOM_PROPERTIES.FRICTION,
+    VISIBLE  : md2d.ATOM_PROPERTIES.VISIBLE,
     ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT
   };
 
@@ -469,10 +485,14 @@ modeler.model = function(initialProperties) {
     chargeShading       = properties.chargeShading;
     showVDWLines        = properties.showVDWLines;
     VDWLinesRatio       = properties.VDWLinesRatio;
+    viscosity           = properties.viscosity;
+    gravitationalField  = properties.gravitationalField;
 
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(temperature_control);
+    coreModel.setViscosity(viscosity);
+    coreModel.setGravitationalField(gravitationalField);
 
     coreModel.setTargetTemperature(temperature);
 
@@ -558,6 +578,11 @@ modeler.model = function(initialProperties) {
     return coreModel.getLJCalculator();
   };
 
+  model.reset = function() {
+    model.resetTime();
+    dispatch.reset();
+  };
+
   model.resetTime = function() {
     coreModel.setTime(0);
   };
@@ -597,7 +622,7 @@ modeler.model = function(initialProperties) {
       // findMinimimuPELocation will return false if minimization doesn't converge, in which case
       // try again from a different x, y
       loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
-      if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge)) return true;
+      if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge, 0, 0)) return true;
     } while (++numTries < maxTries);
 
     return false;
@@ -615,7 +640,7 @@ modeler.model = function(initialProperties) {
 
     Otherwise, returns true.
   */
-  model.addAtom = function(el, x, y, vx, vy, charge, pinned) {
+  model.addAtom = function(el, x, y, vx, vy, charge, friction, pinned, visible) {
     var size      = model.size(),
         radius    = coreModel.getRadiusOfElement(el);
 
@@ -627,7 +652,7 @@ modeler.model = function(initialProperties) {
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
     if (coreModel.canPlaceAtom(el, x, y)) {
-      coreModel.addAtom(el, x, y, vx, vy, charge, pinned);
+      coreModel.addAtom(el, x, y, vx, vy, charge, friction, pinned, visible);
 
       // reassign nodes to possibly-reallocated atoms array
       nodes = coreModel.atoms;

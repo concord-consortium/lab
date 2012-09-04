@@ -1,13 +1,16 @@
 /*global controllers model Thermometer layout $ alert */
 /*jshint eqnull: true*/
-controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
+controllers.interactivesController = function(interactive, viewSelector, applicationCallbacks, layoutStyle) {
 
   var controller = {},
       modelController,
       $interactiveContainer,
       propertiesListeners = [],
       playerConfig,
+      componentCallbacks = [],
       thermometer,
+      energyGraph,
+      energyData = [[],[],[]],
 
       //
       // Define the scripting API used by 'action' scripts on interactive elements.
@@ -83,7 +86,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         getAtomProperties: function getAtomProperties(i) {
           var props = {},
               atoms = model.get_nodes();
-          for (property in model.ATOM_PROPERTIES) {
+          for (var property in model.ATOM_PROPERTIES) {
             props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
           }
           return props;
@@ -155,6 +158,8 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         return createPulldown(component);
       case 'thermometer':
         return createThermometer(component);
+      case 'energyGraph':
+        return createEnergyGraph(component);
     }
   }
 
@@ -244,7 +249,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
   */
   function getStringFromArray(str) {
     if (typeof str === 'string') {
-      return str
+      return str;
     }
     return str.join('\n');
   }
@@ -259,7 +264,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
 
     $button.click(evalInScriptContext(scriptStr));
 
-    return $button;
+    return { elem: $button };
   }
 
   function createPulldown(component) {
@@ -297,7 +302,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       }
     });
 
-    return $pulldown;
+    return { elem: $pulldown };
   }
 
   function createThermometer(component) {
@@ -306,9 +311,15 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     thermometer = new Thermometer($thermometer, null, component.min, component.max);
     queuePropertiesListener(['temperature'], updateThermometerValue);
 
-    return $('<div class="interactive-thermometer">')
-             .append($thermometer)
-             .append($('<p class="label">').text('Thermometer'));
+    return {
+      elem: $('<div class="interactive-thermometer">')
+                .append($thermometer)
+                .append($('<p class="label">').text('Thermometer')),
+      callback: function() {
+        thermometer.resize();
+        updateThermometerValue();
+      }
+    };
   }
 
   function updateThermometerValue() {
@@ -320,6 +331,92 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       model.addPropertiesListener(properties, func);
     } else {
       propertiesListeners.push([properties, func]);
+    }
+  }
+
+  // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
+  function createEnergyGraph(component) {
+    var elem = $('<div>').attr('id', component.id);
+    return  {
+      elem: elem,
+      callback: function() {
+        var thisComponent = component;
+        var options = {
+          title:     "Energy of the System (KE:red, PE:green, TE:blue)",
+          xlabel:    "Model Time (ps)",
+          xmin:      0,
+          xmax:     100,
+          sample:    0.1,
+          ylabel:    "eV",
+          ymin:      -5.0,
+          ymax:      5.0
+        };
+        resetEnergyData();
+        options.dataset = energyData;
+        if (thisComponent.options) {
+          $.extend(options, thisComponent.options);
+        }
+        model.on("tick.energyGraph", updateEnergyGraph);
+        model.on('play.energyGraph', function() {
+          var i, len;
+          if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
+            resetEnergyData(model.stepCounter());
+            energyGraph.new_data(energyData);
+          }
+          energyGraph.show_canvas();
+        });
+        model.on('reset.energyGraph', function() {
+          resetEnergyData();
+          energyGraph.new_data(energyData);
+          energyGraph.reset();
+        });
+        // Right now this action is acting as an indication of model reset ...
+        // This should be refactoring to distinguish the difference between reset
+        // and seek to location in model history.
+        model.on('seek.energyGraph', function() {
+          var modelsteps = model.stepCounter();
+          if (modelsteps > 0) {
+            resetEnergyData(modelsteps);
+          } else {
+            resetEnergyData();
+          }
+          energyGraph.new_data(energyData);
+        });
+        energyGraph = grapher.realTimeGraph('#' + thisComponent.id, options);
+        if (thisComponent.dimensions) {
+          energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
+        }
+      }
+    };
+  }
+
+  function updateEnergyGraph() {
+    energyGraph.add_points(updateEnergyData());
+  }
+
+  // Add another sample of model KE, PE, and TE to the arrays in energyData
+  function updateEnergyData() {
+    var ke = model.ke(),
+        pe = model.pe(),
+        te = ke + pe;
+    energyData[0].push(ke);
+    energyData[1].push(pe);
+    energyData[2].push(te);
+    return [ke, pe, te];
+  }
+
+  // Reset the energyData arrays to a specific length by passing in an index value,
+  // or empty the energyData arrays an initialize the first sample.
+  function resetEnergyData(index) {
+    var modelsteps = model.stepCounter();
+    if (index) {
+      for (i = 0, len = energyData.length; i < len; i++) {
+        energyData[i].length = modelsteps;
+      }
+      return index;
+    } else {
+      energyData = [[0],[0],[0]];
+      return 0;
     }
   }
 
@@ -344,10 +441,14 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       model.addPropertiesListener(listener[0], listener[1]);
     }
 
-    // TODO. Of course, this should happen automatically
-    if (thermometer) {
-      thermometer.resize();
-      updateThermometerValue();
+    for(i = 0; i < componentCallbacks.length; i++) {
+      componentCallbacks[i]();
+    }
+
+    if (applicationCallbacks) {
+      for(i = 0; i < applicationCallbacks.length; i++) {
+        applicationCallbacks[i]();
+      }
     }
   }
 
@@ -374,6 +475,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
         $top, $right,
         i, ii;
 
+    componentCallbacks = [];
     interactive = newInteractive;
     $interactiveContainer = $(viewSelector);
     if ($interactiveContainer.children().length === 0) {
@@ -396,12 +498,12 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
       } else {
         playerConfig = { controlButtons: 'play' };
       }
-      playerConfig.fit_to_parent = !layoutStyle
+      playerConfig.fit_to_parent = !layoutStyle;
     }
 
     if (modelUrl) loadModel(modelUrl);
 
-    componentJsons = interactive.components;
+    componentJsons = interactive.components || [];
 
     for (i = 0, ii=componentJsons.length; i<ii; i++) {
       component = createComponent(componentJsons[i]);
@@ -419,7 +521,10 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
           for (i = 0, ii = divArray.length; i<ii; i++) {
             componentId = divArray[i];
             if (components[componentId]) {
-              $('#'+div).append(components[componentId]);
+              $('#'+div).append(components[componentId].elem);
+              if (components[componentId].callback) {
+                componentCallbacks.push(components[componentId].callback);
+              }
               delete components[componentId];
             }
           }
@@ -430,7 +535,7 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
     // add the remaining components to #bottom
     for (componentId in components) {
       if (components.hasOwnProperty(componentId)) {
-        $('#bottom').append(components[componentId]);
+        $('#bottom').append(components[componentId].elem);
       }
     }
 

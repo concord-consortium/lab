@@ -33,7 +33,7 @@ Lab.moleculesView = function(e, model, options) {
       default_options = {
         playback_controller:  false,
         play_only_controller: false,
-        model_time_label:     false,
+        modelTimeLabel:       false,
         grid_lines:           false,
         xunits:               false,
         yunits:               false,
@@ -84,7 +84,7 @@ Lab.moleculesView = function(e, model, options) {
       left:   0
     };
 
-    if (options.model_time_label) {
+    if (options.modelTimeLabel) {
       padding.bottom += 35;
     } else if (options.xunits) {
       padding.bottom += 16;
@@ -221,9 +221,9 @@ Lab.moleculesView = function(e, model, options) {
         .style("fill", "#EEEEEE");
 
       // add model time display
-      if (options.model_time_label) {
+      if (options.modelTimeLabel) {
         time_label = vis.append("text")
-            .attr("class", "model_time_label")
+            .attr("class", "modelTimeLabel")
             .text(modelTimeLabel())
             .attr("x", size.width - 100)
             .attr("y", size.height)
@@ -274,7 +274,7 @@ Lab.moleculesView = function(e, model, options) {
         .attr("height", size.height)
         .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      if (options.model_time_label) {
+      if (options.modelTimeLabel) {
         time_label.text(modelTimeLabel())
             .attr("x", size.width - 100)
             .attr("y", size.height);
@@ -367,7 +367,7 @@ Lab.moleculesView = function(e, model, options) {
             .text(fy);
 
         // update model time display
-        if (options.model_time_label) {
+        if (options.modelTimeLabel) {
           time_label.text(modelTimeLabel());
         }
 
@@ -550,7 +550,7 @@ Lab.moleculesView = function(e, model, options) {
       (atoms = []).length = model.get_num_atoms();
 
       // update model time display
-      if (options.model_time_label) {
+      if (options.modelTimeLabel) {
         time_label.text(modelTimeLabel());
       }
 

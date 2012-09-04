@@ -8,21 +8,35 @@
   "components": [
     {
       "type": "button",
-      "id": "cool",
-      "text": "Cool",
-      "action": "adjustTemperature(0.9);"
+      "id": "no-force",
+      "text": "No force",
+      "action": " set({ 'gravitationalField' : false });"
     },
     {
       "type": "button",
-      "id": "heat",
-      "text": "Heat",
-      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
+      "id": "small-force",
+      "text": "Small force",
+      "action": " set({ 'gravitationalField' : 0.00025 });"
+    },
+    {
+      "type": "button",
+      "id": "med-force",
+      "text": "Medium force",
+      "action": " set({ 'gravitationalField' : 0.00075 });"
+    },
+    {
+      "type": "button",
+      "id": "large-force",
+      "text": "Large force",
+      "action": " set({ 'gravitationalField' : 0.001 });"
     }
   ],
   "layout": {
     "bottom": [
-      "cool",
-      "heat"
+      "no-force",
+      "small-force",
+      "med-force",
+      "large-force"
     ]
   }
 }

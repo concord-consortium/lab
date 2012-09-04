@@ -1,0 +1,92 @@
+{
+  "temperature_control": false,
+  "width": 4,
+  "height": 2,
+  "viscosity": 0,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 1.99,
+  "gravitationalField": 0.01,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 20,
+      "sigma": 0.07,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 40,
+      "sigma": 0.14,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 60,
+      "sigma": 0.21,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 80,
+      "sigma": 0.28,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      0.4,
+      1.4,
+      2.4,
+      3.4
+    ],
+    "Y": [
+      1.6050000419627473,
+      1.64000034843929,
+      1.674999366388907,
+      1.7099992264876673
+    ],
+    "VX": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "VY": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "CHARGE": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "FRICTION": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "ELEMENT": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "PINNED": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}
