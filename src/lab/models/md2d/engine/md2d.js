@@ -1498,6 +1498,7 @@ exports.makeModel = function() {
         sigma_i, epsilon_i,
         sigma_j, epsilon_j,
         sig, eps,
+        distanceCutoff_sq = 4 // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
         prevVdwPairsNum = vdwPairNum || 0;
       vdwPairNum = 0;
 
@@ -1505,7 +1506,7 @@ exports.makeModel = function() {
         // pairwise interactions
         for (j = i+1; j < N; j++) {
           if (N_radialBonds != 0 && (radialBondsHash[i] && radialBondsHash[i][j])) continue;
-          if(!(model.isChargeSame(i,j))){
+          if(charge[i]*charge[j] <= 0){
             dx = x[j] - x[i];
             dy = y[j] - y[i];
             r_sq = dx*dx + dy*dy;
@@ -1516,7 +1517,7 @@ exports.makeModel = function() {
             sig = 0.5*(sigma_i+sigma_j);
             sig *= sig;
             eps = epsilon_i*epsilon_j;
-            if (r_sq < sig * (2*2) && eps > 0) {
+            if (r_sq < sig * distanceCutoff_sq && eps > 0) {
               vdwPairAtom1Index[vdwPairNum] = i;
               vdwPairAtom2Index[vdwPairNum] = j;
               vdwPairNum++;
@@ -1532,18 +1533,6 @@ exports.makeModel = function() {
         }
       }
     },
-
-    isChargeSame: function(atom1,atom2) {
-      var atomCharge1 =  charge[atom1];
-      var atomCharge2 =  charge[atom2];
-      if((atomCharge1 > 0) &&  (atomCharge2 > 0) || (atomCharge1 < 0) &&  (atomCharge2 < 0)){
-        return true;
-      }
-      else {
-        return false;
-      }
-    },
-
 
     relaxToTemperature: function(T) {
 
