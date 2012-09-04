@@ -1,6 +1,6 @@
 /*global controllers model Thermometer layout $ alert */
 /*jshint eqnull: true*/
-controllers.interactivesController = function(interactive, viewSelector, layoutStyle) {
+controllers.interactivesController = function(interactive, viewSelector, applicationCallbacks, layoutStyle) {
 
   var controller = {},
       modelController,
@@ -443,6 +443,12 @@ controllers.interactivesController = function(interactive, viewSelector, layoutS
 
     for(i = 0; i < componentCallbacks.length; i++) {
       componentCallbacks[i]();
+    }
+
+    if (applicationCallbacks) {
+      for(i = 0; i < applicationCallbacks.length; i++) {
+        applicationCallbacks[i]();
+      }
     }
   }
 
