@@ -3652,6 +3652,9 @@ modeler.model = function(initialProperties) {
 
   model.reset = function() {
     model.resetTime();
+    tick_history_list_index = 0;
+    tick_counter = 0;
+    tick_history_list_extract(tick_history_list_index);
     dispatch.reset();
   };
 
