@@ -793,7 +793,9 @@ modeler.model = function(initialProperties) {
     return radialBonds;
   };
   model.get_vdw_pairs = function() {
+    if(coreModel.vdwPairs){
     coreModel.updateVdwPairsArray();
+    }
     return vdwPairs;
   };
 
