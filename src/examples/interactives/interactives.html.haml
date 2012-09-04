@@ -79,7 +79,8 @@
         #extras-bottom-banner Extras
         #editor.extras-item
           .extras-item-banner
-            %input#show-editor{:type => "checkbox", :checked => false} Interactive Editor
+            %input#show-editor{:type => "checkbox", :checked => false}
+            %label{:for => "show-editor"} Interactive Editor
           #editor-content.extras-item-content
             .extras-item-controls
               %button#update-interactive-button Update Interactive
@@ -88,7 +89,8 @@
             %textarea#interactive-text-area
         #benchmark.extras-item
           .extras-item-banner
-            %input#show-benchmarks{:type => "checkbox", :checked => false} Benchmarks
+            %input#show-benchmarks{:type => "checkbox", :checked => false}
+            %label{:for => "show-benchmarks"} Benchmarks
           #benchmarks-content.extras-item-content
             .extras-item-controls
               %button#run-benchmarks-button.extras-item-controls Run Benchmarks
@@ -97,7 +99,8 @@
               %table#model-benchmark-results.model-benchmark-results
         #model-datatable.extras-item
           .extras-item-banner
-            %input#show-model-datatable{:type => "checkbox", :checked => false} Atoms Datatable
+            %input#show-model-datatable{:type => "checkbox", :checked => false}
+            %label{:for => "show-model-datatable"} Atoms Datatable
           #model-datatable-content.extras-item-content
             #model-datatable-stats.extras-item-controls
             .model-datatable-results
