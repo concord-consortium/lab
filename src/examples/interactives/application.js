@@ -28,7 +28,9 @@ var ROOT = "/examples",
       $showModelDatatable = $("#show-model-datatable"),
       $modelDatatableContent = $("#model-datatable-content"),
       $modelDatatableResults = $("#model-datatable-results"),
+      $modelDatatableStats = $("#model-datatable-stats"),
 
+      applicationCallbacks,
       editor,
       controller,
       indent = 2,
@@ -59,7 +61,7 @@ var ROOT = "/examples",
       // rest of the elements on the non-iframe-embeddable version of the page
       // are present and should be setup.
       if (selectInteractive) {
-        setupFullPage();
+        applicationCallbacks = [setupFullPage];
       } else {
         viewType = 'interactive-iframe';
       }
@@ -73,7 +75,7 @@ var ROOT = "/examples",
   });
 
   $.when(interactiveDefinitionLoaded, windowLoaded).done(function(results) {
-    controller = controllers.interactivesController(interactive, '#interactive-container', viewType);
+    controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
   });
 
   $(window).bind('hashchange', function() {
@@ -235,9 +237,17 @@ var ROOT = "/examples",
 
     $showModelDatatable.change(function() {
       if (this.checked) {
+        model.on("tick.dataTable", renderModelDatatable);
+        model.on('play.dataTable', renderModelDatatable);
+        model.on('reset.energyGraph', renderModelDatatable);
+        model.on('seek.energyGraph', renderModelDatatable);
         renderModelDatatable();
         $modelDatatableContent.show(100);
       } else {
+        model.on("tick.dataTable");
+        model.on('play.dataTable');
+        model.on('reset.energyGraph');
+        model.on('seek.energyGraph');
         $modelDatatableContent.hide(100);
       }
     }).change();
@@ -249,6 +259,9 @@ var ROOT = "/examples",
         atoms = [],
         titlerows = $modelDatatableResults.find(".title"),
         datarows = $modelDatatableResults.find(".data"),
+        timeFormatter = d3.format("5.0f"),
+        timePrefix = "",
+        timeSuffix = " (fs)",
         column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'CHARGE', 'RADIUS', 'ELEMENT'],
         i_formatter = d3.format(" 2d"),
         charge_formatter = d3.format(" 1.1f"),
@@ -332,6 +345,8 @@ var ROOT = "/examples",
       }
       return $modelDatatableResults.find(".data");
     }
+
+    $modelDatatableStats.text(timePrefix + timeFormatter(model.getTime()) + timeSuffix);
 
     if (titlerows.length === 0) {
       var $title_row = add_row("title");
