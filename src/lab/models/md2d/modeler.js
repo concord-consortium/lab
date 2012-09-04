@@ -275,7 +275,7 @@ modeler.model = function(initialProperties) {
     }
   }
 
-  function restoreFirstStateinTicHistory() {
+  function restoreFirstStateinTickHistory() {
     tick_history_list_index = 0;
     tick_counter = 0;
     tick_history_list.length = 1;
@@ -597,7 +597,7 @@ modeler.model = function(initialProperties) {
   model.reset = function() {
     catchRemainingTimerTick = true;
     model.resetTime();
-    restoreFirstStateinTicHistory();
+    restoreFirstStateinTickHistory();
     dispatch.reset();
     notifyListenersOfEvents("reset");
   };
