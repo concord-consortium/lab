@@ -171,14 +171,14 @@ modeler.model = function(initialProperties) {
     STRENGTH  : md2d.RADIAL_INDICES.STRENGTH
   };
 
-  function notifyListeners(listeners) {
+  function notifyPropertyListeners(listeners) {
     $.unique(listeners);
     for (var i=0, ii=listeners.length; i<ii; i++){
       listeners[i]();
     }
   }
 
-  function notifyListenersOfEvents(events) {
+  function notifyPropertyListenersOfEvents(events) {
     var evt,
         evts,
         waitingToBeNotified = [],
@@ -198,7 +198,7 @@ modeler.model = function(initialProperties) {
     if (listeners["all"]){      // listeners that want to be notified on any change
       waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
     }
-    notifyListeners(waitingToBeNotified);
+    notifyPropertyListeners(waitingToBeNotified);
   }
 
   function average_speed() {
@@ -339,7 +339,7 @@ modeler.model = function(initialProperties) {
         propsChanged.push(property);
       }
     }
-    notifyListenersOfEvents(propsChanged);
+    notifyPropertyListenersOfEvents(propsChanged);
   }
 
   function readModelState() {
@@ -419,7 +419,6 @@ modeler.model = function(initialProperties) {
     tick_counter = location;
     tick_history_list_extract(tick_history_list_index);
     dispatch.seek();
-    notifyListenersOfEvents("seek");
     if (model_listener) { model_listener(); }
     return tick_counter;
   };
@@ -602,7 +601,6 @@ modeler.model = function(initialProperties) {
     model.resetTime();
     restoreFirstStateinTickHistory();
     dispatch.reset();
-    notifyListenersOfEvents("reset");
   };
 
   model.resetTime = function() {
@@ -817,14 +815,12 @@ modeler.model = function(initialProperties) {
     stopped = false;
     d3.timer(tick);
     dispatch.play();
-    notifyListenersOfEvents("play");
     return model;
   };
 
   model.stop = function() {
     stopped = true;
     dispatch.stop();
-    notifyListenersOfEvents("stop");
     return model;
   };
 

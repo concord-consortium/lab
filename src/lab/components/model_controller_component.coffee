@@ -53,7 +53,8 @@ class ModelControllerComponent
       this.hide(@stop)
 
 
-    model.addPropertiesListener(["play", "stop"], => this.update_ui())
+    model.on 'play', => this.update_ui()
+    model.on 'stop', => this.update_ui()
 
   # return pixel offset of button (key)
   offset: (offset) ->
