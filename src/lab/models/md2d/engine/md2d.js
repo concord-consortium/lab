@@ -820,6 +820,34 @@ exports.makeModel = function() {
         }
       },
 
+      updateFrictionAccelerations = function () {
+        if (!viscosity) return;
+
+        /**
+          Classic MW calculation:
+              inverseMass = GF_CONVERSION_CONSTANT * a.friction / a.mass;
+              a.fx -= inverseMass * a.vx * universe.getViscosity();
+              a.fy -= inverseMass * a.vy * universe.getViscosity();
+
+          Note: An additional factor of 12000 needed to be applied to
+          GF_CONVERSION_CONSTANT in order to get the same behavior between
+          Classic and MW5. FIXME: We need to resolve our conversion questions
+        */
+
+        var i = N,
+            dragConstant = -1 * 12000 * GF_CONVERSION_CONSTANT * viscosity,
+            mass,
+            drag;
+
+        while (i--) {
+          mass = elements[element[i]][ELEMENT_INDICES.MASS];
+          drag = dragConstant * friction[i] / mass;
+
+          ax[i] += vx[i] * drag;
+          ay[i] += vy[i] * drag;
+        }
+      },
+
       updateBondAccelerations = function() {
         // fast path if no radial bonds have been defined
         if (N_radialBonds < 1) return;
@@ -1501,6 +1529,9 @@ exports.makeModel = function() {
 
         // Accumulate optional gravitational accelerations
         updateGravitationalAcceleration();
+
+        // Accumulate friction/drag accelerations
+        updateFrictionAccelerations();
 
         for (i = 0; i < N; i++) {
           // Clearing the acceleration here from pinned atoms will cause the acceleration
