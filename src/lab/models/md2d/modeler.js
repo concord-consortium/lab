@@ -14,7 +14,7 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
-      dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
+      dispatch = d3.dispatch("tick", "play", "stop", "stepForward", "stepBack", "seek"),
       temperature_control,
       chargeShading, showVDWLines,VDWLinesRatio,
       lennard_jones_forces, coulomb_forces,
@@ -576,14 +576,6 @@ modeler.model = function(initialProperties) {
 
   model.getLJCalculator = function() {
     return coreModel.getLJCalculator();
-  };
-
-  model.reset = function() {
-    model.resetTime();
-    tick_history_list_index = 0;
-    tick_counter = 0;
-    tick_history_list_extract(tick_history_list_index);
-    dispatch.reset();
   };
 
   model.resetTime = function() {

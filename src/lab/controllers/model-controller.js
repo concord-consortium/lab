@@ -39,7 +39,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
       // We pass this object to the "ModelPlayer" to intercept messages for the model
       // instead of allowing the ModelPlayer to talk to the model directly.
-      // In particular, we want to treat seek(1) as a reset event
+      // This allows us, for example, to reload the model instead of trying to call a 'reset' event
+      // on models (which don't really know how to reset themselves; that's part of what we're for.)
+
       modelProxy = {
         resume: function() {
           model.resume();
@@ -51,15 +53,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
         reset: function() {
           model.stop();
-          model.reset();
-        },
-
-        seek: function(n) {
-          // Special case assumption: This is to intercept the "reset" button
-          // of PlaybackComponentSVG, which calls seek(1) on the ModelPlayer
-          if (n === 1) {
-            reload(modelConfig, playerConfig);
-          }
+          reload(modelConfig, playerConfig);
         },
 
         is_stopped: function() {
