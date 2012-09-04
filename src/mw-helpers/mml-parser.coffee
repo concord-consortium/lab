@@ -116,7 +116,7 @@ parseMML = (mmlString) ->
     ###
     showVDWLines = parseBoolean($mml("[property=showVDWLines] boolean").text(), false)
     VDWLinesRatio = $mml("[property=VDWLinesRatio] float")
-    VDWLinesRatio = if VDWLinesRatio.length != 0 then parseFloat(VDWLinesRatio.text()) else 1.99
+    VDWLinesRatio = if VDWLinesRatio.length != 0 then parseFloat(VDWLinesRatio.text()) else 2
     ###
       Viscosity
     ###
