@@ -778,7 +778,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
               }
           })
           .style("stroke-dasharray", function (d, i) {
-            if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { 
+            if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
               return "5 5"
             } else {
               return "";
@@ -1038,7 +1038,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     function node_dragstart(d, i) {
       if (!is_stopped()) {
         // if we're running, add a spring force
-        model.addSpringForce(i, get_x(i), get_y(i), 0.9);
+        model.addSpringForce(i, get_x(i), get_y(i), 20);
       } else {
         // if we're stopped, drag the atom
         drag_origin = [get_x(i), get_y(i)];
