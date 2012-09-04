@@ -256,6 +256,9 @@ exports.makeModel = function() {
       //Ordered Radial Bond hash
       radialBondsHash,
 
+      //Number of VDW Pairs
+      vdwPairNum,
+
       // Number of actual radial bonds (may be smaller than the length of the property arrays)
       N_radialBonds = 0,
 
@@ -1415,7 +1418,8 @@ exports.makeModel = function() {
         sigma_i, epsilon_i,
         sigma_j, epsilon_j,
         sig, eps,
-        vdwPairNum = 0;
+        prevVdwPairsNum = vdwPairNum || 0;
+      vdwPairNum = 0;
 
       for (i = 0; i < N; i++) {
         // pairwise interactions
@@ -1438,6 +1442,13 @@ exports.makeModel = function() {
               vdwPairNum++;
             }
           }
+        }
+      }
+      //Logic to clear off the previous atoms indices from the array which are far apart than cutoff distance after array update
+      if(vdwPairNum < prevVdwPairsNum) {
+        for(i = vdwPairNum;i<prevVdwPairsNum;i++) {
+           vdwPairAtom1Index[i] = 0;
+           vdwPairAtom2Index[i] = 0;
         }
       }
     },
