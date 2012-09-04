@@ -39,6 +39,8 @@ grapher.graph = function(elem, options, message) {
         "yscale":         "linear",
         "xTicCount":       10,
         "yTicCount":        8,
+        "xFormatter":     "3.3r",
+        "yFormatter":     "3.3r",
         "xscaleExponent": 0.5,
         "yscaleExponent": 0.5,
         "xmax":            60,
@@ -244,8 +246,8 @@ grapher.graph = function(elem, options, message) {
       return d ? "#ccc" : "#666";
     };
 
-    fx = xScale.tickFormat(options.xTicCount);
-    fy = yScale.tickFormat(options.yTicCount);
+    fx = d3.format(options.xFormatter);
+    fy = d3.format(options.yFormatter);
 
     line = d3.svg.line()
         .x(function(d, i) { return xScale(points[i][0]); })

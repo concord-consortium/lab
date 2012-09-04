@@ -1,9 +1,9 @@
 {
-  "temperature_control": false,
+  "viscosity": 0.25,
+  "temperature_control": true,
   "width": 4.38,
   "height": 2.88,
-  "viscosity": 0,
-  "chargeShading": true,
+  "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.99,
   "gravitationalField": false,
@@ -41,20 +41,37 @@
   ],
   "atoms": {
     "X": [
+      2.53,
+      1.74
     ],
     "Y": [
+      1.39,
+      1.4
     ],
     "VX": [
+      0,
+      0
     ],
     "VY": [
+      0,
+      0
     ],
     "CHARGE": [
+      0,
+      0
     ],
     "FRICTION": [
+      1.0,
+      1.0
     ],
     "ELEMENT": [
+      0,
+      0
     ],
     "PINNED": [
+      0,
+      0
     ]
-  }
+  },
+  "temperature": 6321.80541535
 }

@@ -43,6 +43,8 @@ controllers.complexModelController =
       showVDWLines        = modelConfig.showVDWLines,
       radialBonds         = modelConfig.radialBonds,
       obstacles           = modelConfig.obstacles,
+      viscosity           = modelConfig.viscosity,
+      gravitationalField  = modelConfig.gravitationalField,
 
       moleculeContainer,
       model_listener,
@@ -124,7 +126,9 @@ controllers.complexModelController =
           width: width,
           height: height,
           chargeShading: chargeShading,
-          showVDWLines: showVDWLines
+          showVDWLines: showVDWLines,
+          viscosity : viscosity,
+          gravitationalField : gravitationalField
         });
 
       if (atoms_properties) {
@@ -163,8 +167,8 @@ controllers.complexModelController =
           title:               "Simple Molecules",
           xlabel:              "X position (nm)",
           ylabel:              "Y position (nm)",
-          control_buttons:     "play_reset_step",
-          model_time_label:     true,
+          controlButtons:       "play_reset_step",
+          modelTimeLabel:       true,
           grid_lines:           true,
           xunits:               true,
           yunits:               true,

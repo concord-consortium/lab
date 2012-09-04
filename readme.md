@@ -1386,6 +1386,7 @@ AWS account.**
     Besides the AWS Access Key ID and AWS Secret Access Key security credentials copyied locally to
     to the file `~/.fog` the `lab-dev.pem` file saved in the directory: `~/.ec2` is also used when
     communicating with AWS.
+
 7.  List the deploy targets described in `config/config.yml` with the task: `thor cloud:list_targets`
     to confirm the configuration is valid:
 
@@ -1520,7 +1521,7 @@ There are a set of [thor](#thor) tasks for managing, creating, and re-creating A
     $ thor -T
     cloud
     -----
-    thor cloud:create_hostname hostname              # create a new server instance using this hostname
+    thor cloud:create hostname                       # create a new server instance using this hostname
     thor cloud:delete hostname                       # delete an existing server instance running at this hostname
     thor cloud:find_dns_record hostname              # find dns record for hostname
     thor cloud:list                                  # list existing servers
@@ -1528,22 +1529,88 @@ There are a set of [thor](#thor) tasks for managing, creating, and re-creating A
     thor cloud:recreate hostname                     # recreate a new server instance for this hostname by destroying and rebuilding an existing server
     thor cloud:setup                                 # setup capistrano deploy tasks and littlechef nodes using targets in config/config.yml
     thor cloud:setup_ssh hostname                    # setup ssh configuration for communication to hostname
-    thor cloud:start ec2_id hostname                 # start a stopped existing server instance using the ec2-id
+    thor cloud:start ec2_id                          # start a stopped existing server instance using the ec2-id
     thor cloud:stop reference                        # stop a running existing server instance at this hostname or ec2-id
+    thor cloud:update reference                      # update server <ec2_id|hostname> provisioning with littlechef 'lab-server' role
     thor cloud:update_dns_record hostname ipaddress  # updating IP address for DNS record hostname to ipaddress
 
-There is more work to do to generalize these deployment systems to work with multiple servers.
 
-Create a new Amazon EC2 instance as described in the readme in the **ruby-lab-server** branch in
-Concord Consortium's [littlechef-servers](https://github.com/concord-consortium/littlechef-servers)
-repository. Make sure the security group you choose has port 80 open.
+### Creating a new AWS Lab Server
 
-Modify the value of the `:host` key in the configuration file `config/config.yml` to reference
-the domain name of the new server.
+Creating a new Lab server on AWS consists of three steps:
 
-    $ cap <deploy-target> deploy:setup
+1. Creating a new hostname, server, and provisioning the server with thor:
 
-Will do an initial deploy and build of all the project resources to the server.
+        $ thor cloud:create <hostname>
+
+      This task will create a new **hostname** as a DNS A record if the **hostname** does not already exists.
+
+      If the hostname already exists as a CNAME first login to the [AWS:Route53](https://console.aws.amazon.com/route53/home)
+      service and delete the existing host name.
+
+      If the new DNS entry for **hostname** is not properly propogated when the hostname is created or
+      changed you will get an error that looks something like this:
+    
+        *** running local command: echo '
+        Host <hostname>
+          User ubuntu
+          IdentityFile ~/.ec2/lab-dev.pem
+        ' >> ~/.ssh/config
+
+        *** running local command: ssh-keygen -R <hostname>
+        /Users/stephen/.ssh/known_hosts updated.
+        Original contents retained as /Users/stephen/.ssh/known_hosts.old
+
+        *** running local command: ssh ubuntu@<hostname> -o StrictHostKeyChecking=no exit
+        ssh: Could not resolve hostname <hostname>: nodename nor servname provided, or not known
+
+        *** updating littlechef node: <hostname>.json
+
+        *** provisioning <hostname> with littlechef role: lab-server
+            <ec2-id>, <ec2-hostname>, <new-ip-address>
+            command: cd /Users/stephen/dev/concord/lab/config/littlechef && fix node:<hostname> role:lab-server
+
+
+        == Applying role 'lab-server' to <hostname> ==
+
+        Fatal error: Name lookup failed for <hostname>
+
+        Underlying exception:
+            nodename nor servname provided, or not known
+
+      You will need to resolve the issue with getting the correct DNS record for **hostname** before
+      continuing. After this is resolved you can follow these steps to continue the initial setup and
+      provisioning:
+
+        $ ssh-keygen -R <hostname>
+        $ ssh ubuntu@<hostname> -o StrictHostKeyChecking=no exit
+        $ thor cloud:update  <hostname>
+
+2. Optionally configure the server to use a valid Java code-siging certificate.
+
+      If you wish to support the integration of the optional Java resources that are required to be signed to work:
+
+      - legacy Molecular Worbench and Energy2D Java Web Start applications
+      - Java-based Vernier GoIO browser-sensor applet integration
+
+      You should put copy of a valid Java siging certificate keystore on **hostname** and edit
+      `config/config.yml` to reference this keystore before running `cap <deploy-target> deploy:setup`
+
+      The one supplied with the repository is a sample self-signed certificate and end user will be warned that it
+      is not valid.
+
+      Here is one way to acomplish this:
+
+        $ scp <path-to-keystore> deploy@<hostname>:/var/www/app/config/<new-keystore-name>.jks
+
+      Now ssh to the new host and edit the [java section](https://github.com/concord-consortium/lab/blob/master/config/config_sample.yml#L2-6)
+      of `/var/www/app/config/config.yml` to update the values for `:password`, `:alias`, and `:keystore_path`.
+
+3. Finishing the setup of the server with a capistrano task
+
+        $ cap <deploy-target> deploy:setup
+
+    This completes the initial deploy and builds of all the project resources to the server.
 
 ## References
 

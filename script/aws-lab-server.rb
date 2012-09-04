@@ -64,16 +64,20 @@ file: ~/.fog
     end
     hostnames.each do |hostname|
       @name = @options[:name] = hostname
-      add_hostname_to_ssh_config
-      erase_existing_host_key
-      add_new_host_key
+      # unless we can already connect with ssh
+      unless run_local_command("ssh ubuntu@#{@name} exit")
+        # setup ssh communicatiopnb
+        add_hostname_to_ssh_config
+        erase_existing_host_key
+        add_new_host_key
+      end
     end
   end
 
   def list
     @lab_servers = @compute.servers.all('group-name' => GROUP_NAME).reject { |ls| ls.state == 'terminated' }
     @lab_servers.sort! { |a,b| a.state <=> b.state }
-    @records = @zone.records.all(:name => ZONE_RECORDS_NAME)
+    @records = @zone.records.all
     puts
     puts sprintf(SERVER_FORMAT_STR, "target", "hostname", "state", "ipaddress", "ec2-id", "ec2-dns")
     puts "-" * 150
@@ -112,6 +116,8 @@ file: ~/.fog
     erase_existing_host_key
     add_new_host_key
     write_littlechef_node
+    update_littlechef_node
+    new_server_prologue
   end
 
   def delete(hostname)
@@ -138,33 +144,60 @@ file: ~/.fog
     erase_existing_host_key
     add_new_host_key
     write_littlechef_node
-    cmd = "cd #{@options[:littlechef_path]} && fix node:#{name} role:lab-server"
-    target = find_target(@name)
+    update_littlechef_node
+    new_server_prologue
+  end
+
+  def new_server_prologue
     if @options[:verbose]
       puts <<-HEREDOC
 
-*** building-out #{@name} with littlechef role: lab-server
-    #{@server.id}, #{@server.dns_name}, #{@ipaddress}
-    command: #{cmd}
-
-      HEREDOC
-    end
-    system(cmd)
-    if @options[:verbose]
-      puts <<-HEREDOC
-
-If the littlechef install was successful run:
+If the server provisioning with littlechef was successful run:
 
     cap #{target[:name]} deploy:setup
 
 To finish deploying the application code and seting up #{@name}.
 
+If you wish to support the integration of the optional Java resources
+that are required to be signed to work:
+
+  - legacy Molecular Worbench and Energy2D Java Web Start applications
+  - Java-based Vernier GoIO browser-sensor applet integration
+
+You should put copy of a valid Java siging certificate keystore
+on #{target[:name]} and edit 'config/config.yml' to reference this
+keystore before running cap #{target[:name]} deploy:setup
+
+The one supplied with the repository is a sample self-signed certificate
+and end user will be warned that it is not valid.
+
       HEREDOC
     end
   end
 
+  # Call with hostname or ec2 instance-id
+  def update(reference)
+    @name = @options[:name] = reference
+    @options[:server][:tags]["Name"] = @name
+    @ipaddress = IPSocket::getaddress(@name)
+    @server = @compute.servers.all({ 'ip-address' => @ipaddress }).first
+    begin
+      @server = @compute.servers.get(reference) unless @server
+    rescue Fog::Compute::AWS::Error
+    end
+    if @server
+      if @server.state == "running"
+        puts "\n*** updating server: #{@server.id}, #{@server.dns_name} provisioning with littlechef 'lab-server' role" if @options[:verbose]
+        update_littlechef_node
+      else
+        puts "\n*** server not running: #{@server.id}, #{@server.dns_name}" if @options[:verbose]
+      end
+    else
+      puts "\n*** can't locate: #{reference}" if @options[:verbose]
+    end
+  end
 
-  # Call with hostname or ec2 instance-id 
+  # Call with hostname or ec2 instance-id
   def stop(reference)
     @name = @options[:name] = reference
     @options[:server][:tags]["Name"] = @name
@@ -252,11 +285,12 @@ Host #{@name}
 
   def aquire_elastic_ip_address
     # either use an available elastic IP address or create a new one
-    available_addresses = compute.addresses.all({"instance-id" => ""})
+    available_addresses = @compute.addresses.all({"instance-id" => ""})
     if available_addresses.empty?
       # Allocate a new elastic ip
       elasticip = compute.allocate_address
-      ipaddress = allocate.body.public_ip
+      # TODO: check this -- which only happens when no elastic ips are available
+      ipaddress = elasticip.public_ip
     else
       # else use an available one
       ipaddress = available_addresses.last.public_ip
@@ -295,6 +329,21 @@ Host #{@name}
     littlechef_nodes_path = File.join(@options[:littlechef_path], 'nodes')
     FileUtils.mkdir_p littlechef_nodes_path
     File.open(File.join(littlechef_nodes_path, node_name), 'w') { |f| f.write @json_node }
+  end
+
+  def update_littlechef_node
+    cmd = "cd #{@options[:littlechef_path]} && fix node:#{name} role:lab-server"
+    target = find_target(@name)
+    if @options[:verbose]
+      puts <<-HEREDOC
+
+*** provisioning #{@name} with littlechef role: lab-server
+    #{@server.id}, #{@server.dns_name}, #{@ipaddress}
+    command: #{cmd}
+
+      HEREDOC
+    end
+    system(cmd)
   end
 
   def setup_capistrano_deploy_scripts

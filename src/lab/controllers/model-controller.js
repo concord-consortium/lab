@@ -19,7 +19,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
       // properties read from the playerConfig hash
       controlButtons,
+      modelTimeLabel,
       fit_to_parent,
+      enableAtomTooltips,
 
       // properties read from the modelConfig hash
       elements,
@@ -33,12 +35,16 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       showVDWLines,
       radialBonds,
       obstacles,
+      viscosity,
+      gravitationalField,
 
       moleculeContainer,
 
       // We pass this object to the "ModelPlayer" to intercept messages for the model
       // instead of allowing the ModelPlayer to talk to the model directly.
-      // In particular, we want to treat seek(1) as a reset event
+      // This allows us, for example, to reload the model instead of trying to call a 'reset' event
+      // on models (which don't really know how to reset themselves; that's part of what we're for.)
+
       modelProxy = {
         resume: function() {
           model.resume();
@@ -48,12 +54,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           model.stop();
         },
 
-        seek: function(n) {
-          // Special case assumption: This is to intercept the "reset" button
-          // of PlaybackComponentSVG, which calls seek(1) on the ModelPlayer
-          if (n === 1) {
-            reload(modelConfig, playerConfig);
-          }
+        reset: function() {
+          model.stop();
+          reload(modelConfig, playerConfig);
         },
 
         is_stopped: function() {
@@ -81,6 +84,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function initializeLocalVariables() {
       controlButtons      = playerConfig.controlButtons;
+      modelTimeLabel      = playerConfig.modelTimeLabel;
       enableAtomTooltips  = playerConfig.enableAtomTooltips || false;
       fit_to_parent       = playerConfig.fit_to_parent;
 
@@ -95,6 +99,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       showVDWLines        = modelConfig.showVDWLines;
       radialBonds         = modelConfig.radialBonds;
       obstacles           = modelConfig.obstacles;
+      viscosity           = modelConfig.viscosity;
+      gravitationalField  = modelConfig.gravitationalField;
     }
 
     // ------------------------------------------------------------
@@ -112,7 +118,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           width               : width,
           height              : height,
           chargeShading       : chargeShading,
-          showVDWLines        : showVDWLines
+          showVDWLines        : showVDWLines,
+          viscosity           : viscosity,
+          gravitationalField  : gravitationalField
         });
 
       if (atoms) {
@@ -162,9 +170,10 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_obstacles:        function() { return model.get_obstacles(); },
         get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments);  },
-        is_stopped:           function() { return model.is_stopped() },
+        is_stopped:           function() { return model.is_stopped(); },
 
-        control_buttons:      controlButtons
+        controlButtons:      controlButtons,
+        modelTimeLabel:      modelTimeLabel
       });
 
       moleculeContainer.updateMoleculeRadius();
@@ -190,9 +199,10 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
         get_obstacles:        function() { return model.get_obstacles(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments); },
-        is_stopped:           function() { return model.is_stopped() },
+        is_stopped:           function() { return model.is_stopped(); },
 
-        control_buttons:      controlButtons
+        controlButtons:      controlButtons,
+        modelTimeLabel:      modelTimeLabel
       });
       moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_drawables();
