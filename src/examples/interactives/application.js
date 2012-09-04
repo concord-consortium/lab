@@ -235,7 +235,7 @@ var ROOT = "/examples",
 
     $showModelDatatable.change(function() {
       if (this.checked) {
-        renderModelDatatable(true);
+        renderModelDatatable();
         $modelDatatableContent.show(100);
       } else {
         $modelDatatableContent.hide(100);
@@ -257,9 +257,9 @@ var ROOT = "/examples",
         f_formatter = d3.format(" 3.4f  "),
         e_formatter = d3.format(" 3.4e  "),
         formatters = [f_formatter, f_formatter, f_formatter, 
-                      f_formatter, e_formatter, e_formatter, e_formatter, 
-                      e_formatter, e_formatter, charge_formatter, radius_formatter, 
-                      i_formatter];
+                      f_formatter, e_formatter, e_formatter, 
+                      e_formatter, e_formatter, e_formatter, 
+                      charge_formatter, radius_formatter, i_formatter];
 
     atoms.length = nodes[0].length;
     reset = reset || false;
@@ -285,20 +285,29 @@ var ROOT = "/examples",
       $(row).append($el);
     }
 
-    function add_molecule_data(row, index, el) {
-      el = el || "<td>";
-      var $cells = $(row).find(el),
-          i = 0;
+    function add_molecule_data(row, index) {
+      var i,
+          value,
+          textValue,
+          column,
+          $cells = $(row).find('td');
+
       if ($cells.length > 0) {
-        $cells[0].text(index);
-        while (++i < $cells.length) {
-          $cells[i].text(formatters[i](nodes[model.INDICES[column_titles[i-1]]][index]));
+        $cells[0].textContent = index;
+        for(i = 0; i < column_titles.length; i++) {
+          column = column_titles[i];
+          value = nodes[model.INDICES[column]][index];
+          textValue = formatters[i](value);
+          $cells[i+1].textContent = textValue;
         }
-      }
-      i--;
-      add_data(row, index);
-      while (++i < column_titles.length) {
-        add_data(row, formatters[i](nodes[model.INDICES[column_titles[i]]][index]));
+      } else {
+        add_data(row, index);
+        for(i = 0; i < column_titles.length; i++) {
+          column = column_titles[i];
+          value = nodes[model.INDICES[column]][index];
+          textValue = formatters[i](value);
+          add_data(row, textValue);
+        }
       }
     }
 
