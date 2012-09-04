@@ -2,6 +2,9 @@ cheerio   = require 'cheerio'
 constants = require '../lab/models/md2d/engine/constants'
 unit      = constants.unit
 
+# converts gravitation field value from Classic to an acceleration in nm/fs^2
+CLASSIC_TO_NEXTGEN_GRATIVATION_RATIO = 8e-5
+
 # window.MWHelpers = {};
 
 ###
@@ -128,6 +131,7 @@ parseMML = (mmlString) ->
     gravitationalProps = $mml(".org-concord-mw2d-models-GravitationalField")
     if (gravitationalProps.length > 0)
       gravitationalField = parseFloat gravitationalProps.find("[property=intensity] double").text() || 0.010
+      gravitationalField *= CLASSIC_TO_NEXTGEN_GRATIVATION_RATIO
     else
       gravitationalField = false
 

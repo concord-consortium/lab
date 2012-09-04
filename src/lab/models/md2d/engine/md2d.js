@@ -825,10 +825,10 @@ exports.makeModel = function() {
       updateGravitationalAcceleration = function() {
         // fast path if there is no gravitationalField
         if (!gravitationalField) return;
-        var i,
-            gf = gravitationalField * GF_CONVERSION_CONSTANT;
+        var i;
+
         for (i = 0; i < N; i++) {
-          ay[i] -= gf;
+          ay[i] -= gravitationalField;
         }
       },
 
