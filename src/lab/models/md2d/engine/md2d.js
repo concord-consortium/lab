@@ -1476,7 +1476,7 @@ exports.makeModel = function() {
       for (i = 0; i < N; i++) {
         // pairwise interactions
         for (j = i+1; j < N; j++) {
-          if (radialBondsHash[i] && radialBondsHash[i][j]) continue;
+          if (N_radialBonds != 0 && (radialBondsHash[i] && radialBondsHash[i][j])) continue;
           if(!(model.isChargeSame(i,j))){
             dx = x[j] - x[i];
             dy = y[j] - y[i];
