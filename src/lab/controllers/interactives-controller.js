@@ -1,4 +1,4 @@
-/*global controllers model Thermometer layout $ alert */
+/*global controllers model Thermometer layout $ alert ACTUAL_ROOT grapher */
 /*jshint eqnull: true*/
 controllers.interactivesController = function(interactive, viewSelector, applicationCallbacks, layoutStyle) {
 
@@ -85,9 +85,13 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         */
         getAtomProperties: function getAtomProperties(i) {
           var props = {},
-              atoms = model.get_nodes();
-          for (var property in model.ATOM_PROPERTIES) {
-            props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
+              atoms = model.get_nodes(),
+              property;
+
+          for (property in model.ATOM_PROPERTIES) {
+            if (model.ATOM_PROPERTIES.hasOwnProperty(property)) {
+              props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
+            }
           }
           return props;
         },
@@ -358,7 +362,6 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         }
         model.on("tick.energyGraph", updateEnergyGraph);
         model.on('play.energyGraph', function() {
-          var i, len;
           if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
             resetEnergyData(model.stepCounter());
             energyGraph.new_data(energyData);
@@ -408,7 +411,10 @@ controllers.interactivesController = function(interactive, viewSelector, applica
   // Reset the energyData arrays to a specific length by passing in an index value,
   // or empty the energyData arrays an initialize the first sample.
   function resetEnergyData(index) {
-    var modelsteps = model.stepCounter();
+    var modelsteps = model.stepCounter(),
+        i,
+        len;
+
     if (index) {
       for (i = 0, len = energyData.length; i < len; i++) {
         energyData[i].length = modelsteps;

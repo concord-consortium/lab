@@ -21,6 +21,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       controlButtons,
       modelTimeLabel,
       fit_to_parent,
+      enableAtomTooltips,
 
       // properties read from the modelConfig hash
       elements,
@@ -34,6 +35,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       showVDWLines,
       radialBonds,
       obstacles,
+      viscosity,
+      gravitationalField,
 
       moleculeContainer,
 
@@ -165,7 +168,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_num_atoms:        function() { return model.get_num_atoms(); },
         get_obstacles:        function() { return model.get_obstacles(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments);  },
-        is_stopped:           function() { return model.is_stopped() },
+        is_stopped:           function() { return model.is_stopped(); },
 
         controlButtons:      controlButtons,
         modelTimeLabel:      modelTimeLabel
@@ -193,7 +196,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_num_atoms:        function() { return model.get_num_atoms(); },
         get_obstacles:        function() { return model.get_obstacles(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments); },
-        is_stopped:           function() { return model.is_stopped() },
+        is_stopped:           function() { return model.is_stopped(); },
 
         controlButtons:      controlButtons,
         modelTimeLabel:      modelTimeLabel
