@@ -529,6 +529,9 @@ modeler.model = function(initialProperties) {
     tick_counter = 0;
     new_step = true;
 
+    // Listeners should consider resetting the atoms a 'reset' event
+    dispatch.reset();
+
     // return model, for chaining (if used)
     return model;
   };
