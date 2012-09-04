@@ -268,17 +268,17 @@ var ROOT = "/examples",
         timeFormatter = d3.format("5.0f"),
         timePrefix = "",
         timeSuffix = " (fs)",
-        column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'CHARGE', 'RADIUS', 'FRICTION', 'ELEMENT'],
+        column_titles = ['X', 'Y', 'VX', 'VY', 'AX', 'AY', 'PX', 'PY', 'SPEED', 'CHARGE', 'RADIUS', 'FRICTION', 'ELEMENT'],
         i_formatter = d3.format(" 2d"),
         charge_formatter = d3.format(" 1.1f"),
-        radius_formatter = d3.format(" 1.2f"),
+        f2_formatter = d3.format(" 1.2f"),
         r_formatter = d3.format(" 3.4r  "),
         f_formatter = d3.format(" 3.4f  "),
         e_formatter = d3.format(" 3.4e  "),
-        formatters = [f_formatter, f_formatter, f_formatter,
-                      f_formatter, e_formatter, e_formatter,
+        formatters = [f_formatter, f_formatter, e_formatter,
                       e_formatter, e_formatter, e_formatter,
-                      charge_formatter, radius_formatter, f_formatter, i_formatter];
+                      e_formatter, e_formatter, e_formatter,
+                      charge_formatter, f2_formatter, f2_formatter, i_formatter];
 
     atoms.length = nodes[0].length;
     reset = reset || false;
