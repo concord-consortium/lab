@@ -1503,6 +1503,7 @@ exports.makeModel = function() {
       var i, j,
         dx, dy,
         r_sq,
+        element_i, element_j,
         sigma_i, epsilon_i,
         sigma_j, epsilon_j,
         sig, eps,
@@ -1512,16 +1513,18 @@ exports.makeModel = function() {
 
       for (i = 0; i < N; i++) {
         // pairwise interactions
+        element_i = elements[element[i]];
+        sigma_i = element_i[ELEMENT_INDICES.SIGMA];
+        epsilon_i = element_i[ELEMENT_INDICES.EPSILON];
         for (j = i+1; j < N; j++) {
           if (N_radialBonds !== 0 && (radialBondsHash[i] && radialBondsHash[i][j])) continue;
+          element_j = elements[element[j]];
           if(charge[i]*charge[j] <= 0){
             dx = x[j] - x[i];
             dy = y[j] - y[i];
             r_sq = dx*dx + dy*dy;
-            sigma_i = elements[element[i]][ELEMENT_INDICES.SIGMA];
-            epsilon_i = elements[element[i]][ELEMENT_INDICES.EPSILON];
-            sigma_j = elements[element[j]][ELEMENT_INDICES.SIGMA];
-            epsilon_j = elements[element[j]][ELEMENT_INDICES.EPSILON];
+            sigma_j = element_j[ELEMENT_INDICES.SIGMA];
+            epsilon_j = element_j[ELEMENT_INDICES.EPSILON];
             sig = 0.5*(sigma_i+sigma_j);
             sig *= sig;
             eps = epsilon_i*epsilon_j;
