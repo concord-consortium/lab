@@ -17,6 +17,10 @@ var ROOT = "/examples",
       updateInteractiveButton = document.getElementById('update-interactive-button'),
       autoFormatSelectionButton = document.getElementById('autoformat-selection-button'),
 
+      $aboutLink = $("#about-link"),
+      $aboutPane = $("#about-pane"),
+      $aboutPaneClose = $('#about-pane-close'),
+
       $showEditor = $("#show-editor"),
       $editorContent = $("#editor-content"),
 
@@ -75,6 +79,12 @@ var ROOT = "/examples",
 
   $.when(interactiveDefinitionLoaded, windowLoaded).done(function() {
     controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
+    $aboutLink.click(function() {
+      $aboutPane.show(100);
+    });
+    $aboutPaneClose.click(function() {
+      $aboutPane.hide(100);
+    });
   });
 
   $(window).bind('hashchange', function() {

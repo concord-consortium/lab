@@ -276,3 +276,68 @@ div.tooltip
 
 .draggable
   cursor: move
+
+#content-banner
+  z-index: 10
+  width: 100%
+  display: table
+  font-size: 1.3em
+  margin: 0em
+  height: 1.5em
+  color: white
+  background-color: lighten( #3A878B, 30% )
+  opacity: 0.1
+  &:hover
+    opacity: 0.7
+  .link
+    color: #fff
+    &:hover
+      font-weight: bold
+
+#about
+  float: right
+  vertical-align: middle
+  display: table-cell
+  margin-right: 2em
+
+#about-pane
+  display: none
+  position: absolute
+  @include border-radius(0.5em)
+  @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
+  width: 60%
+  height: auto
+  min-height: 30%
+  max-height: 60%
+  top: 3em
+  right: 2em
+  z-index: 100
+  margin: 0.5em
+  padding: 0em
+  background-color: #efefef
+
+#about-pane-banner
+  width: 100%
+  display: table
+  opacity: 0.7
+  font-size: 1.1em
+  margin: 0em
+  padding: 0.2em 0em 0.2em 0.5em
+  height: 1.5em
+  color: white
+  background-color: lighten( #3A878B, 15% )
+  a
+    color: #fff
+    &:hover
+      font-weight: bold
+
+#about-pane-close
+  float: right
+  vertical-align: middle
+  display: table-cell
+  margin-right: 0.5em
+  &:hover
+    font-weight: bold
+
+#about-content
+  margin: 0.5em 1em 1em 1em

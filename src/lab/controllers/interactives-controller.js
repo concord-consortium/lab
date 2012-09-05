@@ -515,7 +515,9 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     if (interactive.model != null) {
       modelUrl = interactive.model.url;
       if (interactive.model.viewOptions) {
-        playerConfig = interactive.model.viewOptions;
+        // make a deep copy of interactive.model.viewOptions, so we can freely mutate playerConfig
+        // without the results being serialized or displayed in the interactives editor.
+        playerConfig = $.extend(true, {}, interactive.model.viewOptions);
       } else {
         playerConfig = { controlButtons: 'play' };
       }
