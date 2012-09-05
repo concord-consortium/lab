@@ -134,6 +134,7 @@ modeler.model = function(initialProperties) {
     CHARGE   : md2d.INDICES.CHARGE,
     FRICTION : md2d.INDICES.FRICTION,
     VISIBLE  : md2d.INDICES.VISIBLE,
+    DRAGGABLE: md2d.INDICES.DRAGGABLE,
     ELEMENT  : md2d.INDICES.ELEMENT
   };
 
@@ -151,6 +152,7 @@ modeler.model = function(initialProperties) {
     CHARGE   : md2d.ATOM_PROPERTIES.CHARGE,
     FRICTION : md2d.ATOM_PROPERTIES.FRICTION,
     VISIBLE  : md2d.ATOM_PROPERTIES.VISIBLE,
+    DRAGGABLE: md2d.ATOM_PROPERTIES.DRAGGABLE,
     ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT
   };
 
@@ -668,7 +670,7 @@ modeler.model = function(initialProperties) {
 
     Otherwise, returns true.
   */
-  model.addAtom = function(el, x, y, vx, vy, charge, friction, pinned, visible) {
+  model.addAtom = function(el, x, y, vx, vy, charge, friction, pinned, visible, draggable) {
     var size      = model.size(),
         radius    = coreModel.getRadiusOfElement(el);
 
@@ -680,7 +682,7 @@ modeler.model = function(initialProperties) {
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
     if (coreModel.canPlaceAtom(el, x, y)) {
-      coreModel.addAtom(el, x, y, vx, vy, charge, friction, pinned, visible);
+      coreModel.addAtom(el, x, y, vx, vy, charge, friction, pinned, visible, draggable);
 
       // reassign nodes to possibly-reallocated atoms array
       nodes = coreModel.atoms;

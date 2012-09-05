@@ -146,7 +146,8 @@ exports.INDICES = INDICES = {
   ELEMENT: 11,
   PINNED : 12,
   FRICTION: 13,
-  VISIBLE : 14
+  VISIBLE : 14,
+  DRAGGABLE: 15
 };
 
 exports.ATOM_PROPERTIES = {
@@ -164,7 +165,8 @@ exports.ATOM_PROPERTIES = {
   ELEMENT:  "element",
   PINNED :  "pinned",
   FRICTION: "friction",
-  VISIBLE:  "visible"
+  VISIBLE:  "visible",
+  DRAGGABLE: "draggable"
 };
 
 exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
@@ -195,7 +197,7 @@ exports.VDW_INDICES = VDW_INDICES = {
   ATOM2   :  1
 };
 
-exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE"];
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE", "DRAGGABLE"];
 
 exports.makeModel = function() {
 
@@ -263,7 +265,7 @@ exports.makeModel = function() {
       elements,
 
       // Individual property arrays for the atoms, indexed by atom number
-      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, visible,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, visible, draggable,
 
       // An array of length max(INDICES)+1 which contains the above property arrays
       atoms,
@@ -1151,6 +1153,7 @@ exports.makeModel = function() {
       element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8);
       pinned  = model.pinned  = atoms[INDICES.PINNED]  = arrays.create(num, 0, uint8);
       visible = model.visible = atoms[INDICES.VISIBLE] = arrays.create(num, 0, uint8);
+      draggable = model.draggable = atoms[INDICES.DRAGGABLE] = arrays.create(num, 0, uint8);
 
       N = 0;
       totalMass = 0;
@@ -1162,7 +1165,7 @@ exports.makeModel = function() {
       If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
-    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, is_pinned, is_visible) {
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, is_pinned, is_visible, is_draggable) {
       var el, mass;
 
       if (N+1 > atoms[0].length) {
@@ -1187,6 +1190,7 @@ exports.makeModel = function() {
       friction[N]= atom_friction;
       pinned[N]  = is_pinned;
       visible[N] = is_visible;
+      draggable[N] = is_draggable;
 
       if (atom_charge) hasChargedAtoms = true;
 
@@ -1359,7 +1363,7 @@ exports.makeModel = function() {
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var x, y, vx, vy, charge, element, friction, pinned, visible,
+      var x, y, vx, vy, charge, element, friction, pinned, visible, draggable,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -1381,8 +1385,9 @@ exports.makeModel = function() {
         pinned = props.PINNED ? props.PINNED[i] : 0;
         visible = props.VISIBLE ? props.VISIBLE[i] : 1;
         friction = props.FRICTION ? props.FRICTION[i] : 0;
+        draggable = props.DRAGGABLE ? props.DRAGGABLE[i] : 0;
 
-        model.addAtom(element, x, y, vx, vy, charge, friction, pinned, visible);
+        model.addAtom(element, x, y, vx, vy, charge, friction, pinned, visible, draggable);
       }
 
       // Publish the current state
@@ -1430,7 +1435,7 @@ exports.makeModel = function() {
 
           charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          model.addAtom(element, x, y, vx, vy, charge, 0, 0);
+          model.addAtom(element, x, y, vx, vy, charge, 0, 0, 0, 0);
         }
       }
 
