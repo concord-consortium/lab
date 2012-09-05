@@ -815,14 +815,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         atom2 = get_vdw_line_atom_2(i);
         if(!(atom1 == 0 && atom2 == 0)) {
           VDWLines_container.append("line")
+            .attr("class", "attractionforce")
             .attr("x1", x(get_x(atom1)))
             .attr("y1", y(get_y(atom1)))
             .attr("x2", x(get_x(atom2)))
-            .attr("y2", y(get_y(atom2)))
-            .attr("class", "attractionforce")
-            .style("stroke-width", 0.3)
-            .style("stroke", "#000000")
-            .style("stroke-dasharray", "5 3");
+            .attr("y2", y(get_y(atom2)));
         }
       }
     }
