@@ -697,8 +697,14 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("r",  function(d, i) { return x(get_radius(i)); })
           .attr("cx", function(d, i) { return x(get_x(i)); })
           .attr("cy", function(d, i) { return y(get_y(i)); })
+          .style("fill-opacity", function(d, i) {
+            if (get_visible(i)) {
+              return 1;
+            } else {
+              return 0;
+            }
+          })
           .style("fill", function(d, i) {
-            if (!get_visible(i)) { return "#eeeeee"; }
             if (chargeShadingMode()) {
                 if (get_charge(i) > 0){
                     return  "url(#pos-grad)";
