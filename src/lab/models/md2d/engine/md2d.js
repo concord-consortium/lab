@@ -1438,7 +1438,7 @@ exports.makeModel = function() {
 
           charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          model.addAtom(element, x, y, vx, vy, charge, 0, 0, 0, 0);
+          model.addAtom(element, x, y, vx, vy, charge, 0, 0, 1, 0);
         }
       }
 
