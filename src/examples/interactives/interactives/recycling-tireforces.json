@@ -16,19 +16,19 @@
       "type": "button",
       "id": "small-force",
       "text": "Small force",
-      "action": " set({ 'gravitationalField' : 0.001 });"
+      "action": " set({ 'gravitationalField' : 8e-8 });"
     },
     {
       "type": "button",
       "id": "med-force",
       "text": "Medium force",
-      "action": " set({ 'gravitationalField' : 0.003 });"
+      "action": " set({ 'gravitationalField' : 2.4e-7 });"
     },
     {
       "type": "button",
       "id": "large-force",
       "text": "Large force",
-      "action": " set({ 'gravitationalField' : 0.005 });"
+      "action": " set({ 'gravitationalField' : 4e-7 });"
     }
   ],
   "layout": {
