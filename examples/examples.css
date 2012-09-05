@@ -513,6 +513,10 @@ applet {
   min-width: 20em;
   min-height: 20em;
   margin: 2px 0px 2px 0px; }
+  #molecule-container line.attractionforce {
+    stroke: #aaaaaa;
+    stroke-width: 2.5;
+    stroke-dasharray: 3 2; }
   #molecule-container circle {
     stroke: transparent;
     stroke-width: 1;

@@ -54,6 +54,8 @@ modeler.model = function(initialProperties) {
       obstacles,
       // Radial Bonds
       radialBonds,
+      // VDW Pairs
+      vdwPairs,
 
       viscosity,
 
@@ -170,14 +172,19 @@ modeler.model = function(initialProperties) {
     STRENGTH  : md2d.RADIAL_INDICES.STRENGTH
   };
 
-  function notifyListeners(listeners) {
+  model.VDW_INDICES = {
+    ATOM1     : md2d.VDW_INDICES.ATOM1,
+    ATOM2     : md2d.VDW_INDICES.ATOM2
+  };
+
+  function notifyPropertyListeners(listeners) {
     $.unique(listeners);
     for (var i=0, ii=listeners.length; i<ii; i++){
       listeners[i]();
     }
   }
 
-  function notifyListenersOfEvents(events) {
+  function notifyPropertyListenersOfEvents(events) {
     var evt,
         evts,
         waitingToBeNotified = [],
@@ -197,7 +204,7 @@ modeler.model = function(initialProperties) {
     if (listeners["all"]){      // listeners that want to be notified on any change
       waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
     }
-    notifyListeners(waitingToBeNotified);
+    notifyPropertyListeners(waitingToBeNotified);
   }
 
   function average_speed() {
@@ -206,9 +213,10 @@ modeler.model = function(initialProperties) {
     return s/n;
   }
 
+
+
   function tick(elapsedTime, dontDispatchTickEvent) {
     var t;
-
     coreModel.integrate();
 
     pressure = modelOutputState.pressure;
@@ -233,7 +241,10 @@ modeler.model = function(initialProperties) {
       }
     }
 
-    if (!dontDispatchTickEvent) dispatch.tick();
+    if (!dontDispatchTickEvent) {
+      dispatch.tick();
+    }
+
     return stopped;
   }
 
@@ -261,9 +272,16 @@ modeler.model = function(initialProperties) {
       time:     modelOutputState.time
     });
     if (tick_history_list_index > 1000) {
-      tick_history_list.splice(0,1);
+      tick_history_list.splice(1,1);
       tick_history_list_index = 1000;
     }
+  }
+
+  function restoreFirstStateinTickHistory() {
+    tick_history_list_index = 0;
+    tick_counter = 0;
+    tick_history_list.length = 1;
+    tick_history_list_extract(tick_history_list_index);
   }
 
   function reset_tick_history_list() {
@@ -323,7 +341,7 @@ modeler.model = function(initialProperties) {
         propsChanged.push(property);
       }
     }
-    notifyListenersOfEvents(propsChanged);
+    notifyPropertyListenersOfEvents(propsChanged);
   }
 
   function readModelState() {
@@ -403,7 +421,6 @@ modeler.model = function(initialProperties) {
     tick_counter = location;
     tick_history_list_extract(tick_history_list_index);
     dispatch.seek();
-    notifyListenersOfEvents("seek");
     if (model_listener) { model_listener(); }
     return tick_counter;
   };
@@ -513,6 +530,9 @@ modeler.model = function(initialProperties) {
     tick_counter = 0;
     new_step = true;
 
+    // Listeners should consider resetting the atoms a 'reset' event
+    dispatch.reset();
+
     // return model, for chaining (if used)
     return model;
   };
@@ -520,6 +540,13 @@ modeler.model = function(initialProperties) {
   model.createRadialBonds = function(_radialBonds) {
     coreModel.initializeRadialBonds(_radialBonds);
     radialBonds = coreModel.radialBonds;
+    readModelState();
+    return model;
+  };
+
+  model.createVdwPairs = function(_atoms) {
+    coreModel.createVdwPairsArray(_atoms);
+    vdwPairs = coreModel.vdwPairs;
     readModelState();
     return model;
   };
@@ -580,9 +607,7 @@ modeler.model = function(initialProperties) {
 
   model.reset = function() {
     model.resetTime();
-    tick_history_list_index = 0;
-    tick_counter = 0;
-    tick_history_list_extract(tick_history_list_index);
+    restoreFirstStateinTickHistory();
     dispatch.reset();
   };
 
@@ -762,6 +787,12 @@ modeler.model = function(initialProperties) {
   model.get_radial_bonds = function() {
     return radialBonds;
   };
+  model.get_vdw_pairs = function() {
+    if(coreModel.vdwPairs){
+    coreModel.updateVdwPairsArray();
+    }
+    return vdwPairs;
+  };
 
   model.on = function(type, listener) {
     dispatch.on(type, listener);
@@ -796,16 +827,24 @@ modeler.model = function(initialProperties) {
 
   model.resume = function() {
     stopped = false;
-    d3.timer(tick);
+
+    d3.timer(function timerTick(elapsedTime) {
+      // Cancel the timer and refuse to to step the model, if the model is stopped.
+      // This is necessary because there is no direct way to cancel a d3 timer.
+      // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
+      if (stopped) return true;
+
+      tick(elapsedTime, false);
+      return false;
+    });
+
     dispatch.play();
-    notifyListenersOfEvents("play");
     return model;
   };
 
   model.stop = function() {
     stopped = true;
     dispatch.stop();
-    notifyListenersOfEvents("stop");
     return model;
   };
 

@@ -1342,6 +1342,7 @@ var arrays       = require('arrays'),
     OBSTACLE_INDICES,
     SAVEABLE_INDICES,
     RADIAL_INDICES,
+    VDW_INDICES,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -1474,6 +1475,11 @@ exports.RADIAL_INDICES = RADIAL_INDICES = {
   STRENGTH:  3
 };
 
+exports.VDW_INDICES = VDW_INDICES = {
+  ATOM1   :  0,
+  ATOM2   :  1
+};
+
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE"];
 
 exports.makeModel = function() {
@@ -1556,6 +1562,11 @@ exports.makeModel = function() {
       // An array of length 4 which contains the above 4 property arrays.
       // Left undefined if no radial bonds are defined.
       radialBonds,
+      //Ordered Radial Bond hash
+      radialBondsHash,
+
+      //Number of VDW Pairs
+      vdwPairNum,
 
       // Number of actual radial bonds (may be smaller than the length of the property arrays)
       N_radialBonds = 0,
@@ -1685,7 +1696,8 @@ exports.makeModel = function() {
         radialBonds[radialIndices.STRENGTH] = radialBondStrength   = arrays.create(num, 0, float32);
       },
 
-      // Make the 'radialBonds' array bigger. FIXME: needs to be factored
+
+  // Make the 'radialBonds' array bigger. FIXME: needs to be factored
       // into a common pattern with 'extendAtomsArray'
       extendRadialBondsArray = function(num) {
         var savedArrays = [],
@@ -2098,10 +2110,38 @@ exports.makeModel = function() {
       updateGravitationalAcceleration = function() {
         // fast path if there is no gravitationalField
         if (!gravitationalField) return;
-        var i,
-            gf = gravitationalField * GF_CONVERSION_CONSTANT;
+        var i;
+
         for (i = 0; i < N; i++) {
-          ay[i] -= gf;
+          ay[i] -= gravitationalField;
+        }
+      },
+
+      updateFrictionAccelerations = function () {
+        if (!viscosity) return;
+
+        /**
+          Classic MW calculation:
+              inverseMass = GF_CONVERSION_CONSTANT * a.friction / a.mass;
+              a.fx -= inverseMass * a.vx * universe.getViscosity();
+              a.fy -= inverseMass * a.vy * universe.getViscosity();
+
+          Note: An additional factor of 12000 needed to be applied to
+          GF_CONVERSION_CONSTANT in order to get the same behavior between
+          Classic and MW5. FIXME: We need to resolve our conversion questions
+        */
+
+        var i = N,
+            dragConstant = -1 * 12000 * GF_CONVERSION_CONSTANT * viscosity,
+            mass,
+            drag;
+
+        while (i--) {
+          mass = elements[element[i]][ELEMENT_INDICES.MASS];
+          drag = dragConstant * friction[i] / mass;
+
+          ax[i] += vx[i] * drag;
+          ay[i] += vy[i] * drag;
         }
       },
 
@@ -2312,14 +2352,12 @@ exports.makeModel = function() {
       for (i = 0; i < elements.length; i++) {
         epsilon_i = elements[i][ELEMENT_INDICES.EPSILON];
         sigma_i   = elements[i][ELEMENT_INDICES.SIGMA];
-
         // the radius is derived from sigma
         elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius(sigma_i);
 
         for (j = i; j < elements.length; j++) {
           epsilon_j = elements[j][ELEMENT_INDICES.EPSILON];
           sigma_j   = elements[j][ELEMENT_INDICES.SIGMA];
-
           epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
           sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
 
@@ -2462,7 +2500,15 @@ exports.makeModel = function() {
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
     addRadialBond: function(atomIndex1, atomIndex2, bondLength, bondStrength) {
-
+      var smallerIndex, largerIndex;
+      if(atomIndex1 < atomIndex2) {
+        smallerIndex = atomIndex1;
+        largerIndex = atomIndex2;
+      }
+      else {
+        smallerIndex = atomIndex2;
+        largerIndex = atomIndex1;
+      }
       if (N_radialBonds+1 > radialBondAtom1Index.length) {
         extendRadialBondsArray(N_radialBonds+1);
       }
@@ -2471,6 +2517,11 @@ exports.makeModel = function() {
       radialBondAtom2Index[N_radialBonds] = atomIndex2;
       radialBondLength[N_radialBonds]     = bondLength;
       radialBondStrength[N_radialBonds]   = bondStrength;
+
+      if (!radialBondsHash[smallerIndex]) {
+        radialBondsHash[smallerIndex] = {};
+      }
+      radialBondsHash[smallerIndex][largerIndex] = true;
 
       N_radialBonds++;
     },
@@ -2698,7 +2749,7 @@ exports.makeModel = function() {
     initializeRadialBonds: function(props) {
       var num = props.atom1Index.length,
           i;
-
+      radialBondsHash = {};
       createRadialBondsArray(num);
 
       for (i = 0; i < num; i++) {
@@ -2708,6 +2759,63 @@ exports.makeModel = function() {
           props.bondLength[i],
           props.bondStrength[i]
         );
+      }
+    },
+
+    createVdwPairsArray: function(num) {
+      var uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
+        vdwIndices = VDW_INDICES,
+        numAtoms = num.ELEMENT.length;
+      var maxNumPairs = (((numAtoms)*(numAtoms-1))/2);
+
+      vdwPairs = model.vdwPairs = [];
+
+      vdwPairs[vdwIndices.ATOM1] = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, uint16);
+      vdwPairs[vdwIndices.ATOM2] = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, uint16);
+      model.updateVdwPairsArray();
+
+    },
+
+    updateVdwPairsArray: function(){
+      var i, j,
+        dx, dy,
+        r_sq,
+        sigma_i, epsilon_i,
+        sigma_j, epsilon_j,
+        sig, eps,
+        distanceCutoff_sq = 4 // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
+        prevVdwPairsNum = vdwPairNum || 0;
+      vdwPairNum = 0;
+
+      for (i = 0; i < N; i++) {
+        // pairwise interactions
+        for (j = i+1; j < N; j++) {
+          if (N_radialBonds != 0 && (radialBondsHash[i] && radialBondsHash[i][j])) continue;
+          if(charge[i]*charge[j] <= 0){
+            dx = x[j] - x[i];
+            dy = y[j] - y[i];
+            r_sq = dx*dx + dy*dy;
+            sigma_i = elements[element[i]][ELEMENT_INDICES.SIGMA];
+            epsilon_i = elements[element[i]][ELEMENT_INDICES.EPSILON];
+            sigma_j = elements[element[j]][ELEMENT_INDICES.SIGMA];
+            epsilon_j = elements[element[j]][ELEMENT_INDICES.EPSILON];
+            sig = 0.5*(sigma_i+sigma_j);
+            sig *= sig;
+            eps = epsilon_i*epsilon_j;
+            if (r_sq < sig * distanceCutoff_sq && eps > 0) {
+              vdwPairAtom1Index[vdwPairNum] = i;
+              vdwPairAtom2Index[vdwPairNum] = j;
+              vdwPairNum++;
+            }
+          }
+        }
+      }
+      //Logic to clear off the previous atoms indices from the array which are far apart than cutoff distance after array update
+      if(vdwPairNum < prevVdwPairsNum) {
+        for(i = vdwPairNum;i<prevVdwPairsNum;i++) {
+           vdwPairAtom1Index[i] = 0;
+           vdwPairAtom2Index[i] = 0;
+        }
       }
     },
 
@@ -2786,6 +2894,9 @@ exports.makeModel = function() {
 
         // Accumulate optional gravitational accelerations
         updateGravitationalAcceleration();
+
+        // Accumulate friction/drag accelerations
+        updateFrictionAccelerations();
 
         for (i = 0; i < N; i++) {
           // Clearing the acceleration here from pinned atoms will cause the acceleration
@@ -2884,6 +2995,7 @@ exports.makeModel = function() {
       outputState.vCM      = [vx_CM, vy_CM];
       outputState.omega_CM = omega_CM;
     },
+
 
     /**
       Given a test element and charge, returns a function that returns for a location (x, y) in nm:
@@ -3126,6 +3238,8 @@ modeler.model = function(initialProperties) {
       obstacles,
       // Radial Bonds
       radialBonds,
+      // VDW Pairs
+      vdwPairs,
 
       viscosity,
 
@@ -3242,14 +3356,19 @@ modeler.model = function(initialProperties) {
     STRENGTH  : md2d.RADIAL_INDICES.STRENGTH
   };
 
-  function notifyListeners(listeners) {
+  model.VDW_INDICES = {
+    ATOM1     : md2d.VDW_INDICES.ATOM1,
+    ATOM2     : md2d.VDW_INDICES.ATOM2
+  };
+
+  function notifyPropertyListeners(listeners) {
     $.unique(listeners);
     for (var i=0, ii=listeners.length; i<ii; i++){
       listeners[i]();
     }
   }
 
-  function notifyListenersOfEvents(events) {
+  function notifyPropertyListenersOfEvents(events) {
     var evt,
         evts,
         waitingToBeNotified = [],
@@ -3269,7 +3388,7 @@ modeler.model = function(initialProperties) {
     if (listeners["all"]){      // listeners that want to be notified on any change
       waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
     }
-    notifyListeners(waitingToBeNotified);
+    notifyPropertyListeners(waitingToBeNotified);
   }
 
   function average_speed() {
@@ -3278,9 +3397,10 @@ modeler.model = function(initialProperties) {
     return s/n;
   }
 
+
+
   function tick(elapsedTime, dontDispatchTickEvent) {
     var t;
-
     coreModel.integrate();
 
     pressure = modelOutputState.pressure;
@@ -3305,7 +3425,10 @@ modeler.model = function(initialProperties) {
       }
     }
 
-    if (!dontDispatchTickEvent) dispatch.tick();
+    if (!dontDispatchTickEvent) {
+      dispatch.tick();
+    }
+
     return stopped;
   }
 
@@ -3333,9 +3456,16 @@ modeler.model = function(initialProperties) {
       time:     modelOutputState.time
     });
     if (tick_history_list_index > 1000) {
-      tick_history_list.splice(0,1);
+      tick_history_list.splice(1,1);
       tick_history_list_index = 1000;
     }
+  }
+
+  function restoreFirstStateinTickHistory() {
+    tick_history_list_index = 0;
+    tick_counter = 0;
+    tick_history_list.length = 1;
+    tick_history_list_extract(tick_history_list_index);
   }
 
   function reset_tick_history_list() {
@@ -3395,7 +3525,7 @@ modeler.model = function(initialProperties) {
         propsChanged.push(property);
       }
     }
-    notifyListenersOfEvents(propsChanged);
+    notifyPropertyListenersOfEvents(propsChanged);
   }
 
   function readModelState() {
@@ -3475,7 +3605,6 @@ modeler.model = function(initialProperties) {
     tick_counter = location;
     tick_history_list_extract(tick_history_list_index);
     dispatch.seek();
-    notifyListenersOfEvents("seek");
     if (model_listener) { model_listener(); }
     return tick_counter;
   };
@@ -3585,6 +3714,9 @@ modeler.model = function(initialProperties) {
     tick_counter = 0;
     new_step = true;
 
+    // Listeners should consider resetting the atoms a 'reset' event
+    dispatch.reset();
+
     // return model, for chaining (if used)
     return model;
   };
@@ -3592,6 +3724,13 @@ modeler.model = function(initialProperties) {
   model.createRadialBonds = function(_radialBonds) {
     coreModel.initializeRadialBonds(_radialBonds);
     radialBonds = coreModel.radialBonds;
+    readModelState();
+    return model;
+  };
+
+  model.createVdwPairs = function(_atoms) {
+    coreModel.createVdwPairsArray(_atoms);
+    vdwPairs = coreModel.vdwPairs;
     readModelState();
     return model;
   };
@@ -3652,9 +3791,7 @@ modeler.model = function(initialProperties) {
 
   model.reset = function() {
     model.resetTime();
-    tick_history_list_index = 0;
-    tick_counter = 0;
-    tick_history_list_extract(tick_history_list_index);
+    restoreFirstStateinTickHistory();
     dispatch.reset();
   };
 
@@ -3834,6 +3971,12 @@ modeler.model = function(initialProperties) {
   model.get_radial_bonds = function() {
     return radialBonds;
   };
+  model.get_vdw_pairs = function() {
+    if(coreModel.vdwPairs){
+    coreModel.updateVdwPairsArray();
+    }
+    return vdwPairs;
+  };
 
   model.on = function(type, listener) {
     dispatch.on(type, listener);
@@ -3868,16 +4011,24 @@ modeler.model = function(initialProperties) {
 
   model.resume = function() {
     stopped = false;
-    d3.timer(tick);
+
+    d3.timer(function timerTick(elapsedTime) {
+      // Cancel the timer and refuse to to step the model, if the model is stopped.
+      // This is necessary because there is no direct way to cancel a d3 timer.
+      // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
+      if (stopped) return true;
+
+      tick(elapsedTime, false);
+      return false;
+    });
+
     dispatch.play();
-    notifyListenersOfEvents("play");
     return model;
   };
 
   model.stop = function() {
     stopped = true;
     dispatch.stop();
-    notifyListenersOfEvents("stop");
     return model;
   };
 

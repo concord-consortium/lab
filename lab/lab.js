@@ -3496,6 +3496,7 @@ var arrays       = require('arrays'),
     OBSTACLE_INDICES,
     SAVEABLE_INDICES,
     RADIAL_INDICES,
+    VDW_INDICES,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -3628,6 +3629,11 @@ exports.RADIAL_INDICES = RADIAL_INDICES = {
   STRENGTH:  3
 };
 
+exports.VDW_INDICES = VDW_INDICES = {
+  ATOM1   :  0,
+  ATOM2   :  1
+};
+
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE"];
 
 exports.makeModel = function() {
@@ -3710,6 +3716,11 @@ exports.makeModel = function() {
       // An array of length 4 which contains the above 4 property arrays.
       // Left undefined if no radial bonds are defined.
       radialBonds,
+      //Ordered Radial Bond hash
+      radialBondsHash,
+
+      //Number of VDW Pairs
+      vdwPairNum,
 
       // Number of actual radial bonds (may be smaller than the length of the property arrays)
       N_radialBonds = 0,
@@ -3839,7 +3850,8 @@ exports.makeModel = function() {
         radialBonds[radialIndices.STRENGTH] = radialBondStrength   = arrays.create(num, 0, float32);
       },
 
-      // Make the 'radialBonds' array bigger. FIXME: needs to be factored
+
+  // Make the 'radialBonds' array bigger. FIXME: needs to be factored
       // into a common pattern with 'extendAtomsArray'
       extendRadialBondsArray = function(num) {
         var savedArrays = [],
@@ -4252,10 +4264,38 @@ exports.makeModel = function() {
       updateGravitationalAcceleration = function() {
         // fast path if there is no gravitationalField
         if (!gravitationalField) return;
-        var i,
-            gf = gravitationalField * GF_CONVERSION_CONSTANT;
+        var i;
+
         for (i = 0; i < N; i++) {
-          ay[i] -= gf;
+          ay[i] -= gravitationalField;
+        }
+      },
+
+      updateFrictionAccelerations = function () {
+        if (!viscosity) return;
+
+        /**
+          Classic MW calculation:
+              inverseMass = GF_CONVERSION_CONSTANT * a.friction / a.mass;
+              a.fx -= inverseMass * a.vx * universe.getViscosity();
+              a.fy -= inverseMass * a.vy * universe.getViscosity();
+
+          Note: An additional factor of 12000 needed to be applied to
+          GF_CONVERSION_CONSTANT in order to get the same behavior between
+          Classic and MW5. FIXME: We need to resolve our conversion questions
+        */
+
+        var i = N,
+            dragConstant = -1 * 12000 * GF_CONVERSION_CONSTANT * viscosity,
+            mass,
+            drag;
+
+        while (i--) {
+          mass = elements[element[i]][ELEMENT_INDICES.MASS];
+          drag = dragConstant * friction[i] / mass;
+
+          ax[i] += vx[i] * drag;
+          ay[i] += vy[i] * drag;
         }
       },
 
@@ -4466,14 +4506,12 @@ exports.makeModel = function() {
       for (i = 0; i < elements.length; i++) {
         epsilon_i = elements[i][ELEMENT_INDICES.EPSILON];
         sigma_i   = elements[i][ELEMENT_INDICES.SIGMA];
-
         // the radius is derived from sigma
         elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius(sigma_i);
 
         for (j = i; j < elements.length; j++) {
           epsilon_j = elements[j][ELEMENT_INDICES.EPSILON];
           sigma_j   = elements[j][ELEMENT_INDICES.SIGMA];
-
           epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
           sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
 
@@ -4616,7 +4654,15 @@ exports.makeModel = function() {
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
     addRadialBond: function(atomIndex1, atomIndex2, bondLength, bondStrength) {
-
+      var smallerIndex, largerIndex;
+      if(atomIndex1 < atomIndex2) {
+        smallerIndex = atomIndex1;
+        largerIndex = atomIndex2;
+      }
+      else {
+        smallerIndex = atomIndex2;
+        largerIndex = atomIndex1;
+      }
       if (N_radialBonds+1 > radialBondAtom1Index.length) {
         extendRadialBondsArray(N_radialBonds+1);
       }
@@ -4625,6 +4671,11 @@ exports.makeModel = function() {
       radialBondAtom2Index[N_radialBonds] = atomIndex2;
       radialBondLength[N_radialBonds]     = bondLength;
       radialBondStrength[N_radialBonds]   = bondStrength;
+
+      if (!radialBondsHash[smallerIndex]) {
+        radialBondsHash[smallerIndex] = {};
+      }
+      radialBondsHash[smallerIndex][largerIndex] = true;
 
       N_radialBonds++;
     },
@@ -4852,7 +4903,7 @@ exports.makeModel = function() {
     initializeRadialBonds: function(props) {
       var num = props.atom1Index.length,
           i;
-
+      radialBondsHash = {};
       createRadialBondsArray(num);
 
       for (i = 0; i < num; i++) {
@@ -4862,6 +4913,63 @@ exports.makeModel = function() {
           props.bondLength[i],
           props.bondStrength[i]
         );
+      }
+    },
+
+    createVdwPairsArray: function(num) {
+      var uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
+        vdwIndices = VDW_INDICES,
+        numAtoms = num.ELEMENT.length;
+      var maxNumPairs = (((numAtoms)*(numAtoms-1))/2);
+
+      vdwPairs = model.vdwPairs = [];
+
+      vdwPairs[vdwIndices.ATOM1] = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, uint16);
+      vdwPairs[vdwIndices.ATOM2] = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, uint16);
+      model.updateVdwPairsArray();
+
+    },
+
+    updateVdwPairsArray: function(){
+      var i, j,
+        dx, dy,
+        r_sq,
+        sigma_i, epsilon_i,
+        sigma_j, epsilon_j,
+        sig, eps,
+        distanceCutoff_sq = 4 // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
+        prevVdwPairsNum = vdwPairNum || 0;
+      vdwPairNum = 0;
+
+      for (i = 0; i < N; i++) {
+        // pairwise interactions
+        for (j = i+1; j < N; j++) {
+          if (N_radialBonds != 0 && (radialBondsHash[i] && radialBondsHash[i][j])) continue;
+          if(charge[i]*charge[j] <= 0){
+            dx = x[j] - x[i];
+            dy = y[j] - y[i];
+            r_sq = dx*dx + dy*dy;
+            sigma_i = elements[element[i]][ELEMENT_INDICES.SIGMA];
+            epsilon_i = elements[element[i]][ELEMENT_INDICES.EPSILON];
+            sigma_j = elements[element[j]][ELEMENT_INDICES.SIGMA];
+            epsilon_j = elements[element[j]][ELEMENT_INDICES.EPSILON];
+            sig = 0.5*(sigma_i+sigma_j);
+            sig *= sig;
+            eps = epsilon_i*epsilon_j;
+            if (r_sq < sig * distanceCutoff_sq && eps > 0) {
+              vdwPairAtom1Index[vdwPairNum] = i;
+              vdwPairAtom2Index[vdwPairNum] = j;
+              vdwPairNum++;
+            }
+          }
+        }
+      }
+      //Logic to clear off the previous atoms indices from the array which are far apart than cutoff distance after array update
+      if(vdwPairNum < prevVdwPairsNum) {
+        for(i = vdwPairNum;i<prevVdwPairsNum;i++) {
+           vdwPairAtom1Index[i] = 0;
+           vdwPairAtom2Index[i] = 0;
+        }
       }
     },
 
@@ -4940,6 +5048,9 @@ exports.makeModel = function() {
 
         // Accumulate optional gravitational accelerations
         updateGravitationalAcceleration();
+
+        // Accumulate friction/drag accelerations
+        updateFrictionAccelerations();
 
         for (i = 0; i < N; i++) {
           // Clearing the acceleration here from pinned atoms will cause the acceleration
@@ -5038,6 +5149,7 @@ exports.makeModel = function() {
       outputState.vCM      = [vx_CM, vy_CM];
       outputState.omega_CM = omega_CM;
     },
+
 
     /**
       Given a test element and charge, returns a function that returns for a location (x, y) in nm:
@@ -5280,6 +5392,8 @@ modeler.model = function(initialProperties) {
       obstacles,
       // Radial Bonds
       radialBonds,
+      // VDW Pairs
+      vdwPairs,
 
       viscosity,
 
@@ -5396,14 +5510,19 @@ modeler.model = function(initialProperties) {
     STRENGTH  : md2d.RADIAL_INDICES.STRENGTH
   };
 
-  function notifyListeners(listeners) {
+  model.VDW_INDICES = {
+    ATOM1     : md2d.VDW_INDICES.ATOM1,
+    ATOM2     : md2d.VDW_INDICES.ATOM2
+  };
+
+  function notifyPropertyListeners(listeners) {
     $.unique(listeners);
     for (var i=0, ii=listeners.length; i<ii; i++){
       listeners[i]();
     }
   }
 
-  function notifyListenersOfEvents(events) {
+  function notifyPropertyListenersOfEvents(events) {
     var evt,
         evts,
         waitingToBeNotified = [],
@@ -5423,7 +5542,7 @@ modeler.model = function(initialProperties) {
     if (listeners["all"]){      // listeners that want to be notified on any change
       waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
     }
-    notifyListeners(waitingToBeNotified);
+    notifyPropertyListeners(waitingToBeNotified);
   }
 
   function average_speed() {
@@ -5432,9 +5551,10 @@ modeler.model = function(initialProperties) {
     return s/n;
   }
 
+
+
   function tick(elapsedTime, dontDispatchTickEvent) {
     var t;
-
     coreModel.integrate();
 
     pressure = modelOutputState.pressure;
@@ -5459,7 +5579,10 @@ modeler.model = function(initialProperties) {
       }
     }
 
-    if (!dontDispatchTickEvent) dispatch.tick();
+    if (!dontDispatchTickEvent) {
+      dispatch.tick();
+    }
+
     return stopped;
   }
 
@@ -5487,9 +5610,16 @@ modeler.model = function(initialProperties) {
       time:     modelOutputState.time
     });
     if (tick_history_list_index > 1000) {
-      tick_history_list.splice(0,1);
+      tick_history_list.splice(1,1);
       tick_history_list_index = 1000;
     }
+  }
+
+  function restoreFirstStateinTickHistory() {
+    tick_history_list_index = 0;
+    tick_counter = 0;
+    tick_history_list.length = 1;
+    tick_history_list_extract(tick_history_list_index);
   }
 
   function reset_tick_history_list() {
@@ -5549,7 +5679,7 @@ modeler.model = function(initialProperties) {
         propsChanged.push(property);
       }
     }
-    notifyListenersOfEvents(propsChanged);
+    notifyPropertyListenersOfEvents(propsChanged);
   }
 
   function readModelState() {
@@ -5629,7 +5759,6 @@ modeler.model = function(initialProperties) {
     tick_counter = location;
     tick_history_list_extract(tick_history_list_index);
     dispatch.seek();
-    notifyListenersOfEvents("seek");
     if (model_listener) { model_listener(); }
     return tick_counter;
   };
@@ -5739,6 +5868,9 @@ modeler.model = function(initialProperties) {
     tick_counter = 0;
     new_step = true;
 
+    // Listeners should consider resetting the atoms a 'reset' event
+    dispatch.reset();
+
     // return model, for chaining (if used)
     return model;
   };
@@ -5746,6 +5878,13 @@ modeler.model = function(initialProperties) {
   model.createRadialBonds = function(_radialBonds) {
     coreModel.initializeRadialBonds(_radialBonds);
     radialBonds = coreModel.radialBonds;
+    readModelState();
+    return model;
+  };
+
+  model.createVdwPairs = function(_atoms) {
+    coreModel.createVdwPairsArray(_atoms);
+    vdwPairs = coreModel.vdwPairs;
     readModelState();
     return model;
   };
@@ -5806,9 +5945,7 @@ modeler.model = function(initialProperties) {
 
   model.reset = function() {
     model.resetTime();
-    tick_history_list_index = 0;
-    tick_counter = 0;
-    tick_history_list_extract(tick_history_list_index);
+    restoreFirstStateinTickHistory();
     dispatch.reset();
   };
 
@@ -5988,6 +6125,12 @@ modeler.model = function(initialProperties) {
   model.get_radial_bonds = function() {
     return radialBonds;
   };
+  model.get_vdw_pairs = function() {
+    if(coreModel.vdwPairs){
+    coreModel.updateVdwPairsArray();
+    }
+    return vdwPairs;
+  };
 
   model.on = function(type, listener) {
     dispatch.on(type, listener);
@@ -6022,16 +6165,24 @@ modeler.model = function(initialProperties) {
 
   model.resume = function() {
     stopped = false;
-    d3.timer(tick);
+
+    d3.timer(function timerTick(elapsedTime) {
+      // Cancel the timer and refuse to to step the model, if the model is stopped.
+      // This is necessary because there is no direct way to cancel a d3 timer.
+      // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
+      if (stopped) return true;
+
+      tick(elapsedTime, false);
+      return false;
+    });
+
     dispatch.play();
-    notifyListenersOfEvents("play");
     return model;
   };
 
   model.stop = function() {
     stopped = true;
     dispatch.stop();
-    notifyListenersOfEvents("stop");
     return model;
   };
 
@@ -7157,8 +7308,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       get_obstacles,
       mock_obstacles_array = [],
       mock_radial_bond_array = [],
+      mock_vdw_pairs_array = [],
       radialBond,
+      vdwLine,
       getRadialBonds,
+      getVdwPairs,
       bondColorArray,
       default_options = {
         fit_to_parent:        false,
@@ -7211,6 +7365,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     get_obstacles = options.get_obstacles;
     getRadialBonds = options.get_radial_bonds;
+    getVdwPairs = options.get_vdw_pairs;
     set_atom_properties = options.set_atom_properties;
     is_stopped = options.is_stopped;
   }
@@ -7413,14 +7568,30 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   function get_radial_bond_strength(i) {
     return radialBonds[model.RADIAL_INDICES.STRENGTH][i];
   }
-    function chargeShadingMode() {
-        if (model.get("chargeShading")) {
-            return true;
-        }
-        else {
-            return false;
-        }
+  function get_vdw_line_atom_1(i) {
+    return vdwPairs[model.VDW_INDICES.ATOM1][i];
+  }
+
+  function get_vdw_line_atom_2(i) {
+    return vdwPairs[model.VDW_INDICES.ATOM2][i];
+  }
+
+  function chargeShadingMode() {
+    if (model.get("chargeShading")) {
+      return true;
     }
+    else {
+      return false;
+    }
+  }
+  function drawVdwLines() {
+    if (model.get("showVDWLines")) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 
   function container() {
     // if (node.clientWidth && node.clientHeight) {
@@ -7888,7 +8059,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
               }
           })
           .style("stroke-dasharray", function (d, i) {
-            if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { 
+            if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
               return "5 5"
             } else {
               return "";
@@ -7897,46 +8068,27 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function drawAttractionForces(){
-      VDWLines_container.selectAll("line.attractionforce").remove();
-        for(var atom1 = 0;atom1 < mock_atoms_array.length;atom1++){
-            for(var atom2 =0 ;atom2<atom1;atom2++) {
-                var xs = (x(get_x(atom1))-x(get_x(atom2)));
-                var ys = (y(get_y(atom1))-y(get_y(atom2)));
-                var dist;
-                xs = xs * xs;
-                ys = ys * ys;
-                dist =  Math.sqrt( xs + ys );
-                if (dist <= 70 && !isChargeSame(atom1,atom2))
-                {
-                  VDWLines_container.append("line")
-                        .attr("x1", x(get_x(atom1)))
-                        .attr("y1", y(get_y(atom1)))
-                        .attr("x2", x(get_x(atom2)))
-                        .attr("y2", y(get_y(atom2)))
-                        .attr("class", "attractionforce")
-                        .style("stroke-width", 1)
-                        .style("stroke", "#000000")
-                        .style("stroke-dasharray", "5 3");
-                }
-            }
+      var vdwPairs = mock_vdw_pairs_array.length;
+      var atom1;
+      var atom2;
+      for(var i = 0;i < vdwPairs;i++){
+        atom1 = get_vdw_line_atom_1(i);
+        atom2 = get_vdw_line_atom_2(i);
+        if(!(atom1 == 0 && atom2 == 0)) {
+          VDWLines_container.append("line")
+            .attr("class", "attractionforce")
+            .attr("x1", x(get_x(atom1)))
+            .attr("y1", y(get_y(atom1)))
+            .attr("x2", x(get_x(atom2)))
+            .attr("y2", y(get_y(atom2)));
         }
-    }
-
-    function isChargeSame(atom1,atom2) {
-      var atomCharge1 =  get_charge(atom1);
-      var atomCharge2 =  get_charge(atom2);
-      if((atomCharge1 > 0) &&  (atomCharge2 > 0) || (atomCharge1 < 0) &&  (atomCharge2 < 0)){
-        return true;
-      }
-      else {
-        return false;
       }
     }
 
     function setup_drawables() {
       setup_obstacles();
-      if(model.get("showVDWLines")){
-        drawAttractionForces();
+      if(drawVdwLines){
+        setup_vdw_pairs();
       }
       setup_radial_bonds();
       setup_particles();
@@ -8032,6 +8184,18 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       radialBondEnter(radialBond);
     }
 
+    function setup_vdw_pairs() {
+      VDWLines_container.selectAll("line.attractionforce").remove();
+
+      vdwPairs = getVdwPairs();
+
+      if (!vdwPairs) return;
+
+      mock_vdw_pairs_array.length = vdwPairs[0].length;
+
+      drawAttractionForces();
+    }
+
     function mousedown() {
       node.focus();
     }
@@ -8092,8 +8256,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function update_drawable_positions() {
       setup_obstacles();
-      if(model.get("showVDWLines")){
-        drawAttractionForces();
+      if(drawVdwLines){
+        setup_vdw_pairs();
       }
       update_radial_bonds();
       update_molecule_positions();
@@ -8148,7 +8312,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     function node_dragstart(d, i) {
       if (!is_stopped()) {
         // if we're running, add a spring force
-        model.addSpringForce(i, get_x(i), get_y(i), 0.9);
+        model.addSpringForce(i, get_x(i), get_y(i), 20);
       } else {
         // if we're stopped, drag the atom
         drag_origin = [get_x(i), get_y(i)];
@@ -9847,7 +10011,10 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
       } else {
         this.hide(this.stop);
       }
-      model.addPropertiesListener(["play", "stop"], function() {
+      model.on('play', function() {
+        return _this.update_ui();
+      });
+      model.on('stop', function() {
         return _this.update_ui();
       });
     }
@@ -10453,6 +10620,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       controlButtons,
       modelTimeLabel,
       fit_to_parent,
+      enableAtomTooltips,
 
       // properties read from the modelConfig hash
       elements,
@@ -10466,12 +10634,16 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       showVDWLines,
       radialBonds,
       obstacles,
+      viscosity,
+      gravitationalField,
 
       moleculeContainer,
 
       // We pass this object to the "ModelPlayer" to intercept messages for the model
       // instead of allowing the ModelPlayer to talk to the model directly.
-      // In particular, we want to treat seek(1) as a reset event
+      // This allows us, for example, to reload the model instead of trying to call a 'reset' event
+      // on models (which don't really know how to reset themselves; that's part of what we're for.)
+
       modelProxy = {
         resume: function() {
           model.resume();
@@ -10483,15 +10655,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
         reset: function() {
           model.stop();
-          model.reset();
-        },
-
-        seek: function(n) {
-          // Special case assumption: This is to intercept the "reset" button
-          // of PlaybackComponentSVG, which calls seek(1) on the ModelPlayer
-          if (n === 1) {
-            reload(modelConfig, playerConfig);
-          }
+          reload(modelConfig, playerConfig);
         },
 
         is_stopped: function() {
@@ -10568,6 +10732,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       }
 
       if (radialBonds) model.createRadialBonds(radialBonds);
+      if (showVDWLines) model.createVdwPairs(atoms);
       if (obstacles) model.createObstacles(obstacles);
 
       dispatch.modelReset();
@@ -10602,8 +10767,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
         get_obstacles:        function() { return model.get_obstacles(); },
+        get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments);  },
-        is_stopped:           function() { return model.is_stopped() },
+        is_stopped:           function() { return model.is_stopped(); },
 
         controlButtons:      controlButtons,
         modelTimeLabel:      modelTimeLabel
@@ -10629,9 +10795,10 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_radial_bonds:     function() { return model.get_radial_bonds(); },
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
+        get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
         get_obstacles:        function() { return model.get_obstacles(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments); },
-        is_stopped:           function() { return model.is_stopped() },
+        is_stopped:           function() { return model.is_stopped(); },
 
         controlButtons:      controlButtons,
         modelTimeLabel:      modelTimeLabel
@@ -10697,7 +10864,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     return controller;
 };
-/*global controllers model Thermometer layout $ alert */
+/*global controllers model Thermometer layout $ alert ACTUAL_ROOT grapher */
 /*jshint eqnull: true*/
 controllers.interactivesController = function(interactive, viewSelector, applicationCallbacks, layoutStyle) {
 
@@ -10784,9 +10951,13 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         */
         getAtomProperties: function getAtomProperties(i) {
           var props = {},
-              atoms = model.get_nodes();
-          for (var property in model.ATOM_PROPERTIES) {
-            props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
+              atoms = model.get_nodes(),
+              property;
+
+          for (property in model.ATOM_PROPERTIES) {
+            if (model.ATOM_PROPERTIES.hasOwnProperty(property)) {
+              props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
+            }
           }
           return props;
         },
@@ -11039,39 +11210,50 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     return  {
       elem: elem,
       callback: function() {
-        var thisComponent = component;
-        var options = {
-          title:     "Energy of the System (KE:red, PE:green, TE:blue)",
-          xlabel:    "Model Time (ps)",
-          xmin:      0,
-          xmax:     100,
-          sample:    0.1,
-          ylabel:    "eV",
-          ymin:      -5.0,
-          ymax:      5.0
-        };
+
+        var thisComponent = component,
+            options = {
+              title:     "Energy of the System (KE:red, PE:green, TE:blue)",
+              xlabel:    "Model Time (ps)",
+              xmin:      0,
+              xmax:     100,
+              sample:    0.1,
+              ylabel:    "eV",
+              ymin:      -5.0,
+              ymax:      5.0
+            };
+
         resetEnergyData();
-        options.dataset = energyData;
-        if (thisComponent.options) {
-          $.extend(options, thisComponent.options);
+
+        // Draw the energyGraph only if it hasn't been drawn before:
+        if (!energyGraph) {
+          $.extend(options, thisComponent.options || []);
+          renderEnergyGraph(thisComponent.id, options);
         }
-        model.on("tick.energyGraph", updateEnergyGraph);
+
+        if (thisComponent.dimensions) {
+          energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
+        }
+
+        // This method is called whenever a model loads (i.e., a new model object is created.)
+        // Always request event notifications from the new model object.
+
+        model.on('tick.energyGraph', updateEnergyGraph);
+
         model.on('play.energyGraph', function() {
-          var i, len;
           if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
             resetEnergyData(model.stepCounter());
             energyGraph.new_data(energyData);
           }
           energyGraph.show_canvas();
         });
+
         model.on('reset.energyGraph', function() {
           resetEnergyData();
           energyGraph.new_data(energyData);
           energyGraph.reset();
         });
-        // Right now this action is acting as an indication of model reset ...
-        // This should be refactoring to distinguish the difference between reset
-        // and seek to location in model history.
+
         model.on('seek.energyGraph', function() {
           var modelsteps = model.stepCounter();
           if (modelsteps > 0) {
@@ -11081,12 +11263,15 @@ controllers.interactivesController = function(interactive, viewSelector, applica
           }
           energyGraph.new_data(energyData);
         });
-        energyGraph = grapher.realTimeGraph('#' + thisComponent.id, options);
-        if (thisComponent.dimensions) {
-          energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
-        }
+
       }
     };
+  }
+
+  function renderEnergyGraph(id, options) {
+    options = options || {};
+    options.dataset = energyData;
+    energyGraph = grapher.realTimeGraph('#' + id, options);
   }
 
   function updateEnergyGraph() {
@@ -11107,7 +11292,10 @@ controllers.interactivesController = function(interactive, viewSelector, applica
   // Reset the energyData arrays to a specific length by passing in an index value,
   // or empty the energyData arrays an initialize the first sample.
   function resetEnergyData(index) {
-    var modelsteps = model.stepCounter();
+    var modelsteps = model.stepCounter(),
+        i,
+        len;
+
     if (index) {
       for (i = 0, len = energyData.length; i < len; i++) {
         energyData[i].length = modelsteps;
@@ -11754,6 +11942,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
       if (radialBonds) model.createRadialBonds(radialBonds);
+      if (showVDWLines) model.createVdwPairs(atoms_properties);
       if (obstacles) model.createObstacles(obstacles);
     }
 
@@ -11781,6 +11970,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
           chargeShading:        chargeShading,
           showVDWLines:         showVDWLines,
           get_radial_bonds:     function() { return model.get_radial_bonds(); },
+          get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
           get_nodes:            function() { return model.get_nodes(); },
           get_num_atoms:        function() { return model.get_num_atoms(); },
           get_obstacles:        function() { return model.get_obstacles(); }
@@ -12102,6 +12292,7 @@ controllers.complexModelController =
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
         if (radialBonds) model.createRadialBonds(radialBonds);
+        if (showVDWLines) model.createVdwPairs(atoms_properties);
         if (obstacles) model.createObstacles(obstacles);
       } else if (mol_number) {
         model.createNewAtoms({
@@ -12147,6 +12338,7 @@ controllers.complexModelController =
           chargeShading:        chargeShading,
           showVDWLines:         showVDWLines,
           get_radial_bonds:     function() { return model.get_radial_bonds(); },
+          get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
           get_nodes:            function() { return model.get_nodes(); },
           get_num_atoms:        function() { return model.get_num_atoms(); },
           get_obstacles:        function() { return model.get_obstacles(); }

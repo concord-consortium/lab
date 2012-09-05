@@ -427,7 +427,10 @@
       } else {
         this.hide(this.stop);
       }
-      model.addPropertiesListener(["play", "stop"], function() {
+      model.on('play', function() {
+        return _this.update_ui();
+      });
+      model.on('stop', function() {
         return _this.update_ui();
       });
     }

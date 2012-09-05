@@ -21,6 +21,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       controlButtons,
       modelTimeLabel,
       fit_to_parent,
+      enableAtomTooltips,
 
       // properties read from the modelConfig hash
       elements,
@@ -34,12 +35,16 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       showVDWLines,
       radialBonds,
       obstacles,
+      viscosity,
+      gravitationalField,
 
       moleculeContainer,
 
       // We pass this object to the "ModelPlayer" to intercept messages for the model
       // instead of allowing the ModelPlayer to talk to the model directly.
-      // In particular, we want to treat seek(1) as a reset event
+      // This allows us, for example, to reload the model instead of trying to call a 'reset' event
+      // on models (which don't really know how to reset themselves; that's part of what we're for.)
+
       modelProxy = {
         resume: function() {
           model.resume();
@@ -51,15 +56,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
         reset: function() {
           model.stop();
-          model.reset();
-        },
-
-        seek: function(n) {
-          // Special case assumption: This is to intercept the "reset" button
-          // of PlaybackComponentSVG, which calls seek(1) on the ModelPlayer
-          if (n === 1) {
-            reload(modelConfig, playerConfig);
-          }
+          reload(modelConfig, playerConfig);
         },
 
         is_stopped: function() {
@@ -136,6 +133,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       }
 
       if (radialBonds) model.createRadialBonds(radialBonds);
+      if (showVDWLines) model.createVdwPairs(atoms);
       if (obstacles) model.createObstacles(obstacles);
 
       dispatch.modelReset();
@@ -170,8 +168,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
         get_obstacles:        function() { return model.get_obstacles(); },
+        get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments);  },
-        is_stopped:           function() { return model.is_stopped() },
+        is_stopped:           function() { return model.is_stopped(); },
 
         controlButtons:      controlButtons,
         modelTimeLabel:      modelTimeLabel
@@ -197,9 +196,10 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_radial_bonds:     function() { return model.get_radial_bonds(); },
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
+        get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
         get_obstacles:        function() { return model.get_obstacles(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments); },
-        is_stopped:           function() { return model.is_stopped() },
+        is_stopped:           function() { return model.is_stopped(); },
 
         controlButtons:      controlButtons,
         modelTimeLabel:      modelTimeLabel

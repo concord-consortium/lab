@@ -21,40 +21,40 @@
         },
         {
           "text": "Gravitational Field: 1",
-          "action": "reset(); set({ 'gravitationalField' : 0.000025 });"
+          "action": "reset(); set({ 'gravitationalField' : 2e-9 });"
         },
         {
           "text": "Gravitational Field: 2",
-          "action": "reset(); set({ 'gravitationalField' : 0.0001 });"
+          "action": "reset(); set({ 'gravitationalField' : 8e-9 });"
         },
         {
           "text": "Gravitational Field: 5",
-          "action": "reset(); set({ 'gravitationalField' : 0.00025 });"
+          "action": "reset(); set({ 'gravitationalField' : 2e-8 });"
         },
         {
           "text": "Gravitational Field: 10",
-          "action": "reset(); set({ 'gravitationalField' : 0.0005 });"
+          "action": "reset(); set({ 'gravitationalField' : 4e-8 });"
         },
         {
           "text": "Gravitational Field: 20",
-          "action": "reset(); set({ 'gravitationalField' : 0.001 });"
+          "action": "reset(); set({ 'gravitationalField' : 8e-8 });"
         },
         {
           "text": "Gravitational Field: 50",
-          "action": "reset(); set({ 'gravitationalField' : 0.0025 });"
+          "action": "reset(); set({ 'gravitationalField' : 2e-7 });"
         },
         {
           "text": "Gravitational Field: 100",
-          "action": "reset(); set({ 'gravitationalField' : 0.005 });"
+          "action": "reset(); set({ 'gravitationalField' : 4e-7 });"
         },
         {
           "text": "Gravitational Field: 200 (default)",
           "selected": true,
-          "action": "reset(); set({ 'gravitationalField' : 0.01 });"
+          "action": "reset(); set({ 'gravitationalField' : 8e-7 });"
         },
         {
           "text": "Gravitational Field: 400",
-          "action": "reset(); set({ 'gravitationalField' : 0.02 });"
+          "action": "reset(); set({ 'gravitationalField' : 1.6e-6});"
         }
       ]
     },

@@ -1,4 +1,4 @@
-/*globals $ CodeMirror controllers model alert DEVELOPMENT: true */
+/*global $ d3 CodeMirror controllers model modelList benchmark DEVELOPMENT: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -38,9 +38,8 @@ var ROOT = "/examples",
       interactiveUrl,
       interactive,
       hash,
-      jsonModelPath, contentItems, mmlPath, cmlPath,
-      viewType,
-      dgPaylod, dgUrl;
+      jsonModelPath, contentItems, mmlPath,
+      viewType;
 
   if (!document.location.hash) {
     if (selectInteractive) {
@@ -74,7 +73,7 @@ var ROOT = "/examples",
     windowLoaded.resolve();
   });
 
-  $.when(interactiveDefinitionLoaded, windowLoaded).done(function(results) {
+  $.when(interactiveDefinitionLoaded, windowLoaded).done(function() {
     controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
   });
 
@@ -108,13 +107,16 @@ var ROOT = "/examples",
 
   // used to extract values from nested object: modelList
   function getObjects(obj, key, val) {
-    var objects = [];
-    for (var i in obj) {
-      if (!obj.hasOwnProperty(i)) continue;
-      if (typeof obj[i] == 'object') {
-        objects = objects.concat(getObjects(obj[i], key, val));
-      } else if (i == key && obj[key] == val) {
-        objects.push(obj);
+    var objects = [],
+        i;
+
+    for (i in obj) {
+      if (obj.hasOwnProperty(i)) {
+        if (typeof obj[i] === 'object') {
+          objects = objects.concat(getObjects(obj[i], key, val));
+        } else if (i === key && obj[key] === val) {
+          objects.push(obj);
+        }
       }
     }
     return objects;
@@ -134,22 +136,22 @@ var ROOT = "/examples",
     mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml");
     contentItems = getObjects(modelList, "mml", mmlPath);
     if (contentItems.length > 0) {
-      $("#java-mw-link").attr("href", function(i, href) {
+      $("#java-mw-link").attr("href", function() {
         return "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," + window.location.origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
       });
     }
 
     // construct link to DataGames embeddable version of Interactive
-    $("#datagames-link").attr("href", function(i, href) {
-      dgPayload = [{
-        "name": $(selectInteractive).find("option:selected").text(),
-        "dimensions": {
-          "width": 600,
-          "height":400
-        },
-        "url": "DataGames/Games/concord-lab" + "/examples/interactives/embeddable.html#" +  interactiveUrl
-      }];
-      dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
+    $("#datagames-link").attr("href", function() {
+      var dgPayload = [{
+            "name": $(selectInteractive).find("option:selected").text(),
+            "dimensions": {
+              "width": 600,
+              "height":400
+            },
+            "url": "DataGames/Games/concord-lab" + "/examples/interactives/embeddable.html#" +  interactiveUrl
+          }],
+          dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
       return encodeURI(dgUrl);
     });
 
@@ -199,9 +201,11 @@ var ROOT = "/examples",
       {
         name: "100 Steps (steps/s)",
         run: function() {
+          var elapsed, start, i;
+
           model.stop();
-          var start = +Date.now();
-          var i = -1;
+          start = +Date.now();
+          i = -1;
           while (i++ < 100) {
             // advance model 1 tick, but don't paint the display
             model.tick(1, { dontDispatchTickEvent: true });
@@ -213,9 +217,11 @@ var ROOT = "/examples",
       {
         name: "100 Steps w/graphics",
         run: function() {
+          var elapsed, start, i;
+
           model.stop();
-          var start = +Date.now();
-          var i = -1;
+          start = +Date.now();
+          i = -1;
           while (i++ < 100) {
             model.tick();
           }
@@ -258,21 +264,21 @@ var ROOT = "/examples",
         nodes = model.get_nodes(),
         atoms = [],
         titlerows = $modelDatatableResults.find(".title"),
-        datarows = $modelDatatableResults.find(".data"),
+        $datarows = $modelDatatableResults.find(".data"),
         timeFormatter = d3.format("5.0f"),
         timePrefix = "",
         timeSuffix = " (fs)",
-        column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'CHARGE', 'RADIUS', 'ELEMENT'],
+        column_titles = ['X', 'Y', 'VX', 'VY', 'AX', 'AY', 'PX', 'PY', 'SPEED', 'CHARGE', 'RADIUS', 'FRICTION', 'ELEMENT'],
         i_formatter = d3.format(" 2d"),
         charge_formatter = d3.format(" 1.1f"),
-        radius_formatter = d3.format(" 1.2f"),
+        f2_formatter = d3.format(" 1.2f"),
         r_formatter = d3.format(" 3.4r  "),
         f_formatter = d3.format(" 3.4f  "),
         e_formatter = d3.format(" 3.4e  "),
-        formatters = [f_formatter, f_formatter, f_formatter, 
-                      f_formatter, e_formatter, e_formatter, 
-                      e_formatter, e_formatter, e_formatter, 
-                      charge_formatter, radius_formatter, i_formatter];
+        formatters = [f_formatter, f_formatter, e_formatter,
+                      e_formatter, e_formatter, e_formatter,
+                      e_formatter, e_formatter, e_formatter,
+                      charge_formatter, f2_formatter, f2_formatter, i_formatter];
 
     atoms.length = nodes[0].length;
     reset = reset || false;
@@ -334,7 +340,7 @@ var ROOT = "/examples",
     }
 
     function add_data_rows(n) {
-      var i = -1, j = datarows.length;
+      var i = -1, j = $datarows.length;
       while (++i < n) {
         if (i >= j) {
           add_row();
@@ -351,13 +357,13 @@ var ROOT = "/examples",
     if (titlerows.length === 0) {
       var $title_row = add_row("title");
       add_column_headings($title_row, column_titles);
-      datarows = add_data_rows(atoms.length);
+      $datarows = add_data_rows(atoms.length);
     }
     if (reset) {
-      datarows = add_data_rows(model.get_num_atoms());
+      $datarows = add_data_rows(model.get_num_atoms());
     }
     i = -1; while (++i < atoms.length) {
-      add_molecule_data(datarows[i], i);
+      add_molecule_data($datarows[i], i);
     }
   }
 }());

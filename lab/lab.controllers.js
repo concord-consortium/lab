@@ -37,6 +37,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       controlButtons,
       modelTimeLabel,
       fit_to_parent,
+      enableAtomTooltips,
 
       // properties read from the modelConfig hash
       elements,
@@ -50,12 +51,16 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       showVDWLines,
       radialBonds,
       obstacles,
+      viscosity,
+      gravitationalField,
 
       moleculeContainer,
 
       // We pass this object to the "ModelPlayer" to intercept messages for the model
       // instead of allowing the ModelPlayer to talk to the model directly.
-      // In particular, we want to treat seek(1) as a reset event
+      // This allows us, for example, to reload the model instead of trying to call a 'reset' event
+      // on models (which don't really know how to reset themselves; that's part of what we're for.)
+
       modelProxy = {
         resume: function() {
           model.resume();
@@ -67,15 +72,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
         reset: function() {
           model.stop();
-          model.reset();
-        },
-
-        seek: function(n) {
-          // Special case assumption: This is to intercept the "reset" button
-          // of PlaybackComponentSVG, which calls seek(1) on the ModelPlayer
-          if (n === 1) {
-            reload(modelConfig, playerConfig);
-          }
+          reload(modelConfig, playerConfig);
         },
 
         is_stopped: function() {
@@ -152,6 +149,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       }
 
       if (radialBonds) model.createRadialBonds(radialBonds);
+      if (showVDWLines) model.createVdwPairs(atoms);
       if (obstacles) model.createObstacles(obstacles);
 
       dispatch.modelReset();
@@ -186,8 +184,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
         get_obstacles:        function() { return model.get_obstacles(); },
+        get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments);  },
-        is_stopped:           function() { return model.is_stopped() },
+        is_stopped:           function() { return model.is_stopped(); },
 
         controlButtons:      controlButtons,
         modelTimeLabel:      modelTimeLabel
@@ -213,9 +212,10 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         get_radial_bonds:     function() { return model.get_radial_bonds(); },
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
+        get_vdw_pairs:        function() { return model.get_vdw_pairs(); },
         get_obstacles:        function() { return model.get_obstacles(); },
         set_atom_properties:  function() { return model.setAtomProperties.apply(model, arguments); },
-        is_stopped:           function() { return model.is_stopped() },
+        is_stopped:           function() { return model.is_stopped(); },
 
         controlButtons:      controlButtons,
         modelTimeLabel:      modelTimeLabel
@@ -281,7 +281,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     return controller;
 };
-/*global controllers model Thermometer layout $ alert */
+/*global controllers model Thermometer layout $ alert ACTUAL_ROOT grapher */
 /*jshint eqnull: true*/
 controllers.interactivesController = function(interactive, viewSelector, applicationCallbacks, layoutStyle) {
 
@@ -368,9 +368,13 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         */
         getAtomProperties: function getAtomProperties(i) {
           var props = {},
-              atoms = model.get_nodes();
-          for (var property in model.ATOM_PROPERTIES) {
-            props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
+              atoms = model.get_nodes(),
+              property;
+
+          for (property in model.ATOM_PROPERTIES) {
+            if (model.ATOM_PROPERTIES.hasOwnProperty(property)) {
+              props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
+            }
           }
           return props;
         },
@@ -623,39 +627,50 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     return  {
       elem: elem,
       callback: function() {
-        var thisComponent = component;
-        var options = {
-          title:     "Energy of the System (KE:red, PE:green, TE:blue)",
-          xlabel:    "Model Time (ps)",
-          xmin:      0,
-          xmax:     100,
-          sample:    0.1,
-          ylabel:    "eV",
-          ymin:      -5.0,
-          ymax:      5.0
-        };
+
+        var thisComponent = component,
+            options = {
+              title:     "Energy of the System (KE:red, PE:green, TE:blue)",
+              xlabel:    "Model Time (ps)",
+              xmin:      0,
+              xmax:     100,
+              sample:    0.1,
+              ylabel:    "eV",
+              ymin:      -5.0,
+              ymax:      5.0
+            };
+
         resetEnergyData();
-        options.dataset = energyData;
-        if (thisComponent.options) {
-          $.extend(options, thisComponent.options);
+
+        // Draw the energyGraph only if it hasn't been drawn before:
+        if (!energyGraph) {
+          $.extend(options, thisComponent.options || []);
+          renderEnergyGraph(thisComponent.id, options);
         }
-        model.on("tick.energyGraph", updateEnergyGraph);
+
+        if (thisComponent.dimensions) {
+          energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
+        }
+
+        // This method is called whenever a model loads (i.e., a new model object is created.)
+        // Always request event notifications from the new model object.
+
+        model.on('tick.energyGraph', updateEnergyGraph);
+
         model.on('play.energyGraph', function() {
-          var i, len;
           if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
             resetEnergyData(model.stepCounter());
             energyGraph.new_data(energyData);
           }
           energyGraph.show_canvas();
         });
+
         model.on('reset.energyGraph', function() {
           resetEnergyData();
           energyGraph.new_data(energyData);
           energyGraph.reset();
         });
-        // Right now this action is acting as an indication of model reset ...
-        // This should be refactoring to distinguish the difference between reset
-        // and seek to location in model history.
+
         model.on('seek.energyGraph', function() {
           var modelsteps = model.stepCounter();
           if (modelsteps > 0) {
@@ -665,12 +680,15 @@ controllers.interactivesController = function(interactive, viewSelector, applica
           }
           energyGraph.new_data(energyData);
         });
-        energyGraph = grapher.realTimeGraph('#' + thisComponent.id, options);
-        if (thisComponent.dimensions) {
-          energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
-        }
+
       }
     };
+  }
+
+  function renderEnergyGraph(id, options) {
+    options = options || {};
+    options.dataset = energyData;
+    energyGraph = grapher.realTimeGraph('#' + id, options);
   }
 
   function updateEnergyGraph() {
@@ -691,7 +709,10 @@ controllers.interactivesController = function(interactive, viewSelector, applica
   // Reset the energyData arrays to a specific length by passing in an index value,
   // or empty the energyData arrays an initialize the first sample.
   function resetEnergyData(index) {
-    var modelsteps = model.stepCounter();
+    var modelsteps = model.stepCounter(),
+        i,
+        len;
+
     if (index) {
       for (i = 0, len = energyData.length; i < len; i++) {
         energyData[i].length = modelsteps;

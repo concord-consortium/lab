@@ -852,11 +852,18 @@ modelList = [
         "json": "converted/potential-tests/converging-equilibrium-series/converging-equilibrium-5$0.json"
       },
       {
-        "name": "friction",
+        "name": "friction-1",
         "path": "potential-tests/",
         "cml": "potential-tests/friction/friction.cml",
         "mml": "potential-tests/friction/friction$0.mml",
         "json": "converted/potential-tests/friction/friction$0.json"
+      },
+      {
+        "name": "friction-2",
+        "path": "potential-tests/",
+        "cml": "potential-tests/friction/friction.cml",
+        "mml": "potential-tests/friction/friction-2.mml",
+        "json": "converted/potential-tests/friction/friction-2.json"
       },
       {
         "name": "image-layers",

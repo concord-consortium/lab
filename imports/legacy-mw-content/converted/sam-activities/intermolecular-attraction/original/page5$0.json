@@ -5,7 +5,7 @@
   "viscosity": 0.25,
   "chargeShading": true,
   "showVDWLines": true,
-  "VDWLinesRatio": 1.99,
+  "VDWLinesRatio": 2,
   "gravitationalField": false,
   "elements": [
     {

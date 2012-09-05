@@ -185,8 +185,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       get_obstacles,
       mock_obstacles_array = [],
       mock_radial_bond_array = [],
+      mock_vdw_pairs_array = [],
       radialBond,
+      vdwLine,
       getRadialBonds,
+      getVdwPairs,
       bondColorArray,
       default_options = {
         fit_to_parent:        false,
@@ -239,6 +242,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     get_obstacles = options.get_obstacles;
     getRadialBonds = options.get_radial_bonds;
+    getVdwPairs = options.get_vdw_pairs;
     set_atom_properties = options.set_atom_properties;
     is_stopped = options.is_stopped;
   }
@@ -441,14 +445,30 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   function get_radial_bond_strength(i) {
     return radialBonds[model.RADIAL_INDICES.STRENGTH][i];
   }
-    function chargeShadingMode() {
-        if (model.get("chargeShading")) {
-            return true;
-        }
-        else {
-            return false;
-        }
+  function get_vdw_line_atom_1(i) {
+    return vdwPairs[model.VDW_INDICES.ATOM1][i];
+  }
+
+  function get_vdw_line_atom_2(i) {
+    return vdwPairs[model.VDW_INDICES.ATOM2][i];
+  }
+
+  function chargeShadingMode() {
+    if (model.get("chargeShading")) {
+      return true;
     }
+    else {
+      return false;
+    }
+  }
+  function drawVdwLines() {
+    if (model.get("showVDWLines")) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 
   function container() {
     // if (node.clientWidth && node.clientHeight) {
@@ -916,7 +936,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
               }
           })
           .style("stroke-dasharray", function (d, i) {
-            if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) { 
+            if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
               return "5 5"
             } else {
               return "";
@@ -925,46 +945,27 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function drawAttractionForces(){
-      VDWLines_container.selectAll("line.attractionforce").remove();
-        for(var atom1 = 0;atom1 < mock_atoms_array.length;atom1++){
-            for(var atom2 =0 ;atom2<atom1;atom2++) {
-                var xs = (x(get_x(atom1))-x(get_x(atom2)));
-                var ys = (y(get_y(atom1))-y(get_y(atom2)));
-                var dist;
-                xs = xs * xs;
-                ys = ys * ys;
-                dist =  Math.sqrt( xs + ys );
-                if (dist <= 70 && !isChargeSame(atom1,atom2))
-                {
-                  VDWLines_container.append("line")
-                        .attr("x1", x(get_x(atom1)))
-                        .attr("y1", y(get_y(atom1)))
-                        .attr("x2", x(get_x(atom2)))
-                        .attr("y2", y(get_y(atom2)))
-                        .attr("class", "attractionforce")
-                        .style("stroke-width", 1)
-                        .style("stroke", "#000000")
-                        .style("stroke-dasharray", "5 3");
-                }
-            }
+      var vdwPairs = mock_vdw_pairs_array.length;
+      var atom1;
+      var atom2;
+      for(var i = 0;i < vdwPairs;i++){
+        atom1 = get_vdw_line_atom_1(i);
+        atom2 = get_vdw_line_atom_2(i);
+        if(!(atom1 == 0 && atom2 == 0)) {
+          VDWLines_container.append("line")
+            .attr("class", "attractionforce")
+            .attr("x1", x(get_x(atom1)))
+            .attr("y1", y(get_y(atom1)))
+            .attr("x2", x(get_x(atom2)))
+            .attr("y2", y(get_y(atom2)));
         }
-    }
-
-    function isChargeSame(atom1,atom2) {
-      var atomCharge1 =  get_charge(atom1);
-      var atomCharge2 =  get_charge(atom2);
-      if((atomCharge1 > 0) &&  (atomCharge2 > 0) || (atomCharge1 < 0) &&  (atomCharge2 < 0)){
-        return true;
-      }
-      else {
-        return false;
       }
     }
 
     function setup_drawables() {
       setup_obstacles();
-      if(model.get("showVDWLines")){
-        drawAttractionForces();
+      if(drawVdwLines){
+        setup_vdw_pairs();
       }
       setup_radial_bonds();
       setup_particles();
@@ -1060,6 +1061,18 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       radialBondEnter(radialBond);
     }
 
+    function setup_vdw_pairs() {
+      VDWLines_container.selectAll("line.attractionforce").remove();
+
+      vdwPairs = getVdwPairs();
+
+      if (!vdwPairs) return;
+
+      mock_vdw_pairs_array.length = vdwPairs[0].length;
+
+      drawAttractionForces();
+    }
+
     function mousedown() {
       node.focus();
     }
@@ -1120,8 +1133,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function update_drawable_positions() {
       setup_obstacles();
-      if(model.get("showVDWLines")){
-        drawAttractionForces();
+      if(drawVdwLines){
+        setup_vdw_pairs();
       }
       update_radial_bonds();
       update_molecule_positions();
@@ -1176,7 +1189,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     function node_dragstart(d, i) {
       if (!is_stopped()) {
         // if we're running, add a spring force
-        model.addSpringForce(i, get_x(i), get_y(i), 0.9);
+        model.addSpringForce(i, get_x(i), get_y(i), 20);
       } else {
         // if we're stopped, drag the atom
         drag_origin = [get_x(i), get_y(i)];
