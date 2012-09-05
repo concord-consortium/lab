@@ -7,6 +7,7 @@
   "showVDWLines": false,
   "VDWLinesRatio": 1.67,
   "gravitationalField": false,
+  "showClock": true,
   "elements":[
     {
       "id":0,

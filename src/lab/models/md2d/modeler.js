@@ -17,6 +17,7 @@ modeler.model = function(initialProperties) {
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
       chargeShading, showVDWLines,VDWLinesRatio,
+      showClock,
       lennard_jones_forces, coulomb_forces,
       gravitationalField = false,
       stopped = true,
@@ -76,6 +77,7 @@ modeler.model = function(initialProperties) {
         gravitationalField    : false,
         chargeShading         : false,
         showVDWLines          : false,
+        showClock             : true,
         VDWLinesRatio         : 1.99,
         viscosity             : 0,
 
@@ -504,6 +506,7 @@ modeler.model = function(initialProperties) {
     chargeShading       = properties.chargeShading;
     showVDWLines        = properties.showVDWLines;
     VDWLinesRatio       = properties.VDWLinesRatio;
+    showClock           = properties.showClock;
     viscosity           = properties.viscosity;
     gravitationalField  = properties.gravitationalField;
 
@@ -672,7 +675,8 @@ modeler.model = function(initialProperties) {
   */
   model.addAtom = function(el, x, y, vx, vy, charge, friction, pinned, visible, draggable) {
     var size      = model.size(),
-        radius    = coreModel.getRadiusOfElement(el);
+        radius    = coreModel.getRadiusOfElement(el),
+        visible   = typeof visible === "number" ? visible : 1;        // default for visible is 1
 
     // As a convenience to script authors, bump the atom within bounds
     if (x < radius) x = radius;
