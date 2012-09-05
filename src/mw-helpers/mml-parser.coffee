@@ -248,15 +248,15 @@ parseMML = (mmlString) ->
         vx     = parseFloat $node.find("[property=vx]").text() || 0
         vy     = parseFloat $node.find("[property=vy]").text() || 0
         charge = parseFloat $node.find("[property=charge]").text() || 0
-        friction = parseFloat $node.find("[property=friction]").text() || 0
-        visible = if (parseBoolean (getProperty $node, 'visible'), true) then 1 else 0
-        pinned = if $node.find("[property=movable]").text() then 1 else 0
-
+        friction  = parseFloat $node.find("[property=friction]").text() || 0
+        visible   = if (parseBoolean (getProperty $node, 'visible'), true) then 1 else 0
+        pinned    = if $node.find("[property=movable]").text() then 1 else 0
+        draggable = if $node.find("[property=userField]").text() then 1 else 0
         [x, y] = toNextgenCoordinates x, y
 
         vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
         vy = -vy / 100
-        atoms.push { elemId, x, y, vx, vy, charge, friction, pinned, visible }
+        atoms.push { elemId, x, y, vx, vy, charge, friction, pinned, visible, draggable }
 
       atoms
 
@@ -307,6 +307,7 @@ parseMML = (mmlString) ->
     element = (atom.elemId for atom in atoms)
     pinned = (atom.pinned for atom in atoms)
     visible = (atom.visible for atom in atoms)
+    draggable = (atom.draggable for atom in atoms)
 
     id = atoms[0]?.elemId || 0
 
@@ -337,9 +338,13 @@ parseMML = (mmlString) ->
         ELEMENT: element
         PINNED: pinned
         VISIBLE: visible
+        DRAGGABLE: draggable
 
-    # remove the atoms.VISIBLE array if all atoms are visible
-    delete json.atoms.VISIBLE if visible.every (i)-> i
+    removeArrayIfDefault = (name, array, defaultVal) ->
+      delete json.atoms[name] if array.every (i)-> i is defaultVal
+
+    removeArrayIfDefault("VISIBLE", visible, 1)
+    removeArrayIfDefault("DRAGGABLE", draggable, 0)
 
     if radialBonds.length > 0
       json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength'
