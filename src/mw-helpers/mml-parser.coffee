@@ -126,6 +126,10 @@ parseMML = (mmlString) ->
     universeProps = $mml(".org-concord-mw2d-models-Universe")
     viscosity = parseFloat universeProps.find("[property=viscosity] float").text() || 0
     ###
+      Show Clock
+    ###
+    showClock = parseBoolean($mml("[property=showClock] boolean").text(), true)
+    ###
       GravitationalField
     ###
     gravitationalProps = $mml(".org-concord-mw2d-models-GravitationalField")
@@ -326,7 +330,8 @@ parseMML = (mmlString) ->
       chargeShading       : !!chargeShading
       showVDWLines        : !!showVDWLines
       VDWLinesRatio       : VDWLinesRatio
-      gravitationalField  : gravitationalField,
+      gravitationalField  : gravitationalField
+      showClock           : showClock
       elements            : elemTypes
       atoms :
         X : x

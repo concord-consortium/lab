@@ -37,6 +37,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       obstacles,
       viscosity,
       gravitationalField,
+      showClock,
 
       moleculeContainer,
 
@@ -97,6 +98,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       height              = modelConfig.height;
       chargeShading       = modelConfig.chargeShading;
       showVDWLines        = modelConfig.showVDWLines;
+      showClock           = modelConfig.showClock;
       radialBonds         = modelConfig.radialBonds;
       obstacles           = modelConfig.obstacles;
       viscosity           = modelConfig.viscosity;
@@ -119,6 +121,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           height              : height,
           chargeShading       : chargeShading,
           showVDWLines        : showVDWLines,
+          showClock           : showClock,
           viscosity           : viscosity,
           gravitationalField  : gravitationalField
         });

@@ -59,7 +59,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         xlabel:               false,
         ylabel:               false,
         controlButtons:      "play",
-        modelTimeLabel:       false,
         grid_lines:           false,
         xunits:               false,
         yunits:               false,
@@ -107,6 +106,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     getVdwPairs = options.get_vdw_pairs;
     set_atom_properties = options.set_atom_properties;
     is_stopped = options.is_stopped;
+    if (!options.showClock) {
+      options.showClock = model.get("showClock");
+    }
   }
 
   function scale(w, h) {
@@ -409,7 +411,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
 
       // add model time display
-      if (options.modelTimeLabel) {
+      if (options.showClock) {
         time_label = vis.append("text")
             .attr("class", "modelTimeLabel")
             .text(modelTimeLabel())
@@ -486,7 +488,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
-      if (options.modelTimeLabel) {
+      if (options.showClock) {
         time_label.text(modelTimeLabel())
             .attr("x", 10)
             .attr("y", size.height - 35);
@@ -612,7 +614,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .text(fy);
 
         // update model time display
-        if (options.modelTimeLabel) {
+        if (options.showClock) {
           time_label.text(modelTimeLabel());
         }
 
@@ -732,7 +734,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); })
           .style("fill", function(d, i) {
             return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; })
-          .style("stroke-width", function(d, i) {return get_obstacle_visible(i) ? 0.2 : 0.0})
+          .style("stroke-width", function(d, i) {return get_obstacle_visible(i) ? 0.2 : 0.0; })
           .style("stroke", "black");
     }
 
@@ -743,7 +745,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
           .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
           .attr("class", "radialbond")
-          .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75})
+          .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_1(i)))*0.75; })
           .style("stroke", function(d, i) {
               if((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
                 return "#000000";
@@ -767,7 +769,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             })
             .style("stroke-dasharray", function (d, i) {
                 if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
-                  return "5 5"
+                  return "5 5";
                 } else {
                   return "";
                 }
@@ -779,7 +781,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
           .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
           .attr("class", "radialbond1")
-          .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75})
+          .style("stroke-width", function (d, i) {return x(get_radius(get_radial_bond_atom_2(i)))*0.75; })
           .style("stroke", function(d, i) {
               if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
                 return "#000000";
@@ -803,7 +805,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           })
           .style("stroke-dasharray", function (d, i) {
             if ((Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
-              return "5 5"
+              return "5 5";
             } else {
               return "";
             }
@@ -817,7 +819,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       for(var i = 0;i < vdwPairs;i++){
         atom1 = get_vdw_line_atom_1(i);
         atom2 = get_vdw_line_atom_2(i);
-        if(!(atom1 == 0 && atom2 == 0)) {
+        if(!(atom1 === 0 && atom2 === 0)) {
           VDWLines_container.append("line")
             .attr("class", "attractionforce")
             .attr("x1", x(get_x(atom1)))
@@ -895,7 +897,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                         return;
                     }
                 }
-            })
+            });
       }
     }
 
@@ -1013,7 +1015,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       nodes = get_nodes();
 
       // update model time display
-      if (options.modelTimeLabel) {
+      if (options.showClock) {
         time_label.text(modelTimeLabel());
       }
 
@@ -1043,13 +1045,13 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_1(i)));})
         .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_1(i)));})
         .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
-        .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
+        .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);});
 
       gradient_container.selectAll("line.radialbond1")
         .attr("x2", function (d, i) {return ((x(get_x(get_radial_bond_atom_1(i)))+x(get_x(get_radial_bond_atom_2(i))))/2);})
         .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
         .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
-        .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));})
+        .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));});
     }
 
     function node_dragstart(d, i) {
@@ -1081,12 +1083,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           new_x, new_y;
 
       dragTarget
-        .attr("cx", function(){return d3.event.x})
-        .attr("cy", function(){return d3.event.y});
+        .attr("cx", function(){return d3.event.x; })
+        .attr("cy", function(){return d3.event.y; });
 
       molecule_div
             .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 16 + "px")
-            .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px")
+            .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px");
 
       new_x = x.invert(dragTarget.attr('cx'));
       new_y = y.invert(dragTarget.attr('cy'));

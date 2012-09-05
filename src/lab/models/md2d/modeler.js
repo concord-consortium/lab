@@ -17,6 +17,7 @@ modeler.model = function(initialProperties) {
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
       chargeShading, showVDWLines,VDWLinesRatio,
+      showClock,
       lennard_jones_forces, coulomb_forces,
       gravitationalField = false,
       stopped = true,
@@ -76,6 +77,7 @@ modeler.model = function(initialProperties) {
         gravitationalField    : false,
         chargeShading         : false,
         showVDWLines          : false,
+        showClock             : true,
         VDWLinesRatio         : 1.99,
         viscosity             : 0,
 
@@ -504,6 +506,7 @@ modeler.model = function(initialProperties) {
     chargeShading       = properties.chargeShading;
     showVDWLines        = properties.showVDWLines;
     VDWLinesRatio       = properties.VDWLinesRatio;
+    showClock           = properties.showClock;
     viscosity           = properties.viscosity;
     gravitationalField  = properties.gravitationalField;
 
