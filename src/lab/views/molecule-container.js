@@ -265,6 +265,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     return nodes[model.INDICES.VISIBLE][i];
   }
 
+  function get_draggable(i) {
+    return nodes[model.INDICES.DRAGGABLE][i];
+  }
+
   function get_obstacle_x(i) {
     return obstacles[model.OBSTACLE_INDICES.X][i];
   }
@@ -1051,7 +1055,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     function node_dragstart(d, i) {
       if (!is_stopped()) {
         // if we're running, add a spring force
-        model.addSpringForce(i, get_x(i), get_y(i), 20);
+        if (get_draggable(i)) {
+          model.addSpringForce(i, get_x(i), get_y(i), 20);
+        }
       } else {
         // if we're stopped, drag the atom
         drag_origin = [get_x(i), get_y(i)];
@@ -1060,12 +1066,14 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function node_drag(d, i){
       if (!is_stopped()) {
-        var click_x = x.invert(d3.event.x),
-            click_y = y.invert(d3.event.y);
+        if (get_draggable(i)) {
+          var click_x = x.invert(d3.event.x),
+              click_y = y.invert(d3.event.y);
 
-        // here we just assume we are updating the one and only spring force.
-        // This assumption will have to change if we can have more than one
-        model.updateSpringForce(0, click_x, click_y);
+          // here we just assume we are updating the one and only spring force.
+          // This assumption will have to change if we can have more than one
+          model.updateSpringForce(0, click_x, click_y);
+        }
         return;
       }
 
@@ -1091,7 +1099,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       if (!is_stopped()) {
         // here we just assume we are removing the one and only spring force.
         // This assumption will have to change if we can have more than one
-        model.removeSpringForce(0);
+        if (get_draggable(i)) {
+          model.removeSpringForce(0);
+        }
         return;
       }
 
