@@ -132,40 +132,40 @@ exports.ELEMENT_INDICES = ELEMENT_INDICES = {
 },
 
 exports.INDICES = INDICES = {
-  RADIUS :  0,
-  PX     :  1,
-  PY     :  2,
-  X      :  3,
-  Y      :  4,
-  VX     :  5,
-  VY     :  6,
-  SPEED  :  7,
-  AX     :  8,
-  AY     :  9,
-  CHARGE : 10,
-  ELEMENT: 11,
-  PINNED : 12,
-  FRICTION: 13,
-  VISIBLE : 14,
+  RADIUS   :  0,
+  PX       :  1,
+  PY       :  2,
+  X        :  3,
+  Y        :  4,
+  VX       :  5,
+  VY       :  6,
+  SPEED    :  7,
+  AX       :  8,
+  AY       :  9,
+  CHARGE   : 10,
+  ELEMENT  : 11,
+  PINNED   : 12,
+  FRICTION : 13,
+  VISIBLE  : 14,
   DRAGGABLE: 15
 };
 
 exports.ATOM_PROPERTIES = {
-  RADIUS :  "radius",
-  PX     :  "px",
-  PY     :  "py",
-  X      :  "x",
-  Y      :  "y",
-  VX     :  "vx",
-  VY     :  "vy",
-  SPEED  :  "speed",
-  AX     :  "ax",
-  AY     :  "ay",
-  CHARGE :  "charge",
-  ELEMENT:  "element",
-  PINNED :  "pinned",
-  FRICTION: "friction",
-  VISIBLE:  "visible",
+  RADIUS   :  "radius",
+  PX       :  "px",
+  PY       :  "py",
+  X        :  "x",
+  Y        :  "y",
+  VX       :  "vx",
+  VY       :  "vy",
+  SPEED    :  "speed",
+  AX       :  "ax",
+  AY       :  "ay",
+  CHARGE   :  "charge",
+  ELEMENT  :  "element",
+  PINNED   :  "pinned",
+  FRICTION : "friction",
+  VISIBLE  :  "visible",
   DRAGGABLE: "draggable"
 };
 
@@ -284,6 +284,9 @@ exports.makeModel = function() {
 
       //Number of VDW Pairs
       vdwPairNum,
+      vdwPairs,
+      vdwPairAtom1Index,
+      vdwPairAtom2Index,
 
       // Number of actual radial bonds (may be smaller than the length of the property arrays)
       N_radialBonds = 0,
@@ -1503,14 +1506,14 @@ exports.makeModel = function() {
         sigma_i, epsilon_i,
         sigma_j, epsilon_j,
         sig, eps,
-        distanceCutoff_sq = 4 // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
+        distanceCutoff_sq = 4, // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
         prevVdwPairsNum = vdwPairNum || 0;
       vdwPairNum = 0;
 
       for (i = 0; i < N; i++) {
         // pairwise interactions
         for (j = i+1; j < N; j++) {
-          if (N_radialBonds != 0 && (radialBondsHash[i] && radialBondsHash[i][j])) continue;
+          if (N_radialBonds !== 0 && (radialBondsHash[i] && radialBondsHash[i][j])) continue;
           if(charge[i]*charge[j] <= 0){
             dx = x[j] - x[i];
             dy = y[j] - y[i];
