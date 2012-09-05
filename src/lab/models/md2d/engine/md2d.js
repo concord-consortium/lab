@@ -39,19 +39,6 @@ var arrays       = require('arrays'),
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-    /**
-      from the Java MW:
-        final static float GF_CONVERSION_CONSTANT = 0.008f;
-
-      https://github.com/concord-consortium/mw/blob/master/src/org/concord/mw2d/models/MDModel.java#L141-147
-        converts energy gradient unit into force unit:
-        1.6E-19 [J] / ( E-11 [m] x 120E-3 / 6E23 [kg] ) / ( E-11 / ( E-15) ^ 2 ) [m/s^2]
-
-      However in order to get similar gravitational effect our constant is 100 time smaller
-      TODO: find out why ???
-    */
-    GF_CONVERSION_CONSTANT = 0.00008,
-
     INDICES,
     ELEMENT_INDICES,
     OBSTACLE_INDICES,
@@ -840,28 +827,22 @@ exports.makeModel = function() {
       updateFrictionAccelerations = function () {
         if (!viscosity) return;
 
-        /**
-          Classic MW calculation:
-              inverseMass = GF_CONVERSION_CONSTANT * a.friction / a.mass;
-              a.fx -= inverseMass * a.vx * universe.getViscosity();
-              a.fy -= inverseMass * a.vy * universe.getViscosity();
-
-          Note: An additional factor of 12000 needed to be applied to
-          GF_CONVERSION_CONSTANT in order to get the same behavior between
-          Classic and MW5. FIXME: We need to resolve our conversion questions
-        */
-
         var i = N,
-            dragConstant = -1 * 12000 * GF_CONVERSION_CONSTANT * viscosity,
-            mass,
+            fx,
+            fy,
+            inverseMass,
             drag;
 
         while (i--) {
-          mass = elements[element[i]][ELEMENT_INDICES.MASS];
-          drag = dragConstant * friction[i] / mass;
+          inverseMass = 1 / elements[element[i]][ELEMENT_INDICES.MASS];
+          drag = viscosity * friction[i];
 
-          ax[i] += vx[i] * drag;
-          ay[i] += vy[i] * drag;
+          fx = -vx[i] * drag;
+          fy = -vy[i] * drag;
+          fx[i] += fx;
+          fy[i] += fy;
+          ax[i] += fx * inverseMass;
+          ay[i] += fy * inverseMass;
         }
       },
 
