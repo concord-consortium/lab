@@ -38,7 +38,7 @@ var ROOT = "/examples",
       editor,
       controller,
       indent = 2,
-      foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder),
+      foldFunc,
       interactiveUrl,
       interactive,
       hash,
@@ -167,6 +167,7 @@ var ROOT = "/examples",
 
     // Copy Interactive json to code editor
     interactiveTextArea.textContent = JSON.stringify(interactive, null, indent);
+    foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     editor = CodeMirror.fromTextArea(interactiveTextArea, {
       mode: 'javascript',
       indentUnit: indent,
