@@ -210,6 +210,9 @@ var ROOT = "/examples",
     $showBenchmarks.change(function() {
       if (this.checked) {
         $benchmarksContent.show(100);
+        $showModelEnergyGraph.attr("checked", false).change();
+        $showModelDatatable.attr("checked", false).change();
+        $showEditor.attr("checked", false).change();
       } else {
         $benchmarksContent.hide(100);
       }
