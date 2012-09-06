@@ -81,6 +81,15 @@ modeler.model = function(initialProperties) {
         VDWLinesRatio         : 1.99,
         viscosity             : 0,
 
+        /**
+          These functions are optional setters that will be called *instead* of simply setting
+          a value when 'model.set({property: value})' is called, and are currently needed if you
+          want to pass a value through to the coreModel.  The function names are automatically
+          determined from the property name. If you define one of these custom functions, you
+          must remember to also set the property explicitly (if appropriate) as this won't be
+          done automatically
+        */
+
         set_temperature: function(t) {
           this.temperature = t;
           if (coreModel) {
@@ -114,6 +123,13 @@ modeler.model = function(initialProperties) {
           this.gravitationalField = gf;
           if (coreModel) {
             coreModel.setGravitationalField(gf);
+          }
+        },
+
+        set_viscosity: function(v) {
+          this.viscosity = v;
+          if (coreModel) {
+            coreModel.setViscosity(v);
           }
         }
       };
