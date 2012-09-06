@@ -10,7 +10,7 @@ GF_CONVERSION_CONSTANT = 0.008
 # converts gravitation field value from Classic to an acceleration in nm/fs^2
 CLASSIC_TO_NEXTGEN_GRAVITATION_RATIO = 0.01 * GF_CONVERSION_CONSTANT
 
-# converts a 'friction' value from Classic to units of amu/false
+# converts a 'friction' value from Classic to units of amu/fs
 CLASSIC_TO_NEXTGEN_FRICTION_RATIO = 120 * GF_CONVERSION_CONSTANT
 
 # window.MWHelpers = {};
