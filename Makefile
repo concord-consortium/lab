@@ -96,6 +96,7 @@ clean:
 	rm -rf node_modules
 	git submodule update --init --recursive
 	rm -f src/vendor/jquery/dist/jquery.min.js
+	rm -f src/vendor/jquery-ui/dist/jquery-ui.min.js
 	rm -f src/vendor/lightgl.js/lightgl.js
 
 clean-jnlp:
@@ -208,7 +209,7 @@ server/public/vendor: \
 	server/public/vendor/d3 \
 	server/public/vendor/d3-plugins \
 	server/public/vendor/jquery/jquery.min.js \
-	server/public/vendor/jquery-ui \
+	server/public/vendor/jquery-ui/jquery-ui.min.js \
 	server/public/vendor/science.js \
 	server/public/vendor/modernizr \
 	server/public/vendor/sizzle \
@@ -257,6 +258,15 @@ server/public/vendor/jquery/jquery.min.js: \
 
 server/public/vendor/jquery:
 	mkdir -p server/public/vendor/jquery
+
+server/public/vendor/jquery-ui/jquery-ui.min.js: \
+	src/vendor/jquery-ui/dist/jquery-ui.min.js \
+	server/public/vendor/jquery-ui
+	cp -r src/vendor/jquery-ui/dist/* server/public/vendor/jquery-ui
+	cp src/vendor/jquery-ui/MIT-LICENSE.txt server/public/vendor/jquery-ui
+
+server/public/vendor/jquery-ui:
+	mkdir -p server/public/vendor/jquery-ui
 
 server/public/vendor/science.js:
 	mkdir -p server/public/vendor/science.js
@@ -334,17 +344,16 @@ src/vendor/lightgl.js/lightgl.js:
 	cd src/vendor/lightgl.js; python build.py
 
 src/vendor/jquery/dist/jquery.min.js: src/vendor/jquery
-	cd src/vendor/jquery; npm install; ./node_modules/grunt/bin/grunt
+	cd src/vendor/jquery; npm install; ./node_modules/grunt/bin/grunt min
 
 src/vendor/jquery:
 	git submodule update --init --recursive
 
-server/public/vendor/jquery-ui:
-	mkdir -p server/public/vendor/jquery-ui/js
-	cp src/vendor/jquery-ui/development-bundle/GPL-LICENSE.txt server/public/vendor/jquery-ui
-	cp src/vendor/jquery-ui/development-bundle/MIT-LICENSE.txt server/public/vendor/jquery-ui
-	cp src/vendor/jquery-ui/js/jquery-ui-1.8.17.custom.min.js server/public/vendor/jquery-ui/js/jquery-ui.custom.min.js
-	cp -R src/vendor/jquery-ui/css server/public/vendor/jquery-ui
+src/vendor/jquery-ui/dist/jquery-ui.min.js: src/vendor/jquery-ui
+	cd src/vendor/jquery-ui; npm install; ./node_modules/grunt/bin/grunt min
+
+src/vendor/jquery-ui:
+	git submodule update --init --recursive
 
 server/public/lab:
 	mkdir -p server/public/lab

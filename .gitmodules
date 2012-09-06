@@ -46,3 +46,6 @@
 [submodule "src/vendor/codemirror"]
 	path = src/vendor/codemirror
 	url = git://github.com/marijnh/CodeMirror.git
+[submodule "src/vendor/jquery-ui"]
+	path = src/vendor/jquery-ui
+	url = git://github.com/jquery/jquery-ui.git
