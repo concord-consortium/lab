@@ -490,11 +490,4 @@ var ROOT = "/examples",
     }
   }
 
-  //
-  // bug when dragging an extra item down
-  //
-  // $("#sortable-extras").sortable({
-  //     placeholder: "sortable-placeholder"
-  // });
-
 }());
