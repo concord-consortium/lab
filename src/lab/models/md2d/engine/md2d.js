@@ -839,8 +839,6 @@ exports.makeModel = function() {
 
           fx = -vx[i] * drag;
           fy = -vy[i] * drag;
-          fx[i] += fx;
-          fy[i] += fy;
           ax[i] += fx * inverseMass;
           ay[i] += fy * inverseMass;
         }
