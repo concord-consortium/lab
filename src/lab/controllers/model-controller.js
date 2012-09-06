@@ -44,7 +44,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       // We pass this object to the "ModelPlayer" to intercept messages for the model
       // instead of allowing the ModelPlayer to talk to the model directly.
       // This allows us, for example, to reload the model instead of trying to call a 'reset' event
-      // on models (which don't really know how to reset themselves; that's part of what we're for.)
+      // on models which don't know how to reset themselves.
 
       modelProxy = {
         resume: function() {
@@ -57,6 +57,12 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
         reset: function() {
           model.stop();
+          // if the model has a reset function then call it so anything the application
+          // sets up outside the interactive itself that is listening for a model.reset
+          // event gets notified. Example the Energy Graph Extra Item.
+          if (model.reset) {
+            model.reset();
+          }
           reload(modelConfig, playerConfig);
         },
 
