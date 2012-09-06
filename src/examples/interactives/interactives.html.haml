@@ -82,34 +82,45 @@
           #interactive-container
       #extras-bottom
         #extras-bottom-banner Extras
-        #editor.extras-item
-          .extras-item-banner
-            %input#show-editor{:type => "checkbox", :checked => false}
-            %label{:for => "show-editor"} Interactive Editor
-          #editor-content.extras-item-content
-            .extras-item-controls
-              %button#update-interactive-button Update Interactive
-              %button#autoformat-selection-button AutoFormat Selection
-              %a#json-model-link{:href => "", :class => "opens-in-new-window", :target => "_blank"} Model JSON
-            %textarea#interactive-text-area
-        #benchmark.extras-item
-          .extras-item-banner
-            %input#show-benchmarks{:type => "checkbox", :checked => false}
-            %label{:for => "show-benchmarks"} Benchmarks
-          #benchmarks-content.extras-item-content
-            .extras-item-controls
-              %button#run-benchmarks-button.extras-item-controls Run Benchmarks
-              Collect performance data by first running just the model for 100 steps and then running the model and the graphics together for 100 steps.
-            .model-benchmark-results
-              %table#model-benchmark-results.model-benchmark-results
-        #model-datatable.extras-item
-          .extras-item-banner
-            %input#show-model-datatable{:type => "checkbox", :checked => false}
-            %label{:for => "show-model-datatable"} Atoms Datatable
-          #model-datatable-content.extras-item-content
-            #model-datatable-stats.extras-item-controls
-            .model-datatable-results
-              %table#model-datatable-results
+
+        %ul#sortable-extras
+          %li#editor.extras-item
+            .extras-item-banner
+              %input#show-editor{:type => "checkbox", :checked => false}
+              %label{:for => "show-editor"} Interactive Editor
+            #editor-content.extras-item-content
+              .extras-item-controls
+                %button#update-interactive-button Update Interactive
+                %button#autoformat-selection-button AutoFormat Selection
+                %a#json-model-link{:href => "", :class => "opens-in-new-window", :target => "_blank"} Model JSON
+              %textarea#interactive-text-area
+
+          %li#model-energy-graph.extras-item
+            .extras-item-banner
+              %input#show-model-energy-graph{:type => "checkbox", :checked => false}
+              %label{:for => "show-model-energy-graph"} Energy Graph
+            #model-energy-graph-content.extras-item-content
+              #model-energy-graph-chart.ke-chart
+
+          %li#model-datatable.extras-item
+            .extras-item-banner
+              %input#show-model-datatable{:type => "checkbox", :checked => false}
+              %label{:for => "show-model-datatable"} Atoms Datatable
+            #model-datatable-content.extras-item-content
+              #model-datatable-stats.extras-item-controls
+              .model-datatable-results
+                %table#model-datatable-results
+
+          %li#benchmark.extras-item
+            .extras-item-banner
+              %input#show-benchmarks{:type => "checkbox", :checked => false}
+              %label{:for => "show-benchmarks"} Benchmarks
+            #benchmarks-content.extras-item-content
+              .extras-item-controls
+                %button#run-benchmarks-button.extras-item-controls Run Benchmarks
+                Collect performance data by first running just the model for 100 steps and then running the model and the graphics together for 100 steps.
+              .model-benchmark-results
+                %table#model-benchmark-results.model-benchmark-results
 
       #about-pane
         #about-pane-banner

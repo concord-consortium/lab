@@ -21,14 +21,23 @@ var ROOT = "/examples",
       $aboutPane = $("#about-pane"),
       $aboutPaneClose = $('#about-pane-close'),
 
+      $editorExtrasItem = $("editor.extras-item"),
       $showEditor = $("#show-editor"),
       $editorContent = $("#editor-content"),
 
+      $benchmarksExtrasItem = $("benchmarks.extras-item"),
       $showBenchmarks = $("#show-benchmarks"),
       $benchmarksContent = $("#benchmarks-content"),
       $runBenchmarksButton = $("#run-benchmarks-button"),
       benchmarksToRun,
 
+      $modelEnergyGraphExtrasItem = $("model-energy-graph.extras-item"),
+      $showModelEnergyGraph = $("#show-model-energy-graph"),
+      $modelEnergyGraphContent = $("#model-energy-graph-content"),
+      modelEnergyGraph,
+      modelEnergyData = [],
+
+      $modelDatatableExtrasItem = $("model-datatable.extras-item"),
       $showModelDatatable = $("#show-model-datatable"),
       $modelDatatableContent = $("#model-datatable-content"),
       $modelDatatableResults = $("#model-datatable-results"),
@@ -85,6 +94,7 @@ var ROOT = "/examples",
     $aboutPaneClose.click(function() {
       $aboutPane.hide(100);
     });
+    $aboutPane.draggable();
   });
 
   $(window).bind('hashchange', function() {
@@ -165,7 +175,13 @@ var ROOT = "/examples",
       return encodeURI(dgUrl);
     });
 
-    // Copy Interactive json to code editor
+    //
+    // Extras
+    //
+
+    //
+    // Interactive Code Editor
+    //
     interactiveTextArea.textContent = JSON.stringify(interactive, null, indent);
     foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     editor = CodeMirror.fromTextArea(interactiveTextArea, {
@@ -188,6 +204,9 @@ var ROOT = "/examples",
       }
     }).change();
 
+    //
+    // Benchmarks
+    //
     $showBenchmarks.change(function() {
       if (this.checked) {
         $benchmarksContent.show(100);
@@ -252,19 +271,109 @@ var ROOT = "/examples",
       benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun);
     });
 
+    //
+    // Energy Graph
+    //
+
+    if (!modelEnergyGraph) {
+      renderModelEnergyGraph();
+    }
+
+    $showModelEnergyGraph.change(function() {
+      if (this.checked) {
+        model.on("tick.modelEnergyGraph", function() {
+          modelEnergyGraph.add_points(updateModelEnergyData());
+        });
+
+        model.on('play.modelEnergyGraph', function() {
+          if (modelEnergyGraph.number_of_points() && model.stepCounter() < modelEnergyGraph.number_of_points()) {
+            resetModelEnergyData(model.stepCounter());
+            modelEnergyGraph.new_data(modelEnergyData);
+          }
+          modelEnergyGraph.show_canvas();
+        });
+
+        model.on('reset.modelEnergyGraph', function() {
+          resetModelEnergyData();
+          modelEnergyGraph.new_data(modelEnergyData);
+          modelEnergyGraph.reset();
+        });
+
+        model.on('seek.modelEnergyGraph', function() {
+        });
+        $modelEnergyGraphContent.show(100);
+      } else {
+        model.on("tick.modelEnergyGraph");
+        model.on('play.modelEnergyGraph');
+        model.on('reset.modelEnergyGraph');
+        model.on('seek.modelEnergyGraph');
+        $modelEnergyGraphContent.hide(100);
+      }
+    }).change();
+
+    function renderModelEnergyGraph() {
+      var options = {
+            title:     "Energy of the System (KE:red, PE:green, TE:blue)",
+            xlabel:    "Model Time (ps)",
+            xmin:      0,
+            xmax:     100,
+            sample:    0.1,
+            ylabel:    "eV",
+            ymin:      -5.0,
+            ymax:      5.0
+          };
+
+      resetModelEnergyData();
+      options.dataset = modelEnergyData;
+      modelEnergyGraph = grapher.realTimeGraph('#model-energy-graph-chart', options);
+    }
+
+    // Add another sample of model KE, PE, and TE to the arrays in resetModelEnergyData
+    function updateModelEnergyData() {
+      var ke = model.ke(),
+          pe = model.pe(),
+          te = ke + pe;
+      modelEnergyData[0].push(ke);
+      modelEnergyData[1].push(pe);
+      modelEnergyData[2].push(te);
+      return [ke, pe, te];
+    }
+
+    // Reset the resetModelEnergyData arrays to a specific length by passing in an index value,
+    // or empty the resetModelEnergyData arrays an initialize the first sample.
+    function resetModelEnergyData(index) {
+      var modelsteps = model.stepCounter(),
+          i,
+          len;
+
+      if (index) {
+        for (i = 0, len = modelEnergyData.length; i < len; i++) {
+          modelEnergyData[i].length = modelsteps;
+        }
+        return index;
+      } else {
+        modelEnergyData = [[0],[0],[0]];
+        return 0;
+      }
+    }
+
+
+    //
+    // Atom Data Table
+    //
     $showModelDatatable.change(function() {
       if (this.checked) {
         model.on("tick.dataTable", renderModelDatatable);
         model.on('play.dataTable', renderModelDatatable);
-        model.on('reset.energyGraph', renderModelDatatable);
-        model.on('seek.energyGraph', renderModelDatatable);
+        model.on('reset.dataTable', renderModelDatatable);
+        model.on('seek.dataTable', renderModelDatatable);
         renderModelDatatable();
         $modelDatatableContent.show(100);
       } else {
         model.on("tick.dataTable");
         model.on('play.dataTable');
-        model.on('reset.energyGraph');
-        model.on('seek.energyGraph');
+        model.on('reset.dataTable');
+        model.on('seek.dataTable');
         $modelDatatableContent.hide(100);
       }
     }).change();
@@ -377,4 +486,12 @@ var ROOT = "/examples",
       add_molecule_data($datarows[i], i);
     }
   }
+
+  //
+  // bug when dragging an extra item down
+  //
+  // $("#sortable-extras").sortable({
+  //     placeholder: "sortable-placeholder"
+  // });
+
 }());
