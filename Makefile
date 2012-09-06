@@ -201,6 +201,13 @@ server/public/imports:
 	./node-bin/convert-mml-files
 	./node-bin/create-mml-html-index
 	./src/mw-helpers/post-batch-processor.rb
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/sam-activities server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/conversion-and-physics-examples server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/other-activities server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/potential-tests server/public/imports/legacy-mw-content/converted
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/tutorial server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/visual server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/validation server/public/imports/legacy-mw-content/converted/
 
 server/public/resources:
 	cp -R ./src/resources ./server/public/
