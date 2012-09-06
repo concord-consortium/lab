@@ -95,8 +95,8 @@ clean:
 	rm -rf lab
 	rm -rf node_modules
 	git submodule update --init --recursive
-	rm -f src/vendor/jquery/dist/jquery.min.js
-	rm -f src/vendor/jquery-ui/dist/jquery-ui.min.js
+	rm -f src/vendor/jquery/dist/jquery*.js
+	rm -f src/vendor/jquery-ui/dist/jquery-ui*.js
 	rm -f src/vendor/lightgl.js/lightgl.js
 
 clean-jnlp:
@@ -252,7 +252,7 @@ server/public/vendor/d3-plugins:
 server/public/vendor/jquery/jquery.min.js: \
 	src/vendor/jquery/dist/jquery.min.js \
 	server/public/vendor/jquery
-	cp src/vendor/jquery/dist/jquery.min.js server/public/vendor/jquery/jquery.min.js
+	cp src/vendor/jquery/dist/jquery*.js server/public/vendor/jquery
 	cp src/vendor/jquery/MIT-LICENSE.txt server/public/vendor/jquery
 	cp src/vendor/jquery/README.md server/public/vendor/jquery
 
@@ -344,13 +344,13 @@ src/vendor/lightgl.js/lightgl.js:
 	cd src/vendor/lightgl.js; python build.py
 
 src/vendor/jquery/dist/jquery.min.js: src/vendor/jquery
-	cd src/vendor/jquery; npm install; ./node_modules/grunt/bin/grunt min
+	cd src/vendor/jquery; npm install; ./node_modules/grunt/bin/grunt
 
 src/vendor/jquery:
 	git submodule update --init --recursive
 
 src/vendor/jquery-ui/dist/jquery-ui.min.js: src/vendor/jquery-ui
-	cd src/vendor/jquery-ui; npm install; ./node_modules/grunt/bin/grunt min
+	cd src/vendor/jquery-ui; npm install; ./node_modules/grunt/bin/grunt build
 
 src/vendor/jquery-ui:
 	git submodule update --init --recursive
