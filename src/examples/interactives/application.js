@@ -143,6 +143,7 @@ var ROOT = "/examples",
   }
 
   function setupFullPage() {
+    var java_mw_link;
     selectInteractive.value = interactiveUrl;
 
     // construct link to embeddable version of Interactive
@@ -156,9 +157,9 @@ var ROOT = "/examples",
     mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml");
     contentItems = getObjects(modelList, "mml", mmlPath);
     if (contentItems.length > 0) {
-      $("#java-mw-link").attr("href", function() {
-        return "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," + window.location.origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
-      });
+      java_mw_link = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
+                      window.location.origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
+      $("#java-mw-link").attr("href", java_mw_link);
     }
 
     // construct link to DataGames embeddable version of Interactive
