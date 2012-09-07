@@ -1647,6 +1647,12 @@ exports.makeModel = function() {
       KEinMWUnits = 0;
 
       for (i = 0; i < N; i++) {
+
+        // gravitational PE
+        if (gravitationalField) {
+          PE += elements[i][ELEMENT_INDICES.MASS] * gravitationalField * y[i] * 10375.0;
+        }
+
         KEinMWUnits += 0.5 * elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
 
         // pairwise interactions
