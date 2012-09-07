@@ -38,6 +38,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       viscosity,
       gravitationalField,
       images,
+      interactiveUrl,
       showClock,
 
       moleculeContainer,
@@ -95,6 +96,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       modelTimeLabel      = playerConfig.modelTimeLabel;
       enableAtomTooltips  = playerConfig.enableAtomTooltips || false;
       fit_to_parent       = playerConfig.fit_to_parent;
+      interactiveUrl      = playerConfig.interactiveUrl;
 
       elements            = modelConfig.elements;
       atoms               = modelConfig.atoms;
@@ -132,7 +134,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           showClock           : showClock,
           viscosity           : viscosity,
           gravitationalField  : gravitationalField,
-          images              : images
+          images              : images,
+          interactiveUrl      : interactiveUrl
         });
 
       if (atoms) {
@@ -177,6 +180,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         chargeShading:        chargeShading,
         enableAtomTooltips:   enableAtomTooltips,
         images:               images,
+        interactiveUrl:       interactiveUrl,
         get_radial_bonds:     function() { return model.get_radial_bonds(); },
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },

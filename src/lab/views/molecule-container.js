@@ -53,6 +53,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       vdwLine,
       getRadialBonds,
       imageProp,
+      interactiveUrl,
       getVdwPairs,
       bondColorArray,
       default_options = {
@@ -109,6 +110,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     set_atom_properties = options.set_atom_properties;
     is_stopped = options.is_stopped;
     imageProp = options.images;
+    interactiveUrl = options.interactiveUrl;
     if (!options.showClock) {
       options.showClock = model.get("showClock");
     }
@@ -843,23 +845,23 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function drawImageAttachment(){
       image_container.selectAll("image.image_attach").remove();
+      var imgHostIndex_i, img, img_height, img_width, imagePath, distance;
       var numImages = imageProp.length;
+      imagePath = interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
       for(var i = 0;i < numImages;i++) {
-        var imgHostIndex_i =  imageProp[i].imageHostIndex
-        var img = new Image();
-        img.src =   "../../resources/"+imageProp[i].imageUri;
-        var dist = Math.sqrt((img.height*img.height) + (img.width*img.width))/2;
+        imgHostIndex_i =  imageProp[i].imageHostIndex
+        img = new Image();
+        img.src = imagePath+imageProp[i].imageUri;
+        img_height = img.height;
+        img_width = img.width
+        distance = Math.sqrt((img_height*img_height) + (img_width*img_width))/2;
         image_container.append("image")
-/*
-          .attr("x", function() { return imgHostIndex_i ? (x(get_x(imgHostIndex_i))-x(get_radius(imgHostIndex_i))) : imageProp[i].imageX;})
-          .attr("x", function() { return imgHostIndex_i ? (y(get_y(imgHostIndex_i))-x(get_radius(imgHostIndex_i))) : imageProp[i].imageY;})
-*/
-          .attr("x", (x(get_x(imgHostIndex_i))-dist))
-          .attr("y", (y(get_y(imgHostIndex_i))-dist))
+          .attr("x", (x(get_x(imgHostIndex_i))-distance))
+          .attr("y", (y(get_y(imgHostIndex_i))-distance))
           .attr("class", "image_attach draggable")
           .attr("xlink:href", img.src)
-          .attr("width", 26)
-          .attr("height", 26)
+          .attr("width", img_width)
+          .attr("height", img_height)
           .attr("pointer-events", "none");
       }
     }

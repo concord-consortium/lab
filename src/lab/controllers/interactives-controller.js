@@ -524,6 +524,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         playerConfig = { controlButtons: 'play' };
       }
       playerConfig.fit_to_parent = !layoutStyle;
+      playerConfig.interactiveUrl = modelUrl;
     }
 
     if (modelUrl) loadModel(modelUrl);
