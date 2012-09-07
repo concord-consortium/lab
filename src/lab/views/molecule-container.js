@@ -817,6 +817,26 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             }
           });
     }
+    function springBondEnter(x1, y1, x2, y2, minDistance, radialBond) {
+      var dx = x2 - x1;
+      var dy = y2 - y1;
+      var numPoints = (Math.floor(Math.sqrt(dx * dx + dy * dy)) / minDistance)+1;
+
+      var result = [];
+
+      var stepx = dx / numPoints;
+      var stepy = dy / numPoints;
+      var px = x1;
+      var py = y1;
+      for (var i = 0; i < numPoints; i++)
+      {
+        result.push([px, py]);
+        px += stepx;
+        py += stepy;
+      }
+      return result;
+
+    }
 
     function drawAttractionForces(){
       var vdwPairs = mock_vdw_pairs_array.length;
@@ -932,7 +952,13 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       radialBond = gradient_container.selectAll("line.radialbond").data(mock_radial_bond_array);
 
-      radialBondEnter(radialBond);
+      for(var i = 0; i<mock_radial_bond_array.length;i++){
+        if(!(Math.ceil(get_radial_bond_length(i) > 0.3 )) && (get_radial_bond_strength(i) < 2000 )) {
+          radialBondEnter(radialBond);
+        } else {
+          springBondEnter(x(get_x(get_radial_bond_atom_1(i))),y(get_y(get_radial_bond_atom_1(i))),x(get_x(get_radial_bond_atom_2(i))),y(get_y(get_radial_bond_atom_2(i))), 5, radialBond);
+        }
+      }
     }
 
     function setup_vdw_pairs() {
