@@ -108,13 +108,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     getVdwPairs = options.get_vdw_pairs;
     set_atom_properties = options.set_atom_properties;
     is_stopped = options.is_stopped;
-<<<<<<< HEAD
     imageProp = options.images;
-=======
     if (!options.showClock) {
       options.showClock = model.get("showClock");
     }
->>>>>>> master
   }
 
   function scale(w, h) {
@@ -848,13 +845,22 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       image_container.selectAll("image.image_attach").remove();
       var numImages = imageProp.length;
       for(var i = 0;i < numImages;i++) {
-      image_container.append("image")
-        .attr("x", (x(get_x(imageProp[0].imageHostIndex))-x(get_radius(imageProp[i].imageHostIndex))))
-        .attr("y", (y(get_y(imageProp[0].imageHostIndex))-x(get_radius(imageProp[i].imageHostIndex))))
-        .attr("class", "image_attach draggable")
-        .attr("xlink:href", "../../resources/"+imageProp[i].imageUri)
-        .attr("width", 26)
-        .attr("height", 26);
+        var imgHostIndex_i =  imageProp[i].imageHostIndex
+        var img = new Image();
+        img.src =   "../../resources/"+imageProp[i].imageUri;
+        var dist = Math.sqrt((img.height*img.height) + (img.width*img.width))/2;
+        image_container.append("image")
+/*
+          .attr("x", function() { return imgHostIndex_i ? (x(get_x(imgHostIndex_i))-x(get_radius(imgHostIndex_i))) : imageProp[i].imageX;})
+          .attr("x", function() { return imgHostIndex_i ? (y(get_y(imgHostIndex_i))-x(get_radius(imgHostIndex_i))) : imageProp[i].imageY;})
+*/
+          .attr("x", (x(get_x(imgHostIndex_i))-dist))
+          .attr("y", (y(get_y(imgHostIndex_i))-dist))
+          .attr("class", "image_attach draggable")
+          .attr("xlink:href", img.src)
+          .attr("width", 26)
+          .attr("height", 26)
+          .attr("pointer-events", "none");
       }
     }
 
@@ -1038,7 +1044,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       update_radial_bonds();
       update_molecule_positions();
       if(imageProp && imageProp.length!=0){
-      drawImageAttachment();
+      updateImageAttachment();
       }
       }
 
@@ -1086,6 +1092,18 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
         .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
         .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));});
+    }
+    function updateImageAttachment(){
+      var numImages = imageProp.length;
+      for(var i = 0;i < numImages;i++) {
+        var imgHostIndex_i =  imageProp[i].imageHostIndex
+        var img = new Image();
+        img.src =   "../../resources/"+imageProp[i].imageUri;
+        var dist = Math.sqrt((img.height*img.height) + (img.width*img.width))/2;
+        image_container.selectAll("image.draggable")
+          .attr("x", (x(get_x(imgHostIndex_i))-dist))
+          .attr("y", (y(get_y(imgHostIndex_i))-dist))
+      }
     }
 
     function node_dragstart(d, i) {

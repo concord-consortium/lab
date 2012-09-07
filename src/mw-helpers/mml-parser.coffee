@@ -154,7 +154,7 @@ parseMML = (mmlString) ->
         { ...
       ]
     ###
-    imageProps = $mml("[property=images]")
+    imageProps = $mml("[property=images] array")
     images = [];
     if imageProps.length > 0
       for type in imageProps
@@ -166,7 +166,6 @@ parseMML = (mmlString) ->
         imageX = parseFloat imageProps.find("[property=x] double").text()
         imageY = parseFloat imageProps.find("[property=y] double").text()
         images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageX: imageX, imageY: imageY }
-
     ###
       Find the view-port size
     ###
