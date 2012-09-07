@@ -839,8 +839,6 @@ exports.makeModel = function() {
 
           fx = -vx[i] * drag;
           fy = -vy[i] * drag;
-          fx[i] += fx;
-          fy[i] += fy;
           ax[i] += fx * inverseMass;
           ay[i] += fy * inverseMass;
         }
@@ -1638,6 +1636,7 @@ exports.makeModel = function() {
           r_sq,
           k,
           dr,
+          gravPEInMWUnits,
           KEinMWUnits,       // total kinetic energy, in MW units
           PE;                // potential energy, in eV
 
@@ -1650,7 +1649,8 @@ exports.makeModel = function() {
 
         // gravitational PE
         if (gravitationalField) {
-          PE += elements[i][ELEMENT_INDICES.MASS] * gravitationalField * y[i] * 10375.0;
+          gravPEInMWUnits = elements[i][ELEMENT_INDICES.MASS] * gravitationalField * y[i];
+          PE += constants.convert(gravPEInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
         }
 
         KEinMWUnits += 0.5 * elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
