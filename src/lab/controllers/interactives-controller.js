@@ -359,10 +359,12 @@ controllers.interactivesController = function(interactive, viewSelector, applica
 
         resetEnergyData();
 
-        // Draw the energyGraph only if it hasn't been drawn before:
+        // Create energyGraph only if it hasn't been drawn before:
         if (!energyGraph) {
           $.extend(options, thisComponent.options || []);
-          renderEnergyGraph(thisComponent.id, options);
+          newEnergyGraph(thisComponent.id, options);
+        } else {
+          energyGraph.reset();
         }
 
         if (thisComponent.dimensions) {
@@ -402,7 +404,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     };
   }
 
-  function renderEnergyGraph(id, options) {
+  function newEnergyGraph(id, options) {
     options = options || {};
     options.dataset = energyData;
     energyGraph = grapher.realTimeGraph('#' + id, options);

@@ -2,8 +2,16 @@ cheerio   = require 'cheerio'
 constants = require '../lab/models/md2d/engine/constants'
 unit      = constants.unit
 
+# Used throughout Classic MW to convert energy gradient values measured in units of eV/0.1Å to
+# the equivalent forces measured in units of 120 amu * 0.1Å / fs^2 (Classic's "natural" unit system
+# used to compute position updates)
+GF_CONVERSION_CONSTANT = 0.008
+
 # converts gravitation field value from Classic to an acceleration in nm/fs^2
-CLASSIC_TO_NEXTGEN_GRATIVATION_RATIO = 8e-5
+CLASSIC_TO_NEXTGEN_GRAVITATION_RATIO = 0.01 * GF_CONVERSION_CONSTANT
+
+# converts a 'friction' value from Classic to units of amu/fs
+CLASSIC_TO_NEXTGEN_FRICTION_RATIO = 120 * GF_CONVERSION_CONSTANT
 
 # window.MWHelpers = {};
 
@@ -135,7 +143,7 @@ parseMML = (mmlString) ->
     gravitationalProps = $mml(".org-concord-mw2d-models-GravitationalField")
     if (gravitationalProps.length > 0)
       gravitationalField = parseFloat gravitationalProps.find("[property=intensity] double").text() || 0.010
-      gravitationalField *= CLASSIC_TO_NEXTGEN_GRATIVATION_RATIO
+      gravitationalField *= CLASSIC_TO_NEXTGEN_GRAVITATION_RATIO
     else
       gravitationalField = false
 
@@ -282,10 +290,13 @@ parseMML = (mmlString) ->
         visible   = if (parseBoolean (getProperty $node, 'visible'), true) then 1 else 0
         pinned    = if $node.find("[property=movable]").text() then 1 else 0
         draggable = if $node.find("[property=userField]").text() then 1 else 0
-        [x, y] = toNextgenCoordinates x, y
 
+        # unit conversions
+        [x, y] = toNextgenCoordinates x, y
+        friction = friction * CLASSIC_TO_NEXTGEN_FRICTION_RATIO
         vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
         vy = -vy / 100
+
         atoms.push { elemId, x, y, vx, vy, charge, friction, pinned, visible, draggable }
 
       atoms

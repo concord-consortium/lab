@@ -95,7 +95,8 @@ clean:
 	rm -rf lab
 	rm -rf node_modules
 	git submodule update --init --recursive
-	rm -f src/vendor/jquery/dist/jquery.min.js
+	rm -f src/vendor/jquery/dist/jquery*.js
+	rm -f src/vendor/jquery-ui/dist/jquery-ui*.js
 	rm -f src/vendor/lightgl.js/lightgl.js
 
 clean-jnlp:
@@ -200,6 +201,13 @@ server/public/imports:
 	./node-bin/convert-mml-files
 	./node-bin/create-mml-html-index
 	./src/mw-helpers/post-batch-processor.rb
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/sam-activities server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/conversion-and-physics-examples server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/other-activities server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/potential-tests server/public/imports/legacy-mw-content/converted
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/tutorial server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/visual server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/validation server/public/imports/legacy-mw-content/converted/
 
 server/public/resources:
 	cp -R ./src/resources ./server/public/
@@ -208,7 +216,7 @@ server/public/vendor: \
 	server/public/vendor/d3 \
 	server/public/vendor/d3-plugins \
 	server/public/vendor/jquery/jquery.min.js \
-	server/public/vendor/jquery-ui \
+	server/public/vendor/jquery-ui/jquery-ui.min.js \
 	server/public/vendor/science.js \
 	server/public/vendor/modernizr \
 	server/public/vendor/sizzle \
@@ -251,12 +259,21 @@ server/public/vendor/d3-plugins:
 server/public/vendor/jquery/jquery.min.js: \
 	src/vendor/jquery/dist/jquery.min.js \
 	server/public/vendor/jquery
-	cp src/vendor/jquery/dist/jquery.min.js server/public/vendor/jquery/jquery.min.js
+	cp src/vendor/jquery/dist/jquery*.js server/public/vendor/jquery
 	cp src/vendor/jquery/MIT-LICENSE.txt server/public/vendor/jquery
 	cp src/vendor/jquery/README.md server/public/vendor/jquery
 
 server/public/vendor/jquery:
 	mkdir -p server/public/vendor/jquery
+
+server/public/vendor/jquery-ui/jquery-ui.min.js: \
+	src/vendor/jquery-ui/dist/jquery-ui.min.js \
+	server/public/vendor/jquery-ui
+	cp -r src/vendor/jquery-ui/dist/* server/public/vendor/jquery-ui
+	cp src/vendor/jquery-ui/MIT-LICENSE.txt server/public/vendor/jquery-ui
+
+server/public/vendor/jquery-ui:
+	mkdir -p server/public/vendor/jquery-ui
 
 server/public/vendor/science.js:
 	mkdir -p server/public/vendor/science.js
@@ -339,12 +356,11 @@ src/vendor/jquery/dist/jquery.min.js: src/vendor/jquery
 src/vendor/jquery:
 	git submodule update --init --recursive
 
-server/public/vendor/jquery-ui:
-	mkdir -p server/public/vendor/jquery-ui/js
-	cp src/vendor/jquery-ui/development-bundle/GPL-LICENSE.txt server/public/vendor/jquery-ui
-	cp src/vendor/jquery-ui/development-bundle/MIT-LICENSE.txt server/public/vendor/jquery-ui
-	cp src/vendor/jquery-ui/js/jquery-ui-1.8.17.custom.min.js server/public/vendor/jquery-ui/js/jquery-ui.custom.min.js
-	cp -R src/vendor/jquery-ui/css server/public/vendor/jquery-ui
+src/vendor/jquery-ui/dist/jquery-ui.min.js: src/vendor/jquery-ui
+	cd src/vendor/jquery-ui; npm install; ./node_modules/grunt/bin/grunt build
+
+src/vendor/jquery-ui:
+	git submodule update --init --recursive
 
 server/public/lab:
 	mkdir -p server/public/lab

@@ -1,4 +1,5 @@
 @import url('molecules-view.css')
+@import 'sass/bourbon/bourbon'
 
 #content
   width: 100%
@@ -18,8 +19,15 @@
   font-size: 110%
   margin: 0.5em
 
+#sortable-extras
+
+.sortable-placeholder
+  height: 0em
+  display: block
+
 .extras-item
   border: 1px dashed gray
+  display: block
   margin: 0.5em
   min-width: 40em
   padding: 0.5em
@@ -123,3 +131,15 @@ a.opens-in-new-window
     padding: 0em 1.0em 0em 0.5em
     text-align: right
     width: 6.0em
+
+.ke-chart
+  display: inline-block
+  vertical-align: bottom
+  position: relative
+  width: 90%
+  height: 32em
+  background: #f9eec1
+  @include border-radius(0.5em)
+  @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
+  margin: 0em 1em
+  padding: 0em 0em

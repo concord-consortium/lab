@@ -9,6 +9,7 @@
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
     %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
     %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/jquery-ui/jquery-ui.min.js", :type => "text/javascript"}
     // %script{:src => "../../vendor/science.js/science.v1.js", :type => "text/javascript"}
     %script{:src => "../../vendor/codemirror/lib/codemirror.js", :type => "text/javascript"}
     %link{:href => "../../vendor/codemirror/lib/codemirror.css", :rel => "stylesheet", :type => "text/css"}/
@@ -81,34 +82,45 @@
           #interactive-container
       #extras-bottom
         #extras-bottom-banner Extras
-        #editor.extras-item
-          .extras-item-banner
-            %input#show-editor{:type => "checkbox", :checked => false}
-            %label{:for => "show-editor"} Interactive Editor
-          #editor-content.extras-item-content
-            .extras-item-controls
-              %button#update-interactive-button Update Interactive
-              %button#autoformat-selection-button AutoFormat Selection
-              %a#json-model-link{:href => "", :class => "opens-in-new-window", :target => "_blank"} Model JSON
-            %textarea#interactive-text-area
-        #benchmark.extras-item
-          .extras-item-banner
-            %input#show-benchmarks{:type => "checkbox", :checked => false}
-            %label{:for => "show-benchmarks"} Benchmarks
-          #benchmarks-content.extras-item-content
-            .extras-item-controls
-              %button#run-benchmarks-button.extras-item-controls Run Benchmarks
-              Collect performance data by first running just the model for 100 steps and then running the model and the graphics together for 100 steps.
-            .model-benchmark-results
-              %table#model-benchmark-results.model-benchmark-results
-        #model-datatable.extras-item
-          .extras-item-banner
-            %input#show-model-datatable{:type => "checkbox", :checked => false}
-            %label{:for => "show-model-datatable"} Atoms Datatable
-          #model-datatable-content.extras-item-content
-            #model-datatable-stats.extras-item-controls
-            .model-datatable-results
-              %table#model-datatable-results
+
+        %ul#sortable-extras
+          %li#editor.extras-item
+            .extras-item-banner
+              %input#show-editor{:type => "checkbox", :checked => false}
+              %label{:for => "show-editor"} Interactive Editor
+            #editor-content.extras-item-content
+              .extras-item-controls
+                %button#update-interactive-button Update Interactive
+                %button#autoformat-selection-button AutoFormat Selection
+                %a#json-model-link{:href => "", :class => "opens-in-new-window", :target => "_blank"} Model JSON
+              %textarea#interactive-text-area
+
+          %li#model-energy-graph.extras-item
+            .extras-item-banner
+              %input#show-model-energy-graph{:type => "checkbox", :checked => false}
+              %label{:for => "show-model-energy-graph"} Energy Graph
+            #model-energy-graph-content.extras-item-content
+              #model-energy-graph-chart.ke-chart
+
+          %li#model-datatable.extras-item
+            .extras-item-banner
+              %input#show-model-datatable{:type => "checkbox", :checked => false}
+              %label{:for => "show-model-datatable"} Atoms Datatable
+            #model-datatable-content.extras-item-content
+              #model-datatable-stats.extras-item-controls
+              .model-datatable-results
+                %table#model-datatable-results
+
+          %li#benchmark.extras-item
+            .extras-item-banner
+              %input#show-benchmarks{:type => "checkbox", :checked => false}
+              %label{:for => "show-benchmarks"} Benchmarks
+            #benchmarks-content.extras-item-content
+              .extras-item-controls
+                %button#run-benchmarks-button.extras-item-controls Run Benchmarks
+                Collect performance data by first running just the model for 100 steps and then running the model and the graphics together for 100 steps.
+              .model-benchmark-results
+                %table#model-benchmark-results.model-benchmark-results
 
       #about-pane
         #about-pane-banner
@@ -124,12 +136,13 @@
             %a{:href => "http://concord.org/"} Concord Consortium.
             and is Copyright 2012 by the Concord Consortium, All Rights are Reserved.
           %p
-            However this Interactive and all of the code to create it are available in the
-            %a{:href => "https://github.com/concord-consortium/lab"} Concord Consortium Lab
+            However this Interactive and all of the code to create it are available in
+            Concord Consortium's
+            %a{:href => "https://github.com/concord-consortium/lab"} Lab
             software repository and distributed to you under multiple open-source licenses.
           %p
-            The
-            %a{:href => "https://github.com/concord-consortium/lab"} Concord Consortium Lab
+            Concord Consortium's
+            %a{:href => "https://github.com/concord-consortium/lab"}  Lab
             software and content are Copyright 2012 (c) by the Concord Consortium and are
             distributed under any of the following licenses:
             %a{:href => "http://www.opensource.org/licenses/BSD-2-Clause"} Simplified BSD
