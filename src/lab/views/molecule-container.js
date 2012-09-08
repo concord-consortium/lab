@@ -54,6 +54,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       getRadialBonds,
       imageProp,
       interactiveUrl,
+      imagePath,
       getVdwPairs,
       bondColorArray,
       default_options = {
@@ -111,6 +112,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     is_stopped = options.is_stopped;
     imageProp = options.images;
     interactiveUrl = options.interactiveUrl;
+    imagePath = interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
     if (!options.showClock) {
       options.showClock = model.get("showClock");
     }
@@ -845,9 +847,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function drawImageAttachment(){
       image_container.selectAll("image.image_attach").remove();
-      var imgHostIndex_i, img, img_height, img_width, imagePath, distance;
+      var imgHostIndex_i, img, img_height, img_width, distance;
       var numImages = imageProp.length;
-      imagePath = interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
       for(var i = 0;i < numImages;i++) {
         imgHostIndex_i =  imageProp[i].imageHostIndex
         img = new Image();
@@ -1096,12 +1097,13 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));});
     }
     function updateImageAttachment(){
-      var numImages = imageProp.length;
+      var numImages, imgHostIndex_i, img, dist;
+        numImages= imageProp.length;
       for(var i = 0;i < numImages;i++) {
-        var imgHostIndex_i =  imageProp[i].imageHostIndex
-        var img = new Image();
-        img.src =   "../../resources/"+imageProp[i].imageUri;
-        var dist = Math.sqrt((img.height*img.height) + (img.width*img.width))/2;
+        imgHostIndex_i =  imageProp[i].imageHostIndex
+        img = new Image();
+        img.src =   imagePath+imageProp[i].imageUri;
+        dist = Math.sqrt((img.height*img.height) + (img.width*img.width))/2;
         image_container.selectAll("image.draggable")
           .attr("x", (x(get_x(imgHostIndex_i))-dist))
           .attr("y", (y(get_y(imgHostIndex_i))-dist))
