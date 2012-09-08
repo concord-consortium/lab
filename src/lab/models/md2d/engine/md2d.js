@@ -1692,6 +1692,9 @@ exports.makeModel = function() {
         if (useLennardJonesInteraction) {
           PE += ljCalculator[el1][el2].potentialFromSquaredDistance(r_sq);
         }
+        if (useCoulombInteraction && charge[i1] && charge[i2]) {
+          PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2]);
+        }
       }
 
       // State to be read by the rest of the system:
