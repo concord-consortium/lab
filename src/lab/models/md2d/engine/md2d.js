@@ -1659,12 +1659,12 @@ exports.makeModel = function() {
 
           r_sq = dx*dx + dy*dy;
 
-          // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
+          // FIXME the signs here don't really make sense
           if (useLennardJonesInteraction) {
-            PE += -ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
+            PE -=ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction && hasChargedAtoms) {
-            PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
+            PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
       }
