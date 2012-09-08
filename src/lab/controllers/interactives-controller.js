@@ -96,6 +96,14 @@ controllers.interactivesController = function(interactive, viewSelector, applica
           return props;
         },
 
+        pe: function pe() {
+          return model.pe();
+        },
+
+        ke: function ke() {
+          return model.ke();
+        },
+
         start: function start() {
           model.start();
         },

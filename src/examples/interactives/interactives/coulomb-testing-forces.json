@@ -31,12 +31,14 @@
         "     data = [],",
         "     props0, props1, distance;",
         "        ",
+        " setAtomProperties(0, { pinned: 0 });",
+        " setAtomProperties(1, { pinned: 0 });",
         " while (steps--) {",
         "   tick();",
         "   props0 = getAtomProperties(0);",
         "   props1 = getAtomProperties(1);",
         "   distance = props1.x - props0.x;",
-        "   data.push([distance, props0.ax].join(','))",
+        "   data.push([distance, props0.ax, props0.vx, pe(), ke(), pe() + ke()].join(','))",
         " }",
         " console.log(data.join('\\n'));"
       ]
