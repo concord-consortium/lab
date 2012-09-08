@@ -382,7 +382,7 @@
     <void index="0"> 
      <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
       <void property="URI"> 
-       <string>starComp.png</string> 
+       <string>star.png</string>
       </void> 
       <void property="hostIndex"> 
        <int>18</int> 
