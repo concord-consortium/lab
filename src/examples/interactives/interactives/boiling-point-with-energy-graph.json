@@ -1,6 +1,6 @@
 {
   "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
+    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/boiling-point-with-clock.json",
     "viewOptions": {
       "controlButtons": "play_reset",
       "modelTimeLabel": true
@@ -18,6 +18,41 @@
       "id": "heat",
       "text": "Heat",
       "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select View Refresh Rate (reset the model first) ...",
+          "disabled": true
+        },
+        {
+          "text": "10",
+          "action": "set({ 'viewRefreshInterval' : 10 });"
+        },
+        {
+          "text": "20",
+          "action": "set({ 'viewRefreshInterval' : 20 });"
+        },
+        {
+          "text": "50",
+          "selected": true,
+          "action": "set({ 'viewRefreshInterval' : 50 });"
+        },
+        {
+          "text": "100",
+          "action": "set({ 'viewRefreshInterval' : 100 });"
+        },
+        {
+          "text": "200",
+          "action": "set({ 'viewRefreshInterval' : 200 });"
+        },
+        {
+          "text": "500",
+          "action": "set({ 'viewRefreshInterval' : 500 });"
+        }
+      ]
     },
     {
       "type": "energyGraph",
