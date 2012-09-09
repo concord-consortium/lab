@@ -134,6 +134,10 @@ parseMML = (mmlString) ->
     universeProps = $mml(".org-concord-mw2d-models-Universe")
     viscosity = parseFloat universeProps.find("[property=viscosity] float").text() || 0
     ###
+      viewRefreshInterval
+    ###
+    viewRefreshInterval = parseFloat($mml("[property=viewRefreshInterval] int").text() || 50)
+    ###
       Show Clock
     ###
     showClock = parseBoolean($mml("[property=showClock] boolean").text(), true)
@@ -343,6 +347,7 @@ parseMML = (mmlString) ->
       VDWLinesRatio       : VDWLinesRatio
       gravitationalField  : gravitationalField
       showClock           : showClock
+      viewRefreshInterval : viewRefreshInterval
       elements            : elemTypes
       atoms :
         X : x
