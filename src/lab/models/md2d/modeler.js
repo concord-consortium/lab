@@ -27,7 +27,7 @@ modeler.model = function(initialProperties) {
       tick_counter = 0,
       new_step = false,
       pressure, pressures = [0],
-      sampleRate = 30,
+      modelSampleRate = 60,
       lastSampleTime,
       sampleTimes = [],
 
@@ -74,6 +74,7 @@ modeler.model = function(initialProperties) {
 
       properties = {
         temperature           : 300,
+        modelSampleRate       : 60,
         coulomb_forces        : true,
         lennard_jones_forces  : true,
         temperature_control   : true,
@@ -257,7 +258,7 @@ modeler.model = function(initialProperties) {
       t = Date.now();
       if (lastSampleTime) {
         sampleTime  = t - lastSampleTime;
-        if (1000/sampleTime < sampleRate) {
+        if (1000/sampleTime < modelSampleRate) {
           doIntegration = true;
           lastSampleTime = t;
           sampleTimes.push(sampleTime);
@@ -543,6 +544,7 @@ modeler.model = function(initialProperties) {
     // Initialize properties
     temperature_control = properties.temperature_control;
     temperature         = properties.temperature;
+    modelSampleRate     = properties.modelSampleRate,
     chargeShading       = properties.chargeShading;
     showVDWLines        = properties.showVDWLines;
     VDWLinesRatio       = properties.VDWLinesRatio;
