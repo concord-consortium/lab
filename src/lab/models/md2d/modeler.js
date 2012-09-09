@@ -718,8 +718,9 @@ modeler.model = function(initialProperties) {
   */
   model.addAtom = function(el, x, y, vx, vy, charge, friction, pinned, visible, draggable) {
     var size      = model.size(),
-        radius    = coreModel.getRadiusOfElement(el),
-        visible   = typeof visible === "number" ? visible : 1;        // default for visible is 1
+        radius    = coreModel.getRadiusOfElement(el);
+
+    visible   = typeof visible === "number" ? visible : 1;        // default for visible is 1
 
     // As a convenience to script authors, bump the atom within bounds
     if (x < radius) x = radius;
