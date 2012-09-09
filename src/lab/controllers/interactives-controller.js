@@ -346,7 +346,6 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     }
   }
 
-  // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
   function createEnergyGraph(component) {
     var elem = $('<div>').attr('id', component.id);
     return  {
@@ -354,12 +353,13 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       callback: function() {
 
         var thisComponent = component,
+            sample = model.get("viewRefreshInterval")/1000,
             options = {
               title:     "Energy of the System (KE:red, PE:green, TE:blue)",
               xlabel:    "Model Time (ps)",
               xmin:      0,
-              xmax:     100,
-              sample:    0.1,
+              xmax:     20,
+              sample:    sample,
               ylabel:    "eV",
               ymin:      -5.0,
               ymax:      5.0
@@ -367,12 +367,19 @@ controllers.interactivesController = function(interactive, viewSelector, applica
 
         resetEnergyData();
 
+        model.addPropertiesListener(['viewRefreshInterval'], function() {
+          options.sample = model.get("viewRefreshInterval")/1000;
+          energyGraph.reset(options);
+        });
+
         // Create energyGraph only if it hasn't been drawn before:
         if (!energyGraph) {
           $.extend(options, thisComponent.options || []);
           newEnergyGraph(thisComponent.id, options);
         } else {
-          energyGraph.reset();
+          sample = model.get("viewRefreshInterval")/1000;
+          options.sample = sample;
+          energyGraph.reset(options);
         }
 
         if (thisComponent.dimensions) {
@@ -393,9 +400,11 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         });
 
         model.on('reset.energyGraph', function() {
+          sample = model.get("viewRefreshInterval")/1000;
+          options.sample = sample;
           resetEnergyData();
+          energyGraph.reset(options);
           energyGraph.new_data(energyData);
-          energyGraph.reset();
         });
 
         model.on('seek.energyGraph', function() {

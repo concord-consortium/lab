@@ -316,12 +316,13 @@ var ROOT = "/examples",
     }).change();
 
     function renderModelEnergyGraph() {
-      var options = {
+      var sample = model.get("viewRefreshInterval")/1000,
+          options = {
             title:     "Energy of the System (KE:red, PE:green, TE:blue)",
             xlabel:    "Model Time (ps)",
             xmin:      0,
-            xmax:     100,
-            sample:    0.1,
+            xmax:     50,
+            sample:    sample,
             ylabel:    "eV",
             ymin:      -5.0,
             ymax:      5.0
