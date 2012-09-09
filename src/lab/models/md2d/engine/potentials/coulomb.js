@@ -3,7 +3,7 @@ constants = require('../constants'),
 unit      = constants.unit,
 
 // Classic MW uses a value for Coulomb's constant that is effectively 0.346 of the real value
-CLASSIC_MW_FUDGE_FACTOR = 0.346;
+CLASSIC_MW_FUDGE_FACTOR = 0.346,
 
 COULOMB_CONSTANT_IN_METERS_PER_FARAD = constants.COULOMB_CONSTANT.as( constants.unit.METERS_PER_FARAD ),
 

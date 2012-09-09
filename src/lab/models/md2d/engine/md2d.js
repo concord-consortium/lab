@@ -767,12 +767,9 @@ exports.makeModel = function() {
         py[i] = mass * vy[i];
       },
 
-      // Sets the acceleration of atom i to zero if i is pinned
-      clearAccelerationIfPinned = function(i) {
-        if (pinned[i]) {
-          ax[i] = 0;
-          ay[i] = 0;
-        }
+      // Removes velocity and acceleration from atom i
+      pinAtom = function(i) {
+        vx[i] = vy[i] = ax[i] = ay[i] = 0;
       },
 
       // Accumulate accelerations into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between particles i and j
@@ -1606,7 +1603,7 @@ exports.makeModel = function() {
         for (i = 0; i < N; i++) {
           // Clearing the acceleration here from pinned atoms will cause the acceleration
           // to be zero for both halfUpdateVelocity methods and updatePosition, freezing the atom
-          clearAccelerationIfPinned(i);
+          if (pinned[i]) pinAtom(i);
 
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
           halfUpdateVelocity(i);
@@ -1662,12 +1659,12 @@ exports.makeModel = function() {
 
           r_sq = dx*dx + dy*dy;
 
-          // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
+          // FIXME the signs here don't really make sense
           if (useLennardJonesInteraction) {
-            PE += -ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
+            PE -=ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction && hasChargedAtoms) {
-            PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
+            PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
       }
@@ -1694,6 +1691,9 @@ exports.makeModel = function() {
         // Remove the Lennard Jones potential for the bonded pair
         if (useLennardJonesInteraction) {
           PE += ljCalculator[el1][el2].potentialFromSquaredDistance(r_sq);
+        }
+        if (useCoulombInteraction && charge[i1] && charge[i2]) {
+          PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2]);
         }
       }
 
