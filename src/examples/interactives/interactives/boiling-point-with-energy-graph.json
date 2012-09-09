@@ -21,10 +21,10 @@
     },
     {
       "type": "pulldown",
-      "id": "pulldown1",
+      "id": "pulldown-refresh",
       "options": [
         {
-          "text": "Select View Refresh Rate (reset the model first) ...",
+          "text": "View Refresh Rate ...",
           "disabled": true
         },
         {
@@ -55,6 +55,29 @@
       ]
     },
     {
+      "type": "pulldown",
+      "id": "pulldown-model-sample",
+      "options": [
+        {
+          "text": "Model Sample Rate (Hz) ...",
+          "disabled": true
+        },
+        {
+          "text": "10",
+          "action": "set({ 'modelSampleRate' : 10 });"
+        },
+        {
+          "text": "30",
+          "action": "set({ 'modelSampleRate' : 30 });"
+        },
+        {
+          "text": "60",
+          "selected": true,
+          "action": "set({ 'modelSampleRate' : 60 });"
+        }
+      ]
+    },
+    {
       "type": "energyGraph",
       "id": "ke-chart",
       "dimensions": { "width": 500, "height": 296 },
@@ -66,8 +89,10 @@
       "ke-chart"
     ],
     "bottom": [
-      "abs-zero",
-      "add-heat"
+      "heat",
+      "cool",
+      "pulldown-refresh",
+      "pulldown-model-sample"
     ]
   }
 }
