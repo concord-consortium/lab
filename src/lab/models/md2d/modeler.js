@@ -20,13 +20,16 @@ modeler.model = function(initialProperties) {
       showClock,
       lennard_jones_forces, coulomb_forces,
       gravitationalField = false,
+      viewRefreshInterval = 50,
       stopped = true,
       tick_history_list = [],
       tick_history_list_index = 0,
       tick_counter = 0,
       new_step = false,
       pressure, pressures = [0],
-      sample_time, sample_times = [],
+      sampleRate = 30,
+      lastSampleTime,
+      sampleTimes = [],
 
       // N.B. this is the thermostat (temperature control) setting
       temperature,
@@ -78,6 +81,7 @@ modeler.model = function(initialProperties) {
         chargeShading         : false,
         showVDWLines          : false,
         showClock             : true,
+        viewRefreshInterval   : 50,
         VDWLinesRatio         : 1.99,
         viscosity             : 0,
 
@@ -123,6 +127,13 @@ modeler.model = function(initialProperties) {
           this.gravitationalField = gf;
           if (coreModel) {
             coreModel.setGravitationalField(gf);
+          }
+        },
+
+        set_viewRefreshInterval: function(vri) {
+          this.viewRefreshInterval = vri;
+          if (coreModel) {
+            coreModel.setIntegrationDuration(vri);
           }
         },
 
@@ -236,33 +247,46 @@ modeler.model = function(initialProperties) {
 
 
   function tick(elapsedTime, dontDispatchTickEvent) {
-    var t;
-    coreModel.integrate();
+    var t,
+        sampleTime,
+        doIntegration;
 
-    pressure = modelOutputState.pressure;
-    pe       = modelOutputState.PE;
-    ke       = modelOutputState.KE;
-    time     = modelOutputState.time;
-
-    pressures.push(pressure);
-    pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-
-    tick_history_list_push();
-
-    if (!stopped) {
+    if (stopped) {
+      doIntegration = true;
+    } else {
       t = Date.now();
-      if (sample_time) {
-        sample_time  = t - sample_time;
-        if (sample_time) { sample_times.push(sample_time); }
-        sample_time = t;
-        sample_times.splice(0, sample_times.length - 128);
+      if (lastSampleTime) {
+        sampleTime  = t - lastSampleTime;
+        if (1000/sampleTime < sampleRate) {
+          doIntegration = true;
+          lastSampleTime = t;
+          sampleTimes.push(sampleTime);
+          sampleTimes.splice(0, sampleTimes.length - 128);
+        } else {
+          doIntegration = false;
+        }
       } else {
-        sample_time = t;
+        lastSampleTime = t;
+        doIntegration = true;
       }
     }
 
-    if (!dontDispatchTickEvent) {
-      dispatch.tick();
+    if (doIntegration) {
+      coreModel.integrate();
+
+      pressure = modelOutputState.pressure;
+      pe       = modelOutputState.PE;
+      ke       = modelOutputState.KE;
+      time     = modelOutputState.time;
+
+      pressures.push(pressure);
+      pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
+
+      tick_history_list_push();
+
+      if (!dontDispatchTickEvent) {
+        dispatch.tick();
+      }
     }
 
     return stopped;
@@ -335,8 +359,8 @@ modeler.model = function(initialProperties) {
   }
 
   function average_rate() {
-    var i, ave, s = 0, n = sample_times.length;
-    i = -1; while (++i < n) { s += sample_times[i]; }
+    var i, ave, s = 0, n = sampleTimes.length;
+    i = -1; while (++i < n) { s += sampleTimes[i]; }
     ave = s/n;
     return (ave ? 1/ave*1000: 0);
   }
@@ -523,14 +547,17 @@ modeler.model = function(initialProperties) {
     showVDWLines        = properties.showVDWLines;
     VDWLinesRatio       = properties.VDWLinesRatio;
     showClock           = properties.showClock;
+    viewRefreshInterval = properties.viewRefreshInterval;
     viscosity           = properties.viscosity;
     gravitationalField  = properties.gravitationalField;
+    viewRefreshInterval = properties.viewRefreshInterval;
 
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(temperature_control);
     coreModel.setViscosity(viscosity);
     coreModel.setGravitationalField(gravitationalField);
+    coreModel.setIntegrationDuration(viewRefreshInterval);
 
     coreModel.setTargetTemperature(temperature);
 
