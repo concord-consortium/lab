@@ -58,11 +58,7 @@ $max-width: 100%
   position: relative
 
 #right
-  @include span-columns(2 of 12, inline-block)
-  .label
-    margin: 0.5em auto 0.5em auto
-    text-align: center
-    font-size: 1.4em
+  display: inline-block
 
 #rightwide
   @include span-columns(4 of 12, inline-block)
@@ -212,7 +208,6 @@ a.opens-in-new-window
   position: relative
   border-radius: 0.5em
 
-
 #chart
   background-color: #f9eec1
   width: 960px
@@ -222,3 +217,12 @@ a.opens-in-new-window
   padding: 0
   position: relative
   border-radius: 0.5em
+
+.interactive-thermometer
+  min-height: 12em
+  .label
+    margin: 0.5em auto 0.5em auto
+    text-align: center
+    font-size: 1em
+  .thermometer
+    width: 2em
