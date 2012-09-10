@@ -474,16 +474,17 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     layout.addView('moleculeContainers', modelController.moleculeContainer);
     if (thermometer) layout.addView('thermometers', thermometer);
     if (energyGraph) layout.addView('energyGraphs', energyGraph);
+    $(window).unbind('resize');
 
     if (layoutStyle) {
-      // deprecated path for compatibility with current implementation "embedded" interactive style
+      // for compatibility with current implementation "embedded" interactive style
       layout.selection = layoutStyle;
       layout.setupScreen();
-      $(window).unbind('resize');
       $(window).on('resize', layout.setupScreen);
     } else {
-      // preferred path
+      // preferred path...
       layout.setupInteractiveLayout();
+      $(window).on('resize', layout.setupInteractiveLayout);
     }
 
     for(i = 0; i < propertiesListeners.length; i++) {
