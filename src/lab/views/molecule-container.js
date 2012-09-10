@@ -113,8 +113,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     set_atom_properties = options.set_atom_properties;
     is_stopped = options.is_stopped;
     imageProp = options.images;
+    if(options.interactiveUrl) {
     interactiveUrl = options.interactiveUrl;
     imagePath = interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
+    }
     if (!options.showClock) {
       options.showClock = model.get("showClock");
     }
@@ -854,15 +856,16 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       var imgHostIndex_i, img, img_height, img_width, distance;
       var numImages = imageProp.length;
       for(var i = 0;i < numImages;i++) {
-        imgHostIndex_i =  imageProp[i].imageHostIndex
+        imgHostIndex_i =  imageProp[i].imageHostIndex;
         img = new Image();
         img.src = imagePath+imageProp[i].imageUri;
-        img_height = img.height;
-        img_width = img.width
-        distance = Math.sqrt((img_height*img_height) + (img_width*img_width))/2;
+      }
+      img.onload = function() {
+        img_width = img.width*layout.screen_factor;
+        img_height = img.height*layout.screen_factor;
         image_container.append("image")
-          .attr("x", (x(get_x(imgHostIndex_i))-distance))
-          .attr("y", (y(get_y(imgHostIndex_i))-distance))
+          .attr("x", function(d,i) {if(imgHostIndex_i == null) {return imageProp[i].imageX; } else { return (x(get_x(imgHostIndex_i))-img_width/2);}})
+          .attr("y", function(d,i) {if(imgHostIndex_i == null) {return imageProp[i].imageY; } else { return (y(get_y(imgHostIndex_i))-img_height/2);}})
           .attr("class", "image_attach draggable")
           .attr("xlink:href", img.src)
           .attr("width", img_width)
@@ -1107,10 +1110,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         imgHostIndex_i =  imageProp[i].imageHostIndex
         img = new Image();
         img.src =   imagePath+imageProp[i].imageUri;
-        dist = Math.sqrt((img.height*img.height) + (img.width*img.width))/2;
+        img_width = img.width*layout.screen_factor;
+        img_height = img.height*layout.screen_factor;
         image_container.selectAll("image.draggable")
-          .attr("x", (x(get_x(imgHostIndex_i))-dist))
-          .attr("y", (y(get_y(imgHostIndex_i))-dist))
+          .attr("x", function() {if(imgHostIndex_i == null) {return imageProp[i].imageX; } else { return (x(get_x(imgHostIndex_i))-img_width/2);}})
+          .attr("y", function() {if(imgHostIndex_i == null) {return imageProp[i].imageY; } else { return (y(get_y(imgHostIndex_i))-img_height/2);}})
       }
     }
 
