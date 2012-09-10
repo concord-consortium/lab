@@ -68,9 +68,14 @@ layout.setupInteractiveLayout = function setupInteractiveLayout() {
   setThermometerHeight(modelHeight);
 
   // FIXME this is a temporary hack ... put in layout code instead of memorializing it in the CSS,
-  // which doesn't tend to get reviewed as closely ...  to push the molecule-container down so its
-  // top lines up with the energy graph's top exactly. After brief investigation, couldn't tell for
-  // sure why the energyGraph container was being pushed down ~5px by the browser...
-  $(viewLists.moleculeContainers[0].outerNode).css('top', 5);
+  // which doesn't tend to get reviewed as closely.
 
+  // Push the molecule-container down so its top lines up with the energy graph's top exactly.
+  // After brief investigation, couldn't tell for sure why the energyGraph container was being pushed down ~5px by the browser...
+  if (viewLists.energyGraphs) {
+    $(viewLists.moleculeContainers[0].outerNode).css('top', 5);
+  }
+
+  // For non-embedded interactives, #viz doesn't need a min-height (content will push it down)
+  $('#viz.top').css('min-height', 0);
 };
