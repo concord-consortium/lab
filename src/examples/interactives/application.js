@@ -75,7 +75,6 @@ var ROOT = "/examples",
       // are present and should be setup.
       if ($selectInteractive.length) {
         applicationCallbacks = [setupFullPage];
-        viewType = 'interactive';
       } else {
         viewType = 'interactive-iframe';
       }
