@@ -6,7 +6,6 @@
     %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
       if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
-    %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
     %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
     %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
     %script{:src => "../../vendor/jquery-ui/jquery-ui.min.js", :type => "text/javascript"}
@@ -75,7 +74,7 @@
       %a#java-mw-link{:href => "../../imports/legacy-mw-content/converted/", :class => "opens-in-new-window"} Java MW
       %a#datagames-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} DataGames
 
-    #content
+    #content.standard-interactive-layout
       #content-banner
         #about
           #about-link.link About
