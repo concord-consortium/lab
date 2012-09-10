@@ -30,8 +30,8 @@
       "thermometer"
     ],
     "bottom": [
-      "abs-zero",
-      "add-heat"
+      "cool",
+      "heat"
     ]
   }
 }

@@ -8,6 +8,7 @@
   "VDWLinesRatio": 2,
   "gravitationalField": 4.0000000000000003e-7,
   "showClock": true,
+  "viewRefreshInterval": 50,
   "elements": [
     {
       "id": 0,

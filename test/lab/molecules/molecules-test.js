@@ -16,7 +16,8 @@ var initialization_options = {
       lennard_jones_forces: true,
       coulomb_forces: true,
       model_listener: false,
-      mol_number: 50
+      mol_number: 50,
+      viewRefreshInterval: 100
     },
     node_options = {
       xdomain: 100,

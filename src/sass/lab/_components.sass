@@ -2,15 +2,14 @@
 
 .thermometer
   display: block
-  width: 2em
-  height: 20em
+  width: 3.0em
+  height: 23em
   margin: auto
   padding-top: 0.2em
   padding-bottom: 0.1em
   border: 2px solid #f4b626
   position: relative
-  @include border-top-radius(1.0em)
-  @include border-bottom-radius(0.2em)
+  border-radius: 1.5em 1.5em 0.2em 0.2em
   div
     display: block
     position: relative
@@ -22,7 +21,7 @@
     left: 15%
     bottom: 0
     background: #e16a3e
-    @include border-top-radius(0.5em)
+    border-radius: 0.75em 0.75em 0em 0em
 
 .therm_text
   display: block
@@ -279,15 +278,9 @@ $button_down: darken($button_hover, 20%)
   cursor: pointer
 .component_group button.left_edge
   border-right-width: 0
-  @include border-top-left-radius(3px)
-  @include border-top-right-radius(0)
-  @include border-bottom-right-radius(0)
-  @include border-bottom-left-radius(3px)
+  border-radius: 3px 0px 0px 3px
 .component_group button.right_edge
-  @include border-top-left-radius(0)
-  @include border-top-right-radius(3px)
-  @include border-bottom-right-radius(3px)
-  @include border-bottom-left-radius(0)
+  border-radius: 0px 3px 3px 0px
 .component_group
   button#cool_button, button#heat_button
     @include linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #ddd 50%, #ddd 100%, $fallback: #ddd)

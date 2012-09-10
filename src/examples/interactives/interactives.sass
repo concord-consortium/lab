@@ -1,5 +1,10 @@
-@import url('molecules-view.css')
+$directory: "../.."
+
+$max-width: 100%
 @import 'sass/bourbon/bourbon'
+@import url('molecules-view.css')
+@import 'sass/neat/neat'
+@import 'sass/lab/lab'
 
 #content
   width: 100%
@@ -7,6 +12,44 @@
     color: #333
     font-size: 90%
     padding-left: 1em
+
+#viz.top
+  width: 100%
+  min-height: 30em
+  padding: 0.5em 1.0em
+
+#interactive-container
+  @include outer-container
+  @include fill-parent
+  margin: inherit 0em inherit 0em
+
+#top
+  @include span-columns(12)
+
+#molecule-container
+  @include span-columns(6 of 12, inline-block)
+
+.interactive-top
+  position: relative
+
+#right
+  @include span-columns(2 of 12, inline-block)
+  .label
+    margin: 0.5em auto 0.5em auto
+    text-align: center
+    font-size: 1.4em
+
+#rightwide
+  @include span-columns(4 of 12, inline-block)
+  .label
+    margin: 0.5em auto 0.5em auto
+    text-align: center
+    font-size: 1.4em
+
+#bottom.interactive-bottom
+  @include row
+  @include span-columns(12, inline-block)
+  padding-top: 1.0em
 
 #extras-bottom
   border: 1px solid gray
@@ -59,38 +102,12 @@ button.extras-item-controls
   height: 45em
   overflow: auto
 
-.interactive-top
-  position: relative
-
 .push-right
   margin-right: 7em
 
 #molecule-container
   width: 30em
   min-height: 0
-
-#right
-  display: inline-block
-  position: absolute
-  height: 100%
-  margin-left: 1em
-
-.interactive-thermometer
-  position: absolute
-  height: 100%
-  max-height: 20em
-
-  .thermometer
-    position: absolute
-    top: 0.5em
-    bottom: 2em
-    height: auto
-    left: 2em
-
-  .label
-    position: absolute
-    margin: 0
-    bottom: 0
 
 a.opens-in-new-window
   color: white
@@ -139,7 +156,7 @@ a.opens-in-new-window
   width: 90%
   height: 32em
   background: #f9eec1
-  @include border-radius(0.5em)
+  border-radius: 0.5em
   @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
   margin: 0em 1em
   padding: 0em 0em

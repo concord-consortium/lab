@@ -346,7 +346,6 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     }
   }
 
-  // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
   function createEnergyGraph(component) {
     var elem = $('<div>').attr('id', component.id);
     return  {
@@ -354,12 +353,13 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       callback: function() {
 
         var thisComponent = component,
+            sample = model.get("viewRefreshInterval")/1000,
             options = {
               title:     "Energy of the System (KE:red, PE:green, TE:blue)",
               xlabel:    "Model Time (ps)",
               xmin:      0,
-              xmax:     100,
-              sample:    0.1,
+              xmax:     20,
+              sample:    sample,
               ylabel:    "eV",
               ymin:      -5.0,
               ymax:      5.0
@@ -367,12 +367,19 @@ controllers.interactivesController = function(interactive, viewSelector, applica
 
         resetEnergyData();
 
+        model.addPropertiesListener(['viewRefreshInterval'], function() {
+          options.sample = model.get("viewRefreshInterval")/1000;
+          energyGraph.reset(options);
+        });
+
         // Create energyGraph only if it hasn't been drawn before:
         if (!energyGraph) {
           $.extend(options, thisComponent.options || []);
           newEnergyGraph(thisComponent.id, options);
         } else {
-          energyGraph.reset();
+          sample = model.get("viewRefreshInterval")/1000;
+          options.sample = sample;
+          energyGraph.reset(options);
         }
 
         if (thisComponent.dimensions) {
@@ -393,9 +400,11 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         });
 
         model.on('reset.energyGraph', function() {
+          sample = model.get("viewRefreshInterval")/1000;
+          options.sample = sample;
           resetEnergyData();
+          energyGraph.reset(options);
           energyGraph.new_data(energyData);
-          energyGraph.reset();
         });
 
         model.on('seek.energyGraph', function() {
@@ -458,10 +467,15 @@ controllers.interactivesController = function(interactive, viewSelector, applica
   function modelLoaded() {
     var i, listener;
 
+    for(i = 0; i < componentCallbacks.length; i++) {
+      componentCallbacks[i]();
+    }
+
     if (layoutStyle) {
       layout.selection = layoutStyle;
       layout.addView('moleculeContainers', modelController.moleculeContainer);
       if (thermometer) layout.addView('thermometers', thermometer);
+      if (energyGraph) layout.addView('energyGraphs', energyGraph);
       layout.setupScreen();
       $(window).unbind('resize');
       $(window).on('resize', layout.setupScreen);
@@ -472,9 +486,6 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       model.addPropertiesListener(listener[0], listener[1]);
     }
 
-    for(i = 0; i < componentCallbacks.length; i++) {
-      componentCallbacks[i]();
-    }
 
     if (applicationCallbacks) {
       for(i = 0; i < applicationCallbacks.length; i++) {
@@ -503,7 +514,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         divArray,
         div,
         componentId,
-        $top, $right,
+        $top, $right, $rightwide,
         i, ii;
 
     componentCallbacks = [];
@@ -511,15 +522,27 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     $interactiveContainer = $(viewSelector);
     if ($interactiveContainer.children().length === 0) {
       $top = $('<div class="interactive-top" id="top"/>');
-      $top.append('<div id="molecule-container"/>');
-      $right = $('<div id="right"/>');
-      $top.append($right);
+      $top.append('<div class="interactive-top" id="molecule-container"/>');
+      if (interactive.layout && interactive.layout.right) {
+        $right = $('<div class="interactive-top" id="right"/>');
+        $top.append($right);
+      }
+      if (interactive.layout && interactive.layout.rightwide) {
+        $rightwide = $('<div class="interactive-top" id="rightwide"/>');
+        $top.append($rightwide);
+      }
       $interactiveContainer.append($top);
       $interactiveContainer.append('<div class="interactive-bottom" id="bottom"/>');
     } else {
-      $('#bottom').html('');
-      $('#right').html('');
-      $interactiveContainer.append('<div id="bottom"/>');
+      $bottom = $("#bottom");
+      $right = $("#right");
+      $bottom.html('');
+      if ($right) {
+        $right.html('');
+      }
+      if ($rightwide) {
+        $rightwide.html('');
+      }
     }
 
     if (interactive.model != null) {

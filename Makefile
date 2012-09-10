@@ -28,13 +28,13 @@ vpath %.sass src/examples
 SASS_DOC_FILES := $(shell find src/doc -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/server\/public\/\1.css/' )
 vpath %.sass src/doc
 
-SCSS_EXAMPLE_FILES := $(shell find src -name '*.scss' -exec echo {} \; | grep -v bourbon | sed s'/src\/\(.*\)\.scss/server\/public\/\1.css/' )
+SCSS_EXAMPLE_FILES := $(shell find src -type d -name 'sass' -prune -o -name '*.scss' -exec echo {} \; | grep -v bourbon | sed s'/src\/\(.*\)\.scss/server\/public\/\1.css/' )
 vpath %.scss src
 
 COFFEESCRIPT_EXAMPLE_FILES := $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/server\/public\/\1.js/' )
 vpath %.coffee src
 
-MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/server\/public\/\1.html/' )
+MARKDOWN_EXAMPLE_FILES := $(shell find src -type d -name 'sass' -prune -o -name '*.md'  -maxdepth 1 -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/server\/public\/\1.html/' )
 vpath %.md src
 
 LAB_JS_FILES = \
@@ -482,6 +482,9 @@ server/public/%.html: src/%.html.haml Makefile
 
 se:
 	@echo $(SASS_EXAMPLE_FILES)
+
+sce:
+	@echo $(SCSS_EXAMPLE_FILES)
 
 sd:
 	@echo $(SASS_DOC_FILES)

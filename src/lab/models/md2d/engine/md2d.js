@@ -228,6 +228,9 @@ exports.makeModel = function() {
       // Viscosity of the medium of the model
       viscosity,
 
+      // default integration duration, in femtoseconds.
+      integrationDuration = 50,
+
       // The current model time, in femtoseconds.
       time = 0,
 
@@ -994,6 +997,14 @@ exports.makeModel = function() {
       }
     },
 
+    setIntegrationDuration: function(duration) {
+      if (typeof duration === "number" && duration >= 0) {
+        integrationDuration = duration;
+      } else {
+        throw new Error("The integrationDuration must be a number greater than or equal to 1");
+      }
+    },
+
     setTargetTemperature: function(v) {
       validateTemperature(v);
       T_target = v;
@@ -1544,7 +1555,7 @@ exports.makeModel = function() {
         throw new Error("md2d: integrate called before atoms created.");
       }
 
-      if (duration == null)  duration = 100;  // how much time to integrate over, in fs
+      if (duration == null)  duration = integrationDuration;  // how much time to integrate over, in fs
 
       dt = opt_dt || 1;
       dt_sq = dt*dt;                      // time step, squared
