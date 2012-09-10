@@ -1,3 +1,6 @@
+@import 'sass/bourbon/bourbon'
+@import 'sass/neat/neat'
+
 #content
   margin: 0em
   padding: 0em
@@ -14,8 +17,8 @@
 
 #viz
   margin: 0em
-  padding: 0em
   height: 100%
+  width: 100%
   display: inline-block
 
 .top
@@ -47,7 +50,7 @@
   left: 0
   right: 0
   background: $component-background-color
-  @include border-radius(0.5em)
+  border-radius: 0.5em
   @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
   height: 100%
   width: 100%
@@ -66,7 +69,7 @@ applet
   left: 0
   right: 0
   background: $component-background-color
-  @include border-radius(0.5em)
+  border-radius: 0.5em
   @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
   height: 100%
   width: 100%
@@ -137,7 +140,7 @@ div.tooltip
   width: 20em
   height: 16em
   background: $component-background-color
-  @include border-radius(0.5em)
+  border-radius: 0.5em
   @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
   margin: 0em 0.5em 0.5em 1.0em
   circle
@@ -157,7 +160,7 @@ div.tooltip
   width: 20em
   height: 16em
   background: $component-background-color
-  @include border-radius(0.5em)
+  border-radius: 0.5em
   @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
   margin: 0em 0.5em 0.5em 0.5em
 
@@ -168,7 +171,7 @@ div.tooltip
   width: 41em
   height: 21.5em
   background: $component-background-color
-  @include border-radius(0.5em)
+  border-radius: 0.5em
   @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
   margin: 0em 1em
   padding: 0em 0em
@@ -178,7 +181,7 @@ div.tooltip
   background: $component-background-color
   border: none !important
   padding: 0.3em 0.6em !important
-  @include border-radius(0.5em)
+  border-radius: 0.5em
   @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
   display: inline-block
   vertical-align: top
@@ -303,7 +306,7 @@ div.tooltip
 #about-pane
   display: none
   position: absolute
-  @include border-radius(0.5em)
+  border-radius: 0.5em
   @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
   width: 60%
   height: auto

@@ -30,7 +30,7 @@ layout.canonical.height = 800;
 
 layout.getDisplayProperties = function(obj) {
   if (!arguments.length) {
-    var obj = {};
+    obj = {};
   }
   obj.screen = {
       width:  screen.width,
@@ -54,9 +54,43 @@ layout.getDisplayProperties = function(obj) {
   return obj;
 };
 
+layout.setBodyEmsize = function() {
+  var emsize;
+  if (!layout.display) {
+    layout.display = layout.getDisplayProperties();
+  }
+  emsize = Math.min(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
+  $('body').css('font-size', emsize + 'em');
+};
+
+layout.getVizProperties = function(obj) {
+  var $viz = $('#viz');
+
+  if (!arguments.length) {
+    obj = {};
+  }
+  obj.width = $viz.width();
+  obj.height = $viz.height();
+  obj.screen_factor_width  = obj.width / layout.canonical.width;
+  obj.screen_factor_height = obj.height / layout.canonical.height;
+  obj.emsize = Math.min(obj.screen_factor_width * 1.1, obj.screen_factor_height);
+  return obj;
+};
+
+layout.setVizEmsize = function() {
+  var emsize,
+      $viz = $('#viz');
+
+  if (!layout.vis) {
+    layout.vis = layout.getVizProperties();
+  }
+  emsize = Math.min(layout.viz.screen_factor_width * 1.2, layout.viz.screen_factor_height * 1.2);
+  $viz.css('font-size', emsize + 'em');
+};
+
 layout.screenEqualsPage = function() {
   return ((layout.display.screen.width  === layout.display.page.width) ||
-          (layout.display.screen.height === layout.display.page.height))
+          (layout.display.screen.height === layout.display.page.height));
 };
 
 layout.checkForResize = function() {
@@ -81,17 +115,19 @@ layout.setView = function(type, viewArray) {
   layout.views[type] = viewArray;
 };
 
-layout.setupScreen = function(forceRender) {
-  var viewLists  = layout.views,
+layout.setupScreen = function(event) {
+  var emzise,
+      viewLists  = layout.views,
       fullscreen = document.fullScreen ||
                    document.webkitIsFullScreen ||
                    document.mozFullScreen;
 
-  if (forceRender) {
+  if (event && event.forceRender) {
     layout.not_rendered = true;
   }
 
   layout.display = layout.getDisplayProperties();
+  layout.viz = layout.getVizProperties();
 
   if (!layout.regular_display) {
     layout.regular_display = layout.getDisplayProperties();
@@ -130,8 +166,8 @@ layout.setupScreen = function(forceRender) {
 
       // fluid layout
       case "compare-screen":
-      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
-      layout.bodycss.style.fontSize = emsize + 'em';
+      emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      $('body').css('font-size', emsize + "em");
       compareScreen();
       layout.not_rendered = false;
       break;
@@ -160,16 +196,16 @@ layout.setupScreen = function(forceRender) {
 
       // fluid layout
       case "simple-screen":
-      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
-      layout.bodycss.style.fontSize = emsize + 'em';
+      emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      $('body').css('font-size', emsize + 'em');
       simpleScreen();
       break;
 
       // only fluid on page load (and when resizing on trnasition to and from full-screen)
       case "simple-static-screen":
       if (layout.not_rendered) {
-        var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
-        layout.bodycss.style.fontSize = emsize + 'em';
+        emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+        $('body').css('font-size', emsize + 'em');
         simpleStaticScreen();
         layout.not_rendered = false;
       }
@@ -177,16 +213,16 @@ layout.setupScreen = function(forceRender) {
 
       // fluid layout
       case "simple-iframe":
-      var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
-      layout.bodycss.style.fontSize = emsize + 'em';
+      emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+      $('body').css('font-size', emsize + 'em');
       setupSimpleIFrameScreen();
       break;
 
       // only fluid on page load (and when resizing on trnasition to and from full-screen)
       case "full-static-screen":
       if (layout.not_rendered) {
-        var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
-        layout.bodycss.style.fontSize = emsize + 'em';
+        emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+        $('body').css('font-size', emsize + 'em');
         regularScreen();
         layout.not_rendered = false;
       }
@@ -194,25 +230,28 @@ layout.setupScreen = function(forceRender) {
 
       // fluid layout
       case "compare-screen":
-      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
-      layout.bodycss.style.fontSize = emsize + 'em';
+      emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      $('body').css('font-size', emsize + 'em');
       compareScreen();
       break;
 
-      // like full-static-screen, but all component position definitions are set from properties
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       case "interactive":
-      throw new Error("DO NOT USE LAYOUT.JS FOR INTERACTIVES.");
+      if (layout.not_rendered) {
+        layout.setVizEmsize();
+        setupInteractiveScreen();
+        layout.not_rendered = false;
+      }
       break;
 
       // like simple-iframe, but all component position definitions are set from properties
       case "interactive-iframe":
-      var emsize = Math.min(layout.screen_factor_width * 1.2, layout.screen_factor_height * 1.2);
-      layout.bodycss.style.fontSize = emsize + 'em';
+      layout.setBodyEmsize();
       setupInteractiveIFrameScreen();
       break;
 
       default:
-      layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+      layout.setVizEmsize();
       setupRegularScreen();
       break;
     }
@@ -236,7 +275,7 @@ layout.setupScreen = function(forceRender) {
   //
   // Regular Screen Layout
   //
-  function regularScreen() {
+  function setupRegularScreen() {
     var i, width, height, mcsize,
         rightHeight, rightHalfWidth, rightQuarterWidth,
         widthToPageRatio, modelAspectRatio,
@@ -273,28 +312,92 @@ layout.setupScreen = function(forceRender) {
   }
 
   //
-  // Interactive iframe Screen Layout
+  // Interactive Screen Layout
   //
-  function setupInteractiveIFrameScreen() {
+  function setupInteractiveScreen() {
     var i, width, height, mcsize,
-        rightHeight, rightHalfWidth, rightQuarterWidth,
-        widthToPageRatio, modelAspectRatio,
-        pageWidth = layout.display.page.width,
-        pageHeight = layout.display.page.height;
+        modelWidth,
+        modelHeight,
+        modelDimensions,
+        modelAspectRatio,
+        modelWidthFactor,
+        viewSizes = {},
+        containerWidth = layout.viz.width,
+        containerHeight = layout.viz.height;
 
-    mcsize = viewLists.moleculeContainers[0].scale();
-    modelAspectRatio = mcsize[0] / mcsize[1];
-    widthToPageRatio = mcsize[0] / pageWidth;
-    width = pageWidth * 0.70;
-    height = width * 1/modelAspectRatio;
-    if (height > pageHeight * 0.75) {
-      height = pageHeight * 0.75;
-      width = height * modelAspectRatio;
+    modelDimensions = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = modelDimensions[0] / modelDimensions[1];
+    modelWidthFactor = 0.70;
+    if (viewLists.thermometers) {
+      modelWidthFactor -= 0.10;
+    }
+    if (viewLists.energyGraphs) {
+      modelWidthFactor -= 0.45;
+    }
+    modelWidth = containerWidth * modelWidthFactor;
+    modelHeight = modelWidth / modelAspectRatio;
+    if (modelHeight > containerHeight * 0.60) {
+      modelHeight = containerHeight * 0.60;
+      modelWidth = modelHeight * modelAspectRatio;
+    }
+    viewSizes.moleculeContainers = [modelWidth, modelHeight];
+    if (viewLists.energyGraphs) {
+      viewSizes.energyGraphs = [containerWidth * 0.40, modelHeight * 1.25];
     }
     for (viewType in viewLists) {
       if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
         i = -1;  while(++i < viewLists[viewType].length) {
-          viewLists[viewType][i].resize(width, height);
+          if (viewSizes[viewType]) {
+            viewLists[viewType][i].resize(viewSizes[viewType][0], viewSizes[viewType][1]);
+          } else {
+            viewLists[viewType][i].resize();
+          }
+        }
+      }
+    }
+  }
+
+  //
+  // Interactive iframe Screen Layout
+  //
+  function setupInteractiveIFrameScreen() {
+    var i,
+        modelWidth,
+        modelHeight,
+        modelDimensions,
+        modelAspectRatio,
+        modelWidthFactor,
+        viewSizes = {},
+        containerWidth = layout.display.page.width,
+        containerHeight = layout.display.page.height;
+
+    modelDimensions = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = modelDimensions[0] / modelDimensions[1];
+    modelWidthFactor = 0.90;
+    if (viewLists.thermometers) {
+      modelWidthFactor -= 0.25;
+    }
+    if (viewLists.energyGraphs) {
+      modelWidthFactor -= 0.45;
+    }
+    modelWidth = containerWidth * modelWidthFactor;
+    modelHeight = modelWidth / modelAspectRatio;
+    if (modelHeight > containerHeight * 0.70) {
+      modelHeight = containerHeight * 0.70;
+      modelWidth = modelHeight * modelAspectRatio;
+    }
+    viewSizes.moleculeContainers = [modelWidth, modelHeight];
+    if (viewLists.energyGraphs) {
+      viewSizes.energyGraphs = [containerWidth * 0.35, modelHeight * 1.2];
+    }
+    for (viewType in viewLists) {
+      if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
+        i = -1;  while(++i < viewLists[viewType].length) {
+          if (viewSizes[viewType]) {
+            viewLists[viewType][i].resize(viewSizes[viewType][0], viewSizes[viewType][1]);
+          } else {
+            viewLists[viewType][i].resize();
+          }
         }
       }
     }
@@ -343,7 +446,7 @@ layout.setupScreen = function(forceRender) {
     height = width * 1/modelAspectRatio;
     if (height > pageHeight*0.70) {
       height = pageHeight * 0.70;
-      width * height * modelAspectRatio;
+      width = height * modelAspectRatio;
     }
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(width, height);
@@ -418,7 +521,7 @@ layout.setupScreen = function(forceRender) {
     height = width * 1/modelAspectRatio;
     if (height > pageHeight * 0.70) {
       height = pageHeight * 0.70;
-      width * height * modelAspectRatio;
+      width = height * modelAspectRatio;
     }
     viewLists.moleculeContainers[0].resize(width, height);
     mcsize = viewLists.moleculeContainers[0].scale();
@@ -442,7 +545,7 @@ layout.setupScreen = function(forceRender) {
     height = width * 1/modelAspectRatio;
     if (height > pageHeight * 0.60) {
       height = pageHeight * 0.60;
-      width * height * modelAspectRatio;
+      width = height * modelAspectRatio;
     }
     viewLists.moleculeContainers[0].resize(width, height);
   }
@@ -528,6 +631,5 @@ if (description_right !== null) {
   layout.fontsize = parseInt(layout.getStyleForSelector("#description-right").style.fontSize);
 }
 
-layout.bodycss = layout.getStyleForSelector("body");
 layout.transform = layout.getTransformProperty(document.body);
 

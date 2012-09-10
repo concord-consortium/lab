@@ -467,10 +467,15 @@ controllers.interactivesController = function(interactive, viewSelector, applica
   function modelLoaded() {
     var i, listener;
 
+    for(i = 0; i < componentCallbacks.length; i++) {
+      componentCallbacks[i]();
+    }
+
     if (layoutStyle) {
       layout.selection = layoutStyle;
       layout.addView('moleculeContainers', modelController.moleculeContainer);
       if (thermometer) layout.addView('thermometers', thermometer);
+      if (energyGraph) layout.addView('energyGraphs', energyGraph);
       layout.setupScreen();
       $(window).unbind('resize');
       $(window).on('resize', layout.setupScreen);
@@ -481,9 +486,6 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       model.addPropertiesListener(listener[0], listener[1]);
     }
 
-    for(i = 0; i < componentCallbacks.length; i++) {
-      componentCallbacks[i]();
-    }
 
     if (applicationCallbacks) {
       for(i = 0; i < applicationCallbacks.length; i++) {
@@ -512,7 +514,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         divArray,
         div,
         componentId,
-        $top, $right,
+        $top, $right, $rightwide,
         i, ii;
 
     componentCallbacks = [];
@@ -520,15 +522,27 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     $interactiveContainer = $(viewSelector);
     if ($interactiveContainer.children().length === 0) {
       $top = $('<div class="interactive-top" id="top"/>');
-      $top.append('<div id="molecule-container"/>');
-      $right = $('<div id="right"/>');
-      $top.append($right);
+      $top.append('<div class="interactive-top" id="molecule-container"/>');
+      if (interactive.layout && interactive.layout.right) {
+        $right = $('<div class="interactive-top" id="right"/>');
+        $top.append($right);
+      }
+      if (interactive.layout && interactive.layout.rightwide) {
+        $rightwide = $('<div class="interactive-top" id="rightwide"/>');
+        $top.append($rightwide);
+      }
       $interactiveContainer.append($top);
       $interactiveContainer.append('<div class="interactive-bottom" id="bottom"/>');
     } else {
-      $('#bottom').html('');
-      $('#right').html('');
-      $interactiveContainer.append('<div id="bottom"/>');
+      $bottom = $("#bottom");
+      $right = $("#right");
+      $bottom.html('');
+      if ($right) {
+        $right.html('');
+      }
+      if ($rightwide) {
+        $rightwide.html('');
+      }
     }
 
     if (interactive.model != null) {
