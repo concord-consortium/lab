@@ -434,7 +434,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("xlink:href", "../../resources/heatbath.gif");
 
       model.addPropertiesListener(["temperature_control"], updateHeatBath);
-      updateHeatBath();
 
       molecule_div = d3.select("#viz").append("div")
           .attr("class", "tooltip")
@@ -847,6 +846,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
       setup_radial_bonds();
       setup_particles();
+      updateHeatBath();
     }
 
     function setup_particles() {
