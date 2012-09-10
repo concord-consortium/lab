@@ -368,6 +368,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr('preserveAspectRatio', 'xMinYMin meet');
 
       } else {
+        outerElement = elem;
         vis1 = d3.select(node).append("svg")
           .attr("width", cx)
           .attr("height", cy);
