@@ -41,6 +41,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
+	server/public/lab/lab.interactive-layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.energy2d.js \
@@ -370,6 +371,7 @@ server/public/lab/lab.js: \
 	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
+	server/public/lab/lab.interactive-layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.components.js \
   server/public/lab/lab.controllers.js \
@@ -409,6 +411,11 @@ server/public/lab/lab.layout.js: \
 	src/lab/start.js \
 	src/lab/layout/layout.js \
 	src/lab/layout/fullscreen.js \
+	src/lab/end.js
+
+server/public/lab/lab.interactive-layout.js: \
+	src/lab/start.js \
+	src/lab/layout/interactive-layout.js \
 	src/lab/end.js
 
 server/public/lab/lab.views.js: \
