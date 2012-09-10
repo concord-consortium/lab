@@ -6,6 +6,15 @@ layout = layout || {};
 // Layout for non-embedded 'interactives' page
 //
 
+
+function setThermometerHeight(h) {
+  // get height of thermometer label, including margin:
+  var labelHeight = $('.interactive-thermometer p.label').outerHeight(true);
+
+  $('.interactive-thermometer').height(h);
+  $('.interactive-thermometer .thermometer').height(h - labelHeight);
+}
+
 layout.setupInteractiveLayout = function setupInteractiveLayout() {
 
   var i,
@@ -55,6 +64,8 @@ layout.setupInteractiveLayout = function setupInteractiveLayout() {
       }
     }
   }
+
+  setThermometerHeight(modelHeight);
 
   // FIXME this is a temporary hack ... put in layout code instead of memorializing it in the CSS,
   // which doesn't tend to get reviewed as closely ...  to push the molecule-container down so its
