@@ -8,7 +8,8 @@ any of the following licenses:
 If you have have received a **distribution archive** of the
 [Concord Consortium Lab project](https://github.com/concord-consortium/lab) the standard
 Concord Consortium Lab copyright applies to all resources **except** the files in the
-`vendor/` and `imports/` directories as well as some of the files in the `jnlp/` directory.
+`vendor/` and `imports/` directories as well as some of the generated CSS and some of the
+files in the `jnlp/` directory.
 
 The files in the `src/vendor/` directory which are copied to the `vendor/` directory
 when a distribution is created are from third-parties and are distributed under either
@@ -22,7 +23,7 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
 
 1.  [D3](http://d3js.org/): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 2.  [D3-plugins](https://github.com/d3/d3-plugins): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-3.  [hijs](https://github.com/cloudhead/hijs): [MIT](http://www.opensource.org/licenses/MIT) 
+3.  [hijs](https://github.com/cloudhead/hijs): [MIT](http://www.opensource.org/licenses/MIT)
 4.  [jQuery](https://github.com/jquery/jquery): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 5.  [jQuery-UI](https://github.com/jquery/jquery-ui): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
@@ -70,7 +71,12 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
     10.  src/vendor/codemirror2/mode/xquery/xquery.js: MIT
     11.  src/vendor/codemirror2/theme/xq-dark.css: MIT
     12.  src/vendor/codemirror2/lib/util/foldcode.js: MIT
-    
+
+The Sass mixins in the directories: `src/sass/bourbon` and `src/sass/neat` are used to produce some
+of the CSS used in the Lab project and are distributed under the MIT license.
+
+1.  [Bourbon](https://github.com/thoughtbot/bourbon): [MIT](http://www.opensource.org/licenses/MIT)
+2.  [Neat](https://github.com/thoughtbot/neat): [MIT](http://www.opensource.org/licenses/MIT)
 
 The files in the `src/imports/` directory which are copied to the `imports/` directory
 when a distribution is created are all Copyright 2012 (c) by the Concord Consortium and distributed

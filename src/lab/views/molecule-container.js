@@ -10,6 +10,8 @@ if (typeof Lab === 'undefined') Lab = {};
 Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   var elem = d3.select(e),
       node = elem.node(),
+      // in fit-to-parent mode, the d3 selection containing outermost container
+      outerElement,
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
       width, height,
@@ -352,7 +354,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     if (vis === undefined) {
 
       if (options.fit_to_parent) {
-        elem = d3.select(e)
+        outerElement = d3.select(e);
+        elem = outerElement
           .append('div').attr('class', 'positioning-container')
           .append('div').attr('class', 'molecules-view-aspect-container')
             .attr('style', 'padding-top: ' + Math.round(cy/cx * 100) + '%')
@@ -365,6 +368,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr('preserveAspectRatio', 'xMinYMin meet');
 
       } else {
+        outerElement = elem;
         vis1 = d3.select(node).append("svg")
           .attr("width", cx)
           .attr("height", cy);
@@ -1198,6 +1202,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     // make these private variables and functions available
     container.node = node;
+    container.outerNode = outerElement.node();
     container.updateMoleculeRadius = updateMoleculeRadius;
     container.setup_drawables = setup_drawables;
     container.update_drawable_positions = update_drawable_positions;
@@ -1208,7 +1213,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   }
 
   container.resize = function(w, h) {
-    if ( !options.fit_to_parent ) container.scale(w, h);
+    if (options.fit_to_parent) {
+      outerElement.style('width', w+'px');
+    } else {
+      container.scale(w, h);
+    }
     container();
     container.setup_drawables();
   };

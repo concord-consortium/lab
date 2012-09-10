@@ -1,8 +1,45 @@
+$directory: "../.."
+
+@import 'sass/bourbon/bourbon'
+@import 'sass/variables'
+@import 'sass/neat/neat'
+@import 'sass/lab/lab'
+
 #content
   width: 100%
-  white-space: nowrap
+
+#viz.top
+  width: 100%
+  padding: 0.5em 1.0em
+
+#interactive-container
+  @include outer-container
+  @include fill-parent
+
+#top
+  @include span-columns(12)
+
+.interactive-top
+  position: relative
+
+#molecule-container
+  @include span-columns(6 of 12, inline-block)
 
 #right
-  display: inline-block
-  padding-left: 0.5em
-  vertical-align: bottom
+  @include span-columns(2 of 12, inline-block)
+  .label
+    margin: 0.5em auto 0.5em auto
+    text-align: center
+    font-size: 1.4em
+
+#rightwide
+  @include span-columns(4 of 12, inline-block)
+  .label
+    margin: 0.5em auto 0.5em auto
+    text-align: center
+    font-size: 1.4em
+
+#bottom.interactive-bottom
+  @include row
+  @include span-columns(12, inline-block)
+  padding-top: 1.0em

@@ -12,10 +12,11 @@ var ROOT = "/examples",
   var interactiveDefinitionLoaded = $.Deferred(),
       windowLoaded = $.Deferred(),
 
-      selectInteractive = document.getElementById('select-interactive'),
-      interactiveTextArea = document.getElementById('interactive-text-area'),
-      updateInteractiveButton = document.getElementById('update-interactive-button'),
-      autoFormatSelectionButton = document.getElementById('autoformat-selection-button'),
+      $selectInteractive = $("#select-interactive"),
+
+      $updateInteractiveButton = $("#update-interactive-button"),
+      $autoFormatSelectionButton = $("#autoformat-selection-button"),
+      $interactiveTextArea = $("#interactive-text-area"),
 
       $aboutLink = $("#about-link"),
       $aboutPane = $("#about-pane"),
@@ -55,7 +56,7 @@ var ROOT = "/examples",
       viewType;
 
   if (!document.location.hash) {
-    if (selectInteractive) {
+    if ($selectInteractive) {
       selectInteractiveHandler();
     } else {
       document.location.hash = '#interactives/heat-and-cool-example.json';
@@ -72,7 +73,7 @@ var ROOT = "/examples",
       // Use the presense of selectInteractive as a proxy indicating that the
       // rest of the elements on the non-iframe-embeddable version of the page
       // are present and should be setup.
-      if (selectInteractive) {
+      if ($selectInteractive.length) {
         applicationCallbacks = [setupFullPage];
       } else {
         viewType = 'interactive-iframe';
@@ -108,22 +109,10 @@ var ROOT = "/examples",
   // non-embeddable Interactive page
   //
   function selectInteractiveHandler() {
-    document.location.hash = '#' + selectInteractive.value;
+    document.location.hash = '#' + $selectInteractive.val();
   }
 
-  function updateInteractiveHandler() {
-    interactive = JSON.parse(editor.getValue());
-    controller.loadInteractive(interactive, '#interactive-container');
-  }
-
-  function getSelectedRange() {
-    return { from: editor.getCursor(true), to: editor.getCursor(false) };
-  }
-
-  function autoFormatSelection() {
-    var range = getSelectedRange();
-    editor.autoFormatRange(range.from, range.to);
-  }
+  $selectInteractive.change(selectInteractiveHandler);
 
   // used to extract values from nested object: modelList
   function getObjects(obj, key, val) {
@@ -144,7 +133,7 @@ var ROOT = "/examples",
 
   function setupFullPage() {
     var java_mw_link;
-    selectInteractive.value = interactiveUrl;
+    $selectInteractive.val(interactiveUrl);
 
     // construct link to embeddable version of Interactive
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
@@ -165,7 +154,7 @@ var ROOT = "/examples",
     // construct link to DataGames embeddable version of Interactive
     $("#datagames-link").attr("href", function() {
       var dgPayload = [{
-            "name": $(selectInteractive).find("option:selected").text(),
+            "name": $selectInteractive.find("option:selected").text(),
             "dimensions": {
               "width": 600,
               "height":400
@@ -183,19 +172,28 @@ var ROOT = "/examples",
     //
     // Interactive Code Editor
     //
-    interactiveTextArea.textContent = JSON.stringify(interactive, null, indent);
+
+    $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
     foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
-    editor = CodeMirror.fromTextArea(interactiveTextArea, {
-      mode: 'javascript',
-      indentUnit: indent,
-      lineNumbers: true,
-      lineWrapping: false,
-      onGutterClick: foldFunc
+    if (!editor) {
+      editor = CodeMirror.fromTextArea($interactiveTextArea.get(0), {
+        mode: 'javascript',
+        indentUnit: indent,
+        lineNumbers: true,
+        lineWrapping: false,
+        onGutterClick: foldFunc
+      });
+    }
+
+    $updateInteractiveButton.click(function() {
+      interactive = JSON.parse(editor.getValue());
+      controller.loadInteractive(interactive, '#interactive-container');
     });
 
-    selectInteractive.onchange = selectInteractiveHandler;
-    updateInteractiveButton.onclick = updateInteractiveHandler;
-    autoFormatSelectionButton.onclick = autoFormatSelection;
+    $autoFormatSelectionButton.click(function() {
+      var range = getSelectedRange();
+      editor.autoFormatRange(range.from, range.to);
+    });
 
     $showEditor.change(function() {
       if (this.checked) {

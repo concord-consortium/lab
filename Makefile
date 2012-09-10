@@ -28,19 +28,20 @@ vpath %.sass src/examples
 SASS_DOC_FILES := $(shell find src/doc -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/server\/public\/\1.css/' )
 vpath %.sass src/doc
 
-SCSS_EXAMPLE_FILES := $(shell find src -name '*.scss' -exec echo {} \; | grep -v bourbon | sed s'/src\/\(.*\)\.scss/server\/public\/\1.css/' )
+SCSS_EXAMPLE_FILES := $(shell find src -type d -name 'sass' -prune -o -name '*.scss' -exec echo {} \; | grep -v bourbon | sed s'/src\/\(.*\)\.scss/server\/public\/\1.css/' )
 vpath %.scss src
 
 COFFEESCRIPT_EXAMPLE_FILES := $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/server\/public\/\1.js/' )
 vpath %.coffee src
 
-MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/server\/public\/\1.html/' )
+MARKDOWN_EXAMPLE_FILES := $(shell find src -type d -name 'sass' -prune -o -name '*.md'  -maxdepth 1 -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/server\/public\/\1.html/' )
 vpath %.md src
 
 LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
+	server/public/lab/lab.interactive-layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.energy2d.js \
@@ -370,6 +371,7 @@ server/public/lab/lab.js: \
 	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
+	server/public/lab/lab.interactive-layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.components.js \
   server/public/lab/lab.controllers.js \
@@ -409,6 +411,11 @@ server/public/lab/lab.layout.js: \
 	src/lab/start.js \
 	src/lab/layout/layout.js \
 	src/lab/layout/fullscreen.js \
+	src/lab/end.js
+
+server/public/lab/lab.interactive-layout.js: \
+	src/lab/start.js \
+	src/lab/layout/interactive-layout.js \
 	src/lab/end.js
 
 server/public/lab/lab.views.js: \
@@ -482,6 +489,9 @@ server/public/%.html: src/%.html.haml Makefile
 
 se:
 	@echo $(SASS_EXAMPLE_FILES)
+
+sce:
+	@echo $(SCSS_EXAMPLE_FILES)
 
 sd:
 	@echo $(SASS_DOC_FILES)
