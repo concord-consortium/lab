@@ -602,14 +602,6 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       }
     }
 
-    // Finally, make sure there's room for the right side. This is needed because the
-    // right side is absolutely positioned (the only way to get its height to stretch to the
-    // same height as the molecule container.) Perhaps there's a better way.
-    if ($('#right').children().length > 0) {
-      $('.interactive-top').addClass('push-right');
-    } else {
-      $('.interactive-top').removeClass('push-right');
-    }
 
   }
 
