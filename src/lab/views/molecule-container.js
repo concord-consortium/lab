@@ -875,7 +875,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function drawImageAttachment(){
-      image_container.selectAll("image.image_attach").remove();
       var imgHostIndex_i, img, img_height, img_width, plotSize, mwWidth,scaling_factor;
       plotSize = size.width;
       mwWidth = model.size()[0];
@@ -885,8 +884,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         imgHostIndex_i =  imageProp[i].imageHostIndex;
         img = new Image();
         img.src = imagePath+imageProp[i].imageUri;
-        if(img.complete){
           img.onload = function() {
+            image_container.selectAll("image.image_attach").remove();
             img_width = img.width*scaling_factor;
             img_height = img.height*scaling_factor;
             image_container.append("image")
@@ -898,7 +897,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
               .attr("height", img_height)
               .attr("pointer-events", "none");
           }
-        }
       }
     }
 
