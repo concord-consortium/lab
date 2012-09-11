@@ -404,7 +404,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
           sample = model.get("viewRefreshInterval")/1000;
           options.sample = sample;
           resetEnergyData();
-          energyGraph.reset(options);
+          energyGraph.reset('#' + thisComponent.id, options);
           energyGraph.new_data(energyData);
         });
 
