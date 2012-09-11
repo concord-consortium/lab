@@ -1163,6 +1163,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           var click_x = x.invert(d3.event.x),
               click_y = y.invert(d3.event.y);
 
+          if (click_x < options.xmin) click_x = options.xmin;
+          if (click_x > options.xmax) click_x = options.xmax;
+          if (click_y < options.ymin) click_y = options.ymin;
+          if (click_y > options.ymax) click_y = options.ymax;
+
           // here we just assume we are updating the one and only spring force.
           // This assumption will have to change if we can have more than one
           model.updateSpringForce(0, click_x, click_y);
