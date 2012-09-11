@@ -345,6 +345,9 @@
   <void property="quantumRule"> 
    <object class="org.concord.mw2d.models.QuantumRule"/> 
   </void> 
+  <void property="timeStep"> 
+   <double>1.0</double> 
+  </void> 
   <void property="universe"> 
    <object class="org.concord.mw2d.models.Universe"/> 
   </void> 

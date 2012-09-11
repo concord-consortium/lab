@@ -6,14 +6,14 @@
 <text>  
      
 
-VisualRefreshInterval
+View Refresh Interval
   
 
-TimeStep
+Integration Time Step
   
 
 </text>
-<section start="0" end="50">
+<section start="0" end="63">
 <paragraph start="0" end="3">
 <content start="0" end="1">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
@@ -62,7 +62,7 @@ TimeStep
 </paragraph>
 <paragraph start="10" end="32">
 <content start="10" end="32">
-<size>16</size><bold>true</bold></content>
+<bold>true</bold><size>16</size></content>
 
 </paragraph>
 <paragraph start="32" end="35">
@@ -74,12 +74,12 @@ TimeStep
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
 <action>Execute MW script</action>
-<script>{option=&quot;10&quot;, script=&quot;&quot;set visual_refresh_interval 10&quot;}
-{option=&quot;20&quot;, script=&quot;&quot;set visual_refresh_interval 20&quot;}
-{option=&quot;50&quot;, script=&quot;&quot;set visual_refresh_interval 50&quot;}
-{option=&quot;100&quot;, script=&quot;&quot;set visual_refresh_interval 100&quot;}
-{option=&quot;200&quot;, script=&quot;&quot;set visual_refresh_interval 200&quot;}
-{option=&quot;500&quot;, script=&quot;&quot;set visual_refresh_interval 500&quot;}
+<script>{option=&quot;10&quot;, script=&quot;set view_refresh_interval 10&quot;}
+{option=&quot;20&quot;, script=&quot;set view_refresh_interval 20&quot;}
+{option=&quot;50&quot;, script=&quot;set view_refresh_interval 50&quot;}
+{option=&quot;100&quot;, script=&quot;set view_refresh_interval 100&quot;}
+{option=&quot;200&quot;, script=&quot;set view_refresh_interval 200&quot;}
+{option=&quot;500&quot;, script=&quot;set view_refresh_interval 500&quot;}
 </script>
 <selectedIndex>2</selectedIndex>
 <disabled_at_run>true</disabled_at_run>
@@ -94,41 +94,41 @@ TimeStep
 </content>
 
 </paragraph>
-<paragraph start="36" end="45">
-<content start="36" end="45">
-<size>16</size><bold>true</bold></content>
+<paragraph start="36" end="58">
+<content start="36" end="58">
+<bold>true</bold><size>16</size></content>
 
 </paragraph>
-<paragraph start="45" end="48">
-<content start="45" end="46">
+<paragraph start="58" end="61">
+<content start="58" end="59">
 </content>
 
-<content start="46" end="47">
+<content start="59" end="60">
 <component><class>org.concord.modeler.PageComboBox</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
 <action>Execute MW script</action>
-<script>{option=&quot;0.1&quot;, script=&quot;&quot;set time_step 0.1&quot;}
-{option=&quot;0.2&quot;, script=&quot;&quot;set time_step 0.2&quot;}
-{option=&quot;0.5&quot;, script=&quot;&quot;set time_step 0.5&quot;}
-{option=&quot;1.0&quot;, script=&quot;&quot;set time_step 1.0&quot;}
-{option=&quot;2.0&quot;, script=&quot;&quot;set time_step 2.0&quot;}
-{option=&quot;5.0&quot;, script=&quot;&quot;set time_step 5.0&quot;}
+<script>{option=&quot;0.1&quot;, script=&quot;set timestep 0.1&quot;}
+{option=&quot;0.2&quot;, script=&quot;set timestep 0.2&quot;}
+{option=&quot;0.5&quot;, script=&quot;set timestep 0.5&quot;}
+{option=&quot;1.0&quot;, script=&quot;set timestep 1.0&quot;}
+{option=&quot;2.0&quot;, script=&quot;set timestep 2.0&quot;}
+{option=&quot;5.0&quot;, script=&quot;set timestep 5.0&quot;}
 </script>
 <selectedIndex>3</selectedIndex>
 <disabled_at_run>true</disabled_at_run>
 </component></content>
 
-<content start="47" end="48">
+<content start="60" end="61">
 </content>
 
 </paragraph>
-<paragraph start="48" end="49">
-<content start="48" end="49">
+<paragraph start="61" end="62">
+<content start="61" end="62">
 </content>
 
 </paragraph>
-<paragraph start="49" end="50">
+<paragraph start="62" end="63">
 </paragraph>
 </section>
 </document>
