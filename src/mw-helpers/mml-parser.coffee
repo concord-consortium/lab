@@ -172,6 +172,8 @@ parseMML = (mmlString) ->
       for type in imageProps
         imageUri = imageProps.find("[property=URI] string").text()
         imageHostIndex = parseInt imageProps.find("[property=hostIndex] int").text()
+        if (isNaN(imageHostIndex))
+          imageHostIndex = 0
         imageHostType = imageProps.find("[property=hostType] string").text()
         imageHostType = imageHostType.slice(imageHostType.lastIndexOf(".")+1)
         imageLayer = parseInt imageProps.find("[property=layer] int").text()

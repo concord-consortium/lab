@@ -889,8 +889,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             img_width = img.width*scaling_factor;
             img_height = img.height*scaling_factor;
             image_container.append("image")
-              .attr("x", function(d,i) {if(imgHostIndex_i == null) {return imageProp[i].imageX; } else { return (x(get_x(imgHostIndex_i))-img_width/2);}})
-              .attr("y", function(d,i) {if(imgHostIndex_i == null) {return imageProp[i].imageY; } else { return (y(get_y(imgHostIndex_i))-img_height/2);}})
+              .attr("x",  (x(get_x(imgHostIndex_i))-img_width/2))
+              .attr("y",  (y(get_y(imgHostIndex_i))-img_height/2))
               .attr("class", "image_attach draggable")
               .attr("xlink:href", img.src)
               .attr("width", img_width)
@@ -1137,8 +1137,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         img_width = img.width*scaling_factor;
         img_height = img.height*scaling_factor;
         image_container.selectAll("image.draggable")
-          .attr("x", function() {if(imgHostIndex_i == null) {return imageProp[i].imageX; } else { return (x(get_x(imgHostIndex_i))-img_width/2);}})
-          .attr("y", function() {if(imgHostIndex_i == null) {return imageProp[i].imageY; } else { return (y(get_y(imgHostIndex_i))-img_height/2);}})
+          .attr("x", (x(get_x(imgHostIndex_i))-img_width/2))
+          .attr("y", (y(get_y(imgHostIndex_i))-img_height/2))
       }
     }
 
