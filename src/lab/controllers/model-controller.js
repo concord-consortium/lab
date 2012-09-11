@@ -37,6 +37,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       obstacles,
       viscosity,
       gravitationalField,
+      images,
+      interactiveUrl,
       showClock,
       viewRefreshInterval,
 
@@ -95,6 +97,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       modelTimeLabel      = playerConfig.modelTimeLabel;
       enableAtomTooltips  = playerConfig.enableAtomTooltips || false;
       fit_to_parent       = playerConfig.fit_to_parent;
+      interactiveUrl      = playerConfig.interactiveUrl;
 
       elements            = modelConfig.elements;
       atoms               = modelConfig.atoms;
@@ -111,6 +114,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       obstacles           = modelConfig.obstacles;
       viscosity           = modelConfig.viscosity;
       gravitationalField  = modelConfig.gravitationalField;
+      images              = modelConfig.images;
     }
 
     // ------------------------------------------------------------
@@ -132,7 +136,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           showClock           : showClock,
           viewRefreshInterval : viewRefreshInterval,
           viscosity           : viscosity,
-          gravitationalField  : gravitationalField
+          gravitationalField  : gravitationalField,
+          images              : images,
+          interactiveUrl      : interactiveUrl
         });
 
       if (atoms) {
@@ -176,6 +182,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         ymax:                 height,
         chargeShading:        chargeShading,
         enableAtomTooltips:   enableAtomTooltips,
+        images:               images,
+        interactiveUrl:       interactiveUrl,
         get_radial_bonds:     function() { return model.get_radial_bonds(); },
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },
@@ -205,6 +213,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         xmax:                 width,
         ymax:                 height,
         chargeShading:        chargeShading,
+        images:               images,
         get_radial_bonds:     function() { return model.get_radial_bonds(); },
         get_nodes:            function() { return model.get_nodes(); },
         get_num_atoms:        function() { return model.get_num_atoms(); },

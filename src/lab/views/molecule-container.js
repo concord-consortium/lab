@@ -30,6 +30,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       time_suffix = " (fs)",
       gradient_container,
       VDWLines_container,
+      image_container,
       red_gradient,
       blue_gradient,
       green_gradient,
@@ -53,6 +54,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       radialBond,
       vdwLine,
       getRadialBonds,
+      imageProp,
+      interactiveUrl,
+      imagePath,
       getVdwPairs,
       bondColorArray,
       default_options = {
@@ -108,6 +112,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     getVdwPairs = options.get_vdw_pairs;
     set_atom_properties = options.set_atom_properties;
     is_stopped = options.is_stopped;
+    imageProp = options.images;
+    if(options.interactiveUrl) {
+    interactiveUrl = options.interactiveUrl;
+    imagePath = interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
+    }
     if (!options.showClock) {
       options.showClock = model.get("showClock");
     }
@@ -648,6 +657,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       element_gradient_array = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
       bondColorArray = ["#538f2f", "#aa2bb1", "#2cb6af", "#b3831c", "#7781c2", "#ee7171"];
+      image_container = vis.append("g");
+      image_container.attr("class", "image_container");
     }
 
     function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
@@ -840,6 +851,29 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
     }
 
+    function drawImageAttachment(){
+      image_container.selectAll("image.image_attach").remove();
+      var imgHostIndex_i, img, img_height, img_width, distance;
+      var numImages = imageProp.length;
+      for(var i = 0;i < numImages;i++) {
+        imgHostIndex_i =  imageProp[i].imageHostIndex;
+        img = new Image();
+        img.src = imagePath+imageProp[i].imageUri;
+      }
+      img.onload = function() {
+        img_width = img.width*(layout.screen_factor*1.6);
+        img_height = img.height*(layout.screen_factor*1.6);
+        image_container.append("image")
+          .attr("x", function(d,i) {if(imgHostIndex_i == null) {return imageProp[i].imageX; } else { return (x(get_x(imgHostIndex_i))-img_width/2);}})
+          .attr("y", function(d,i) {if(imgHostIndex_i == null) {return imageProp[i].imageY; } else { return (y(get_y(imgHostIndex_i))-img_height/2);}})
+          .attr("class", "image_attach draggable")
+          .attr("xlink:href", img.src)
+          .attr("width", img_width)
+          .attr("height", img_height)
+          .attr("pointer-events", "none");
+      }
+    }
+
     function setup_drawables() {
       setup_obstacles();
       if(drawVdwLines){
@@ -847,6 +881,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
       setup_radial_bonds();
       setup_particles();
+      if(imageProp && imageProp.length!=0){
+        drawImageAttachment()
+      }
     }
 
     function setup_particles() {
@@ -1016,6 +1053,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
       update_radial_bonds();
       update_molecule_positions();
+      if(imageProp && imageProp.length!=0){
+      updateImageAttachment();
+      }
       }
 
     function update_molecule_positions() {
@@ -1062,6 +1102,20 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("y2", function (d, i) {return ((y(get_y(get_radial_bond_atom_1(i)))+y(get_y(get_radial_bond_atom_2(i))))/2);})
         .attr("x1", function (d, i) {return x(get_x(get_radial_bond_atom_2(i)));})
         .attr("y1", function (d, i) {return y(get_y(get_radial_bond_atom_2(i)));});
+    }
+    function updateImageAttachment(){
+      var numImages, imgHostIndex_i, img, dist;
+        numImages= imageProp.length;
+      for(var i = 0;i < numImages;i++) {
+        imgHostIndex_i =  imageProp[i].imageHostIndex
+        img = new Image();
+        img.src =   imagePath+imageProp[i].imageUri;
+        img_width = img.width*(layout.screen_factor*1.6);
+        img_height = img.height*(layout.screen_factor*1.6);
+        image_container.selectAll("image.draggable")
+          .attr("x", function() {if(imgHostIndex_i == null) {return imageProp[i].imageX; } else { return (x(get_x(imgHostIndex_i))-img_width/2);}})
+          .attr("y", function() {if(imgHostIndex_i == null) {return imageProp[i].imageY; } else { return (y(get_y(imgHostIndex_i))-img_height/2);}})
+      }
     }
 
     function node_dragstart(d, i) {

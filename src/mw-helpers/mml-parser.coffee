@@ -151,7 +151,33 @@ parseMML = (mmlString) ->
     else
       gravitationalField = false
 
-
+    ###
+      Object image Properties
+      Find all object images. Results in:
+      [
+        {
+          imageUri: imageUri,
+          imageHostIndex: imageHostIndex,
+          imageHostType: imageHostType
+          imageLayer: imageLayer
+          imageX: imageX
+          imageY: imageY
+        },
+        { ...
+      ]
+    ###
+    imageProps = $mml("[property=images] array")
+    images = [];
+    if imageProps.length > 0
+      for type in imageProps
+        imageUri = imageProps.find("[property=URI] string").text()
+        imageHostIndex = parseInt imageProps.find("[property=hostIndex] int").text()
+        imageHostType = imageProps.find("[property=hostType] string").text()
+        imageHostType = imageHostType.slice(imageHostType.lastIndexOf(".")+1)
+        imageLayer = parseInt imageProps.find("[property=layer] int").text()
+        imageX = parseFloat imageProps.find("[property=x] double").text()
+        imageY = parseFloat imageProps.find("[property=y] double").text()
+        images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageX: imageX, imageY: imageY }
     ###
       Find the view-port size
     ###
@@ -369,6 +395,9 @@ parseMML = (mmlString) ->
 
     if radialBonds.length > 0
       json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength'
+
+    if imageProps.length > 0
+      json.images = images
 
     if obstacles.length > 0
       json.obstacles = unroll obstacles, 'x', 'y', 'height', 'width', 'density', 'color', 'visible'
