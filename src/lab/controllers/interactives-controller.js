@@ -353,6 +353,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       callback: function() {
 
         var thisComponent = component,
+            $container = $('#' + thisComponent.id),
             sample = model.get("viewRefreshInterval")/1000,
             options = {
               title:     "Energy of the System (KE:red, PE:green, TE:blue)",
@@ -379,7 +380,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         } else {
           sample = model.get("viewRefreshInterval")/1000;
           options.sample = sample;
-          energyGraph.reset(options);
+          energyGraph.reset('#' + thisComponent.id, options, $container[0]);
         }
 
         if (thisComponent.dimensions) {
@@ -542,12 +543,13 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     } else {
       $bottom = $("#bottom");
       $right = $("#right");
+      $rightwide = $("#rightwide");
       $bottom.html('');
       if ($right) {
-        $right.html('');
+        $right.empty();
       }
       if ($rightwide) {
-        $rightwide.html('');
+        $rightwide.empty();
       }
     }
 

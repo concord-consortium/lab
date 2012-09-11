@@ -1,8 +1,8 @@
-grapher.realTimeGraph = function(e, options) {
-  var elem = d3.select(e),
-      node = elem.node(),
-      cx = elem.property("clientWidth"),
-      cy = elem.property("clientHeight"),
+grapher.realTimeGraph = function(id, options, message) {
+  var elem,
+      node,
+      cx,
+      cy,
 
       stroke = function(d) { return d ? "#ccc" : "#666"; },
       tx = function(d) { return "translate(" + xScale(d) + ",0)"; },
@@ -64,12 +64,12 @@ grapher.realTimeGraph = function(e, options) {
         bars: false
       };
 
-  initialize(options);
+  initialize(id, options, message);
 
-  function setupOptions(options) {
-    if (options) {
+  function setupOptions(opts) {
+    if (opts) {
       for(var p in default_options) {
-        if (options[p] === undefined) {
+        if (opts[p] === undefined) {
           options[p] = default_options[p];
         }
       }
@@ -112,13 +112,22 @@ grapher.realTimeGraph = function(e, options) {
       node.style.height = cy +"px";
     }
     calculateSizeType();
-    displayProperties = layout.getDisplayProperties();
-    emsize = displayProperties.emsize;
+    // displayProperties = layout.getDisplayProperties();
+    emsize = parseFloat($('#viz').css('font-size') || $('body').css('font-size'))/12
+    // emsize = displayProperties.emsize;
   }
 
-  function initialize(newOptions, mesg) {
-    if (newOptions || !options) {
-      options = setupOptions(newOptions);
+  function initialize(id, opts, message) {
+    if (id) {
+      elem = d3.select(id);
+      node = elem.node();
+      cx = elem.property("clientWidth");
+      cy = elem.property("clientHeight");
+    }
+
+    if (opts || !options) {
+      options = setupOptions(opts);
+      newOptions = undefined;
     }
 
     if (svg !== undefined) {
@@ -126,8 +135,9 @@ grapher.realTimeGraph = function(e, options) {
       svg = undefined;
     }
 
-    if (mesg) {
-      message = mesg;
+    if (gcanvas !== undefined) {
+      $(gcanvas).remove();
+      gcanvas = undefined;
     }
 
     // use local variable for access speed in add_point()
@@ -226,7 +236,7 @@ grapher.realTimeGraph = function(e, options) {
       .range([0, size.width]);
 
     if (options.xscale == "pow") {
-      xScale.exponent(options.xscaleExponent)
+      xScale.exponent(options.xscaleExponent);
     }
 
     yScale = d3.scale[options.yscale]()
@@ -234,7 +244,7 @@ grapher.realTimeGraph = function(e, options) {
       .range([size.height, 0]).nice();
 
     if (options.yscale == "pow") {
-      yScale.exponent(options.yscaleExponent)
+      yScale.exponent(options.yscaleExponent);
     }
 
     fx = d3.format(options.xFormatter);
@@ -347,6 +357,13 @@ grapher.realTimeGraph = function(e, options) {
             .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
+      notification = vis.append("text")
+          .attr("class", "graph-notification")
+          .text(message)
+          .attr("x", size.width/2)
+          .attr("y", size.height/2)
+          .style("text-anchor","middle");
+
       d3.select(node)
           .on("mousemove.drag", mousemove)
           .on("touchmove.drag", mousemove)
@@ -392,6 +409,10 @@ grapher.realTimeGraph = function(e, options) {
             .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
+      notification
+        .attr("x", size.width/2)
+        .attr("y", size.height/2);
+
       vis.selectAll("g.x").remove();
       vis.selectAll("g.y").remove();
 
@@ -399,6 +420,21 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     redraw();
+
+    // ------------------------------------------------------------
+    //
+    // Chart Notification
+    //
+    // ------------------------------------------------------------
+
+    function notify(mesg) {
+      message = mesg;
+      if (mesg) {
+        notification.text(mesg);
+      } else {
+        notification.text('');
+      }
+    }
 
     // ------------------------------------------------------------
     //
@@ -907,6 +943,7 @@ grapher.realTimeGraph = function(e, options) {
     graph.update = update;
     graph.redraw = redraw;
     graph.initialize = initialize;
+    graph.notify = notify;
 
     graph.number_of_points = number_of_points;
     graph.new_data = new_data;
@@ -955,9 +992,9 @@ grapher.realTimeGraph = function(e, options) {
     return graph;
   };
 
-  graph.reset = function(options, message) {
+  graph.reset = function(id, options, message) {
     if (arguments.length) {
-      graph.initialize(options, message);
+      graph.initialize(id, options, message);
     } else {
       graph.initialize();
     }
