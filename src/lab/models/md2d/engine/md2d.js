@@ -784,9 +784,12 @@ exports.makeModel = function() {
         var j, dx, dy, r_sq, f_over_r, fx, fy,
             el_i = element[i],
             el_j,
-            mass_inv = 1/elements[el_i][0], mass_j_inv, q_i = charge[i];
+            mass_inv = 1/elements[el_i][0], mass_j_inv, q_i = charge[i],
+            bondingPartners = radialBondsHash && radialBondsHash[i];
 
         for (j = 0; j < i; j++) {
+          if (bondingPartners && bondingPartners[j]) continue;
+
           el_j = element[j];
 
           mass_j_inv = 1/elements[el_j][0];
@@ -890,21 +893,6 @@ exports.makeModel = function() {
 
           // "natural" Next Gen MW force units / nm
           f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
-
-          // Subtract out the Lennard-Jones force between bonded pairs.
-          //
-          // (optimization assumption: the penalty for calculating the force twice for bonded pairs
-          // will be much less than the overhead and possible loop deoptimization incurred by
-          // checking against a list of bonded pairs each time through
-          // updatePairwiseAccelerations()'s inner loop.)
-
-          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el1][el2]) {
-            f_over_r -= ljCalculator[el1][el2].forceOverDistanceFromSquaredDistance(r_sq);
-          }
-
-          if (useCoulombInteraction && hasChargedAtoms) {
-            f_over_r -= coulomb.forceOverDistanceFromSquaredDistance(r_sq, charge[i1], charge[i2]);
-          }
 
           fx = f_over_r * dx;
           fy = f_over_r * dy;
