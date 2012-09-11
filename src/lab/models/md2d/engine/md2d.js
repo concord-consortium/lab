@@ -1639,7 +1639,7 @@ exports.makeModel = function() {
 
         // gravitational PE
         if (gravitationalField) {
-          gravPEInMWUnits = elements[i][ELEMENT_INDICES.MASS] * gravitationalField * y[i];
+          gravPEInMWUnits = elements[element[i]][ELEMENT_INDICES.MASS] * gravitationalField * y[i];
           PE += constants.convert(gravPEInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
         }
 
