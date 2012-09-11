@@ -643,15 +643,23 @@ exports.makeModel = function() {
         var r = radius[i],
             leftwall = r,
             bottomwall = r,
-            rightwall = size[0] - r,
-            topwall = size[1] - r;
+            width = size[0],
+            height = size[1],
+            rightwall = width - r,
+            topwall = height - r;
 
         // Bounce off vertical walls.
         if (x[i] < leftwall) {
+          while (x[i] < leftwall - width) {
+            x[i] += width;
+          }
           x[i]  = leftwall + (leftwall - x[i]);
           vx[i] *= -1;
           px[i] *= -1;
         } else if (x[i] > rightwall) {
+          while (x[i] > rightwall + width) {
+            x[i] -= width;
+          }
           x[i]  = rightwall - (x[i] - rightwall);
           vx[i] *= -1;
           px[i] *= -1;
@@ -659,10 +667,16 @@ exports.makeModel = function() {
 
         // Bounce off horizontal walls
         if (y[i] < bottomwall) {
+          while (y[i] < bottomwall - height) {
+            y[i] += height;
+          }
           y[i]  = bottomwall + (bottomwall - y[i]);
           vy[i] *= -1;
           py[i] *= -1;
         } else if (y[i] > topwall) {
+          while (y[i] > topwall + width) {
+            y[i] -= width;
+          }
           y[i]  = topwall - (y[i] - topwall);
           vy[i] *= -1;
           py[i] *= -1;
