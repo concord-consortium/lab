@@ -167,18 +167,20 @@ parseMML = (mmlString) ->
       ]
     ###
     imageProps = $mml("[property=images] array")
+    imageBlock = imageProps.find("object.org-concord-mw2d-models-ImageComponent-Delegate")
     images = [];
     if imageProps.length > 0
-      for type in imageProps
-        imageUri = imageProps.find("[property=URI] string").text()
-        imageHostIndex = parseInt imageProps.find("[property=hostIndex] int").text()
+      for image in imageBlock
+        $image = getNode(cheerio(image))
+        imageUri = $image.find("[property=URI] string").text()
+        imageHostIndex = parseInt $image.find("[property=hostIndex] int").text()
         if (isNaN(imageHostIndex))
           imageHostIndex = 0
-        imageHostType = imageProps.find("[property=hostType] string").text()
+        imageHostType = $image.find("[property=hostType] string").text()
         imageHostType = imageHostType.slice(imageHostType.lastIndexOf(".")+1)
-        imageLayer = parseInt imageProps.find("[property=layer] int").text()
-        imageX = parseFloat imageProps.find("[property=x] double").text()
-        imageY = parseFloat imageProps.find("[property=y] double").text()
+        imageLayer = parseInt $image.find("[property=layer] int").text()
+        imageX = parseFloat $image.find("[property=x] double").text()
+        imageY = parseFloat $image.find("[property=y] double").text()
         images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageX: imageX, imageY: imageY }
     ###
       Find the view-port size

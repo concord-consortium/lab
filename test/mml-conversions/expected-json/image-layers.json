@@ -1,0 +1,182 @@
+{
+  "temperature_control": true,
+  "width": 4,
+  "height": 3,
+  "viscosity": 0,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 2,
+  "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 20,
+      "sigma": 0.07,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 40,
+      "sigma": 0.14,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 60,
+      "sigma": 0.21,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 80,
+      "sigma": 0.28,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      1.2669779155182745,
+      0.7079376595129699,
+      2.761388423015648,
+      2.82232927063234,
+      2.741559435860856
+    ],
+    "Y": [
+      2.3209081709470336,
+      1.1424921899760085,
+      0.3115017773734269,
+      0.49984243495511976,
+      0.6850307905523323
+    ],
+    "VX": [
+      -0.0007728959027961447,
+      -0.0012389530613610641,
+      0.0005515708108054276,
+      0.00025076003939323676,
+      -0.0005533282358543803
+    ],
+    "VY": [
+      0.0007019612854822051,
+      0.0014127888923623957,
+      -0.00045975905955863224,
+      0.000043546558147901317,
+      -0.00029993891979294225
+    ],
+    "CHARGE": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "FRICTION": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "ELEMENT": [
+      3,
+      3,
+      1,
+      2,
+      1
+    ],
+    "PINNED": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "radialBonds": {
+    "atom1Index": [
+      2,
+      4
+    ],
+    "atom2Index": [
+      3,
+      3
+    ],
+    "bondLength": [
+      0.2,
+      0.2
+    ],
+    "bondStrength": [
+      2000,
+      2000
+    ]
+  },
+    "images": [
+        {
+            "imageUri": "above-bottom.png",
+            "imageHostIndex": 0,
+            "imageHostType": "",
+            "imageLayer": 1,
+            "imageX": 12,
+            "imageY": 45
+        },
+        {
+            "imageUri": "above-top.png",
+            "imageHostIndex": 0,
+            "imageHostType": "",
+            "imageLayer": 1,
+            "imageX": 173,
+            "imageY": 24
+        },
+        {
+            "imageUri": "beneath-bottom.png",
+            "imageHostIndex": 0,
+            "imageHostType": "",
+            "imageLayer": 2,
+            "imageX": 18,
+            "imageY": 172
+        },
+        {
+            "imageUri": "beneath-top.png",
+            "imageHostIndex": 0,
+            "imageHostType": "",
+            "imageLayer": 2,
+            "imageX": 188,
+            "imageY": 158
+        }
+    ],
+  "obstacles": {
+    "x": [
+      2.05
+    ],
+    "y": [
+      0.08999999999999986
+    ],
+    "height": [
+      2.81
+    ],
+    "width": [
+      0.23
+    ],
+    "density": [
+      "Infinity"
+    ],
+    "color": [
+      [
+        204,
+        204,
+        204
+      ]
+    ],
+    "visible": [
+      true
+    ]
+  },
+  "temperature": 4952.2219931146
+}
