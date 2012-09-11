@@ -269,7 +269,9 @@ exports.makeModel = function() {
       // An array of length 4 which contains the above 4 property arrays.
       // Left undefined if no radial bonds are defined.
       radialBonds,
-      //Ordered Radial Bond hash
+
+      // radialBondsHash[i][j] === true when atoms i and j are "radially bonded"
+      // radialBondsHash[i][j] === undefined otherwise
       radialBondsHash,
 
       //Number of VDW Pairs
@@ -1208,29 +1210,21 @@ exports.makeModel = function() {
       If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
-    addRadialBond: function(atomIndex1, atomIndex2, bondLength, bondStrength) {
-      var smallerIndex, largerIndex;
-      if(atomIndex1 < atomIndex2) {
-        smallerIndex = atomIndex1;
-        largerIndex = atomIndex2;
-      }
-      else {
-        smallerIndex = atomIndex2;
-        largerIndex = atomIndex1;
-      }
+    addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength) {
       if (N_radialBonds+1 > radialBondAtom1Index.length) {
         extendRadialBondsArray(N_radialBonds+1);
       }
 
-      radialBondAtom1Index[N_radialBonds] = atomIndex1;
-      radialBondAtom2Index[N_radialBonds] = atomIndex2;
+      radialBondAtom1Index[N_radialBonds] = atom1Index;
+      radialBondAtom2Index[N_radialBonds] = atom2Index;
       radialBondLength[N_radialBonds]     = bondLength;
       radialBondStrength[N_radialBonds]   = bondStrength;
 
-      if (!radialBondsHash[smallerIndex]) {
-        radialBondsHash[smallerIndex] = {};
-      }
-      radialBondsHash[smallerIndex][largerIndex] = true;
+      if ( ! radialBondsHash[atom1Index] ) radialBondsHash[atom1Index] = {};
+      radialBondsHash[atom1Index][atom2Index] = true;
+
+      if ( ! radialBondsHash[atom2Index] ) radialBondsHash[atom2Index] = {};
+      radialBondsHash[atom2Index][atom1Index] = true;
 
       N_radialBonds++;
     },
