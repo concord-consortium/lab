@@ -1275,6 +1275,10 @@ exports.makeModel = function() {
       }
     },
 
+    springForceAtomIndex: function(i) {
+      return springForceAtomIndex[i];
+    },
+
     addObstacle: function(x, y, width, height, density, color, visible) {
       var mass;
 

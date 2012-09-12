@@ -790,24 +790,34 @@ modeler.model = function(initialProperties) {
     return true;
   },
 
-  /* A "spring force" is used to pull atom `atomIndex` towards (x, y). We expect this to be used
+  model.DRAG_FRICTION_COEFFICIENT = 10;
+
+  /** A "spring force" is used to pull atom `atomIndex` towards (x, y). We expect this to be used
      to drag atoms interactively using the mouse cursor (in which case (x,y) is the mouse cursor
      location.)
 
-     The optional springConstant parameter (measured in eV/nm^2) is used to
+     The optional springConstant parameter (measured in eV/nm^2) is used to adjust the strength
+     of the "spring" pulling the atom toward (x, y)
+
+     @returns ID (index) of the spring force among all spring forces
   */
   model.addSpringForce = function(atomIndex, x, y, springConstant) {
     if (springConstant == null) springConstant = 2000;
-    coreModel.addSpringForce(atomIndex, x, y, springConstant);
-  },
+
+    // Increase friction during drag
+    nodes[model.INDICES.FRICTION][atomIndex] *= model.DRAG_FRICTION_COEFFICIENT;
+    return coreModel.addSpringForce(atomIndex, x, y, springConstant);
+  };
 
   model.updateSpringForce = function(i, x, y) {
     coreModel.updateSpringForce(i, x, y);
   },
 
   model.removeSpringForce = function(i) {
+    var atomIndex = coreModel.springForceAtomIndex(i);
+    nodes[model.INDICES.FRICTION][atomIndex] /= model.DRAG_FRICTION_COEFFICIENT;
     coreModel.removeSpringForce(i);
-  },
+  };
 
   // return a copy of the array of speeds
   model.get_speed = function() {
