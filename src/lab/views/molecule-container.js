@@ -16,6 +16,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       cy = elem.property("clientHeight"),
       width, height,
       scale_factor,
+      scaling_factor,
       vis1, vis, plot,
       playback_component, time_label,
       padding, size,
@@ -172,7 +173,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       "width":  width,
       "height": height
     };
-
+    scaling_factor = (size.width/(modelSize[0]*100));
     offset_top  = node.offsetTop + padding.top;
     offset_left = node.offsetLeft + padding.left;
 
@@ -869,16 +870,15 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("x1", x(get_x(atom1)))
             .attr("y1", y(get_y(atom1)))
             .attr("x2", x(get_x(atom2)))
-            .attr("y2", y(get_y(atom2)));
+            .attr("y2", y(get_y(atom2)))
+            .style("stroke-width", 2*scaling_factor)
+            .style("stroke-dasharray", 3*scaling_factor+" "+2*scaling_factor);
         }
       }
     }
 
     function drawImageAttachment(){
-      var imgHostIndex_i, img, img_height, img_width, plotSize, mwWidth,scaling_factor;
-      plotSize = size.width;
-      mwWidth = model.size()[0];
-      scaling_factor = (plotSize/(mwWidth*100));
+      var imgHostIndex_i, img, img_height, img_width;
       var numImages = imageProp.length;
       for(var i = 0;i < numImages;i++) {
         imgHostIndex_i =  imageProp[i].imageHostIndex;
@@ -1125,11 +1125,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("d", function (d, i) { return findPoints(i,2);});
     }
     function updateImageAttachment(){
-      var numImages, imgHostIndex_i, img, plotSize, mwWidth,  scaling_factor;
+      var numImages, imgHostIndex_i, img;
         numImages= imageProp.length;
-        plotSize = size.width;
-        mwWidth = model.size()[0];
-        scaling_factor = (plotSize/(mwWidth*100));
       for(var i = 0;i < numImages;i++) {
         imgHostIndex_i =  imageProp[i].imageHostIndex
         img = new Image();
