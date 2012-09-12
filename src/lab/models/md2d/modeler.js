@@ -802,7 +802,7 @@ modeler.model = function(initialProperties) {
      @returns ID (index) of the spring force among all spring forces
   */
   model.addSpringForce = function(atomIndex, x, y, springConstant) {
-    if (springConstant == null) springConstant = 2000;
+    if (springConstant == null) springConstant = 500;
 
     // Increase friction during drag
     nodes[model.INDICES.FRICTION][atomIndex] *= model.DRAG_FRICTION_COEFFICIENT;
