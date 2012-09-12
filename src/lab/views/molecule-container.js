@@ -763,7 +763,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       radialBond.enter().append("path")
           .attr("d", function (d, i) { return findPoints(i,1);})
           .attr("class", "radialbond")
-          .style("stroke-width", function (d, i) {if (isSpringBond(i)) {return "0.2";}else return  x(get_radius(get_radial_bond_atom_1(i)))*0.75; })
+          .style("stroke-width", function (d, i) {if (isSpringBond(i)) {return 0.3*scaling_factor;}else return  x(get_radius(get_radial_bond_atom_1(i)))*0.75; })
           .style("stroke", function(d, i) {
               if(isSpringBond(i)) {
                 return "#000000";
@@ -788,7 +788,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       radialBond.enter().append("path")
           .attr("d", function (d, i) { return findPoints(i,2);})
           .attr("class", "radialbond1")
-          .style("stroke-width", function (d, i) {if (isSpringBond(i)) {return "0.2";}else return x(get_radius(get_radial_bond_atom_2(i)))*0.75; })
+          .style("stroke-width", function (d, i) {if (isSpringBond(i)) {return 0.3*scaling_factor;}else return x(get_radius(get_radial_bond_atom_2(i)))*0.75; })
           .style("stroke", function(d, i) {
               if (isSpringBond(i)) {
                 return "#A4A4A4";
@@ -812,7 +812,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function findPoints(i, num) {
-      var pointX, pointY,dx, dy, x1, x2, y1, y2, lineTo, path, costheta, sintheta, length, numSpikes = 10*(layout.screen_factor*1.5);
+      var pointX, pointY,dx, dy, x1, x2, y1, y2, lineTo, path, costheta, sintheta, length, numSpikes = 10;
       x1 = x(get_x(get_radial_bond_atom_1(i)));
       y1 = y(get_y(get_radial_bond_atom_1(i)));
       x2 = x(get_x(get_radial_bond_atom_2(i)));
@@ -820,7 +820,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       if (isSpringBond(i)) {
         dx = x2 - x1;
         dy = y2 - y1;
-        length = Math.sqrt(dx*dx + dy*dy);
+        length = Math.sqrt(dx*dx + dy*dy)/scaling_factor;
         costheta = dx / length;
         sintheta = dy / length;
         var delta = length / numSpikes;
