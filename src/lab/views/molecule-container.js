@@ -878,10 +878,13 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function drawImageAttachment(){
-      var imgHostIndex_i, img, img_height, img_width;
-      var numImages = imageProp.length;
+      var numImages, img, img_height, img_width, imgHostIndex, imgHostType, imgX, imgY;
+      numImages = imageProp.length;
       for(var i = 0;i < numImages;i++) {
-        imgHostIndex_i =  imageProp[i].imageHostIndex;
+        imgHostIndex =  imageProp[i].imageHostIndex;
+        imgHostType =  imageProp[i].imageHostType;
+        imgX =  imageProp[i].imageX;
+        imgY =  imageProp[i].imageY;
         img = new Image();
         img.src = imagePath+imageProp[i].imageUri;
           img.onload = function() {
@@ -889,8 +892,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             img_width = img.width*scaling_factor;
             img_height = img.height*scaling_factor;
             image_container.append("image")
-              .attr("x",  (x(get_x(imgHostIndex_i))-img_width/2))
-              .attr("y",  (y(get_y(imgHostIndex_i))-img_height/2))
+              .attr("x",  function() { if(imgHostType == ""){ return imgX; } else { return (x(get_x(imgHostIndex))-img_width/2)}})
+              .attr("y",  function() { if(imgHostType == ""){ return imgY; } else { return (y(get_y(imgHostIndex))-img_height/2)}})
               .attr("class", "image_attach draggable")
               .attr("xlink:href", img.src)
               .attr("width", img_width)
@@ -1125,17 +1128,20 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("d", function (d, i) { return findPoints(i,2);});
     }
     function updateImageAttachment(){
-      var numImages, imgHostIndex_i, img;
-        numImages= imageProp.length;
+      var numImages, img, img_height, img_width, imgHostIndex, imgHostType, imgX, imgY;
+      numImages= imageProp.length;
       for(var i = 0;i < numImages;i++) {
-        imgHostIndex_i =  imageProp[i].imageHostIndex
+        imgHostIndex =  imageProp[i].imageHostIndex
+        imgHostType =  imageProp[i].imageHostType;
+        imgX =  imageProp[i].imageX;
+        imgY =  imageProp[i].imageY;
         img = new Image();
         img.src =   imagePath+imageProp[i].imageUri;
         img_width = img.width*scaling_factor;
         img_height = img.height*scaling_factor;
         image_container.selectAll("image.draggable")
-          .attr("x", (x(get_x(imgHostIndex_i))-img_width/2))
-          .attr("y", (y(get_y(imgHostIndex_i))-img_height/2))
+          .attr("x",  function() { if(imgHostType == ""){ return imgX; } else { return (x(get_x(imgHostIndex))-img_width/2)}})
+          .attr("y",  function() { if(imgHostType == ""){ return imgY; } else { return (y(get_y(imgHostIndex))-img_height/2)}})
       }
     }
 
