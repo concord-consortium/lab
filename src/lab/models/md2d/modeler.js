@@ -790,8 +790,15 @@ modeler.model = function(initialProperties) {
     return true;
   },
 
-  model.addSpringForce = function(atomIndex, x, y, strength) {
-    coreModel.addSpringForce(atomIndex, x, y, strength);
+  /* A "spring force" is used to pull atom `atomIndex` towards (x, y). We expect this to be used
+     to drag atoms interactively using the mouse cursor (in which case (x,y) is the mouse cursor
+     location.)
+
+     The optional springConstant parameter (measured in eV/nm^2) is used to
+  */
+  model.addSpringForce = function(atomIndex, x, y, springConstant) {
+    if (springConstant == null) springConstant = 2000;
+    coreModel.addSpringForce(atomIndex, x, y, springConstant);
   },
 
   model.updateSpringForce = function(i, x, y) {
