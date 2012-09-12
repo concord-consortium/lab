@@ -63,6 +63,12 @@ modeler.model = function(initialProperties) {
 
       viscosity,
 
+      // The index of the "spring force" used to implement dragging of atoms in a running model
+      liveDragSpringForceIndex,
+
+      // Cached value of the 'friction' property of the atom being dragged in a running model
+      liveDragSavedFriction,
+
       default_obstacle_properties = {
         vx: 0,
         vy: 0,
@@ -208,6 +214,9 @@ modeler.model = function(initialProperties) {
     ATOM1     : md2d.VDW_INDICES.ATOM1,
     ATOM2     : md2d.VDW_INDICES.ATOM2
   };
+
+  // Friction parameter temporarily applied to the live-dragged atom.
+  model.LIVE_DRAG_FRICTION = 10;
 
   function notifyPropertyListeners(listeners) {
     $.unique(listeners);
@@ -790,11 +799,10 @@ modeler.model = function(initialProperties) {
     return true;
   },
 
-  model.DRAG_FRICTION_COEFFICIENT = 10;
-
   /** A "spring force" is used to pull atom `atomIndex` towards (x, y). We expect this to be used
      to drag atoms interactively using the mouse cursor (in which case (x,y) is the mouse cursor
-     location.)
+     location.) In these cases, use the liveDragStart, liveDrag, and liveDragEnd methods instead
+     of this one.
 
      The optional springConstant parameter (measured in eV/nm^2) is used to adjust the strength
      of the "spring" pulling the atom toward (x, y)
@@ -803,20 +811,51 @@ modeler.model = function(initialProperties) {
   */
   model.addSpringForce = function(atomIndex, x, y, springConstant) {
     if (springConstant == null) springConstant = 500;
-
-    // Increase friction during drag
-    nodes[model.INDICES.FRICTION][atomIndex] *= model.DRAG_FRICTION_COEFFICIENT;
     return coreModel.addSpringForce(atomIndex, x, y, springConstant);
   };
 
-  model.updateSpringForce = function(i, x, y) {
-    coreModel.updateSpringForce(i, x, y);
-  },
+  /**
+    Update the (x, y) position of a spring force.
+  */
+  model.updateSpringForce = function(springForceIndex, x, y) {
+    coreModel.updateSpringForce(springForceIndex, x, y);
+  };
 
-  model.removeSpringForce = function(i) {
-    var atomIndex = coreModel.springForceAtomIndex(i);
-    nodes[model.INDICES.FRICTION][atomIndex] /= model.DRAG_FRICTION_COEFFICIENT;
-    coreModel.removeSpringForce(i);
+  /**
+    Remove a spring force.
+  */
+  model.removeSpringForce = function(springForceIndex) {
+    coreModel.removeSpringForce(springForceIndex);
+  };
+
+  /**
+    Implements dragging of an atom in a running model, by creating a spring force that pulls the
+    atom towards the mouse cursor position (x, y) and damping the resulting motion by temporarily
+    adjusting the friction of the dragged atom.
+  */
+  model.liveDragStart = function(atomIndex, x, y) {
+    liveDragSavedFriction = nodes[model.INDICES.FRICTION][atomIndex];
+    nodes[model.INDICES.FRICTION][atomIndex] = model.LIVE_DRAG_FRICTION;
+
+    liveDragSpringForceIndex = model.addSpringForce(atomIndex, x, y, 500);
+  };
+
+  /**
+    Updates the drag location after liveDragStart
+  */
+  model.liveDrag = function(x, y) {
+    model.updateSpringForce(liveDragSpringForceIndex, x, y);
+  };
+
+  /**
+    Cancels a live drag by removing the spring force that is pulling the atom, and restoring its
+    original friction property.
+  */
+  model.liveDragEnd = function() {
+    var atomIndex = coreModel.springForceAtomIndex(liveDragSpringForceIndex);
+
+    nodes[model.INDICES.FRICTION][atomIndex] = liveDragSavedFriction;
+    model.removeSpringForce(liveDragSpringForceIndex);
   };
 
   // return a copy of the array of speeds

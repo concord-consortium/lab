@@ -1242,7 +1242,7 @@ exports.makeModel = function() {
       springForceY[N_springForces]          = y;
       springForceStrength[N_springForces]   = strength;
 
-      N_springForces++;
+      return N_springForces++;
     },
 
     updateSpringForce: function(i, x, y) {

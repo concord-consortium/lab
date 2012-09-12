@@ -1149,7 +1149,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       if (!is_stopped()) {
         // if we're running, add a spring force
         if (get_draggable(i)) {
-          model.addSpringForce(i, get_x(i), get_y(i));
+          model.liveDragStart(i, get_x(i), get_y(i));
         }
       } else {
         // if we're stopped, drag the atom
@@ -1168,9 +1168,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           if (click_y < options.ymin) click_y = options.ymin;
           if (click_y > options.ymax) click_y = options.ymax;
 
-          // here we just assume we are updating the one and only spring force.
-          // This assumption will have to change if we can have more than one
-          model.updateSpringForce(0, click_x, click_y);
+          model.liveDrag(click_x, click_y);
         }
         return;
       }
@@ -1198,7 +1196,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         // here we just assume we are removing the one and only spring force.
         // This assumption will have to change if we can have more than one
         if (get_draggable(i)) {
-          model.removeSpringForce(0);
+          model.liveDragEnd();
         }
         return;
       }
