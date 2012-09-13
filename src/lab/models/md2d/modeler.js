@@ -754,6 +754,47 @@ modeler.model = function(initialProperties) {
     return false;
   },
 
+  /** Return the bounding box of the molecule containing atom 'atomIndex', with atomic radii taken
+      into account.
+
+     @returns an object with properties 'left', 'right', 'top', and 'bottom'. These are translated
+     relative to the center of atom 'atomIndex', so that 'left' represents (-) the distance in nm
+     between the leftmost edge and the center of atom 'atomIndex'.
+  */
+  model.getMoleculeBoundingBox = function(atomIndex) {
+
+    var moleculeAtoms,
+        i,
+        x,
+        y,
+        r,
+        top = -Infinity,
+        left = Infinity,
+        bottom = Infinity,
+        right = -Infinity,
+        cx,
+        cy;
+
+    moleculeAtoms = coreModel.getMoleculeAtoms(atomIndex);
+    moleculeAtoms.push(atomIndex);
+
+    for (i = 0; i < moleculeAtoms.length; i++) {
+      x = nodes[model.INDICES.X][moleculeAtoms[i]];
+      y = nodes[model.INDICES.Y][moleculeAtoms[i]];
+      r = nodes[model.INDICES.RADIUS][moleculeAtoms[i]];
+
+      if (x-r < left  ) left   = x-r;
+      if (x+r > right ) right  = x+r;
+      if (y-r < bottom) bottom = y-r;
+      if (y+r > top   ) top    = y+r;
+    }
+
+    cx = nodes[model.INDICES.X][atomIndex];
+    cy = nodes[model.INDICES.Y][atomIndex];
+
+    return { top: top-cy, left: left-cx, bottom: bottom-cy, right: right-cx };
+  },
+
   /**
       A generic method to set properties on a single existing atom.
 
