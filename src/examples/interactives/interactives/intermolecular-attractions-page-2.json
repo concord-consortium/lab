@@ -2,7 +2,7 @@
   "model": {
     "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json",
     "viewOptions": {
-      "controlButtons": "play_reset"
+      "controlButtons": ""
     }
   },
   "components": [
@@ -27,6 +27,12 @@
           "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json'); start();"
         }
       ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "reset",
+      "action": "reset();"
     }
   ]
 }
