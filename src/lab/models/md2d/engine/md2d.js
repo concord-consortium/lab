@@ -1311,27 +1311,37 @@ exports.makeModel = function() {
       N_obstacles++;
     },
 
-    /**
-      Checks to see if an uncharged atom could be placed at location x,y
-      without increasing the PE (i.e. overlapping with another atom), and
-      without being on an obstacle.
+    atomInBounds: function(_x, _y, i) {
+      var r = radius[i], j;
 
-      Optionally, an atom index i can be included which will tell the function
-      to ignore the existance of atom i. (Used when moving i around.)
-    */
-    canPlaceAtom: function(element, _x, _y, i) {
-      var r,
-          orig_x, orig_y,
-          PEAtLocation,
-          j;
-
-      // first do the simpler check to see if we're on an obstacle
-      r = radius[i];
+      if (_x < r || _x > size[0] - r || _y < r || _y > size[1] - r) {
+        return false;
+      }
       for (j = 0; j < N_obstacles; j++) {
         if (_x > (obstacleX[j] - r) && _x < (obstacleX[j] + obstacleWidth[j] + r) &&
             _y > (obstacleY[j] - r) && _y < (obstacleY[j] + obstacleHeight[j] + r)) {
           return false;
         }
+      }
+      return true;
+    },
+
+    /**
+      Checks to see if an uncharged atom could be placed at location x,y
+      without increasing the PE (i.e. overlapping with another atom), and
+      without being on an obstacle or past a wall.
+
+      Optionally, an atom index i can be included which will tell the function
+      to ignore the existance of atom i. (Used when moving i around.)
+    */
+    canPlaceAtom: function(element, _x, _y, i) {
+      var orig_x,
+          orig_y,
+          PEAtLocation;
+
+      // first do the simpler check to see if we're outside the walls or intersect an obstacle
+      if ( !model.atomInBounds(_x, _y, i) ) {
+        return false;
       }
 
       // then check PE at location

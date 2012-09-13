@@ -119,9 +119,8 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     // ------------------------------------------------------------
     //
-    // Create model and pass in properties
+    //   Molecular Model Setup
     //
-    // ------------------------------------------------------------
 
     function createModel() {
       initializeLocalVariables();
@@ -153,8 +152,12 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       if (radialBonds) model.createRadialBonds(radialBonds);
       if (showVDWLines) model.createVdwPairs(atoms);
       if (obstacles) model.createObstacles(obstacles);
+    }
 
-      dispatch.modelReset();
+    function setupModel() {
+      createModel();
+      model.resetTime();
+      model.on('tick', tickHandler);
     }
 
     // ------------------------------------------------------------
@@ -229,28 +232,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       moleculeContainer.setup_drawables();
     }
 
-
-    // ------------------------------------------------------------
-    //
-    //   Molecular Model Setup
-    //
-
-    function setupModel() {
-      model.resetTime();
-      model.stop();
-      model.on('tick', tickHandler);
-    }
-
-    function finishSetup(firstTime) {
-      createModel();
-      setupModel();
-      if (firstTime) {
-        setupModelPlayer();
-      } else {
-        resetModelPlayer();
-      }
-    }
-
     /**
       Note: newModelConfig, newPlayerConfig are optional. Calling this without
       arguments will simply reload the current model.
@@ -258,19 +239,30 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
     function reload(newModelConfig, newPlayerConfig) {
       modelConfig = newModelConfig || modelConfig;
       playerConfig = newPlayerConfig || playerConfig;
-      finishSetup(false);
+      setupModel();
+      resetModelPlayer();
+      dispatch.modelReset();
     }
+
+    // ------------------------------------------------------------
+    //
+    // Initial setup of this modelController:
+    //
+    // ------------------------------------------------------------
 
     if (typeof DEVELOPMENT === 'undefined') {
       try {
-        finishSetup(true);
+        setupModel();
       } catch(e) {
         alert(e);
         throw new Error(e);
       }
     } else {
-      finishSetup(true);
+      setupModel();
     }
+
+    setupModelPlayer();
+    dispatch.modelReset();
 
     // ------------------------------------------------------------
     //
