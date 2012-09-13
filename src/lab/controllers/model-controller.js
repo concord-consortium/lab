@@ -237,7 +237,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
 
     function setupModel() {
       model.resetTime();
-      model.stop();
       model.on('tick', tickHandler);
     }
 
