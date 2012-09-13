@@ -1168,64 +1168,47 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function node_dragstart(d, i) {
-      if (!is_stopped()) {
-        // if we're running, add a spring force
-        if (get_draggable(i)) {
-          model.liveDragStart(i, get_x(i), get_y(i));
-        }
-      } else {
-        // if we're stopped, drag the atom
+      if ( !get_draggable(i) ) return;
+
+      if ( is_stopped() ) {
+        // cache the *original* atom position so we can go back to it if drag is disallowed
         drag_origin = [get_x(i), get_y(i)];
+      } else {
+        model.liveDragStart(i);
       }
     }
 
-    function node_drag(d, i){
-      if (!is_stopped()) {
-        if (get_draggable(i)) {
-          model.liveDrag( clipX(x.invert(d3.event.x)), clipY(y.invert(d3.event.y)) );
+    function node_drag(d, i) {
+      if ( !get_draggable(i) ) return;
+
+      var dragX = x.invert(d3.event.x),
+          dragY = y.invert(d3.event.y);
+
+      if ( is_stopped() ) {
+        set_position(i, dragX, dragY, false, true);
+        update_drawable_positions();
+      } else {
+        model.liveDrag( clipX(dragX), clipY(dragY) );
+      }
+    }
+
+    function node_dragend(d, i) {
+      if ( !get_draggable(i) ) return;
+
+      var dragX,
+          dragY;
+
+      if ( is_stopped() ) {
+        if (!set_position(i, get_x(i), get_y(i), true, true)) {
+          alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
+          set_position(i, drag_origin[0], drag_origin[1], false, true);
         }
-        return;
-      }
-
-      var dragTarget = d3.select(this),
-          new_x, new_y;
-
-      dragTarget
-        .attr("cx", function(){return d3.event.x; })
-        .attr("cy", function(){return d3.event.y; });
-
-      molecule_div
-            .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 16 + "px")
-            .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px");
-
-      new_x = x.invert(dragTarget.attr('cx'));
-      new_y = y.invert(dragTarget.attr('cy'));
-      set_position(i, new_x, new_y, false, true);
-
-      update_drawable_positions();
-    }
-
-    function node_dragend(d, i){
-      if (!is_stopped()) {
+        update_drawable_positions();
+      } else {
         // here we just assume we are removing the one and only spring force.
-        // This assumption will have to change if we can have more than one
-        if (get_draggable(i)) {
-          model.liveDragEnd();
-        }
-        return;
+        // This assumption will have to change if we can have more than one.
+        model.liveDragEnd();
       }
-
-      var dragTarget = d3.select(this),
-          new_x, new_y;
-
-      new_x = x.invert(dragTarget.attr('cx'));
-      new_y = y.invert(dragTarget.attr('cy'));
-      if (!set_position(i, new_x, new_y, true, true)) {
-        alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
-        set_position(i, drag_origin[0], drag_origin[1], false, true);
-      }
-
-      update_drawable_positions();
     }
 
     // ------------------------------------------------------------

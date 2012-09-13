@@ -834,6 +834,9 @@ modeler.model = function(initialProperties) {
     adjusting the friction of the dragged atom.
   */
   model.liveDragStart = function(atomIndex, x, y) {
+    if (x == null) x = nodes[model.INDICES.X][atomIndex];
+    if (y == null) y = nodes[model.INDICES.Y][atomIndex];
+
     liveDragSavedFriction = nodes[model.INDICES.FRICTION][atomIndex];
     nodes[model.INDICES.FRICTION][atomIndex] = model.LIVE_DRAG_FRICTION;
 
