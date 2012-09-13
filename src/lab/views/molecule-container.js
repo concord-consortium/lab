@@ -1146,12 +1146,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function node_dragstart(d, i) {
-      if ( !get_draggable(i) ) return;
-
       if ( is_stopped() ) {
         // cache the *original* atom position so we can go back to it if drag is disallowed
         drag_origin = [get_x(i), get_y(i)];
-      } else {
+      }
+      else if ( get_draggable(i) ) {
         model.liveDragStart(i);
       }
     }
@@ -1184,8 +1183,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function node_drag(d, i) {
-      if ( !get_draggable(i) ) return;
-
       var dragX = x.invert(d3.event.x),
           dragY = y.invert(d3.event.y),
           drag;
@@ -1194,25 +1191,26 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
         set_position(i, drag.x, drag.y, false, true);
         update_drawable_positions();
-      } else {
+      }
+      else if ( get_draggable(i) ) {
         drag = dragPoint(dragX, dragY);
         model.liveDrag(drag.x, drag.y);
       }
     }
 
     function node_dragend(d, i) {
-      if ( !get_draggable(i) ) return;
-
       var dragX,
           dragY;
 
       if ( is_stopped() ) {
+
         if (!set_position(i, get_x(i), get_y(i), true, true)) {
           alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
           set_position(i, drag_origin[0], drag_origin[1], false, true);
         }
         update_drawable_positions();
-      } else {
+      }
+      else if ( get_draggable(i) ) {
         // here we just assume we are removing the one and only spring force.
         // This assumption will have to change if we can have more than one.
         model.liveDragEnd();
