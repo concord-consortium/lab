@@ -83,6 +83,28 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     scale(cx, cy);
   }
 
+  function clip(value, min, max) {
+    if (value < min) return min;
+    if (value > max) return max;
+    return value;
+  }
+
+  /**
+    Make sure an x-value (from, say, a mouse click location in "model coordinates") is clipped to
+    remain within the model container's left and right sides.
+  */
+  function clipX(x) {
+    return clip(x, options.xmin, options.xmax);
+  }
+
+  /**
+    Make sure a y-value (from, say, as a mouse click location in "model coordinates") is clipped to
+    remain within the model container's top and bottom.
+  */
+  function clipY(y) {
+    return clip(y, options.ymin, options.ymax);
+  }
+
   tx = function(d, i) { return "translate(" + x(d) + ",0)"; };
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
@@ -1160,15 +1182,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     function node_drag(d, i){
       if (!is_stopped()) {
         if (get_draggable(i)) {
-          var click_x = x.invert(d3.event.x),
-              click_y = y.invert(d3.event.y);
-
-          if (click_x < options.xmin) click_x = options.xmin;
-          if (click_x > options.xmax) click_x = options.xmax;
-          if (click_y < options.ymin) click_y = options.ymin;
-          if (click_y > options.ymax) click_y = options.ymax;
-
-          model.liveDrag(click_x, click_y);
+          model.liveDrag( clipX(x.invert(d3.event.x)), clipY(y.invert(d3.event.y)) );
         }
         return;
       }
