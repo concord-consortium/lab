@@ -8,8 +8,9 @@
     
 
 
+
 </text>
-<section start="0" end="15">
+<section start="0" end="16">
 <paragraph start="0" end="2">
 <Alignment>1</Alignment>
 <content start="0" end="1">
@@ -63,7 +64,7 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
     &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Separate the 
     molecules from each other by dragging the one attached to the green star. 
     The other molecule is fixed in place so it won&apos;t move. &lt;/font&gt;
@@ -107,6 +108,7 @@
 {option=&quot;pull apart two polar molecules&quot;, script=&quot;load polarPulling.mml;run;focus;&quot;}
 {option=&quot;pull apart a non-polar and polar molecule&quot;, script=&quot;load polarNpPulling.mml;run;focus;&quot;}
 </script>
+<selectedIndex>1</selectedIndex>
 <tooltip>select a pair of molecules here</tooltip>
 </component></content>
 
@@ -145,16 +147,23 @@
 </paragraph>
 <paragraph start="12" end="13">
 <Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
 <content start="12" end="13">
 </content>
 
 </paragraph>
 <paragraph start="13" end="14">
+<Alignment>1</Alignment>
 <content start="13" end="14">
-<size>10</size></content>
+</content>
 
 </paragraph>
 <paragraph start="14" end="15">
+<content start="14" end="15">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="15" end="16">
 </paragraph>
 </section>
 </document>

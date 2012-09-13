@@ -311,21 +311,21 @@
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
-    <string>page2$0.mml</string> 
+    <string>instructions.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1347560916000</long> 
+     <long>1347559093000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2$0.mml</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>11417</long> 
+    <long>11416</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
