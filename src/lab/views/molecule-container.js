@@ -83,28 +83,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     scale(cx, cy);
   }
 
-  function clip(value, min, max) {
-    if (value < min) return min;
-    if (value > max) return max;
-    return value;
-  }
-
-  /**
-    Make sure an x-value (from, say, a mouse click location in "model coordinates") is clipped to
-    remain within the model container's left and right sides.
-  */
-  function clipX(x) {
-    return clip(x, options.xmin, options.xmax);
-  }
-
-  /**
-    Make sure a y-value (from, say, as a mouse click location in "model coordinates") is clipped to
-    remain within the model container's top and bottom.
-  */
-  function clipY(y) {
-    return clip(y, options.ymin, options.ymax);
-  }
-
   tx = function(d, i) { return "translate(" + x(d) + ",0)"; };
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
@@ -1190,6 +1168,21 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       return { x: x, y: y };
     }
+
+    function clip(value, min, max) {
+      if (value < min) return min;
+      if (value > max) return max;
+      return value;
+    }
+
+    /**
+      Given x, y, make sure that x and y are clipped to remain within the model container's
+      boundaries
+    */
+    function dragPoint(x, y) {
+      return { x: clip(x, options.xmin, options.xmax), y: clip(y, options.ymin, options.ymax) };
+    }
+
     function node_drag(d, i) {
       if ( !get_draggable(i) ) return;
 
@@ -1202,7 +1195,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         set_position(i, drag.x, drag.y, false, true);
         update_drawable_positions();
       } else {
-        model.liveDrag( clipX(dragX), clipY(dragY) );
+        drag = dragPoint(dragX, dragY);
+        model.liveDrag(drag.x, drag.y);
       }
     }
 
