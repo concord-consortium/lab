@@ -153,8 +153,6 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       if (radialBonds) model.createRadialBonds(radialBonds);
       if (showVDWLines) model.createVdwPairs(atoms);
       if (obstacles) model.createObstacles(obstacles);
-
-      dispatch.modelReset();
     }
 
     // ------------------------------------------------------------
@@ -248,6 +246,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       } else {
         resetModelPlayer();
       }
+
+      // finally, let everyone know the model was (re)set
+      dispatch.modelReset();
     }
 
     /**
