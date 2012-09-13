@@ -66,9 +66,10 @@ controllers.interactivesController = function(interactive, viewSelector, applica
           if (model.get('temperature') > t) model.set({temperature: t});
         },
 
-        loadModel: function loadModel(modelUrl) {
+        loadModel: function loadModel(modelUrl, cb) {
           model.stop();
           controller.loadModel(modelUrl);
+          if (typeof cb === 'function') applicationCallbacks.push(cb);
         },
 
         /**
