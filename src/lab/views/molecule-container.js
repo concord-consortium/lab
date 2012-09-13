@@ -1178,14 +1178,28 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
     }
 
+    /**
+      Given x, y, and a bounding box (object with keys top, left, bottom, and right relative to
+      (x, y), returns an (x, y) constrained to keep the bounding box within the molecule container.
+    */
+    function dragBoundingBox(x, y, bbox) {
+      if (bbox.left + x < options.xmin)   x = options.xmin - bbox.left;
+      if (bbox.right + x > options.xmax)  x = options.xmax - bbox.right;
+      if (bbox.bottom + y < options.ymin) y = options.ymin - bbox.bottom;
+      if (bbox.top + y > options.ymax)    y = options.ymax - bbox.top;
+
+      return { x: x, y: y };
+    }
     function node_drag(d, i) {
       if ( !get_draggable(i) ) return;
 
       var dragX = x.invert(d3.event.x),
-          dragY = y.invert(d3.event.y);
+          dragY = y.invert(d3.event.y),
+          drag;
 
       if ( is_stopped() ) {
-        set_position(i, dragX, dragY, false, true);
+        drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
+        set_position(i, drag.x, drag.y, false, true);
         update_drawable_positions();
       } else {
         model.liveDrag( clipX(dragX), clipY(dragY) );
