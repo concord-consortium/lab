@@ -49,7 +49,7 @@ layout.setupInteractiveLayout = function setupInteractiveLayout() {
   modelHeight = modelWidth / modelAspectRatio;
 
   // width of moleculeContainer derives automatically from height
-  viewSizes.moleculeContainers = [modelWidth];
+  viewSizes.moleculeContainers = [modelWidth, modelHeight];
 
   if (viewLists.energyGraphs) {
     viewSizes.energyGraphs = [containerWidth * 0.40, modelHeight];
