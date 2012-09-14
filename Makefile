@@ -218,6 +218,7 @@ server/public/vendor: \
 	server/public/vendor/d3-plugins \
 	server/public/vendor/jquery/jquery.min.js \
 	server/public/vendor/jquery-ui/jquery-ui.min.js \
+	server/public/vendor/tinysort/jquery.tinysort.js \
 	server/public/vendor/science.js \
 	server/public/vendor/modernizr \
 	server/public/vendor/sizzle \
@@ -275,6 +276,14 @@ server/public/vendor/jquery-ui/jquery-ui.min.js: \
 
 server/public/vendor/jquery-ui:
 	mkdir -p server/public/vendor/jquery-ui
+
+server/public/vendor/tinysort:
+	mkdir -p server/public/vendor/tinysort
+	
+server/public/vendor/tinysort/jquery.tinysort.js: \
+	server/public/vendor/tinysort
+	cp -r src/vendor/tinysort/src/* server/public/vendor/tinysort
+	cp src/vendor/tinysort/README.md server/public/vendor/tinysort
 
 server/public/vendor/science.js:
 	mkdir -p server/public/vendor/science.js

@@ -52,3 +52,6 @@
 [submodule "src/sass/neat"]
 	path = src/sass/neat
 	url = git://github.com/thoughtbot/neat.git
+[submodule "src/vendor/tinysort"]
+	path = src/vendor/tinysort
+	url = git://github.com/Sjeiti/TinySort.git
