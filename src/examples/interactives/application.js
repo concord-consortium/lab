@@ -476,7 +476,19 @@ var ROOT = "/examples",
         sortOrder = 'asc';
       }
       $heading.siblings().removeClass("sorted");
-      $tbody.find("tr").tsort('td:eq('+$heading.index()+')', { order:sortOrder });
+      $tbody.find("tr").tsort('td:eq('+$heading.index()+')', 
+        {
+          sortFunction:function(a, b) {
+            var anum = Math.abs(parseFloat(a.s)),
+                bnum = Math.abs(parseFloat(b.s));
+            if (sortOrder === ascending) {
+              return anum === bnum ? 0 : (anum > bnum ? 1 : -1);
+            } else {
+              return anum === bnum ? 0 : (anum < bnum ? 1 : -1);
+            }
+          }
+        }
+      );
       $heading.addClass("sorted");
       e.preventDefault();
     }
