@@ -31,7 +31,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       time_suffix = " (fs)",
       gradient_container,
       VDWLines_container,
-      image_container,
+      image_container_below,
+      image_container_top,
       red_gradient,
       blue_gradient,
       green_gradient,
@@ -638,6 +639,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function create_gradients() {
+      image_container_below = vis.append("g");
+      image_container_below.attr("class", "image_container_below");
       VDWLines_container = vis.append("g");
       VDWLines_container.attr("class", "VDWLines_container");
 
@@ -659,8 +662,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       element_gradient_array = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
       bondColorArray = ["#538f2f", "#aa2bb1", "#2cb6af", "#b3831c", "#7781c2", "#ee7171"];
-      image_container = vis.append("g");
-      image_container.attr("class", "image_container");
+      image_container_top = vis.append("g");
+      image_container_top.attr("class", "image_container_top");
     }
 
     function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
@@ -880,7 +883,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function drawImageAttachment(){
-      var numImages, img = [], img_height, img_width, imgHostIndex, imgHostType, imgX, imgY;
+      var numImages, img = [], img_height, img_width, imgHostIndex, imgHostType,imglayer, imgX, imgY;
       numImages = imageProp.length;
       img.length = numImages;
       for(var i = 0;i < numImages;i++) {
@@ -888,14 +891,17 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         img[i].src = imagePath+imageProp[i].imageUri;
         img[i].onload = (function(i){
           return function() {
-            image_container.selectAll("image.image_attach"+i).remove();
+            image_container_top.selectAll("image.image_attach"+i).remove();
+            image_container_below.selectAll("image.image_attach"+i).remove();
             imgHostIndex =  imageProp[i].imageHostIndex;
             imgHostType =  imageProp[i].imageHostType;
+            imglayer =  imageProp[i].imageLayer;
             imgX =  imageProp[i].imageX;
             imgY =  imageProp[i].imageY;
             img_width = img[i].width*scaling_factor;
             img_height = img[i].height*scaling_factor;
-            image_container.append("image")
+            if(imglayer == 1) {
+            image_container_top.append("image")
               .attr("x",  function() { if(imgHostType == ""){ return imgX; } else { return (x(get_x(imgHostIndex))-img_width/2)}})
               .attr("y",  function() { if(imgHostType == ""){ return imgY; } else { return (y(get_y(imgHostIndex))-img_height/2)}})
               .attr("class", "image_attach"+i+" draggable")
@@ -903,6 +909,16 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
               .attr("width", img_width)
               .attr("height", img_height)
               .attr("pointer-events", "none");
+            } else {
+            image_container_below.append("image")
+              .attr("x",  function() { if(imgHostType == ""){ return imgX; } else { return (x(get_x(imgHostIndex))-img_width/2)}})
+              .attr("y",  function() { if(imgHostType == ""){ return imgY; } else { return (y(get_y(imgHostIndex))-img_height/2)}})
+              .attr("class", "image_attach"+i+" draggable")
+              .attr("xlink:href", img[i].src)
+              .attr("width", img_width)
+              .attr("height", img_height)
+              .attr("pointer-events", "none");
+            }
           }
         })(i);
       }
@@ -1133,20 +1149,27 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("d", function (d, i) { return findPoints(i,2);});
     }
     function updateImageAttachment(){
-      var numImages, img, img_height, img_width, imgHostIndex, imgHostType, imgX, imgY;
+      var numImages, img, img_height, img_width, imgHostIndex, imgHostType, imglayer, imgX, imgY;
       numImages= imageProp.length;
       for(var i = 0;i < numImages;i++) {
         imgHostIndex =  imageProp[i].imageHostIndex
         imgHostType =  imageProp[i].imageHostType;
         imgX =  imageProp[i].imageX;
         imgY =  imageProp[i].imageY;
+        imglayer =  imageProp[i].imageLayer;
         img = new Image();
         img.src =   imagePath+imageProp[i].imageUri;
         img_width = img.width*scaling_factor;
         img_height = img.height*scaling_factor;
-        image_container.selectAll("image.image_attach"+i)
+        if(imglayer == 1) {
+          image_container_top.selectAll("image.image_attach"+i)
           .attr("x",  function() { if(imgHostType == ""){ return imgX; } else { return (x(get_x(imgHostIndex))-img_width/2)}})
           .attr("y",  function() { if(imgHostType == ""){ return imgY; } else { return (y(get_y(imgHostIndex))-img_height/2)}})
+        } else {
+          image_container_below.selectAll("image.image_attach"+i)
+            .attr("x",  function() { if(imgHostType == ""){ return imgX; } else { return (x(get_x(imgHostIndex))-img_width/2)}})
+            .attr("y",  function() { if(imgHostType == ""){ return imgY; } else { return (y(get_y(imgHostIndex))-img_height/2)}})
+        }
       }
     }
 
