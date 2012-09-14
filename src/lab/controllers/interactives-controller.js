@@ -1,5 +1,5 @@
 /*global controllers model Thermometer layout $ alert ACTUAL_ROOT grapher */
-/*jshint eqnull: true*/
+/*jshint eqnull: true boss: true */
 controllers.interactivesController = function(interactive, viewSelector, applicationCallbacks, layoutStyle) {
 
   var controller = {},
@@ -173,7 +173,8 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       case 'pulldown':
         return createPulldown(component);
       case 'thermometer':
-        return createThermometer(component);
+        thermometer = createThermometer(component);
+        return thermometer;
       case 'energyGraph':
         return createEnergyGraph(component);
     }
@@ -321,25 +322,41 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     return { elem: $pulldown };
   }
 
+  /**
+    Returns an 'interactive thermometer' object, that wraps a base Thermometer with a label for use
+    in Interactives.
+
+    properties are:
+
+     elem:      DOM element containing the Thermometer div and the label div
+     component: base Thermometer object, with no label
+     callback:  standard interactive component callback, called as soon as the display is ready
+     update:    method to ask thermometer to update its display
+  */
   function createThermometer(component) {
-    var $thermometer = $('<div>').attr('id', component.id);
+    var $thermometer = $('<div>').attr('id', component.id),
+        thermometerComponent,
+        self;
 
-    thermometer = new Thermometer($thermometer, null, component.min, component.max);
-    queuePropertiesListener(['temperature'], updateThermometerValue);
+    thermometerComponent = new Thermometer($thermometer, null, component.min, component.max);
+    queuePropertiesListener(['temperature'], function() { self.update(); });
 
-    return {
+    return self = {
       elem: $('<div class="interactive-thermometer">')
                 .append($thermometer)
                 .append($('<p class="label">').text('Thermometer')),
+
+      component: thermometerComponent,
+
       callback: function() {
-        thermometer.resize();
-        updateThermometerValue();
+        thermometerComponent.resize();
+        self.update();
+      },
+
+      update: function() {
+        thermometerComponent.add_value(model.get('temperature'));
       }
     };
-  }
-
-  function updateThermometerValue() {
-    thermometer.add_value(model.get('temperature'));
   }
 
   function queuePropertiesListener(properties, func) {
@@ -477,7 +494,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
     }
 
     layout.addView('moleculeContainers', modelController.moleculeContainer);
-    if (thermometer) layout.addView('thermometers', thermometer);
+    if (thermometer) layout.addView('thermometers', thermometer.component);
     if (energyGraph) layout.addView('energyGraphs', energyGraph);
     $(window).unbind('resize');
 
