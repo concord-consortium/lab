@@ -335,17 +335,30 @@ controllers.interactivesController = function(interactive, viewSelector, applica
   */
   function createThermometer(component) {
     var $thermometer = $('<div>').attr('id', component.id),
-        thermometerComponent,
+
+        units =  component.readingUnits  || "K",
+        offset = component.readingOffset || 0,
+        scale =  component.readingScale  || 1,
+
+        labelIsReading = !!component.labelIsReading,
+        labelText = labelIsReading ? "" : "Thermometer",
+        $label = $('<p class="label">').text(labelText).width('6em'),
+        $elem = $('<div class="interactive-thermometer">')
+                .append($thermometer)
+                .append($label),
+
+        thermometerComponent = new Thermometer($thermometer, null, component.min, component.max),
         self;
 
-    thermometerComponent = new Thermometer($thermometer, null, component.min, component.max);
+    function updateLabel(temperature) {
+      temperature = (temperature - offset) * scale;
+      $label.text(temperature.toFixed(0) + " " + units);
+    }
+
     queuePropertiesListener(['temperature'], function() { self.update(); });
 
     return self = {
-      elem: $('<div class="interactive-thermometer">')
-                .append($thermometer)
-                .append($('<p class="label">').text('Thermometer')),
-
+      elem:      $elem,
       component: thermometerComponent,
 
       callback: function() {
@@ -354,7 +367,9 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       },
 
       update: function() {
-        thermometerComponent.add_value(model.get('temperature'));
+        var t = model.get('temperature');
+        thermometerComponent.add_value(t);
+        if (labelIsReading) updateLabel(t);
       }
     };
   }
