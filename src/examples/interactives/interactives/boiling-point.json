@@ -27,7 +27,8 @@
       "reading": {
         "units": "K",
         "offset": 0,
-        "scale": 1
+        "scale": 1,
+        "digits": 0
       }
     }
   ],

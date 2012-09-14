@@ -340,6 +340,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         units = "K",
         offset = 0,
         scale = 1,
+        digits = 0,
 
         labelIsReading = !!component.labelIsReading,
         labelText = labelIsReading ? "" : "Thermometer",
@@ -355,11 +356,12 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       if (reading.units != null)  units = reading.units;
       if (reading.offset != null) offset = reading.offset;
       if (reading.scale != null)  scale = reading.scale;
+      if (reading.digits != null) digits = reading.digits;
     }
 
     function updateLabel(temperature) {
       temperature = scale*temperature + offset;
-      $label.text(temperature.toFixed(0) + " " + units);
+      $label.text(temperature.toFixed(digits) + " " + units);
     }
 
     queuePropertiesListener(['temperature'], function() { self.update(); });
