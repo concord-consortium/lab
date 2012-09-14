@@ -557,7 +557,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         divArray,
         div,
         componentId,
-        $top, $right, $rightwide,
+        $top, $right, $rightwide, $bottom,
         i, ii;
 
     componentCallbacks = [];
