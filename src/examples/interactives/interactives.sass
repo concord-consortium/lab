@@ -180,12 +180,32 @@ a.opens-in-new-window
   th
     padding: 0em 0.5em
     text-align: center
+    background-repeat: no-repeat
+    background-position: center right
+    cursor: pointer
+  th.sorted
+    background: darken(#eee, 15%)
+  th.sorted.asc
+    background-image: url(down.png)
+    background-size: 20%
+    background-repeat: no-repeat
+    background-position: bottom right
+  th.sorted.desc
+    background-image: url(up.png)
+    background-size: 25%
+    background-repeat: no-repeat
+    background-position: top right
+  tr: nth-child(odd)
+    background-color: #eee
+  tr: nth-child(even)
+    background-color: #fff
   td
     font-size: 90%
     border-top: 1px solid #CCC
     padding: 0em 0.5em 0em 0.5em
     text-align: right
     width: 7.0em
+
 
 .ke-chart
   display: inline-block

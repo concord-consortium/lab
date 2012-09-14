@@ -386,8 +386,10 @@ var ROOT = "/examples",
     var i,
         nodes = model.get_nodes(),
         atoms = [],
+        $thead =  $('#model-datatable-results>thead'),
+        $tbody =  $('#model-datatable-results>tbody'),
         titlerows = $modelDatatableResults.find(".title"),
-        $datarows = $modelDatatableResults.find(".data"),
+        datarows = $modelDatatableResults.find(".data"),
         timeFormatter = d3.format("5.0f"),
         timePrefix = "",
         timeSuffix = " (fs)",
@@ -406,33 +408,34 @@ var ROOT = "/examples",
     atoms.length = nodes[0].length;
     reset = reset || false;
 
-    function empty_table() {
+    function table_is_empty() {
       return $modelDatatableResults.find("<tr>").length === 0;
     }
 
-    function add_row(kind) {
-      kind = kind || "data";
+    function add_row($el, kind, rownum) {
       var $row = $("<tr>");
+      kind = kind || "data";
       $row.addClass(kind);
-      $modelDatatableResults.append($row);
+      if (typeof rownum === "number") {
+        $row.attr("id", "row_" + rownum);
+      }
+      $el.append($row);
       return $row;
     }
 
-    function add_data(row, content, el, colspan) {
-      el = el || "<td>";
-      colspan = colspan || 1;
-      var $el = $(el);
+    function add_data($row, content) {
+      var $el = $("<td>");
       $el.text(content);
-      $el.attr("colSpan", colspan);
-      $(row).append($el);
+      $row.append($el);
     }
 
-    function add_molecule_data(row, index) {
+    function add_molecule_data(index) {
       var i,
           value,
           textValue,
           column,
-          $cells = $(row).find('td');
+          $row = $tbody.find(".data#row_" + index);
+          $cells = $row.find('td');
 
       if ($cells.length > 0) {
         $cells[0].textContent = index;
@@ -443,50 +446,82 @@ var ROOT = "/examples",
           $cells[i+1].textContent = textValue;
         }
       } else {
-        add_data(row, index);
+        add_data($row, index);
         for(i = 0; i < column_titles.length; i++) {
           column = column_titles[i];
           value = nodes[model.INDICES[column]][index];
           textValue = formatters[i](value);
-          add_data(row, textValue);
+          add_data($row, textValue);
         }
       }
     }
 
-    function add_column_headings($title_row, titles, colspan) {
-      colspan = colspan || 1;
-      var i;
-      add_data($title_row, "atom", "<th>", colspan);
+    function columnSort(e) {
+      var $heading = $(this),
+          ascending = "asc",
+          descending = "desc",
+          sortOrder;
+
+      sortOrder = ascending;
+      if ($heading.hasClass(ascending)) {
+        $heading.removeClass(ascending);
+        $heading.addClass(descending);
+        sortOrder = "desc";
+      } else if ($heading.hasClass(descending)) {
+        $heading.removeClass(descending);
+        $heading.addClass(ascending);
+        sortOrder = 'asc';
+      } else {
+        $heading.addClass(ascending);
+        sortOrder = 'asc';
+      }
+      $heading.siblings().removeClass("sorted");
+      $tbody.find("tr").tsort('td:eq('+$heading.index()+')', { order:sortOrder });
+      $heading.addClass("sorted");
+      e.preventDefault();
+    }
+
+    function add_column_headings($title_row, titles) {
+      var i,
+          $el;
+
+      $el = $("<th>");
+      $el.text("atom");
+      $title_row.append($el);
+      $el.click(columnSort);
       i = -1; while (++i < titles.length) {
-        add_data($title_row, titles[i], "<th>", colspan);
+        $el = $("<th>");
+        $el.text(titles[i]);
+        $title_row.append($el);
+        $el.click(columnSort);
       }
     }
 
     function add_data_rows(n) {
-      var i = -1, j = $datarows.length;
+      var i = -1, j = datarows.length;
       while (++i < n) {
         if (i >= j) {
-          add_row();
+          add_row($tbody, 'data', i);
         }
       }
       while (--j >= i) {
-        $modelDatatableResults.remove($datarows[i]);
+        $tbody.remove(datarows[i]);
       }
-      return $modelDatatableResults.find(".data");
+      return $tbody.find(".data");
     }
 
     $modelDatatableStats.text(timePrefix + timeFormatter(model.getTime()) + timeSuffix);
 
     if (titlerows.length === 0) {
-      var $title_row = add_row("title");
+      var $title_row = add_row($thead, "title");
       add_column_headings($title_row, column_titles);
-      $datarows = add_data_rows(atoms.length);
+      datarows = add_data_rows(atoms.length);
     }
     if (reset) {
-      $datarows = add_data_rows(model.get_num_atoms());
+      datarows = add_data_rows(model.get_num_atoms());
     }
     i = -1; while (++i < atoms.length) {
-      add_molecule_data($datarows[i], i);
+      add_molecule_data(i);
     }
   }
 
