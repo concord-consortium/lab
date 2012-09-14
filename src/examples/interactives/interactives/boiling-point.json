@@ -24,9 +24,11 @@
       "min": 0,
       "max": 2000,
       "labelIsReading": true,
-      "readingUnits": "K",
-      "readingOffset": 0,
-      "readingScale": 1
+      "reading": {
+        "units": "K",
+        "offset": 0,
+        "scale": 1
+      }
     }
   ],
   "layout": {

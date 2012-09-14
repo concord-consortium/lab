@@ -336,9 +336,10 @@ controllers.interactivesController = function(interactive, viewSelector, applica
   function createThermometer(component) {
     var $thermometer = $('<div>').attr('id', component.id),
 
-        units =  component.readingUnits  || "K",
-        offset = component.readingOffset || 0,
-        scale =  component.readingScale  || 1,
+        reading,
+        units = "K",
+        offset = 0,
+        scale = 1,
 
         labelIsReading = !!component.labelIsReading,
         labelText = labelIsReading ? "" : "Thermometer",
@@ -349,6 +350,12 @@ controllers.interactivesController = function(interactive, viewSelector, applica
 
         thermometerComponent = new Thermometer($thermometer, null, component.min, component.max),
         self;
+
+    if (reading = component.reading) {
+      if (reading.units != null)  units = reading.units;
+      if (reading.offset != null) offset = reading.offset;
+      if (reading.scale != null)  scale = reading.scale;
+    }
 
     function updateLabel(temperature) {
       temperature = scale*temperature + offset;
