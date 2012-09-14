@@ -69,7 +69,10 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         loadModel: function loadModel(modelUrl, cb) {
           model.stop();
           controller.loadModel(modelUrl);
-          if (typeof cb === 'function') applicationCallbacks.push(cb);
+          if (typeof cb === 'function') {
+            applicationCallbacks = applicationCallbacks || [];
+            applicationCallbacks.push(cb);
+          }
         },
 
         /**
