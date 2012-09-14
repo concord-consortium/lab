@@ -466,14 +466,14 @@ var ROOT = "/examples",
       if ($heading.hasClass(ascending)) {
         $heading.removeClass(ascending);
         $heading.addClass(descending);
-        sortOrder = "desc";
+        sortOrder = descending;
       } else if ($heading.hasClass(descending)) {
         $heading.removeClass(descending);
         $heading.addClass(ascending);
-        sortOrder = 'asc';
+        sortOrder = ascending;
       } else {
-        $heading.addClass(ascending);
-        sortOrder = 'asc';
+        $heading.addClass(descending);
+        sortOrder = descending;
       }
       $heading.siblings().removeClass("sorted");
       $tbody.find("tr").tsort('td:eq('+$heading.index()+')', 
