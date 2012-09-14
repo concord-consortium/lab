@@ -6,7 +6,7 @@ layout = layout || {};
 // Layout for non-embedded 'interactives' page
 //
 
-function setThermometerHeight(h) {
+function setThermometerHeight(thermometerComponent, h) {
   // get height of thermometer label, including margin:
   var labelHeight = $('.interactive-thermometer p.label').outerHeight(true);
 
@@ -14,6 +14,8 @@ function setThermometerHeight(h) {
   // allow for a min-height calculation to make the height larger than h
   h = $('.interactive-thermometer').height();
   $('.interactive-thermometer .thermometer').height(h - labelHeight);
+
+  thermometerComponent.redraw();
 }
 
 layout.setupInteractiveLayout = function setupInteractiveLayout() {
@@ -42,7 +44,7 @@ layout.setupInteractiveLayout = function setupInteractiveLayout() {
 
   // unless there needs to be room for energy graph *and* thermometer
   if (viewLists.energyGraphs && viewLists.thermometers) {
-     modelWidthFactor = 0.35;
+    modelWidthFactor = 0.35;
   }
 
   modelWidth = containerWidth * modelWidthFactor;
@@ -67,7 +69,9 @@ layout.setupInteractiveLayout = function setupInteractiveLayout() {
     }
   }
 
-  setThermometerHeight(modelHeight * 0.8);
+  if (layout.views.thermometers) {
+    setThermometerHeight(layout.views.thermometers[0], modelHeight * 0.8);
+  }
 
   // FIXME this is a temporary hack ... put in layout code instead of memorializing it in the CSS,
   // which doesn't tend to get reviewed as closely.
