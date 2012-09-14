@@ -351,7 +351,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
         self;
 
     function updateLabel(temperature) {
-      temperature = (temperature - offset) * scale;
+      temperature = scale*temperature + offset;
       $label.text(temperature.toFixed(0) + " " + units);
     }
 
