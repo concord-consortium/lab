@@ -134,7 +134,8 @@ exports.INDICES = INDICES = {
   PINNED   : 12,
   FRICTION : 13,
   VISIBLE  : 14,
-  DRAGGABLE: 15
+  DRAGGABLE: 15,
+  MASS     : 16
 };
 
 exports.ATOM_PROPERTIES = {
@@ -153,7 +154,8 @@ exports.ATOM_PROPERTIES = {
   PINNED   :  "pinned",
   FRICTION : "friction",
   VISIBLE  :  "visible",
-  DRAGGABLE: "draggable"
+  DRAGGABLE: "draggable",
+  MASS     : "mass"
 };
 
 exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
@@ -196,6 +198,9 @@ exports.makeModel = function() {
 
       // Whether "atoms" (particles) have been created & initialized. This is only allowed to happen once.
       atomsHaveBeenCreated = false,
+
+      // Whether "elements" (properties for groups of particles) have been created & initialized. This is only allowed to happen once.
+      elementsHaveBeenCreated = false,
 
       // Whether to simulate Coulomb forces between particles.
       useCoulombInteraction = false,
@@ -255,7 +260,7 @@ exports.makeModel = function() {
       elements,
 
       // Individual property arrays for the atoms, indexed by atom number
-      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, visible, draggable,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, visible, draggable, mass,
 
       // An array of length max(INDICES)+1 which contains the above property arrays
       atoms,
@@ -517,7 +522,7 @@ exports.makeModel = function() {
             i;
 
         for (i = 0; i < N; i++) {
-          twoKE += elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
+          twoKE += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
         }
         return KE_to_T( twoKE/2, N );
       },
@@ -537,8 +542,8 @@ exports.makeModel = function() {
         vx[i] += vx_t;
         vy[i] += vy_t;
 
-        px[i] = vx[i]*elements[element[i]][0];
-        py[i] = vy[i]*elements[element[i]][0];
+        px[i] = vx[i]*mass[i];
+        py[i] = vy[i]*mass[i];
       },
 
       // Adds effect of angular velocity omega, relative to (x_CM, y_CM), to the velocity vector of particle i
@@ -546,8 +551,8 @@ exports.makeModel = function() {
         vx[i] -= omega * (y[i] - y_CM);
         vy[i] += omega * (x[i] - x_CM);
 
-        px[i] = vx[i]*elements[element[i]][0];
-        py[i] = vy[i]*elements[element[i]][0];
+        px[i] = vx[i]*mass[i];
+        py[i] = vy[i]*mass[i];
       },
 
       // Subtracts the center-of-mass linear velocity and the system angular velocity from the velocity vectors
@@ -600,14 +605,14 @@ exports.makeModel = function() {
       computeSystemRotation = function() {
         var L = 0,
             I = 0,
-            mass,
+            m,
             i;
 
         for (i = 0; i < N; i++) {
-          mass = elements[element[i]][0];
+          m = mass[i];
           // L_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
-          L += mass * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
-          I += mass * sumSquare( x[i]-x_CM, y[i]-y_CM );
+          L += m * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
+          I += m * sumSquare( x[i]-x_CM, y[i]-y_CM );
         }
 
         L_CM = L;
@@ -705,7 +710,7 @@ exports.makeModel = function() {
             vyPrev,
             obs_vxPrev,
             obs_vyPrev,
-            mass,
+            atom_mass,
             obs_mass,
             totalMass,
             bounceDirection = 0; // if we bounce horz: 1, vert: -1
@@ -748,20 +753,20 @@ exports.makeModel = function() {
           if (bounceDirection) {
             if (obs_mass !== Infinity) {
               // if we have real mass, perform a perfectly-elastic collision
-              mass = elements[element[i]][0];
-              totalMass = obs_mass + mass;
+              atom_mass = mass[i];
+              totalMass = obs_mass + atom_mass;
               if (bounceDirection === 1) {
                 vxPrev = vx[i];
                 obs_vxPrev = obstacleVX[j];
 
-                vx[i] = (vxPrev * (mass - obs_mass) + (2 * obs_mass * obs_vxPrev)) / totalMass;
-                obstacleVX[j] = (obs_vxPrev * (obs_mass - mass) + (2 * px[i])) / totalMass;
+                vx[i] = (vxPrev * (atom_mass - obs_mass) + (2 * obs_mass * obs_vxPrev)) / totalMass;
+                obstacleVX[j] = (obs_vxPrev * (obs_mass - atom_mass) + (2 * px[i])) / totalMass;
               } else {
                 vyPrev = vy[i];
                 obs_vyPrev = obstacleVY[j];
 
-                vy[i] = (vyPrev * (mass - obs_mass) + (2 * obs_mass * obs_vyPrev)) / totalMass;
-                obstacleVY[j] = (obs_vyPrev * (obs_mass - mass) + (2 * py[i])) / totalMass;
+                vy[i] = (vyPrev * (atom_mass - obs_mass) + (2 * obs_mass * obs_vyPrev)) / totalMass;
+                obstacleVY[j] = (obs_vyPrev * (obs_mass - atom_mass) + (2 * py[i])) / totalMass;
               }
             } else {
               // if we have infinite mass, just reflect (like a wall)
@@ -779,11 +784,11 @@ exports.makeModel = function() {
       // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
       // call once when a = a(t) and once when a = a(t+dt)
       halfUpdateVelocity = function(i) {
-        var mass = elements[element[i]][0];
+        var m = mass[i];
         vx[i] += 0.5*ax[i]*dt;
-        px[i] = mass * vx[i];
+        px[i] = m * vx[i];
         vy[i] += 0.5*ay[i]*dt;
-        py[i] = mass * vy[i];
+        py[i] = m * vy[i];
       },
 
       // Removes velocity and acceleration from atom i
@@ -798,7 +803,9 @@ exports.makeModel = function() {
         var j, dx, dy, r_sq, f_over_r, fx, fy,
             el_i = element[i],
             el_j,
-            mass_inv = 1/elements[el_i][0], mass_j_inv, q_i = charge[i],
+            mass_inv = 1/mass[i],
+            mass_j_inv,
+            q_i = charge[i],
             bondingPartners = radialBondsHash && radialBondsHash[i];
 
         for (j = 0; j < i; j++) {
@@ -806,7 +813,7 @@ exports.makeModel = function() {
 
           el_j = element[j];
 
-          mass_j_inv = 1/elements[el_j][0];
+          mass_j_inv = 1/mass[j];
 
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -853,7 +860,7 @@ exports.makeModel = function() {
             drag;
 
         while (i--) {
-          inverseMass = 1 / elements[element[i]][ELEMENT_INDICES.MASS];
+          inverseMass = 1 / mass[i];
           drag = viscosity * friction[i];
 
           fx = -vx[i] * drag;
@@ -871,8 +878,6 @@ exports.makeModel = function() {
             len,
             i1,
             i2,
-            el1,
-            el2,
             dx,
             dy,
             r_sq,
@@ -888,11 +893,9 @@ exports.makeModel = function() {
         for (i = 0, len = radialBonds[0].length; i < len; i++) {
           i1 = radialBondAtom1Index[i];
           i2 = radialBondAtom2Index[i];
-          el1 = element[i1];
-          el2 = element[i2];
 
-          mass1_inv = 1/elements[el1][0];
-          mass2_inv = 1/elements[el2][0];
+          mass1_inv = 1/mass[i1];
+          mass2_inv = 1/mass[i2];
 
           dx = x[i2] - x[i1];
           dy = y[i2] - y[i1];
@@ -932,7 +935,7 @@ exports.makeModel = function() {
 
         for (i = 0; i < N_springForces; i++) {
           a = springForceAtomIndex[i];
-          mass_inv = 1/elements[element[a]][0];
+          mass_inv = 1/mass[a];
 
           dx = springForceX[i] - x[a];
           dy = springForceY[i] - y[a];
@@ -1083,6 +1086,7 @@ exports.makeModel = function() {
           }(i,j));
         }
       }
+      elementsHaveBeenCreated = true;
     },
 
     /**
@@ -1093,9 +1097,14 @@ exports.makeModel = function() {
     */
     createAtoms: function(options) {
       var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint16 = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
           uint8 = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
           numIndices,
           num;
+
+      if (!elementsHaveBeenCreated) {
+        throw new Error("md2d: createAtoms was called before setElements.");
+      }
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
@@ -1132,22 +1141,23 @@ exports.makeModel = function() {
 
       atoms  = model.atoms  = arrays.create(numIndices, null, 'regular');
 
-      radius  = model.radius  = atoms[INDICES.RADIUS]  = arrays.create(num, 0, float32);
-      px      = model.px      = atoms[INDICES.PX]      = arrays.create(num, 0, float32);
-      py      = model.py      = atoms[INDICES.PY]      = arrays.create(num, 0, float32);
-      x       = model.x       = atoms[INDICES.X]       = arrays.create(num, 0, float32);
-      y       = model.y       = atoms[INDICES.Y]       = arrays.create(num, 0, float32);
-      vx      = model.vx      = atoms[INDICES.VX]      = arrays.create(num, 0, float32);
-      vy      = model.vy      = atoms[INDICES.VY]      = arrays.create(num, 0, float32);
-      speed   = model.speed   = atoms[INDICES.SPEED]   = arrays.create(num, 0, float32);
-      ax      = model.ax      = atoms[INDICES.AX]      = arrays.create(num, 0, float32);
-      ay      = model.ay      = atoms[INDICES.AY]      = arrays.create(num, 0, float32);
-      charge  = model.charge  = atoms[INDICES.CHARGE]  = arrays.create(num, 0, float32);
-      friction= model.friction= atoms[INDICES.FRICTION]= arrays.create(num, 0, float32);
-      element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8);
-      pinned  = model.pinned  = atoms[INDICES.PINNED]  = arrays.create(num, 0, uint8);
-      visible = model.visible = atoms[INDICES.VISIBLE] = arrays.create(num, 0, uint8);
-      draggable = model.draggable = atoms[INDICES.DRAGGABLE] = arrays.create(num, 0, uint8);
+      radius    = model.radius      = atoms[INDICES.RADIUS]    = arrays.create(num, 0, float32);
+      px        = model.px          = atoms[INDICES.PX]        = arrays.create(num, 0, float32);
+      py        = model.py          = atoms[INDICES.PY]        = arrays.create(num, 0, float32);
+      x         = model.x           = atoms[INDICES.X]         = arrays.create(num, 0, float32);
+      y         = model.y           = atoms[INDICES.Y]         = arrays.create(num, 0, float32);
+      vx        = model.vx          = atoms[INDICES.VX]        = arrays.create(num, 0, float32);
+      vy        = model.vy          = atoms[INDICES.VY]        = arrays.create(num, 0, float32);
+      speed     = model.speed       = atoms[INDICES.SPEED]     = arrays.create(num, 0, float32);
+      ax        = model.ax          = atoms[INDICES.AX]        = arrays.create(num, 0, float32);
+      ay        = model.ay          = atoms[INDICES.AY]        = arrays.create(num, 0, float32);
+      charge    = model.charge      = atoms[INDICES.CHARGE]    = arrays.create(num, 0, float32);
+      friction  = model.friction    = atoms[INDICES.FRICTION]  = arrays.create(num, 0, float32);
+      element   = model.element     = atoms[INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
+      pinned    = model.pinned      = atoms[INDICES.PINNED]    = arrays.create(num, 0, uint8);
+      visible   = model.visible     = atoms[INDICES.VISIBLE]   = arrays.create(num, 0, uint8);
+      draggable = model.draggable   = atoms[INDICES.DRAGGABLE] = arrays.create(num, 0, uint8);
+      mass      = model.mass        = atoms[INDICES.MASS]      = arrays.create(num, 0, Float32Array);
 
       N = 0;
       totalMass = 0;
@@ -1160,35 +1170,36 @@ exports.makeModel = function() {
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
     addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, is_pinned, is_visible, is_draggable) {
-      var el, mass;
+      var el, atom_mass;
 
       if (N+1 > atoms[0].length) {
         extendAtomsArray(N+1);
       }
 
       el = elements[atom_element];
-      mass = el[ELEMENT_INDICES.MASS];
+      atom_mass = el[ELEMENT_INDICES.MASS];
 
-      element[N] = atom_element;
-      radius[N]  = elements[atom_element][ELEMENT_INDICES.RADIUS];
-      x[N]       = atom_x;
-      y[N]       = atom_y;
-      vx[N]      = atom_vx;
-      vy[N]      = atom_vy;
-      px[N]      = atom_vx * mass;
-      py[N]      = atom_vy * mass;
-      ax[N]      = 0;
-      ay[N]      = 0;
-      speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
-      charge[N]  = atom_charge;
-      friction[N]= atom_friction;
-      pinned[N]  = is_pinned;
-      visible[N] = is_visible;
+      element[N]   = atom_element;
+      radius[N]    = elements[atom_element][ELEMENT_INDICES.RADIUS];
+      x[N]         = atom_x;
+      y[N]         = atom_y;
+      vx[N]        = atom_vx;
+      vy[N]        = atom_vy;
+      px[N]        = atom_vx * atom_mass;
+      py[N]        = atom_vy * atom_mass;
+      ax[N]        = 0;
+      ay[N]        = 0;
+      speed[N]     = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
+      charge[N]    = atom_charge;
+      friction[N]  = atom_friction;
+      pinned[N]    = is_pinned;
+      visible[N]   = is_visible;
       draggable[N] = is_draggable;
+      mass[N]      = atom_mass;
 
       if (atom_charge) hasChargedAtoms = true;
 
-      totalMass += mass;
+      totalMass += atom_mass;
       N++;
     },
 
@@ -1280,7 +1291,7 @@ exports.makeModel = function() {
     },
 
     addObstacle: function(x, y, width, height, density, color, visible) {
-      var mass;
+      var obstaclemass;
 
       if (N_obstacles+1 > obstacleX.length) {
         extendObstaclesArray(N_obstacles+1);
@@ -1298,9 +1309,9 @@ exports.makeModel = function() {
       obstacleVY[N_obstacles] = 0;
 
       density = parseFloat(density);      // may be string "Infinity"
-      mass = density * width * height;
+      obstaclemass = density * width * height;
 
-      obstacleMass[N_obstacles] = mass;
+      obstacleMass[N_obstacles] = obstaclemass;
 
       obstacleColorR[N_obstacles] = color[0];
       obstacleColorG[N_obstacles] = color[1];
@@ -1667,11 +1678,11 @@ exports.makeModel = function() {
 
         // gravitational PE
         if (gravitationalField) {
-          gravPEInMWUnits = elements[element[i]][ELEMENT_INDICES.MASS] * gravitationalField * y[i];
+          gravPEInMWUnits = mass[i] * gravitationalField * y[i];
           PE += constants.convert(gravPEInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
         }
 
-        KEinMWUnits += 0.5 * elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
+        KEinMWUnits += 0.5 * mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
 
         // pairwise interactions
         for (j = i+1; j < N; j++) {

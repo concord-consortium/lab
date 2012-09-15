@@ -171,7 +171,8 @@ modeler.model = function(initialProperties) {
     FRICTION : md2d.INDICES.FRICTION,
     VISIBLE  : md2d.INDICES.VISIBLE,
     DRAGGABLE: md2d.INDICES.DRAGGABLE,
-    ELEMENT  : md2d.INDICES.ELEMENT
+    ELEMENT  : md2d.INDICES.ELEMENT,
+    MASS     : md2d.INDICES.MASS
   };
 
   model.ATOM_PROPERTIES = {
@@ -189,7 +190,8 @@ modeler.model = function(initialProperties) {
     FRICTION : md2d.ATOM_PROPERTIES.FRICTION,
     VISIBLE  : md2d.ATOM_PROPERTIES.VISIBLE,
     DRAGGABLE: md2d.ATOM_PROPERTIES.DRAGGABLE,
-    ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT
+    ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT,
+    MASS     : md2d.ATOM_PROPERTIES.MASS
   };
 
   model.OBSTACLE_INDICES = {
