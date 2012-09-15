@@ -308,7 +308,7 @@
   <void property="heatBath"> 
    <object class="org.concord.mw2d.models.HeatBath"> 
     <void property="expectedTemperature"> 
-     <double>300.0</double> 
+     <double>100.0</double> 
     </void> 
    </object> 
   </void> 
