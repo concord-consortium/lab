@@ -19,14 +19,17 @@ try {
 
 }
 
+// http://www.khronos.org/registry/typedarray/specs/latest/#TYPEDARRAYS
 // regular
 // Uint8Array
+// Uint8ClampedArray
 // Uint16Array
 // Uint32Array
 // Int8Array
 // Int16Array
 // Int32Array
 // Float32Array
+// Float64Array
 
 arrays.create = function(size, fill, array_type) {
   if (!array_type) {
