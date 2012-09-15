@@ -744,6 +744,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             }
           })
           .on("mousedown", molecule_mousedown)
+          .on("mouseover", molecule_mouseover)
           .on("mouseout", molecule_mouseout)
           .call(d3.behavior.drag()
             .on("dragstart", node_dragstart)
@@ -1043,10 +1044,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       node.focus();
     }
 
-    function molecule_mouseover(d) {
-      // molecule_div.transition()
-      //       .duration(250)
-      //       .style("opacity", 1);
+    function molecule_mouseover(d, i) {
+      if (options.enableAtomTooltips) {
+        render_atom_tooltip(i);
+      }
     }
 
     function molecule_mousedown(d, i) {
@@ -1072,7 +1073,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .style("opacity", 1.0)
             .style("display", "inline")
             .style("background", "rgba(100%, 100%, 100%, 0.7)")
-            .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 16 + "px")
+            .style("left", x(nodes[model.INDICES.X][i]) + offset_left +60 + "px")
             .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px")
             .style("zIndex", 100)
             .transition().duration(250);
@@ -1092,7 +1093,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function molecule_mouseout() {
-      if (atom_tooltip_on === false) {
+      if (!atom_tooltip_on && atom_tooltip_on !== 0) {
         molecule_div.style("opacity", 1e-6).style("zIndex" -1);
       }
     }
