@@ -858,15 +858,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function setup_drawables() {
       obstacles = get_obstacles();
-      if (obstacles) {
-        setup_obstacles();
-      }
-      if (drawVdwLines) {
-        setup_vdw_pairs();
-      }
-      if (radialBondResults) {
-        setup_radial_bonds();
-      }
+      setup_obstacles();
+      setup_vdw_pairs();
+      setup_radial_bonds();
       setup_particles();
       updateHeatBath();
       if(imageProp && imageProp.length !== 0) {
@@ -935,23 +929,18 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function setup_obstacles() {
       gradient_container.selectAll("rect").remove();
-
-      if (!obstacles) return;
-
-      mock_obstacles_array.length = obstacles[0].length;
-
-      obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
-
-      obstacleEnter();
+      if (obstacles) {
+        mock_obstacles_array.length = obstacles[0].length;
+        obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
+        obstacleEnter();
+      }
     }
 
     function setup_radial_bonds() {
       gradient_container.selectAll("path.radialbond1").remove();
       gradient_container.selectAll("path.radialbond2").remove();
-
       radialBonds = getRadialBonds();
       radialBondResults = options.get_radial_bond_results();
-
       if (radialBondResults) {
         radialBond1 = gradient_container.selectAll("path.radialbond1").data(radialBondResults);
         radialBond2 = gradient_container.selectAll("path.radialbond2").data(radialBondResults);
@@ -965,14 +954,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function update_vdw_pairs() {
       VDWLines_container.selectAll("line.attractionforce").remove();
-
       vdwPairs = getVdwPairs();
-
-      if (!vdwPairs) return;
-
-      mock_vdw_pairs_array.length = vdwPairs[0].length;
-
-      drawAttractionForces();
+      if (vdwPairs) {
+        mock_vdw_pairs_array.length = vdwPairs[0].length;
+        drawAttractionForces();
+      }
     }
 
     function mousedown() {
