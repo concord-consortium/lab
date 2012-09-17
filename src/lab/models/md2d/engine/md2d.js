@@ -265,11 +265,35 @@ exports.makeModel = function() {
       // An array of length max(INDICES)+1 which contains the above property arrays
       atoms,
 
+      // count of atom properties
+      numIndices = (function() {
+        var n = 0, index;
+        for (index in INDICES) {
+          if (INDICES.hasOwnProperty(index)) n++;
+        }
+        return n;
+      }()),
+
+      //  An array of individual atom index values and properties.
+      results,
+
       // Individual property arrays for the "radial" bonds, indexed by bond number
       radialBondAtom1Index,
       radialBondAtom2Index,
       radialBondLength,
       radialBondStrength,
+
+      // count of radial bond properties
+      numRadialBondIndices = (function() {
+        var n = 0, index;
+        for (index in RADIAL_INDICES) {
+          if (RADIAL_INDICES.hasOwnProperty(index)) n++;
+        }
+        return n;
+      }()),
+
+      //  An array of individual radial bond index values and properties.
+      radialBondResults,
 
       // An array of length 4 which contains the above 4 property arrays.
       // Left undefined if no radial bonds are defined.
@@ -382,7 +406,8 @@ exports.makeModel = function() {
       extendAtomsArray = function(num) {
         var savedArrays = [],
             savedTotalMass,
-            i;
+            i,
+            float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
 
         for (i = 0; i < atoms.length; i++) {
           savedArrays[i] = atoms[i];
@@ -402,8 +427,8 @@ exports.makeModel = function() {
       },
 
       createRadialBondsArray = function(num) {
-      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular', radialIndices = RADIAL_INDICES;
+        var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+            uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular', radialIndices = RADIAL_INDICES;
 
         radialBonds = model.radialBonds = [];
 
@@ -411,10 +436,20 @@ exports.makeModel = function() {
         radialBonds[radialIndices.ATOM2] = radialBondAtom2Index = arrays.create(num, 0, uint16);
         radialBonds[radialIndices.LENGTH] = radialBondLength     = arrays.create(num, 0, float32);
         radialBonds[radialIndices.STRENGTH] = radialBondStrength   = arrays.create(num, 0, float32);
+
+        /**
+          Initialize radialBondResults[] arrays consisting of arrays of radial bond
+          index numbers and space to later contain transposed radial bond properties
+        */
+        radialBondResults = model.radialBondResults = [];
+        i = -1; while (++i < num) {
+          radialBondResults[i] = arrays.create(numRadialBondIndices+5,  0, float32);
+          radialBondResults[i][0] = i;
+        }
       },
 
 
-  // Make the 'radialBonds' array bigger. FIXME: needs to be factored
+      // Make the 'radialBonds' array bigger. FIXME: needs to be factored
       // into a common pattern with 'extendAtomsArray'
       extendRadialBondsArray = function(num) {
         var savedArrays = [],
@@ -1099,8 +1134,8 @@ exports.makeModel = function() {
       var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
           uint16 = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
           uint8 = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
-          numIndices,
-          num;
+          num,
+          i;
 
       if (!elementsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called before setElements.");
@@ -1116,6 +1151,7 @@ exports.makeModel = function() {
         throw new Error("md2d: createAtoms was called without options specifying the atoms to create.");
       }
 
+      //  number of atoms
       num = options.num;
 
       if (typeof num === 'undefined') {
@@ -1130,14 +1166,6 @@ exports.makeModel = function() {
       if (num > N_MAX) {
         throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
       }
-
-      numIndices = (function() {
-        var n = 0, index;
-        for (index in INDICES) {
-          if (INDICES.hasOwnProperty(index)) n++;
-        }
-        return n;
-      }());
 
       atoms  = model.atoms  = arrays.create(numIndices, null, 'regular');
 
@@ -1157,10 +1185,21 @@ exports.makeModel = function() {
       pinned    = model.pinned      = atoms[INDICES.PINNED]    = arrays.create(num, 0, uint8);
       visible   = model.visible     = atoms[INDICES.VISIBLE]   = arrays.create(num, 0, uint8);
       draggable = model.draggable   = atoms[INDICES.DRAGGABLE] = arrays.create(num, 0, uint8);
-      mass      = model.mass        = atoms[INDICES.MASS]      = arrays.create(num, 0, Float32Array);
+      mass      = model.mass        = atoms[INDICES.MASS]      = arrays.create(num, 0, float32);
 
       N = 0;
       totalMass = 0;
+
+      /**
+        Initialize results[] arrays consisting of arrays of atom index numbers
+        and space to later contain transposed atom properties.
+      */
+      results   = model.results     = [];
+      i = -1; while (++i < num) {
+        results[i] = arrays.create(numIndices+1,  0, float32);
+        results[i][0] = i;
+      }
+
     },
 
     /**
@@ -1215,6 +1254,7 @@ exports.makeModel = function() {
         if (!props.hasOwnProperty(prop)) continue;
         this[prop][i] = props[prop];
       }
+      this.computeOutputState();
     },
 
     /**
@@ -1228,10 +1268,10 @@ exports.makeModel = function() {
         extendRadialBondsArray(N_radialBonds+1);
       }
 
-      radialBondAtom1Index[N_radialBonds] = atom1Index;
-      radialBondAtom2Index[N_radialBonds] = atom2Index;
-      radialBondLength[N_radialBonds]     = bondLength;
-      radialBondStrength[N_radialBonds]   = bondStrength;
+      radialBondResults[N_radialBonds][1] = radialBondAtom1Index[N_radialBonds] = atom1Index;
+      radialBondResults[N_radialBonds][2] = radialBondAtom2Index[N_radialBonds] = atom2Index;
+      radialBondResults[N_radialBonds][3] = radialBondLength[N_radialBonds]     = bondLength;
+      radialBondResults[N_radialBonds][4] = radialBondStrength[N_radialBonds]   = bondStrength;
 
       if ( ! radialBondsHash[atom1Index] ) radialBondsHash[atom1Index] = {};
       radialBondsHash[atom1Index][atom2Index] = true;
@@ -1727,6 +1767,40 @@ exports.makeModel = function() {
         if (useCoulombInteraction && charge[i1] && charge[i2]) {
           PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2]);
         }
+
+        // Also save the updated position of the two bonded atoms
+        // in a row in the radialBondResults array.
+        radialBondResults[i][5] = x[i1];
+        radialBondResults[i][6] = y[i1];
+        radialBondResults[i][7] = x[i2];
+        radialBondResults[i][8] = y[i2];
+      }
+
+      // generate transposed results
+      // i = -1; while (++i < N) {
+      //   j = -1; while (++j < atoms.length) {
+      //     results[i][j+1] = atoms[j][i];
+      //   }
+      // }
+
+      i = -1; while (++i < N) {
+        results[i][1] =  atoms[0][i];
+        results[i][2] =  atoms[1][i];
+        results[i][3] =  atoms[2][i];
+        results[i][4] =  atoms[3][i];
+        results[i][5] =  atoms[4][i];
+        results[i][6] =  atoms[5][i];
+        results[i][7] =  atoms[6][i];
+        results[i][8] =  atoms[7][i];
+        results[i][9] =  atoms[8][i];
+        results[i][10] = atoms[9][i];
+        results[i][11] = atoms[10][i];
+        results[i][12] = atoms[11][i];
+        results[i][13] = atoms[12][i];
+        results[i][14] = atoms[13][i];
+        results[i][15] = atoms[14][i];
+        results[i][16] = atoms[15][i];
+        results[i][17] = atoms[16][i];
       }
 
       // State to be read by the rest of the system:

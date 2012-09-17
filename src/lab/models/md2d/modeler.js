@@ -14,7 +14,7 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
-      dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
+      dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
       temperature_control,
       chargeShading, showVDWLines,VDWLinesRatio,
       showClock,
@@ -53,6 +53,17 @@ modeler.model = function(initialProperties) {
       // A two dimensional array consisting of arrays of node property values
       //
       nodes,
+
+      //
+      // A two dimensional array consisting of atom index numbers and atom
+      // property values - in effect transposed from the atom property arrays.
+      //
+      results,
+
+      //
+      // A two dimensional array consisting of radial bond index numbers, radial bond
+      // property, and the postions of the two bonded atoms.
+      radialBondResults,
 
       // list of obstacles
       obstacles,
@@ -174,6 +185,23 @@ modeler.model = function(initialProperties) {
     ELEMENT  : md2d.INDICES.ELEMENT,
     MASS     : md2d.INDICES.MASS
   };
+
+  model_md2d_results_RADIUS   = md2d.INDICES.RADIUS+1,
+  model_md2d_results_PX       = md2d.INDICES.PX+1,
+  model_md2d_results_PY       = md2d.INDICES.PY+1,
+  model_md2d_results_X        = md2d.INDICES.X+1,
+  model_md2d_results_Y        = md2d.INDICES.Y+1,
+  model_md2d_results_VX       = md2d.INDICES.VX+1,
+  model_md2d_results_VY       = md2d.INDICES.VY+1,
+  model_md2d_results_SPEED    = md2d.INDICES.SPEED+1,
+  model_md2d_results_AX       = md2d.INDICES.AX+1,
+  model_md2d_results_AY       = md2d.INDICES.AY+1,
+  model_md2d_results_CHARGE   = md2d.INDICES.CHARGE+1,
+  model_md2d_results_FRICTION = md2d.INDICES.FRICTION+1,
+  model_md2d_results_VISIBLE  = md2d.INDICES.VISIBLE+1,
+  model_md2d_results_DRAGGABLE= md2d.INDICES.DRAGGABLE+1,
+  model_md2d_results_ELEMENT  = md2d.INDICES.ELEMENT+1,
+  model_md2d_results_MASS     = md2d.INDICES.MASS+1,
 
   model.ATOM_PROPERTIES = {
     RADIUS   : md2d.ATOM_PROPERTIES.RADIUS,
@@ -550,6 +578,8 @@ modeler.model = function(initialProperties) {
     });
 
     nodes = coreModel.atoms;
+    results = coreModel.results;
+
     modelOutputState = coreModel.outputState;
 
     // Initialize properties
@@ -601,6 +631,7 @@ modeler.model = function(initialProperties) {
   model.createRadialBonds = function(_radialBonds) {
     coreModel.initializeRadialBonds(_radialBonds);
     radialBonds = coreModel.radialBonds;
+    radialBondResults = coreModel.radialBondResults;
     readModelState();
     return model;
   };
@@ -733,7 +764,11 @@ modeler.model = function(initialProperties) {
     var size      = model.size(),
         radius    = coreModel.getRadiusOfElement(el);
 
-    visible   = typeof visible === "number" ? visible : 1;        // default for visible is 1
+    charge    = typeof charge    === "number" ? charge : 0;       // default for charge is 0
+    friction  = typeof friction  === "number" ? friction : 0;     // default for friction is 0
+    pinned    = typeof pinned    === "number" ? pinned : 0;       // default for pinned is 0
+    visible   = typeof visible   === "number" ? visible : 1;      // default for visible is 1
+    draggable = typeof draggable === "number" ? draggable : 1;    // default for draggable is 1
 
     // As a convenience to script authors, bump the atom within bounds
     if (x < radius) x = radius;
@@ -747,8 +782,9 @@ modeler.model = function(initialProperties) {
 
       // reassign nodes to possibly-reallocated atoms array
       nodes = coreModel.atoms;
+      results = coreModel.results;
       coreModel.computeOutputState();
-      if (model_listener) model_listener();
+      dispatch.addAtom();
 
       return true;
     }
@@ -812,14 +848,15 @@ modeler.model = function(initialProperties) {
   model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
     var atoms,
         dx, dy,
-        new_x, new_y;
+        new_x, new_y,
+        j, jj;
 
     if (moveMolecule) {
       atoms = coreModel.getMoleculeAtoms(i);
       if (atoms.length > 0) {
         dx = typeof props.x === "number" ? props.x - coreModel.atoms[model.INDICES.X][i] : 0;
         dy = typeof props.y === "number" ? props.y - coreModel.atoms[model.INDICES.Y][i] : 0;
-        for (var j = 0, jj=atoms.length; j<jj; j++) {
+        for (j = 0, jj=atoms.length; j<jj; j++) {
           new_x = coreModel.atoms[model.INDICES.X][atoms[j]] + dx;
           new_y = coreModel.atoms[model.INDICES.Y][atoms[j]] + dy;
           if (!model.setAtomProperties(atoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
@@ -931,6 +968,14 @@ modeler.model = function(initialProperties) {
     return nodes;
   };
 
+  model.get_results = function() {
+    return results;
+  };
+
+  model.get_radial_bond_results = function() {
+    return radialBondResults;
+  };
+
   model.get_num_atoms = function() {
     return nodes[0].length;
   };
@@ -938,9 +983,11 @@ modeler.model = function(initialProperties) {
   model.get_obstacles = function() {
     return obstacles;
   };
+
   model.get_radial_bonds = function() {
     return radialBonds;
   };
+
   model.get_vdw_pairs = function() {
     if(coreModel.vdwPairs){
     coreModel.updateVdwPairsArray();
