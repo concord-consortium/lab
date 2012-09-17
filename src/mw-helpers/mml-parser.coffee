@@ -190,6 +190,29 @@ parseMML = (mmlString) ->
         images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageX: imageX, imageY: imageY }
 
     ###
+      Text boxes. TODO: factor out pattern common to MML parsing of images and text boxes
+    ###
+    wrapTextBoxText = (t) ->
+      ("<p>#{line.replace(/^\s+|\s+$/g, '')}</p>" for line in t.split('\n')).join('\n')
+
+    parseTextBoxNode = (textBoxNode) ->
+      $textBoxNode = getNode cheerio textBoxNode
+      text = wrapTextBoxText $textBoxNode.find("[property=text] string").text()
+      x = $textBoxNode.find("[property=x] double").text()
+      x = if x? then parseFloat(x) else 0
+      y = $textBoxNode.find("[property=y] double").text()
+      y = if y? then parseFloat(y) else 0
+
+      { text, x, y }
+
+    $textBoxesArray = $mml "[property=textBoxes] array"
+    if $textBoxesArray.length > 0
+      $textBoxNodes = $textBoxesArray.find "object.org-concord-mw2d-models-TextBoxComponent-Delegate"
+      textBoxes = (parseTextBoxNode(node) for node in $textBoxNodes)
+    else
+      textBoxes = []
+
+    ###
       Find the view-port size
     ###
     viewPort = viewProps.find("[property=viewSize] .java-awt-Dimension int")
@@ -409,6 +432,9 @@ parseMML = (mmlString) ->
 
     if imageProps.length > 0
       json.images = images
+
+    if textBoxes.length > 0
+      json.textBoxes = textBoxes
 
     if obstacles.length > 0
       json.obstacles = unroll obstacles, 'x', 'y', 'height', 'width', 'density', 'color', 'visible'

@@ -1,0 +1,61 @@
+{
+  "temperature_control": false,
+  "width": 3.5,
+  "height": 2,
+  "viscosity": 0.25,
+  "chargeShading": true,
+  "showVDWLines": true,
+  "VDWLinesRatio": 2,
+  "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 120,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 240,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 360,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 480,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [],
+    "Y": [],
+    "VX": [],
+    "VY": [],
+    "CHARGE": [],
+    "FRICTION": [],
+    "ELEMENT": [],
+    "PINNED": []
+  },
+  "textBoxes": [
+    {
+      "text": "<p>You will pull apart pairs of polar and</p>\n<p>non-polar molecules to see the different</p>\n<p>strengths of attraction.</p>\n<p></p>\n<p></p>\n<p>Choose a pair of molecules</p>\n<p>from the menu below.</p>",
+      "x": 24,
+      "y": 27
+    }
+  ]
+}
