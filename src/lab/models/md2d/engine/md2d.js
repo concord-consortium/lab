@@ -10,9 +10,13 @@ var arrays       = require('arrays'),
     coulomb      = require('./potentials').coulomb,
     lennardJones = require('./potentials').lennardJones,
 
-    // TODO: Actually check for Safari. Typed arrays are faster almost everywhere
+    // Check for Safari. Typed arrays are faster almost everywhere
     // ... except Safari.
-    notSafari = true,
+    notSafari = (function() {
+      var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
+          match = navigator.userAgent.match(safarimatch);
+      return (match && match[3]) ? false: true;
+    }()),
 
     hasTypedArrays = (function() {
       try {
@@ -428,7 +432,8 @@ exports.makeModel = function() {
 
       createRadialBondsArray = function(num) {
         var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-            uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular', radialIndices = RADIAL_INDICES;
+            uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
+            radialIndices = RADIAL_INDICES;
 
         radialBonds = model.radialBonds = [];
 
