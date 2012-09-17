@@ -447,20 +447,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       vis.selectAll("g.x").remove();
       vis.selectAll("g.y").remove();
 
-      if (particle) {
-        updateMoleculeRadius();
-
-        label.attr("transform", function(d, i) {
-          return "translate(" + x(d[model_md2d_results_X]) + "," + y(d[model_md2d_results_Y]) + ")";
-        });
-      }
-      if (obstacle) {
-        obstacle.attr("x", function(d, i) {return x(get_obstacle_x(i)); })
-                .attr("y", function(d, i) {return y(get_obstacle_y(i) + get_obstacle_height(i)); })
-                .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
-                .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); });
-      }
-
       if (options.playback_controller) {
         playback_component.position(pc_xpos, pc_ypos, scale_factor);
       }
@@ -666,14 +652,17 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     function obstacleEnter() {
       obstacle.enter().append("rect")
-          .attr("x", function(d, i) {return x(get_obstacle_x(i)); })
-          .attr("y", function(d, i) {return y(get_obstacle_y(i) + get_obstacle_height(i)); })
-          .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
-          .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); })
-          .style("fill", function(d, i) {
-            return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; })
-          .style("stroke-width", function(d, i) {return get_obstacle_visible(i) ? 0.2 : 0.0; })
-          .style("stroke", "black");
+          .attr({
+            "x": function(d, i) { return x(get_obstacle_x(i)); },
+            "y": function(d, i) { return y(get_obstacle_y(i) + get_obstacle_height(i)); },
+            "width": function(d, i) {return x(get_obstacle_width(i)); },
+            "height": function(d, i) {return y_flip(get_obstacle_height(i)); }
+          })
+          .style({
+            "fill": function(d, i) { return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; },
+            "stroke-width": function(d, i) { return get_obstacle_visible(i) ? 0.2 : 0.0; },
+            "stroke": function(d, i) { return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; }
+          })
     }
 
     function radialBondEnter() {
