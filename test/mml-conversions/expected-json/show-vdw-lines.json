@@ -228,5 +228,12 @@
       2000,
       2000
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Drag the molecules close to each other,</p>\n<p>and look for intermolecular attractions.</p>",
+      "x": 53,
+      "y": 18
+    }
+  ]
 }
