@@ -117,35 +117,41 @@ parseMML = (mmlString) ->
     viewProps = $mml(".org-concord-mw2d-models-RectangularBoundary-Delegate")
     width  = parseInt viewProps.find("[property=width] double").text()
     height = parseInt viewProps.find("[property=height] double").text()
+
     ###
       Find the chargeShading
     ###
     viewChargeShadingProps = $mml(".java-beans-XMLDecoder")
     chargeShading  = viewChargeShadingProps.find("[property=chargeShading] boolean").text()
+
     ###
       Show VDW Lines?
     ###
     showVDWLines = parseBoolean($mml("[property=showVDWLines] boolean").text(), false)
     VDWLinesRatio = $mml("[property=VDWLinesRatio] float")
     VDWLinesRatio = if VDWLinesRatio.length != 0 then parseFloat(VDWLinesRatio.text()) else 2
+
     ###
       Viscosity
     ###
     universeProps = $mml(".org-concord-mw2d-models-Universe")
     viscosity = parseFloat universeProps.find("[property=viscosity] float").text() || 0
+
     ###
       viewRefreshInterval
     ###
     viewRefreshInterval = parseFloat($mml("[property=viewRefreshInterval] int").text() || 50)
+
     ###
       Show Clock
     ###
     showClock = parseBoolean($mml("[property=showClock] boolean").text(), true)
+
     ###
       GravitationalField
     ###
     gravitationalProps = $mml(".org-concord-mw2d-models-GravitationalField")
-    if (gravitationalProps.length > 0)
+    if gravitationalProps.length > 0
       gravitationalField = parseFloat gravitationalProps.find("[property=intensity] double").text() || 0.010
       gravitationalField *= CLASSIC_TO_NEXTGEN_GRAVITATION_RATIO
     else
@@ -182,6 +188,7 @@ parseMML = (mmlString) ->
         imageX = parseFloat $image.find("[property=x] double").text()
         imageY = parseFloat $image.find("[property=y] double").text()
         images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageX: imageX, imageY: imageY }
+
     ###
       Find the view-port size
     ###
