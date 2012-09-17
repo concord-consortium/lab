@@ -96,7 +96,7 @@ windows_feature_token = {
 function what_browser() {
   var chromematch  = / (Chrome)\/(.*?) /,
       ffmatch      = / (Firefox)\/([0123456789ab.]+)/,
-      safarimatch  = / Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
+      safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
       iematch      = / (MSIE) ([0123456789.]+);/,
       operamatch   = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
       iphonematch  = /.+?\((iPhone); CPU.+?OS .+?Version\/([0123456789._]+)/,
@@ -139,10 +139,10 @@ function what_browser() {
     };
   }
   match = navigator.userAgent.match(safarimatch);
-  if (match && match[2]) {
+  if (match && match[3]) {
     return {
-      browser: match[2],
-      version: match[1],
+      browser: match[3],
+      version: match[2] + '/' + match[1],
       oscpu: os_platform()
     };
   }
