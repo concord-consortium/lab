@@ -51,6 +51,11 @@ parseMML = (mmlString) ->
       else
         bool == "true"
 
+    ### Convert a cheerio node whose text is a number, to an actual number ###
+    toNumber = ($node, {defaultValue}) ->
+      val = $node.text()
+      if val? then parseFloat(val) else defaultValue
+
     ### Scale MML length units to nextgen length units ###
     toNextgenLengths = (ls...) -> l/100 for l in ls
 
@@ -198,10 +203,11 @@ parseMML = (mmlString) ->
     parseTextBoxNode = (textBoxNode) ->
       $textBoxNode = getNode cheerio textBoxNode
       text = wrapTextBoxText $textBoxNode.find("[property=text] string").text()
-      x = $textBoxNode.find("[property=x] double").text()
-      x = if x? then parseFloat(x) else 0
-      y = $textBoxNode.find("[property=y] double").text()
-      y = if y? then parseFloat(y) else 0
+      $x = $textBoxNode.find("[property=x] double")
+      $y = $textBoxNode.find("[property=y] double")
+
+      x = toNumber $x, defaultValue: 0
+      y = toNumber $y, defaultValue: 0
 
       { text, x, y }
 
