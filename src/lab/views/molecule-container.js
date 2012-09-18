@@ -62,6 +62,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       drawVdwLines,
       getRadialBonds,
       imageProp,
+      textBoxes,
       interactiveUrl,
       imagePath,
       getVdwPairs,
@@ -120,6 +121,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     set_atom_properties = options.set_atom_properties;
     is_stopped = options.is_stopped;
     imageProp = options.images;
+    textBoxes = options.textBoxes || [];
     if(options.interactiveUrl) {
     interactiveUrl = options.interactiveUrl;
     imagePath = interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
@@ -856,6 +858,29 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
     }
 
+    function drawTextBoxes() {
+      var htmlObjects, textBox, size;
+
+      size = model.size();
+
+      // Curiously, selector "foreignObject.textBox" doesn't return the foreignObjects
+      htmlObjects = gradient_container.selectAll(".textBox").data(textBoxes);
+
+      htmlObjects.enter().append("foreignObject")
+        .attr("class", "textBox")
+        .append("xhtml:body");
+
+      htmlObjects.exit().remove();
+
+      // For the time being, make all text boxes cover the screen
+      htmlObjects.attr({
+        width:  x(size[0]),
+        height: y(-size[1])
+      }).each(function(d) {
+        d3.select(this).select("body").attr("class", "textBoxBody").html(d.text);
+      });
+    }
+
     function setup_drawables() {
       obstacles = get_obstacles();
       setup_obstacles();
@@ -866,6 +891,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       if(imageProp && imageProp.length !== 0) {
         drawImageAttachment();
       }
+      drawTextBoxes();
     }
 
     function setup_particles() {

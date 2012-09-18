@@ -38,6 +38,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       viscosity,
       gravitationalField,
       images,
+      textBoxes,
       interactiveUrl,
       showClock,
       viewRefreshInterval,
@@ -115,6 +116,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       viscosity           = modelConfig.viscosity;
       gravitationalField  = modelConfig.gravitationalField;
       images              = modelConfig.images;
+      textBoxes           = modelConfig.textBoxes;
     }
 
     // ------------------------------------------------------------
@@ -188,6 +190,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         enableAtomTooltips:      enableAtomTooltips,
         images:                  images,
         interactiveUrl:          interactiveUrl,
+        textBoxes:               textBoxes,
         get_results:             function() { return model.get_results(); },
         get_radial_bond_results: function() { return model.get_radial_bond_results(); },
         get_radial_bonds:        function() { return model.get_radial_bonds(); },
@@ -218,6 +221,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         ymax:                    height,
         chargeShading:           chargeShading,
         images:                  images,
+        textBoxes:               textBoxes,
         get_results:             function() { return model.get_results(); },
         get_radial_bond_results: function() { return model.get_radial_bond_results(); },
         get_radial_bonds:        function() { return model.get_radial_bonds(); },
