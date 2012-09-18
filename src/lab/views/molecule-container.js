@@ -816,6 +816,11 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           img,
           i;
 
+      image_container_top.selectAll("image").remove();
+      image_container_below.selectAll("image").remove();
+
+      if (!imageProp) return;
+
       for (i = 0; i < imageProp.length; i++) {
         img[i] = new Image();
         img[i].src = imagePath+imageProp[i].imageUri;
@@ -906,9 +911,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       setup_radial_bonds();
       setup_particles();
       updateHeatBath();
-      if(imageProp && imageProp.length !== 0) {
-        drawImageAttachment();
-      }
+      drawImageAttachment();
       drawClock();
       drawTextBoxes();
     }
