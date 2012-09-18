@@ -219,9 +219,14 @@ function run(benchmarks_table, benchmarks_to_run) {
       results_row = add_row();
 
   function add_data(row, content, el) {
+    var cell;
     el = el || "td";
-    row.appendChild(document.createElement(el))
-      .textContent = content;
+    cell = row.appendChild(document.createElement(el))
+    if (typeof content === "string" && content.slice(0,1) === "<") {
+      cell.innerHTML = content;
+    } else {
+      cell.textContent = content;
+    }
   }
 
   function add_column(title, data) {
@@ -236,9 +241,6 @@ function run(benchmarks_table, benchmarks_to_run) {
 
   var formatter = d3.time.format("%Y-%m-%d %H:%M");
   add_column("date", formatter(new Date()));
-
-  // add_column("molecules", mol_number);
-  // add_column("temperature", temperature);
 
   for (i = 0; i < benchmarks_to_run.length; i++) {
     b = benchmarks_to_run[i];

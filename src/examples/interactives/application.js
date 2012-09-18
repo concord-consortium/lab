@@ -219,6 +219,12 @@ var ROOT = "/examples",
 
     benchmarksToRun = [
       {
+        name: "commit",
+        run: function() {
+          return "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
+        }
+      },
+      {
         name: "molecules",
         run: function() {
           return model.get_num_atoms();
