@@ -22,8 +22,9 @@ gem 'guard-markdown',     "~> 0.2.0"
 
 gem "capistrano",         "~> 2.13.3"
 gem "rvm-capistrano",     "~> 1.2.6"
+gem "grit",               "~> 2.5.0"
 
-gem "mustache",           "~>  0.99.4"
+gem "mustache",           "~> 0.99.4"
 
 def darwin_only(require_as)
   RUBY_PLATFORM.include?('darwin') && require_as
