@@ -411,55 +411,6 @@
   <void property="showVDWLines">
    <boolean>true</boolean>
   </void>
-  <void property="textBoxes">
-   <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="1">
-    <void index="0">
-     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate">
-      <void property="borderType">
-       <int>2</int>
-      </void>
-      <void property="fillMode">
-       <object class="org.concord.modeler.draw.FillMode$ColorFill">
-        <void property="color">
-         <object class="java.awt.Color">
-          <int>232</int>
-          <int>231</int>
-          <int>231</int>
-          <int>255</int>
-         </object>
-        </void>
-       </object>
-      </void>
-      <void property="font">
-       <object class="java.awt.Font">
-        <string>Arial-BoldMS</string>
-        <int>1</int>
-        <int>14</int>
-       </object>
-      </void>
-      <void property="layer">
-       <int>1</int>
-      </void>
-      <void property="layerPosition">
-       <byte>1</byte>
-      </void>
-      <void property="shadowType">
-       <int>1</int>
-      </void>
-      <void property="text">
-       <string>      Polar molecules:
-Dipole-Dipole Attraction</string>
-      </void>
-      <void property="x">
-       <double>81.0</double>
-      </void>
-      <void property="y">
-       <double>11.0</double>
-      </void>
-     </object>
-    </void>
-   </array>
-  </void>
  </object>
  <object class="org.concord.mw2d.models.Atom">
   <void property="ID">
