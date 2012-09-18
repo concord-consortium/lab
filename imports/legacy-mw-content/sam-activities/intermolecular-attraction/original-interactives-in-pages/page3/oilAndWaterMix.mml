@@ -326,20 +326,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1346276161000</long> 
+     <long>1348001499000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.mml</string> 
+    <string>/Users/rklancer/dev/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>42500</long> 
+    <long>41657</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3</string> 
+    <string>/Users/rklancer/dev/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -410,86 +410,6 @@
   </void> 
   <void property="showVDWLines"> 
    <boolean>true</boolean> 
-  </void> 
-  <void property="accelerationFlavor"> 
-   <void id="Color1" property="color"/> 
-  </void> 
-  <void property="textBoxes"> 
-   <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="2"> 
-    <void index="0"> 
-     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="borderType"> 
-       <int>2</int> 
-      </void> 
-      <void property="fillMode"> 
-       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
-        <void property="color"> 
-         <object class="java.awt.Color"> 
-          <int>230</int> 
-          <int>230</int> 
-          <int>230</int> 
-          <int>255</int> 
-         </object> 
-        </void> 
-       </object> 
-      </void> 
-      <void property="font"> 
-       <object class="java.awt.Font"> 
-        <string>Arial</string> 
-        <int>1</int> 
-        <int>12</int> 
-       </object> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>1</byte> 
-      </void> 
-      <void property="shadowType"> 
-       <int>1</int> 
-      </void> 
-      <void property="text"> 
-       <string>Oil and Water Shaken Up and Mixed</string> 
-      </void> 
-      <void property="x"> 
-       <double>60.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>9.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="1"> 
-     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="font"> 
-       <object class="java.awt.Font"> 
-        <string>Arial</string> 
-        <int>1</int> 
-        <int>12</int> 
-       </object> 
-      </void> 
-      <void property="foregroundColor"> 
-       <object idref="Color1"/> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>2</byte> 
-      </void> 
-      <void property="text"> 
-       <string>press run to see  the mixture &quot;settle&quot;</string> 
-      </void> 
-      <void property="x"> 
-       <double>56.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>187.0</double> 
-      </void> 
-     </object> 
-    </void> 
-   </array> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
