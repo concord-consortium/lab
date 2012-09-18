@@ -877,7 +877,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         width:  x(size[0]),
         height: y(-size[1])
       }).each(function(d) {
-        d3.select(this).select("body").attr("class", "textBoxBody").html(d.text);
+        d3.select(this).select("body")
+          .attr("class", "textBoxBody")
+          .html(d.text)
+          // layout.js (used by embeddables) sets font-size of all 'body' elements.
+          // The line below can be removed when layout is fiexed.
+          .style("font-size", "inherit");
       });
     }
 
