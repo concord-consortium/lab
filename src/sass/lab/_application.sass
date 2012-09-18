@@ -286,22 +286,31 @@ div.tooltip
   display: table
   font-size: 1.3em
   margin: 0em
+  padding-top: 0.5em
   height: 1.5em
-  color: white
-  background-color: lighten( #3A878B, 30% )
-  opacity: 0.1
+  color: #000
+  background-color: #fff
+  a
+    text-decoration: none
+    color: #000
+
+#cc
+  float: left
+  vertical-align: middle
+  display: table-cell
+  margin-left: 1em
+  opacity: 0.3
   &:hover
-    opacity: 0.7
-  .link
-    color: #fff
-    &:hover
-      font-weight: bold
+    opacity: 1.0
 
 #about
   float: right
   vertical-align: middle
   display: table-cell
   margin-right: 2em
+  opacity: 0.3
+  &:hover
+    opacity: 1.0
 
 #about-pane
   display: none
