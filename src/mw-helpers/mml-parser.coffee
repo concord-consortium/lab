@@ -206,8 +206,8 @@ parseMML = (mmlString) ->
       $x = $textBoxNode.find("[property=x] double")
       $y = $textBoxNode.find("[property=y] double")
 
-      x = toNumber $x, defaultValue: 0
-      y = toNumber $y, defaultValue: 0
+      [x] = toNextgenLengths toNumber $x, defaultValue: 0
+      [y] = toNextgenLengths toNumber $y, defaultValue: 0
 
       { text, x, y }
 
