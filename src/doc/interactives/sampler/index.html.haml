@@ -1,0 +1,42 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
+    %title Interactive Sampler
+    %script{:src => "../../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
+    %script{:src => "../../../vendor/d3/d3.v2.js", :type => "text/javascript"}
+    %script{:src => "../../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
+    %script{:src => "../../../vendor/jquery-ui/jquery-ui.min.js", :type => "text/javascript"}
+    %script{:src => "http://use.typekit.com/hdw8ayt.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      try{Typekit.load();}catch(e){}
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "../../../../examples/examples.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
+  %body
+    #header
+      %a#logo(href="http://www.concord.org/")
+        %img(src="../../../../resources/layout/cc-logo.png")
+      %h1 Interactive Sampler
+    .description
+      %h2 Oil and Water
+      %p
+        It is well known that "oil and water don't mix", but why is that the case?
+        The model to the left shows polar water and non-polar oil in a container
+        together. Press "run" to see how they interact. Salad dressing is typically
+        made from oil and vinegar (primarily water). Use the button below to "shake
+        up the dressing" and watch what happens to the oil and water as you let it "settle".
+      %iframe{:width => 750, :height => 500, :src => '../../../examples/interactives/embeddable.html#interactives/oil-and-water-shake.json' }
+      %h2 Boiling Point and Solubility
+      %p
+        The model below has two tiny drops of liquid, one polar and the other non-polar.
+        By heating up these liquids you can vaporize them (or boil them), causing the
+        molecules to break free of their intermolecular attractions. You know that
+        something has been vaporized when most of its molecules have broken free of
+        their attractions. Pressing the heat and cool buttons will change the temperature
+        of these liquids.
+      %iframe{:width => 850, :height => 430, :frameborder => 0, :src => '../../../examples/interactives/embeddable.html#interactives/boiling-point.json' }
+      %p
+        Try heating the liquids slowly to see which one will vaporize first.
