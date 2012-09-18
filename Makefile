@@ -48,6 +48,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.components.js \
 	server/public/lab/lab.controllers.js \
 	server/public/lab/lab.deprecated-controllers.js \
+	server/public/lab/lab.version.js \
 	server/public/lab/lab.js
 
 all: \
@@ -384,7 +385,11 @@ server/public/lab/lab.js: \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.components.js \
   server/public/lab/lab.controllers.js \
-  server/public/lab/lab.deprecated-controllers.js
+  server/public/lab/lab.deprecated-controllers.js \
+	server/public/lab/lab.version.js
+
+server/public/lab/lab.version.js:
+	./script/generate-version.rb
 
 server/public/lab/lab.energy2d.js: $(ENERGY2D_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/energy2d/energy2d.build.js
