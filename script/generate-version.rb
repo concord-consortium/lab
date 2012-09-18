@@ -9,8 +9,8 @@ repo = Grit::Repo.new(".")
 head = repo.head
 commit = repo.commits.first
 
-short_message = commit.short_message.html_safe.to_s.gsub("\n", "\\n")
-message = commit.message.html_safe.to_s.gsub("\n", "\\n")
+short_message = "".html_safe + commit.short_message.gsub("\n", "\\n")
+message = "".html_safe + commit.message.gsub("\n", "\\n")
 
 version = <<HEREDOC
 (function(){
