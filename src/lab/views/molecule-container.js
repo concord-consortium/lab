@@ -363,17 +363,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
                 .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
-      // add model time display
-      if (options.showClock) {
-        time_label = vis.append("text")
-            .attr("class", "modelTimeLabel")
-            .text(modelTimeLabel())
-            .attr("x", 10)
-            .attr("y", size.height - 35)
-            .attr("dy","2.4em")
-            .style("text-anchor","start");
-      }
-
       vis.append("image")
         .attr("x", 5)
         .attr("id", "heat_bath")
@@ -886,6 +875,21 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       });
     }
 
+    function drawClock() {
+      // add model time display
+      vis.selectAll('.modelTimeLabel').remove();
+
+      if (options.showClock) {
+        time_label = vis.append("text")
+          .attr("class", "modelTimeLabel")
+          .text(modelTimeLabel())
+          .attr("x", 10)
+          .attr("y", size.height - 35)
+          .attr("dy","2.4em")
+          .style("text-anchor","start");
+      }
+    }
+
     function setup_drawables() {
       obstacles = get_obstacles();
       setup_obstacles();
@@ -896,6 +900,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       if(imageProp && imageProp.length !== 0) {
         drawImageAttachment();
       }
+      drawClock();
       drawTextBoxes();
     }
 
