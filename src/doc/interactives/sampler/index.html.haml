@@ -28,7 +28,8 @@
         together. Press "run" to see how they interact. Salad dressing is typically
         made from oil and vinegar (primarily water). Use the button below to "shake
         up the dressing" and watch what happens to the oil and water as you let it "settle".
-      %iframe{:width => 750, :height => 500, :src => '../../../examples/interactives/embeddable.html#interactives/oil-and-water-shake.json' }
+      .iframe-container
+        %iframe{:width => 750, :height => 500, :frameborder => 1, :src => '../../../examples/interactives/embeddable.html#interactives/oil-and-water-shake.json' }
       %h2 Boiling Point and Solubility
       %p
         The model below has two tiny drops of liquid, one polar and the other non-polar.
@@ -37,6 +38,7 @@
         something has been vaporized when most of its molecules have broken free of
         their attractions. Pressing the heat and cool buttons will change the temperature
         of these liquids.
-      %iframe{:width => 850, :height => 430, :frameborder => 0, :src => '../../../examples/interactives/embeddable.html#interactives/boiling-point.json' }
       %p
         Try heating the liquids slowly to see which one will vaporize first.
+      .iframe-container
+        %iframe{:width => 840, :height => 430, :frameborder => 1, :src => '../../../examples/interactives/embeddable.html#interactives/boiling-point.json' }
