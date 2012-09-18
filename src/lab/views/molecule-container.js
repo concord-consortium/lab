@@ -805,42 +805,51 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
     }
 
-    function drawImageAttachment(){
-      var numImages, img = [], img_height, img_width, imgHost, imgHostType,imglayer, imgX, imgY;
-      numImages = imageProp.length;
-      img.length = numImages;
-      for(var i = 0;i < numImages;i++) {
+    function drawImageAttachment() {
+      var img = [],
+          img_height,
+          img_width,
+          imgHost,
+          imgHostType,
+          imglayer,
+          imgX,
+          img,
+          i;
+
+      for (i = 0; i < imageProp.length; i++) {
         img[i] = new Image();
         img[i].src = imagePath+imageProp[i].imageUri;
         img[i].onload = (function(i) {
           return function() {
             image_container_top.selectAll("image.image_attach"+i).remove();
             image_container_below.selectAll("image.image_attach"+i).remove();
-            imgHost =  results[imageProp[i].imageHostIndex];
-            imgHostType =  imageProp[i].imageHostType;
-            imglayer =  imageProp[i].imageLayer;
-            imgX =  imageProp[i].imageX;
-            imgY =  imageProp[i].imageY;
-            img_width = img[i].width*scaling_factor;
-            img_height = img[i].height*scaling_factor;
-            if(imglayer == 1) {
-            image_container_top.append("image")
-              .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
-              .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } })
-              .attr("class", "image_attach"+i+" draggable")
-              .attr("xlink:href", img[i].src)
-              .attr("width", img_width)
-              .attr("height", img_height)
-              .attr("pointer-events", "none");
+
+            imgHost = results[imageProp[i].imageHostIndex];
+            imgHostType = imageProp[i].imageHostType;
+            imglayer = imageProp[i].imageLayer;
+            imgX = imageProp[i].imageX;
+            imgY = imageProp[i].imageY;
+            img_width = img[i].width * scaling_factor;
+            img_height = img[i].height * scaling_factor;
+
+            if (imglayer === 1) {
+              image_container_top.append("image")
+                .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
+                .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } })
+                .attr("class", "image_attach"+i+" draggable")
+                .attr("xlink:href", img[i].src)
+                .attr("width", img_width)
+                .attr("height", img_height)
+                .attr("pointer-events", "none");
             } else {
-            image_container_below.append("image")
-              .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
-              .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } })
-              .attr("class", "image_attach"+i+" draggable")
-              .attr("xlink:href", img[i].src)
-              .attr("width", img_width)
-              .attr("height", img_height)
-              .attr("pointer-events", "none");
+              image_container_below.append("image")
+                .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
+                .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } })
+                .attr("class", "image_attach"+i+" draggable")
+                .attr("xlink:href", img[i].src)
+                .attr("width", img_width)
+                .attr("height", img_height)
+                .attr("pointer-events", "none");
             }
           };
         })(i);
