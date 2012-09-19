@@ -12,6 +12,8 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       energyGraph,
       energyData = [[],[],[]],
 
+      setupScreenCalledTwice = false,
+
       //
       // Define the scripting API used by 'action' scripts on interactive elements.
       //
@@ -526,6 +528,18 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       // for compatibility with current implementation "embedded" interactive style
       layout.selection = layoutStyle;
       layout.setupScreen();
+
+      // layout.setupScreen modifies the size of the molecule view's containing element based on
+      // its current size. The first two times it is called, it sets the container to two different
+      // sizes. After that, further calls do not change the size of the container. (For some reason,
+      // when the screen resizes, only one call to setupScreen is required.)
+      //
+      // The following is therefore a dirty hack to pretend layout.setupScreen behaves more nicely.
+      if (!setupScreenCalledTwice) {
+        layout.setupScreen();
+        setupScreenCalledTwice = true;
+      }
+
       $(window).on('resize', layout.setupScreen);
     } else {
       // preferred path...
