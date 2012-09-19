@@ -375,7 +375,7 @@ layout.setupScreen = function(event) {
     modelAspectRatio = modelDimensions[0] / modelDimensions[1];
     modelWidthFactor = 0.90;
     if (viewLists.thermometers) {
-      modelWidthFactor -= 0.25;
+      modelWidthFactor -= 0.30;
     }
     if (viewLists.energyGraphs) {
       modelWidthFactor -= 0.45;
