@@ -245,6 +245,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       modelConfig = newModelConfig || modelConfig;
       playerConfig = newPlayerConfig || playerConfig;
       setupModel();
+      resetModelPlayer();
       dispatch.modelReset();
     }
 
