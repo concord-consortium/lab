@@ -177,10 +177,17 @@ server/public/examples:
   # resources from src/examples/ to server/public/examples/
 	rsync -aq --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.coffee' src/examples/ server/public/examples/
 
-server/public/doc:
-	mkdir -p server/public/doc
+server/public/doc: \
+	server/public/doc/interactives \
+	server/public/doc/models
 	# copy directories, javascript, json, and image resources from src/examples/
 	rsync -aq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ server/public/doc/
+
+server/public/doc/interactives:
+	mkdir -p server/public/doc/interactives
+
+server/public/doc/models:
+	mkdir -p server/public/doc/models
 
 server/public/lab-amd: $(LAB_SRC_FILES)
 	mkdir -p server/public/lab-amd
@@ -280,7 +287,7 @@ server/public/vendor/jquery-ui:
 
 server/public/vendor/tinysort:
 	mkdir -p server/public/vendor/tinysort
-	
+
 server/public/vendor/tinysort/jquery.tinysort.js: \
 	server/public/vendor/tinysort
 	cp -r src/vendor/tinysort/src/* server/public/vendor/tinysort
