@@ -10,6 +10,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
       propertiesListeners = [],
       playerConfig,
       componentCallbacks = [],
+      onLoadScripts = [],
       thermometer,
       energyGraph,
       energyData = [[],[],[]],
@@ -73,8 +74,11 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
         loadModel: function loadModel(modelUrl, cb) {
           model.stop();
           controller.loadModel(modelUrl);
+
+          // Assume that existing onLoadScripts are only relevant to the previous model
+          onLoadScripts = [];
           if (typeof cb === 'function') {
-            modelLoadedCallbacks.push(cb);
+            onLoadScripts.push(cb);
           }
         },
 
@@ -556,6 +560,10 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
     for(i = 0; i < modelLoadedCallbacks.length; i++) {
       modelLoadedCallbacks[i]();
     }
+
+    for(i = 0; i < onLoadScripts.length; i++) {
+      onLoadScripts[i]();
+    }
   }
 
   /**
@@ -611,6 +619,8 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
     }
 
     if (interactive.model != null) {
+      var onLoad = interactive.model.onLoad;
+
       modelUrl = interactive.model.url;
       if (interactive.model.viewOptions) {
         // make a deep copy of interactive.model.viewOptions, so we can freely mutate playerConfig
@@ -621,6 +631,10 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
       }
       playerConfig.fit_to_parent = !layoutStyle;
       playerConfig.interactiveUrl = modelUrl;
+
+      if (onLoad != null) {
+        onLoadScripts.push( evalInScriptContext( getStringFromArray(onLoad) ) );
+      }
     }
 
     if (modelUrl) loadModel(modelUrl);
