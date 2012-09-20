@@ -1,8 +1,8 @@
 /*global controllers model Thermometer layout $ alert ACTUAL_ROOT grapher */
 /*jshint eqnull: true boss: true */
-controllers.interactivesController = function(interactive, viewSelector, applicationCallbacks, layoutStyle) {
+controllers.interactivesController = function(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
 
-  applicationCallbacks = applicationCallbacks || [];
+  modelLoadedCallbacks = modelLoadedCallbacks || [];
 
   var controller = {},
       modelController,
@@ -74,7 +74,7 @@ controllers.interactivesController = function(interactive, viewSelector, applica
           model.stop();
           controller.loadModel(modelUrl);
           if (typeof cb === 'function') {
-            applicationCallbacks.push(cb);
+            modelLoadedCallbacks.push(cb);
           }
         },
 
@@ -553,8 +553,8 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       model.addPropertiesListener(listener[0], listener[1]);
     }
 
-    for(i = 0; i < applicationCallbacks.length; i++) {
-      applicationCallbacks[i]();
+    for(i = 0; i < modelLoadedCallbacks.length; i++) {
+      modelLoadedCallbacks[i]();
     }
   }
 
