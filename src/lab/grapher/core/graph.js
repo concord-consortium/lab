@@ -227,8 +227,8 @@ grapher.graph = function(elem, options, message) {
     }
 
     yScale = d3.scale[options.yscale]()
-      .domain([options.ymin, options.ymax]).nice()
-      .range([size.height, 0]).nice();
+      .domain([options.ymin, options.ymax])
+      .range([size.height, 0]);
 
     if (options.yscale === "pow") {
       yScale.exponent(options.yscaleExponent);
@@ -532,6 +532,17 @@ grapher.graph = function(elem, options, message) {
           .attr("x2", size.width);
 
       if (sizeType.value > 1) {
+        if (options.yscale === "log") {
+          var gye_length = gye[0].length;
+          if (gye_length > 100) {
+            gye = gye.filter(function(d) { return !!d.toString().match(/(\.[0]*|^)[1]/);});
+          } else if (gye_length > 50) {
+            gye = gye.filter(function(d) { return !!d.toString().match(/(\.[0]*|^)[12]/);});
+          } else {
+            gye = gye.filter(function(d) { 
+              return !!d.toString().match(/(\.[0]*|^)[125]/);});
+          }
+        }
         gye.append("text")
             .attr("class", "axis")
             .style("font-size", sizeType.value/2.7 * 100 + "%")

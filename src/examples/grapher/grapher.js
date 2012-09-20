@@ -130,6 +130,7 @@ function selectDataHandler() {
         xmin:   -10000,
         ymax:   20000,
         ymin:   0.1,
+        yFormatter: "3.3r",
         yscale: "log",
         circleRadius: false,
         dataChange: false,
