@@ -1278,10 +1278,10 @@ exports.makeModel = function() {
       radialBondResults[N_radialBonds][3] = radialBondLength[N_radialBonds]     = bondLength;
       radialBondResults[N_radialBonds][4] = radialBondStrength[N_radialBonds]   = bondStrength;
 
-      if ( ! radialBondsHash[atom1Index] ) radialBondsHash[atom1Index] = {};
+      if ( ! radialBondsHash[atom1Index] ) radialBondsHash[atom1Index] = [];
       radialBondsHash[atom1Index][atom2Index] = true;
 
-      if ( ! radialBondsHash[atom2Index] ) radialBondsHash[atom2Index] = {};
+      if ( ! radialBondsHash[atom2Index] ) radialBondsHash[atom2Index] = [];
       radialBondsHash[atom2Index][atom1Index] = true;
 
       N_radialBonds++;
@@ -1525,7 +1525,7 @@ exports.makeModel = function() {
     initializeRadialBonds: function(props) {
       var num = props.atom1Index.length,
           i;
-      radialBondsHash = {};
+      radialBondsHash = [];
       createRadialBondsArray(num);
 
       for (i = 0; i < num; i++) {
