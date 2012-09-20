@@ -169,6 +169,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
         modelLoaded();
         // also be sure to get notified when the underlying model changes
         modelController.on('modelReset', modelLoaded);
+        controller.modelController = modelController;
       }
     });
   }

@@ -237,7 +237,22 @@ var ROOT = "/examples",
         }
       },
       {
-        name: "100 Steps (steps/s)",
+        name: "just graphics (steps/s)",
+        run: function() {
+          var elapsed, start, i;
+
+          model.stop();
+          start = +Date.now();
+          i = -1;
+          while (i++ < 100) {
+            controller.modelController.moleculeContainer.update_drawable_positions();
+          }
+          elapsed = Date.now() - start;
+          return d3.format("5.1f")(100/elapsed*1000);
+        }
+      },
+      {
+        name: "model (steps/s)",
         run: function() {
           var elapsed, start, i;
 
@@ -253,7 +268,7 @@ var ROOT = "/examples",
         }
       },
       {
-        name: "100 Steps w/graphics",
+        name: "model+graphics (steps/s)",
         run: function() {
           var elapsed, start, i;
 
