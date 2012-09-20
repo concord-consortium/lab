@@ -2,6 +2,8 @@
 /*jshint eqnull: true boss: true */
 controllers.interactivesController = function(interactive, viewSelector, applicationCallbacks, layoutStyle) {
 
+  applicationCallbacks = applicationCallbacks || [];
+
   var controller = {},
       modelController,
       $interactiveContainer,
@@ -72,7 +74,6 @@ controllers.interactivesController = function(interactive, viewSelector, applica
           model.stop();
           controller.loadModel(modelUrl);
           if (typeof cb === 'function') {
-            applicationCallbacks = applicationCallbacks || [];
             applicationCallbacks.push(cb);
           }
         },
@@ -552,11 +553,8 @@ controllers.interactivesController = function(interactive, viewSelector, applica
       model.addPropertiesListener(listener[0], listener[1]);
     }
 
-
-    if (applicationCallbacks) {
-      for(i = 0; i < applicationCallbacks.length; i++) {
-        applicationCallbacks[i]();
-      }
+    for(i = 0; i < applicationCallbacks.length; i++) {
+      applicationCallbacks[i]();
     }
   }
 
