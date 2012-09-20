@@ -66,10 +66,10 @@ grapher.realTimeGraph = function(id, options, message) {
 
   initialize(id, options, message);
 
-  function setupOptions(opts) {
-    if (opts) {
+  function setupOptions(options) {
+    if (options) {
       for(var p in default_options) {
-        if (opts[p] === undefined) {
+        if (options[p] === undefined) {
           options[p] = default_options[p];
         }
       }
