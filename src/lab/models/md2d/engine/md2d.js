@@ -448,7 +448,7 @@ exports.makeModel = function() {
           index numbers and space to later contain transposed radial bond properties
         */
         radialBondResults = model.radialBondResults = [];
-        i = -1; while (++i < num) {
+        for (i = 0; i < num; i++) {
           radialBondResults[i] = arrays.create(numRadialBondIndices+5,  0, float32);
           radialBondResults[i][0] = i;
         }
@@ -894,13 +894,13 @@ exports.makeModel = function() {
       updateFrictionAccelerations = function () {
         if (!viscosity) return;
 
-        var i = N,
+        var i,
             fx,
             fy,
             inverseMass,
             drag;
 
-        while (i--) {
+        for (i = 0; i < N; i++) {
           inverseMass = 1 / mass[i];
           drag = viscosity * friction[i];
 
@@ -1200,8 +1200,8 @@ exports.makeModel = function() {
         Initialize results[] arrays consisting of arrays of atom index numbers
         and space to later contain transposed atom properties.
       */
-      results   = model.results     = [];
-      i = -1; while (++i < num) {
+      results = model.results = [];
+      for (i = 0; i < num; i++) {
         results[i] = arrays.create(numIndices+1,  0, float32);
         results[i][0] = i;
       }
