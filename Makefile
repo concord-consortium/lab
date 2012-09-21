@@ -395,6 +395,7 @@ server/public/lab/lab.js: \
   server/public/lab/lab.deprecated-controllers.js \
 	server/public/lab/lab.version.js
 
+.PHONY: server/public/lab/lab.version.js
 server/public/lab/lab.version.js:
 	./script/generate-version.rb
 
