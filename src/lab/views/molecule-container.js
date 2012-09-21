@@ -729,8 +729,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     function findPoints(d, num) {
       var pointX, pointY,
           j,
-          atom1 = get_radial_bond_atom_1(i),
-          atom2 = get_radial_bond_atom_2(i),
           dx, dy,
           x1, x2,
           y1, y2,
