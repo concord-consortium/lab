@@ -1781,31 +1781,11 @@ exports.makeModel = function() {
         radialBondResults[i][8] = y[i2];
       }
 
-      // generate transposed results
-      // i = -1; while (++i < N) {
-      //   j = -1; while (++j < atoms.length) {
-      //     results[i][j+1] = atoms[j][i];
-      //   }
-      // }
-
-      i = -1; while (++i < N) {
-        results[i][1] =  atoms[0][i];
-        results[i][2] =  atoms[1][i];
-        results[i][3] =  atoms[2][i];
-        results[i][4] =  atoms[3][i];
-        results[i][5] =  atoms[4][i];
-        results[i][6] =  atoms[5][i];
-        results[i][7] =  atoms[6][i];
-        results[i][8] =  atoms[7][i];
-        results[i][9] =  atoms[8][i];
-        results[i][10] = atoms[9][i];
-        results[i][11] = atoms[10][i];
-        results[i][12] = atoms[11][i];
-        results[i][13] = atoms[12][i];
-        results[i][14] = atoms[13][i];
-        results[i][15] = atoms[14][i];
-        results[i][16] = atoms[15][i];
-        results[i][17] = atoms[16][i];
+      // Transpose 'atoms' array into 'results' for easier consumption by view code
+      for (j = 0; j < atoms.length; j++) {
+        for (i = 0; i < N; i++) {
+          results[i][j+1] = atoms[j][i];
+        }
       }
 
       // State to be read by the rest of the system:
