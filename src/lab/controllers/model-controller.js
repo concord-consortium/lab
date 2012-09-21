@@ -138,8 +138,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           viewRefreshInterval : viewRefreshInterval,
           viscosity           : viscosity,
           gravitationalField  : gravitationalField,
-          images              : images,
-          interactiveUrl      : interactiveUrl
+          images              : images
         });
 
       if (atoms) {
