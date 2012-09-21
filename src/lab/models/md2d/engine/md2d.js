@@ -433,7 +433,8 @@ exports.makeModel = function() {
       createRadialBondsArray = function(num) {
         var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
             uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
-            radialIndices = RADIAL_INDICES;
+            radialIndices = RADIAL_INDICES,
+            i;
 
         radialBonds = model.radialBonds = [];
 
