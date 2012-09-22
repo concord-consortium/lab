@@ -18,6 +18,11 @@ $max-width: 100%
     a
       color: #fff
       text-decoration: none
+  a.opens-in-new-window
+    color: #fff
+    font-size: 100%
+    padding-left: 1em
+    text-decoration: none
   a#logo
     display: block
     height: 3.25em
@@ -147,28 +152,30 @@ button.extras-item-controls
   width: 30em
   min-height: 0
 
-a.opens-in-new-window
-  color: white
-  font-size: 90%
-  padding-left: 1em
-
 .model-benchmark-results
-  font-size: 70%
   margin: 0em
   padding: 1em
   overflow: auto
   table
     background: #eee
     width: 140em
-    font: 11px/24px Verdana, Arial, Helvetica, sans-serif
+    font: 65% Verdana, Arial, Helvetica, sans-serif
     border-collapse: collapse
     overflow: auto
   th
-    padding: 0 1.0em
+    padding: 0.2em 0.5em
     text-align: left
+    min-width: 11em
+    width: auto
   td
     border-top: 1px solid #CCC
-    padding: 0 1.0em
+    text-align: left
+    padding: 0.3em 0.5em
+
+#model-benchmark-results
+  a.opens-in-new-window
+    padding-left: 0em
+    font-size: 100%
 
 .model-datatable-results
   margin: 0em
