@@ -39,6 +39,7 @@ guard 'shell' do
     puts "re-generating javascript libraries and css resources for these libraries ..."
     command("make src")
     command("make test-src")
+    command("rm -f server/public/lab/lab.version.js; make server/public/lab/lab.version.js")
   end
 
   watch(/^imports\/.+/) do |match|
