@@ -6,9 +6,11 @@ require 'active_support/core_ext/string/output_safety'
 VERSION_PATH = File.join(SERVER_PUBLIC_PATH, 'lab', 'lab.version.js')
 
 def dirty?
-  x = `git diff --cached --exit-code --quiet`
-  y = `git diff --exit-code --quiet`
-  (x + y).empty?
+  !system("git diff --exit-code --quiet")
+end
+
+def unpushed?
+  !system("git diff --cached --exit-code --quiet")
 end
 
 repo = Grit::Repo.new(".")
