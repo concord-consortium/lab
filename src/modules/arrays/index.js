@@ -69,6 +69,9 @@ arrays.create = function(size, fill, array_type) {
       case "Uint8Array":
       a = new Uint8Array(size);
       break;
+      case "Uint8ClampedArray":
+      a = new Uint8ClampedArray(size);
+      break;
       default:
       a = new Array(size);
       break;
@@ -82,18 +85,26 @@ arrays.constructor_function = function(source) {
   if (source.buffer && source.buffer.__proto__ && source.buffer.__proto__.constructor) {
     return source.__proto__.constructor;
   }
-  if (source.constructor === Array) {
-    return source.constructor;
-  }
+  switch(source.constructor) {
+  case Array: return Array;
+  case Float32Array: return Float32Array;
+  case Uint8Array: return Uint8Array;
+  case Float64Array: return Float64Array;
+  case Int32Array: return Int32Array;
+  case Int16Array: return Int16Array;
+  case Int8Array: return Int8Array;
+  case Uint32Array: return Uint32Array;
+  case Uint16Array: return Uint16Array;
+  case Uint8ClampedArray: return Uint8ClampedArray;
+  default:
   throw new Error(
-      "arrays.constructor_function: must be an Array or Typed Array: " +
-      "  source: " + source +
-      ", source.constructor: " + source.constructor +
-      ", source.buffer: " + source.buffer +
-      ", source.buffer.slice: " + source.buffer.slice +
-      ", source.buffer.__proto__: " + source.buffer.__proto__ +
-      ", source.buffer.__proto__.constructor: " + source.buffer.__proto__.constructor
-    );
+      "arrays.constructor_function: must be an Array or Typed Array: " + "  source: " + source);
+      // ", source.constructor: " + source.constructor +
+      // ", source.buffer: " + source.buffer +
+      // ", source.buffer.slice: " + source.buffer.slice +
+      // ", source.buffer.__proto__: " + source.buffer.__proto__ +
+      // ", source.buffer.__proto__.constructor: " + source.buffer.__proto__.constructor
+  }
 };
 
 arrays.copy = function(source, dest) {
