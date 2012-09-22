@@ -221,7 +221,11 @@ var ROOT = "/examples",
       {
         name: "commit",
         run: function() {
-          return "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
+          var link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
+          if (Lab.version.repo.dirty) {
+            link += " <i>dirty</i>";
+          }
+          return link;
         }
       },
       {

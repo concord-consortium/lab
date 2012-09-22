@@ -5,9 +5,16 @@ require 'active_support/core_ext/string/output_safety'
 
 VERSION_PATH = File.join(SERVER_PUBLIC_PATH, 'lab', 'lab.version.js')
 
+def dirty?
+  x = `git diff --cached --exit-code --quiet`
+  y = `git diff --exit-code --quiet`
+  (x + y).empty?
+end
+
 repo = Grit::Repo.new(".")
 head = repo.head
-commit = repo.commits.first
+head_commit_sha = `git log -1 --pretty="%H"`.strip
+commit = repo.commit(head_commit_sha)
 
 short_message = "".html_safe + commit.short_message.gsub("\n", "\\n")
 message = "".html_safe + commit.message.gsub("\n", "\\n")
@@ -27,7 +34,8 @@ Lab.version = {
       "date":          "#{commit.committed_date}",
       "short_message": "#{short_message}",
       "message":       "#{message}"
-    }
+    },
+    "dirty": #{dirty?}
   }
 };
 
