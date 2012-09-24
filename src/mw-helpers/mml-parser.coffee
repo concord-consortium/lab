@@ -377,7 +377,7 @@ parseMML = (mmlString) ->
       heatBath settings
     ###
     heatBath = $mml(".org-concord-mw2d-models-HeatBath").find("[property=expectedTemperature]")
-    if heatBath.size() > 0
+    if heatBath.length > 0
       temperature = parseFloat heatBath.find("double").text()
 
     ### Put everything together into Lab's JSON format ###
