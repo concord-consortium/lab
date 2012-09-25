@@ -43,8 +43,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       molRadius,
       molecule_div, molecule_div_pre,
       get_num_atoms,
-      nodes,
-      get_nodes,
       results,
       radialBondResults,
       set_atom_properties,

@@ -96,7 +96,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
         */
         getAtomProperties: function getAtomProperties(i) {
           var props = {},
-              atoms = model.get_nodes(),
+              atoms = model.get_atoms(),
               prop,
               j;
 

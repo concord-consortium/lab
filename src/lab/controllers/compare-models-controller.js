@@ -120,7 +120,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
           yunits:               true,
           xmax:                 width,
           ymax:                 height,
-          get_nodes:            function() { return model.get_nodes(); },
+          get_atoms:            function() { return model.get_atoms(); },
           get_num_atoms:        function() { return model.get_num_atoms(); },
           get_obstacles:        function() { return model.get_obstacles(); },
           get_radial_bonds:     function() { return model.get_radial_bonds(); }
@@ -198,7 +198,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
 
     function setupModel() {
-      nodes = model.get_nodes();
+      nodes = model.get_atoms();
 
       model.resetTime();
 

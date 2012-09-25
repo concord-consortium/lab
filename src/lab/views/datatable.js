@@ -18,7 +18,7 @@ layout.hide_datatable = function() {
 layout.render_datatable = function(reset) {
   datatable_table.style.display = "";
   var i,
-      nodes = model.get_nodes(),
+      nodes = model.get_atoms(),
       atoms = [],
       titlerows = datatable_table.getElementsByClassName("title"),
       datarows = datatable_table.getElementsByClassName("data"),
@@ -26,9 +26,9 @@ layout.render_datatable = function(reset) {
       i_formatter = d3.format(" 2d"),
       charge_formatter = d3.format(" 1.1f"),
       f_formatter = d3.format(" 3.4f"),
-      formatters = [f_formatter, f_formatter, f_formatter, 
-                    f_formatter, f_formatter, f_formatter, f_formatter, 
-                    f_formatter, f_formatter, charge_formatter, f_formatter, 
+      formatters = [f_formatter, f_formatter, f_formatter,
+                    f_formatter, f_formatter, f_formatter, f_formatter,
+                    f_formatter, f_formatter, charge_formatter, f_formatter,
                     i_formatter];
 
   atoms.length = nodes[0].length;

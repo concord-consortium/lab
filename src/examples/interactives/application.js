@@ -409,7 +409,7 @@ var ROOT = "/examples",
 
   function renderModelDatatable(reset) {
     var i,
-        nodes = model.get_nodes(),
+        nodes = model.get_atoms(),
         atoms = [],
         $thead =  $('#model-datatable-results>thead'),
         $tbody =  $('#model-datatable-results>tbody'),
@@ -501,7 +501,7 @@ var ROOT = "/examples",
         sortOrder = descending;
       }
       $heading.siblings().removeClass("sorted");
-      $tbody.find("tr").tsort('td:eq('+$heading.index()+')', 
+      $tbody.find("tr").tsort('td:eq('+$heading.index()+')',
         {
           sortFunction:function(a, b) {
             var anum = Math.abs(parseFloat(a.s)),

@@ -9,7 +9,7 @@ var suite = vows.describe("lab.molecules");
 var atoms = [];
 
 var get_charge = function (i) {
-  return model.get_nodes()[model.INDICES.CHARGE][i];
+  return model.get_atoms()[model.INDICES.CHARGE][i];
 };
 
 var initialization_options = {
@@ -56,15 +56,15 @@ suite.addBatch({
       assert.equal(model.get_num_atoms(), 50);
     },
     "creates 50 molecules with a total charge of 0": function(model) {
-      var nodes, total_charge;
+      var atoms, total_charge;
 
       model.createNewAtoms(50);
 
-      nodes = model.get_nodes();
-      (atoms = []).length = model.get_num_atoms();
+      atoms = model.get_atoms();
+      (dummyAtoms = []).length = model.get_num_atoms();
 
-      assert.equal(atoms.length, 50);
-      total_charge = d3.sum(atoms, function(d, i) { return get_charge(i);  });
+      assert.equal(dummyAtoms.length, 50);
+      total_charge = d3.sum(dummyAtoms, function(d, i) { return get_charge(i);  });
       assert.equal(total_charge, 0);
     },
     "creates 100 molecules with a total charge of 0": function(model) {
@@ -216,7 +216,7 @@ suite.addBatch({
     topic: function() {
       model = modeler.model(initialization_options);
       model.createNewAtoms(initialization_options.mol_number);
-      atom0InitialPosition = [model.get_nodes()[model.INDICES.X][0], model.get_nodes()[model.INDICES.Y][0]];
+      atom0InitialPosition = [model.get_atoms()[model.INDICES.X][0], model.get_atoms()[model.INDICES.Y][0]];
       return model;
     },
     "a newly initialized model starts at step 0": function(model) {
@@ -235,7 +235,7 @@ suite.addBatch({
       model.stepBack();
       assert.equal(model.stepCounter(), 0);
       assert.deepEqual(
-        [model.get_nodes()[model.INDICES.X][0], model.get_nodes()[model.INDICES.Y][0]],
+        [model.get_atoms()[model.INDICES.X][0], model.get_atoms()[model.INDICES.Y][0]],
         atom0InitialPosition
       );
     },

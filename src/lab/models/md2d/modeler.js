@@ -50,9 +50,9 @@ modeler.model = function(initialProperties) {
       height = initialProperties.height,
 
       //
-      // A two dimensional array consisting of arrays of node property values
+      // A two dimensional array consisting of arrays of atom property values
       //
-      nodes,
+      atoms,
 
       //
       // A two dimensional array consisting of atom index numbers and atom
@@ -166,7 +166,7 @@ modeler.model = function(initialProperties) {
       };
 
   //
-  // Indexes into the nodes array for the individual node property arrays
+  // Indexes into the atoms array for the individual node property arrays
   // (re-export these from engine for convenience)
   //
   model.INDICES = {};
@@ -329,18 +329,18 @@ modeler.model = function(initialProperties) {
 
   function tick_history_list_push() {
     var i,
-        newnodes = [],
-        n = nodes.length;
+        newAtoms = [],
+        n = atoms.length;
 
     i = -1; while (++i < n) {
-      newnodes[i] = arrays.clone(nodes[i]);
+      newAtoms[i] = arrays.clone(atoms[i]);
     }
     tick_history_list.length = tick_history_list_index;
     tick_history_list_index++;
     tick_counter++;
     new_step = true;
     tick_history_list.push({
-      nodes:   newnodes,
+      atoms:   newAtoms,
       pressure: modelOutputState.pressure,
       pe:       modelOutputState.PE,
       ke:       modelOutputState.KE,
@@ -370,7 +370,7 @@ modeler.model = function(initialProperties) {
   }
 
   function tick_history_list_extract(index) {
-    var i, n=nodes.length;
+    var i, n=atoms.length;
     if (index < 0) {
       throw new Error("modeler: request for tick_history_list[" + index + "]");
     }
@@ -378,7 +378,7 @@ modeler.model = function(initialProperties) {
       throw new Error("modeler: request for tick_history_list[" + index + "], tick_history_list.length=" + tick_history_list.length);
     }
     i = -1; while(++i < n) {
-      arrays.copy(tick_history_list[index].nodes[i], nodes[i]);
+      arrays.copy(tick_history_list[index].atoms[i], atoms[i]);
     }
     ke = tick_history_list[index].ke;
     time = tick_history_list[index].time;
@@ -568,7 +568,7 @@ modeler.model = function(initialProperties) {
       num: num
     });
 
-    nodes = engine.atoms;
+    atoms = engine.atoms;
     results = engine.results;
 
     modelOutputState = engine.outputState;
@@ -771,8 +771,8 @@ modeler.model = function(initialProperties) {
     if (engine.canPlaceAtom(el, x, y)) {
       engine.addAtom(el, x, y, vx, vy, charge, friction, pinned, visible, draggable);
 
-      // reassign nodes to possibly-reallocated atoms array
-      nodes = engine.atoms;
+      // reassign atoms to possibly-reallocated atoms array
+      atoms = engine.atoms;
       results = engine.results;
       engine.computeOutputState();
       dispatch.addAtom();
@@ -808,9 +808,9 @@ modeler.model = function(initialProperties) {
     moleculeAtoms.push(atomIndex);
 
     for (i = 0; i < moleculeAtoms.length; i++) {
-      x = nodes[model.INDICES.X][moleculeAtoms[i]];
-      y = nodes[model.INDICES.Y][moleculeAtoms[i]];
-      r = nodes[model.INDICES.RADIUS][moleculeAtoms[i]];
+      x = atoms[model.INDICES.X][moleculeAtoms[i]];
+      y = atoms[model.INDICES.Y][moleculeAtoms[i]];
+      r = atoms[model.INDICES.RADIUS][moleculeAtoms[i]];
 
       if (x-r < left  ) left   = x-r;
       if (x+r > right ) right  = x+r;
@@ -818,8 +818,8 @@ modeler.model = function(initialProperties) {
       if (y+r > top   ) top    = y+r;
     }
 
-    cx = nodes[model.INDICES.X][atomIndex];
-    cy = nodes[model.INDICES.Y][atomIndex];
+    cx = atoms[model.INDICES.X][atomIndex];
+    cy = atoms[model.INDICES.Y][atomIndex];
 
     return { top: top-cy, left: left-cx, bottom: bottom-cy, right: right-cx };
   },
@@ -837,20 +837,20 @@ modeler.model = function(initialProperties) {
       the bonded atoms together.
     */
   model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
-    var atoms,
+    var moleculeAtoms,
         dx, dy,
         new_x, new_y,
         j, jj;
 
     if (moveMolecule) {
-      atoms = engine.getMoleculeAtoms(i);
-      if (atoms.length > 0) {
+      moleculeAtoms = engine.getMoleculeAtoms(i);
+      if (moleculeAtoms.length > 0) {
         dx = typeof props.x === "number" ? props.x - engine.atoms[model.INDICES.X][i] : 0;
         dy = typeof props.y === "number" ? props.y - engine.atoms[model.INDICES.Y][i] : 0;
-        for (j = 0, jj=atoms.length; j<jj; j++) {
-          new_x = engine.atoms[model.INDICES.X][atoms[j]] + dx;
-          new_y = engine.atoms[model.INDICES.Y][atoms[j]] + dy;
-          if (!model.setAtomProperties(atoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
+        for (j = 0, jj=moleculeAtoms.length; j<jj; j++) {
+          new_x = engine.moleculeAtoms[model.INDICES.X][moleculeAtoms[j]] + dx;
+          new_y = engine.moleculeAtoms[model.INDICES.Y][moleculeAtoms[j]] + dy;
+          if (!model.setAtomProperties(moleculeAtoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
             return false;
           }
         }
@@ -905,11 +905,11 @@ modeler.model = function(initialProperties) {
     adjusting the friction of the dragged atom.
   */
   model.liveDragStart = function(atomIndex, x, y) {
-    if (x == null) x = nodes[model.INDICES.X][atomIndex];
-    if (y == null) y = nodes[model.INDICES.Y][atomIndex];
+    if (x == null) x = atoms[model.INDICES.X][atomIndex];
+    if (y == null) y = atoms[model.INDICES.Y][atomIndex];
 
-    liveDragSavedFriction = nodes[model.INDICES.FRICTION][atomIndex];
-    nodes[model.INDICES.FRICTION][atomIndex] = model.LIVE_DRAG_FRICTION;
+    liveDragSavedFriction = atoms[model.INDICES.FRICTION][atomIndex];
+    atoms[model.INDICES.FRICTION][atomIndex] = model.LIVE_DRAG_FRICTION;
 
     liveDragSpringForceIndex = model.addSpringForce(atomIndex, x, y, 500);
   };
@@ -928,7 +928,7 @@ modeler.model = function(initialProperties) {
   model.liveDragEnd = function() {
     var atomIndex = engine.springForceAtomIndex(liveDragSpringForceIndex);
 
-    nodes[model.INDICES.FRICTION][atomIndex] = liveDragSavedFriction;
+    atoms[model.INDICES.FRICTION][atomIndex] = liveDragSavedFriction;
     model.removeSpringForce(liveDragSpringForceIndex);
   };
 
@@ -955,8 +955,8 @@ modeler.model = function(initialProperties) {
    engine.useCoulombInteraction(cf);
   };
 
-  model.get_nodes = function() {
-    return nodes;
+  model.get_atoms = function() {
+    return atoms;
   };
 
   model.get_results = function() {
@@ -968,7 +968,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.get_num_atoms = function() {
-    return nodes[0].length;
+    return atoms[0].length;
   };
 
   model.get_obstacles = function() {
