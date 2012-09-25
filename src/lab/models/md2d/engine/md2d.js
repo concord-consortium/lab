@@ -278,9 +278,6 @@ exports.createEngine = function() {
       // An array of length ATOM_PROPERTY_LIST.length which contains the above property arrays
       atoms,
 
-      //  An array of individual atom index values and properties.
-      results,
-
       // Individual property arrays for the "radial" bonds, indexed by bond number
       radialBondAtom1Index,
       radialBondAtom2Index,
@@ -1201,17 +1198,6 @@ exports.createEngine = function() {
 
       N = 0;
       totalMass = 0;
-
-      /**
-        Initialize results[] arrays consisting of arrays of atom index numbers
-        and space to later contain transposed atom properties.
-      */
-      results = engine.results = [];
-      for (i = 0; i < num; i++) {
-        results[i] = arrays.create(ATOM_PROPERTY_LIST.length+1,  0, float32);
-        results[i][0] = i;
-      }
-
     },
 
     /**
@@ -1795,13 +1781,6 @@ exports.createEngine = function() {
         radialBondResults[i][6] = y[i1];
         radialBondResults[i][7] = x[i2];
         radialBondResults[i][8] = y[i2];
-      }
-
-      // Transpose 'atoms' array into 'results' for easier consumption by view code
-      for (j = 0; j < atoms.length; j++) {
-        for (i = 0; i < N; i++) {
-          results[i][j+1] = atoms[j][i];
-        }
       }
 
       // State to be read by the rest of the system:

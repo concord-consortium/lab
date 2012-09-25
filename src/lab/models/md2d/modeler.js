@@ -163,7 +163,27 @@ modeler.model = function(initialProperties) {
             engine.setViscosity(v);
           }
         }
-      };
+      },
+
+      // TODO: notSafari and hasTypedArrays belong in the arrays module
+
+      // Check for Safari. Typed arrays are faster almost everywhere
+      // ... except Safari.
+      notSafari = (function() {
+        var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
+            match = navigator.userAgent.match(safarimatch);
+        return (match && match[3]) ? false: true;
+      }()),
+
+      hasTypedArrays = (function() {
+        try {
+          new Float32Array();
+        }
+        catch(e) {
+          return false;
+        }
+        return true;
+      }());
 
   //
   // Indexes into the atoms array for the individual node property arrays
@@ -301,11 +321,7 @@ modeler.model = function(initialProperties) {
 
     if (doIntegration) {
       engine.integrate();
-
-      pressure = modelOutputState.pressure;
-      pe       = modelOutputState.PE;
-      ke       = modelOutputState.KE;
-      time     = modelOutputState.time;
+      readModelState();
 
       pressures.push(pressure);
       pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
@@ -417,13 +433,43 @@ modeler.model = function(initialProperties) {
   }
 
   function readModelState() {
+    var i,
+        len,
+        j,
+        n;
+
     engine.computeOutputState();
+
+    // Transpose 'atoms' array into 'results' for easier consumption by view code
+    for (j = 0, len = engine.atoms.length; j < len; j++) {
+      for (i = 0, n = model.get_num_atoms(); i < n; i++) {
+        results[i][j+1] = engine.atoms[j][i];
+      }
+    }
 
     pressure = modelOutputState.pressure;
     pe       = modelOutputState.PE;
     ke       = modelOutputState.KE;
     time     = modelOutputState.time;
   }
+
+  /**
+    Initialize results[] arrays consisting of arrays of atom index numbers
+    and space to later contain transposed atom properties.
+  */
+  function createResultsArray() {
+    var i,
+        n,
+        arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
+
+    results = [];
+
+    for (i = 0, n = model.get_num_atoms(); i < n; i++) {
+      results[i] = arrays.create(1 + model.ATOM_PROPERTY_LIST.length,  0, arrayType);
+      results[i][0] = i;
+    }
+  }
+
 
   // ------------------------------
   // finish setting up the model
@@ -566,7 +612,7 @@ modeler.model = function(initialProperties) {
     });
 
     atoms = engine.atoms;
-    results = engine.results;
+    createResultsArray();
 
     modelOutputState = engine.outputState;
 
