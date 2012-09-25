@@ -438,7 +438,7 @@ modeler.model = function(initialProperties) {
         j,
         n;
 
-    engine.computeOutputState();
+    engine.computeOutputState(modelOutputState);
 
     // Transpose 'atoms' array into 'results' for easier consumption by view code
     for (j = 0, len = engine.atoms.length; j < len; j++) {
@@ -614,7 +614,7 @@ modeler.model = function(initialProperties) {
     atoms = engine.atoms;
     createResultsArray();
 
-    modelOutputState = engine.outputState;
+    window.state = modelOutputState = {};
 
     // Initialize properties
     temperature_control = properties.temperature_control;
@@ -910,6 +910,7 @@ modeler.model = function(initialProperties) {
       }
     }
     engine.setAtomProperties(i, props);
+    readModelState();
     return true;
   },
 
@@ -1082,19 +1083,19 @@ modeler.model = function(initialProperties) {
   };
 
   model.ke = function() {
-    return modelOutputState ? modelOutputState.KE : undefined;
+    return modelOutputState.KE;
   };
 
   model.ave_ke = function() {
-    return modelOutputState? modelOutputState.KE / model.get_num_atoms() : undefined;
+    return modelOutputState.KE / model.get_num_atoms();
   };
 
   model.pe = function() {
-    return modelOutputState ? modelOutputState.PE : undefined;
+    return modelOutputState.PE;
   };
 
   model.ave_pe = function() {
-    return modelOutputState? modelOutputState.PE / model.get_num_atoms() : undefined;
+    return modelOutputState.PE / model.get_num_atoms();
   };
 
   model.speed = function() {

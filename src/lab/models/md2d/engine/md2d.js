@@ -372,9 +372,6 @@ exports.createEngine = function() {
       // instantaneous system temperature, in Kelvin
       T,
 
-      // Object containing observations of the sytem (temperature, etc)
-      outputState = window.state = {},
-
       // The following are the pairwise values for elements i and j, indexed
       // like [i][j]
       epsilon = [],
@@ -1026,8 +1023,6 @@ exports.createEngine = function() {
 
   return engine = {
 
-    outputState: outputState,
-
     useCoulombInteraction: function(v) {
       useCoulombInteraction = !!v;
     },
@@ -1063,7 +1058,7 @@ exports.createEngine = function() {
 
     // Our timekeeping is really a convenience for users of this lib, so let them reset time at will
     setTime: function(t) {
-      outputState.time = time = t;
+      time = t;
     },
 
     setSize: function(v) {
@@ -1252,7 +1247,6 @@ exports.createEngine = function() {
         if (!props.hasOwnProperty(prop)) continue;
         this[prop][i] = props[prop];
       }
-      this.computeOutputState();
     },
 
     /**
@@ -1441,7 +1435,6 @@ exports.createEngine = function() {
 
       // Publish the current state
       T = computeTemperature();
-      engine.computeOutputState();
     },
 
     initializeAtomsRandomly: function(options) {
@@ -1502,7 +1495,6 @@ exports.createEngine = function() {
 
       // Publish the current state
       T = computeTemperature();
-      engine.computeOutputState();
     },
 
     initializeObstacles: function (props) {
@@ -1693,7 +1685,6 @@ exports.createEngine = function() {
 
         adjustTemperature();
       } // end of integration loop
-      engine.computeOutputState();
     },
 
     getTotalMass: function() {
@@ -1704,7 +1695,11 @@ exports.createEngine = function() {
       return elements[el][ELEMENT_INDICES.RADIUS];
     },
 
-    computeOutputState: function() {
+    /**
+      Compute the model state and store into the passed-in 'state' object.
+      (Avoids GC hit of throwaway object creation.)
+    */
+    computeOutputState: function(state) {
       var i, j,
           i1, i2,
           el1, el2,
@@ -1784,15 +1779,15 @@ exports.createEngine = function() {
       }
 
       // State to be read by the rest of the system:
-      outputState.time     = time;
-      outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
-      outputState.PE       = PE;
-      outputState.KE       = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
-      outputState.T        = T;
-      outputState.pCM      = [px_CM, py_CM];
-      outputState.CM       = [x_CM, y_CM];
-      outputState.vCM      = [vx_CM, vy_CM];
-      outputState.omega_CM = omega_CM;
+      state.time     = time;
+      state.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
+      state.PE       = PE;
+      state.KE       = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+      state.temperature = T;
+      state.pCM      = [px_CM, py_CM];
+      state.CM       = [x_CM, y_CM];
+      state.vCM      = [vx_CM, vy_CM];
+      state.omega_CM = omega_CM;
     },
 
 
