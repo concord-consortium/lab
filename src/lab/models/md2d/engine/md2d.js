@@ -200,10 +200,10 @@ exports.VDW_INDICES = VDW_INDICES = {
 
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE", "DRAGGABLE"];
 
-exports.makeModel = function() {
+exports.createEngine = function() {
 
   var // the object to be returned
-      model,
+      engine,
 
       // Whether system dimensions have been set. This is only allowed to happen once.
       sizeHasBeenInitialized = false,
@@ -418,7 +418,7 @@ exports.makeModel = function() {
 
         savedTotalMass = totalMass;
         atomsHaveBeenCreated = false;
-        model.createAtoms({ num: num });
+        engine.createAtoms({ num: num });
 
         for (i = 0; i < atoms.length; i++) {
           arrays.copy(savedArrays[i], atoms[i]);
@@ -435,7 +435,7 @@ exports.makeModel = function() {
             radialIndices = RADIAL_INDICES,
             i;
 
-        radialBonds = model.radialBonds = [];
+        radialBonds = engine.radialBonds = [];
 
         radialBonds[radialIndices.ATOM1] = radialBondAtom1Index = arrays.create(num, 0, uint16);
         radialBonds[radialIndices.ATOM2] = radialBondAtom2Index = arrays.create(num, 0, uint16);
@@ -446,7 +446,7 @@ exports.makeModel = function() {
           Initialize radialBondResults[] arrays consisting of arrays of radial bond
           index numbers and space to later contain transposed radial bond properties
         */
-        radialBondResults = model.radialBondResults = [];
+        radialBondResults = engine.radialBondResults = [];
         for (i = 0; i < num; i++) {
           radialBondResults[i] = arrays.create(numRadialBondIndices+5,  0, float32);
           radialBondResults[i][0] = i;
@@ -475,7 +475,7 @@ exports.makeModel = function() {
       var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
           uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
 
-        springForces = model.springForces = [];
+        springForces = engine.springForces = [];
 
         springForces[0] = springForceAtomIndex  = arrays.create(num, 0, uint16);
         springForces[1] = springForceX          = arrays.create(num, 0, float32);
@@ -505,7 +505,7 @@ exports.makeModel = function() {
             uint8   = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
             ind     = OBSTACLE_INDICES;
 
-        obstacles = model.obstacles = [];
+        obstacles = engine.obstacles = [];
 
         obstacles[ind.X]        = obstacleX      = arrays.create(num, 0, float32);
         obstacles[ind.Y]        = obstacleY      = arrays.create(num, 0, float32);
@@ -1020,7 +1020,7 @@ exports.makeModel = function() {
       };
 
 
-  return model = {
+  return engine = {
 
     outputState: outputState,
 
@@ -1172,25 +1172,25 @@ exports.makeModel = function() {
         throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
       }
 
-      atoms  = model.atoms  = arrays.create(ATOM_PROPERTY_LIST.length, null, 'regular');
+      atoms  = engine.atoms  = arrays.create(ATOM_PROPERTY_LIST.length, null, 'regular');
 
-      radius    = model.radius      = atoms[ATOM_INDICES.RADIUS]    = arrays.create(num, 0, float32);
-      px        = model.px          = atoms[ATOM_INDICES.PX]        = arrays.create(num, 0, float32);
-      py        = model.py          = atoms[ATOM_INDICES.PY]        = arrays.create(num, 0, float32);
-      x         = model.x           = atoms[ATOM_INDICES.X]         = arrays.create(num, 0, float32);
-      y         = model.y           = atoms[ATOM_INDICES.Y]         = arrays.create(num, 0, float32);
-      vx        = model.vx          = atoms[ATOM_INDICES.VX]        = arrays.create(num, 0, float32);
-      vy        = model.vy          = atoms[ATOM_INDICES.VY]        = arrays.create(num, 0, float32);
-      speed     = model.speed       = atoms[ATOM_INDICES.SPEED]     = arrays.create(num, 0, float32);
-      ax        = model.ax          = atoms[ATOM_INDICES.AX]        = arrays.create(num, 0, float32);
-      ay        = model.ay          = atoms[ATOM_INDICES.AY]        = arrays.create(num, 0, float32);
-      charge    = model.charge      = atoms[ATOM_INDICES.CHARGE]    = arrays.create(num, 0, float32);
-      friction  = model.friction    = atoms[ATOM_INDICES.FRICTION]  = arrays.create(num, 0, float32);
-      element   = model.element     = atoms[ATOM_INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
-      pinned    = model.pinned      = atoms[ATOM_INDICES.PINNED]    = arrays.create(num, 0, uint8);
-      visible   = model.visible     = atoms[ATOM_INDICES.VISIBLE]   = arrays.create(num, 0, uint8);
-      draggable = model.draggable   = atoms[ATOM_INDICES.DRAGGABLE] = arrays.create(num, 0, uint8);
-      mass      = model.mass        = atoms[ATOM_INDICES.MASS]      = arrays.create(num, 0, float32);
+      radius    = engine.radius      = atoms[ATOM_INDICES.RADIUS]    = arrays.create(num, 0, float32);
+      px        = engine.px          = atoms[ATOM_INDICES.PX]        = arrays.create(num, 0, float32);
+      py        = engine.py          = atoms[ATOM_INDICES.PY]        = arrays.create(num, 0, float32);
+      x         = engine.x           = atoms[ATOM_INDICES.X]         = arrays.create(num, 0, float32);
+      y         = engine.y           = atoms[ATOM_INDICES.Y]         = arrays.create(num, 0, float32);
+      vx        = engine.vx          = atoms[ATOM_INDICES.VX]        = arrays.create(num, 0, float32);
+      vy        = engine.vy          = atoms[ATOM_INDICES.VY]        = arrays.create(num, 0, float32);
+      speed     = engine.speed       = atoms[ATOM_INDICES.SPEED]     = arrays.create(num, 0, float32);
+      ax        = engine.ax          = atoms[ATOM_INDICES.AX]        = arrays.create(num, 0, float32);
+      ay        = engine.ay          = atoms[ATOM_INDICES.AY]        = arrays.create(num, 0, float32);
+      charge    = engine.charge      = atoms[ATOM_INDICES.CHARGE]    = arrays.create(num, 0, float32);
+      friction  = engine.friction    = atoms[ATOM_INDICES.FRICTION]  = arrays.create(num, 0, float32);
+      element   = engine.element     = atoms[ATOM_INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
+      pinned    = engine.pinned      = atoms[ATOM_INDICES.PINNED]    = arrays.create(num, 0, uint8);
+      visible   = engine.visible     = atoms[ATOM_INDICES.VISIBLE]   = arrays.create(num, 0, uint8);
+      draggable = engine.draggable   = atoms[ATOM_INDICES.DRAGGABLE] = arrays.create(num, 0, uint8);
+      mass      = engine.mass        = atoms[ATOM_INDICES.MASS]      = arrays.create(num, 0, float32);
 
       N = 0;
       totalMass = 0;
@@ -1199,7 +1199,7 @@ exports.makeModel = function() {
         Initialize results[] arrays consisting of arrays of atom index numbers
         and space to later contain transposed atom properties.
       */
-      results = model.results = [];
+      results = engine.results = [];
       for (i = 0; i < num; i++) {
         results[i] = arrays.create(ATOM_PROPERTY_LIST.length+1,  0, float32);
         results[i][0] = i;
@@ -1396,7 +1396,7 @@ exports.makeModel = function() {
           PEAtLocation;
 
       // first do the simpler check to see if we're outside the walls or intersect an obstacle
-      if ( !model.atomInBounds(_x, _y, i) ) {
+      if ( !engine.atomInBounds(_x, _y, i) ) {
         return false;
       }
 
@@ -1407,7 +1407,7 @@ exports.makeModel = function() {
         x[i] = y[i] = Infinity;   // move i atom away
       }
 
-      PEAtLocation = model.newPotentialCalculator(element, 0, false)(_x, _y);
+      PEAtLocation = engine.newPotentialCalculator(element, 0, false)(_x, _y);
 
       if (typeof i === "number") {
         x[i] = orig_x;
@@ -1443,12 +1443,12 @@ exports.makeModel = function() {
         friction = props.FRICTION ? props.FRICTION[i] : 0;
         draggable = props.DRAGGABLE ? props.DRAGGABLE[i] : 0;
 
-        model.addAtom(element, x, y, vx, vy, charge, friction, pinned, visible, draggable);
+        engine.addAtom(element, x, y, vx, vy, charge, friction, pinned, visible, draggable);
       }
 
       // Publish the current state
       T = computeTemperature();
-      model.computeOutputState();
+      engine.computeOutputState();
     },
 
     initializeAtomsRandomly: function(options) {
@@ -1491,7 +1491,7 @@ exports.makeModel = function() {
 
           charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          model.addAtom(element, x, y, vx, vy, charge, 0, 0, 1, 0);
+          engine.addAtom(element, x, y, vx, vy, charge, 0, 0, 1, 0);
         }
       }
 
@@ -1509,7 +1509,7 @@ exports.makeModel = function() {
 
       // Publish the current state
       T = computeTemperature();
-      model.computeOutputState();
+      engine.computeOutputState();
     },
 
     initializeObstacles: function (props) {
@@ -1518,7 +1518,7 @@ exports.makeModel = function() {
 
       createObstaclesArray(num);
       for (i = 0; i < num; i++) {
-        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i], props.visible[i]);
+        engine.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i], props.visible[i]);
       }
     },
 
@@ -1529,7 +1529,7 @@ exports.makeModel = function() {
       createRadialBondsArray(num);
 
       for (i = 0; i < num; i++) {
-        model.addRadialBond(
+        engine.addRadialBond(
           props.atom1Index[i],
           props.atom2Index[i],
           props.bondLength[i],
@@ -1544,11 +1544,11 @@ exports.makeModel = function() {
         numAtoms = num.ELEMENT.length;
       var maxNumPairs = (((numAtoms)*(numAtoms-1))/2);
 
-      vdwPairs = model.vdwPairs = [];
+      vdwPairs = engine.vdwPairs = [];
 
       vdwPairs[vdwIndices.ATOM1] = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, uint16);
       vdwPairs[vdwIndices.ATOM2] = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, uint16);
-      model.updateVdwPairsArray();
+      engine.updateVdwPairsArray();
 
     },
 
@@ -1609,7 +1609,7 @@ exports.makeModel = function() {
 
       beginTransientTemperatureChange();
       while (temperatureChangeInProgress) {
-        model.integrate();
+        engine.integrate();
       }
     },
 
@@ -1691,7 +1691,7 @@ exports.makeModel = function() {
 
         adjustTemperature();
       } // end of integration loop
-      model.computeOutputState();
+      engine.computeOutputState();
     },
 
     getTotalMass: function() {
@@ -1867,7 +1867,7 @@ exports.makeModel = function() {
       by adding at atom of element el.
     */
     findMinimumPELocation: function(el, x, y, charge) {
-      var pot    = model.newPotentialCalculator(el, charge, true),
+      var pot    = engine.newPotentialCalculator(el, charge, true),
           radius = elements[el][ELEMENT_INDICES.RADIUS],
 
           res =  math.minimize(pot, [x, y], {
@@ -1884,7 +1884,7 @@ exports.makeModel = function() {
       position.
     */
     findMinimumPESquaredLocation: function(el, x, y, charge) {
-      var pot = model.newPotentialCalculator(el, charge, true),
+      var pot = engine.newPotentialCalculator(el, charge, true),
 
           // squared potential energy, with gradient
           potsq = function(x,y) {

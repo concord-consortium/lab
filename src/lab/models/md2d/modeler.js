@@ -6,7 +6,7 @@
 
 var md2d   = require('/md2d'),
     arrays = require('arrays'),
-    coreModel;
+    engine;
 
 modeler = {};
 modeler.VERSION = '0.2.0';
@@ -108,7 +108,7 @@ modeler.model = function(initialProperties) {
         /**
           These functions are optional setters that will be called *instead* of simply setting
           a value when 'model.set({property: value})' is called, and are currently needed if you
-          want to pass a value through to the coreModel.  The function names are automatically
+          want to pass a value through to the engine.  The function names are automatically
           determined from the property name. If you define one of these custom functions, you
           must remember to also set the property explicitly (if appropriate) as this won't be
           done automatically
@@ -116,22 +116,22 @@ modeler.model = function(initialProperties) {
 
         set_temperature: function(t) {
           this.temperature = t;
-          if (coreModel) {
-            coreModel.setTargetTemperature(t);
+          if (engine) {
+            engine.setTargetTemperature(t);
           }
         },
 
         set_temperature_control: function(tc) {
           this.temperature_control = tc;
-          if (coreModel) {
-            coreModel.useThermostat(tc);
+          if (engine) {
+            engine.useThermostat(tc);
           }
         },
 
         set_coulomb_forces: function(cf) {
           this.coulomb_forces = cf;
-          if (coreModel) {
-            coreModel.useCoulombInteraction(cf);
+          if (engine) {
+            engine.useCoulombInteraction(cf);
           }
         },
 
@@ -145,29 +145,29 @@ modeler.model = function(initialProperties) {
 
         set_gravitationalField: function(gf) {
           this.gravitationalField = gf;
-          if (coreModel) {
-            coreModel.setGravitationalField(gf);
+          if (engine) {
+            engine.setGravitationalField(gf);
           }
         },
 
         set_viewRefreshInterval: function(vri) {
           this.viewRefreshInterval = vri;
-          if (coreModel) {
-            coreModel.setIntegrationDuration(vri);
+          if (engine) {
+            engine.setIntegrationDuration(vri);
           }
         },
 
         set_viscosity: function(v) {
           this.viscosity = v;
-          if (coreModel) {
-            coreModel.setViscosity(v);
+          if (engine) {
+            engine.setViscosity(v);
           }
         }
       };
 
   //
   // Indexes into the nodes array for the individual node property arrays
-  // (re-export these from coreModel for convenience)
+  // (re-export these from engine for convenience)
   //
   model.INDICES = {};
   for (i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
@@ -269,7 +269,7 @@ modeler.model = function(initialProperties) {
 
   function average_speed() {
     var i, s = 0, n = model.get_num_atoms();
-    i = -1; while (++i < n) { s += coreModel.speed[i]; }
+    i = -1; while (++i < n) { s += engine.speed[i]; }
     return s/n;
   }
 
@@ -301,7 +301,7 @@ modeler.model = function(initialProperties) {
     }
 
     if (doIntegration) {
-      coreModel.integrate();
+      engine.integrate();
 
       pressure = modelOutputState.pressure;
       pe       = modelOutputState.PE;
@@ -380,7 +380,7 @@ modeler.model = function(initialProperties) {
     }
     ke = tick_history_list[index].ke;
     time = tick_history_list[index].time;
-    coreModel.setTime(time);
+    engine.setTime(time);
   }
 
   function container_pressure() {
@@ -396,7 +396,7 @@ modeler.model = function(initialProperties) {
 
   function set_temperature(t) {
     temperature = t;
-    coreModel.setTargetTemperature(t);
+    engine.setTargetTemperature(t);
   }
 
   function set_properties(hash) {
@@ -418,7 +418,7 @@ modeler.model = function(initialProperties) {
   }
 
   function readModelState() {
-    coreModel.computeOutputState();
+    engine.computeOutputState();
 
     pressure = modelOutputState.pressure;
     pe       = modelOutputState.PE;
@@ -532,13 +532,13 @@ modeler.model = function(initialProperties) {
   };
 
   /**
-    Creates a new md2d model with a new set of atoms and leaves it in 'coreModel'
+    Creates a new md2d model with a new set of atoms and leaves it in 'engine'
 
     @config: either the number of atoms (for a random setup) or
              a hash specifying the x,y,vx,vy properties of the atoms
     When random setup is used, the option 'relax' determines whether the model is requested to
     relax to a steady-state temperature (and in effect gets thermalized). If false, the atoms are
-    left in whatever grid the coreModel's initialization leaves them in.
+    left in whatever grid the engine's initialization leaves them in.
   */
   model.createNewAtoms = function(config) {
     var elemsArray, element, i, ii, num;
@@ -559,17 +559,17 @@ modeler.model = function(initialProperties) {
     }
 
     // get a fresh model
-    coreModel = md2d.makeModel();
-    coreModel.setSize([width,height]);
-    coreModel.setElements(elemsArray);
-    coreModel.createAtoms({
+    engine = md2d.createEngine();
+    engine.setSize([width,height]);
+    engine.setElements(elemsArray);
+    engine.createAtoms({
       num: num
     });
 
-    nodes = coreModel.atoms;
-    results = coreModel.results;
+    nodes = engine.atoms;
+    results = engine.results;
 
-    modelOutputState = coreModel.outputState;
+    modelOutputState = engine.outputState;
 
     // Initialize properties
     temperature_control = properties.temperature_control;
@@ -584,22 +584,22 @@ modeler.model = function(initialProperties) {
     gravitationalField  = properties.gravitationalField;
     viewRefreshInterval = properties.viewRefreshInterval;
 
-    coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
-    coreModel.useCoulombInteraction(properties.coulomb_forces);
-    coreModel.useThermostat(temperature_control);
-    coreModel.setViscosity(viscosity);
-    coreModel.setGravitationalField(gravitationalField);
-    coreModel.setIntegrationDuration(viewRefreshInterval);
+    engine.useLennardJonesInteraction(properties.lennard_jones_forces);
+    engine.useCoulombInteraction(properties.coulomb_forces);
+    engine.useThermostat(temperature_control);
+    engine.setViscosity(viscosity);
+    engine.setGravitationalField(gravitationalField);
+    engine.setIntegrationDuration(viewRefreshInterval);
 
-    coreModel.setTargetTemperature(temperature);
+    engine.setTargetTemperature(temperature);
 
     if (config.X && config.Y) {
-      coreModel.initializeAtomsFromProperties(config);
+      engine.initializeAtomsFromProperties(config);
     } else {
-      coreModel.initializeAtomsRandomly({
+      engine.initializeAtomsRandomly({
         temperature: temperature
       });
-      if (config.relax) coreModel.relaxToTemperature();
+      if (config.relax) engine.relaxToTemperature();
     }
 
     readModelState();
@@ -618,16 +618,16 @@ modeler.model = function(initialProperties) {
   };
 
   model.createRadialBonds = function(_radialBonds) {
-    coreModel.initializeRadialBonds(_radialBonds);
-    radialBonds = coreModel.radialBonds;
-    radialBondResults = coreModel.radialBondResults;
+    engine.initializeRadialBonds(_radialBonds);
+    radialBonds = engine.radialBonds;
+    radialBondResults = engine.radialBondResults;
     readModelState();
     return model;
   };
 
   model.createVdwPairs = function(_atoms) {
-    coreModel.createVdwPairsArray(_atoms);
-    vdwPairs = coreModel.vdwPairs;
+    engine.createVdwPairsArray(_atoms);
+    vdwPairs = engine.vdwPairs;
     readModelState();
     return model;
   };
@@ -649,8 +649,8 @@ modeler.model = function(initialProperties) {
       }
     }
 
-    coreModel.initializeObstacles(_obstacles);
-    obstacles = coreModel.obstacles;
+    engine.initializeObstacles(_obstacles);
+    obstacles = engine.obstacles;
     return model;
   };
 
@@ -663,7 +663,7 @@ modeler.model = function(initialProperties) {
       Example value for argon is 0.013 (positive)
   */
   model.setEpsilon = function(e) {
-    coreModel.setLJEpsilon(e);
+    engine.setLJEpsilon(e);
   };
 
   /** Accepts a sigma value in nm
@@ -671,19 +671,19 @@ modeler.model = function(initialProperties) {
     Example value for argon is 3.4 nm
   */
   model.setSigma = function(s) {
-    coreModel.setLJSigma(s);
+    engine.setLJSigma(s);
   };
 
   model.getEpsilon = function() {
-    return coreModel.getLJEpsilon();
+    return engine.getLJEpsilon();
   };
 
   model.getSigma = function() {
-    return coreModel.getLJSigma();
+    return engine.getLJSigma();
   };
 
   model.getLJCalculator = function() {
-    return coreModel.getLJCalculator();
+    return engine.getLJCalculator();
   };
 
   model.reset = function() {
@@ -693,7 +693,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.resetTime = function() {
-    coreModel.setTime(0);
+    engine.setTime(0);
   };
 
   model.getTime = function() {
@@ -701,7 +701,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.getTotalMass = function() {
-    return coreModel.getTotalMass();
+    return engine.getTotalMass();
   };
 
   /**
@@ -716,7 +716,7 @@ modeler.model = function(initialProperties) {
     if (charge == null) charge = 0;
 
     var size   = model.size(),
-        radius = coreModel.getRadiusOfElement(el),
+        radius = engine.getRadiusOfElement(el),
         x,
         y,
         loc,
@@ -730,7 +730,7 @@ modeler.model = function(initialProperties) {
 
       // findMinimimuPELocation will return false if minimization doesn't converge, in which case
       // try again from a different x, y
-      loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
+      loc = engine.findMinimumPELocation(el, x, y, 0, 0, charge);
       if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge, 0, 0)) return true;
     } while (++numTries < maxTries);
 
@@ -751,7 +751,7 @@ modeler.model = function(initialProperties) {
   */
   model.addAtom = function(el, x, y, vx, vy, charge, friction, pinned, visible, draggable) {
     var size      = model.size(),
-        radius    = coreModel.getRadiusOfElement(el);
+        radius    = engine.getRadiusOfElement(el);
 
     charge    = typeof charge    === "number" ? charge : 0;       // default for charge is 0
     friction  = typeof friction  === "number" ? friction : 0;     // default for friction is 0
@@ -766,13 +766,13 @@ modeler.model = function(initialProperties) {
     if (y > size[1]-radius) y = size[1]-radius;
 
     // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-    if (coreModel.canPlaceAtom(el, x, y)) {
-      coreModel.addAtom(el, x, y, vx, vy, charge, friction, pinned, visible, draggable);
+    if (engine.canPlaceAtom(el, x, y)) {
+      engine.addAtom(el, x, y, vx, vy, charge, friction, pinned, visible, draggable);
 
       // reassign nodes to possibly-reallocated atoms array
-      nodes = coreModel.atoms;
-      results = coreModel.results;
-      coreModel.computeOutputState();
+      nodes = engine.atoms;
+      results = engine.results;
+      engine.computeOutputState();
       dispatch.addAtom();
 
       return true;
@@ -802,7 +802,7 @@ modeler.model = function(initialProperties) {
         cx,
         cy;
 
-    moleculeAtoms = coreModel.getMoleculeAtoms(atomIndex);
+    moleculeAtoms = engine.getMoleculeAtoms(atomIndex);
     moleculeAtoms.push(atomIndex);
 
     for (i = 0; i < moleculeAtoms.length; i++) {
@@ -841,13 +841,13 @@ modeler.model = function(initialProperties) {
         j, jj;
 
     if (moveMolecule) {
-      atoms = coreModel.getMoleculeAtoms(i);
+      atoms = engine.getMoleculeAtoms(i);
       if (atoms.length > 0) {
-        dx = typeof props.x === "number" ? props.x - coreModel.atoms[model.INDICES.X][i] : 0;
-        dy = typeof props.y === "number" ? props.y - coreModel.atoms[model.INDICES.Y][i] : 0;
+        dx = typeof props.x === "number" ? props.x - engine.atoms[model.INDICES.X][i] : 0;
+        dy = typeof props.y === "number" ? props.y - engine.atoms[model.INDICES.Y][i] : 0;
         for (j = 0, jj=atoms.length; j<jj; j++) {
-          new_x = coreModel.atoms[model.INDICES.X][atoms[j]] + dx;
-          new_y = coreModel.atoms[model.INDICES.Y][atoms[j]] + dy;
+          new_x = engine.atoms[model.INDICES.X][atoms[j]] + dx;
+          new_y = engine.atoms[model.INDICES.Y][atoms[j]] + dy;
           if (!model.setAtomProperties(atoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
             return false;
           }
@@ -856,15 +856,15 @@ modeler.model = function(initialProperties) {
     }
 
     if (checkLocation) {
-      var x  = typeof props.x === "number" ? props.x : coreModel.atoms[model.INDICES.X][i],
-          y  = typeof props.y === "number" ? props.y : coreModel.atoms[model.INDICES.Y][i],
-          el = typeof props.element === "number" ? props.y : coreModel.atoms[model.INDICES.ELEMENT][i];
+      var x  = typeof props.x === "number" ? props.x : engine.atoms[model.INDICES.X][i],
+          y  = typeof props.y === "number" ? props.y : engine.atoms[model.INDICES.Y][i],
+          el = typeof props.element === "number" ? props.y : engine.atoms[model.INDICES.ELEMENT][i];
 
-      if (!coreModel.canPlaceAtom(el, x, y, i)) {
+      if (!engine.canPlaceAtom(el, x, y, i)) {
         return false;
       }
     }
-    coreModel.setAtomProperties(i, props);
+    engine.setAtomProperties(i, props);
     return true;
   },
 
@@ -880,21 +880,21 @@ modeler.model = function(initialProperties) {
   */
   model.addSpringForce = function(atomIndex, x, y, springConstant) {
     if (springConstant == null) springConstant = 500;
-    return coreModel.addSpringForce(atomIndex, x, y, springConstant);
+    return engine.addSpringForce(atomIndex, x, y, springConstant);
   };
 
   /**
     Update the (x, y) position of a spring force.
   */
   model.updateSpringForce = function(springForceIndex, x, y) {
-    coreModel.updateSpringForce(springForceIndex, x, y);
+    engine.updateSpringForce(springForceIndex, x, y);
   };
 
   /**
     Remove a spring force.
   */
   model.removeSpringForce = function(springForceIndex) {
-    coreModel.removeSpringForce(springForceIndex);
+    engine.removeSpringForce(springForceIndex);
   };
 
   /**
@@ -924,7 +924,7 @@ modeler.model = function(initialProperties) {
     original friction property.
   */
   model.liveDragEnd = function() {
-    var atomIndex = coreModel.springForceAtomIndex(liveDragSpringForceIndex);
+    var atomIndex = engine.springForceAtomIndex(liveDragSpringForceIndex);
 
     nodes[model.INDICES.FRICTION][atomIndex] = liveDragSavedFriction;
     model.removeSpringForce(liveDragSpringForceIndex);
@@ -932,7 +932,7 @@ modeler.model = function(initialProperties) {
 
   // return a copy of the array of speeds
   model.get_speed = function() {
-    return arrays.copy(coreModel.speed, []);
+    return arrays.copy(engine.speed, []);
   };
 
   model.get_rate = function() {
@@ -945,12 +945,12 @@ modeler.model = function(initialProperties) {
 
   model.set_lennard_jones_forces = function(lj) {
    lennard_jones_forces = lj;
-   coreModel.useLennardJonesInteraction(lj);
+   engine.useLennardJonesInteraction(lj);
   };
 
   model.set_coulomb_forces = function(cf) {
    coulomb_forces = cf;
-   coreModel.useCoulombInteraction(cf);
+   engine.useCoulombInteraction(cf);
   };
 
   model.get_nodes = function() {
@@ -978,8 +978,8 @@ modeler.model = function(initialProperties) {
   };
 
   model.get_vdw_pairs = function() {
-    if(coreModel.vdwPairs){
-    coreModel.updateVdwPairsArray();
+    if(engine.vdwPairs){
+    engine.updateVdwPairsArray();
     }
     return vdwPairs;
   };
@@ -1007,7 +1007,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.relax = function() {
-    coreModel.relaxToTemperature();
+    engine.relaxToTemperature();
     return model;
   };
 
@@ -1069,8 +1069,8 @@ modeler.model = function(initialProperties) {
   };
 
   model.size = function(x) {
-    if (!arguments.length) return coreModel.getSize();
-    coreModel.setSize(x);
+    if (!arguments.length) return engine.getSize();
+    engine.setSize(x);
     return model;
   };
 
@@ -1110,7 +1110,7 @@ modeler.model = function(initialProperties) {
   model.serialize = function(includeAtoms) {
     var propCopy = $.extend({}, properties);
     if (includeAtoms) {
-      propCopy.atoms = coreModel.serialize();
+      propCopy.atoms = engine.serialize();
     }
     if (elements) {
       propCopy.elements = elements;
