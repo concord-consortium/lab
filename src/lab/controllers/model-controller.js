@@ -162,6 +162,32 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       model.on('addAtom', resetModelPlayer);
     }
 
+    /**
+      Returns a customized interface to the model for use by the view
+    */
+    function getModelInterface() {
+      return {
+        fit_to_parent:           fit_to_parent,
+        xmax:                    width,
+        ymax:                    height,
+        chargeShading:           chargeShading,
+        enableAtomTooltips:      enableAtomTooltips,
+        images:                  images,
+        interactiveUrl:          interactiveUrl,
+        textBoxes:               textBoxes,
+        get_results:             function() { return model.get_results(); },
+        get_radial_bond_results: function() { return model.get_radial_bond_results(); },
+        get_radial_bonds:        function() { return model.get_radial_bonds(); },
+        get_obstacles:           function() { return model.get_obstacles(); },
+        get_vdw_pairs:           function() { return model.get_vdw_pairs(); },
+        set_atom_properties:     function() { return model.setAtomProperties.apply(model, arguments);  },
+        is_stopped:              function() { return model.is_stopped(); },
+
+        controlButtons:      controlButtons,
+        modelTimeLabel:      modelTimeLabel
+      };
+    }
+
     // ------------------------------------------------------------
     //
     // Create Model Player
@@ -181,26 +207,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       model_player.forward = function() {},
       model_player.back = function() {},
 
-      moleculeContainer = Lab.moleculeContainer(moleculeViewId, {
-        fit_to_parent:           fit_to_parent,
-        xmax:                    width,
-        ymax:                    height,
-        chargeShading:           chargeShading,
-        enableAtomTooltips:      enableAtomTooltips,
-        images:                  images,
-        interactiveUrl:          interactiveUrl,
-        textBoxes:               textBoxes,
-        get_results:             function() { return model.get_results(); },
-        get_radial_bond_results: function() { return model.get_radial_bond_results(); },
-        get_radial_bonds:        function() { return model.get_radial_bonds(); },
-        get_obstacles:           function() { return model.get_obstacles(); },
-        get_vdw_pairs:           function() { return model.get_vdw_pairs(); },
-        set_atom_properties:     function() { return model.setAtomProperties.apply(model, arguments);  },
-        is_stopped:              function() { return model.is_stopped(); },
-
-        controlButtons:      controlButtons,
-        modelTimeLabel:      modelTimeLabel
-      });
+      moleculeContainer = Lab.moleculeContainer(moleculeViewId, getModelInterface());
 
       moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_drawables();
@@ -214,24 +221,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       //
       // ------------------------------------------------------------
 
-      moleculeContainer.reset({
-        fit_to_parent:           fit_to_parent,
-        xmax:                    width,
-        ymax:                    height,
-        chargeShading:           chargeShading,
-        images:                  images,
-        textBoxes:               textBoxes,
-        get_results:             function() { return model.get_results(); },
-        get_radial_bond_results: function() { return model.get_radial_bond_results(); },
-        get_radial_bonds:        function() { return model.get_radial_bonds(); },
-        get_vdw_pairs:           function() { return model.get_vdw_pairs(); },
-        get_obstacles:           function() { return model.get_obstacles(); },
-        set_atom_properties:     function() { return model.setAtomProperties.apply(model, arguments); },
-        is_stopped:              function() { return model.is_stopped(); },
-
-        controlButtons:      controlButtons,
-        modelTimeLabel:      modelTimeLabel
-      });
+      moleculeContainer.reset(getModelInterface());
       moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_drawables();
     }
