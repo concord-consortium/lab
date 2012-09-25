@@ -167,6 +167,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
     */
     function getModelInterface() {
       return {
+        model:                   model,
         fit_to_parent:           fit_to_parent,
         xmax:                    width,
         ymax:                    height,

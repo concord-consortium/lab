@@ -82,22 +82,23 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         ymax:                 10
       },
 
-      model_md2d_results_RADIUS   = model.INDICES.RADIUS+1,
-      model_md2d_results_PX       = model.INDICES.PX+1,
-      model_md2d_results_PY       = model.INDICES.PY+1,
-      model_md2d_results_X        = model.INDICES.X+1,
-      model_md2d_results_Y        = model.INDICES.Y+1,
-      model_md2d_results_VX       = model.INDICES.VX+1,
-      model_md2d_results_VY       = model.INDICES.VY+1,
-      model_md2d_results_SPEED    = model.INDICES.SPEED+1,
-      model_md2d_results_AX       = model.INDICES.AX+1,
-      model_md2d_results_AY       = model.INDICES.AY+1,
-      model_md2d_results_CHARGE   = model.INDICES.CHARGE+1,
-      model_md2d_results_FRICTION = model.INDICES.FRICTION+1,
-      model_md2d_results_VISIBLE  = model.INDICES.VISIBLE+1,
-      model_md2d_results_DRAGGABLE= model.INDICES.DRAGGABLE+1,
-      model_md2d_results_ELEMENT  = model.INDICES.ELEMENT+1,
-      model_md2d_results_MASS     = model.INDICES.MASS+1;
+      model,
+      model_md2d_results_RADIUS,
+      model_md2d_results_PX,
+      model_md2d_results_PY,
+      model_md2d_results_X,
+      model_md2d_results_Y,
+      model_md2d_results_VX,
+      model_md2d_results_VY,
+      model_md2d_results_SPEED,
+      model_md2d_results_AX,
+      model_md2d_results_AY,
+      model_md2d_results_CHARGE,
+      model_md2d_results_FRICTION,
+      model_md2d_results_VISIBLE,
+      model_md2d_results_DRAGGABLE,
+      model_md2d_results_ELEMENT,
+      model_md2d_results_MASS;
 
   processOptions();
 
@@ -123,6 +124,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       options = default_options;
     }
 
+    model = options.model;
+
     // The model function get_results() returns a 2 dimensional array
     // of atom indices and properties that is update everymodel tick.
     // This array is not garbage collected so the view can be assured that
@@ -144,6 +147,23 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     if (!options.showClock) {
       options.showClock = model.get("showClock");
     }
+
+    model_md2d_results_RADIUS   = model.INDICES.RADIUS+1;
+    model_md2d_results_PX       = model.INDICES.PX+1;
+    model_md2d_results_PY       = model.INDICES.PY+1;
+    model_md2d_results_X        = model.INDICES.X+1;
+    model_md2d_results_Y        = model.INDICES.Y+1;
+    model_md2d_results_VX       = model.INDICES.VX+1;
+    model_md2d_results_VY       = model.INDICES.VY+1;
+    model_md2d_results_SPEED    = model.INDICES.SPEED+1;
+    model_md2d_results_AX       = model.INDICES.AX+1;
+    model_md2d_results_AY       = model.INDICES.AY+1;
+    model_md2d_results_CHARGE   = model.INDICES.CHARGE+1;
+    model_md2d_results_FRICTION = model.INDICES.FRICTION+1;
+    model_md2d_results_VISIBLE  = model.INDICES.VISIBLE+1;
+    model_md2d_results_DRAGGABLE= model.INDICES.DRAGGABLE+1;
+    model_md2d_results_ELEMENT  = model.INDICES.ELEMENT+1;
+    model_md2d_results_MASS     = model.INDICES.MASS+1;
   }
 
   function scale(w, h) {
