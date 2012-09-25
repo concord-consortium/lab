@@ -78,6 +78,7 @@ benchmark.run = function(benchmarks_table, benchmarks_to_run) {
 };
 
 windows_platform_token = {
+  "Windows NT 6.2":	"Windows 8",
   "Windows NT 6.1":	"Windows 7",
   "Windows NT 6.0":	"Windows Vista",
   "Windows NT 5.2":	"Windows Server 2003; Windows XP x64 Edition",
