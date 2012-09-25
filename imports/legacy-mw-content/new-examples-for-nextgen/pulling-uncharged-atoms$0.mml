@@ -376,9 +376,6 @@
   <void property="showClock"> 
    <boolean>false</boolean> 
   </void> 
-  <void property="showVDWLines"> 
-   <boolean>true</boolean> 
-  </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
