@@ -140,9 +140,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     is_stopped = options.is_stopped;
     imageProp = options.images;
     textBoxes = options.textBoxes || [];
-    if(options.interactiveUrl) {
-    interactiveUrl = options.interactiveUrl;
-    imagePath = interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
+    if (options.interactiveUrl) {
+      interactiveUrl = options.interactiveUrl;
+      imagePath = interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
     }
     if (!options.showClock) {
       options.showClock = model.get("showClock");
