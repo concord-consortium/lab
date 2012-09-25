@@ -274,7 +274,7 @@ exports.createEngine = function() {
       // Individual property arrays for the atoms, indexed by atom number
       radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, visible, draggable, mass,
 
-      // An array of length ATOM_PROPERTY_LIST.length+1 which contains the above property arrays
+      // An array of length ATOM_PROPERTY_LIST.length which contains the above property arrays
       atoms,
 
       //  An array of individual atom index values and properties.
