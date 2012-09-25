@@ -117,9 +117,14 @@ function what_browser() {
   }
   match = navigator.userAgent.match(ffmatch);
   if (match && match[1]) {
+    var buildID = navigator.buildID,
+        buildDate = "";
+    if (buildID && buildID.length >= 8) {
+      buildDate = "(" + buildID.slice(0,4) + "-" + buildID.slice(4,6) + "-" + buildID.slice(6,8) + ")";
+    }
     return {
       browser: match[1],
-      version: match[2],
+      version: match[2] + ' ' + buildDate,
       oscpu: os_platform()
     };
   }
