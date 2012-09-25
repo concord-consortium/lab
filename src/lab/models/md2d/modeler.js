@@ -1,4 +1,4 @@
-/*globals $ modeler:true, require, d3, benchmark, molecule_container */
+/*global $ modeler:true, require, d3, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
@@ -79,6 +79,8 @@ modeler.model = function(initialProperties) {
 
       // Cached value of the 'friction' property of the atom being dragged in a running model
       liveDragSavedFriction,
+      i,
+      prop,
 
       default_obstacle_properties = {
         vx: 0,
@@ -167,41 +169,28 @@ modeler.model = function(initialProperties) {
   // Indexes into the nodes array for the individual node property arrays
   // (re-export these from coreModel for convenience)
   //
-  model.INDICES = {
-    RADIUS   : md2d.INDICES.RADIUS,
-    PX       : md2d.INDICES.PX,
-    PY       : md2d.INDICES.PY,
-    X        : md2d.INDICES.X,
-    Y        : md2d.INDICES.Y,
-    VX       : md2d.INDICES.VX,
-    VY       : md2d.INDICES.VY,
-    SPEED    : md2d.INDICES.SPEED,
-    AX       : md2d.INDICES.AX,
-    AY       : md2d.INDICES.AY,
-    CHARGE   : md2d.INDICES.CHARGE,
-    FRICTION : md2d.INDICES.FRICTION,
-    VISIBLE  : md2d.INDICES.VISIBLE,
-    DRAGGABLE: md2d.INDICES.DRAGGABLE,
-    ELEMENT  : md2d.INDICES.ELEMENT,
-    MASS     : md2d.INDICES.MASS
-  };
+  model.INDICES = {};
+  for (i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
+    prop = md2d.ATOM_PROPERTY_LIST[i];
+    model.INDICES[prop] = md2d.ATOM_INDICES[prop];
+  }
 
-  model_md2d_results_RADIUS   = md2d.INDICES.RADIUS+1,
-  model_md2d_results_PX       = md2d.INDICES.PX+1,
-  model_md2d_results_PY       = md2d.INDICES.PY+1,
-  model_md2d_results_X        = md2d.INDICES.X+1,
-  model_md2d_results_Y        = md2d.INDICES.Y+1,
-  model_md2d_results_VX       = md2d.INDICES.VX+1,
-  model_md2d_results_VY       = md2d.INDICES.VY+1,
-  model_md2d_results_SPEED    = md2d.INDICES.SPEED+1,
-  model_md2d_results_AX       = md2d.INDICES.AX+1,
-  model_md2d_results_AY       = md2d.INDICES.AY+1,
-  model_md2d_results_CHARGE   = md2d.INDICES.CHARGE+1,
-  model_md2d_results_FRICTION = md2d.INDICES.FRICTION+1,
-  model_md2d_results_VISIBLE  = md2d.INDICES.VISIBLE+1,
-  model_md2d_results_DRAGGABLE= md2d.INDICES.DRAGGABLE+1,
-  model_md2d_results_ELEMENT  = md2d.INDICES.ELEMENT+1,
-  model_md2d_results_MASS     = md2d.INDICES.MASS+1,
+  window.model_md2d_results_RADIUS   = md2d.ATOM_INDICES.RADIUS+1,
+  window.model_md2d_results_PX       = md2d.ATOM_INDICES.PX+1,
+  window.model_md2d_results_PY       = md2d.ATOM_INDICES.PY+1,
+  window.model_md2d_results_X        = md2d.ATOM_INDICES.X+1,
+  window.model_md2d_results_Y        = md2d.ATOM_INDICES.Y+1,
+  window.model_md2d_results_VX       = md2d.ATOM_INDICES.VX+1,
+  window.model_md2d_results_VY       = md2d.ATOM_INDICES.VY+1,
+  window.model_md2d_results_SPEED    = md2d.ATOM_INDICES.SPEED+1,
+  window.model_md2d_results_AX       = md2d.ATOM_INDICES.AX+1,
+  window.model_md2d_results_AY       = md2d.ATOM_INDICES.AY+1,
+  window.model_md2d_results_CHARGE   = md2d.ATOM_INDICES.CHARGE+1,
+  window.model_md2d_results_FRICTION = md2d.ATOM_INDICES.FRICTION+1,
+  window.model_md2d_results_VISIBLE  = md2d.ATOM_INDICES.VISIBLE+1,
+  window.model_md2d_results_DRAGGABLE= md2d.ATOM_INDICES.DRAGGABLE+1,
+  window.model_md2d_results_ELEMENT  = md2d.ATOM_INDICES.ELEMENT+1,
+  window.model_md2d_results_MASS     = md2d.ATOM_INDICES.MASS+1,
 
   model.ATOM_PROPERTIES = {
     RADIUS   : md2d.ATOM_PROPERTIES.RADIUS,
@@ -216,10 +205,10 @@ modeler.model = function(initialProperties) {
     AY       : md2d.ATOM_PROPERTIES.AY,
     CHARGE   : md2d.ATOM_PROPERTIES.CHARGE,
     FRICTION : md2d.ATOM_PROPERTIES.FRICTION,
-    VISIBLE  : md2d.ATOM_PROPERTIES.VISIBLE,
-    DRAGGABLE: md2d.ATOM_PROPERTIES.DRAGGABLE,
     ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT,
-    MASS     : md2d.ATOM_PROPERTIES.MASS
+    MASS     : md2d.ATOM_PROPERTIES.MASS,
+    VISIBLE  : "visible",
+    DRAGGABLE: "draggable"
   };
 
   model.OBSTACLE_INDICES = {

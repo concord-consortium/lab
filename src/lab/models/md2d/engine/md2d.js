@@ -1,4 +1,4 @@
-/*globals Float32Array window:true */
+/*global Float32Array window:true */
 /*jslint eqnull: true, boss: true, loopfunc: true*/
 
 if (typeof window === 'undefined') window = {};
@@ -43,12 +43,14 @@ var arrays       = require('arrays'),
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-    INDICES,
+    ATOM_PROPERTY_LIST,
+    ATOM_INDICES,
     ELEMENT_INDICES,
     OBSTACLE_INDICES,
     SAVEABLE_INDICES,
     RADIAL_INDICES,
     VDW_INDICES,
+    i,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -122,25 +124,31 @@ exports.ELEMENT_INDICES = ELEMENT_INDICES = {
   RADIUS: 3
 },
 
-exports.INDICES = INDICES = {
-  RADIUS   :  0,
-  PX       :  1,
-  PY       :  2,
-  X        :  3,
-  Y        :  4,
-  VX       :  5,
-  VY       :  6,
-  SPEED    :  7,
-  AX       :  8,
-  AY       :  9,
-  CHARGE   : 10,
-  ELEMENT  : 11,
-  PINNED   : 12,
-  FRICTION : 13,
-  VISIBLE  : 14,
-  DRAGGABLE: 15,
-  MASS     : 16
-};
+exports.ATOM_PROPERTY_LIST = ATOM_PROPERTY_LIST = [
+  "RADIUS",
+  "PX",
+  "PY",
+  "X",
+  "Y",
+  "VX",
+  "VY",
+  "SPEED",
+  "AX",
+  "AY",
+  "CHARGE",
+  "ELEMENT",
+  "PINNED",
+  "FRICTION",
+  "VISIBLE",
+  "DRAGGABLE",
+  "MASS"
+];
+
+exports.ATOM_INDICES = ATOM_INDICES = {};
+
+for (i = 0; i < ATOM_PROPERTY_LIST.length; i++) {
+  exports.ATOM_INDICES[ ATOM_PROPERTY_LIST[i] ] = i;
+}
 
 exports.ATOM_PROPERTIES = {
   RADIUS   :  "radius",
@@ -266,17 +274,8 @@ exports.makeModel = function() {
       // Individual property arrays for the atoms, indexed by atom number
       radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, visible, draggable, mass,
 
-      // An array of length max(INDICES)+1 which contains the above property arrays
+      // An array of length ATOM_PROPERTY_LIST.length+1 which contains the above property arrays
       atoms,
-
-      // count of atom properties
-      numIndices = (function() {
-        var n = 0, index;
-        for (index in INDICES) {
-          if (INDICES.hasOwnProperty(index)) n++;
-        }
-        return n;
-      }()),
 
       //  An array of individual atom index values and properties.
       results,
@@ -1173,25 +1172,25 @@ exports.makeModel = function() {
         throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
       }
 
-      atoms  = model.atoms  = arrays.create(numIndices, null, 'regular');
+      atoms  = model.atoms  = arrays.create(ATOM_PROPERTY_LIST.length, null, 'regular');
 
-      radius    = model.radius      = atoms[INDICES.RADIUS]    = arrays.create(num, 0, float32);
-      px        = model.px          = atoms[INDICES.PX]        = arrays.create(num, 0, float32);
-      py        = model.py          = atoms[INDICES.PY]        = arrays.create(num, 0, float32);
-      x         = model.x           = atoms[INDICES.X]         = arrays.create(num, 0, float32);
-      y         = model.y           = atoms[INDICES.Y]         = arrays.create(num, 0, float32);
-      vx        = model.vx          = atoms[INDICES.VX]        = arrays.create(num, 0, float32);
-      vy        = model.vy          = atoms[INDICES.VY]        = arrays.create(num, 0, float32);
-      speed     = model.speed       = atoms[INDICES.SPEED]     = arrays.create(num, 0, float32);
-      ax        = model.ax          = atoms[INDICES.AX]        = arrays.create(num, 0, float32);
-      ay        = model.ay          = atoms[INDICES.AY]        = arrays.create(num, 0, float32);
-      charge    = model.charge      = atoms[INDICES.CHARGE]    = arrays.create(num, 0, float32);
-      friction  = model.friction    = atoms[INDICES.FRICTION]  = arrays.create(num, 0, float32);
-      element   = model.element     = atoms[INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
-      pinned    = model.pinned      = atoms[INDICES.PINNED]    = arrays.create(num, 0, uint8);
-      visible   = model.visible     = atoms[INDICES.VISIBLE]   = arrays.create(num, 0, uint8);
-      draggable = model.draggable   = atoms[INDICES.DRAGGABLE] = arrays.create(num, 0, uint8);
-      mass      = model.mass        = atoms[INDICES.MASS]      = arrays.create(num, 0, float32);
+      radius    = model.radius      = atoms[ATOM_INDICES.RADIUS]    = arrays.create(num, 0, float32);
+      px        = model.px          = atoms[ATOM_INDICES.PX]        = arrays.create(num, 0, float32);
+      py        = model.py          = atoms[ATOM_INDICES.PY]        = arrays.create(num, 0, float32);
+      x         = model.x           = atoms[ATOM_INDICES.X]         = arrays.create(num, 0, float32);
+      y         = model.y           = atoms[ATOM_INDICES.Y]         = arrays.create(num, 0, float32);
+      vx        = model.vx          = atoms[ATOM_INDICES.VX]        = arrays.create(num, 0, float32);
+      vy        = model.vy          = atoms[ATOM_INDICES.VY]        = arrays.create(num, 0, float32);
+      speed     = model.speed       = atoms[ATOM_INDICES.SPEED]     = arrays.create(num, 0, float32);
+      ax        = model.ax          = atoms[ATOM_INDICES.AX]        = arrays.create(num, 0, float32);
+      ay        = model.ay          = atoms[ATOM_INDICES.AY]        = arrays.create(num, 0, float32);
+      charge    = model.charge      = atoms[ATOM_INDICES.CHARGE]    = arrays.create(num, 0, float32);
+      friction  = model.friction    = atoms[ATOM_INDICES.FRICTION]  = arrays.create(num, 0, float32);
+      element   = model.element     = atoms[ATOM_INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
+      pinned    = model.pinned      = atoms[ATOM_INDICES.PINNED]    = arrays.create(num, 0, uint8);
+      visible   = model.visible     = atoms[ATOM_INDICES.VISIBLE]   = arrays.create(num, 0, uint8);
+      draggable = model.draggable   = atoms[ATOM_INDICES.DRAGGABLE] = arrays.create(num, 0, uint8);
+      mass      = model.mass        = atoms[ATOM_INDICES.MASS]      = arrays.create(num, 0, float32);
 
       N = 0;
       totalMass = 0;
@@ -1202,7 +1201,7 @@ exports.makeModel = function() {
       */
       results = model.results = [];
       for (i = 0; i < num; i++) {
-        results[i] = arrays.create(numIndices+1,  0, float32);
+        results[i] = arrays.create(ATOM_PROPERTY_LIST.length+1,  0, float32);
         results[i][0] = i;
       }
 
@@ -1978,7 +1977,7 @@ exports.makeModel = function() {
           i, ii;
       for (i=0, ii=SAVEABLE_INDICES.length; i<ii; i++) {
         prop = SAVEABLE_INDICES[i];
-        array = atoms[INDICES[prop]];
+        array = atoms[ATOM_INDICES[prop]];
         serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
       }
       return serializedData;
