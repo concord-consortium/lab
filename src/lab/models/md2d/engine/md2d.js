@@ -150,7 +150,7 @@ for (i = 0; i < ATOM_PROPERTY_LIST.length; i++) {
   exports.ATOM_INDICES[ ATOM_PROPERTY_LIST[i] ] = i;
 }
 
-exports.ATOM_PROPERTIES = {
+exports.ATOM_PROPERTY_NAMES = {
   RADIUS   :  "radius",
   PX       :  "px",
   PY       :  "py",

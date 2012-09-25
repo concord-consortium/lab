@@ -97,12 +97,12 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
         getAtomProperties: function getAtomProperties(i) {
           var props = {},
               atoms = model.get_nodes(),
-              property;
+              prop,
+              j;
 
-          for (property in model.ATOM_PROPERTIES) {
-            if (model.ATOM_PROPERTIES.hasOwnProperty(property)) {
-              props[model.ATOM_PROPERTIES[property]] = atoms[model.INDICES[property]][i];
-            }
+          for (j = 0; j < model.ATOM_PROPERTY_LIST.length; j++) {
+            prop = model.ATOM_PROPERTY_LIST[j];
+            props[model.ATOM_PROPERTY_NAMES[prop]] = atoms[model.INDICES[prop]][i];
           }
           return props;
         },

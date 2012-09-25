@@ -170,8 +170,10 @@ modeler.model = function(initialProperties) {
   // (re-export these from engine for convenience)
   //
   model.INDICES = {};
+  model.ATOM_PROPERTY_LIST = [];
   for (i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
     prop = md2d.ATOM_PROPERTY_LIST[i];
+    model.ATOM_PROPERTY_LIST[i] = prop;
     model.INDICES[prop] = md2d.ATOM_INDICES[prop];
   }
 
@@ -192,21 +194,21 @@ modeler.model = function(initialProperties) {
   window.model_md2d_results_ELEMENT  = md2d.ATOM_INDICES.ELEMENT+1,
   window.model_md2d_results_MASS     = md2d.ATOM_INDICES.MASS+1,
 
-  model.ATOM_PROPERTIES = {
-    RADIUS   : md2d.ATOM_PROPERTIES.RADIUS,
-    PX       : md2d.ATOM_PROPERTIES.PX,
-    PY       : md2d.ATOM_PROPERTIES.PY,
-    X        : md2d.ATOM_PROPERTIES.X,
-    Y        : md2d.ATOM_PROPERTIES.Y,
-    VX       : md2d.ATOM_PROPERTIES.VX,
-    VY       : md2d.ATOM_PROPERTIES.VY,
-    SPEED    : md2d.ATOM_PROPERTIES.SPEED,
-    AX       : md2d.ATOM_PROPERTIES.AX,
-    AY       : md2d.ATOM_PROPERTIES.AY,
-    CHARGE   : md2d.ATOM_PROPERTIES.CHARGE,
-    FRICTION : md2d.ATOM_PROPERTIES.FRICTION,
-    ELEMENT  : md2d.ATOM_PROPERTIES.ELEMENT,
-    MASS     : md2d.ATOM_PROPERTIES.MASS,
+  model.ATOM_PROPERTY_NAMES = {
+    RADIUS   : md2d.ATOM_PROPERTY_NAMES.RADIUS,
+    PX       : md2d.ATOM_PROPERTY_NAMES.PX,
+    PY       : md2d.ATOM_PROPERTY_NAMES.PY,
+    X        : md2d.ATOM_PROPERTY_NAMES.X,
+    Y        : md2d.ATOM_PROPERTY_NAMES.Y,
+    VX       : md2d.ATOM_PROPERTY_NAMES.VX,
+    VY       : md2d.ATOM_PROPERTY_NAMES.VY,
+    SPEED    : md2d.ATOM_PROPERTY_NAMES.SPEED,
+    AX       : md2d.ATOM_PROPERTY_NAMES.AX,
+    AY       : md2d.ATOM_PROPERTY_NAMES.AY,
+    CHARGE   : md2d.ATOM_PROPERTY_NAMES.CHARGE,
+    FRICTION : md2d.ATOM_PROPERTY_NAMES.FRICTION,
+    ELEMENT  : md2d.ATOM_PROPERTY_NAMES.ELEMENT,
+    MASS     : md2d.ATOM_PROPERTY_NAMES.MASS,
     VISIBLE  : "visible",
     DRAGGABLE: "draggable"
   };
