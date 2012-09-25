@@ -47,7 +47,7 @@ var arrays       = require('arrays'),
     ATOM_INDICES,
     ELEMENT_INDICES,
     OBSTACLE_INDICES,
-    SAVEABLE_INDICES,
+    SAVEABLE_PROPERTIES,
     RADIAL_INDICES,
     VDW_INDICES,
     i,
@@ -199,7 +199,7 @@ exports.VDW_INDICES = VDW_INDICES = {
   ATOM2 : 2
 };
 
-exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE", "DRAGGABLE"];
+exports.SAVEABLE_PROPERTIES = SAVEABLE_PROPERTIES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE", "DRAGGABLE"];
 
 exports.createEngine = function() {
 
@@ -1991,8 +1991,8 @@ exports.createEngine = function() {
           prop,
           array,
           i, ii;
-      for (i=0, ii=SAVEABLE_INDICES.length; i<ii; i++) {
-        prop = SAVEABLE_INDICES[i];
+      for (i=0, ii=SAVEABLE_PROPERTIES.length; i<ii; i++) {
+        prop = SAVEABLE_PROPERTIES[i];
         array = atoms[ATOM_INDICES[prop]];
         serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
       }
