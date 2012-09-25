@@ -194,8 +194,9 @@ exports.RADIAL_INDICES = RADIAL_INDICES = {
 };
 
 exports.VDW_INDICES = VDW_INDICES = {
-  ATOM1   :  0,
-  ATOM2   :  1
+  COUNT : 0,
+  ATOM1 : 1,
+  ATOM2 : 2
 };
 
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE", "DRAGGABLE"];
@@ -295,7 +296,7 @@ exports.createEngine = function() {
         return n;
       }()),
 
-      //  An array of individual radial bond index values and properties.
+      // An array of individual radial bond index values and properties.
       radialBondResults,
 
       // An array of length 4 which contains the above 4 property arrays.
@@ -306,9 +307,15 @@ exports.createEngine = function() {
       // radialBondsHash[i][j] === undefined otherwise
       radialBondsHash,
 
-      //Number of VDW Pairs
-      vdwPairNum,
+
+
+      // Array of arrays containing VdW pairs
       vdwPairs,
+
+      // Number of VdW pairs
+      N_vdwPairs,
+
+      // Arrays of VdW pair atom #1 and atom #2 indices
       vdwPairAtom1Index,
       vdwPairAtom2Index,
 
@@ -1539,63 +1546,72 @@ exports.createEngine = function() {
     },
 
     createVdwPairsArray: function(num) {
-      var uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
-        vdwIndices = VDW_INDICES,
-        numAtoms = num.ELEMENT.length;
-      var maxNumPairs = (((numAtoms)*(numAtoms-1))/2);
+      var uint16 = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
+          maxNumPairs = N * (N-1) / 2;
 
       vdwPairs = engine.vdwPairs = [];
 
-      vdwPairs[vdwIndices.ATOM1] = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, uint16);
-      vdwPairs[vdwIndices.ATOM2] = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, uint16);
-      engine.updateVdwPairsArray();
+      vdwPairs[VDW_INDICES.COUNT] = N_vdwPairs;
+      vdwPairs[VDW_INDICES.ATOM1] = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, uint16);
+      vdwPairs[VDW_INDICES.ATOM2] = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, uint16);
 
+      engine.updateVdwPairsArray();
     },
 
-    updateVdwPairsArray: function(){
-      var i, j,
-        dx, dy,
-        r_sq,
-        element_i, element_j,
-        sigma_i, epsilon_i,
-        sigma_j, epsilon_j,
-        sig, eps,
-        distanceCutoff_sq = 4, // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
-        prevVdwPairsNum = vdwPairNum || 0;
-      vdwPairNum = 0;
+    updateVdwPairsArray: function() {
+      var i,
+          j,
+          dx,
+          dy,
+          r_sq,
+          x_i,
+          y_i,
+          element_i,
+          element_j,
+          sigma_i,
+          epsilon_i,
+          sigma_j,
+          epsilon_j,
+          sig,
+          eps,
+          distanceCutoff_sq = 4; // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
+
+      N_vdwPairs = 0;
 
       for (i = 0; i < N; i++) {
         // pairwise interactions
         element_i = elements[element[i]];
-        sigma_i = element_i[ELEMENT_INDICES.SIGMA];
+        sigma_i   = element_i[ELEMENT_INDICES.SIGMA];
         epsilon_i = element_i[ELEMENT_INDICES.EPSILON];
+        x_i = x[i];
+        y_i = y[i];
+
         for (j = i+1; j < N; j++) {
           if (N_radialBonds !== 0 && (radialBondsHash[i] && radialBondsHash[i][j])) continue;
+
           element_j = elements[element[j]];
-          if(charge[i]*charge[j] <= 0){
-            dx = x[j] - x[i];
-            dy = y[j] - y[i];
+          if (charge[i]*charge[j] <= 0) {
+            dx = x[j] - x_i;
+            dy = y[j] - y_i;
             r_sq = dx*dx + dy*dy;
+
             sigma_j = element_j[ELEMENT_INDICES.SIGMA];
             epsilon_j = element_j[ELEMENT_INDICES.EPSILON];
-            sig = 0.5*(sigma_i+sigma_j);
+
+            sig = 0.5 * (sigma_i+sigma_j);
             sig *= sig;
-            eps = epsilon_i*epsilon_j;
+            eps = epsilon_i * epsilon_j;
+
             if (r_sq < sig * distanceCutoff_sq && eps > 0) {
-              vdwPairAtom1Index[vdwPairNum] = i;
-              vdwPairAtom2Index[vdwPairNum] = j;
-              vdwPairNum++;
+              vdwPairAtom1Index[N_vdwPairs] = i;
+              vdwPairAtom2Index[N_vdwPairs] = j;
+              N_vdwPairs++;
             }
           }
         }
       }
-      //Logic to clear off the previous atoms indices from the array which are far apart than cutoff distance after array update
-      if(vdwPairNum < prevVdwPairsNum) {
-        for(i = vdwPairNum;i<prevVdwPairsNum;i++) {
-           vdwPairAtom1Index[i] = 0;
-           vdwPairAtom2Index[i] = 0;
-        }
-      }
+
+      vdwPairs[VDW_INDICES.COUNT] = N_vdwPairs;
     },
 
     relaxToTemperature: function(T) {

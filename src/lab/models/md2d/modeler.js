@@ -231,10 +231,7 @@ modeler.model = function(initialProperties) {
     STRENGTH  : md2d.RADIAL_INDICES.STRENGTH
   };
 
-  model.VDW_INDICES = {
-    ATOM1     : md2d.VDW_INDICES.ATOM1,
-    ATOM2     : md2d.VDW_INDICES.ATOM2
-  };
+  model.VDW_INDICES = md2d.VDW_INDICES;
 
   // Friction parameter temporarily applied to the live-dragged atom.
   model.LIVE_DRAG_FRICTION = 10;
@@ -980,9 +977,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.get_vdw_pairs = function() {
-    if(engine.vdwPairs){
-    engine.updateVdwPairsArray();
-    }
+    if (vdwPairs) engine.updateVdwPairsArray();
     return vdwPairs;
   };
 

@@ -52,9 +52,9 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       get_obstacles,
       mock_obstacles_array = [],
       mock_radial_bond_array = [],
-      mock_vdw_pairs_array = [],
       radialBond1, radialBond2,
       vdwLine,
+      vdwPairs,
       chargeShadingMode,
       chargeShadingChars = ["+", "-", ""],
       drawVdwLines,
@@ -279,6 +279,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
   function get_radial_bond_strength(i) {
     return radialBonds[model.RADIAL_INDICES.STRENGTH][i];
   }
+
   function get_vdw_line_atom_1(i) {
     return vdwPairs[model.VDW_INDICES.ATOM1][i];
   }
@@ -780,22 +781,26 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
     }
 
-    function drawAttractionForces(){
-      var vdwPairs = mock_vdw_pairs_array.length,
+    function drawAttractionForces() {
+      if (!vdwPairs) return;
+
+      var numVdwPairs = vdwPairs[model.VDW_INDICES.COUNT],
           atom1,
           atom2,
           i;
-      for(i = 0;i < vdwPairs;i++) {
+
+      for (i = 0; i < numVdwPairs; i++) {
         atom1 = get_vdw_line_atom_1(i);
         atom2 = get_vdw_line_atom_2(i);
-        if(!(atom1 === 0 && atom2 === 0)) {
+
+        if (atom1 !== 0 || atom2 !== 0) {
           VDWLines_container.append("line")
             .attr("class", "attractionforce")
             .attr("x1", x(results[atom1][model_md2d_results_X]))
             .attr("y1", y(results[atom1][model_md2d_results_Y]))
             .attr("x2", x(results[atom2][model_md2d_results_X]))
             .attr("y2", y(results[atom2][model_md2d_results_Y]))
-            .style("stroke-width", 2*scaling_factor)
+            .style("stroke-width", 2 * scaling_factor)
             .style("stroke-dasharray", 3 * scaling_factor + " " + 2 * scaling_factor);
         }
       }
@@ -999,10 +1004,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     function update_vdw_pairs() {
       VDWLines_container.selectAll("line.attractionforce").remove();
       vdwPairs = getVdwPairs();
-      if (vdwPairs) {
-        mock_vdw_pairs_array.length = vdwPairs[0].length;
-        drawAttractionForces();
-      }
+      drawAttractionForces();
     }
 
     function mousedown() {
