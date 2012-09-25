@@ -80,7 +80,24 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         xmax:                 10,
         ymin:                 0,
         ymax:                 10
-      };
+      },
+
+      model_md2d_results_RADIUS   = model.INDICES.RADIUS+1,
+      model_md2d_results_PX       = model.INDICES.PX+1,
+      model_md2d_results_PY       = model.INDICES.PY+1,
+      model_md2d_results_X        = model.INDICES.X+1,
+      model_md2d_results_Y        = model.INDICES.Y+1,
+      model_md2d_results_VX       = model.INDICES.VX+1,
+      model_md2d_results_VY       = model.INDICES.VY+1,
+      model_md2d_results_SPEED    = model.INDICES.SPEED+1,
+      model_md2d_results_AX       = model.INDICES.AX+1,
+      model_md2d_results_AY       = model.INDICES.AY+1,
+      model_md2d_results_CHARGE   = model.INDICES.CHARGE+1,
+      model_md2d_results_FRICTION = model.INDICES.FRICTION+1,
+      model_md2d_results_VISIBLE  = model.INDICES.VISIBLE+1,
+      model_md2d_results_DRAGGABLE= model.INDICES.DRAGGABLE+1,
+      model_md2d_results_ELEMENT  = model.INDICES.ELEMENT+1,
+      model_md2d_results_MASS     = model.INDICES.MASS+1;
 
   processOptions();
 

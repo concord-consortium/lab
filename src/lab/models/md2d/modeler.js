@@ -197,23 +197,6 @@ modeler.model = function(initialProperties) {
     model.INDICES[prop] = md2d.ATOM_INDICES[prop];
   }
 
-  window.model_md2d_results_RADIUS   = md2d.ATOM_INDICES.RADIUS+1,
-  window.model_md2d_results_PX       = md2d.ATOM_INDICES.PX+1,
-  window.model_md2d_results_PY       = md2d.ATOM_INDICES.PY+1,
-  window.model_md2d_results_X        = md2d.ATOM_INDICES.X+1,
-  window.model_md2d_results_Y        = md2d.ATOM_INDICES.Y+1,
-  window.model_md2d_results_VX       = md2d.ATOM_INDICES.VX+1,
-  window.model_md2d_results_VY       = md2d.ATOM_INDICES.VY+1,
-  window.model_md2d_results_SPEED    = md2d.ATOM_INDICES.SPEED+1,
-  window.model_md2d_results_AX       = md2d.ATOM_INDICES.AX+1,
-  window.model_md2d_results_AY       = md2d.ATOM_INDICES.AY+1,
-  window.model_md2d_results_CHARGE   = md2d.ATOM_INDICES.CHARGE+1,
-  window.model_md2d_results_FRICTION = md2d.ATOM_INDICES.FRICTION+1,
-  window.model_md2d_results_VISIBLE  = md2d.ATOM_INDICES.VISIBLE+1,
-  window.model_md2d_results_DRAGGABLE= md2d.ATOM_INDICES.DRAGGABLE+1,
-  window.model_md2d_results_ELEMENT  = md2d.ATOM_INDICES.ELEMENT+1,
-  window.model_md2d_results_MASS     = md2d.ATOM_INDICES.MASS+1,
-
   model.ATOM_PROPERTY_NAMES = {
     RADIUS   : md2d.ATOM_PROPERTY_NAMES.RADIUS,
     PX       : md2d.ATOM_PROPERTY_NAMES.PX,
