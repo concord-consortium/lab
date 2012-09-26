@@ -45,9 +45,9 @@ var arrays       = require('arrays'),
 
     ATOM_PROPERTY_LIST,
     ATOM_INDICES,
+    DEFAULT_VALUES,
     ELEMENT_INDICES,
     OBSTACLE_INDICES,
-    SAVEABLE_PROPERTIES,
     RADIAL_INDICES,
     VDW_INDICES,
     i,
@@ -107,14 +107,6 @@ var arrays       = require('arrays'),
       if (temperature === Infinity) {
         throw new Error("md2d: requested temperature was Infinity!");
       }
-    },
-
-    copyTypedArray = function(arr) {
-      var copy = [];
-      for (var i=0,ii=arr.length; i<ii; i++){
-        copy[i] = arr[i];
-      }
-      return copy;
     };
 
 exports.ELEMENT_INDICES = ELEMENT_INDICES = {
@@ -139,8 +131,6 @@ exports.ATOM_PROPERTY_LIST = ATOM_PROPERTY_LIST = [
   "ELEMENT",
   "PINNED",
   "FRICTION",
-  "VISIBLE",
-  "DRAGGABLE",
   "MASS"
 ];
 
@@ -150,7 +140,8 @@ for (i = 0; i < ATOM_PROPERTY_LIST.length; i++) {
   exports.ATOM_INDICES[ ATOM_PROPERTY_LIST[i] ] = i;
 }
 
-exports.ATOM_PROPERTY_NAMES = {
+// FIXME: this seems silly. Why not use the same names for everything?
+exports.ATOM_PROPERTY_SHORT_NAMES = {
   RADIUS   : "radius",
   PX       : "px",
   PY       : "py",
@@ -165,9 +156,14 @@ exports.ATOM_PROPERTY_NAMES = {
   ELEMENT  : "element",
   PINNED   : "pinned",
   FRICTION : "friction",
-  VISIBLE  : "visible",
-  DRAGGABLE: "draggable",
   MASS     : "mass"
+};
+
+
+exports.DEFAULT_VALUES = DEFAULT_VALUES = {
+  CHARGE   : 0,
+  FRICTION : 0,
+  PINNED   : 0
 };
 
 exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
@@ -198,8 +194,6 @@ exports.VDW_INDICES = VDW_INDICES = {
   ATOM1 : 1,
   ATOM2 : 2
 };
-
-exports.SAVEABLE_PROPERTIES = SAVEABLE_PROPERTIES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT", "PINNED", "FRICTION", "VISIBLE", "DRAGGABLE"];
 
 exports.createEngine = function() {
 
@@ -273,7 +267,7 @@ exports.createEngine = function() {
       elements,
 
       // Individual property arrays for the atoms, indexed by atom number
-      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, visible, draggable, mass,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
 
       // An array of length ATOM_PROPERTY_LIST.length which contains the above property arrays
       atoms,
@@ -1187,8 +1181,6 @@ exports.createEngine = function() {
       friction  = engine.friction    = atoms[ATOM_INDICES.FRICTION]  = arrays.create(num, 0, float32);
       element   = engine.element     = atoms[ATOM_INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
       pinned    = engine.pinned      = atoms[ATOM_INDICES.PINNED]    = arrays.create(num, 0, uint8);
-      visible   = engine.visible     = atoms[ATOM_INDICES.VISIBLE]   = arrays.create(num, 0, uint8);
-      draggable = engine.draggable   = atoms[ATOM_INDICES.DRAGGABLE] = arrays.create(num, 0, uint8);
       mass      = engine.mass        = atoms[ATOM_INDICES.MASS]      = arrays.create(num, 0, float32);
 
       N = 0;
@@ -1200,13 +1192,21 @@ exports.createEngine = function() {
 
       If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
       extends the length of the typed arrays by one to contain one more atom with listed properties.
+
+      @returns the index of the new atom
     */
-    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, is_pinned, is_visible, is_draggable) {
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, atom_pinned) {
       var el, atom_mass;
 
       if (N+1 > atoms[0].length) {
         extendAtomsArray(N+1);
       }
+
+      // Allow these values to be optional, and use the default if not defined:
+
+      if (atom_charge == null)   atom_charge   = DEFAULT_VALUES.CHARGE;
+      if (atom_friction == null) atom_friction = DEFAULT_VALUES.FRICTION;
+      if (atom_pinned == null )  atom_pinned   = DEFAULT_VALUES.PINNED;
 
       el = elements[atom_element];
       atom_mass = el[ELEMENT_INDICES.MASS];
@@ -1224,29 +1224,14 @@ exports.createEngine = function() {
       speed[N]     = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
       charge[N]    = atom_charge;
       friction[N]  = atom_friction;
-      pinned[N]    = is_pinned;
-      visible[N]   = is_visible;
-      draggable[N] = is_draggable;
+      pinned[N]    = atom_pinned;
       mass[N]      = atom_mass;
 
       if (atom_charge) hasChargedAtoms = true;
 
       totalMass += atom_mass;
-      N++;
-    },
 
-    /**
-      The generic method to set properties on a single existing atom.
-
-      Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
-    */
-    setAtomProperties: function(i, props) {
-      var prop;
-
-      for (prop in props) {
-        if (!props.hasOwnProperty(prop)) continue;
-        this[prop][i] = props[prop];
-      }
+      return N++;
     },
 
     /**
@@ -1406,7 +1391,7 @@ exports.createEngine = function() {
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var x, y, vx, vy, charge, element, friction, pinned, visible, draggable,
+      var x, y, vx, vy, charge, element, friction, pinned,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -1426,11 +1411,9 @@ exports.createEngine = function() {
         vy = props.VY[i];
         charge = props.CHARGE ? props.CHARGE[i] : 0;
         pinned = props.PINNED ? props.PINNED[i] : 0;
-        visible = props.VISIBLE ? props.VISIBLE[i] : 1;
         friction = props.FRICTION ? props.FRICTION[i] : 0;
-        draggable = props.DRAGGABLE ? props.DRAGGABLE[i] : 0;
 
-        engine.addAtom(element, x, y, vx, vy, charge, friction, pinned, visible, draggable);
+        engine.addAtom(element, x, y, vx, vy, charge, friction, pinned);
       }
 
       // Publish the current state
@@ -1958,19 +1941,6 @@ exports.createEngine = function() {
 
     setViscosity: function(v) {
       viscosity = v;
-    },
-
-    serialize: function() {
-      var serializedData = {},
-          prop,
-          array,
-          i, ii;
-      for (i=0, ii=SAVEABLE_PROPERTIES.length; i<ii; i++) {
-        prop = SAVEABLE_PROPERTIES[i];
-        array = atoms[ATOM_INDICES[prop]];
-        serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
-      }
-      return serializedData;
     }
   };
 };

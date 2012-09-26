@@ -102,7 +102,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
 
           for (j = 0; j < model.ATOM_PROPERTY_LIST.length; j++) {
             prop = model.ATOM_PROPERTY_LIST[j];
-            props[model.ATOM_PROPERTY_NAMES[prop]] = atoms[model.INDICES[prop]][i];
+            props[model.ATOM_PROPERTY_SHORT_NAMES[prop]] = atoms[model.INDICES[prop]][i];
           }
           return props;
         },
