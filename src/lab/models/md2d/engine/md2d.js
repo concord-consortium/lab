@@ -1678,6 +1678,10 @@ exports.createEngine = function() {
       return elements[el][ELEMENT_INDICES.RADIUS];
     },
 
+    getNumberOfAtoms: function() {
+      return N;
+    },
+
     /**
       Compute the model state and store into the passed-in 'state' object.
       (Avoids GC hit of throwaway object creation.)

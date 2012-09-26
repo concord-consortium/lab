@@ -1138,7 +1138,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.get_num_atoms = function() {
-    return atoms[0].length;
+    return engine.getNumberOfAtoms();
   };
 
   model.get_obstacles = function() {
