@@ -1,23 +1,32 @@
-/*globals window Uint8Array Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
+/*globals window Uint8Array Uint8ClampedArray Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
 /*jshint newcap: false */
 
 //
 // 'requirified' version of Typed Array Utilities.
 //
 
-var arrays;
+var arrays = {},
 
-arrays = {};
+    // Check for Safari. Typed arrays are faster almost everywhere
+    // ... except Safari.
+    notSafari = (function() {
+      var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
+          match = navigator.userAgent.match(safarimatch);
+      return (match && match[3]) ? false: true;
+    }());
 
 arrays.version = '0.0.1';
-arrays.webgl = (typeof window !== 'undefined') && !!window.WebGLRenderingContext;
-arrays.typed = false;
-try {
-  var a = new Float64Array(0);
-  arrays.typed = true;
-} catch(e) {
 
-}
+arrays.webgl = (typeof window !== 'undefined') && !!window.WebGLRenderingContext;
+
+arrays.typed = (function() {
+  try {
+    new Float64Array(0);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}());
 
 // http://www.khronos.org/registry/typedarray/specs/latest/#TYPEDARRAYS
 // regular
@@ -73,8 +82,7 @@ arrays.create = function(size, fill, array_type) {
         a = new Uint8ClampedArray(size);
         break;
       default:
-        a = new Array(size);
-        break;
+        throw new Error("arrays: couldn't understand array type \"" + array_type + "\".");
     }
   }
   i=-1; while(++i < size) { a[i] = fill; }
