@@ -155,7 +155,7 @@ node_modules/mkdirp:
 	npm install
 
 node_modules/arrays:
-	npm install src/modules/arrays
+	npm link src/modules/arrays
 
 bin:
 	bundle install --binstubs
