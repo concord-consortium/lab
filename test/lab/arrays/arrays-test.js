@@ -83,6 +83,84 @@ suite.addBatch({
 });
 
 suite.addBatch({
+  "extend": {
+    topic: function() {
+      return arrays.extend;
+    },
+
+    "extends a typed array to an array of the same type": function(extend) {
+      var src = arrays.create(2, 0, "Float32Array"),
+          dest;
+
+      src[0] = 1;
+      src[1] = 2;
+      dest = extend(src, 2);
+      assert.equal(arrays.constructor_function(dest), Float32Array);
+    },
+
+    "extends a non-typed array to a non-typed array": function(extend) {
+      var src = arrays.create(2, 0, "regular"),
+          dest;
+
+      src[0] = 1;
+      src[1] = 2;
+      dest = extend(src, 2);
+      assert.equal(arrays.constructor_function(dest), Array);
+    },
+
+    "extends a typed array to a longer length": function(extend) {
+      var src = arrays.create(2, 0, "Float32Array"),
+          dest;
+
+      src[0] = 1;
+      src[1] = 2;
+      dest = extend(src, 3);
+
+      assert.equal(dest.length, 3);
+      assert.equal(dest[0], 1);
+      assert.equal(dest[1], 2);
+    },
+
+    "\"extends\" a typed array to a shorter length": function(extend) {
+      var src = arrays.create(2, 0, "Float32Array"),
+          dest;
+
+      src[0] = 1;
+      src[1] = 2;
+      dest = extend(src, 1);
+
+      assert.equal(dest.length, 1);
+      assert.equal(dest[0], 1);
+    },
+
+
+    "extends a non-typed array to a longer length": function(extend) {
+      var src = arrays.create(2, 0, "regular"),
+          dest;
+
+      src[0] = 1;
+      src[1] = 2;
+      dest = extend(src, 3);
+
+      assert.equal(dest.length, 3);
+      assert.equal(dest[0], 1);
+      assert.equal(dest[1], 2);
+    },
+
+    "\"extends\" a non-typed array to a shorter length": function(extend) {
+      var src = arrays.create(2, 0, "regular"),
+          dest;
+
+      src[0] = 1;
+      src[1] = 2;
+      dest = extend(src, 1);
+
+      assert.deepEqual(dest, [1]);
+    }
+  }
+});
+
+suite.addBatch({
   "between": {
     topic: function() {
       return arrays.between;

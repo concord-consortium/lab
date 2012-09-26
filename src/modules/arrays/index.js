@@ -227,6 +227,41 @@ arrays.average = function(array) {
   return acc / length;
 };
 
+/**
+  Create a new array of the same type as 'array' and of length 'newLength', and copies as many
+  elements from 'array' to the new array as is possible.
+
+  If 'newLength' is less than 'array.length', and 'array' is  a typed array, we still allocate a
+  new, shorter array in order to allow GC to work.
+
+  The returned array should always take the place of the passed-in 'array' in client code, and this
+  method should not be counted on to always return a copy. If 'array' is non-typed, we manipulate
+  its length instead of copying it. But if 'array' is typed, we cannot increase its size in-place,
+  therefore must pas a *new* object reference back to client code.
+*/
+arrays.extend = function(array, newLength) {
+  var i,
+      len,
+      extendedArray,
+      Constructor;
+
+  Constructor = arrays.constructor_function(array);
+
+  if (Constructor === Array) {
+    array.length = newLength;
+    return array;
+  }
+
+  extendedArray = new Constructor(newLength);
+
+  // prevent 'set' method from erroring when array.length > newLength, by using the (no-copy) method
+  // 'subarray' to get an array view that is clamped to length = min(array.length, newLength)
+  extendedArray.set(array.subarray(0, newLength));
+
+  return extendedArray;
+};
+
+
 // publish everything to exports
 for (var key in arrays) {
   if (arrays.hasOwnProperty(key)) exports[key] = arrays[key];
