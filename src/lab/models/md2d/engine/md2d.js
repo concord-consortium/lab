@@ -50,7 +50,6 @@ var arrays       = require('arrays'),
     OBSTACLE_INDICES,
     RADIAL_INDICES,
     VDW_INDICES,
-    i,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -136,9 +135,11 @@ exports.ATOM_PROPERTY_LIST = ATOM_PROPERTY_LIST = [
 
 exports.ATOM_INDICES = ATOM_INDICES = {};
 
-for (i = 0; i < ATOM_PROPERTY_LIST.length; i++) {
-  exports.ATOM_INDICES[ ATOM_PROPERTY_LIST[i] ] = i;
-}
+(function() {
+  for (var i = 0; i < ATOM_PROPERTY_LIST.length; i++) {
+    exports.ATOM_INDICES[ ATOM_PROPERTY_LIST[i] ] = i;
+  }
+}());
 
 // FIXME: this seems silly. Why not use the same names for everything?
 exports.ATOM_PROPERTY_SHORT_NAMES = {
