@@ -400,28 +400,13 @@ exports.createEngine = function() {
         }
       },
 
-      // Make the 'atoms' array bigger
-      extendAtomsArray = function(num) {
-        var savedArrays = [],
-            savedTotalMass,
-            i,
-            float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
-
-        for (i = 0; i < atoms.length; i++) {
-          savedArrays[i] = atoms[i];
+      /**
+        Extend one of our arrays to some size.
+      */
+      extendArrays = function(arrayList, extensionLength) {
+        for (var i = 0, len = arrayList.length; i < len; i++) {
+          arrayList[i] = arrays.extend(arrayList[i], arrayList[i].length + extensionLength);
         }
-
-        savedTotalMass = totalMass;
-        atomsHaveBeenCreated = false;
-        engine.createAtoms({ num: num });
-
-        for (i = 0; i < atoms.length; i++) {
-          arrays.copy(savedArrays[i], atoms[i]);
-        }
-
-        // restore N and totalMass
-        N = savedArrays[0].length;        // atoms[0].length is now > N!
-        totalMass = savedTotalMass;
       },
 
       createRadialBondsArray = function(num) {
@@ -448,24 +433,6 @@ exports.createEngine = function() {
         }
       },
 
-
-      // Make the 'radialBonds' array bigger. FIXME: needs to be factored
-      // into a common pattern with 'extendAtomsArray'
-      extendRadialBondsArray = function(num) {
-        var savedArrays = [],
-            i;
-
-        for (i = 0; i < radialBonds.length; i++) {
-          savedArrays[i] = radialBonds[i];
-        }
-
-        createRadialBondsArray(num);
-
-        for (i = 0; i < radialBonds.length; i++) {
-          arrays.copy(savedArrays[i], radialBonds[i]);
-        }
-      },
-
       createSpringForcesArray = function(num) {
       var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
           uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
@@ -476,23 +443,6 @@ exports.createEngine = function() {
         springForces[1] = springForceX          = arrays.create(num, 0, float32);
         springForces[2] = springForceY          = arrays.create(num, 0, float32);
         springForces[3] = springForceStrength   = arrays.create(num, 0, float32);
-      },
-
-      extendSpringForcesArray = function(num) {
-        var savedArrays = [],
-            i;
-
-        if (springForces) {
-          for (i = 0; i < springForces.length; i++) {
-            savedArrays[i] = springForces[i];
-          }
-        }
-
-        createSpringForcesArray(num);
-
-        for (i = 0; i < savedArrays.length; i++) {
-          arrays.copy(savedArrays[i], springForces[i]);
-        }
       },
 
       createObstaclesArray = function(num) {
@@ -516,24 +466,6 @@ exports.createEngine = function() {
         obstacles[ind.COLOR_B]  = obstacleColorB = arrays.create(num, 0, float32);
         obstacles[ind.VISIBLE]  = obstacleVisible = arrays.create(num, 0, uint8);
       },
-
-
-      extendObstaclesArray = function(num) {
-        var savedArrays = [],
-            i;
-
-        for (i = 0; i < obstacles.length; i++) {
-          savedArrays[i] = obstacles[i];
-        }
-
-        createObstaclesArray(num);
-
-        for (i = 0; i < obstacles.length; i++) {
-          arrays.copy(savedArrays[i], obstacles[i]);
-        }
-      },
-
-
 
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
       T_windowed,
@@ -1191,15 +1123,15 @@ exports.createEngine = function() {
       The canonical method for adding an atom to the collections of atoms.
 
       If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
-      extends the length of the typed arrays by one to contain one more atom with listed properties.
+      extends the length of the typed arrays by ten to have room for more atoms.
 
       @returns the index of the new atom
     */
     addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, atom_pinned) {
       var el, atom_mass;
 
-      if (N+1 > atoms[0].length) {
-        extendAtomsArray(N+1);
+      if (N + 1 > atoms[0].length) {
+        extendArrays(atoms, N + 10);
       }
 
       // Allow these values to be optional, and use the default if not defined:
@@ -1241,8 +1173,8 @@ exports.createEngine = function() {
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
     addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength) {
-      if (N_radialBonds+1 > radialBondAtom1Index.length) {
-        extendRadialBondsArray(N_radialBonds+1);
+      if (N_radialBonds + 1 > radialBonds[0].length) {
+        extendArrays(radialBonds, N_radialBonds + 10);
       }
 
       radialBondResults[N_radialBonds][1] = radialBondAtom1Index[N_radialBonds] = atom1Index;
@@ -1261,9 +1193,17 @@ exports.createEngine = function() {
 
     /**
       Adds a spring force between an atom and an x, y location.
+
+      @returns the index of the new spring force.
     */
     addSpringForce: function(atomIndex, x, y, strength) {
-      extendSpringForcesArray(N_springForces+1);
+
+      if (!springForces) createSpringForcesArray(1);
+
+      // conservatively just add one spring force
+      if (N_springForces > springForces[0].length) {
+        extendArrays(springForces, N_springForces + 1);
+      }
 
       springForceAtomIndex[N_springForces]  = atomIndex;
       springForceX[N_springForces]          = x;
@@ -1280,27 +1220,7 @@ exports.createEngine = function() {
 
     removeSpringForce: function(i) {
       if (i >= N_springForces) return;
-
       N_springForces--;
-
-      if (N_springForces === 0) {
-        createSpringForcesArray(0);
-      } else {
-        var savedArrays = [],
-            j;
-
-        for (j = 0; j < springForces.length; j++) {
-          if (j !== i) {
-            savedArrays.push(springForces[i]);
-          }
-        }
-
-        createSpringForcesArray(N_springForces);
-
-        for (j = 0; j < springForces.length; j++) {
-          arrays.copy(savedArrays[i], springForces[i]);
-        }
-      }
     },
 
     springForceAtomIndex: function(i) {
@@ -1310,8 +1230,8 @@ exports.createEngine = function() {
     addObstacle: function(x, y, width, height, density, color, visible) {
       var obstaclemass;
 
-      if (N_obstacles+1 > obstacleX.length) {
-        extendObstaclesArray(N_obstacles+1);
+      if (N_obstacles + 1 > obstacles[0].length) {
+        extendArrays(obstacles, N_obstacles + 10);
       }
 
       obstacleX[N_obstacles] = x;
