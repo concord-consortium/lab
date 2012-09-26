@@ -660,6 +660,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             "fill": function(d) {
               var charge = d[model_md2d_results_CHARGE],
                   grad = element_gradient_array[d[model_md2d_results_ELEMENT] % 4];
+
+              // For demo purposes, show marked atoms with positive charge color gradient
+              if (d[model_md2d_results_MARKED]) {
+                return  "url(#pos-grad)";
+              }
+
               if (chargeShadingMode) {
                   if (charge > 0) return  "url(#pos-grad)";
                   else if (charge < 0) return  "url(#neg-grad)";
