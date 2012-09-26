@@ -333,6 +333,7 @@ parseMML = (mmlString) ->
         friction  = parseFloat $node.find("[property=friction]").text() || 0
         visible   = if (parseBoolean (getProperty $node, 'visible'), true) then 1 else 0
         pinned    = if $node.find("[property=movable]").text() then 1 else 0
+        marked    = if $node.find("[property=marked]").text() then 1 else 0
         draggable = if $node.find("[property=userField]").text() then 1 else 0
 
         # unit conversions
@@ -341,7 +342,7 @@ parseMML = (mmlString) ->
         vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
         vy = -vy / 100
 
-        atoms.push { elemId, x, y, vx, vy, charge, friction, pinned, visible, draggable }
+        atoms.push { elemId, x, y, vx, vy, charge, friction, pinned, marked, visible, draggable }
 
       atoms
 
@@ -391,6 +392,7 @@ parseMML = (mmlString) ->
     friction = (atom.friction for atom in atoms)
     element = (atom.elemId for atom in atoms)
     pinned = (atom.pinned for atom in atoms)
+    marked = (atom.marked for atom in atoms)
     visible = (atom.visible for atom in atoms)
     draggable = (atom.draggable for atom in atoms)
 
@@ -424,12 +426,14 @@ parseMML = (mmlString) ->
         FRICTION: friction
         ELEMENT: element
         PINNED: pinned
+        MARKED: marked
         VISIBLE: visible
         DRAGGABLE: draggable
 
     removeArrayIfDefault = (name, array, defaultVal) ->
       delete json.atoms[name] if array.every (i)-> i is defaultVal
 
+    removeArrayIfDefault("MARKED", marked, 0)
     removeArrayIfDefault("VISIBLE", visible, 1)
     removeArrayIfDefault("DRAGGABLE", draggable, 0)
 
