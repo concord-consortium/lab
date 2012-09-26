@@ -1335,7 +1335,7 @@ exports.createEngine = function() {
 
           i, r, c, rowSpacing, colSpacing,
           vMagnitude, vDirection,
-          x, y, vx, vy, charge, friction, element;
+          x, y, vx, vy, charge, element;
 
       validateTemperature(temperature);
 
@@ -1395,6 +1395,7 @@ exports.createEngine = function() {
     initializeRadialBonds: function(props) {
       var num = props.atom1Index.length,
           i;
+
       radialBondMatrix = [];
       createRadialBondsArray(num);
 
@@ -1408,7 +1409,7 @@ exports.createEngine = function() {
       }
     },
 
-    createVdwPairsArray: function(num) {
+    createVdwPairsArray: function() {
       var maxNumPairs = N * (N-1) / 2;
 
       vdwPairs = engine.vdwPairs = [];
