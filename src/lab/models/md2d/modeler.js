@@ -208,16 +208,19 @@ modeler.model = function(initialProperties) {
 
     model.NON_ENGINE_PROPERTY_LIST = [
       "VISIBLE",
+      "MARKED",
       "DRAGGABLE"
     ];
 
     model.NON_ENGINE_PROPERTY_SHORT_NAMES = {
       VISIBLE: "visible",
+      MARKED: "marked",
       DRAGGABLE: "draggable"
     };
 
     model.NON_ENGINE_DEFAULT_VALUES = {
       VISIBLE: 1,
+      MARKED: 0,
       DRAGGABLE: 0
     };
 
@@ -252,6 +255,7 @@ modeler.model = function(initialProperties) {
       "PINNED",
       "FRICTION",
       "VISIBLE",
+      "MARKED",
       "DRAGGABLE"
     ];
 
