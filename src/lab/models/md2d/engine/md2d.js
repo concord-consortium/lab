@@ -1,4 +1,4 @@
-/*global Float32Array window:true */
+/*global window:true */
 /*jslint eqnull: true, boss: true, loopfunc: true*/
 
 if (typeof window === 'undefined') window = {};
@@ -18,15 +18,9 @@ var arrays       = require('arrays'),
       return (match && match[3]) ? false: true;
     }()),
 
-    hasTypedArrays = (function() {
-      try {
-        new Float32Array();
-      }
-      catch(e) {
-        return false;
-      }
-      return true;
-    }()),
+    float32 = (arrays.typed && notSafari) ? 'Float32Array' : 'regular',
+    uint16  = (arrays.typed && notSafari) ? 'Uint16Array'  : 'regular',
+    uint8   = (arrays.typed && notSafari) ? 'Uint8Array'   : 'regular',
 
     // make at least 1 atom
     N_MIN = 1,
@@ -411,17 +405,14 @@ exports.createEngine = function() {
       },
 
       createRadialBondsArray = function(num) {
-        var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-            uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
-            radialIndices = RADIAL_INDICES,
-            i;
+        var i;
 
         radialBonds = engine.radialBonds = [];
 
-        radialBonds[radialIndices.ATOM1] = radialBondAtom1Index = arrays.create(num, 0, uint16);
-        radialBonds[radialIndices.ATOM2] = radialBondAtom2Index = arrays.create(num, 0, uint16);
-        radialBonds[radialIndices.LENGTH] = radialBondLength     = arrays.create(num, 0, float32);
-        radialBonds[radialIndices.STRENGTH] = radialBondStrength   = arrays.create(num, 0, float32);
+        radialBonds[RADIAL_INDICES.ATOM1] = radialBondAtom1Index = arrays.create(num, 0, uint16);
+        radialBonds[RADIAL_INDICES.ATOM2] = radialBondAtom2Index = arrays.create(num, 0, uint16);
+        radialBonds[RADIAL_INDICES.LENGTH] = radialBondLength     = arrays.create(num, 0, float32);
+        radialBonds[RADIAL_INDICES.STRENGTH] = radialBondStrength   = arrays.create(num, 0, float32);
 
         /**
           Initialize radialBondResults[] arrays consisting of arrays of radial bond
@@ -435,9 +426,6 @@ exports.createEngine = function() {
       },
 
       createSpringForcesArray = function(num) {
-      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
-
         springForces = engine.springForces = [];
 
         springForces[0] = springForceAtomIndex  = arrays.create(num, 0, uint16);
@@ -447,9 +435,7 @@ exports.createEngine = function() {
       },
 
       createObstaclesArray = function(num) {
-        var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-            uint8   = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
-            ind     = OBSTACLE_INDICES;
+        var ind = OBSTACLE_INDICES;
 
         obstacles = engine.obstacles = [];
 
@@ -1062,11 +1048,7 @@ exports.createEngine = function() {
         num: the number of atoms to create
     */
     createAtoms: function(options) {
-      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint16 = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
-          uint8 = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
-          num,
-          i;
+      var num;
 
       if (!elementsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called before setElements.");
@@ -1428,8 +1410,7 @@ exports.createEngine = function() {
     },
 
     createVdwPairsArray: function(num) {
-      var uint16 = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular',
-          maxNumPairs = N * (N-1) / 2;
+      var maxNumPairs = N * (N-1) / 2;
 
       vdwPairs = engine.vdwPairs = [];
 
