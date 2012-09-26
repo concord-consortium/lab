@@ -749,15 +749,13 @@ exports.createEngine = function() {
         vx[i] = vy[i] = ax[i] = ay[i] = 0;
       },
 
-      // Accumulate accelerations into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between particles i and j
-      // where j < i. Note a(t, i) and a(t, j) (accelerations from the previous time step) should be cleared from arrays
-      // ax and ay before calling this function.
-      updatePairwiseAccelerations = function(i) {
+      // Accumulate forces into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between
+      // particles i and j where j < i. Note that data from the previous time step should be cleared
+      // from arrays ax and ay before calling this function.
+      updatePairwiseForces = function(i) {
         var j, dx, dy, r_sq, f_over_r, fx, fy,
             el_i = element[i],
             el_j,
-            mass_inv = 1/mass[i],
-            mass_j_inv,
             q_i = charge[i],
             bondingPartners = radialBondMatrix && radialBondMatrix[i];
 
@@ -765,8 +763,6 @@ exports.createEngine = function() {
           if (bondingPartners && bondingPartners[j]) continue;
 
           el_j = element[j];
-
-          mass_j_inv = 1/mass[j];
 
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -785,15 +781,15 @@ exports.createEngine = function() {
           if (f_over_r) {
             fx = f_over_r * dx;
             fy = f_over_r * dy;
-            ax[i] += fx * mass_inv;
-            ay[i] += fy * mass_inv;
-            ax[j] -= fx * mass_j_inv;
-            ay[j] -= fy * mass_j_inv;
+            ax[i] += fx;
+            ay[i] += fy;
+            ax[j] -= fx;
+            ay[j] -= fy;
           }
         }
       },
 
-      updateGravitationalAcceleration = function() {
+      updateGravitationalAccelerations = function() {
         // fast path if there is no gravitationalField
         if (!gravitationalField) return;
         var i;
@@ -803,27 +799,21 @@ exports.createEngine = function() {
         }
       },
 
-      updateFrictionAccelerations = function () {
+      updateFrictionForces = function() {
         if (!viscosity) return;
 
         var i,
-            fx,
-            fy,
-            inverseMass,
             drag;
 
         for (i = 0; i < N; i++) {
-          inverseMass = 1 / mass[i];
           drag = viscosity * friction[i];
 
-          fx = -vx[i] * drag;
-          fy = -vy[i] * drag;
-          ax[i] += fx * inverseMass;
-          ay[i] += fy * inverseMass;
+          ax[i] += (-vx[i] * drag);
+          ay[i] += (-vy[i] * drag);
         }
       },
 
-      updateBondAccelerations = function() {
+      updateBondForces = function() {
         // fast path if no radial bonds have been defined
         if (N_radialBonds < 1) return;
 
@@ -839,16 +829,11 @@ exports.createEngine = function() {
             r0,
             f_over_r,
             fx,
-            fy,
-            mass1_inv,
-            mass2_inv;
+            fy;
 
         for (i = 0, len = radialBonds[0].length; i < len; i++) {
           i1 = radialBondAtom1Index[i];
           i2 = radialBondAtom2Index[i];
-
-          mass1_inv = 1/mass[i1];
-          mass2_inv = 1/mass[i2];
 
           dx = x[i2] - x[i1];
           dy = y[i2] - y[i1];
@@ -867,18 +852,17 @@ exports.createEngine = function() {
           fx = f_over_r * dx;
           fy = f_over_r * dy;
 
-          ax[i1] += fx * mass1_inv;
-          ay[i1] += fy * mass1_inv;
-          ax[i2] -= fx * mass2_inv;
-          ay[i2] -= fy * mass2_inv;
+          ax[i1] += fx;
+          ay[i1] += fy;
+          ax[i2] -= fx;
+          ay[i2] -= fy;
         }
       },
 
-      updateSpringAccelerations = function() {
+      updateSpringForces = function() {
         if (N_springForces < 1) return;
 
         var i,
-            mass_inv,
             dx, dy,
             r, r_sq,
             k,
@@ -888,7 +872,6 @@ exports.createEngine = function() {
 
         for (i = 0; i < N_springForces; i++) {
           a = springForceAtomIndex[i];
-          mass_inv = 1/mass[a];
 
           dx = springForceX[i] - x[a];
           dy = springForceY[i] - y[a];
@@ -906,8 +889,8 @@ exports.createEngine = function() {
           fx = f_over_r * dx;
           fy = f_over_r * dy;
 
-          ax[a] += fx * mass_inv;
-          ay[a] += fy * mass_inv;
+          ax[a] += fx;
+          ay[a] += fy;
         }
       },
 
@@ -1494,7 +1477,8 @@ exports.createEngine = function() {
 
     integrate: function(duration, opt_dt) {
 
-      var radius;
+      var radius,
+          inverseMass;
 
       if (!atomsHaveBeenCreated) {
         throw new Error("md2d: integrate called before atoms created.");
@@ -1531,30 +1515,46 @@ exports.createEngine = function() {
           // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
           halfUpdateVelocity(i);
 
-          // Zero out a(t, i) for accumulation of a(t+dt, i)
+          // Zero out a(t, i) for accumulation of forces into a(t+dt, i)
           ax[i] = ay[i] = 0;
 
-          // Accumulate accelerations for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i) won't be
-          // usable until this loop completes; it won't have contributions from a(t+dt, k) for k > i
-          updatePairwiseAccelerations(i);
+          // Accumulate _forces_ for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i)
+          // won't be usable until this loop completes; it won't have contributions from a(t+dt, k)
+          // for k > i
+          updatePairwiseForces(i);
         }
+
+        //
+        // ax and ay are FORCES below this point
+        //
 
         // Move obstacles
         for (i = 0; i < N_obstacles; i++) {
           updateObstaclePosition(i);
         }
 
-        // Accumulate accelerations from bonded interactions into a(t+dt)
-        updateBondAccelerations();
+        // Accumulate forces from bonded interactions into a(t+dt)
+        updateBondForces();
 
-        // Accumulate accelerations from spring forces
-        updateSpringAccelerations();
+        // Accumulate forces from spring forces into a(t+dt)
+        updateSpringForces();
 
-        // Accumulate friction/drag accelerations
-        updateFrictionAccelerations();
+        // Accumulate drag forces into a(t+dt)
+        updateFrictionForces();
 
-        // Accumulate optional gravitational accelerations
-        updateGravitationalAcceleration();
+        // Convert ax, ay from forces to accelerations
+        for (i = 0; i < N; i++) {
+          inverseMass = 1/mass[i];
+          ax[i] *= inverseMass;
+          ay[i] *= inverseMass;
+        }
+
+        //
+        // ax and ay are ACCELERATIONS below this point
+        //
+
+        // Accumulate optional gravitational accelerations into a(t+dt)
+        updateGravitationalAccelerations();
 
         for (i = 0; i < N; i++) {
           // Clearing the acceleration here from pinned atoms will cause the acceleration
