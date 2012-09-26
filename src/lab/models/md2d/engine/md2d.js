@@ -294,9 +294,9 @@ exports.createEngine = function() {
       // Left undefined if no radial bonds are defined.
       radialBonds,
 
-      // radialBondsHash[i][j] === true when atoms i and j are "radially bonded"
-      // radialBondsHash[i][j] === undefined otherwise
-      radialBondsHash,
+      // radialBondMatrix[i][j] === true when atoms i and j are "radially bonded"
+      // radialBondMatrix[i][j] === undefined otherwise
+      radialBondMatrix,
 
 
 
@@ -773,7 +773,7 @@ exports.createEngine = function() {
             mass_inv = 1/mass[i],
             mass_j_inv,
             q_i = charge[i],
-            bondingPartners = radialBondsHash && radialBondsHash[i];
+            bondingPartners = radialBondMatrix && radialBondMatrix[i];
 
         for (j = 0; j < i; j++) {
           if (bondingPartners && bondingPartners[j]) continue;
@@ -1182,11 +1182,11 @@ exports.createEngine = function() {
       radialBondResults[N_radialBonds][3] = radialBondLength[N_radialBonds]     = bondLength;
       radialBondResults[N_radialBonds][4] = radialBondStrength[N_radialBonds]   = bondStrength;
 
-      if ( ! radialBondsHash[atom1Index] ) radialBondsHash[atom1Index] = [];
-      radialBondsHash[atom1Index][atom2Index] = true;
+      if ( ! radialBondMatrix[atom1Index] ) radialBondMatrix[atom1Index] = [];
+      radialBondMatrix[atom1Index][atom2Index] = true;
 
-      if ( ! radialBondsHash[atom2Index] ) radialBondsHash[atom2Index] = [];
-      radialBondsHash[atom2Index][atom1Index] = true;
+      if ( ! radialBondMatrix[atom2Index] ) radialBondMatrix[atom2Index] = [];
+      radialBondMatrix[atom2Index][atom1Index] = true;
 
       N_radialBonds++;
     },
@@ -1413,7 +1413,7 @@ exports.createEngine = function() {
     initializeRadialBonds: function(props) {
       var num = props.atom1Index.length,
           i;
-      radialBondsHash = [];
+      radialBondMatrix = [];
       createRadialBondsArray(num);
 
       for (i = 0; i < num; i++) {
@@ -1468,7 +1468,7 @@ exports.createEngine = function() {
         y_i = y[i];
 
         for (j = i+1; j < N; j++) {
-          if (N_radialBonds !== 0 && (radialBondsHash[i] && radialBondsHash[i][j])) continue;
+          if (N_radialBonds !== 0 && (radialBondMatrix[i] && radialBondMatrix[i][j])) continue;
 
           element_j = elements[element[j]];
           if (charge[i]*charge[j] <= 0) {
@@ -1568,11 +1568,11 @@ exports.createEngine = function() {
         // Accumulate accelerations from spring forces
         updateSpringAccelerations();
 
-        // Accumulate optional gravitational accelerations
-        updateGravitationalAcceleration();
-
         // Accumulate friction/drag accelerations
         updateFrictionAccelerations();
+
+        // Accumulate optional gravitational accelerations
+        updateGravitationalAcceleration();
 
         for (i = 0; i < N; i++) {
           // Clearing the acceleration here from pinned atoms will cause the acceleration
