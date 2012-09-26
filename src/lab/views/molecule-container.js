@@ -96,6 +96,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       model_md2d_results_CHARGE,
       model_md2d_results_FRICTION,
       model_md2d_results_VISIBLE,
+      model_md2d_results_MARKED,
       model_md2d_results_DRAGGABLE,
       model_md2d_results_ELEMENT,
       model_md2d_results_MASS;
@@ -161,6 +162,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     model_md2d_results_CHARGE   = model.INDICES.CHARGE+1;
     model_md2d_results_FRICTION = model.INDICES.FRICTION+1;
     model_md2d_results_VISIBLE  = model.INDICES.VISIBLE+1;
+    model_md2d_results_MARKED   = model.INDICES.MARKED+1;
     model_md2d_results_DRAGGABLE= model.INDICES.DRAGGABLE+1;
     model_md2d_results_ELEMENT  = model.INDICES.ELEMENT+1;
     model_md2d_results_MASS     = model.INDICES.MASS+1;
