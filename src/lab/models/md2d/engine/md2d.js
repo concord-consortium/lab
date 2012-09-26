@@ -28,7 +28,7 @@ var arrays       = require('arrays'),
       return true;
     }()),
 
-    // make at least 2 atoms
+    // make at least 1 atom
     N_MIN = 1,
 
     // make no more than this many atoms:
