@@ -21,6 +21,20 @@
         %img(src="../../../../resources/layout/cc-logo.png")
       %h1 Interactive Sampler
     .description
+      %h2 Extract from blog post on improving speed ...
+      %p
+        At the heart of Molecular Workbench’s modeling of atomic interactions is a profoundly
+        important but fundamentally simple concept: At close distances, atoms attract each
+        other until they get so close that they repel
+      %p
+        Here’s a demo of that concept: two atoms interacting. Drag the green atom to various
+        locations near and far from the purple atom and watch what happens as the two atoms
+        approach each other and move apart. (If you’re wondering why the atom slows down and
+        stops, the answer is that we apply an artificial damping force to the green atom in
+        order to make it easier for you to “grab” it and play with it.)
+      .iframe-container
+        %iframe{:width => 400, :height => 300, :frameborder => 1, :src => '../../../examples/interactives/embeddable.html#interactives/pulling-uncharged-atoms.json' }
+    .description
       %h2 Intermolecular Attractions: Introduction
       %p
         All molecules attract to each other, but there are different patterns and
