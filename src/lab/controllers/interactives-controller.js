@@ -148,6 +148,16 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
       };
 
   /**
+    Allow console users to try script actions
+  */
+  function exposeScriptingAPI() {
+    window.script = $.extend({}, scriptingAPI);
+    window.script.run = function(source) {
+      return evalInScriptContext(source)();
+    };
+  }
+
+  /**
     Load the model from the url specified in the 'model' key. 'modelLoaded' is called
     after the model loads.
 
@@ -261,7 +271,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
 
       try {
         // invoke the script, passing only enough arguments for the whitelisted names
-        safedScript.apply(null, whitelistedObjectsArray);
+        return safedScript.apply(null, whitelistedObjectsArray);
       } catch (e) {
         alert("Error running script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
       }
@@ -681,6 +691,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
 
   // run this when controller is created
   loadInteractive(interactive, viewSelector);
+  exposeScriptingAPI();
 
   // make these private variables and functions available
   controller.loadInteractive = loadInteractive;
