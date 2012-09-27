@@ -589,6 +589,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
       create_radial_gradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", gradient_container);
       create_radial_gradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", gradient_container);
+      create_radial_gradient("mark-grad", "#FEE0D2", "#FC9272", "#DE2D26", gradient_container);
       create_radial_gradient("green-grad", "#dfffef", "#75a643", "#2a7216", gradient_container);
       create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", gradient_container);
       create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", gradient_container);
@@ -661,10 +662,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
               var charge = d[model_md2d_results_CHARGE],
                   grad = element_gradient_array[d[model_md2d_results_ELEMENT] % 4];
 
-              // For demo purposes, show marked atoms with positive charge color gradient
-              if (d[model_md2d_results_MARKED]) {
-                return  "url(#pos-grad)";
-              }
+              if (d[model_md2d_results_MARKED]) return "url(#mark-grad)";
 
               if (chargeShadingMode) {
                   if (charge > 0) return  "url(#pos-grad)";
