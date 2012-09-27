@@ -36,6 +36,10 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
           return typeof n === "number" && (parseFloat(n) === parseInt(n, 10));
         }
 
+        function isArray(obj) {
+          return typeof obj === 'object' && obj.slice === Array.prototype.slice;
+        }
+
         /** return an integer randomly chosen from the set of integers 0..n-1 */
         function randomInteger(n) {
           return Math.floor(Math.random() * n);
@@ -126,6 +130,38 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
 
             if (n > numAtoms) n = numAtoms;
             return choose(n, numAtoms);
+          },
+
+          /**
+            Accepts atom indices as arguments, or an array containing atom indices.
+            Unmarks all atoms, then marks the requested atom indices.
+            Repaints the screen to make the marks visible.
+          */
+          markAtoms: function markAtoms() {
+            var i,
+                len;
+
+            if (arguments.length === 0) return;
+
+            // allow passing an array instead of a list of atom indices
+            if (isArray(arguments[0])) {
+              return markAtoms.apply(null, arguments[0]);
+            }
+
+            scriptingAPI.unmarkAllAtoms();
+
+            // mark the requested atoms
+            for (i = 0, len = arguments.length; i < len; i++) {
+              model.setAtomProperties(arguments[i], {marked: 1});
+            }
+            scriptingAPI.repaint();
+          },
+
+          unmarkAllAtoms: function unmarkAllAtoms() {
+            for (var i = 0, len = model.get_num_atoms(); i < len; i++) {
+              model.setAtomProperties(i, {marked: 0});
+            }
+            scriptingAPI.repaint();
           },
 
           /**
