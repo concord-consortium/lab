@@ -239,6 +239,10 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       dispatch.modelReset();
     }
 
+    function repaint() {
+      moleculeContainer.setup_drawables();
+    }
+
     // ------------------------------------------------------------
     //
     // Initial setup of this modelController:
@@ -268,7 +272,9 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
     controller.on = function(type, listener) {
       dispatch.on(type, listener);
     };
+
     controller.reload = reload;
+    controller.repaint = repaint;
     controller.moleculeContainer = moleculeContainer;
 
     return controller;

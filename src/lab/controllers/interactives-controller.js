@@ -133,7 +133,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
         },
 
         repaint: function repaint() {
-          modelController.moleculeContainer.update_drawable_positions();
+          modelController.repaint();
         },
 
         // rudimentary debugging functionality
