@@ -36,7 +36,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       red_gradient,
       blue_gradient,
       green_gradient,
-      element_gradient_array,
+      gradientNameForElement,
       atom_tooltip_on,
       offset_left, offset_top,
       particle, label, labelEnter, tail,
@@ -587,16 +587,21 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("height", size.height)
           .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
+      // Charge gradients
       create_radial_gradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", gradient_container);
       create_radial_gradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", gradient_container);
+      create_radial_gradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", gradient_container);
+
+      // "Marked" atom gradient
       create_radial_gradient("mark-grad", "#FEE0D2", "#FC9272", "#DE2D26", gradient_container);
+
+      // Element gradients
       create_radial_gradient("green-grad", "#dfffef", "#75a643", "#2a7216", gradient_container);
       create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", gradient_container);
       create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", gradient_container);
       create_radial_gradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", gradient_container);
-      create_radial_gradient("custom-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", gradient_container);
 
-      element_gradient_array = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
+      gradientNameForElement = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
       bondColorArray = ["#538f2f", "#aa2bb1", "#2cb6af", "#b3831c", "#7781c2", "#ee7171"];
       image_container_top = vis.append("g");
       image_container_top.attr("class", "image_container_top");
@@ -659,18 +664,18 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .style({
             "fill-opacity": function(d) { return d[model_md2d_results_VISIBLE]; },
             "fill": function(d) {
-              var charge = d[model_md2d_results_CHARGE],
-                  grad = element_gradient_array[d[model_md2d_results_ELEMENT] % 4];
+              var charge;
 
               if (d[model_md2d_results_MARKED]) return "url(#mark-grad)";
 
               if (chargeShadingMode) {
-                  if (charge > 0) return  "url(#pos-grad)";
-                  else if (charge < 0) return  "url(#neg-grad)";
-                  else return "url(#custom-grad)";
-              } else {
-                return "url('#"+grad+"')";
+                charge = d[model_md2d_results_CHARGE];
+
+                if (charge === 0) return "url(#neutral-grad)";
+                return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
               }
+
+              return "url('#"+gradientNameForElement[d[model_md2d_results_ELEMENT] % 4]+"')";
             }
           })
           .on("mousedown", molecule_mousedown)
