@@ -29,123 +29,170 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
       // TODO: move construction of this object to its own file.
       //
 
-      scriptingAPI = {
+      scriptingAPI = (function() {
 
-        getRadialBond: function getRadialBond(i) {
-          return [
-            model.get_radial_bonds()[0][i],
-            model.get_radial_bonds()[1][i],
-            model.get_radial_bonds()[2][i],
-            model.get_radial_bonds()[3][i]
-          ];
-        },
-
-        setRadialBond: function setRadialBond(i, values) {
-          model.get_radial_bonds()[0][i] = values[0];
-          model.get_radial_bonds()[1][i] = values[1];
-          model.get_radial_bonds()[2][i] = values[2];
-          model.get_radial_bonds()[3][i] = values[3];
-        },
-
-        addAtom: function addAtom() {
-          return model.addAtom.apply(model, arguments);
-        },
-
-        addRandomAtom: function addRandomAtom() {
-          return model.addRandomAtom.apply(model, arguments);
-        },
-
-        get: function get() {
-          return model.get.apply(model, arguments);
-        },
-
-        set: function set() {
-          return model.set.apply(model, arguments);
-        },
-
-        adjustTemperature: function adjustTemperature(fraction) {
-          model.set({temperature: fraction * model.get('temperature')});
-        },
-
-        limitHighTemperature: function limitHighTemperature(t) {
-          if (model.get('temperature') > t) model.set({temperature: t});
-        },
-
-        loadModel: function loadModel(modelUrl, cb) {
-          model.stop();
-          controller.loadModel(modelUrl);
-
-          // Assume that existing onLoadScripts are only relevant to the previous model
-          onLoadScripts = [];
-          if (typeof cb === 'function') {
-            onLoadScripts.push(cb);
-          }
-        },
-
-        /**
-          Sets individual atom properties using human-readable hash.
-          e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
-        */
-        setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule) {
-          return model.setAtomProperties(i, props, checkLocation, moveMolecule);
-        },
-
-        /**
-          Returns atom properties as a human-readable hash.
-          e.g. getAtomProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
-        */
-        getAtomProperties: function getAtomProperties(i) {
-          var props = {},
-              atoms = model.get_atoms(),
-              prop,
-              j;
-
-          for (j = 0; j < model.ATOM_PROPERTY_LIST.length; j++) {
-            prop = model.ATOM_PROPERTY_LIST[j];
-            props[model.ATOM_PROPERTY_SHORT_NAMES[prop]] = atoms[model.INDICES[prop]][i];
-          }
-          return props;
-        },
-
-        pe: function pe() {
-          return model.pe();
-        },
-
-        ke: function ke() {
-          return model.ke();
-        },
-
-        start: function start() {
-          model.start();
-        },
-
-        stop: function stop() {
-          model.stop();
-        },
-
-        reset: function reset() {
-          model.stop();
-          modelController.reload();
-        },
-
-        tick: function tick() {
-          model.tick();
-        },
-
-        repaint: function repaint() {
-          modelController.repaint();
-        },
-
-        // rudimentary debugging functionality
-        alert: alert,
-
-        console: window.console != null ? window.console : {
-          log: function() {},
-          error: function() {},
-          warn: function() {},
-          dir: function() {}
+        function isInteger(n) {
+          // Exploits the facts that (1) NaN !== NaN, and (2) parseInt(Infinity, 10) is NaN
+          return typeof n === "number" && (parseFloat(n) === parseInt(n, 10));
         }
-      };
+
+        /** return an integer randomly chosen from the set of integers 0..n-1 */
+        function randomInteger(n) {
+          return Math.floor(Math.random() * n);
+        }
+
+        function swapElementsOfArray(array, i, j) {
+          var tmp = array[i];
+          array[i] = array[j];
+          array[j] = tmp;
+        }
+
+        /** Return an array of n randomly chosen members of the set of integers 0..N-1 */
+        function choose(n, N) {
+          var values = [],
+              i;
+
+          for (i = 0; i < N; i++) { values[i] = i; }
+
+          for (i = 0; i < n; i++) {
+            swapElementsOfArray(values, i, i + randomInteger(N-i));
+          }
+          values.length = n;
+
+          return values;
+        }
+
+        return {
+
+          getRadialBond: function getRadialBond(i) {
+            return [
+              model.get_radial_bonds()[0][i],
+              model.get_radial_bonds()[1][i],
+              model.get_radial_bonds()[2][i],
+              model.get_radial_bonds()[3][i]
+            ];
+          },
+
+          setRadialBond: function setRadialBond(i, values) {
+            model.get_radial_bonds()[0][i] = values[0];
+            model.get_radial_bonds()[1][i] = values[1];
+            model.get_radial_bonds()[2][i] = values[2];
+            model.get_radial_bonds()[3][i] = values[3];
+          },
+
+          addAtom: function addAtom() {
+            return model.addAtom.apply(model, arguments);
+          },
+
+          addRandomAtom: function addRandomAtom() {
+            return model.addRandomAtom.apply(model, arguments);
+          },
+
+          get: function get() {
+            return model.get.apply(model, arguments);
+          },
+
+          set: function set() {
+            return model.set.apply(model, arguments);
+          },
+
+          adjustTemperature: function adjustTemperature(fraction) {
+            model.set({temperature: fraction * model.get('temperature')});
+          },
+
+          limitHighTemperature: function limitHighTemperature(t) {
+            if (model.get('temperature') > t) model.set({temperature: t});
+          },
+
+          loadModel: function loadModel(modelUrl, cb) {
+            model.stop();
+            controller.loadModel(modelUrl);
+
+            // Assume that existing onLoadScripts are only relevant to the previous model
+            onLoadScripts = [];
+            if (typeof cb === 'function') {
+              onLoadScripts.push(cb);
+            }
+          },
+
+          /** returns a list of integers corresponding to atoms in the system */
+          randomAtoms: function randomAtoms(n) {
+            var numAtoms = model.get_num_atoms();
+
+            if (n == null) n = 1 + randomInteger(numAtoms-1);
+
+            if (!isInteger(n)) throw new Error("randomAtoms: number of atoms requested, " + n + ", is not an integer.");
+            if (n < 0) throw new Error("randomAtoms: number of atoms requested, " + n + ", was less be greater than zero.");
+
+            if (n > numAtoms) n = numAtoms;
+            return choose(n, numAtoms);
+          },
+
+          /**
+            Sets individual atom properties using human-readable hash.
+            e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
+          */
+          setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule) {
+            return model.setAtomProperties(i, props, checkLocation, moveMolecule);
+          },
+
+          /**
+            Returns atom properties as a human-readable hash.
+            e.g. getAtomProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
+          */
+          getAtomProperties: function getAtomProperties(i) {
+            var props = {},
+                atoms = model.get_atoms(),
+                prop,
+                j;
+
+            for (j = 0; j < model.ATOM_PROPERTY_LIST.length; j++) {
+              prop = model.ATOM_PROPERTY_LIST[j];
+              props[model.ATOM_PROPERTY_SHORT_NAMES[prop]] = atoms[model.INDICES[prop]][i];
+            }
+            return props;
+          },
+
+          pe: function pe() {
+            return model.pe();
+          },
+
+          ke: function ke() {
+            return model.ke();
+          },
+
+          start: function start() {
+            model.start();
+          },
+
+          stop: function stop() {
+            model.stop();
+          },
+
+          reset: function reset() {
+            model.stop();
+            modelController.reload();
+          },
+
+          tick: function tick() {
+            model.tick();
+          },
+
+          repaint: function repaint() {
+            modelController.repaint();
+          },
+
+          // rudimentary debugging functionality
+          alert: alert,
+
+          console: window.console != null ? window.console : {
+            log: function() {},
+            error: function() {},
+            warn: function() {},
+            dir: function() {}
+          }
+        };
+      }());
 
   /**
     Allow console users to try script actions
