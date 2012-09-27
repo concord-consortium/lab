@@ -1010,11 +1010,11 @@ modeler.model = function(initialProperties) {
     if (moveMolecule) {
       moleculeAtoms = engine.getMoleculeAtoms(i);
       if (moleculeAtoms.length > 0) {
-        dx = typeof props.x === "number" ? props.x - engine.atoms[model.INDICES.X][i] : 0;
-        dy = typeof props.y === "number" ? props.y - engine.atoms[model.INDICES.Y][i] : 0;
+        dx = typeof props.x === "number" ? props.x - atoms[model.INDICES.X][i] : 0;
+        dy = typeof props.y === "number" ? props.y - atoms[model.INDICES.Y][i] : 0;
         for (j = 0, jj=moleculeAtoms.length; j<jj; j++) {
-          new_x = engine.moleculeAtoms[model.INDICES.X][moleculeAtoms[j]] + dx;
-          new_y = engine.moleculeAtoms[model.INDICES.Y][moleculeAtoms[j]] + dy;
+          new_x = atoms[model.INDICES.X][moleculeAtoms[j]] + dx;
+          new_y = atoms[model.INDICES.Y][moleculeAtoms[j]] + dy;
           if (!model.setAtomProperties(moleculeAtoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
             return false;
           }
@@ -1023,9 +1023,9 @@ modeler.model = function(initialProperties) {
     }
 
     if (checkLocation) {
-      var x  = typeof props.x === "number" ? props.x : engine.atoms[model.INDICES.X][i],
-          y  = typeof props.y === "number" ? props.y : engine.atoms[model.INDICES.Y][i],
-          el = typeof props.element === "number" ? props.y : engine.atoms[model.INDICES.ELEMENT][i];
+      var x  = typeof props.x === "number" ? props.x : atoms[model.INDICES.X][i],
+          y  = typeof props.y === "number" ? props.y : atoms[model.INDICES.Y][i],
+          el = typeof props.element === "number" ? props.y : atoms[model.INDICES.ELEMENT][i];
 
       if (!engine.canPlaceAtom(el, x, y, i)) {
         return false;
