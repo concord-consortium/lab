@@ -1,6 +1,6 @@
 {
   "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page4/page4$0.json",
+    "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page3/page3$0.json",
     "viewOptions": {
       "controlButtons": ""
     }
@@ -23,6 +23,18 @@
       "id": "reset",
       "text": "Reset",
       "action": "reset();"
+    },
+    {
+      "type": "button",
+      "id": "increase-volume",
+      "text": "Volume &#8593;",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "decrease-volume",
+      "text": "Volume &#8595;",
+      "action": ""
     }
   ]
 }

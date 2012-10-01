@@ -1,0 +1,46 @@
+{
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json",
+    "viewOptions": {
+      "controlButtons": ""
+    }
+  },
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select a pair of molecules",
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5Title.json"
+        },
+        {
+          "text": "small molecules",
+          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json', start);"
+        },
+        {
+          "text": "large straight molecules",
+          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npLargeStraight.json', start);"
+        },
+        {
+          "text": "large straight and bent",
+          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightJagged.json', start);"
+        },
+        {
+          "text": "large straight and circular",
+          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightRound.json', start);"
+        },
+        {
+          "text": "large curved and circular",
+          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npCurvedRound.json', start);"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "reset",
+      "action": "reset();"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page5/page5$0.json",
+    "viewOptions": {
+      "controlButtons": ""
+    }
+  },
+  "components": [
+    {
+      "type": "button",
+      "id": "run",
+      "text": "Run",
+      "action": "start();"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "120 molecules",
+          "action": ""
+        },
+        {
+          "text": "100 molecules",
+          "action": ""
+        },
+        {
+          "text": "80 molecules",
+          "action": ""
+        },
+        {
+          "text": "60 molecules",
+          "action": ""
+        },
+        {
+          "text": "40 molecules",
+          "action": ""
+        },
+        {
+          "text": "20 molecules",
+          "action": ""
+        }
+      ]
+    }
+  ]
+}

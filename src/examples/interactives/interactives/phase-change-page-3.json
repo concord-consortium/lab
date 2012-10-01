@@ -1,0 +1,50 @@
+{
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page3/liquid1.json",
+    "viewOptions": {
+      "controlButtons": "play_reset"
+    }
+  },
+  "components": [
+    {
+      "type": "button",
+      "id": "show-interactions",
+      "text": "Show Interaction Checkbox (na)",
+      "action": ";"
+    },
+    {
+      "type": "pulldown",
+      "id": "liquid-pulldown",
+      "options": [
+        {
+          "text": "Liquid 1",
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page3/liquid1.json"
+        },
+        {
+          "text": "Liquid 2",
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page3/liquid2.json"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "pick-random-and-trajectory",
+      "text": "Randomly pick an atom and show its trajectory (na)",
+      "action": ";"
+    },
+    {
+      "type": "button",
+      "id": "mark-atom-near-center",
+      "text": "Mark atoms near center (na)",
+      "action": ";"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "show-interactions",
+      "liquid-pulldown",
+      "pick-random-and-trajectory",
+      "mark-atom-near-center"
+    ]
+  }
+}
