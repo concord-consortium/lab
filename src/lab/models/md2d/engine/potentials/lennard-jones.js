@@ -114,7 +114,7 @@ exports.newLJCalculator = function(params, cb) {
 
   return calculator = {
 
-    coefficients: getCoefficients,
+    getCoefficients: getCoefficients,
 
     setEpsilon: function(e) {
       validateEpsilon(e);
