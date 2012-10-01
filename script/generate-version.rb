@@ -26,7 +26,7 @@ version = <<HEREDOC
 
 Lab.version = {
   "repo": {
-    "branch": "#{head.name}",
+    "branch": "#{head.name if head != nil}",
     "commit": {
       "sha":           "#{commit.id}",
       "short_sha":      "#{commit.id[0..7]}",
