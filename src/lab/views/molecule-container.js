@@ -966,9 +966,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function setup_particles() {
-      var ljf = model.getLJCalculator()[0][0].coefficients();
-      // // molRadius = ljf.rmin * 0.5;
-      // // model.set_radius(molRadius);
+      var textShrinkFactor = results.length <= 100 ? 1 : 0.9;
 
       chargeShadingMode = model.get("chargeShading");
       drawVdwLines = model.get("showVDWLines");
@@ -979,9 +977,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       particle = gradient_container.selectAll("circle").data(results);
 
       particleEnter();
-
-      var font_size = x(ljf.rmin * 0.5 * 1.5);
-      if (results.length > 100) { font_size *= 0.9; }
 
       label = gradient_container.selectAll("g.label")
           .data(results);
@@ -995,7 +990,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       if (options.atom_mubers) {
         labelEnter.append("text")
             .attr("class", "index")
-            .attr("font-size", font_size)
+            .attr("font-size", function(d) { return 1.6 * textShrinkFactor * x(d[model_md2d_results_RADIUS]); })
             .attr("style", "font-weight: bold; opacity: .7")
             .attr("x", 0)
             .attr("y", "0.31em")
@@ -1004,7 +999,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       } else {
         labelEnter.append("text")
             .attr("class", "index")
-            .attr("font-size", font_size)
+            .attr("font-size", function(d) { return 1.6 * x(d[model_md2d_results_RADIUS]); })
             .attr("style", "font-weight: bold; opacity: .7")
             .attr("x", "-0.31em")
             .attr("y", "0.31em")
