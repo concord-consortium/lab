@@ -1,12 +1,9 @@
-var fs  = require('fs');
-var env = require("../../env");
-require("d3");
-components = require("../../../server/public/lab/lab.components");
-jquery = require("../../../server/public/vendor/jquery/jquery.min");
-$ = window.jQuery;
+require("../../env");
 
 var vows = require("vows"),
-    assert = require("assert");
+    assert = require("assert"),
+
+    components = require("../../../server/public/lab/lab.components");
 
 var suite = vows.describe("lab.components");
 

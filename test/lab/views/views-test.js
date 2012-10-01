@@ -1,5 +1,7 @@
+/*globals views */
+
 require("../../env");
-require("d3");
+
 require("../../../server/public/lab/lab.layout");
 require("../../../server/public/lab/lab.views");
 

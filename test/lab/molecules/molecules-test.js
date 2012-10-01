@@ -1,4 +1,7 @@
+/*globals d3, model, modeler */
+
 require("../../env");
+
 require("../../../server/public/lab/lab.molecules");
 
 var vows = require("vows"),

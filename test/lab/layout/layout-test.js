@@ -1,5 +1,7 @@
+/*globals layout */
+
 require("../../env");
-require("d3");
+
 require("../../../server/public/lab/lab.layout");
 
 var vows = require("vows"),
