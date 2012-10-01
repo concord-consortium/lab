@@ -3,7 +3,6 @@ branches:
   only:
     - master
     - energy2d
-    - WIP-fix-travis
 notifications:
   irc: "irc.freenode.org#otrunk"
   email:
