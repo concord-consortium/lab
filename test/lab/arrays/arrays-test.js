@@ -1,8 +1,9 @@
-require("../../env")();
-arrays = require("arrays");
+require("../../env");
 
 var vows = require("vows"),
-    assert = require("assert");
+    assert = require("assert"),
+
+    arrays = require("arrays");
 
 var suite = vows.describe("arrays module");
 

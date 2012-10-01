@@ -1,7 +1,7 @@
-/*globals grapher*/
+/*globals grapher, $ */
 
 require("../../env");
-require("d3");
+
 require("../../../server/public/lab/lab.grapher");
 require("../../../server/public/lab/lab.layout");
 
