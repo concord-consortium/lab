@@ -292,6 +292,8 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
         return thermometer;
       case 'energyGraph':
         return createEnergyGraph(component);
+      case 'slider':
+        return createSlider(component);
     }
   }
 
@@ -442,6 +444,55 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
     });
 
     return { elem: $pulldown };
+  }
+
+  function createSlider(component) {
+    var min = component.min,
+        max = component.max,
+        steps = component.steps,
+        action = component.action,
+        value = component.value,
+        label = component.label || "",
+        $elem,
+        $label,
+        $slider;
+
+    if (min == null) min = 0;
+    if (max == null) max = 10;
+    if (steps == null) steps = 10;
+
+    $label = $('<p class="label">' + label + '</p>');
+    // we pick up the SVG slider component CSS if we use the generic class name 'slider'
+    $slider = $('<div class="html-slider">');
+    $slider.slider({
+      min: min,
+      max: max,
+      step: (max - min) / steps
+    });
+
+    // The 'action' property is a source of a function which assumes we pass it a paramter called
+    // 'value'.
+    if (action) {
+      action = makeFunctionInScriptContext('value', action);
+      $slider.bind('slide', function(event, ui) {
+        action.call(null, ui.value);
+      });
+    }
+
+    if (value != null) {
+      $slider.slider('value', value);
+
+      // Make sure to call the action with the startup value of slider. (The script action may
+      // manipulate the model, so we have to make sure it runs after the model loads, by pushing
+      // it onto 'modelLoadedCallbacks'.)
+      if (action != null) modelLoadedCallbacks.push(function() { action.call(null, $slider.slider('value')); });
+    }
+
+    $elem = $('<div class="interactive-slider">')
+              .append($label)
+              .append($slider);
+
+    return { elem: $elem };
   }
 
   /**
@@ -672,12 +723,12 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
       model.addPropertiesListener(listener[0], listener[1]);
     }
 
-    for(i = 0; i < modelLoadedCallbacks.length; i++) {
-      modelLoadedCallbacks[i]();
-    }
-
     for(i = 0; i < onLoadScripts.length; i++) {
       onLoadScripts[i]();
+    }
+
+    for(i = 0; i < modelLoadedCallbacks.length; i++) {
+      modelLoadedCallbacks[i]();
     }
   }
 
