@@ -1012,7 +1012,12 @@ modeler.model = function(initialProperties) {
 
     readModelState();
     return true;
-  },
+  };
+
+  model.setElementProperties = function(i, props) {
+    engine.setElementProperties(i, props);
+    readModelState();
+  };
 
   /** A "spring force" is used to pull atom `atomIndex` towards (x, y). We expect this to be used
      to drag atoms interactively using the mouse cursor (in which case (x,y) is the mouse cursor

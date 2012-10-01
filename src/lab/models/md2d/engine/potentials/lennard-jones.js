@@ -59,6 +59,8 @@ exports.newLJCalculator = function(params, cb) {
       alpha_Force,      // units are "MW Force Units" * nm^13
       beta_Force,       // units are "MW Force Units" * nm^7
 
+      initialized = false, // skip callback during initialization
+
       setCoefficients = function(e, s) {
         // Input units:
         //  epsilon: eV
@@ -78,7 +80,7 @@ exports.newLJCalculator = function(params, cb) {
           beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
         }
 
-        if (typeof cb === 'function') cb(getCoefficients(), this);
+        if (initialized && typeof cb === 'function') cb(getCoefficients(), this);
       },
 
       getCoefficients = function() {
@@ -109,8 +111,9 @@ exports.newLJCalculator = function(params, cb) {
       validateEpsilon(params.epsilon);
       validateSigma(params.sigma);
 
-      // Initialize coefficients to passed-in values
+      // Initialize coefficients to passed-in values, skipping setCoefficients callback
       setCoefficients(params.epsilon, params.sigma);
+      initialized = true;
 
   return calculator = {
 

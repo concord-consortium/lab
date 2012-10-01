@@ -373,25 +373,32 @@ exports.createEngine = function() {
       // potential between elements i and j
       ljCalculator = [],
 
-      // Callback that recalculates element radii  and cutoffDistance_LJ_sq when the Lennard-Jones
-      // sigma parameter changes.
-      ljCoefficientsChanged = function(el1, el2, coefficients) {
-        cutoffDistance_LJ_sq[el1][el2] =
-          cutoffDistance_LJ_sq[el2][el1] =
-          cutoff * cutoff * coefficients.sigma * coefficients.sigma;
-
-        if (el1 === el2) updateElementRadius(el1, coefficients);
+      // Throws an informative error if a developer tries to use the setCoefficients method of an
+      // in-use LJ calculator. (Hint: for an interactive LJ chart, create a new LJ calculator with
+      // the desired coefficients; call setElementProperties to change the LJ properties in use.)
+      ljCoefficientChangeError = function() {
+        throw new Error("md2d: Don't change the epsilon or sigma parameters of the LJ calculator being used by MD2D. Use the setElementProperties method instead.");
       },
 
-      // Update radius of element # 'el'. Also, if 'element' and 'radius' arrays are defined, update
-      // all atom's radii to match the new radii of their corresponding elements.
-      updateElementRadius = function(el, coefficients) {
-        elements[el][ELEMENT_INDICES.RADIUS] = lennardJones.radius( coefficients.sigma );
+      // Initialize epsilon, sigma, cutoffDistance_LJ_sq, and ljCalculator array elements for
+      // element pair i and j
+      setPairwiseLJProperties = function(i, j) {
+        var epsilon_i = elements[i][ELEMENT_INDICES.EPSILON],
+            epsilon_j = elements[j][ELEMENT_INDICES.EPSILON],
+            sigma_i   = elements[i][ELEMENT_INDICES.SIGMA],
+            sigma_j   = elements[j][ELEMENT_INDICES.SIGMA],
+            e,
+            s;
 
-        if (!radius || !element) return;
-        for (var i = 0, len = radius.length; i < len; i++) {
-          radius[i] = elements[element[i]][ELEMENT_INDICES.RADIUS];
-        }
+        e = epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
+        s = sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
+
+        cutoffDistance_LJ_sq[i][j] = cutoffDistance_LJ_sq[j][i] = (cutoff * s) * (cutoff * s);
+
+        ljCalculator[i][j] = ljCalculator[j][i] = lennardJones.newLJCalculator({
+          epsilon: e,
+          sigma:   s
+        }, ljCoefficientChangeError);
       },
 
       /**
@@ -983,7 +990,7 @@ exports.createEngine = function() {
       ]
     */
     setElements: function(elems) {
-      var i, j, epsilon_i, epsilon_j, sigma_i, sigma_j;
+      var i, j;
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: setElements cannot be called after atoms have been created");
@@ -998,29 +1005,48 @@ exports.createEngine = function() {
       }
 
       for (i = 0; i < elements.length; i++) {
-        epsilon_i = elements[i][ELEMENT_INDICES.EPSILON];
-        sigma_i   = elements[i][ELEMENT_INDICES.SIGMA];
         // the radius is derived from sigma
-        elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius(sigma_i);
+        elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius( elements[i][ELEMENT_INDICES.SIGMA] );
 
         for (j = i; j < elements.length; j++) {
-          epsilon_j = elements[j][ELEMENT_INDICES.EPSILON];
-          sigma_j   = elements[j][ELEMENT_INDICES.SIGMA];
-          epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
-          sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
-
-          // bind i and j to the callback made below
-          (function(i, j) {
-            ljCalculator[i][j] = ljCalculator[j][i] = lennardJones.newLJCalculator({
-              epsilon: epsilon[i][j],
-              sigma:   sigma[i][j]
-            }, function(coefficients) {
-              ljCoefficientsChanged(i, j, coefficients);
-            });
-          }(i,j));
+          setPairwiseLJProperties(i,j);
         }
       }
       elementsHaveBeenCreated = true;
+    },
+
+    setElementProperties: function(i, properties) {
+      var j, newRadius;
+
+
+      // FIXME we cached mass into its own array, which is now probably unnecessary (position-update
+      // calculations have since been speeded up by batching the computation of accelerations from
+      // forces.) If we remove the mass[] array we also remove the need for the loop below:
+
+      if (properties.mass != null && properties.mass !== elements[i][ELEMENT_INDICES.MASS]) {
+        elements[i][ELEMENT_INDICES.MASS] = properties.mass;
+        for (j = 0; j < N; j++) {
+          if (element[j] === i) mass[j] = properties.mass;
+        }
+      }
+
+      if (properties.sigma != null) {
+        elements[i][ELEMENT_INDICES.SIGMA] = properties.sigma;
+        newRadius = lennardJones.radius(properties.sigma);
+
+        if (elements[i][ELEMENT_INDICES.RADIUS] !== newRadius) {
+          elements[i][ELEMENT_INDICES.RADIUS] = newRadius;
+          for (j = 0; j < N; j++) {
+            if (element[j] === i) radius[j] = newRadius;
+          }
+        }
+      }
+
+      if (properties.epsilon != null) elements[i][ELEMENT_INDICES.EPSILON] = properties.epsilon;
+
+      for (j = 0; j < elements.length; j++) {
+        setPairwiseLJProperties(i, j);
+      }
     },
 
     /**
