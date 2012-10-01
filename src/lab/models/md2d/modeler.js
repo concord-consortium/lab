@@ -809,38 +809,6 @@ modeler.model = function(initialProperties) {
     return model;
   };
 
-  // The next four functions assume we're are doing this for
-  // all the atoms will need to be changed when different atoms
-  // can have different LJ sigma values
-
-  /** Accepts an epsilon value in eV.
-
-      Example value for argon is 0.013 (positive)
-  */
-  model.setEpsilon = function(e) {
-    engine.setLJEpsilon(e);
-  };
-
-  /** Accepts a sigma value in nm
-
-    Example value for argon is 3.4 nm
-  */
-  model.setSigma = function(s) {
-    engine.setLJSigma(s);
-  };
-
-  model.getEpsilon = function() {
-    return engine.getLJEpsilon();
-  };
-
-  model.getSigma = function() {
-    return engine.getLJSigma();
-  };
-
-  model.getLJCalculator = function() {
-    return engine.getLJCalculator();
-  };
-
   model.reset = function() {
     model.resetTime();
     restoreFirstStateinTickHistory();
