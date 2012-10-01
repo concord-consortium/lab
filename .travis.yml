@@ -3,6 +3,7 @@ branches:
   only:
     - master
     - energy2d
+    - WIP-fix-travis
 notifications:
   irc: "irc.freenode.org#otrunk"
   email:
@@ -17,6 +18,7 @@ language: node_js
 node_js:
   - 0.8
 before_script:
+  - cp config/config_sample.yml config/config.yml
   - bundle install --binstubs
   - make clean; make
 script: "make test"
