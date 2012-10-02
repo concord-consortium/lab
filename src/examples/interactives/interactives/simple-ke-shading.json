@@ -1,0 +1,28 @@
+{
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
+    "viewOptions": {
+      "controlButtons": "play_reset"
+    }
+  },
+  "components": [
+    {
+      "type": "button",
+      "id": "ke-shading-on",
+      "text": "Set KE Shading on",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "ke-shading-off",
+      "text": "Set KE Shading off",
+      "action": ""
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "ke-shading-on",
+      "ke-shading-off"
+    ]
+  }
+}
