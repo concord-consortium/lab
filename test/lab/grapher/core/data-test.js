@@ -1,15 +1,23 @@
 require("../../../env");
-require("../../../../server/public/lab/lab.grapher");
 
-var vows = require("vows"),
+var requirejs = require('requirejs'),
+    config    = require('../../../requirejs-config'),
+    vows = require("vows"),
     assert = require("assert");
+
+// Use Lab RequireJS configuration.
+requirejs.config(config.labConfig);
+
+requirejs([
+  'grapher/core/data'
+], function (data) {
 
 var suite = vows.describe("grapher.data");
 
 suite.addBatch({
   "data": {
     topic: function() {
-      return grapher.data;
+      return data;
     },
     "creates dataset from array": function(data) {
       assert.deepEqual(data([1, 0, 3, 4]), [{x:1, y:0}, {x:3, y:4}]);
@@ -21,3 +29,4 @@ suite.addBatch({
 });
 
 suite.export(module);
+});

@@ -1,20 +1,29 @@
 require("../../../env");
-require("../../../../server/public/lab/lab.grapher");
 
-var vows = require("vows"),
+var requirejs = require('requirejs'),
+    config    = require('../../../requirejs-config'),
+    vows = require("vows"),
     assert = require("assert");
 
-var suite = vows.describe("grapher.colors");
+// Use Lab RequireJS configuration.
+requirejs.config(config.labConfig);
 
-suite.addBatch({
-  "colors": {
-    topic: function() {
-      return grapher.colors;
-    },
-    "returns six char hex color string from name": function(colors) {
-      assert.equal(colors('bright_red'), '#ff0000');
+requirejs([
+  'grapher/core/colors'
+], function (colors) {
+
+  var suite = vows.describe("grapher.colors");
+
+  suite.addBatch({
+    "colors": {
+      topic: function() {
+        return colors;
+      },
+      "returns six char hex color string from name": function(colors) {
+        assert.equal(colors('bright_red'), '#ff0000');
+      }
     }
-  }
-});
+  });
 
-suite.export(module);
+  suite.export(module);
+});
