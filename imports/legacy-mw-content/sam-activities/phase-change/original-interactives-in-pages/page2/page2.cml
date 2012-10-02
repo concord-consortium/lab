@@ -45,7 +45,7 @@
 
 <content start="2" end="3">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>gas1.mml</resource><menubar>false</menubar></component></content>
+<resource>page2$0.mml</resource><menubar>false</menubar></component></content>
 
 <content start="3" end="4">
 <foreground>255 0 0</foreground></content>
@@ -55,7 +55,6 @@
 
 </paragraph>
 <paragraph start="5" end="18">
-<Alignment>1</Alignment>
 <content start="5" end="8">
 </content>
 
@@ -92,7 +91,6 @@ run;</script>
 <component><class>org.concord.modeler.PageCheckBox</class>
 <title>Show Interactions</title>
 <tooltip>Dotted lines represent forces that exist between neighbors</tooltip>
-<selected>true</selected>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
 <action>Show van der Waals interactions</action>
@@ -137,7 +135,6 @@ show selectionhalo off;</script>
 
 </paragraph>
 <paragraph start="18" end="19">
-<Alignment>1</Alignment>
 </paragraph>
 </section>
 </document>

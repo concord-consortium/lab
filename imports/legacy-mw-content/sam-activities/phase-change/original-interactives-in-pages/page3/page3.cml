@@ -26,7 +26,7 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body face=&quot;Verdana&quot; marginwidth=&quot;8&quot; marginheight=&quot;4&quot;&gt;
+  &lt;body face=&quot;Verdana&quot; marginheight=&quot;4&quot; marginwidth=&quot;8&quot;&gt;
     Here are models of two liquids. One liquid is made of atoms only. The 
     other is made of triatomic molecules. Run the models and watch them 
     carefully.
@@ -45,7 +45,7 @@
 
 <content start="2" end="3">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>liquid1.mml</resource><menubar>false</menubar></component></content>
+<resource>page3$0.mml</resource><menubar>false</menubar></component></content>
 
 <content start="3" end="4">
 </content>
@@ -80,7 +80,6 @@ run;</script>
 <component><class>org.concord.modeler.PageCheckBox</class>
 <title>Show Attractions</title>
 <tooltip>Dotted lines represent forces that exist between neighbors</tooltip>
-<selected>true</selected>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
 <action>Show van der Waals interactions</action>

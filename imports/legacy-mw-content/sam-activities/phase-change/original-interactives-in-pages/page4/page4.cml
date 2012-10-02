@@ -25,7 +25,7 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body face=&quot;Verdana&quot; marginwidth=&quot;8&quot; marginheight=&quot;8&quot;&gt;
+  &lt;body face=&quot;Verdana&quot; marginheight=&quot;8&quot; marginwidth=&quot;8&quot;&gt;
     &lt;b&gt;Instructions:&lt;/b&gt; Here are models of two types of solids. Run the 
     models and watch them carefully.
 
@@ -41,7 +41,7 @@
 
 <content start="2" end="3">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>solid1.mml</resource><menubar>false</menubar></component></content>
+<resource>page4$0.mml</resource><menubar>false</menubar></component></content>
 
 <content start="3" end="4">
 </content>
@@ -89,7 +89,6 @@ run;</script>
 <component><class>org.concord.modeler.PageCheckBox</class>
 <title>Show interactions</title>
 <tooltip>Show interactions</tooltip>
-<selected>true</selected>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
 <action>Show van der Waals interactions</action>
@@ -100,7 +99,6 @@ run;</script>
 
 </paragraph>
 <paragraph start="13" end="16">
-<Alignment>1</Alignment>
 <content start="13" end="14">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Randomly pick an atom and show its trajectory</title>
@@ -140,7 +138,6 @@ show selectionhalo off;</script>
 
 </paragraph>
 <paragraph start="16" end="17">
-<Alignment>1</Alignment>
 </paragraph>
 </section>
 </document>
