@@ -12,6 +12,7 @@ R_OPTIMIZER = ./node_modules/.bin/r.js
 
 LAB_SRC_FILES := $(shell find src/lab -type f -print)
 ENERGY2D_SRC_FILES := $(shell find src/lab/energy2d -type f -print)
+GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f -print)
 MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
 
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
@@ -400,17 +401,8 @@ server/public/lab/lab.version.js:
 server/public/lab/lab.energy2d.js: $(ENERGY2D_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/energy2d/energy2d.build.js
 
-server/public/lab/lab.grapher.js: \
-	src/lab/start.js \
-	src/lab/grapher/core/core.js \
-	src/lab/grapher/core/data.js \
-	src/lab/grapher/core/axis.js \
-	src/lab/grapher/core/indexed-data.js \
-	src/lab/grapher/core/graph.js \
-	src/lab/grapher/core/real-time-graph.js \
-	src/lab/grapher/core/colors.js \
-	src/lab/grapher/core/register-keyboard-handler.js \
-	src/lab/end.js
+server/public/lab/lab.grapher.js: $(GRAPHER_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/grapher/grapher.build.js
 
 server/public/lab/lab.md2d.js: \
 	$(MD_ENGINE_JS_FILES)
