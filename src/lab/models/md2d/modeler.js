@@ -16,7 +16,7 @@ modeler.model = function(initialProperties) {
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
       temperature_control,
-      chargeShading, showVDWLines,VDWLinesRatio,
+      keShading, chargeShading, showVDWLines,VDWLinesRatio,
       showClock,
       lennard_jones_forces, coulomb_forces,
       gravitationalField = false,
@@ -96,6 +96,7 @@ modeler.model = function(initialProperties) {
         lennard_jones_forces  : true,
         temperature_control   : true,
         gravitationalField    : false,
+        keShading             : false,
         chargeShading         : false,
         showVDWLines          : false,
         showClock             : true,
@@ -723,6 +724,7 @@ modeler.model = function(initialProperties) {
     temperature_control = properties.temperature_control;
     temperature         = properties.temperature;
     modelSampleRate     = properties.modelSampleRate,
+    keShading           = properties.keShading,
     chargeShading       = properties.chargeShading;
     showVDWLines        = properties.showVDWLines;
     VDWLinesRatio       = properties.VDWLinesRatio;

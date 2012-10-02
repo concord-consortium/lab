@@ -31,6 +31,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       temperature,
       width,
       height,
+      keShading,
       chargeShading,
       showVDWLines,
       radialBonds,
@@ -107,6 +108,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
       temperature         = modelConfig.temperature;
       width               = modelConfig.width;
       height              = modelConfig.height;
+      keShading           = modelConfig.keShading;
       chargeShading       = modelConfig.chargeShading;
       showVDWLines        = modelConfig.showVDWLines;
       showClock           = modelConfig.showClock;
@@ -132,6 +134,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
           temperature_control : temperature_control,
           width               : width,
           height              : height,
+          keShading           : keShading,
           chargeShading       : chargeShading,
           showVDWLines        : showVDWLines,
           showClock           : showClock,
@@ -171,6 +174,7 @@ controllers.modelController = function(moleculeViewId, modelConfig, playerConfig
         fit_to_parent:           fit_to_parent,
         xmax:                    width,
         ymax:                    height,
+        keShading:               keShading,
         chargeShading:           chargeShading,
         enableAtomTooltips:      enableAtomTooltips,
         images:                  images,
