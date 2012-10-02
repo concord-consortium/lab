@@ -3,6 +3,7 @@
   "width": 7.2,
   "height": 4.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,

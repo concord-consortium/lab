@@ -130,6 +130,11 @@ parseMML = (mmlString) ->
     chargeShading  = viewChargeShadingProps.find("[property=chargeShading] boolean").text()
 
     ###
+      Find the KE Shading
+    ###
+    keShading = parseBoolean($mml("[property=shading] boolean").text(), false)
+
+    ###
       Show VDW Lines?
     ###
     showVDWLines = parseBoolean($mml("[property=showVDWLines] boolean").text(), false)
@@ -410,6 +415,7 @@ parseMML = (mmlString) ->
       width               : width
       height              : height
       viscosity           : viscosity
+      keShading           : keShading
       chargeShading       : !!chargeShading
       showVDWLines        : !!showVDWLines
       VDWLinesRatio       : VDWLinesRatio
