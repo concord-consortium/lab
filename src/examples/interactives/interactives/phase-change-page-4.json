@@ -8,43 +8,14 @@
   "components": [
     {
       "type": "button",
-      "id": "show-interactions",
-      "text": "Show Interaction Checkbox (na)",
-      "action": ";"
-    },
-    {
-      "type": "pulldown",
-      "id": "liquid-pulldown",
-      "options": [
-        {
-          "text": "Solid 1",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page4/solid1.json"
-        },
-        {
-          "text": "Solid 2",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page4/solid2.json"
-        }
-      ]
-    },
-    {
-      "type": "button",
-      "id": "pick-random-and-trajectory",
-      "text": "Randomly pick an atom and show its trajectory (na)",
-      "action": ";"
-    },
-    {
-      "type": "button",
-      "id": "mark-atom-near-center",
-      "text": "Mark atoms near center (na)",
-      "action": ";"
+      "id": "mark-two-atoms",
+      "text": "Mark two atoms",
+      "action": "markAtoms(randomAtoms(2));"
     }
   ],
   "layout": {
     "bottom": [
-      "show-interactions",
-      "solid-pulldown",
-      "pick-random-and-trajectory",
-      "mark-atom-near-center"
+      "mark-two-atoms"
     ]
   }
 }
