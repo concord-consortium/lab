@@ -239,8 +239,18 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
   */
   function exposeScriptingAPI() {
     window.script = $.extend({}, scriptingAPI);
-    window.script.run = function(source) {
-      return evalInScriptContext(source)();
+    window.script.run = function(source, args) {
+      var prop,
+          argNames = [],
+          argVals = [];
+
+      for (prop in args) {
+        if (args.hasOwnProperty(prop)) {
+          argNames.push(prop);
+          argVals.push(args[prop]);
+        }
+      }
+      return makeFunctionInScriptContext.apply(null, argNames.concat(source)).apply(null, argVals);
     };
   }
 
@@ -294,18 +304,25 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
     on accidentally exposed functionality, before we've made decisions about
     what scripting API and semantics we want to support.
   */
-  function evalInScriptContext(scriptSource) {
+  function makeFunctionInScriptContext() {
     var prop,
         whitelistedNames,
         whitelistedObjectsArray,
-        safedScriptSource;
+        scriptFunctionMakerSource,
+
+        // First n-1 arguments to this function are the names to bind to the arguments that are
+        // passed to the function we make
+        argumentsToScript = Array.prototype.slice.call(arguments, 0, arguments.length - 1),
+
+        // Last argument is the function body of the script, as a string
+        scriptSource = arguments[arguments.length - 1];
 
     // Construct parallel arrays of the keys and values of the scripting API
     whitelistedNames = [];
     whitelistedObjectsArray = [];
 
     for (prop in scriptingAPI) {
-      if (scriptingAPI.hasOwnProperty(prop)) {
+      if (scriptingAPI.hasOwnProperty(prop) && argumentsToScript.indexOf(prop) < 0) {
         whitelistedNames.push(prop);
         whitelistedObjectsArray.push( scriptingAPI[prop] );
       }
@@ -313,7 +330,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
 
     // Make sure the script runs in strict mode, so undeclared variables don't
     // escape to the toplevel scope.
-    safedScriptSource =  "'use strict';" + scriptSource;
+    scriptFunctionMakerSource =  "return function(" + argumentsToScript.join(',') + ") { 'use strict';" + scriptSource + "};";
 
     // This function runs the script with all globals shadowed:
     return function() {
@@ -345,20 +362,20 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
       // (Additionally, remember that functions created by the Function
       // constructor execute in the global context -- they don't capture names
       // from the scope they were created in.)
-      scriptArgumentList = whitelistedNames.concat(blacklistedNames).concat(safedScriptSource);
+      scriptArgumentList = whitelistedNames.concat(blacklistedNames).concat(scriptFunctionMakerSource);
 
       // TODO: obvious optimization: cache the result of the Function constructor
       // and don't reinvoke the Function constructor unless the blacklistedNames array
       // has changed. Create a unit test for this scenario.
       try {
-        safedScript = Function.apply(null, scriptArgumentList);
+        safedScript = Function.apply(null, scriptArgumentList).apply(null, whitelistedObjectsArray);
       } catch (e) {
         alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
       }
 
       try {
         // invoke the script, passing only enough arguments for the whitelisted names
-        return safedScript.apply(null, whitelistedObjectsArray);
+        return safedScript.apply(null, Array.prototype.slice.call(arguments));
       } catch (e) {
         alert("Error running script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
       }
@@ -384,7 +401,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
 
     scriptStr = getStringFromArray(component.action);
 
-    $button.click(evalInScriptContext(scriptStr));
+    $button.click(makeFunctionInScriptContext(scriptStr));
 
     return { elem: $button };
   }
@@ -417,7 +434,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
 
       if (action){
         scriptStr = getStringFromArray(action);
-        evalInScriptContext(scriptStr)();
+        makeFunctionInScriptContext(scriptStr)();
       } else if (component.options[index].loadModel){
         model.stop();
         loadModel(component.options[index].loadModel);
@@ -731,7 +748,7 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
       playerConfig.interactiveUrl = modelUrl;
 
       if (onLoad != null) {
-        onLoadScripts.push( evalInScriptContext( getStringFromArray(onLoad) ) );
+        onLoadScripts.push( makeFunctionInScriptContext( getStringFromArray(onLoad) ) );
       }
     }
 
