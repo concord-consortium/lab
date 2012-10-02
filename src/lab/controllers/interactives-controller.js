@@ -189,6 +189,10 @@ controllers.interactivesController = function(interactive, viewSelector, modelLo
             return props;
           },
 
+          setElementProperties: function setElementProperties(i, props) {
+            return model.setElementProperties(i, props);
+          },
+
           pe: function pe() {
             return model.pe();
           },
