@@ -1041,7 +1041,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("pointer-events", "none")
             .text(function(d) {
                 var charge = d[model_md2d_results_CHARGE];
-                if (chargeShadingMode) {
+                // Draw +/- signs also when KE shading is enabled.
+                if (chargeShadingMode || keShadingMode) {
                     if (charge > 0){
                         return  "+";
                     } else if (charge < 0){
