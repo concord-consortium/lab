@@ -827,6 +827,10 @@ modeler.model = function(initialProperties) {
     return engine.getTotalMass();
   };
 
+  model.getAtomKineticEnergy = function(i) {
+    return engine.getAtomKineticEnergy(i);
+  };
+
   /**
     Attempts to add an 0-velocity atom to a random location. Returns false if after 10 tries it
     can't find a location. (Intended to be exposed as a script API method.)

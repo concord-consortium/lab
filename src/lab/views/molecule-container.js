@@ -1,3 +1,4 @@
+/*globals d3 */
 // ------------------------------------------------------------
 //
 //   Molecule Container
@@ -37,6 +38,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       blue_gradient,
       green_gradient,
       gradientNameForElement,
+      // Set of gradients used for Kinetic Energy Shading.
+      gradientNameForKELevel = [],
+      // Number of gradients used for Kinetic Energy Shading.
+      KE_SHADING_STEPS = 25,
       atom_tooltip_on,
       offset_left, offset_top,
       particle, label, labelEnter, tail,
@@ -57,6 +62,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       vdwPairs,
       chargeShadingMode,
       chargeShadingChars = ["+", "-", ""],
+      keShadingMode,
       drawVdwLines,
       getRadialBonds,
       imageProp,
@@ -410,6 +416,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("xlink:href", "../../resources/heatbath.gif");
 
       model.addPropertiesListener(["temperature_control"], updateHeatBath);
+      model.addPropertiesListener(["keShading", "chargeShading"], updateParticleShading);
 
       molecule_div = d3.select("#viz").append("div")
           .attr("class", "tooltip")
@@ -574,6 +581,18 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     }
 
     function create_gradients() {
+          // Scale used for Kinetic Energy Shading gradients.
+      var medColorScale = d3.scale.linear()
+            .interpolate(d3.interpolateRgb)
+            .range(["#F2F2F2", "#FF8080"]),
+          // Scale used for Kinetic Energy Shading gradients.
+          darkColorScale = d3.scale.linear()
+            .interpolate(d3.interpolateRgb)
+            .range(["#A4A4A4", "#FF2020"]),
+          gradientName,
+          KELevel,
+          i;
+
       image_container_below = vis.append("g");
       image_container_below.attr("class", "image_container_below");
       VDWLines_container = vis.append("g");
@@ -600,6 +619,18 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", gradient_container);
       create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", gradient_container);
       create_radial_gradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", gradient_container);
+
+      // Kinetic Energy Shading gradients
+      for (i = 0; i < KE_SHADING_STEPS; i++) {
+        gradientName = "ke-shading-" + i;
+        KELevel = i / KE_SHADING_STEPS;
+        create_radial_gradient(gradientName, "#FFFFFF", medColorScale(KELevel),
+          darkColorScale(KELevel), gradient_container);
+        // Different from gradientNameForElement names convention, but
+        // it allows to avoid constructing final string during each update
+        // of atom shading.
+        gradientNameForKELevel[i] = "url('#" + gradientName + "')";
+      }
 
       gradientNameForElement = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
       bondColorArray = ["#538f2f", "#aa2bb1", "#2cb6af", "#b3831c", "#7781c2", "#ee7171"];
@@ -630,6 +661,33 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("offset", "100%");
     }
 
+    // Returns gradient appropriate for a given atom.
+    // d - atom data.
+    function getParticleGradient(d) {
+        var ke, keIndex, charge;
+
+        if (d[model_md2d_results_MARKED]) return "url(#mark-grad)";
+
+        if (keShadingMode) {
+          ke  = model.getAtomKineticEnergy(d[0]),
+          // Convert Kinetic Energy to [0, 1] range
+          // using empirically tested transformations.
+          // K.E. shading should be similar to the classic MW K.E. shading.
+          keIndex = Math.min(5 * ke, 1);
+
+          return gradientNameForKELevel[Math.round(keIndex * (KE_SHADING_STEPS - 1))];
+        }
+
+        if (chargeShadingMode) {
+          charge = d[model_md2d_results_CHARGE];
+
+          if (charge === 0) return "url(#neutral-grad)";
+          return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
+        }
+
+        return "url('#"+gradientNameForElement[d[model_md2d_results_ELEMENT] % 4]+"')";
+    }
+
       /*Function : updateHeatBath
        *
        * Controls display of Heat Bath icon based on value of temperature_control property for model.
@@ -643,6 +701,16 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
               d3.select("#heat_bath").style("display","none");
           }
       }
+
+    // Update shading modes and redraws particles.
+    function updateParticleShading() {
+      // Update model properties related to shading.
+      chargeShadingMode = model.get("chargeShading");
+      keShadingMode = model.get("keShading");
+
+      // Update style of each particle.
+      particle.style("fill", getParticleGradient);
+    }
 
     function updateMoleculeRadius() {
       vis.selectAll("circle").data(results).attr("r",  function(d) { return x(d[model_md2d_results_RADIUS]); });
@@ -663,20 +731,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           })
           .style({
             "fill-opacity": function(d) { return d[model_md2d_results_VISIBLE]; },
-            "fill": function(d) {
-              var charge;
-
-              if (d[model_md2d_results_MARKED]) return "url(#mark-grad)";
-
-              if (chargeShadingMode) {
-                charge = d[model_md2d_results_CHARGE];
-
-                if (charge === 0) return "url(#neutral-grad)";
-                return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
-              }
-
-              return "url('#"+gradientNameForElement[d[model_md2d_results_ELEMENT] % 4]+"')";
-            }
+            "fill": getParticleGradient
           })
           .on("mousedown", molecule_mousedown)
           .on("mouseover", molecule_mouseover)
@@ -969,6 +1024,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       var textShrinkFactor = results.length <= 100 ? 1 : 0.9;
 
       chargeShadingMode = model.get("chargeShading");
+      keShadingMode = model.get("keShading");
       drawVdwLines = model.get("showVDWLines");
 
       gradient_container.selectAll("circle").remove();
@@ -1006,7 +1062,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
             .attr("pointer-events", "none")
             .text(function(d) {
                 var charge = d[model_md2d_results_CHARGE];
-                if (chargeShadingMode) {
+                // Draw +/- signs also when KE shading is enabled.
+                if (chargeShadingMode || keShadingMode) {
                     if (charge > 0){
                         return  "+";
                     } else if (charge < 0){
@@ -1127,6 +1184,8 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       }
     }
 
+    // TODO: this function name seems to be inappropriate to
+    // its content.
     function update_molecule_positions() {
       // update model time display
       if (options.showClock) {
@@ -1137,6 +1196,12 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         "cx": function(d) { return x(d[model_md2d_results_X]); },
         "cy": function(d) { return y(d[model_md2d_results_Y]); }
       });
+
+      // When Kinetic Energy Shading is enabled, update style of atoms
+      // during each frame.
+      if (keShadingMode) {
+        particle.style("fill", getParticleGradient);
+      }
 
       label.attr("transform", function(d, i) {
         return "translate(" + x(d[model_md2d_results_X]) + "," + y(d[model_md2d_results_Y]) + ")";
