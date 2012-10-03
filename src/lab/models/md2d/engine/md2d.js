@@ -1871,6 +1871,14 @@ exports.createEngine = function() {
       return bondedAtoms;
     },
 
+    /**
+      Returns Kinetic Energy of single atom i, in eV.
+    */
+    getAtomKineticEnergy: function(i) {
+      var KEinMWUnits = 0.5 * mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+      return constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+    },
+
     setViscosity: function(v) {
       viscosity = v;
     }
