@@ -22,6 +22,12 @@ var ROOT = "/examples",
       $aboutPane = $("#about-pane"),
       $aboutPaneClose = $('#about-pane-close'),
 
+      $shareLink = $("#share-link"),
+      $sharePane = $("#share-pane"),
+      $sharePaneClose = $('#share-pane-close'),
+      $shareIframeContent = $("#share-iframe-content"),
+      $shareSelectIframeSize = $("#share-select-iframe-size"),
+
       $editorExtrasItem = $("editor.extras-item"),
       $showEditor = $("#show-editor"),
       $editorContent = $("#editor-content"),
@@ -56,10 +62,10 @@ var ROOT = "/examples",
       viewType;
 
   if (!document.location.hash) {
-    if ($selectInteractive) {
+    if ($selectInteractive.length > 0) {
       selectInteractiveHandler();
     } else {
-      document.location.hash = '#interactives/heat-and-cool-example.json';
+      document.location.hash = '#interactives/oil-and-water-shake.json';
     }
   }
 
@@ -89,13 +95,8 @@ var ROOT = "/examples",
 
   $.when(interactiveDefinitionLoaded, windowLoaded).done(function() {
     controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
-    $aboutLink.click(function() {
-      $aboutPane.show(100);
-    });
-    $aboutPaneClose.click(function() {
-      $aboutPane.hide(100);
-    });
-    $aboutPane.draggable();
+    setupAboutPane();
+    setupSharePane();
   });
 
   $(window).bind('hashchange', function() {
@@ -103,6 +104,58 @@ var ROOT = "/examples",
       location.reload();
     }
   });
+
+  function setupAboutPane() {
+    $aboutLink.click(function() {
+      $aboutPane.show(100);
+    });
+    $aboutPaneClose.click(function() {
+      $aboutPane.hide(100);
+    });
+    $aboutPane.draggable();
+    $("#about-pane-title").text("About: " + interactive.title);
+  }
+
+  function setupSharePane() {
+    var embeddablePath = location.pathname.replace(/\/[^/]+$/, "/embeddable.html"),
+        embeddableUrl = document.location.origin + embeddablePath + hash;
+    $shareLink.click(function() {
+      $sharePane.show(100);
+    });
+    $sharePaneClose.click(function() {
+      $sharePane.hide(100);
+    });
+    $shareSelectIframeSize.change(updateShareIframeContent);
+    $sharePane.draggable();
+    $("#share-pane-title").text("Share: " + interactive.title);
+    $("#share-embeddable-link").attr("href", embeddableUrl);
+    $('#share-embeddable-link-content').val(embeddableUrl);
+    updateShareIframeContent();
+
+    function updateShareIframeContent() {
+      var actualWidth, actualHeight,
+          sizeAttributes = "",
+          sizeChoice = $shareSelectIframeSize.val();
+
+      actualWidth = document.width;
+      actualHeight = document.height;
+      switch(sizeChoice) {
+        case "actual":
+        sizeAttributes = 'width="' + actualWidth + 'px" height="' + actualHeight + 'px"';
+        break;
+        case "small":
+        sizeAttributes = 'width="' + Math.floor(actualWidth * 0.7) + 'px" height="' + Math.floor(actualHeight  * 0.7) + 'px"';
+        break;
+        case "medium":
+        sizeAttributes = 'width="' + actualWidth + 'px" height="' + actualHeight + 'px"';
+        break;
+        case "large":
+        sizeAttributes = 'width="' + Math.floor(actualWidth * 1.5) + 'px" height="' + Math.floor(actualHeight  * 1.5) + 'px"';
+        break;
+      }
+      $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no"scrolling="no" src="' + embeddableUrl + '"></iframe>');
+    }
+  }
 
   //
   // The following functions are only used when rendering the

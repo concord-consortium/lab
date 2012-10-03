@@ -303,17 +303,17 @@ div.tooltip
   &:hover
     opacity: 1.0
 
-#about
+#about, #share
   float: right
   vertical-align: middle
   display: table-cell
   margin-right: 2em
   opacity: 0.5
   &:hover
-    cursor: help
+    cursor: pointer
     opacity: 1.0
 
-#about-pane
+#about-pane, #share-pane
   display: none
   position: absolute
   border-radius: 0.5em
@@ -321,15 +321,28 @@ div.tooltip
   width: 60%
   height: auto
   min-height: 15em
-  max-height: 60%
+  max-height: 80%
   top: 3em
   right: 2em
   z-index: 100
   margin: 0.5em
   padding: 0em
   background-color: #efefef
+  p
+    margin-top: 0.5em
+    margin-bottom: 0.5em
+  textarea
+    margin-top: 0.5em
+    margin-bottom: 0.5em
+    padding: 0.5em
+    width: 100%
+    height: auto
+  textarea#share-iframe-content
+    height: 5em
 
-#about-pane-banner
+
+
+#about-pane-banner, #share-pane-banner
   width: 100%
   display: table
   opacity: 0.7
@@ -344,7 +357,7 @@ div.tooltip
     &:hover
       font-weight: bold
 
-#about-pane-close
+#about-pane-close, #share-pane-close
   float: right
   vertical-align: middle
   display: table-cell
@@ -352,5 +365,5 @@ div.tooltip
   &:hover
     font-weight: bold
 
-#about-content
+#about-content, #share-content
   margin: 0.5em 1em 1em 1em
