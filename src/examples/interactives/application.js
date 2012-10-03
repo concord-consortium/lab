@@ -131,7 +131,6 @@ var ROOT = "/examples",
     $("#share-embeddable-link").attr("href", embeddableUrl);
     $('#share-embeddable-link-content').val(embeddableUrl);
     updateShareIframeContent();
-
     function updateShareIframeContent() {
       var actualWidth, actualHeight,
           sizeAttributes = "",
@@ -155,6 +154,8 @@ var ROOT = "/examples",
       }
       $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no"scrolling="no" src="' + embeddableUrl + '"></iframe>');
     }
+    setupSharePane.resize = updateShareIframeContent;
+    layout.addView('setupSharePane', setupSharePane);
   }
 
   //
