@@ -1,4 +1,6 @@
 {
+  "title": "Testing Image Layers",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/potential-tests/image-layers/image-layers$0.json",
     "viewOptions": {

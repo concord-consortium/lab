@@ -1,4 +1,6 @@
 {
+  "title": "Simple KE Shading",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
     "viewOptions": {

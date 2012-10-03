@@ -1,4 +1,6 @@
 {
+  "title": "Testing: Only One Atom",
+  "about": "Interactive example",
   "model": {
     "url": "models/one-atom.json",
     "viewOptions": {

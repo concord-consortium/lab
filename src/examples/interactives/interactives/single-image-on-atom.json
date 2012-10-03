@@ -1,4 +1,6 @@
 {
+  "title": "Testing: Single Image on an Atom",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/potential-tests/single-image-on-atom/single-image-on-atom$0.json",
     "viewOptions": {

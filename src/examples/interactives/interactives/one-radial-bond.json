@@ -1,4 +1,6 @@
 {
+  "title": "Testing: One Radial Bond",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/one-radial-bond$0.json",
     "viewOptions": {

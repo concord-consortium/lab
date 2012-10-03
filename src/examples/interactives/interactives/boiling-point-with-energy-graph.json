@@ -1,4 +1,6 @@
 {
+  "title": "Boiling Point with Energy Graph",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/boiling-point-with-clock$0.json",
     "viewOptions": {

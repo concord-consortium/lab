@@ -1,4 +1,6 @@
 {
+  "title": "Testing: Multiple Attached Images on Multiple Atoms",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/potential-tests/multiple-images-on-multiple-atoms/multiple-images-on-multiple-atoms$0.json",
     "viewOptions": {

@@ -1,4 +1,6 @@
 {
+  "title": "Recycling: Tire Forces",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/visual/Recycling/tireforcesimple$0.json",
     "viewOptions": {

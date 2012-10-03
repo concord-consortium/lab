@@ -1,4 +1,6 @@
 {
+  "title": "Testing: Visible and Ivisible Atoms",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/visible-and-invisible$0.json",
     "viewOptions": {

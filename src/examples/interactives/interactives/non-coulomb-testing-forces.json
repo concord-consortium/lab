@@ -1,4 +1,6 @@
 {
+  "title": "Testing: Non-Coulomb Forces",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/potential-tests/static-non-coulomb-test/static-non-coulomb-test$0.json",
     "viewOptions": {

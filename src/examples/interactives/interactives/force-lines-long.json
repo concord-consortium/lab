@@ -1,4 +1,6 @@
 {
+  "title": "Testing Force Lines Long",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/force-lines-long$0.json",
     "viewOptions": {

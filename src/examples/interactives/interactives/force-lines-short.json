@@ -1,4 +1,6 @@
 {
+  "title": "Testing Force Lines Short",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/force-lines-short$0.json",
     "viewOptions": {

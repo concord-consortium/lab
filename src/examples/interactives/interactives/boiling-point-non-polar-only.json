@@ -1,4 +1,6 @@
 {
+  "title": "Boiling Point Non-Polar Only",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/potential-tests/boiling-point-non-polar-only/boiling-point-non-polar-only$0.json",
     "viewOptions": {

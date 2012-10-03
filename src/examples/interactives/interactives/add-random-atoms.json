@@ -1,4 +1,6 @@
 {
+  "title": "Add Random Atom",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/potential-tests/three-atoms-three-elements/three-atoms-three-elements$0.json",
     "viewOptions": {

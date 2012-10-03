@@ -1,4 +1,6 @@
 {
+  "title": "Testing Force Lines Medium",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/force-lines-medium$0.json",
     "viewOptions": {

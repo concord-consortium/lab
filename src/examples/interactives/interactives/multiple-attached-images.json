@@ -1,4 +1,6 @@
 {
+  "title": "Testing: Multiple Attached Images",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/potential-tests/multiple-attached-images/multiple-attached-images$0.json",
     "viewOptions": {

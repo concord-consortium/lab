@@ -1,4 +1,6 @@
 {
+  "title": "Testing: Select one of Two Models using Pulldown Menu",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page2/gas1.json",
     "viewOptions": {

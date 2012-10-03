@@ -1,4 +1,6 @@
 {
+  "title": "Testing Gravitational Field",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/gravitational-field-test$0.json",
     "viewOptions": {

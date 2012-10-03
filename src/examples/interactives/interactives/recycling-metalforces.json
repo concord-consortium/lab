@@ -1,4 +1,6 @@
 {
+  "title": "Recycling: Metal Forces",
+  "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/visual/Recycling/metalforcesimple$0.json",
     "viewOptions": {
