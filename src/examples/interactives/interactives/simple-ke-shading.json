@@ -10,13 +10,13 @@
       "type": "button",
       "id": "ke-shading-on",
       "text": "Set KE Shading on",
-      "action": ""
+      "action": "set({keShading: true})"
     },
     {
       "type": "button",
       "id": "ke-shading-off",
       "text": "Set KE Shading off",
-      "action": ""
+      "action": "set({keShading: false})"
     }
   ],
   "layout": {
