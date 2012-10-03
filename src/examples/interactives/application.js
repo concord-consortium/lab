@@ -149,7 +149,7 @@ var ROOT = "/examples",
         sizeAttributes = 'width="' + Math.floor(actualWidth * 1.5) + 'px" height="' + Math.floor(actualHeight  * 1.5) + 'px"';
         break;
       }
-      $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no"scrolling="no" src="' + embeddableUrl + '"></iframe>');
+      $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no "scrolling="no" src="' + embeddableUrl + '"></iframe>');
     }
     setupSharePane.resize = updateShareIframeContent;
     layout.addView('setupSharePane', setupSharePane);
