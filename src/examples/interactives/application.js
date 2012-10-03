@@ -142,13 +142,10 @@ var ROOT = "/examples",
         case "actual":
         sizeAttributes = 'width="' + actualWidth + 'px" height="' + actualHeight + 'px"';
         break;
-        case "small":
+        case "smaller":
         sizeAttributes = 'width="' + Math.floor(actualWidth * 0.7) + 'px" height="' + Math.floor(actualHeight  * 0.7) + 'px"';
         break;
-        case "medium":
-        sizeAttributes = 'width="' + actualWidth + 'px" height="' + actualHeight + 'px"';
-        break;
-        case "large":
+        case "larger":
         sizeAttributes = 'width="' + Math.floor(actualWidth * 1.5) + 'px" height="' + Math.floor(actualHeight  * 1.5) + 'px"';
         break;
       }

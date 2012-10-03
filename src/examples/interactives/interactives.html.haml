@@ -193,10 +193,9 @@
         #share-iframe-form
           Select size:
           %select#share-select-iframe-size
+            %option{:value => "smaller"} smaller
             %option{:value => "actual", :selected => true} actual
-            %option{:value => "small"} small
-            %option{:value => "medium"} medium
-            %option{:value => "large"} large
+            %option{:value => "larger"} larger
           %textarea#share-iframe-content
 
     %script{:src => "../../lab/lab.js", :type => "text/javascript"}
