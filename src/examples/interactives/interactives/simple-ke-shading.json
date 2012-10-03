@@ -17,12 +17,19 @@
       "id": "ke-shading-off",
       "text": "Set KE Shading off",
       "action": "set({keShading: false})"
+    },
+    {
+      "type": "button",
+      "id": "mark-two-atoms",
+      "text": "Mark two atoms",
+      "action": "markAtoms(randomAtoms(2));"
     }
   ],
   "layout": {
     "bottom": [
       "ke-shading-on",
-      "ke-shading-off"
+      "ke-shading-off",
+      "mark-two-atoms"
     ]
   }
 }
