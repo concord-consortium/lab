@@ -416,6 +416,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("xlink:href", "../../resources/heatbath.gif");
 
       model.addPropertiesListener(["temperature_control"], updateHeatBath);
+      model.addPropertiesListener(["keShading", "chargeShading"], updateParticleShading);
 
       molecule_div = d3.select("#viz").append("div")
           .attr("class", "tooltip")
@@ -660,6 +661,33 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           .attr("offset", "100%");
     }
 
+    // Returns gradient appropriate for a given atom.
+    // d - atom data.
+    function getParticleGradient(d) {
+        var ke, keIndex, charge;
+
+        if (d[model_md2d_results_MARKED]) return "url(#mark-grad)";
+
+        if (keShadingMode) {
+          ke  = model.getAtomKineticEnergy(d[0]),
+          // Convert Kinetic Energy to [0, 1] range
+          // using empirically tested transformations.
+          // K.E. shading should be similar to the classic MW K.E. shading.
+          keIndex = Math.min(5 * ke, 1);
+
+          return gradientNameForKELevel[Math.round(keIndex * (KE_SHADING_STEPS - 1))];
+        }
+
+        if (chargeShadingMode) {
+          charge = d[model_md2d_results_CHARGE];
+
+          if (charge === 0) return "url(#neutral-grad)";
+          return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
+        }
+
+        return "url('#"+gradientNameForElement[d[model_md2d_results_ELEMENT] % 4]+"')";
+    }
+
       /*Function : updateHeatBath
        *
        * Controls display of Heat Bath icon based on value of temperature_control property for model.
@@ -673,6 +701,16 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
               d3.select("#heat_bath").style("display","none");
           }
       }
+
+    // Update shading modes and redraws particles.
+    function updateParticleShading() {
+      // Update model properties related to shading.
+      chargeShadingMode = model.get("chargeShading");
+      keShadingMode = model.get("keShading");
+
+      // Update style of each particle.
+      particle.style("fill", getParticleGradient);
+    }
 
     function updateMoleculeRadius() {
       vis.selectAll("circle").data(results).attr("r",  function(d) { return x(d[model_md2d_results_RADIUS]); });
@@ -693,24 +731,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
           })
           .style({
             "fill-opacity": function(d) { return d[model_md2d_results_VISIBLE]; },
-            "fill": function(d) {
-              var charge;
-
-              if (d[model_md2d_results_MARKED]) return "url(#mark-grad)";
-
-              if (keShadingMode) {
-                return getKEShadingGradient(d);
-              }
-
-              if (chargeShadingMode) {
-                charge = d[model_md2d_results_CHARGE];
-
-                if (charge === 0) return "url(#neutral-grad)";
-                return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
-              }
-
-              return "url('#"+gradientNameForElement[d[model_md2d_results_ELEMENT] % 4]+"')";
-            }
+            "fill": getParticleGradient
           })
           .on("mousedown", molecule_mousedown)
           .on("mouseover", molecule_mouseover)
@@ -1176,9 +1197,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         "cy": function(d) { return y(d[model_md2d_results_Y]); }
       });
 
-      // When Kinetic Energy Shading is enabled, update style of atoms.
+      // When Kinetic Energy Shading is enabled, update style of atoms
+      // during each frame.
       if (keShadingMode) {
-        particle.style("fill", getKEShadingGradient);
+        particle.style("fill", getParticleGradient);
       }
 
       label.attr("transform", function(d, i) {
@@ -1188,18 +1210,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
       if (atom_tooltip_on === 0 || atom_tooltip_on > 0) {
         render_atom_tooltip(atom_tooltip_on);
       }
-    }
-
-    // Returns gradient representing Kinetic Energy level for given atom.
-    // d - atom data.
-    function getKEShadingGradient(d) {
-      var ke  = model.getAtomKineticEnergy(d[0]),
-          // Convert Kinetic Energy to [0, 1] range
-          // using empirically tested transformations.
-          // K.E. shading should be similar to the classic MW K.E. shading.
-          keIndex = Math.min(5 * ke, 1);
-
-      return gradientNameForKELevel[Math.round(keIndex * (KE_SHADING_STEPS - 1))];
     }
 
     function update_radial_bonds() {
