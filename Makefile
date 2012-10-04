@@ -445,13 +445,6 @@ server/public/lab/lab.views.js: \
 	src/lab/views/views.js \
 	src/lab/views/applet-container.js \
 	src/lab/views/molecule-container.js \
-	src/lab/views/potential-chart.js \
-	src/lab/views/speed-distribution-histogram.js \
-	src/lab/views/benchmarks.js \
-	src/lab/views/datatable.js \
-	src/lab/views/temperature-control.js \
-	src/lab/views/display-stats.js \
-	src/lab/views/heat-cool-buttons.js \
 	src/lab/end.js
 
 server/public/lab/lab.controllers.js: \
