@@ -33,7 +33,7 @@
     "cheerio": "0.x",
     "jade": "*",
     "mkdirp": "0.3.2",
-    "requirejs": "*"
+    "requirejs": "2.0.6"
   },
   "directories": {
     "bin": "node-bin"
