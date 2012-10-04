@@ -41,16 +41,16 @@ layout.getDisplayProperties = function(obj) {
       height: document.body.clientHeight
   };
   obj.window = {
-      width:  document.width,
-      height: document.height
+      width:  $(window).width(),
+      height: $(window).height()
   };
   obj.page = {
       width: layout.getPageWidth(),
       height: layout.getPageHeight()
   };
-  obj.screen_factor_width  = obj.page.width / layout.canonical.width;
-  obj.screen_factor_height = obj.page.height / layout.canonical.height;
-  obj.emsize = Math.min(obj.screen_factor_width * 1.1, obj.screen_factor_height);
+  obj.screen_factor_width  = obj.window.width / layout.canonical.width;
+  obj.screen_factor_height = obj.window.height / layout.canonical.height;
+  obj.emsize = Math.max(obj.screen_factor_width * 1.1, obj.screen_factor_height);
   return obj;
 };
 
