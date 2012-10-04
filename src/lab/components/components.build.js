@@ -28,12 +28,12 @@
   optimize: 'none',
   // Protect global namespace.
   wrap: {
-        start: "(function() {",
-        // Manual require a the end of the file instead of such option:
-        // insertRequire: ['components/public-api'],
-        // It is a workaround, as Almond by default simulates async call
-        // of require (sets timeout). Last argument (true) forces sync call instead.
-        // TODO: ask a question on requirejs group about this issue.
-        end: "require(['components/public-api'], undefined, undefined, true); }());"
-    }
+    start: "(function() {",
+    // Manual require at the end of the file instead of such option:
+    // insertRequire: ['components/public-api'],
+    // It is a workaround, as Almond by default simulates async call
+    // of require (sets timeout). Last argument (true) forces sync call instead.
+    // TODO: ask a question on requirejs group about this issue.
+    end: "require(['components/public-api'], undefined, undefined, true); }());"
+  }
 })
