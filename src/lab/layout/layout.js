@@ -261,7 +261,6 @@ layout.setupScreen = function(event) {
     $('input[type=checkbox]').css(layout.transform, 'scale(' + layout.checkbox_factor + ',' + layout.checkbox_factor + ')');
   }
 
-  layout.setupTemperature(model);
   if (layout.temperature_control_checkbox) {
     model.addPropertiesListener(["temperature_control"], layout.temperatureControlUpdate);
     layout.temperatureControlUpdate();
