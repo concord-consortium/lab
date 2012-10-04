@@ -34,10 +34,10 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
 8.  [Modernizr](https://github.com/Modernizr/Modernizr): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 9.  [science.js](https://github.com/jasondavies/science.js): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-10.  [sizzle](): triple-licensed under the [MIT](http://www.opensource.org/licenses/MIT),
+10. [sizzle](): triple-licensed under the [MIT](http://www.opensource.org/licenses/MIT),
     [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause), and
     [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-11.  [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
+11. [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
 12. [dsp.js](https://github.com/corbanbrook/dsp.js): [MIT](http://www.opensource.org/licenses/MIT)
 13. [lightgl.js](https://github.com/evanw/lightgl.js): [MIT](http://www.opensource.org/licenses/MIT)
 14. [requirejs](https://github.com/jrburke/requirejs): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
@@ -48,7 +48,8 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 17. [domReady](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-18. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
+18. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)
+19. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
     Codemirror2 includes a number of modules from third parties. All of the modules are licensed under either the MIT or BSD
     license except for the following which are excluded during the Make process where resources from `src/vendor/` are
     generated and copied to `server/public/vendor/`.
@@ -123,7 +124,7 @@ Here is a list of files in the `java` directory, their authorship and licenses:
 
     Wilensky, U. (1999). NetLogo. http://ccl.northwestern.edu/netlogo/.
     Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
-    
+
     And distributed here [github.com/NetLogo/NetLogo](https://github.com/NetLogo/NetLogo)
 
 5.  The rest of the files in the `src/jnlp/org/concord/` directory were created by Concord Consortium and are all
@@ -149,7 +150,7 @@ are listed below:
 
     Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
     Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-    
+
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 2. [MIT](http://www.opensource.org/licenses/MIT)
@@ -165,7 +166,7 @@ are listed below:
 3. [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
 
     Concord Consortium Lab Copyright (c) 2012, Concord Consortium
-   
+
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
@@ -177,7 +178,7 @@ are listed below:
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-   
+
     Apache License
     Version 2.0, January 2004
     http://www.apache.org/licenses/

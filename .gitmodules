@@ -55,3 +55,6 @@
 [submodule "src/vendor/tinysort"]
 	path = src/vendor/tinysort
 	url = git://github.com/Sjeiti/TinySort.git
+[submodule "src/vendor/coffee-script"]
+	path = src/vendor/coffee-script
+	url = git://github.com/jashkenas/coffee-script.git
