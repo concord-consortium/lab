@@ -25,26 +25,30 @@ layout.setupInteractiveLayout = function setupInteractiveLayout() {
       h,
       modelWidth,
       modelHeight,
+      modelDimensions,
       modelAspectRatio,
       modelWidthFactor,
       viewLists,
       viewSizes = {},
       viewType,
-      containerWidth = $('#viz').width();
+      containerWidth = $('#content').width(),
+      containerHeight = $('#content').height(),
+      emsize;
 
   // grab 'viewLists' from legacy layout system
   viewLists = layout.views;
 
-  w = $(viewLists.moleculeContainers[0].outerNode).width();
-  h = $(viewLists.moleculeContainers[0].outerNode).height();
+  modelDimensions = viewLists.moleculeContainers[0].scale();
+  w = modelDimensions[2];
+  h = modelDimensions[3];
   modelAspectRatio = w / h;
 
-  // Model container should take up 45% of parent container width...
-  modelWidthFactor = 0.45;
+  // Model container should take up 60% of parent container width...
+  modelWidthFactor = 0.60;
 
   // unless there needs to be room for energy graph *and* thermometer
-  if (viewLists.energyGraphs && viewLists.thermometers) {
-    modelWidthFactor = 0.35;
+  if (viewLists.energyGraphs) {
+    modelWidthFactor = 0.50;
   }
 
   modelWidth = containerWidth * modelWidthFactor;
@@ -54,7 +58,7 @@ layout.setupInteractiveLayout = function setupInteractiveLayout() {
   viewSizes.moleculeContainers = [modelWidth, modelHeight];
 
   if (viewLists.energyGraphs) {
-    viewSizes.energyGraphs = [containerWidth * 0.40, modelHeight];
+    viewSizes.energyGraphs = [containerWidth * 0.45, modelHeight];
   }
 
   for (viewType in viewLists) {
@@ -69,19 +73,22 @@ layout.setupInteractiveLayout = function setupInteractiveLayout() {
     }
   }
 
-  if (layout.views.thermometers) {
-    setThermometerHeight(layout.views.thermometers[0], modelHeight * 0.8);
-  }
+  // if (layout.views.thermometers) {
+  //   setThermometerHeight(layout.views.thermometers[0], modelHeight * 0.8);
+  // }
+
+  emsize = containerHeight / 800 * 1.2;
+  $('#content').css('font-size', emsize + 'em');
 
   // FIXME this is a temporary hack ... put in layout code instead of memorializing it in the CSS,
   // which doesn't tend to get reviewed as closely.
 
   // Push the molecule-container down so its top lines up with the energy graph's top exactly.
   // After brief investigation, couldn't tell for sure why the energyGraph container was being pushed down ~5px by the browser...
-  if (viewLists.energyGraphs) {
-    $(viewLists.moleculeContainers[0].outerNode).css('top', 5);
-  }
+  // if (viewLists.energyGraphs) {
+  //   $(viewLists.moleculeContainers[0].outerNode).css('top', 5);
+  // }
 
   // For non-embedded interactives, #viz doesn't need a min-height (content will push it down)
-  $('#viz.top').css('min-height', 0);
+  // $('#viz.top').css('min-height', 0);
 };
