@@ -1,20 +1,29 @@
 require("../../env");
-require("../../../server/public/lab/lab.benchmark");
 
-var vows = require("vows"),
+var requirejs = require('requirejs'),
+    config    = require('../../requirejs-config'),
+    vows = require("vows"),
     assert = require("assert");
 
-var suite = vows.describe("lab.benchmark");
+// Use Lab RequireJS configuration.
+requirejs.config(config.labConfig);
 
-suite.addBatch({
-  "version": {
-    topic: function() {
-      return benchmark.version;
-    },
-    "reports version": function(version) {
-      assert.equal(version, "0.0.1");
+requirejs([
+  'benchmark/benchmark'
+], function (benchmark) {
+
+  var suite = vows.describe("lab.benchmark");
+
+  suite.addBatch({
+    "version": {
+      topic: function() {
+        return benchmark.version;
+      },
+      "reports version": function(version) {
+        assert.equal(version, "0.0.1");
+      }
     }
-  }
-});
+  });
 
-suite.export(module);
+  suite.export(module);
+});

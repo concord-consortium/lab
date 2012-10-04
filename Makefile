@@ -14,6 +14,7 @@ LAB_SRC_FILES := $(shell find src/lab -type f -print)
 ENERGY2D_SRC_FILES := $(shell find src/lab/energy2d -type f -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f -print)
 COMPONENTS_SRC_FILES := $(shell find src/lab/components -type f -print)
+BENCHMARK_SRC_FILES := $(shell find src/lab/benchmark -type f -print)
 MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
 
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
@@ -415,10 +416,8 @@ server/public/lab/lab.molecules.js: \
 	src/lab/models/md2d/modeler.js \
 	src/lab/end.js
 
-server/public/lab/lab.benchmark.js: \
-	src/lab/start.js \
-	src/lab/benchmark/benchmark.js \
-	src/lab/end.js
+server/public/lab/lab.benchmark.js: $(BENCHMARK_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/benchmark/benchmark.build.js
 
 server/public/lab/lab.layout.js: \
 	src/lab/start.js \

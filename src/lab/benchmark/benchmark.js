@@ -1,3 +1,4 @@
+/*globals define: false, d3: false */
 // ------------------------------------------------------------
 //
 // Simple benchmark runner and results generator
@@ -66,190 +67,193 @@
 //     padding: 0 1em; }
 //
 
-benchmark = {};
-benchmark = { version: "0.0.1" };
+define(function (require) {
 
-benchmark.what_browser = function() {
-  return what_browser();
-};
+  var version = "0.0.1",
+      windows_platform_token = {
+        "Windows NT 6.2": "Windows 8",
+        "Windows NT 6.1": "Windows 7",
+        "Windows NT 6.0": "Windows Vista",
+        "Windows NT 5.2": "Windows Server 2003; Windows XP x64 Edition",
+        "Windows NT 5.1": "Windows XP",
+        "Windows NT 5.01": "Windows 2000, Service Pack 1 (SP1)",
+        "Windows NT 5.0": "Windows 2000",
+        "Windows NT 4.0": "Microsoft Windows NT 4.0"
+      },
+      windows_feature_token = {
+        "WOW64":       "64/32",
+        "Win64; IA64": "64",
+        "Win64; x64":  "64"
+      };
 
-benchmark.run = function(benchmarks_table, benchmarks_to_run) {
-  run(benchmarks_table, benchmarks_to_run);
-};
+  function what_browser() {
+    var chromematch  = / (Chrome)\/(.*?) /,
+        ffmatch      = / (Firefox)\/([0123456789ab.]+)/,
+        safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
+        iematch      = / (MSIE) ([0123456789.]+);/,
+        operamatch   = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
+        iphonematch  = /.+?\((iPhone); CPU.+?OS .+?Version\/([0123456789._]+)/,
+        ipadmatch    = /.+?\((iPad); CPU.+?OS .+?Version\/([0123456789._]+)/,
+        ipodmatch    = /.+?\((iPod); CPU (iPhone.+?) like.+?Version\/([0123456789ab._]+)/,
+        androidchromematch = /.+?(Android) ([0123456789.]+).+?; (.+?)\).+? CrMo\/([0123456789.]+)/,
+        androidmatch = /.+?(Android) ([0123456789ab.]+).+?; (.+?)\)/,
+        match;
 
-windows_platform_token = {
-  "Windows NT 6.2":	"Windows 8",
-  "Windows NT 6.1":	"Windows 7",
-  "Windows NT 6.0":	"Windows Vista",
-  "Windows NT 5.2":	"Windows Server 2003; Windows XP x64 Edition",
-  "Windows NT 5.1":	"Windows XP",
-  "Windows NT 5.01": "Windows 2000, Service Pack 1 (SP1)",
-  "Windows NT 5.0":	"Windows 2000",
-  "Windows NT 4.0":	"Microsoft Windows NT 4.0"
-};
-
-windows_feature_token = {
-  "WOW64":       "64/32",
-  "Win64; IA64": "64",
-  "Win64; x64":  "64"
-};
-
-function what_browser() {
-  var chromematch  = / (Chrome)\/(.*?) /,
-      ffmatch      = / (Firefox)\/([0123456789ab.]+)/,
-      safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-      iematch      = / (MSIE) ([0123456789.]+);/,
-      operamatch   = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
-      iphonematch  = /.+?\((iPhone); CPU.+?OS .+?Version\/([0123456789._]+)/,
-      ipadmatch    = /.+?\((iPad); CPU.+?OS .+?Version\/([0123456789._]+)/,
-      ipodmatch    = /.+?\((iPod); CPU (iPhone.+?) like.+?Version\/([0123456789ab._]+)/,
-      androidchromematch = /.+?(Android) ([0123456789.]+).+?; (.+?)\).+? CrMo\/([0123456789.]+)/,
-      androidmatch = /.+?(Android) ([0123456789ab.]+).+?; (.+?)\)/,
-      match;
-
-  match = navigator.userAgent.match(chromematch);
-  if (match && match[1]) {
-    return {
-      browser: match[1],
-      version: match[2],
-      oscpu: os_platform()
-    };
-  }
-  match = navigator.userAgent.match(ffmatch);
-  if (match && match[1]) {
-    var buildID = navigator.buildID,
-        buildDate = "";
-    if (buildID && buildID.length >= 8) {
-      buildDate = "(" + buildID.slice(0,4) + "-" + buildID.slice(4,6) + "-" + buildID.slice(6,8) + ")";
+    match = navigator.userAgent.match(chromematch);
+    if (match && match[1]) {
+      return {
+        browser: match[1],
+        version: match[2],
+        oscpu: os_platform()
+      };
+    }
+    match = navigator.userAgent.match(ffmatch);
+    if (match && match[1]) {
+      var buildID = navigator.buildID,
+          buildDate = "";
+      if (buildID && buildID.length >= 8) {
+        buildDate = "(" + buildID.slice(0,4) + "-" + buildID.slice(4,6) + "-" + buildID.slice(6,8) + ")";
+      }
+      return {
+        browser: match[1],
+        version: match[2] + ' ' + buildDate,
+        oscpu: os_platform()
+      };
+    }
+    match = navigator.userAgent.match(androidchromematch);
+    if (match && match[1]) {
+      return {
+        browser: "Chrome",
+        version: match[4],
+        oscpu: match[1] + "/" + match[2] + "/" + match[3]
+      };
+    }
+    match = navigator.userAgent.match(androidmatch);
+    if (match && match[1]) {
+      return {
+        browser: "Android",
+        version: match[2],
+        oscpu: match[1] + "/" + match[2] + "/" + match[3]
+      };
+    }
+    match = navigator.userAgent.match(safarimatch);
+    if (match && match[3]) {
+      return {
+        browser: match[3],
+        version: match[2] + '/' + match[1],
+        oscpu: os_platform()
+      };
+    }
+    match = navigator.userAgent.match(iematch);
+    if (match && match[1]) {
+      var platform_match = navigator.userAgent.match(/\(.*?(Windows.+?); (.+?)[;)].*/);
+      return {
+        browser: match[1],
+        version: match[2],
+        oscpu: windows_platform_token[platform_match[1]] + "/" + navigator.cpuClass + "/" + navigator.platform
+      };
+    }
+    match = navigator.userAgent.match(operamatch);
+    if (match && match[1]) {
+      return {
+        browser: match[1],
+        version: match[2],
+        oscpu: os_platform()
+      };
+    }
+    match = navigator.userAgent.match(iphonematch);
+    if (match && match[1]) {
+      return {
+        browser: "Mobile Safari",
+        version: match[2],
+        oscpu: match[1] + "/" + "iOS" + "/" + match[2]
+      };
+    }
+    match = navigator.userAgent.match(ipadmatch);
+    if (match && match[1]) {
+      return {
+        browser: "Mobile Safari",
+        version: match[2],
+        oscpu: match[1] + "/" + "iOS" + "/" + match[2]
+      };
+    }
+    match = navigator.userAgent.match(ipodmatch);
+    if (match && match[1]) {
+      return {
+        browser: "Mobile Safari",
+        version: match[3],
+        oscpu: match[1] + "/" + "iOS" + "/" + match[2]
+      };
     }
     return {
-      browser: match[1],
-      version: match[2] + ' ' + buildDate,
-      oscpu: os_platform()
+      browser: "",
+      version: navigator.appVersion,
+      oscpu:   ""
     };
   }
-  match = navigator.userAgent.match(androidchromematch);
-  if (match && match[1]) {
-    return {
-      browser: "Chrome",
-      version: match[4],
-      oscpu: match[1] + "/" + match[2] + "/" + match[3]
-    };
+
+  function os_platform() {
+    var match = navigator.userAgent.match(/\((.+?)[;)] (.+?)[;)].*/);
+    if (!match) { return "na"; }
+    if (match[1] === "Macintosh") {
+      return match[2];
+    } else if (match[1].match(/^Windows/)) {
+      var arch  = windows_feature_token[match[2]] || "32",
+          token = navigator.userAgent.match(/\(.*?(Windows NT.+?)[;)]/);
+      return windows_platform_token[token[1]] + "/" + arch;
+    }
   }
-  match = navigator.userAgent.match(androidmatch);
-  if (match && match[1]) {
-    return {
-      browser: "Android",
-      version: match[2],
-      oscpu: match[1] + "/" + match[2] + "/" + match[3]
-    };
+
+  function run(benchmarks_table, benchmarks_to_run) {
+    var i = 0, b, browser_info, results = [];
+    benchmarks_table.style.display = "";
+
+    var empty_table = benchmarks_table.getElementsByTagName("tr").length === 0;
+    function add_row() {
+      return benchmarks_table.appendChild(document.createElement("tr"));
+    }
+
+    var title_row = add_row(),
+        results_row = add_row();
+
+    function add_data(row, content, el) {
+      var cell;
+      el = el || "td";
+      cell = row.appendChild(document.createElement(el));
+      if (typeof content === "string" && content.slice(0,1) === "<") {
+        cell.innerHTML = content;
+      } else {
+        cell.textContent = content;
+      }
+    }
+
+    function add_column(title, data) {
+      if (empty_table) { add_data(title_row, title, "th"); }
+      add_data(results_row, data);
+    }
+
+    browser_info = what_browser();
+    add_column("browser", browser_info.browser);
+    add_column("version", browser_info.version);
+    add_column("cpu/os", browser_info.oscpu);
+
+    var formatter = d3.time.format("%Y-%m-%d %H:%M");
+    add_column("date", formatter(new Date()));
+
+    for (i = 0; i < benchmarks_to_run.length; i++) {
+      b = benchmarks_to_run[i];
+      add_column(b.name, b.run());
+    }
   }
-  match = navigator.userAgent.match(safarimatch);
-  if (match && match[3]) {
-    return {
-      browser: match[3],
-      version: match[2] + '/' + match[1],
-      oscpu: os_platform()
-    };
-  }
-  match = navigator.userAgent.match(iematch);
-  if (match && match[1]) {
-    var platform_match = navigator.userAgent.match(/\(.*?(Windows.+?); (.+?)[;)].*/);
-    return {
-      browser: match[1],
-      version: match[2],
-      oscpu: windows_platform_token[platform_match[1]] + "/" + navigator.cpuClass + "/" + navigator.platform
-    };
-  }
-  match = navigator.userAgent.match(operamatch);
-  if (match && match[1]) {
-    return {
-      browser: match[1],
-      version: match[2],
-      oscpu: os_platform()
-    };
-  }
-  match = navigator.userAgent.match(iphonematch);
-  if (match && match[1]) {
-    return {
-      browser: "Mobile Safari",
-      version: match[2],
-      oscpu: match[1] + "/" + "iOS" + "/" + match[2]
-    };
-  }
-  match = navigator.userAgent.match(ipadmatch);
-  if (match && match[1]) {
-    return {
-      browser: "Mobile Safari",
-      version: match[2],
-      oscpu: match[1] + "/" + "iOS" + "/" + match[2]
-    };
-  }
-  match = navigator.userAgent.match(ipodmatch);
-  if (match && match[1]) {
-    return {
-      browser: "Mobile Safari",
-      version: match[3],
-      oscpu: match[1] + "/" + "iOS" + "/" + match[2]
-    };
-  }
+
+  // Return Public API.
   return {
-    browser: "",
-    version: navigator.appVersion,
-    oscpu:   ""
-  };
-}
-
-function os_platform() {
-  var match = navigator.userAgent.match(/\((.+?)[;)] (.+?)[;)].*/);
-  if (!match) { return "na"; }
-  if (match[1] === "Macintosh") {
-    return match[2];
-  } else if (match[1].match(/^Windows/)) {
-    var arch  = windows_feature_token[match[2]] || "32",
-        token = navigator.userAgent.match(/\(.*?(Windows NT.+?)[;)]/);
-    return windows_platform_token[token[1]] + "/" + arch;
-  }
-}
-
-function run(benchmarks_table, benchmarks_to_run) {
-  var i = 0, b, browser_info, results = [];
-  benchmarks_table.style.display = "";
-
-  var empty_table = benchmarks_table.getElementsByTagName("tr").length === 0;
-  function add_row() {
-    return benchmarks_table.appendChild(document.createElement("tr"));
-  }
-
-  var title_row = add_row(),
-      results_row = add_row();
-
-  function add_data(row, content, el) {
-    var cell;
-    el = el || "td";
-    cell = row.appendChild(document.createElement(el))
-    if (typeof content === "string" && content.slice(0,1) === "<") {
-      cell.innerHTML = content;
-    } else {
-      cell.textContent = content;
+    version: version,
+    what_browser: function() {
+      return what_browser();
+    },
+    run: function(benchmarks_table, benchmarks_to_run) {
+      run(benchmarks_table, benchmarks_to_run);
     }
-  }
-
-  function add_column(title, data) {
-    if (empty_table) { add_data(title_row, title, "th"); }
-    add_data(results_row, data);
-  }
-
-  browser_info = what_browser();
-  add_column("browser", browser_info.browser);
-  add_column("version", browser_info.version);
-  add_column("cpu/os", browser_info.oscpu);
-
-  var formatter = d3.time.format("%Y-%m-%d %H:%M");
-  add_column("date", formatter(new Date()));
-
-  for (i = 0; i < benchmarks_to_run.length; i++) {
-    b = benchmarks_to_run[i];
-    add_column(b.name, b.run());
-  }
-}
+  };
+});
