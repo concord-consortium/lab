@@ -15,6 +15,7 @@ ENERGY2D_SRC_FILES := $(shell find src/lab/energy2d -type f -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f -print)
 COMPONENTS_SRC_FILES := $(shell find src/lab/components -type f -print)
 BENCHMARK_SRC_FILES := $(shell find src/lab/benchmark -type f -print)
+LAYOUT_SRC_FILES := $(shell find src/lab/layout -type f -print)
 MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
 
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
@@ -44,7 +45,6 @@ LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
-	server/public/lab/lab.interactive-layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.energy2d.js \
@@ -390,7 +390,6 @@ server/public/lab/lab.js: \
 	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
-	server/public/lab/lab.interactive-layout.js \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.components.js \
   server/public/lab/lab.controllers.js \
@@ -419,16 +418,8 @@ server/public/lab/lab.molecules.js: \
 server/public/lab/lab.benchmark.js: $(BENCHMARK_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/benchmark/benchmark.build.js
 
-server/public/lab/lab.layout.js: \
-	src/lab/start.js \
-	src/lab/layout/layout.js \
-	src/lab/layout/fullscreen.js \
-	src/lab/end.js
-
-server/public/lab/lab.interactive-layout.js: \
-	src/lab/start.js \
-	src/lab/layout/interactive-layout.js \
-	src/lab/end.js
+server/public/lab/lab.layout.js: $(LAYOUT_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/layout/layout.build.js
 
 server/public/lab/lab.views.js: \
 	src/lab/start.js \
