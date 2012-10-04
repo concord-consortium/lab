@@ -367,28 +367,41 @@ layout.setupScreen = function(event) {
         modelDimensions,
         modelAspectRatio,
         modelWidthFactor,
+        modelPaddingFactor,
+        modelHeightFactor = 0.85,
         viewSizes = {},
-        containerWidth = layout.display.page.width,
-        containerHeight = layout.display.page.height;
+        containerWidth = $(window).width(),
+        containerHeight = $(window).height(),
+        mcWidth = $('#molecule-container').width();
 
     modelDimensions = viewLists.moleculeContainers[0].scale();
-    modelAspectRatio = modelDimensions[0] / modelDimensions[1];
-    modelWidthFactor = 0.90;
+    modelAspectRatio = modelDimensions[2] / modelDimensions[3];
+    modelWidthFactor = 0.85;
+
+    modelWidthPaddingFactor = modelDimensions[0]/modelDimensions[2] - 1.05;
+    modelWidthFactor -= modelWidthPaddingFactor;
+
+    modelHeightPaddingFactor = modelDimensions[1]/modelDimensions[3] - 1.05;
+    modelHeightFactor -= modelHeightPaddingFactor;
     if (viewLists.thermometers) {
-      modelWidthFactor -= 0.30;
+      modelWidthFactor -= 0.05;
     }
     if (viewLists.energyGraphs) {
-      modelWidthFactor -= 0.45;
+      modelWidthFactor -= 0.35;
+    }
+    viewLists.bottomItems = $('#bottom').children().length;
+    if (viewLists.bottomItems) {
+      modelHeightFactor -= ($('#bottom').height() * 0.0025);
     }
     modelWidth = containerWidth * modelWidthFactor;
     modelHeight = modelWidth / modelAspectRatio;
-    if (modelHeight > containerHeight * 0.70) {
-      modelHeight = containerHeight * 0.70;
+    if (modelHeight > containerHeight * modelHeightFactor) {
+      modelHeight = containerHeight * modelHeightFactor;
       modelWidth = modelHeight * modelAspectRatio;
     }
     viewSizes.moleculeContainers = [modelWidth, modelHeight];
     if (viewLists.energyGraphs) {
-      viewSizes.energyGraphs = [containerWidth * 0.35, modelHeight * 1.2];
+      viewSizes.energyGraphs = [containerWidth * 0.40, modelHeight * 1.2];
     }
     for (viewType in viewLists) {
       if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {

@@ -7,17 +7,15 @@ $directory: "../.."
 
 #content
   width: 100%
+  display: block
 
 #viz.top
   width: 100%
   padding: 0.5em 1.0em
 
 #interactive-container
-  @include outer-container
-  @include fill-parent
 
 #top
-  @include span-columns(12)
 
 .interactive-top
   position: relative
@@ -26,7 +24,7 @@ $directory: "../.."
 //   @include span-columns(6 of 12, inline-block)
 
 #right
-  @include span-columns(2 of 12, inline-block)
+  display: inline-block
   .label
     margin: 0.5em auto 0.5em auto
     text-align: center

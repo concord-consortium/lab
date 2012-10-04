@@ -134,10 +134,18 @@ var ROOT = "/examples",
     function updateShareIframeContent() {
       var actualWidth, actualHeight,
           sizeAttributes = "",
-          sizeChoice = $shareSelectIframeSize.val();
+          sizeChoice = $shareSelectIframeSize.val(),
+          notEmbedded = $selectInteractive.length,
+          $content;
 
-      actualWidth = document.width;
-      actualHeight = document.height;
+      if (notEmbedded) {
+        $content = $("#content");
+        actualWidth = $content.width();
+        actualHeight = $content.height();
+      } else {
+        actualWidth = document.width;
+        actualHeight = document.height;
+      }
       switch(sizeChoice) {
         case "actual":
         sizeAttributes = 'width="' + actualWidth + 'px" height="' + actualHeight + 'px"';
