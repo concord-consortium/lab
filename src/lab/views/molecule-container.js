@@ -343,6 +343,10 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     scale();
 
+    // Subscribe for model events.
+    model.addPropertiesListener(["temperature_control"], updateHeatBath);
+    model.addPropertiesListener(["keShading", "chargeShading"], updateParticleShading);
+
     // create container, or update properties if it already exists
     if (vis === undefined) {
 
@@ -414,9 +418,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
         .attr("width", "3%")
         .attr("height", "3%")
         .attr("xlink:href", "../../resources/heatbath.gif");
-
-      model.addPropertiesListener(["temperature_control"], updateHeatBath);
-      model.addPropertiesListener(["keShading", "chargeShading"], updateParticleShading);
 
       molecule_div = d3.select("#viz").append("div")
           .attr("class", "tooltip")
