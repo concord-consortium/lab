@@ -3,7 +3,7 @@
   [
     {
       "path": ".",
-      "folder_exclude_patterns": [".sass-cache", ".bundle", "bin", "node_modules", "lab.*", "server/public", "src/vendor", "java"],
+      "folder_exclude_patterns": [".sass-cache", ".bundle", "bin", "node_modules", "lab.*", "server/public", "src/vendor", "java", "attic"],
       "file_exclude_patterns": ["Gemfile.lock", "*.sublime-workspace"]
     }
   ],
