@@ -345,7 +345,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
 
     // Subscribe for model events.
     model.addPropertiesListener(["temperature_control"], updateHeatBath);
-    model.addPropertiesListener(["keShading", "chargeShading"], updateParticleShading);
+    model.addPropertiesListener(["keShading", "chargeShading"], setup_drawables);
 
     // create container, or update properties if it already exists
     if (vis === undefined) {
@@ -702,16 +702,6 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
               d3.select("#heat_bath").style("display","none");
           }
       }
-
-    // Update shading modes and redraws particles.
-    function updateParticleShading() {
-      // Update model properties related to shading.
-      chargeShadingMode = model.get("chargeShading");
-      keShadingMode = model.get("keShading");
-
-      // Update style of each particle.
-      particle.style("fill", getParticleGradient);
-    }
 
     function updateMoleculeRadius() {
       vis.selectAll("circle").data(results).attr("r",  function(d) { return x(d[model_md2d_results_RADIUS]); });
