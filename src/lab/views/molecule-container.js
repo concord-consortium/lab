@@ -271,7 +271,7 @@ Lab.moleculeContainer = layout.moleculeContainer = function(e, options) {
     downscaley = y.copy();
     downy = Math.NaN;
     dragged = null;
-    return [cx, cy];
+    return [cx, cy, width, height];
   }
 
   function modelTimeLabel() {
