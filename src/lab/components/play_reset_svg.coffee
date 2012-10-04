@@ -1,21 +1,22 @@
 ############################################
 # The player UI
 ############################################
-class PlayResetComponentSVG extends ModelControllerComponent
+define (require) ->
+  # Dependencies.
+  ModelControllerComponent = require 'cs!components/model_controller_component'
 
-  setup_buttons: ->
+  class PlayResetComponentSVG extends ModelControllerComponent
 
-    @reset = this.make_button
-      action: 'reset'
-      offset: 0
+    setup_buttons: ->
 
-    @play = this.make_button
-      action: 'play'
-      offset: 1
+      @reset = this.make_button
+        action: 'reset'
+        offset: 0
 
-    @stop = this.make_button
-      action: 'stop'
-      offset: 1
+      @play = this.make_button
+        action: 'play'
+        offset: 1
 
-root = exports ? this
-root.PlayResetComponentSVG = PlayResetComponentSVG
+      @stop = this.make_button
+        action: 'stop'
+        offset: 1

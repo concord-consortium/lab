@@ -1,17 +1,18 @@
 ############################################
 # The player UI
 ############################################
-class PlayOnlyComponentSVG extends ModelControllerComponent
+define (require) ->
+  # Dependencies.
+  ModelControllerComponent = require 'cs!components/model_controller_component'
 
-  setup_buttons: ->
+  class PlayOnlyComponentSVG extends ModelControllerComponent
 
-    @play = this.make_button
-      action: 'play'
-      offset: 0
+    setup_buttons: ->
 
-    @stop = this.make_button
-      action: 'stop'
-      offset: 0
+      @play = this.make_button
+        action: 'play'
+        offset: 0
 
-root = exports ? this
-root.PlayOnlyComponentSVG = PlayOnlyComponentSVG
+      @stop = this.make_button
+        action: 'stop'
+        offset: 0
