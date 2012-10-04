@@ -58,3 +58,6 @@
 [submodule "src/vendor/coffee-script"]
 	path = src/vendor/coffee-script
 	url = git://github.com/jashkenas/coffee-script.git
+[submodule "src/vendor/require-cs"]
+	path = src/vendor/require-cs
+	url = git://github.com/jrburke/require-cs.git
