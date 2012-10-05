@@ -1,9 +1,10 @@
-/*globals define, d3, layout */
+/*globals define, d3 */
 
 define(function (require) {
   // Dependencies.
   var axis                    = require('grapher/core/axis'),
-      registerKeyboardHandler = require('grapher/core/register-keyboard-handler');
+      registerKeyboardHandler = require('grapher/core/register-keyboard-handler'),
+      layout                  = require('layout/layout');
 
   return function Graph(elem, options, message) {
     var cx = 600, cy = 300,

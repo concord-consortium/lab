@@ -1,6 +1,4 @@
-/*jslint indent: 2 */
 /*globals define: false, window: false */
-//main.js
 
 define(function (require) {
   'use strict';
@@ -13,9 +11,9 @@ define(function (require) {
     indexedData             = require('grapher/core/indexed-data'),
     registerKeyboardHandler = require('grapher/core/register-keyboard-handler'),
     // Object to be returned.
-    public_api;
+    publicAPI;
 
-  public_api = {
+  publicAPI = {
     version: "0.0.1",
     // ==========================================================================
     // Add functions and modules which should belong to this API:
@@ -38,8 +36,8 @@ define(function (require) {
 
   // Finally, export API to global namespace.
   // Export this API under 'grapher' name.
-  window.grapher = public_api;
+  window.grapher = publicAPI;
 
-  // Also return public_api as module.
-  return public_api;
+  // Also return publicAPI as module.
+  return publicAPI;
 });
