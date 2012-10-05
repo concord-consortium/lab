@@ -76,6 +76,10 @@ var ROOT = "/examples",
       if (typeof results === 'string') results = JSON.parse(results);
       interactive = results;
 
+      if (interactive.title) {
+        document.title = interactive.title;
+      }
+
       // Use the presense of selectInteractive as a proxy indicating that the
       // rest of the elements on the non-iframe-embeddable version of the page
       // are present and should be setup.
