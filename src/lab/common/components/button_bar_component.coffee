@@ -1,6 +1,6 @@
 define (require) ->
   # Dependencies.
-  Component = require 'cs!components/component'
+  Component = require 'cs!common/components/component'
 
   class ButtonBarComponent extends Component
 

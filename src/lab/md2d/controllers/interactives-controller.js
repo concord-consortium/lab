@@ -2,10 +2,10 @@
 /*jshint eqnull: true boss: true */
 define(function (require) {
   // Dependencies.
-  var ModelController        = require('controllers/model-controller'),
-      Thermometer            = require('cs!components/thermometer'),
-      layout                 = require('layout/layout'),
-      setupInteractiveLayout = require('layout/interactive-layout');
+  var ModelController        = require('md2d/controllers/model-controller'),
+      Thermometer            = require('cs!common/components/thermometer'),
+      layout                 = require('common/layout/layout'),
+      setupInteractiveLayout = require('common/layout/interactive-layout');
 
   return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
 

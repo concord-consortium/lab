@@ -1,6 +1,6 @@
 define (require) ->
   # Dependencies.
-  ButtonBarComponent = require 'cs!components/button_bar_component'
+  ButtonBarComponent = require 'cs!common/components/button_bar_component'
 
   class PlaybackBarComponent extends ButtonBarComponent
 

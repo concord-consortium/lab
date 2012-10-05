@@ -10,13 +10,13 @@
 /*jslint onevar: true*/
 define(function (require) {
   // Dependencies.
-  var Model             = require('models/md2d/modeler'),
-      AppletContainer   = require('views/applet-container'),
-      MoleculeContainer = require('views/molecule-container'),
-      ModelPlayer       = require('cs!components/model_player'),
-      Thermometer       = require('cs!components/thermometer'),
-      SliderComponent   = require('cs!components/slider'),
-      layout            = require('layout/layout');
+  var Model             = require('md2d/models/modeler'),
+      AppletContainer   = require('md2d/views/applet-container'),
+      MoleculeContainer = require('md2d/views/molecule-container'),
+      ModelPlayer       = require('cs!common/components/model_player'),
+      Thermometer       = require('cs!common/components/thermometer'),
+      SliderComponent   = require('cs!common/components/slider'),
+      layout            = require('common/layout/layout');
 
   return function compareModelsController(molecule_view_id, appletContainerID, modelSelectID, modelConfig, playerConfig) {
 

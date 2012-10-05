@@ -1,7 +1,7 @@
 /*globals define: false, window: false */
 
 define(function (require) {
-  var benchmark = require('benchmark/benchmark');
+  var benchmark = require('common/benchmark/benchmark');
 
   // Export API to the global namespace.
   window.benchmark = benchmark;

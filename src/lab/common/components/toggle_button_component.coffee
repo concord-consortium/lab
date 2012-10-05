@@ -1,6 +1,6 @@
 define (require) ->
   # Dependencies.
-  ButtonComponent = require 'cs!components/button_component'
+  ButtonComponent = require 'cs!common/components/button_component'
 
   class ToggleButtonComponent extends ButtonComponent
 

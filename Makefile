@@ -11,12 +11,10 @@ BROWSERIFY = ./node_modules/.bin/browserify
 R_OPTIMIZER = ./node_modules/.bin/r.js
 
 LAB_SRC_FILES := $(shell find src/lab -type f -print)
-ENERGY2D_SRC_FILES := $(shell find src/lab/energy2d -type f -print)
+COMMON_SRC_FILES := $(shell find src/lab/common -type f -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f -print)
-COMPONENTS_SRC_FILES := $(shell find src/lab/components -type f -print)
-BENCHMARK_SRC_FILES := $(shell find src/lab/benchmark -type f -print)
-CONTROLLERS_SRC_FILES := $(shell find src/lab/controllers -type f -print)
-MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
+ENERGY2D_SRC_FILES := $(shell find src/lab/energy2d -type f -print)
+MD2D_FILES := $(shell find src/lab/md2d -type f -print)
 
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
 LAB_GLSL_FILES := $(shell find src/lab -name '*.glsl' -print)
@@ -46,7 +44,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.components.js \
-	server/public/lab/lab.controllers.js \
+	server/public/lab/lab.md2d.js \
 	server/public/lab/lab.version.js \
 	server/public/lab/lab.js
 
@@ -385,29 +383,33 @@ server/public/lab:
 server/public/lab/lab.js: \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.benchmark.js \
-  server/public/lab/lab.controllers.js \
+  server/public/lab/lab.md2d.js \
  	server/public/lab/lab.version.js
 
 .PHONY: server/public/lab/lab.version.js
 server/public/lab/lab.version.js:
 	./script/generate-version.rb
 
-server/public/lab/lab.energy2d.js: $(ENERGY2D_SRC_FILES)
+server/public/lab/lab.energy2d.js: \
+	$(ENERGY2D_SRC_FILES) \
+	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/energy2d/energy2d.build.js
 
-server/public/lab/lab.grapher.js: $(GRAPHER_SRC_FILES)
+server/public/lab/lab.grapher.js: \
+	$(GRAPHER_SRC_FILES) \
+	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/grapher/grapher.build.js
 
-server/public/lab/lab.benchmark.js: $(BENCHMARK_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/benchmark/benchmark.build.js
+server/public/lab/lab.benchmark.js: $(COMMON_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/common/benchmark/benchmark.build.js
 
-server/public/lab/lab.controllers.js: \
-	$(CONTROLLERS_SRC_FILES) \
-	$(MD_ENGINE_JS_FILES)
-	$(R_OPTIMIZER) -o src/lab/controllers/controllers.build.js
+server/public/lab/lab.md2d.js: \
+	$(MD2D_SRC_FILES) \
+	$(COMMON_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/md2d/md2d.build.js
 
-server/public/lab/lab.components.js: $(COMPONENTS_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/components/components.build.js
+server/public/lab/lab.components.js: $(COMMON_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/common/components/components.build.js
 
 server/public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
 	cat $^ | $(COFFEESCRIPT_COMPILER) --stdio --print > $@

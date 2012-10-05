@@ -4,7 +4,7 @@ define(function (require) {
   // Dependencies.
   var axis                    = require('grapher/core/axis'),
       registerKeyboardHandler = require('grapher/core/register-keyboard-handler'),
-      layout                  = require('layout/layout');
+      layout                  = require('common/layout/layout');
 
   return function Graph(elem, options, message) {
     var cx = 600, cy = 300,

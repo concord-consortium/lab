@@ -6,8 +6,10 @@
 // ------------------------------------------------------------
 define(function (require) {
   // Dependencies.
-  var PlayResetComponentSVG = require('cs!components/play_reset_svg'),
-      layout                = require('layout/layout');
+  var PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
+      PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
+      PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
+      layout                = require('common/layout/layout');
 
   return function moleculeContainer(e, options) {
     var elem = d3.select(e),
@@ -747,7 +749,7 @@ define(function (require) {
               "fill": function(d, i) { return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; },
               "stroke-width": function(d, i) { return get_obstacle_visible(i) ? 0.2 : 0.0; },
               "stroke": function(d, i) { return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; }
-            })
+            });
       }
 
       function radialBondEnter() {
@@ -909,7 +911,6 @@ define(function (require) {
             imgHostType,
             imglayer,
             imgX,
-            img,
             i;
 
         image_container_top.selectAll("image").remove();

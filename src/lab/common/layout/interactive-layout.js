@@ -5,7 +5,7 @@
 //
 define(function (require) {
   // Dependencies.
-  var layout = require('layout/layout');
+  var layout = require('common/layout/layout');
 
   function setThermometerHeight(thermometerComponent, h) {
     // get height of thermometer label, including margin:

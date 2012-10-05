@@ -5,7 +5,7 @@
 //
 // ------------------------------------------------------------
 define(function (require) {
-  var layout = require('layout/layout');
+  var layout = require('common/layout/layout');
 
   return function appletContainer(e, options) {
     var elem = d3.select(e),

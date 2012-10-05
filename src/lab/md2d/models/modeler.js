@@ -4,7 +4,7 @@
 define(function(require) {
   // Dependencies.
   var arrays = require('arrays'),
-      md2d   = require('models/md2d/engine/md2d'),
+      md2d   = require('md2d/models/engine/md2d'),
 
       engine;
 

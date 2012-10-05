@@ -3,7 +3,7 @@
 ############################################
 define (require) ->
   # Dependencies.
-  ModelControllerComponent = require 'cs!components/model_controller_component'
+  ModelControllerComponent = require 'cs!common/components/model_controller_component'
 
   class PlaybackComponentSVG extends ModelControllerComponent
 

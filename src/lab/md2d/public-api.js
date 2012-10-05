@@ -2,9 +2,9 @@
 
 // TODO: just temporary solution, refactor it.
 define(function (require) {
-  var interactivesController  = require('controllers/interactives-controller'),
-      compareModelsController = require('controllers/compare-models-controller'),
-      layout                  = require('layout/layout'),
+  var interactivesController  = require('md2d/controllers/interactives-controller'),
+      compareModelsController = require('md2d/controllers/compare-models-controller'),
+      layout                  = require('common/layout/layout'),
       // Object to be returned.
       publicAPI;
 
@@ -13,11 +13,12 @@ define(function (require) {
     // ==========================================================================
     // Add functions and modules which should belong to this API:
     interactivesController: interactivesController,
-    compareModelsController: compareModelsController,
+    compareModelsController: compareModelsController
     // ==========================================================================
   };
   // Export this API under 'controllers' name.
   window.controllers = publicAPI;
+  // Also export layout.
   window.layout = layout;
 
   // Return public API as a module.

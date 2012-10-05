@@ -10,9 +10,9 @@
 /*jslint onevar: true*/
 define(function (require) {
   // Dependencies.
-  var Model             = require('models/md2d/modeler'),
-      MoleculeContainer = require('views/molecule-container'),
-      ModelPlayer       = require('cs!components/model_player');
+  var Model             = require('md2d/models/modeler'),
+      MoleculeContainer = require('md2d/views/molecule-container'),
+      ModelPlayer       = require('cs!common/components/model_player');
 
   return function modelController(moleculeViewId, modelConfig, playerConfig) {
     var controller = {},
