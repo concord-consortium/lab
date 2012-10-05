@@ -23,7 +23,7 @@ message = "".html_safe + commit.message.gsub("\n", "\\n")
 
 version = <<HEREDOC
 (function(){
-
+if (typeof Lab === 'undefined') Lab = {};
 Lab.version = {
   "repo": {
     "branch": "#{head.name if head != nil}",
