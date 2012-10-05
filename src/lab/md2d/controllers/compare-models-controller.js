@@ -18,7 +18,7 @@ define(function (require) {
       SliderComponent   = require('cs!common/components/slider'),
       layout            = require('common/layout/layout');
 
-  return function compareModelsController(molecule_view_id, appletContainerID, modelSelectID, modelConfig, playerConfig) {
+  return function compareModelsController(moleculeViewId, appletContainerID, modelSelectID, modelConfig, playerConfig) {
 
     var layoutStyle         = playerConfig.layoutStyle,
         autostart           = playerConfig.autostart,
@@ -39,7 +39,7 @@ define(function (require) {
 
         nodes,
 
-        molecule_container,
+        moleculeContainer,
         modelListener,
         step_counter,
         therm,
@@ -63,7 +63,40 @@ define(function (require) {
       // ------------------------------------------------------------
 
       function modelListener(e) {
-        molecule_container.update_drawable_positions();
+        moleculeContainer.update_drawable_positions();
+      }
+
+      // ------------------------------------------------------------
+      //
+      // Initialize (or update) local variables based on playerConfig and modelConfig objects
+      //
+      // ------------------------------------------------------------
+
+      function initializeLocalVariables() {
+        controlButtons      = playerConfig.controlButtons;
+        modelTimeLabel      = playerConfig.modelTimeLabel;
+        enableAtomTooltips  = playerConfig.enableAtomTooltips || false;
+        fit_to_parent       = playerConfig.fit_to_parent;
+        interactiveUrl      = playerConfig.interactiveUrl;
+
+        elements            = modelConfig.elements;
+        atoms               = modelConfig.atoms;
+        mol_number          = modelConfig.mol_number;
+        temperature_control = modelConfig.temperature_control;
+        temperature         = modelConfig.temperature;
+        width               = modelConfig.width;
+        height              = modelConfig.height;
+        keShading           = modelConfig.keShading;
+        chargeShading       = modelConfig.chargeShading;
+        showVDWLines        = modelConfig.showVDWLines;
+        showClock           = modelConfig.showClock;
+        viewRefreshInterval = modelConfig.viewRefreshInterval;
+        radialBonds         = modelConfig.radialBonds;
+        obstacles           = modelConfig.obstacles;
+        viscosity           = modelConfig.viscosity;
+        gravitationalField  = modelConfig.gravitationalField;
+        images              = modelConfig.images;
+        textBoxes           = modelConfig.textBoxes;
       }
 
       // ------------------------------------------------------------
@@ -73,29 +106,63 @@ define(function (require) {
       // ------------------------------------------------------------
 
       function createModel() {
+        initializeLocalVariables();
         model = Model({
-            elements: elements,
-            model_listener: modelListener,
-            temperature: temperature,
-            lennard_jones_forces: true,
-            coulomb_forces: coulomb_forces,
-            temperature_control: temperature_control,
-            width: width,
-            height: height
+            elements            : elements,
+            temperature         : temperature,
+            temperature_control : temperature_control,
+            width               : width,
+            height              : height,
+            keShading           : keShading,
+            chargeShading       : chargeShading,
+            showVDWLines        : showVDWLines,
+            showClock           : showClock,
+            viewRefreshInterval : viewRefreshInterval,
+            viscosity           : viscosity,
+            gravitationalField  : gravitationalField,
+            images              : images
           });
 
-        if (atoms_properties) {
-          model.createNewAtoms(atoms_properties);
+        if (atoms) {
+          model.createNewAtoms(atoms);
         } else if (mol_number) {
-          model.createNewAtoms({
-            num: mol_number,
-            relax: true
-          });
+          model.createNewAtoms(mol_number);
+          model.relax();
         } else {
-          throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
+          throw new Error("ModelController: tried to create a model without atoms or mol_number.");
         }
+
         if (radialBonds) model.createRadialBonds(radialBonds);
+        if (showVDWLines) model.createVdwPairs(atoms);
         if (obstacles) model.createObstacles(obstacles);
+      }
+
+      /**
+        Returns a customized interface to the model for use by the view
+      */
+      function getModelInterface() {
+        return {
+          model:                   model,
+          fit_to_parent:           fit_to_parent,
+          xmax:                    width,
+          ymax:                    height,
+          keShading:               keShading,
+          chargeShading:           chargeShading,
+          enableAtomTooltips:      enableAtomTooltips,
+          images:                  images,
+          interactiveUrl:          interactiveUrl,
+          textBoxes:               textBoxes,
+          get_results:             function() { return model.get_results(); },
+          get_radial_bond_results: function() { return model.get_radial_bond_results(); },
+          get_radial_bonds:        function() { return model.get_radial_bonds(); },
+          get_obstacles:           function() { return model.get_obstacles(); },
+          get_vdw_pairs:           function() { return model.get_vdw_pairs(); },
+          set_atom_properties:     function() { return model.setAtomProperties.apply(model, arguments);  },
+          is_stopped:              function() { return model.is_stopped(); },
+
+          controlButtons:      controlButtons,
+          modelTimeLabel:      modelTimeLabel
+        };
       }
 
       // ------------------------------------------------------------
@@ -115,24 +182,11 @@ define(function (require) {
         layout.selection = layoutStyle;
 
         model_player = new ModelPlayer(model, autostart);
-        molecule_container = MoleculeContainer(molecule_view_id,
-          {
-            control_buttons:      "",
-            modelTimeLabel:       true,
-            grid_lines:           true,
-            xunits:               true,
-            yunits:               true,
-            xmax:                 width,
-            ymax:                 height,
-            get_atoms:            function() { return model.get_atoms(); },
-            get_num_atoms:        function() { return model.get_num_atoms(); },
-            get_obstacles:        function() { return model.get_obstacles(); },
-            get_radial_bonds:     function() { return model.get_radial_bonds(); }
-          }
-        );
 
-        molecule_container.updateMoleculeRadius();
-        molecule_container.setup_drawables();
+        moleculeContainer = MoleculeContainer(moleculeViewId, getModelInterface());
+
+        moleculeContainer.updateMoleculeRadius();
+        moleculeContainer.setup_drawables();
 
         // ------------------------------------------------------------
         //
@@ -156,7 +210,7 @@ define(function (require) {
         //
         // ------------------------------------------------------------
 
-        layout.addView('moleculeContainers', molecule_container);
+        layout.addView('moleculeContainers', moleculeContainer);
         layout.addView('appletContainers', appletContainer);
 
         layout.setupScreen();
