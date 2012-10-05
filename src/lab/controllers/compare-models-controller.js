@@ -1,7 +1,6 @@
 /*globals
 
   define
-  modeler
   ModelPlayer
   Thermometer
   SliderComponent
@@ -14,7 +13,8 @@
 */
 /*jslint onevar: true*/
 define(function (require) {
-  var AppletContainer   = require('views/applet-container'),
+  var Model             = require('models/md2d/modeler'),
+      AppletContainer   = require('views/applet-container'),
       MoleculeContainer = require('views/molecule-container');
 
   return function compareModelsController(molecule_view_id, appletContainerID, modelSelectID, modelConfig, playerConfig) {
@@ -72,7 +72,7 @@ define(function (require) {
       // ------------------------------------------------------------
 
       function createModel() {
-        model = modeler.model({
+        model = Model({
             elements: elements,
             model_listener: modelListener,
             temperature: temperature,

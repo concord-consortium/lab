@@ -11,6 +11,14 @@
   // Do not use UglifyJS.
   // It's done via Makefile routines.
   optimize: 'none',
+  // Paths to CommonJS modules.
+  packages: [
+    {
+        name: "arrays",
+        main: "index",
+        location: "../modules/arrays"
+    }
+  ],
   // Protect global namespace.
   wrap: {
     start: "(function() {",

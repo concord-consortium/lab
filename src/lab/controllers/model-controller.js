@@ -1,7 +1,6 @@
 /*global
 
   define
-  modeler
   ModelPlayer
   DEVELOPMENT
   d3
@@ -12,7 +11,8 @@
 /*jslint onevar: true*/
 define(function (require) {
   // Dependencies.
-  var MoleculeContainer = require('views/molecule-container');
+  var Model             = require('models/md2d/modeler'),
+      MoleculeContainer = require('views/molecule-container');
 
   return function modelController(moleculeViewId, modelConfig, playerConfig) {
     var controller = {},
@@ -131,7 +131,7 @@ define(function (require) {
 
       function createModel() {
         initializeLocalVariables();
-        model = modeler.model({
+        model = Model({
             elements            : elements,
             temperature         : temperature,
             temperature_control : temperature_control,

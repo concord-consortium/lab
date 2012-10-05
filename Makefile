@@ -46,7 +46,6 @@ LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
-	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.components.js \
 	server/public/lab/lab.controllers.js \
@@ -387,7 +386,6 @@ server/public/lab:
 
 server/public/lab/lab.js: \
 	server/public/lab/lab.grapher.js \
-	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
 	server/public/lab/lab.components.js \
@@ -404,16 +402,15 @@ server/public/lab/lab.energy2d.js: $(ENERGY2D_SRC_FILES)
 server/public/lab/lab.grapher.js: $(GRAPHER_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/grapher/grapher.build.js
 
-server/public/lab/lab.molecules.js: $(MD_ENGINE_JS_FILES)
-	$(R_OPTIMIZER) -o src/lab/models/md2d/molecules.build.js
-
 server/public/lab/lab.benchmark.js: $(BENCHMARK_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/benchmark/benchmark.build.js
 
 server/public/lab/lab.layout.js: $(LAYOUT_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/layout/layout.build.js
 
-server/public/lab/lab.controllers.js: $(CONTROLLERS_SRC_FILES)
+server/public/lab/lab.controllers.js: \
+	$(CONTROLLERS_SRC_FILES) \
+	$(MD_ENGINE_JS_FILES)
 	$(R_OPTIMIZER) -o src/lab/controllers/controllers.build.js
 
 server/public/lab/lab.components.js: $(COMPONENTS_SRC_FILES)
