@@ -43,7 +43,6 @@ LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.energy2d.js \
-	server/public/lab/lab.components.js \
 	server/public/lab/lab.md2d.js \
 	server/public/lab/lab.version.js \
 	server/public/lab/lab.js
@@ -407,9 +406,6 @@ server/public/lab/lab.md2d.js: \
 	$(MD2D_SRC_FILES) \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/md2d/md2d.build.js
-
-server/public/lab/lab.components.js: $(COMMON_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/common/components/components.build.js
 
 server/public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
 	cat $^ | $(COFFEESCRIPT_COMPILER) --stdio --print > $@
