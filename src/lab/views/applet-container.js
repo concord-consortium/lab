@@ -1,10 +1,11 @@
-/*globals define: false, d3: false, layout: false */
+/*globals define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   Applet Container
 //
 // ------------------------------------------------------------
 define(function (require) {
+  var layout = require('layout/layout');
 
   return function appletContainer(e, options) {
     var elem = d3.select(e),

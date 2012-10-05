@@ -1,4 +1,4 @@
-/*globals define: false, d3: false, layout: false */
+/*globals define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   Molecule Container
@@ -6,7 +6,8 @@
 // ------------------------------------------------------------
 define(function (require) {
   // Dependencies.
-  var PlayResetComponentSVG = require('cs!components/play_reset_svg');
+  var PlayResetComponentSVG = require('cs!components/play_reset_svg'),
+      layout                = require('layout/layout');
 
   return function moleculeContainer(e, options) {
     var elem = d3.select(e),

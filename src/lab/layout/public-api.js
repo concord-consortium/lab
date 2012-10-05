@@ -6,7 +6,7 @@ define(function (require) {
       fullscreen        = require('layout/fullscreen');
 
   // Follow naming convetion defined by earlier work.
-  layout.setupInteractiveLayout = interactiveLayout.setupInteractiveLayout;
+  layout.setupInteractiveLayout = interactiveLayout;
 
   // Export API to the global namespace.
   window.layout = layout;

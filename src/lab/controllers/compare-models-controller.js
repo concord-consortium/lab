@@ -1,7 +1,6 @@
 /*globals
 
   define
-  layout
   DEVELOPMENT
   $
   alert
@@ -16,7 +15,8 @@ define(function (require) {
       MoleculeContainer = require('views/molecule-container'),
       ModelPlayer       = require('cs!components/model_player'),
       Thermometer       = require('cs!components/thermometer'),
-      SliderComponent   = require('cs!components/slider');
+      SliderComponent   = require('cs!components/slider'),
+      layout            = require('layout/layout');
 
   return function compareModelsController(molecule_view_id, appletContainerID, modelSelectID, modelConfig, playerConfig) {
 

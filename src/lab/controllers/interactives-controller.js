@@ -2,8 +2,10 @@
 /*jshint eqnull: true boss: true */
 define(function (require) {
   // Dependencies.
-  var ModelController = require('controllers/model-controller'),
-      Thermometer     = require('cs!components/thermometer');
+  var ModelController        = require('controllers/model-controller'),
+      Thermometer            = require('cs!components/thermometer'),
+      layout                 = require('layout/layout'),
+      setupInteractiveLayout = require('layout/interactive-layout');
 
   return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
 
@@ -719,8 +721,8 @@ define(function (require) {
         $(window).on('resize', layout.setupScreen);
       } else {
         // preferred path...
-        layout.setupInteractiveLayout();
-        $(window).on('resize', layout.setupInteractiveLayout);
+        setupInteractiveLayout();
+        $(window).on('resize', setupInteractiveLayout);
       }
 
       for(i = 0; i < propertiesListeners.length; i++) {
