@@ -388,7 +388,6 @@ server/public/lab/lab.js: \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
-	server/public/lab/lab.components.js \
   server/public/lab/lab.controllers.js \
  	server/public/lab/lab.version.js
 

@@ -5,6 +5,8 @@
 //
 // ------------------------------------------------------------
 define(function (require) {
+  // Dependencies.
+  var PlayResetComponentSVG = require('cs!components/play_reset_svg');
 
   return function moleculeContainer(e, options) {
     var elem = d3.select(e),

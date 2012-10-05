@@ -1,8 +1,9 @@
-/*global define model Thermometer layout $ alert ACTUAL_ROOT grapher */
+/*global define model layout $ alert ACTUAL_ROOT grapher */
 /*jshint eqnull: true boss: true */
 define(function (require) {
   // Dependencies.
-  var ModelController = require('controllers/model-controller');
+  var ModelController = require('controllers/model-controller'),
+      Thermometer     = require('cs!components/thermometer');
 
   return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
 

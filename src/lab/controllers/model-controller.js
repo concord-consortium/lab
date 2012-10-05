@@ -1,7 +1,6 @@
 /*global
 
   define
-  ModelPlayer
   DEVELOPMENT
   d3
   alert
@@ -12,7 +11,8 @@
 define(function (require) {
   // Dependencies.
   var Model             = require('models/md2d/modeler'),
-      MoleculeContainer = require('views/molecule-container');
+      MoleculeContainer = require('views/molecule-container'),
+      ModelPlayer       = require('cs!components/model_player');
 
   return function modelController(moleculeViewId, modelConfig, playerConfig) {
     var controller = {},
