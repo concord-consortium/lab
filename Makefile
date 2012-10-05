@@ -404,15 +404,8 @@ server/public/lab/lab.energy2d.js: $(ENERGY2D_SRC_FILES)
 server/public/lab/lab.grapher.js: $(GRAPHER_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/grapher/grapher.build.js
 
-server/public/lab/lab.md2d.js: \
-	$(MD_ENGINE_JS_FILES)
-	$(BROWSERIFY) src/lab/models/md2d/engine/md2d.js -o server/public/lab/lab.md2d.js
-
-server/public/lab/lab.molecules.js: \
-	src/lab/start.js \
-	server/public/lab/lab.md2d.js \
-	src/lab/models/md2d/modeler.js \
-	src/lab/end.js
+server/public/lab/lab.molecules.js: $(MD_ENGINE_JS_FILES)
+	$(R_OPTIMIZER) -o src/lab/models/md2d/molecules.build.js
 
 server/public/lab/lab.benchmark.js: $(BENCHMARK_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/benchmark/benchmark.build.js

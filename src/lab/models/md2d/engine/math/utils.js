@@ -1,3 +1,4 @@
+/*globals define: true */
 /*jslint eqnull: true */
 /**
   Returns a function which accepts a single numeric argument and returns:
@@ -8,26 +9,37 @@
   The default windowSize is 1000.
 
 */
-exports.getWindowedAverager = function(windowSize) {
-  if (windowSize == null) windowSize = 1000;      // default window size
 
-  var i = 0,
-      vals = [],
-      sum_vals = 0;
+// Module can be used both in Node.js environment and in Web browser
+// using RequireJS. RequireJS Optimizer will strip out this if statement.
+if (typeof define !== 'function') {
+  var define = require('amdefine')(module);
+}
 
-  return function(val) {
-    sum_vals -= (vals[i] || 0);
-    sum_vals += val;
-    vals[i] = val;
+define(function (require, exports, module) {
 
-    if (++i === windowSize) i = 0;
+  exports.getWindowedAverager = function(windowSize) {
 
-    if (vals.length === windowSize) {
-      return sum_vals / windowSize;
-    }
-    else {
-      // don't allow any numerical comparisons with result to be true
-      return NaN;
-    }
-  }
-};
+    if (windowSize == null) windowSize = 1000;      // default window size
+
+    var i = 0,
+        vals = [],
+        sum_vals = 0;
+
+    return function(val) {
+      sum_vals -= (vals[i] || 0);
+      sum_vals += val;
+      vals[i] = val;
+
+      if (++i === windowSize) i = 0;
+
+      if (vals.length === windowSize) {
+        return sum_vals / windowSize;
+      }
+      else {
+        // don't allow any numerical comparisons with result to be true
+        return NaN;
+      }
+    };
+  };
+});

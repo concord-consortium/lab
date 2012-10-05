@@ -1,68 +1,79 @@
-var
-constants = require('../constants'),
-unit      = constants.unit,
+/*globals define: true */
 
-// Classic MW uses a value for Coulomb's constant that is effectively 0.346 of the real value
-CLASSIC_MW_FUDGE_FACTOR = 0.346,
+// Module can be used both in Node.js environment and in Web browser
+// using RequireJS. RequireJS Optimizer will strip out this if statement.
+if (typeof define !== 'function') {
+  var define = require('amdefine')(module);
+}
 
-COULOMB_CONSTANT_IN_METERS_PER_FARAD = constants.COULOMB_CONSTANT.as( constants.unit.METERS_PER_FARAD ),
+define(function (require, exports, module) {
 
-NANOMETERS_PER_METER = constants.ratio(unit.NANOMETER, { per: unit.METER }),
-COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ = Math.pow( constants.ratio(unit.COULOMB, { per: unit.ELEMENTARY_CHARGE }), 2),
+  var
+  constants = require('../constants/index'),
+  unit      = constants.unit,
 
-EV_PER_JOULE = constants.ratio(unit.EV, { per: unit.JOULE }),
-MW_FORCE_UNITS_PER_NEWTON = constants.ratio(unit.MW_FORCE_UNIT, { per: unit.NEWTON }),
+  // Classic MW uses a value for Coulomb's constant that is effectively 0.346 of the real value
+  CLASSIC_MW_FUDGE_FACTOR = 0.346,
 
-// Coulomb constant for expressing potential in eV given elementary charges, nanometers
-k_ePotential = CLASSIC_MW_FUDGE_FACTOR *
-               COULOMB_CONSTANT_IN_METERS_PER_FARAD *
-               COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ *
-               NANOMETERS_PER_METER *
-               EV_PER_JOULE,
+  COULOMB_CONSTANT_IN_METERS_PER_FARAD = constants.COULOMB_CONSTANT.as( constants.unit.METERS_PER_FARAD ),
 
-// Coulomb constant for expressing force in Dalton*nm/fs^2 given elementary charges, nanometers
-k_eForce = CLASSIC_MW_FUDGE_FACTOR *
-           COULOMB_CONSTANT_IN_METERS_PER_FARAD *
-           COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ *
-           NANOMETERS_PER_METER *
-           NANOMETERS_PER_METER *
-           MW_FORCE_UNITS_PER_NEWTON,
+  NANOMETERS_PER_METER = constants.ratio(unit.NANOMETER, { per: unit.METER }),
+  COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ = Math.pow( constants.ratio(unit.COULOMB, { per: unit.ELEMENTARY_CHARGE }), 2),
 
+  EV_PER_JOULE = constants.ratio(unit.EV, { per: unit.JOULE }),
+  MW_FORCE_UNITS_PER_NEWTON = constants.ratio(unit.MW_FORCE_UNIT, { per: unit.NEWTON }),
 
-// Exports
+  // Coulomb constant for expressing potential in eV given elementary charges, nanometers
+  k_ePotential = CLASSIC_MW_FUDGE_FACTOR *
+                 COULOMB_CONSTANT_IN_METERS_PER_FARAD *
+                 COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ *
+                 NANOMETERS_PER_METER *
+                 EV_PER_JOULE,
 
-/** Input units:
-     r: nanometers,
-     q1, q2: elementary charges
-
-    Output units: eV
-*/
-potential = exports.potential = function(r, q1, q2) {
-  return k_ePotential * ((q1 * q2) / r);
-},
+  // Coulomb constant for expressing force in Dalton*nm/fs^2 given elementary charges, nanometers
+  k_eForce = CLASSIC_MW_FUDGE_FACTOR *
+             COULOMB_CONSTANT_IN_METERS_PER_FARAD *
+             COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ *
+             NANOMETERS_PER_METER *
+             NANOMETERS_PER_METER *
+             MW_FORCE_UNITS_PER_NEWTON,
 
 
-/** Input units:
-    r_sq: nanometers^2
-    q1, q2: elementary charges
+  // Exports
 
-    Output units: "MW Force Units" (Dalton * nm / fs^2)
-*/
-forceFromSquaredDistance = exports.forceFromSquaredDistance = function(r_sq, q1, q2) {
-  return -k_eForce * ((q1 * q2) / r_sq);
-},
+  /** Input units:
+       r: nanometers,
+       q1, q2: elementary charges
+
+      Output units: eV
+  */
+  potential = exports.potential = function(r, q1, q2) {
+    return k_ePotential * ((q1 * q2) / r);
+  },
 
 
-forceOverDistanceFromSquaredDistance = exports.forceOverDistanceFromSquaredDistance = function(r_sq, q1, q2) {
-  return forceFromSquaredDistance(r_sq, q1, q2) / Math.sqrt(r_sq);
-},
+  /** Input units:
+      r_sq: nanometers^2
+      q1, q2: elementary charges
 
-/** Input units:
-     r: nanometers,
-     q1, q2: elementary charges
+      Output units: "MW Force Units" (Dalton * nm / fs^2)
+  */
+  forceFromSquaredDistance = exports.forceFromSquaredDistance = function(r_sq, q1, q2) {
+    return -k_eForce * ((q1 * q2) / r_sq);
+  },
 
-    Output units: "MW Force Units" (Dalton * nm / fs^2)
-*/
-force = exports.force = function(r, q1, q2) {
-  return forceFromSquaredDistance(r*r, q1, q2);
-};
+
+  forceOverDistanceFromSquaredDistance = exports.forceOverDistanceFromSquaredDistance = function(r_sq, q1, q2) {
+    return forceFromSquaredDistance(r_sq, q1, q2) / Math.sqrt(r_sq);
+  },
+
+  /** Input units:
+       r: nanometers,
+       q1, q2: elementary charges
+
+      Output units: "MW Force Units" (Dalton * nm / fs^2)
+  */
+  force = exports.force = function(r, q1, q2) {
+    return forceFromSquaredDistance(r*r, q1, q2);
+  };
+});
