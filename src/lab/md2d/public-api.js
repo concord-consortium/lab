@@ -5,6 +5,7 @@ define(function (require) {
   var interactivesController  = require('md2d/controllers/interactives-controller'),
       compareModelsController = require('md2d/controllers/compare-models-controller'),
       layout                  = require('common/layout/layout'),
+      benchmark               = require('common/benchmark/benchmark'),
       // Object to be returned.
       publicAPI;
 
@@ -18,8 +19,9 @@ define(function (require) {
   };
   // Export this API under 'controllers' name.
   window.controllers = publicAPI;
-  // Also export layout.
+  // Also export layout and benchmark.
   window.layout = layout;
+  window.benchmark = benchmark;
 
   // Return public API as a module.
   return publicAPI;

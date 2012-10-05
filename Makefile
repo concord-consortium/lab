@@ -41,7 +41,6 @@ vpath %.md src
 
 LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
-	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.md2d.js \
 	server/public/lab/lab.version.js \
@@ -381,7 +380,6 @@ server/public/lab:
 
 server/public/lab/lab.js: \
 	server/public/lab/lab.grapher.js \
-	server/public/lab/lab.benchmark.js \
   server/public/lab/lab.md2d.js \
  	server/public/lab/lab.version.js
 
@@ -398,9 +396,6 @@ server/public/lab/lab.grapher.js: \
 	$(GRAPHER_SRC_FILES) \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/grapher/grapher.build.js
-
-server/public/lab/lab.benchmark.js: $(COMMON_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/common/benchmark/benchmark.build.js
 
 server/public/lab/lab.md2d.js: \
 	$(MD2D_SRC_FILES) \
