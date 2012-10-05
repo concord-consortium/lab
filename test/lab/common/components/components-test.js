@@ -1,7 +1,7 @@
-require("../../env");
+require("../../../env");
 
 var requirejs = require('requirejs'),
-    config    = require('../../requirejs-config'),
+    config    = require('../../../requirejs-config'),
     vows = require("vows"),
     assert = require("assert");
 
@@ -9,10 +9,10 @@ var requirejs = require('requirejs'),
 requirejs.config(config.labConfig);
 
 requirejs([
-  'cs!components/thermometer'
+  'cs!common/components/thermometer'
 ], function (Thermometer) {
 
-  var suite = vows.describe("lab.components");
+  var suite = vows.describe("common/components");
 
   suite.addBatch({
     "Thermometer": {

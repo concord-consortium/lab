@@ -1,5 +1,4 @@
 require("../../../env");
-require("../../../../server/public/lab/lab.layout");
 
 var requirejs = require('requirejs'),
     config    = require('../../../requirejs-config'),
@@ -13,7 +12,7 @@ requirejs([
   'grapher/core/axis'
 ], function (axis) {
 
-  var suite = vows.describe("grapher.axis");
+  var suite = vows.describe("grapher/core/axis");
 
   suite.addBatch({
     "axis": {

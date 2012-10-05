@@ -9,18 +9,18 @@ var requirejs = require('requirejs'),
 requirejs.config(config.labConfig);
 
 requirejs([
-  'grapher/core/colors'
-], function (colors) {
+  'common/layout/layout'
+], function (layout) {
 
-  var suite = vows.describe("grapher/core/colors");
+  var suite = vows.describe("common/layout");
 
   suite.addBatch({
-    "colors": {
+    "version": {
       topic: function() {
-        return colors;
+        return layout.version;
       },
-      "returns six char hex color string from name": function(colors) {
-        assert.equal(colors('bright_red'), '#ff0000');
+      "reports version": function(version) {
+        assert.equal(version, "0.0.1");
       }
     }
   });

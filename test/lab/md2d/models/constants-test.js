@@ -1,13 +1,13 @@
 // Test physical constants against independently looked-up values using
 // hand-written unit conversions.
 
-var constants = require('../../src/lab/models/md2d/engine/constants'),
+var constants = require('../../../../src/lab/md2d/models/engine/constants'),
     unit = constants.unit,
 
     vows = require("vows"),
     assert = require("assert"),
 
-    suite = vows.describe('md-engine/constants');
+    suite = vows.describe('md2d/models/engine/constants');
 
 assert.close = function(actual, expected) {
   if (Math.abs(1 - actual/expected) > 0.00001) {

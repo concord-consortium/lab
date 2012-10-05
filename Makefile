@@ -14,7 +14,7 @@ LAB_SRC_FILES := $(shell find src/lab -type f -print)
 COMMON_SRC_FILES := $(shell find src/lab/common -type f -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f -print)
 ENERGY2D_SRC_FILES := $(shell find src/lab/energy2d -type f -print)
-MD2D_FILES := $(shell find src/lab/md2d -type f -print)
+MD2D_SRC_FILES := $(shell find src/lab/md2d -type f -print)
 
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
 LAB_GLSL_FILES := $(shell find src/lab -name '*.glsl' -print)
@@ -419,14 +419,12 @@ test: test/layout.html \
 	src/vendor/d3 \
 	server/public \
 	$(LAB_JS_FILES) \
-	$(JS_FILES:.js=.min.js) \
-	$(MD_ENGINE_JS_FILES)
+	$(JS_FILES:.js=.min.js)
 	@$(JS_TESTER)
 
 test-src: test/layout.html \
 	$(LAB_JS_FILES) \
-	$(JS_FILES:.js=.min.js) \
-	$(MD_ENGINE_JS_FILES)
+	$(JS_FILES:.js=.min.js)
 	@$(JS_TESTER)
 
 %.min.js: %.js Makefile
@@ -489,7 +487,7 @@ m:
 	@echo $(MARKDOWN_EXAMPLE_FILES)
 
 md2d:
-	@echo $(MD_ENGINE_JS_FILES)
+	@echo $(MD2D_SRC_FILES)
 
 server/public/%.html: %.md Makefile
 	@rm -f $@

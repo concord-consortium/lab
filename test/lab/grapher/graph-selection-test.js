@@ -1,7 +1,5 @@
 /*globals $ */
-
 require("../../env");
-require("../../../server/public/lab/lab.layout");
 
 var requirejs = require('requirejs'),
     config    = require('../../requirejs-config'),
@@ -15,7 +13,7 @@ requirejs([
   'grapher/core/graph'
 ], function (graph) {
 
-  var suite = vows.describe("Lab grapher selection features");
+  var suite = vows.describe("grapher/graph-selection");
 
   function getBaseGraph() {
     return graph( $('<div>').width(500).height(500)[0] ).xmin(0).xmax(10);

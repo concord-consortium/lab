@@ -12,7 +12,7 @@ requirejs([
   'grapher/core/data'
 ], function (data) {
 
-var suite = vows.describe("grapher.data");
+var suite = vows.describe("grapher/core/data");
 
 suite.addBatch({
   "data": {

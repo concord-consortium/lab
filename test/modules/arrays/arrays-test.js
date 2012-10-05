@@ -5,7 +5,7 @@ var vows = require("vows"),
 
     arrays = require("arrays");
 
-var suite = vows.describe("arrays module");
+var suite = vows.describe("arrays");
 
 suite.addBatch({
   "create": {
