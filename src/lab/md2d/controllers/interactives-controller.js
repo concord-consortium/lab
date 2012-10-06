@@ -605,6 +605,7 @@ define(function (require) {
           } else {
             sample = model.get("viewRefreshInterval")/1000;
             options.sample = sample;
+			$.extend(options, thisComponent.options || []);
             energyGraph.reset('#' + thisComponent.id, options, $container[0]);
           }
 
