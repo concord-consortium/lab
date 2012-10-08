@@ -5,7 +5,7 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
+    context = require('energy2d/gpu/context'),
 
     // The internal `gl` variable holds the current WebGL context.
     gl,

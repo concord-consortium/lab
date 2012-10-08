@@ -5,7 +5,7 @@
 define(function (require) {
   'use strict';
   var
-    InteractiveController = require('controllers/interactive'),
+    InteractiveController = require('energy2d/controllers/interactive'),
     // Object to be returned.
     public_api;
 

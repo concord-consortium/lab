@@ -10,8 +10,8 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
-    Texture = require('gpu/texture');
+    context = require('energy2d/gpu/context'),
+    Texture = require('energy2d/gpu/texture');
 
   return function WebGLStatusView(html_id) {
     var

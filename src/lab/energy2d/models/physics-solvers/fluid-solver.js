@@ -4,7 +4,7 @@
 define(function (require, exports, module) {
   'use strict';
   var
-    arrays = require('utils/arrays').arrays,
+    arrays = require('energy2d/utils/arrays').arrays,
 
     RELAXATION_STEPS = 5,
     GRAVITY = 0,
@@ -41,7 +41,7 @@ define(function (require, exports, module) {
       u0         = arrays.create(nx * ny, 0, array_type),
       v0         = arrays.create(nx * ny, 0, array_type),
 
-      // Convenience variables.   
+      // Convenience variables.
       i2dx  = 0.5 / deltaX,
       i2dy  = 0.5 / deltaY,
       idxsq = 1.0 / (deltaX * deltaX),
@@ -52,11 +52,11 @@ define(function (require, exports, module) {
       nx2 = nx - 2,
       ny2 = ny - 2,
 
-      // 
+      //
       // Private methods
       //
 
-      // b = 1 horizontal; b = 2 vertical 
+      // b = 1 horizontal; b = 2 vertical
       applyBoundary = function (b, f) {
         var
           horizontal = b === 1,

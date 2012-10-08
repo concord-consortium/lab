@@ -3,7 +3,7 @@
 
 define(function (require, exports, module) {
   'use strict';
-  var constants = require('models/constants');
+  var constants = require('energy2d/models/constants');
 
   // This object defines default values for different configuration objects.
   //
@@ -53,7 +53,7 @@ define(function (require, exports, module) {
       // Structure can be undefined.
       // However, its desired form is:
       // "structure": {
-      //   "part": [ 
+      //   "part": [
       //     {
       //       ... part definition (see part fallback values below)
       //     },
@@ -92,11 +92,11 @@ define(function (require, exports, module) {
       //   "texture_width": 12,
       //   "texture_height": 12
       // },
-      "uid": undefined,       // unnecessary (not yet implemented)    
+      "uid": undefined,       // unnecessary (not yet implemented)
       "draggable": true       // unnecessary (not yet implemented)
 
       // Part should declare also *ONE* of available shapes:
-      // 
+      //
       // "rectangle": {
       //   "x": 5,
       //   "y": 5,
@@ -117,7 +117,7 @@ define(function (require, exports, module) {
       // },
       // "polygon": {
       //   "count": 3,                    // Vertices count.
-      //   "vertices": "1, 1, 2, 2, 3, 3" // String with coordinates.   
+      //   "vertices": "1, 1, 2, 2, 3, 3" // String with coordinates.
       // },
     }
   };

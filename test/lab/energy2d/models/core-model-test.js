@@ -2,21 +2,17 @@
 
 var
   requirejs = require('requirejs'),
+  config    = require('../../../requirejs-config'),
   vows      = require("vows"),
   assert    = require("assert");
 
-requirejs.config({
-  baseUrl: 'src/lab/energy2d',
-  paths: {
-    text: '../../vendor/text/text'
-  },
-  nodeRequire: require
-});
+// Use Lab RequireJS configuration.
+requirejs.config(config.labConfig);
 
 requirejs([
-  'models/core-model',
-  'models/default-config',
-  'models/photon'
+  'energy2d/models/core-model',
+  'energy2d/models/default-config',
+  'energy2d/models/photon'
 ], function (core, config, photon) {
   var
     Photon = photon.Photon,

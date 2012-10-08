@@ -4,7 +4,7 @@
 define(function (require, exports, module) {
   'use strict';
   var
-    arrays = require('utils/arrays').arrays,
+    arrays = require('energy2d/utils/arrays').arrays,
 
     RELAXATION_STEPS = 5;
 
@@ -35,7 +35,7 @@ define(function (require, exports, module) {
       // Internal array that stores the previous temperature results.
       t0 = arrays.create(nx * ny, 0, model.getArrayType()),
 
-      // Convenience variables.  
+      // Convenience variables.
       nx1 = nx - 1,
       ny1 = ny - 1,
       nx2 = nx - 2,

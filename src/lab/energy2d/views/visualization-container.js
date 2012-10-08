@@ -18,13 +18,13 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    HeatmapView        = require('views/heatmap'),
-    HeatmapWebGLView   = require('views/heatmap-webgl'),
-    VectormapView      = require('views/vectormap'),
-    VectormapWebGLView = require('views/vectormap-webgl'),
-    PartsView          = require('views/parts'),
-    PhotonsView        = require('views/photons'),
-    TimeView           = require('views/time');
+    HeatmapView        = require('energy2d/views/heatmap'),
+    HeatmapWebGLView   = require('energy2d/views/heatmap-webgl'),
+    VectormapView      = require('energy2d/views/vectormap'),
+    VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
+    PartsView          = require('energy2d/views/parts'),
+    PhotonsView        = require('energy2d/views/photons'),
+    TimeView           = require('energy2d/views/time');
 
   return function VisualizationContainer(html_id, use_WebGL) {
     var
@@ -79,7 +79,7 @@ define(function (require) {
       setAsTimeLayer = function (view) {
         var $layer = view.getHTMLElement();
 
-        // Style time view to make it visible and sharp 
+        // Style time view to make it visible and sharp
         // as it is displayed on the heatmap (often dark blue color).
         $layer.css('color', 'white');
         $layer.css('font-weight', 'bold');

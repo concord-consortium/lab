@@ -4,16 +4,16 @@
 define(function (require, exports, module) {
   'use strict';
   var
-    default_config = require('models/default-config'),
-    constants      = require('models/constants'),
-    hypot          = require('models/helpers').hypot,
-    Photon         = require('models/photon').Photon,
-    shape_utils    = require('models/shape'),
-    Line           = require('models/shape').Line,
-    Polygon        = require('models/shape').Polygon,
-    Rectangle      = require('models/shape').Rectangle,
-    Ellipse        = require('models/shape').Ellipse,
-    Ring           = require('models/shape').Ring,
+    default_config = require('energy2d/models/default-config'),
+    constants      = require('energy2d/models/constants'),
+    hypot          = require('energy2d/models/helpers').hypot,
+    Photon         = require('energy2d/models/photon').Photon,
+    shape_utils    = require('energy2d/models/shape'),
+    Line           = require('energy2d/models/shape').Line,
+    Polygon        = require('energy2d/models/shape').Polygon,
+    Rectangle      = require('energy2d/models/shape').Rectangle,
+    Ellipse        = require('energy2d/models/shape').Ellipse,
+    Ring           = require('energy2d/models/shape').Ring,
 
     // Part's constants.
     RADIATOR_SPACING = 0.5,

@@ -10,16 +10,16 @@
 //
 // Texture parameters can be passed in via the `options` argument.
 // Example usage:
-// 
+//
 //     var t = new Texture(256, 256, {
 //       // Defaults to gl.LINEAR, set both at once with "filter"
 //       mag_filter: gl.NEAREST,
 //       min_filter: gl.LINEAR,
-// 
+//
 //       // Defaults to gl.CLAMP_TO_EDGE, set both at once with "wrap"
 //       wrap_s: gl.REPEAT,
 //       wrap_t: gl.REPEAT,
-// 
+//
 //       format: gl.RGB, // Defaults to gl.RGBA
 //       type: gl.FLOAT  // Defaults to gl.UNSIGNED_BYTE
 //     });
@@ -28,7 +28,7 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
+    context = require('energy2d/gpu/context'),
 
     // WebGL context.
     gl,

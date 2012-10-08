@@ -5,24 +5,24 @@ define(function (require, exports, module) {
   'use strict';
   var
     // Dependencies.
-    Shader = require('gpu/shader'),
+    Shader = require('energy2d/gpu/shader'),
     // GPGPU utilities. It's a singleton instance.
     // It should have been previously initialized by core-model.
-    gpgpu  = require('gpu/gpgpu'),
+    gpgpu  = require('energy2d/gpu/gpgpu'),
     // Shader sources. One of Lab build steps converts sources to JavaScript file.
-    basic_vs                 = require('text!models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl'),
-    maccormack_step1_fs      = require('text!models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl'),
-    maccormack_step2_fs      = require('text!models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl'),
-    apply_uv_boundary_fs     = require('text!models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl'),
-    apply_u0v0_boundary_fs   = require('text!models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl'),
-    set_obstacle_boundary_fs = require('text!models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl'),
-    set_obstacle_velocity_fs = require('text!models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl'),
-    uv_to_u0v0_fs            = require('text!models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl'),
-    conserve_step1_fs        = require('text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl'),
-    conserve_step2_fs        = require('text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl'),
-    conserve_step3_fs        = require('text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl'),
-    diffuse_fs               = require('text!models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl'),
-    apply_buoyancy_fs        = require('text!models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl'),
+    basic_vs                 = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl'),
+    maccormack_step1_fs      = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl'),
+    maccormack_step2_fs      = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl'),
+    apply_uv_boundary_fs     = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl'),
+    apply_u0v0_boundary_fs   = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl'),
+    set_obstacle_boundary_fs = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl'),
+    set_obstacle_velocity_fs = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl'),
+    uv_to_u0v0_fs            = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl'),
+    conserve_step1_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl'),
+    conserve_step2_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl'),
+    conserve_step3_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl'),
+    diffuse_fs               = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl'),
+    apply_buoyancy_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl'),
 
     RELAXATION_STEPS = 10,
     GRAVITY = 0,
@@ -50,25 +50,25 @@ define(function (require, exports, module) {
       // ========================================================================
 
       // Simulation arrays provided by model.
-      // texture 0: 
+      // texture 0:
       // - R: t
       // - G: t0
       // - B: tb
       // - A: conductivity
       data0_tex = model.getSimulationTexture(0),
-      // texture 1: 
+      // texture 1:
       // - R: q
       // - G: capacity
       // - B: density
       // - A: fluidity
       data1_tex = model.getSimulationTexture(1),
-      // texture 2: 
+      // texture 2:
       // - R: u
       // - G: v
       // - B: u0
       // - A: v0
       data2_tex = model.getSimulationTexture(2),
-      // texture 3: 
+      // texture 3:
       // - R: uWind
       // - G: vWind
       // - B: undefined
@@ -91,7 +91,7 @@ define(function (require, exports, module) {
       relaxation_steps = RELAXATION_STEPS,
       gravity = GRAVITY,
 
-      // Convenience variables.   
+      // Convenience variables.
       i2dx  = 0.5 / delta_x,
       i2dy  = 0.5 / delta_y,
       idxsq = 1.0 / (delta_x * delta_x),
@@ -348,7 +348,7 @@ define(function (require, exports, module) {
           macCormack();
           conserve();
           setObstacleVelocity();
-          // Synchronize. It's not required but it 
+          // Synchronize. It's not required but it
           // allows to measure time (for optimization).
           gpgpu.tryFinish();
         }

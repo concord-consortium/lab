@@ -10,13 +10,13 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    Modeler                = require('modeler'),
-    PerformanceMonitor     = require('utils/performance-monitor'),
-    PerformanceView        = require('views/performance'),
-    VisualizationContainer = require('views/visualization-container'),
-    PlayerView             = require('views/player'),
-    WebGLStatusView        = require('views/webgl-status'),
-    DescriptionView        = require('views/description');
+    Modeler                = require('energy2d/modeler'),
+    PerformanceMonitor     = require('energy2d/utils/performance-monitor'),
+    PerformanceView        = require('energy2d/views/performance'),
+    VisualizationContainer = require('energy2d/views/visualization-container'),
+    PlayerView             = require('energy2d/views/player'),
+    WebGLStatusView        = require('energy2d/views/webgl-status'),
+    DescriptionView        = require('energy2d/views/description');
 
   // Export constructor function.
   return function InteractiveController(interactive, interactive_container_id, description_container_id) {

@@ -4,7 +4,7 @@
 // TODO: Remove this, as it's redundant.
 define(function (require) {
   'use strict';
-  var coremodel = require('models/core-model');
+  var coremodel = require('energy2d/models/core-model');
 
   return function Modeler(options) {
     var core_model = coremodel.makeCoreModel(options);

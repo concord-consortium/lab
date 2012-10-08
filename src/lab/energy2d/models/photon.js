@@ -4,11 +4,11 @@
 define(function (require, exports, module) {
   'use strict';
   var
-    hypot     = require('models/helpers').hypot,
-    Line      = require('models/shape').Line,
-    Rectangle = require('models/shape').Rectangle,
+    hypot     = require('energy2d/models/helpers').hypot,
+    Line      = require('energy2d/models/shape').Line,
+    Rectangle = require('energy2d/models/shape').Rectangle,
 
-    // 
+    //
     // Photon class.
     //
     Photon = exports.Photon = function (x, y, energy, c, angle) {
