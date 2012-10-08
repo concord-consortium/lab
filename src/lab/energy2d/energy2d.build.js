@@ -14,6 +14,15 @@
   optimize: 'none',
   // Protect global namespace and call export of API.
 
+  // Paths to CommonJS modules.
+  packages: [
+    {
+        name: "arrays",
+        main: "index",
+        location: "../modules/arrays"
+    }
+  ],
+
   paths: {
     // Plugin for loading plain text files (GLSL sources).
     'text': '../vendor/text/text'

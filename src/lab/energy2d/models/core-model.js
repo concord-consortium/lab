@@ -4,7 +4,7 @@
 define(function (require, exports, module) {
   'use strict';
   var
-    arrays          = require('energy2d/utils/arrays').arrays,
+    arrays          = require('arrays'),
     heatsolver      = require('energy2d/models/physics-solvers/heat-solver'),
     heatsolver_GPU  = require('energy2d/models/physics-solvers-gpu/heat-solver-gpu'),
     fluidsolver     = require('energy2d/models/physics-solvers/fluid-solver'),

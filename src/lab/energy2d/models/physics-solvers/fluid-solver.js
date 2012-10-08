@@ -4,7 +4,7 @@
 define(function (require, exports, module) {
   'use strict';
   var
-    arrays = require('energy2d/utils/arrays').arrays,
+    arrays = require('arrays'),
 
     RELAXATION_STEPS = 5,
     GRAVITY = 0,
