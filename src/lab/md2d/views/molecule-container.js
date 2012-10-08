@@ -347,7 +347,7 @@ define(function (require) {
       scale();
 
       // Subscribe for model events.
-      model.addPropertiesListener(["temperature_control"], updateHeatBath);
+      model.addPropertiesListener(["temperature_control"], drawSymbolImages);
       model.addPropertiesListener(["keShading", "chargeShading"], setup_drawables);
 
       // create container, or update properties if it already exists
@@ -414,14 +414,7 @@ define(function (require) {
                   .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
         }
 
-        vis.append("image")
-          .attr("x", 5)
-          .attr("id", "heat_bath")
-          .attr("y", 5)
-          .attr("width", "3%")
-          .attr("height", "3%")
-          .attr("xlink:href", "../../resources/heatbath.gif");
-
+        // Tooltip.
         molecule_div = d3.select("#viz").append("div")
             .attr("class", "tooltip")
             .style("opacity", 1e-6);
@@ -436,7 +429,7 @@ define(function (require) {
 
         redraw();
         create_gradients();
-
+        createSymbolImages();
       } else {
 
         if ( !options.fit_to_parent ) {
@@ -692,19 +685,73 @@ define(function (require) {
           return "url('#"+gradientNameForElement[d[model_md2d_results_ELEMENT] % 4]+"')";
       }
 
-        /*Function : updateHeatBath
-         *
-         * Controls display of Heat Bath icon based on value of temperature_control property for model.
-         * */
-        function updateHeatBath() {
-            var heatBath = model.get('temperature_control');
-            if (heatBath) {
-                d3.select("#heat_bath").style("display","");
-            }
-            else {
-                d3.select("#heat_bath").style("display","none");
-            }
-        }
+      // Create key images which can be shown in the
+      // upper left corner in different situations.
+      // IMPORTANT: use percentage values whenever possible,
+      // especially for *height* attribute!
+      // It will allow to properly calculate images
+      // placement in drawSymbolImages() function.
+      function createSymbolImages() {
+        var xMargin = "1%";
+        // Heat bath key image.
+        vis.append("image")
+            .attr({
+              "id": "heat-bath",
+              "x": xMargin,
+              "width": "3%",
+              "height": "3%",
+              "preserveAspectRatio": "xMinYMin",
+              "xlink:href": "../../resources/heatbath.gif"
+            });
+        // Kinetic Energy Shading gradient image.
+        vis.append("image")
+            .attr({
+              "id": "ke-gradient",
+              "x": xMargin,
+              "width": "12%",
+              "height": "12%",
+              "preserveAspectRatio": "xMinYMin",
+              "xlink:href": "../../resources/ke-gradient.png"
+            });
+      }
+
+      // Draw key images in the upper left corner.
+      // Place them in one row, dynamically calculate
+      // y position.
+      function drawSymbolImages() {
+          var heatBath = model.get('temperature_control'),
+              imageSelect, imageHeight,
+              // Variables used for calculating proper y positions.
+              // The unit for these values is percentage points!
+              yPos = 0,
+              yMargin = 1;
+
+          // Heat bath symbol.
+          if (heatBath) {
+              yPos += yMargin;
+              imageSelect = d3.select("#heat-bath")
+                .attr("y", yPos + "%")
+                .style("display", "");
+
+              imageHeight = imageSelect.attr("height");
+              // Truncate % symbol and convert to Number.
+              imageHeight = Number(imageHeight.substring(0, imageHeight.length - 1));
+              yPos += imageHeight;
+          } else {
+              d3.select("#heat-bath").style("display","none");
+          }
+
+          // Kinetic Energy shading gradient.
+          // Put it under heat bath symbol.
+          if (keShadingMode) {
+              yPos += yMargin;
+              d3.select("#ke-gradient")
+                .attr("y", yPos + "%")
+                .style("display", "");
+          } else {
+              d3.select("#ke-gradient").style("display", "none");
+          }
+      }
 
       function updateMoleculeRadius() {
         vis.selectAll("circle").data(results).attr("r",  function(d) { return x(d[model_md2d_results_RADIUS]); });
@@ -1007,7 +1054,7 @@ define(function (require) {
         setup_vdw_pairs();
         setup_radial_bonds();
         setup_particles();
-        updateHeatBath();
+        drawSymbolImages();
         drawImageAttachment();
         drawClock();
         drawTextBoxes();
