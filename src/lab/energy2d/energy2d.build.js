@@ -12,7 +12,6 @@
   // Do not use UglifyJS.
   // It's done via Makefile rutines.
   optimize: 'none',
-  // Protect global namespace and call export of API.
 
   // Paths to CommonJS modules.
   packages: [
@@ -28,6 +27,7 @@
     'text': '../vendor/text/text'
   },
 
+  // Protect global namespace and call export of API.
   wrap: {
     start: "(function() {",
     // Manual require at the end of the file instead of such option:

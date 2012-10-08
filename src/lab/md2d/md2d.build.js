@@ -32,7 +32,7 @@
   wrap: {
     start: "(function() {",
     // Manual require at the end of the file instead of such option:
-    // insertRequire: ['controllers/public-api'],
+    // insertRequire: ['md2d/public-api'],
     // It is a workaround, as Almond by default simulates async call
     // of require (sets timeout). Last argument (true) forces sync call instead.
     end: "require(['md2d/public-api'], undefined, undefined, true); }());"
