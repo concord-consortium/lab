@@ -23,8 +23,14 @@
     {
       "type": "button",
       "id": "mark-two-atoms",
-      "text": "Mark two atoms",
+      "text": "Mark two random atoms",
       "action": "markAtoms(randomAtoms(2))"
+    },
+    {
+      "type": "button",
+      "id": "unmark-all-atoms",
+      "text": "Unmark all atoms",
+      "action": "unmarkAllAtoms()"
     },
     {
       "type": "button",
@@ -43,7 +49,8 @@
     "bottom": [
       "ke-shading-on",
       "ke-shading-off",
-      "mark-two-atoms"
+      "mark-two-atoms",
+      "unmark-all-atoms"
     ]
   }
 }
