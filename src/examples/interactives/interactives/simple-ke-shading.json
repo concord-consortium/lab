@@ -24,7 +24,19 @@
       "type": "button",
       "id": "mark-two-atoms",
       "text": "Mark two atoms",
-      "action": "markAtoms(randomAtoms(2));"
+      "action": "markAtoms(randomAtoms(2))"
+    },
+    {
+      "type": "button",
+      "id": "temperature-control-on",
+      "text": "Set Temperature Control on",
+      "action": "set({temperature_control: true})"
+    },
+    {
+      "type": "button",
+      "id": "temperature-control-off",
+      "text": "Set Temperature Control off",
+      "action": "set({temperature_control: false})"
     }
   ],
   "layout": {
