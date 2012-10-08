@@ -89,7 +89,8 @@ use a local web server on your computer to serve the downloaded distribution Chr
 Lab uses a number of RubyGems and node modules to manage development. Lab's test framework
 uses [Vows](http://vowsjs.org), which depends on [nodejs](http://nodejs.org/) and
 [npm](http://npmjs.org/) (Node Package Manager). In addition JavaScript minification is
-done using [UglifyJS](https://github.com/mishoo/UglifyJS).
+done using [UglifyJS](https://github.com/mishoo/UglifyJS). JavaScript dependency management
+is handled by [RequireJS](http://requirejs.org/).
 
 ### Prerequisites:
 
@@ -824,50 +825,38 @@ these resources at Concord Consortium.
 
 ### Lab Modules: `src/lab`
 
-The source code for the Lab modules is all contained in **`src/lab`**
+The source code for the Lab modules is all contained in **`src/lab`**:
 
-- `src/lab/models`
-- `src/lab/views`
-- `src/lab/controllers`
+- `src/lab/md2d`
+- `src/lab/energy2d`
 - `src/lab/grapher`
-- `src/lab/arrays`
-- `src/lab/benchmark`
-- `src/lab/components`
-- `src/lab/layout`
+- `src/lab/common`
 
-These JavaScript fragments are used in the build process:
+The list above presents independent modules built as separate sub-libraries (`md2d`, `energy2d`, `grapher`)
+and one directory which contains common utilities and modules (`common`).
 
-- `src/lab/start.js`
-- `src/lab/lab-module.js`
-- `src/lab/end.js`
-
-The **`energy2d-module.js`** represents a new way of creating modules used by the Energy2D model engine.
-
-- `src/lab/energy2d-module.js`
-
-### Lab Modeling Engines: `src/lab/models`
+### Lab Modeling Engines: `md2d` and `energy2d`
 
 #### 2D Molecular Dynamics: `md2d`
 
-The source code of the core molecular dynamics engine is currently located in the `src/md-engine`
-directory, which is organized as a set of related Node modules. The entry point for external
-applications is the file `src/md-engine/md2d.js`.
+`md2d` module contains a basic *Next Gen Molecular Workbench* application. It built over MVC design
+pattern and consist of following units:
 
-A build step uses the [`node-browserify`](https://github.com/substack/node-browserify) Node module
-to convert this entry point and all its dependencies into a single JavaScript file located at `md-
-engine/md2d.js`. Another build step automatically appends this browser-compatible version to the
-beginning of the `lab.molecules.js` file.
+- Models - `src/lab/md2d/modles`
+- Views - `src/lab/md2d/views`
+- Controllers - `src/lab/md2d/controllers`
 
-This means that the global function `require()` is defined at the beginnig of `lab.molecules.js`,
-and can be used by any code that runs after that point to obtain the modeler defined in `md2d.js`
-and its dependencies. The argument to `require()` should be written as if one were using Node with a
-current working directory of `src/md-engine`, e.g., in a web application that includes
-`lab.molecules.js`, write `var md2d = require('./md2d');` to get a reference to the modeler.
+The source code of the core molecular dynamics engine is currently located in the
+`src/lab/md2d/models/engine` directory, which is organized as a set of related RequireJS modules.
+These modules are compatible both with the Web browser environment and Node. When used in Node,
+[amdefine](https://github.com/jrburke/amdefine) package must be available (it is listed as an
+dependency in the Lab `packages.json` file). The entry point for external Node.js applications is
+the file `src/lab/md2d/models/engine/md2d.js`.
 
-In addition, Node-based executables can be written and placed in `src/md-engine` or a subdirectory.
-These are expected to be useful for verifying and tuning the model by running the model headless and
-saving summary results into a file for offline analysis; see, e.g., [https://github.com/rklancer
-/script-md](https://github.com/rklancer/script-md).
+In addition, Node-based executables can be written and placed in `src/lab/md2d/models/engine` or a
+subdirectory. These are expected to be useful for verifying and tuning the model by running the
+model headless and saving summary results into a file for offline analysis; see, e.g.,
+[https://github.com/rklancer /script-md](https://github.com/rklancer/script- md).
 
 Hashbang scripts for starting these executables (i.e., files which start with the line
 `#!/usr/bin/env node` and which have the execute bit set) should be placed in the directory `node-
@@ -879,58 +868,191 @@ Bundler.)
 
 #### 2D Thermal Energy: `energy2d`
 
-### Lab Views: `src/lab/views`
+### JavaScript Dependency Management and Build Process - RequreJS
 
-### Lab Controllers: `src/lab/controllers`
+Lab's modules use [RequireJS](http://requirejs.org/) for dependency management. It is a JavaScript
+file and module loader optimized for in-browser use, but it can be used in other JavaScript
+environments, like Rhino and Node. So, you don't have to worry about manual JavaScript files
+concatenation and the library build process - everything is done automatically.
 
-### Adding new source files or modules
+[RequireJS](http://requirejs.org/) might be used for fully asynchronous in-browser module loading,
+but it can also be used for combining all source files into one output JavaScript file. The Lab
+project mostly uses the second approach. The tool which resolves all dependencies and combines them
+into single output file is called **RequireJS Optimizer**.
 
-If you add a new JavaScript file to an existing Lab module also add it to the associated section of the `MakeFile`.
+Useful RequireJS resources:
 
-For example if you created a pie chart grapher and intended it to be part of the mdoule
-`lab.grapher.js` you might add the file here:
-
-    src/lab/grapher/core/pie-chart.js
-
-Then add that path to the `server/public/lab/lab.grapher.js` target section of the MakeFile:
-
-    server/public/lab/lab.grapher.js: \
-      src/lab/start.js \
-      src/lab/grapher/core/core.js \
-      src/lab/grapher/core/data.js \
-      src/lab/grapher/core/axis.js \
-      src/lab/grapher/core/indexed-data.js \
-      src/lab/grapher/core/graph.js \
-      src/lab/grapher/core/pie-chart.js \
-      src/lab/grapher/core/real-time-graph.js \
-      src/lab/grapher/core/colors.js \
-      src/lab/grapher/core/register-keyboard-handler.js \
-      src/lab/end.js
-
-Similarly if you add a new module to Lab you will need to create a new target to represent the module
-using a similar form to the `server/public/lab/lab.grapher.js` target as well as adding the target
-module to the `LAB_JS_FILES` make variable containing the list of all Lab JavaScript modules to
-be generated:
-
-    LAB_JS_FILES = \
-      server/public/lab/lab.grapher.js \
-      server/public/lab/lab.benchmark.js \
-      server/public/lab/lab.layout.js \
-      server/public/lab/lab.views.js \
-      server/public/lab/lab.arrays.js \
-      server/public/lab/lab.molecules.js \
-      server/public/lab/lab.energy2d.js \
-      server/public/lab/lab.components.js \
-      server/public/lab/lab.controllers.js \
-      server/public/lab/lab.js
-
-The html file are generated from [Haml](http://haml-lang.com/) markup. Add the suffix `.html.haml`
-to these files.
-
-The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these
-files. The stylesheets may also be written using the newer `*.scss` variant of Sass.
+- [How to get started with RequireJS](http://requirejs.org/docs/start.html)
+- [RequireJS API](http://requirejs.org/docs/api.html)
+- [RequireJS Optimization](http://requirejs.org/docs/optimization.html)
+- [RequireJS in Node](http://requirejs.org/docs/node.html)
+- [RequireJS Google Group](https://groups.google.com/forum/?fromgroups#!forum/requirejs)
 
 
+#### Adding new source file intended to work in the Web browser
+
+Adding a new source to existing module is straightforward.
+
+- Put the source file in an appropriate directory (e.g. `src/lab/module-name/`).
+
+- Define it as a module using RequireJS syntax, e.g. following this pattern:
+
+        define(function (require) {
+          // Dependencies.
+          var utils = require('other-module-name/file-name');
+          // Preparation code.
+          // (...)
+          // Finally, return module API.
+          return {
+            // (...)
+          };
+          // Or just constructor function:
+          // return function ClassName() {
+          //   (...)
+          // };
+        });
+
+    You can read more about RequireJS modules syntax
+    [here](http://requirejs.org/docs/api.html#define).
+
+
+- In case of need, reference this file in other sources using RequireJS syntax:
+
+          var dependency = require('module-name/file-name');
+
+That's all! Your file will be automatically included during module build process.
+
+#### Adding new source file intended to work in the Web browser and in Node
+
+If you are working on file which should also work in the Node environment as a typical package
+(without using RequireJS as a dependency and its syntax), follow instructions above and
+additionally:
+
+- Add following snippet at the beginning of the source file:
+
+        if (typeof define !== 'function') { var define = require('amdefine')(module) }
+
+- Make sure that `amdefine` package is listed as a dependency in your `package.json` file (it can be
+Lab's `package.json` file or separate one if you work on the independent module, like those stored in
+`src/modules` directory).
+
+The Lab's **array** module uses this technique, so you may look for a reference in
+`src/modules/array`.
+
+
+#### Adding new module which should be built as a separate library
+
+This involves a few additional steps comparing with adding a single source file.
+
+- Create a new directory in `src/lab`.
+- Put all related sources there or in `src/lab/common` (if you think that they are generic enough
+and may be reused by other modules).
+- Define `module-name.build.js` and `public-api.js` files in your new directory (described below).
+- Add build routines to the Makefile:
+
+    - Define a new target, for example:
+
+            server/public/lab/lab.module-name.js: \
+                $(NEW_MODULE_SRC_FILES) \
+                $(COMMON_SRC_FILES)
+                $(R_OPTIMIZER) -o src/lab/module-name/module-name.build.js
+
+    - List this target in `LAB_JS_FILES` Makefile variable containing the list of all Lab JavaScript
+modules to be generated.
+
+Your module will be built during Lab's build process. You may use one of the existing modules for
+reference in case of any troubles (`md2d`, `energy2d` or `grapher`).
+
+#### Module Build Configuration - *.build.js file
+
+Each Lab's module contains file `name.build.js`. It is a RequireJS Optimizer build profile. Useful,
+related resources:
+
+- [RequireJS Build Profile Help](http://requirejs.org/docs/optimization.html#wholeproject)
+- [Example Build File with All Options
+Documented](https://github.com/jrburke/r.js/blob/master/build/example.build.js)
+
+**If you create new build file, make sure that you use one of the existing build profiles as a
+reference!** It will enforce consistent style and options across all Lab's modules.
+
+Lab's build profiles use [almond](https://github.com/jrburke/almond) module - a replacement AMD
+loader for RequireJS. It is a smaller "shim" loader, providing the minimal AMD API footprint that
+includes loader plugin support.
+
+Why? [almond](https://github.com/jrburke/almond) allows us to create the resulting library which is
+totally independent from RequireJS. It is a reasonable approach as RequireJS is used only for module
+definition, dependency resolving and building a single file library using Optimizer. The
+asynchronous module loading is not utilized by the final Lab library, so there is no need to force
+users to load whole RequireJS library. Instead, use and include minimalistic RequireJS API
+replacement.
+
+#### Module Public API - public-api.js file
+
+If module exposes API using global variables, it should define it in `public-api.js` file. It is
+a typical RequireJS module, which just adds properties to `window` object. You can look at `src/md2d
+/public-api.js`, `src/energy2d/public-api.js` or `src/grapher/public-api.js` file for a reference.
+
+This files are **not necessary**, but **highly recommended** if module has to define some global
+variables. It is a convention used internally by Lab repository. Such files are enforcing clean
+definition of public API exposed by modules. Developers will have certainty that all global
+variables are defined **there and only there**.
+
+Execution of this script should be enforced by build profile (*.build.js files described above).
+Most often is done by `wrap` option:
+
+      // Protect global namespace and call Public API export.
+      wrap: {
+        start: "(function() {",
+        // Almond by default simulates async call of require (sets timeout).
+        // Last argument (true) forces sync call instead.
+        end: "require(['module-name/public-api'], undefined, undefined, true); }());"
+      }
+
+#### CoffeeScript Files Support
+
+The Lab project is configured to easily support CoffeeScript sources. RequireJS plugin called
+**require-cs** is used for dynamic loading of CoffeeScript sources.
+
+To enable CoffeeScript support, make sure that module's build profile (see section about *.build.js
+files) contains following options:
+
+    // Additional modules.
+    paths: {
+    'cs' :'../vendor/require-cs/cs',
+    'coffee-script': '../vendor/coffee-script/extras/coffee-script'
+    },
+    //Stub out the cs module after a build since
+    //it will not be needed.
+    stubModules: ['cs'],
+    // The optimization will load CoffeeScript to convert
+    // the CoffeeScript files to plain JS. Use the exclude
+    // directive so that the coffee-script module is not included
+    // in the built file.
+    exclude: ['coffee-script']
+
+`md2d` module has CoffeeScript support enabled, so you can use its build profile as a reference.
+
+
+
+- To define a CoffeeScript module just use typical RequireJS syntax converted to CoffeeScript:
+
+        define (require) ->
+          # Dependencies.
+          CoffeeScriptDependency = require 'cs!other-module-name/file-name'
+          JavaScriptDependency   = require 'module-name/file-name'
+
+          class SomeClass extends BaseClass
+          // (...)
+
+- You can also load CoffeeScript in JavaScript files:
+
+        define(function (require) {
+          // Dependencies.
+          var CoffeeScriptDependency = require('cs!module-name/file-name');
+          // (...)
+
+Just remember about **cs!** prefix in paths when loading CoffeeScript sources. RequireJS Optimizer
+will convert such files to plain JavaScript and include them in the final library.
 
 ### Generated Examples: `server/public/examples/`
 
@@ -1550,7 +1672,7 @@ Creating a new Lab server on AWS consists of three steps:
 
       If the new DNS entry for **hostname** is not properly propogated when the hostname is created or
       changed you will get an error that looks something like this:
-    
+
         *** running local command: echo '
         Host <hostname>
           User ubuntu
