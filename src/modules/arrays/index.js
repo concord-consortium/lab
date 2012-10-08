@@ -51,7 +51,9 @@ define(function (require, exports, module) {
         array_type = "regular";
       }
     }
-    fill = fill || 0;
+    if (fill === undefined) {
+      fill = 0;
+    }
     var a, i;
     if (array_type === "regular") {
       a = new Array(size);
