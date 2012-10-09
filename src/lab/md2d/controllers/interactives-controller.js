@@ -524,8 +524,12 @@ define(function (require) {
           action = component.action,
           value = component.value,
           title = component.title || "",
+          labels = component.labels || [],
+          i,
           $elem,
           $title,
+          label,
+          $label,
           $slider;
 
       if (min == null) min = 0;
@@ -534,12 +538,26 @@ define(function (require) {
 
       $title = $('<p class="title">' + title + '</p>');
       // we pick up the SVG slider component CSS if we use the generic class name 'slider'
+      $container = $('<div class="container">');
       $slider = $('<div class="html-slider">');
+      $container.append($slider);
+
       $slider.slider({
         min: min,
         max: max,
         step: (max - min) / steps
       });
+
+      $elem = $('<div class="interactive-slider">')
+                .append($title)
+                .append($container);
+
+      for (i = 0; i < labels.length; i++) {
+        label = labels[i];
+        $label = $('<p class="label">' + label.label + '</p>');
+        $label.css('left', (label.value-min) / (max-min) * 100 + '%');
+        $container.append($label);
+      }
 
       // The 'action' property is a source of a function which assumes we pass it a paramter called
       // 'value'.
@@ -558,10 +576,6 @@ define(function (require) {
         // it onto 'modelLoadedCallbacks'.)
         if (action != null) modelLoadedCallbacks.push(function() { action($slider.slider('value')); });
       }
-
-      $elem = $('<div class="interactive-slider">')
-                .append($title)
-                .append($slider);
 
       return { elem: $elem };
     }

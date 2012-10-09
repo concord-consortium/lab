@@ -276,11 +276,29 @@ button.extras-item-controls
   .title
     display: inline-block
     font-size: 1em
-    margin: 0 0 0.5em 0
+    margin: 0 0 0.5em 2em
     vertical-align: top
-  .html-slider
-    margin: 0 0 0 0.5em
-    width: 10em
+  .container
+    // make this a positioned element so the .label can be positioned absolute
+    position: relative
+    // bottom margin has to account for size of labels, which are taken out of flow
+    // left and right margins have to account for
+    margin: 0 2em 1.2em 2em
+    // This will be the width of the slider div itself
+    width: 12em
+    .html-slider
+      width: 100%
+    .label
+      position: absolute
+      top: 0.2em
+      // "width: 2x; margin-left: -x; left: y%" places the center of the .label at exactly y%
+      // of the width of the parent
+      width: 6em
+      margin-left: -3em
+      // Now, make the text itself centered in the .label element
+      text-align: center
+      // And finally, make the position labels a bit smaller than the title and other text
+      font-size: 0.9em
 
 .textBoxBody
   font-family: museo-sans, 'Open Sans', Verdana, Geneva, sans-serif
