@@ -843,12 +843,12 @@ and one directory which contains common utilities and modules (`common`).
 [`md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d) module contains a basic *Next Gen Molecular Workbench* application. It built over MVC design
 pattern and consist of following units:
 
-- Models - [`src/lab/md2d/modles`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/models)
+- Models - [`src/lab/md2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/models)
 - Views - [`src/lab/md2d/views`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/views)
 - Controllers - [`src/lab/md2d/controllers`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/controllers)
 
 The source code of the core molecular dynamics engine is currently located in the
-[`src/lab/md2d/modles/engine`](https://github.com/concord-
+[`src/lab/md2d/models/engine`](https://github.com/concord-
 consortium/lab/tree/master/src/lab/md2d/models/engine) directory, which is organized as a set of
 related RequireJS modules. These modules are compatible both with the Web browser environment and
 Node. When used in Node, [amdefine](https://github.com/jrburke/amdefine) package must be available
@@ -858,7 +858,7 @@ the file [`src/lab/md2d/models/engine/md2d.js`](https://github.com/concord-
 consortium/lab/blob/master/src/lab/md2d/models/engine/md2d.js).
 
 In addition, Node-based executables can be written and placed in
-[`src/lab/md2d/modles/engine`](https://github.com/concord-
+[`src/lab/md2d/models/engine`](https://github.com/concord-
 consortium/lab/tree/master/src/lab/md2d/models/engine) or a subdirectory. These are expected to be
 useful for verifying and tuning the model by running the model headless and saving summary results
 into a file for offline analysis; see, e.g., [https://github.com/rklancer/script-md](https://github.com/rklancer/script-md).
@@ -879,7 +879,7 @@ executables made available via Bundler.)
 a basic *Energy2D* application. It is a direct port of [Java Energy2D](http://energy.concord.org/energy2d/).
 Energy2D is also built over MVC design pattern and consist of following units:
 
-- Models - [`src/lab/energy2d/modles`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models)
+- Models - [`src/lab/energy2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models)
 - Views - [`src/lab/energy2d/views`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/views)
 - Controllers - [`src/lab/energy2d/controllers`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/controllers)
 
