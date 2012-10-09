@@ -893,9 +893,9 @@ Useful RequireJS resources:
 
 Adding a new source to existing module is straightforward.
 
-- Put the source file in an appropriate directory (e.g. `src/lab/module-name/`).
+1. Put the source file in an appropriate directory (e.g. `src/lab/module-name/`).
 
-- Define it as a module using RequireJS syntax, e.g. following this pattern:
+2. Define it as a module using RequireJS syntax, e.g. following this pattern:
 
         define(function (require) {
           // Dependencies.
@@ -916,7 +916,7 @@ Adding a new source to existing module is straightforward.
     [here](http://requirejs.org/docs/api.html#define).
 
 
-- In case of need, reference this file in other sources using RequireJS syntax:
+3. In case of need, reference this file in other sources using RequireJS syntax:
 
           var dependency = require('module-name/file-name');
 
@@ -928,11 +928,11 @@ If you are working on file which should also work in the Node environment as a t
 (without using RequireJS as a dependency and its syntax), follow instructions above and
 additionally:
 
-- Add following snippet at the beginning of the source file:
+1. Add following snippet at the beginning of the source file:
 
         if (typeof define !== 'function') { var define = require('amdefine')(module) }
 
-- Make sure that `amdefine` package is listed as a dependency in your `package.json` file (it can be
+2. Make sure that `amdefine` package is listed as a dependency in your `package.json` file (it can be
 Lab's `package.json` file or separate one if you work on the independent module, like those stored in
 `src/modules` directory).
 
@@ -944,11 +944,11 @@ The Lab's **array** module uses this technique, so you may look for a reference 
 
 This involves a few additional steps comparing with adding a single source file.
 
-- Create a new directory in `src/lab`.
-- Put all related sources there or in `src/lab/common` (if you think that they are generic enough
+1. Create a new directory in `src/lab`.
+2. Put all related sources there or in `src/lab/common` (if you think that they are generic enough
 and may be reused by other modules).
-- Define `module-name.build.js` and `public-api.js` files in your new directory (described below).
-- Add build routines to the Makefile:
+3. Define `module-name.build.js` and `public-api.js` files in your new directory (described below).
+4. Add build routines to the Makefile:
 
     - Define a new target, for example:
 
