@@ -73,12 +73,9 @@ define(function (require) {
       }
     }
 
-    // if (layout.views.thermometers) {
-    //   setThermometerHeight(layout.views.thermometers[0], modelHeight * 0.8);
-    // }
-
-    emsize = containerHeight / 800 * 1.2;
-    $('#content').css('font-size', emsize + 'em');
+    if (layout.views.thermometers) {
+      setThermometerHeight(layout.views.thermometers[0], modelHeight * 0.8);
+    }
 
     // FIXME this is a temporary hack ... put in layout code instead of memorializing it in the CSS,
     // which doesn't tend to get reviewed as closely.
