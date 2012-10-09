@@ -292,6 +292,8 @@ define(function (require) {
       switch (component.type) {
         case 'button':
           return createButton(component);
+        case 'checkbox':
+          return createCheckbox(component);
         case 'pulldown':
           return createPulldown(component);
         case 'thermometer':
@@ -413,6 +415,68 @@ define(function (require) {
       $button.click(makeFunctionInScriptContext(scriptStr));
 
       return { elem: $button };
+    }
+
+    function createCheckbox(component) {
+      var propertyName = component.property,
+          action = component.action,
+          $checkbox,
+          $label;
+
+      $checkbox = $('<input type="checkbox">').attr('id', component.id);
+      $label = $('<label>').append($checkbox).append(component.text);
+      // Append class to label, as it's the most outer container in this case.
+      $label.addClass("component");
+
+      // Process action script if it is defined.
+      if (action) {
+        action = getStringFromArray(action);
+        // Create a function which assumes we pass it a paramter called 'checked'.
+        action = makeFunctionInScriptContext('checked', action);
+      }
+
+      // Connect checkbox with model's property if its name is defined.
+      if (propertyName !== undefined) {
+        modelLoadedCallbacks.push(function () {
+          var updateCheckbox = function () {
+            var value = model.get(propertyName);
+            if (value) {
+              $checkbox.attr('checked', true);
+            } else {
+              $checkbox.attr('checked', false);
+            }
+          };
+          // Register listener for 'propertyName'.
+          model.addPropertiesListener([propertyName], updateCheckbox);
+          // Perform initial checkbox setup.
+          updateCheckbox();
+        });
+      }
+
+      // Register handler for click event.
+      $checkbox.click(function () {
+        var checked = false,
+            propObj;
+        // $(this) will contain a reference to the checkbox.
+        if ($(this).is(':checked')) {
+          checked = true;
+        }
+        // Change property value if checkbox is connected
+        // with model's property.
+        if (propertyName !== undefined) {
+          propObj = {};
+          propObj[propertyName] = checked;
+          model.set(propObj);
+        }
+        // Finally, if checkbox has action script attached,
+        // call it in script context with 'checked' value passed.
+        if (action !== undefined) {
+          action.call(null, checked);
+        }
+      });
+
+      // Return label tag, as it contains checkbox anyway.
+      return { elem: $label };
     }
 
     function createPulldown(component) {
