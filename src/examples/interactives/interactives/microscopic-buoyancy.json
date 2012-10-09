@@ -11,16 +11,11 @@
   },
   "components": [
     {
-      "type": "button",
-      "id": "gravity-on",
-      "text": "Gravity On",
-      "action": "set({ 'gravitationalField' : false });"
-    },
-    {
-      "type": "button",
-      "id": "gravity-off",
-      "text": "Gravity Off",
-      "action": "set({ 'gravitationalField' : 8e-8 });"
+      "type": "checkbox",
+      "id": "gfield",
+      "text": "Gravity",
+      "property": "gravitationalField",
+      "action": "if (value) { set({ 'gravitationalField' : 8e-8 }); }"
     },
     {
       "type": "energyGraph",
@@ -34,8 +29,7 @@
       "ke-chart"
     ],
     "bottom": [
-      "gravity-on",
-      "gravity-off"
+      "gfield"
     ]
   }
 }
