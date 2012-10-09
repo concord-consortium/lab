@@ -890,7 +890,7 @@ and additionally:
 
 GPU Toolkit is a small set of utilities which wraps basic WebGL structures and objects, providing
 higher level API. It is useful, as Energy2D uses WebGL for General-Purpose Computing on
-Graphics Processing Unit. So, a lot of physics calculations is performed on the GPU if user's Web
+Graphics Processing Unit. So, a lot of physics calculations are performed on the GPU if user's Web
 browser supports WebGL technology.
 
 The source code of the core physics engine is located in the [`src/lab/energy2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models) directory.
