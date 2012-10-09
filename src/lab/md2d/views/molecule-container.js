@@ -61,7 +61,6 @@ define(function (require) {
         mock_obstacles_array = [],
         mock_radial_bond_array = [],
         radialBond1, radialBond2,
-        vdwLine,
         vdwPairs,
         chargeShadingMode,
         chargeShadingChars = ["+", "-", ""],
@@ -348,7 +347,9 @@ define(function (require) {
 
       // Subscribe for model events.
       model.addPropertiesListener(["temperature_control"], drawSymbolImages);
-      model.addPropertiesListener(["keShading", "chargeShading"], setup_drawables);
+      // Redraw container each time when some visual-related property is changed.
+      model.addPropertiesListener(["keShading", "chargeShading", "showVDWLines", "showClock"],
+          setup_drawables);
 
       // create container, or update properties if it already exists
       if (vis === undefined) {
@@ -926,6 +927,8 @@ define(function (require) {
       }
 
       function drawAttractionForces() {
+        // Remove old lines if there are any.
+        VDWLines_container.selectAll("line.attractionforce").remove();
         if (!vdwPairs) return;
 
         var numVdwPairs = vdwPairs[model.VDW_INDICES.COUNT],
@@ -1051,7 +1054,7 @@ define(function (require) {
       function setup_drawables() {
         obstacles = get_obstacles();
         setup_obstacles();
-        setup_vdw_pairs();
+        setupVdwPairs();
         setup_radial_bonds();
         setup_particles();
         drawSymbolImages();
@@ -1065,7 +1068,6 @@ define(function (require) {
 
         chargeShadingMode = model.get("chargeShading");
         keShadingMode = model.get("keShading");
-        drawVdwLines = model.get("showVDWLines");
 
         gradient_container.selectAll("circle").remove();
         gradient_container.selectAll("g").remove();
@@ -1137,13 +1139,18 @@ define(function (require) {
         }
       }
 
-      function setup_vdw_pairs() {
-        update_vdw_pairs();
+      function setupVdwPairs() {
+        VDWLines_container.selectAll("line.attractionforce").remove();
+        drawVdwLines = model.get("showVDWLines");
+        if (drawVdwLines) {
+          updateVdwPairs();
+        }
       }
 
-      function update_vdw_pairs() {
-        VDWLines_container.selectAll("line.attractionforce").remove();
+      function updateVdwPairs() {
+        // Get new set of pairs from model.
         vdwPairs = getVdwPairs();
+        // And draw them.
         drawAttractionForces();
       }
 
@@ -1213,7 +1220,7 @@ define(function (require) {
         }
 
         if (drawVdwLines) {
-          setup_vdw_pairs();
+          updateVdwPairs();
         }
         if (radialBondResults) {
           update_radial_bonds();
