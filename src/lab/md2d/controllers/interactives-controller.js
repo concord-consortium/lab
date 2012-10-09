@@ -546,7 +546,7 @@ define(function (require) {
       if (action) {
         action = makeFunctionInScriptContext('value', action);
         $slider.bind('slide', function(event, ui) {
-          action.call(null, ui.value);
+          action(ui.value);
         });
       }
 
@@ -556,7 +556,7 @@ define(function (require) {
         // Make sure to call the action with the startup value of slider. (The script action may
         // manipulate the model, so we have to make sure it runs after the model loads, by pushing
         // it onto 'modelLoadedCallbacks'.)
-        if (action != null) modelLoadedCallbacks.push(function() { action.call(null, $slider.slider('value')); });
+        if (action != null) modelLoadedCallbacks.push(function() { action($slider.slider('value')); });
       }
 
       $elem = $('<div class="interactive-slider">')
