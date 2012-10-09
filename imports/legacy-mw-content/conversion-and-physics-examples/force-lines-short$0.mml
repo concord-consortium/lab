@@ -319,7 +319,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1345490083000</long> 
+     <long>1346965046000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -328,7 +328,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>11968</long> 
+    <long>11975</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -374,9 +374,6 @@
      <int>255</int> 
     </object> 
    </void> 
-  </void> 
-  <void property="shading"> 
-   <boolean>true</boolean> 
   </void> 
   <void property="showVDWLines"> 
    <boolean>true</boolean> 
