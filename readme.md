@@ -990,22 +990,21 @@ and may be reused by other modules).
 3. Define `module-name.build.js` and `public-api.js` files in your new directory (described below).
 4. Add build routines to the [`Makefile`](https://github.com/concord-consortium/lab/blob/master/Makefile):
 
-    - Define a new target, for example:
+    4.1. Define a new target, for example:
 
-            server/public/lab/lab.module-name.js: \
-                $(NEW_MODULE_SRC_FILES) \
-                $(COMMON_SRC_FILES)
-                $(R_OPTIMIZER) -o src/lab/module-name/module-name.build.js
+        server/public/lab/lab.module-name.js: \
+            $(NEW_MODULE_SRC_FILES) \
+            $(COMMON_SRC_FILES)
+            $(R_OPTIMIZER) -o src/lab/module-name/module-name.build.js
 
-    - List this target in `LAB_JS_FILES` Makefile variable containing the list of all Lab JavaScript
-modules to be generated.
+    4.2. List this target in `LAB_JS_FILES` Makefile variable containing the list of all Lab JavaScript
+      modules to be generated.
 
 Your module will be built during Lab's build process. You may use one of the existing modules for
-reference in case of any troubles (
-[`md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d),
+reference in case of any troubles
+([`md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d),
 [`energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d) or
-[`grapher`](https://github.com/concord-consortium/lab/tree/master/src/lab/grapher)
-).
+[`grapher`](https://github.com/concord-consortium/lab/tree/master/src/lab/grapher)).
 
 #### Module Build Configuration - *.build.js file
 
