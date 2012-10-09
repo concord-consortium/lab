@@ -80,11 +80,8 @@ define(function (require) {
 
     // Push the molecule-container down so its top lines up with the energy graph's top exactly.
     // After brief investigation, couldn't tell for sure why the energyGraph container was being pushed down ~5px by the browser...
-    // if (viewLists.energyGraphs) {
-    //   $(viewLists.moleculeContainers[0].outerNode).css('top', 5);
-    // }
-
-    // For non-embedded interactives, #viz doesn't need a min-height (content will push it down)
-    // $('#viz.top').css('min-height', 0);
+    if (viewLists.energyGraphs) {
+      $(viewLists.moleculeContainers[0].outerNode).css('top', 5);
+    }
   };
 });
