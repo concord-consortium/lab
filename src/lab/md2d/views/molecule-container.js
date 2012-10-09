@@ -610,7 +610,7 @@ define(function (require) {
         create_radial_gradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", gradient_container);
 
         // "Marked" atom gradient
-        create_radial_gradient("mark-grad", "#FEE0D2", "#FC9272", "#DE2D26", gradient_container);
+        create_radial_gradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", gradient_container);
 
         // Element gradients
         create_radial_gradient("green-grad", "#dfffef", "#75a643", "#2a7216", gradient_container);
