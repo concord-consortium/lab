@@ -9,16 +9,22 @@
   },
   "components": [
     {
-      "type": "button",
-      "id": "ke-shading-on",
-      "text": "Set KE Shading on",
-      "action": "set({keShading: true})"
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE Shading",
+      "property": "keShading"
     },
     {
-      "type": "button",
-      "id": "ke-shading-off",
-      "text": "Set KE Shading off",
-      "action": "set({keShading: false})"
+      "type": "checkbox",
+      "id": "temperature-control",
+      "text": "Temperature Control (property link)",
+      "property": "temperature_control"
+    },
+    {
+      "type": "checkbox",
+      "id": "temperature-control-action",
+      "text": "Temperature Control (action defined)",
+      "action": "set({temperature_control: checked})"
     },
     {
       "type": "button",
@@ -31,24 +37,13 @@
       "id": "unmark-all-atoms",
       "text": "Unmark all atoms",
       "action": "unmarkAllAtoms()"
-    },
-    {
-      "type": "button",
-      "id": "temperature-control-on",
-      "text": "Set Temperature Control on",
-      "action": "set({temperature_control: true})"
-    },
-    {
-      "type": "button",
-      "id": "temperature-control-off",
-      "text": "Set Temperature Control off",
-      "action": "set({temperature_control: false})"
     }
   ],
   "layout": {
     "bottom": [
-      "ke-shading-on",
-      "ke-shading-off",
+      "ke-shading",
+      "temperature-control",
+      "temperature-control-action",
       "mark-two-atoms",
       "unmark-all-atoms"
     ]
