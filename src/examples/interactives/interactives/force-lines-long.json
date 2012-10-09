@@ -8,5 +8,11 @@
     }
   },
   "components": [
+    {
+      "type": "checkbox",
+      "id": "vdw-lines",
+      "text": "Show Attraction Forces",
+      "property": "showVDWLines"
+    }
   ]
 }
