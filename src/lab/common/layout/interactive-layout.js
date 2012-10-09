@@ -25,7 +25,6 @@ define(function (require) {
         h,
         modelWidth,
         modelHeight,
-        modelDimensions,
         modelAspectRatio,
         modelWidthFactor,
         viewLists,
@@ -38,9 +37,8 @@ define(function (require) {
     // grab 'viewLists' from legacy layout system
     viewLists = layout.views;
 
-    modelDimensions = viewLists.moleculeContainers[0].scale();
-    w = modelDimensions[2];
-    h = modelDimensions[3];
+    w = $(viewLists.moleculeContainers[0].outerNode).width();
+    h = $(viewLists.moleculeContainers[0].outerNode).height();
     modelAspectRatio = w / h;
 
     // Model container should take up 60% of parent container width...
