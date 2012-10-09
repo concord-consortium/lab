@@ -866,7 +866,39 @@ which `npm` should make available whenever Lab is imported into another project 
 (For developer convenience, `bin/` is being reserved for Ruby executables made available via
 Bundler.)
 
-#### 2D Thermal Energy: `energy2d`
+#### 2D Thermal Energy: [`energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d)
+
+[`energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d) module contains
+a basic *Energy2D* application. It is a direct port of [Java Energy2D](http://energy.concord.org/energy2d/).
+Energy2D is also built over MVC design pattern and consist of following units:
+
+- Models - [`src/lab/energy2d/modles`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models)
+- Views - [`src/lab/energy2d/views`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/views)
+- Controllers - [`src/lab/energy2d/controllers`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/controllers)
+
+and additionally:
+
+- Internal Utils - [`src/lab/energy2d/utils`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/utils)
+- GPU Toolkit - [`src/lab/energy2d/gpu`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/gpu)
+
+GPU Toolkit is a small set of utilities which wraps basic WebGL structures and objects, providing
+higher level API. It is useful, as Energy2D uses WebGL for General-Purpose Computing on
+Graphics Processing Unit. So, a lot of physics calculations is performed on the GPU if user's Web
+browser supports WebGL technology.
+
+The source code of the core physics engine is located in the [`src/lab/energy2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models) directory.
+Especially important units are listed below:
+
+- Core Model [`src/lab/energy2d/models/core-model.js`](https://github.com/concord-consortium/lab/blob/master/src/lab/energy2d/models/core-model.js) - constructs all physics solvers,
+stores simulation data (arrays, textures) and delegates physics calculations to proper objects.
+- Physics Solvers [`src/lab/energy2d/models/physics-solvers`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models/physics-solvers) - directory containing sequential
+(plain JavaScritp) implementation of physics algorithms used by core model.
+- Physics Solvers GPU [`src/lab/energy2d/models/physics-solvers-gpu`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models/physics-solvers-gpu) - directory containing parallel
+implementation (WebGL-based) of heat and fluid solvers.
+
+Necessary GLSL (GL Shading Language) sources are stored in separate files. They are loaded using
+RequireJS *text* plug-in which just allows to load plain text files. Finally, they are inlined in
+the resulting library due to the RequireJS optimization process.
 
 ### JavaScript Dependency Management and Build Process - RequreJS
 
