@@ -1915,6 +1915,22 @@ More about using npm for development:
 Lab Example: [`package.json`](https://github.com/concord-consortium/lab/blob/master/package.json)
 specifies node pakage dependencies for the Lab project.
 
+#### RequireJS
+
+[RequireJS](http://requirejs.org) is a JavaScript file and module
+loader. It is optimized for in-browser use, but it can be used in other
+JavaScript environments, like Rhino and Node.
+
+- [homepage](http://requirejs.org)
+- [repo](https://github.com/jrburke/requirejs)
+- [RequireJS Google Group](https://groups.google.com/forum/?fromgroups#!forum/requirejs)
+
+Lab Example:
+
+
+All Lab's modules use RequireJS for dependency management and build process. Its application is widely
+described in [this section](#javascript-dependency-management-and-build-process---requrejs).
+
 #### CoffeeScript
 
 [CoffeeScript](http://coffeescript.org/) is a language the compiles to JavaScript. Many programmers
