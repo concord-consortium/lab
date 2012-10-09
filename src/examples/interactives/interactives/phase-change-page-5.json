@@ -13,6 +13,16 @@
       "id":     "epsilon-slider",
       "min":    0.01,
       "max":    0.16,
+      "labels": [
+        {
+          "value": 0.01,
+          "label": "weak"
+        },
+        {
+          "value": 0.16,
+          "label": "strong"
+        }
+      ],
       "steps":  50,
       "title":  "Attraction between atoms",
       "value":  0.144,
