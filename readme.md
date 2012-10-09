@@ -825,46 +825,53 @@ these resources at Concord Consortium.
 
 ### Lab Modules: `src/lab`
 
-The source code for the Lab modules is all contained in **`src/lab`**:
+The source code for the Lab modules is all contained in
+**[`src/lab`](https://github.com/concord-consortium/lab/tree/master/src/lab)**:
 
-- `src/lab/md2d`
-- `src/lab/energy2d`
-- `src/lab/grapher`
-- `src/lab/common`
+- [`src/lab/md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d)
+- [`src/lab/energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d)
+- [`src/lab/grapher`](https://github.com/concord-consortium/lab/tree/master/src/lab/grapher)
+- [`src/lab/common`](https://github.com/concord-consortium/lab/tree/master/src/lab/common)
 
 The list above presents independent modules built as separate sub-libraries (`md2d`, `energy2d`, `grapher`)
 and one directory which contains common utilities and modules (`common`).
 
 ### Lab Modeling Engines: `md2d` and `energy2d`
 
-#### 2D Molecular Dynamics: `md2d`
+#### 2D Molecular Dynamics: [`md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d)
 
-`md2d` module contains a basic *Next Gen Molecular Workbench* application. It built over MVC design
+[`md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d) module contains a basic *Next Gen Molecular Workbench* application. It built over MVC design
 pattern and consist of following units:
 
-- Models - `src/lab/md2d/modles`
-- Views - `src/lab/md2d/views`
-- Controllers - `src/lab/md2d/controllers`
+- Models - [`src/lab/md2d/modles`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/models)
+- Views - [`src/lab/md2d/views`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/views)
+- Controllers - [`src/lab/md2d/controllers`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/controllers)
 
 The source code of the core molecular dynamics engine is currently located in the
-`src/lab/md2d/models/engine` directory, which is organized as a set of related RequireJS modules.
-These modules are compatible both with the Web browser environment and Node. When used in Node,
-[amdefine](https://github.com/jrburke/amdefine) package must be available (it is listed as an
-dependency in the Lab `packages.json` file). The entry point for external Node.js applications is
-the file `src/lab/md2d/models/engine/md2d.js`.
+[`src/lab/md2d/modles/engine`](https://github.com/concord-
+consortium/lab/tree/master/src/lab/md2d/models/engine) directory, which is organized as a set of
+related RequireJS modules. These modules are compatible both with the Web browser environment and
+Node. When used in Node, [amdefine](https://github.com/jrburke/amdefine) package must be available
+(it is listed as an dependency in the Lab [`packages.json`](https://github.com/concord-
+consortium/lab/blob/master/package.json) file). The entry point for external Node.js applications is
+the file [`src/lab/md2d/models/engine/md2d.js`](https://github.com/concord-
+consortium/lab/blob/master/src/lab/md2d/models/engine/md2d.js).
 
-In addition, Node-based executables can be written and placed in `src/lab/md2d/models/engine` or a
-subdirectory. These are expected to be useful for verifying and tuning the model by running the
-model headless and saving summary results into a file for offline analysis; see, e.g.,
-[https://github.com/rklancer /script-md](https://github.com/rklancer/script- md).
+In addition, Node-based executables can be written and placed in
+[`src/lab/md2d/modles/engine`](https://github.com/concord-
+consortium/lab/tree/master/src/lab/md2d/models/engine) or a subdirectory. These are expected to be
+useful for verifying and tuning the model by running the model headless and saving summary results
+into a file for offline analysis; see, e.g., [https://github.com/rklancer/script-md](https://github.com/rklancer/script-md).
 
 Hashbang scripts for starting these executables (i.e., files which start with the line
-`#!/usr/bin/env node` and which have the execute bit set) should be placed in the directory `node-
-bin`, and should execute by `require()`ing the appropriate module and calling its entry point
-method. Lab's `package.json` file specifies `node-bin/` as the location of the executable scripts
-which `npm` should make available whenever Lab is imported into another project as a Node module.
-(For developer convenience, `bin/` is being reserved for Ruby executables made available via
-Bundler.)
+`#!/usr/bin/env node` and which have the execute bit set) should be placed in the directory
+[`node-bin`](https://github.com/concord-consortium/lab/tree/master/node-bin), and should execute by
+`require()`ing the appropriate module and calling its entry point method. Lab's
+[`packages.json`](https://github.com/concord-consortium/lab/blob/master/package.json) file
+specifies [`node-bin`](https://github.com/concord-consortium/lab/tree/master/node-bin) as the
+location of the executable scripts which `npm` should make available whenever Lab is imported into
+another project as a Node module. (For developer convenience, `bin/` is being reserved for Ruby
+executables made available via Bundler.)
 
 #### 2D Thermal Energy: [`energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d)
 
@@ -965,11 +972,12 @@ additionally:
         if (typeof define !== 'function') { var define = require('amdefine')(module) }
 
 2. Make sure that `amdefine` package is listed as a dependency in your `package.json` file (it can be
-Lab's `package.json` file or separate one if you work on the independent module, like those stored in
-`src/modules` directory).
+Lab's [`packages.json`](https://github.com/concord-consortium/lab/blob/master/package.json) file
+or separate one if you work on the independent module, like those stored in
+[`src/modules`](https://github.com/concord-consortium/lab/tree/master/src/modules) directory).
 
 The Lab's **array** module uses this technique, so you may look for a reference in
-`src/modules/array`.
+[`src/modules/arrays`](https://github.com/concord-consortium/lab/tree/master/src/modules/arrays).
 
 
 #### Adding new module which should be built as a separate library
@@ -980,7 +988,7 @@ This involves a few additional steps comparing with adding a single source file.
 2. Put all related sources there or in `src/lab/common` (if you think that they are generic enough
 and may be reused by other modules).
 3. Define `module-name.build.js` and `public-api.js` files in your new directory (described below).
-4. Add build routines to the Makefile:
+4. Add build routines to the [`Makefile`](https://github.com/concord-consortium/lab/blob/master/Makefile):
 
     - Define a new target, for example:
 
@@ -993,7 +1001,11 @@ and may be reused by other modules).
 modules to be generated.
 
 Your module will be built during Lab's build process. You may use one of the existing modules for
-reference in case of any troubles (`md2d`, `energy2d` or `grapher`).
+reference in case of any troubles (
+[`md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d),
+[`energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d) or
+[`grapher`](https://github.com/concord-consortium/lab/tree/master/src/lab/grapher)
+).
 
 #### Module Build Configuration - *.build.js file
 
@@ -1021,8 +1033,11 @@ replacement.
 #### Module Public API - public-api.js file
 
 If module exposes API using global variables, it should define it in `public-api.js` file. It is
-a typical RequireJS module, which just adds properties to `window` object. You can look at `src/md2d
-/public-api.js`, `src/energy2d/public-api.js` or `src/grapher/public-api.js` file for a reference.
+a typical RequireJS module, which just adds properties to `window` object. You can look at
+[`src/md2d/public-api.js`](https://github.com/concord-consortium/lab/blob/master/src/lab/md2d/public-api.js),
+[`src/energy2d/public-api.js`](https://github.com/concord-consortium/lab/blob/master/src/lab/energy2d/public-api.js)
+or [`src/grapher/public-api.js`](https://github.com/concord-consortium/lab/blob/master/src/lab/grapher/public-api.js)
+file for a reference.
 
 This files are **not necessary**, but **highly recommended** if module has to define some global
 variables. It is a convention used internally by Lab repository. Such files are enforcing clean
@@ -1062,7 +1077,9 @@ files) contains following options:
     // in the built file.
     exclude: ['coffee-script']
 
-`md2d` module has CoffeeScript support enabled, so you can use its build profile as a reference.
+`md2d` module has CoffeeScript support enabled, so you can use
+[its build profile](https://github.com/concord-consortium/lab/blob/master/src/lab/md2d/md2d.build.js)
+as a reference.
 
 
 
