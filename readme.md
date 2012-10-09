@@ -1935,7 +1935,8 @@ described in [this section](#javascript-dependency-management-and-build-process-
 
 [CoffeeScript](http://coffeescript.org/) is a language the compiles to JavaScript. Many programmers
 find it more expressive and productive. [js2cofee](http://js2coffee.org/) can be used to convert
-JavaScript to CoffeeScript.
+JavaScript to CoffeeScript. RequireJS Optimizer also can convert CoffeeScript to JavaScrit. So
+you don't have to manually do it when referencing CoffeeScript files using RequireJS.
 
 - [repo](https://github.com/jashkenas/coffee-script)
 - [issues](https://github.com/jashkenas/coffee-script/issues)
@@ -1945,8 +1946,14 @@ Lab Examples:
 1.  [`get-md2d-data.coffee`](https://github.com/concord-consortium/lab/blob/master/node-bin/get-md2d-data.coffee)
     is a coffeescript program used to run the MD2D engine from the command line and generate data used
     for physics validation tests.
-2.  [`PlaybackComponentSVG`](src/lab/components/playback_svg.coffee) is an object written in coffeescript
-    that creates and manages the SVG-based Playback control widget for the Molecule Container.
+2.  [`PlaybackComponentSVG`](https://github.com/concord-consortium/lab/blob/master/src/lab/common/components/playback_svg.coffee)
+    is an object written in CoffeeScript that creates and manages the SVG-based Playback control widget
+    for the Molecule Container.
+3.  [`InteractivesController`](https://github.com/concord-consortium/lab/blob/master/src/lab/md2d/controllers/interactives-controller.js)
+    is an object written in plain JavaScript which references directly CoffeeScript file using RequireJS
+    (`Thermometer = require('cs!common/components/thermometer')`).
+
+[This section](#coffeescript-files-support) covers RequireJS support of CoffeeScript files.
 
 ### RubyGems
 
