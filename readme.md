@@ -44,9 +44,9 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
 ### Molecular Modeling Examples
 
-- [Simple Atoms Model](examples/simple-atoms-model/simple-atoms-model.html)
-- [More Complex Atoms Model](examples/complex-atoms-model/complex-atoms-model.html)
-- [Authorable Atoms Model](examples/interactives/interactives.html)
+- [A Simple Gas](/examples/interactives/interactives.html#interactives/simple-gas.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/simple-gas.json))
+- [Oil and Water](/examples/interactives/interactives.html#interactives/intermolecular-attractions-page-3-1.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/intermolecular-attractions-page-3-1.json))
+- [Boiling Point and Solubility](examples/interactives/interactives.html#interactives/intermolecular-attractions-page-3-2.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/intermolecular-attractions-page-3-2.json))
 
 ### Energy2D Examples
 
