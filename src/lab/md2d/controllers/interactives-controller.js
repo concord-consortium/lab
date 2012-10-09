@@ -523,16 +523,16 @@ define(function (require) {
           steps = component.steps,
           action = component.action,
           value = component.value,
-          label = component.label || "",
+          title = component.title || "",
           $elem,
-          $label,
+          $title,
           $slider;
 
       if (min == null) min = 0;
       if (max == null) max = 10;
       if (steps == null) steps = 10;
 
-      $label = $('<p class="label">' + label + '</p>');
+      $title = $('<p class="title">' + title + '</p>');
       // we pick up the SVG slider component CSS if we use the generic class name 'slider'
       $slider = $('<div class="html-slider">');
       $slider.slider({
@@ -560,7 +560,7 @@ define(function (require) {
       }
 
       $elem = $('<div class="interactive-slider">')
-                .append($label)
+                .append($title)
                 .append($slider);
 
       return { elem: $elem };

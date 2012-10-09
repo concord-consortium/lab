@@ -14,7 +14,7 @@
       "min":    0.01,
       "max":    0.16,
       "steps":  50,
-      "label":  "Attraction between atoms",
+      "title":  "Attraction between atoms",
       "value":  0.144,
       "action": "setElementProperties(2, { epsilon: -value });"
     }
