@@ -431,8 +431,8 @@ define(function (require) {
       // Process action script if it is defined.
       if (action) {
         action = getStringFromArray(action);
-        // Create a function which assumes we pass it a paramter called 'checked'.
-        action = makeFunctionInScriptContext('checked', action);
+        // Create a function which assumes we pass it a parameter called 'value'.
+        action = makeFunctionInScriptContext('value', action);
       }
 
       // Connect checkbox with model's property if its name is defined.
@@ -455,23 +455,23 @@ define(function (require) {
 
       // Register handler for click event.
       $checkbox.click(function () {
-        var checked = false,
+        var value = false,
             propObj;
         // $(this) will contain a reference to the checkbox.
         if ($(this).is(':checked')) {
-          checked = true;
+          value = true;
         }
         // Change property value if checkbox is connected
         // with model's property.
         if (propertyName !== undefined) {
           propObj = {};
-          propObj[propertyName] = checked;
+          propObj[propertyName] = value;
           model.set(propObj);
         }
         // Finally, if checkbox has action script attached,
-        // call it in script context with 'checked' value passed.
+        // call it in script context with checkbox status passed.
         if (action !== undefined) {
-          action.call(null, checked);
+          action.call(null, value);
         }
       });
 

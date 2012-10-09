@@ -24,7 +24,7 @@
       "type": "checkbox",
       "id": "temperature-control-action",
       "text": "Temperature Control (action defined)",
-      "action": "set({temperature_control: checked})"
+      "action": "set({temperature_control: value})"
     },
     {
       "type": "button",
