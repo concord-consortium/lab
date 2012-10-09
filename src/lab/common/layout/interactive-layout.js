@@ -71,8 +71,11 @@ define(function (require) {
       }
     }
 
+    // Get the actual molecule container height after resize (minimum width may have come into play)
+    h = $(viewLists.moleculeContainers[0].outerNode).height();
+
     if (layout.views.thermometers) {
-      setThermometerHeight(layout.views.thermometers[0], modelHeight * 0.8);
+      setThermometerHeight(layout.views.thermometers[0], 0.8 * h);
     }
 
     // FIXME this is a temporary hack ... put in layout code instead of memorializing it in the CSS,
