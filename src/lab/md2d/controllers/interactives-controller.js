@@ -522,7 +522,7 @@ define(function (require) {
           max = component.max,
           steps = component.steps,
           action = component.action,
-          value = component.value,
+          initialValue = component.initialValue,
           title = component.title || "",
           labels = component.labels || [],
           i,
@@ -569,8 +569,8 @@ define(function (require) {
         });
       }
 
-      if (value != null) {
-        $slider.slider('value', value);
+      if (initialValue != null) {
+        $slider.slider('value', initialValue);
 
         // Make sure to call the action with the startup value of slider. (The script action may
         // manipulate the model, so we have to make sure it runs after the model loads, by pushing

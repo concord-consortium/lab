@@ -25,7 +25,7 @@
       ],
       "steps":  50,
       "title":  "Attraction between atoms",
-      "value":  0.144,
+      "initialValue":  0.144,
       "action": "setElementProperties(2, { epsilon: -value });"
     }
   ],
