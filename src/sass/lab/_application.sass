@@ -304,6 +304,8 @@ div.tooltip
     cursor: pointer
     opacity: 1.0
 
+$embeddable-pane-font-size: 1.3em
+
 #about, #share
   float: right
   vertical-align: middle
@@ -321,7 +323,7 @@ div.tooltip
   @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
   width: 60%
   height: auto
-  min-height: 10em
+  min-height: $embeddable-pane-font-size*10
   max-height: 80%
   top: 3em
   left: 4em
@@ -338,34 +340,37 @@ div.tooltip
     padding: 0.5em
     width: 100%
     height: auto
+    font-size: $embeddable-pane-font-size*0.5
   textarea#share-iframe-content
-    height: 5em
+    height: $embeddable-pane-font-size*5
 
 #share-pane
   left: inherit
   right: 2em
-  min-height: 15em
+  min-height: $embeddable-pane-font-size*15
 
 #about-pane-banner, #share-pane-banner
   width: 100%
   display: table
   opacity: 0.7
-  font-size: 1.1em
   margin: 0em
   padding: 0.2em 0em 0.2em 0.5em
-  height: 1.5em
+  height: $embeddable-pane-font-size*1.25
   color: white
   background-color: lighten( #3A878B, 15% )
-  a
-    color: #fff
-    &:hover
-      font-weight: bold
+
+#about-pane-title, #share-pane-title
+  vertical-align: middle
+  display: table-cell
+  font-size: $embeddable-pane-font-size
+  font-weight: bold
 
 #about-pane-close, #share-pane-close
   float: right
   vertical-align: middle
   display: table-cell
   margin-right: 0.5em
+  font-size: $embeddable-pane-font-size
   font-weight: 800
   &:hover
     cursor: default
@@ -373,3 +378,4 @@ div.tooltip
 
 #about-content, #share-content
   margin: 0.5em 1em 1em 1em
+  font-size: $embeddable-pane-font-size
