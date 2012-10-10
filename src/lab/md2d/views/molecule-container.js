@@ -1036,10 +1036,11 @@ define(function (require) {
         });
       }
 
-      function drawClock() {
+      function setupClock() {
         // add model time display
         vis.selectAll('.modelTimeLabel').remove();
-
+        // Update clock status.
+        options.showClock = model.get("showClock");
         if (options.showClock) {
           time_label = vis.append("text")
             .attr("class", "modelTimeLabel")
@@ -1057,9 +1058,9 @@ define(function (require) {
         setupVdwPairs();
         setup_radial_bonds();
         setup_particles();
+        setupClock();
         drawSymbolImages();
         drawImageAttachment();
-        drawClock();
         drawTextBoxes();
       }
 
