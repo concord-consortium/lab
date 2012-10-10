@@ -411,11 +411,10 @@ define(function (require, exports, module) {
           Extend all arrays in `arrayList` to `newLength`. Here, arrayList is expected to be `atoms`
           `elements`, `radialBonds`, etc.
         */
-        extendArrays = function(arrayList, newLength, cb) {
+        extendArrays = function(arrayList, newLength) {
           for (var i = 0, len = arrayList.length; i < len; i++) {
             arrayList[i] = arrays.extend(arrayList[i], newLength);
           }
-          if (typeof cb === 'function') cb();
         },
 
         /**
