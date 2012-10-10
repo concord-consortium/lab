@@ -408,12 +408,53 @@ define(function (require, exports, module) {
         },
 
         /**
-          Extend one of our arrays to some size.
+          Extend all arrays in `arrayList` to `newLength`. Here, arrayList is expected to be `atoms`
+          `elements`, `radialBonds`, etc.
         */
-        extendArrays = function(arrayList, newLength) {
+        extendArrays = function(arrayList, newLength, cb) {
           for (var i = 0, len = arrayList.length; i < len; i++) {
             arrayList[i] = arrays.extend(arrayList[i], newLength);
           }
+          if (typeof cb === 'function') cb();
+        },
+
+        /**
+          Set up "shortcut" references, e.g., x = atoms[ATOM_INDICES.X]
+        */
+        assignShortcutReferences = {
+
+          atoms: function() {
+            radius    = engine.radius      = atoms[ATOM_INDICES.RADIUS];
+            px        = engine.px          = atoms[ATOM_INDICES.PX];
+            py        = engine.py          = atoms[ATOM_INDICES.PY];
+            x         = engine.x           = atoms[ATOM_INDICES.X];
+            y         = engine.y           = atoms[ATOM_INDICES.Y];
+            vx        = engine.vx          = atoms[ATOM_INDICES.VX];
+            vy        = engine.vy          = atoms[ATOM_INDICES.VY];
+            speed     = engine.speed       = atoms[ATOM_INDICES.SPEED];
+            ax        = engine.ax          = atoms[ATOM_INDICES.AX];
+            ay        = engine.ay          = atoms[ATOM_INDICES.AY];
+            charge    = engine.charge      = atoms[ATOM_INDICES.CHARGE];
+            friction  = engine.friction    = atoms[ATOM_INDICES.FRICTION];
+            element   = engine.element     = atoms[ATOM_INDICES.ELEMENT];
+            pinned    = engine.pinned      = atoms[ATOM_INDICES.PINNED];
+            mass      = engine.mass        = atoms[ATOM_INDICES.MASS];
+          },
+
+          radialBonds: function() {
+            radialBondAtom1Index  = radialBonds[RADIAL_INDICES.ATOM1];
+            radialBondAtom2Index  = radialBonds[RADIAL_INDICES.ATOM2];
+            radialBondLength      = radialBonds[RADIAL_INDICES.LENGTH];
+            radialBondStrength    = radialBonds[RADIAL_INDICES.STRENGTH];
+          },
+
+          springForces: function() {
+            springForceAtomIndex = springForces[0];
+            springForceX         = springForces[1];
+            springForceY         = springForces[2];
+            springForceStrength  = springForces[3];
+          }
+
         },
 
         createRadialBondsArray = function(num) {
@@ -421,11 +462,12 @@ define(function (require, exports, module) {
 
           radialBonds = engine.radialBonds = [];
 
-          radialBonds[RADIAL_INDICES.ATOM1] = radialBondAtom1Index = arrays.create(num, 0, uint16);
-          radialBonds[RADIAL_INDICES.ATOM2] = radialBondAtom2Index = arrays.create(num, 0, uint16);
-          radialBonds[RADIAL_INDICES.LENGTH] = radialBondLength     = arrays.create(num, 0, float32);
-          radialBonds[RADIAL_INDICES.STRENGTH] = radialBondStrength   = arrays.create(num, 0, float32);
+          radialBonds[RADIAL_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
+          radialBonds[RADIAL_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
+          radialBonds[RADIAL_INDICES.LENGTH]   = arrays.create(num, 0, float32);
+          radialBonds[RADIAL_INDICES.STRENGTH] = arrays.create(num, 0, float32);
 
+          assignShortcutReferences.radialBonds();
           /**
             Initialize radialBondResults[] arrays consisting of arrays of radial bond
             index numbers and space to later contain transposed radial bond properties
@@ -440,10 +482,12 @@ define(function (require, exports, module) {
         createSpringForcesArray = function(num) {
           springForces = engine.springForces = [];
 
-          springForces[0] = springForceAtomIndex  = arrays.create(num, 0, uint16);
-          springForces[1] = springForceX          = arrays.create(num, 0, float32);
-          springForces[2] = springForceY          = arrays.create(num, 0, float32);
-          springForces[3] = springForceStrength   = arrays.create(num, 0, float32);
+          springForces[0] = arrays.create(num, 0, uint16);
+          springForces[1] = arrays.create(num, 0, float32);
+          springForces[2] = arrays.create(num, 0, float32);
+          springForces[3] = arrays.create(num, 0, float32);
+
+          assignShortcutReferences.springForces();
         },
 
         createObstaclesArray = function(num) {
@@ -1096,21 +1140,24 @@ define(function (require, exports, module) {
 
         atoms  = engine.atoms  = arrays.create(ATOM_PROPERTY_LIST.length, null, 'regular');
 
-        radius    = engine.radius      = atoms[ATOM_INDICES.RADIUS]    = arrays.create(num, 0, float32);
-        px        = engine.px          = atoms[ATOM_INDICES.PX]        = arrays.create(num, 0, float32);
-        py        = engine.py          = atoms[ATOM_INDICES.PY]        = arrays.create(num, 0, float32);
-        x         = engine.x           = atoms[ATOM_INDICES.X]         = arrays.create(num, 0, float32);
-        y         = engine.y           = atoms[ATOM_INDICES.Y]         = arrays.create(num, 0, float32);
-        vx        = engine.vx          = atoms[ATOM_INDICES.VX]        = arrays.create(num, 0, float32);
-        vy        = engine.vy          = atoms[ATOM_INDICES.VY]        = arrays.create(num, 0, float32);
-        speed     = engine.speed       = atoms[ATOM_INDICES.SPEED]     = arrays.create(num, 0, float32);
-        ax        = engine.ax          = atoms[ATOM_INDICES.AX]        = arrays.create(num, 0, float32);
-        ay        = engine.ay          = atoms[ATOM_INDICES.AY]        = arrays.create(num, 0, float32);
-        charge    = engine.charge      = atoms[ATOM_INDICES.CHARGE]    = arrays.create(num, 0, float32);
-        friction  = engine.friction    = atoms[ATOM_INDICES.FRICTION]  = arrays.create(num, 0, float32);
-        element   = engine.element     = atoms[ATOM_INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
-        pinned    = engine.pinned      = atoms[ATOM_INDICES.PINNED]    = arrays.create(num, 0, uint8);
-        mass      = engine.mass        = atoms[ATOM_INDICES.MASS]      = arrays.create(num, 0, float32);
+        // TODO. DRY this up by letting the property list say what type each array is
+        atoms[ATOM_INDICES.RADIUS]    = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.PX]        = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.PY]        = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.X]         = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.Y]         = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.VX]        = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.VY]        = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.SPEED]     = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.AX]        = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.AY]        = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.CHARGE]    = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.FRICTION]  = arrays.create(num, 0, float32);
+        atoms[ATOM_INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
+        atoms[ATOM_INDICES.PINNED]    = arrays.create(num, 0, uint8);
+        atoms[ATOM_INDICES.MASS]      = arrays.create(num, 0, float32);
+
+        assignShortcutReferences.atoms();
 
         N = 0;
         totalMass = 0;
@@ -1129,6 +1176,7 @@ define(function (require, exports, module) {
 
         if (N + 1 > atoms[0].length) {
           extendArrays(atoms, N + 10);
+          assignShortcutReferences.atoms();
         }
 
         // Allow these values to be optional, and use the default if not defined:
@@ -1172,6 +1220,7 @@ define(function (require, exports, module) {
       addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength) {
         if (N_radialBonds + 1 > radialBonds[0].length) {
           extendArrays(radialBonds, N_radialBonds + 10);
+          assignShortcutReferences.radialBonds();
         }
 
         radialBondResults[N_radialBonds][1] = radialBondAtom1Index[N_radialBonds] = atom1Index;
@@ -1200,6 +1249,7 @@ define(function (require, exports, module) {
         // conservatively just add one spring force
         if (N_springForces > springForces[0].length) {
           extendArrays(springForces, N_springForces + 1);
+          assignShortcutReferences.springForces();
         }
 
         springForceAtomIndex[N_springForces]  = atomIndex;
