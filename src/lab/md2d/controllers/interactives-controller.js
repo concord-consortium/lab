@@ -196,6 +196,16 @@ define(function (require) {
               return props;
             },
 
+            /**
+              Observe property `propertyName` on the model, and perform `action` when it changes.
+              Pass property value to action.
+            */
+            onPropertyChange: function onPropertyChange(propertyName, action) {
+              model.addPropertiesListener([propertyName], function() {
+                action( model.get(propertyName) );
+              });
+            },
+
             setElementProperties: function setElementProperties(i, props) {
               return model.setElementProperties(i, props);
             },
