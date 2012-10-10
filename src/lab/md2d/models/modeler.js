@@ -18,6 +18,7 @@ define(function(require) {
         lennard_jones_forces, coulomb_forces,
         gravitationalField = false,
         viewRefreshInterval = 50,
+        timeStep = 1,
         stopped = true,
         tick_history_list = [],
         tick_history_list_index = 0,
@@ -98,6 +99,7 @@ define(function(require) {
           showVDWLines          : false,
           showClock             : true,
           viewRefreshInterval   : 50,
+          timeStep              : 1,
           VDWLinesRatio         : 1.99,
           viscosity             : 0,
 
@@ -150,6 +152,13 @@ define(function(require) {
             this.viewRefreshInterval = vri;
             if (engine) {
               engine.setIntegrationDuration(vri);
+            }
+          },
+
+          set_timeStep: function(ts) {
+            this.timeStep = ts;
+            if (engine) {
+              engine.setTimeStep(ts);
             }
           },
 
@@ -727,16 +736,17 @@ define(function(require) {
       VDWLinesRatio       = properties.VDWLinesRatio;
       showClock           = properties.showClock;
       viewRefreshInterval = properties.viewRefreshInterval;
+      timeStep            = properties.timeStep;
       viscosity           = properties.viscosity;
       gravitationalField  = properties.gravitationalField;
-      viewRefreshInterval = properties.viewRefreshInterval;
 
       engine.useLennardJonesInteraction(properties.lennard_jones_forces);
       engine.useCoulombInteraction(properties.coulomb_forces);
       engine.useThermostat(temperature_control);
       engine.setViscosity(viscosity);
       engine.setGravitationalField(gravitationalField);
-      engine.setIntegrationDuration(viewRefreshInterval);
+      engine.setIntegrationDuration(viewRefreshInterval*timeStep);
+      engine.setTimeStep(timeStep);
 
       engine.setTargetTemperature(temperature);
 

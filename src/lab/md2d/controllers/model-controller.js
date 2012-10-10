@@ -46,6 +46,7 @@ define(function (require) {
         interactiveUrl,
         showClock,
         viewRefreshInterval,
+        timeStep,
 
         moleculeContainer,
 
@@ -116,6 +117,7 @@ define(function (require) {
         showVDWLines        = modelConfig.showVDWLines;
         showClock           = modelConfig.showClock;
         viewRefreshInterval = modelConfig.viewRefreshInterval;
+        timeStep            = modelConfig.timeStep;
         radialBonds         = modelConfig.radialBonds;
         obstacles           = modelConfig.obstacles;
         viscosity           = modelConfig.viscosity;
@@ -142,6 +144,7 @@ define(function (require) {
             showVDWLines        : showVDWLines,
             showClock           : showClock,
             viewRefreshInterval : viewRefreshInterval,
+            timeStep            : timeStep,
             viscosity           : viscosity,
             gravitationalField  : gravitationalField,
             images              : images

@@ -27,15 +27,24 @@ define(function (require) {
         lj_epsilon_min      = playerConfig.lj_epsilon_min,
 
         elements            = modelConfig.elements,
-        atoms_properties    = modelConfig.atoms,
+        atoms               = modelConfig.atoms,
         mol_number          = modelConfig.mol_number,
         temperature_control = modelConfig.temperature_control,
         temperature         = modelConfig.temperature,
-        coulomb_forces      = modelConfig.coulomb_forces,
         width               = modelConfig.width,
         height              = modelConfig.height,
+        keShading           = modelConfig.keShading,
+        chargeShading       = modelConfig.chargeShading,
+        showVDWLines        = modelConfig.showVDWLines,
+        showClock           = modelConfig.showClock,
+        viewRefreshInterval = modelConfig.viewRefreshInterval,
+        timeStep            = modelConfig.timeStep,
         radialBonds         = modelConfig.radialBonds,
         obstacles           = modelConfig.obstacles,
+        viscosity           = modelConfig.viscosity,
+        gravitationalField  = modelConfig.gravitationalField,
+        images              = modelConfig.images,
+        textBoxes           = modelConfig.textBoxes,
 
         nodes,
 
@@ -91,6 +100,7 @@ define(function (require) {
         showVDWLines        = modelConfig.showVDWLines;
         showClock           = modelConfig.showClock;
         viewRefreshInterval = modelConfig.viewRefreshInterval;
+        timeStep            = modelConfig.timeStep;
         radialBonds         = modelConfig.radialBonds;
         obstacles           = modelConfig.obstacles;
         viscosity           = modelConfig.viscosity;
@@ -118,6 +128,7 @@ define(function (require) {
             showVDWLines        : showVDWLines,
             showClock           : showClock,
             viewRefreshInterval : viewRefreshInterval,
+            timeStep            : timeStep,
             viscosity           : viscosity,
             gravitationalField  : gravitationalField,
             images              : images

@@ -247,7 +247,7 @@ define(function (require, exports, module) {
         time = 0,
 
         // The current integration time step, in femtoseconds.
-        dt,
+        dt = 1,
 
         // Square of integration time step, in fs^2.
         dt_sq,
@@ -1002,6 +1002,14 @@ define(function (require, exports, module) {
         }
       },
 
+      setTimeStep: function(ts) {
+        if (typeof ts === "number" && ts >= 0) {
+          dt = ts;
+        } else {
+          throw new Error("The timeStep must be a time in fs greater than 0");
+        }
+      },
+
       setTargetTemperature: function(v) {
         validateTemperature(v);
         T_target = v;
@@ -1556,7 +1564,7 @@ define(function (require, exports, module) {
         }
       },
 
-      integrate: function(duration, opt_dt) {
+      integrate: function(duration) {
 
         var radius,
             inverseMass;
@@ -1567,7 +1575,6 @@ define(function (require, exports, module) {
 
         if (duration == null)  duration = integrationDuration;  // how much time to integrate over, in fs
 
-        dt = opt_dt || 1;
         dt_sq = dt*dt;                      // time step, squared
 
         // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
