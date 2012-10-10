@@ -37,6 +37,12 @@
       "id": "unmark-all-atoms",
       "text": "Unmark all atoms",
       "action": "unmarkAllAtoms()"
+    },
+    {
+      "type": "button",
+      "id": "add-atom",
+      "text": "Add a random atom",
+      "action": "addRandomAtom()"
     }
   ],
   "layout": {
