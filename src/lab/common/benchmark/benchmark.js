@@ -95,7 +95,8 @@ define(function (require) {
         iphonematch  = /.+?\((iPhone); CPU.+?OS .+?Version\/([0123456789._]+)/,
         ipadmatch    = /.+?\((iPad); CPU.+?OS .+?Version\/([0123456789._]+)/,
         ipodmatch    = /.+?\((iPod); CPU (iPhone.+?) like.+?Version\/([0123456789ab._]+)/,
-        androidchromematch = /.+?(Android) ([0123456789.]+).+?; (.+?)\).+? CrMo\/([0123456789.]+)/,
+        androidchromematch = /.+?(Android) ([0123456789.]+).+?; (.+?)\).+? Chrome\/([0123456789.]+)/,
+        androidfirefoxmatch = /.+?(Android.+?\)).+? Firefox\/([0123456789.]+)/),
         androidmatch = /.+?(Android) ([0123456789ab.]+).+?; (.+?)\)/,
         match;
 
@@ -126,6 +127,14 @@ define(function (require) {
         browser: "Chrome",
         version: match[4],
         oscpu: match[1] + "/" + match[2] + "/" + match[3]
+      };
+    }
+    match = navigator.userAgent.match(androidfirefoxmatch);
+    if (match && match[1]) {
+      return {
+        browser: "Firefox",
+        version: match[2],
+        oscpu: match[1]
       };
     }
     match = navigator.userAgent.match(androidmatch);
