@@ -153,6 +153,11 @@ parseMML = (mmlString) ->
     viewRefreshInterval = parseFloat($mml("[property=viewRefreshInterval] int").text() || 50)
 
     ###
+      timeStep
+    ###
+    timeStep = parseFloat($mml("[property=timeStep] double").text() || 1.0)
+
+    ###
       Show Clock
     ###
     showClock = parseBoolean($mml("[property=showClock] boolean").text(), true)
@@ -422,6 +427,7 @@ parseMML = (mmlString) ->
       gravitationalField  : gravitationalField
       showClock           : showClock
       viewRefreshInterval : viewRefreshInterval
+      timeStep            : timeStep
       elements            : elemTypes
       atoms :
         X : x

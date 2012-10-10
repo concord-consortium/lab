@@ -10,6 +10,7 @@
   "gravitationalField": 4.0000000000000003e-7,
   "showClock": true,
   "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,

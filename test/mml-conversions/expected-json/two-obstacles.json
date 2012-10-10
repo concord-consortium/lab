@@ -10,6 +10,7 @@
   "gravitationalField": false,
   "showClock": true,
   "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
