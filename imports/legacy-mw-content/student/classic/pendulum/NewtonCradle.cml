@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A virtual experiment on Newton&apos;s Cradle</page_title>
+<referenced_files>pendulumarray8.mml,
+pendulumarray4.mml,
+pendulumarray14.mml</referenced_files>
+<text>A virtual experiment on Newton&apos;s Cradle
+
+ 
+  
+   
+The masses of all balls must be identical in order to keep only the green and blue balls moving while all the others stay approximately around their original positions (i.e. they swing much less than the green and blue ones). You can verify this by pulling the above slider to change the mass of the green ball and see what happens. To return to the initial condition, hit the &quot;Reset Model&quot; button.</text>
+<section start="0" end="449">
+<paragraph start="0" end="40">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<content start="0" end="39">
+<bold>true</bold><size>16</size></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="43">
+<Alignment>1</Alignment>
+<content start="41" end="42">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>NewtonCradle$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="46">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset Mass of Green Ball</title>
+<tooltip>Reset the mass of the green ball</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>set element[1].mass 480;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="44" end="45">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset Model</title>
+<tooltip>Reset the simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>reset;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="50">
+<Alignment>1</Alignment>
+<content start="46" end="47">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>4.0</value>
+<minimum>1.0</minimum>
+<maximum>11.0</maximum>
+<nstep>10</nstep>
+<title>Mass of Green Ball</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;1.0&quot;, label=&quot;Small&quot;}{value=&quot;11.0&quot;, label=&quot;Large&quot;}</labeltable>
+<script>set element[1].mass &quot;%val*120&quot;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="47" end="48">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show Momentum Vector</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select element 3;
+show momentum on;
+select element none;</script>
+<script2>select element 3;
+show momentum off;
+select element none;</script2>
+<action>Momentum Vector</action>
+</component></content>
+
+<content start="48" end="49">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Execute MW script</action>
+<script>{option=&quot;8 Pendula&quot;, script=&quot;load pendulumarray8.mml&quot;}
+{option=&quot;4 Pendula&quot;, script=&quot;load pendulumarray4.mml&quot;}
+{option=&quot;14 Pendula&quot;, script=&quot;load pendulumarray14.mml&quot;}
+</script>
+<tooltip>Set the number of pendula inbetween</tooltip>
+</component></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="449">
+<LeftIndent>8.0</LeftIndent>
+<content start="50" end="448">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

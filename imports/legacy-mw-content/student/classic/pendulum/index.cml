@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Virtual experiments on pendula</page_title>
+<bg_image>sidebar1b.gif</bg_image>
+<text> 
+
+Like springs, pendula are classic examples for learning Newtonian mechanics. Here are a collection of virtual experiments on pendula.
+
+   Double pendulum 3D
+   Pendulum 3D
+   Pendulum experiment: period is independent of mass
+   A sliding pendulum
+   A damped pendulum
+   A pendulm connected to a spring
+   A double pendulum
+   A triple pendulum
+   Newton&apos;s Cradle
+
+
+</text>
+<section start="0" end="371">
+<paragraph start="0" end="2">
+<Alignment>2</Alignment>
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<SpaceAbove>10.0</SpaceAbove>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>400.0</width><height>60</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;h2&gt;&lt;font face=Verdana color=#ffffff&gt;Virtual experiments on pendula&lt;/font&gt;&lt;/center&gt;&lt;/html&gt;</title><bgcolor>-ff6601</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="137">
+<LeftIndent>160.0</LeftIndent>
+<content start="3" end="137">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="137" end="138">
+<LeftIndent>160.0</LeftIndent>
+<content start="137" end="138">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="138" end="160">
+<LeftIndent>180.0</LeftIndent>
+<content start="138" end="139">
+<size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="139" end="141">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="141" end="159">
+<size>14</size><family>Trebuchet MS</family><href>doublependulum3d.cml</href></content>
+
+<content start="159" end="160">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="160" end="175">
+<LeftIndent>180.0</LeftIndent>
+<content start="160" end="161">
+<size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="161" end="163">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="163" end="174">
+<size>14</size><family>Trebuchet MS</family><href>pendulum3d.cml</href></content>
+
+<content start="174" end="175">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="175" end="229">
+<LeftIndent>180.0</LeftIndent>
+<content start="175" end="176">
+<size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="176" end="178">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="178" end="228">
+<size>14</size><family>Trebuchet MS</family><href>pendulum1.cml</href></content>
+
+<content start="228" end="229">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="229" end="251">
+<LeftIndent>180.0</LeftIndent>
+<content start="229" end="230">
+<size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="230" end="232">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="232" end="250">
+<size>14</size><family>Trebuchet MS</family><href>slidingpendulum.cml</href></content>
+
+<content start="250" end="251">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="251" end="272">
+<LeftIndent>180.0</LeftIndent>
+<content start="251" end="252">
+<size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="252" end="254">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="254" end="271">
+<size>14</size><family>Trebuchet MS</family><href>pendulum2.cml</href></content>
+
+<content start="271" end="272">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="272" end="307">
+<LeftIndent>180.0</LeftIndent>
+<content start="272" end="273">
+<size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="273" end="275">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="275" end="306">
+<size>14</size><family>Trebuchet MS</family><href>pendulum3.cml</href></content>
+
+<content start="306" end="307">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="307" end="328">
+<LeftIndent>180.0</LeftIndent>
+<content start="307" end="308">
+<size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="308" end="310">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="310" end="327">
+<size>14</size><family>Trebuchet MS</family><href>doublependulum1.cml</href></content>
+
+<content start="327" end="328">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="328" end="349">
+<LeftIndent>180.0</LeftIndent>
+<content start="328" end="329">
+<size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="329" end="331">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="331" end="348">
+<size>14</size><family>Trebuchet MS</family><href>triplependulum.cml</href></content>
+
+<content start="348" end="349">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="349" end="368">
+<LeftIndent>180.0</LeftIndent>
+<content start="349" end="350">
+<size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="350" end="352">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="352" end="367">
+<size>14</size><family>Trebuchet MS</family><href>NewtonCradle.cml</href></content>
+
+<content start="367" end="368">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="368" end="369">
+<LeftIndent>180.0</LeftIndent>
+<content start="368" end="369">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="369" end="370">
+<content start="369" end="370">
+</content>
+
+</paragraph>
+<paragraph start="370" end="371">
+</paragraph>
+</section>
+</document>

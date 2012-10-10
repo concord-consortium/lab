@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Damped Pendulum</page_title>
+<text>Damped Pendulum
+
+ 
+
+ 
+Instruction: If a damping force (caused by friction or air resistance) is present, the pendulum will eventually stop.</text>
+<section start="0" end="140">
+<paragraph start="0" end="16">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="15">
+<bold>true</bold><size>15</size></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<Alignment>1</Alignment>
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="19">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pendulum2$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="22">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>0.10000000149011612</maximum>
+<nstep>20</nstep>
+<title>Damping force constant</title>
+<width>400</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.10000000149011612&quot;, label=&quot;0.1&quot;}{value=&quot;0.04000000059604644&quot;, label=&quot;0.04&quot;}{value=&quot;0.08000000119209288&quot;, label=&quot;0.08&quot;}{value=&quot;0.02000000029802322&quot;, label=&quot;0.02&quot;}{value=&quot;0.06000000089406967&quot;, label=&quot;0.06&quot;}{value=&quot;0.0&quot;, label=&quot;0.0&quot;}</labeltable>
+<script>select element 3;
+damp %val;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="140">
+<LeftIndent>6.0</LeftIndent>
+<content start="22" end="33">
+<bold>true</bold><size>11</size></content>
+
+<content start="33" end="139">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

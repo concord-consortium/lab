@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>A Triple Pendulum</page_title>
+<text>A Triple Pendulum
+
+ 
+   
+Instruction: Like a double pendulum, a triple pendulum exhibits chaotic behavior as well. Is it more chaotic than a double pendulum?
+
+Related simulation: Double pendulum</text>
+<section start="0" end="195">
+<paragraph start="0" end="18">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="17">
+<bold>true</bold><size>15</size></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>1</Alignment>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="21">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>triplependulum$0.mml</resource><menubar>false</menubar><button>Change Velocity</button><button>Select Object</button><button>Toggle Trajectory</button></component></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="25">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>3.9999961853027344</value>
+<minimum>3.9000000953674316</minimum>
+<maximum>4.099999904632568</maximum>
+<nstep>100</nstep>
+<title>Mass of the Purple Ball</title>
+<tooltip>Mass of the Purple Ball</tooltip>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;4.099996089935303&quot;, label=&quot;Slightly Heavier&quot;}{value=&quot;3.899996280670166&quot;, label=&quot;Slightly Lighter&quot;}</labeltable>
+<script>set element[3].mass &quot;%val*120&quot;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Snapshot</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>3.9999961853027344</value>
+<minimum>3.9000000953674316</minimum>
+<maximum>4.099999904632568</maximum>
+<nstep>100</nstep>
+<title>Mass of the Blue Ball</title>
+<tooltip>Mass of the Blue Ball</tooltip>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;4.099996089935303&quot;, label=&quot;Slightly Heavier&quot;}{value=&quot;3.899996280670166&quot;, label=&quot;Slightly Lighter&quot;}</labeltable>
+<script>set element[2].mass &quot;%val*120&quot;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="158">
+<LeftIndent>6.0</LeftIndent>
+<content start="25" end="36">
+<bold>true</bold><size>11</size></content>
+
+<content start="36" end="158">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="158" end="159">
+<LeftIndent>6.0</LeftIndent>
+<content start="158" end="159">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="159" end="195">
+<LeftIndent>6.0</LeftIndent>
+<content start="159" end="179">
+<size>10</size></content>
+
+<content start="179" end="194">
+<href>doublependulum1.cml</href><size>10</size></content>
+
+</paragraph>
+</section>
+</document>
