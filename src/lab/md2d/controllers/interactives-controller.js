@@ -341,7 +341,7 @@ define(function (require) {
 
       // Make sure the script runs in strict mode, so undeclared variables don't
       // escape to the toplevel scope.
-      scriptFunctionMakerSource =  "return function(" + argumentsToScript.join(',') + ") { 'use strict';" + scriptSource + "};";
+      scriptFunctionMakerSource =  "return function(" + argumentsToScript.join(',') + ") { 'use " + "strict'; " + scriptSource + "};";
 
       // This function runs the script with all globals shadowed:
       return function() {
