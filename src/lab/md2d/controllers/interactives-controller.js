@@ -530,7 +530,8 @@ define(function (require) {
           $title,
           label,
           $label,
-          $slider;
+          $slider,
+          $container;
 
       if (min == null) min = 0;
       if (max == null) max = 10;
