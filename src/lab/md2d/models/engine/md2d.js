@@ -410,9 +410,9 @@ define(function (require, exports, module) {
         /**
           Extend one of our arrays to some size.
         */
-        extendArrays = function(arrayList, extensionLength) {
+        extendArrays = function(arrayList, newLength) {
           for (var i = 0, len = arrayList.length; i < len; i++) {
-            arrayList[i] = arrays.extend(arrayList[i], arrayList[i].length + extensionLength);
+            arrayList[i] = arrays.extend(arrayList[i], newLength);
           }
         },
 
