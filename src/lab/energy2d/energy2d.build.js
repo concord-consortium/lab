@@ -12,6 +12,8 @@
   // Do not use UglifyJS.
   // It's done via Makefile rutines.
   optimize: 'none',
+  //Allow "use strict"; be included in the RequireJS files.
+  useStrict: true,
 
   // Paths to CommonJS modules.
   packages: [

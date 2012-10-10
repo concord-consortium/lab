@@ -12,6 +12,8 @@
   // Do not use UglifyJS.
   // It's done via Makefile routines.
   optimize: 'none',
+  //Allow "use strict"; be included in the RequireJS files.
+  useStrict: true,
 
   // Protect global namespace and call export of API.
   wrap: {
