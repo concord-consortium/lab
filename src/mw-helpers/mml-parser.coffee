@@ -400,14 +400,11 @@ parseMML = (mmlString) ->
       atom1Index   = parseInt($node.find('[property=atom1]').text(), 10) || 0
       atom2Index   = parseInt($node.find('[property=atom2]').text(), 10) || 0
       atom3Index   = parseInt($node.find('[property=atom3]').text(), 10) || 0
+      # unit: radian
       bondAngle    = parseFloat $node.find('[property=bondAngle]').text()
+      # unit: eV/radian^2
       bondStrength = parseFloat $node.find('[property=bondStrength]').text()
-
-      # convert from MML units to Lab units.
-
-      # MML reports bondStrength in units of eV per 0.01 nm. Convert to eV/nm
-      # TODO: check it! Not sure if it also applies to angular bonds.
-      bondStrength *= 1e4
+      # Unit conversion is unnecessary.
 
       angularBonds.push { atom1Index, atom2Index, atom3Index, bondAngle, bondStrength }
 
