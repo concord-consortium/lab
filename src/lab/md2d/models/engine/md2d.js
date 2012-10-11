@@ -331,7 +331,11 @@ define(function (require, exports, module) {
           return n;
         }()),
 
-        // An array of individual radial bond index values and properties.
+        // An array of individual angular bond index values and properties.
+        // TODO: at the moment, it's not used anywhere. Probably it might
+        // be useful for visualization of angular bonds. If there is
+        // a decision that there is no angular bonds visualization,
+        // remove it and related lines of code!
         angularBondResults,
 
         // An array of length 5 which contains the above 5 property arrays.
@@ -340,6 +344,8 @@ define(function (require, exports, module) {
 
         // angularBondMatrix[i][j] === true when atoms i and j are "angularly bonded"
         // angularBondMatrix[i][j] === undefined otherwise
+        // i, j refer to atoms with index 1 and 2. Third (central) atom isn't stored in this matrix.
+        // radialBondMatrix stores information about connection between 1 and 3, and 2 and 3.
         angularBondMatrix,
 
         // Number of actual angular bonds (may be smaller than the length of the property arrays).
@@ -994,6 +1000,68 @@ define(function (require, exports, module) {
           // Fast path if no angular bonds have been defined.
           if (N_angularBonds < 1) return;
 
+          var i, len,
+              i1, i2, i3,
+              dxij, dyij, dxkj, dykj, rijSquared, rkjSquared, rij, rkj,
+              k, angle, theta, cosTheta, sinTheta,
+              forceInXForI, forceInYForI, forceInXForK, forceInYForK,
+              commonPrefactor, temp;
+
+          for (i = 0, len = angularBonds[0].length; i < len; i++) {
+            i1 = angularBondAtom1Index[i];
+            i2 = angularBondAtom2Index[i];
+            i3 = angularBondAtom3Index[i];
+
+            // radian
+            angle = angularBondAngle[i];
+
+            // eV/radian^2
+            k = angularBondStrength[i];
+
+            // Calculate angle (theta) between two vectors:
+            // Atom1-Atom3 and Atom2-Atom3
+            // Atom1 -> i, Atom2 -> k, Atom3 -> j
+            dxij = x[i1] - x[i3];
+            dxkj = x[i2] - x[i3];
+            dyij = y[i1] - y[i3];
+            dykj = y[i2] - y[i3];
+            rijSquared = dxij * dxij + dyij * dyij;
+            rkjSquared = dxkj * dxkj + dykj * dykj;
+            rij = Math.sqrt(rijSquared);
+            rkj = Math.sqrt(rkjSquared);
+            // Calculate cos using dot product definition.
+            cosTheta = (dxij * dxkj + dyij * dykj) / (rij * rkj);
+            if (cosTheta > 1.0) cosTheta = 1.0;
+            else if (cosTheta < -1.0) cosTheta = -1.0;
+            // Pythagorean trigonometric identity.
+            sinTheta = Math.sqrt(1.0 - cosTheta * cosTheta);
+            // Finally:
+            theta = Math.acos(cosTheta);
+
+            if (sinTheta < 0.0001) sinTheta = 0.0001;
+
+            // Calculate force.
+            // "natural" Next Gen MW force units / nm
+            commonPrefactor = constants.convert(k * (theta - angle) / (sinTheta * rij),
+                { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / rkj;
+
+            // nm^2
+            temp = dxij * dxkj + dyij * dykj;
+            // Terms in brackets end up with nm unit.
+            // commonPrefactor is in "natural" Next Gen MW force units / nm,
+            // so everything is correct.
+            forceInXForI = commonPrefactor * (dxkj - temp * dxij / rijSquared);
+            forceInYForI = commonPrefactor * (dykj - temp * dyij / rijSquared);
+            forceInXForK = commonPrefactor * (dxij - temp * dxkj / rkjSquared);
+            forceInYForK = commonPrefactor * (dyij - temp * dykj / rkjSquared);
+
+            ax[i1] += forceInXForI;
+            ay[i1] += forceInYForI;
+            ax[i2] += forceInXForK;
+            ay[i2] += forceInYForK;
+            ax[i3] -= (forceInXForI + forceInXForK);
+            ay[i3] -= (forceInYForI + forceInYForK);
+          }
         },
 
         updateSpringForces = function() {
