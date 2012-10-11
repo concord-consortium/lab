@@ -230,6 +230,17 @@ define(function(require) {
         DRAGGABLE: "draggable"
       };
 
+      model.RADIAL_BOND_STYLES = {
+        RADIAL_BOND_STANDARD_STICK_STYLE: 101,
+        RADIAL_BOND_LONG_SPRING_STYLE:    102,
+        RADIAL_BOND_SOLID_LINE_STYLE:     103,
+        RADIAL_BOND_GHOST_STYLE:          104,
+        RADIAL_BOND_UNICOLOR_STICK_STYLE: 105,
+        RADIAL_BOND_SHORT_SPRING_STYLE:   106,
+        RADIAL_BOND_DOUBLE_BOND_STYLE:    107,
+        RADIAL_BOND_TRIPLE_BOND_STYLE:    108
+      };
+
       model.NON_ENGINE_DEFAULT_VALUES = {
         VISIBLE: 1,
         MARKED: 0,
@@ -286,7 +297,8 @@ define(function(require) {
         ATOM1     : md2d.RADIAL_INDICES.ATOM1,
         ATOM2     : md2d.RADIAL_INDICES.ATOM2,
         LENGTH    : md2d.RADIAL_INDICES.LENGTH,
-        STRENGTH  : md2d.RADIAL_INDICES.STRENGTH
+        STRENGTH  : md2d.RADIAL_INDICES.STRENGTH,
+        STYLE     : md2d.RADIAL_INDICES.STYLE
       };
 
       model.VDW_INDICES = md2d.VDW_INDICES;

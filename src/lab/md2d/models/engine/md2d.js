@@ -160,13 +160,6 @@ define(function (require, exports, module) {
     MASS     : "mass"
   };
 
-
-  exports.DEFAULT_VALUES = DEFAULT_VALUES = {
-    CHARGE   : 0,
-    FRICTION : 0,
-    PINNED   : 0
-  };
-
   exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
     X       :  0,
     Y       :  1,
@@ -183,11 +176,23 @@ define(function (require, exports, module) {
     VISIBLE :  12
   };
 
+  exports.RADIAL_BOND_STYLES = RADIAL_BOND_STYLES = {
+    RADIAL_BOND_STANDARD_STICK_STYLE : 101,
+    RADIAL_BOND_LONG_SPRING_STYLE    : 102,
+    RADIAL_BOND_SOLID_LINE_STYLE     : 103,
+    RADIAL_BOND_GHOST_STYLE          : 104,
+    RADIAL_BOND_UNICOLOR_STICK_STYLE : 105,
+    RADIAL_BOND_SHORT_SPRING_STYLE   : 106,
+    RADIAL_BOND_DOUBLE_BOND_STYLE    : 107,
+    RADIAL_BOND_TRIPLE_BOND_STYLE    : 108
+  };
+
   exports.RADIAL_INDICES = RADIAL_INDICES = {
     ATOM1   :  0,
     ATOM2   :  1,
     LENGTH  :  2,
-    STRENGTH:  3
+    STRENGTH:  3,
+    STYLE   :  4
   };
 
   exports.ANGULAR_INDICES = ANGULAR_INDICES = {
@@ -202,6 +207,13 @@ define(function (require, exports, module) {
     COUNT : 0,
     ATOM1 : 1,
     ATOM2 : 2
+  };
+
+  exports.DEFAULT_VALUES = DEFAULT_VALUES = {
+    CHARGE            : 0,
+    FRICTION          : 0,
+    PINNED            : 0,
+    RADIAL_BOND_STYLE : RADIAL_BOND_STYLES.RADIAL_BOND_STANDARD_STICK_STYLE
   };
 
   exports.createEngine = function() {
@@ -288,6 +300,7 @@ define(function (require, exports, module) {
         radialBondAtom2Index,
         radialBondLength,
         radialBondStrength,
+        radialBondStyle,
 
         // count of radial bond properties
         numRadialBondIndices = (function() {
@@ -301,7 +314,7 @@ define(function (require, exports, module) {
         // An array of individual radial bond index values and properties.
         radialBondResults,
 
-        // An array of length 4 which contains the above 4 property arrays.
+        // An array of length 5 which contains the above 5 property arrays.
         // Left undefined if no radial bonds are defined.
         radialBonds,
 
@@ -494,6 +507,7 @@ define(function (require, exports, module) {
             radialBondAtom2Index  = radialBonds[RADIAL_INDICES.ATOM2];
             radialBondLength      = radialBonds[RADIAL_INDICES.LENGTH];
             radialBondStrength    = radialBonds[RADIAL_INDICES.STRENGTH];
+            radialBondStyle       = radialBonds[RADIAL_INDICES.STYLE];
           },
 
           angularBonds: function() {
@@ -522,6 +536,7 @@ define(function (require, exports, module) {
           radialBonds[RADIAL_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
           radialBonds[RADIAL_INDICES.LENGTH]   = arrays.create(num, 0, float32);
           radialBonds[RADIAL_INDICES.STRENGTH] = arrays.create(num, 0, float32);
+          radialBonds[RADIAL_INDICES.STYLE]    = arrays.create(num, 0, uint8);
 
           assignShortcutReferences.radialBonds();
           /**
@@ -1373,7 +1388,8 @@ define(function (require, exports, module) {
         If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
         extends the length of the typed arrays by one to contain one more atom with listed properties.
       */
-      addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength) {
+      addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength, bondStyle) {
+        if (bondStyle == null )  bondStyle   = DEFAULT_VALUES.RADIAL_BOND_STYLE;
         if (N_radialBonds + 1 > radialBonds[0].length) {
           extendArrays(radialBonds, N_radialBonds + 10);
           assignShortcutReferences.radialBonds();
@@ -1383,6 +1399,7 @@ define(function (require, exports, module) {
         radialBondResults[N_radialBonds][2] = radialBondAtom2Index[N_radialBonds] = atom2Index;
         radialBondResults[N_radialBonds][3] = radialBondLength[N_radialBonds]     = bondLength;
         radialBondResults[N_radialBonds][4] = radialBondStrength[N_radialBonds]   = bondStrength;
+        radialBondResults[N_radialBonds][5] = radialBondStyle[N_radialBonds]      = bondStyle;
 
         if ( ! radialBondMatrix[atom1Index] ) radialBondMatrix[atom1Index] = [];
         radialBondMatrix[atom1Index][atom2Index] = true;
@@ -1655,7 +1672,8 @@ define(function (require, exports, module) {
             props.atom1Index[i],
             props.atom2Index[i],
             props.bondLength[i],
-            props.bondStrength[i]
+            props.bondStrength[i],
+            props.bondStyle[i]
           );
         }
       },
@@ -1949,10 +1967,10 @@ define(function (require, exports, module) {
 
           // Also save the updated position of the two bonded atoms
           // in a row in the radialBondResults array.
-          radialBondResults[i][5] = x[i1];
-          radialBondResults[i][6] = y[i1];
-          radialBondResults[i][7] = x[i2];
-          radialBondResults[i][8] = y[i2];
+          radialBondResults[i][6] = x[i1];
+          radialBondResults[i][7] = y[i1];
+          radialBondResults[i][8] = x[i2];
+          radialBondResults[i][9] = y[i2];
         }
 
         // Angular bonds.

@@ -107,7 +107,16 @@ define(function (require) {
         model_md2d_results_MARKED,
         model_md2d_results_DRAGGABLE,
         model_md2d_results_ELEMENT,
-        model_md2d_results_MASS;
+        model_md2d_results_MASS,
+
+        RADIAL_BOND_STANDARD_STICK_STYLE,
+        RADIAL_BOND_LONG_SPRING_STYLE,
+        RADIAL_BOND_SOLID_LINE_STYLE,
+        RADIAL_BOND_GHOST_STYLE,
+        RADIAL_BOND_UNICOLOR_STICK_STYLE,
+        RADIAL_BOND_SHORT_SPRING_STYLE,
+        RADIAL_BOND_DOUBLE_BOND_STYLE,
+        RADIAL_BOND_TRIPLE_BOND_STYLE;
 
     processOptions();
 
@@ -141,7 +150,6 @@ define(function (require) {
       // the latest results will be in this array when the view is executing
       results = options.get_results();
       radialBondResults = options.get_radial_bond_results();
-
       get_obstacles = options.get_obstacles;
       getRadialBonds = options.get_radial_bonds;
       getVdwPairs = options.get_vdw_pairs;
@@ -174,6 +182,16 @@ define(function (require) {
       model_md2d_results_DRAGGABLE= model.INDICES.DRAGGABLE+1;
       model_md2d_results_ELEMENT  = model.INDICES.ELEMENT+1;
       model_md2d_results_MASS     = model.INDICES.MASS+1;
+
+      RADIAL_BOND_STANDARD_STICK_STYLE = 101;
+      RADIAL_BOND_LONG_SPRING_STYLE    = 102;
+      RADIAL_BOND_SOLID_LINE_STYLE     = 103;
+      RADIAL_BOND_GHOST_STYLE          = 104;
+      RADIAL_BOND_UNICOLOR_STICK_STYLE = 105;
+      RADIAL_BOND_SHORT_SPRING_STYLE   = 106;
+      RADIAL_BOND_DOUBLE_BOND_STYLE    = 107;
+      RADIAL_BOND_TRIPLE_BOND_STYLE    = 108;
+
     }
 
     function scale(w, h) {
@@ -882,10 +900,10 @@ define(function (require) {
             sintheta,
             length, numSpikes = 10;
 
-        x1 = x(d[5]);
-        y1 = y(d[6]);
-        x2 = x(d[7]);
-        y2 = y(d[8]);
+        x1 = x(d[6]);
+        y1 = y(d[7]);
+        x2 = x(d[8]);
+        y2 = y(d[9]);
 
         if (isSpringBond(d)) {
           dx = x2 - x1;
@@ -918,12 +936,7 @@ define(function (require) {
       }
 
       function isSpringBond(d){
-        if ((Math.ceil(d[4] > 0.3 )) && (d[4] < 2000 )) {
-          return true;
-        }
-        else {
-          return false;
-        }
+        return d[5] === model.RADIAL_BOND_STYLES.RADIAL_BOND_SHORT_SPRING_STYLE;
       }
 
       function drawAttractionForces() {
