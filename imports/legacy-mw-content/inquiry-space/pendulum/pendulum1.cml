@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>A pendulum</page_title>
+<text>A pendulum
+
+The pendulum model can be used to learn a couple of important concepts in classical mechanics, such as gravitational acceleration, energy conservation, and so on.
+
+ 
+   
+Instruction: Pull the slider to change the mass of the suspended ball. Observe the simulation carefully. At the first time the ball returns to the original position, click the &quot;Stop&quot; button immediately (be quick). Take a look at the number on the knob of the frame slider. Press the &quot;Reset&quot; button again. Pull the slider to a different value. Repeat the above procedure. Are the numbers you got different?</text>
+<section start="0" end="588">
+<paragraph start="0" end="11">
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>6.0</SpaceAbove>
+<content start="0" end="10">
+<size>15</size><bold>true</bold></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="175">
+<LeftIndent>6.0</LeftIndent>
+<content start="12" end="174">
+<size>11</size></content>
+
+<content start="174" end="175">
+</content>
+
+</paragraph>
+<paragraph start="175" end="176">
+<Alignment>1</Alignment>
+<content start="175" end="176">
+</content>
+
+</paragraph>
+<paragraph start="176" end="178">
+<Alignment>1</Alignment>
+<content start="176" end="177">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pendulum1$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="177" end="178">
+</content>
+
+</paragraph>
+<paragraph start="178" end="182">
+<Alignment>1</Alignment>
+<content start="178" end="179">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>4.0</value>
+<minimum>1.0</minimum>
+<maximum>11.0</maximum>
+<nstep>10</nstep>
+<title>Mass of the Ball</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;1.0&quot;, label=&quot;Light&quot;}{value=&quot;11.0&quot;, label=&quot;Heavy&quot;}</labeltable>
+<script>set element[3].mass &quot;%val*120&quot;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="179" end="180">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop the simulation</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="180" end="181">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset the simulation</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="181" end="182">
+</content>
+
+</paragraph>
+<paragraph start="182" end="588">
+<LeftIndent>6.0</LeftIndent>
+<content start="182" end="193">
+<bold>true</bold><size>11</size></content>
+
+<content start="193" end="587">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>
