@@ -221,6 +221,7 @@ server/public/vendor: \
 	server/public/vendor/d3-plugins \
 	server/public/vendor/jquery/jquery.min.js \
 	server/public/vendor/jquery-ui/jquery-ui.min.js \
+	server/public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
 	server/public/vendor/tinysort/jquery.tinysort.js \
 	server/public/vendor/science.js \
 	server/public/vendor/modernizr \
@@ -260,6 +261,13 @@ server/public/vendor/d3-plugins:
 	cp src/vendor/d3-plugins/README.md server/public/vendor/d3-plugins/README.md
 	cp src/vendor/d3-plugins/cie/*.js server/public/vendor/d3-plugins/cie
 	cp src/vendor/d3-plugins/cie/README.md server/public/vendor/d3-plugins/cie/README.md
+
+server/public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
+	server/public/vendor/jquery-ui-touch-punch
+	cp src/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js server/public/vendor/jquery-ui-touch-punch
+
+server/public/vendor/jquery-ui-touch-punch:
+	mkdir -p server/public/vendor/jquery-ui-touch-punch
 
 server/public/vendor/jquery/jquery.min.js: \
 	src/vendor/jquery/dist/jquery.min.js \

@@ -61,3 +61,6 @@
 [submodule "src/vendor/require-cs"]
 	path = src/vendor/require-cs
 	url = git://github.com/jrburke/require-cs.git
+[submodule "src/vendor/jquery-ui-touch-punch"]
+	path = src/vendor/jquery-ui-touch-punch
+	url = git://github.com/furf/jquery-ui-touch-punch.git
