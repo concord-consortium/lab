@@ -128,6 +128,7 @@ class MD2DImports
       @model_list.push(MD2DSection.new("potential-tests").section)
       @model_list.push(MD2DSection.new("validation").section)
       @model_list.push(MD2DDirectory.new("tutorial").section)
+      @model_list.push(MD2DDirectory.new("new-examples-for-nextgen").section)
       @model_list.push(MD2DDirectory.new("student/classic/pendulum").section)
       @model_list.push(MD2DDirectory.new("visual/Recycling").section)
       @model_list.push(MD2DSection.new("inquiry-space").section)
