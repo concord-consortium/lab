@@ -385,6 +385,33 @@ parseMML = (mmlString) ->
       radialBonds.push { atom1Index, atom2Index, bondLength, bondStrength }
 
     ###
+      angular bonds
+    ###
+    angularBonds = []
+    angularBondNodes = $mml('.org-concord-mw2d-models-AngularBond-Delegate')
+    for node in angularBondNodes
+      $node = getNode cheerio node
+
+      # It appears from an inspection of MW's AtomicModel.encode(java.beans.XMLEncoder out) method
+      # that atoms are written to the MML file in ascending order. Therefore 'atom1 = 1' means
+      # the second atom in the order atoms are found in the file. The atom[1|2] property is NOT
+      # written to the file at all if it has the default value 0.
+
+      atom1Index   = parseInt($node.find('[property=atom1]').text(), 10) || 0
+      atom2Index   = parseInt($node.find('[property=atom2]').text(), 10) || 0
+      atom3Index   = parseInt($node.find('[property=atom3]').text(), 10) || 0
+      bondAngle    = parseFloat $node.find('[property=bondAngle]').text()
+      bondStrength = parseFloat $node.find('[property=bondStrength]').text()
+
+      # convert from MML units to Lab units.
+
+      # MML reports bondStrength in units of eV per 0.01 nm. Convert to eV/nm
+      # TODO: check it! Not sure if it also applies to angular bonds.
+      bondStrength *= 1e4
+
+      angularBonds.push { atom1Index, atom2Index, atom3Index, bondAngle, bondStrength }
+
+    ###
       heatBath settings
     ###
     heatBath = $mml(".org-concord-mw2d-models-HeatBath").find("[property=expectedTemperature]")
@@ -451,6 +478,9 @@ parseMML = (mmlString) ->
 
     if radialBonds.length > 0
       json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength'
+
+    if angularBonds.length > 0
+      json.angularBonds = unroll angularBonds, 'atom1Index', 'atom2Index', 'atom3Index', 'bondAngle', 'bondStrength'
 
     if imageProps.length > 0
       json.images = images

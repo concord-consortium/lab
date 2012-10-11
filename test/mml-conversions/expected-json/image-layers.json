@@ -119,6 +119,23 @@
       2000
     ]
   },
+  "angularBonds": {
+    "atom1Index": [
+      2
+    ],
+    "atom2Index": [
+      4
+    ],
+    "atom3Index": [
+      3
+    ],
+    "bondAngle": [
+      2.0943951023931953
+    ],
+    "bondStrength": [
+      20000
+    ]
+  },
     "images": [
         {
             "imageUri": "above-bottom.png",
