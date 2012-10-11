@@ -26,6 +26,19 @@ end
 #
 # MD2DDirectory
 #
+# Use this when there are multiple cml and mml files in a single directory
+#
+# Example: imports/legacy-mw-content/student/classic/pendulum/
+#
+#  $ tree -L 2 imports/legacy-mw-content/student/classic/pendulum/
+#  imports/legacy-mw-content/student/classic/pendulum/
+#  |-- NewtonCradle$0.mml
+#  |-- NewtonCradle.cml
+#  |-- NewtonCradle.html
+#  |-- doublependulum1$0.mml
+#  |-- doublependulum1.cml
+#  |-- doublependulum1.html
+#
 class MD2DDirectory
   include ProcessMML
   attr_reader :section
@@ -52,8 +65,19 @@ end
 #
 # MD2DSection
 #
-# An class for representing and extracting the content
-# from a legacy Java Energy2D page
+# Use this when there is a single separate cml file in each directory
+#
+# Example: imports/legacy-mw-content/potential-tests/
+#
+#  $ tree -L 2 imports/legacy-mw-content/potential-tests/
+#   imports/legacy-mw-content/potential-tests/
+#   |-- boiling-point-non-polar-only
+#   |   |-- boiling-point-non-polar-only$0.mml
+#   |   `-- boiling-point-non-polar-only.cml
+#   |-- boiling-point-polar-only
+#   |   |-- boiling-point-polar-only$0.mml
+#   |   `-- boiling-point-polar-only.cml
+#
 #
 class MD2DSection
   include ProcessMML
@@ -104,7 +128,9 @@ class MD2DImports
       @model_list.push(MD2DSection.new("potential-tests").section)
       @model_list.push(MD2DSection.new("validation").section)
       @model_list.push(MD2DDirectory.new("tutorial").section)
+      @model_list.push(MD2DDirectory.new("student/classic/pendulum").section)
       @model_list.push(MD2DDirectory.new("visual/Recycling").section)
+      @model_list.push(MD2DSection.new("inquiry-space").section)
       @dirs = Dir["tutorial/**"]
       @dirs.each do |dir|
         @tutorial_section = MD2DDirectory.new(dir).section
