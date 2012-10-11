@@ -481,7 +481,7 @@ define(function (require) {
         // Finally, if checkbox has action script attached,
         // call it in script context with checkbox status passed.
         if (action !== undefined) {
-          action.call(null, value);
+          action(value);
         }
       });
 
