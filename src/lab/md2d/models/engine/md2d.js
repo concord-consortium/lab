@@ -344,13 +344,6 @@ define(function (require, exports, module) {
           return n;
         }()),
 
-        // An array of individual angular bond index values and properties.
-        // TODO: at the moment, it's not used anywhere. Probably it might
-        // be useful for visualization of angular bonds. If there is
-        // a decision that there is no angular bonds visualization,
-        // remove it and related lines of code!
-        angularBondResults,
-
         // An array of length 5 which contains the above 5 property arrays.
         // Left undefined if no angular bonds are defined.
         angularBonds,
@@ -562,15 +555,6 @@ define(function (require, exports, module) {
           angularBonds[ANGULAR_INDICES.STRENGTH] = arrays.create(num, 0, float32);
 
           assignShortcutReferences.angularBonds();
-          // Initialize angularBondResults[] arrays consisting of arrays of angular bond
-          // index numbers and space to later contain transposed angular bond properties
-          // (coordinates of atom1, atom2 and atom3).
-          // TODO: is this necessary now?
-          angularBondResults = engine.angularBondResults = [];
-          for (i = 0; i < num; i++) {
-            angularBondResults[i] = arrays.create(numAngularBondIndices + 7, 0, float32);
-            angularBondResults[i][0] = i;
-          }
         },
 
         createSpringForcesArray = function(num) {
@@ -1422,11 +1406,11 @@ define(function (require, exports, module) {
           assignShortcutReferences.angularBonds();
         }
 
-        angularBondResults[N_angularBonds][1] = angularBondAtom1Index[N_angularBonds] = atom1Index;
-        angularBondResults[N_angularBonds][2] = angularBondAtom2Index[N_angularBonds] = atom2Index;
-        angularBondResults[N_angularBonds][3] = angularBondAtom3Index[N_angularBonds] = atom3Index;
-        angularBondResults[N_angularBonds][4] = angularBondAngle[N_angularBonds]      = bondAngle;
-        angularBondResults[N_angularBonds][5] = angularBondStrength[N_angularBonds]   = bondStrength;
+        angularBondAtom1Index[N_angularBonds] = atom1Index;
+        angularBondAtom2Index[N_angularBonds] = atom2Index;
+        angularBondAtom3Index[N_angularBonds] = atom3Index;
+        angularBondAngle[N_angularBonds]      = bondAngle;
+        angularBondStrength[N_angularBonds]   = bondStrength;
 
         // Store information only about 1-2 atom pair.
         // Third (center) atom is redundant and pairs 1-3 and 2-3

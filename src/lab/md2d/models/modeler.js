@@ -62,16 +62,10 @@ define(function(require) {
         // properties, and the postions of the two bonded atoms.
         radialBondResults,
 
-        // A two dimensional array consisting of angular bond index numbers, angular bond
-        // properties, and the postions of the three bonded atoms.
-        angularBondResults,
-
         // list of obstacles
         obstacles,
         // Radial Bonds
         radialBonds,
-        // Angular Bonds
-        angularBonds,
         // VDW Pairs
         vdwPairs,
 
@@ -806,8 +800,6 @@ define(function(require) {
 
     model.createAngularBonds = function(_angularBonds) {
       engine.initializeAngularBonds(_angularBonds);
-      angularBonds = engine.angularBonds;
-      angularBondResults = engine.angularBondResults;
       readModelState();
       return model;
     };
