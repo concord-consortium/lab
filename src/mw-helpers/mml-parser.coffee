@@ -13,6 +13,18 @@ CLASSIC_TO_NEXTGEN_GRAVITATION_RATIO = 0.01 * GF_CONVERSION_CONSTANT
 # converts a 'friction' value from Classic to units of amu/fs
 CLASSIC_TO_NEXTGEN_FRICTION_RATIO = 120 * GF_CONVERSION_CONSTANT
 
+# JAVA MW RadialBond style codes
+RADIAL_BOND_STANDARD_STICK_STYLE = 101
+RADIAL_BOND_LONG_SPRING_STYLE = 102
+RADIAL_BOND_SOLID_LINE_STYLE = 103
+RADIAL_BOND_GHOST_STYLE = 104
+RADIAL_BOND_UNICOLOR_STICK_STYLE = 105
+RADIAL_BOND_SHORT_SPRING_STYLE = 106
+RADIAL_BOND_DOUBLE_BOND_STYLE = 107
+RADIAL_BOND_TRIPLE_BOND_STYLE = 108
+
+RadialBondStyleDefault = RADIAL_BOND_STANDARD_STICK_STYLE
+
 # window.MWHelpers = {};
 
 ###
@@ -369,10 +381,11 @@ parseMML = (mmlString) ->
       # the second atom in the order atoms are found in the file. The atom[1|2] property is NOT
       # written to the file at all if it has the default value 0.
 
-      atom1Index   = parseInt($node.find('[property=atom1]').text(), 10) || 0
-      atom2Index   = parseInt($node.find('[property=atom2]').text(), 10) || 0
-      bondLength   = parseFloat $node.find('[property=bondLength]').text()
-      bondStrength = parseFloat $node.find('[property=bondStrength]').text()
+      atom1Index    = parseInt($node.find('[property=atom1]').text(), 10) || 0
+      atom2Index    = parseInt($node.find('[property=atom2]').text(), 10) || 0
+      bondLength    = parseFloat $node.find('[property=bondLength]').text()
+      bondStrength  = parseFloat $node.find('[property=bondStrength]').text()
+      bondStyle     = parseInt($node.find('[property=style] byte').text()) || RadialBondStyleDefault
 
       # convert from MML units to Lab units.
 
@@ -382,7 +395,7 @@ parseMML = (mmlString) ->
       # MML reports bondLength in units of 0.01 nm. Convert to nm.
       bondLength *= 0.01
 
-      radialBonds.push { atom1Index, atom2Index, bondLength, bondStrength }
+      radialBonds.push { atom1Index, atom2Index, bondLength, bondStrength, bondStyle }
 
     ###
       angular bonds
@@ -474,7 +487,7 @@ parseMML = (mmlString) ->
     removeArrayIfDefault("DRAGGABLE", draggable, 0)
 
     if radialBonds.length > 0
-      json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength'
+      json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength',  'bondStyle'
 
     if angularBonds.length > 0
       json.angularBonds = unroll angularBonds, 'atom1Index', 'atom2Index', 'atom3Index', 'bondAngle', 'bondStrength'

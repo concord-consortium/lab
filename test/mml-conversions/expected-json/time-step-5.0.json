@@ -89,6 +89,9 @@
     ],
     "bondStrength": [
       50000
+    ],
+    "bondStyle": [
+      105
     ]
   },
   "obstacles": {
