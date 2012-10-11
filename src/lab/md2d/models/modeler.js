@@ -58,15 +58,20 @@ define(function(require) {
         //
         results,
 
-        //
         // A two dimensional array consisting of radial bond index numbers, radial bond
-        // property, and the postions of the two bonded atoms.
+        // properties, and the postions of the two bonded atoms.
         radialBondResults,
+
+        // A two dimensional array consisting of angular bond index numbers, angular bond
+        // properties, and the postions of the three bonded atoms.
+        angularBondResults,
 
         // list of obstacles
         obstacles,
         // Radial Bonds
         radialBonds,
+        // Angular Bonds
+        angularBonds,
         // VDW Pairs
         vdwPairs,
 
@@ -783,6 +788,14 @@ define(function(require) {
       engine.initializeRadialBonds(_radialBonds);
       radialBonds = engine.radialBonds;
       radialBondResults = engine.radialBondResults;
+      readModelState();
+      return model;
+    };
+
+    model.createAngularBonds = function(_angularBonds) {
+      engine.initializeAngularBonds(_angularBonds);
+      angularBonds = engine.angularBonds;
+      angularBondResults = engine.angularBondResults;
       readModelState();
       return model;
     };
