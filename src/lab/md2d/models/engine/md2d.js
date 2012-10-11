@@ -48,6 +48,7 @@ define(function (require, exports, module) {
       ELEMENT_INDICES,
       OBSTACLE_INDICES,
       RADIAL_INDICES,
+      ANGULAR_INDICES,
       VDW_INDICES,
 
       cross = function(a0, a1, b0, b1) {
@@ -189,6 +190,14 @@ define(function (require, exports, module) {
     STRENGTH:  3
   };
 
+  exports.ANGULAR_INDICES = ANGULAR_INDICES = {
+    ATOM1   :  0,
+    ATOM2   :  1,
+    ATOM3   :  2,
+    ANGLE   :  3,
+    STRENGTH:  4
+  };
+
   exports.VDW_INDICES = VDW_INDICES = {
     COUNT : 0,
     ATOM1 : 1,
@@ -272,6 +281,8 @@ define(function (require, exports, module) {
         // An array of length ATOM_PROPERTY_LIST.length which contains the above property arrays
         atoms,
 
+        // ####################################################################
+        //                      Radial Bonds Properties
         // Individual property arrays for the "radial" bonds, indexed by bond number
         radialBondAtom1Index,
         radialBondAtom2Index,
@@ -298,7 +309,42 @@ define(function (require, exports, module) {
         // radialBondMatrix[i][j] === undefined otherwise
         radialBondMatrix,
 
+        // Number of actual radial bonds (may be smaller than the length of the property arrays).
+        N_radialBonds = 0,
+        // ####################################################################
 
+        // ####################################################################
+        //                      Angular Bonds Properties
+        // Individual property arrays for the "angular" bonds, indexed by bond number.
+        angularBondAtom1Index,
+        angularBondAtom2Index,
+        angularBondAtom3Index,
+        angularBondAngle,
+        angularBondStrength,
+
+        // Count of angular bond properties.
+        numAngularBondIndices = (function() {
+          var n = 0, index;
+          for (index in ANGULAR_INDICES) {
+            if (ANGULAR_INDICES.hasOwnProperty(index)) n++;
+          }
+          return n;
+        }()),
+
+        // An array of individual radial bond index values and properties.
+        angularBondResults,
+
+        // An array of length 5 which contains the above 5 property arrays.
+        // Left undefined if no angular bonds are defined.
+        angularBonds,
+
+        // angularBondMatrix[i][j] === true when atoms i and j are "angularly bonded"
+        // angularBondMatrix[i][j] === undefined otherwise
+        angularBondMatrix,
+
+        // Number of actual angular bonds (may be smaller than the length of the property arrays).
+        N_angularBonds = 0,
+        // ####################################################################
 
         // Array of arrays containing VdW pairs
         vdwPairs,
@@ -309,9 +355,6 @@ define(function (require, exports, module) {
         // Arrays of VdW pair atom #1 and atom #2 indices
         vdwPairAtom1Index,
         vdwPairAtom2Index,
-
-        // Number of actual radial bonds (may be smaller than the length of the property arrays)
-        N_radialBonds = 0,
 
         // Arrays for spring forces, which are forces defined between an atom and a point in space
         springForceAtomIndex,
@@ -447,6 +490,14 @@ define(function (require, exports, module) {
             radialBondStrength    = radialBonds[RADIAL_INDICES.STRENGTH];
           },
 
+          angularBonds: function() {
+            angularBondAtom1Index = angularBonds[ANGULAR_INDICES.ATOM1];
+            angularBondAtom2Index = angularBonds[ANGULAR_INDICES.ATOM2];
+            angularBondAtom3Index = angularBonds[ANGULAR_INDICES.ATOM3];
+            angularBondAngle      = angularBonds[ANGULAR_INDICES.ANGLE];
+            angularBondStrength   = angularBonds[ANGULAR_INDICES.STRENGTH];
+          },
+
           springForces: function() {
             springForceAtomIndex = springForces[0];
             springForceX         = springForces[1];
@@ -475,6 +526,29 @@ define(function (require, exports, module) {
           for (i = 0; i < num; i++) {
             radialBondResults[i] = arrays.create(numRadialBondIndices+5,  0, float32);
             radialBondResults[i][0] = i;
+          }
+        },
+
+        createAngularBondsArray = function(num) {
+          var i;
+
+          angularBonds = engine.angularBonds = [];
+
+          angularBonds[ANGULAR_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
+          angularBonds[ANGULAR_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
+          angularBonds[ANGULAR_INDICES.ATOM3]    = arrays.create(num, 0, uint16);
+          angularBonds[ANGULAR_INDICES.ANGLE]    = arrays.create(num, 0, float32);
+          angularBonds[ANGULAR_INDICES.STRENGTH] = arrays.create(num, 0, float32);
+
+          assignShortcutReferences.angularBonds();
+          // Initialize angularBondResults[] arrays consisting of arrays of angular bond
+          // index numbers and space to later contain transposed angular bond properties
+          // (coordinates of atom1, atom2 and atom3).
+          // TODO: is this necessary now?
+          angularBondResults = engine.angularBondResults = [];
+          for (i = 0; i < num; i++) {
+            angularBondResults[i] = arrays.create(numAngularBondIndices + 7, 0, float32);
+            angularBondResults[i][0] = i;
           }
         },
 
@@ -817,6 +891,7 @@ define(function (require, exports, module) {
 
           for (j = 0; j < i; j++) {
             if (bondingPartners && bondingPartners[j]) continue;
+            // TODO: check angular bonds too?
 
             el_j = element[j];
 
@@ -869,7 +944,7 @@ define(function (require, exports, module) {
           }
         },
 
-        updateBondForces = function() {
+        updateRadialBondForces = function() {
           // fast path if no radial bonds have been defined
           if (N_radialBonds < 1) return;
 
@@ -913,6 +988,12 @@ define(function (require, exports, module) {
             ax[i2] -= fx;
             ay[i2] -= fy;
           }
+        },
+
+        updateAngularBondForces = function() {
+          // Fast path if no angular bonds have been defined.
+          if (N_angularBonds < 1) return;
+
         },
 
         updateSpringForces = function() {
@@ -1245,6 +1326,36 @@ define(function (require, exports, module) {
       },
 
       /**
+        The canonical method for adding an angular bond to the collection of angular bonds.
+
+        If there isn't enough room in the 'angularBonds' array, it (somewhat inefficiently)
+        extends the length of the typed arrays by ten to have room for more bonds.
+      */
+      addAngularBond: function(atom1Index, atom2Index, atom3Index, bondAngle, bondStrength) {
+        if (N_angularBonds + 1 > angularBonds[0].length) {
+          extendArrays(angularBonds, N_angularBonds + 10);
+          assignShortcutReferences.angularBonds();
+        }
+
+        angularBondResults[N_angularBonds][1] = angularBondAtom1Index[N_angularBonds] = atom1Index;
+        angularBondResults[N_angularBonds][2] = angularBondAtom2Index[N_angularBonds] = atom2Index;
+        angularBondResults[N_angularBonds][3] = angularBondAtom3Index[N_angularBonds] = atom3Index;
+        angularBondResults[N_angularBonds][4] = angularBondAngle[N_angularBonds]      = bondAngle;
+        angularBondResults[N_angularBonds][5] = angularBondStrength[N_angularBonds]   = bondStrength;
+
+        // Store information only about 1-2 atom pair.
+        // Third (center) atom is redundant and pairs 1-3 and 2-3
+        // are handled by radialBondMatrix.
+        if (!angularBondMatrix[atom1Index]) angularBondMatrix[atom1Index] = [];
+        angularBondMatrix[atom1Index][atom2Index] = true;
+
+        if (!angularBondMatrix[atom2Index]) angularBondMatrix[atom2Index] = [];
+        angularBondMatrix[atom2Index][atom1Index] = true;
+
+        N_angularBonds++;
+      },
+
+      /**
         Adds a spring force between an atom and an x, y location.
 
         @returns the index of the new spring force.
@@ -1481,6 +1592,24 @@ define(function (require, exports, module) {
         }
       },
 
+      initializeAngularBonds: function(props) {
+        var num = props.atom1Index.length,
+            i;
+
+        angularBondMatrix = [];
+        createAngularBondsArray(num);
+
+        for (i = 0; i < num; i++) {
+          engine.addAngularBond(
+            props.atom1Index[i],
+            props.atom2Index[i],
+            props.atom3Index[i],
+            props.bondAngle[i],
+            props.bondStrength[i]
+          );
+        }
+      },
+
       createVdwPairsArray: function() {
         var maxNumPairs = N * (N-1) / 2;
 
@@ -1621,8 +1750,11 @@ define(function (require, exports, module) {
             updateObstaclePosition(i);
           }
 
-          // Accumulate forces from bonded interactions into a(t+dt)
-          updateBondForces();
+          // Accumulate forces from radially bonded interactions into a(t+dt)
+          updateRadialBondForces();
+
+          // Accumulate forces from angularly bonded interactions into a(t+dt)
+          updateAngularBondForces();
 
           // Accumulate forces from spring forces into a(t+dt)
           updateSpringForces();
@@ -1754,6 +1886,11 @@ define(function (require, exports, module) {
           radialBondResults[i][7] = x[i2];
           radialBondResults[i][8] = y[i2];
         }
+
+        // Angular bonds.
+        // TODO: implement me!
+        // for (i = 0; i < N_angularBonds; i++) {
+        // }
 
         // State to be read by the rest of the system:
         state.time     = time;
