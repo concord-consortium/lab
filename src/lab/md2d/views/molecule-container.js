@@ -827,7 +827,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return 0.3 * scaling_factor;
               } else {
-                return x(results[d[1]][model_md2d_results_RADIUS]) * 0.75;
+                return x(Math.min(results[d[1]][model_md2d_results_RADIUS], results[d[2]][model_md2d_results_RADIUS])) * 0.75;
               }
             })
             .style("stroke", function(d, i) {
@@ -861,7 +861,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return 0.3 * scaling_factor;
               } else {
-                return x(results[d[2]][model_md2d_results_RADIUS]) * 0.75;
+                return x(Math.min(results[d[1]][model_md2d_results_RADIUS], results[d[2]][model_md2d_results_RADIUS])) * 0.75;
               }
             })
             .style("stroke", function(d, i) {
