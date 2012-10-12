@@ -143,7 +143,7 @@ define(function (require) {
       layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
       layout.screen_factor = layout.screen_factor_height;
       layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
-      layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+      $('body').css('font-size', layout.screen_factor + "em");
       layout.not_rendered = true;
       switch (layout.selection) {
 
