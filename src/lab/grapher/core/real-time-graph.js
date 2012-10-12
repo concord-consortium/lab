@@ -186,7 +186,7 @@ define(function (require) {
          "top":    options.title  ? 25 : 15,
          "right":  15,
          "bottom": 20,
-         "left":   20
+         "left":   30
         };
         break;
 
