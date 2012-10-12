@@ -1892,12 +1892,13 @@ define(function (require, exports, module) {
       */
       computeOutputState: function(state) {
         var i, j,
-            i1, i2,
+            i1, i2, i3,
             el1, el2,
             dx, dy,
-            r_sq,
-            k,
-            dr,
+            dxij, dyij, dxkj, dykj,
+            cosTheta, theta,
+            r_sq, rij, rkj,
+            k, dr, angleDiff,
             gravPEInMWUnits,
             KEinMWUnits,       // total kinetic energy, in MW units
             PE;                // potential energy, in eV
@@ -1971,8 +1972,32 @@ define(function (require, exports, module) {
 
         // Angular bonds.
         // TODO: implement me!
-        // for (i = 0; i < N_angularBonds; i++) {
-        // }
+        for (i = 0; i < N_angularBonds; i++) {
+          i1 = angularBondAtom1Index[i];
+          i2 = angularBondAtom2Index[i];
+          i3 = angularBondAtom3Index[i];
+
+          // Calculate angle (theta) between two vectors:
+          // Atom1-Atom3 and Atom2-Atom3
+          // Atom1 -> i, Atom2 -> k, Atom3 -> j
+          dxij = x[i1] - x[i3];
+          dxkj = x[i2] - x[i3];
+          dyij = y[i1] - y[i3];
+          dykj = y[i2] - y[i3];
+          rij = Math.sqrt(dxij * dxij + dyij * dyij);
+          rkj = Math.sqrt(dxkj * dxkj + dykj * dykj);
+          // Calculate cos using dot product definition.
+          cosTheta = (dxij * dxkj + dyij * dykj) / (rij * rkj);
+          if (cosTheta > 1.0) cosTheta = 1.0;
+          else if (cosTheta < -1.0) cosTheta = -1.0;
+          theta = Math.acos(cosTheta);
+
+          // Finally, update PE.
+          // radian
+          angleDiff = theta - angularBondAngle[i];
+          // angularBondStrength unit: eV/radian^2
+          PE += 0.5 * angularBondStrength[i] * angleDiff * angleDiff;
+        }
 
         // State to be read by the rest of the system:
         state.time     = time;
