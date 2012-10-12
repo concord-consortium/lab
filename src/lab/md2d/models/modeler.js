@@ -1111,6 +1111,26 @@ define(function(require) {
       return props;
     };
 
+    model.setAngularBondProperties = function(i, props) {
+      var key, p;
+      for (key in props) {
+        if (props.hasOwnProperty(key)) {
+          p = model.ANGULAR_BOND_INDICES[key.toUpperCase()];
+          angularBonds[p][i] = props[key];
+        }
+      }
+      readModelState();
+    };
+
+    model.getAngularBondProperties = function(i) {
+      var p,
+          props = {};
+      for (p = 0; p < model.ANGULAR_BOND_PROPERTY_LIST.length; p++) {
+        props[model.ANGULAR_BOND_PROPERTY_LIST[p].toLowerCase()] = angularBonds[p][i];
+      }
+      return props;
+    };
+
     /** A "spring force" is used to pull atom `atomIndex` towards (x, y). We expect this to be used
        to drag atoms interactively using the mouse cursor (in which case (x,y) is the mouse cursor
        location.) In these cases, use the liveDragStart, liveDrag, and liveDragEnd methods instead

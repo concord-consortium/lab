@@ -219,6 +219,15 @@ define(function (require) {
               return model.getRadialBondProperties(i);
             },
 
+            setAngularBondProperties: function setAngularBondProperties(i, props) {
+              model.setAngularBondProperties(i, props);
+              scriptingAPI.repaint();
+            },
+
+            getAngularBondProperties: function getAngularBondProperties(i) {
+              return model.getAngularBondProperties(i);
+            },
+
             pe: function pe() {
               return model.pe();
             },
