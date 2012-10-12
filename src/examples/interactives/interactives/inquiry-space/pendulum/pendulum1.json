@@ -65,7 +65,7 @@
         }
       ],
       "steps":  90,
-      "title":  "Angle of Pendulum",
+      "title":  "Starting Angle of Pendulum",
       "action": "stop(); var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0}); repaint();"
     },
     {
