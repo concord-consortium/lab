@@ -628,7 +628,10 @@ define(function (require, exports, module) {
           }
           // Obstacles.
           for (i = 0; i < N_obstacles; i++) {
-            twoKE += obstacleMass[i] * (obstacleVX[i] * obstacleVX[i] + obstacleVY[i] * obstacleVY[i]);
+            if (obstacleMass[i] !== Infinity) {
+              twoKE += obstacleMass[i] *
+                  (obstacleVX[i] * obstacleVX[i] + obstacleVY[i] * obstacleVY[i]);
+            }
           }
 
           return KE_to_T( twoKE/2, N );
@@ -2010,8 +2013,10 @@ define(function (require, exports, module) {
 
         // Obstacles.
         for (i = 0; i < N_obstacles; i++) {
-          KEinMWUnits += 0.5 * obstacleMass[i] *
-              (obstacleVX[i] * obstacleVX[i] + obstacleVY[i] * obstacleVY[i]);
+          if (obstacleMass[i] !== Infinity) {
+            KEinMWUnits += 0.5 * obstacleMass[i] *
+                (obstacleVX[i] * obstacleVX[i] + obstacleVY[i] * obstacleVY[i]);
+          }
         }
 
         // State to be read by the rest of the system:
