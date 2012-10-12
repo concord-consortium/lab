@@ -42,13 +42,21 @@ define(function (require, exports, module) {
 
       BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
+      DEFAULT_VALUES,
+
       ATOM_PROPERTY_LIST,
       ATOM_INDICES,
-      DEFAULT_VALUES,
+
+      ELEMENT_PROPERTY_LIST,
       ELEMENT_INDICES,
+
+      RADIAL_BOND_PROPERTY_LIST,
+      RADIAL_BOND_INDICES,
+
       OBSTACLE_INDICES,
-      RADIAL_INDICES,
+
       ANGULAR_INDICES,
+
       VDW_INDICES,
 
       cross = function(a0, a1, b0, b1) {
@@ -108,13 +116,7 @@ define(function (require, exports, module) {
         }
       };
 
-  exports.ELEMENT_INDICES = ELEMENT_INDICES = {
-    MASS: 0,
-    EPSILON: 1,
-    SIGMA: 2,
-    RADIUS: 3
-  },
-
+  // Atoms
   exports.ATOM_PROPERTY_LIST = ATOM_PROPERTY_LIST = [
     "RADIUS",
     "PX",
@@ -141,25 +143,51 @@ define(function (require, exports, module) {
     }
   }());
 
-  // FIXME: this seems silly. Why not use the same names for everything?
-  exports.ATOM_PROPERTY_SHORT_NAMES = {
-    RADIUS   : "radius",
-    PX       : "px",
-    PY       : "py",
-    X        : "x",
-    Y        : "y",
-    VX       : "vx",
-    VY       : "vy",
-    SPEED    : "speed",
-    AX       : "ax",
-    AY       : "ay",
-    CHARGE   : "charge",
-    ELEMENT  : "element",
-    PINNED   : "pinned",
-    FRICTION : "friction",
-    MASS     : "mass"
+  // Radial Bonds
+  exports.RADIAL_BOND_PROPERTY_LIST = RADIAL_BOND_PROPERTY_LIST = [
+    "ATOM1",
+    "ATOM2",
+    "LENGTH",
+    "STRENGTH",
+    "STYLE"
+  ];
+
+  exports.RADIAL_BOND_INDICES = RADIAL_BOND_INDICES = {};
+
+  (function() {
+    for (var i = 0; i < RADIAL_BOND_PROPERTY_LIST.length; i++) {
+      exports.RADIAL_BOND_INDICES[ RADIAL_BOND_PROPERTY_LIST[i] ] = i;
+    }
+  }());
+
+  exports.RADIAL_BOND_STYLES = RADIAL_BOND_STYLES = {
+    RADIAL_BOND_STANDARD_STICK_STYLE : 101,
+    RADIAL_BOND_LONG_SPRING_STYLE    : 102,
+    RADIAL_BOND_SOLID_LINE_STYLE     : 103,
+    RADIAL_BOND_GHOST_STYLE          : 104,
+    RADIAL_BOND_UNICOLOR_STICK_STYLE : 105,
+    RADIAL_BOND_SHORT_SPRING_STYLE   : 106,
+    RADIAL_BOND_DOUBLE_BOND_STYLE    : 107,
+    RADIAL_BOND_TRIPLE_BOND_STYLE    : 108
   };
 
+  // Elements
+  exports.ELEMENT_PROPERTY_LIST = ELEMENT_PROPERTY_LIST = [
+    "MASS",
+    "EPSILON",
+    "SIGMA",
+    "RADIUS"
+  ];
+
+  exports.ELEMENT_INDICES = ELEMENT_INDICES = {};
+
+  (function() {
+    for (var i = 0; i < ELEMENT_PROPERTY_LIST.length; i++) {
+      exports.ELEMENT_INDICES[ ELEMENT_PROPERTY_LIST[i] ] = i;
+    }
+  }());
+
+  // Obstacles
   exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
     X       :  0,
     Y       :  1,
@@ -176,25 +204,7 @@ define(function (require, exports, module) {
     VISIBLE :  12
   };
 
-  exports.RADIAL_BOND_STYLES = RADIAL_BOND_STYLES = {
-    RADIAL_BOND_STANDARD_STICK_STYLE : 101,
-    RADIAL_BOND_LONG_SPRING_STYLE    : 102,
-    RADIAL_BOND_SOLID_LINE_STYLE     : 103,
-    RADIAL_BOND_GHOST_STYLE          : 104,
-    RADIAL_BOND_UNICOLOR_STICK_STYLE : 105,
-    RADIAL_BOND_SHORT_SPRING_STYLE   : 106,
-    RADIAL_BOND_DOUBLE_BOND_STYLE    : 107,
-    RADIAL_BOND_TRIPLE_BOND_STYLE    : 108
-  };
-
-  exports.RADIAL_INDICES = RADIAL_INDICES = {
-    ATOM1   :  0,
-    ATOM2   :  1,
-    LENGTH  :  2,
-    STRENGTH:  3,
-    STYLE   :  4
-  };
-
+  // Angular Bonds
   exports.ANGULAR_INDICES = ANGULAR_INDICES = {
     ATOM1   :  0,
     ATOM2   :  1,
@@ -203,6 +213,7 @@ define(function (require, exports, module) {
     STRENGTH:  4
   };
 
+  // VDW pairs
   exports.VDW_INDICES = VDW_INDICES = {
     COUNT : 0,
     ATOM1 : 1,
@@ -305,8 +316,8 @@ define(function (require, exports, module) {
         // count of radial bond properties
         numRadialBondIndices = (function() {
           var n = 0, index;
-          for (index in RADIAL_INDICES) {
-            if (RADIAL_INDICES.hasOwnProperty(index)) n++;
+          for (index in RADIAL_BOND_INDICES) {
+            if (RADIAL_BOND_INDICES.hasOwnProperty(index)) n++;
           }
           return n;
         }()),
@@ -496,11 +507,11 @@ define(function (require, exports, module) {
           },
 
           radialBonds: function() {
-            radialBondAtom1Index  = radialBonds[RADIAL_INDICES.ATOM1];
-            radialBondAtom2Index  = radialBonds[RADIAL_INDICES.ATOM2];
-            radialBondLength      = radialBonds[RADIAL_INDICES.LENGTH];
-            radialBondStrength    = radialBonds[RADIAL_INDICES.STRENGTH];
-            radialBondStyle       = radialBonds[RADIAL_INDICES.STYLE];
+            radialBondAtom1Index  = radialBonds[RADIAL_BOND_INDICES.ATOM1];
+            radialBondAtom2Index  = radialBonds[RADIAL_BOND_INDICES.ATOM2];
+            radialBondLength      = radialBonds[RADIAL_BOND_INDICES.LENGTH];
+            radialBondStrength    = radialBonds[RADIAL_BOND_INDICES.STRENGTH];
+            radialBondStyle       = radialBonds[RADIAL_BOND_INDICES.STYLE];
           },
 
           angularBonds: function() {
@@ -525,11 +536,11 @@ define(function (require, exports, module) {
 
           radialBonds = engine.radialBonds = [];
 
-          radialBonds[RADIAL_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
-          radialBonds[RADIAL_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
-          radialBonds[RADIAL_INDICES.LENGTH]   = arrays.create(num, 0, float32);
-          radialBonds[RADIAL_INDICES.STRENGTH] = arrays.create(num, 0, float32);
-          radialBonds[RADIAL_INDICES.STYLE]    = arrays.create(num, 0, uint8);
+          radialBonds[RADIAL_BOND_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
+          radialBonds[RADIAL_BOND_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
+          radialBonds[RADIAL_BOND_INDICES.LENGTH]   = arrays.create(num, 0, float32);
+          radialBonds[RADIAL_BOND_INDICES.STRENGTH] = arrays.create(num, 0, float32);
+          radialBonds[RADIAL_BOND_INDICES.STYLE]    = arrays.create(num, 0, uint8);
 
           assignShortcutReferences.radialBonds();
           /**
@@ -1218,6 +1229,7 @@ define(function (require, exports, module) {
           }
         }
         elementsHaveBeenCreated = true;
+        engine.elements = elements;
       },
 
       setElementProperties: function(i, properties) {

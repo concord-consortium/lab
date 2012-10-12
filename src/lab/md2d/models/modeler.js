@@ -202,14 +202,34 @@ define(function(require) {
       model.ATOM_PROPERTY_LIST = [];
       model.ATOM_PROPERTY_SHORT_NAMES = {};
 
-      // Copy property indices and names from md2d
+      // Copy ATOM property indices and names from md2d
       offset = 0;
       for (i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
         prop = md2d.ATOM_PROPERTY_LIST[i];
 
         model.ATOM_PROPERTY_LIST[i] = prop;
-        model.INDICES[prop]             = md2d.ATOM_INDICES[prop] + offset;
-        model.ATOM_PROPERTY_SHORT_NAMES[prop] = md2d.ATOM_PROPERTY_SHORT_NAMES[prop];
+        model.INDICES[prop]         = md2d.ATOM_INDICES[prop] + offset;
+      }
+
+      model.RADIAL_BOND_INDICES = {};
+      model.RADIAL_BOND_PROPERTY_LIST = [];
+
+      // Copy RADIAL_BOND property indices and names from md2d
+      offset = 0;
+      for (i = 0; i < md2d.RADIAL_BOND_PROPERTY_LIST.length; i++) {
+        prop = md2d.RADIAL_BOND_PROPERTY_LIST[i];
+        model.RADIAL_BOND_PROPERTY_LIST[i] = prop;
+        model.RADIAL_BOND_INDICES[prop]    = md2d.RADIAL_BOND_INDICES[prop] + offset;
+      }
+
+      model.ELEMENT_INDICES = {};
+      model.ELEMENT_PROPERTY_LIST = [];
+
+      // Copy ELEMENT property indices and names from md2d
+      for (i = 0; i < md2d.ELEMENT_PROPERTY_LIST.length; i++) {
+        prop = md2d.ELEMENT_PROPERTY_LIST[i];
+        model.ELEMENT_PROPERTY_LIST[i] = prop;
+        model.ELEMENT_INDICES[prop]    = md2d.ELEMENT_INDICES[prop];
       }
 
       model.NON_ENGINE_PROPERTY_LIST = [
@@ -285,14 +305,6 @@ define(function(require) {
         COLOR_G  : md2d.OBSTACLE_INDICES.COLOR_G,
         COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B,
         VISIBLE  : md2d.OBSTACLE_INDICES.VISIBLE
-      };
-
-      model.RADIAL_INDICES = {
-        ATOM1     : md2d.RADIAL_INDICES.ATOM1,
-        ATOM2     : md2d.RADIAL_INDICES.ATOM2,
-        LENGTH    : md2d.RADIAL_INDICES.LENGTH,
-        STRENGTH  : md2d.RADIAL_INDICES.STRENGTH,
-        STYLE     : md2d.RADIAL_INDICES.STYLE
       };
 
       model.VDW_INDICES = md2d.VDW_INDICES;
@@ -1002,8 +1014,8 @@ define(function(require) {
           dx, dy,
           new_x, new_y,
           j, jj,
-          shortName,
-          longName;
+          key,
+          propName;
 
       if (moveMolecule) {
         moleculeAtoms = engine.getMoleculeAtoms(i);
@@ -1031,10 +1043,10 @@ define(function(require) {
       }
 
       // Actually set properties
-      for (shortName in props) {
-        if (props.hasOwnProperty(shortName)) {
-          longName = model.ATOM_PROPERTY_LONG_NAMES[shortName];
-          if (longName) atoms[model.INDICES[longName]][i] = props[shortName];
+      for (key in props) {
+        if (props.hasOwnProperty(key)) {
+          propName = key.toUpperCase();
+          if (propName) atoms[model.INDICES[propName]][i] = props[key];
         }
       }
 
@@ -1042,9 +1054,47 @@ define(function(require) {
       return true;
     };
 
+    model.getAtomProperties = function(i) {
+      var p,
+          props = {};
+      for (p = 0; p < model.ATOM_PROPERTY_LIST.length; p++) {
+        props[model.ATOM_PROPERTY_LIST[p].toLowerCase()] = atoms[p][i];
+      }
+      return props;
+    };
+
     model.setElementProperties = function(i, props) {
       engine.setElementProperties(i, props);
       readModelState();
+    };
+
+    model.getElementProperties = function(i) {
+      var p,
+          props = {};
+      for (p = 0; p < model.ELEMENT_PROPERTY_LIST.length; p++) {
+        props[model.ELEMENT_PROPERTY_LIST[p].toLowerCase()] = engine.elements[p][i];
+      }
+      return props;
+    };
+
+    model.setRadialBondProperties = function(i, props) {
+      var key, p;
+      for (key in props) {
+        if (props.hasOwnProperty(key)) {
+          p = model.RADIAL_BOND_INDICES[key.toUpperCase()];
+          radialBonds[p][i] = props[key];
+        }
+      }
+      readModelState();
+    };
+
+    model.getRadialBondProperties = function(i) {
+      var p,
+          props = {};
+      for (p = 0; p < model.RADIAL_BOND_PROPERTY_LIST.length; p++) {
+        props[model.RADIAL_BOND_PROPERTY_LIST[p].toLowerCase()] = radialBonds[p][i];
+      }
+      return props;
     };
 
     /** A "spring force" is used to pull atom `atomIndex` towards (x, y). We expect this to be used

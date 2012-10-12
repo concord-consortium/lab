@@ -330,19 +330,19 @@ define(function (require) {
     }
 
     function get_radial_bond_atom_1(i) {
-      return radialBonds[model.RADIAL_INDICES.ATOM1][i];
+      return radialBonds[model.RADIAL_BOND_INDICES.ATOM1][i];
     }
 
     function get_radial_bond_atom_2(i) {
-      return radialBonds[model.RADIAL_INDICES.ATOM2][i];
+      return radialBonds[model.RADIAL_BOND_INDICES.ATOM2][i];
     }
 
     function get_radial_bond_length(i) {
-      return radialBonds[model.RADIAL_INDICES.LENGTH][i];
+      return radialBonds[model.RADIAL_BOND_INDICES.LENGTH][i];
     }
 
     function get_radial_bond_strength(i) {
-      return radialBonds[model.RADIAL_INDICES.STRENGTH][i];
+      return radialBonds[model.RADIAL_BOND_INDICES.STRENGTH][i];
     }
 
     function get_vdw_line_atom_1(i) {

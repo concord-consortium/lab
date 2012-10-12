@@ -25,44 +25,44 @@
         },
         {
           "text": "x 4",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 4; setRadialBond(0, values);"
+          "action": "setRadialBondProperties(0, { strength: 10000 * 4})"
         },
         {
           "text": "x 2",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 2; setRadialBond(0, values);"
+          "action": "setRadialBondProperties(0, { strength: 10000 * 2})"
         },
         {
           "text": "x 1",
           "selected": true,
-          "action": "var values = getRadialBond(0); values[3] = 10000 ; setRadialBond(0, values);"
+          "action": "setRadialBondProperties(0, { strength: 10000 })"
         },
         {
           "text": "x 0.5",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 0.5; setRadialBond(0, values);"
+          "action": "setRadialBondProperties(0, { strength: 10000 * 0.5})"
         },
         {
           "text": "x 0.1",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 0.1; setRadialBond(0, values);"
+          "action": "setRadialBondProperties(0, { strength: 10000 * 0.1})"
         },
         {
           "text": "x 1e-2",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 1e-2; setRadialBond(0, values);"
+          "action": "setRadialBondProperties(0, { strength: 10000 * 1e-2})"
         },
         {
           "text": "x 1e-3",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 1e-3; setRadialBond(0, values);"
+          "action": "setRadialBondProperties(0, { strength: 10000 * 1e-3})"
         },
         {
           "text": "x 1e-4",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 1e-4; setRadialBond(0, values);"
+          "action": "setRadialBondProperties(0, { strength: 10000 * 1e-4})"
         },
         {
           "text": "x 1e-5",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 1e-5; setRadialBond(0, values);"
+          "action": "setRadialBondProperties(0, { strength: 10000 * 1e-5})"
         },
         {
           "text": "x 1e-6",
-          "action": "var values = getRadialBond(0); values[3] = 10000 * 1e-6; setRadialBond(0, values);"
+          "action": "setRadialBondProperties(0, { strength: 10000 * 1e-6})"
         }
       ]
     },

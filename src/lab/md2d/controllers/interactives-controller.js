@@ -75,6 +75,9 @@ define(function (require) {
 
           return {
 
+            deg2rad: Math.PI/180,
+            rad2deg: 180/Math.PI,
+
             getRadialBond: function getRadialBond(i) {
               return [
                 model.get_radial_bonds()[0][i],
@@ -177,6 +180,7 @@ define(function (require) {
             */
             setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule) {
               return model.setAtomProperties(i, props, checkLocation, moveMolecule);
+              scriptingAPI.repaint();
             },
 
             /**
@@ -184,16 +188,7 @@ define(function (require) {
               e.g. getAtomProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
             */
             getAtomProperties: function getAtomProperties(i) {
-              var props = {},
-                  atoms = model.get_atoms(),
-                  prop,
-                  j;
-
-              for (j = 0; j < model.ATOM_PROPERTY_LIST.length; j++) {
-                prop = model.ATOM_PROPERTY_LIST[j];
-                props[model.ATOM_PROPERTY_SHORT_NAMES[prop]] = atoms[model.INDICES[prop]][i];
-              }
-              return props;
+              return model.getAtomProperties(i);
             },
 
             /**
@@ -208,6 +203,19 @@ define(function (require) {
 
             setElementProperties: function setElementProperties(i, props) {
               return model.setElementProperties(i, props);
+            },
+
+            getElementProperties: function getElementProperties(i) {
+              return model.getElementProperties(i);
+            },
+
+            setRadialBondProperties: function setRadialBondProperties(i, props) {
+              return model.setRadialBondProperties(i, props);
+              scriptingAPI.repaint();
+            },
+
+            getRadialBondProperties: function getRadialBondProperties(i) {
+              return model.getRadialBondProperties(i);
             },
 
             pe: function pe() {
