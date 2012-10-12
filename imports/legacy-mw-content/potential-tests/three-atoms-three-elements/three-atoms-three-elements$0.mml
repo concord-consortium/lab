@@ -318,7 +318,7 @@
    <object class="org.concord.mw2d.models.LightSource"/>
   </void>
   <void property="numberOfParticles">
-   <int>2</int>
+   <int>3</int>
   </void>
   <void property="properties">
    <void method="put">
