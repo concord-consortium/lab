@@ -121,8 +121,12 @@ var ROOT = "/examples",
   }
 
   function setupSharePane() {
-    var embeddablePath = location.pathname.replace(/\/[^/]+$/, "/embeddable.html"),
-        embeddableUrl = document.location.origin + embeddablePath + hash;
+    var embeddablePath,
+        origin,
+        embeddableUrl;
+    embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
+    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
+    embeddableUrl = origin + embeddablePath + hash;
     $shareLink.click(function() {
       $sharePane.show(100);
     });
