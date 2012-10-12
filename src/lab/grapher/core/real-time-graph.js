@@ -322,9 +322,9 @@ define(function (require) {
               .attr("class", "line")
               .attr("d", line(points));
 
-        marker = viewbox.append("path")
-            .attr("class", "marker")
-            .attr("d", []);
+        marker = viewbox.append("path").attr("class", "marker");
+        // path without attributes cause SVG parse problem in IE9
+        //     .attr("d", []);
 
         // add Chart Title
         if (options.title && sizeType.value > 1) {
@@ -771,7 +771,7 @@ define(function (require) {
       }
 
       function show_canvas() {
-        vis.select("path.line").attr("d", []);
+        vis.select("path.line").remove();
         gcanvas.style.zIndex = 100;
       }
 
