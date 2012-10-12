@@ -179,7 +179,7 @@ define(function (require) {
               e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
             */
             setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule) {
-              return model.setAtomProperties(i, props, checkLocation, moveMolecule);
+              model.setAtomProperties(i, props, checkLocation, moveMolecule);
               scriptingAPI.repaint();
             },
 
@@ -202,7 +202,8 @@ define(function (require) {
             },
 
             setElementProperties: function setElementProperties(i, props) {
-              return model.setElementProperties(i, props);
+              model.setElementProperties(i, props);
+              scriptingAPI.repaint();
             },
 
             getElementProperties: function getElementProperties(i) {
@@ -210,7 +211,7 @@ define(function (require) {
             },
 
             setRadialBondProperties: function setRadialBondProperties(i, props) {
-              return model.setRadialBondProperties(i, props);
+              model.setRadialBondProperties(i, props);
               scriptingAPI.repaint();
             },
 
