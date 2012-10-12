@@ -66,6 +66,8 @@ define(function(require) {
         obstacles,
         // Radial Bonds
         radialBonds,
+        // Angular Bonds
+        angularBonds,
         // VDW Pairs
         vdwPairs,
 
@@ -220,6 +222,17 @@ define(function(require) {
         prop = md2d.RADIAL_BOND_PROPERTY_LIST[i];
         model.RADIAL_BOND_PROPERTY_LIST[i] = prop;
         model.RADIAL_BOND_INDICES[prop]    = md2d.RADIAL_BOND_INDICES[prop] + offset;
+      }
+
+      model.ANGULAR_BOND_INDICES = {};
+      model.ANGULAR_BOND_PROPERTY_LIST = [];
+
+      // Copy ANGULAR_BOND property indices and names from md2d
+      offset = 0;
+      for (i = 0; i < md2d.ANGULAR_BOND_PROPERTY_LIST.length; i++) {
+        prop = md2d.ANGULAR_BOND_PROPERTY_LIST[i];
+        model.ANGULAR_BOND_PROPERTY_LIST[i] = prop;
+        model.ANGULAR_BOND_INDICES[prop]    = md2d.ANGULAR_BOND_INDICES[prop] + offset;
       }
 
       model.ELEMENT_INDICES = {};
@@ -812,6 +825,7 @@ define(function(require) {
 
     model.createAngularBonds = function(_angularBonds) {
       engine.initializeAngularBonds(_angularBonds);
+      angularBonds = engine.angularBonds;
       readModelState();
       return model;
     };

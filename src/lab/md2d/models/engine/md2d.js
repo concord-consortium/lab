@@ -53,9 +53,10 @@ define(function (require, exports, module) {
       RADIAL_BOND_PROPERTY_LIST,
       RADIAL_BOND_INDICES,
 
-      OBSTACLE_INDICES,
+      ANGULAR_BOND_PROPERTY_LIST,
+      ANGULAR_BOND_INDICES,
 
-      ANGULAR_INDICES,
+      OBSTACLE_INDICES,
 
       VDW_INDICES,
 
@@ -160,6 +161,22 @@ define(function (require, exports, module) {
     }
   }());
 
+  // Angular Bonds
+  exports.ANGULAR_BOND_PROPERTY_LIST = ANGULAR_BOND_PROPERTY_LIST = [
+    "ATOM1",
+    "ATOM2",
+    "ATOM3",
+    "ANGLE",
+    "STRENGTH"
+  ];
+
+  exports.ANGULAR_BOND_INDICES = ANGULAR_BOND_INDICES = {};
+  (function() {
+    for (var i = 0; i < ANGULAR_BOND_PROPERTY_LIST.length; i++) {
+      exports.ANGULAR_BOND_INDICES[ ANGULAR_BOND_PROPERTY_LIST[i] ] = i;
+    }
+  }());
+
   exports.RADIAL_BOND_STYLES = RADIAL_BOND_STYLES = {
     RADIAL_BOND_STANDARD_STICK_STYLE : 101,
     RADIAL_BOND_LONG_SPRING_STYLE    : 102,
@@ -202,15 +219,6 @@ define(function (require, exports, module) {
     COLOR_G :  10,
     COLOR_B :  11,
     VISIBLE :  12
-  };
-
-  // Angular Bonds
-  exports.ANGULAR_INDICES = ANGULAR_INDICES = {
-    ATOM1   :  0,
-    ATOM2   :  1,
-    ATOM3   :  2,
-    ANGLE   :  3,
-    STRENGTH:  4
   };
 
   // VDW pairs
@@ -349,8 +357,8 @@ define(function (require, exports, module) {
         // Count of angular bond properties.
         numAngularBondIndices = (function() {
           var n = 0, index;
-          for (index in ANGULAR_INDICES) {
-            if (ANGULAR_INDICES.hasOwnProperty(index)) n++;
+          for (index in ANGULAR_BOND_INDICES) {
+            if (ANGULAR_BOND_INDICES.hasOwnProperty(index)) n++;
           }
           return n;
         }()),
@@ -509,11 +517,11 @@ define(function (require, exports, module) {
           },
 
           angularBonds: function() {
-            angularBondAtom1Index = angularBonds[ANGULAR_INDICES.ATOM1];
-            angularBondAtom2Index = angularBonds[ANGULAR_INDICES.ATOM2];
-            angularBondAtom3Index = angularBonds[ANGULAR_INDICES.ATOM3];
-            angularBondAngle      = angularBonds[ANGULAR_INDICES.ANGLE];
-            angularBondStrength   = angularBonds[ANGULAR_INDICES.STRENGTH];
+            angularBondAtom1Index = angularBonds[ANGULAR_BOND_INDICES.ATOM1];
+            angularBondAtom2Index = angularBonds[ANGULAR_BOND_INDICES.ATOM2];
+            angularBondAtom3Index = angularBonds[ANGULAR_BOND_INDICES.ATOM3];
+            angularBondAngle      = angularBonds[ANGULAR_BOND_INDICES.ANGLE];
+            angularBondStrength   = angularBonds[ANGULAR_BOND_INDICES.STRENGTH];
           },
 
           springForces: function() {
@@ -553,11 +561,11 @@ define(function (require, exports, module) {
 
           angularBonds = engine.angularBonds = [];
 
-          angularBonds[ANGULAR_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_INDICES.ATOM3]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_INDICES.ANGLE]    = arrays.create(num, 0, float32);
-          angularBonds[ANGULAR_INDICES.STRENGTH] = arrays.create(num, 0, float32);
+          angularBonds[ANGULAR_BOND_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
+          angularBonds[ANGULAR_BOND_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
+          angularBonds[ANGULAR_BOND_INDICES.ATOM3]    = arrays.create(num, 0, uint16);
+          angularBonds[ANGULAR_BOND_INDICES.ANGLE]    = arrays.create(num, 0, float32);
+          angularBonds[ANGULAR_BOND_INDICES.STRENGTH] = arrays.create(num, 0, float32);
 
           assignShortcutReferences.angularBonds();
         },
