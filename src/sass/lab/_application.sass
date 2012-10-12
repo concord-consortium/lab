@@ -298,7 +298,7 @@ div.tooltip
   float: left
   vertical-align: middle
   display: table-cell
-  margin-left: 1em
+  margin-left: 0.92em
   opacity: 0.5
   &:hover
     cursor: pointer
@@ -320,7 +320,7 @@ $embeddable-pane-font-size: 1.3em
   display: none
   position: absolute
   border-radius: 0.5em
-  @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
+  @include box-shadow(1px 1px 15px rgba(000,000,000,0.5))
   width: 60%
   height: auto
   min-height: $embeddable-pane-font-size*10
@@ -332,8 +332,8 @@ $embeddable-pane-font-size: 1.3em
   padding: 0em
   background-color: #efefef
   p
-    margin-top: 0.5em
-    margin-bottom: 0.5em
+    margin-top: 1em
+    margin-bottom: 1em
   textarea
     margin-top: 0.5em
     margin-bottom: 0.5em
@@ -343,21 +343,27 @@ $embeddable-pane-font-size: 1.3em
     font-size: $embeddable-pane-font-size*0.5
   textarea#share-iframe-content
     height: $embeddable-pane-font-size*5
-
+#share-link
+  text-transform: uppercase
 #share-pane
   left: inherit
   right: 2em
   min-height: $embeddable-pane-font-size*15
+  p
+    margin-top: 0.5em
+    margin-bottom: 0.5em
 
 #about-pane-banner, #share-pane-banner
-  width: 100%
+  width: 100.2%
   display: table
   opacity: 0.7
   margin: 0em
-  padding: 0.2em 0em 0.2em 0.5em
+  padding: .5em 1.3em
   height: $embeddable-pane-font-size*1.25
   color: white
   background-color: lighten( #3A878B, 15% )
+  border-top-right-radius: 0.5em
+  border-top-left-radius: 0.5em
 
 #about-pane-title, #share-pane-title
   vertical-align: middle
@@ -369,11 +375,10 @@ $embeddable-pane-font-size: 1.3em
   float: right
   vertical-align: middle
   display: table-cell
-  margin-right: 0.5em
   font-size: $embeddable-pane-font-size
   font-weight: 800
   &:hover
-    cursor: default
+    cursor: pointer
     color: #DDD
 
 #about-content, #share-content
