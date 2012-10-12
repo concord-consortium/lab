@@ -200,14 +200,16 @@ var ROOT = "/examples",
 
   function setupFullPage() {
     var java_mw_href,
-        java_mw_link = $("#java-mw-link");
+        java_mw_link = $("#java-mw-link"),
+        origin;
+    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
     $selectInteractive.val(interactiveUrl);
 
     // construct link to embeddable version of Interactive
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
     jsonModelPath = interactive.model.url;
-    $("#json-model-link").attr("href", window.location.origin + ACTUAL_ROOT + jsonModelPath);
+    $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
 
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
@@ -215,7 +217,7 @@ var ROOT = "/examples",
     contentItems = getObjects(modelList, "mml", mmlPath);
     if (contentItems.length > 0) {
       java_mw_href = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
-                      window.location.origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
+                      origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
       java_mw_link.attr("href", java_mw_href);
     } else {
       java_mw_link.removeAttr("href");
