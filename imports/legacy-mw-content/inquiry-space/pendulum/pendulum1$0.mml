@@ -335,37 +335,6 @@
   <void property="numberOfParticles"> 
    <int>2</int> 
   </void> 
-  <void property="obstacles"> 
-   <void method="add"> 
-    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
-     <void property="fillMode"> 
-      <object class="org.concord.modeler.draw.FillMode$PatternFill"> 
-       <void property="cellHeight"> 
-        <int>10</int> 
-       </void> 
-       <void property="cellWidth"> 
-        <int>10</int> 
-       </void> 
-       <void property="style"> 
-        <byte>12</byte> 
-       </void> 
-      </object> 
-     </void> 
-     <void property="height"> 
-      <double>17.0</double> 
-     </void> 
-     <void property="width"> 
-      <double>395.0</double> 
-     </void> 
-     <void property="x"> 
-      <double>2.0</double> 
-     </void> 
-     <void property="y"> 
-      <double>50.0</double> 
-     </void> 
-    </object> 
-   </void> 
-  </void> 
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
@@ -374,20 +343,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1264443026000</long> 
+     <long>1349990546000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/student/classic/pendulum/pendulum1$0.mml</string> 
+    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/inquiry-space/pendulum/pendulum1$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>13189</long> 
+    <long>13196</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/student/classic/pendulum</string> 
+    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/inquiry-space/pendulum</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -463,7 +432,7 @@
    <double>209.83337914425556</double> 
   </void> 
   <void property="ry"> 
-   <double>71.26429130838793</double> 
+   <double>21.264291308387925</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -477,7 +446,7 @@
    <double>147.97126782800976</double> 
   </void> 
   <void property="ry"> 
-   <double>177.5757099961271</double> 
+   <double>127.5757099961271</double> 
   </void> 
   <void property="showRTraj"> 
    <boolean>true</boolean> 

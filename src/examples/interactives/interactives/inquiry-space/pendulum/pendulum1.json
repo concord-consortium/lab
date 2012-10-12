@@ -13,6 +13,7 @@
       "id":     "mass-slider",
       "min":    1.0,
       "max":    11.0,
+      "initialValue": 5.0,
       "labels": [
         {
           "value": 1.0,
@@ -26,9 +27,58 @@
       "steps":  50,
       "title":  "Mass of the Ball",
       "action": "setElementProperties(3, { mass: value*120 });"
+    },
+    {
+      "type":   "slider",
+      "id":     "length-slider",
+      "min":    0.2,
+      "max":    2.0,
+      "initialValue": 1.0,
+      "labels": [
+        {
+          "value": 0.2,
+          "label": "Short"
+        },
+        {
+          "value": 2.0,
+          "label": "Long"
+        }
+      ],
+      "steps":  50,
+      "title":  "Length of Pendulum",
+      "action": "var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: value }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len}); repaint();"
+    },
+    {
+      "type":   "slider",
+      "id":     "angle-slider",
+      "min":    -45,
+      "max":    45,
+      "initialValue": 30,
+      "labels": [
+        {
+          "value": -45,
+          "label": "-45&deg;"
+        },
+        {
+          "value": 45,
+          "label": "45&deg;"
+        }
+      ],
+      "steps":  90,
+      "title":  "Angle of Pendulum",
+      "action": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len}); repaint();"
+    },
+    {
+      "type": "energyGraph",
+      "id": "ke-chart",
+      "dimensions": { "width": 500, "height": 296 },
+      "options": { "ymin": -0.2, "ymax": 0.4, "xmax": 40 }
     }
   ],
   "layout": {
+    "rightwide": [
+      "ke-chart"
+    ],
     "bottom": [
       "mass-slider"
     ]

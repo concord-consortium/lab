@@ -12,10 +12,10 @@ Instruction: Pull the slider to change the mass of the suspended ball. Observe t
 <section start="0" end="588">
 <paragraph start="0" end="11">
 <Alignment>1</Alignment>
-<LeftIndent>10.0</LeftIndent>
 <SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
 <content start="0" end="10">
-<size>15</size><bold>true</bold></content>
+<bold>true</bold><size>15</size></content>
 
 <content start="10" end="11">
 </content>
