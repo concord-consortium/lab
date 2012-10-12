@@ -622,20 +622,33 @@ define(function (require, exports, module) {
           var twoKE = 0,
               i;
 
+          // Particles.
           for (i = 0; i < N; i++) {
             twoKE += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
           }
+          // Obstacles.
+          for (i = 0; i < N_obstacles; i++) {
+            twoKE += obstacleMass[i] * (obstacleVX[i] * obstacleVX[i] + obstacleVY[i] * obstacleVY[i]);
+          }
+
           return KE_to_T( twoKE/2, N );
         },
 
         // Scales the velocity vector of particle i by `factor`.
-        scaleVelocity = function(i, factor) {
+        scaleParticleVelocity = function(i, factor) {
           vx[i] *= factor;
           vy[i] *= factor;
 
           // scale momentum too
           px[i] *= factor;
           py[i] *= factor;
+        },
+
+        // Scales the velocity vector of obstacle i by `factor`.
+        scaleObstacleVelocity = function(i, factor) {
+          obstacleVX[i] *= factor;
+          obstacleVY[i] *= factor;
+          // Obstacles don't store momentum, nothing else to update.
         },
 
         // Adds the velocity vector (vx_t, vy_t) to the velocity vector of particle i
@@ -1124,8 +1137,13 @@ define(function (require, exports, module) {
 
           if (forceAdjustment || useThermostat || temperatureChangeInProgress && T > 0) {
             rescalingFactor = Math.sqrt(target / T);
+            // Scale particles velocity.
             for (i = 0; i < N; i++) {
-              scaleVelocity(i, rescalingFactor);
+              scaleParticleVelocity(i, rescalingFactor);
+            }
+            // Scale obstacles velocity.
+            for (i = 0; i < N_obstacles; i++) {
+              scaleObstacleVelocity(i, rescalingFactor);
             }
             T = target;
           }
@@ -1881,6 +1899,7 @@ define(function (require, exports, module) {
         Compute the model state and store into the passed-in 'state' object.
         (Avoids GC hit of throwaway object creation.)
       */
+      // TODO: [refactoring] divide this function into smaller chunks?
       computeOutputState: function(state) {
         var i, j,
             i1, i2, i3,
@@ -1962,7 +1981,6 @@ define(function (require, exports, module) {
         }
 
         // Angular bonds.
-        // TODO: implement me!
         for (i = 0; i < N_angularBonds; i++) {
           i1 = angularBondAtom1Index[i];
           i2 = angularBondAtom2Index[i];
@@ -1988,6 +2006,12 @@ define(function (require, exports, module) {
           angleDiff = theta - angularBondAngle[i];
           // angularBondStrength unit: eV/radian^2
           PE += 0.5 * angularBondStrength[i] * angleDiff * angleDiff;
+        }
+
+        // Obstacles.
+        for (i = 0; i < N_obstacles; i++) {
+          KEinMWUnits += 0.5 * obstacleMass[i] *
+              (obstacleVX[i] * obstacleVX[i] + obstacleVY[i] * obstacleVY[i]);
         }
 
         // State to be read by the rest of the system:
