@@ -894,6 +894,8 @@ define(function (require) {
             dx, dy,
             x1, x2,
             y1, y2,
+            radius_x1, radius_x2, radiusFactorX,
+            radius_y1, radius_y2, radiusFactorY,
             lineTo,
             path,
             costheta,
@@ -904,13 +906,20 @@ define(function (require) {
         y1 = y(d[7]);
         x2 = x(d[8]);
         y2 = y(d[9]);
+        dx = x2 - x1;
+        dy = y2 - y1;
+        length = Math.sqrt(dx*dx + dy*dy)/scaling_factor;
+        costheta = dx / length;
+        sintheta = dy / length;
+
+        radius_x1 = x(results[d[1]][model_md2d_results_RADIUS]) * costheta;
+        radius_x2 = x(results[d[2]][model_md2d_results_RADIUS]) * costheta;
+        radius_y1 = x(results[d[1]][model_md2d_results_RADIUS]) * sintheta;
+        radius_y2 = x(results[d[2]][model_md2d_results_RADIUS]) * sintheta;
+        radiusFactorX = radius_x1 - radius_x2;
+        radiusFactorY = radius_y1 - radius_y2;
 
         if (isSpringBond(d)) {
-          dx = x2 - x1;
-          dy = y2 - y1;
-          length = Math.sqrt(dx*dx + dy*dy)/scaling_factor;
-          costheta = dx / length;
-          sintheta = dy / length;
           var delta = length / numSpikes;
           path = "M "+x1+","+y1+" " ;
           for (j = 0; j < numSpikes; j++) {
@@ -928,9 +937,9 @@ define(function (require) {
           return path += " L "+x2+","+y2;
         } else {
           if (num === 1) {
-            return "M "+x1+","+y1+" L "+((x2+x1)/2)+" , "+((y2+y1)/2);
+            return "M "+x1+","+y1+" L "+((x2+x1+radiusFactorX)/2)+" , "+((y2+y1+radiusFactorY)/2);
           } else {
-            return "M "+((x2+x1)/2)+" , "+((y2+y1)/2)+" L "+x2+","+y2;
+            return "M "+((x2+x1+radiusFactorX)/2)+" , "+((y2+y1+radiusFactorY)/2)+" L "+x2+","+y2;
           }
         }
       }
