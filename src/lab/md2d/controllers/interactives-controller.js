@@ -78,22 +78,6 @@ define(function (require) {
             deg2rad: Math.PI/180,
             rad2deg: 180/Math.PI,
 
-            getRadialBond: function getRadialBond(i) {
-              return [
-                model.get_radial_bonds()[0][i],
-                model.get_radial_bonds()[1][i],
-                model.get_radial_bonds()[2][i],
-                model.get_radial_bonds()[3][i]
-              ];
-            },
-
-            setRadialBond: function setRadialBond(i, values) {
-              model.get_radial_bonds()[0][i] = values[0];
-              model.get_radial_bonds()[1][i] = values[1];
-              model.get_radial_bonds()[2][i] = values[2];
-              model.get_radial_bonds()[3][i] = values[3];
-            },
-
             addAtom: function addAtom() {
               return model.addAtom.apply(model, arguments);
             },
