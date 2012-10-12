@@ -1054,7 +1054,7 @@ define(function (require) {
             .html(d.text)
             // layout.js (used by embeddables) sets font-size of all 'body' elements.
             // The line below can be removed when layout is fiexed.
-            .style("font-size", "inherit");
+            // .style("font-size", "inherit");
         });
       }
 
