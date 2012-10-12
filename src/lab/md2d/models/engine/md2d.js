@@ -359,12 +359,6 @@ define(function (require, exports, module) {
         // Left undefined if no angular bonds are defined.
         angularBonds,
 
-        // angularBondMatrix[i][j] === true when atoms i and j are "angularly bonded"
-        // angularBondMatrix[i][j] === undefined otherwise
-        // i, j refer to atoms with index 1 and 2. Third (central) atom isn't stored in this matrix.
-        // radialBondMatrix stores information about connection between 1 and 3, and 2 and 3.
-        angularBondMatrix,
-
         // Number of actual angular bonds (may be smaller than the length of the property arrays).
         N_angularBonds = 0,
         // ####################################################################
@@ -907,7 +901,6 @@ define(function (require, exports, module) {
 
           for (j = 0; j < i; j++) {
             if (bondingPartners && bondingPartners[j]) continue;
-            // TODO: check angular bonds too?
 
             el_j = element[j];
 
@@ -1424,15 +1417,6 @@ define(function (require, exports, module) {
         angularBondAngle[N_angularBonds]      = bondAngle;
         angularBondStrength[N_angularBonds]   = bondStrength;
 
-        // Store information only about 1-2 atom pair.
-        // Third (center) atom is redundant and pairs 1-3 and 2-3
-        // are handled by radialBondMatrix.
-        if (!angularBondMatrix[atom1Index]) angularBondMatrix[atom1Index] = [];
-        angularBondMatrix[atom1Index][atom2Index] = true;
-
-        if (!angularBondMatrix[atom2Index]) angularBondMatrix[atom2Index] = [];
-        angularBondMatrix[atom2Index][atom1Index] = true;
-
         N_angularBonds++;
       },
 
@@ -1678,7 +1662,6 @@ define(function (require, exports, module) {
         var num = props.atom1Index.length,
             i;
 
-        angularBondMatrix = [];
         createAngularBondsArray(num);
 
         for (i = 0; i < num; i++) {
