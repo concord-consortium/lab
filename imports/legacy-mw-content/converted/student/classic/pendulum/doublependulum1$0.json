@@ -1,0 +1,117 @@
+{
+  "temperature_control": false,
+  "width": 4,
+  "height": 3,
+  "viscosity": 0,
+  "keShading": false,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 2,
+  "gravitationalField": 8e-8,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 5,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 10000,
+      "sigma": 0.07,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 479.9995422363281,
+      "sigma": 0.2,
+      "epsilon": -0.0010000000474974513
+    },
+    {
+      "id": 2,
+      "mass": 480,
+      "sigma": 0.2,
+      "epsilon": -0.0010000000474974513
+    },
+    {
+      "id": 3,
+      "mass": 479.9995422363281,
+      "sigma": 0.2,
+      "epsilon": -0.0010000000474974513
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      2.0983337914425557,
+      1.19,
+      1.78
+    ],
+    "Y": [
+      1.5873570869161207,
+      1.7,
+      1.32
+    ],
+    "VX": [
+      0,
+      -0.0003,
+      0
+    ],
+    "VY": [
+      0,
+      -0.00015,
+      0
+    ],
+    "CHARGE": [
+      0,
+      0,
+      0
+    ],
+    "FRICTION": [
+      0,
+      0,
+      0
+    ],
+    "ELEMENT": [
+      0,
+      3,
+      1
+    ],
+    "PINNED": [
+      1,
+      0,
+      0
+    ]
+  },
+  "radialBonds": {
+    "atom1Index": [
+      2,
+      2
+    ],
+    "atom2Index": [
+      0,
+      1
+    ],
+    "bondLength": [
+      0.41571169661012264,
+      0.7017834423809101
+    ],
+    "bondStrength": [
+      20000,
+      20000
+    ],
+    "bondStyle": [
+      101,
+      101
+    ]
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Am I chaotic?</p>",
+      "x": 2.76,
+      "y": 0.16
+    }
+  ]
+}

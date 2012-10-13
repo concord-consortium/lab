@@ -3,10 +3,14 @@
   "width": 3.6,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -120,5 +124,23 @@
       0,
       0
     ]
-  }
+  },
+  "images": [
+    {
+      "imageUri": "xaxis.gif",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 2,
+      "imageX": 30,
+      "imageY": 122
+    },
+    {
+      "imageUri": "yaxis.gif",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 2,
+      "imageX": 179,
+      "imageY": -65
+    }
+  ]
 }

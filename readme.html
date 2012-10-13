@@ -107,14 +107,20 @@ A live version of the readme is always available here:
         </ul>
       </li>
       <li><a href="#lab-modules-srclab">Lab Modules: <code>src/lab</code></a></li>
-      <li><a href="#lab-modeling-engines-srclabmodels">Lab Modeling Engines: <code>src/lab/models</code></a>        <ul>
-          <li><a href="#d-molecular-dynamics-md2d">2D Molecular Dynamics: <code>md2d</code></a></li>
-          <li><a href="#d-thermal-energy-energy2d">2D Thermal Energy: <code>energy2d</code></a></li>
+      <li><a href="#lab-modeling-engines-md2d-and-energy2d">Lab Modeling Engines: <code>md2d</code> and <code>energy2d</code></a>        <ul>
+          <li><a href="#d-molecular-dynamics-md2dhttpsgithubcomconcord-consortiumlabtreemastersrclabmd2d">2D Molecular Dynamics: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>md2d</code></a></a></li>
+          <li><a href="#d-thermal-energy-energy2dhttpsgithubcomconcord-consortiumlabtreemastersrclabenergy2d">2D Thermal Energy: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>energy2d</code></a></a></li>
         </ul>
       </li>
-      <li><a href="#lab-views-srclabviews">Lab Views: <code>src/lab/views</code></a></li>
-      <li><a href="#lab-controllers-srclabcontrollers">Lab Controllers: <code>src/lab/controllers</code></a></li>
-      <li><a href="#adding-new-source-files-or-modules">Adding new source files or modules</a></li>
+      <li><a href="#javascript-dependency-management-and-build-process---requrejs">JavaScript Dependency Management and Build Process - RequreJS</a>        <ul>
+          <li><a href="#adding-new-source-file-intended-to-work-in-the-web-browser">Adding new source file intended to work in the Web browser</a></li>
+          <li><a href="#adding-new-source-file-intended-to-work-in-the-web-browser-and-in-node">Adding new source file intended to work in the Web browser and in Node</a></li>
+          <li><a href="#adding-new-module-which-should-be-built-as-a-separate-library">Adding new module which should be built as a separate library</a></li>
+          <li><a href="#module-build-configuration---buildjs-file">Module Build Configuration - *.build.js file</a></li>
+          <li><a href="#module-public-api---public-apijs-file">Module Public API - public-api.js file</a></li>
+          <li><a href="#coffeescript-files-support">CoffeeScript Files Support</a></li>
+        </ul>
+      </li>
       <li><a href="#generated-examples-serverpublicexamples">Generated Examples: <code>server/public/examples/</code></a></li>
       <li><a href="#html-and-css-generation">HTML and CSS Generation</a></li>
     </ul>
@@ -172,6 +178,7 @@ A live version of the readme is always available here:
       <li><a href="#development-dependencies">Development Dependencies</a>        <ul>
           <li><a href="#node">node</a></li>
           <li><a href="#npm">npm</a></li>
+          <li><a href="#requirejs">RequireJS</a></li>
           <li><a href="#coffeescript">CoffeeScript</a></li>
         </ul>
       </li>
@@ -222,9 +229,9 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 <h3 id="molecular-modeling-examples">Molecular Modeling Examples</h3>
 
 <ul>
-  <li><a href="examples/simple-atoms-model/simple-atoms-model.html">Simple Atoms Model</a></li>
-  <li><a href="examples/complex-atoms-model/complex-atoms-model.html">More Complex Atoms Model</a></li>
-  <li><a href="examples/interactives/interactives.html">Authorable Atoms Model</a></li>
+  <li><a href="/examples/interactives/interactives.html#interactives/basic-examples/simple-gas.json">A Simple Gas</a>, (<a href="/examples/interactives/embeddable.html#interactives/basic-examples/simple-gas.json">embeddable link</a>)</li>
+  <li><a href="/examples/interactives/interactives.html#interactives/basic-examples/oil-and-water-shake.json">Oil and Water</a>, (<a href="/examples/interactives/embeddable.html#interactives/basic-examples/oil-and-water-shake.json">embeddable link</a>)</li>
+  <li><a href="/examples/interactives/interactives.html#interactives/sam/intermolecular-attractions-page-3-2.json">Boiling Point and Solubility</a>, (<a href="/examples/interactives/embeddable.html#interactives/sam/intermolecular-attractions-page-3-2.json">embeddable link</a>)</li>
 </ul>
 
 <h3 id="energy2d-examples">Energy2D Examples</h3>
@@ -276,7 +283,8 @@ use a local web server on your computer to serve the downloaded distribution Chr
 <p>Lab uses a number of RubyGems and node modules to manage development. Lab’s test framework
 uses <a href="http://vowsjs.org">Vows</a>, which depends on <a href="http://nodejs.org/">nodejs</a> and
 <a href="http://npmjs.org/">npm</a> (Node Package Manager). In addition JavaScript minification is
-done using <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a>.</p>
+done using <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a>. JavaScript dependency management
+is handled by <a href="http://requirejs.org/">RequireJS</a>.</p>
 
 <h3 id="prerequisites">Prerequisites:</h3>
 
@@ -1113,120 +1121,319 @@ these resources at Concord Consortium.</p>
 
 <h3 id="lab-modules-srclab">Lab Modules: <code>src/lab</code></h3>
 
-<p>The source code for the Lab modules is all contained in <strong><code>src/lab</code></strong></p>
+<p>The source code for the Lab modules is all contained in
+<strong><a href="https://github.com/concord-consortium/lab/tree/master/src/lab"><code>src/lab</code></a></strong>:</p>
 
 <ul>
-  <li><code>src/lab/models</code></li>
-  <li><code>src/lab/views</code></li>
-  <li><code>src/lab/controllers</code></li>
-  <li><code>src/lab/grapher</code></li>
-  <li><code>src/lab/arrays</code></li>
-  <li><code>src/lab/benchmark</code></li>
-  <li><code>src/lab/components</code></li>
-  <li><code>src/lab/layout</code></li>
+  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>src/lab/md2d</code></a></li>
+  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>src/lab/energy2d</code></a></li>
+  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/grapher"><code>src/lab/grapher</code></a></li>
+  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/common"><code>src/lab/common</code></a></li>
 </ul>
 
-<p>These JavaScript fragments are used in the build process:</p>
+<p>The list above presents independent modules built as separate sub-libraries (<code>md2d</code>, <code>energy2d</code>, <code>grapher</code>)
+and one directory which contains common utilities and modules (<code>common</code>).</p>
+
+<h3 id="lab-modeling-engines-md2d-and-energy2d">Lab Modeling Engines: <code>md2d</code> and <code>energy2d</code></h3>
+
+<h4 id="d-molecular-dynamics-md2dhttpsgithubcomconcord-consortiumlabtreemastersrclabmd2d">2D Molecular Dynamics: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>md2d</code></a></h4>
+
+<p><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>md2d</code></a> module contains a basic <em>Next Gen Molecular Workbench</em> application. It built over MVC design
+pattern and consist of following units:</p>
 
 <ul>
-  <li><code>src/lab/start.js</code></li>
-  <li><code>src/lab/lab-module.js</code></li>
-  <li><code>src/lab/end.js</code></li>
+  <li>Models - <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/models"><code>src/lab/md2d/models</code></a></li>
+  <li>Views - <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/views"><code>src/lab/md2d/views</code></a></li>
+  <li>Controllers - <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/controllers"><code>src/lab/md2d/controllers</code></a></li>
 </ul>
 
-<p>The <strong><code>energy2d-module.js</code></strong> represents a new way of creating modules used by the Energy2D model engine.</p>
+<p>The source code of the core molecular dynamics engine is currently located in the
+<a href="https://github.com/concord-
+consortium/lab/tree/master/src/lab/md2d/models/engine"><code>src/lab/md2d/models/engine</code></a> directory, which is organized as a set of
+related RequireJS modules. These modules are compatible both with the Web browser environment and
+Node. When used in Node, <a href="https://github.com/jrburke/amdefine">amdefine</a> package must be available
+(it is listed as an dependency in the Lab <a href="https://github.com/concord-
+consortium/lab/blob/master/package.json"><code>packages.json</code></a> file). The entry point for external Node.js applications is
+the file <a href="https://github.com/concord-
+consortium/lab/blob/master/src/lab/md2d/models/engine/md2d.js"><code>src/lab/md2d/models/engine/md2d.js</code></a>.</p>
 
-<ul>
-  <li><code>src/lab/energy2d-module.js</code></li>
-</ul>
-
-<h3 id="lab-modeling-engines-srclabmodels">Lab Modeling Engines: <code>src/lab/models</code></h3>
-
-<h4 id="d-molecular-dynamics-md2d">2D Molecular Dynamics: <code>md2d</code></h4>
-
-<p>The source code of the core molecular dynamics engine is currently located in the <code>src/md-engine</code>
-directory, which is organized as a set of related Node modules. The entry point for external
-applications is the file <code>src/md-engine/md2d.js</code>.</p>
-
-<p>A build step uses the <a href="https://github.com/substack/node-browserify"><code>node-browserify</code></a> Node module
-to convert this entry point and all its dependencies into a single JavaScript file located at <code>md-
-engine/md2d.js</code>. Another build step automatically appends this browser-compatible version to the
-beginning of the <code>lab.molecules.js</code> file.</p>
-
-<p>This means that the global function <code>require()</code> is defined at the beginnig of <code>lab.molecules.js</code>,
-and can be used by any code that runs after that point to obtain the modeler defined in <code>md2d.js</code>
-and its dependencies. The argument to <code>require()</code> should be written as if one were using Node with a
-current working directory of <code>src/md-engine</code>, e.g., in a web application that includes
-<code>lab.molecules.js</code>, write <code>var md2d = require('./md2d');</code> to get a reference to the modeler.</p>
-
-<p>In addition, Node-based executables can be written and placed in <code>src/md-engine</code> or a subdirectory.
-These are expected to be useful for verifying and tuning the model by running the model headless and
-saving summary results into a file for offline analysis; see, e.g., <a href="https://github.com/rklancer/script-md">https://github.com/rklancer
-/script-md</a>.</p>
+<p>In addition, Node-based executables can be written and placed in
+<a href="https://github.com/concord-
+consortium/lab/tree/master/src/lab/md2d/models/engine"><code>src/lab/md2d/models/engine</code></a> or a subdirectory. These are expected to be
+useful for verifying and tuning the model by running the model headless and saving summary results
+into a file for offline analysis; see, e.g., <a href="https://github.com/rklancer/script-md">https://github.com/rklancer/script-md</a>.</p>
 
 <p>Hashbang scripts for starting these executables (i.e., files which start with the line
-<code>#!/usr/bin/env node</code> and which have the execute bit set) should be placed in the directory <code>node-
-bin</code>, and should execute by <code>require()</code>ing the appropriate module and calling its entry point
-method. Lab’s <code>package.json</code> file specifies <code>node-bin/</code> as the location of the executable scripts
-which <code>npm</code> should make available whenever Lab is imported into another project as a Node module.
-(For developer convenience, <code>bin/</code> is being reserved for Ruby executables made available via
-Bundler.)</p>
+<code>#!/usr/bin/env node</code> and which have the execute bit set) should be placed in the directory
+<a href="https://github.com/concord-consortium/lab/tree/master/node-bin"><code>node-bin</code></a>, and should execute by
+<code>require()</code>ing the appropriate module and calling its entry point method. Lab’s
+<a href="https://github.com/concord-consortium/lab/blob/master/package.json"><code>packages.json</code></a> file
+specifies <a href="https://github.com/concord-consortium/lab/tree/master/node-bin"><code>node-bin</code></a> as the
+location of the executable scripts which <code>npm</code> should make available whenever Lab is imported into
+another project as a Node module. (For developer convenience, <code>bin/</code> is being reserved for Ruby
+executables made available via Bundler.)</p>
 
-<h4 id="d-thermal-energy-energy2d">2D Thermal Energy: <code>energy2d</code></h4>
+<h4 id="d-thermal-energy-energy2dhttpsgithubcomconcord-consortiumlabtreemastersrclabenergy2d">2D Thermal Energy: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>energy2d</code></a></h4>
 
-<h3 id="lab-views-srclabviews">Lab Views: <code>src/lab/views</code></h3>
+<p><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>energy2d</code></a> module contains
+a basic <em>Energy2D</em> application. It is a direct port of <a href="http://energy.concord.org/energy2d/">Java Energy2D</a>.
+Energy2D is also built over MVC design pattern and consist of following units:</p>
 
-<h3 id="lab-controllers-srclabcontrollers">Lab Controllers: <code>src/lab/controllers</code></h3>
+<ul>
+  <li>Models - <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models"><code>src/lab/energy2d/models</code></a></li>
+  <li>Views - <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/views"><code>src/lab/energy2d/views</code></a></li>
+  <li>Controllers - <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/controllers"><code>src/lab/energy2d/controllers</code></a></li>
+</ul>
 
-<h3 id="adding-new-source-files-or-modules">Adding new source files or modules</h3>
+<p>and additionally:</p>
 
-<p>If you add a new JavaScript file to an existing Lab module also add it to the associated section of the <code>MakeFile</code>.</p>
+<ul>
+  <li>Internal Utils - <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/utils"><code>src/lab/energy2d/utils</code></a></li>
+  <li>GPU Toolkit - <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/gpu"><code>src/lab/energy2d/gpu</code></a></li>
+</ul>
 
-<p>For example if you created a pie chart grapher and intended it to be part of the mdoule
-<code>lab.grapher.js</code> you might add the file here:</p>
+<p>GPU Toolkit is a small set of utilities which wraps basic WebGL structures and objects, providing
+higher level API. It is useful, as Energy2D uses WebGL for General-Purpose Computing on
+Graphics Processing Unit. So, a lot of physics calculations are performed on the GPU if user’s Web
+browser supports WebGL technology.</p>
 
-<pre><code>src/lab/grapher/core/pie-chart.js
+<p>The source code of the core physics engine is located in the <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models"><code>src/lab/energy2d/models</code></a> directory.
+Especially important units are listed below:</p>
+
+<ul>
+  <li>Core Model <a href="https://github.com/concord-consortium/lab/blob/master/src/lab/energy2d/models/core-model.js"><code>src/lab/energy2d/models/core-model.js</code></a> - constructs all physics solvers,
+stores simulation data (arrays, textures) and delegates physics calculations to proper objects.</li>
+  <li>Physics Solvers <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models/physics-solvers"><code>src/lab/energy2d/models/physics-solvers</code></a> - directory containing sequential
+(plain JavaScritp) implementation of physics algorithms used by core model.</li>
+  <li>Physics Solvers GPU <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models/physics-solvers-gpu"><code>src/lab/energy2d/models/physics-solvers-gpu</code></a> - directory containing parallel
+implementation (WebGL-based) of heat and fluid solvers.</li>
+</ul>
+
+<p>Necessary GLSL (GL Shading Language) sources are stored in separate files. They are loaded using
+RequireJS <em>text</em> plug-in which just allows to load plain text files. Finally, they are inlined in
+the resulting library due to the RequireJS optimization process.</p>
+
+<h3 id="javascript-dependency-management-and-build-process---requrejs">JavaScript Dependency Management and Build Process - RequreJS</h3>
+
+<p>Lab’s modules use <a href="http://requirejs.org/">RequireJS</a> for dependency management. It is a JavaScript
+file and module loader optimized for in-browser use, but it can be used in other JavaScript
+environments, like Rhino and Node. So, you don’t have to worry about manual JavaScript files
+concatenation and the library build process - everything is done automatically.</p>
+
+<p><a href="http://requirejs.org/">RequireJS</a> might be used for fully asynchronous in-browser module loading,
+but it can also be used for combining all source files into one output JavaScript file. The Lab
+project mostly uses the second approach. The tool which resolves all dependencies and combines them
+into single output file is called <strong>RequireJS Optimizer</strong>.</p>
+
+<p>Useful RequireJS resources:</p>
+
+<ul>
+  <li><a href="http://requirejs.org/docs/start.html">How to get started with RequireJS</a></li>
+  <li><a href="http://requirejs.org/docs/api.html">RequireJS API</a></li>
+  <li><a href="http://requirejs.org/docs/optimization.html">RequireJS Optimization</a></li>
+  <li><a href="http://requirejs.org/docs/node.html">RequireJS in Node</a></li>
+  <li><a href="https://groups.google.com/forum/?fromgroups#!forum/requirejs">RequireJS Google Group</a></li>
+</ul>
+
+<h4 id="adding-new-source-file-intended-to-work-in-the-web-browser">Adding new source file intended to work in the Web browser</h4>
+
+<p>Adding a new source to existing module is straightforward.</p>
+
+<ol>
+  <li>
+    <p>Put the source file in an appropriate directory (e.g. <code>src/lab/module-name/</code>).</p>
+  </li>
+  <li>
+    <p>Define it as a module using RequireJS syntax, e.g. following this pattern:</p>
+
+    <pre><code> define(function (require) {
+   // Dependencies.
+   var utils = require('other-module-name/file-name');
+   // Preparation code.
+   // (...)
+   // Finally, return module API.
+   return {
+     // (...)
+   };
+   // Or just constructor function:
+   // return function ClassName() {
+   //   (...)
+   // };
+ });
 </code></pre>
 
-<p>Then add that path to the <code>server/public/lab/lab.grapher.js</code> target section of the MakeFile:</p>
+    <p>You can read more about RequireJS modules syntax
+ <a href="http://requirejs.org/docs/api.html#define">here</a>.</p>
+  </li>
+  <li>
+    <p>In case of need, reference this file in other sources using RequireJS syntax:</p>
 
-<pre><code>server/public/lab/lab.grapher.js: \
-  src/lab/start.js \
-  src/lab/grapher/core/core.js \
-  src/lab/grapher/core/data.js \
-  src/lab/grapher/core/axis.js \
-  src/lab/grapher/core/indexed-data.js \
-  src/lab/grapher/core/graph.js \
-  src/lab/grapher/core/pie-chart.js \
-  src/lab/grapher/core/real-time-graph.js \
-  src/lab/grapher/core/colors.js \
-  src/lab/grapher/core/register-keyboard-handler.js \
-  src/lab/end.js
+    <pre><code>   var dependency = require('module-name/file-name');
+</code></pre>
+  </li>
+</ol>
+
+<p>That’s all! Your file will be automatically included during module build process.</p>
+
+<h4 id="adding-new-source-file-intended-to-work-in-the-web-browser-and-in-node">Adding new source file intended to work in the Web browser and in Node</h4>
+
+<p>If you are working on file which should also work in the Node environment as a typical package
+(without using RequireJS as a dependency and its syntax), follow instructions above and
+additionally:</p>
+
+<ol>
+  <li>
+    <p>Add following snippet at the beginning of the source file:</p>
+
+    <pre><code> if (typeof define !== 'function') { var define = require('amdefine')(module) }
+</code></pre>
+  </li>
+  <li>
+    <p>Make sure that <code>amdefine</code> package is listed as a dependency in your <code>package.json</code> file (it can be
+Lab’s <a href="https://github.com/concord-consortium/lab/blob/master/package.json"><code>packages.json</code></a> file
+or separate one if you work on the independent module, like those stored in
+<a href="https://github.com/concord-consortium/lab/tree/master/src/modules"><code>src/modules</code></a> directory).</p>
+  </li>
+</ol>
+
+<p>The Lab’s <strong>array</strong> module uses this technique, so you may look for a reference in
+<a href="https://github.com/concord-consortium/lab/tree/master/src/modules/arrays"><code>src/modules/arrays</code></a>.</p>
+
+<h4 id="adding-new-module-which-should-be-built-as-a-separate-library">Adding new module which should be built as a separate library</h4>
+
+<p>This involves a few additional steps comparing with adding a single source file.</p>
+
+<ol>
+  <li>Create a new directory in <code>src/lab</code>.</li>
+  <li>Put all related sources there or in <code>src/lab/common</code> (if you think that they are generic enough
+and may be reused by other modules).</li>
+  <li>Define <code>module-name.build.js</code> and <code>public-api.js</code> files in your new directory (described below).</li>
+  <li>
+    <p>Add build routines to the <a href="https://github.com/concord-consortium/lab/blob/master/Makefile"><code>Makefile</code></a>:</p>
+
+    <p>4.1. Define a new target, for example:</p>
+
+    <pre><code> server/public/lab/lab.module-name.js: \
+     $(NEW_MODULE_SRC_FILES) \
+     $(COMMON_SRC_FILES)
+     $(R_OPTIMIZER) -o src/lab/module-name/module-name.build.js
 </code></pre>
 
-<p>Similarly if you add a new module to Lab you will need to create a new target to represent the module
-using a similar form to the <code>server/public/lab/lab.grapher.js</code> target as well as adding the target
-module to the <code>LAB_JS_FILES</code> make variable containing the list of all Lab JavaScript modules to
-be generated:</p>
+    <p>4.2. List this target in <code>LAB_JS_FILES</code> Makefile variable containing the list of all Lab JavaScript
+   modules to be generated.</p>
+  </li>
+</ol>
 
-<pre><code>LAB_JS_FILES = \
-  server/public/lab/lab.grapher.js \
-  server/public/lab/lab.benchmark.js \
-  server/public/lab/lab.layout.js \
-  server/public/lab/lab.views.js \
-  server/public/lab/lab.arrays.js \
-  server/public/lab/lab.molecules.js \
-  server/public/lab/lab.energy2d.js \
-  server/public/lab/lab.components.js \
-  server/public/lab/lab.controllers.js \
-  server/public/lab/lab.js
+<p>Your module will be built during Lab’s build process. You may use one of the existing modules for
+reference in case of any troubles
+(<a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>md2d</code></a>,
+<a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>energy2d</code></a> or
+<a href="https://github.com/concord-consortium/lab/tree/master/src/lab/grapher"><code>grapher</code></a>).</p>
+
+<h4 id="module-build-configuration---buildjs-file">Module Build Configuration - *.build.js file</h4>
+
+<p>Each Lab’s module contains file <code>name.build.js</code>. It is a RequireJS Optimizer build profile. Useful,
+related resources:</p>
+
+<ul>
+  <li><a href="http://requirejs.org/docs/optimization.html#wholeproject">RequireJS Build Profile Help</a></li>
+  <li><a href="https://github.com/jrburke/r.js/blob/master/build/example.build.js">Example Build File with All Options
+Documented</a></li>
+</ul>
+
+<p><strong>If you create new build file, make sure that you use one of the existing build profiles as a
+reference!</strong> It will enforce consistent style and options across all Lab’s modules.</p>
+
+<p>Lab’s build profiles use <a href="https://github.com/jrburke/almond">almond</a> module - a replacement AMD
+loader for RequireJS. It is a smaller “shim” loader, providing the minimal AMD API footprint that
+includes loader plugin support.</p>
+
+<p>Why? <a href="https://github.com/jrburke/almond">almond</a> allows us to create the resulting library which is
+totally independent from RequireJS. It is a reasonable approach as RequireJS is used only for module
+definition, dependency resolving and building a single file library using Optimizer. The
+asynchronous module loading is not utilized by the final Lab library, so there is no need to force
+users to load whole RequireJS library. Instead, use and include minimalistic RequireJS API
+replacement.</p>
+
+<h4 id="module-public-api---public-apijs-file">Module Public API - public-api.js file</h4>
+
+<p>If module exposes API using global variables, it should define it in <code>public-api.js</code> file. It is
+a typical RequireJS module, which just adds properties to <code>window</code> object. You can look at
+<a href="https://github.com/concord-consortium/lab/blob/master/src/lab/md2d/public-api.js"><code>src/md2d/public-api.js</code></a>,
+<a href="https://github.com/concord-consortium/lab/blob/master/src/lab/energy2d/public-api.js"><code>src/energy2d/public-api.js</code></a>
+or <a href="https://github.com/concord-consortium/lab/blob/master/src/lab/grapher/public-api.js"><code>src/grapher/public-api.js</code></a>
+file for a reference.</p>
+
+<p>This files are <strong>not necessary</strong>, but <strong>highly recommended</strong> if module has to define some global
+variables. It is a convention used internally by Lab repository. Such files are enforcing clean
+definition of public API exposed by modules. Developers will have certainty that all global
+variables are defined <strong>there and only there</strong>.</p>
+
+<p>Execution of this script should be enforced by build profile (*.build.js files described above).
+Most often is done by <code>wrap</code> option:</p>
+
+<pre><code>  // Protect global namespace and call Public API export.
+  wrap: {
+    start: "(function() {",
+    // Almond by default simulates async call of require (sets timeout).
+    // Last argument (true) forces sync call instead.
+    end: "require(['module-name/public-api'], undefined, undefined, true); }());"
+  }
 </code></pre>
 
-<p>The html file are generated from <a href="http://haml-lang.com/">Haml</a> markup. Add the suffix <code>.html.haml</code>
-to these files.</p>
+<h4 id="coffeescript-files-support">CoffeeScript Files Support</h4>
 
-<p>The css stylesheets are generated from <a href="http://sass-lang.com/">Sass</a> markup. Add the suffix <code>.sass</code> to these
-files. The stylesheets may also be written using the newer <code>*.scss</code> variant of Sass.</p>
+<p>The Lab project is configured to easily support CoffeeScript sources. RequireJS plugin called
+<strong>require-cs</strong> is used for dynamic loading of CoffeeScript sources.</p>
+
+<p>To enable CoffeeScript support, make sure that module’s build profile (see section about *.build.js
+files) contains following options:</p>
+
+<pre><code>// Additional modules.
+paths: {
+'cs' :'../vendor/require-cs/cs',
+'coffee-script': '../vendor/coffee-script/extras/coffee-script'
+},
+//Stub out the cs module after a build since
+//it will not be needed.
+stubModules: ['cs'],
+// The optimization will load CoffeeScript to convert
+// the CoffeeScript files to plain JS. Use the exclude
+// directive so that the coffee-script module is not included
+// in the built file.
+exclude: ['coffee-script']
+</code></pre>
+
+<p><code>md2d</code> module has CoffeeScript support enabled, so you can use
+<a href="https://github.com/concord-consortium/lab/blob/master/src/lab/md2d/md2d.build.js">its build profile</a>
+as a reference.</p>
+
+<ul>
+  <li>
+    <p>To define a CoffeeScript module just use typical RequireJS syntax converted to CoffeeScript:</p>
+
+    <pre><code>  define (require) -&gt;
+    # Dependencies.
+    CoffeeScriptDependency = require 'cs!other-module-name/file-name'
+    JavaScriptDependency   = require 'module-name/file-name'
+
+    class SomeClass extends BaseClass
+    // (...)
+</code></pre>
+  </li>
+  <li>
+    <p>You can also load CoffeeScript in JavaScript files:</p>
+
+    <pre><code>  define(function (require) {
+    // Dependencies.
+    var CoffeeScriptDependency = require('cs!module-name/file-name');
+    // (...)
+</code></pre>
+  </li>
+</ul>
+
+<p>Just remember about <strong>cs!</strong> prefix in paths when loading CoffeeScript sources. RequireJS Optimizer
+will convert such files to plain JavaScript and include them in the final library.</p>
 
 <h3 id="generated-examples-serverpublicexamples">Generated Examples: <code>server/public/examples/</code></h3>
 
@@ -2138,11 +2345,29 @@ used to specify and manage external node pacage dependencies for a project.</p>
 <p>Lab Example: <a href="https://github.com/concord-consortium/lab/blob/master/package.json"><code>package.json</code></a>
 specifies node pakage dependencies for the Lab project.</p>
 
+<h4 id="requirejs">RequireJS</h4>
+
+<p><a href="http://requirejs.org">RequireJS</a> is a JavaScript file and module
+loader. It is optimized for in-browser use, but it can be used in other
+JavaScript environments, like Rhino and Node.</p>
+
+<ul>
+  <li><a href="http://requirejs.org">homepage</a></li>
+  <li><a href="https://github.com/jrburke/requirejs">repo</a></li>
+  <li><a href="https://groups.google.com/forum/?fromgroups#!forum/requirejs">RequireJS Google Group</a></li>
+</ul>
+
+<p>Lab Example:</p>
+
+<p>All Lab’s modules use RequireJS for dependency management and build process. Its application is widely
+described in <a href="#javascript-dependency-management-and-build-process---requrejs">this section</a>.</p>
+
 <h4 id="coffeescript">CoffeeScript</h4>
 
 <p><a href="http://coffeescript.org/">CoffeeScript</a> is a language the compiles to JavaScript. Many programmers
 find it more expressive and productive. <a href="http://js2coffee.org/">js2cofee</a> can be used to convert
-JavaScript to CoffeeScript.</p>
+JavaScript to CoffeeScript. RequireJS Optimizer also can convert CoffeeScript to JavaScrit. So
+you don’t have to manually do it when referencing CoffeeScript files using RequireJS.</p>
 
 <ul>
   <li><a href="https://github.com/jashkenas/coffee-script">repo</a></li>
@@ -2155,9 +2380,15 @@ JavaScript to CoffeeScript.</p>
   <li><a href="https://github.com/concord-consortium/lab/blob/master/node-bin/get-md2d-data.coffee"><code>get-md2d-data.coffee</code></a>
 is a coffeescript program used to run the MD2D engine from the command line and generate data used
 for physics validation tests.</li>
-  <li><a href="src/lab/components/playback_svg.coffee"><code>PlaybackComponentSVG</code></a> is an object written in coffeescript
-that creates and manages the SVG-based Playback control widget for the Molecule Container.</li>
+  <li><a href="https://github.com/concord-consortium/lab/blob/master/src/lab/common/components/playback_svg.coffee"><code>PlaybackComponentSVG</code></a>
+is an object written in CoffeeScript that creates and manages the SVG-based Playback control widget
+for the Molecule Container.</li>
+  <li><a href="https://github.com/concord-consortium/lab/blob/master/src/lab/md2d/controllers/interactives-controller.js"><code>InteractivesController</code></a>
+is an object written in plain JavaScript which references directly CoffeeScript file using RequireJS
+(<code>Thermometer = require('cs!common/components/thermometer')</code>).</li>
 </ol>
+
+<p><a href="#coffeescript-files-support">This section</a> covers RequireJS support of CoffeeScript files.</p>
 
 <h3 id="rubygems">RubyGems</h3>
 

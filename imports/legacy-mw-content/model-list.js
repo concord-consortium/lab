@@ -373,32 +373,46 @@ modelList = [
         "name": "page2-1",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
+        "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.mml",
+        "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json"
+      },
+      {
+        "name": "page2-2",
+        "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
+        "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json"
       },
       {
-        "name": "page2-2",
+        "name": "page2-3",
+        "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
+        "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
+        "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPullingAtoms.mml",
+        "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPullingAtoms.json"
+      },
+      {
+        "name": "page2-4",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2$0.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2$0.json"
       },
       {
-        "name": "page2-3",
+        "name": "page2-5",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2Title.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2Title.json"
       },
       {
-        "name": "page2-4",
+        "name": "page2-6",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json"
       },
       {
-        "name": "page2-5",
+        "name": "page2-7",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.mml",
@@ -585,6 +599,13 @@ modelList = [
         "json": "converted/sam-activities/phase-change/original-interactives-in-pages/page2/gas2.json"
       },
       {
+        "name": "page2-3",
+        "path": "sam-activities/phase-change/original-interactives-in-pages/",
+        "cml": "sam-activities/phase-change/original-interactives-in-pages/page2/page2.cml",
+        "mml": "sam-activities/phase-change/original-interactives-in-pages/page2/page2$0.mml",
+        "json": "converted/sam-activities/phase-change/original-interactives-in-pages/page2/page2$0.json"
+      },
+      {
         "name": "page3-1",
         "path": "sam-activities/phase-change/original-interactives-in-pages/",
         "cml": "sam-activities/phase-change/original-interactives-in-pages/page3/page3.cml",
@@ -599,14 +620,28 @@ modelList = [
         "json": "converted/sam-activities/phase-change/original-interactives-in-pages/page3/liquid2.json"
       },
       {
+        "name": "page3-3",
+        "path": "sam-activities/phase-change/original-interactives-in-pages/",
+        "cml": "sam-activities/phase-change/original-interactives-in-pages/page3/page3.cml",
+        "mml": "sam-activities/phase-change/original-interactives-in-pages/page3/page3$0.mml",
+        "json": "converted/sam-activities/phase-change/original-interactives-in-pages/page3/page3$0.json"
+      },
+      {
         "name": "page4-1",
+        "path": "sam-activities/phase-change/original-interactives-in-pages/",
+        "cml": "sam-activities/phase-change/original-interactives-in-pages/page4/page4.cml",
+        "mml": "sam-activities/phase-change/original-interactives-in-pages/page4/page4$0.mml",
+        "json": "converted/sam-activities/phase-change/original-interactives-in-pages/page4/page4$0.json"
+      },
+      {
+        "name": "page4-2",
         "path": "sam-activities/phase-change/original-interactives-in-pages/",
         "cml": "sam-activities/phase-change/original-interactives-in-pages/page4/page4.cml",
         "mml": "sam-activities/phase-change/original-interactives-in-pages/page4/solid1.mml",
         "json": "converted/sam-activities/phase-change/original-interactives-in-pages/page4/solid1.json"
       },
       {
-        "name": "page4-2",
+        "name": "page4-3",
         "path": "sam-activities/phase-change/original-interactives-in-pages/",
         "cml": "sam-activities/phase-change/original-interactives-in-pages/page4/page4.cml",
         "mml": "sam-activities/phase-change/original-interactives-in-pages/page4/solid2.mml",
@@ -767,39 +802,6 @@ modelList = [
     ]
   },
   {
-    "section": "visual",
-    "content": [
-      {
-        "name": "Recycling-1",
-        "path": "visual/",
-        "cml": "visual/Recycling/ceramicforcesimple.cml",
-        "mml": "visual/Recycling/ceramicforcesimple$0.mml",
-        "json": "converted/visual/Recycling/ceramicforcesimple$0.json"
-      },
-      {
-        "name": "Recycling-2",
-        "path": "visual/",
-        "cml": "visual/Recycling/ceramicforcesimple.cml",
-        "mml": "visual/Recycling/metalforcesimple$0.mml",
-        "json": "converted/visual/Recycling/metalforcesimple$0.json"
-      },
-      {
-        "name": "Recycling-3",
-        "path": "visual/",
-        "cml": "visual/Recycling/ceramicforcesimple.cml",
-        "mml": "visual/Recycling/plasticforcesimple$0.mml",
-        "json": "converted/visual/Recycling/plasticforcesimple$0.json"
-      },
-      {
-        "name": "Recycling-4",
-        "path": "visual/",
-        "cml": "visual/Recycling/ceramicforcesimple.cml",
-        "mml": "visual/Recycling/tireforcesimple$0.mml",
-        "json": "converted/visual/Recycling/tireforcesimple$0.json"
-      }
-    ]
-  },
-  {
     "section": "potential-tests",
     "content": [
       {
@@ -871,6 +873,27 @@ modelList = [
         "cml": "potential-tests/image-layers/image-layers.cml",
         "mml": "potential-tests/image-layers/image-layers$0.mml",
         "json": "converted/potential-tests/image-layers/image-layers$0.json"
+      },
+      {
+        "name": "mark-atoms",
+        "path": "potential-tests/",
+        "cml": "potential-tests/mark-atoms/mark-atoms.cml",
+        "mml": "potential-tests/mark-atoms/mark-atoms$0.mml",
+        "json": "converted/potential-tests/mark-atoms/mark-atoms$0.json"
+      },
+      {
+        "name": "multiple-attached-images",
+        "path": "potential-tests/",
+        "cml": "potential-tests/multiple-attached-images/multiple-attached-images.cml",
+        "mml": "potential-tests/multiple-attached-images/multiple-attached-images$0.mml",
+        "json": "converted/potential-tests/multiple-attached-images/multiple-attached-images$0.json"
+      },
+      {
+        "name": "multiple-images-on-multiple-atoms",
+        "path": "potential-tests/",
+        "cml": "potential-tests/multiple-images-on-multiple-atoms/multiple-images-on-multiple-atoms.cml",
+        "mml": "potential-tests/multiple-images-on-multiple-atoms/multiple-images-on-multiple-atoms$0.mml",
+        "json": "converted/potential-tests/multiple-images-on-multiple-atoms/multiple-images-on-multiple-atoms$0.json"
       },
       {
         "name": "simple-atoms-in-classic",
@@ -2376,6 +2399,124 @@ modelList = [
     ]
   },
   {
+    "section": "new-examples-for-nextgen",
+    "content": [
+      {
+        "name": "pulling-uncharged-atoms",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/pulling-uncharged-atoms.cml",
+        "mml": "new-examples-for-nextgen/pulling-uncharged-atoms$0.mml",
+        "json": "converted/new-examples-for-nextgen/pulling-uncharged-atoms$0.json"
+      },
+      {
+        "name": "simple-gas",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/simple-gas.cml",
+        "mml": "new-examples-for-nextgen/simple-gas$0.mml",
+        "json": "converted/new-examples-for-nextgen/simple-gas$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/classic/pendulum",
+    "content": [
+      {
+        "name": "doublependulum1",
+        "path": "student/classic/pendulum/",
+        "cml": "student/classic/pendulum/doublependulum1.cml",
+        "mml": "student/classic/pendulum/doublependulum1$0.mml",
+        "json": "converted/student/classic/pendulum/doublependulum1$0.json"
+      },
+      {
+        "name": "NewtonCradle",
+        "path": "student/classic/pendulum/",
+        "cml": "student/classic/pendulum/NewtonCradle.cml",
+        "mml": "student/classic/pendulum/NewtonCradle$0.mml",
+        "json": "converted/student/classic/pendulum/NewtonCradle$0.json"
+      },
+      {
+        "name": "pendulum1",
+        "path": "student/classic/pendulum/",
+        "cml": "student/classic/pendulum/pendulum1.cml",
+        "mml": "student/classic/pendulum/pendulum1$0.mml",
+        "json": "converted/student/classic/pendulum/pendulum1$0.json"
+      },
+      {
+        "name": "pendulum2",
+        "path": "student/classic/pendulum/",
+        "cml": "student/classic/pendulum/pendulum2.cml",
+        "mml": "student/classic/pendulum/pendulum2$0.mml",
+        "json": "converted/student/classic/pendulum/pendulum2$0.json"
+      },
+      {
+        "name": "pendulum3",
+        "path": "student/classic/pendulum/",
+        "cml": "student/classic/pendulum/pendulum3.cml",
+        "mml": "student/classic/pendulum/pendulum3$0.mml",
+        "json": "converted/student/classic/pendulum/pendulum3$0.json"
+      },
+      {
+        "name": "slidingpendulum",
+        "path": "student/classic/pendulum/",
+        "cml": "student/classic/pendulum/slidingpendulum.cml",
+        "mml": "student/classic/pendulum/slidingpendulum$0.mml",
+        "json": "converted/student/classic/pendulum/slidingpendulum$0.json"
+      },
+      {
+        "name": "triplependulum",
+        "path": "student/classic/pendulum/",
+        "cml": "student/classic/pendulum/triplependulum.cml",
+        "mml": "student/classic/pendulum/triplependulum$0.mml",
+        "json": "converted/student/classic/pendulum/triplependulum$0.json"
+      }
+    ]
+  },
+  {
+    "section": "visual/Recycling",
+    "content": [
+      {
+        "name": "ceramicforcesimple",
+        "path": "visual/Recycling/",
+        "cml": "visual/Recycling/ceramicforcesimple.cml",
+        "mml": "visual/Recycling/ceramicforcesimple$0.mml",
+        "json": "converted/visual/Recycling/ceramicforcesimple$0.json"
+      },
+      {
+        "name": "metalforcesimple",
+        "path": "visual/Recycling/",
+        "cml": "visual/Recycling/metalforcesimple.cml",
+        "mml": "visual/Recycling/metalforcesimple$0.mml",
+        "json": "converted/visual/Recycling/metalforcesimple$0.json"
+      },
+      {
+        "name": "plasticforcesimple",
+        "path": "visual/Recycling/",
+        "cml": "visual/Recycling/plasticforcesimple.cml",
+        "mml": "visual/Recycling/plasticforcesimple$0.mml",
+        "json": "converted/visual/Recycling/plasticforcesimple$0.json"
+      },
+      {
+        "name": "tireforcesimple",
+        "path": "visual/Recycling/",
+        "cml": "visual/Recycling/tireforcesimple.cml",
+        "mml": "visual/Recycling/tireforcesimple$0.mml",
+        "json": "converted/visual/Recycling/tireforcesimple$0.json"
+      }
+    ]
+  },
+  {
+    "section": "inquiry-space",
+    "content": [
+      {
+        "name": "pendulum",
+        "path": "inquiry-space/",
+        "cml": "inquiry-space/pendulum/pendulum1.cml",
+        "mml": "inquiry-space/pendulum/pendulum1$0.mml",
+        "json": "converted/inquiry-space/pendulum/pendulum1$0.json"
+      }
+    ]
+  },
+  {
     "section": "tutorial/glossary",
     "content": [
       {
@@ -2555,6 +2696,20 @@ modelList = [
     "section": "conversion-and-physics-examples",
     "content": [
       {
+        "name": "angular-bonds",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/angular-bonds.cml",
+        "mml": "conversion-and-physics-examples/angular-bonds$0.mml",
+        "json": "converted/conversion-and-physics-examples/angular-bonds$0.json"
+      },
+      {
+        "name": "boiling-point-with-clock",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/boiling-point-with-clock.cml",
+        "mml": "conversion-and-physics-examples/boiling-point-with-clock$0.mml",
+        "json": "converted/conversion-and-physics-examples/boiling-point-with-clock$0.json"
+      },
+      {
         "name": "force-lines-long",
         "path": "conversion-and-physics-examples/",
         "cml": "conversion-and-physics-examples/force-lines-long.cml",
@@ -2602,6 +2757,13 @@ modelList = [
         "cml": "conversion-and-physics-examples/one-radial-bond_different_elements.cml",
         "mml": "conversion-and-physics-examples/one-radial-bond_different_elements$0.mml",
         "json": "converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json"
+      },
+      {
+        "name": "simple-ke-shading",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/simple-ke-shading.cml",
+        "mml": "conversion-and-physics-examples/simple-ke-shading$0.mml",
+        "json": "converted/conversion-and-physics-examples/simple-ke-shading$0.json"
       },
       {
         "name": "visible-and-invisible",

@@ -1,4 +1,4 @@
-(function () {
+(function() {
 /**
  * almond 0.1.2 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -330,35 +330,50 @@ var requirejs, require, define;
     };
 }());
 
-define("../../vendor/almond/almond", function(){});
+define("../vendor/almond/almond", function(){});
 
-/*globals window Uint8Array Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
+/*globals window Uint8Array Uint8ClampedArray Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
 /*jshint newcap: false */
 
-define('utils/arrays',['require','exports','module'],function (require, exports, module) {
-  
-  var arrays;
+// Module can be used both in Node.js environment and in Web browser
+// using RequireJS. R.JS Optimizer will strip out this if statement.
 
-  arrays = exports.arrays = {};
+
+define('arrays/index',['require','exports','module'],function (require, exports, module) {
+  var arrays = {},
+
+      // Check for Safari. Typed arrays are faster almost everywhere
+      // ... except Safari.
+      notSafari = (function() {
+        var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
+            match = navigator.userAgent.match(safarimatch);
+        return (match && match[3]) ? false: true;
+      }());
 
   arrays.version = '0.0.1';
+
   arrays.webgl = (typeof window !== 'undefined') && !!window.WebGLRenderingContext;
-  arrays.typed = false;
-  try {
-    var a = new Float64Array(0);
-    arrays.typed = true;
-  } catch(e) {
 
-  }
+  arrays.typed = (function() {
+    try {
+      new Float64Array(0);
+      return true;
+    } catch(e) {
+      return false;
+    }
+  }());
 
+  // http://www.khronos.org/registry/typedarray/specs/latest/#TYPEDARRAYS
   // regular
   // Uint8Array
+  // Uint8ClampedArray
   // Uint16Array
   // Uint32Array
   // Int8Array
   // Int16Array
   // Int32Array
   // Float32Array
+  // Float64Array
 
   arrays.create = function(size, fill, array_type) {
     if (!array_type) {
@@ -368,41 +383,43 @@ define('utils/arrays',['require','exports','module'],function (require, exports,
         array_type = "regular";
       }
     }
-    // fill = fill || 0; -> this doesn't handle NaN value
-    if (fill === undefined)
+    if (fill === undefined) {
       fill = 0;
+    }
     var a, i;
     if (array_type === "regular") {
       a = new Array(size);
     } else {
       switch(array_type) {
         case "Float64Array":
-        a = new Float64Array(size);
-        break;
+          a = new Float64Array(size);
+          break;
         case "Float32Array":
-        a = new Float32Array(size);
-        break;
+          a = new Float32Array(size);
+          break;
         case "Int32Array":
-        a = new Int32Array(size);
-        break;
+          a = new Int32Array(size);
+          break;
         case "Int16Array":
-        a = new Int16Array(size);
-        break;
+          a = new Int16Array(size);
+          break;
         case "Int8Array":
-        a = new Int8Array(size);
-        break;
+          a = new Int8Array(size);
+          break;
         case "Uint32Array":
-        a = new Uint32Array(size);
-        break;
+          a = new Uint32Array(size);
+          break;
         case "Uint16Array":
-        a = new Uint16Array(size);
-        break;
+          a = new Uint16Array(size);
+          break;
         case "Uint8Array":
-        a = new Uint8Array(size);
-        break;
+          a = new Uint8Array(size);
+          break;
+        case "Uint8ClampedArray":
+          a = new Uint8ClampedArray(size);
+          break;
         default:
-        a = new Array(size);
-        break;
+          throw new Error("arrays: couldn't understand array type \"" + array_type + "\".");
       }
     }
     i=-1; while(++i < size) { a[i] = fill; }
@@ -413,18 +430,26 @@ define('utils/arrays',['require','exports','module'],function (require, exports,
     if (source.buffer && source.buffer.__proto__ && source.buffer.__proto__.constructor) {
       return source.__proto__.constructor;
     }
-    if (source.constructor === Array) {
-      return source.constructor;
-    }
-    throw new Error(
-        "arrays.constructor_function: must be an Array or Typed Array: " +
-        "  source: " + source +
-        ", source.constructor: " + source.constructor +
-        ", source.buffer: " + source.buffer +
-        ", source.buffer.slice: " + source.buffer.slice +
-        ", source.buffer.__proto__: " + source.buffer.__proto__ +
-        ", source.buffer.__proto__.constructor: " + source.buffer.__proto__.constructor
-      );
+    switch(source.constructor) {
+      case Array: return Array;
+      case Float32Array: return Float32Array;
+      case Uint8Array: return Uint8Array;
+      case Float64Array: return Float64Array;
+      case Int32Array: return Int32Array;
+      case Int16Array: return Int16Array;
+      case Int8Array: return Int8Array;
+      case Uint32Array: return Uint32Array;
+      case Uint16Array: return Uint16Array;
+      case Uint8ClampedArray: return Uint8ClampedArray;
+      default:
+        throw new Error(
+            "arrays.constructor_function: must be an Array or Typed Array: " + "  source: " + source);
+            // ", source.constructor: " + source.constructor +
+            // ", source.buffer: " + source.buffer +
+            // ", source.buffer.slice: " + source.buffer.slice +
+            // ", source.buffer.__proto__: " + source.buffer.__proto__ +
+            // ", source.buffer.__proto__.constructor: " + source.buffer.__proto__.constructor
+      }
   };
 
   arrays.copy = function(source, dest) {
@@ -538,15 +563,57 @@ define('utils/arrays',['require','exports','module'],function (require, exports,
     }
     return acc / length;
   };
+
+  /**
+    Create a new array of the same type as 'array' and of length 'newLength', and copies as many
+    elements from 'array' to the new array as is possible.
+
+    If 'newLength' is less than 'array.length', and 'array' is  a typed array, we still allocate a
+    new, shorter array in order to allow GC to work.
+
+    The returned array should always take the place of the passed-in 'array' in client code, and this
+    method should not be counted on to always return a copy. If 'array' is non-typed, we manipulate
+    its length instead of copying it. But if 'array' is typed, we cannot increase its size in-place,
+    therefore must pas a *new* object reference back to client code.
+  */
+  arrays.extend = function(array, newLength) {
+    var i,
+        len,
+        extendedArray,
+        Constructor;
+
+    Constructor = arrays.constructor_function(array);
+
+    if (Constructor === Array) {
+      array.length = newLength;
+      return array;
+    }
+
+    extendedArray = new Constructor(newLength);
+
+    // prevent 'set' method from erroring when array.length > newLength, by using the (no-copy) method
+    // 'subarray' to get an array view that is clamped to length = min(array.length, newLength)
+    extendedArray.set(array.subarray(0, newLength));
+
+    return extendedArray;
+  };
+
+
+  // publish everything to exports
+  for (var key in arrays) {
+    if (arrays.hasOwnProperty(key)) exports[key] = arrays[key];
+  }
 });
+
+define('arrays', ['arrays/index'], function (main) { return main; });
 
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false*/
 
-define('models/physics-solvers/heat-solver',['require','exports','module','utils/arrays'],function (require, exports, module) {
-  
+define('energy2d/models/physics-solvers/heat-solver',['require','exports','module','arrays'],function (require, exports, module) {
+  'use strict';
   var
-    arrays = require('utils/arrays').arrays,
+    arrays = require('arrays'),
 
     RELAXATION_STEPS = 5;
 
@@ -577,7 +644,7 @@ define('models/physics-solvers/heat-solver',['require','exports','module','utils
       // Internal array that stores the previous temperature results.
       t0 = arrays.create(nx * ny, 0, model.getArrayType()),
 
-      // Convenience variables.  
+      // Convenience variables.
       nx1 = nx - 1,
       ny1 = ny - 1,
       nx2 = nx - 2,
@@ -723,8 +790,8 @@ define('models/physics-solvers/heat-solver',['require','exports','module','utils
 // All clients interested in WebGL context should call:
 // getWebGLContext() function. If WebGL is not available, 
 // an appropriate error will be thrown.
-define('gpu/context',[],function () {
-  
+define('energy2d/gpu/context',[],function () {
+  'use strict';
   // The internal `gl` variable holds the current WebGL context.
   var gl;
 
@@ -747,11 +814,11 @@ define('gpu/context',[],function () {
 /*jslint indent: 2, browser: true, newcap: true, es5: true */
 /*globals define: false, Float32Array: false, Uint16Array: false, console: false*/
 
-define('gpu/shader',['require','gpu/context'],function (require) {
-  
+define('energy2d/gpu/shader',['require','energy2d/gpu/context'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
+    context = require('energy2d/gpu/context'),
 
     // The internal `gl` variable holds the current WebGL context.
     gl,
@@ -970,25 +1037,25 @@ define('gpu/shader',['require','gpu/context'],function (require) {
 //
 // Texture parameters can be passed in via the `options` argument.
 // Example usage:
-// 
+//
 //     var t = new Texture(256, 256, {
 //       // Defaults to gl.LINEAR, set both at once with "filter"
 //       mag_filter: gl.NEAREST,
 //       min_filter: gl.LINEAR,
-// 
+//
 //       // Defaults to gl.CLAMP_TO_EDGE, set both at once with "wrap"
 //       wrap_s: gl.REPEAT,
 //       wrap_t: gl.REPEAT,
-// 
+//
 //       format: gl.RGB, // Defaults to gl.RGBA
 //       type: gl.FLOAT  // Defaults to gl.UNSIGNED_BYTE
 //     });
 
-define('gpu/texture',['require','gpu/context'],function (require) {
-  
+define('energy2d/gpu/texture',['require','energy2d/gpu/context'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
+    context = require('energy2d/gpu/context'),
 
     // WebGL context.
     gl,
@@ -1103,11 +1170,11 @@ define('gpu/texture',['require','gpu/context'],function (require) {
 // default, although `computeWireframe()` will add a normal buffer if it wasn't
 // initially enabled.
 
-define('gpu/mesh',['require','gpu/context'],function (require) {
-  
+define('energy2d/gpu/mesh',['require','energy2d/gpu/context'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
+    context = require('energy2d/gpu/context'),
 
     // The internal `gl` variable holds the current WebGL context.
     gl,
@@ -1118,7 +1185,7 @@ define('gpu/mesh',['require','gpu/context'],function (require) {
     Mesh;
 
   // Provides a simple method of uploading data to a GPU buffer. Example usage:
-  // 
+  //
   //     var vertices = new GL.Buffer(gl.ARRAY_BUFFER, Float32Array);
   //     var indices = new GL.Buffer(gl.ELEMENT_ARRAY_BUFFER, Uint16Array);
   //     vertices.data = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [1, 1, 0]];
@@ -1139,7 +1206,7 @@ define('gpu/mesh',['require','gpu/context'],function (require) {
   // This will remember the data length and element length for later use by shaders.
   // The type can be either `gl.STATIC_DRAW` or `gl.DYNAMIC_DRAW`, and defaults to
   // `gl.STATIC_DRAW`.
-  // 
+  //
   // This could have used `[].concat.apply([], this.data)` to flatten
   // the array but Google Chrome has a maximum number of arguments so the
   // concatenations are chunked to avoid that limit.
@@ -1224,11 +1291,11 @@ define('gpu/mesh',['require','gpu/context'],function (require) {
   // in x and y, and `detail`, which sets both `detailX` and `detailY` at once.
   // Two triangles are generated by default.
   // Example usage:
-  // 
+  //
   //     var mesh1 = GL.Mesh.plane();
   //     var mesh2 = GL.Mesh.plane({ detail: 5 });
   //     var mesh3 = GL.Mesh.plane({ detailX: 20, detailY: 40 });
-  // 
+  //
   Mesh.plane = function (options) {
     var mesh, detailX, detailY, x, y, t, s, i;
     options = options || {};
@@ -1267,20 +1334,20 @@ define('gpu/mesh',['require','gpu/context'],function (require) {
 /*globals define: false, Float32Array: false, Uint8Array: false*/
 
 // GPGPU Utils (singleton, one instance in the environment).
-define('gpu/gpgpu',['require','gpu/context','gpu/texture','gpu/shader','gpu/mesh'],function (require) {
-  
+define('energy2d/gpu/gpgpu',['require','energy2d/gpu/context','energy2d/gpu/texture','energy2d/gpu/shader','energy2d/gpu/mesh'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
-    Texture = require('gpu/texture'),
-    Shader  = require('gpu/shader'),
-    Mesh    = require('gpu/mesh'),
+    context = require('energy2d/gpu/context'),
+    Texture = require('energy2d/gpu/texture'),
+    Shader  = require('energy2d/gpu/shader'),
+    Mesh    = require('energy2d/gpu/mesh'),
 
     // The internal `gl` variable holds the current WebGL context.
     gl,
 
     // GPGPU utils must know dimensions of data (grid).
-    // This assumption that all the textures will have the same dimensions is 
+    // This assumption that all the textures will have the same dimensions is
     // caused by performance reasons (helps avoiding recreating data structures).
     // To set grid dimensions and initialize WebGL context, call init(grid_width, grid_height).
     grid_width,
@@ -1303,7 +1370,7 @@ define('gpu/gpgpu',['require','gpu/context','gpu/texture','gpu/shader','gpu/mesh
     // Flag which determines if WebGL context and necessary objects are initialized.
     WebGL_initialized = false,
 
-    // Special shader for encoding floats based on: 
+    // Special shader for encoding floats based on:
     // https://github.com/cscheid/facet/blob/master/src/shade/bits/encode_float.js
     encode_program,
     copy_program,
@@ -1582,7 +1649,7 @@ define('gpu/gpgpu',['require','gpu/context','gpu/texture','gpu/shader','gpu/mesh
   java: false, location: false */
 
 define('text',['module'], function (module) {
-    
+    'use strict';
 
     var text, fs,
         progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
@@ -1877,37 +1944,37 @@ define('text',['module'], function (module) {
     return text;
 });
 
-define('text!models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl',[],function () { return 'varying vec2 coord;\n\nvoid main() {\n  coord = gl_Vertex.xy * 0.5 + 0.5;\n  gl_Position = vec4(gl_Vertex.xy, 0.0, 1.0);\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl',[],function () { return 'varying vec2 coord;\n\nvoid main() {\n  coord = gl_Vertex.xy * 0.5 + 0.5;\n  gl_Position = vec4(gl_Vertex.xy, 0.0, 1.0);\n}\n';});
 
-define('text!models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n\nuniform vec2 grid;\nuniform float hx;\nuniform float hy;\nuniform float inv_timestep;\n\n// Boundary conditions uniforms\nuniform float enforce_temp;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    float tb = data0.b;\n    // Check if tb is NaN. isnan() function is not available\n    // in OpenGL ES GLSL, so use some tricks. IEEE 754 spec defines\n    // that NaN != NaN, however this seems to not work on Windows.\n    // So, also check if the value is outside [-3.4e38, 3.4e38] (3.4e38\n    // is close to 32Float max value), as such values are not expected.\n    if (tb != tb || tb < -3.4e38 || tb > 3.4e38) {\n      vec4 data1 = texture2D(data1_tex, coord);\n      vec4 data0_m_dy = texture2D(data0_tex, coord - dy);\n      vec4 data0_p_dy = texture2D(data0_tex, coord + dy);\n      vec4 data0_m_dx = texture2D(data0_tex, coord - dx);\n      vec4 data0_p_dx = texture2D(data0_tex, coord + dx);\n      float sij = data1.g * data1.b * inv_timestep;\n      float rij = data0.a;\n      float axij = hx * (rij + data0_m_dy.a);\n      float bxij = hx * (rij + data0_p_dy.a);\n      float ayij = hy * (rij + data0_m_dx.a);\n      float byij = hy * (rij + data0_p_dx.a);\n      data0.r = (data0.g * sij + data1.r\n                 + axij * data0_m_dy.r\n                 + bxij * data0_p_dy.r\n                 + ayij * data0_m_dx.r\n                 + byij * data0_p_dx.r)\n                 / (sij + axij + bxij + ayij + byij);\n    } else {\n      data0.r = tb;\n    }\n  } else if (enforce_temp == 1.0) {\n    // "temperature at border" boundary conditions are\n    // integrated into this shader.\n    if (coord.x < grid.x) {\n      data0.r = vN;\n    } else if (coord.x > 1.0 - grid.x) {\n      data0.r = vS;\n    } else if (coord.y < grid.y) {\n      data0.r = vW;\n    } else if (coord.y > 1.0 - grid.y) {\n      data0.r = vE;\n    }\n  }\n  gl_FragColor = data0;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n\nuniform vec2 grid;\nuniform float hx;\nuniform float hy;\nuniform float inv_timestep;\n\n// Boundary conditions uniforms\nuniform float enforce_temp;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    float tb = data0.b;\n    // Check if tb is NaN. isnan() function is not available\n    // in OpenGL ES GLSL, so use some tricks. IEEE 754 spec defines\n    // that NaN != NaN, however this seems to not work on Windows.\n    // So, also check if the value is outside [-3.4e38, 3.4e38] (3.4e38\n    // is close to 32Float max value), as such values are not expected.\n    if (tb != tb || tb < -3.4e38 || tb > 3.4e38) {\n      vec4 data1 = texture2D(data1_tex, coord);\n      vec4 data0_m_dy = texture2D(data0_tex, coord - dy);\n      vec4 data0_p_dy = texture2D(data0_tex, coord + dy);\n      vec4 data0_m_dx = texture2D(data0_tex, coord - dx);\n      vec4 data0_p_dx = texture2D(data0_tex, coord + dx);\n      float sij = data1.g * data1.b * inv_timestep;\n      float rij = data0.a;\n      float axij = hx * (rij + data0_m_dy.a);\n      float bxij = hx * (rij + data0_p_dy.a);\n      float ayij = hy * (rij + data0_m_dx.a);\n      float byij = hy * (rij + data0_p_dx.a);\n      data0.r = (data0.g * sij + data1.r\n                 + axij * data0_m_dy.r\n                 + bxij * data0_p_dy.r\n                 + ayij * data0_m_dx.r\n                 + byij * data0_p_dx.r)\n                 / (sij + axij + bxij + ayij + byij);\n    } else {\n      data0.r = tb;\n    }\n  } else if (enforce_temp == 1.0) {\n    // "temperature at border" boundary conditions are\n    // integrated into this shader.\n    if (coord.x < grid.x) {\n      data0.r = vN;\n    } else if (coord.x > 1.0 - grid.x) {\n      data0.r = vS;\n    } else if (coord.y < grid.y) {\n      data0.r = vW;\n    } else if (coord.y > 1.0 - grid.y) {\n      data0.r = vE;\n    }\n  }\n  gl_FragColor = data0;\n}\n';});
 
-define('text!models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n\nuniform vec2 grid;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\nuniform float delta_x;\nuniform float delta_y;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  vec2 dx = vec2(grid.x, 0.0);\n  vec2 dy = vec2(0.0, grid.y);\n  if (coord.x < grid.x) {\n    data0.r = texture2D(data0_tex, coord + dx).r\n            + vN * delta_y / data0.a;\n  } else if (coord.x > 1.0 - grid.x) {\n    data0.r = texture2D(data0_tex, coord - dx).r\n            - vS * delta_y / data0.a;\n  } else if (coord.y < grid.y) {\n    data0.r = texture2D(data0_tex, coord + dy).r\n            - vW * delta_x / data0.a;\n  } else if (coord.y > 1.0 - grid.y) {\n    data0.r = texture2D(data0_tex, coord - dy).r\n            + vE * delta_x / data0.a;\n  }\n  gl_FragColor = data0;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n\nuniform vec2 grid;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\nuniform float delta_x;\nuniform float delta_y;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  vec2 dx = vec2(grid.x, 0.0);\n  vec2 dy = vec2(0.0, grid.y);\n  if (coord.x < grid.x) {\n    data0.r = texture2D(data0_tex, coord + dx).r\n            + vN * delta_y / data0.a;\n  } else if (coord.x > 1.0 - grid.x) {\n    data0.r = texture2D(data0_tex, coord - dx).r\n            - vS * delta_y / data0.a;\n  } else if (coord.y < grid.y) {\n    data0.r = texture2D(data0_tex, coord + dy).r\n            - vW * delta_x / data0.a;\n  } else if (coord.y > 1.0 - grid.y) {\n    data0.r = texture2D(data0_tex, coord - dy).r\n            + vE * delta_x / data0.a;\n  }\n  gl_FragColor = data0;\n}\n';});
 
-define('text!models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n\nvarying vec2 coord;\n\nvoid main() {\n\tvec4 data0 = texture2D(data0_tex, coord);\n\tdata0.g = data0.r;\n\tgl_FragColor = data0;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n\nvarying vec2 coord;\n\nvoid main() {\n\tvec4 data0 = texture2D(data0_tex, coord);\n\tdata0.g = data0.r;\n\tgl_FragColor = data0;\n}\n';});
 
-define('text!models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\n// Boundary conditions uniforms.\nuniform float enforce_temp;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n    \n    float fluidity = texture2D(data1_tex, coord).a;\n    if (fluidity == 1.0) {\n      vec2 dx = vec2(grid.x, 0.0);\n      vec2 dy = vec2(0.0, grid.y);\n\n      // Temperature.\n      float t_m_dy = texture2D(data0_tex, coord - dy).r;\n      float t_p_dy = texture2D(data0_tex, coord + dy).r;\n      float t_m_dx = texture2D(data0_tex, coord - dx).r;\n      float t_p_dx = texture2D(data0_tex, coord + dx).r;\n      // Velocity.\n      float u_m_dy = texture2D(data2_tex, coord - dy).r;\n      float u_p_dy = texture2D(data2_tex, coord + dy).r;\n      float v_m_dx = texture2D(data2_tex, coord - dx).g;\n      float v_p_dx = texture2D(data2_tex, coord + dx).g;\n      // Update T0.\n      data0.g = data0.r - tx * (u_p_dy * t_p_dy - u_m_dy * t_m_dy)\n                        - ty * (v_p_dx * t_p_dx - v_m_dx * t_m_dx);\n    }\n  } else if (enforce_temp == 1.0) {\n    // "temperature at border" boundary conditions are\n    // integrated into this shader.\n    if (coord.x < grid.x) {\n      data0.g = vN;\n    } else if (coord.x > 1.0 - grid.x) {\n      data0.g = vS;\n    } else if (coord.y < grid.y) {\n      data0.g = vW;\n    } else if (coord.y > 1.0 - grid.y) {\n      data0.g = vE;\n    }\n  }\n  gl_FragColor = data0;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\n// Boundary conditions uniforms.\nuniform float enforce_temp;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n    \n    float fluidity = texture2D(data1_tex, coord).a;\n    if (fluidity == 1.0) {\n      vec2 dx = vec2(grid.x, 0.0);\n      vec2 dy = vec2(0.0, grid.y);\n\n      // Temperature.\n      float t_m_dy = texture2D(data0_tex, coord - dy).r;\n      float t_p_dy = texture2D(data0_tex, coord + dy).r;\n      float t_m_dx = texture2D(data0_tex, coord - dx).r;\n      float t_p_dx = texture2D(data0_tex, coord + dx).r;\n      // Velocity.\n      float u_m_dy = texture2D(data2_tex, coord - dy).r;\n      float u_p_dy = texture2D(data2_tex, coord + dy).r;\n      float v_m_dx = texture2D(data2_tex, coord - dx).g;\n      float v_p_dx = texture2D(data2_tex, coord + dx).g;\n      // Update T0.\n      data0.g = data0.r - tx * (u_p_dy * t_p_dy - u_m_dy * t_m_dy)\n                        - ty * (v_p_dx * t_p_dx - v_m_dx * t_m_dx);\n    }\n  } else if (enforce_temp == 1.0) {\n    // "temperature at border" boundary conditions are\n    // integrated into this shader.\n    if (coord.x < grid.x) {\n      data0.g = vN;\n    } else if (coord.x > 1.0 - grid.x) {\n      data0.g = vS;\n    } else if (coord.y < grid.y) {\n      data0.g = vW;\n    } else if (coord.y > 1.0 - grid.y) {\n      data0.g = vE;\n    }\n  }\n  gl_FragColor = data0;\n}\n';});
 
-define('text!models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\n// Boundary conditions uniforms.\nuniform float enforce_temp;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n    \n    float fluidity = texture2D(data1_tex, coord).a;\n    if (fluidity == 1.0) {\n      vec2 dx = vec2(grid.x, 0.0);\n      vec2 dy = vec2(0.0, grid.y);\n\n      // Temperature t0.\n      float t0_m_dy = texture2D(data0_tex, coord - dy).g;\n      float t0_p_dy = texture2D(data0_tex, coord + dy).g;\n      float t0_m_dx = texture2D(data0_tex, coord - dx).g;\n      float t0_p_dx = texture2D(data0_tex, coord + dx).g;\n      // Velocity.\n      float u = texture2D(data2_tex, coord).r;\n      float v = texture2D(data2_tex, coord).g;\n      // Update T.\n      data0.r = 0.5 * (data0.r + data0.g)\n              - 0.5 * tx * u * (t0_p_dy - t0_m_dy)\n              - 0.5 * ty * v * (t0_p_dx - t0_m_dx);\n    }\n  } else if (enforce_temp == 1.0) {\n    // "temperature at border" boundary conditions are\n    // integrated into this shader.\n    if (coord.x < grid.x) {\n      data0.r = vN;\n    } else if (coord.x > 1.0 - grid.x) {\n      data0.r = vS;\n    } else if (coord.y < grid.y) {\n      data0.r = vW;\n    } else if (coord.y > 1.0 - grid.y) {\n      data0.r = vE;\n    }\n  }\n  gl_FragColor = data0;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\n// Boundary conditions uniforms.\nuniform float enforce_temp;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n    \n    float fluidity = texture2D(data1_tex, coord).a;\n    if (fluidity == 1.0) {\n      vec2 dx = vec2(grid.x, 0.0);\n      vec2 dy = vec2(0.0, grid.y);\n\n      // Temperature t0.\n      float t0_m_dy = texture2D(data0_tex, coord - dy).g;\n      float t0_p_dy = texture2D(data0_tex, coord + dy).g;\n      float t0_m_dx = texture2D(data0_tex, coord - dx).g;\n      float t0_p_dx = texture2D(data0_tex, coord + dx).g;\n      // Velocity.\n      float u = texture2D(data2_tex, coord).r;\n      float v = texture2D(data2_tex, coord).g;\n      // Update T.\n      data0.r = 0.5 * (data0.r + data0.g)\n              - 0.5 * tx * u * (t0_p_dy - t0_m_dy)\n              - 0.5 * ty * v * (t0_p_dx - t0_m_dx);\n    }\n  } else if (enforce_temp == 1.0) {\n    // "temperature at border" boundary conditions are\n    // integrated into this shader.\n    if (coord.x < grid.x) {\n      data0.r = vN;\n    } else if (coord.x > 1.0 - grid.x) {\n      data0.r = vS;\n    } else if (coord.y < grid.y) {\n      data0.r = vW;\n    } else if (coord.y > 1.0 - grid.y) {\n      data0.r = vE;\n    }\n  }\n  gl_FragColor = data0;\n}\n';});
 
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false*/
 
-define('models/physics-solvers-gpu/heat-solver-gpu',['require','exports','module','gpu/shader','gpu/gpgpu','text!models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl','text!models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl','text!models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl','text!models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl','text!models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl','text!models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl','text!models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl'],function (require, exports, module) {
-  
+define('energy2d/models/physics-solvers-gpu/heat-solver-gpu',['require','exports','module','energy2d/gpu/shader','energy2d/gpu/gpgpu','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl'],function (require, exports, module) {
+  'use strict';
   var
     // Dependencies.
-    Shader = require('gpu/shader'),
+    Shader = require('energy2d/gpu/shader'),
     // GPGPU utilities. It's a singleton instance.
     // It should have been previously initialized by core-model.
-    gpgpu  = require('gpu/gpgpu'),
+    gpgpu  = require('energy2d/gpu/gpgpu'),
     // Shader sources.
-    basic_vs            = require('text!models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl'),
-    solver_fs           = require('text!models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl'),
-    force_flux_t_fs     = require('text!models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'),
-    force_flux_t0_fs    = require('text!models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'),
-    t_to_t0             = require('text!models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl'),
-    maccormack_step1_fs = require('text!models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl'),
-    maccormack_step2_fs = require('text!models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl'),
+    basic_vs            = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl'),
+    solver_fs           = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl'),
+    force_flux_t_fs     = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'),
+    force_flux_t0_fs    = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'),
+    t_to_t0             = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl'),
+    maccormack_step1_fs = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl'),
+    maccormack_step2_fs = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl'),
 
     RELAXATION_STEPS = 10;
 
@@ -1943,26 +2010,26 @@ define('models/physics-solvers-gpu/heat-solver-gpu',['require','exports','module
       relaxation_steps = RELAXATION_STEPS,
 
       // Simulation textures provided by model.
-      // texture 0: 
+      // texture 0:
       // - R: t
       // - G: t0
       // - B: tb
       // - A: conductivity
       data0_tex = model.getSimulationTexture(0),
-      // texture 1: 
+      // texture 1:
       // - R: q
       // - G: capacity
       // - B: density
       // - A: fluidity
       data1_tex = model.getSimulationTexture(1),
-      // texture 2: 
+      // texture 2:
       // - R: u
       // - G: v
       // - B: u0
       // - A: v0
       data2_tex = model.getSimulationTexture(2),
 
-      // Convenience variables.  
+      // Convenience variables.
       data_0_1_2_array = [data0_tex, data1_tex, data2_tex],
       data_0_1_array = [data0_tex, data1_tex],
       data_0_array = [data0_tex],
@@ -2101,7 +2168,7 @@ define('models/physics-solvers-gpu/heat-solver-gpu',['require','exports','module
           if (convective) {
             macCormack();
           }
-          // Synchronize. It's not required but it 
+          // Synchronize. It's not required but it
           // allows to measure time (for optimization).
           gpgpu.tryFinish();
         }
@@ -2115,10 +2182,10 @@ define('models/physics-solvers-gpu/heat-solver-gpu',['require','exports','module
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false*/
 
-define('models/physics-solvers/fluid-solver',['require','exports','module','utils/arrays'],function (require, exports, module) {
-  
+define('energy2d/models/physics-solvers/fluid-solver',['require','exports','module','arrays'],function (require, exports, module) {
+  'use strict';
   var
-    arrays = require('utils/arrays').arrays,
+    arrays = require('arrays'),
 
     RELAXATION_STEPS = 5,
     GRAVITY = 0,
@@ -2155,7 +2222,7 @@ define('models/physics-solvers/fluid-solver',['require','exports','module','util
       u0         = arrays.create(nx * ny, 0, array_type),
       v0         = arrays.create(nx * ny, 0, array_type),
 
-      // Convenience variables.   
+      // Convenience variables.
       i2dx  = 0.5 / deltaX,
       i2dy  = 0.5 / deltaY,
       idxsq = 1.0 / (deltaX * deltaX),
@@ -2166,11 +2233,11 @@ define('models/physics-solvers/fluid-solver',['require','exports','module','util
       nx2 = nx - 2,
       ny2 = ny - 2,
 
-      // 
+      //
       // Private methods
       //
 
-      // b = 1 horizontal; b = 2 vertical 
+      // b = 1 horizontal; b = 2 vertical
       applyBoundary = function (b, f) {
         var
           horizontal = b === 1,
@@ -2532,57 +2599,57 @@ define('models/physics-solvers/fluid-solver',['require','exports','module','util
   };
 });
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl',[],function () { return 'varying vec2 coord;\n\nvoid main() {\n  coord = gl_Vertex.xy * 0.5 + 0.5;\n  gl_Position = vec4(gl_Vertex.xy, 0.0, 1.0);\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl',[],function () { return 'varying vec2 coord;\n\nvoid main() {\n  coord = gl_Vertex.xy * 0.5 + 0.5;\n  gl_Position = vec4(gl_Vertex.xy, 0.0, 1.0);\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    // Update velocity UV components.\n    data2.rg = data2.ba - tx * (data2_p_dy.bb * data2_p_dy.ba - data2_m_dy.bb * data2_m_dy.ba)\n              - ty * (data2_p_dx.aa * data2_p_dx.ba - data2_m_dx.aa * data2_m_dx.ba);\n  }\n\n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    // Update velocity UV components.\n    data2.rg = data2.ba - tx * (data2_p_dy.bb * data2_p_dy.ba - data2_m_dy.bb * data2_m_dy.ba)\n              - ty * (data2_p_dx.aa * data2_p_dx.ba - data2_m_dx.aa * data2_m_dx.ba);\n  }\n\n  gl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    // Update velocity UV components.\n    data2.rg = 0.5 * (data2.ba + data2.rg) \n            - 0.5 * tx * data2.bb * (data2_p_dy.rg - data2_m_dy.rg)\n            - 0.5 * ty * data2.aa * (data2_p_dx.rg - data2_m_dx.rg);\n  }\n\n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    // Update velocity UV components.\n    data2.rg = 0.5 * (data2.ba + data2.rg) \n            - 0.5 * tx * data2.bb * (data2_p_dy.rg - data2_m_dy.rg)\n            - 0.5 * ty * data2.aa * (data2_p_dx.rg - data2_m_dx.rg);\n  }\n\n  gl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl',[],function () { return '// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  vec2 dx = vec2(grid.x, 0.0);\n  vec2 dy = vec2(0.0, grid.y);\n  // Process corners.\n  // TODO: values from previous step are used for corners.\n  if (coord.x < grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.rg = 0.5 * (data2_p_dy.rg + data2_p_dx.rg);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.rg = 0.5 * (data2_p_dy.rg + data2_m_dx.rg);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.rg = 0.5 * (data2_m_dy.rg + data2_m_dx.rg);\n  }\n  else if (coord.x < grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.rg = 0.5 * (data2_m_dy.rg + data2_p_dx.rg);\n  }\n  // Process boundaries.\n  // Left.\n  else if (coord.x < grid.x) {\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.rg = vec2(data2_p_dx.r, -data2_p_dx.g);\n  }\n  // Right.\n  else if (coord.x > 1.0 - grid.x) {\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.rg = vec2(data2_m_dx.r, -data2_m_dx.g);\n  }\n  // Down.\n  else if (coord.y < grid.y) {\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    data2.rg = vec2(-data2_p_dy.r, data2_p_dy.g);\n  }\n  // Up.\n  else if (coord.y > 1.0 - grid.y) {\n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    data2.rg = vec2(-data2_m_dy.r, data2_m_dy.g);\n  }\n  \n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl',[],function () { return '// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  vec2 dx = vec2(grid.x, 0.0);\n  vec2 dy = vec2(0.0, grid.y);\n  // Process corners.\n  // TODO: values from previous step are used for corners.\n  if (coord.x < grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.rg = 0.5 * (data2_p_dy.rg + data2_p_dx.rg);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.rg = 0.5 * (data2_p_dy.rg + data2_m_dx.rg);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.rg = 0.5 * (data2_m_dy.rg + data2_m_dx.rg);\n  }\n  else if (coord.x < grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.rg = 0.5 * (data2_m_dy.rg + data2_p_dx.rg);\n  }\n  // Process boundaries.\n  // Left.\n  else if (coord.x < grid.x) {\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.rg = vec2(data2_p_dx.r, -data2_p_dx.g);\n  }\n  // Right.\n  else if (coord.x > 1.0 - grid.x) {\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.rg = vec2(data2_m_dx.r, -data2_m_dx.g);\n  }\n  // Down.\n  else if (coord.y < grid.y) {\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    data2.rg = vec2(-data2_p_dy.r, data2_p_dy.g);\n  }\n  // Up.\n  else if (coord.y > 1.0 - grid.y) {\n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    data2.rg = vec2(-data2_m_dy.r, data2_m_dy.g);\n  }\n  \n  gl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl',[],function () { return '// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  vec2 dx = vec2(grid.x, 0.0);\n  vec2 dy = vec2(0.0, grid.y);\n  // Process corners.\n  // TODO: values from previous step are used for corners.\n  if (coord.x < grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.ba = 0.5 * (data2_p_dy.ba + data2_p_dx.ba);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.ba = 0.5 * (data2_p_dy.ba + data2_m_dx.ba);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.ba = 0.5 * (data2_m_dy.ba + data2_m_dx.ba);\n  }\n  else if (coord.x < grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.ba = 0.5 * (data2_m_dy.ba + data2_p_dx.ba);\n  }\n  // Process boundaries.\n  // Left.\n  else if (coord.x < grid.x) {\n    data2.ba = texture2D(data2_tex, coord + dx).ba;\n  }\n  // Right.\n  else if (coord.x > 1.0 - grid.x) {\n    data2.ba = texture2D(data2_tex, coord - dx).ba;\n  }\n  // Down.\n  else if (coord.y < grid.y) {\n    data2.ba = texture2D(data2_tex, coord + dy).ba;\n  }\n  // Up.\n  else if (coord.y > 1.0 - grid.y) {\n    data2.ba = texture2D(data2_tex, coord - dy).ba;\n  }\n  \n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl',[],function () { return '// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  vec2 dx = vec2(grid.x, 0.0);\n  vec2 dy = vec2(0.0, grid.y);\n  // Process corners.\n  // TODO: values from previous step are used for corners.\n  if (coord.x < grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.ba = 0.5 * (data2_p_dy.ba + data2_p_dx.ba);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.ba = 0.5 * (data2_p_dy.ba + data2_m_dx.ba);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.ba = 0.5 * (data2_m_dy.ba + data2_m_dx.ba);\n  }\n  else if (coord.x < grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.ba = 0.5 * (data2_m_dy.ba + data2_p_dx.ba);\n  }\n  // Process boundaries.\n  // Left.\n  else if (coord.x < grid.x) {\n    data2.ba = texture2D(data2_tex, coord + dx).ba;\n  }\n  // Right.\n  else if (coord.x > 1.0 - grid.x) {\n    data2.ba = texture2D(data2_tex, coord - dx).ba;\n  }\n  // Down.\n  else if (coord.y < grid.y) {\n    data2.ba = texture2D(data2_tex, coord + dy).ba;\n  }\n  // Up.\n  else if (coord.y > 1.0 - grid.y) {\n    data2.ba = texture2D(data2_tex, coord - dy).ba;\n  }\n  \n  gl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 0.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n\n    if (texture2D(data1_tex, coord - dy).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord - dy).ba;\n    } \n    else if (texture2D(data1_tex, coord + dy).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord + dy).ba;\n    } \n\n    if (texture2D(data1_tex, coord - dx).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord - dx).ba;\n    } \n    else if (texture2D(data1_tex, coord + dx).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord + dx).ba;\n    } \n  }\n\n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 0.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n\n    if (texture2D(data1_tex, coord - dy).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord - dy).ba;\n    } \n    else if (texture2D(data1_tex, coord + dy).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord + dy).ba;\n    } \n\n    if (texture2D(data1_tex, coord - dx).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord - dx).ba;\n    } \n    else if (texture2D(data1_tex, coord + dx).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord + dx).ba;\n    } \n  }\n\n  gl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n// texture 3: \n// - R: uWind\n// - G: vWind\n// - B: undefined\n// - A: undefined\nuniform sampler2D data3_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n\n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 0.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n\n    int count = 0;\n\n    if (texture2D(data1_tex, coord - dy).a == 1.0) {\n      count += 1;\n      vec2 data2_m_dy = texture2D(data2_tex, coord - dy).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(-data2_m_dy.r, data2_m_dy.g);\n    } \n    else if (texture2D(data1_tex, coord + dy).a == 1.0) {\n      count += 1;\n      vec2 data2_p_dy = texture2D(data2_tex, coord + dy).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(-data2_p_dy.r, data2_p_dy.g);\n    } \n\n    if (texture2D(data1_tex, coord - dx).a == 1.0) {\n      count += 1;\n      vec2 data2_m_dx = texture2D(data2_tex, coord - dx).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(data2_m_dx.r, -data2_m_dx.g);\n    } \n    else if (texture2D(data1_tex, coord + dx).a == 1.0) {\n      count += 1;\n      vec2 data2_p_dx = texture2D(data2_tex, coord + dx).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(data2_p_dx.r, -data2_p_dx.g);\n    } \n\n    if (count == 0) {\n      data2.rg = texture2D(data3_tex, coord).rg;\n    }\n  }\n  \n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n// texture 3: \n// - R: uWind\n// - G: vWind\n// - B: undefined\n// - A: undefined\nuniform sampler2D data3_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n\n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 0.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n\n    int count = 0;\n\n    if (texture2D(data1_tex, coord - dy).a == 1.0) {\n      count += 1;\n      vec2 data2_m_dy = texture2D(data2_tex, coord - dy).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(-data2_m_dy.r, data2_m_dy.g);\n    } \n    else if (texture2D(data1_tex, coord + dy).a == 1.0) {\n      count += 1;\n      vec2 data2_p_dy = texture2D(data2_tex, coord + dy).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(-data2_p_dy.r, data2_p_dy.g);\n    } \n\n    if (texture2D(data1_tex, coord - dx).a == 1.0) {\n      count += 1;\n      vec2 data2_m_dx = texture2D(data2_tex, coord - dx).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(data2_m_dx.r, -data2_m_dx.g);\n    } \n    else if (texture2D(data1_tex, coord + dx).a == 1.0) {\n      count += 1;\n      vec2 data2_p_dx = texture2D(data2_tex, coord + dx).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(data2_p_dx.r, -data2_p_dx.g);\n    } \n\n    if (count == 0) {\n      data2.rg = texture2D(data3_tex, coord).rg;\n    }\n  }\n  \n  gl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl',[],function () { return '// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nvarying vec2 coord;\n\nvoid main() {\n\tvec4 data2 = texture2D(data2_tex, coord);\n\tdata2.ba = data2.rg;\n\tgl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl',[],function () { return '// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nvarying vec2 coord;\n\nvoid main() {\n\tvec4 data2 = texture2D(data2_tex, coord);\n\tdata2.ba = data2.rg;\n\tgl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float i2dx;\nuniform float i2dy;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    \n    // Phi.\n    data2.b = 0.0;\n    // Div.\n    data2.a = (data2_p_dy.r - data2_m_dy.r) * i2dx + (data2_p_dx.g - data2_m_dx.g) * i2dy;\n  }\n\n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float i2dx;\nuniform float i2dy;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    \n    // Phi.\n    data2.b = 0.0;\n    // Div.\n    data2.a = (data2_p_dy.r - data2_m_dy.r) * i2dx + (data2_p_dx.g - data2_m_dx.g) * i2dy;\n  }\n\n  gl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float s;\nuniform float idxsq;\nuniform float idysq;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    \n    // Phi.\n    data2.b = s * ((data2_m_dy.b + data2_p_dy.b) * idxsq + (data2_m_dx.b + data2_p_dx.b) * idysq - data2.a);\n  }\n\n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float s;\nuniform float idxsq;\nuniform float idysq;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    \n    // Phi.\n    data2.b = s * ((data2_m_dy.b + data2_p_dy.b) * idxsq + (data2_m_dx.b + data2_p_dx.b) * idysq - data2.a);\n  }\n\n  gl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float i2dx;\nuniform float i2dy;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    \n    // U.\n    data2.r -= (data2_p_dy.b - data2_m_dy.b) * i2dx;\n    // V.\n    data2.g -= (data2_p_dx.b - data2_m_dx.b) * i2dy;\n  }\n\n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float i2dx;\nuniform float i2dy;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    \n    // U.\n    data2.r -= (data2_p_dy.b - data2_m_dy.b) * i2dx;\n    // V.\n    data2.g -= (data2_p_dx.b - data2_m_dx.b) * i2dy;\n  }\n\n  gl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float hx;\nuniform float hy;\nuniform float dn;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    // Update velocity UV components.\n    data2.rg = (data2.ba + hx * (data2_m_dy.rg + data2_p_dy.rg)\n                         + hy * (data2_m_dx.rg + data2_p_dx.rg)) * dn;\n  }\n\n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float hx;\nuniform float hy;\nuniform float dn;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    // Update velocity UV components.\n    data2.rg = (data2.ba + hx * (data2_m_dy.rg + data2_p_dy.rg)\n                         + hy * (data2_m_dx.rg + data2_p_dx.rg)) * dn;\n  }\n\n  gl_FragColor = data2;\n}\n';});
 
-define('text!models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float g;\nuniform float b;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    float t = texture2D(data0_tex, coord).r;\n    // Get average column temperature.\n\n    float avg_t = t;\n    float count = 1.0;\n    vec2 n_coord = coord - dx;\n    // Silly while(true) loop (almost).\n    // While loops are not allowed.\n    // For loops with non-constant expressions also.\n    for (int i = 1; i != 0; i++) {\n      if (n_coord.x > 0.0 && texture2D(data1_tex, n_coord).a == 1.0) {\n        avg_t += texture2D(data0_tex, n_coord).r;\n        count += 1.0;\n        n_coord -= dx;\n      } else {\n        break;\n      }\n    }\n    n_coord = coord + dx;\n    // Silly while(true) loop (almost).\n    // While loops are not allowed.\n    // For loops with non-constant expressions also.\n    for (int i = 1; i != 0; i++) {\n      if (n_coord.x < 1.0 && texture2D(data1_tex, n_coord).a == 1.0) {\n        avg_t += texture2D(data0_tex, n_coord).r;\n        count += 1.0;\n        n_coord += dx;\n      } else {\n        break;\n      }\n    }\n    avg_t /= count;\n\n    // Update velocity V component.\n    data2.g += (g - b) * t + b * avg_t;\n  }\n\n  gl_FragColor = data2;\n}\n';});
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float g;\nuniform float b;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    float t = texture2D(data0_tex, coord).r;\n    // Get average column temperature.\n\n    float avg_t = t;\n    float count = 1.0;\n    vec2 n_coord = coord - dx;\n    // Silly while(true) loop (almost).\n    // While loops are not allowed.\n    // For loops with non-constant expressions also.\n    for (int i = 1; i != 0; i++) {\n      if (n_coord.x > 0.0 && texture2D(data1_tex, n_coord).a == 1.0) {\n        avg_t += texture2D(data0_tex, n_coord).r;\n        count += 1.0;\n        n_coord -= dx;\n      } else {\n        break;\n      }\n    }\n    n_coord = coord + dx;\n    // Silly while(true) loop (almost).\n    // While loops are not allowed.\n    // For loops with non-constant expressions also.\n    for (int i = 1; i != 0; i++) {\n      if (n_coord.x < 1.0 && texture2D(data1_tex, n_coord).a == 1.0) {\n        avg_t += texture2D(data0_tex, n_coord).r;\n        count += 1.0;\n        n_coord += dx;\n      } else {\n        break;\n      }\n    }\n    avg_t /= count;\n\n    // Update velocity V component.\n    data2.g += (g - b) * t + b * avg_t;\n  }\n\n  gl_FragColor = data2;\n}\n';});
 
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false*/
 
-define('models/physics-solvers-gpu/fluid-solver-gpu',['require','exports','module','gpu/shader','gpu/gpgpu','text!models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl','text!models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl'],function (require, exports, module) {
-  
+define('energy2d/models/physics-solvers-gpu/fluid-solver-gpu',['require','exports','module','energy2d/gpu/shader','energy2d/gpu/gpgpu','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl'],function (require, exports, module) {
+  'use strict';
   var
     // Dependencies.
-    Shader = require('gpu/shader'),
+    Shader = require('energy2d/gpu/shader'),
     // GPGPU utilities. It's a singleton instance.
     // It should have been previously initialized by core-model.
-    gpgpu  = require('gpu/gpgpu'),
+    gpgpu  = require('energy2d/gpu/gpgpu'),
     // Shader sources. One of Lab build steps converts sources to JavaScript file.
-    basic_vs                 = require('text!models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl'),
-    maccormack_step1_fs      = require('text!models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl'),
-    maccormack_step2_fs      = require('text!models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl'),
-    apply_uv_boundary_fs     = require('text!models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl'),
-    apply_u0v0_boundary_fs   = require('text!models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl'),
-    set_obstacle_boundary_fs = require('text!models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl'),
-    set_obstacle_velocity_fs = require('text!models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl'),
-    uv_to_u0v0_fs            = require('text!models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl'),
-    conserve_step1_fs        = require('text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl'),
-    conserve_step2_fs        = require('text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl'),
-    conserve_step3_fs        = require('text!models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl'),
-    diffuse_fs               = require('text!models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl'),
-    apply_buoyancy_fs        = require('text!models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl'),
+    basic_vs                 = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl'),
+    maccormack_step1_fs      = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl'),
+    maccormack_step2_fs      = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl'),
+    apply_uv_boundary_fs     = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl'),
+    apply_u0v0_boundary_fs   = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl'),
+    set_obstacle_boundary_fs = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl'),
+    set_obstacle_velocity_fs = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl'),
+    uv_to_u0v0_fs            = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl'),
+    conserve_step1_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl'),
+    conserve_step2_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl'),
+    conserve_step3_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl'),
+    diffuse_fs               = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl'),
+    apply_buoyancy_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl'),
 
     RELAXATION_STEPS = 10,
     GRAVITY = 0,
@@ -2610,25 +2677,25 @@ define('models/physics-solvers-gpu/fluid-solver-gpu',['require','exports','modul
       // ========================================================================
 
       // Simulation arrays provided by model.
-      // texture 0: 
+      // texture 0:
       // - R: t
       // - G: t0
       // - B: tb
       // - A: conductivity
       data0_tex = model.getSimulationTexture(0),
-      // texture 1: 
+      // texture 1:
       // - R: q
       // - G: capacity
       // - B: density
       // - A: fluidity
       data1_tex = model.getSimulationTexture(1),
-      // texture 2: 
+      // texture 2:
       // - R: u
       // - G: v
       // - B: u0
       // - A: v0
       data2_tex = model.getSimulationTexture(2),
-      // texture 3: 
+      // texture 3:
       // - R: uWind
       // - G: vWind
       // - B: undefined
@@ -2651,7 +2718,7 @@ define('models/physics-solvers-gpu/fluid-solver-gpu',['require','exports','modul
       relaxation_steps = RELAXATION_STEPS,
       gravity = GRAVITY,
 
-      // Convenience variables.   
+      // Convenience variables.
       i2dx  = 0.5 / delta_x,
       i2dy  = 0.5 / delta_y,
       idxsq = 1.0 / (delta_x * delta_x),
@@ -2908,7 +2975,7 @@ define('models/physics-solvers-gpu/fluid-solver-gpu',['require','exports','modul
           macCormack();
           conserve();
           setObstacleVelocity();
-          // Synchronize. It's not required but it 
+          // Synchronize. It's not required but it
           // allows to measure time (for optimization).
           gpgpu.tryFinish();
         }
@@ -2924,8 +2991,8 @@ define('models/physics-solvers-gpu/fluid-solver-gpu',['require','exports','modul
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false*/
 
-define('models/helpers',['require','exports','module'],function (require, exports, module) {
-  
+define('energy2d/models/helpers',['require','exports','module'],function (require, exports, module) {
+  'use strict';
 
   exports.hypot = function (x, y) {
     var t;
@@ -2940,8 +3007,8 @@ define('models/helpers',['require','exports','module'],function (require, export
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false*/
 
-define('models/shape',['require','exports','module'],function (require, exports, module) {
-  
+define('energy2d/models/shape',['require','exports','module'],function (require, exports, module) {
+  'use strict';
 
   // Based on: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
   // It is optional to repeat the first vertex at the end of list of polygon vertices.
@@ -3171,14 +3238,14 @@ define('models/shape',['require','exports','module'],function (require, exports,
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false*/
 
-define('models/photon',['require','exports','module','models/helpers','models/shape','models/shape'],function (require, exports, module) {
-  
+define('energy2d/models/photon',['require','exports','module','energy2d/models/helpers','energy2d/models/shape','energy2d/models/shape'],function (require, exports, module) {
+  'use strict';
   var
-    hypot     = require('models/helpers').hypot,
-    Line      = require('models/shape').Line,
-    Rectangle = require('models/shape').Rectangle,
+    hypot     = require('energy2d/models/helpers').hypot,
+    Line      = require('energy2d/models/shape').Line,
+    Rectangle = require('energy2d/models/shape').Rectangle,
 
-    // 
+    //
     // Photon class.
     //
     Photon = exports.Photon = function (x, y, energy, c, angle) {
@@ -3298,10 +3365,10 @@ define('models/photon',['require','exports','module','models/helpers','models/sh
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false*/
 
-define('models/physics-solvers/ray-solver',['require','exports','module','models/photon'],function (require, exports, module) {
-  
+define('energy2d/models/physics-solvers/ray-solver',['require','exports','module','energy2d/models/photon'],function (require, exports, module) {
+  'use strict';
   var
-    Photon = require('models/photon').Photon;
+    Photon = require('energy2d/models/photon').Photon;
 
   exports.makeRaySolver = function (model) {
     var
@@ -3328,7 +3395,7 @@ define('models/physics-solvers/ray-solver',['require','exports','module','models
       parts   = model.getPartsArray(),
       photons = model.getPhotonsArray(),
 
-      // Convenience variables.  
+      // Convenience variables.
       nx1 = nx - 1,
       ny1 = ny - 1,
       nx2 = nx - 2,
@@ -3502,8 +3569,8 @@ define('models/physics-solvers/ray-solver',['require','exports','module','models
 
 // Basic constants used by Energy2D module
 
-define('models/constants',['require','exports','module'],function (require, exports, module) {
-  
+define('energy2d/models/constants',['require','exports','module'],function (require, exports, module) {
+  'use strict';
   // Air's thermal conductivity = 0.025 W/(m*K)
   exports.AIR_THERMAL_CONDUCTIVITY = 0.025;
   // Air's specific heat = 1012 J/(kg*K)
@@ -3520,9 +3587,9 @@ define('models/constants',['require','exports','module'],function (require, expo
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false*/
 
-define('models/default-config',['require','exports','module','models/constants'],function (require, exports, module) {
-  
-  var constants = require('models/constants');
+define('energy2d/models/default-config',['require','exports','module','energy2d/models/constants'],function (require, exports, module) {
+  'use strict';
+  var constants = require('energy2d/models/constants');
 
   // This object defines default values for different configuration objects.
   //
@@ -3572,7 +3639,7 @@ define('models/default-config',['require','exports','module','models/constants']
       // Structure can be undefined.
       // However, its desired form is:
       // "structure": {
-      //   "part": [ 
+      //   "part": [
       //     {
       //       ... part definition (see part fallback values below)
       //     },
@@ -3611,11 +3678,11 @@ define('models/default-config',['require','exports','module','models/constants']
       //   "texture_width": 12,
       //   "texture_height": 12
       // },
-      "uid": undefined,       // unnecessary (not yet implemented)    
+      "uid": undefined,       // unnecessary (not yet implemented)
       "draggable": true       // unnecessary (not yet implemented)
 
       // Part should declare also *ONE* of available shapes:
-      // 
+      //
       // "rectangle": {
       //   "x": 5,
       //   "y": 5,
@@ -3636,7 +3703,7 @@ define('models/default-config',['require','exports','module','models/constants']
       // },
       // "polygon": {
       //   "count": 3,                    // Vertices count.
-      //   "vertices": "1, 1, 2, 2, 3, 3" // String with coordinates.   
+      //   "vertices": "1, 1, 2, 2, 3, 3" // String with coordinates.
       // },
     }
   };
@@ -3677,19 +3744,19 @@ define('models/default-config',['require','exports','module','models/constants']
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false*/
 
-define('models/part',['require','exports','module','models/default-config','models/constants','models/helpers','models/photon','models/shape','models/shape','models/shape','models/shape','models/shape','models/shape'],function (require, exports, module) {
-  
+define('energy2d/models/part',['require','exports','module','energy2d/models/default-config','energy2d/models/constants','energy2d/models/helpers','energy2d/models/photon','energy2d/models/shape','energy2d/models/shape','energy2d/models/shape','energy2d/models/shape','energy2d/models/shape','energy2d/models/shape'],function (require, exports, module) {
+  'use strict';
   var
-    default_config = require('models/default-config'),
-    constants      = require('models/constants'),
-    hypot          = require('models/helpers').hypot,
-    Photon         = require('models/photon').Photon,
-    shape_utils    = require('models/shape'),
-    Line           = require('models/shape').Line,
-    Polygon        = require('models/shape').Polygon,
-    Rectangle      = require('models/shape').Rectangle,
-    Ellipse        = require('models/shape').Ellipse,
-    Ring           = require('models/shape').Ring,
+    default_config = require('energy2d/models/default-config'),
+    constants      = require('energy2d/models/constants'),
+    hypot          = require('energy2d/models/helpers').hypot,
+    Photon         = require('energy2d/models/photon').Photon,
+    shape_utils    = require('energy2d/models/shape'),
+    Line           = require('energy2d/models/shape').Line,
+    Polygon        = require('energy2d/models/shape').Polygon,
+    Rectangle      = require('energy2d/models/shape').Rectangle,
+    Ellipse        = require('energy2d/models/shape').Ellipse,
+    Ring           = require('energy2d/models/shape').Ring,
 
     // Part's constants.
     RADIATOR_SPACING = 0.5,
@@ -4089,18 +4156,18 @@ define('models/part',['require','exports','module','models/default-config','mode
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false, console: false*/
 
-define('models/core-model',['require','exports','module','utils/arrays','models/physics-solvers/heat-solver','models/physics-solvers-gpu/heat-solver-gpu','models/physics-solvers/fluid-solver','models/physics-solvers-gpu/fluid-solver-gpu','models/physics-solvers/ray-solver','models/part','models/default-config','gpu/gpgpu'],function (require, exports, module) {
-  
+define('energy2d/models/core-model',['require','exports','module','arrays','energy2d/models/physics-solvers/heat-solver','energy2d/models/physics-solvers-gpu/heat-solver-gpu','energy2d/models/physics-solvers/fluid-solver','energy2d/models/physics-solvers-gpu/fluid-solver-gpu','energy2d/models/physics-solvers/ray-solver','energy2d/models/part','energy2d/models/default-config','energy2d/gpu/gpgpu'],function (require, exports, module) {
+  'use strict';
   var
-    arrays          = require('utils/arrays').arrays,
-    heatsolver      = require('models/physics-solvers/heat-solver'),
-    heatsolver_GPU  = require('models/physics-solvers-gpu/heat-solver-gpu'),
-    fluidsolver     = require('models/physics-solvers/fluid-solver'),
-    fluidsolver_GPU = require('models/physics-solvers-gpu/fluid-solver-gpu'),
-    raysolver       = require('models/physics-solvers/ray-solver'),
-    part            = require('models/part'),
-    default_config  = require('models/default-config'),
-    gpgpu           = require('gpu/gpgpu'),
+    arrays          = require('arrays'),
+    heatsolver      = require('energy2d/models/physics-solvers/heat-solver'),
+    heatsolver_GPU  = require('energy2d/models/physics-solvers-gpu/heat-solver-gpu'),
+    fluidsolver     = require('energy2d/models/physics-solvers/fluid-solver'),
+    fluidsolver_GPU = require('energy2d/models/physics-solvers-gpu/fluid-solver-gpu'),
+    raysolver       = require('energy2d/models/physics-solvers/ray-solver'),
+    part            = require('energy2d/models/part'),
+    default_config  = require('energy2d/models/default-config'),
+    gpgpu           = require('energy2d/gpu/gpgpu'),
 
     array_type = (function () {
       try {
@@ -4112,7 +4179,7 @@ define('models/core-model',['require','exports','module','utils/arrays','models/
     }());
 
   // Core Energy2D model.
-  // 
+  //
   // It creates and manages all the data and parameters used for calculations.
   exports.makeCoreModel = function (model_options) {
     var
@@ -4211,22 +4278,22 @@ define('models/core-model',['require','exports','module','utils/arrays','models/
       //
       // [GPGPU] Simulation textures:
       //
-      // texture 0: 
+      // texture 0:
       // - R: t
       // - G: t0
       // - B: tb
       // - A: conductivity
-      // texture 1: 
+      // texture 1:
       // - R: q
       // - G: capacity
       // - B: density
       // - A: fluidity
-      // texture 2: 
+      // texture 2:
       // - R: u
       // - G: v
       // - B: u0
       // - A: v0
-      // texture 3: 
+      // texture 3:
       // - R: uWind
       // - G: vWind
       // - B: undefined
@@ -4255,9 +4322,9 @@ define('models/core-model',['require','exports','module','utils/arrays','models/
         return result;
       }()),
 
-      //  
-      // Private methods  
-      //      
+      //
+      // Private methods
+      //
       initGPGPU = function () {
         // Make sure that environment is a browser.
         if (typeof window === 'undefined') {
@@ -4283,25 +4350,25 @@ define('models/core-model',['require','exports','module','utils/arrays','models/
         texture[3] = gpgpu.createTexture();
 
         // Update textures as material properties should be already set.
-        // texture 0: 
+        // texture 0:
         // - R: t
         // - G: t0
         // - B: tb
         // - A: conductivity
         gpgpu.writeRGBATexture(texture[0], t, t, tb, conductivity);
-        // texture 1: 
+        // texture 1:
         // - R: q
         // - G: capacity
         // - B: density
         // - A: fluidity
         gpgpu.writeRGBATexture(texture[1], q, capacity, density, fluidity);
-        // texture 2: 
+        // texture 2:
         // - R: u
         // - G: v
         // - B: u0
         // - A: v0
         gpgpu.writeRGBATexture(texture[2], u, v, u, v);
-        // texture 3: 
+        // texture 3:
         // - R: uWind
         // - G: vWind
         // - B: undefined
@@ -4626,7 +4693,7 @@ define('models/core-model',['require','exports','module','utils/arrays','models/
         }
       };
 
-    // 
+    //
     // One-off initialization.
     //
 
@@ -4673,9 +4740,9 @@ define('models/core-model',['require','exports','module','utils/arrays','models/
 /*globals define: false*/
 
 // TODO: Remove this, as it's redundant.
-define('modeler',['require','models/core-model'],function (require) {
-  
-  var coremodel = require('models/core-model');
+define('energy2d/modeler',['require','energy2d/models/core-model'],function (require) {
+  'use strict';
+  var coremodel = require('energy2d/models/core-model');
 
   return function Modeler(options) {
     var core_model = coremodel.makeCoreModel(options);
@@ -4738,8 +4805,8 @@ define('modeler',['require','models/core-model'],function (require) {
 //  |.. connection 
 //  |.. parsing
 
-define('utils/performance-monitor',[],function () {
-  
+define('energy2d/utils/performance-monitor',[],function () {
+  'use strict';
 
   return function PerformanceMonitor() {
     var
@@ -4833,8 +4900,8 @@ define('utils/performance-monitor',[],function () {
 //
 // getHTMLElement() method returns JQuery object with DIV that contains performance data.
 
-define('views/performance',[],function () {
-  
+define('energy2d/views/performance',[],function () {
+  'use strict';
 
   return function PerformanceView(html_id) {
     var
@@ -4922,8 +4989,8 @@ define('views/performance',[],function () {
 /*globals define: false*/
 
 
-define('views/helpers',[],function () {
-  
+define('energy2d/views/helpers',[],function () {
+  'use strict';
 
   // Return module with functions.
   return {
@@ -5011,11 +5078,11 @@ define('views/helpers',[],function () {
 /*jslint indent: 2, browser: true, newcap: true, sub: true */
 /*globals define: false, $: false*/
 
-define('views/color-palette',['require','views/helpers'],function (require) {
-  
+define('energy2d/views/color-palette',['require','energy2d/views/helpers'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    view_helpers = require('views/helpers'),
+    view_helpers = require('energy2d/views/helpers'),
 
     // Object with available color palettes.
     color_palette,
@@ -5065,16 +5132,16 @@ define('views/color-palette',['require','views/helpers'],function (require) {
 // It uses HTML5 Canvas for rendering.
 // getHTMLElement() returns jQuery object with the canvas used for rendering.
 // Before use, this view should be bound with a heatmap using bindHeapmap(heatmap, grid_width, grid_height).
-// To render the heatmap use renderHeatmap() method. 
-// Set size of the heatmap using CSS rules. The view fits canvas dimensions to the real 
+// To render the heatmap use renderHeatmap() method.
+// Set size of the heatmap using CSS rules. The view fits canvas dimensions to the real
 // size of the HTML element to avoid low quality CSS scaling *ONLY* when HQ rendering is enabled.
 // Otherwise, the canvas has the same dimensions as heatmap grid and fast CSS scaling is used.
 
-define('views/heatmap',['require','views/color-palette'],function (require) {
-  
+define('energy2d/views/heatmap',['require','energy2d/views/color-palette'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    ColorPalette = require('views/color-palette');
+    ColorPalette = require('energy2d/views/color-palette');
 
   return function HeatmapView(html_id) {
     var
@@ -5096,7 +5163,7 @@ define('views/heatmap',['require','views/color-palette'],function (require) {
       min_temp = 0,
       max_temp = 50,
 
-      // 
+      //
       // Private methods.
       //
       initHTMLelement = function () {
@@ -5224,9 +5291,9 @@ define('views/heatmap',['require','views/color-palette'],function (require) {
   };
 });
 
-define('text!views/heatmap-webgl-glsl/basic.vs.glsl',[],function () { return 'varying vec2 coord;\n\nvoid main() {\n  coord = gl_TexCoord.xy;\n  gl_Position = vec4(gl_Vertex.xyz, 1.0);\n}\n';});
+define('text!energy2d/views/heatmap-webgl-glsl/basic.vs.glsl',[],function () { return 'varying vec2 coord;\n\nvoid main() {\n  coord = gl_TexCoord.xy;\n  gl_Position = vec4(gl_Vertex.xyz, 1.0);\n}\n';});
 
-define('text!views/heatmap-webgl-glsl/temp-renderer.fs.glsl',[],function () { return '// Provided textur contains temperature data in R channel.\nuniform sampler2D heatmap_tex;\nuniform sampler2D palette_tex;\n\nuniform float max_temp;\nuniform float min_temp;\n\nvarying vec2 coord;\n\nvoid main() {\n  float temp = texture2D(heatmap_tex, coord).r;\n  float scaled_temp = (temp - min_temp) / (max_temp - min_temp);\n  gl_FragColor = texture2D(palette_tex, vec2(scaled_temp, 0.5));\n}\n';});
+define('text!energy2d/views/heatmap-webgl-glsl/temp-renderer.fs.glsl',[],function () { return '// Provided textur contains temperature data in R channel.\nuniform sampler2D heatmap_tex;\nuniform sampler2D palette_tex;\n\nuniform float max_temp;\nuniform float min_temp;\n\nvarying vec2 coord;\n\nvoid main() {\n  float temp = texture2D(heatmap_tex, coord).r;\n  float scaled_temp = (temp - min_temp) / (max_temp - min_temp);\n  gl_FragColor = texture2D(palette_tex, vec2(scaled_temp, 0.5));\n}\n';});
 
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false, Uint8Array: false, $: false */
@@ -5236,20 +5303,20 @@ define('text!views/heatmap-webgl-glsl/temp-renderer.fs.glsl',[],function () { re
 // It uses HTML5 Canvas and WebGL for rendering.
 // getHTMLElement() returns jQuery object with the canvas used for rendering.
 // Before use, this view should be bound with a heatmap texture using bindHeapmapTexture(heatmap_tex).
-// To render the heatmap use renderHeatmapTexture() method. 
+// To render the heatmap use renderHeatmapTexture() method.
 // Set size of the heatmap using CSS rules.
-define('views/heatmap-webgl',['require','gpu/context','gpu/texture','gpu/shader','gpu/mesh','views/color-palette','text!views/heatmap-webgl-glsl/basic.vs.glsl','text!views/heatmap-webgl-glsl/temp-renderer.fs.glsl'],function (require) {
-  
+define('energy2d/views/heatmap-webgl',['require','energy2d/gpu/context','energy2d/gpu/texture','energy2d/gpu/shader','energy2d/gpu/mesh','energy2d/views/color-palette','text!energy2d/views/heatmap-webgl-glsl/basic.vs.glsl','text!energy2d/views/heatmap-webgl-glsl/temp-renderer.fs.glsl'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    context      = require('gpu/context'),
-    Texture      = require('gpu/texture'),
-    Shader       = require('gpu/shader'),
-    Mesh         = require('gpu/mesh'),
-    ColorPalette = require('views/color-palette'),
+    context      = require('energy2d/gpu/context'),
+    Texture      = require('energy2d/gpu/texture'),
+    Shader       = require('energy2d/gpu/shader'),
+    Mesh         = require('energy2d/gpu/mesh'),
+    ColorPalette = require('energy2d/views/color-palette'),
     // Shader sources.
-    basic_vs         = require('text!views/heatmap-webgl-glsl/basic.vs.glsl'),
-    temp_renderer_fs = require('text!views/heatmap-webgl-glsl/temp-renderer.fs.glsl');
+    basic_vs         = require('text!energy2d/views/heatmap-webgl-glsl/basic.vs.glsl'),
+    temp_renderer_fs = require('text!energy2d/views/heatmap-webgl-glsl/temp-renderer.fs.glsl');
 
   return function HeatmapWebGLView(html_id) {
     var
@@ -5272,7 +5339,7 @@ define('views/heatmap-webgl',['require','gpu/context','gpu/texture','gpu/shader'
       min_temp = 0,
       max_temp = 50,
 
-      // 
+      //
       // Private methods.
       //
       initHTMLelement = function () {
@@ -5395,8 +5462,8 @@ define('views/heatmap-webgl',['require','gpu/context','gpu/texture','gpu/shader'
 // Set size of the vectormap using CSS rules. The view fits canvas dimensions to the real 
 // size of the HTML element to avoid low quality CSS scaling.
 
-define('views/vectormap',[],function () {
-  
+define('energy2d/views/vectormap',[],function () {
+  'use strict';
 
   return function VectormapView(html_id) {
     var
@@ -5528,9 +5595,9 @@ define('views/vectormap',[],function () {
   };
 });
 
-define('text!views/vectormap-webgl-glsl/vectormap.vs.glsl',[],function () { return '// Provided texture contains vector data in RG channels.\nattribute vec2 origin;\n\nuniform sampler2D vectormap_tex;\nuniform float base_length;\nuniform float vector_scale;\nuniform vec2 scale;\n\nvoid main() {\n  // Read vector which should be visualized.\n  vec2 vec = texture2D(vectormap_tex, gl_TexCoord.xy).xy;\n  vec.y = -vec.y;\n\n  if (length(vec) < 1e-15) {\n    // Do not draw to small vectors.\n    // Set position outside [-1, 1] region, which is rendered.\n    gl_Position = vec4(2.0);\n    return;\n  }\n\n  // Test which part of the vector arrow is being processed. \n  if (gl_Vertex.x == 0.0 && gl_Vertex.y == 0.0) {\n    // Origin of the arrow is being processed.\n    // Just transform its coordinates.\n    gl_Position = vec4(origin, 0.0, 1.0);\n  } else {\n    // Other parts of arrow are being processed.\n    // Set proper length of the arrow, rotate it, scale\n    // and finally transform.\n\n    // Calculate arrow length.\n    vec2 new_pos = gl_Vertex.xy;\n    new_pos.x += base_length + vector_scale * length(vec);\n\n    // Calculate angle between reference arrow (horizontal).\n    vec = normalize(vec);\n    float angle = acos(dot(vec, vec2(1.0, 0.0)));\n    if (vec.y < 0.0) {\n      angle = -angle;\n    }\n    // Prepare rotation matrix.\n    // See: http://en.wikipedia.org/wiki/Rotation_matrix\n    mat2 rot_m = mat2(\n      cos(angle), sin(angle),\n     -sin(angle), cos(angle)\n    );\n    // Rotate.\n    new_pos = rot_m * new_pos;\n    // Scale.\n    new_pos = new_pos * scale;\n    // Transform.\n    gl_Position = vec4(new_pos + origin, 0.0, 1.0);\n  }\n}\n';});
+define('text!energy2d/views/vectormap-webgl-glsl/vectormap.vs.glsl',[],function () { return '// Provided texture contains vector data in RG channels.\nattribute vec2 origin;\n\nuniform sampler2D vectormap_tex;\nuniform float base_length;\nuniform float vector_scale;\nuniform vec2 scale;\n\nvoid main() {\n  // Read vector which should be visualized.\n  vec2 vec = texture2D(vectormap_tex, gl_TexCoord.xy).xy;\n  vec.y = -vec.y;\n\n  if (length(vec) < 1e-15) {\n    // Do not draw to small vectors.\n    // Set position outside [-1, 1] region, which is rendered.\n    gl_Position = vec4(2.0);\n    return;\n  }\n\n  // Test which part of the vector arrow is being processed. \n  if (gl_Vertex.x == 0.0 && gl_Vertex.y == 0.0) {\n    // Origin of the arrow is being processed.\n    // Just transform its coordinates.\n    gl_Position = vec4(origin, 0.0, 1.0);\n  } else {\n    // Other parts of arrow are being processed.\n    // Set proper length of the arrow, rotate it, scale\n    // and finally transform.\n\n    // Calculate arrow length.\n    vec2 new_pos = gl_Vertex.xy;\n    new_pos.x += base_length + vector_scale * length(vec);\n\n    // Calculate angle between reference arrow (horizontal).\n    vec = normalize(vec);\n    float angle = acos(dot(vec, vec2(1.0, 0.0)));\n    if (vec.y < 0.0) {\n      angle = -angle;\n    }\n    // Prepare rotation matrix.\n    // See: http://en.wikipedia.org/wiki/Rotation_matrix\n    mat2 rot_m = mat2(\n      cos(angle), sin(angle),\n     -sin(angle), cos(angle)\n    );\n    // Rotate.\n    new_pos = rot_m * new_pos;\n    // Scale.\n    new_pos = new_pos * scale;\n    // Transform.\n    gl_Position = vec4(new_pos + origin, 0.0, 1.0);\n  }\n}\n';});
 
-define('text!views/vectormap-webgl-glsl/vectormap.fs.glsl',[],function () { return 'uniform vec4 color;\n\nvoid main() {\n  gl_FragColor = color;\n}\n';});
+define('text!energy2d/views/vectormap-webgl-glsl/vectormap.fs.glsl',[],function () { return 'uniform vec4 color;\n\nvoid main() {\n  gl_FragColor = color;\n}\n';});
 
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false, $: false*/
@@ -5540,19 +5607,19 @@ define('text!views/vectormap-webgl-glsl/vectormap.fs.glsl',[],function () { retu
 // It uses HTML5 Canvas and WebGL for rendering.
 // getHTMLElement() returns jQuery object with the canvas used for rendering.
 // Before use, this view should be bound with a heatmap texture using bindHeapmapTexture(vectormap_tex).
-// To render the heatmap use renderVectormapTexture() method. 
+// To render the heatmap use renderVectormapTexture() method.
 // Set size of the heatmap using CSS rules.
 
-define('views/vectormap-webgl',['require','gpu/context','gpu/shader','gpu/mesh','text!views/vectormap-webgl-glsl/vectormap.vs.glsl','text!views/vectormap-webgl-glsl/vectormap.fs.glsl'],function (require) {
-  
+define('energy2d/views/vectormap-webgl',['require','energy2d/gpu/context','energy2d/gpu/shader','energy2d/gpu/mesh','text!energy2d/views/vectormap-webgl-glsl/vectormap.vs.glsl','text!energy2d/views/vectormap-webgl-glsl/vectormap.fs.glsl'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
-    Shader  = require('gpu/shader'),
-    Mesh    = require('gpu/mesh'),
+    context = require('energy2d/gpu/context'),
+    Shader  = require('energy2d/gpu/shader'),
+    Mesh    = require('energy2d/gpu/mesh'),
     // Shader sources. One of Lab build steps converts sources to the JavaScript file.
-    vectormap_vs = require('text!views/vectormap-webgl-glsl/vectormap.vs.glsl'),
-    vectormap_fs = require('text!views/vectormap-webgl-glsl/vectormap.fs.glsl');
+    vectormap_vs = require('text!energy2d/views/vectormap-webgl-glsl/vectormap.vs.glsl'),
+    vectormap_fs = require('text!energy2d/views/vectormap-webgl-glsl/vectormap.fs.glsl');
 
   return function VectormapWebGLView(html_id) {
     var
@@ -5577,7 +5644,7 @@ define('views/vectormap-webgl',['require','gpu/context','gpu/shader','gpu/mesh',
       grid_height,
       spacing,
 
-      // 
+      //
       // Private methods.
       //
       initGeometry = function () {
@@ -5705,8 +5772,8 @@ define('views/vectormap-webgl',['require','gpu/context','gpu/shader','gpu/mesh',
 // Set size of the parts view using CSS rules. The view fits canvas dimensions to the real
 // size of the HTML element to avoid low quality scaling.
 
-define('views/parts',[],function () {
-  
+define('energy2d/views/parts',[],function () {
+  'use strict';
 
   return function PartsView(html_id) {
     var
@@ -5981,8 +6048,8 @@ define('views/parts',[],function () {
 // Set size of the parts view using CSS rules. The view fits canvas dimensions to the real
 // size of the HTML element to avoid low quality scaling.
 
-define('views/photons',[],function () {
-  
+define('energy2d/views/photons',[],function () {
+  'use strict';
 
   return function PhotonsView(html_id) {
     var
@@ -6093,8 +6160,8 @@ define('views/photons',[],function () {
 // If you want to style its components:
 // Default div id = "energy2d-time"
 
-define('views/time',[],function () {
-  
+define('energy2d/views/time',[],function () {
+  'use strict';
 
   return function TimeView(html_id) {
     var
@@ -6166,17 +6233,17 @@ define('views/time',[],function () {
 // If you want to resize Energy2D scene view use CSS rule for wrapping DIV.
 // Do not resize manually internal views (heatmap, velocity or parts)!
 
-define('views/visualization-container',['require','views/heatmap','views/heatmap-webgl','views/vectormap','views/vectormap-webgl','views/parts','views/photons','views/time'],function (require) {
-  
+define('energy2d/views/visualization-container',['require','energy2d/views/heatmap','energy2d/views/heatmap-webgl','energy2d/views/vectormap','energy2d/views/vectormap-webgl','energy2d/views/parts','energy2d/views/photons','energy2d/views/time'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    HeatmapView        = require('views/heatmap'),
-    HeatmapWebGLView   = require('views/heatmap-webgl'),
-    VectormapView      = require('views/vectormap'),
-    VectormapWebGLView = require('views/vectormap-webgl'),
-    PartsView          = require('views/parts'),
-    PhotonsView        = require('views/photons'),
-    TimeView           = require('views/time');
+    HeatmapView        = require('energy2d/views/heatmap'),
+    HeatmapWebGLView   = require('energy2d/views/heatmap-webgl'),
+    VectormapView      = require('energy2d/views/vectormap'),
+    VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
+    PartsView          = require('energy2d/views/parts'),
+    PhotonsView        = require('energy2d/views/photons'),
+    TimeView           = require('energy2d/views/time');
 
   return function VisualizationContainer(html_id, use_WebGL) {
     var
@@ -6231,7 +6298,7 @@ define('views/visualization-container',['require','views/heatmap','views/heatmap
       setAsTimeLayer = function (view) {
         var $layer = view.getHTMLElement();
 
-        // Style time view to make it visible and sharp 
+        // Style time view to make it visible and sharp
         // as it is displayed on the heatmap (often dark blue color).
         $layer.css('color', 'white');
         $layer.css('font-weight', 'bold');
@@ -6334,8 +6401,8 @@ define('views/visualization-container',['require','views/heatmap','views/heatmap
 // Default div id = "energy2d-simulation-player",
 // Buttons ids: "sim-play", "sim-step", "sim-stop", "sim-reset".
 
-define('views/player',[],function () {
-  
+define('energy2d/views/player',[],function () {
+  'use strict';
 
   return function SimulationPlayerView(html_id) {
     var
@@ -6408,12 +6475,12 @@ define('views/player',[],function () {
 //
 // getHTMLElement() method returns JQuery object with DIV that contains status.
 
-define('views/webgl-status',['require','gpu/context','gpu/texture'],function (require) {
-  
+define('energy2d/views/webgl-status',['require','energy2d/gpu/context','energy2d/gpu/texture'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
-    Texture = require('gpu/texture');
+    context = require('energy2d/gpu/context'),
+    Texture = require('energy2d/gpu/texture');
 
   return function WebGLStatusView(html_id) {
     var
@@ -6555,8 +6622,8 @@ define('views/webgl-status',['require','gpu/context','gpu/texture'],function (re
 // Default div id = "energy2d-description",
 // Title class: "energy2d-description-title", Content class: "energy2d-description-content".
 
-define('views/description',[],function () {
-  
+define('energy2d/views/description',[],function () {
+  'use strict';
 
   return function DescriptionView(description) {
     var
@@ -6616,17 +6683,17 @@ define('views/description',[],function () {
 // Call this constructor function with interactive definition and the ID of the DOM container for an application.
 // This HTML element is used as a default container for all interactive components that don't define their own containers.
 
-define('controllers/interactive',['require','modeler','utils/performance-monitor','views/performance','views/visualization-container','views/player','views/webgl-status','views/description'],function (require) {
-  
+define('energy2d/controllers/interactive',['require','energy2d/modeler','energy2d/utils/performance-monitor','energy2d/views/performance','energy2d/views/visualization-container','energy2d/views/player','energy2d/views/webgl-status','energy2d/views/description'],function (require) {
+  'use strict';
   var
     // Dependencies.
-    Modeler                = require('modeler'),
-    PerformanceMonitor     = require('utils/performance-monitor'),
-    PerformanceView        = require('views/performance'),
-    VisualizationContainer = require('views/visualization-container'),
-    PlayerView             = require('views/player'),
-    WebGLStatusView        = require('views/webgl-status'),
-    DescriptionView        = require('views/description');
+    Modeler                = require('energy2d/modeler'),
+    PerformanceMonitor     = require('energy2d/utils/performance-monitor'),
+    PerformanceView        = require('energy2d/views/performance'),
+    VisualizationContainer = require('energy2d/views/visualization-container'),
+    PlayerView             = require('energy2d/views/player'),
+    WebGLStatusView        = require('energy2d/views/webgl-status'),
+    DescriptionView        = require('energy2d/views/description');
 
   // Export constructor function.
   return function InteractiveController(interactive, interactive_container_id, description_container_id) {
@@ -6938,10 +7005,10 @@ define('controllers/interactive',['require','modeler','utils/performance-monitor
 /*globals define: false, window: false */
 //main.js
 
-define('public-api',['require','controllers/interactive'],function (require) {
-  
+define('energy2d/public-api',['require','energy2d/controllers/interactive'],function (require) {
+  'use strict';
   var
-    InteractiveController = require('controllers/interactive'),
+    InteractiveController = require('energy2d/controllers/interactive'),
     // Object to be returned.
     public_api;
 
@@ -6963,6 +7030,4 @@ define('public-api',['require','controllers/interactive'],function (require) {
   // Also return public_api as module.
   return public_api;
 });
-
-require(["public-api"]);
-}());
+require(['energy2d/public-api'], undefined, undefined, true); }());

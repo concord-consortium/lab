@@ -3,10 +3,14 @@
   "width": 4.5,
   "height": 3.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -64,5 +68,17 @@
     "PINNED": [
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>x  x  x  x  x  x  x  x</p>\n<p></p>\n<p>x  x  x  x  x  x  x  x</p>\n<p></p>\n<p>x  x  x  x  x  x  x  x</p>\n<p></p>\n<p>x  x  x  x  x  x  x  x</p>\n<p></p>\n<p>x  x  x  x  x  x  x  x</p>\n<p></p>\n<p>x  x  x  x  x  x  x  x</p>",
+      "x": 0.34,
+      "y": 1.03
+    },
+    {
+      "text": "<p>A model for a</p>\n<p>mass spectrometer</p>",
+      "x": 0.05,
+      "y": 0.05
+    }
+  ]
 }

@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -208,5 +212,12 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Click once to show/hide</p>\n<p>the current average position</p>\n<p>of the center of mass of</p>\n<p>the selected particle.</p>",
+      "x": 0.12,
+      "y": 0.23
+    }
+  ]
 }

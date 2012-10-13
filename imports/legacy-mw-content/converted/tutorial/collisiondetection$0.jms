@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.jmol.ModelState"> 
+  <void property="atomAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="atomInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="axisStyle"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="blinkInteractionCenters"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="bondAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="pauliRepulsionForAllAtoms"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="roverMode"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="roverTurning"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="startingScene"> 
+   <object class="org.concord.jmol.SceneState"> 
+    <void property="geoData"> 
+     <string>-32.28142 -1.4789636 -5.62504 -112.0 983.0 144.0 89.0 100.0</string> 
+    </void> 
+    <void property="scheme"> 
+     <string>CPK Space Fill</string> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+</java> 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_11" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+    <void property="color"> 
+     <object class="java.awt.Color"> 
+      <int>255</int> 
+      <int>255</int> 
+      <int>255</int> 
+      <int>255</int> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="initScript"> 
+   <string>print model initialized;
+define %countUp 0;
+define %countDown 0;
+define %countLeft 0;
+define %countRight 0;
+
+beginkey:pressed;
+  print key (%keycode) pressed;
+endkey:pressed;
+
+beginkey:released;
+  if(%keycode == 37);
+     ++%countLeft;
+  endif;
+  if(%keycode == 38);
+     ++%countUp;
+  endif;
+  if(%keycode == 39);
+     ++%countRight;
+  endif;
+  if(%keycode == 40);
+     ++%countDown;
+  endif;
+  print key (%keycode) released %countUp, %countDown, %countLeft, %countRight;
+endkey:released;
+</string> 
+  </void> 
+  <void property="rotation"> 
+   <string>-146 944 294 152.5</string> 
+  </void> 
+  <void property="timeStep"> 
+   <float>2.0</float> 
+  </void> 
+  <void property="x1Argb"> 
+   <int>-16711936</int> 
+  </void> 
+  <void property="x1Epsilon"> 
+   <float>0.12</float> 
+  </void> 
+  <void property="x1Mass"> 
+   <float>50.0</float> 
+  </void> 
+  <void property="x1Sigma"> 
+   <float>12.0</float> 
+  </void> 
+  <void property="x4Argb"> 
+   <int>-3355393</int> 
+  </void> 
+  <void property="x4Sigma"> 
+   <float>12.0</float> 
+  </void> 
+  <void property="xyzFileName"> 
+   <string>script_key$0.xyz</string> 
+  </void> 
+ </object> 
+</java> 

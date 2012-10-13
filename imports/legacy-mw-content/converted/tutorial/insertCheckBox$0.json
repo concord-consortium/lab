@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -201,36 +205,36 @@
       -0.5
     ],
     "FRICTION": [
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48
     ],
     "ELEMENT": [
       0,
@@ -296,5 +300,23 @@
       0,
       0
     ]
-  }
+  },
+  "images": [
+    {
+      "imageUri": "battery.gif",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 160,
+      "imageY": 25
+    },
+    {
+      "imageUri": "lightbulb.gif",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 200,
+      "imageY": 156
+    }
+  ]
 }

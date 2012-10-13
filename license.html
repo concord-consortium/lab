@@ -26,7 +26,8 @@ any of the following licenses:
 <p>If you have have received a <strong>distribution archive</strong> of the
 <a href="https://github.com/concord-consortium/lab">Concord Consortium Lab project</a> the standard
 Concord Consortium Lab copyright applies to all resources <strong>except</strong> the files in the
-<code>vendor/</code> and <code>imports/</code> directories as well as some of the files in the <code>jnlp/</code> directory.</p>
+<code>vendor/</code> and <code>imports/</code> directories as well as some of the generated CSS and some of the
+files in the <code>jnlp/</code> directory.</p>
 
 <p>The files in the <code>src/vendor/</code> directory which are copied to the <code>vendor/</code> directory
 when a distribution is created are from third-parties and are distributed under either
@@ -41,10 +42,12 @@ are in the specific folders included in the <code>src/vendor/</code> directory.<
 <ol>
   <li><a href="http://d3js.org/">D3</a>: <a href="http://www.opensource.org/licenses/BSD-3-Clause">The BSD 3-Clause License</a></li>
   <li><a href="https://github.com/d3/d3-plugins">D3-plugins</a>: <a href="http://www.opensource.org/licenses/BSD-3-Clause">The BSD 3-Clause License</a></li>
-  <li><a href="https://github.com/cloudhead/hijs">hijs</a>: <a href="http://www.opensource.org/licenses/MIT">MIT</a> </li>
+  <li><a href="https://github.com/cloudhead/hijs">hijs</a>: <a href="http://www.opensource.org/licenses/MIT">MIT</a></li>
   <li><a href="https://github.com/jquery/jquery">jQuery</a>: dual-licensed under <a href="http://www.opensource.org/licenses/MIT">MIT</a>
 and <a href="http://www.opensource.org/licenses/GPL-2.0">GPL v2.0</a>.</li>
   <li><a href="https://github.com/jquery/jquery-ui">jQuery-UI</a>: dual-licensed under <a href="http://www.opensource.org/licenses/MIT">MIT</a>
+and <a href="http://www.opensource.org/licenses/GPL-2.0">GPL v2.0</a>.</li>
+  <li><a href="https://github.com/Sjeiti/TinySort">TinySort</a>: dual-licensed under <a href="http://www.opensource.org/licenses/MIT">MIT</a>
 and <a href="http://www.opensource.org/licenses/GPL-2.0">GPL v2.0</a>.</li>
   <li><a href="https://github.com/mathjax/MathJax">MathJax</a>: <a href="http://www.opensource.org/licenses/Apache-2.0">Apache 2.0</a></li>
   <li><a href="https://github.com/Modernizr/Modernizr">Modernizr</a>: dual-licensed under <a href="http://www.opensource.org/licenses/MIT">MIT</a>
@@ -64,11 +67,16 @@ and <a href="http://www.opensource.org/licenses/BSD-3-Clause">The BSD 3-Clause L
 and <a href="http://www.opensource.org/licenses/BSD-3-Clause">The BSD 3-Clause License</a></li>
   <li><a href="https://github.com/requirejs/domReady">domReady</a>: dual-licensed under <a href="http://www.opensource.org/licenses/MIT">MIT</a>
 and <a href="http://www.opensource.org/licenses/BSD-3-Clause">The BSD 3-Clause License</a></li>
-  <li>
-    <p><a href="https://github.com/marijnh/CodeMirror2">Codemirror2</a>: <a href="http://www.opensource.org/licenses/MIT">MIT</a>
+  <li><a href="https://github.com/requirejs/domReady">require-cs</a>: dual-licensed under <a href="http://www.opensource.org/licenses/MIT">MIT</a>
+and <a href="http://www.opensource.org/licenses/BSD-3-Clause">The BSD 3-Clause License</a></li>
+  <li><a href="https://github.com/jashkenas/coffee-script">coffe-script</a>: <a href="http://www.opensource.org/licenses/MIT">MIT</a></li>
+  <li><a href="https://github.com/marijnh/CodeMirror2">Codemirror2</a>: <a href="http://www.opensource.org/licenses/MIT">MIT</a>
 Codemirror2 includes a number of modules from third parties. All of the modules are licensed under either the MIT or BSD
 license except for the following which are excluded during the Make process where resources from <code>src/vendor/</code> are
-generated and copied to <code>server/public/vendor/</code>.</p>
+generated and copied to <code>server/public/vendor/</code>.</li>
+  <li>
+    <p><a href="http://http://touchpunch.furf.com/">jQuery UI Touch Punch</a>: dual-licensed under <a href="http://www.opensource.org/licenses/MIT">MIT</a>
+and <a href="http://www.opensource.org/licenses/GPL-2.0">GPL v2.0</a>.</p>
 
     <p><strong>Licensing of Excluded Modules</strong></p>
 
@@ -95,6 +103,14 @@ generated and copied to <code>server/public/vendor/</code>.</p>
       <li>src/vendor/codemirror2/lib/util/foldcode.js: MIT</li>
     </ol>
   </li>
+</ol>
+
+<p>The Sass mixins in the directories: <code>src/sass/bourbon</code> and <code>src/sass/neat</code> are used to produce some
+of the CSS used in the Lab project and are distributed under the MIT license.</p>
+
+<ol>
+  <li><a href="https://github.com/thoughtbot/bourbon">Bourbon</a>: <a href="http://www.opensource.org/licenses/MIT">MIT</a></li>
+  <li><a href="https://github.com/thoughtbot/neat">Neat</a>: <a href="http://www.opensource.org/licenses/MIT">MIT</a></li>
 </ol>
 
 <p>The files in the <code>src/imports/</code> directory which are copied to the <code>imports/</code> directory

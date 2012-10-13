@@ -3,10 +3,14 @@
   "width": 3.6,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.67,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -297,6 +301,13 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>A pressure gauge</p>",
+      "x": 2.46,
+      "y": 0.05
+    }
+  ],
   "obstacles": {
     "x": [
       3.28

@@ -3,10 +3,14 @@
   "width": 3.44,
   "height": 1.58,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.33,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -361,6 +365,70 @@
       2000,
       2000,
       2000
+    ],
+    "bondStyle": [
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101
+    ]
+  },
+  "angularBonds": {
+    "atom1Index": [
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "atom2Index": [
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29
+    ],
+    "atom3Index": [
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "bondAngle": [
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957
+    ],
+    "bondStrength": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
     ]
   }
 }

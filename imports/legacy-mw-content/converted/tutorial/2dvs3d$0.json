@@ -3,10 +3,14 @@
   "width": 3.48,
   "height": 2.88,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -65,6 +69,13 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>2D</p>",
+      "x": null,
+      "y": null
+    }
+  ],
   "obstacles": {
     "x": [
       0.38,

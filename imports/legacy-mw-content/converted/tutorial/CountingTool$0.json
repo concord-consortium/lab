@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -352,5 +356,12 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Click this button to use the Counting Tool.</p>",
+      "x": 0.33,
+      "y": 0.19
+    }
+  ]
 }

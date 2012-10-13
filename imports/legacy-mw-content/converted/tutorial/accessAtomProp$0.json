@@ -3,10 +3,14 @@
   "width": 3.5,
   "height": 2,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -72,5 +76,32 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Origin (0, 0)</p>",
+      "x": 0.12,
+      "y": 0.15
+    },
+    {
+      "text": "<p>Simulator Window</p>",
+      "x": 1.03,
+      "y": 0.81
+    },
+    {
+      "text": "<p>X-axis</p>",
+      "x": 2.88,
+      "y": 0.13
+    },
+    {
+      "text": "<p>Y-axis</p>",
+      "x": 0.18,
+      "y": 1.72
+    },
+    {
+      "text": "<p>Double-click on me and type</p>\n<p>in the X/Y fields to change my</p>\n<p>position.</p>",
+      "x": 0.98,
+      "y": 1.16
+    }
+  ]
 }

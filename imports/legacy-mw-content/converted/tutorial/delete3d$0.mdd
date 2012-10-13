@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_01" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="drawList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>53</int> 
+        <int>84</int> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Bookman Old Style</string> 
+        <int>1</int> 
+        <int>11</int> 
+       </object> 
+      </void> 
+      <void property="foregroundColor"> 
+       <object class="java.awt.Color"> 
+        <int>0</int> 
+        <int>255</int> 
+        <int>0</int> 
+        <int>255</int> 
+       </object> 
+      </void> 
+      <void property="text"> 
+       <string>This structure was
+created casually using
+the Deletion Tool. LiCl 
+cannot really form such 
+a structure.</string> 
+      </void> 
+      <void property="x"> 
+       <float>2.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>10.0</float> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+    <void property="color"> 
+     <object class="java.awt.Color"> 
+      <int>0</int> 
+      <int>0</int> 
+      <int>0</int> 
+      <int>255</int> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="fullSizeUnbondedAtoms"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="moleculeStyle"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="rotation"> 
+   <string>305 150 -940 73.4 59</string> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>0.5</float> 
+  </void> 
+  <void property="unmovableSelection"> 
+   <string>3 4 5 6 7 8 9 10 11 15 16 17 18 19 20 21 22 23 24 25 26 32 33 35 36 37 38 40 41 42 43 45 46 60 61 62 63 66 68 69 70 71 74</string> 
+  </void> 
+ </object> 
+</java> 

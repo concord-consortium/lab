@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.1,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": true,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -505,6 +509,30 @@
       2000,
       2000,
       2000
+    ],
+    "bondStyle": [
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101
     ]
   }
 }

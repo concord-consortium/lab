@@ -6,8 +6,8 @@
 // It uses HTML5 Canvas for rendering.
 // getHTMLElement() returns jQuery object with the canvas used for rendering.
 // Before use, this view should be bound with a heatmap using bindHeapmap(heatmap, grid_width, grid_height).
-// To render the heatmap use renderHeatmap() method. 
-// Set size of the heatmap using CSS rules. The view fits canvas dimensions to the real 
+// To render the heatmap use renderHeatmap() method.
+// Set size of the heatmap using CSS rules. The view fits canvas dimensions to the real
 // size of the HTML element to avoid low quality CSS scaling *ONLY* when HQ rendering is enabled.
 // Otherwise, the canvas has the same dimensions as heatmap grid and fast CSS scaling is used.
 
@@ -15,7 +15,7 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    ColorPalette = require('views/color-palette');
+    ColorPalette = require('energy2d/views/color-palette');
 
   return function HeatmapView(html_id) {
     var
@@ -37,7 +37,7 @@ define(function (require) {
       min_temp = 0,
       max_temp = 50,
 
-      // 
+      //
       // Private methods.
       //
       initHTMLelement = function () {

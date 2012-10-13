@@ -3,10 +3,14 @@
   "width": 5,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,12 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Double-click on a button to bring</p>\n<p>up a customization dialog window.</p>",
+      "x": 1.11,
+      "y": 0.53
+    }
+  ]
 }

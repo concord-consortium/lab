@@ -3,10 +3,14 @@
   "width": 5,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 0.9879999756813049,
   "elements": [
     {
       "id": 0,
@@ -697,6 +701,28 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>Inside balloon</p>",
+      "x": 0.08,
+      "y": 0.07
+    },
+    {
+      "text": "<p>Outside balloon</p>",
+      "x": 2.76,
+      "y": 0.07
+    },
+    {
+      "text": "<p>Balloon</p>\n<p>skin</p>",
+      "x": 1.6243974304199218,
+      "y": 1.06
+    },
+    {
+      "text": "<p>Counter</p>",
+      "x": 0.06,
+      "y": 2.2
+    }
+  ],
   "obstacles": {
     "x": [
       2.1943974843548912

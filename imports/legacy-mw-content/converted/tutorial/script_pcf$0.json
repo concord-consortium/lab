@@ -3,10 +3,14 @@
   "width": 3.38,
   "height": 1.88,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -1040,5 +1044,17 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Left cut-out</p>",
+      "x": 0.44,
+      "y": 0.29
+    },
+    {
+      "text": "<p>Right cut-out</p>",
+      "x": 2.35,
+      "y": 1.27
+    }
+  ]
 }

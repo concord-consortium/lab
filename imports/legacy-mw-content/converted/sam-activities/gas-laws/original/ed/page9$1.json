@@ -3,10 +3,14 @@
   "width": 3.7,
   "height": 3.2,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -401,6 +405,13 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>In this compartment, particles below</p>\n<p>the obstacle represent a fixed amount</p>\n<p>of air molecules in the atmosphere.</p>",
+      "x": 0.65,
+      "y": 0.16
+    }
+  ],
   "obstacles": {
     "x": [
       0.09,

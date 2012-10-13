@@ -3,10 +3,14 @@
   "width": 3.5,
   "height": 2.7,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,12 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Can you identify what invisible particles</p>\n<p>are present in this window by the type of</p>\n<p>electric field they produce?</p>\n<p></p>\n<p></p>\n<p>Try it yourself</p>",
+      "x": 0.01,
+      "y": 0.4
+    }
+  ]
 }

@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.8,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": 8.000000000000001e-7,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -64,5 +68,23 @@
     "PINNED": [
       0
     ]
-  }
+  },
+  "images": [
+    {
+      "imageUri": "soccer.gif",
+      "imageHostIndex": 0,
+      "imageHostType": "Atom",
+      "imageLayer": 1,
+      "imageX": 62.39999999999944,
+      "imageY": 100.3921632009563
+    },
+    {
+      "imageUri": "park.gif",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 2,
+      "imageX": -2,
+      "imageY": -20
+    }
+  ]
 }

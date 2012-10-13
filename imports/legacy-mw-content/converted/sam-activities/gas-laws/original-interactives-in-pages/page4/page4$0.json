@@ -3,10 +3,14 @@
   "width": 5,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.67,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -521,6 +525,13 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>A piston</p>\n<p>with</p>\n<p>constant</p>\n<p>pressure</p>\n<p>on it</p>",
+      "x": 1.973017120361328,
+      "y": 0.865
+    }
+  ],
   "obstacles": {
     "x": [
       2.1330171942535365

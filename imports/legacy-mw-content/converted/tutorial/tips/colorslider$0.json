@@ -3,10 +3,14 @@
   "width": 3.88,
   "height": 1.88,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,6 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "images": []
 }

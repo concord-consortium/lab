@@ -1,0 +1,40 @@
+{
+  "title": "Intermolecular Attractions Page 2: Comparing Dipole-Dipole to London Dispersion",
+  "about": "Interactive example",
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json",
+    "viewOptions": {
+      "controlButtons": ""
+    }
+  },
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select a pair of molecules",
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json"
+        },
+        {
+          "text": "Pull apart two non-polar molecules",
+          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json', start);"
+        },
+        {
+          "text": "Pull apart two polar molecules",
+          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.json', start);"
+        },
+        {
+          "text": "Pull apart a non-polar and polar molecules",
+          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json', start);"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "reset",
+      "action": "reset();"
+    }
+  ]
+}

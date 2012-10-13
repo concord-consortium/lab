@@ -3,10 +3,14 @@
   "width": 3.5,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,30 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "images": [
+    {
+      "imageUri": "simplifiedCombustionFlat.png",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 33,
+      "imageY": 19
+    },
+    {
+      "imageUri": "reactionLeft.png",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 9,
+      "imageY": 217
+    }
+  ],
+  "textBoxes": [
+    {
+      "text": "<p>Choose a reaction to run.</p>",
+      "x": 0.18,
+      "y": 2.09
+    }
+  ]
 }

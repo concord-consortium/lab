@@ -3,10 +3,14 @@
   "width": 3.5,
   "height": 2.2,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": true,
   "showVDWLines": true,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -225,6 +229,23 @@
       2000,
       2000,
       2000
+    ],
+    "bondStyle": [
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Drag the molecules close to each other,</p>\n<p>and look for intermolecular attractions.</p>",
+      "x": 0.53,
+      "y": 0.18
+    }
+  ]
 }

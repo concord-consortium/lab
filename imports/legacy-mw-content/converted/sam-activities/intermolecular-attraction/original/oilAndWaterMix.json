@@ -3,10 +3,14 @@
   "width": 3.5,
   "height": 2.1,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": true,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -505,7 +509,53 @@
       2000,
       2000,
       2000
+    ],
+    "bondStyle": [
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101
     ]
   },
+  "images": [
+    {
+      "imageUri": "hideHeatBath.gif",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 8,
+      "imageY": 7
+    }
+  ],
+  "textBoxes": [
+    {
+      "text": "<p>Oil and Water Shaken Up and Mixed</p>",
+      "x": 0.6,
+      "y": 0.09
+    },
+    {
+      "text": "<p>press run to see  the mixture \"settle\"</p>",
+      "x": 0.56,
+      "y": 1.87
+    }
+  ],
   "temperature": 1000
 }

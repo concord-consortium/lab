@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,15 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "images": [
+    {
+      "imageUri": "atlanticcod.jpg",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 50,
+      "imageY": 50
+    }
+  ]
 }

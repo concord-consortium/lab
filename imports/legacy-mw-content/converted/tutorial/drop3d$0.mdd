@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_01" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+    <void property="color"> 
+     <object class="java.awt.Color"> 
+      <int>0</int> 
+      <int>0</int> 
+      <int>0</int> 
+      <int>255</int> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="rotation"> 
+   <string>-954 73 -292 160.5 114</string> 
+  </void> 
+  <void property="showCharge"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="showVdwLines"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>0.5</float> 
+  </void> 
+  <void property="trajectorySelection"> 
+   <string>11 14</string> 
+  </void> 
+  <void property="unmovableSelection"> 
+   <string>5 6 7 8 9 10 11 32 33 37 38 60 61 62 63 66</string> 
+  </void> 
+  <void property="velocitySelection"> 
+   <string>14</string> 
+  </void> 
+ </object> 
+</java> 

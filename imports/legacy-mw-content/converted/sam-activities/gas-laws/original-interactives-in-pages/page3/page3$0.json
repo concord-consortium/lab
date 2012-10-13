@@ -3,10 +3,14 @@
   "width": 3.6,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.67,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -297,6 +301,48 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>A wall</p>\n<p>with a</p>\n<p>pressure</p>\n<p>gauge</p>",
+      "x": 1.4000009155273438,
+      "y": 1.005
+    },
+    {
+      "text": "<p>1</p>",
+      "x": 0.36,
+      "y": 0.19
+    },
+    {
+      "text": "<p>2</p>",
+      "x": 0.86,
+      "y": 0.19
+    },
+    {
+      "text": "<p>3</p>",
+      "x": 1.35,
+      "y": 0.19
+    },
+    {
+      "text": "<p>4</p>",
+      "x": 1.85,
+      "y": 0.19
+    },
+    {
+      "text": "<p>5</p>",
+      "x": 2.36,
+      "y": 0.19
+    },
+    {
+      "text": "<p>6</p>",
+      "x": 2.86,
+      "y": 0.19
+    },
+    {
+      "text": "<p>7</p>",
+      "x": 3.36,
+      "y": 0.18
+    }
+  ],
   "obstacles": {
     "x": [
       1.5000008791686752

@@ -3,10 +3,14 @@
   "width": 3.5,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -777,8 +781,59 @@
       1857.1428954601288,
       1857.1428954601288,
       1857.1428954601288
+    ],
+    "bondStyle": [
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101
     ]
   },
+  "images": [
+    {
+      "imageUri": "fuelOxygenKeyFlat.png",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 4,
+      "imageY": 220
+    }
+  ],
+  "textBoxes": [
+    {
+      "text": "<p>Fuel as a Limiting Reactant</p>",
+      "x": 0.6,
+      "y": 0.15
+    }
+  ],
   "obstacles": {
     "x": [
       0.05

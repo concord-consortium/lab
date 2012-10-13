@@ -6,16 +6,16 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
-    Texture = require('gpu/texture'),
-    Shader  = require('gpu/shader'),
-    Mesh    = require('gpu/mesh'),
+    context = require('energy2d/gpu/context'),
+    Texture = require('energy2d/gpu/texture'),
+    Shader  = require('energy2d/gpu/shader'),
+    Mesh    = require('energy2d/gpu/mesh'),
 
     // The internal `gl` variable holds the current WebGL context.
     gl,
 
     // GPGPU utils must know dimensions of data (grid).
-    // This assumption that all the textures will have the same dimensions is 
+    // This assumption that all the textures will have the same dimensions is
     // caused by performance reasons (helps avoiding recreating data structures).
     // To set grid dimensions and initialize WebGL context, call init(grid_width, grid_height).
     grid_width,
@@ -38,7 +38,7 @@ define(function (require) {
     // Flag which determines if WebGL context and necessary objects are initialized.
     WebGL_initialized = false,
 
-    // Special shader for encoding floats based on: 
+    // Special shader for encoding floats based on:
     // https://github.com/cscheid/facet/blob/master/src/shade/bits/encode_float.js
     encode_program,
     copy_program,

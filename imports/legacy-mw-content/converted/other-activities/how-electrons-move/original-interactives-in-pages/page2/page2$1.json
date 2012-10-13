@@ -3,10 +3,14 @@
   "width": 4.5,
   "height": 2.6,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -67,5 +71,12 @@
     "VISIBLE": [
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Find the hidden particle.</p>",
+      "x": 1.34,
+      "y": 0.06
+    }
+  ]
 }

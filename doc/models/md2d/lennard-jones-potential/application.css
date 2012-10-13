@@ -28,7 +28,6 @@ body {
   margin: 0em;
   padding: 0em;
   background-color: white;
-  background: url("../../../../resources/aspect-ratio-1x1.png") no-repeat -9999px -9999px;
   color: #3f3f3f; }
 
 h1 {
@@ -51,28 +50,14 @@ h3 {
 
 .thermometer {
   display: block;
-  width: 2em;
+  width: 3em;
   height: 20em;
   margin: auto;
   padding-top: 0.2em;
   padding-bottom: 0.1em;
   border: 2px solid #f4b626;
   position: relative;
-  -moz-border-radius-topleft: 1em;
-  -webkit-border-top-left-radius: 1em;
-  -moz-border-top-left-radius: 1em;
-  border-top-left-radius: 1em;
-  -moz-border-radius-topright: 1em;
-  -webkit-border-top-right-radius: 1em;
-  -moz-border-top-right-radius: 1em;
-  border-top-right-radius: 1em;
-  -moz-border-radius-bottomleft: 0.2em;
-  -webkit-border-bottom-left-radius: 0.2em;
-  -moz-border-bottom-left-radius: 0.2em;
-  border-bottom-left-radius: 0.2em;
-  -webkit-border-bottom-right-radius: 0.2em;
-  -moz-border-bottom-right-radius: 0.2em;
-  border-bottom-right-radius: 0.2em; }
+  border-radius: 1.5em 1.5em 0.2em 0.2em; }
   .thermometer div {
     display: block;
     position: relative;
@@ -84,14 +69,7 @@ h3 {
     left: 15%;
     bottom: 0;
     background: #e16a3e;
-    -moz-border-radius-topleft: 0.5em;
-    -webkit-border-top-left-radius: 0.5em;
-    -moz-border-top-left-radius: 0.5em;
-    border-top-left-radius: 0.5em;
-    -moz-border-radius-topright: 0.5em;
-    -webkit-border-top-right-radius: 0.5em;
-    -moz-border-top-right-radius: 0.5em;
-    border-top-right-radius: 0.5em; }
+    border-radius: 0.75em 0.75em 0em 0em; }
 
 .therm_text {
   display: block;
@@ -335,7 +313,6 @@ h3 {
   background-image: -o-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
   background-image: linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
   -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.7);
-  -moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.7);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.7); }
 
 .component_group button[disabled="disabled"] {
@@ -355,38 +332,10 @@ h3 {
 
 .component_group button.left_edge {
   border-right-width: 0;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
-  -moz-border-top-left-radius: 3px;
-  border-top-left-radius: 3px;
-  -moz-border-radius-topright: 0;
-  -webkit-border-top-right-radius: 0;
-  -moz-border-top-right-radius: 0;
-  border-top-right-radius: 0;
-  -webkit-border-bottom-right-radius: 0;
-  -moz-border-bottom-right-radius: 0;
-  border-bottom-right-radius: 0;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  -moz-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px; }
+  border-radius: 3px 0px 0px 3px; }
 
 .component_group button.right_edge {
-  -moz-border-radius-topleft: 0;
-  -webkit-border-top-left-radius: 0;
-  -moz-border-top-left-radius: 0;
-  border-top-left-radius: 0;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
-  -moz-border-top-right-radius: 3px;
-  border-top-right-radius: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  -moz-border-bottom-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  -moz-border-radius-bottomleft: 0;
-  -webkit-border-bottom-left-radius: 0;
-  -moz-border-bottom-left-radius: 0;
-  border-bottom-left-radius: 0; }
+  border-radius: 0px 3px 3px 0px; }
 
 .component_group button#cool_button, .component_group button#heat_button {
   background-color: #dddddd;
@@ -430,6 +379,11 @@ h3 {
   background-image: linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
   color: #999999; }
 
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
 #content {
   margin: 0em;
   padding: 0em;
@@ -446,8 +400,8 @@ h3 {
 
 #viz {
   margin: 0em;
-  padding: 0em;
   height: 100%;
+  width: 100%;
   display: inline-block; }
 
 .top {
@@ -479,11 +433,8 @@ h3 {
   left: 0;
   right: 0;
   background: #f9eec1;
-  -webkit-border-radius: 0.5em;
-  -moz-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   height: 100%;
   width: 100%;
@@ -502,11 +453,8 @@ applet {
   left: 0;
   right: 0;
   background: #f9eec1;
-  -webkit-border-radius: 0.5em;
-  -moz-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   height: 100%;
   width: 100%;
@@ -578,11 +526,8 @@ div.tooltip {
   width: 20em;
   height: 16em;
   background: #f9eec1;
-  -webkit-border-radius: 0.5em;
-  -moz-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   margin: 0em 0.5em 0.5em 1em; }
   #lj-potential-chart circle {
@@ -602,11 +547,8 @@ div.tooltip {
   width: 20em;
   height: 16em;
   background: #f9eec1;
-  -webkit-border-radius: 0.5em;
-  -moz-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   margin: 0em 0.5em 0.5em 0.5em; }
 
@@ -617,11 +559,8 @@ div.tooltip {
   width: 41em;
   height: 21.5em;
   background: #f9eec1;
-  -webkit-border-radius: 0.5em;
-  -moz-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   margin: 0em 1em;
   padding: 0em 0em; }
@@ -630,11 +569,8 @@ div.tooltip {
   background: #f9eec1;
   border: none !important;
   padding: 0.3em 0.6em !important;
-  -webkit-border-radius: 0.5em;
-  -moz-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   display: inline-block;
   vertical-align: top;
@@ -732,3 +668,108 @@ div.tooltip {
 
 .draggable {
   cursor: move; }
+
+#content-banner {
+  z-index: 10;
+  width: 100%;
+  display: table;
+  font-size: 1.2em;
+  margin: 0em;
+  padding-top: 0.5em;
+  height: 1.2em;
+  color: black;
+  background-color: white; }
+  #content-banner a {
+    text-decoration: none;
+    color: black; }
+
+#cc {
+  float: left;
+  vertical-align: middle;
+  display: table-cell;
+  margin-left: 0.92em;
+  opacity: 0.5; }
+  #cc:hover {
+    cursor: pointer;
+    opacity: 1; }
+
+#about, #share {
+  float: right;
+  vertical-align: middle;
+  display: table-cell;
+  margin-right: 2em;
+  opacity: 0.5; }
+  #about:hover, #share:hover {
+    cursor: pointer;
+    opacity: 1; }
+
+#about-pane, #share-pane {
+  display: none;
+  position: absolute;
+  border-radius: 0.5em;
+  -webkit-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.5);
+  width: 60%;
+  height: auto;
+  min-height: 10.4em;
+  max-height: 80%;
+  top: 3em;
+  left: 4em;
+  z-index: 100;
+  margin: 0.5em;
+  padding: 0em;
+  background-color: #efefef; }
+  #about-pane p, #share-pane p {
+    margin-top: 1em;
+    margin-bottom: 1em; }
+  #about-pane textarea, #share-pane textarea {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+    width: 100%;
+    height: auto;
+    font-size: 0.65em; }
+  #about-pane textarea#share-iframe-content, #share-pane textarea#share-iframe-content {
+    height: 6.5em; }
+
+#share-pane {
+  left: inherit;
+  right: 2em;
+  min-height: 19.5em; }
+  #share-pane p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em; }
+
+#about-pane-banner, #share-pane-banner {
+  width: 100.2%;
+  display: table;
+  opacity: 0.7;
+  margin: 0em;
+  padding: 0.5em 1.3em;
+  height: 1.625em;
+  color: white;
+  background-color: #58b5b9;
+  border-top-right-radius: 0.5em;
+  border-top-left-radius: 0.5em; }
+
+#about-pane-title, #share-pane-title {
+  vertical-align: middle;
+  display: table-cell;
+  font-size: 1.3em;
+  font-weight: bold; }
+
+#about-pane-close, #share-pane-close {
+  float: right;
+  vertical-align: middle;
+  display: table-cell;
+  font-size: 1.3em;
+  font-weight: 800; }
+  #about-pane-close:hover, #share-pane-close:hover {
+    cursor: pointer;
+    color: #dddddd; }
+
+#about-content, #share-content {
+  margin: 0.5em 1em 1em 1em;
+  font-size: 1.3em; }
+  #about-content a, #share-content a {
+    text-decoration: none; }

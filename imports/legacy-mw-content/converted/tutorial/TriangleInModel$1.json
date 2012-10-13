@@ -3,10 +3,14 @@
   "width": 5,
   "height": 2,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -72,5 +76,22 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Magnetic field in it</p>",
+      "x": 0.4,
+      "y": 0.19
+    },
+    {
+      "text": "<p>Internal reflection</p>",
+      "x": 1.31,
+      "y": 1.61
+    },
+    {
+      "text": "<p>Form a trapezoid</p>\n<p>using two triangles</p>",
+      "x": 3.67,
+      "y": 0.09
+    }
+  ]
 }

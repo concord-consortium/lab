@@ -3,10 +3,14 @@
   "width": 6.88,
   "height": 3.88,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -88,5 +92,72 @@
       0,
       0
     ]
-  }
+  },
+  "images": [
+    {
+      "imageUri": "helicopter.gif",
+      "imageHostIndex": 0,
+      "imageHostType": "Atom",
+      "imageLayer": 1,
+      "imageX": 386,
+      "imageY": 140
+    },
+    {
+      "imageUri": "helicopter.gif",
+      "imageHostIndex": 1,
+      "imageHostType": "Atom",
+      "imageLayer": 1,
+      "imageX": 137,
+      "imageY": 212
+    },
+    {
+      "imageUri": "helicopter.gif",
+      "imageHostIndex": 2,
+      "imageHostType": "Atom",
+      "imageLayer": 1,
+      "imageX": 42,
+      "imageY": 66
+    },
+    {
+      "imageUri": "island.jpg",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 2,
+      "imageX": 194,
+      "imageY": 93
+    },
+    {
+      "imageUri": "radar.gif",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 2,
+      "imageX": 319,
+      "imageY": 189
+    },
+    {
+      "imageUri": "Mirage.gif",
+      "imageHostIndex": 3,
+      "imageHostType": "Atom",
+      "imageLayer": 1,
+      "imageX": 218,
+      "imageY": 344
+    }
+  ],
+  "textBoxes": [
+    {
+      "text": "<p>An JPEG image</p>",
+      "x": 1.78,
+      "y": 1.39
+    },
+    {
+      "text": "<p>An animated GIF image</p>\n<p>not attached to any particle</p>",
+      "x": 3.38,
+      "y": 2.74
+    },
+    {
+      "text": "<p>An animated GIF image</p>\n<p>attached to a particle</p>",
+      "x": 0.48,
+      "y": 0.14
+    }
+  ]
 }

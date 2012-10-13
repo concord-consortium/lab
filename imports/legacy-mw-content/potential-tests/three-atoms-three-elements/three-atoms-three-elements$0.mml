@@ -1,4 +1,4 @@
-5<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <java version="1.6.0_31" class="java.beans.XMLDecoder">
  <object id="Element0" class="org.concord.mw2d.models.Element">
   <void property="epsilon">
@@ -318,7 +318,7 @@
    <object class="org.concord.mw2d.models.LightSource"/>
   </void>
   <void property="numberOfParticles">
-   <int>2</int>
+   <int>3</int>
   </void>
   <void property="properties">
    <void method="put">

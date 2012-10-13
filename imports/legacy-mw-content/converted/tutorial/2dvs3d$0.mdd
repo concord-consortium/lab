@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_11" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="axisStyle"> 
+   <byte>0</byte> 
+  </void> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="drawList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>60</int> 
+        <int>64</int> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Arial Bold</string> 
+        <int>1</int> 
+        <int>16</int> 
+       </object> 
+      </void> 
+      <void property="foregroundColor"> 
+       <object id="Color0" class="java.awt.Color"> 
+        <int>255</int> 
+        <int>255</int> 
+        <int>255</int> 
+        <int>255</int> 
+       </object> 
+      </void> 
+      <void property="text"> 
+       <string>3D</string> 
+      </void> 
+      <void property="x"> 
+       <float>36.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>45.0</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>60</int> 
+        <int>64</int> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Book Antiqua</string> 
+        <int>0</int> 
+        <int>12</int> 
+       </object> 
+      </void> 
+      <void property="foregroundColor"> 
+       <object idref="Color0"/> 
+      </void> 
+      <void property="text"> 
+       <string>Drag the mouse to rotate;
+hold down SHIFT to zoom.</string> 
+      </void> 
+      <void property="x"> 
+       <float>3.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>313.0</float> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="obstacles"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="color"> 
+       <int>-3342592</int> 
+      </void> 
+      <void property="lx"> 
+       <float>3.5914154</float> 
+      </void> 
+      <void property="ly"> 
+       <float>19.882978</float> 
+      </void> 
+      <void property="lz"> 
+       <float>11.353973</float> 
+      </void> 
+      <void property="rx"> 
+       <float>-24.325989</float> 
+      </void> 
+      <void property="ry"> 
+       <float>1.4479542</float> 
+      </void> 
+      <void property="rz"> 
+       <float>-4.34317</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="lx"> 
+       <float>8.545865</float> 
+      </void> 
+      <void property="ly"> 
+       <float>19.204407</float> 
+      </void> 
+      <void property="lz"> 
+       <float>3.819519</float> 
+      </void> 
+      <void property="rx"> 
+       <float>26.74633</float> 
+      </void> 
+      <void property="ry"> 
+       <float>5.7955933</float> 
+      </void> 
+      <void property="rz"> 
+       <float>-9.819519</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="color"> 
+       <int>-6710785</int> 
+      </void> 
+      <void property="lx"> 
+       <float>44.518013</float> 
+      </void> 
+      <void property="ly"> 
+       <float>2.2015686</float> 
+      </void> 
+      <void property="lz"> 
+       <float>18.294937</float> 
+      </void> 
+      <void property="rx"> 
+       <float>-1.4931717</float> 
+      </void> 
+      <void property="ry"> 
+       <float>-7.0057983</float> 
+      </void> 
+      <void property="rz"> 
+       <float>0.3431549</float> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="rotation"> 
+   <string>400 -909 -119 65.1 30</string> 
+  </void> 
+  <void property="showClock"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>1.0</float> 
+  </void> 
+  <void property="trajectorySelection"> 
+   <string>0</string> 
+  </void> 
+  <void property="xyzFileName"> 
+   <string>2dvs3d$0.xyz</string> 
+  </void> 
+ </object> 
+</java> 

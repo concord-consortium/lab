@@ -3,10 +3,14 @@
   "width": 3.9,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": true,
   "VDWLinesRatio": 1.67,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -865,6 +869,18 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>Pressure gauge on</p>\n<p>the left face:</p>\n<p>Measuring pressure</p>\n<p>by counting impulses</p>\n<p>of molecules onto</p>\n<p>the surface.</p>",
+      "x": 2.6,
+      "y": 1.44
+    },
+    {
+      "text": "<p>A strongly</p>\n<p>interacting</p>\n<p>system.</p>",
+      "x": 2.64,
+      "y": 0.22
+    }
+  ],
   "obstacles": {
     "x": [
       2.31

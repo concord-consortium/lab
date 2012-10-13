@@ -3,10 +3,14 @@
   "width": 3.5,
   "height": 2,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -64,5 +68,12 @@
     "PINNED": [
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Charge reverser</p>",
+      "x": 0.17,
+      "y": 0.67
+    }
+  ]
 }

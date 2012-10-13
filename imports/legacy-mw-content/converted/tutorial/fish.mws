@@ -1,0 +1,102 @@
+show selectionhalo off;
+select image all;
+remove;
+select textbox all;
+remove;
+
+add textbox sample.txt (2, 2);
+select textbox none;
+set textbox[0].text <t>Fish in the northeastern coast</t>
+
+add image atlanticcod.jpg (5, 5);
+set textbox[0].text <t>Atlantic Cod</t>
+delay 2;
+select image 0;
+loop 1; // the commands before this one and the last loop command get executed only once!
+move (-5, 0); delay 0.2;
+loop 5;
+remove;
+
+add image blackseabass.jpg (5, 5);
+set textbox[0].text <t>Black Sea Bass</t>
+delay 2;
+select image 0; 
+loop 1;
+move (-5, 0); delay 0.2;
+loop 5;
+remove;
+
+add image bluefintuna.jpg (5, 5);
+set textbox[0].text <t>Bluefin Tuna</t>
+delay 2;
+select image 0; 
+loop 1;
+move (-5, 0); delay 0.2;
+loop 5;
+remove;
+
+add image bluefish.jpg (5, 5);
+set textbox[0].text <t>Blue Fish</t>
+delay 2;
+select image 0;
+loop 1;
+move (-5, 0); delay 0.2;
+loop 5;
+remove;
+
+add image fluke.jpg (5, 5);
+set textbox[0].text <t>Fluke (flounder)</t>
+delay 2;
+select image 0;
+loop 1;
+move (-5, 0); delay 0.2;
+loop 5;
+remove;
+
+add image haddock.jpg (5, 5);
+set textbox[0].text <t>Haddock</t>
+delay 2;
+select image 0;
+loop 1;
+move (-5, 0); delay 0.2;
+loop 5;
+remove;
+
+add image scup.jpg (5, 5);
+set textbox[0].text <t>Scup</t>
+delay 2;
+select image 0;
+loop 1;
+move (-5, 0); delay 0.2;
+loop 5;
+remove;
+
+add image stripedbass.jpg (5, 5);
+set textbox[0].text <t>Striped Bass</t>
+delay 2;
+select image 0;
+loop 1;
+move (-5, 0); delay 0.2;
+loop 5;
+remove;
+
+add image tautog.jpg (5, 5);
+set textbox[0].text <t>Tautog</t>
+delay 2;
+select image 0;
+loop 1;
+move (-5, 0); delay 0.2;
+loop 5;
+remove;
+
+add image yellowfintuna.jpg (5, 5);
+set textbox[0].text <t>Yellowfin Tuna</t>
+delay 2;
+select image 0;
+loop 1;
+move (-5, 0); delay 0.2;
+loop 5;
+remove;
+
+set textbox[0].text <t>No more fish.</t>;
+show selectionhalo on;

@@ -6,19 +6,19 @@
 // It uses HTML5 Canvas and WebGL for rendering.
 // getHTMLElement() returns jQuery object with the canvas used for rendering.
 // Before use, this view should be bound with a heatmap texture using bindHeapmapTexture(vectormap_tex).
-// To render the heatmap use renderVectormapTexture() method. 
+// To render the heatmap use renderVectormapTexture() method.
 // Set size of the heatmap using CSS rules.
 
 define(function (require) {
   'use strict';
   var
     // Dependencies.
-    context = require('gpu/context'),
-    Shader  = require('gpu/shader'),
-    Mesh    = require('gpu/mesh'),
+    context = require('energy2d/gpu/context'),
+    Shader  = require('energy2d/gpu/shader'),
+    Mesh    = require('energy2d/gpu/mesh'),
     // Shader sources. One of Lab build steps converts sources to the JavaScript file.
-    vectormap_vs = require('text!views/vectormap-webgl-glsl/vectormap.vs.glsl'),
-    vectormap_fs = require('text!views/vectormap-webgl-glsl/vectormap.fs.glsl');
+    vectormap_vs = require('text!energy2d/views/vectormap-webgl-glsl/vectormap.vs.glsl'),
+    vectormap_fs = require('text!energy2d/views/vectormap-webgl-glsl/vectormap.fs.glsl');
 
   return function VectormapWebGLView(html_id) {
     var
@@ -43,7 +43,7 @@ define(function (require) {
       grid_height,
       spacing,
 
-      // 
+      //
       // Private methods.
       //
       initGeometry = function () {

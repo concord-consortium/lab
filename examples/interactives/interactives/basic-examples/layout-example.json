@@ -1,0 +1,66 @@
+{
+  "title": "Testing: Layout Example",
+  "about": "Interactive example",
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
+    "viewOptions": {
+      "controlButtons": ""
+    }
+  },
+  "components": [
+    {
+      "type": "button",
+      "id": "abs-zero",
+      "text": "Set to absolute zero",
+      "action": "set({temperature: 0.00001});"
+    },
+    {
+      "type": "button",
+      "id": "add-heat",
+      "text": "Add lots of heat",
+      "action": [
+                "var curTemp = get('temperature'), newTemp = curTemp + 2500;",
+                "if (newTemp > 4000) {",
+                "  newTemp = 4000;",
+                "}",
+                "set({temperature: newTemp});"
+              ]
+    },
+    {
+      "type": "button",
+      "id": "start",
+      "text": "Start",
+      "action": "start();"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": 200,
+      "max": 4000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "start",
+      "stop",
+      "reset",
+      "abs-zero",
+      "add-heat"
+    ]
+  }
+}

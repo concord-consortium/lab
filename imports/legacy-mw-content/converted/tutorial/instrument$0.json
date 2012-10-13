@@ -3,10 +3,14 @@
   "width": 3,
   "height": 2,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -72,5 +76,32 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Scan to generate an X-ray image.</p>",
+      "x": 0.24,
+      "y": 0.11
+    },
+    {
+      "text": "<p>Left: Level of details; Right: Inversion.</p>",
+      "x": 0.24,
+      "y": 0.41
+    },
+    {
+      "text": "<p>Left: Zoom in; Right: Zoom out.</p>",
+      "x": 0.24,
+      "y": 0.7
+    },
+    {
+      "text": "<p>Left: Take a snapshot; Right: Save the image.</p>",
+      "x": 0.24,
+      "y": 1.01
+    },
+    {
+      "text": "<p>The Control Panel of the Virtual</p>\n<p>X-ray Diffraction Instrument.</p>",
+      "x": 0.24,
+      "y": 1.39
+    }
+  ]
 }

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A Sliding Pendulum</page_title>
+<text>A Sliding Pendulum
+
+ 
+  
+Instruction: under construction.</text>
+<section start="0" end="58">
+<paragraph start="0" end="19">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="18">
+<bold>true</bold><size>15</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="22">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>slidingpendulum$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="25">
+<Alignment>1</Alignment>
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>10</nstep>
+<title>Mass of the Green Ball</title>
+<tooltip>Change the mass of the green ball</tooltip>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Heavy&quot;}{value=&quot;0.0&quot;, label=&quot;Light&quot;}</labeltable>
+<script>set element[1].mass &quot;(1+%val)*100&quot;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>10</nstep>
+<title>Mass of the Purple Ball</title>
+<tooltip>Change the mass of the purple ball</tooltip>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Heavy&quot;}{value=&quot;0.0&quot;, label=&quot;Light&quot;}</labeltable>
+<script>set element[3].mass &quot;(1+%val)*100&quot;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="58">
+<LeftIndent>6.0</LeftIndent>
+<content start="25" end="36">
+<bold>true</bold><size>11</size></content>
+
+<content start="36" end="57">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

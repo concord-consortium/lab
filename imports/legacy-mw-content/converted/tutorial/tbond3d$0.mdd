@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_01" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+    <void property="color"> 
+     <object class="java.awt.Color"> 
+      <int>0</int> 
+      <int>0</int> 
+      <int>0</int> 
+      <int>255</int> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="moleculeStyle"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="rotation"> 
+   <string>1000 0 0 1.0 106</string> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>0.5</float> 
+  </void> 
+ </object> 
+</java> 

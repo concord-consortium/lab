@@ -3,10 +3,14 @@
   "width": 5.88,
   "height": 2.38,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": true,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -205,6 +209,101 @@
       2000,
       2000,
       2000
+    ],
+    "bondStyle": [
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101
     ]
-  }
+  },
+  "angularBonds": {
+    "atom1Index": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "atom2Index": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "atom3Index": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "bondAngle": [
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957,
+      2.0943951023931957
+    ],
+    "bondStrength": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Start</p>",
+      "x": 2.88,
+      "y": 0.07
+    },
+    {
+      "text": "<p>Calcuate forces f(t) from potentials V({r(t)})</p>\n<p>Get accelerations at time t: a(t)=f(t)/m</p>",
+      "x": 1.93,
+      "y": 0.47
+    },
+    {
+      "text": "<p>Equations of motion:</p>\n<p>r(t+dt)=r(t)+v(t)*dt+0.5*a(t)*dt^2</p>\n<p>v(t+dt)=v(t)+a(t)*dt</p>",
+      "x": 2.23,
+      "y": 1.01
+    },
+    {
+      "text": "<p>In actuality, use</p>\n<p>Verlet's algorithm</p>",
+      "x": 4.41,
+      "y": 1.09
+    },
+    {
+      "text": "<p>t=t+dt</p>",
+      "x": 1.55,
+      "y": 2.19
+    },
+    {
+      "text": "<p>Output results at time t+dt:</p>\n<p>energies, temperature,</p>\n<p>pressure, etc.</p>",
+      "x": 2.36,
+      "y": 1.71
+    }
+  ]
 }

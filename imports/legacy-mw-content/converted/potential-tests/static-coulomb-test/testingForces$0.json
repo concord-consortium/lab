@@ -1,12 +1,16 @@
 {
-  "temperature_control": true,
+  "temperature_control": false,
   "width": 3,
   "height": 3,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": true,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 5,
   "elements": [
     {
       "id": 0,
@@ -72,6 +76,5 @@
       1,
       1
     ]
-  },
-  "temperature": 244.4
+  }
 }

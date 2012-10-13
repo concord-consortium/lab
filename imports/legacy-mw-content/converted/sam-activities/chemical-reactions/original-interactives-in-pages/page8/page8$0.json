@@ -3,10 +3,14 @@
   "width": 2.9,
   "height": 2,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,22 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "images": [
+    {
+      "imageUri": "reactionLeft.png",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 12,
+      "imageY": 118
+    }
+  ],
+  "textBoxes": [
+    {
+      "text": "<p>Select each reaction to the left</p>\n<p>and then answer a question on</p>\n<p>that reaction below.</p>",
+      "x": 0.25,
+      "y": 1.09
+    }
+  ]
 }

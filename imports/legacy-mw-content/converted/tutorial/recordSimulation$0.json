@@ -3,10 +3,14 @@
   "width": 4.5,
   "height": 3,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -88,5 +92,47 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Drag the knob with mouse, or</p>\n<p>press the slider and use the left</p>\n<p>and right arrow key, or roll the</p>\n<p>wheel of the mouse (if any) to</p>\n<p>play back the recorded simulation</p>\n<p>freely.</p>",
+      "x": 0.08,
+      "y": 1.51
+    },
+    {
+      "text": "<p>Reset</p>",
+      "x": 0.86,
+      "y": 2.74
+    },
+    {
+      "text": "<p>Rewind</p>",
+      "x": 1.05,
+      "y": 2.48
+    },
+    {
+      "text": "<p>Step</p>\n<p>back</p>",
+      "x": 1.66,
+      "y": 2.42
+    },
+    {
+      "text": "<p>Stop</p>",
+      "x": 2.12,
+      "y": 2.51
+    },
+    {
+      "text": "<p>Step</p>\n<p>forward</p>",
+      "x": 2.6,
+      "y": 2.33
+    },
+    {
+      "text": "<p>Run or play back</p>",
+      "x": 2.63,
+      "y": 2.73
+    },
+    {
+      "text": "<p>The VCR-like control panel of the simulation recorder</p>\n<p>is at the bottom of each simulator. If the recorder is</p>\n<p>turned off, the panel will be replaced by a simple</p>\n<p>panel with \"Run\", \"Stop\" and \"Reset\" buttons.</p>",
+      "x": 0.7,
+      "y": 0.26
+    }
+  ]
 }

@@ -3,10 +3,14 @@
   "width": 3.5,
   "height": 2,
   "viscosity": 0.25,
+  "keShading": false,
   "chargeShading": true,
   "showVDWLines": true,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -40,13 +44,51 @@
     }
   ],
   "atoms": {
-    "X": [],
-    "Y": [],
-    "VX": [],
-    "VY": [],
-    "CHARGE": [],
-    "FRICTION": [],
-    "ELEMENT": [],
-    "PINNED": []
-  }
+    "X": [
+      0.86,
+      2.44
+    ],
+    "Y": [
+      1.84,
+      1.83
+    ],
+    "VX": [
+      0,
+      0
+    ],
+    "VY": [
+      0,
+      0
+    ],
+    "CHARGE": [
+      0,
+      0
+    ],
+    "FRICTION": [
+      0,
+      0
+    ],
+    "ELEMENT": [
+      0,
+      0
+    ],
+    "PINNED": [
+      1,
+      1
+    ],
+    "VISIBLE": [
+      0,
+      0
+    ]
+  },
+  "images": [
+    {
+      "imageUri": "instructionsFlat.png",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 32,
+      "imageY": 27
+    }
+  ]
 }

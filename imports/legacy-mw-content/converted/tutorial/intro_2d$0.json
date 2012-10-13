@@ -3,10 +3,14 @@
   "width": 5,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": true,
   "VDWLinesRatio": 1.67,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -88,5 +92,57 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Menu bar</p>",
+      "x": 2.27,
+      "y": 0.27
+    },
+    {
+      "text": "<p>Tool bar</p>",
+      "x": 0.11,
+      "y": 0.1
+    },
+    {
+      "text": "<p>Recorder</p>\n<p>control panel</p>",
+      "x": 0.47,
+      "y": 1.35
+    },
+    {
+      "text": "<p>Clock</p>",
+      "x": 0.08,
+      "y": 1.88
+    },
+    {
+      "text": "<p>Heat/cool tool</p>\n<p>or temperature</p>\n<p>controller</p>",
+      "x": 3.6,
+      "y": 1.13
+    },
+    {
+      "text": "<p>The anatomy of the</p>\n<p>user interface of a</p>\n<p>2D Model Container</p>",
+      "x": 3.4,
+      "y": 0.17
+    },
+    {
+      "text": "<p>Canvas (or view)</p>",
+      "x": 1.74,
+      "y": 0.93
+    },
+    {
+      "text": "<p>Run</p>\n<p>button</p>",
+      "x": 2.51,
+      "y": 1.98
+    },
+    {
+      "text": "<p>Stop</p>\n<p>button</p>",
+      "x": 1.85,
+      "y": 1.98
+    },
+    {
+      "text": "<p>Reset</p>\n<p>button</p>",
+      "x": 1.18,
+      "y": 1.99
+    }
+  ]
 }

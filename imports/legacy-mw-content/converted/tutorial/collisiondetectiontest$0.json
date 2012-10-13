@@ -3,10 +3,14 @@
   "width": 6,
   "height": 3,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -71,7 +75,7 @@
       0
     ],
     "FRICTION": [
-      0.1,
+      0.096,
       0,
       0,
       0
@@ -87,6 +91,12 @@
       1,
       1,
       1
+    ],
+    "DRAGGABLE": [
+      1,
+      0,
+      0,
+      0
     ]
   }
 }

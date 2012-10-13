@@ -1,0 +1,165 @@
+{
+  "temperature_control": false,
+  "width": 5,
+  "height": 4,
+  "viscosity": 0,
+  "keShading": false,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 2,
+  "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 20,
+      "sigma": 0.268799991607666,
+      "epsilon": -0.017899999395012856
+    },
+    {
+      "id": 1,
+      "mass": 40,
+      "sigma": 0.14,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 60,
+      "sigma": 0.21,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 80,
+      "sigma": 0.28,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      0.87,
+      1.33,
+      0.95,
+      2.04,
+      2,
+      2.16,
+      3.56,
+      3.5,
+      2.8,
+      2.62,
+      1.3
+    ],
+    "Y": [
+      3.46,
+      2.7,
+      2.22,
+      2.25,
+      2.74,
+      3.2,
+      3.1,
+      2.24,
+      1.92,
+      1.37,
+      3.12
+    ],
+    "VX": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "VY": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "CHARGE": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "FRICTION": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "ELEMENT": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "PINNED": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "MARKED": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

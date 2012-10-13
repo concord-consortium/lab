@@ -3,10 +3,14 @@
   "width": 4.5,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.67,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -1273,6 +1277,13 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>Pressure gauge</p>\n<p>on the left face</p>\n<p>measures</p>\n<p>pressure by</p>\n<p>recording</p>\n<p>impacts.</p>",
+      "x": 3.46,
+      "y": 0.45
+    }
+  ],
   "obstacles": {
     "x": [
       2.73209225757295

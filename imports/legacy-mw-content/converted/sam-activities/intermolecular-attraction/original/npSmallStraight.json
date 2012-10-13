@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.1,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": true,
   "showVDWLines": true,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -76,11 +80,11 @@
       0
     ],
     "FRICTION": [
-      0.25,
-      0.25,
-      0.25,
-      0.25,
-      0.25
+      0.24,
+      0.24,
+      0.24,
+      0.24,
+      0.24
     ],
     "ELEMENT": [
       1,
@@ -102,6 +106,13 @@
       1,
       1,
       0
+    ],
+    "DRAGGABLE": [
+      0,
+      0,
+      0,
+      0,
+      1
     ]
   },
   "radialBonds": {
@@ -128,6 +139,29 @@
       2000,
       20,
       20
+    ],
+    "bondStyle": [
+      101,
+      101,
+      106,
+      106
     ]
-  }
+  },
+  "images": [
+    {
+      "imageUri": "star.png",
+      "imageHostIndex": 4,
+      "imageHostType": "Atom",
+      "imageLayer": 1,
+      "imageX": 112,
+      "imageY": 92
+    }
+  ],
+  "textBoxes": [
+    {
+      "text": "<p>Small Straight Molecules</p>",
+      "x": 1.12,
+      "y": 0.12
+    }
+  ]
 }

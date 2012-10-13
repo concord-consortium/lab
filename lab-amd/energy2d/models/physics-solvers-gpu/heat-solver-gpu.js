@@ -5,18 +5,18 @@ define(function (require, exports, module) {
   'use strict';
   var
     // Dependencies.
-    Shader = require('gpu/shader'),
+    Shader = require('energy2d/gpu/shader'),
     // GPGPU utilities. It's a singleton instance.
     // It should have been previously initialized by core-model.
-    gpgpu  = require('gpu/gpgpu'),
+    gpgpu  = require('energy2d/gpu/gpgpu'),
     // Shader sources.
-    basic_vs            = require('text!models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl'),
-    solver_fs           = require('text!models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl'),
-    force_flux_t_fs     = require('text!models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'),
-    force_flux_t0_fs    = require('text!models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'),
-    t_to_t0             = require('text!models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl'),
-    maccormack_step1_fs = require('text!models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl'),
-    maccormack_step2_fs = require('text!models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl'),
+    basic_vs            = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl'),
+    solver_fs           = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl'),
+    force_flux_t_fs     = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'),
+    force_flux_t0_fs    = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'),
+    t_to_t0             = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl'),
+    maccormack_step1_fs = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl'),
+    maccormack_step2_fs = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl'),
 
     RELAXATION_STEPS = 10;
 
@@ -52,26 +52,26 @@ define(function (require, exports, module) {
       relaxation_steps = RELAXATION_STEPS,
 
       // Simulation textures provided by model.
-      // texture 0: 
+      // texture 0:
       // - R: t
       // - G: t0
       // - B: tb
       // - A: conductivity
       data0_tex = model.getSimulationTexture(0),
-      // texture 1: 
+      // texture 1:
       // - R: q
       // - G: capacity
       // - B: density
       // - A: fluidity
       data1_tex = model.getSimulationTexture(1),
-      // texture 2: 
+      // texture 2:
       // - R: u
       // - G: v
       // - B: u0
       // - A: v0
       data2_tex = model.getSimulationTexture(2),
 
-      // Convenience variables.  
+      // Convenience variables.
       data_0_1_2_array = [data0_tex, data1_tex, data2_tex],
       data_0_1_array = [data0_tex, data1_tex],
       data_0_array = [data0_tex],
@@ -210,7 +210,7 @@ define(function (require, exports, module) {
           if (convective) {
             macCormack();
           }
-          // Synchronize. It's not required but it 
+          // Synchronize. It's not required but it
           // allows to measure time (for optimization).
           gpgpu.tryFinish();
         }

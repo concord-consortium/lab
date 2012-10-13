@@ -4,7 +4,7 @@
 define(function (require, exports, module) {
   'use strict';
   var
-    Photon = require('models/photon').Photon;
+    Photon = require('energy2d/models/photon').Photon;
 
   exports.makeRaySolver = function (model) {
     var
@@ -31,7 +31,7 @@ define(function (require, exports, module) {
       parts   = model.getPartsArray(),
       photons = model.getPhotonsArray(),
 
-      // Convenience variables.  
+      // Convenience variables.
       nx1 = nx - 1,
       ny1 = ny - 1,
       nx2 = nx - 2,

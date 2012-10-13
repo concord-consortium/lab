@@ -3,10 +3,14 @@
   "width": 3.6,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,12 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>up=0, down= 0, left= 0, right=0</p>",
+      "x": 0.85,
+      "y": 1.17
+    }
+  ]
 }

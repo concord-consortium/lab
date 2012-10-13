@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.jmol.ModelState"> 
+  <void property="ZDepthMagnification"> 
+   <int>10</int> 
+  </void> 
+  <void property="atomAnnotations"> 
+   <object class="java.util.HashMap"> 
+    <void method="put"> 
+     <int>1216</int> 
+     <object class="org.jmol.api.SiteAnnotation"> 
+      <void property="backgroundRgb"> 
+       <int>-135733</int> 
+      </void> 
+      <void property="text"> 
+       <string>&lt;html&gt;&lt;h2&gt;&lt;font face=Verdana&gt;The iron atom&lt;/h2&gt;&lt;p&gt;&lt;font face=Verdana size=2&gt;The iron atom is bonded to five nitrogen atoms and an oxygen atom of a water molecule nearby.
+&lt;br&gt;&lt;br&gt;&lt;a href=&quot;script:jmol:1:select atomno=740, atomno=1262, atomno=1235, atomno=1224, atomno=1251, atomno=1243;cpk 10%;delay 0.5;cpk 20%;delay 0.5;cpk 10%;delay 0.5;cpk 20%&quot;&gt;Flash the bonded atoms&lt;/a&gt;.&lt;/font&gt;&lt;/html&gt;</string> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="atomInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="startingScene"> 
+   <object class="org.concord.jmol.SceneState"> 
+    <void property="geoData"> 
+     <string>14.823357 29.579018 -0.29097366 728.0 -685.0 -38.0 161.1 100.0</string> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+</java> 

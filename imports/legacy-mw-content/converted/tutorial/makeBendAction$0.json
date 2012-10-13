@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.33,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -129,6 +133,17 @@
     "bondStrength": [
       2000,
       2000
+    ],
+    "bondStyle": [
+      101,
+      101
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>The button for building</p>\n<p>an angular bond</p>",
+      "x": 0.23,
+      "y": 0.16
+    }
+  ]
 }

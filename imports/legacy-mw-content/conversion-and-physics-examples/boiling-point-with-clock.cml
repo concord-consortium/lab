@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Intermolecular Attractions: Boiling Point and Solubility</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>  
+     
+
+View Refresh Interval
+  
+
+Integration Time Step
+  
+
+</text>
+<section start="0" end="63">
+<paragraph start="0" end="3">
+<content start="0" end="1">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>boiling-point-with-clock$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="1" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="9">
+<content start="3" end="4">
+</content>
+
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<width>100</width><height>28</height>
+<opaque>false</opaque>
+<model>0</model>
+<action>Cool the system down</action>
+<step>-0.01</step>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+<content start="6" end="7">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<width>100</width><height>28</height>
+<opaque>false</opaque>
+<model>0</model>
+<action>Heat the system up</action>
+<step>0.01</step>
+</component></content>
+
+<content start="7" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="32">
+<content start="10" end="32">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="32" end="35">
+<content start="32" end="33">
+</content>
+
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Execute MW script</action>
+<script>{option=&quot;10&quot;, script=&quot;set view_refresh_interval 10&quot;}
+{option=&quot;20&quot;, script=&quot;set view_refresh_interval 20&quot;}
+{option=&quot;50&quot;, script=&quot;set view_refresh_interval 50&quot;}
+{option=&quot;100&quot;, script=&quot;set view_refresh_interval 100&quot;}
+{option=&quot;200&quot;, script=&quot;set view_refresh_interval 200&quot;}
+{option=&quot;500&quot;, script=&quot;set view_refresh_interval 500&quot;}
+</script>
+<selectedIndex>2</selectedIndex>
+<disabled_at_run>true</disabled_at_run>
+</component></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="58">
+<content start="36" end="58">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="58" end="61">
+<content start="58" end="59">
+</content>
+
+<content start="59" end="60">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Execute MW script</action>
+<script>{option=&quot;0.1&quot;, script=&quot;set timestep 0.1&quot;}
+{option=&quot;0.2&quot;, script=&quot;set timestep 0.2&quot;}
+{option=&quot;0.5&quot;, script=&quot;set timestep 0.5&quot;}
+{option=&quot;1.0&quot;, script=&quot;set timestep 1.0&quot;}
+{option=&quot;2.0&quot;, script=&quot;set timestep 2.0&quot;}
+{option=&quot;5.0&quot;, script=&quot;set timestep 5.0&quot;}
+</script>
+<selectedIndex>3</selectedIndex>
+<disabled_at_run>true</disabled_at_run>
+</component></content>
+
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+</paragraph>
+</section>
+</document>

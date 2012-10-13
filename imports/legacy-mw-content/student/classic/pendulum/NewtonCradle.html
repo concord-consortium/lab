@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>A virtual experiment on Newton&apos;s Cradle</title>
+  </head>
+  <body>
+    <center>
+      <applet code="org.concord.modeler.MwApplet" archive="../../../lib/mwapplet.jar" width="100%" height="600">
+        <param name="script" value="page:0:import NewtonCradle.cml"/>
+      </applet>
+      <form action="http://mw2.concord.org/tmp.jnlp" method="GET">
+        <input type="HIDDEN" name="address" value="http://mw2.concord.org/public/student/classic/pendulum/NewtonCradle.cml">
+        <input type="SUBMIT" value="Get this simulation using Molecular Workbench">
+      </form>
+      <p><b>System requirements:</b> You must have Java Version 5 or higher. <a href="http://java.com">Download Java now</a>.
+    </center>
+  </body>
+</html>

@@ -3,10 +3,14 @@
   "width": 5,
   "height": 2,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -64,5 +68,22 @@
     "PINNED": [
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Magnetic lens</p>",
+      "x": 2.05,
+      "y": 1.66
+    },
+    {
+      "text": "<p>Accelerator</p>",
+      "x": 0.79,
+      "y": 0.54
+    },
+    {
+      "text": "<p>Deccelerator</p>",
+      "x": 3.36,
+      "y": 0.61
+    }
+  ]
 }

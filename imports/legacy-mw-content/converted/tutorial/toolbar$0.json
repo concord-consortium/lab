@@ -3,10 +3,14 @@
   "width": 4,
   "height": 1,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,17 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>A tool bar that has</p>\n<p>all the tools.</p>",
+      "x": 0.08,
+      "y": 0.11
+    },
+    {
+      "text": "<p>Click the arrow to get to</p>\n<p>the buttons that cannot</p>\n<p>be placed in the visible</p>\n<p>part of the tool bar.</p>",
+      "x": 2.01,
+      "y": 0.12
+    }
+  ]
 }

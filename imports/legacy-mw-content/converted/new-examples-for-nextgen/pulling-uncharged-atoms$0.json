@@ -1,0 +1,84 @@
+{
+  "temperature_control": false,
+  "width": 1.6,
+  "height": 1,
+  "viscosity": 0.25,
+  "keShading": false,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 2,
+  "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 120,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 120,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 360,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 480,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      0.688,
+      0.9119999999999999
+    ],
+    "Y": [
+      0.5,
+      0.5
+    ],
+    "VX": [
+      0,
+      0
+    ],
+    "VY": [
+      0,
+      0
+    ],
+    "CHARGE": [
+      0,
+      0
+    ],
+    "FRICTION": [
+      0.96,
+      0.96
+    ],
+    "ELEMENT": [
+      1,
+      0
+    ],
+    "PINNED": [
+      1,
+      0
+    ],
+    "DRAGGABLE": [
+      0,
+      1
+    ]
+  }
+}

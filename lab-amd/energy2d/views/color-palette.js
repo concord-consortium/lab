@@ -5,7 +5,7 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    view_helpers = require('views/helpers'),
+    view_helpers = require('energy2d/views/helpers'),
 
     // Object with available color palettes.
     color_palette,

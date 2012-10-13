@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.jmol.ModelState"> 
+  <void property="atomAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="atomInteractions"> 
+   <object class="java.util.HashMap"> 
+    <void method="put"> 
+     <int>0</int> 
+     <object class="org.jmol.api.InteractionCenter"> 
+      <void property="charge"> 
+       <int>5</int> 
+      </void> 
+      <void property="host"> 
+       <int>0</int> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="axisStyle"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="bondAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="pauliRepulsionForAllAtoms"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="roverCharge"> 
+   <float>-5.0</float> 
+  </void> 
+  <void property="roverMode"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="roverTurning"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="startingScene"> 
+   <object class="org.concord.jmol.SceneState"> 
+    <void property="geoData"> 
+     <string>4.888367 -73.35365 -29.291039 -172.0 -711.0 681.0 163.6 100.0</string> 
+    </void> 
+    <void property="scheme"> 
+     <string>CPK Space Fill</string> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+</java> 

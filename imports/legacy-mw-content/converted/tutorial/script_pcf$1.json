@@ -3,10 +3,14 @@
   "width": 3.5,
   "height": 2,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -1336,5 +1340,12 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Compute PCF for this cut-out</p>\n<p>area to get rid of the reflecting</p>\n<p>boundary effect.</p>",
+      "x": 0.09,
+      "y": 0.08
+    }
+  ]
 }

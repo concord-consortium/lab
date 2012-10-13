@@ -3,10 +3,14 @@
   "width": 7,
   "height": 3,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": 8e-8,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -225,6 +229,26 @@
       500000,
       500000,
       500000
+    ],
+    "bondStyle": [
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101,
+      101
     ]
-  }
+  },
+  "images": [
+    {
+      "imageUri": "line.gif",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 2,
+      "imageX": 30,
+      "imageY": 87
+    }
+  ]
 }

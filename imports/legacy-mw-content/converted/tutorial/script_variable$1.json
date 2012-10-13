@@ -3,10 +3,14 @@
   "width": 4.88,
   "height": 2.38,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -88,5 +92,37 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>My atom index is 0.</p>",
+      "x": 0.39,
+      "y": 0.56
+    },
+    {
+      "text": "<p>My atom index is 2.</p>",
+      "x": 0.4,
+      "y": 1.48
+    },
+    {
+      "text": "<p>My atom index is 1.</p>",
+      "x": 0.41,
+      "y": 1
+    },
+    {
+      "text": "<p>My atom index is 3.</p>",
+      "x": 0.41,
+      "y": 1.96
+    },
+    {
+      "text": "<p>To access the properties of an atom</p>\n<p>through the expressions of system</p>\n<p>variables, we must know its index first.</p>\n<p>There are a couple of different ways to</p>\n<p>show the index of an atom:</p>\n<p></p>\n<p>(1) The Query Tool can be used to show</p>\n<p>the index of the selected object.</p>\n<p>(2) The \"View Options\" dialog provides</p>\n<p>an option to show the indices of all particles</p>\n<p>(this can be put on the page, as is shown</p>\n<p>by the check box below this window).</p>\n<p>(3) Double-click on the atom and look up</p>\n<p>its index in its Properties Panel.</p>",
+      "x": 2.13,
+      "y": 0.22
+    },
+    {
+      "text": "<p>The indices of atoms</p>",
+      "x": 0.25,
+      "y": 0.08
+    }
+  ]
 }

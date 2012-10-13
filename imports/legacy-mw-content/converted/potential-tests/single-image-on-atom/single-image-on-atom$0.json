@@ -3,10 +3,14 @@
   "width": 4,
   "height": 3,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -113,5 +117,15 @@
       0
     ]
   },
+  "images": [
+    {
+      "imageUri": "star.png",
+      "imageHostIndex": 0,
+      "imageHostType": "Atom",
+      "imageLayer": 1,
+      "imageX": 174.5,
+      "imageY": 114
+    }
+  ],
   "temperature": 101
 }

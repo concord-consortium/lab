@@ -6,20 +6,20 @@
 // It uses HTML5 Canvas and WebGL for rendering.
 // getHTMLElement() returns jQuery object with the canvas used for rendering.
 // Before use, this view should be bound with a heatmap texture using bindHeapmapTexture(heatmap_tex).
-// To render the heatmap use renderHeatmapTexture() method. 
+// To render the heatmap use renderHeatmapTexture() method.
 // Set size of the heatmap using CSS rules.
 define(function (require) {
   'use strict';
   var
     // Dependencies.
-    context      = require('gpu/context'),
-    Texture      = require('gpu/texture'),
-    Shader       = require('gpu/shader'),
-    Mesh         = require('gpu/mesh'),
-    ColorPalette = require('views/color-palette'),
+    context      = require('energy2d/gpu/context'),
+    Texture      = require('energy2d/gpu/texture'),
+    Shader       = require('energy2d/gpu/shader'),
+    Mesh         = require('energy2d/gpu/mesh'),
+    ColorPalette = require('energy2d/views/color-palette'),
     // Shader sources.
-    basic_vs         = require('text!views/heatmap-webgl-glsl/basic.vs.glsl'),
-    temp_renderer_fs = require('text!views/heatmap-webgl-glsl/temp-renderer.fs.glsl');
+    basic_vs         = require('text!energy2d/views/heatmap-webgl-glsl/basic.vs.glsl'),
+    temp_renderer_fs = require('text!energy2d/views/heatmap-webgl-glsl/temp-renderer.fs.glsl');
 
   return function HeatmapWebGLView(html_id) {
     var
@@ -42,7 +42,7 @@ define(function (require) {
       min_temp = 0,
       max_temp = 50,
 
-      // 
+      //
       // Private methods.
       //
       initHTMLelement = function () {

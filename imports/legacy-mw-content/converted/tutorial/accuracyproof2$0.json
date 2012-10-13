@@ -3,10 +3,14 @@
   "width": 3.5,
   "height": 3,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 0.10000000149011612,
   "elements": [
     {
       "id": 0,

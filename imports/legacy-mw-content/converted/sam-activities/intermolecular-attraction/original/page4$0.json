@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.1,
   "viscosity": 0.25,
+  "keShading": false,
   "chargeShading": true,
   "showVDWLines": true,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,12 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>You will pull apart pairs of molecules</p>\n<p>with varying polarity. By doing this</p>\n<p>you can see how polarity affects the</p>\n<p>strength of the dipole-dipole attraction.</p>\n<p></p>\n<p></p>\n<p>Choose a pair of moleucles</p>\n<p>from the menu below.</p>",
+      "x": 0.49,
+      "y": 0.27
+    }
+  ]
 }

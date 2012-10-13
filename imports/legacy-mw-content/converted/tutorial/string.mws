@@ -1,0 +1,33 @@
+define %oldn %number_of_atoms;
+define %n 20; // number of elements in the string
+define %d 1; // element spacing
+define %theta 45/180*pi; // the angle of the string
+define %sintheta sin(%theta);
+define %costheta cos(%theta);
+define %i 0;
+define %x0 %width/2-%n/2*%d*%costheta;
+define %y0 %height/2-%n/2*%d*%sintheta;
+
+// add elements
+while(%i < %n);
+  add atom 0 (%x0+%d*%i*%costheta, %y0+%d*%i*%sintheta);
+  %i++;
+endwhile;
+set %i 0;
+
+// build the radial springs
+while (%i < %n-1);
+  bond "%oldn+%i" "%oldn+%i+1" 2;
+  %i++;
+endwhile;
+set %i 0;
+
+// build the angular springs
+while(%i < %n-2);
+  bond "%oldn+%i" "%oldn+%i+1" "%oldn+%i+2" 500;
+  %i++;
+endwhile;
+
+select abond none;
+select rbond none;
+select atom none;

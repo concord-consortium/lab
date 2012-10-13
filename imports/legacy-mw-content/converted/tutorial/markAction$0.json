@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -279,6 +283,43 @@
       0,
       0,
       0
+    ],
+    "MARKED": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Click this button to use the Marking Tool.</p>\n<p>Double-click it to change the mark color.</p>",
+      "x": 0.33,
+      "y": 0.19
+    }
+  ]
 }

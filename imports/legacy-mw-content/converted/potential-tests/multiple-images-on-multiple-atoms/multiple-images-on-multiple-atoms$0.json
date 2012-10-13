@@ -1,0 +1,163 @@
+{
+  "temperature_control": true,
+  "width": 4,
+  "height": 3,
+  "viscosity": 0,
+  "keShading": false,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 2,
+  "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 20,
+      "sigma": 0.07,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 40,
+      "sigma": 0.14,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 60,
+      "sigma": 0.21,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 80,
+      "sigma": 0.28,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      1.92,
+      0.89,
+      2.56,
+      3.09,
+      2.95,
+      1.77,
+      0.79,
+      2.24,
+      1.38
+    ],
+    "Y": [
+      1.7,
+      2.22,
+      2.4,
+      1.97,
+      0.91,
+      0.39,
+      1.08,
+      1.15,
+      1.26
+    ],
+    "VX": [
+      0.00015111196173713066,
+      -0.00017948064137395352,
+      0.0001590037702925305,
+      -0.0001360341758581187,
+      -0.00011621028823721002,
+      0.0002108144633699787,
+      0.00017324170335675682,
+      -0.0000655940227309457,
+      0.00010064987858732537
+    ],
+    "VY": [
+      -0.00015111196173713066,
+      -0.00011103234760044997,
+      -0.00013877782198331638,
+      0.0001613573234789029,
+      0.00017617222184413022,
+      0.000009937045622355464,
+      0.00012053545146438179,
+      0.0001712582381838141,
+      0.00009946818710231649
+    ],
+    "CHARGE": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "FRICTION": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "ELEMENT": [
+      3,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      3,
+      3
+    ],
+    "PINNED": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "images": [
+    {
+      "imageUri": "star.png",
+      "imageHostIndex": 0,
+      "imageHostType": "Atom",
+      "imageLayer": 1,
+      "imageX": 174.5,
+      "imageY": 114
+    },
+    {
+      "imageUri": "red-star.png",
+      "imageHostIndex": 7,
+      "imageHostType": "Atom",
+      "imageLayer": 1,
+      "imageX": 206.5,
+      "imageY": 169
+    },
+    {
+      "imageUri": "blue-star.png",
+      "imageHostIndex": 8,
+      "imageHostType": "Atom",
+      "imageLayer": 1,
+      "imageX": 120.5,
+      "imageY": 158
+    }
+  ],
+  "temperature": 122.21000000000002
+}

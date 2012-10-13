@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 0.9879999756813049,
   "elements": [
     {
       "id": 0,
@@ -537,6 +541,23 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>Inside soda can</p>",
+      "x": 0.07,
+      "y": 2.2
+    },
+    {
+      "text": "<p>Outside soda can</p>",
+      "x": 2.76,
+      "y": 2.2
+    },
+    {
+      "text": "<p>Can wall</p>",
+      "x": 1.6765425109863281,
+      "y": 1.14
+    }
+  ],
   "obstacles": {
     "x": [
       1.7715425035502181

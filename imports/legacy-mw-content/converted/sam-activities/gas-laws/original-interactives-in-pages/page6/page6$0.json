@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 1.67,
   "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -1017,6 +1021,13 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>29.8</p>",
+      "x": 2.978912658691406,
+      "y": 1.15
+    }
+  ],
   "obstacles": {
     "x": [
       2.9789127292515407

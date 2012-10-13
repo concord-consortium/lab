@@ -3,10 +3,14 @@
   "width": 4,
   "height": 3,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -113,8 +117,63 @@
     "bondStrength": [
       2000,
       2000
+    ],
+    "bondStyle": [
+      101,
+      101
     ]
   },
+  "angularBonds": {
+    "atom1Index": [
+      2
+    ],
+    "atom2Index": [
+      4
+    ],
+    "atom3Index": [
+      3
+    ],
+    "bondAngle": [
+      2.0943951023931953
+    ],
+    "bondStrength": [
+      2
+    ]
+  },
+  "images": [
+    {
+      "imageUri": "above-bottom.png",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 12,
+      "imageY": 45
+    },
+    {
+      "imageUri": "above-top.png",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 173,
+      "imageY": 24
+    },
+    {
+      "imageUri": "beneath-bottom.png",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 2,
+      "imageX": 18,
+      "imageY": 172
+    },
+    {
+      "imageUri": "beneath-top.png",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 2,
+      "imageX": 188,
+      "imageY": 158
+    }
+  ],
   "obstacles": {
     "x": [
       2.05

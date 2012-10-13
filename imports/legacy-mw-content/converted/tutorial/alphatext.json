@@ -3,10 +3,14 @@
   "width": 5,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,27 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>This text box comes in.</p>",
+      "x": 2.45,
+      "y": 2.01
+    },
+    {
+      "text": "<p>This text box dims out.</p>",
+      "x": 2.43,
+      "y": 2.01
+    },
+    {
+      "text": "<p>月落烏啼霜滿天，</p>\n<p>江楓漁火對愁眠，</p>\n<p>姑蘇城外寒山寺，</p>\n<p>夜半鐘聲到客船。</p>\n<p></p>",
+      "x": 0.46,
+      "y": 0.35
+    },
+    {
+      "text": "<p>月落乌啼霜满天，</p>\n<p>江枫渔火对愁眠，</p>\n<p>姑苏城外寒山寺，</p>\n<p>夜半钟声到客船。</p>",
+      "x": 0.45,
+      "y": 0.35
+    }
+  ]
 }

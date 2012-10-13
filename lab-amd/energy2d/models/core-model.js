@@ -4,15 +4,15 @@
 define(function (require, exports, module) {
   'use strict';
   var
-    arrays          = require('utils/arrays').arrays,
-    heatsolver      = require('models/physics-solvers/heat-solver'),
-    heatsolver_GPU  = require('models/physics-solvers-gpu/heat-solver-gpu'),
-    fluidsolver     = require('models/physics-solvers/fluid-solver'),
-    fluidsolver_GPU = require('models/physics-solvers-gpu/fluid-solver-gpu'),
-    raysolver       = require('models/physics-solvers/ray-solver'),
-    part            = require('models/part'),
-    default_config  = require('models/default-config'),
-    gpgpu           = require('gpu/gpgpu'),
+    arrays          = require('arrays'),
+    heatsolver      = require('energy2d/models/physics-solvers/heat-solver'),
+    heatsolver_GPU  = require('energy2d/models/physics-solvers-gpu/heat-solver-gpu'),
+    fluidsolver     = require('energy2d/models/physics-solvers/fluid-solver'),
+    fluidsolver_GPU = require('energy2d/models/physics-solvers-gpu/fluid-solver-gpu'),
+    raysolver       = require('energy2d/models/physics-solvers/ray-solver'),
+    part            = require('energy2d/models/part'),
+    default_config  = require('energy2d/models/default-config'),
+    gpgpu           = require('energy2d/gpu/gpgpu'),
 
     array_type = (function () {
       try {
@@ -24,7 +24,7 @@ define(function (require, exports, module) {
     }());
 
   // Core Energy2D model.
-  // 
+  //
   // It creates and manages all the data and parameters used for calculations.
   exports.makeCoreModel = function (model_options) {
     var
@@ -123,22 +123,22 @@ define(function (require, exports, module) {
       //
       // [GPGPU] Simulation textures:
       //
-      // texture 0: 
+      // texture 0:
       // - R: t
       // - G: t0
       // - B: tb
       // - A: conductivity
-      // texture 1: 
+      // texture 1:
       // - R: q
       // - G: capacity
       // - B: density
       // - A: fluidity
-      // texture 2: 
+      // texture 2:
       // - R: u
       // - G: v
       // - B: u0
       // - A: v0
-      // texture 3: 
+      // texture 3:
       // - R: uWind
       // - G: vWind
       // - B: undefined
@@ -167,9 +167,9 @@ define(function (require, exports, module) {
         return result;
       }()),
 
-      //  
-      // Private methods  
-      //      
+      //
+      // Private methods
+      //
       initGPGPU = function () {
         // Make sure that environment is a browser.
         if (typeof window === 'undefined') {
@@ -195,25 +195,25 @@ define(function (require, exports, module) {
         texture[3] = gpgpu.createTexture();
 
         // Update textures as material properties should be already set.
-        // texture 0: 
+        // texture 0:
         // - R: t
         // - G: t0
         // - B: tb
         // - A: conductivity
         gpgpu.writeRGBATexture(texture[0], t, t, tb, conductivity);
-        // texture 1: 
+        // texture 1:
         // - R: q
         // - G: capacity
         // - B: density
         // - A: fluidity
         gpgpu.writeRGBATexture(texture[1], q, capacity, density, fluidity);
-        // texture 2: 
+        // texture 2:
         // - R: u
         // - G: v
         // - B: u0
         // - A: v0
         gpgpu.writeRGBATexture(texture[2], u, v, u, v);
-        // texture 3: 
+        // texture 3:
         // - R: uWind
         // - G: vWind
         // - B: undefined
@@ -538,7 +538,7 @@ define(function (require, exports, module) {
         }
       };
 
-    // 
+    //
     // One-off initialization.
     //
 

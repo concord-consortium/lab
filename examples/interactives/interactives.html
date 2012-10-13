@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta content='text/html;charset=utf-8' http-equiv='Content-Type' />
+    <meta content='text/html;charset=utf-8;IE=Edge' http-equiv='Content-Type;X-UA-Compatible' />
     <title>Simple Atoms Interactives Model</title>
     <script src='../../vendor/modernizr/modernizr.js' type='text/javascript'></script>
     <script type='text/javascript'>
       if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
     </script>
-    <link href='../examples.css' rel='stylesheet' type='text/css' />
     <script src='../../vendor/d3/d3.v2.js' type='text/javascript'></script>
     <script src='../../vendor/jquery/jquery.min.js' type='text/javascript'></script>
+    <script src='../../vendor/jquery-ui/jquery-ui.min.js' type='text/javascript'></script>
+    <script src='../../vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' type='text/javascript'></script>
+    <script src='../../vendor/tinysort/jquery.tinysort.js' type='text/javascript'></script>
     <!-- / %script{:src => "../../vendor/science.js/science.v1.js", :type => "text/javascript"} -->
     <script src='../../vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
     <link href='../../vendor/codemirror/lib/codemirror.css' rel='stylesheet' type='text/css' />
@@ -17,6 +19,7 @@
     <script src='../../vendor/codemirror/lib/util/foldcode.js' type='text/javascript'></script>
     <script src='../../vendor/codemirror/lib/util/formatting.js' type='text/javascript'></script>
     <link href='interactives.css' rel='stylesheet' type='text/css' />
+    <link href='../../vendor/jquery-ui/jquery-ui.css' rel='stylesheet' type='text/css' />
     <script src='http://use.typekit.com/hdw8ayt.js' type='text/javascript'></script>
     <script type='text/javascript'>
       try{Typekit.load();}catch(e){}
@@ -34,63 +37,103 @@
       Select Interactive:
       <select id='select-interactive'>
         <optgroup label='Basic Interactive Examples'>
-          <option value='interactives/add-atoms.json'>add atoms</option>
-          <option value='interactives/add-random-atoms.json'>add random atoms</option>
-          <option value='interactives/one-atom.json'>one atom</option>
-          <option value='interactives/layout-example.json'>layout example</option>
-          <option value='interactives/script-examples.json'>script examples</option>
-          <option value='interactives/boiling-point-with-energy-graph.json'>Energy Graph test</option>
+          <option selected='selected' value='interactives/basic-examples/oil-and-water-shake.json'>Oil and Water</option>
+          <option value='interactives/basic-examples/add-atoms.json'>add atoms</option>
+          <option value='interactives/basic-examples/add-random-atoms.json'>add random atoms</option>
+          <option value='interactives/basic-examples/one-atom.json'>one atom</option>
+          <option value='interactives/basic-examples/layout-example.json'>layout example</option>
+          <option value='interactives/basic-examples/script-examples.json'>script examples</option>
+          <option value='interactives/basic-examples/boiling-point-with-energy-graph.json'>Energy Graph test</option>
+          <option value='interactives/basic-examples/pulling-uncharged-atoms.json'>Pulling Uncharged Atoms Apart</option>
+          <option value='interactives/basic-examples/simple-gas.json'>A Simple Gas</option>
+          <option value='interactives/basic-examples/simple-ke-shading.json'>Simple KE Shading</option>
+          <option value='interactives/basic-examples/on-property-change.json'>onPropertyChange Demo</option>
         </optgroup>
         <optgroup label='Science of Atoms and Molecules: Intermolecular Attractions'>
-          <option selected='selected' value='interactives/oil-and-water-shake.json'>Oil and Water</option>
-          <option value='interactives/intermolecular-attractions-page-1.json'>Page 1</option>
-          <option value='interactives/intermolecular-attractions-page-2.json'>Page 2</option>
-          <option value='interactives/boiling-point.json'>Boiling Point and Solubility</option>
-          <option value='interactives/leastPolarPull.json'>Page 4: Least Polar</option>
-          <option value='interactives/npCurvedRound.json'>Page 5: Curved Round</option>
-          <option value='interactives/npSmallStraight.json'>Page 5: Small Straight</option>
+          <option value='interactives/sam/intermolecular-attractions-page-1.json'>Page 1: Introduction</option>
+          <option value='interactives/sam/intermolecular-attractions-page-2.json'>Page 2: Comparing Dipole-Dipole to London Dispersion</option>
+          <option value='interactives/sam/intermolecular-attractions-page-3-1.json'>Page 3: Oil and Water</option>
+          <option value='interactives/sam/intermolecular-attractions-page-3-2.json'>Page 3: Boiling Point and Solubility</option>
+          <option value='interactives/sam/intermolecular-attractions-page-4.json'>Page 4: Strengthening Dipole-Dipole Attractions</option>
+          <option value='interactives/sam/intermolecular-attractions-page-5.json'>Page 5: Strengthening London Dispersion Attraction</option>
+          <option value='interactives/sam/intermolecular-attractions-page-6.json'>Page 6: Hydrogen Bonds, a Special Type of Attraction</option>
+          <option value='interactives/sam/intermolecular-attractions-page-8.json'>Page 8: Your Immune System</option>
         </optgroup>
         <optgroup label='Science of Atoms and Molecules: Gas Laws'>
-          <option value='interactives/gas-laws-page-2.json'>Gas Laws Page 2 example</option>
-          <option value='interactives/gas-laws-page-4.json'>Gas Laws Page 4 example</option>
+          <option value='interactives/sam/gas-laws-page-2.json'>Page 2: What is Pressure?</option>
+          <option value='interactives/sam/gas-laws-page-3.json'>Page 3: The Volume-Pressure Relationship</option>
+          <option value='interactives/sam/gas-laws-page-4.json'>Page 4: The Temperature-Volume Relationship</option>
+          <option value='interactives/sam/gas-laws-page-5.json'>Page 5: The Temperature-Pressure Relationship</option>
+          <option value='interactives/sam/gas-laws-page-6.json'>Page 6: The Number-Volume Relationship</option>
+          <option value='interactives/sam/gas-laws-page-7.json'>Page 7: Why did the Can Collapse?</option>
+        </optgroup>
+        <optgroup label='Science of Atoms and Molecules: Phase Change'>
+          <option value='interactives/sam/phase-change-page-2.json'>Page 2: Two Types of Gases</option>
+          <option value='interactives/sam/phase-change-page-3.json'>Page 3: Liquids</option>
+          <option value='interactives/sam/phase-change-page-4.json'>Page 4: Solids</option>
+          <option value='interactives/sam/phase-change-page-5.json'>Page 5: Interatomic Interactions and States</option>
+          <option value='interactives/sam/phase-change-page-6.json'>Page 6: Phase Changes Caused by Energy Input</option>
+          <option value='interactives/sam/phase-change-page-7.json'>Page 7: Latent Heat</option>
         </optgroup>
         <optgroup label='VISUAL Recycling Project'>
-          <option value='interactives/recycling-ceramicforces.json'>Recycling: Ceramic Forces</option>
-          <option value='interactives/recycling-plasticforces.json'>Recycling: Plastic Forces</option>
-          <option value='interactives/recycling-metalforces.json'>Recycling: Metal Forces</option>
-          <option value='interactives/recycling-tireforces.json'>Recycling: Tire Forces</option>
+          <option value='interactives/visual/recycling-ceramicforces.json'>Recycling: Ceramic Forces</option>
+          <option value='interactives/visual/recycling-plasticforces.json'>Recycling: Plastic Forces</option>
+          <option value='interactives/visual/recycling-metalforces.json'>Recycling: Metal Forces</option>
+          <option value='interactives/visual/recycling-tireforces.json'>Recycling: Tire Forces</option>
+        </optgroup>
+        <optgroup label='InquirySpace'>
+          <option value='interactives/inquiry-space/pendulum/pendulum1.json'>Pendulum</option>
+        </optgroup>
+        <optgroup label='MW Tutorial'>
+          <option value='interactives/tutorial/microscopic-buoyancy.json'>Microscopic buoyancy</option>
+        </optgroup>
+        <optgroup label='Student/Classic'>
+          <option value='interactives/student/classic/pendulum/pendulum1.json'>Pendulum1</option>
         </optgroup>
         <optgroup label='Conversion Tests'>
-          <option value='interactives/one-radial-bond.json'>One Radial Bond</option>
-          <option value='interactives/one-radial-bond-different-elements.json'>One Radial Bond, Different Elements</option>
-          <option value='interactives/force-lines-short.json'>Force Lines Short</option>
-          <option value='interactives/force-lines-medium.json'>Force Lines Medium</option>
-          <option value='interactives/force-lines-long.json'>Force Lines Long</option>
-          <option value='interactives/coulomb-testing-forces.json'>Coulomb Forces</option>
-          <option value='interactives/non-coulomb-testing-forces.json'>Non-Coulomb Forces</option>
-          <option value='interactives/boiling-point-non-polar-only.json'>Boiling Non-polar Substance</option>
-          <option value='interactives/boiling-point-polar-only.json'>Boiling Polar Substance</option>
-          <option value='interactives/single-image-on-atom.json'>Single Image on Atom</option>
-          <option value='interactives/image-layers.json'>Multiple Images in Multiple Layers</option>
-          <option value='interactives/friction.json'>Friction</option>
-          <option value='interactives/friction-2.json'>Friction Two Atoms</option>
-          <option value='interactives/gravitational-field-test.json'>Gravitational Field Test</option>
-          <option value='interactives/visible-and-invisible.json'>Visible and Invisible Atoms</option>
+          <option value='interactives/conversion-tests/one-radial-bond.json'>One Radial Bond</option>
+          <option value='interactives/conversion-tests/one-radial-bond-different-elements.json'>One Radial Bond, Different Elements</option>
+          <option value='interactives/conversion-tests/angular-bonds.json'>Angular Bonds</option>
+          <option value='interactives/conversion-tests/force-lines-short.json'>Force Lines Short</option>
+          <option value='interactives/conversion-tests/force-lines-medium.json'>Force Lines Medium</option>
+          <option value='interactives/conversion-tests/force-lines-long.json'>Force Lines Long</option>
+          <option value='interactives/conversion-tests/coulomb-testing-forces.json'>Coulomb Forces</option>
+          <option value='interactives/conversion-tests/non-coulomb-testing-forces.json'>Non-Coulomb Forces</option>
+          <option value='interactives/conversion-tests/boiling-point-non-polar-only.json'>Boiling Non-polar Substance</option>
+          <option value='interactives/conversion-tests/boiling-point-polar-only.json'>Boiling Polar Substance</option>
+          <option value='interactives/conversion-tests/single-image-on-atom.json'>Single Image on Atom</option>
+          <option value='interactives/conversion-tests/multiple-attached-images.json'>Multiple Attached Images</option>
+          <option value='interactives/conversion-tests/multiple-images-on-multiple-atoms.json'>Multiple Images on Multiple Atoms</option>
+          <option value='interactives/conversion-tests/image-layers.json'>Multiple Images in Multiple Layers</option>
+          <option value='interactives/conversion-tests/friction.json'>Friction</option>
+          <option value='interactives/conversion-tests/friction-2.json'>Friction Two Atoms</option>
+          <option value='interactives/conversion-tests/gravitational-field-test.json'>Gravitational Field Test</option>
+          <option value='interactives/conversion-tests/visible-and-invisible.json'>Visible and Invisible Atoms</option>
+          <option value='interactives/conversion-tests/two-model-pulldown.json'>Select One of Two models from Pulldown</option>
+          <option value='interactives/conversion-tests/mark-atom.json'>Mark atoms Test</option>
         </optgroup>
       </select>
       <a class='opens-in-new-window' href='embeddable.html' id='embeddable-link' target='_blank'>Embeddable</a>
       <a class='opens-in-new-window' href='../../imports/legacy-mw-content/converted/' id='java-mw-link'>Java MW</a>
       <a class='opens-in-new-window' href='embeddable.html' id='datagames-link' target='_blank'>DataGames</a>
     </div>
-    <div id='content'>
-      <div id='viz'>
-        <div class='top'>
-          <div id='interactive-container'></div>
+    <div class='standard-interactive-layout' id='content'>
+      <div id='content-banner'>
+        <div id='cc'>
+          <div class='link' id='about-link'>The Concord Consortium</div>
+        </div>
+        <div id='share'>
+          <div class='link' id='share-link'>Share</div>
         </div>
       </div>
-      <div id='extras-bottom'>
-        <div id='extras-bottom-banner'>Extras</div>
-        <div class='extras-item' id='editor'>
+      <div class='top' id='viz'>
+        <div id='interactive-container'></div>
+      </div>
+    </div>
+    <div id='extras-bottom'>
+      <div id='extras-bottom-banner'>Extras</div>
+      <ul id='sortable-extras'>
+        <li class='extras-item' id='editor'>
           <div class='extras-item-banner'>
             <input id='show-editor' type='checkbox' />
             <label for='show-editor'>Interactive Editor</label>
@@ -103,23 +146,17 @@
             </div>
             <textarea id='interactive-text-area'></textarea>
           </div>
-        </div>
-        <div class='extras-item' id='benchmark'>
+        </li>
+        <li class='extras-item' id='model-energy-graph'>
           <div class='extras-item-banner'>
-            <input id='show-benchmarks' type='checkbox' />
-            <label for='show-benchmarks'>Benchmarks</label>
+            <input id='show-model-energy-graph' type='checkbox' />
+            <label for='show-model-energy-graph'>Energy Graph</label>
           </div>
-          <div class='extras-item-content' id='benchmarks-content'>
-            <div class='extras-item-controls'>
-              <button class='extras-item-controls' id='run-benchmarks-button'>Run Benchmarks</button>
-              Collect performance data by first running just the model for 100 steps and then running the model and the graphics together for 100 steps.
-            </div>
-            <div class='model-benchmark-results'>
-              <table class='model-benchmark-results' id='model-benchmark-results'></table>
-            </div>
+          <div class='extras-item-content' id='model-energy-graph-content'>
+            <div class='ke-chart' id='model-energy-graph-chart'></div>
           </div>
-        </div>
-        <div class='extras-item' id='model-datatable'>
+        </li>
+        <li class='extras-item' id='model-datatable'>
           <div class='extras-item-banner'>
             <input id='show-model-datatable' type='checkbox' />
             <label for='show-model-datatable'>Atoms Datatable</label>
@@ -127,14 +164,75 @@
           <div class='extras-item-content' id='model-datatable-content'>
             <div class='extras-item-controls' id='model-datatable-stats'></div>
             <div class='model-datatable-results'>
-              <table id='model-datatable-results'></table>
+              <table id='model-datatable-results'>
+                <thead></thead>
+                <tbody></tbody>
+              </table>
             </div>
           </div>
-        </div>
+        </li>
+        <li class='extras-item' id='benchmark'>
+          <div class='extras-item-banner'>
+            <input id='show-benchmarks' type='checkbox' />
+            <label for='show-benchmarks'>Benchmarks</label>
+          </div>
+          <div class='extras-item-content' id='benchmarks-content'>
+            <div class='extras-item-controls'>
+              <button class='extras-item-controls' id='run-benchmarks-button'>Run Benchmarks</button>
+              Collect performance data by running 100 steps: first just the graphics, then
+              just the model, and finally the model and graphics together.
+            </div>
+            <div class='model-benchmark-results'>
+              <table class='model-benchmark-results' id='model-benchmark-results'></table>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div id='about-pane'>
+      <div id='about-pane-banner'>
+        <span id='about-pane-title'>About</span>
+        <div id='about-pane-close'>X</div>
+      </div>
+      <div id='about-content'>
+        <p>
+          This interactive was created by the
+          <a href='http://concord.org/'>Concord Consortium</a>
+          using our
+          <a href='http://mw.concord.org/nextgen/'>Next-Generation Molecular Workbench</a>
+          software, with funding by a grant from
+          <a href='http://www.google.org/'>Google.org</a>
+        </p>
+      </div>
+    </div>
+  </body>
+  <div id='share-pane'>
+    <div id='share-pane-banner'>
+      <span id='share-pane-title'>Share</span>
+      <div id='share-pane-close'>X</div>
+    </div>
+    <div id='share-content'>
+      <p>
+        Paste this
+        <a class='opens-in-new-window' href='embeddable.html' id='share-embeddable-link' target='_blank'>link</a>
+        in email or IM.
+      </p>
+      <textarea id='share-embeddable-link-content'></textarea>
+      <p>
+        Paste HTML to embed in website or blog.
+      </p>
+      <div id='share-iframe-form'>
+        Select size:
+        <select id='share-select-iframe-size'>
+          <option value='smaller'>30% smaller</option>
+          <option selected='selected' value='actual'>actual</option>
+          <option value='larger'>50% larger</option>
+        </select>
+        <textarea id='share-iframe-content'></textarea>
       </div>
     </div>
     <script src='../../lab/lab.js' type='text/javascript'></script>
     <script src='../../imports/legacy-mw-content/model-list.js' type='text/javascript'></script>
     <script src='application.js' type='text/javascript'></script>
-  </body>
+  </div>
 </html>

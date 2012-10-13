@@ -45,7 +45,7 @@ First, clone a copy of the main jQuery git repo by running:
 git clone git://github.com/jquery/jquery.git
 ```
 
-Enter the directory and install the node dependencies:
+Enter the directory and install the Node dependencies:
 
 ```bash
 cd jquery && npm install
@@ -72,39 +72,73 @@ The built version of jQuery will be put in the `dist/` subdirectory.
 
 ### Modules (new in 1.8)
 
-Starting in jQuery 1.8, special builds can now be created that optionally exlude or include any of the following modules:
+Starting in jQuery 1.8, special builds can now be created that optionally exclude or include any of the following modules:
 
+- ajax
+- css
 - dimensions
 - effects
 - offset
 
 
+Before creating a custom build for use in production, be sure to check out the latest stable version:
+
+```bash
+git pull; git checkout $(git describe --abbrev=0 --tags)
+```
+
+Then, make sure all Node dependencies are installed and all Git submodules are checked out:
+
+```bash
+npm install && grunt
+```
+
 To create a custom build, use the following special `grunt` commands:
+
+Exclude **ajax**:
+
+```bash
+grunt custom:-ajax
+```
+
+Exclude **css**:
+
+```bash
+grunt custom:-css
+```
+
+Exclude **deprecated**:
+
+```bash
+grunt custom:-deprecated
+```
 
 Exclude **dimensions**:
 
 ```bash
-grunt build:*:*:-dimensions
+grunt custom:-dimensions
 ```
 
 Exclude **effects**:
 
 ```bash
-grunt build:*:*:-effects
+grunt custom:-effects
 ```
 
 Exclude **offset**:
 
 ```bash
-grunt build:*:*:-offset
+grunt custom:-offset
 ```
 
 Exclude **all** optional modules:
 
 ```bash
-grunt build:*:*:-dimensions:-effects:-offset
+grunt custom:-ajax,-css,-deprecated,-dimensions,-effects,-offset
 ```
 
+
+Note: dependencies will be handled internally, by the build process.
 
 
 Running the Unit Tests
@@ -184,6 +218,7 @@ Following are the steps to manually get the submodules:
 
 ```bash
 git clone https://github.com/jquery/jquery.git
+cd jquery
 git submodule init
 git submodule update
 ```
@@ -192,6 +227,7 @@ Or:
 
 ```bash
 git clone https://github.com/jquery/jquery.git
+cd jquery
 git submodule update --init
 ```
 
@@ -199,6 +235,7 @@ Or:
 
 ```bash
 git clone --recursive https://github.com/jquery/jquery.git
+cd jquery
 ```
 
 If you want to work inside a submodule, it is possible, but first you need to checkout a branch:

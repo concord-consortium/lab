@@ -1,0 +1,97 @@
+{
+  "temperature_control": false,
+  "width": 4,
+  "height": 2.5,
+  "viscosity": 0,
+  "keShading": false,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 2,
+  "gravitationalField": 6.400000095367432e-7,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 120,
+      "sigma": 0.07,
+      "epsilon": -0.009999999776482582
+    },
+    {
+      "id": 1,
+      "mass": 240,
+      "sigma": 0.3,
+      "epsilon": -0.009999999776482582
+    },
+    {
+      "id": 2,
+      "mass": 360,
+      "sigma": 0.3,
+      "epsilon": -0.009999999776482582
+    },
+    {
+      "id": 3,
+      "mass": 100,
+      "sigma": 0.05,
+      "epsilon": -0.009999999776482582
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      1.92,
+      2.43
+    ],
+    "Y": [
+      0.86,
+      1.27
+    ],
+    "VX": [
+      0,
+      0
+    ],
+    "VY": [
+      0,
+      0
+    ],
+    "CHARGE": [
+      0,
+      0
+    ],
+    "FRICTION": [
+      0,
+      0
+    ],
+    "ELEMENT": [
+      1,
+      0
+    ],
+    "PINNED": [
+      0,
+      1
+    ]
+  },
+  "radialBonds": {
+    "atom1Index": [
+      0
+    ],
+    "atom2Index": [
+      1
+    ],
+    "bondLength": [
+      0.6543699259593154
+    ],
+    "bondStrength": [
+      20000
+    ],
+    "bondStyle": [
+      105
+    ]
+  }
+}

@@ -3,10 +3,14 @@
   "width": 4,
   "height": 3,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": 8e-8,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -1345,6 +1349,18 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>Obstacle #1</p>",
+      "x": 1.61,
+      "y": -0.02
+    },
+    {
+      "text": "<p>Obstacle #0</p>",
+      "x": 1.61,
+      "y": 2.78
+    }
+  ],
   "obstacles": {
     "x": [
       null,

@@ -3,10 +3,14 @@
   "width": 3.8,
   "height": 2.7,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 0.5,
   "elements": [
     {
       "id": 0,
@@ -1601,6 +1605,33 @@
       0
     ]
   },
+  "textBoxes": [
+    {
+      "text": "<p>gauge#0</p>",
+      "x": 0.05,
+      "y": 0.04
+    },
+    {
+      "text": "<p>gauge#3</p>",
+      "x": 3.03,
+      "y": 0.04
+    },
+    {
+      "text": "<p>gauge#2</p>",
+      "x": 2.42,
+      "y": 2.49
+    },
+    {
+      "text": "<p>gauge#1</p>",
+      "x": 0.73,
+      "y": 2.49
+    },
+    {
+      "text": "<p>Membrane</p>",
+      "x": 1.51,
+      "y": 0.03
+    }
+  ],
   "obstacles": {
     "x": [
       0.02,

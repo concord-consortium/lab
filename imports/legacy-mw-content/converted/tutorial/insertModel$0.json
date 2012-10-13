@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -48,5 +52,37 @@
     "FRICTION": [],
     "ELEMENT": [],
     "PINNED": []
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>The menu bar</p>",
+      "x": 2.14,
+      "y": 0.35
+    },
+    {
+      "text": "<p>The tool bar</p>",
+      "x": 0.11,
+      "y": 0.1
+    },
+    {
+      "text": "<p>The recorder</p>\n<p>control panel</p>",
+      "x": 1.78,
+      "y": 1.85
+    },
+    {
+      "text": "<p>The simulation</p>\n<p>clock</p>",
+      "x": 0.1,
+      "y": 1.73
+    },
+    {
+      "text": "<p>The heat/cool tool</p>\n<p>or temperature</p>\n<p>controller (optional)</p>",
+      "x": 2.16,
+      "y": 0.86
+    },
+    {
+      "text": "<p>The anatomy of the</p>\n<p>user interface of a</p>\n<p>model container</p>",
+      "x": 0.3,
+      "y": 0.84
+    }
+  ]
 }

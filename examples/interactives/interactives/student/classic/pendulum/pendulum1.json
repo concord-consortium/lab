@@ -1,0 +1,36 @@
+{
+  "title": "Pendulum 1",
+  "about": "Interactive example",
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/student/classic/pendulum/pendulum1$0.json",
+    "viewOptions": {
+      "controlButtons": "play_reset"
+    }
+  },
+  "components": [
+    {
+      "type":   "slider",
+      "id":     "mass-slider",
+      "min":    1.0,
+      "max":    11.0,
+      "labels": [
+        {
+          "value": 1.0,
+          "label": "Light"
+        },
+        {
+          "value": 11.0,
+          "label": "Heavy"
+        }
+      ],
+      "steps":  50,
+      "title":  "Mass of the Ball",
+      "action": "setElementProperties(3, { mass: value*120 });"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "mass-slider"
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Pendulum 3D</page_title>
+<text>Pendulum 3D
+ 
+
+Instruction: Press the Run button, click on the window above, drag the mouse, and see how the pendulum swings!
+Note that while you are rotating the box, you are also rotating the pendulum (not just the box itself!).</text>
+<section start="0" end="231">
+<paragraph start="0" end="12">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="11">
+<size>20</size><bold>true</bold><family>Book Antiqua</family><italic>true</italic></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="14">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageMd3d</class><resource>pendulum3d$0.mdd</resource><coordinate>pendulum3d$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="126">
+<Alignment>1</Alignment>
+<LeftIndent>80.0</LeftIndent>
+<content start="15" end="126">
+</content>
+
+</paragraph>
+<paragraph start="126" end="231">
+<Alignment>1</Alignment>
+<LeftIndent>80.0</LeftIndent>
+<content start="126" end="230">
+</content>
+
+</paragraph>
+</section>
+</document>

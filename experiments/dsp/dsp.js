@@ -143,7 +143,7 @@ graphOptions = {
     sample: sampleRate/bufferSize,
     lines: false,
     bars: true
-  },
+  }
 };
 
 graph1 = grapher.realTimeGraph('#chart1', graphOptions.sinWave);
@@ -154,27 +154,27 @@ function selectDataHandler() {
   stopStreaming = true;
   switch(selectData.value) {
     case "sin-wave":
-    graph1.reset(graphOptions.sinWave);
+    graph1.reset('#chart1', graphOptions.sinWave);
     graphOptions.fft.dataset = sinSpectrum;
-    graph2.reset(graphOptions.fft);
+    graph2.reset('#chart2', graphOptions.fft);
     break;
 
     case "triangle-wave":
-    graph1.reset(graphOptions.triangleWave);
+    graph1.reset('#chart1', graphOptions.triangleWave);
     graphOptions.fft.dataset = triangleSpectrum;
-    graph2.reset(graphOptions.fft);
+    graph2.reset('#chart2', graphOptions.fft);
     break;
 
     case "sawtooth-wave":
-    graph1.reset(graphOptions.sawtoothWave);
+    graph1.reset('#chart1', graphOptions.sawtoothWave);
     graphOptions.fft.dataset = sawtoothSpectrum;
-    graph2.reset(graphOptions.fft);
+    graph2.reset('#chart2', graphOptions.fft);
     break;
 
     case "square-wave":
-    graph1.reset(graphOptions.squareWave);
+    graph1.reset('#chart1', graphOptions.squareWave);
     graphOptions.fft.dataset = squareSpectrum;
-    graph2.reset(graphOptions.fft);
+    graph2.reset('#chart2', graphOptions.fft);
     break;
 
   }

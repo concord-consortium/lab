@@ -1,0 +1,124 @@
+{
+  "temperature_control": false,
+  "width": 4,
+  "height": 2.5,
+  "viscosity": 0,
+  "keShading": false,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 2,
+  "gravitationalField": 8e-8,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 5,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 10,
+      "sigma": 0.28,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 100,
+      "sigma": 0.28,
+      "epsilon": -0.0010000000474974513
+    },
+    {
+      "id": 2,
+      "mass": 480,
+      "sigma": 0.28,
+      "epsilon": -0.0010000000474974513
+    },
+    {
+      "id": 3,
+      "mass": 100,
+      "sigma": 0.28,
+      "epsilon": -0.0010000000474974513
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      1.2841897857490183,
+      0.8358102142509816
+    ],
+    "Y": [
+      2.0988828313949557,
+      0.8252801001190434
+    ],
+    "VX": [
+      0.00001377211784938273,
+      -0.00001377211784938273
+    ],
+    "VY": [
+      -0.000004270106168908919,
+      0.000016877620032151362
+    ],
+    "CHARGE": [
+      0,
+      0
+    ],
+    "FRICTION": [
+      0,
+      0
+    ],
+    "ELEMENT": [
+      1,
+      3
+    ],
+    "PINNED": [
+      0,
+      0
+    ]
+  },
+  "radialBonds": {
+    "atom1Index": [
+      0
+    ],
+    "atom2Index": [
+      1
+    ],
+    "bondLength": [
+      1.3507405376311175
+    ],
+    "bondStrength": [
+      2000
+    ],
+    "bondStyle": [
+      105
+    ]
+  },
+  "obstacles": {
+    "x": [
+      0.03
+    ],
+    "y": [
+      1.78
+    ],
+    "height": [
+      0.17
+    ],
+    "width": [
+      3.95
+    ],
+    "density": [
+      "Infinity"
+    ],
+    "color": [
+      [
+        128,
+        128,
+        128
+      ]
+    ],
+    "visible": [
+      true
+    ]
+  }
+}

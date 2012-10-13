@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>A pendulum connected to a spring</page_title>
+<text>A pendulum connected to a spring
+
+ 
+  
+Instruction: In this experiment, you can play the balance of force. When the gravitational acceleration is relatively greater or the spring is relatively weaker, the green ball moves more like a pendulum. Otherwise, it moves in the region in-between the fixed points.</text>
+<section start="0" end="307">
+<paragraph start="0" end="33">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="32">
+<bold>true</bold><size>15</size></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="36">
+<Alignment>1</Alignment>
+<content start="34" end="35">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pendulum3$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="39">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.00800000011920929</value>
+<minimum>0.0</minimum>
+<maximum>0.05000000074505806</maximum>
+<nstep>50</nstep>
+<title>Gravitational acceleration</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;0.05000000074505806&quot;, label=&quot;Large&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Gravitational Field</change>
+</component></content>
+
+<content start="37" end="38">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>1.2</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>50</nstep>
+<title>Strength of spring</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Weak&quot;}</labeltable>
+<script>set atom[0].restraint &quot;0.1+5*%val&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="307">
+<LeftIndent>6.0</LeftIndent>
+<content start="39" end="306">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

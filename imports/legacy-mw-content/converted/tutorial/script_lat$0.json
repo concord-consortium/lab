@@ -3,10 +3,14 @@
   "width": 5,
   "height": 3,
   "viscosity": 0,
+  "keShading": true,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 0.10000000149011612,
   "elements": [
     {
       "id": 0,
@@ -3768,5 +3772,12 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>The temperatures of these</p>\n<p>slabs as a function of</p>\n<p>time will be computed.</p>",
+      "x": 3.22,
+      "y": 2.35
+    }
+  ]
 }

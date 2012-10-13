@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>A Double Pendulum</page_title>
+<text>A Double Pendulum
+
+ 
+   
+Instruction: Double pendula are simple dynamical systems that can exhibit chaotic behavior. One of the characteristic features of chaos is the butterfly effect, which means the system is sensitive to the initial condition. You can adjust the masses of the two balls using the above sliders and observe the butterfly effect. Use the &quot;Snapshot&quot; button to take snapshots and compare the pictures of the trajectories in the Snapshot Gallery.
+
+To have a longer trajectory, open the Preference Dialog, select the &quot;Recorder&quot; tab, type a greater number on the &quot;Length of Recorder&quot; field (e.g. 1000) and then click the &quot;OK&quot; button of the Dialog. Should the software not restart automatically, restart it manually.
+
+The following are the images of two recorded trajectories with different initial conditions:
+
+  
+
+Related simulation: Triple pendulum</text>
+<section start="0" end="865">
+<paragraph start="0" end="18">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="17">
+<bold>true</bold><size>15</size></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>1</Alignment>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="21">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>doublependulum1$0.mml</resource><menubar>false</menubar><button>Change Velocity</button><button>Select Object</button><button>Toggle Trajectory</button></component></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="25">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>3.9999961853027344</value>
+<minimum>3.9000000953674316</minimum>
+<maximum>4.099999904632568</maximum>
+<nstep>100</nstep>
+<title>Mass of the Purple Ball</title>
+<tooltip>Mass of the Purple Ball</tooltip>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;4.099996089935303&quot;, label=&quot;Slightly Heavier&quot;}{value=&quot;3.899996280670166&quot;, label=&quot;Slightly Lighter&quot;}</labeltable>
+<script>set element[3].mass &quot;%val*120&quot;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Snapshot</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>3.9999961853027344</value>
+<minimum>3.9000000953674316</minimum>
+<maximum>4.099999904632568</maximum>
+<nstep>100</nstep>
+<title>Mass of the Green Ball</title>
+<tooltip>Mass of the Green Ball</tooltip>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;4.099996089935303&quot;, label=&quot;Slightly Heavier&quot;}{value=&quot;3.899996280670166&quot;, label=&quot;Slightly Lighter&quot;}</labeltable>
+<script>set element[1].mass &quot;%val*120&quot;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="463">
+<LeftIndent>6.0</LeftIndent>
+<content start="25" end="36">
+<bold>true</bold><size>11</size></content>
+
+<content start="36" end="463">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="463" end="464">
+<LeftIndent>6.0</LeftIndent>
+<content start="463" end="464">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="464" end="730">
+<LeftIndent>6.0</LeftIndent>
+<content start="464" end="730">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="730" end="731">
+<LeftIndent>6.0</LeftIndent>
+<content start="730" end="731">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="731" end="824">
+<LeftIndent>6.0</LeftIndent>
+<content start="731" end="824">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="824" end="825">
+<LeftIndent>6.0</LeftIndent>
+<content start="824" end="825">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="825" end="828">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="825" end="826">
+</content>
+
+<content start="826" end="827">
+<icon>dp1.gif</icon></content>
+
+<content start="827" end="828">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="828" end="829">
+<LeftIndent>6.0</LeftIndent>
+<content start="828" end="829">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="829" end="865">
+<LeftIndent>6.0</LeftIndent>
+<content start="829" end="849">
+<size>11</size></content>
+
+<content start="849" end="864">
+<href>triplependulum.cml</href><size>11</size></content>
+
+</paragraph>
+</section>
+</document>

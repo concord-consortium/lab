@@ -3,10 +3,14 @@
   "width": 4,
   "height": 2.5,
   "viscosity": 0,
+  "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
   "VDWLinesRatio": 2,
   "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
   "elements": [
     {
       "id": 0,
@@ -280,5 +284,27 @@
       0,
       0
     ]
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>To add an opposite</p>\n<p>charge, hold down</p>\n<p>the SHIFT key.</p>",
+      "x": 2.62,
+      "y": 0.14
+    },
+    {
+      "text": "<p>To set an arbitrary charge,</p>\n<p>double-click the particle</p>\n<p>and type a value in the</p>\n<p>\"Charge\" field.</p>",
+      "x": 2.48,
+      "y": 1.84
+    },
+    {
+      "text": "<p>Button for</p>\n<p>adding a</p>\n<p>positive charge</p>",
+      "x": 0.04,
+      "y": 0.55
+    },
+    {
+      "text": "<p>Button for</p>\n<p>adding a</p>\n<p>negative charge</p>",
+      "x": 1.01,
+      "y": 0.15
+    }
+  ]
 }
