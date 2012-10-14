@@ -3,6 +3,7 @@
 
 define(function (require, exports, module) {
   'use strict';
+  require('common/console');
   var
     arrays          = require('arrays'),
     heatsolver      = require('energy2d/models/physics-solvers/heat-solver'),

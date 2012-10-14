@@ -2,6 +2,8 @@
 # The player UI
 ############################################
 define (require) ->
+  # Dependencies.
+  require 'common/console'
 
   class ModelControllerComponent
 
