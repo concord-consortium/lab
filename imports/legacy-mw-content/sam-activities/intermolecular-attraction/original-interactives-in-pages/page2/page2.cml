@@ -47,8 +47,8 @@
 
 </paragraph>
 <paragraph start="2" end="7">
-<Alignment>1</Alignment>
 <SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
 <content start="2" end="3">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>page2$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
@@ -96,8 +96,8 @@
 
 </paragraph>
 <paragraph start="7" end="12">
-<Alignment>1</Alignment>
 <SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
 <content start="7" end="8">
 <component><class>org.concord.modeler.PageComboBox</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
@@ -146,8 +146,8 @@
 
 </paragraph>
 <paragraph start="12" end="13">
-<Alignment>1</Alignment>
 <SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
 <content start="12" end="13">
 </content>
 
