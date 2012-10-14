@@ -3,6 +3,18 @@ require_relative 'setup.rb'
 require 'grit'
 require 'active_support/core_ext/string/output_safety'
 
+ENCODING_OPTIONS = {
+    :invalid           => :replace,  # Replace invalid byte sequences
+    :undef             => :replace,  # Replace anything not defined in ASCII
+    :replace           => ''        # Use a blank for those replacements
+    # :universal_newline => true doesn't work in Ruby 1.9.3-p194
+}
+
+def cleanup_string(str)
+  clean = str.encode Encoding.find('ASCII'), ENCODING_OPTIONS
+  clean.gsub("\r", "\\n")
+end
+
 VERSION_PATH = File.join(SERVER_PUBLIC_PATH, 'lab', 'lab.version.js')
 
 def dirty?
@@ -35,7 +47,7 @@ Lab.version = {
       "email":         "#{commit.author.email}",
       "date":          "#{commit.committed_date}",
       "short_message": "#{short_message}",
-      "message":       "#{message}"
+      "message":       "#{cleanup_string(message)}"
     },
     "dirty": #{dirty?}
   }
