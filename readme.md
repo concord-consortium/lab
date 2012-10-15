@@ -659,6 +659,29 @@ Restart the server and the request should now suceed:
     Content-Length: 34632
     content-encoding: pack200-gzip
 
+## Project Configuration
+
+Configruation variables used by the runtime JavaScript code are available in the JavaScript global
+object `Lab.config`.
+
+Currently the only attribute in `Lab.config` is a boolean attribute named `sharing` which is used to
+determine if the **Sharing** link in the Interactives will be enabled. The default value for this
+is `true`.
+
+In a full build environment the JavaScript configuration is set in the `:jsconfg` section of
+`config/config.yml`:
+
+    :jsconfig:
+      :sharing: true
+
+When the build environment is active these values are used to generate JavaScript code integrated
+into the project by the Ruby program:
+[`script/generate-js-config.rb`](https://github.com/concord-consortium/lab/blob/master/script/generate-js-config.rb)
+
+If you have downloaded a distribution archive and you can find the code that initializes the JavaScript
+runtime configuration in the files: `lab/lab.js` and `lab/lab.min.js`. Editing the value for `Lab.config.sharing`
+in these files will affect the JavaScript runtime settings when these files are loaded.
+
 ## Contributing to Lab
 
 If you think you'd like to contribute to Lab as an external developer:

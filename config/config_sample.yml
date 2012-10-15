@@ -1,4 +1,6 @@
 ---
+:jsconfig:
+  :sharing: true
 # password and alias for Java siging certificate.
 :java:
   :password: abc123
