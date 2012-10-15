@@ -93,10 +93,16 @@ parseMML = (mmlString) ->
         width   = parseFloat getProperty $node, 'width'
         x       = parseFloat getProperty $node, 'x'
         y       = parseFloat getProperty $node, 'y'
+        vx      = parseFloat (getProperty $node, 'vx') || 0
+        vy      = parseFloat (getProperty $node, 'vy') || 0
 
         visible = parseBoolean (getProperty $node, 'visible'), true
 
         density = parseFloat getProperty $node, 'density'
+
+        # Unit conversion.
+        vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
+        vy = -vy / 100
 
         # authors in MW specify Kg/(mol*A^2), but this gets saved as 100Kg/(mol*A^2)
         # (e.g. 20 Kg/(mol*A^2) is saved as 0.2)
@@ -123,7 +129,7 @@ parseMML = (mmlString) ->
         [height, width] = toNextgenLengths height, width
         y               = y - height     # flip to lower-left coordinate system
 
-        obstacles.push { x, y, height, width, density, color, visible }
+        obstacles.push { x, y, vx, vy, height, width, density, color, visible }
 
       obstacles
 
@@ -499,7 +505,7 @@ parseMML = (mmlString) ->
       json.textBoxes = textBoxes
 
     if obstacles.length > 0
-      json.obstacles = unroll obstacles, 'x', 'y', 'height', 'width', 'density', 'color', 'visible'
+      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'height', 'width', 'density', 'color', 'visible'
 
     json.temperature = temperature if temperature
 
