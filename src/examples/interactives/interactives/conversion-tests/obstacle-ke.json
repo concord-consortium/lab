@@ -1,0 +1,35 @@
+{
+  "title": "Testing: Obstacle Kinetic Energy calculation",
+  "about": "Interactive example",
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-ke$0.json",
+    "viewOptions": {
+      "controlButtons": "play_reset_step",
+      "modelTimeLabel": true
+    }
+  },
+  "components": [
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": 0,
+      "max": 1000
+    },
+    {
+      "type": "energyGraph",
+      "id": "ke-chart",
+      "options": {
+        "ymin": -20,
+        "ymax": 20
+      }
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "ke-chart"
+    ]
+  }
+}
