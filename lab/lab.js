@@ -13303,14 +13303,14 @@ require(['md2d/public-api'], undefined, undefined, true); }());(function(){
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "46cc60d6c133dd3e16115adaa7c5e0a380beb978",
-        "short_sha":      "46cc60d6",
-        "url":            "https://github.com/concord-consortium/lab/commit/46cc60d6",
+        "sha":           "2e4b2ae7134aa67f0bf7557fe62f1fd6c6b802b8",
+        "short_sha":      "2e4b2ae7",
+        "url":            "https://github.com/concord-consortium/lab/commit/2e4b2ae7",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2012-10-15 15:36:37 -0400",
-        "short_message": "bump littlechef: apache config for serving fonts",
-        "message":       "bump littlechef: apache config for serving fonts"
+        "date":          "2012-10-15 16:02:10 -0400",
+        "short_message": "Link to Interactive at home location works w/distribution",
+        "message":       "Link to Interactive at home location works w/distribution\n\n[#37801099]\n\nNeeded to be more explicit with paths to make sure the About\nbox link to the &#x27;Home&#x27; version of the Interactive worked\nwhen running from a downloaded distribution.\n\nSee: http://lab.dev.concord.org/readme.html#distribution-of-project-and-examples"
       },
       "dirty": false
     }
@@ -13321,6 +13321,8 @@ if (typeof Lab === 'undefined') Lab = {};
 Lab.config = {
   "sharing": false,
   "home": "http://lab.concord.org",
+  "home_interactive_path": "/examples/interactives/interactive.html",
+  "home_embeddable_path": "/examples/interactives/embeddable.html",
   "aboutContent": "<p>This interactive was created by the <a href='http://concord.org/' class='opens-in-new-window' target='_blank'>Concord Consortium</a> using our <a href='http://mw.concord.org/nextgen/' class='opens-in-new-window' target='_blank'>Next-Generation Molecular Workbench</a> software, with funding by a grant from <a href='http://www.google.org/' class='opens-in-new-window' target='_blank'>Google.org</a>.</p>"
 }
 })();

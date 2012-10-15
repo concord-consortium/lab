@@ -131,7 +131,7 @@ var ROOT = "/examples",
     $("#about-pane-title").text("About: " + interactive.title);
     $aboutContent.append(Lab.config.aboutContent);
     if (!Lab.config.sharing) {
-      interactiveAboutUrl = Lab.config.home + embeddablePath + hash;
+      interactiveAboutUrl = Lab.config.home + Lab.config.home_embeddable_path + hash;
       $('#about-content').append('<p>Explore or embed a <a href=' + interactiveAboutUrl + ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive, and discover other open source interactives for math, science and engineering at <a href="http://concord.org" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
     }
   }
