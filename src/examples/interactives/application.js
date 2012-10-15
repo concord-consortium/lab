@@ -124,21 +124,27 @@ var ROOT = "/examples",
     var embeddablePath,
         origin,
         embeddableUrl;
-    embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
-    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
-    embeddableUrl = origin + embeddablePath + hash;
-    $shareLink.click(function() {
-      $sharePane.show(100);
-    });
-    $sharePaneClose.click(function() {
-      $sharePane.hide(100);
-    });
-    $shareSelectIframeSize.change(updateShareIframeContent);
-    $sharePane.draggable();
-    $("#share-pane-title").text("Share: " + interactive.title);
-    $("#share-embeddable-link").attr("href", embeddableUrl);
-    $('#share-embeddable-link-content').val(embeddableUrl);
-    updateShareIframeContent();
+    if (Lab.config.sharing) {
+      $shareLink.show();
+      embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
+      origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
+      embeddableUrl = origin + embeddablePath + hash;
+      $shareLink.click(function() {
+        $sharePane.show(100);
+      });
+      $sharePaneClose.click(function() {
+        $sharePane.hide(100);
+      });
+      $shareSelectIframeSize.change(updateShareIframeContent);
+      $sharePane.draggable();
+      $("#share-pane-title").text("Share: " + interactive.title);
+      $("#share-embeddable-link").attr("href", embeddableUrl);
+      $('#share-embeddable-link-content').val(embeddableUrl);
+      updateShareIframeContent();
+    } else {
+      $shareLink.hide();
+      return;
+    }
     function updateShareIframeContent() {
       var actualWidth, actualHeight,
           sizeAttributes = "",
