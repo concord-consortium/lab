@@ -10,18 +10,30 @@
   },
   "components": [
     {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 0.001,
+      "max": 80000,
+      "labels": [
+        {
+          "value": 0.001,
+          "label": "low"
+        },
+        {
+          "value": 80000,
+          "label": "high"
+        }
+      ],
+      "steps": 50,
+      "title": "Temperature",
+      "initialValue": 7600,
+      "action": "set({ temperature: value });"
+    },
+    {
       "type": "thermometer",
       "id": "thermometer",
       "min": 0,
-      "max": 1000
-    },
-    {
-      "type": "energyGraph",
-      "id": "ke-chart",
-      "options": {
-        "ymin": -20,
-        "ymax": 20
-      }
+      "max": 80000
     }
   ],
   "layout": {
@@ -29,7 +41,7 @@
       "thermometer"
     ],
     "bottom": [
-      "ke-chart"
+      "temperature-slider"
     ]
   }
 }

@@ -318,6 +318,13 @@
     </void>
    </object>
   </void>
+  <void property="heatBath">
+   <object class="org.concord.mw2d.models.HeatBath">
+    <void property="expectedTemperature">
+     <double>7592.21418375</double>
+    </void>
+   </object>
+  </void>
   <void property="lightSource">
    <object class="org.concord.mw2d.models.LightSource">
     <void property="radiationPeriod">
@@ -348,13 +355,13 @@
       </object>
      </void>
      <void property="vx">
-      <double>0.002864140442922106</double>
+      <double>0.0028641404429214346</double>
      </void>
      <void property="width">
       <double>62.0</double>
      </void>
      <void property="x">
-      <double>34.0</double>
+      <double>54.9082252333431</double>
      </void>
      <void property="y">
       <double>71.0</double>
@@ -370,7 +377,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1350293695000</long>
+     <long>1350301371000</long>
     </object>
    </void>
    <void method="put">
@@ -379,7 +386,7 @@
    </void>
    <void method="put">
     <string>size</string>
-    <long>10770</long>
+    <long>11587</long>
    </void>
    <void method="put">
     <string>codebase</string>
