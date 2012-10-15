@@ -449,7 +449,7 @@ h:
 	@echo $(HAML_FILES)
 
 server/public/%.html: src/%.html.haml Makefile
-	haml $< $@
+	haml -r ./script/setup.rb $< $@
 
 se:
 	@echo $(SASS_EXAMPLE_FILES)

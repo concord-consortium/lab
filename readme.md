@@ -664,19 +664,40 @@ Restart the server and the request should now suceed:
 Configruation variables used by the runtime JavaScript code are available in the JavaScript global
 object `Lab.config`.
 
-Currently the only attribute in `Lab.config` is a boolean attribute named `sharing` which is used to
-determine if the **Sharing** link in the Interactives will be enabled. The default value for this
-is `true`.
-
 In a full build environment the JavaScript configuration is set in the `:jsconfg` section of
 `config/config.yml`:
 
     :jsconfig:
-      :sharing: true
+      :sharing: false
+      :home: "http://lab.concord.org"
+      :homeInteractivePath: "/examples/interactives/interactive.html"
+      :homeEmbeddablePath: "/examples/interactives/embeddable.html"
+      :aboutContent: "<p>This interactive was created by the <a href='http://concord.org/' class='opens-in-new-window' target='_blank'>Concord Consortium</a> using our <a href='http://mw.concord.org/nextgen/' class='opens-in-new-window' target='_blank'>Next-Generation Molecular Workbench</a> software, with funding by a grant from <a href='http://www.google.org/' class='opens-in-new-window' target='_blank'>Google.org</a>.</p>"
+
+- `sharing`
+  A boolean attribute named `sharing` which is used to determine if the **Sharing** link
+  in the Interactives will be enabled. The default value for this is `true`.
+- `home`
+  Url used to reference cannonical site when sharing is turned off.
+- `homeInteractivePath`
+  Path to page to run non-embeddable version of Interactive
+- `homeEmbeddablePath`
+  Path to page to run embeddable version of Interactive
+- `aboutContent`
+  The first paragraph of content in the About dialog
+- `utmCampaign`
+  If present this generates a UTM suffix for links in the About box
 
 When the build environment is active these values are used to generate JavaScript code integrated
 into the project by the Ruby program:
 [`script/generate-js-config.rb`](https://github.com/concord-consortium/lab/blob/master/script/generate-js-config.rb)
+
+In addition there is a optional section in `config/config.yml` which if present enables embedding google
+analytics script into the head of the main and example html pages. Include your Google Analytics account
+number to enable insertion of he script by the build system.
+
+    :google_analytics:
+      :account_id: <account-id>
 
 If you have downloaded a distribution archive and you can find the code that initializes the JavaScript
 runtime configuration in the files: `lab/lab.js` and `lab/lab.min.js`. Editing the value for `Lab.config.sharing`
