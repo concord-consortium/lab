@@ -534,6 +534,7 @@ define(function (require) {
           max = component.max,
           steps = component.steps,
           action = component.action,
+          propertyName = component.property,
           initialValue = component.initialValue,
           title = component.title || "",
           labels = component.labels || [],
@@ -572,22 +573,52 @@ define(function (require) {
         $container.append($label);
       }
 
-      // The 'action' property is a source of a function which assumes we pass it a paramter called
-      // 'value'.
       if (action) {
+        // The 'action' property is a source of a function which assumes we pass it a parameter
+        // called 'value'.
         action = makeFunctionInScriptContext('value', action);
         $slider.bind('slide', function(event, ui) {
           action(ui.value);
         });
       }
 
-      if (initialValue != null) {
-        $slider.slider('value', initialValue);
+      if (propertyName) {
+        $slider.bind('slide', function(event, ui) {
+          // just ignore slide events that occur before the model is loaded
+          var obj = {};
+          obj[propertyName] = ui.value;
+          if (model) model.set(obj);
+        });
 
+        modelLoadedCallbacks.push(function() {
+          model.addPropertiesListener([propertyName], function() {
+            $slider.slider('value', model.get(propertyName));
+          });
+        });
+      }
+
+      if (initialValue != null) {
         // Make sure to call the action with the startup value of slider. (The script action may
         // manipulate the model, so we have to make sure it runs after the model loads, by pushing
         // it onto 'modelLoadedCallbacks'.)
-        if (action != null) modelLoadedCallbacks.push(function() { action($slider.slider('value')); });
+        if (action) {
+          modelLoadedCallbacks.push(function() {
+            $slider.slider('value', initialValue);
+            action(initialValue);
+          });
+        }
+
+        if (propertyName) {
+          modelLoadedCallbacks.push(function() {
+            var obj = {};
+            obj.propertyName = initialValue;
+            model.set(obj);
+          });
+        }
+      } else if (propertyName) {
+        modelLoadedCallbacks.push(function() {
+          $slider.slider('value', model.get(propertyName));
+        });
       }
 
       return { elem: $elem };
