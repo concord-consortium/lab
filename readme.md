@@ -672,21 +672,18 @@ In a full build environment the JavaScript configuration is set in the `:jsconfg
       :home: "http://lab.concord.org"
       :homeInteractivePath: "/examples/interactives/interactive.html"
       :homeEmbeddablePath: "/examples/interactives/embeddable.html"
-      :aboutContent: "<p>This interactive was created by the <a href='http://concord.org/' class='opens-in-new-window' target='_blank'>Concord Consortium</a> using our <a href='http://mw.concord.org/nextgen/' class='opens-in-new-window' target='_blank'>Next-Generation Molecular Workbench</a> software, with funding by a grant from <a href='http://www.google.org/' class='opens-in-new-window' target='_blank'>Google.org</a>.</p>"
+      :utmCampaign: <external-campaign-key>
 
-- `sharing`
-  A boolean attribute named `sharing` which is used to determine if the **Sharing** link
-  in the Interactives will be enabled. The default value for this is `true`.
-- `home`
-  Url used to reference cannonical site when sharing is turned off.
-- `homeInteractivePath`
-  Path to page to run non-embeddable version of Interactive
-- `homeEmbeddablePath`
-  Path to page to run embeddable version of Interactive
-- `aboutContent`
-  The first paragraph of content in the About dialog
-- `utmCampaign`
-  If present this generates a UTM suffix for links in the About box
+**`sharing`** A boolean attribute used to determine if the **Sharing** link in the Interactives will be enabled.
+The default value for this is `true`.
+
+**`home`** Url used to reference cannonical site when sharing is turned off.
+
+**`homeInteractivePath`** Path to page to run non-embeddable version of Interactive
+
+**`homeEmbeddablePath`** Path to page to run embeddable version of Interactive
+
+**`utmCampaign`** If present a UTM suffix is added to links in the About box
 
 When the build environment is active these values are used to generate JavaScript code integrated
 into the project by the Ruby program:

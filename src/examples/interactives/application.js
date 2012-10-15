@@ -129,10 +129,25 @@ var ROOT = "/examples",
     });
     $aboutPane.draggable();
     $("#about-pane-title").text("About: " + interactive.title);
-    $aboutContent.append(Lab.config.aboutContent);
+
+    concordUrl = 'http://concord.org';
+    nextGenUrl = 'http://mw.concord.org/nextgen/';
+    interactiveAboutUrl = Lab.config.home + Lab.config.homeEmbeddablePath + hash;
+    newWindow = " class='opens-in-new-window' target='_blank";
+
+    if (Lab.config.utmCampaign) {
+      concordUrl += "?utm_source=[" + interactive.title + "]&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
+      nextGenUrl += "?utm_source=[" + interactive.title + "]&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
+      interactiveAboutUrl += "?utm_source=[embed_link]&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
+    }
+
+    concordLink = "<a href='" + concordUrl + "'" + newWindow + "'>Concord Consortium</a>";
+    nextGenLink = "<a href='" + nextGenUrl + "'" + newWindow + "'>Next-Generation Molecular Workbench</a>";
+    interactiveAboutLink = "<a href='" + "'" + interactiveAboutUrl + newWindow + "'>shareable version</a>";
+    googleOrgLink = "<a href='http://www.google.org/' " + newWindow + "'>Google.org</a>";
+    $aboutContent.append('<p>This interactive was created by the ' + concordLink + ' using our ' + nextGenLink + ' software, with funding by a grant from ' + googleOrgLink + '.</p>');
     if (!Lab.config.sharing) {
-      interactiveAboutUrl = Lab.config.home + Lab.config.home_embeddable_path + hash;
-      $('#about-content').append('<p>Explore or embed a <a href=' + interactiveAboutUrl + ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive, and discover other open source interactives for math, science and engineering at <a href="http://concord.org" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
+      $aboutContent.append('<p>Explore or embed a <a href=' + interactiveAboutUrl + ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive, and discover other open source interactives for math, science and engineering at <a href="' + concordUrl + '" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
     }
   }
 
