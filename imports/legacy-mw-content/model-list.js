@@ -380,39 +380,46 @@ modelList = [
         "name": "page2-2",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
+        "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructionsTextBox.mml",
+        "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructionsTextBox.json"
+      },
+      {
+        "name": "page2-3",
+        "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
+        "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json"
       },
       {
-        "name": "page2-3",
+        "name": "page2-4",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPullingAtoms.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPullingAtoms.json"
       },
       {
-        "name": "page2-4",
+        "name": "page2-5",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2$0.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2$0.json"
       },
       {
-        "name": "page2-5",
+        "name": "page2-6",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2Title.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2Title.json"
       },
       {
-        "name": "page2-6",
+        "name": "page2-7",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json"
       },
       {
-        "name": "page2-7",
+        "name": "page2-8",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.mml",
@@ -2736,6 +2743,13 @@ modelList = [
         "cml": "conversion-and-physics-examples/gravitational-field-test.cml",
         "mml": "conversion-and-physics-examples/gravitational-field-test$0.mml",
         "json": "converted/conversion-and-physics-examples/gravitational-field-test$0.json"
+      },
+      {
+        "name": "obstacle-ke",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/obstacle-ke.cml",
+        "mml": "conversion-and-physics-examples/obstacle-ke$0.mml",
+        "json": "converted/conversion-and-physics-examples/obstacle-ke$0.json"
       },
       {
         "name": "one-radial-bond-1",

@@ -81,11 +81,14 @@
       0
     ]
   },
-  "textBoxes": [
+  "images": [
     {
-      "text": "<p>Explore the different attractive forces between polar and non-polar molecules by dragging the “star” image found in the following simulations.</p>\n<p>Choose a pair of molecules from the menu below.</p>\n<p></p>",
-      "x": null,
-      "y": null
+      "imageUri": "instructionsFlat.png",
+      "imageHostIndex": 0,
+      "imageHostType": "",
+      "imageLayer": 1,
+      "imageX": 32,
+      "imageY": 27
     }
   ]
 }

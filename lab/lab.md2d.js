@@ -332,6 +332,17 @@ var requirejs, require, define;
 
 define("../vendor/almond/almond", function(){});
 
+define('common/console',['require'],function (require) {
+
+  // prevent a console.log from blowing things up if we are on a browser that
+  // does not support it ... like IE9
+  if (typeof console === 'undefined') {
+    window.console = {} ;
+    console.log = console.info = console.warn = console.error = function(){};
+  }
+
+});
+
 /*globals window Uint8Array Uint8ClampedArray Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
 /*jshint newcap: false */
 
@@ -1381,8 +1392,9 @@ define('md2d/models/engine/potentials/index',['require','exports','module','./co
 // using RequireJS. RequireJS Optimizer will strip out this if statement.
 
 
-define('md2d/models/engine/md2d',['require','exports','module','arrays','./constants/index','./math/index','./potentials/index','./potentials/index'],function (require, exports, module) {
+define('md2d/models/engine/md2d',['require','exports','module','common/console','arrays','./constants/index','./math/index','./potentials/index','./potentials/index'],function (require, exports, module) {
 
+  require('common/console');
   var arrays       = require('arrays'),
       constants    = require('./constants/index'),
       unit         = constants.unit,
@@ -2860,7 +2872,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','./const
         return springForceAtomIndex[i];
       },
 
-      addObstacle: function(x, y, width, height, density, color, visible) {
+      addObstacle: function(x, y, vx, vy, width, height, density, color, visible) {
         var obstaclemass;
 
         if (N_obstacles + 1 > obstacles[0].length) {
@@ -2875,8 +2887,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','./const
         obstacleWidth[N_obstacles]  = width;
         obstacleHeight[N_obstacles] = height;
 
-        obstacleVX[N_obstacles] = 0;
-        obstacleVY[N_obstacles] = 0;
+        obstacleVX[N_obstacles] = vx;
+        obstacleVY[N_obstacles] = vy;
 
         density = parseFloat(density);      // may be string "Infinity"
         obstaclemass = density * width * height;
@@ -3039,7 +3051,17 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','./const
 
         createObstaclesArray(num);
         for (i = 0; i < num; i++) {
-          engine.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i], props.visible[i]);
+          engine.addObstacle(
+            props.x[i],
+            props.y[i],
+            props.vx[i],
+            props.vy[i],
+            props.width[i],
+            props.height[i],
+            props.density[i],
+            props.color[i],
+            props.visible[i]
+          );
         }
       },
 
@@ -3589,10 +3611,11 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','./const
 /*global define: false, d3: false, $: false */
 /*jslint onevar: true devel:true eqnull: true */
 
-define('md2d/models/modeler',['require','arrays','md2d/models/engine/md2d'],function(require) {
+define('md2d/models/modeler',['require','common/console','arrays','md2d/models/engine/md2d'],function(require) {
   // Dependencies.
-  var arrays = require('arrays'),
-      md2d   = require('md2d/models/engine/md2d'),
+  require('common/console');
+  var arrays  = require('arrays'),
+      md2d    = require('md2d/models/engine/md2d'),
 
       engine;
 
@@ -4976,8 +4999,9 @@ define('md2d/models/modeler',['require','arrays','md2d/models/engine/md2d'],func
 define('cs',{load: function(id){throw new Error("Dynamic load not allowed: " + id);}});
 (function() {
 
-  define('cs!common/components/model_controller_component',['require'],function(require) {
+  define('cs!common/components/model_controller_component',['require','common/console'],function(require) {
     var ModelControllerComponent;
+    require('common/console');
     return ModelControllerComponent = (function() {
 
       function ModelControllerComponent(svg_element, playable, xpos, ypos, scale) {
@@ -8493,6 +8517,7 @@ define('md2d/controllers/interactives-controller',['require','md2d/controllers/m
           max = component.max,
           steps = component.steps,
           action = component.action,
+          propertyName = component.property,
           initialValue = component.initialValue,
           title = component.title || "",
           labels = component.labels || [],
@@ -8531,22 +8556,52 @@ define('md2d/controllers/interactives-controller',['require','md2d/controllers/m
         $container.append($label);
       }
 
-      // The 'action' property is a source of a function which assumes we pass it a paramter called
-      // 'value'.
       if (action) {
+        // The 'action' property is a source of a function which assumes we pass it a parameter
+        // called 'value'.
         action = makeFunctionInScriptContext('value', action);
         $slider.bind('slide', function(event, ui) {
           action(ui.value);
         });
       }
 
-      if (initialValue != null) {
-        $slider.slider('value', initialValue);
+      if (propertyName) {
+        $slider.bind('slide', function(event, ui) {
+          // just ignore slide events that occur before the model is loaded
+          var obj = {};
+          obj[propertyName] = ui.value;
+          if (model) model.set(obj);
+        });
 
+        modelLoadedCallbacks.push(function() {
+          model.addPropertiesListener([propertyName], function() {
+            $slider.slider('value', model.get(propertyName));
+          });
+        });
+      }
+
+      if (initialValue != null) {
         // Make sure to call the action with the startup value of slider. (The script action may
         // manipulate the model, so we have to make sure it runs after the model loads, by pushing
         // it onto 'modelLoadedCallbacks'.)
-        if (action != null) modelLoadedCallbacks.push(function() { action($slider.slider('value')); });
+        if (action) {
+          modelLoadedCallbacks.push(function() {
+            $slider.slider('value', initialValue);
+            action(initialValue);
+          });
+        }
+
+        if (propertyName) {
+          modelLoadedCallbacks.push(function() {
+            var obj = {};
+            obj.propertyName = initialValue;
+            model.set(obj);
+          });
+        }
+      } else if (propertyName) {
+        modelLoadedCallbacks.push(function() {
+          $slider.slider('value', model.get(propertyName));
+        });
       }
 
       return { elem: $elem };

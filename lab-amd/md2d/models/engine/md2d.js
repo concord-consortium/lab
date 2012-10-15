@@ -9,6 +9,7 @@ if (typeof define !== 'function') {
 
 define(function (require, exports, module) {
 
+  require('common/console');
   var arrays       = require('arrays'),
       constants    = require('./constants/index'),
       unit         = constants.unit,
@@ -1486,7 +1487,7 @@ define(function (require, exports, module) {
         return springForceAtomIndex[i];
       },
 
-      addObstacle: function(x, y, width, height, density, color, visible) {
+      addObstacle: function(x, y, vx, vy, width, height, density, color, visible) {
         var obstaclemass;
 
         if (N_obstacles + 1 > obstacles[0].length) {
@@ -1501,8 +1502,8 @@ define(function (require, exports, module) {
         obstacleWidth[N_obstacles]  = width;
         obstacleHeight[N_obstacles] = height;
 
-        obstacleVX[N_obstacles] = 0;
-        obstacleVY[N_obstacles] = 0;
+        obstacleVX[N_obstacles] = vx;
+        obstacleVY[N_obstacles] = vy;
 
         density = parseFloat(density);      // may be string "Infinity"
         obstaclemass = density * width * height;
@@ -1665,7 +1666,17 @@ define(function (require, exports, module) {
 
         createObstaclesArray(num);
         for (i = 0; i < num; i++) {
-          engine.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i], props.density[i], props.color[i], props.visible[i]);
+          engine.addObstacle(
+            props.x[i],
+            props.y[i],
+            props.vx[i],
+            props.vy[i],
+            props.width[i],
+            props.height[i],
+            props.density[i],
+            props.color[i],
+            props.visible[i]
+          );
         }
       },
 

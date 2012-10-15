@@ -709,6 +709,9 @@ div.tooltip {
     cursor: pointer;
     opacity: 1; }
 
+#share-link {
+  display: none; }
+
 #about-pane, #share-pane {
   display: none;
   position: absolute;

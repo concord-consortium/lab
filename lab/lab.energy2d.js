@@ -332,6 +332,17 @@ var requirejs, require, define;
 
 define("../vendor/almond/almond", function(){});
 
+define('common/console',['require'],function (require) {
+
+  // prevent a console.log from blowing things up if we are on a browser that
+  // does not support it ... like IE9
+  if (typeof console === 'undefined') {
+    window.console = {} ;
+    console.log = console.info = console.warn = console.error = function(){};
+  }
+
+});
+
 /*globals window Uint8Array Uint8ClampedArray Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
 /*jshint newcap: false */
 
@@ -4156,8 +4167,9 @@ define('energy2d/models/part',['require','exports','module','energy2d/models/def
 /*jslint indent: 2, browser: true, newcap: true */
 /*globals define: false, console: false*/
 
-define('energy2d/models/core-model',['require','exports','module','arrays','energy2d/models/physics-solvers/heat-solver','energy2d/models/physics-solvers-gpu/heat-solver-gpu','energy2d/models/physics-solvers/fluid-solver','energy2d/models/physics-solvers-gpu/fluid-solver-gpu','energy2d/models/physics-solvers/ray-solver','energy2d/models/part','energy2d/models/default-config','energy2d/gpu/gpgpu'],function (require, exports, module) {
+define('energy2d/models/core-model',['require','exports','module','common/console','arrays','energy2d/models/physics-solvers/heat-solver','energy2d/models/physics-solvers-gpu/heat-solver-gpu','energy2d/models/physics-solvers/fluid-solver','energy2d/models/physics-solvers-gpu/fluid-solver-gpu','energy2d/models/physics-solvers/ray-solver','energy2d/models/part','energy2d/models/default-config','energy2d/gpu/gpgpu'],function (require, exports, module) {
   'use strict';
+  require('common/console');
   var
     arrays          = require('arrays'),
     heatsolver      = require('energy2d/models/physics-solvers/heat-solver'),

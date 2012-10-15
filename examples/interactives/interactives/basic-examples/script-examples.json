@@ -1,5 +1,5 @@
 {
-  "title": "Testing: Scripting Examples",
+  "title": "Test Button, Slider, and Pulldown Examples",
   "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
@@ -70,6 +70,55 @@
           "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json"
         }
       ]
+    },
+
+    {
+      "type": "slider",
+      "id": "temperature-property-slider",
+      "title": "Temperature (set via property link)",
+      "min": 1,
+      "max": 3000,
+      "steps": 30,
+      "labels": [
+        {
+          "value": 1,
+          "label": "0 K"
+        },
+        {
+          "value": 1500,
+          "label": "1500 K"
+        },
+        {
+          "value": 3000,
+          "label": "3000 K"
+        }
+      ],
+      "property": "temperature"
+    },
+
+    {
+      "type": "slider",
+      "id": "temperature-action-slider",
+      "title": "Temperature (set via action)",
+      "min": 1,
+      "max": 3000,
+      "steps": 30,
+      "initialValue": 300,
+      "labels": [
+        {
+          "value": 1,
+          "label": "0 K"
+        },
+        {
+          "value": 1500,
+          "label": "1500 K"
+        },
+        {
+          "value": 3000,
+          "label": "3000 K"
+        }
+      ],
+      "action": "set({temperature: value});"
     }
   ]
 }

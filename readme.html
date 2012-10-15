@@ -86,6 +86,7 @@ A live version of the readme is always available here:
       </li>
     </ul>
   </li>
+  <li><a href="#project-configuration">Project Configuration</a></li>
   <li><a href="#contributing-to-lab">Contributing to Lab</a></li>
   <li><a href="#continuous-integration-on-travis-ci">Continuous Integration on travis-ci</a>    <ul>
       <li><a href="#setting-up-travis-ci-integration">Setting up travis-ci integration</a></li>
@@ -935,6 +936,30 @@ Content-Type: application/java-archive
 Content-Length: 34632
 content-encoding: pack200-gzip
 </code></pre>
+
+<h2 id="project-configuration">Project Configuration</h2>
+
+<p>Configruation variables used by the runtime JavaScript code are available in the JavaScript global
+object <code>Lab.config</code>.</p>
+
+<p>Currently the only attribute in <code>Lab.config</code> is a boolean attribute named <code>sharing</code> which is used to
+determine if the <strong>Sharing</strong> link in the Interactives will be enabled. The default value for this
+is <code>true</code>.</p>
+
+<p>In a full build environment the JavaScript configuration is set in the <code>:jsconfg</code> section of
+<code>config/config.yml</code>:</p>
+
+<pre><code>:jsconfig:
+  :sharing: true
+</code></pre>
+
+<p>When the build environment is active these values are used to generate JavaScript code integrated
+into the project by the Ruby program:
+<a href="https://github.com/concord-consortium/lab/blob/master/script/generate-js-config.rb"><code>script/generate-js-config.rb</code></a></p>
+
+<p>If you have downloaded a distribution archive and you can find the code that initializes the JavaScript
+runtime configuration in the files: <code>lab/lab.js</code> and <code>lab/lab.min.js</code>. Editing the value for <code>Lab.config.sharing</code>
+in these files will affect the JavaScript runtime settings when these files are loaded.</p>
 
 <h2 id="contributing-to-lab">Contributing to Lab</h2>
 

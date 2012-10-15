@@ -1,0 +1,91 @@
+{
+  "temperature_control": false,
+  "width": 3.5,
+  "height": 2,
+  "viscosity": 0.25,
+  "keShading": false,
+  "chargeShading": true,
+  "showVDWLines": true,
+  "VDWLinesRatio": 2,
+  "gravitationalField": false,
+  "showClock": false,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 120,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 240,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 360,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 480,
+      "sigma": 0.2,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      0.86,
+      2.44
+    ],
+    "Y": [
+      1.84,
+      1.83
+    ],
+    "VX": [
+      0,
+      0
+    ],
+    "VY": [
+      0,
+      0
+    ],
+    "CHARGE": [
+      0,
+      0
+    ],
+    "FRICTION": [
+      0,
+      0
+    ],
+    "ELEMENT": [
+      0,
+      0
+    ],
+    "PINNED": [
+      1,
+      1
+    ],
+    "VISIBLE": [
+      0,
+      0
+    ]
+  },
+  "textBoxes": [
+    {
+      "text": "<p>Explore the different attractive forces between polar and non-polar molecules by dragging the “star” image found in the following simulations.</p>\n<p>Choose a pair of molecules from the menu below.</p>\n<p></p>",
+      "x": null,
+      "y": null
+    }
+  ]
+}
