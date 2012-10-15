@@ -34,12 +34,17 @@ guard 'haml',         :input => 'test', :output => 'test', :all_on_start => fals
 end
 
 guard 'shell' do
+
+  watch(/script\/generate.*/) do |match|
+    puts "re-generating version and config information ..."
+    command("make src")
+  end
+
   watch(/(^src\/lab\/.+)|(^src\/mw-helpers\/.+)/) do |match|
     puts match[0]
     puts "re-generating javascript libraries and css resources for these libraries ..."
     command("make src")
     command("make test-src")
-    command("rm -f server/public/lab/lab.version.js; make server/public/lab/lab.version.js")
   end
 
   watch(/^imports\/.+/) do |match|

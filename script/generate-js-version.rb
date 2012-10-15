@@ -15,7 +15,7 @@ def cleanup_string(str)
   clean.gsub("\r", "\\n")
 end
 
-VERSION_PATH = File.join(SERVER_PUBLIC_PATH, 'lab', 'lab.version.js')
+JS_VERSION_PATH = File.join(SERVER_PUBLIC_PATH, 'lab', 'lab.version.js')
 
 def dirty?
   !system("git diff --exit-code --quiet")
@@ -35,25 +35,23 @@ message = "".html_safe + commit.message.gsub("\n", "\\n")
 
 version = <<HEREDOC
 (function(){
-if (typeof Lab === 'undefined') Lab = {};
-Lab.version = {
-  "repo": {
-    "branch": "#{head.name if head != nil}",
-    "commit": {
-      "sha":           "#{commit.id}",
-      "short_sha":      "#{commit.id[0..7]}",
-      "url":            "https://github.com/concord-consortium/lab/commit/#{commit.id[0..7]}",
-      "author":        "#{commit.author.name}",
-      "email":         "#{commit.author.email}",
-      "date":          "#{commit.committed_date}",
-      "short_message": "#{short_message}",
-      "message":       "#{cleanup_string(message)}"
-    },
-    "dirty": #{dirty?}
-  }
-};
-
+  if (typeof Lab === 'undefined') Lab = {};
+  Lab.version = {
+    "repo": {
+      "branch": "#{head.name if head != nil}",
+      "commit": {
+        "sha":           "#{commit.id}",
+        "short_sha":      "#{commit.id[0..7]}",
+        "url":            "https://github.com/concord-consortium/lab/commit/#{commit.id[0..7]}",
+        "author":        "#{commit.author.name}",
+        "email":         "#{commit.author.email}",
+        "date":          "#{commit.committed_date}",
+        "short_message": "#{short_message}",
+        "message":       "#{cleanup_string(message)}"
+      },
+      "dirty": #{dirty?}
+    }
+  };
 })();
 HEREDOC
-
-File.open(VERSION_PATH, 'w') { |f| f.write version }
+File.open(JS_VERSION_PATH, 'w') { |f| f.write version }
