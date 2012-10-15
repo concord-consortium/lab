@@ -11,6 +11,9 @@ var ROOT = "/examples",
 
   var interactiveDefinitionLoaded = $.Deferred(),
       windowLoaded = $.Deferred(),
+      origin,
+      embeddablePath,
+      embeddableUrl,
 
       $selectInteractive = $("#select-interactive"),
 
@@ -99,6 +102,12 @@ var ROOT = "/examples",
 
   $.when(interactiveDefinitionLoaded, windowLoaded).done(function() {
     controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
+
+    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
+    embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
+    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
+    embeddableUrl = origin + embeddablePath + hash;
+
     setupAboutPane();
     setupSharePane();
   });
@@ -110,6 +119,8 @@ var ROOT = "/examples",
   });
 
   function setupAboutPane() {
+    var interactiveAboutUrl,
+        $aboutContent = $('#about-content');
     $aboutLink.click(function() {
       $aboutPane.show(100);
     });
@@ -118,17 +129,16 @@ var ROOT = "/examples",
     });
     $aboutPane.draggable();
     $("#about-pane-title").text("About: " + interactive.title);
+    $aboutContent.append(Lab.config.aboutContent);
+    if (!Lab.config.sharing) {
+      interactiveAboutUrl = Lab.config.home + embeddablePath + hash;
+      $('#about-content').append('<p>Explore or embed a <a href=' + interactiveAboutUrl + ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive, and discover other open source interactives for math, science and engineering at <a href="http://concord.org" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
+    }
   }
 
   function setupSharePane() {
-    var embeddablePath,
-        origin,
-        embeddableUrl;
     if (Lab.config.sharing) {
       $shareLink.show();
-      embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
-      origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
-      embeddableUrl = origin + embeddablePath + hash;
       $shareLink.click(function() {
         $sharePane.show(100);
       });
