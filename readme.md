@@ -700,6 +700,8 @@ If you have downloaded a distribution archive and you can find the code that ini
 runtime configuration in the files: `lab/lab.js` and `lab/lab.min.js`. Editing the value for `Lab.config.sharing`
 in these files will affect the JavaScript runtime settings when these files are loaded.
 
+Additionally you can turn on UTM suffixes by adding a string value to `Lab.config.utmCampaign``.
+
 ## Contributing to Lab
 
 If you think you'd like to contribute to Lab as an external developer:
