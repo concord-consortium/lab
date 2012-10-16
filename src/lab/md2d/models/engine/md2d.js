@@ -529,6 +529,25 @@ define(function (require, exports, module) {
             angularBondStrength   = angularBonds[ANGULAR_BOND_INDICES.STRENGTH];
           },
 
+          obstacles: function() {
+            obstacleX        = obstacles.x;
+            obstacleY        = obstacles.y;
+            obstacleWidth    = obstacles.width;
+            obstacleHeight   = obstacles.height;
+            obstacleMass     = obstacles.mass;
+            obstacleVX       = obstacles.vx;
+            obstacleVY       = obstacles.vy;
+            obstacleExtFX    = obstacles.externalFx;
+            obstacleExtFY    = obstacles.externalFy;
+            obstacleFriction = obstacles.friction;
+            obstacleXPrev    = obstacles.xPrev;
+            obstacleYPrev    = obstacles.yPrev;
+            obstacleColorR   = obstacles.colorR;
+            obstacleColorG   = obstacles.colorG;
+            obstacleColorB   = obstacles.colorB;
+            obstacleVisible  = obstacles.visible;
+          },
+
           springForces: function() {
             springForceAtomIndex = springForces[0];
             springForceX         = springForces[1];
@@ -589,22 +608,24 @@ define(function (require, exports, module) {
         createObstaclesArray = function(num) {
           obstacles = engine.obstacles = {};
 
-          obstacles.x          = obstacleX        = arrays.create(num, 0, float32);
-          obstacles.y          = obstacleY        = arrays.create(num, 0, float32);
-          obstacles.width      = obstacleWidth    = arrays.create(num, 0, float32);
-          obstacles.height     = obstacleHeight   = arrays.create(num, 0, float32);
-          obstacles.mass       = obstacleMass     = arrays.create(num, 0, float32);
-          obstacles.vx         = obstacleVX       = arrays.create(num, 0, float32);
-          obstacles.vy         = obstacleVY       = arrays.create(num, 0, float32);
-          obstacles.externalFx = obstacleExtFX    = arrays.create(num, 0, float32);
-          obstacles.externalFy = obstacleExtFY    = arrays.create(num, 0, float32);
-          obstacles.friction   = obstacleFriction = arrays.create(num, 0, float32);
-          obstacles.xPrev      = obstacleXPrev    = arrays.create(num, 0, float32);
-          obstacles.yPrev      = obstacleYPrev    = arrays.create(num, 0, float32);
-          obstacles.colorR     = obstacleColorR   = arrays.create(num, 0, float32);
-          obstacles.colorG     = obstacleColorG   = arrays.create(num, 0, float32);
-          obstacles.colorB     = obstacleColorB   = arrays.create(num, 0, float32);
-          obstacles.visible    = obstacleVisible  = arrays.create(num, 0, uint8);
+          obstacles.x          = arrays.create(num, 0, float32);
+          obstacles.y          = arrays.create(num, 0, float32);
+          obstacles.width      = arrays.create(num, 0, float32);
+          obstacles.height     = arrays.create(num, 0, float32);
+          obstacles.mass       = arrays.create(num, 0, float32);
+          obstacles.vx         = arrays.create(num, 0, float32);
+          obstacles.vy         = arrays.create(num, 0, float32);
+          obstacles.externalFx = arrays.create(num, 0, float32);
+          obstacles.externalFy = arrays.create(num, 0, float32);
+          obstacles.friction   = arrays.create(num, 0, float32);
+          obstacles.xPrev      = arrays.create(num, 0, float32);
+          obstacles.yPrev      = arrays.create(num, 0, float32);
+          obstacles.colorR     = arrays.create(num, 0, float32);
+          obstacles.colorG     = arrays.create(num, 0, float32);
+          obstacles.colorB     = arrays.create(num, 0, float32);
+          obstacles.visible    = arrays.create(num, 0, uint8);
+
+          assignShortcutReferences.obstacles();
         },
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
@@ -1512,7 +1533,8 @@ define(function (require, exports, module) {
         var obstaclemass;
 
         if (N_obstacles + 1 > obstacles.x.length) {
-          extendArrays(obstacles, N_obstacles + 10);
+          extendArrays(obstacles, N_obstacles + 1);
+          assignShortcutReferences.obstacles();
         }
 
         obstacleX[N_obstacles] = x;
