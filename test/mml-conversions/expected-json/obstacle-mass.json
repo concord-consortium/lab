@@ -73,6 +73,7 @@
       "vy": [ 0 ],
       "externalFx": [ 0 ],
       "externalFy": [ 0 ],
+      "friction": [ 0 ],
       "density": [ 2000000 ],
       "visible": [ true ]
   }

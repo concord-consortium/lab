@@ -97,14 +97,14 @@ parseMML = (mmlString) ->
         vy         = parseFloat (getProperty $node, 'vy') || 0
         externalFx = parseFloat (getProperty $node, 'externalFx') || 0
         externalFy = parseFloat (getProperty $node, 'externalFy') || 0
-
-        visible = parseBoolean (getProperty $node, 'visible'), true
-
-        density = parseFloat getProperty $node, 'density'
+        friction   = parseFloat (getProperty $node, 'friction') || 0
+        density    = parseFloat getProperty $node, 'density'
+        visible    = parseBoolean (getProperty $node, 'visible'), true
 
         # Unit conversion.
         vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
         vy = -vy / 100
+        friction = friction * CLASSIC_TO_NEXTGEN_FRICTION_RATIO
 
         # External forces are specified per mas unit. So, in fact it's acceleration.
         # Author in MW specify 1000A/fs^2, but this gets saved as A/fs^2.
@@ -137,7 +137,7 @@ parseMML = (mmlString) ->
         [height, width] = toNextgenLengths height, width
         y               = y - height     # flip to lower-left coordinate system
 
-        obstacles.push { x, y, vx, vy, externalFx, externalFy, height, width, density, color, visible }
+        obstacles.push { x, y, vx, vy, externalFx, externalFy, friction, height, width, density, color, visible }
 
       obstacles
 
@@ -513,7 +513,7 @@ parseMML = (mmlString) ->
       json.textBoxes = textBoxes
 
     if obstacles.length > 0
-      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'height', 'width', 'density', 'color', 'visible'
+      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction', 'height', 'width', 'density', 'color', 'visible'
 
     json.temperature = temperature if temperature
 

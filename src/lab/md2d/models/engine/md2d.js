@@ -207,21 +207,22 @@ define(function (require, exports, module) {
 
   // Obstacles
   exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
-    X       :  0,
-    Y       :  1,
-    WIDTH   :  2,
-    HEIGHT  :  3,
-    MASS    :  4,
-    VX      :  5,
-    VY      :  6,
-    EXT_FX  :  7,
-    EXT_FY  :  8,
-    X_PREV  :  9,
-    Y_PREV  :  10,
-    COLOR_R :  11,
-    COLOR_G :  12,
-    COLOR_B :  13,
-    VISIBLE :  14
+    X        :  0,
+    Y        :  1,
+    WIDTH    :  2,
+    HEIGHT   :  3,
+    MASS     :  4,
+    VX       :  5,
+    VY       :  6,
+    EXT_FX   :  7,
+    EXT_FY   :  8,
+    FRICTION :  9,
+    X_PREV   :  10,
+    Y_PREV   :  11,
+    COLOR_R  :  12,
+    COLOR_G  :  13,
+    COLOR_B  :  14,
+    VISIBLE  :  15
   };
 
   // VDW pairs
@@ -403,6 +404,7 @@ define(function (require, exports, module) {
         obstacleVY,
         obstacleExtFX,
         obstacleExtFY,
+        obstacleFriction,
         obstacleMass,
         obstacleXPrev,
         obstacleYPrev,
@@ -591,21 +593,22 @@ define(function (require, exports, module) {
 
           obstacles = engine.obstacles = [];
 
-          obstacles[ind.X]       = obstacleX       = arrays.create(num, 0, float32);
-          obstacles[ind.Y]       = obstacleY       = arrays.create(num, 0, float32);
-          obstacles[ind.WIDTH]   = obstacleWidth   = arrays.create(num, 0, float32);
-          obstacles[ind.HEIGHT]  = obstacleHeight  = arrays.create(num, 0, float32);
-          obstacles[ind.MASS]    = obstacleMass    = arrays.create(num, 0, float32);
-          obstacles[ind.VX]      = obstacleVX      = arrays.create(num, 0, float32);
-          obstacles[ind.VY]      = obstacleVY      = arrays.create(num, 0, float32);
-          obstacles[ind.EXT_FX]  = obstacleExtFX   = arrays.create(num, 0, float32);
-          obstacles[ind.EXT_FY]  = obstacleExtFY   = arrays.create(num, 0, float32);
-          obstacles[ind.X_PREV]  = obstacleXPrev   = arrays.create(num, 0, float32);
-          obstacles[ind.Y_PREV]  = obstacleYPrev   = arrays.create(num, 0, float32);
-          obstacles[ind.COLOR_R] = obstacleColorR  = arrays.create(num, 0, float32);
-          obstacles[ind.COLOR_G] = obstacleColorG  = arrays.create(num, 0, float32);
-          obstacles[ind.COLOR_B] = obstacleColorB  = arrays.create(num, 0, float32);
-          obstacles[ind.VISIBLE] = obstacleVisible = arrays.create(num, 0, uint8);
+          obstacles[ind.X]        = obstacleX        = arrays.create(num, 0, float32);
+          obstacles[ind.Y]        = obstacleY        = arrays.create(num, 0, float32);
+          obstacles[ind.WIDTH]    = obstacleWidth    = arrays.create(num, 0, float32);
+          obstacles[ind.HEIGHT]   = obstacleHeight   = arrays.create(num, 0, float32);
+          obstacles[ind.MASS]     = obstacleMass     = arrays.create(num, 0, float32);
+          obstacles[ind.VX]       = obstacleVX       = arrays.create(num, 0, float32);
+          obstacles[ind.VY]       = obstacleVY       = arrays.create(num, 0, float32);
+          obstacles[ind.EXT_FX]   = obstacleExtFX    = arrays.create(num, 0, float32);
+          obstacles[ind.EXT_FY]   = obstacleExtFY    = arrays.create(num, 0, float32);
+          obstacles[ind.FRICTION] = obstacleFriction = arrays.create(num, 0, float32);
+          obstacles[ind.X_PREV]   = obstacleXPrev    = arrays.create(num, 0, float32);
+          obstacles[ind.Y_PREV]   = obstacleYPrev    = arrays.create(num, 0, float32);
+          obstacles[ind.COLOR_R]  = obstacleColorR   = arrays.create(num, 0, float32);
+          obstacles[ind.COLOR_G]  = obstacleColorG   = arrays.create(num, 0, float32);
+          obstacles[ind.COLOR_B]  = obstacleColorB   = arrays.create(num, 0, float32);
+          obstacles[ind.VISIBLE]  = obstacleVisible  = arrays.create(num, 0, uint8);
         },
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
@@ -756,14 +759,19 @@ define(function (require, exports, module) {
         },
 
         updateObstaclePosition = function(i) {
-          var vx = obstacleVX[i],
+          var ax, ay, drag,
+              vx = obstacleVX[i],
               vy = obstacleVY[i],
               // External forces are defined per mass unit!
               // So, they are accelerations in fact.
-              ax = obstacleExtFX[i],
-              ay = obstacleExtFY[i];
+              extFx = obstacleExtFX[i],
+              extFy = obstacleExtFY[i];
 
-          if (vx || vy || ax || ay) {
+          if (vx || vy || extFx || extFy) {
+            drag = viscosity * obstacleFriction[i];
+            ax = extFx - drag * vx;
+            ay = extFy - drag * vy;
+
             obstacleXPrev[i] = obstacleX[i];
             obstacleYPrev[i] = obstacleY[i];
 
@@ -1504,7 +1512,7 @@ define(function (require, exports, module) {
         return springForceAtomIndex[i];
       },
 
-      addObstacle: function(x, y, vx, vy, externalFx, externalFy, width, height, density, color, visible) {
+      addObstacle: function(x, y, vx, vy, externalFx, externalFy, friction, width, height, density, color, visible) {
         var obstaclemass;
 
         if (N_obstacles + 1 > obstacles[0].length) {
@@ -1521,6 +1529,8 @@ define(function (require, exports, module) {
 
         obstacleExtFX[N_obstacles] = externalFx;
         obstacleExtFY[N_obstacles] = externalFy;
+
+        obstacleFriction[N_obstacles] = friction;
 
         obstacleWidth[N_obstacles]  = width;
         obstacleHeight[N_obstacles] = height;
@@ -1693,6 +1703,7 @@ define(function (require, exports, module) {
             props.vy[i],
             props.externalFx[i],
             props.externalFy[i],
+            props.friction[i],
             props.width[i],
             props.height[i],
             props.density[i],
