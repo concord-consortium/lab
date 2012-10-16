@@ -1038,10 +1038,11 @@ define(function(require) {
     };
 
     model.getAtomProperties = function(i) {
-      var p,
+      var p, propName,
           props = {};
       for (p = 0; p < model.ATOM_PROPERTY_LIST.length; p++) {
-        props[model.ATOM_PROPERTY_LIST[p].toLowerCase()] = atoms[p][i];
+        propName = model.ATOM_PROPERTY_LIST[p];
+        props[propName] = atoms[propName][i];
       }
       return props;
     };
