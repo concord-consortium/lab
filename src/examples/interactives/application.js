@@ -72,7 +72,17 @@ var ROOT = "/examples",
     }
   }
 
-  if (hash = document.location.hash) {
+  function getHash() {
+    var match,
+        h = document.location.hash;
+    if (h) {
+      match = h.match(/(.*?\.json)/);
+      h = match[1];
+    }
+    return h;
+  }
+
+  if (hash = getHash()) {
     interactiveUrl = hash.substr(1, hash.length);
 
     $.get(interactiveUrl).done(function(results) {
@@ -113,7 +123,7 @@ var ROOT = "/examples",
   });
 
   $(window).bind('hashchange', function() {
-    if (document.location.hash !== hash) {
+    if (getHash() !== hash) {
       location.reload();
     }
   });
@@ -139,9 +149,9 @@ var ROOT = "/examples",
     utmString = "utm_source=" + encodeURIComponent(interactive.title.replace(/ /gi,"+")) + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
 
     if (Lab.config.utmCampaign) {
-      concordUrl += "?" + utmString;
-      nextGenUrl += "?" + utmString;
-      interactiveAboutUrl += "?" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
+      concordUrl += "&" + utmString;
+      nextGenUrl += "&" + utmString;
+      interactiveAboutUrl += "&" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
     }
 
     concordLink = "<a href='" + concordUrl + "'" + newWindow + "'>Concord Consortium</a>";

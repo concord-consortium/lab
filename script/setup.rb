@@ -24,17 +24,23 @@ end
 
 if CONFIG[:google_analytics] && CONFIG[:google_analytics][:account_id]
   ANALYTICS = <<-HEREDOC
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '#{CONFIG[:google_analytics][:account_id]}']);
-  _gaq.push(['_trackPageview', location.pathname + location.search + location.hash]);
+  <script type="text/javascript">
+    // make an array out of the URL's hashtag string, splitting the string at every ampersand
+    var my_hashtag_array = location.hash.split('&');
 
-  (function() {
+    // grab the first value of the array (assuming that's the value that indicates which interactive is being viewed)
+    var my_hashtag = my_hashtag_array[0];
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '#{CONFIG[:google_analytics][:account_id]}']);
+    _gaq.push(['_setAllowAnchor', true]);
+    _gaq.push(['_trackPageview', location.pathname + my_hashtag]);
+    (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.src = ('https:' == document.location.protocol ? '<https://ssl>https://ssl' : '<http://www>http://www') + '.<http://google-analytics.com/ga.js>google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-</script>
+  </script>
   HEREDOC
 else
   ANALYTICS = ""
