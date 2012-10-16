@@ -1,22 +1,25 @@
-# [Lab](http://lab.dev.concord.org/)
+# [lab.concord.org](http://lab.concord.org/)
 
 HTML5-based open source scientific models, visualizations, graphing, and probeware from the
 [Concord Consortium](http://www.concord.org).
 
-Development site:
+**Production site:**
+  : **[lab.concord.org](http://lab.concord.org/)**
+
+**Technical Readme:**
+  : **[lab.concord.org/readme.html](http://lab.concord.org/readme.html)**
+
+**Development site:**
   : **[lab.dev.concord.org](http://lab.dev.concord.org/)**
 
-Readme on the development site:
-  : **[lab.dev.concord.org/readme.html](http://lab.dev.concord.org/readme.html)**
-
-Source code repository:
+**Source code repository:**
   : **[github.com/concord-consortium/lab](https://github.com/concord-consortium/lab)**
 
 _Note: many of the links in this readme only work properly when this document is served
 from a web-server and do not resolve properly at
 [github.com/concord-consortium/lab](https://github.com/concord-consortium/lab).
 A live version of the readme is always available here:
-[lab.dev.concord.org/readme.html](http://lab.dev.concord.org/readme.html)._
+[lab.concord.org/readme.html](http://lab.concord.org/readme.html)._
 
 **Table of Contents**
 
