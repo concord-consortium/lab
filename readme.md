@@ -718,8 +718,8 @@ Interactive **About** box.
 ### Google Analytics
 
 In addition there is a optional section in `config/config.yml` which if present enables embedding google
-analytics script into the head of the main `index.html` and all html pages in the `examples/` directory
-including Interactives.
+analytics script into the head of the main `index.html` and all html pages in the `examples/` and `doc/`
+directories. This includes all the Interactives which are located in `examples/interactives` directory.
 
 Include your Google Analytics account number here to enable insertion of the Google Analytics
 script by the build system into the generated HTML pages.
