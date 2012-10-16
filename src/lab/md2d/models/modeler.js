@@ -221,12 +221,10 @@ define(function(require) {
 
       model.ANGULAR_BOND_PROPERTY_LIST = [];
 
-      // Copy ANGULAR_BOND property indices and names from md2d
-      offset = 0;
+      // Copy ANGULAR_BOND properties from md2d
       for (i = 0; i < md2d.ANGULAR_BOND_PROPERTY_LIST.length; i++) {
         prop = md2d.ANGULAR_BOND_PROPERTY_LIST[i];
         model.ANGULAR_BOND_PROPERTY_LIST[i] = prop;
-        model.ANGULAR_BOND_INDICES[prop]    = md2d.ANGULAR_BOND_INDICES[prop] + offset;
       }
 
       model.ELEMENT_INDICES = {};
@@ -1098,11 +1096,10 @@ define(function(require) {
     };
 
     model.setAngularBondProperties = function(i, props) {
-      var key, p;
+      var key;
       for (key in props) {
         if (props.hasOwnProperty(key)) {
-          p = model.ANGULAR_BOND_INDICES[key.toUpperCase()];
-          angularBonds[p][i] = props[key];
+          angularBonds[key][i] = props[key];
         }
       }
       readModelState();
@@ -1112,7 +1109,8 @@ define(function(require) {
       var p,
           props = {};
       for (p = 0; p < model.ANGULAR_BOND_PROPERTY_LIST.length; p++) {
-        props[model.ANGULAR_BOND_PROPERTY_LIST[p].toLowerCase()] = angularBonds[p][i];
+        propName = model.ANGULAR_BOND_PROPERTY_LIST[p];
+        props[propName] = ANGULAR_BOND_PROPERTY_LIST[propName][i];
       }
       return props;
     };

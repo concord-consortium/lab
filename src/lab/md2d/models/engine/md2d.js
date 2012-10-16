@@ -144,19 +144,12 @@ define(function (require, exports, module) {
 
   // Angular Bonds
   exports.ANGULAR_BOND_PROPERTY_LIST = ANGULAR_BOND_PROPERTY_LIST = [
-    "ATOM1",
-    "ATOM2",
-    "ATOM3",
-    "ANGLE",
-    "STRENGTH"
+    "atom1",
+    "atom2",
+    "atom3",
+    "angle",
+    "strength"
   ];
-
-  exports.ANGULAR_BOND_INDICES = ANGULAR_BOND_INDICES = {};
-  (function() {
-    for (var i = 0; i < ANGULAR_BOND_PROPERTY_LIST.length; i++) {
-      exports.ANGULAR_BOND_INDICES[ ANGULAR_BOND_PROPERTY_LIST[i] ] = i;
-    }
-  }());
 
   exports.RADIAL_BOND_STYLES = RADIAL_BOND_STYLES = {
     RADIAL_BOND_STANDARD_STICK_STYLE : 101,
@@ -338,10 +331,10 @@ define(function (require, exports, module) {
         angularBondStrength,
 
         // Count of angular bond properties.
-        numAngularBondIndices = (function() {
+        numAngularBondProperties = (function() {
           var n = 0, index;
-          for (index in ANGULAR_BOND_INDICES) {
-            if (ANGULAR_BOND_INDICES.hasOwnProperty(index)) n++;
+          for (index in ANGULAR_BOND_PROPERTY_LIST) {
+            if (ANGULAR_BOND_PROPERTY_LIST.hasOwnProperty(index)) n++;
           }
           return n;
         }()),
@@ -516,11 +509,11 @@ define(function (require, exports, module) {
           },
 
           angularBonds: function() {
-            angularBondAtom1Index = angularBonds[ANGULAR_BOND_INDICES.ATOM1];
-            angularBondAtom2Index = angularBonds[ANGULAR_BOND_INDICES.ATOM2];
-            angularBondAtom3Index = angularBonds[ANGULAR_BOND_INDICES.ATOM3];
-            angularBondAngle      = angularBonds[ANGULAR_BOND_INDICES.ANGLE];
-            angularBondStrength   = angularBonds[ANGULAR_BOND_INDICES.STRENGTH];
+            angularBondAtom1Index  = engine.angularBonds.atom1    = angularBonds.atom1;
+            angularBondAtom2Index  = engine.angularBonds.atom2    = angularBonds.atom2;
+            angularBondAtom3Index  = engine.angularBonds.atom3    = angularBonds.atom3;
+            angularBondAngle       = engine.angularBonds.angle    = angularBonds.angle;
+            angularBondStrength    = engine.angularBonds.strength = angularBonds.strength;
           },
 
           obstacles: function() {
@@ -579,11 +572,11 @@ define(function (require, exports, module) {
 
           angularBonds = engine.angularBonds = [];
 
-          angularBonds[ANGULAR_BOND_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_BOND_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_BOND_INDICES.ATOM3]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_BOND_INDICES.ANGLE]    = arrays.create(num, 0, float32);
-          angularBonds[ANGULAR_BOND_INDICES.STRENGTH] = arrays.create(num, 0, float32);
+          angularBonds.atom1    = arrays.create(num, 0, uint16);
+          angularBonds.atom2    = arrays.create(num, 0, uint16);
+          angularBonds.atom3    = arrays.create(num, 0, uint16);
+          angularBonds.angle    = arrays.create(num, 0, float32);
+          angularBonds.strength = arrays.create(num, 0, float32);
 
           assignShortcutReferences.angularBonds();
         },
@@ -1071,7 +1064,7 @@ define(function (require, exports, module) {
               forceInXForI, forceInYForI, forceInXForK, forceInYForK,
               commonPrefactor, temp;
 
-          for (i = 0, len = angularBonds[0].length; i < len; i++) {
+          for (i = 0, len = angularBonds.atom1.length; i < len; i++) {
             i1 = angularBondAtom1Index[i];
             i2 = angularBondAtom2Index[i];
             i3 = angularBondAtom3Index[i];
@@ -1472,7 +1465,7 @@ define(function (require, exports, module) {
         extends the length of the typed arrays by ten to have room for more bonds.
       */
       addAngularBond: function(atom1Index, atom2Index, atom3Index, bondAngle, bondStrength) {
-        if (N_angularBonds + 1 > angularBonds[0].length) {
+        if (N_angularBonds + 1 > angularBonds.atom1.length) {
           extendArrays(angularBonds, N_angularBonds + 10);
           assignShortcutReferences.angularBonds();
         }
