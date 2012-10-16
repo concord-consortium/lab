@@ -149,8 +149,8 @@ var ROOT = "/examples",
     utmString = "utm_source=" + encodeURIComponent(interactive.title.replace(/ /gi,"+")) + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
 
     if (Lab.config.utmCampaign) {
-      concordUrl += "&" + utmString;
-      nextGenUrl += "&" + utmString;
+      concordUrl += "?" + utmString;
+      nextGenUrl += "?" + utmString;
       interactiveAboutUrl += "&" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
     }
 
