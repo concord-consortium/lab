@@ -27,7 +27,7 @@ if CONFIG[:google_analytics] && CONFIG[:google_analytics][:account_id]
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', '#{CONFIG[:google_analytics][:account_id]}']);
-  _gaq.push(['_trackPageview']);
+  _gaq.push(['_trackPageview', location.pathname + location.search + location.hash])
 
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
