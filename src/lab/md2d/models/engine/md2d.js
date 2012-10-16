@@ -46,7 +46,6 @@ define(function (require, exports, module) {
       DEFAULT_VALUES,
 
       ATOM_PROPERTY_LIST,
-      ATOM_INDICES,
 
       ELEMENT_PROPERTY_LIST,
       ELEMENT_INDICES,
@@ -118,30 +117,22 @@ define(function (require, exports, module) {
 
   // Atoms
   exports.ATOM_PROPERTY_LIST = ATOM_PROPERTY_LIST = [
-    "RADIUS",
-    "PX",
-    "PY",
-    "X",
-    "Y",
-    "VX",
-    "VY",
-    "SPEED",
-    "AX",
-    "AY",
-    "CHARGE",
-    "ELEMENT",
-    "PINNED",
-    "FRICTION",
-    "MASS"
+    "radius",
+    "px",
+    "py",
+    "x",
+    "y",
+    "vx",
+    "vy",
+    "speed",
+    "ax",
+    "ay",
+    "charge",
+    "element",
+    "pinned",
+    "friction",
+    "mass"
   ];
-
-  exports.ATOM_INDICES = ATOM_INDICES = {};
-
-  (function() {
-    for (var i = 0; i < ATOM_PROPERTY_LIST.length; i++) {
-      exports.ATOM_INDICES[ ATOM_PROPERTY_LIST[i] ] = i;
-    }
-  }());
 
   // Radial Bonds
   exports.RADIAL_BOND_PROPERTY_LIST = RADIAL_BOND_PROPERTY_LIST = [
@@ -231,9 +222,9 @@ define(function (require, exports, module) {
   };
 
   exports.DEFAULT_VALUES = DEFAULT_VALUES = {
-    CHARGE            : 0,
-    FRICTION          : 0,
-    PINNED            : 0,
+    charge            : 0,
+    friction          : 0,
+    pinned            : 0,
     RADIAL_BOND_STYLE : RADIAL_BOND_STYLES.RADIAL_BOND_STANDARD_STICK_STYLE
   };
 
@@ -503,26 +494,26 @@ define(function (require, exports, module) {
         },
 
         /**
-          Set up "shortcut" references, e.g., x = atoms[ATOM_INDICES.X]
+          Set up "shortcut" references, e.g., x = atoms.x
         */
         assignShortcutReferences = {
 
           atoms: function() {
-            radius    = engine.radius      = atoms[ATOM_INDICES.RADIUS];
-            px        = engine.px          = atoms[ATOM_INDICES.PX];
-            py        = engine.py          = atoms[ATOM_INDICES.PY];
-            x         = engine.x           = atoms[ATOM_INDICES.X];
-            y         = engine.y           = atoms[ATOM_INDICES.Y];
-            vx        = engine.vx          = atoms[ATOM_INDICES.VX];
-            vy        = engine.vy          = atoms[ATOM_INDICES.VY];
-            speed     = engine.speed       = atoms[ATOM_INDICES.SPEED];
-            ax        = engine.ax          = atoms[ATOM_INDICES.AX];
-            ay        = engine.ay          = atoms[ATOM_INDICES.AY];
-            charge    = engine.charge      = atoms[ATOM_INDICES.CHARGE];
-            friction  = engine.friction    = atoms[ATOM_INDICES.FRICTION];
-            element   = engine.element     = atoms[ATOM_INDICES.ELEMENT];
-            pinned    = engine.pinned      = atoms[ATOM_INDICES.PINNED];
-            mass      = engine.mass        = atoms[ATOM_INDICES.MASS];
+            radius   = engine.radius   = atoms.radius;
+            px       = engine.px       = atoms.px;
+            py       = engine.py       = atoms.py;
+            x        = engine.x        = atoms.x;
+            y        = engine.y        = atoms.y;
+            vx       = engine.vx       = atoms.vx;
+            vy       = engine.vy       = atoms.vy;
+            speed    = engine.speed    = atoms.speed;
+            ax       = engine.ax       = atoms.ax;
+            ay       = engine.ay       = atoms.ay;
+            charge   = engine.charge   = atoms.charge;
+            friction = engine.friction = atoms.friction;
+            element  = engine.element  = atoms.element;
+            pinned   = engine.pinned   = atoms.pinned;
+            mass     = engine.mass     = atoms.mass;
           },
 
           radialBonds: function() {
@@ -1382,24 +1373,24 @@ define(function (require, exports, module) {
           throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
         }
 
-        atoms  = engine.atoms  = arrays.create(ATOM_PROPERTY_LIST.length, null, 'regular');
+        atoms  = engine.atoms  = {};
 
         // TODO. DRY this up by letting the property list say what type each array is
-        atoms[ATOM_INDICES.RADIUS]    = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.PX]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.PY]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.X]         = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.Y]         = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.VX]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.VY]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.SPEED]     = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.AX]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.AY]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.CHARGE]    = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.FRICTION]  = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
-        atoms[ATOM_INDICES.PINNED]    = arrays.create(num, 0, uint8);
-        atoms[ATOM_INDICES.MASS]      = arrays.create(num, 0, float32);
+        atoms.radius   = arrays.create(num, 0, float32);
+        atoms.px       = arrays.create(num, 0, float32);
+        atoms.py       = arrays.create(num, 0, float32);
+        atoms.x        = arrays.create(num, 0, float32);
+        atoms.y        = arrays.create(num, 0, float32);
+        atoms.vx       = arrays.create(num, 0, float32);
+        atoms.vy       = arrays.create(num, 0, float32);
+        atoms.speed    = arrays.create(num, 0, float32);
+        atoms.ax       = arrays.create(num, 0, float32);
+        atoms.ay       = arrays.create(num, 0, float32);
+        atoms.charge   = arrays.create(num, 0, float32);
+        atoms.friction = arrays.create(num, 0, float32);
+        atoms.element  = arrays.create(num, 0, uint8);
+        atoms.pinned   = arrays.create(num, 0, uint8);
+        atoms.mass     = arrays.create(num, 0, float32);
 
         assignShortcutReferences.atoms();
 
@@ -1418,16 +1409,16 @@ define(function (require, exports, module) {
       addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, atom_pinned) {
         var el, atom_mass;
 
-        if (N + 1 > atoms[0].length) {
+        if (N + 1 > atoms.x.length) {
           extendArrays(atoms, N + 10);
           assignShortcutReferences.atoms();
         }
 
         // Allow these values to be optional, and use the default if not defined:
 
-        if (atom_charge == null)   atom_charge   = DEFAULT_VALUES.CHARGE;
-        if (atom_friction == null) atom_friction = DEFAULT_VALUES.FRICTION;
-        if (atom_pinned == null )  atom_pinned   = DEFAULT_VALUES.PINNED;
+        if (atom_charge == null)   atom_charge   = DEFAULT_VALUES.charge;
+        if (atom_friction == null) atom_friction = DEFAULT_VALUES.friction;
+        if (atom_pinned == null )  atom_pinned   = DEFAULT_VALUES.pinned;
 
         el = elements[atom_element];
         atom_mass = el[ELEMENT_INDICES.MASS];

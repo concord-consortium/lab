@@ -201,9 +201,7 @@ define(function(require) {
       //
       // Indexes into the atoms array for the individual node property arrays
       //
-      model.INDICES = {};
       model.ATOM_PROPERTY_LIST = [];
-      model.ATOM_PROPERTY_SHORT_NAMES = {};
 
       // Copy ATOM property indices and names from md2d
       offset = 0;
@@ -211,7 +209,6 @@ define(function(require) {
         prop = md2d.ATOM_PROPERTY_LIST[i];
 
         model.ATOM_PROPERTY_LIST[i] = prop;
-        model.INDICES[prop]         = md2d.ATOM_INDICES[prop] + offset;
       }
 
       model.RADIAL_BOND_INDICES = {};
@@ -247,15 +244,15 @@ define(function(require) {
       }
 
       model.NON_ENGINE_PROPERTY_LIST = [
-        "VISIBLE",
-        "MARKED",
-        "DRAGGABLE"
+        "visible",
+        "marked",
+        "draggable"
       ];
 
-      model.NON_ENGINE_PROPERTY_SHORT_NAMES = {
-        VISIBLE: "visible",
-        MARKED: "marked",
-        DRAGGABLE: "draggable"
+      model.NON_ENGINE_DEFAULT_VALUES = {
+        visible: 1,
+        marked: 0,
+        draggable: 0
       };
 
       model.RADIAL_BOND_STYLES = {
@@ -269,45 +266,26 @@ define(function(require) {
         RADIAL_BOND_TRIPLE_BOND_STYLE:    108
       };
 
-      model.NON_ENGINE_DEFAULT_VALUES = {
-        VISIBLE: 1,
-        MARKED: 0,
-        DRAGGABLE: 0
-      };
-
       // Add non-engine properties to the end of the list of property indices and names
       offset = model.ATOM_PROPERTY_LIST.length;
       for (i = 0; i < model.NON_ENGINE_PROPERTY_LIST.length; i++) {
         prop = model.NON_ENGINE_PROPERTY_LIST[i];
-
         model.ATOM_PROPERTY_LIST.push(prop);
-        model.INDICES[prop]             = i + offset;
-        model.ATOM_PROPERTY_SHORT_NAMES[prop] = model.NON_ENGINE_PROPERTY_SHORT_NAMES[prop];
-      }
-
-      // Inverse of ATOM_PROPERTY_SHORT_NAMES...
-      model.ATOM_PROPERTY_LONG_NAMES = {};
-
-      for (prop in model.ATOM_PROPERTY_SHORT_NAMES) {
-        if (model.ATOM_PROPERTY_SHORT_NAMES.hasOwnProperty(prop)) {
-          shortName = model.ATOM_PROPERTY_SHORT_NAMES[prop];
-          model.ATOM_PROPERTY_LONG_NAMES[shortName] = prop;
-        }
       }
 
       // TODO. probably save everything *except* a list of "non-saveable properties"
       model.SAVEABLE_PROPERTIES =  [
-        "X",
-        "Y",
-        "VX",
-        "VY",
-        "CHARGE",
-        "ELEMENT",
-        "PINNED",
-        "FRICTION",
-        "VISIBLE",
-        "MARKED",
-        "DRAGGABLE"
+        "x",
+        "y",
+        "vx",
+        "vy",
+        "charge",
+        "element",
+        "pinned",
+        "friction",
+        "visible",
+        "marked",
+        "draggable"
       ];
 
       // TODO: restrict access to some internal properties?
@@ -500,17 +478,19 @@ define(function(require) {
     function readModelState() {
       var i,
           len,
-          j,
+          prop,
           n;
 
       engine.computeOutputState(modelOutputState);
 
       extendResultsArray();
 
-      // Transpose 'atoms' array into 'results' for easier consumption by view code
-      for (j = 0, len = atoms.length; j < len; j++) {
-        for (i = 0, n = model.get_num_atoms(); i < n; i++) {
-          results[i][j+1] = atoms[j][i];
+      // Transpose 'atoms' object into 'results' for easier consumption by view code
+      for (prop in atoms) {
+        if (atoms.hasOwnProperty(prop)) {
+          for (i = 0, n = model.get_num_atoms(); i < n; i++) {
+            results[i][prop] = atoms[prop][i];
+          }
         }
       }
 
@@ -532,21 +512,21 @@ define(function(require) {
 
       for (i = results.length, n = model.get_num_atoms(); i < n; i++) {
         if (!results[i]) {
-          results[i] = arrays.create(1 + model.ATOM_PROPERTY_LIST.length,  0, arrayType);
-          results[i][0] = i;
+          results[i] = {};
+          results[i].idx = i;
         }
       }
     }
 
     function setToDefaultValue(prop) {
       for (var i = 0; i < model.get_num_atoms(); i++) {
-        atoms[model.INDICES[prop]][i] = model.NON_ENGINE_DEFAULT_VALUES[prop];
+        atoms[prop][i] = model.NON_ENGINE_DEFAULT_VALUES[prop];
       }
     }
 
     function setFromSerializedArray(prop, serializedArray) {
       for (var i = 0; i < model.get_num_atoms(); i++) {
-        atoms[model.INDICES[prop]][i] = serializedArray[i];
+        atoms[prop][i] = serializedArray[i];
       }
     }
 
@@ -556,10 +536,10 @@ define(function(require) {
 
       for (i = 0; i < model.NON_ENGINE_PROPERTY_LIST.length; i++) {
         prop = model.NON_ENGINE_PROPERTY_LIST[i];
-        atoms[model.INDICES[prop]] = arrays.create(model.get_num_atoms(), 0, arrayType);
+        atoms[prop] = arrays.create(model.get_num_atoms(), 0, arrayType);
 
-        if (serializedAtomProps[prop]) {
-          setFromSerializedArray(prop, serializedAtomProps[prop]);
+        if (serializedAtomProps[prop.toUpperCase()]) {
+          setFromSerializedArray(prop, serializedAtomProps[prop.toUpperCase()]);
         }
         else {
           setToDefaultValue(prop);
@@ -570,16 +550,13 @@ define(function(require) {
     /**
       Each entry in engine.atoms is a reference to a typed array. When the engine needs to create
       a larger typed array, it must create a new object. Therefore, this function exists to copy
-      over any references to newly created typed arrays from engine.atoms to our atoms array.
+      over any references to newly created typed arrays from engine.atoms to our atoms object.
     */
     function copyEngineAtomReferences() {
-      var prop;
-      // Note that the indirection below allows us to correctly account for arbitrary differences
-      // between the ordering of indices in model and the ordering in the engine.
-
-      for (var i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
+      var i, prop;
+      for (i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
         prop = md2d.ATOM_PROPERTY_LIST[i];
-        atoms[ model.INDICES[prop] ] = engine.atoms[ md2d.ATOM_INDICES[prop] ];
+        atoms[prop] = engine.atoms[prop];
       }
     }
 
@@ -601,7 +578,7 @@ define(function(require) {
 
       for (i=0, len = model.SAVEABLE_PROPERTIES.length; i < len; i++) {
         prop = model.SAVEABLE_PROPERTIES[i];
-        array = atoms[model.INDICES[prop]];
+        array = atoms[prop];
         serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
       }
 
@@ -788,7 +765,7 @@ define(function(require) {
         if (config.relax) engine.relaxToTemperature();
       }
 
-      atoms = [];
+      atoms = {};
       copyEngineAtomReferences(engine.atoms);
       initializeNonEngineProperties(config);
 
@@ -925,8 +902,8 @@ define(function(require) {
           newLength,
           i;
 
-      if (visible == null)   visible   = model.NON_ENGINE_DEFAULT_VALUES.VISIBLE;
-      if (draggable == null) draggable = model.NON_ENGINE_DEFAULT_VALUES.DRAGGABLE;
+      if (visible == null)   visible   = model.NON_ENGINE_DEFAULT_VALUES.visible;
+      if (draggable == null) draggable = model.NON_ENGINE_DEFAULT_VALUES.draggable;
 
       // As a convenience to script authors, bump the atom within bounds
       if (x < radius) x = radius;
@@ -944,15 +921,15 @@ define(function(require) {
         // or something we could ask the engine to do on our behalf, but it may make more sense when
         // you realize this is a temporary step until we modify the code further in order to maintain
         // the 'visible', 'draggable' propeties *only* in what is now being called the 'results' array
-        newLength = atoms[model.INDICES.ELEMENT].length;
+        newLength = atoms.element.length;
 
-        if (atoms[model.INDICES.VISIBLE].length < newLength) {
-          atoms[model.INDICES.VISIBLE]   = arrays.extend(atoms[model.INDICES.VISIBLE], newLength);
-          atoms[model.INDICES.DRAGGABLE] = arrays.extend(atoms[model.INDICES.DRAGGABLE], newLength);
+        if (atoms.visible.length < newLength) {
+          atoms.visible   = arrays.extend(atoms.visible, newLength);
+          atoms.draggable = arrays.extend(atoms.draggable, newLength);
         }
 
-        atoms[model.INDICES.VISIBLE][i]   = visible;
-        atoms[model.INDICES.DRAGGABLE][i] = draggable;
+        atoms.visible[i]   = visible;
+        atoms.draggable[i] = draggable;
 
         readModelState();
         dispatch.addAtom();
@@ -988,9 +965,9 @@ define(function(require) {
       moleculeAtoms.push(atomIndex);
 
       for (i = 0; i < moleculeAtoms.length; i++) {
-        x = atoms[model.INDICES.X][moleculeAtoms[i]];
-        y = atoms[model.INDICES.Y][moleculeAtoms[i]];
-        r = atoms[model.INDICES.RADIUS][moleculeAtoms[i]];
+        x = atoms.x[moleculeAtoms[i]];
+        y = atoms.y[moleculeAtoms[i]];
+        r = atoms.radius[moleculeAtoms[i]];
 
         if (x-r < left  ) left   = x-r;
         if (x+r > right ) right  = x+r;
@@ -998,8 +975,8 @@ define(function(require) {
         if (y+r > top   ) top    = y+r;
       }
 
-      cx = atoms[model.INDICES.X][atomIndex];
-      cy = atoms[model.INDICES.Y][atomIndex];
+      cx = atoms.x[atomIndex];
+      cy = atoms.y[atomIndex];
 
       return { top: top-cy, left: left-cx, bottom: bottom-cy, right: right-cx };
     },
@@ -1021,17 +998,16 @@ define(function(require) {
           dx, dy,
           new_x, new_y,
           j, jj,
-          key,
-          propName;
+          key;
 
       if (moveMolecule) {
         moleculeAtoms = engine.getMoleculeAtoms(i);
         if (moleculeAtoms.length > 0) {
-          dx = typeof props.x === "number" ? props.x - atoms[model.INDICES.X][i] : 0;
-          dy = typeof props.y === "number" ? props.y - atoms[model.INDICES.Y][i] : 0;
+          dx = typeof props.x === "number" ? props.x - atoms.x[i] : 0;
+          dy = typeof props.y === "number" ? props.y - atoms.y[i] : 0;
           for (j = 0, jj=moleculeAtoms.length; j<jj; j++) {
-            new_x = atoms[model.INDICES.X][moleculeAtoms[j]] + dx;
-            new_y = atoms[model.INDICES.Y][moleculeAtoms[j]] + dy;
+            new_x = atoms.x[moleculeAtoms[j]] + dx;
+            new_y = atoms.y[moleculeAtoms[j]] + dy;
             if (!model.setAtomProperties(moleculeAtoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
               return false;
             }
@@ -1040,9 +1016,9 @@ define(function(require) {
       }
 
       if (checkLocation) {
-        var x  = typeof props.x === "number" ? props.x : atoms[model.INDICES.X][i],
-            y  = typeof props.y === "number" ? props.y : atoms[model.INDICES.Y][i],
-            el = typeof props.element === "number" ? props.y : atoms[model.INDICES.ELEMENT][i];
+        var x  = typeof props.x === "number" ? props.x : atoms.x[i],
+            y  = typeof props.y === "number" ? props.y : atoms.y[i],
+            el = typeof props.element === "number" ? props.y : atoms.element[i];
 
         if (!engine.canPlaceAtom(el, x, y, i)) {
           return false;
@@ -1052,8 +1028,7 @@ define(function(require) {
       // Actually set properties
       for (key in props) {
         if (props.hasOwnProperty(key)) {
-          propName = key.toUpperCase();
-          if (propName) atoms[model.INDICES[propName]][i] = props[key];
+          atoms[key][i] = props[key];
         }
       }
 
@@ -1179,11 +1154,11 @@ define(function(require) {
       adjusting the friction of the dragged atom.
     */
     model.liveDragStart = function(atomIndex, x, y) {
-      if (x == null) x = atoms[model.INDICES.X][atomIndex];
-      if (y == null) y = atoms[model.INDICES.Y][atomIndex];
+      if (x == null) x = atoms.x[atomIndex];
+      if (y == null) y = atoms.y[atomIndex];
 
-      liveDragSavedFriction = atoms[model.INDICES.FRICTION][atomIndex];
-      atoms[model.INDICES.FRICTION][atomIndex] = model.LIVE_DRAG_FRICTION;
+      liveDragSavedFriction = atoms.friction[atomIndex];
+      atoms.friction[atomIndex] = model.LIVE_DRAG_FRICTION;
 
       liveDragSpringForceIndex = model.addSpringForce(atomIndex, x, y, 500);
     };
@@ -1202,7 +1177,7 @@ define(function(require) {
     model.liveDragEnd = function() {
       var atomIndex = engine.springForceAtomIndex(liveDragSpringForceIndex);
 
-      atoms[model.INDICES.FRICTION][atomIndex] = liveDragSavedFriction;
+      atoms.friction[atomIndex] = liveDragSavedFriction;
       model.removeSpringForce(liveDragSpringForceIndex);
     };
 

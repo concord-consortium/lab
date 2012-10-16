@@ -91,23 +91,6 @@ define(function (require) {
         },
 
         model,
-        model_md2d_results_RADIUS,
-        model_md2d_results_PX,
-        model_md2d_results_PY,
-        model_md2d_results_X,
-        model_md2d_results_Y,
-        model_md2d_results_VX,
-        model_md2d_results_VY,
-        model_md2d_results_SPEED,
-        model_md2d_results_AX,
-        model_md2d_results_AY,
-        model_md2d_results_CHARGE,
-        model_md2d_results_FRICTION,
-        model_md2d_results_VISIBLE,
-        model_md2d_results_MARKED,
-        model_md2d_results_DRAGGABLE,
-        model_md2d_results_ELEMENT,
-        model_md2d_results_MASS,
 
         RADIAL_BOND_STANDARD_STICK_STYLE,
         RADIAL_BOND_LONG_SPRING_STYLE,
@@ -164,24 +147,6 @@ define(function (require) {
       if (!options.showClock) {
         options.showClock = model.get("showClock");
       }
-
-      model_md2d_results_RADIUS   = model.INDICES.RADIUS+1;
-      model_md2d_results_PX       = model.INDICES.PX+1;
-      model_md2d_results_PY       = model.INDICES.PY+1;
-      model_md2d_results_X        = model.INDICES.X+1;
-      model_md2d_results_Y        = model.INDICES.Y+1;
-      model_md2d_results_VX       = model.INDICES.VX+1;
-      model_md2d_results_VY       = model.INDICES.VY+1;
-      model_md2d_results_SPEED    = model.INDICES.SPEED+1;
-      model_md2d_results_AX       = model.INDICES.AX+1;
-      model_md2d_results_AY       = model.INDICES.AY+1;
-      model_md2d_results_CHARGE   = model.INDICES.CHARGE+1;
-      model_md2d_results_FRICTION = model.INDICES.FRICTION+1;
-      model_md2d_results_VISIBLE  = model.INDICES.VISIBLE+1;
-      model_md2d_results_MARKED   = model.INDICES.MARKED+1;
-      model_md2d_results_DRAGGABLE= model.INDICES.DRAGGABLE+1;
-      model_md2d_results_ELEMENT  = model.INDICES.ELEMENT+1;
-      model_md2d_results_MASS     = model.INDICES.MASS+1;
 
       RADIAL_BOND_STANDARD_STICK_STYLE = 101;
       RADIAL_BOND_LONG_SPRING_STYLE    = 102;
@@ -682,10 +647,10 @@ define(function (require) {
       function getParticleGradient(d) {
           var ke, keIndex, charge;
 
-          if (d[model_md2d_results_MARKED]) return "url(#mark-grad)";
+          if (d.marked) return "url(#mark-grad)";
 
           if (keShadingMode) {
-            ke  = model.getAtomKineticEnergy(d[0]),
+            ke  = model.getAtomKineticEnergy(d.idx),
             // Convert Kinetic Energy to [0, 1] range
             // using empirically tested transformations.
             // K.E. shading should be similar to the classic MW K.E. shading.
@@ -695,13 +660,13 @@ define(function (require) {
           }
 
           if (chargeShadingMode) {
-            charge = d[model_md2d_results_CHARGE];
+            charge = d.charge;
 
             if (charge === 0) return "url(#neutral-grad)";
             return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
           }
 
-          return "url('#"+gradientNameForElement[d[model_md2d_results_ELEMENT] % 4]+"')";
+          return "url('#"+gradientNameForElement[d.element % 4]+"')";
       }
 
       // Create key images which can be shown in the
@@ -773,7 +738,7 @@ define(function (require) {
       }
 
       function updateMoleculeRadius() {
-        vis.selectAll("circle").data(results).attr("r",  function(d) { return x(d[model_md2d_results_RADIUS]); });
+        vis.selectAll("circle").data(results).attr("r",  function(d) { return x(d.radius); });
         // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
       }
 
@@ -785,12 +750,12 @@ define(function (require) {
         particle.enter().append("circle")
             .attr({
               "class": "draggable",
-              "r":  function(d) { return x(d[model_md2d_results_RADIUS]); },
-              "cx": function(d) { return x(d[model_md2d_results_X]); },
-              "cy": function(d) { return y(d[model_md2d_results_Y]); }
+              "r":  function(d) { return x(d.radius); },
+              "cx": function(d) { return x(d.x); },
+              "cy": function(d) { return y(d.y); }
             })
             .style({
-              "fill-opacity": function(d) { return d[model_md2d_results_VISIBLE]; },
+              "fill-opacity": function(d) { return d.visible; },
               "fill": getParticleGradient
             })
             .on("mousedown", molecule_mousedown)
@@ -827,7 +792,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return 0.3 * scaling_factor;
               } else {
-                return x(Math.min(results[d[1]][model_md2d_results_RADIUS], results[d[2]][model_md2d_results_RADIUS])) * 0.75;
+                return x(Math.min(results[d[1]].radius, results[d[2]].radius)) * 0.75;
               }
             })
             .style("stroke", function(d, i) {
@@ -836,7 +801,7 @@ define(function (require) {
                 return "#000000";
               } else {
                 if (chargeShadingMode) {
-                  charge = results[d[1]][model_md2d_results_CHARGE];
+                  charge = results[d[1]].charge;
                   if (charge > 0) {
                       return  bondColorArray[4];
                   } else if (charge < 0){
@@ -845,7 +810,7 @@ define(function (require) {
                     return "#A4A4A4";
                   }
                 } else {
-                  element = results[d[1]][model_md2d_results_ELEMENT] % 4;
+                  element = results[d[1]].element % 4;
                   grad = bondColorArray[element];
                   return grad;
                 }
@@ -861,7 +826,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return 0.3 * scaling_factor;
               } else {
-                return x(Math.min(results[d[1]][model_md2d_results_RADIUS], results[d[2]][model_md2d_results_RADIUS])) * 0.75;
+                return x(Math.min(results[d[1]].radius, results[d[2]].radius)) * 0.75;
               }
             })
             .style("stroke", function(d, i) {
@@ -870,7 +835,7 @@ define(function (require) {
                 return "#000000";
               } else {
                 if (chargeShadingMode) {
-                  charge = results[d[2]][model_md2d_results_CHARGE];
+                  charge = results[d[2]].charge;
                   if (charge > 0) {
                       return  bondColorArray[4];
                   } else if (charge < 0){
@@ -879,7 +844,7 @@ define(function (require) {
                     return "#A4A4A4";
                   }
                 } else {
-                  element = results[d[2]][model_md2d_results_ELEMENT] % 4;
+                  element = results[d[2]].element % 4;
                   grad = bondColorArray[element];
                   return grad;
                 }
@@ -912,10 +877,10 @@ define(function (require) {
         costheta = dx / length;
         sintheta = dy / length;
 
-        radius_x1 = x(results[d[1]][model_md2d_results_RADIUS]) * costheta;
-        radius_x2 = x(results[d[2]][model_md2d_results_RADIUS]) * costheta;
-        radius_y1 = x(results[d[1]][model_md2d_results_RADIUS]) * sintheta;
-        radius_y2 = x(results[d[2]][model_md2d_results_RADIUS]) * sintheta;
+        radius_x1 = x(results[d[1]].radius) * costheta;
+        radius_x2 = x(results[d[2]].radius) * costheta;
+        radius_y1 = x(results[d[1]].radius) * sintheta;
+        radius_y2 = x(results[d[2]].radius) * sintheta;
         radiusFactorX = radius_x1 - radius_x2;
         radiusFactorY = radius_y1 - radius_y2;
 
@@ -965,10 +930,10 @@ define(function (require) {
           if (atom1 !== 0 || atom2 !== 0) {
             VDWLines_container.append("line")
               .attr("class", "attractionforce")
-              .attr("x1", x(results[atom1][model_md2d_results_X]))
-              .attr("y1", y(results[atom1][model_md2d_results_Y]))
-              .attr("x2", x(results[atom2][model_md2d_results_X]))
-              .attr("y2", y(results[atom2][model_md2d_results_Y]))
+              .attr("x1", x(results[atom1].x))
+              .attr("y1", y(results[atom1].y))
+              .attr("x2", x(results[atom2].x))
+              .attr("y2", y(results[atom2].y))
               .style("stroke-width", 2 * scaling_factor)
               .style("stroke-dasharray", 3 * scaling_factor + " " + 2 * scaling_factor);
           }
@@ -1008,8 +973,8 @@ define(function (require) {
 
               if (imglayer === 1) {
                 image_container_top.append("image")
-                  .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
-                  .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } })
+                  .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
+                  .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } })
                   .attr("class", "image_attach"+i+" draggable")
                   .attr("xlink:href", img[i].src)
                   .attr("width", img_width)
@@ -1017,8 +982,8 @@ define(function (require) {
                   .attr("pointer-events", "none");
               } else {
                 image_container_below.append("image")
-                  .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
-                  .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } })
+                  .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
+                  .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } })
                   .attr("class", "image_attach"+i+" draggable")
                   .attr("xlink:href", img[i].src)
                   .attr("width", img_width)
@@ -1105,28 +1070,28 @@ define(function (require) {
         labelEnter = label.enter().append("g")
             .attr("class", "label")
             .attr("transform", function(d) {
-              return "translate(" + x(d[model_md2d_results_X]) + "," + y(d[model_md2d_results_Y]) + ")";
+              return "translate(" + x(d.x) + "," + y(d.y) + ")";
             });
 
         if (options.atom_mubers) {
           labelEnter.append("text")
               .attr("class", "index")
-              .attr("font-size", function(d) { return 1.6 * textShrinkFactor * x(d[model_md2d_results_RADIUS]); })
+              .attr("font-size", function(d) { return 1.6 * textShrinkFactor * x(d.radius); })
               .attr("style", "font-weight: bold; opacity: .7")
               .attr("x", 0)
               .attr("y", "0.31em")
               .attr("pointer-events", "none")
-              .text(d[0]);
+              .text(d.idx);
         } else {
           labelEnter.append("text")
               .attr("class", "index")
-              .attr("font-size", function(d) { return 1.6 * x(d[model_md2d_results_RADIUS]); })
+              .attr("font-size", function(d) { return 1.6 * x(d.radius); })
               .attr("style", "font-weight: bold; opacity: .7")
               .attr("x", "-0.31em")
               .attr("y", "0.31em")
               .attr("pointer-events", "none")
               .text(function(d) {
-                  var charge = d[model_md2d_results_CHARGE];
+                  var charge = d.charge;
                   // Draw +/- signs also when KE shading is enabled.
                   if (chargeShadingMode || keShadingMode) {
                       if (charge > 0){
@@ -1210,19 +1175,19 @@ define(function (require) {
               .style("opacity", 1.0)
               .style("display", "inline")
               .style("background", "rgba(100%, 100%, 100%, 0.7)")
-              .style("left", x(results[i][model_md2d_results_X]) + offset_left + 60 + "px")
-              .style("top",  y(results[i][model_md2d_results_Y]) + offset_top - 30 + "px")
+              .style("left", x(results[i].x) + offset_left + 60 + "px")
+              .style("top",  y(results[i].y) + offset_top - 30 + "px")
               .style("zIndex", 100)
               .transition().duration(250);
 
         molecule_div_pre.text(
             "atom: " + i + "\n" +
             "time: " + modelTimeLabel() + "\n" +
-            "speed: " + d3.format("+6.3e")(results[i][model_md2d_results_SPEED]) + "\n" +
-            "vx:    " + d3.format("+6.3e")(results[i][model_md2d_results_VX])    + "\n" +
-            "vy:    " + d3.format("+6.3e")(results[i][model_md2d_results_VY])    + "\n" +
-            "ax:    " + d3.format("+6.3e")(results[i][model_md2d_results_AX])    + "\n" +
-            "ay:    " + d3.format("+6.3e")(results[i][model_md2d_results_AY])    + "\n"
+            "speed: " + d3.format("+6.3e")(results[i].speed) + "\n" +
+            "vx:    " + d3.format("+6.3e")(results[i].vx)    + "\n" +
+            "vy:    " + d3.format("+6.3e")(results[i].vy)    + "\n" +
+            "ax:    " + d3.format("+6.3e")(results[i].ax)    + "\n" +
+            "ay:    " + d3.format("+6.3e")(results[i].ay)    + "\n"
           );
       }
 
@@ -1263,8 +1228,8 @@ define(function (require) {
         }
 
         particle.attr({
-          "cx": function(d) { return x(d[model_md2d_results_X]); },
-          "cy": function(d) { return y(d[model_md2d_results_Y]); }
+          "cx": function(d) { return x(d.x); },
+          "cy": function(d) { return y(d.y); }
         });
 
         // When Kinetic Energy Shading is enabled, update style of atoms
@@ -1274,7 +1239,7 @@ define(function (require) {
         }
 
         label.attr("transform", function(d, i) {
-          return "translate(" + x(d[model_md2d_results_X]) + "," + y(d[model_md2d_results_Y]) + ")";
+          return "translate(" + x(d.x) + "," + y(d.y) + ")";
         });
 
         if (atom_tooltip_on === 0 || atom_tooltip_on > 0) {
@@ -1302,12 +1267,12 @@ define(function (require) {
           img_height = img.height*scaling_factor;
           if(imglayer == 1) {
             image_container_top.selectAll("image.image_attach"+i)
-            .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
-            .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } });
+            .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
+            .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } });
           } else {
             image_container_below.selectAll("image.image_attach"+i)
-              .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
-              .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } });
+              .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
+              .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } });
           }
         }
       }
@@ -1315,9 +1280,9 @@ define(function (require) {
       function node_dragstart(d, i) {
         if ( is_stopped() ) {
           // cache the *original* atom position so we can go back to it if drag is disallowed
-          drag_origin = [d[model_md2d_results_X], d[model_md2d_results_Y]];
+          drag_origin = [d.x, d.y];
         }
-        else if ( d[model_md2d_results_DRAGGABLE] ) {
+        else if ( d.draggable ) {
           model.liveDragStart(i);
         }
       }
@@ -1359,7 +1324,7 @@ define(function (require) {
           set_position(i, drag.x, drag.y, false, true);
           update_drawable_positions();
         }
-        else if ( d[model_md2d_results_DRAGGABLE] ) {
+        else if ( d.draggable ) {
           drag = dragPoint(dragX, dragY);
           model.liveDrag(drag.x, drag.y);
         }
@@ -1371,13 +1336,13 @@ define(function (require) {
 
         if ( is_stopped() ) {
 
-          if (!set_position(i, d[model_md2d_results_X], d[model_md2d_results_Y], true, true)) {
+          if (!set_position(i, d.x, d.y, true, true)) {
             alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
             set_position(i, drag_origin[0], drag_origin[1], false, true);
           }
           update_drawable_positions();
         }
-        else if ( d[model_md2d_results_DRAGGABLE] ) {
+        else if ( d.draggable ) {
           // here we just assume we are removing the one and only spring force.
           // This assumption will have to change if we can have more than one.
           model.liveDragEnd();
