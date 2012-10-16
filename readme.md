@@ -668,20 +668,20 @@ In a full build environment the JavaScript configuration is set in the `:jsconfg
 `config/config.yml`:
 
     :jsconfig:
-      :sharing: false
+      :sharing: true
       :home: "http://lab.concord.org"
       :homeInteractivePath: "/examples/interactives/interactive.html"
       :homeEmbeddablePath: "/examples/interactives/embeddable.html"
       :utmCampaign: <external-campaign-key>
 
-**`sharing`** A boolean attribute used to determine if the **Sharing** link in the Interactives will be enabled.
+**`sharing`** A boolean attribute used to determine if the **Share** link in the Interactives will be enabled.
 The default value for this is `true`.
 
 **`home`** Url used to reference cannonical site when sharing is turned off.
 
-**`homeInteractivePath`** Path to page to run non-embeddable version of Interactive
+**`homeInteractivePath`** Path to page to run non-embeddable version of Interactives.
 
-**`homeEmbeddablePath`** Path to page to run embeddable version of Interactive
+**`homeEmbeddablePath`** Path to page to run embeddable version of Interactives.
 
 **`utmCampaign`** If present a UTM suffix is added to links in the About box.
 Set to a string which identifies the external organization.
@@ -689,6 +689,28 @@ Set to a string which identifies the external organization.
 When the build environment is active these values are used to generate JavaScript code integrated
 into the project by the Ruby program:
 [`script/generate-js-config.rb`](https://github.com/concord-consortium/lab/blob/master/script/generate-js-config.rb)
+
+### Interactive Share link
+
+Normally the **Share** link is enabled. If you are hosting this content on an external server where supporting
+sharing is impractical in some manner you can disable the display of the Interactive **Share** link by setting
+`:sharing` in `config/config.yml` to `false`:
+
+    :jsconfig:
+      :sharing: false
+      :home: "http://lab.concord.org"
+      :homeInteractivePath: "/examples/interactives/interactive.html"
+      :homeEmbeddablePath: "/examples/interactives/embeddable.html"
+      :utmCampaign: <external-campaign-key>
+
+The additional values for `:home`, `homeInteractivePath`, and `homeEmbeddablePath` are used to construct an
+additional paragraph in the Interactive **About** box providing a link to the Interactive on the production
+[site for the project](http://lab.concord.org).
+
+The value for `utmCampaign` is optional. If present and the **home** site has enabled Google Analytics it will
+allow better tracking of users who click through links in the **About** box.
+
+### Google Analytics
 
 In addition there is a optional section in `config/config.yml` which if present enables embedding google
 analytics script into the head of the main `index.html` and all html pages in the `examples/` directory
@@ -702,6 +724,8 @@ script by the build system into the generated HTML pages.
 
 The content from which the embedded Google Analytics script is generated is contained in this Ruby file:
 [`script/setup.rb`](https://github.com/concord-consortium/lab/blob/master/script/setup.rb).
+
+### Limitations changing configuration in an archive distribution
 
 If you have downloaded a distribution archive you can manually modify the code that initializes the JavaScript
 runtime configuration in the files: `lab/lab.js` and `lab/lab.min.js`. Editing the value for `Lab.config.sharing`
