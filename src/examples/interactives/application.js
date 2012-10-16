@@ -136,9 +136,9 @@ var ROOT = "/examples",
     newWindow = " class='opens-in-new-window' target='_blank";
 
     if (Lab.config.utmCampaign) {
-      concordUrl += "?utm_source=[" + interactive.title + "]&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
-      nextGenUrl += "?utm_source=[" + interactive.title + "]&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
-      interactiveAboutUrl += "?utm_source=[embed_link]&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
+      concordUrl += "?" + encodeURI("utm_source=" + interactive.title + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
+      nextGenUrl += "?" + encodeURI("utm_source=" + interactive.title + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
+      interactiveAboutUrl += "?" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
     }
 
     concordLink = "<a href='" + concordUrl + "'" + newWindow + "'>Concord Consortium</a>";
