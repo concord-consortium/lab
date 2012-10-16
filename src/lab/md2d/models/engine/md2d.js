@@ -284,14 +284,11 @@ define(function (require, exports, module) {
         // Viscosity of the medium of the model
         viscosity,
 
-        // default integration duration, in femtoseconds.
-        integrationDuration = 50,
-
         // The current model time, in femtoseconds.
         time = 0,
 
         // The current integration time step, in femtoseconds.
-        dt = 1,
+        dt,
 
         // Square of integration time step, in fs^2.
         dt_sq,
@@ -1201,22 +1198,6 @@ define(function (require, exports, module) {
         }
       },
 
-      setIntegrationDuration: function(duration) {
-        if (typeof duration === "number" && duration >= 0) {
-          integrationDuration = duration;
-        } else {
-          throw new Error("The integrationDuration must be a number greater than or equal to 1");
-        }
-      },
-
-      setTimeStep: function(ts) {
-        if (typeof ts === "number" && ts >= 0) {
-          dt = ts;
-        } else {
-          throw new Error("The timeStep must be a time in fs greater than 0");
-        }
-      },
-
       setTargetTemperature: function(v) {
         validateTemperature(v);
         T_target = v;
@@ -1831,7 +1812,7 @@ define(function (require, exports, module) {
         }
       },
 
-      integrate: function(duration) {
+      integrate: function(duration, _dt) {
 
         var radius,
             inverseMass;
@@ -1840,9 +1821,14 @@ define(function (require, exports, module) {
           throw new Error("md2d: integrate called before atoms created.");
         }
 
-        if (duration == null)  duration = integrationDuration;  // how much time to integrate over, in fs
+        // How much time to integrate over, in fs
+        if (duration == null)  duration = 100;
 
-        dt_sq = dt*dt;                      // time step, squared
+        // The length of an integration timestep, in fs
+        if (_dt == null) _dt = 1;
+
+        dt = _dt;       // dt is a closure variable that helpers need access to
+        dt_sq = dt*dt;  // the squared time step is also needed by some helpers
 
         // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
         // assuming just one radius as below

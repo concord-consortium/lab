@@ -152,16 +152,10 @@ define(function(require) {
 
           set_viewRefreshInterval: function(vri) {
             this.viewRefreshInterval = vri;
-            if (engine) {
-              engine.setIntegrationDuration(vri);
-            }
           },
 
           set_timeStep: function(ts) {
             this.timeStep = ts;
-            if (engine) {
-              engine.setTimeStep(ts);
-            }
           },
 
           set_viscosity: function(v) {
@@ -389,7 +383,10 @@ define(function(require) {
       }
 
       if (doIntegration) {
-        engine.integrate();
+        // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
+        // However, in MD2D we prefer the more physical notion of integrating for a particular
+        // length of time.
+        engine.integrate(viewRefreshInterval * timeStep, timeStep);
         readModelState();
 
         pressures.push(pressure);
@@ -782,8 +779,6 @@ define(function(require) {
       engine.useThermostat(temperature_control);
       engine.setViscosity(viscosity);
       engine.setGravitationalField(gravitationalField);
-      engine.setIntegrationDuration(viewRefreshInterval*timeStep);
-      engine.setTimeStep(timeStep);
 
       engine.setTargetTemperature(temperature);
 
