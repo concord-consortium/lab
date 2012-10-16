@@ -1,9 +1,9 @@
 ---
 :jsconfig:
   :sharing: true
-  :home: "http://lab.concord.org"
-  :homeInteractivePath: "/examples/interactives/interactive.html"
-  :homeEmbeddablePath: "/examples/interactives/embeddable.html"
+  :home: http://lab.concord.org
+  :homeInteractivePath: /examples/interactives/interactive.html
+  :homeEmbeddablePath: /examples/interactives/embeddable.html
   :utmCampaign:
 :google_analytics:
   :account_id:

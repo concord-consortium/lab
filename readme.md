@@ -669,9 +669,9 @@ In a full build environment the JavaScript configuration is set in the `:jsconfg
 
     :jsconfig:
       :sharing: true
-      :home: "http://lab.concord.org"
-      :homeInteractivePath: "/examples/interactives/interactive.html"
-      :homeEmbeddablePath: "/examples/interactives/embeddable.html"
+      :home: http://lab.concord.org
+      :homeInteractivePath: /examples/interactives/interactive.html
+      :homeEmbeddablePath: /examples/interactives/embeddable.html
       :utmCampaign: <external-campaign-key>
 
 **`sharing`** A boolean attribute used to determine if the **Share** link in the Interactives will be enabled.
@@ -702,9 +702,9 @@ sharing is impractical in some manner you can disable the display of the Interac
 
     :jsconfig:
       :sharing: false
-      :home: "http://lab.concord.org"
-      :homeInteractivePath: "/examples/interactives/interactive.html"
-      :homeEmbeddablePath: "/examples/interactives/embeddable.html"
+      :home: http://lab.concord.org
+      :homeInteractivePath: /examples/interactives/interactive.html
+      :homeEmbeddablePath: /examples/interactives/embeddable.html
       :utmCampaign: <external-campaign-key>
 
 The additional values for `:home`, `homeInteractivePath`, and `homeEmbeddablePath` are used to construct an
