@@ -211,18 +211,14 @@ define(function(require) {
         model.ATOM_PROPERTY_LIST[i] = prop;
       }
 
-      model.RADIAL_BOND_INDICES = {};
       model.RADIAL_BOND_PROPERTY_LIST = [];
 
-      // Copy RADIAL_BOND property indices and names from md2d
-      offset = 0;
+      // Copy Radial Bond propertiesfrom md2d
       for (i = 0; i < md2d.RADIAL_BOND_PROPERTY_LIST.length; i++) {
         prop = md2d.RADIAL_BOND_PROPERTY_LIST[i];
         model.RADIAL_BOND_PROPERTY_LIST[i] = prop;
-        model.RADIAL_BOND_INDICES[prop]    = md2d.RADIAL_BOND_INDICES[prop] + offset;
       }
 
-      model.ANGULAR_BOND_INDICES = {};
       model.ANGULAR_BOND_PROPERTY_LIST = [];
 
       // Copy ANGULAR_BOND property indices and names from md2d
@@ -1062,7 +1058,7 @@ define(function(require) {
     };
 
     model.setObstacleProperties = function(i, props) {
-      var key, p;
+      var key;
       for (key in props) {
         if (props.hasOwnProperty(key)) {
           obstacles[key][i] = props[key];
@@ -1082,11 +1078,10 @@ define(function(require) {
     };
 
     model.setRadialBondProperties = function(i, props) {
-      var key, p;
+      var key;
       for (key in props) {
         if (props.hasOwnProperty(key)) {
-          p = model.RADIAL_BOND_INDICES[key.toUpperCase()];
-          radialBonds[p][i] = props[key];
+          radialBonds[key][i] = props[key];
         }
       }
       readModelState();
@@ -1096,7 +1091,8 @@ define(function(require) {
       var p,
           props = {};
       for (p = 0; p < model.RADIAL_BOND_PROPERTY_LIST.length; p++) {
-        props[model.RADIAL_BOND_PROPERTY_LIST[p].toLowerCase()] = radialBonds[p][i];
+        propName = model.RADIAL_BOND_PROPERTY_LIST[p];
+        props[propName] = radialBonds[propName][i];
       }
       return props;
     };
