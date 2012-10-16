@@ -71,6 +71,8 @@
       "x": [ 2.03 ],
       "vx": [ 0 ],
       "vy": [ 0 ],
+      "externalFx": [ 0 ],
+      "externalFy": [ 0 ],
       "density": [ 2000000 ],
       "visible": [ true ]
   }

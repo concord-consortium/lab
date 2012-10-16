@@ -58,6 +58,8 @@
       "y": [ 0.44999999999999996 ],
       "vx": [ 0 ],
       "vy": [ 0 ],
+      "externalFx": [ 0 ],
+      "externalFy": [ 0 ],
       "width": [ 1.11 ],
       "height": [ 0.56 ],
       "density": [ "Infinity" ],
