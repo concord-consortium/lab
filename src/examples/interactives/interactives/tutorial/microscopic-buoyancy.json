@@ -15,7 +15,7 @@
       "id": "gfield",
       "text": "Gravity",
       "property": "gravitationalField",
-      "action": "if (value) { set({ 'gravitationalField' : 8e-8 }); }"
+      "onClick": "if (value) { set({ 'gravitationalField' : 8e-8 }); }"
     },
     {
       "type": "energyGraph",

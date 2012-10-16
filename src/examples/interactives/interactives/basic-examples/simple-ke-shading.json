@@ -23,8 +23,8 @@
     {
       "type": "checkbox",
       "id": "temperature-control-action",
-      "text": "Temperature Control (action defined)",
-      "action": "set({temperature_control: value})"
+      "text": "Temperature Control (onClick script defined)",
+      "onClick": "set({temperature_control: value})"
     },
     {
       "type": "button",

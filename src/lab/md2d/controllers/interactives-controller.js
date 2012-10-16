@@ -430,8 +430,8 @@ define(function (require) {
     }
 
     function createCheckbox(component) {
-      var propertyName = component.property,
-          action = component.action,
+      var propertyName  = component.property,
+          onClickScript = component.onClick,
           $checkbox,
           $label;
 
@@ -440,11 +440,11 @@ define(function (require) {
       // Append class to label, as it's the most outer container in this case.
       $label.addClass("component");
 
-      // Process action script if it is defined.
-      if (action) {
-        action = getStringFromArray(action);
+      // Process onClick script if it is defined.
+      if (onClickScript) {
+        onClickScript = getStringFromArray(onClickScript);
         // Create a function which assumes we pass it a parameter called 'value'.
-        action = makeFunctionInScriptContext('value', action);
+        onClickScript = makeFunctionInScriptContext('value', onClickScript);
       }
 
       // Connect checkbox with model's property if its name is defined.
@@ -480,10 +480,10 @@ define(function (require) {
           propObj[propertyName] = value;
           model.set(propObj);
         }
-        // Finally, if checkbox has action script attached,
+        // Finally, if checkbox has onClick script attached,
         // call it in script context with checkbox status passed.
-        if (action !== undefined) {
-          action(value);
+        if (onClickScript !== undefined) {
+          onClickScript(value);
         }
       });
 
