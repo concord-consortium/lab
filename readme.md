@@ -692,7 +692,11 @@ into the project by the Ruby program:
 
 ### Interactive Share link
 
-Normally the **Share** link is enabled. If you are hosting this content on an external server where supporting
+Normally the **Share** link in an Interactive is enabled. The **Share** dialog allows a user to more easily
+share the Interactive in an email or IM, and also provides generated HTML content that can be copied and pasted
+to embed the Interactive into a blog or web page.
+
+If you are hosting this content on an external server where supporting
 sharing is impractical in some manner you can disable the display of the Interactive **Share** link by setting
 `:sharing` in `config/config.yml` to `false`:
 
@@ -707,8 +711,9 @@ The additional values for `:home`, `homeInteractivePath`, and `homeEmbeddablePat
 additional paragraph in the Interactive **About** box providing a link to the Interactive on the production
 [site for the project](http://lab.concord.org).
 
-The value for `utmCampaign` is optional. If present and the **home** site has enabled Google Analytics it will
-allow better tracking of users who click through links in the **About** box.
+The value for `utmCampaign` is optional. If present and the **home** site has enabled Google Analytics
+setting a value for `utmCampaign` will allow better tracking of users who click through links in the
+Interactive **About** box.
 
 ### Google Analytics
 
