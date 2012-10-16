@@ -481,12 +481,24 @@ define(function (require, exports, module) {
         },
 
         /**
-          Extend all arrays in `arrayList` to `newLength`. Here, arrayList is expected to be `atoms`
-          `elements`, `radialBonds`, etc.
+          Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `atoms`
+          `elements`, `radialBonds`, etc. arrayContainer might be an array or an object.
+          TODO: this is just interim solution, in the future only objects will be expected.
         */
-        extendArrays = function(arrayList, newLength) {
-          for (var i = 0, len = arrayList.length; i < len; i++) {
-            arrayList[i] = arrays.extend(arrayList[i], newLength);
+        extendArrays = function(arrayContainer, newLength) {
+          var i, len;
+          if (Array.isArray(arrayContainer)) {
+            // Array of arrays.
+            for (i = 0, len = arrayContainer.length; i < len; i++) {
+              arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+            }
+          } else {
+            // Object with arrays defined as properties.
+            for (i in arrayContainer) {
+              if(arrayContainer.hasOwnProperty(i)) {
+                arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+              }
+            }
           }
         },
 
