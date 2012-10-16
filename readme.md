@@ -661,7 +661,7 @@ Restart the server and the request should now suceed:
 
 ## Project Configuration
 
-Configruation variables used by the runtime JavaScript code are available in the JavaScript global
+Configuration variables used by the runtime JavaScript code are available in the JavaScript global
 object `Lab.config`.
 
 In a full build environment the JavaScript configuration is set in the `:jsconfg` section of
