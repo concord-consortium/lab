@@ -303,30 +303,30 @@ define(function (require) {
     }
 
     function get_obstacle_x(i) {
-      return obstacles[model.OBSTACLE_INDICES.X][i];
+      return obstacles.x[i];
     }
 
     function get_obstacle_y(i) {
-      return obstacles[model.OBSTACLE_INDICES.Y][i];
+      return obstacles.y[i];
     }
 
     function get_obstacle_width(i) {
-      return obstacles[model.OBSTACLE_INDICES.WIDTH][i];
+      return obstacles.width[i];
     }
 
     function get_obstacle_height(i) {
-      return obstacles[model.OBSTACLE_INDICES.HEIGHT][i];
+      return obstacles.height[i];
     }
 
     function get_obstacle_color(i) {
       return "rgb(" +
-        obstacles[model.OBSTACLE_INDICES.COLOR_R][i] + "," +
-        obstacles[model.OBSTACLE_INDICES.COLOR_G][i] + "," +
-        obstacles[model.OBSTACLE_INDICES.COLOR_B][i] + ")";
+        obstacles.colorR[i] + "," +
+        obstacles.colorB[i] + "," +
+        obstacles.colorG[i] + ")";
     }
 
     function get_obstacle_visible(i) {
-      return obstacles[model.OBSTACLE_INDICES.VISIBLE][i];
+      return obstacles.visible[i];
     }
 
     function get_radial_bond_atom_1(i) {
@@ -1144,7 +1144,7 @@ define(function (require) {
       function setup_obstacles() {
         gradient_container.selectAll("rect").remove();
         if (obstacles) {
-          mock_obstacles_array.length = obstacles[0].length;
+          mock_obstacles_array.length = obstacles.x.length;
           obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
           obstacleEnter();
         }
