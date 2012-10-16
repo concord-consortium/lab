@@ -120,6 +120,8 @@ var ROOT = "/examples",
 
   function setupAboutPane() {
     var interactiveAboutUrl,
+        newWindow,
+        titleString,
         $aboutContent = $('#about-content');
     $aboutLink.click(function() {
       $aboutPane.show(100);
@@ -134,10 +136,11 @@ var ROOT = "/examples",
     nextGenUrl = 'http://mw.concord.org/nextgen/';
     interactiveAboutUrl = Lab.config.home + Lab.config.homeEmbeddablePath + hash;
     newWindow = " class='opens-in-new-window' target='_blank";
+    utmString = "utm_source=" + encodeURIComponent(interactive.title.replace(/ /gi,"+")) + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
 
     if (Lab.config.utmCampaign) {
-      concordUrl += "?" + encodeURI("utm_source=" + interactive.title + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
-      nextGenUrl += "?" + encodeURI("utm_source=" + interactive.title + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
+      concordUrl += "?" + utmString;
+      nextGenUrl += "?" + utmString;
       interactiveAboutUrl += "?" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
     }
 
