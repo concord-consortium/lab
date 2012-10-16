@@ -171,7 +171,8 @@ parseMML = (mmlString) ->
       Viscosity
     ###
     universeProps = $mml(".org-concord-mw2d-models-Universe")
-    viscosity = parseFloat universeProps.find("[property=viscosity] float").text() || 0
+    # Viscosity default value, not stored in MML, is 1.
+    viscosity = parseFloat universeProps.find("[property=viscosity] float").text() || 1
 
     ###
       viewRefreshInterval

@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 5,
   "height": 5,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -111,7 +111,7 @@
       4000
     ],
     "bondStyle": [
-      101, 
+      101,
       101
     ]
   }

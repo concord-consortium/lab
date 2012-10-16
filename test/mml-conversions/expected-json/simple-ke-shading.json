@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4,
   "height": 2,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": true,
   "chargeShading": false,
   "showVDWLines": false,

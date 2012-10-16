@@ -1,7 +1,7 @@
 {
   "width": 9.11,
   "height": 1.18,
-  "viscosity": 0,
+  "viscosity": 1,
   "temperature_control": false,
   "keShading": false,
   "chargeShading": false,
