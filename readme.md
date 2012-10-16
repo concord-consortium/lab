@@ -684,29 +684,33 @@ The default value for this is `true`.
 **`homeEmbeddablePath`** Path to page to run embeddable version of Interactive
 
 **`utmCampaign`** If present a UTM suffix is added to links in the About box.
-Set to a string which identifies the external organization
+Set to a string which identifies the external organization.
 
 When the build environment is active these values are used to generate JavaScript code integrated
 into the project by the Ruby program:
 [`script/generate-js-config.rb`](https://github.com/concord-consortium/lab/blob/master/script/generate-js-config.rb)
 
 In addition there is a optional section in `config/config.yml` which if present enables embedding google
-analytics script into the head of the main `index.html` and all html pages in the `examples` directory
-including Interactives. Include your Google Analytics account number to enable insertion of the Google Analytics
-script by the build system into the generated HTML pages. The content of the Google Analytics script is contained in
-this Ruby file: [`script/setup.rb`](https://github.com/concord-consortium/lab/blob/master/script/setup.rb).
+analytics script into the head of the main `index.html` and all html pages in the `examples/` directory
+including Interactives.
+
+Include your Google Analytics account number here to enable insertion of the Google Analytics
+script by the build system into the generated HTML pages.
 
     :google_analytics:
       :account_id: <account-id>
 
-If you have downloaded a distribution archive and you can find the code that initializes the JavaScript
+The content from which the embedded Google Analytics script is generated is contained in this Ruby file:
+[`script/setup.rb`](https://github.com/concord-consortium/lab/blob/master/script/setup.rb).
+
+If you have downloaded a distribution archive you can manually modify the code that initializes the JavaScript
 runtime configuration in the files: `lab/lab.js` and `lab/lab.min.js`. Editing the value for `Lab.config.sharing`
 in these files will affect the JavaScript runtime settings when these files are loaded.
 
 Additionally you can turn on UTM suffixes by adding a string value to `Lab.config.utmCampaign``.
 
-However generation and insertion of the Google Analytics script into HTML pages can only be done by using
-build system.
+However generation and insertion of the Google Analytics script into HTML pages can only be done by
+setting a value for the `:google_analytics :account_id` and running the build process.
 
 ## Contributing to Lab
 
