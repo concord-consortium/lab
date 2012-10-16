@@ -538,8 +538,8 @@ define(function(require) {
         prop = model.NON_ENGINE_PROPERTY_LIST[i];
         atoms[prop] = arrays.create(model.get_num_atoms(), 0, arrayType);
 
-        if (serializedAtomProps[prop.toUpperCase()]) {
-          setFromSerializedArray(prop, serializedAtomProps[prop.toUpperCase()]);
+        if (serializedAtomProps[prop]) {
+          setFromSerializedArray(prop, serializedAtomProps[prop]);
         }
         else {
           setToDefaultValue(prop);
@@ -713,8 +713,8 @@ define(function(require) {
         num = config;
       } else if (config.num != null) {
         num = config.num;
-      } else if (config.X) {
-        num = config.X.length;
+      } else if (config.x) {
+        num = config.x.length;
       }
 
       // convert from easily-readble json format to simplified array format
@@ -756,7 +756,7 @@ define(function(require) {
 
       engine.setTargetTemperature(temperature);
 
-      if (config.X && config.Y) {
+      if (config.x && config.y) {
         engine.initializeAtomsFromProperties(config);
       } else {
         engine.initializeAtomsRandomly({

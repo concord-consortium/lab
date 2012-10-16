@@ -44,35 +44,35 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       2.53,
       1.74
     ],
-    "Y": [
+    "y": [
       1.39,
       1.4
     ],
-    "VX": [
+    "vx": [
       0,
       0
     ],
-    "VY": [
+    "vy": [
       0,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0.75,
       -0.75
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       0,
       0
     ],
-    "PINNED": [
+    "pinned": [
       0,
       0
     ]

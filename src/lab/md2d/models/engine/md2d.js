@@ -1625,24 +1625,24 @@ define(function (require, exports, module) {
         var x, y, vx, vy, charge, element, friction, pinned,
             i, ii;
 
-        if (!(props.X && props.Y)) {
+        if (!(props.x && props.y)) {
           throw new Error("md2d: initializeAtomsFromProperties must specify at minimum X and Y locations.");
         }
 
-        if (!(props.VX && props.VY)) {
+        if (!(props.vx && props.vy)) {
           // We may way to support authored locations with random velocities in the future
           throw new Error("md2d: For now, velocities must be set when locations are set.");
         }
 
-        for (i=0, ii=props.X.length; i<ii; i++){
-          element = props.ELEMENT ? props.ELEMENT[i] : 0;
-          x = props.X[i];
-          y = props.Y[i];
-          vx = props.VX[i];
-          vy = props.VY[i];
-          charge = props.CHARGE ? props.CHARGE[i] : 0;
-          pinned = props.PINNED ? props.PINNED[i] : 0;
-          friction = props.FRICTION ? props.FRICTION[i] : 0;
+        for (i=0, ii=props.x.length; i<ii; i++){
+          element = props.element ? props.element[i] : 0;
+          x = props.x[i];
+          y = props.y[i];
+          vx = props.vx[i];
+          vy = props.vy[i];
+          charge = props.charge ? props.charge[i] : 0;
+          pinned = props.pinned ? props.pinned[i] : 0;
+          friction = props.friction ? props.friction[i] : 0;
 
           engine.addAtom(element, x, y, vx, vy, charge, friction, pinned);
         }
@@ -1657,7 +1657,7 @@ define(function (require, exports, module) {
             temperature = options.temperature || 100,
 
             // fill up the entire 'atoms' array if not otherwise requested
-            num         = options.num         || atoms[0].length,
+            num = options.num || atoms.x.length,
 
             nrows = Math.floor(Math.sqrt(num)),
             ncols = Math.ceil(num/nrows),
