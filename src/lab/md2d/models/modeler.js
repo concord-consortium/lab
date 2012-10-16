@@ -380,12 +380,12 @@ define(function(require) {
     }
 
     function tick_history_list_push() {
-      var i,
-          newAtoms = [],
-          n = atoms.length;
+      var prop,
+          newAtoms = {};
 
-      i = -1; while (++i < n) {
-        newAtoms[i] = arrays.clone(atoms[i]);
+      for (prop in atoms) {
+        if (atoms.hasOwnProperty(prop))
+          newAtoms[prop] = arrays.clone(atoms[prop]);
       }
       tick_history_list.length = tick_history_list_index;
       tick_history_list_index++;
@@ -422,15 +422,16 @@ define(function(require) {
     }
 
     function tick_history_list_extract(index) {
-      var i, n=atoms.length;
+      var prop;
       if (index < 0) {
         throw new Error("modeler: request for tick_history_list[" + index + "]");
       }
       if (index >= tick_history_list.length) {
         throw new Error("modeler: request for tick_history_list[" + index + "], tick_history_list.length=" + tick_history_list.length);
       }
-      i = -1; while(++i < n) {
-        arrays.copy(tick_history_list[index].atoms[i], atoms[i]);
+      for (prop in atoms) {
+        if (atoms.hasOwnProperty(prop))
+          arrays.copy(tick_history_list[index].atoms[prop], atoms[prop]);
       }
       ke = tick_history_list[index].ke;
       time = tick_history_list[index].time;
