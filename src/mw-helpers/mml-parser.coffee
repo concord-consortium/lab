@@ -89,12 +89,14 @@ parseMML = (mmlString) ->
       for node in obstacleNodes
         $node = getNode cheerio node
 
-        height  = parseFloat getProperty $node, 'height'
-        width   = parseFloat getProperty $node, 'width'
-        x       = parseFloat getProperty $node, 'x'
-        y       = parseFloat getProperty $node, 'y'
-        vx      = parseFloat (getProperty $node, 'vx') || 0
-        vy      = parseFloat (getProperty $node, 'vy') || 0
+        height     = parseFloat getProperty $node, 'height'
+        width      = parseFloat getProperty $node, 'width'
+        x          = parseFloat getProperty $node, 'x'
+        y          = parseFloat getProperty $node, 'y'
+        vx         = parseFloat (getProperty $node, 'vx') || 0
+        vy         = parseFloat (getProperty $node, 'vy') || 0
+        externalFx = parseFloat (getProperty $node, 'externalFx') || 0
+        externalFy = parseFloat (getProperty $node, 'externalFy') || 0
 
         visible = parseBoolean (getProperty $node, 'visible'), true
 
@@ -104,12 +106,18 @@ parseMML = (mmlString) ->
         vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
         vy = -vy / 100
 
-        # authors in MW specify Kg/(mol*A^2), but this gets saved as 100Kg/(mol*A^2)
-        # (e.g. 20 Kg/(mol*A^2) is saved as 0.2)
+        # External forces are specified per mas unit. So, in fact it's acceleration.
+        # Author in MW specify 1000A/fs^2, but this gets saved as A/fs^2.
+        # Convert it to nm/fs^2 (1A = 0.1 nm).
+        externalFx *= 0.1
+        externalFy *= 0.1
 
-        # First convert back to Kg/(mol*A^2)
+        # Authors in MW specify Kg/(mol*A^2), but this gets saved as 100Kg/(mol*A^2)
+        # (e.g. 20 Kg/(mol*A^2) is saved as 0.2).
+
+        # First convert back to Kg/(mol*A^2).
         density = density * 100
-        # convert to Daltons/nm^2, 1000 Dal = 1 Kg/mol, 100 A^2 = 1 nm^2
+        # Convert to Daltons/nm^2, 1000 Dal = 1 Kg/mol, 100 A^2 = 1 nm^2.
         density = density * 1000 * 100
 
         if density isnt density     # if NaN
@@ -129,7 +137,7 @@ parseMML = (mmlString) ->
         [height, width] = toNextgenLengths height, width
         y               = y - height     # flip to lower-left coordinate system
 
-        obstacles.push { x, y, vx, vy, height, width, density, color, visible }
+        obstacles.push { x, y, vx, vy, externalFx, externalFy, height, width, density, color, visible }
 
       obstacles
 
@@ -505,7 +513,7 @@ parseMML = (mmlString) ->
       json.textBoxes = textBoxes
 
     if obstacles.length > 0
-      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'height', 'width', 'density', 'color', 'visible'
+      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'height', 'width', 'density', 'color', 'visible'
 
     json.temperature = temperature if temperature
 
