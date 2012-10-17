@@ -5,7 +5,8 @@
     "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page6/page6$0.json",
     "viewOptions": {
       "controlButtons": "play_reset_step"
-    }
+    },
+  "onLoad": "set({temperature_control: true});"
   },
   "components": [
     {
@@ -18,7 +19,30 @@
       "type": "button",
       "id": "heat",
       "text": "Heat",
-      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
+      "action": "adjustTemperature(1.1); limitHighTemperature(8000);"
+    },
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": 0,
+      "max": 8000,
+      "labelIsReading": true,
+      "reading": {
+        "units": "K",
+        "offset": 200,
+        "scale": 0.1,
+        "digits": 0
+      }
     }
-  ]
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "cool",
+      "heat"
+    ]
+  }
+
 }
