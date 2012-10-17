@@ -500,26 +500,26 @@ define(function (require, exports, module) {
           },
 
           radialBonds: function() {
-            radialBondAtom1Index  = engine.radialBonds.atom1    = radialBonds.atom1;
-            radialBondAtom2Index  = engine.radialBonds.atom2    = radialBonds.atom2;
-            radialBondLength      = engine.radialBonds.length   = radialBonds.length;
-            radialBondStrength    = engine.radialBonds.strength = radialBonds.strength;
-            radialBondStyle       = engine.radialBonds.style    = radialBonds.style;
+            radialBondAtom1Index  = radialBonds.atom1;
+            radialBondAtom2Index  = radialBonds.atom2;
+            radialBondLength      = radialBonds.length;
+            radialBondStrength    = radialBonds.strength;
+            radialBondStyle       = radialBonds.style;
           },
 
           angularBonds: function() {
-            angularBondAtom1Index  = engine.angularBonds.atom1    = angularBonds.atom1;
-            angularBondAtom2Index  = engine.angularBonds.atom2    = angularBonds.atom2;
-            angularBondAtom3Index  = engine.angularBonds.atom3    = angularBonds.atom3;
-            angularBondAngle       = engine.angularBonds.angle    = angularBonds.angle;
-            angularBondStrength    = engine.angularBonds.strength = angularBonds.strength;
+            angularBondAtom1Index  = angularBonds.atom1;
+            angularBondAtom2Index  = angularBonds.atom2;
+            angularBondAtom3Index  = angularBonds.atom3;
+            angularBondAngle       = angularBonds.angle;
+            angularBondStrength    = angularBonds.strength;
           },
 
           elements: function() {
-            elementMass    = engine.elements.mass    = elements.mass;
-            elementEpsilon = engine.elements.epsilon = elements.epsilon;
-            elementSigma   = engine.elements.sigma   = elements.sigma;
-            elementRadius  = engine.elements.radius  = elements.radius;
+            elementMass    = elements.mass;
+            elementEpsilon = elements.epsilon;
+            elementSigma   = elements.sigma;
+            elementRadius  = elements.radius;
           },
 
           obstacles: function() {
