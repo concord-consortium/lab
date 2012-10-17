@@ -482,21 +482,21 @@ define(function (require, exports, module) {
         assignShortcutReferences = {
 
           atoms: function() {
-            radius   = engine.radius   = atoms.radius;
-            px       = engine.px       = atoms.px;
-            py       = engine.py       = atoms.py;
-            x        = engine.x        = atoms.x;
-            y        = engine.y        = atoms.y;
-            vx       = engine.vx       = atoms.vx;
-            vy       = engine.vy       = atoms.vy;
-            speed    = engine.speed    = atoms.speed;
-            ax       = engine.ax       = atoms.ax;
-            ay       = engine.ay       = atoms.ay;
-            charge   = engine.charge   = atoms.charge;
-            friction = engine.friction = atoms.friction;
-            element  = engine.element  = atoms.element;
-            pinned   = engine.pinned   = atoms.pinned;
-            mass     = engine.mass     = atoms.mass;
+            radius   = atoms.radius;
+            px       = atoms.px;
+            py       = atoms.py;
+            x        = atoms.x;
+            y        = atoms.y;
+            vx       = atoms.vx;
+            vy       = atoms.vy;
+            speed    = atoms.speed;
+            ax       = atoms.ax;
+            ay       = atoms.ay;
+            charge   = atoms.charge;
+            friction = atoms.friction;
+            element  = atoms.element;
+            pinned   = atoms.pinned;
+            mass     = atoms.mass;
           },
 
           radialBonds: function() {

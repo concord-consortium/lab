@@ -318,7 +318,7 @@ define(function(require) {
 
     function average_speed() {
       var i, s = 0, n = model.get_num_atoms();
-      i = -1; while (++i < n) { s += engine.speed[i]; }
+      i = -1; while (++i < n) { s += engine.atoms.speed[i]; }
       return s/n;
     }
 
@@ -1172,7 +1172,7 @@ define(function(require) {
 
     // return a copy of the array of speeds
     model.get_speed = function() {
-      return arrays.copy(engine.speed, []);
+      return arrays.copy(engine.atoms.speed, []);
     };
 
     model.get_rate = function() {
