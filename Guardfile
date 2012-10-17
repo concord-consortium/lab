@@ -5,6 +5,8 @@ ignore %r{(bin|node_modules)}
 # https://github.com/nex3/firesass
 FIRESASS = false
 
+require "./script/setup.rb"
+
 system("make")
 puts <<HEREDOC
 
