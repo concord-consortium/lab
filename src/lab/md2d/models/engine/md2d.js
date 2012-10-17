@@ -276,13 +276,6 @@ define(function (require, exports, module) {
         //                      Element Properties
         // Individual property arrays for the elements
 
-        // Element properties
-        // elements is an array of elements, each one an array of properties
-        // For now properties are just defined by index, with no additional lookup for
-        // the index (e.g. elements[0][ELEM_MASS_INDEX] for the mass of elem 0). We
-        // have few enough properties that we currently don't need this additional lookup.
-        // element definition: [ MASS_IN_DALTONS, EPSILON, SIGMA ]
-
         elementMass,
         elementEpsilon,
         elementSigma,
