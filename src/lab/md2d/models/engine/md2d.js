@@ -303,6 +303,8 @@ define(function (require, exports, module) {
         radialBonds,
 
         // An array of individual radial bond index values and properties.
+        // Each object contains all radial bond properties (atom1, atom2, length, strength, style)
+        // and additionally (x,y) coordinates of bonded atoms defined as x1, y1, x2, y2 properties.
         radialBondResults,
 
         // radialBondMatrix[i][j] === true when atoms i and j are "radially bonded"
@@ -563,14 +565,13 @@ define(function (require, exports, module) {
           radialBonds.style    = arrays.create(num, 0, uint8);
 
           assignShortcutReferences.radialBonds();
-          /**
-            Initialize radialBondResults[] arrays consisting of arrays of radial bond
-            index numbers and space to later contain transposed radial bond properties
-          */
+
+          //  Initialize radialBondResults[] array consisting of hashes of radial bond
+          //  index numbers and transposed radial bond properties.
           radialBondResults = engine.radialBondResults = [];
           for (i = 0; i < num; i++) {
-            radialBondResults[i] = arrays.create(RADIAL_BOND_PROPERTY_LIST.length + 5,  0, float32);
-            radialBondResults[i][0] = i;
+            radialBondResults[i] = {};
+            radialBondResults[i].idx = i;
           }
         },
 
@@ -1422,11 +1423,11 @@ define(function (require, exports, module) {
           assignShortcutReferences.radialBonds();
         }
 
-        radialBondResults[N_radialBonds][1] = radialBondAtom1Index[N_radialBonds] = atom1Index;
-        radialBondResults[N_radialBonds][2] = radialBondAtom2Index[N_radialBonds] = atom2Index;
-        radialBondResults[N_radialBonds][3] = radialBondLength[N_radialBonds]     = bondLength;
-        radialBondResults[N_radialBonds][4] = radialBondStrength[N_radialBonds]   = bondStrength;
-        radialBondResults[N_radialBonds][5] = radialBondStyle[N_radialBonds]      = bondStyle;
+        radialBondResults[N_radialBonds].atom1    = radialBondAtom1Index[N_radialBonds] = atom1Index;
+        radialBondResults[N_radialBonds].atom2    = radialBondAtom2Index[N_radialBonds] = atom2Index;
+        radialBondResults[N_radialBonds].lenght   = radialBondLength[N_radialBonds]     = bondLength;
+        radialBondResults[N_radialBonds].strength = radialBondStrength[N_radialBonds]   = bondStrength;
+        radialBondResults[N_radialBonds].style    = radialBondStyle[N_radialBonds]      = bondStyle;
 
         if ( ! radialBondMatrix[atom1Index] ) radialBondMatrix[atom1Index] = [];
         radialBondMatrix[atom1Index][atom2Index] = true;
@@ -2023,10 +2024,10 @@ define(function (require, exports, module) {
 
           // Also save the updated position of the two bonded atoms
           // in a row in the radialBondResults array.
-          radialBondResults[i][6] = x[i1];
-          radialBondResults[i][7] = y[i1];
-          radialBondResults[i][8] = x[i2];
-          radialBondResults[i][9] = y[i2];
+          radialBondResults[i].x1 = x[i1];
+          radialBondResults[i].y1 = y[i1];
+          radialBondResults[i].x2 = x[i2];
+          radialBondResults[i].y2 = y[i2];
         }
 
         // Angular bonds.

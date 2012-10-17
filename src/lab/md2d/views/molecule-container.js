@@ -792,7 +792,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return 0.3 * scaling_factor;
               } else {
-                return x(Math.min(results[d[1]].radius, results[d[2]].radius)) * 0.75;
+                return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
             })
             .style("stroke", function(d, i) {
@@ -801,7 +801,7 @@ define(function (require) {
                 return "#000000";
               } else {
                 if (chargeShadingMode) {
-                  charge = results[d[1]].charge;
+                  charge = results[d.atom1].charge;
                   if (charge > 0) {
                       return  bondColorArray[4];
                   } else if (charge < 0){
@@ -810,7 +810,7 @@ define(function (require) {
                     return "#A4A4A4";
                   }
                 } else {
-                  element = results[d[1]].element % 4;
+                  element = results[d.atom1].element % 4;
                   grad = bondColorArray[element];
                   return grad;
                 }
@@ -826,7 +826,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return 0.3 * scaling_factor;
               } else {
-                return x(Math.min(results[d[1]].radius, results[d[2]].radius)) * 0.75;
+                return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
             })
             .style("stroke", function(d, i) {
@@ -835,7 +835,7 @@ define(function (require) {
                 return "#000000";
               } else {
                 if (chargeShadingMode) {
-                  charge = results[d[2]].charge;
+                  charge = results[d.atom2].charge;
                   if (charge > 0) {
                       return  bondColorArray[4];
                   } else if (charge < 0){
@@ -844,7 +844,7 @@ define(function (require) {
                     return "#A4A4A4";
                   }
                 } else {
-                  element = results[d[2]].element % 4;
+                  element = results[d.atom2].element % 4;
                   grad = bondColorArray[element];
                   return grad;
                 }
@@ -867,20 +867,20 @@ define(function (require) {
             sintheta,
             length, numSpikes = 10;
 
-        x1 = x(d[6]);
-        y1 = y(d[7]);
-        x2 = x(d[8]);
-        y2 = y(d[9]);
+        x1 = x(d.x1);
+        y1 = y(d.y1);
+        x2 = x(d.x2);
+        y2 = y(d.y2);
         dx = x2 - x1;
         dy = y2 - y1;
         length = Math.sqrt(dx*dx + dy*dy)/scaling_factor;
         costheta = dx / length;
         sintheta = dy / length;
 
-        radius_x1 = x(results[d[1]].radius) * costheta;
-        radius_x2 = x(results[d[2]].radius) * costheta;
-        radius_y1 = x(results[d[1]].radius) * sintheta;
-        radius_y2 = x(results[d[2]].radius) * sintheta;
+        radius_x1 = x(results[d.atom1].radius) * costheta;
+        radius_x2 = x(results[d.atom2].radius) * costheta;
+        radius_y1 = x(results[d.atom1].radius) * sintheta;
+        radius_y2 = x(results[d.atom2].radius) * sintheta;
         radiusFactorX = radius_x1 - radius_x2;
         radiusFactorY = radius_y1 - radius_y2;
 
@@ -910,7 +910,7 @@ define(function (require) {
       }
 
       function isSpringBond(d){
-        return d[5] === model.RADIAL_BOND_STYLES.RADIAL_BOND_SHORT_SPRING_STYLE;
+        return d.style === model.RADIAL_BOND_STYLES.RADIAL_BOND_SHORT_SPRING_STYLE;
       }
 
       function drawAttractionForces() {
