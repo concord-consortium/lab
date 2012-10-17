@@ -106,11 +106,11 @@ parseMML = (mmlString) ->
         vy = -vy / 100
         friction = friction * CLASSIC_TO_NEXTGEN_FRICTION_RATIO
 
-        # External forces are specified per mas unit. So, in fact it's acceleration.
-        # Author in MW specify 1000A/fs^2, but this gets saved as A/fs^2.
-        # Convert it to nm/fs^2 (1A = 0.1 nm).
-        externalFx *= 0.1
-        externalFy *= 0.1
+        # External forces are specified per mass unit. So, in fact it's acceleration.
+        # Convert from units of 0.1Å/fs^2 to units of nm/fs^2
+        # Conversion: 1 0.1Å/fs^2 * 0.01 nm/0.1Å = 0.01 nm/fs^2
+        externalFx *= 0.01
+        externalFy *= 0.01
 
         # Classic MW saves density in units of 120amu / (0.1Å)^2
         # (As usual, the claim its user interface makes regarding units is spurious.)
