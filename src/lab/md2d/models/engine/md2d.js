@@ -585,7 +585,7 @@ define(function (require, exports, module) {
         },
 
         createAngularBondsArray = function(num) {
-          angularBonds = engine.angularBonds = [];
+          angularBonds = engine.angularBonds = {};
 
           angularBonds.atom1    = arrays.create(num, 0, uint16);
           angularBonds.atom2    = arrays.create(num, 0, uint16);
