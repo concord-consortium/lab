@@ -1312,7 +1312,7 @@ define(function (require, exports, module) {
 
         if (properties.epsilon != null) elementEpsilon[i] = properties.epsilon;
 
-        for (j = 0; j < elements.length; j++) {
+        for (j = 0; j < N_elements; j++) {
           setPairwiseLJProperties(i, j);
         }
       },
