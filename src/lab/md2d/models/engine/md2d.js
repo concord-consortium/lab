@@ -46,20 +46,16 @@ define(function (require, exports, module) {
       DEFAULT_VALUES,
 
       ATOM_PROPERTY_LIST,
-      ATOM_INDICES,
 
       ELEMENT_PROPERTY_LIST,
-      ELEMENT_INDICES,
 
       RADIAL_BOND_PROPERTY_LIST,
-      RADIAL_BOND_INDICES,
 
       ANGULAR_BOND_PROPERTY_LIST,
-      ANGULAR_BOND_INDICES,
-
-      OBSTACLE_INDICES,
 
       VDW_INDICES,
+
+      RADIAL_BOND_STYLES,
 
       cross = function(a0, a1, b0, b1) {
         return a0*b1 - a1*b0;
@@ -120,63 +116,40 @@ define(function (require, exports, module) {
 
   // Atoms
   exports.ATOM_PROPERTY_LIST = ATOM_PROPERTY_LIST = [
-    "RADIUS",
-    "PX",
-    "PY",
-    "X",
-    "Y",
-    "VX",
-    "VY",
-    "SPEED",
-    "AX",
-    "AY",
-    "CHARGE",
-    "ELEMENT",
-    "PINNED",
-    "FRICTION",
-    "MASS"
+    "radius",
+    "px",
+    "py",
+    "x",
+    "y",
+    "vx",
+    "vy",
+    "speed",
+    "ax",
+    "ay",
+    "charge",
+    "element",
+    "pinned",
+    "friction",
+    "mass"
   ];
-
-  exports.ATOM_INDICES = ATOM_INDICES = {};
-
-  (function() {
-    for (var i = 0; i < ATOM_PROPERTY_LIST.length; i++) {
-      exports.ATOM_INDICES[ ATOM_PROPERTY_LIST[i] ] = i;
-    }
-  }());
 
   // Radial Bonds
   exports.RADIAL_BOND_PROPERTY_LIST = RADIAL_BOND_PROPERTY_LIST = [
-    "ATOM1",
-    "ATOM2",
-    "LENGTH",
-    "STRENGTH",
-    "STYLE"
+    "atom1",
+    "atom2",
+    "length",
+    "strength",
+    "style"
   ];
-
-  exports.RADIAL_BOND_INDICES = RADIAL_BOND_INDICES = {};
-
-  (function() {
-    for (var i = 0; i < RADIAL_BOND_PROPERTY_LIST.length; i++) {
-      exports.RADIAL_BOND_INDICES[ RADIAL_BOND_PROPERTY_LIST[i] ] = i;
-    }
-  }());
 
   // Angular Bonds
   exports.ANGULAR_BOND_PROPERTY_LIST = ANGULAR_BOND_PROPERTY_LIST = [
-    "ATOM1",
-    "ATOM2",
-    "ATOM3",
-    "ANGLE",
-    "STRENGTH"
+    "atom1",
+    "atom2",
+    "atom3",
+    "angle",
+    "strength"
   ];
-
-  exports.ANGULAR_BOND_INDICES = ANGULAR_BOND_INDICES = {};
-  (function() {
-    for (var i = 0; i < ANGULAR_BOND_PROPERTY_LIST.length; i++) {
-      exports.ANGULAR_BOND_INDICES[ ANGULAR_BOND_PROPERTY_LIST[i] ] = i;
-    }
-  }());
 
   exports.RADIAL_BOND_STYLES = RADIAL_BOND_STYLES = {
     RADIAL_BOND_STANDARD_STICK_STYLE : 101,
@@ -191,39 +164,31 @@ define(function (require, exports, module) {
 
   // Elements
   exports.ELEMENT_PROPERTY_LIST = ELEMENT_PROPERTY_LIST = [
-    "MASS",
-    "EPSILON",
-    "SIGMA",
-    "RADIUS"
+    "mass",
+    "epsilon",
+    "sigma",
+    "radius"
   ];
 
-  exports.ELEMENT_INDICES = ELEMENT_INDICES = {};
-
-  (function() {
-    for (var i = 0; i < ELEMENT_PROPERTY_LIST.length; i++) {
-      exports.ELEMENT_INDICES[ ELEMENT_PROPERTY_LIST[i] ] = i;
-    }
-  }());
-
   // Obstacles
-  exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
-    X        :  0,
-    Y        :  1,
-    WIDTH    :  2,
-    HEIGHT   :  3,
-    MASS     :  4,
-    VX       :  5,
-    VY       :  6,
-    EXT_FX   :  7,
-    EXT_FY   :  8,
-    FRICTION :  9,
-    X_PREV   :  10,
-    Y_PREV   :  11,
-    COLOR_R  :  12,
-    COLOR_G  :  13,
-    COLOR_B  :  14,
-    VISIBLE  :  15
-  };
+  exports.OBSTACLE_PROPERTY_LIST = [
+    "x",
+    "y",
+    "width",
+    "height",
+    "mass",
+    "vx",
+    "vy",
+    "externalFx",
+    "externalFy",
+    "friction",
+    "xPrev",
+    "yPrev",
+    "colorR",
+    "colorG",
+    "colorB",
+    "visible"
+  ];
 
   // VDW pairs
   exports.VDW_INDICES = VDW_INDICES = {
@@ -233,9 +198,9 @@ define(function (require, exports, module) {
   };
 
   exports.DEFAULT_VALUES = DEFAULT_VALUES = {
-    CHARGE            : 0,
-    FRICTION          : 0,
-    PINNED            : 0,
+    charge            : 0,
+    friction          : 0,
+    pinned            : 0,
     RADIAL_BOND_STYLE : RADIAL_BOND_STYLES.RADIAL_BOND_STANDARD_STICK_STYLE
   };
 
@@ -299,19 +264,35 @@ define(function (require, exports, module) {
         // Total mass of all particles in the system, in Dalton (atomic mass units).
         totalMass,
 
+        // ####################################################################
+        //                      Atom Properties
+        // Individual property arrays for the atoms, indexed by atom number
+        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
+
+        // An array of length ATOM_PROPERTY_LIST.length which contains the above property arrays
+        atoms,
+
+        // ####################################################################
+        //                      Element Properties
+        // Individual property arrays for the elements
+
         // Element properties
         // elements is an array of elements, each one an array of properties
         // For now properties are just defined by index, with no additional lookup for
         // the index (e.g. elements[0][ELEM_MASS_INDEX] for the mass of elem 0). We
         // have few enough properties that we currently don't need this additional lookup.
         // element definition: [ MASS_IN_DALTONS, EPSILON, SIGMA ]
+
+        elementMass,
+        elementEpsilon,
+        elementSigma,
+        elementRadius,
+
+        // array of elements
         elements,
 
-        // Individual property arrays for the atoms, indexed by atom number
-        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
-
-        // An array of length ATOM_PROPERTY_LIST.length which contains the above property arrays
-        atoms,
+        // Number of actual elements (may be smaller than the length of the property arrays).
+        N_elements = 0,
 
         // ####################################################################
         //                      Radial Bonds Properties
@@ -323,10 +304,10 @@ define(function (require, exports, module) {
         radialBondStyle,
 
         // count of radial bond properties
-        numRadialBondIndices = (function() {
+        numRadialBondProperties = (function() {
           var n = 0, index;
-          for (index in RADIAL_BOND_INDICES) {
-            if (RADIAL_BOND_INDICES.hasOwnProperty(index)) n++;
+          for (index in RADIAL_BOND_PROPERTY_LIST) {
+            if (RADIAL_BOND_PROPERTY_LIST.hasOwnProperty(index)) n++;
           }
           return n;
         }()),
@@ -344,7 +325,6 @@ define(function (require, exports, module) {
 
         // Number of actual radial bonds (may be smaller than the length of the property arrays).
         N_radialBonds = 0,
-        // ####################################################################
 
         // ####################################################################
         //                      Angular Bonds Properties
@@ -355,23 +335,15 @@ define(function (require, exports, module) {
         angularBondAngle,
         angularBondStrength,
 
-        // Count of angular bond properties.
-        numAngularBondIndices = (function() {
-          var n = 0, index;
-          for (index in ANGULAR_BOND_INDICES) {
-            if (ANGULAR_BOND_INDICES.hasOwnProperty(index)) n++;
-          }
-          return n;
-        }()),
-
         // An array of length 5 which contains the above 5 property arrays.
         // Left undefined if no angular bonds are defined.
         angularBonds,
 
         // Number of actual angular bonds (may be smaller than the length of the property arrays).
         N_angularBonds = 0,
-        // ####################################################################
 
+        // ####################################################################
+        //                      Misc Properties
         // Array of arrays containing VdW pairs
         vdwPairs,
 
@@ -461,10 +433,10 @@ define(function (require, exports, module) {
         // Initialize epsilon, sigma, cutoffDistance_LJ_sq, and ljCalculator array elements for
         // element pair i and j
         setPairwiseLJProperties = function(i, j) {
-          var epsilon_i = elements[i][ELEMENT_INDICES.EPSILON],
-              epsilon_j = elements[j][ELEMENT_INDICES.EPSILON],
-              sigma_i   = elements[i][ELEMENT_INDICES.SIGMA],
-              sigma_j   = elements[j][ELEMENT_INDICES.SIGMA],
+          var epsilon_i = elementEpsilon[i],
+              epsilon_j = elementEpsilon[j],
+              sigma_i   = elementSigma[i],
+              sigma_j   = elementSigma[j],
               e,
               s;
 
@@ -480,52 +452,90 @@ define(function (require, exports, module) {
         },
 
         /**
-          Extend all arrays in `arrayList` to `newLength`. Here, arrayList is expected to be `atoms`
-          `elements`, `radialBonds`, etc.
+          Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `atoms`
+          `elements`, `radialBonds`, etc. arrayContainer might be an array or an object.
+          TODO: this is just interim solution, in the future only objects will be expected.
         */
-        extendArrays = function(arrayList, newLength) {
-          for (var i = 0, len = arrayList.length; i < len; i++) {
-            arrayList[i] = arrays.extend(arrayList[i], newLength);
+        extendArrays = function(arrayContainer, newLength) {
+          var i, len;
+          if (Array.isArray(arrayContainer)) {
+            // Array of arrays.
+            for (i = 0, len = arrayContainer.length; i < len; i++) {
+              arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+            }
+          } else {
+            // Object with arrays defined as properties.
+            for (i in arrayContainer) {
+              if(arrayContainer.hasOwnProperty(i)) {
+                arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+              }
+            }
           }
         },
 
         /**
-          Set up "shortcut" references, e.g., x = atoms[ATOM_INDICES.X]
+          Set up "shortcut" references, e.g., x = atoms.x
         */
         assignShortcutReferences = {
 
           atoms: function() {
-            radius    = engine.radius      = atoms[ATOM_INDICES.RADIUS];
-            px        = engine.px          = atoms[ATOM_INDICES.PX];
-            py        = engine.py          = atoms[ATOM_INDICES.PY];
-            x         = engine.x           = atoms[ATOM_INDICES.X];
-            y         = engine.y           = atoms[ATOM_INDICES.Y];
-            vx        = engine.vx          = atoms[ATOM_INDICES.VX];
-            vy        = engine.vy          = atoms[ATOM_INDICES.VY];
-            speed     = engine.speed       = atoms[ATOM_INDICES.SPEED];
-            ax        = engine.ax          = atoms[ATOM_INDICES.AX];
-            ay        = engine.ay          = atoms[ATOM_INDICES.AY];
-            charge    = engine.charge      = atoms[ATOM_INDICES.CHARGE];
-            friction  = engine.friction    = atoms[ATOM_INDICES.FRICTION];
-            element   = engine.element     = atoms[ATOM_INDICES.ELEMENT];
-            pinned    = engine.pinned      = atoms[ATOM_INDICES.PINNED];
-            mass      = engine.mass        = atoms[ATOM_INDICES.MASS];
+            radius   = atoms.radius;
+            px       = atoms.px;
+            py       = atoms.py;
+            x        = atoms.x;
+            y        = atoms.y;
+            vx       = atoms.vx;
+            vy       = atoms.vy;
+            speed    = atoms.speed;
+            ax       = atoms.ax;
+            ay       = atoms.ay;
+            charge   = atoms.charge;
+            friction = atoms.friction;
+            element  = atoms.element;
+            pinned   = atoms.pinned;
+            mass     = atoms.mass;
           },
 
           radialBonds: function() {
-            radialBondAtom1Index  = radialBonds[RADIAL_BOND_INDICES.ATOM1];
-            radialBondAtom2Index  = radialBonds[RADIAL_BOND_INDICES.ATOM2];
-            radialBondLength      = radialBonds[RADIAL_BOND_INDICES.LENGTH];
-            radialBondStrength    = radialBonds[RADIAL_BOND_INDICES.STRENGTH];
-            radialBondStyle       = radialBonds[RADIAL_BOND_INDICES.STYLE];
+            radialBondAtom1Index  = radialBonds.atom1;
+            radialBondAtom2Index  = radialBonds.atom2;
+            radialBondLength      = radialBonds.length;
+            radialBondStrength    = radialBonds.strength;
+            radialBondStyle       = radialBonds.style;
           },
 
           angularBonds: function() {
-            angularBondAtom1Index = angularBonds[ANGULAR_BOND_INDICES.ATOM1];
-            angularBondAtom2Index = angularBonds[ANGULAR_BOND_INDICES.ATOM2];
-            angularBondAtom3Index = angularBonds[ANGULAR_BOND_INDICES.ATOM3];
-            angularBondAngle      = angularBonds[ANGULAR_BOND_INDICES.ANGLE];
-            angularBondStrength   = angularBonds[ANGULAR_BOND_INDICES.STRENGTH];
+            angularBondAtom1Index  = angularBonds.atom1;
+            angularBondAtom2Index  = angularBonds.atom2;
+            angularBondAtom3Index  = angularBonds.atom3;
+            angularBondAngle       = angularBonds.angle;
+            angularBondStrength    = angularBonds.strength;
+          },
+
+          elements: function() {
+            elementMass    = elements.mass;
+            elementEpsilon = elements.epsilon;
+            elementSigma   = elements.sigma;
+            elementRadius  = elements.radius;
+          },
+
+          obstacles: function() {
+            obstacleX        = obstacles.x;
+            obstacleY        = obstacles.y;
+            obstacleWidth    = obstacles.width;
+            obstacleHeight   = obstacles.height;
+            obstacleMass     = obstacles.mass;
+            obstacleVX       = obstacles.vx;
+            obstacleVY       = obstacles.vy;
+            obstacleExtFX    = obstacles.externalFx;
+            obstacleExtFY    = obstacles.externalFy;
+            obstacleFriction = obstacles.friction;
+            obstacleXPrev    = obstacles.xPrev;
+            obstacleYPrev    = obstacles.yPrev;
+            obstacleColorR   = obstacles.colorR;
+            obstacleColorG   = obstacles.colorG;
+            obstacleColorB   = obstacles.colorB;
+            obstacleVisible  = obstacles.visible;
           },
 
           springForces: function() {
@@ -537,16 +547,27 @@ define(function (require, exports, module) {
 
         },
 
+        createElementsArray = function(num) {
+          elements = engine.elements = {};
+
+          elements.mass    = arrays.create(num, 0, float32);
+          elements.epsilon = arrays.create(num, 0, float32);
+          elements.sigma   = arrays.create(num, 0, float32);
+          elements.radius  = arrays.create(num, 0, float32);
+
+          assignShortcutReferences.elements();
+        },
+
         createRadialBondsArray = function(num) {
           var i;
 
-          radialBonds = engine.radialBonds = [];
+          radialBonds = engine.radialBonds = {};
 
-          radialBonds[RADIAL_BOND_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
-          radialBonds[RADIAL_BOND_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
-          radialBonds[RADIAL_BOND_INDICES.LENGTH]   = arrays.create(num, 0, float32);
-          radialBonds[RADIAL_BOND_INDICES.STRENGTH] = arrays.create(num, 0, float32);
-          radialBonds[RADIAL_BOND_INDICES.STYLE]    = arrays.create(num, 0, uint8);
+          radialBonds.atom1    = arrays.create(num, 0, uint16);
+          radialBonds.atom2    = arrays.create(num, 0, uint16);
+          radialBonds.length   = arrays.create(num, 0, float32);
+          radialBonds.strength = arrays.create(num, 0, float32);
+          radialBonds.style    = arrays.create(num, 0, uint8);
 
           assignShortcutReferences.radialBonds();
           /**
@@ -555,21 +576,19 @@ define(function (require, exports, module) {
           */
           radialBondResults = engine.radialBondResults = [];
           for (i = 0; i < num; i++) {
-            radialBondResults[i] = arrays.create(numRadialBondIndices+5,  0, float32);
+            radialBondResults[i] = arrays.create(numRadialBondProperties+5,  0, float32);
             radialBondResults[i][0] = i;
           }
         },
 
         createAngularBondsArray = function(num) {
-          var i;
+          angularBonds = engine.angularBonds = {};
 
-          angularBonds = engine.angularBonds = [];
-
-          angularBonds[ANGULAR_BOND_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_BOND_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_BOND_INDICES.ATOM3]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_BOND_INDICES.ANGLE]    = arrays.create(num, 0, float32);
-          angularBonds[ANGULAR_BOND_INDICES.STRENGTH] = arrays.create(num, 0, float32);
+          angularBonds.atom1    = arrays.create(num, 0, uint16);
+          angularBonds.atom2    = arrays.create(num, 0, uint16);
+          angularBonds.atom3    = arrays.create(num, 0, uint16);
+          angularBonds.angle    = arrays.create(num, 0, float32);
+          angularBonds.strength = arrays.create(num, 0, float32);
 
           assignShortcutReferences.angularBonds();
         },
@@ -586,26 +605,26 @@ define(function (require, exports, module) {
         },
 
         createObstaclesArray = function(num) {
-          var ind = OBSTACLE_INDICES;
+          obstacles = engine.obstacles = {};
 
-          obstacles = engine.obstacles = [];
+          obstacles.x          = arrays.create(num, 0, float32);
+          obstacles.y          = arrays.create(num, 0, float32);
+          obstacles.width      = arrays.create(num, 0, float32);
+          obstacles.height     = arrays.create(num, 0, float32);
+          obstacles.mass       = arrays.create(num, 0, float32);
+          obstacles.vx         = arrays.create(num, 0, float32);
+          obstacles.vy         = arrays.create(num, 0, float32);
+          obstacles.externalFx = arrays.create(num, 0, float32);
+          obstacles.externalFy = arrays.create(num, 0, float32);
+          obstacles.friction   = arrays.create(num, 0, float32);
+          obstacles.xPrev      = arrays.create(num, 0, float32);
+          obstacles.yPrev      = arrays.create(num, 0, float32);
+          obstacles.colorR     = arrays.create(num, 0, float32);
+          obstacles.colorG     = arrays.create(num, 0, float32);
+          obstacles.colorB     = arrays.create(num, 0, float32);
+          obstacles.visible    = arrays.create(num, 0, uint8);
 
-          obstacles[ind.X]        = obstacleX        = arrays.create(num, 0, float32);
-          obstacles[ind.Y]        = obstacleY        = arrays.create(num, 0, float32);
-          obstacles[ind.WIDTH]    = obstacleWidth    = arrays.create(num, 0, float32);
-          obstacles[ind.HEIGHT]   = obstacleHeight   = arrays.create(num, 0, float32);
-          obstacles[ind.MASS]     = obstacleMass     = arrays.create(num, 0, float32);
-          obstacles[ind.VX]       = obstacleVX       = arrays.create(num, 0, float32);
-          obstacles[ind.VY]       = obstacleVY       = arrays.create(num, 0, float32);
-          obstacles[ind.EXT_FX]   = obstacleExtFX    = arrays.create(num, 0, float32);
-          obstacles[ind.EXT_FY]   = obstacleExtFY    = arrays.create(num, 0, float32);
-          obstacles[ind.FRICTION] = obstacleFriction = arrays.create(num, 0, float32);
-          obstacles[ind.X_PREV]   = obstacleXPrev    = arrays.create(num, 0, float32);
-          obstacles[ind.Y_PREV]   = obstacleYPrev    = arrays.create(num, 0, float32);
-          obstacles[ind.COLOR_R]  = obstacleColorR   = arrays.create(num, 0, float32);
-          obstacles[ind.COLOR_G]  = obstacleColorG   = arrays.create(num, 0, float32);
-          obstacles[ind.COLOR_B]  = obstacleColorB   = arrays.create(num, 0, float32);
-          obstacles[ind.VISIBLE]  = obstacleVisible  = arrays.create(num, 0, uint8);
+          assignShortcutReferences.obstacles();
         },
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
@@ -1018,7 +1037,7 @@ define(function (require, exports, module) {
               fx,
               fy;
 
-          for (i = 0, len = radialBonds[0].length; i < len; i++) {
+          for (i = 0, len = radialBondAtom1Index.length; i < len; i++) {
             i1 = radialBondAtom1Index[i];
             i2 = radialBondAtom2Index[i];
 
@@ -1057,7 +1076,7 @@ define(function (require, exports, module) {
               forceInXForI, forceInYForI, forceInXForK, forceInYForK,
               commonPrefactor, temp;
 
-          for (i = 0, len = angularBonds[0].length; i < len; i++) {
+          for (i = 0, len = angularBonds.atom1.length; i < len; i++) {
             i1 = angularBondAtom1Index[i];
             i2 = angularBondAtom2Index[i];
             i3 = angularBondAtom3Index[i];
@@ -1227,70 +1246,34 @@ define(function (require, exports, module) {
         return ljCalculator;
       },
 
-      /*
-        Expects an array of element properties such as
-        [
-          [ mass_of_elem_0 ],
-          [ mass_of_elem_1 ]
-        ]
-      */
-      setElements: function(elems) {
-        var i, j;
-
-        if (atomsHaveBeenCreated) {
-          throw new Error("md2d: setElements cannot be called after atoms have been created");
-        }
-        elements = elems;
-
-        for (i = 0; i < elements.length; i++) {
-          epsilon[i] = [];
-          sigma[i] = [];
-          ljCalculator[i] = [];
-          cutoffDistance_LJ_sq[i] = [];
-        }
-
-        for (i = 0; i < elements.length; i++) {
-          // the radius is derived from sigma
-          elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius( elements[i][ELEMENT_INDICES.SIGMA] );
-
-          for (j = i; j < elements.length; j++) {
-            setPairwiseLJProperties(i,j);
-          }
-        }
-        elementsHaveBeenCreated = true;
-        engine.elements = elements;
-      },
-
       setElementProperties: function(i, properties) {
         var j, newRadius;
-
-
         // FIXME we cached mass into its own array, which is now probably unnecessary (position-update
         // calculations have since been speeded up by batching the computation of accelerations from
         // forces.) If we remove the mass[] array we also remove the need for the loop below:
 
-        if (properties.mass != null && properties.mass !== elements[i][ELEMENT_INDICES.MASS]) {
-          elements[i][ELEMENT_INDICES.MASS] = properties.mass;
+        if (properties.mass != null && properties.mass !== elementMass[i]) {
+            elementMass[i] = properties.mass;
           for (j = 0; j < N; j++) {
             if (element[j] === i) mass[j] = properties.mass;
           }
         }
 
         if (properties.sigma != null) {
-          elements[i][ELEMENT_INDICES.SIGMA] = properties.sigma;
+          elementSigma[i] = properties.sigma;
           newRadius = lennardJones.radius(properties.sigma);
 
-          if (elements[i][ELEMENT_INDICES.RADIUS] !== newRadius) {
-            elements[i][ELEMENT_INDICES.RADIUS] = newRadius;
+          if (elementRadius[i] !== newRadius) {
+            elementRadius[i] = newRadius;
             for (j = 0; j < N; j++) {
               if (element[j] === i) radius[j] = newRadius;
             }
           }
         }
 
-        if (properties.epsilon != null) elements[i][ELEMENT_INDICES.EPSILON] = properties.epsilon;
+        if (properties.epsilon != null) elementEpsilon[i] = properties.epsilon;
 
-        for (j = 0; j < elements.length; j++) {
+        for (j = 0; j < N_elements; j++) {
           setPairwiseLJProperties(i, j);
         }
       },
@@ -1334,24 +1317,24 @@ define(function (require, exports, module) {
           throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
         }
 
-        atoms  = engine.atoms  = arrays.create(ATOM_PROPERTY_LIST.length, null, 'regular');
+        atoms  = engine.atoms  = {};
 
         // TODO. DRY this up by letting the property list say what type each array is
-        atoms[ATOM_INDICES.RADIUS]    = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.PX]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.PY]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.X]         = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.Y]         = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.VX]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.VY]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.SPEED]     = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.AX]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.AY]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.CHARGE]    = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.FRICTION]  = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
-        atoms[ATOM_INDICES.PINNED]    = arrays.create(num, 0, uint8);
-        atoms[ATOM_INDICES.MASS]      = arrays.create(num, 0, float32);
+        atoms.radius   = arrays.create(num, 0, float32);
+        atoms.px       = arrays.create(num, 0, float32);
+        atoms.py       = arrays.create(num, 0, float32);
+        atoms.x        = arrays.create(num, 0, float32);
+        atoms.y        = arrays.create(num, 0, float32);
+        atoms.vx       = arrays.create(num, 0, float32);
+        atoms.vy       = arrays.create(num, 0, float32);
+        atoms.speed    = arrays.create(num, 0, float32);
+        atoms.ax       = arrays.create(num, 0, float32);
+        atoms.ay       = arrays.create(num, 0, float32);
+        atoms.charge   = arrays.create(num, 0, float32);
+        atoms.friction = arrays.create(num, 0, float32);
+        atoms.element  = arrays.create(num, 0, uint8);
+        atoms.pinned   = arrays.create(num, 0, uint8);
+        atoms.mass     = arrays.create(num, 0, float32);
 
         assignShortcutReferences.atoms();
 
@@ -1368,24 +1351,23 @@ define(function (require, exports, module) {
         @returns the index of the new atom
       */
       addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, atom_pinned) {
-        var el, atom_mass;
+        var atom_mass;
 
-        if (N + 1 > atoms[0].length) {
+        if (N + 1 > atoms.x.length) {
           extendArrays(atoms, N + 10);
           assignShortcutReferences.atoms();
         }
 
         // Allow these values to be optional, and use the default if not defined:
 
-        if (atom_charge == null)   atom_charge   = DEFAULT_VALUES.CHARGE;
-        if (atom_friction == null) atom_friction = DEFAULT_VALUES.FRICTION;
-        if (atom_pinned == null )  atom_pinned   = DEFAULT_VALUES.PINNED;
+        if (atom_charge == null)   atom_charge   = DEFAULT_VALUES.charge;
+        if (atom_friction == null) atom_friction = DEFAULT_VALUES.friction;
+        if (atom_pinned == null )  atom_pinned   = DEFAULT_VALUES.pinned;
 
-        el = elements[atom_element];
-        atom_mass = el[ELEMENT_INDICES.MASS];
+        atom_mass = elementMass[atom_element];
 
         element[N]   = atom_element;
-        radius[N]    = elements[atom_element][ELEMENT_INDICES.RADIUS];
+        radius[N]    = elementRadius[atom_element];
         x[N]         = atom_x;
         y[N]         = atom_y;
         vx[N]        = atom_vx;
@@ -1408,6 +1390,38 @@ define(function (require, exports, module) {
       },
 
       /**
+        The canonical method for adding an element.
+
+        If there isn't enough room in the 'elements' array, it (somewhat inefficiently)
+        extends the length of the typed arrays by one to contain one more atom with listed properties.
+      */
+      addElement: function(props) {
+        var i;
+
+        if (N_elements >= elementEpsilon.length) {
+          extendArrays(elements, N_elements + 10);
+          assignShortcutReferences.N_elements();
+        }
+
+        elementMass[N_elements]    = props.mass;
+        elementEpsilon[N_elements] = props.epsilon;
+        elementSigma[N_elements]   = props.sigma;
+        elementRadius[N_elements]  = lennardJones.radius(props.sigma);
+
+        epsilon[N_elements]              = [];
+        sigma[N_elements]                = [];
+        ljCalculator[N_elements]         = [];
+        cutoffDistance_LJ_sq[N_elements] = [];
+
+        for (i = 0; i <= N_elements; i++) {
+          setPairwiseLJProperties(N_elements,i);
+        }
+
+        elementsHaveBeenCreated = true;
+        N_elements++;
+      },
+
+      /**
         The canonical method for adding a radial bond to the collection of radial bonds.
 
         If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
@@ -1415,7 +1429,7 @@ define(function (require, exports, module) {
       */
       addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength, bondStyle) {
         if (bondStyle == null )  bondStyle   = DEFAULT_VALUES.RADIAL_BOND_STYLE;
-        if (N_radialBonds + 1 > radialBonds[0].length) {
+        if (N_radialBonds >= radialBondAtom1Index.length) {
           extendArrays(radialBonds, N_radialBonds + 10);
           assignShortcutReferences.radialBonds();
         }
@@ -1442,7 +1456,7 @@ define(function (require, exports, module) {
         extends the length of the typed arrays by ten to have room for more bonds.
       */
       addAngularBond: function(atom1Index, atom2Index, atom3Index, bondAngle, bondStrength) {
-        if (N_angularBonds + 1 > angularBonds[0].length) {
+        if (N_angularBonds + 1 > angularBonds.atom1.length) {
           extendArrays(angularBonds, N_angularBonds + 10);
           assignShortcutReferences.angularBonds();
         }
@@ -1496,8 +1510,9 @@ define(function (require, exports, module) {
       addObstacle: function(x, y, vx, vy, externalFx, externalFy, friction, width, height, density, color, visible) {
         var obstaclemass;
 
-        if (N_obstacles + 1 > obstacles[0].length) {
-          extendArrays(obstacles, N_obstacles + 10);
+        if (N_obstacles + 1 > obstacles.x.length) {
+          extendArrays(obstacles, N_obstacles + 1);
+          assignShortcutReferences.obstacles();
         }
 
         obstacleX[N_obstacles] = x;
@@ -1585,24 +1600,24 @@ define(function (require, exports, module) {
         var x, y, vx, vy, charge, element, friction, pinned,
             i, ii;
 
-        if (!(props.X && props.Y)) {
+        if (!(props.x && props.y)) {
           throw new Error("md2d: initializeAtomsFromProperties must specify at minimum X and Y locations.");
         }
 
-        if (!(props.VX && props.VY)) {
+        if (!(props.vx && props.vy)) {
           // We may way to support authored locations with random velocities in the future
           throw new Error("md2d: For now, velocities must be set when locations are set.");
         }
 
-        for (i=0, ii=props.X.length; i<ii; i++){
-          element = props.ELEMENT ? props.ELEMENT[i] : 0;
-          x = props.X[i];
-          y = props.Y[i];
-          vx = props.VX[i];
-          vy = props.VY[i];
-          charge = props.CHARGE ? props.CHARGE[i] : 0;
-          pinned = props.PINNED ? props.PINNED[i] : 0;
-          friction = props.FRICTION ? props.FRICTION[i] : 0;
+        for (i=0, ii=props.x.length; i<ii; i++){
+          element = props.element ? props.element[i] : 0;
+          x = props.x[i];
+          y = props.y[i];
+          vx = props.vx[i];
+          vy = props.vy[i];
+          charge = props.charge ? props.charge[i] : 0;
+          pinned = props.pinned ? props.pinned[i] : 0;
+          friction = props.friction ? props.friction[i] : 0;
 
           engine.addAtom(element, x, y, vx, vy, charge, friction, pinned);
         }
@@ -1617,7 +1632,7 @@ define(function (require, exports, module) {
             temperature = options.temperature || 100,
 
             // fill up the entire 'atoms' array if not otherwise requested
-            num         = options.num         || atoms[0].length,
+            num = options.num || atoms.x.length,
 
             nrows = Math.floor(Math.sqrt(num)),
             ncols = Math.ceil(num/nrows),
@@ -1640,7 +1655,7 @@ define(function (require, exports, module) {
             i++;
             if (i === num) break;
 
-            element    = Math.floor(Math.random() * elements.length);     // random element
+            element    = Math.floor(Math.random() * elementEpsilon.length);     // random element
             vMagnitude = math.normal(1, 1/4);
             vDirection = 2 * Math.random() * Math.PI;
 
@@ -1692,6 +1707,18 @@ define(function (require, exports, module) {
             props.visible[i]
           );
         }
+      },
+
+      initializeElements: function(elems) {
+        var num = elems.length,
+            i;
+
+        createElementsArray(num);
+
+        for (i = 0; i < num; i++) {
+          engine.addElement(elems[i]);
+        }
+        elementsHaveBeenCreated = true;
       },
 
       initializeRadialBonds: function(props) {
@@ -1749,12 +1776,12 @@ define(function (require, exports, module) {
             r_sq,
             x_i,
             y_i,
-            element_i,
-            element_j,
             sigma_i,
             epsilon_i,
             sigma_j,
             epsilon_j,
+            index_i,
+            index_j,
             sig,
             eps,
             distanceCutoff_sq = 4; // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
@@ -1763,23 +1790,24 @@ define(function (require, exports, module) {
 
         for (i = 0; i < N; i++) {
           // pairwise interactions
-          element_i = elements[element[i]];
-          sigma_i   = element_i[ELEMENT_INDICES.SIGMA];
-          epsilon_i = element_i[ELEMENT_INDICES.EPSILON];
+          index_i = element[i];
+          sigma_i   = elementSigma[index_i];
+          epsilon_i = elementSigma[index_i];
           x_i = x[i];
           y_i = y[i];
 
           for (j = i+1; j < N; j++) {
             if (N_radialBonds !== 0 && (radialBondMatrix[i] && radialBondMatrix[i][j])) continue;
 
-            element_j = elements[element[j]];
+            index_j = element[j];
+            sigma_j   = elementSigma[index_j];
+            epsilon_j = elementSigma[index_j];
+
             if (charge[i]*charge[j] <= 0) {
               dx = x[j] - x_i;
               dy = y[j] - y_i;
               r_sq = dx*dx + dy*dy;
 
-              sigma_j = element_j[ELEMENT_INDICES.SIGMA];
-              epsilon_j = element_j[ELEMENT_INDICES.EPSILON];
 
               sig = 0.5 * (sigma_i+sigma_j);
               sig *= sig;
@@ -1832,7 +1860,7 @@ define(function (require, exports, module) {
 
         // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
         // assuming just one radius as below
-        radius = elements[element[0]][ELEMENT_INDICES.RADIUS];
+        radius = elementRadius[0];
 
         var t_start = time,
             n_steps = Math.floor(duration/dt),  // number of steps
@@ -1921,7 +1949,7 @@ define(function (require, exports, module) {
       },
 
       getRadiusOfElement: function(el) {
-        return elements[el][ELEMENT_INDICES.RADIUS];
+        return elementRadius[el];
       },
 
       getNumberOfAtoms: function() {
@@ -2129,7 +2157,7 @@ define(function (require, exports, module) {
       */
       findMinimumPELocation: function(el, x, y, charge) {
         var pot    = engine.newPotentialCalculator(el, charge, true),
-            radius = elements[el][ELEMENT_INDICES.RADIUS],
+            radius = elementRadius[el],
 
             res =  math.minimize(pot, [x, y], {
               bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
@@ -2162,7 +2190,7 @@ define(function (require, exports, module) {
               return [f*f, grad];
             },
 
-            radius = elements[el][ELEMENT_INDICES.RADIUS],
+            radius = elementRadius[el],
 
             res = math.minimize(potsq, [x, y], {
               bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ],
@@ -2214,7 +2242,7 @@ define(function (require, exports, module) {
         var bondedAtoms = [],
             j, jj;
         if (radialBonds) {
-          for (j = 0, jj = radialBonds[0].length; j < jj; j++) {
+          for (j = 0, jj = radialBondAtom1Index.length; j < jj; j++) {
             // console.log("looking at bond from "+radialBonds)
             if (radialBondAtom1Index[j] === i) {
               bondedAtoms.push(radialBondAtom2Index[j]);

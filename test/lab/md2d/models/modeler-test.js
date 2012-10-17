@@ -19,7 +19,7 @@ requirejs([
   var atoms = [];
 
   var get_charge = function (i) {
-    return model.get_atoms()[model.INDICES.CHARGE][i];
+    return model.get_atoms().charge[i];
   };
 
   var initialization_options = {
@@ -102,7 +102,7 @@ requirejs([
         modelHash = model.serialize(true);
         assert.equal(modelHash.lennard_jones_forces, initialization_options.lennard_jones_forces);
         assert.equal(modelHash.coulomb_forces, initialization_options.coulomb_forces);
-        assert.equal(modelHash.atoms.X.length, initialization_options.mol_number);
+        assert.equal(modelHash.atoms.x.length, initialization_options.mol_number);
         assert.equal(modelHash.width, initialization_options.width);
         assert.equal(modelHash.height, initialization_options.height);
 
@@ -120,7 +120,7 @@ requirejs([
         modelHash = model.serialize(true);
         assert.equal(modelHash.lennard_jones_forces, new_options.lennard_jones_forces);
         assert.equal(modelHash.coulomb_forces, new_options.coulomb_forces);
-        assert.equal(modelHash.atoms.X.length, new_options.mol_number);
+        assert.equal(modelHash.atoms.x.length, new_options.mol_number);
         assert.equal(modelHash.width, initialization_options.width);
         assert.equal(modelHash.height, initialization_options.height);
       },
@@ -136,7 +136,7 @@ requirejs([
 
         oldModelHash = model.serialize(true);
         assert.isObject(oldModelHash.atoms);
-        assert.equal(oldModelHash.atoms.X.length, new_initialization_options.mol_number);
+        assert.equal(oldModelHash.atoms.x.length, new_initialization_options.mol_number);
 
         oldAtomStates = oldModelHash.atoms;
 
@@ -196,11 +196,11 @@ requirejs([
             {id: 1, mass: 20, epsilon: -0.1, sigma: 0.07}
           ],
           atoms: {
-            X: [0,0,0],
-            Y: [0,0,0],
-            VX: [0,0,0],
-            VY: [0,0,0],
-            ELEMENT: [0,0,1]
+            x: [0,0,0],
+            y: [0,0,0],
+            vx: [0,0,0],
+            vy: [0,0,0],
+            element: [0,0,1]
           }
         };
         model = Model(new_initialization_options).createNewAtoms(new_initialization_options.atoms);
@@ -215,7 +215,7 @@ requirejs([
       topic: function() {
         model = Model(initialization_options);
         model.createNewAtoms(initialization_options.mol_number);
-        atom0InitialPosition = [model.get_atoms()[model.INDICES.X][0], model.get_atoms()[model.INDICES.Y][0]];
+        atom0InitialPosition = [model.get_atoms().x[0], model.get_atoms().y[0]];
         return model;
       },
       "a newly initialized model starts at step 0": function(model) {
@@ -234,7 +234,7 @@ requirejs([
         model.stepBack();
         assert.equal(model.stepCounter(), 0);
         assert.deepEqual(
-          [model.get_atoms()[model.INDICES.X][0], model.get_atoms()[model.INDICES.Y][0]],
+          [model.get_atoms().x[0], model.get_atoms().y[0]],
           atom0InitialPosition
         );
       },

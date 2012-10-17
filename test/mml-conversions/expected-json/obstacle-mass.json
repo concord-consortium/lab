@@ -44,21 +44,21 @@
       }
   ],
   "atoms": {
-    "X": [
+    "x": [
     ],
-    "Y": [
+    "y": [
     ],
-    "VX": [
+    "vx": [
     ],
-    "VY": [
+    "vy": [
     ],
-    "CHARGE": [
+    "charge": [
     ],
-    "FRICTION": [
+    "friction": [
     ],
-    "ELEMENT": [
+    "element": [
     ],
-    "PINNED": [
+    "pinned": [
     ]
   },
   "obstacles": {

@@ -482,24 +482,24 @@ parseMML = (mmlString) ->
       timeStep            : timeStep
       elements            : elemTypes
       atoms :
-        X : x
-        Y : y
-        VX: vx
-        VY: vy
-        CHARGE: charge
-        FRICTION: friction
-        ELEMENT: element
-        PINNED: pinned
-        MARKED: marked
-        VISIBLE: visible
-        DRAGGABLE: draggable
+        x : x
+        y : y
+        vx: vx
+        vy: vy
+        charge: charge
+        friction: friction
+        element: element
+        pinned: pinned
+        marked: marked
+        visible: visible
+        draggable: draggable
 
     removeArrayIfDefault = (name, array, defaultVal) ->
       delete json.atoms[name] if array.every (i)-> i is defaultVal
 
-    removeArrayIfDefault("MARKED", marked, 0)
-    removeArrayIfDefault("VISIBLE", visible, 1)
-    removeArrayIfDefault("DRAGGABLE", draggable, 0)
+    removeArrayIfDefault("marked", marked, 0)
+    removeArrayIfDefault("visible", visible, 1)
+    removeArrayIfDefault("draggable", draggable, 0)
 
     if radialBonds.length > 0
       json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength',  'bondStyle'
