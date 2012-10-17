@@ -48,12 +48,10 @@ define(function (require, exports, module) {
       ATOM_PROPERTY_LIST,
 
       ELEMENT_PROPERTY_LIST,
-      ELEMENT_INDICES,
 
       RADIAL_BOND_PROPERTY_LIST,
 
       ANGULAR_BOND_PROPERTY_LIST,
-      ANGULAR_BOND_INDICES,
 
       VDW_INDICES,
 
@@ -164,19 +162,11 @@ define(function (require, exports, module) {
 
   // Elements
   exports.ELEMENT_PROPERTY_LIST = ELEMENT_PROPERTY_LIST = [
-    "MASS",
-    "EPSILON",
-    "SIGMA",
-    "RADIUS"
+    "mass",
+    "epsilon",
+    "sigma",
+    "radius"
   ];
-
-  exports.ELEMENT_INDICES = ELEMENT_INDICES = {};
-
-  (function() {
-    for (var i = 0; i < ELEMENT_PROPERTY_LIST.length; i++) {
-      exports.ELEMENT_INDICES[ ELEMENT_PROPERTY_LIST[i] ] = i;
-    }
-  }());
 
   // Obstacles
   exports.OBSTACLE_PROPERTY_LIST = [
@@ -275,19 +265,44 @@ define(function (require, exports, module) {
         // Total mass of all particles in the system, in Dalton (atomic mass units).
         totalMass,
 
+        // ####################################################################
+        //                      Atom Properties
+        // Individual property arrays for the atoms, indexed by atom number
+        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
+
+        // An array of length ATOM_PROPERTY_LIST.length which contains the above property arrays
+        atoms,
+
+        // ####################################################################
+        //                      Element Properties
+        // Individual property arrays for the elements
+
         // Element properties
         // elements is an array of elements, each one an array of properties
         // For now properties are just defined by index, with no additional lookup for
         // the index (e.g. elements[0][ELEM_MASS_INDEX] for the mass of elem 0). We
         // have few enough properties that we currently don't need this additional lookup.
         // element definition: [ MASS_IN_DALTONS, EPSILON, SIGMA ]
+
+        elementMass,
+        elementEpsilon,
+        elementSigma,
+        elementRadius,
+
+        // array of elements
         elements,
 
-        // Individual property arrays for the atoms, indexed by atom number
-        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
+        // count of element properties
+        numElementProperties = (function() {
+          var n = 0, index;
+          for (index in ELEMENT_PROPERTY_LIST) {
+            if (ELEMENT_PROPERTY_LIST.hasOwnProperty(index)) n++;
+          }
+          return n;
+        }()),
 
-        // An array of length ATOM_PROPERTY_LIST.length which contains the above property arrays
-        atoms,
+        // Number of actual elements (may be smaller than the length of the property arrays).
+        N_elements = 0,
 
         // ####################################################################
         //                      Radial Bonds Properties
@@ -437,10 +452,10 @@ define(function (require, exports, module) {
         // Initialize epsilon, sigma, cutoffDistance_LJ_sq, and ljCalculator array elements for
         // element pair i and j
         setPairwiseLJProperties = function(i, j) {
-          var epsilon_i = elements[i][ELEMENT_INDICES.EPSILON],
-              epsilon_j = elements[j][ELEMENT_INDICES.EPSILON],
-              sigma_i   = elements[i][ELEMENT_INDICES.SIGMA],
-              sigma_j   = elements[j][ELEMENT_INDICES.SIGMA],
+          var epsilon_i = elementEpsilon[i],
+              epsilon_j = elementEpsilon[j],
+              sigma_i   = elementSigma[i],
+              sigma_j   = elementSigma[j],
               e,
               s;
 
@@ -516,6 +531,13 @@ define(function (require, exports, module) {
             angularBondStrength    = engine.angularBonds.strength = angularBonds.strength;
           },
 
+          elements: function() {
+            elementMass    = engine.elements.mass    = elements.mass;
+            elementEpsilon = engine.elements.epsilon = elements.epsilon;
+            elementSigma   = engine.elements.sigma   = elements.sigma;
+            elementRadius  = engine.elements.radius  = elements.radius;
+          },
+
           obstacles: function() {
             obstacleX        = obstacles.x;
             obstacleY        = obstacles.y;
@@ -542,6 +564,19 @@ define(function (require, exports, module) {
             springForceStrength  = springForces[3];
           }
 
+        },
+
+        createElementsArray = function(num) {
+          var i;
+
+          elements = engine.elements = {};
+
+          elements.mass    = arrays.create(num, 0, float32);
+          elements.epsilon = arrays.create(num, 0, float32);
+          elements.sigma   = arrays.create(num, 0, float32);
+          elements.radius  = arrays.create(num, 0, float32);
+
+          assignShortcutReferences.elements();
         },
 
         createRadialBondsArray = function(num) {
@@ -1250,68 +1285,32 @@ define(function (require, exports, module) {
         return ljCalculator;
       },
 
-      /*
-        Expects an array of element properties such as
-        [
-          [ mass_of_elem_0 ],
-          [ mass_of_elem_1 ]
-        ]
-      */
-      setElements: function(elems) {
-        var i, j;
-
-        if (atomsHaveBeenCreated) {
-          throw new Error("md2d: setElements cannot be called after atoms have been created");
-        }
-        elements = elems;
-
-        for (i = 0; i < elements.length; i++) {
-          epsilon[i] = [];
-          sigma[i] = [];
-          ljCalculator[i] = [];
-          cutoffDistance_LJ_sq[i] = [];
-        }
-
-        for (i = 0; i < elements.length; i++) {
-          // the radius is derived from sigma
-          elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius( elements[i][ELEMENT_INDICES.SIGMA] );
-
-          for (j = i; j < elements.length; j++) {
-            setPairwiseLJProperties(i,j);
-          }
-        }
-        elementsHaveBeenCreated = true;
-        engine.elements = elements;
-      },
-
       setElementProperties: function(i, properties) {
         var j, newRadius;
-
-
         // FIXME we cached mass into its own array, which is now probably unnecessary (position-update
         // calculations have since been speeded up by batching the computation of accelerations from
         // forces.) If we remove the mass[] array we also remove the need for the loop below:
 
-        if (properties.mass != null && properties.mass !== elements[i][ELEMENT_INDICES.MASS]) {
-          elements[i][ELEMENT_INDICES.MASS] = properties.mass;
+        if (properties.mass != null && properties.mass !== elementMass[i]) {
+            elementMass[i] = properties.mass;
           for (j = 0; j < N; j++) {
             if (element[j] === i) mass[j] = properties.mass;
           }
         }
 
         if (properties.sigma != null) {
-          elements[i][ELEMENT_INDICES.SIGMA] = properties.sigma;
+          elementSigma[i] = properties.sigma;
           newRadius = lennardJones.radius(properties.sigma);
 
-          if (elements[i][ELEMENT_INDICES.RADIUS] !== newRadius) {
-            elements[i][ELEMENT_INDICES.RADIUS] = newRadius;
+          if (elementRadius[i] !== newRadius) {
+            elementRadius[i] = newRadius;
             for (j = 0; j < N; j++) {
               if (element[j] === i) radius[j] = newRadius;
             }
           }
         }
 
-        if (properties.epsilon != null) elements[i][ELEMENT_INDICES.EPSILON] = properties.epsilon;
+        if (properties.epsilon != null) elementEpsilon[i] = properties.epsilon;
 
         for (j = 0; j < elements.length; j++) {
           setPairwiseLJProperties(i, j);
@@ -1404,11 +1403,10 @@ define(function (require, exports, module) {
         if (atom_friction == null) atom_friction = DEFAULT_VALUES.friction;
         if (atom_pinned == null )  atom_pinned   = DEFAULT_VALUES.pinned;
 
-        el = elements[atom_element];
-        atom_mass = el[ELEMENT_INDICES.MASS];
+        atom_mass = elementMass[atom_element];
 
         element[N]   = atom_element;
-        radius[N]    = elements[atom_element][ELEMENT_INDICES.RADIUS];
+        radius[N]    = elementRadius[atom_element];
         x[N]         = atom_x;
         y[N]         = atom_y;
         vx[N]        = atom_vx;
@@ -1428,6 +1426,38 @@ define(function (require, exports, module) {
         totalMass += atom_mass;
 
         return N++;
+      },
+
+      /**
+        The canonical method for adding an element.
+
+        If there isn't enough room in the 'elements' array, it (somewhat inefficiently)
+        extends the length of the typed arrays by one to contain one more atom with listed properties.
+      */
+      addElement: function(props) {
+        var i, j;
+
+        if (N_elements >= elementEpsilon.length) {
+          extendArrays(elements, N_elements + 10);
+          assignShortcutReferences.N_elements();
+        }
+
+        elementMass[N_elements]    = props.mass;
+        elementEpsilon[N_elements] = props.epsilon;
+        elementSigma[N_elements]   = props.sigma;
+        elementRadius[N_elements]  = lennardJones.radius(props.sigma);
+
+        epsilon[N_elements]              = [];
+        sigma[N_elements]                = [];
+        ljCalculator[N_elements]         = [];
+        cutoffDistance_LJ_sq[N_elements] = [];
+
+        for (i = 0; i <= N_elements; i++) {
+          setPairwiseLJProperties(N_elements,i);
+        }
+
+        elementsHaveBeenCreated = true;
+        N_elements++;
       },
 
       /**
@@ -1664,7 +1694,7 @@ define(function (require, exports, module) {
             i++;
             if (i === num) break;
 
-            element    = Math.floor(Math.random() * elements.length);     // random element
+            element    = Math.floor(Math.random() * elementEpsilon.length);     // random element
             vMagnitude = math.normal(1, 1/4);
             vDirection = 2 * Math.random() * Math.PI;
 
@@ -1716,6 +1746,18 @@ define(function (require, exports, module) {
             props.visible[i]
           );
         }
+      },
+
+      initializeElements: function(elems) {
+        var num = elems.length,
+            i;
+
+        createElementsArray(num);
+
+        for (i = 0; i < num; i++) {
+          engine.addElement(elems[i]);
+        }
+        elementsHaveBeenCreated = true;
       },
 
       initializeRadialBonds: function(props) {
@@ -1773,12 +1815,12 @@ define(function (require, exports, module) {
             r_sq,
             x_i,
             y_i,
-            element_i,
-            element_j,
             sigma_i,
             epsilon_i,
             sigma_j,
             epsilon_j,
+            index_i,
+            index_j,
             sig,
             eps,
             distanceCutoff_sq = 4; // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
@@ -1787,23 +1829,24 @@ define(function (require, exports, module) {
 
         for (i = 0; i < N; i++) {
           // pairwise interactions
-          element_i = elements[element[i]];
-          sigma_i   = element_i[ELEMENT_INDICES.SIGMA];
-          epsilon_i = element_i[ELEMENT_INDICES.EPSILON];
+          index_i = element[i];
+          sigma_i   = elementSigma[index_i];
+          epsilon_i = elementSigma[index_i];
           x_i = x[i];
           y_i = y[i];
 
           for (j = i+1; j < N; j++) {
             if (N_radialBonds !== 0 && (radialBondMatrix[i] && radialBondMatrix[i][j])) continue;
 
-            element_j = elements[element[j]];
+            index_j = element[j];
+            sigma_j   = elementSigma[index_j];
+            epsilon_j = elementSigma[index_j];
+
             if (charge[i]*charge[j] <= 0) {
               dx = x[j] - x_i;
               dy = y[j] - y_i;
               r_sq = dx*dx + dy*dy;
 
-              sigma_j = element_j[ELEMENT_INDICES.SIGMA];
-              epsilon_j = element_j[ELEMENT_INDICES.EPSILON];
 
               sig = 0.5 * (sigma_i+sigma_j);
               sig *= sig;
@@ -1851,7 +1894,7 @@ define(function (require, exports, module) {
 
         // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
         // assuming just one radius as below
-        radius = elements[element[0]][ELEMENT_INDICES.RADIUS];
+        radius = elementRadius[0];
 
         var t_start = time,
             n_steps = Math.floor(duration/dt),  // number of steps
@@ -1940,7 +1983,7 @@ define(function (require, exports, module) {
       },
 
       getRadiusOfElement: function(el) {
-        return elements[el][ELEMENT_INDICES.RADIUS];
+        return elementRadius[el];
       },
 
       getNumberOfAtoms: function() {
@@ -2148,7 +2191,7 @@ define(function (require, exports, module) {
       */
       findMinimumPELocation: function(el, x, y, charge) {
         var pot    = engine.newPotentialCalculator(el, charge, true),
-            radius = elements[el][ELEMENT_INDICES.RADIUS],
+            radius = elementRadius[el];
 
             res =  math.minimize(pot, [x, y], {
               bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
@@ -2181,7 +2224,7 @@ define(function (require, exports, module) {
               return [f*f, grad];
             },
 
-            radius = elements[el][ELEMENT_INDICES.RADIUS],
+            radius = elementRadius[el];
 
             res = math.minimize(potsq, [x, y], {
               bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ],

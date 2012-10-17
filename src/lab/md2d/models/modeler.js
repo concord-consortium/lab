@@ -227,14 +227,12 @@ define(function(require) {
         model.ANGULAR_BOND_PROPERTY_LIST[i] = prop;
       }
 
-      model.ELEMENT_INDICES = {};
       model.ELEMENT_PROPERTY_LIST = [];
 
-      // Copy ELEMENT property indices and names from md2d
+      // Copy ELEMENT properties from md2d
       for (i = 0; i < md2d.ELEMENT_PROPERTY_LIST.length; i++) {
         prop = md2d.ELEMENT_PROPERTY_LIST[i];
         model.ELEMENT_PROPERTY_LIST[i] = prop;
-        model.ELEMENT_INDICES[prop]    = md2d.ELEMENT_INDICES[prop];
       }
 
       model.NON_ENGINE_PROPERTY_LIST = [
@@ -702,7 +700,7 @@ define(function(require) {
       left in whatever grid the engine's initialization leaves them in.
     */
     model.createNewAtoms = function(config) {
-      var elemsArray, element, i, ii, num;
+      var num;
 
       if (typeof config === 'number') {
         num = config;
@@ -712,17 +710,10 @@ define(function(require) {
         num = config.x.length;
       }
 
-      // convert from easily-readble json format to simplified array format
-      elemsArray = [];
-      for (i=0, ii=elements.length; i<ii; i++){
-        element = elements[i];
-        elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
-      }
-
       // get a fresh model
       engine = md2d.createEngine();
       engine.setSize([width,height]);
-      engine.setElements(elemsArray);
+      engine.initializeElements(elements);
       engine.createAtoms({
         num: num
       });
@@ -1050,7 +1041,8 @@ define(function(require) {
       var p,
           props = {};
       for (p = 0; p < model.ELEMENT_PROPERTY_LIST.length; p++) {
-        props[model.ELEMENT_PROPERTY_LIST[p].toLowerCase()] = engine.elements[p][i];
+        propName = model.ELEMENT_PROPERTY_LIST[p];
+        props[propName] = engine.elements[propName][i];
       }
       return props;
     };
