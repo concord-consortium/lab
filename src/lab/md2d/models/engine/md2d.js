@@ -1060,7 +1060,7 @@ define(function (require, exports, module) {
               fx,
               fy;
 
-          for (i = 0, len = radialBonds.atom1.length; i < len; i++) {
+          for (i = 0, len = radialBondAtom1Index.length; i < len; i++) {
             i1 = radialBondAtom1Index[i];
             i2 = radialBondAtom2Index[i];
 
@@ -1468,7 +1468,7 @@ define(function (require, exports, module) {
       */
       addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength, bondStyle) {
         if (bondStyle == null )  bondStyle   = DEFAULT_VALUES.RADIAL_BOND_STYLE;
-        if (N_radialBonds >= radialBonds.atom1.length) {
+        if (N_radialBonds >= radialBondAtom1Index.length) {
           extendArrays(radialBonds, N_radialBonds + 10);
           assignShortcutReferences.radialBonds();
         }
@@ -2276,7 +2276,7 @@ define(function (require, exports, module) {
         var bondedAtoms = [],
             j, jj;
         if (radialBonds) {
-          for (j = 0, jj = radialBonds[0].length; j < jj; j++) {
+          for (j = 0, jj = radialBondAtom1Index.length; j < jj; j++) {
             // console.log("looking at bond from "+radialBonds)
             if (radialBondAtom1Index[j] === i) {
               bondedAtoms.push(radialBondAtom2Index[j]);
