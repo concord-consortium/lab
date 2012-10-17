@@ -258,7 +258,7 @@ define(function (require, exports, module) {
         // Square of integration time step, in fs^2.
         dt_sq,
 
-        // The number of molecules in the system.
+        // The number of atoms in the system.
         N,
 
         // Total mass of all particles in the system, in Dalton (atomic mass units).
@@ -266,35 +266,41 @@ define(function (require, exports, module) {
 
         // ####################################################################
         //                      Atom Properties
+
         // Individual property arrays for the atoms, indexed by atom number
         radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
 
-        // An array of length ATOM_PROPERTY_LIST.length which contains the above property arrays
+        // An object that contains references to the above atom-property arrays
         atoms,
 
         // ####################################################################
         //                      Element Properties
-        // Individual property arrays for the elements
 
+        // Individual property arrays for the elements
         elementMass,
         elementEpsilon,
         elementSigma,
         elementRadius,
 
-        // array of elements
+        // An object that contains references to the above element-property arrays
         elements,
 
         // Number of actual elements (may be smaller than the length of the property arrays).
         N_elements = 0,
 
         // ####################################################################
-        //                      Radial Bonds Properties
+        //                      Radial Bond Properties
+
         // Individual property arrays for the "radial" bonds, indexed by bond number
         radialBondAtom1Index,
         radialBondAtom2Index,
         radialBondLength,
         radialBondStrength,
         radialBondStyle,
+
+        // An object that contains references to the above radial-bond-property arrays.
+        // Left undefined if there are no radial bonds.
+        radialBonds,
 
         // count of radial bond properties
         numRadialBondProperties = (function() {
@@ -308,10 +314,6 @@ define(function (require, exports, module) {
         // An array of individual radial bond index values and properties.
         radialBondResults,
 
-        // An array of length 5 which contains the above 5 property arrays.
-        // Left undefined if no radial bonds are defined.
-        radialBonds,
-
         // radialBondMatrix[i][j] === true when atoms i and j are "radially bonded"
         // radialBondMatrix[i][j] === undefined otherwise
         radialBondMatrix,
@@ -320,7 +322,8 @@ define(function (require, exports, module) {
         N_radialBonds = 0,
 
         // ####################################################################
-        //                      Angular Bonds Properties
+        //                      Angular Bond Properties
+
         // Individual property arrays for the "angular" bonds, indexed by bond number.
         angularBondAtom1Index,
         angularBondAtom2Index,
@@ -328,34 +331,15 @@ define(function (require, exports, module) {
         angularBondAngle,
         angularBondStrength,
 
-        // An array of length 5 which contains the above 5 property arrays.
-        // Left undefined if no angular bonds are defined.
+        // An object that contains references to the above angular-bond-property arrays.
+        // Left undefined if there are no angular bonds.
         angularBonds,
 
         // Number of actual angular bonds (may be smaller than the length of the property arrays).
         N_angularBonds = 0,
 
         // ####################################################################
-        //                      Misc Properties
-        // Array of arrays containing VdW pairs
-        vdwPairs,
-
-        // Number of VdW pairs
-        N_vdwPairs,
-
-        // Arrays of VdW pair atom #1 and atom #2 indices
-        vdwPairAtom1Index,
-        vdwPairAtom2Index,
-
-        // Arrays for spring forces, which are forces defined between an atom and a point in space
-        springForceAtomIndex,
-        springForceX,
-        springForceY,
-        springForceStrength,
-
-        springForces,
-
-        N_springForces = 0,
+        //                      Obstacle Properties
 
         // Individual properties for the obstacles
         obstacleX,
@@ -375,11 +359,36 @@ define(function (require, exports, module) {
         obstacleColorB,
         obstacleVisible,
 
-        // An array of length 12 which contains obstacles information
+        // An object that contains references to the above obstacle-property arrays.
+        // Left undefined if there are no obstacles.
         obstacles,
 
         // Number of actual obstacles
         N_obstacles = 0,
+
+        // ####################################################################
+        //                      Misc Properties
+        // Array of arrays containing VdW pairs
+        vdwPairs,
+
+        // Number of VdW pairs
+        N_vdwPairs,
+
+        // Arrays of VdW pair atom #1 and atom #2 indices
+        vdwPairAtom1Index,
+        vdwPairAtom2Index,
+
+        // Arrays for spring forces, which are forces defined between an atom and a point in space
+        springForceAtomIndex,
+        springForceX,
+        springForceY,
+        springForceStrength,
+
+        // An array whose members are the above spring-force-property arrays
+        springForces,
+
+        // The number of spring forces currently being applied in the model.
+        N_springForces = 0,
 
         // The location of the center of mass, in nanometers.
         x_CM, y_CM,
@@ -1384,9 +1393,6 @@ define(function (require, exports, module) {
 
       /**
         The canonical method for adding an element.
-
-        If there isn't enough room in the 'elements' array, it (somewhat inefficiently)
-        extends the length of the typed arrays by one to contain one more atom with listed properties.
       */
       addElement: function(props) {
         var i;
@@ -1416,12 +1422,10 @@ define(function (require, exports, module) {
 
       /**
         The canonical method for adding a radial bond to the collection of radial bonds.
-
-        If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
-        extends the length of the typed arrays by one to contain one more atom with listed properties.
       */
       addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength, bondStyle) {
-        if (bondStyle == null )  bondStyle   = DEFAULT_VALUES.RADIAL_BOND_STYLE;
+        if (bondStyle == null )  bondStyle = DEFAULT_VALUES.RADIAL_BOND_STYLE;
+
         if (N_radialBonds >= radialBondAtom1Index.length) {
           extendArrays(radialBonds, N_radialBonds + 10);
           assignShortcutReferences.radialBonds();
