@@ -159,6 +159,16 @@ define(function (require) {
             },
 
             /**
+              Observe property `propertyName` on the model, and perform `action` when it changes.
+              Pass property value to action.
+            */
+            onPropertyChange: function onPropertyChange(propertyName, action) {
+              model.addPropertiesListener([propertyName], function() {
+                action( model.get(propertyName) );
+              });
+            },
+
+            /**
               Sets individual atom properties using human-readable hash.
               e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
             */
@@ -175,16 +185,6 @@ define(function (require) {
               return model.getAtomProperties(i);
             },
 
-            /**
-              Observe property `propertyName` on the model, and perform `action` when it changes.
-              Pass property value to action.
-            */
-            onPropertyChange: function onPropertyChange(propertyName, action) {
-              model.addPropertiesListener([propertyName], function() {
-                action( model.get(propertyName) );
-              });
-            },
-
             setElementProperties: function setElementProperties(i, props) {
               model.setElementProperties(i, props);
               scriptingAPI.repaint();
@@ -192,6 +192,23 @@ define(function (require) {
 
             getElementProperties: function getElementProperties(i) {
               return model.getElementProperties(i);
+            },
+
+            /**
+              Sets individual obstacle properties using human-readable hash.
+              e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalFx: 0.00001})
+            */
+            setObstacleProperties: function setObstacleProperties(i, props) {
+              model.setObstacleProperties(i, props);
+              scriptingAPI.repaint();
+            },
+
+            /**
+              Returns obstacle properties as a human-readable hash.
+              e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalFx: 0.00001, ... }
+            */
+            getObstacleProperties: function getObstacleProperties(i) {
+              return model.getObstacleProperties(i);
             },
 
             setRadialBondProperties: function setRadialBondProperties(i, props) {
