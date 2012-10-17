@@ -1141,8 +1141,15 @@ define(function(require) {
       if (x == null) x = atoms.x[atomIndex];
       if (y == null) y = atoms.y[atomIndex];
 
-      liveDragSavedFriction = atoms.friction[atomIndex];
-      atoms.friction[atomIndex] = model.LIVE_DRAG_FRICTION;
+      liveDragSavedFriction = model.getAtomProperties(atomIndex).friction;
+
+      // Use setAtomProperties so that we handle things correctly if a web worker is integrating
+      // the model. (Here we follow the rule that we must assume that an integration might change
+      // any property of an atom, and therefore cause changes to atom properties in the main thread
+      // to be be lost. This is true even though common sense tells us that the friction property
+      // won't change during an integration.)
+
+      model.setAtomProperties(atomIndex, { friction: model.LIVE_DRAG_FRICTION });
 
       liveDragSpringForceIndex = model.addSpringForce(atomIndex, x, y, 500);
     };
@@ -1161,7 +1168,7 @@ define(function(require) {
     model.liveDragEnd = function() {
       var atomIndex = engine.springForceAtomIndex(liveDragSpringForceIndex);
 
-      atoms.friction[atomIndex] = liveDragSavedFriction;
+      model.setAtomProperties(atomIndex, { friction: liveDragSavedFriction });
       model.removeSpringForce(liveDragSpringForceIndex);
     };
 
