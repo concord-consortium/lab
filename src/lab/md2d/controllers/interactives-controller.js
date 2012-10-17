@@ -717,7 +717,7 @@ define(function (require) {
 
           model.addPropertiesListener(['viewRefreshInterval'], function() {
             options.sample = model.get("viewRefreshInterval")/1000;
-            energyGraph.reset(options);
+            energyGraph.reset('#' + thisComponent.id, options);
           });
 
           // Create energyGraph only if it hasn't been drawn before:
