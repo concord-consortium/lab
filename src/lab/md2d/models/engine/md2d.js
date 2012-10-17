@@ -55,6 +55,8 @@ define(function (require, exports, module) {
 
       VDW_INDICES,
 
+      RADIAL_BOND_STYLES,
+
       cross = function(a0, a1, b0, b1) {
         return a0*b1 - a1*b0;
       },
@@ -292,15 +294,6 @@ define(function (require, exports, module) {
         // array of elements
         elements,
 
-        // count of element properties
-        numElementProperties = (function() {
-          var n = 0, index;
-          for (index in ELEMENT_PROPERTY_LIST) {
-            if (ELEMENT_PROPERTY_LIST.hasOwnProperty(index)) n++;
-          }
-          return n;
-        }()),
-
         // Number of actual elements (may be smaller than the length of the property arrays).
         N_elements = 0,
 
@@ -344,15 +337,6 @@ define(function (require, exports, module) {
         angularBondAtom3Index,
         angularBondAngle,
         angularBondStrength,
-
-        // Count of angular bond properties.
-        numAngularBondProperties = (function() {
-          var n = 0, index;
-          for (index in ANGULAR_BOND_PROPERTY_LIST) {
-            if (ANGULAR_BOND_PROPERTY_LIST.hasOwnProperty(index)) n++;
-          }
-          return n;
-        }()),
 
         // An array of length 5 which contains the above 5 property arrays.
         // Left undefined if no angular bonds are defined.
@@ -567,8 +551,6 @@ define(function (require, exports, module) {
         },
 
         createElementsArray = function(num) {
-          var i;
-
           elements = engine.elements = {};
 
           elements.mass    = arrays.create(num, 0, float32);
@@ -603,8 +585,6 @@ define(function (require, exports, module) {
         },
 
         createAngularBondsArray = function(num) {
-          var i;
-
           angularBonds = engine.angularBonds = [];
 
           angularBonds.atom1    = arrays.create(num, 0, uint16);
@@ -1390,7 +1370,7 @@ define(function (require, exports, module) {
         @returns the index of the new atom
       */
       addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, atom_pinned) {
-        var el, atom_mass;
+        var atom_mass;
 
         if (N + 1 > atoms.x.length) {
           extendArrays(atoms, N + 10);
@@ -1435,7 +1415,7 @@ define(function (require, exports, module) {
         extends the length of the typed arrays by one to contain one more atom with listed properties.
       */
       addElement: function(props) {
-        var i, j;
+        var i;
 
         if (N_elements >= elementEpsilon.length) {
           extendArrays(elements, N_elements + 10);
@@ -2191,7 +2171,7 @@ define(function (require, exports, module) {
       */
       findMinimumPELocation: function(el, x, y, charge) {
         var pot    = engine.newPotentialCalculator(el, charge, true),
-            radius = elementRadius[el];
+            radius = elementRadius[el],
 
             res =  math.minimize(pot, [x, y], {
               bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
@@ -2224,7 +2204,7 @@ define(function (require, exports, module) {
               return [f*f, grad];
             },
 
-            radius = elementRadius[el];
+            radius = elementRadius[el],
 
             res = math.minimize(potsq, [x, y], {
               bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ],
