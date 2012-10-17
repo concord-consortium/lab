@@ -112,13 +112,13 @@ parseMML = (mmlString) ->
         externalFx *= 0.1
         externalFy *= 0.1
 
-        # Authors in MW specify Kg/(mol*A^2), but this gets saved as 100Kg/(mol*A^2)
-        # (e.g. 20 Kg/(mol*A^2) is saved as 0.2).
-
-        # First convert back to Kg/(mol*A^2).
-        density = density * 100
-        # Convert to Daltons/nm^2, 1000 Dal = 1 Kg/mol, 100 A^2 = 1 nm^2.
-        density = density * 1000 * 100
+        # Classic MW saves density in units of 120amu / (0.1Å)^2
+        # (As usual, the claim its user interface makes regarding units is spurious.)
+        # Convert to units of amu/nm^2 (aka Dalton/nm^2)
+        # Conversion: 1 120amu / (0.1Å)^2 * 120 amu/120amu * (100 0.1Å/nm)^2 = 1.2e6 amu/nm^2
+        # Note that the constants module ought to be extended to do this conversion for us; see
+        # https://github.com/concord-consortium/lab/issues/9
+        density *= 1.2e6
 
         if density isnt density     # if NaN
           density = "Infinity"
