@@ -302,15 +302,6 @@ define(function (require, exports, module) {
         // Left undefined if there are no radial bonds.
         radialBonds,
 
-        // count of radial bond properties
-        numRadialBondProperties = (function() {
-          var n = 0, index;
-          for (index in RADIAL_BOND_PROPERTY_LIST) {
-            if (RADIAL_BOND_PROPERTY_LIST.hasOwnProperty(index)) n++;
-          }
-          return n;
-        }()),
-
         // An array of individual radial bond index values and properties.
         radialBondResults,
 
@@ -578,7 +569,7 @@ define(function (require, exports, module) {
           */
           radialBondResults = engine.radialBondResults = [];
           for (i = 0; i < num; i++) {
-            radialBondResults[i] = arrays.create(numRadialBondProperties+5,  0, float32);
+            radialBondResults[i] = arrays.create(RADIAL_BOND_PROPERTY_LIST.length + 5,  0, float32);
             radialBondResults[i][0] = i;
           }
         },
