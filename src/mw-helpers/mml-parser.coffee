@@ -510,8 +510,10 @@ parseMML = (mmlString) ->
     if imageProps.length > 0
       json.images = images
 
-    if textBoxes.length > 0
-      json.textBoxes = textBoxes
+    # Temporarily remove text boxes from converted models; see
+    # https://www.pivotaltracker.com/story/show/37081141
+    # if textBoxes.length > 0
+    #   json.textBoxes = textBoxes
 
     if obstacles.length > 0
       json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction', 'height', 'width', 'density', 'color', 'visible'
