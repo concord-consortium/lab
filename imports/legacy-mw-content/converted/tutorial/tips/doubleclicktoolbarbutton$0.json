@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 5,
   "height": 2.5,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,20 +44,13 @@
     }
   ],
   "atoms": {
-    "X": [],
-    "Y": [],
-    "VX": [],
-    "VY": [],
-    "CHARGE": [],
-    "FRICTION": [],
-    "ELEMENT": [],
-    "PINNED": []
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Double-click on a button to bring</p>\n<p>up a customization dialog window.</p>",
-      "x": 1.11,
-      "y": 0.53
-    }
-  ]
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
+  }
 }

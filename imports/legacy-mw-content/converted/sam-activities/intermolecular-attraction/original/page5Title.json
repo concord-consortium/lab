@@ -44,20 +44,13 @@
     }
   ],
   "atoms": {
-    "X": [],
-    "Y": [],
-    "VX": [],
-    "VY": [],
-    "CHARGE": [],
-    "FRICTION": [],
-    "ELEMENT": [],
-    "PINNED": []
-  },
-  "textBoxes": [
-    {
-      "text": "<p>You will pull apart pairs of molecules with</p>\n<p>varying size and shape. By doing this you can</p>\n<p>see how these factors affect the strength</p>\n<p>of the London Dispersion attraction.</p>\n<p></p>\n<p></p>\n<p>Choose a pair of moleucles</p>\n<p>from the menu below.</p>",
-      "x": 0.28,
-      "y": 0.29
-    }
-  ]
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
+  }
 }

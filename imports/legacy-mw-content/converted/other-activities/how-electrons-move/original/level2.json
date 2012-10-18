@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 7.5,
   "height": 4,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": true,
   "showVDWLines": false,
@@ -44,22 +44,15 @@
     }
   ],
   "atoms": {
-    "X": [],
-    "Y": [],
-    "VX": [],
-    "VY": [],
-    "CHARGE": [],
-    "FRICTION": [],
-    "ELEMENT": [],
-    "PINNED": []
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
   },
-  "textBoxes": [
-    {
-      "text": "<p>Electron</p>\n<p>Gun</p>",
-      "x": 0.33,
-      "y": 1.23
-    }
-  ],
   "obstacles": {
     "x": [
       7.3,
@@ -95,6 +88,39 @@
       0
     ],
     "vy": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "externalFx": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "externalFy": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "friction": [
       0,
       0,
       0,

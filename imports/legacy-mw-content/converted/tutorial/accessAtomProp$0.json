@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 3.5,
   "height": 2,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,64 +44,37 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       1.86,
       0.57
     ],
-    "Y": [
+    "y": [
       1.37,
       1.06
     ],
-    "VX": [
+    "vx": [
       0,
       0
     ],
-    "VY": [
+    "vy": [
       0,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       3,
       3
     ],
-    "PINNED": [
+    "pinned": [
       0,
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Origin (0, 0)</p>",
-      "x": 0.12,
-      "y": 0.15
-    },
-    {
-      "text": "<p>Simulator Window</p>",
-      "x": 1.03,
-      "y": 0.81
-    },
-    {
-      "text": "<p>X-axis</p>",
-      "x": 2.88,
-      "y": 0.13
-    },
-    {
-      "text": "<p>Y-axis</p>",
-      "x": 0.18,
-      "y": 1.72
-    },
-    {
-      "text": "<p>Double-click on me and type</p>\n<p>in the X/Y fields to change my</p>\n<p>position.</p>",
-      "x": 0.98,
-      "y": 1.16
-    }
-  ]
+  }
 }

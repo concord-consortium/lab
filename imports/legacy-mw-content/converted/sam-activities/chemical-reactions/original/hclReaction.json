@@ -2,7 +2,7 @@
   "temperature_control": true,
   "width": 2.45,
   "height": 2.8,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,21 +44,14 @@
     }
   ],
   "atoms": {
-    "X": [],
-    "Y": [],
-    "VX": [],
-    "VY": [],
-    "CHARGE": [],
-    "FRICTION": [],
-    "ELEMENT": [],
-    "PINNED": []
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
   },
-  "textBoxes": [
-    {
-      "text": "<p><--- Select a reaction to</p>\n<p>run from the menu.</p>",
-      "x": 0.09,
-      "y": 2.15
-    }
-  ],
   "temperature": 4930
 }

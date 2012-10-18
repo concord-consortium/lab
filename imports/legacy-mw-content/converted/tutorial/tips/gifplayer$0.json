@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 5.88,
   "height": 3.88,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,31 +44,31 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       4.0150000420957515
     ],
-    "Y": [
+    "y": [
       2.0210998745683058
     ],
-    "VX": [
+    "vx": [
       -4.544449691577898e-262
     ],
-    "VY": [
+    "vy": [
       0
     ],
-    "CHARGE": [
+    "charge": [
       0
     ],
-    "FRICTION": [
+    "friction": [
       0.96
     ],
-    "ELEMENT": [
+    "element": [
       0
     ],
-    "PINNED": [
+    "pinned": [
       0
     ],
-    "DRAGGABLE": [
+    "draggable": [
       1
     ]
   },
@@ -80,13 +80,6 @@
       "imageLayer": 1,
       "imageX": 237.50000420957514,
       "imageY": 85.8900125431694
-    }
-  ],
-  "textBoxes": [
-    {
-      "text": "<p>Click Osprey and use</p>\n<p>arrow keys to fly it</p>",
-      "x": 0.05,
-      "y": 0.05
     }
   ]
 }

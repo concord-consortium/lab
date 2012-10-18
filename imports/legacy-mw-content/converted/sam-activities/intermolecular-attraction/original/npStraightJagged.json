@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4,
   "height": 2.1,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": true,
   "showVDWLines": true,
@@ -44,7 +44,7 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       0.63,
       0.63,
       0.63,
@@ -62,7 +62,7 @@
       0.8824399869366332,
       1.56
     ],
-    "Y": [
+    "y": [
       1.6756675057214485,
       1.4309393714625085,
       0.6676651071237941,
@@ -80,7 +80,7 @@
       1.5621174571467886,
       1.03
     ],
-    "VX": [
+    "vx": [
       0,
       0,
       0,
@@ -98,7 +98,7 @@
       0,
       0
     ],
-    "VY": [
+    "vy": [
       0,
       0,
       0,
@@ -116,7 +116,7 @@
       0,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0,
       0,
@@ -134,7 +134,7 @@
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0.24,
       0.24,
       0.24,
@@ -152,7 +152,7 @@
       0.24,
       0.24
     ],
-    "ELEMENT": [
+    "element": [
       1,
       1,
       1,
@@ -170,7 +170,7 @@
       1,
       0
     ],
-    "PINNED": [
+    "pinned": [
       1,
       1,
       1,
@@ -188,7 +188,7 @@
       0,
       0
     ],
-    "VISIBLE": [
+    "visible": [
       1,
       1,
       1,
@@ -206,7 +206,7 @@
       1,
       0
     ],
-    "DRAGGABLE": [
+    "draggable": [
       0,
       0,
       0,
@@ -387,13 +387,6 @@
       "imageLayer": 1,
       "imageX": 142,
       "imageY": 94
-    }
-  ],
-  "textBoxes": [
-    {
-      "text": "<p>Large Straight and Bent Molecules</p>",
-      "x": 0.79,
-      "y": 0.11
     }
   ]
 }

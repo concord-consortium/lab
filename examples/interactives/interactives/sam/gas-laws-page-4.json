@@ -25,6 +25,25 @@
       "id": "reset",
       "text": "Reset",
       "action": "reset();"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 100,
+      "max": 1000,
+      "labels": [
+        {
+          "value": 100,
+          "label": "100 K"
+        },
+        {
+          "value": 1000,
+          "label": "1000 K"
+        }
+      ],
+      "steps": 50,
+      "title": "Temperature",
+      "property": "temperature"
     }
   ]
 }

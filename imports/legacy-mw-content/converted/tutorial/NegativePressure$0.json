@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 3.6,
   "height": 2.5,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": true,
@@ -44,51 +44,39 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       1.6083879553998583,
       1.24
     ],
-    "Y": [
+    "y": [
       1.1433866693211185,
       1.14
     ],
-    "VX": [
+    "vx": [
       -0.00042449605625339664,
       0
     ],
-    "VY": [
+    "vy": [
       0.000025987106581882192,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       2,
       3
     ],
-    "PINNED": [
+    "pinned": [
       0,
       1
     ]
   },
-  "textBoxes": [
-    {
-      "text": "<p>Internal gauge</p>",
-      "x": 0.63,
-      "y": 0.73
-    },
-    {
-      "text": "<p>External gauge</p>",
-      "x": 1.84,
-      "y": 0.74
-    }
-  ],
   "obstacles": {
     "x": [
       1.86,
@@ -115,6 +103,30 @@
       0
     ],
     "vy": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "externalFx": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "externalFy": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "friction": [
       0,
       0,
       0,

@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 5,
   "height": 2,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,46 +44,29 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       0.13
     ],
-    "Y": [
+    "y": [
       1.05
     ],
-    "VX": [
+    "vx": [
       0.0005
     ],
-    "VY": [
+    "vy": [
       0
     ],
-    "CHARGE": [
+    "charge": [
       -0.5
     ],
-    "FRICTION": [
+    "friction": [
       0
     ],
-    "ELEMENT": [
+    "element": [
       0
     ],
-    "PINNED": [
+    "pinned": [
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Magnetic lens</p>",
-      "x": 2.05,
-      "y": 1.66
-    },
-    {
-      "text": "<p>Accelerator</p>",
-      "x": 0.79,
-      "y": 0.54
-    },
-    {
-      "text": "<p>Deccelerator</p>",
-      "x": 3.36,
-      "y": 0.61
-    }
-  ]
+  }
 }

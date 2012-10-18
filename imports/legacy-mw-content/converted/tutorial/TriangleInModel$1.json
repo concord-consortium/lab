@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 5,
   "height": 2,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,54 +44,37 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       2.85,
       2.01
     ],
-    "Y": [
+    "y": [
       0.64,
       1.18
     ],
-    "VX": [
+    "vx": [
       -0.0004907448703200001,
       0.00004
     ],
-    "VY": [
+    "vy": [
       -0.0003385649793203065,
       -0.0003525685210520487
     ],
-    "CHARGE": [
+    "charge": [
       0,
       1
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       0,
       1
     ],
-    "PINNED": [
+    "pinned": [
       0,
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Magnetic field in it</p>",
-      "x": 0.4,
-      "y": 0.19
-    },
-    {
-      "text": "<p>Internal reflection</p>",
-      "x": 1.31,
-      "y": 1.61
-    },
-    {
-      "text": "<p>Form a trapezoid</p>\n<p>using two triangles</p>",
-      "x": 3.67,
-      "y": 0.09
-    }
-  ]
+  }
 }

@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4.88,
   "height": 2.38,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,105 +44,53 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       1.89,
       1.87,
       1.86,
       1.86
     ],
-    "Y": [
+    "y": [
       1.47,
       1,
       0.58,
       0.17
     ],
-    "VX": [
+    "vx": [
       -0.00027011457416521067,
       0.00018644187832083653,
       -0.00015313960013505542,
       -0.00013816658067415273
     ],
-    "VY": [
+    "vy": [
       0.00008389398711996258,
       -0.00007238445733366725,
       0.00017286318306042474,
       -0.0002022624036694096
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0,
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0,
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       0,
       1,
       2,
       3
     ],
-    "PINNED": [
+    "pinned": [
       0,
       0,
       0,
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>I am an Nt atom.</p>",
-      "x": 0.39,
-      "y": 0.56
-    },
-    {
-      "text": "<p>Ich bin eine Ws atom.</p>",
-      "x": 0.4,
-      "y": 1.48
-    },
-    {
-      "text": "<p>Soy un átomo de Pl.</p>",
-      "x": 0.41,
-      "y": 1
-    },
-    {
-      "text": "<p>Je suis un Ck atom.</p>",
-      "x": 0.41,
-      "y": 1.96
-    },
-    {
-      "text": "<p>These abstract elements in MW are</p>\n<p>given names similar to conventional</p>\n<p>names of elements to reinforce the</p>\n<p>fact that they are not atoms but</p>\n<p>elements (types of atoms).</p>\n<p></p>\n<p>Atoms that are the same element have</p>\n<p>the same physical and chemical</p>\n<p>properties.</p>",
-      "x": 2.41,
-      "y": 0.58
-    },
-    {
-      "text": "<p>Nt</p>",
-      "x": 1.78,
-      "y": 0.865
-    },
-    {
-      "text": "<p>Pl</p>",
-      "x": 1.77,
-      "y": 1.335
-    },
-    {
-      "text": "<p>Ws</p>",
-      "x": 1.725,
-      "y": 1.755
-    },
-    {
-      "text": "<p>Ck</p>",
-      "x": 1.745,
-      "y": 2.165
-    },
-    {
-      "text": "<p>Introducing MW's four generic elements</p>",
-      "x": 1.15,
-      "y": 0.12
-    }
-  ]
+  }
 }

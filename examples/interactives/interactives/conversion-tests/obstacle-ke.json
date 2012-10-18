@@ -26,8 +26,7 @@
       ],
       "steps": 50,
       "title": "Temperature",
-      "initialValue": 7600,
-      "action": "set({ temperature: value });"
+      "property": "temperature"
     },
     {
       "type": "thermometer",

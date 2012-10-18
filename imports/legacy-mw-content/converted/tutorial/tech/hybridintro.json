@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 6,
   "height": 3,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,7 +44,7 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       2.54,
       2.54,
       2.3480000000000003,
@@ -90,7 +90,7 @@
       1.5800000000000005,
       3.5
     ],
-    "Y": [
+    "y": [
       1.9218181818181819,
       1.761818181818182,
       1.9218181818181819,
@@ -136,7 +136,7 @@
       1.5481818181818177,
       1.5561818181818183
     ],
-    "VX": [
+    "vx": [
       0,
       0,
       0,
@@ -182,7 +182,7 @@
       0,
       0
     ],
-    "VY": [
+    "vy": [
       0,
       0,
       0,
@@ -228,7 +228,7 @@
       0,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0,
       0,
@@ -274,7 +274,7 @@
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0,
       0,
@@ -320,7 +320,7 @@
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       25,
       28,
       25,
@@ -366,7 +366,7 @@
       28,
       26
     ],
-    "PINNED": [
+    "pinned": [
       0,
       0,
       0,
@@ -846,37 +846,5 @@
       50,
       50
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>DNA bases</p>\n<p>(Purines or pyrimidines)</p>",
-      "x": null,
-      "y": 0.49
-    },
-    {
-      "text": "<p>DNA bases</p>\n<p>(Purines or pyrimidines)</p>",
-      "x": 0.94,
-      "y": 2.22
-    },
-    {
-      "text": "<p>Hydrogen bonds</p>",
-      "x": 0.31,
-      "y": 1.76
-    },
-    {
-      "text": "<p>Ester links</p>\n<p>(Phosphodiester bonds)</p>",
-      "x": 2.58,
-      "y": 1.86
-    },
-    {
-      "text": "<p>Deoxyribose sugar + phosphodiester</p>\n<p>(DNA backbone)</p>",
-      "x": 3.75,
-      "y": 0.58
-    },
-    {
-      "text": "<p>Schematical illustration of the 2D DNA model</p>",
-      "x": 1.39,
-      "y": 0.13
-    }
-  ]
+  }
 }

@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4.5,
   "height": 2.6,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,39 +44,32 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       2.23
     ],
-    "Y": [
+    "y": [
       0.99
     ],
-    "VX": [
+    "vx": [
       0
     ],
-    "VY": [
+    "vy": [
       0
     ],
-    "CHARGE": [
+    "charge": [
       -3
     ],
-    "FRICTION": [
+    "friction": [
       0
     ],
-    "ELEMENT": [
+    "element": [
       2
     ],
-    "PINNED": [
+    "pinned": [
       1
     ],
-    "VISIBLE": [
+    "visible": [
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Find the hidden particle.</p>",
-      "x": 1.34,
-      "y": 0.06
-    }
-  ]
+  }
 }

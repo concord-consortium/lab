@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 3.5,
   "height": 3.5,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,20 +44,13 @@
     }
   ],
   "atoms": {
-    "X": [],
-    "Y": [],
-    "VX": [],
-    "VY": [],
-    "CHARGE": [],
-    "FRICTION": [],
-    "ELEMENT": [],
-    "PINNED": []
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Magnetic Field Pointing Outward</p>",
-      "x": 0.67,
-      "y": 0.07
-    }
-  ]
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
+  }
 }

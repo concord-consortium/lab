@@ -44,39 +44,39 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       0.688,
       0.9119999999999999
     ],
-    "Y": [
+    "y": [
       0.5,
       0.5
     ],
-    "VX": [
+    "vx": [
       0,
       0
     ],
-    "VY": [
+    "vy": [
       0,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0.96,
       0.96
     ],
-    "ELEMENT": [
+    "element": [
       1,
       0
     ],
-    "PINNED": [
+    "pinned": [
       1,
       0
     ],
-    "DRAGGABLE": [
+    "draggable": [
       0,
       1
     ]

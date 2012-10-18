@@ -44,48 +44,41 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       0.86,
       2.44
     ],
-    "Y": [
+    "y": [
       1.84,
       1.83
     ],
-    "VX": [
+    "vx": [
       0,
       0
     ],
-    "VY": [
+    "vy": [
       0,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       0,
       0
     ],
-    "PINNED": [
+    "pinned": [
       1,
       1
     ],
-    "VISIBLE": [
+    "visible": [
       0,
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Explore the different attractive forces between polar and non-polar molecules by dragging the “star” image found in the following simulations.</p>\n<p>Choose a pair of molecules from the menu below.</p>\n<p></p>",
-      "x": null,
-      "y": null
-    }
-  ]
+  }
 }

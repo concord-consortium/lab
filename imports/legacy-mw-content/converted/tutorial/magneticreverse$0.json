@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 3.5,
   "height": 2,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,36 +44,29 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       1.8
     ],
-    "Y": [
+    "y": [
       1.8
     ],
-    "VX": [
+    "vx": [
       0.001
     ],
-    "VY": [
+    "vy": [
       0
     ],
-    "CHARGE": [
+    "charge": [
       0.1
     ],
-    "FRICTION": [
+    "friction": [
       0
     ],
-    "ELEMENT": [
+    "element": [
       0
     ],
-    "PINNED": [
+    "pinned": [
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Charge reverser</p>",
-      "x": 0.17,
-      "y": 0.67
-    }
-  ]
+  }
 }

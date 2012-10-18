@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4.5,
   "height": 3.5,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,63 +44,31 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       0.64
     ],
-    "Y": [
+    "y": [
       1.84
     ],
-    "VX": [
+    "vx": [
       0.0019999999494757503
     ],
-    "VY": [
+    "vy": [
       0
     ],
-    "CHARGE": [
+    "charge": [
       -0.1
     ],
-    "FRICTION": [
+    "friction": [
       0
     ],
-    "ELEMENT": [
+    "element": [
       0
     ],
-    "PINNED": [
+    "pinned": [
       0
     ]
   },
-  "textBoxes": [
-    {
-      "text": "<p>How a cathode ray tube works</p>",
-      "x": 0.39,
-      "y": -0.02
-    },
-    {
-      "text": "<p>Deflecting plates</p>",
-      "x": 1.8,
-      "y": 0.65
-    },
-    {
-      "text": "<p>Cathode</p>",
-      "x": 0.13,
-      "y": 1.35
-    },
-    {
-      "text": "<p>Fluorescent</p>\n<p>screen</p>",
-      "x": 3.57,
-      "y": 3.01
-    },
-    {
-      "text": "<p>- - - - -</p>",
-      "x": 1.94,
-      "y": 2.14
-    },
-    {
-      "text": "<p>+ + + + +</p>",
-      "x": 1.93,
-      "y": 0.95
-    }
-  ],
   "obstacles": {
     "x": [
       3.91
@@ -112,6 +80,15 @@
       0
     ],
     "vy": [
+      0
+    ],
+    "externalFx": [
+      0
+    ],
+    "externalFy": [
+      0
+    ],
+    "friction": [
       0
     ],
     "height": [

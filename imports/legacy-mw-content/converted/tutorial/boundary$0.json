@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 1.48,
   "height": 1.45,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,68 +44,61 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       0.34,
       1.12,
       1.2,
       0.87,
       0.4
     ],
-    "Y": [
+    "y": [
       0.75,
       0.74,
       -0.04,
       0.43,
       0.03
     ],
-    "VX": [
+    "vx": [
       0.00044815040053267807,
       0,
       0,
       0,
       0
     ],
-    "VY": [
+    "vy": [
       0.00011203760013316952,
       0,
       0,
       0,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0,
       0,
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0,
       0,
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       3,
       2,
       2,
       3,
       3
     ],
-    "PINNED": [
+    "pinned": [
       0,
       0,
       0,
       0,
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>The button for</p>\n<p>setting up the</p>\n<p>boundary.</p>\n<p>Double-click on</p>\n<p>it to invoke the</p>\n<p>Boundary Tool.</p>",
-      "x": 0.09,
-      "y": 0.17
-    }
-  ]
+  }
 }

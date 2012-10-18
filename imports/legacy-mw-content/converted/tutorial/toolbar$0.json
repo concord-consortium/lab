@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4,
   "height": 1,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,25 +44,13 @@
     }
   ],
   "atoms": {
-    "X": [],
-    "Y": [],
-    "VX": [],
-    "VY": [],
-    "CHARGE": [],
-    "FRICTION": [],
-    "ELEMENT": [],
-    "PINNED": []
-  },
-  "textBoxes": [
-    {
-      "text": "<p>A tool bar that has</p>\n<p>all the tools.</p>",
-      "x": 0.08,
-      "y": 0.11
-    },
-    {
-      "text": "<p>Click the arrow to get to</p>\n<p>the buttons that cannot</p>\n<p>be placed in the visible</p>\n<p>part of the tool bar.</p>",
-      "x": 2.01,
-      "y": 0.12
-    }
-  ]
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
+  }
 }

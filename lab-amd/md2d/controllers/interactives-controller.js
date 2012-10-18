@@ -159,6 +159,16 @@ define(function (require) {
             },
 
             /**
+              Observe property `propertyName` on the model, and perform `action` when it changes.
+              Pass property value to action.
+            */
+            onPropertyChange: function onPropertyChange(propertyName, action) {
+              model.addPropertiesListener([propertyName], function() {
+                action( model.get(propertyName) );
+              });
+            },
+
+            /**
               Sets individual atom properties using human-readable hash.
               e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
             */
@@ -175,16 +185,6 @@ define(function (require) {
               return model.getAtomProperties(i);
             },
 
-            /**
-              Observe property `propertyName` on the model, and perform `action` when it changes.
-              Pass property value to action.
-            */
-            onPropertyChange: function onPropertyChange(propertyName, action) {
-              model.addPropertiesListener([propertyName], function() {
-                action( model.get(propertyName) );
-              });
-            },
-
             setElementProperties: function setElementProperties(i, props) {
               model.setElementProperties(i, props);
               scriptingAPI.repaint();
@@ -192,6 +192,23 @@ define(function (require) {
 
             getElementProperties: function getElementProperties(i) {
               return model.getElementProperties(i);
+            },
+
+            /**
+              Sets individual obstacle properties using human-readable hash.
+              e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalFx: 0.00001})
+            */
+            setObstacleProperties: function setObstacleProperties(i, props) {
+              model.setObstacleProperties(i, props);
+              scriptingAPI.repaint();
+            },
+
+            /**
+              Returns obstacle properties as a human-readable hash.
+              e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalFx: 0.00001, ... }
+            */
+            getObstacleProperties: function getObstacleProperties(i) {
+              return model.getObstacleProperties(i);
             },
 
             setRadialBondProperties: function setRadialBondProperties(i, props) {
@@ -430,8 +447,8 @@ define(function (require) {
     }
 
     function createCheckbox(component) {
-      var propertyName = component.property,
-          action = component.action,
+      var propertyName  = component.property,
+          onClickScript = component.onClick,
           $checkbox,
           $label;
 
@@ -440,11 +457,11 @@ define(function (require) {
       // Append class to label, as it's the most outer container in this case.
       $label.addClass("component");
 
-      // Process action script if it is defined.
-      if (action) {
-        action = getStringFromArray(action);
+      // Process onClick script if it is defined.
+      if (onClickScript) {
+        onClickScript = getStringFromArray(onClickScript);
         // Create a function which assumes we pass it a parameter called 'value'.
-        action = makeFunctionInScriptContext('value', action);
+        onClickScript = makeFunctionInScriptContext('value', onClickScript);
       }
 
       // Connect checkbox with model's property if its name is defined.
@@ -480,10 +497,10 @@ define(function (require) {
           propObj[propertyName] = value;
           model.set(propObj);
         }
-        // Finally, if checkbox has action script attached,
+        // Finally, if checkbox has onClick script attached,
         // call it in script context with checkbox status passed.
-        if (action !== undefined) {
-          action(value);
+        if (onClickScript !== undefined) {
+          onClickScript(value);
         }
       });
 
@@ -717,7 +734,7 @@ define(function (require) {
 
           model.addPropertiesListener(['viewRefreshInterval'], function() {
             options.sample = model.get("viewRefreshInterval")/1000;
-            energyGraph.reset(options);
+            energyGraph.reset('#' + thisComponent.id, options);
           });
 
           // Create energyGraph only if it hasn't been drawn before:

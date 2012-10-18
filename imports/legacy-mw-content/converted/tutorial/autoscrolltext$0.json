@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 5,
   "height": 3,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,20 +44,13 @@
     }
   ],
   "atoms": {
-    "X": [],
-    "Y": [],
-    "VX": [],
-    "VY": [],
-    "CHARGE": [],
-    "FRICTION": [],
-    "ELEMENT": [],
-    "PINNED": []
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Sir Isaac Newton</p>\n<p></p>\n<p>David Arns</p>\n<p></p>\n<p>Under a spreading apple tree,</p>\n<p>The village genius stands;</p>\n<p>His mind conceives of wondrous things,</p>\n<p>He writes them with his hands;</p>\n<p>His fame goes forth to all the world--</p>\n<p>He's known in many lands.</p>\n<p>A tiny babe on Christmas Day</p>\n<p>in 1642</p>\n<p>Was born to Mrs. Newton</p>\n<p>while outside, the cold winds blew.</p>\n<p>And on the farm, through childhood,</p>\n<p>precocious Isaac grew.</p>\n<p></p>\n<p>And after chores, he built devices</p>\n<p>to see just how they worked,</p>\n<p>To see what laws of nature</p>\n<p>underneath the workings lurked.</p>\n<p>(When people called them \"toys,\" that's what</p>\n<p>got Isaac really irked.)</p>\n<p></p>\n<p>His mother saw he was no farmer,</p>\n<p>sent him off to school;</p>\n<p>He quickly showed at Cambridge</p>\n<p>that he was nobody's fool:</p>\n<p>He began to bring to light the laws</p>\n<p>that all of nature rule.</p>\n<p></p>\n<p>In one chapter in his story</p>\n<p>(though apocryphal, it's said),</p>\n<p>An apple, falling from a tree</p>\n<p>impacted on his head,</p>\n<p>Which drew his thoughts to gravity,</p>\n<p>and we all know where that led.</p>\n<p></p>\n<p>He wondered if, by any chance,</p>\n<p>the self-same gravitation</p>\n<p>That pulls an apple to the ground,</p>\n<p>affected all creation:</p>\n<p>The moon, the planets, and the sun. . .</p>\n<p>Thus went his cogitation.</p>\n<p></p>\n<p>He determined that the gravity</p>\n<p>of earth indeed controls</p>\n<p>The orbit of our moon, as 'round</p>\n<p>the earth it ever rolls.</p>\n<p>Now, describing it mathematically</p>\n<p>was one of Newton's goals.</p>\n<p></p>\n<p>He discovered that the math you need</p>\n<p>to show the laws of nature,</p>\n<p>Surpassed the knowledge of that day;</p>\n<p>the cosmos' legislature</p>\n<p>Required new math, so Newton wrote</p>\n<p>his \"fluxions\" nomenclature.</p>\n<p></p>\n<p>He talked of falling bodies</p>\n<p>and his famous Laws of Motion,</p>\n<p>And of colors seen in bubbles</p>\n<p>and the tides upon the ocean.</p>\n<p>And his crowning jewel, \"Principia,\"</p>\n<p>created great commotion.</p>\n<p></p>\n<p>Yes, Newton's brilliant mind, it was</p>\n<p>a trunk with many twigs--</p>\n<p>His mind branched out in every way</p>\n<p>(right through his powdered wigs).</p>\n<p>His greatest contribution, though,</p>\n<p>was cookies made from figs.</p>\n<p></p>\n<p></p>\n<p>--- Scrolled by Molecular Workbench</p>",
-      "x": 1.14,
-      "y": 2
-    }
-  ]
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
+  }
 }

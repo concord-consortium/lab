@@ -2745,6 +2745,20 @@ modelList = [
         "json": "converted/conversion-and-physics-examples/gravitational-field-test$0.json"
       },
       {
+        "name": "obstacle-force",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/obstacle-force.cml",
+        "mml": "conversion-and-physics-examples/obstacle-force$0.mml",
+        "json": "converted/conversion-and-physics-examples/obstacle-force$0.json"
+      },
+      {
+        "name": "obstacle-friction",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/obstacle-friction.cml",
+        "mml": "conversion-and-physics-examples/obstacle-friction$0.mml",
+        "json": "converted/conversion-and-physics-examples/obstacle-friction$0.json"
+      },
+      {
         "name": "obstacle-ke",
         "path": "conversion-and-physics-examples/",
         "cml": "conversion-and-physics-examples/obstacle-ke.cml",
@@ -2771,6 +2785,13 @@ modelList = [
         "cml": "conversion-and-physics-examples/one-radial-bond_different_elements.cml",
         "mml": "conversion-and-physics-examples/one-radial-bond_different_elements$0.mml",
         "json": "converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json"
+      },
+      {
+        "name": "pressure-probe",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/pressure-probe.cml",
+        "mml": "conversion-and-physics-examples/pressure-probe$0.mml",
+        "json": "converted/conversion-and-physics-examples/pressure-probe$0.json"
       },
       {
         "name": "simple-ke-shading",

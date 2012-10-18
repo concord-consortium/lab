@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 5,
   "height": 2,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,46 +44,29 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       1.78
     ],
-    "Y": [
+    "y": [
       1.74
     ],
-    "VX": [
+    "vx": [
       0.001
     ],
-    "VY": [
+    "vy": [
       0
     ],
-    "CHARGE": [
+    "charge": [
       1
     ],
-    "FRICTION": [
+    "friction": [
       0
     ],
-    "ELEMENT": [
+    "element": [
       2
     ],
-    "PINNED": [
+    "pinned": [
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>An electric field</p>\n<p>is used as a</p>\n<p>reflector of</p>\n<p>charge inside</p>\n<p>this rectangle.</p>",
-      "x": 3.88,
-      "y": 1.11
-    },
-    {
-      "text": "<p>A magnetic field</p>\n<p>is applied in this</p>\n<p>rectange.</p>",
-      "x": 0.08,
-      "y": 0.1
-    },
-    {
-      "text": "<p>Viscous</p>",
-      "x": 2.23,
-      "y": 0.86
-    }
-  ]
+  }
 }

@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4,
   "height": 2.5,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,45 +44,13 @@
     }
   ],
   "atoms": {
-    "X": [],
-    "Y": [],
-    "VX": [],
-    "VY": [],
-    "CHARGE": [],
-    "FRICTION": [],
-    "ELEMENT": [],
-    "PINNED": []
-  },
-  "textBoxes": [
-    {
-      "text": "<p>The menu bar</p>",
-      "x": 2.14,
-      "y": 0.35
-    },
-    {
-      "text": "<p>The tool bar</p>",
-      "x": 0.11,
-      "y": 0.1
-    },
-    {
-      "text": "<p>The recorder</p>\n<p>control panel</p>",
-      "x": 1.78,
-      "y": 1.85
-    },
-    {
-      "text": "<p>The simulation</p>\n<p>clock</p>",
-      "x": 0.1,
-      "y": 1.73
-    },
-    {
-      "text": "<p>The heat/cool tool</p>\n<p>or temperature</p>\n<p>controller (optional)</p>",
-      "x": 2.16,
-      "y": 0.86
-    },
-    {
-      "text": "<p>The anatomy of the</p>\n<p>user interface of a</p>\n<p>model container</p>",
-      "x": 0.3,
-      "y": 0.84
-    }
-  ]
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
+  }
 }

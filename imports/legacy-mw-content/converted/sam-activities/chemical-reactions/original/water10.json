@@ -2,7 +2,7 @@
   "temperature_control": true,
   "width": 2.6,
   "height": 2,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,35 +44,35 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       1.159248976263729,
       1.240751023736271
     ],
-    "Y": [
+    "y": [
       0.9772232497490597,
       1.1227767502509403
     ],
-    "VX": [
+    "vx": [
       0.0018020847509394775,
       0.0006917245098786197
     ],
-    "VY": [
+    "vy": [
       -0.0004713725414495413,
       0.00020743365921404907
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       1,
       1
     ],
-    "PINNED": [
+    "pinned": [
       0,
       0
     ]

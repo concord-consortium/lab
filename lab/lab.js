@@ -446,12 +446,22 @@ define('common/layout/layout',['require'],function (require) {
   };
 
   layout.setBodyEmsize = function() {
-    var emsize;
+    var emsize,
+        $buttons = $('button.component'),
+        minButtonFontSize;
     if (!layout.display) {
       layout.display = layout.getDisplayProperties();
     }
     emsize = Math.min(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
     $('body').css('font-size', emsize + 'em');
+    if (emsize <= 0.5) {
+      minButtonFontSize = 1.4 * 0.5/emsize;
+      $buttons.css('font-size', minButtonFontSize + 'em');
+      // $buttons.css('height', minButtonFontSize 'em');
+    } else {
+      $buttons.css('font-size', '');
+      // $buttons.css('height', '');
+    }
   };
 
   layout.getVizProperties = function(obj) {
@@ -759,6 +769,7 @@ define('common/layout/layout',['require'],function (require) {
           modelWidthFactor,
           modelPaddingFactor,
           modelHeightFactor = 0.85,
+          bottomFactor = 0.0025;
           viewSizes = {},
           containerWidth = $(window).width(),
           containerHeight = $(window).height(),
@@ -779,10 +790,17 @@ define('common/layout/layout',['require'],function (require) {
       if (viewLists.energyGraphs) {
         modelWidthFactor -= 0.35;
       }
+
+      // account for proportionally larger buttons when embeddable size gets very small
+      if (emsize <= 0.5) {
+        bottomFactor *= 0.5/emsize;
+      }
+
       viewLists.bottomItems = $('#bottom').children().length;
       if (viewLists.bottomItems) {
-        modelHeightFactor -= ($('#bottom').height() * 0.0025);
+        modelHeightFactor -= ($('#bottom').height() * bottomFactor);
       }
+
       modelWidth = containerWidth * modelWidthFactor;
       modelHeight = modelWidth / modelAspectRatio;
       if (modelHeight > containerHeight * modelHeightFactor) {
@@ -4693,20 +4711,16 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
       DEFAULT_VALUES,
 
       ATOM_PROPERTY_LIST,
-      ATOM_INDICES,
 
       ELEMENT_PROPERTY_LIST,
-      ELEMENT_INDICES,
 
       RADIAL_BOND_PROPERTY_LIST,
-      RADIAL_BOND_INDICES,
 
       ANGULAR_BOND_PROPERTY_LIST,
-      ANGULAR_BOND_INDICES,
-
-      OBSTACLE_INDICES,
 
       VDW_INDICES,
+
+      RADIAL_BOND_STYLES,
 
       cross = function(a0, a1, b0, b1) {
         return a0*b1 - a1*b0;
@@ -4767,63 +4781,40 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
 
   // Atoms
   exports.ATOM_PROPERTY_LIST = ATOM_PROPERTY_LIST = [
-    "RADIUS",
-    "PX",
-    "PY",
-    "X",
-    "Y",
-    "VX",
-    "VY",
-    "SPEED",
-    "AX",
-    "AY",
-    "CHARGE",
-    "ELEMENT",
-    "PINNED",
-    "FRICTION",
-    "MASS"
+    "radius",
+    "px",
+    "py",
+    "x",
+    "y",
+    "vx",
+    "vy",
+    "speed",
+    "ax",
+    "ay",
+    "charge",
+    "element",
+    "pinned",
+    "friction",
+    "mass"
   ];
-
-  exports.ATOM_INDICES = ATOM_INDICES = {};
-
-  (function() {
-    for (var i = 0; i < ATOM_PROPERTY_LIST.length; i++) {
-      exports.ATOM_INDICES[ ATOM_PROPERTY_LIST[i] ] = i;
-    }
-  }());
 
   // Radial Bonds
   exports.RADIAL_BOND_PROPERTY_LIST = RADIAL_BOND_PROPERTY_LIST = [
-    "ATOM1",
-    "ATOM2",
-    "LENGTH",
-    "STRENGTH",
-    "STYLE"
+    "atom1",
+    "atom2",
+    "length",
+    "strength",
+    "style"
   ];
-
-  exports.RADIAL_BOND_INDICES = RADIAL_BOND_INDICES = {};
-
-  (function() {
-    for (var i = 0; i < RADIAL_BOND_PROPERTY_LIST.length; i++) {
-      exports.RADIAL_BOND_INDICES[ RADIAL_BOND_PROPERTY_LIST[i] ] = i;
-    }
-  }());
 
   // Angular Bonds
   exports.ANGULAR_BOND_PROPERTY_LIST = ANGULAR_BOND_PROPERTY_LIST = [
-    "ATOM1",
-    "ATOM2",
-    "ATOM3",
-    "ANGLE",
-    "STRENGTH"
+    "atom1",
+    "atom2",
+    "atom3",
+    "angle",
+    "strength"
   ];
-
-  exports.ANGULAR_BOND_INDICES = ANGULAR_BOND_INDICES = {};
-  (function() {
-    for (var i = 0; i < ANGULAR_BOND_PROPERTY_LIST.length; i++) {
-      exports.ANGULAR_BOND_INDICES[ ANGULAR_BOND_PROPERTY_LIST[i] ] = i;
-    }
-  }());
 
   exports.RADIAL_BOND_STYLES = RADIAL_BOND_STYLES = {
     RADIAL_BOND_STANDARD_STICK_STYLE : 101,
@@ -4838,36 +4829,31 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
 
   // Elements
   exports.ELEMENT_PROPERTY_LIST = ELEMENT_PROPERTY_LIST = [
-    "MASS",
-    "EPSILON",
-    "SIGMA",
-    "RADIUS"
+    "mass",
+    "epsilon",
+    "sigma",
+    "radius"
   ];
 
-  exports.ELEMENT_INDICES = ELEMENT_INDICES = {};
-
-  (function() {
-    for (var i = 0; i < ELEMENT_PROPERTY_LIST.length; i++) {
-      exports.ELEMENT_INDICES[ ELEMENT_PROPERTY_LIST[i] ] = i;
-    }
-  }());
-
   // Obstacles
-  exports.OBSTACLE_INDICES = OBSTACLE_INDICES = {
-    X       :  0,
-    Y       :  1,
-    WIDTH   :  2,
-    HEIGHT  :  3,
-    MASS    :  4,
-    VX      :  5,
-    VY      :  6,
-    X_PREV  :  7,
-    Y_PREV  :  8,
-    COLOR_R :  9,
-    COLOR_G :  10,
-    COLOR_B :  11,
-    VISIBLE :  12
-  };
+  exports.OBSTACLE_PROPERTY_LIST = [
+    "x",
+    "y",
+    "width",
+    "height",
+    "mass",
+    "vx",
+    "vy",
+    "externalFx",
+    "externalFy",
+    "friction",
+    "xPrev",
+    "yPrev",
+    "colorR",
+    "colorG",
+    "colorB",
+    "visible"
+  ];
 
   // VDW pairs
   exports.VDW_INDICES = VDW_INDICES = {
@@ -4877,9 +4863,9 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
   };
 
   exports.DEFAULT_VALUES = DEFAULT_VALUES = {
-    CHARGE            : 0,
-    FRICTION          : 0,
-    PINNED            : 0,
+    charge            : 0,
+    friction          : 0,
+    pinned            : 0,
     RADIAL_BOND_STYLE : RADIAL_BOND_STYLES.RADIAL_BOND_STANDARD_STICK_STYLE
   };
 
@@ -4928,40 +4914,48 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         // Viscosity of the medium of the model
         viscosity,
 
-        // default integration duration, in femtoseconds.
-        integrationDuration = 50,
-
         // The current model time, in femtoseconds.
         time = 0,
 
         // The current integration time step, in femtoseconds.
-        dt = 1,
+        dt,
 
         // Square of integration time step, in fs^2.
         dt_sq,
 
-        // The number of molecules in the system.
+        // The number of atoms in the system.
         N,
 
         // Total mass of all particles in the system, in Dalton (atomic mass units).
         totalMass,
 
-        // Element properties
-        // elements is an array of elements, each one an array of properties
-        // For now properties are just defined by index, with no additional lookup for
-        // the index (e.g. elements[0][ELEM_MASS_INDEX] for the mass of elem 0). We
-        // have few enough properties that we currently don't need this additional lookup.
-        // element definition: [ MASS_IN_DALTONS, EPSILON, SIGMA ]
-        elements,
+        // ####################################################################
+        //                      Atom Properties
 
         // Individual property arrays for the atoms, indexed by atom number
         radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
 
-        // An array of length ATOM_PROPERTY_LIST.length which contains the above property arrays
+        // An object that contains references to the above atom-property arrays
         atoms,
 
         // ####################################################################
-        //                      Radial Bonds Properties
+        //                      Element Properties
+
+        // Individual property arrays for the elements
+        elementMass,
+        elementEpsilon,
+        elementSigma,
+        elementRadius,
+
+        // An object that contains references to the above element-property arrays
+        elements,
+
+        // Number of actual elements (may be smaller than the length of the property arrays).
+        N_elements = 0,
+
+        // ####################################################################
+        //                      Radial Bond Properties
+
         // Individual property arrays for the "radial" bonds, indexed by bond number
         radialBondAtom1Index,
         radialBondAtom2Index,
@@ -4969,21 +4963,14 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         radialBondStrength,
         radialBondStyle,
 
-        // count of radial bond properties
-        numRadialBondIndices = (function() {
-          var n = 0, index;
-          for (index in RADIAL_BOND_INDICES) {
-            if (RADIAL_BOND_INDICES.hasOwnProperty(index)) n++;
-          }
-          return n;
-        }()),
+        // An object that contains references to the above radial-bond-property arrays.
+        // Left undefined if there are no radial bonds.
+        radialBonds,
 
         // An array of individual radial bond index values and properties.
+        // Each object contains all radial bond properties (atom1, atom2, length, strength, style)
+        // and additionally (x,y) coordinates of bonded atoms defined as x1, y1, x2, y2 properties.
         radialBondResults,
-
-        // An array of length 5 which contains the above 5 property arrays.
-        // Left undefined if no radial bonds are defined.
-        radialBonds,
 
         // radialBondMatrix[i][j] === true when atoms i and j are "radially bonded"
         // radialBondMatrix[i][j] === undefined otherwise
@@ -4991,10 +4978,10 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
 
         // Number of actual radial bonds (may be smaller than the length of the property arrays).
         N_radialBonds = 0,
-        // ####################################################################
 
         // ####################################################################
-        //                      Angular Bonds Properties
+        //                      Angular Bond Properties
+
         // Individual property arrays for the "angular" bonds, indexed by bond number.
         angularBondAtom1Index,
         angularBondAtom2Index,
@@ -5002,23 +4989,43 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         angularBondAngle,
         angularBondStrength,
 
-        // Count of angular bond properties.
-        numAngularBondIndices = (function() {
-          var n = 0, index;
-          for (index in ANGULAR_BOND_INDICES) {
-            if (ANGULAR_BOND_INDICES.hasOwnProperty(index)) n++;
-          }
-          return n;
-        }()),
-
-        // An array of length 5 which contains the above 5 property arrays.
-        // Left undefined if no angular bonds are defined.
+        // An object that contains references to the above angular-bond-property arrays.
+        // Left undefined if there are no angular bonds.
         angularBonds,
 
         // Number of actual angular bonds (may be smaller than the length of the property arrays).
         N_angularBonds = 0,
-        // ####################################################################
 
+        // ####################################################################
+        //                      Obstacle Properties
+
+        // Individual properties for the obstacles
+        obstacleX,
+        obstacleY,
+        obstacleWidth,
+        obstacleHeight,
+        obstacleVX,
+        obstacleVY,
+        obstacleExtFX,
+        obstacleExtFY,
+        obstacleFriction,
+        obstacleMass,
+        obstacleXPrev,
+        obstacleYPrev,
+        obstacleColorR,
+        obstacleColorG,
+        obstacleColorB,
+        obstacleVisible,
+
+        // An object that contains references to the above obstacle-property arrays.
+        // Left undefined if there are no obstacles.
+        obstacles,
+
+        // Number of actual obstacles
+        N_obstacles = 0,
+
+        // ####################################################################
+        //                      Misc Properties
         // Array of arrays containing VdW pairs
         vdwPairs,
 
@@ -5035,30 +5042,11 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         springForceY,
         springForceStrength,
 
+        // An array whose members are the above spring-force-property arrays
         springForces,
 
+        // The number of spring forces currently being applied in the model.
         N_springForces = 0,
-
-        // Individual properties for the obstacles
-        obstacleX,
-        obstacleY,
-        obstacleWidth,
-        obstacleHeight,
-        obstacleVX,
-        obstacleVY,
-        obstacleMass,
-        obstacleXPrev,
-        obstacleYPrev,
-        obstacleColorR,
-        obstacleColorG,
-        obstacleColorB,
-        obstacleVisible,
-
-        // An array of length 12 which contains obstacles information
-        obstacles,
-
-        // Number of actual obstacles
-        N_obstacles = 0,
 
         // The location of the center of mass, in nanometers.
         x_CM, y_CM,
@@ -5105,10 +5093,10 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         // Initialize epsilon, sigma, cutoffDistance_LJ_sq, and ljCalculator array elements for
         // element pair i and j
         setPairwiseLJProperties = function(i, j) {
-          var epsilon_i = elements[i][ELEMENT_INDICES.EPSILON],
-              epsilon_j = elements[j][ELEMENT_INDICES.EPSILON],
-              sigma_i   = elements[i][ELEMENT_INDICES.SIGMA],
-              sigma_j   = elements[j][ELEMENT_INDICES.SIGMA],
+          var epsilon_i = elementEpsilon[i],
+              epsilon_j = elementEpsilon[j],
+              sigma_i   = elementSigma[i],
+              sigma_j   = elementSigma[j],
               e,
               s;
 
@@ -5124,52 +5112,90 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         },
 
         /**
-          Extend all arrays in `arrayList` to `newLength`. Here, arrayList is expected to be `atoms`
-          `elements`, `radialBonds`, etc.
+          Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `atoms`
+          `elements`, `radialBonds`, etc. arrayContainer might be an array or an object.
+          TODO: this is just interim solution, in the future only objects will be expected.
         */
-        extendArrays = function(arrayList, newLength) {
-          for (var i = 0, len = arrayList.length; i < len; i++) {
-            arrayList[i] = arrays.extend(arrayList[i], newLength);
+        extendArrays = function(arrayContainer, newLength) {
+          var i, len;
+          if (Array.isArray(arrayContainer)) {
+            // Array of arrays.
+            for (i = 0, len = arrayContainer.length; i < len; i++) {
+              arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+            }
+          } else {
+            // Object with arrays defined as properties.
+            for (i in arrayContainer) {
+              if(arrayContainer.hasOwnProperty(i)) {
+                arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+              }
+            }
           }
         },
 
         /**
-          Set up "shortcut" references, e.g., x = atoms[ATOM_INDICES.X]
+          Set up "shortcut" references, e.g., x = atoms.x
         */
         assignShortcutReferences = {
 
           atoms: function() {
-            radius    = engine.radius      = atoms[ATOM_INDICES.RADIUS];
-            px        = engine.px          = atoms[ATOM_INDICES.PX];
-            py        = engine.py          = atoms[ATOM_INDICES.PY];
-            x         = engine.x           = atoms[ATOM_INDICES.X];
-            y         = engine.y           = atoms[ATOM_INDICES.Y];
-            vx        = engine.vx          = atoms[ATOM_INDICES.VX];
-            vy        = engine.vy          = atoms[ATOM_INDICES.VY];
-            speed     = engine.speed       = atoms[ATOM_INDICES.SPEED];
-            ax        = engine.ax          = atoms[ATOM_INDICES.AX];
-            ay        = engine.ay          = atoms[ATOM_INDICES.AY];
-            charge    = engine.charge      = atoms[ATOM_INDICES.CHARGE];
-            friction  = engine.friction    = atoms[ATOM_INDICES.FRICTION];
-            element   = engine.element     = atoms[ATOM_INDICES.ELEMENT];
-            pinned    = engine.pinned      = atoms[ATOM_INDICES.PINNED];
-            mass      = engine.mass        = atoms[ATOM_INDICES.MASS];
+            radius   = atoms.radius;
+            px       = atoms.px;
+            py       = atoms.py;
+            x        = atoms.x;
+            y        = atoms.y;
+            vx       = atoms.vx;
+            vy       = atoms.vy;
+            speed    = atoms.speed;
+            ax       = atoms.ax;
+            ay       = atoms.ay;
+            charge   = atoms.charge;
+            friction = atoms.friction;
+            element  = atoms.element;
+            pinned   = atoms.pinned;
+            mass     = atoms.mass;
           },
 
           radialBonds: function() {
-            radialBondAtom1Index  = radialBonds[RADIAL_BOND_INDICES.ATOM1];
-            radialBondAtom2Index  = radialBonds[RADIAL_BOND_INDICES.ATOM2];
-            radialBondLength      = radialBonds[RADIAL_BOND_INDICES.LENGTH];
-            radialBondStrength    = radialBonds[RADIAL_BOND_INDICES.STRENGTH];
-            radialBondStyle       = radialBonds[RADIAL_BOND_INDICES.STYLE];
+            radialBondAtom1Index  = radialBonds.atom1;
+            radialBondAtom2Index  = radialBonds.atom2;
+            radialBondLength      = radialBonds.length;
+            radialBondStrength    = radialBonds.strength;
+            radialBondStyle       = radialBonds.style;
           },
 
           angularBonds: function() {
-            angularBondAtom1Index = angularBonds[ANGULAR_BOND_INDICES.ATOM1];
-            angularBondAtom2Index = angularBonds[ANGULAR_BOND_INDICES.ATOM2];
-            angularBondAtom3Index = angularBonds[ANGULAR_BOND_INDICES.ATOM3];
-            angularBondAngle      = angularBonds[ANGULAR_BOND_INDICES.ANGLE];
-            angularBondStrength   = angularBonds[ANGULAR_BOND_INDICES.STRENGTH];
+            angularBondAtom1Index  = angularBonds.atom1;
+            angularBondAtom2Index  = angularBonds.atom2;
+            angularBondAtom3Index  = angularBonds.atom3;
+            angularBondAngle       = angularBonds.angle;
+            angularBondStrength    = angularBonds.strength;
+          },
+
+          elements: function() {
+            elementMass    = elements.mass;
+            elementEpsilon = elements.epsilon;
+            elementSigma   = elements.sigma;
+            elementRadius  = elements.radius;
+          },
+
+          obstacles: function() {
+            obstacleX        = obstacles.x;
+            obstacleY        = obstacles.y;
+            obstacleWidth    = obstacles.width;
+            obstacleHeight   = obstacles.height;
+            obstacleMass     = obstacles.mass;
+            obstacleVX       = obstacles.vx;
+            obstacleVY       = obstacles.vy;
+            obstacleExtFX    = obstacles.externalFx;
+            obstacleExtFY    = obstacles.externalFy;
+            obstacleFriction = obstacles.friction;
+            obstacleXPrev    = obstacles.xPrev;
+            obstacleYPrev    = obstacles.yPrev;
+            obstacleColorR   = obstacles.colorR;
+            obstacleColorG   = obstacles.colorG;
+            obstacleColorB   = obstacles.colorB;
+            obstacleVisible  = obstacles.visible;
           },
 
           springForces: function() {
@@ -5181,39 +5207,47 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
 
         },
 
+        createElementsArray = function(num) {
+          elements = engine.elements = {};
+
+          elements.mass    = arrays.create(num, 0, float32);
+          elements.epsilon = arrays.create(num, 0, float32);
+          elements.sigma   = arrays.create(num, 0, float32);
+          elements.radius  = arrays.create(num, 0, float32);
+
+          assignShortcutReferences.elements();
+        },
+
         createRadialBondsArray = function(num) {
           var i;
 
-          radialBonds = engine.radialBonds = [];
+          radialBonds = engine.radialBonds = {};
 
-          radialBonds[RADIAL_BOND_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
-          radialBonds[RADIAL_BOND_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
-          radialBonds[RADIAL_BOND_INDICES.LENGTH]   = arrays.create(num, 0, float32);
-          radialBonds[RADIAL_BOND_INDICES.STRENGTH] = arrays.create(num, 0, float32);
-          radialBonds[RADIAL_BOND_INDICES.STYLE]    = arrays.create(num, 0, uint8);
+          radialBonds.atom1    = arrays.create(num, 0, uint16);
+          radialBonds.atom2    = arrays.create(num, 0, uint16);
+          radialBonds.length   = arrays.create(num, 0, float32);
+          radialBonds.strength = arrays.create(num, 0, float32);
+          radialBonds.style    = arrays.create(num, 0, uint8);
 
           assignShortcutReferences.radialBonds();
-          /**
-            Initialize radialBondResults[] arrays consisting of arrays of radial bond
-            index numbers and space to later contain transposed radial bond properties
-          */
+
+          //  Initialize radialBondResults[] array consisting of hashes of radial bond
+          //  index numbers and transposed radial bond properties.
           radialBondResults = engine.radialBondResults = [];
           for (i = 0; i < num; i++) {
-            radialBondResults[i] = arrays.create(numRadialBondIndices+5,  0, float32);
-            radialBondResults[i][0] = i;
+            radialBondResults[i] = {};
+            radialBondResults[i].idx = i;
           }
         },
 
         createAngularBondsArray = function(num) {
-          var i;
+          angularBonds = engine.angularBonds = {};
 
-          angularBonds = engine.angularBonds = [];
-
-          angularBonds[ANGULAR_BOND_INDICES.ATOM1]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_BOND_INDICES.ATOM2]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_BOND_INDICES.ATOM3]    = arrays.create(num, 0, uint16);
-          angularBonds[ANGULAR_BOND_INDICES.ANGLE]    = arrays.create(num, 0, float32);
-          angularBonds[ANGULAR_BOND_INDICES.STRENGTH] = arrays.create(num, 0, float32);
+          angularBonds.atom1    = arrays.create(num, 0, uint16);
+          angularBonds.atom2    = arrays.create(num, 0, uint16);
+          angularBonds.atom3    = arrays.create(num, 0, uint16);
+          angularBonds.angle    = arrays.create(num, 0, float32);
+          angularBonds.strength = arrays.create(num, 0, float32);
 
           assignShortcutReferences.angularBonds();
         },
@@ -5230,23 +5264,26 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         },
 
         createObstaclesArray = function(num) {
-          var ind = OBSTACLE_INDICES;
+          obstacles = engine.obstacles = {};
 
-          obstacles = engine.obstacles = [];
+          obstacles.x          = arrays.create(num, 0, float32);
+          obstacles.y          = arrays.create(num, 0, float32);
+          obstacles.width      = arrays.create(num, 0, float32);
+          obstacles.height     = arrays.create(num, 0, float32);
+          obstacles.mass       = arrays.create(num, 0, float32);
+          obstacles.vx         = arrays.create(num, 0, float32);
+          obstacles.vy         = arrays.create(num, 0, float32);
+          obstacles.externalFx = arrays.create(num, 0, float32);
+          obstacles.externalFy = arrays.create(num, 0, float32);
+          obstacles.friction   = arrays.create(num, 0, float32);
+          obstacles.xPrev      = arrays.create(num, 0, float32);
+          obstacles.yPrev      = arrays.create(num, 0, float32);
+          obstacles.colorR     = arrays.create(num, 0, float32);
+          obstacles.colorG     = arrays.create(num, 0, float32);
+          obstacles.colorB     = arrays.create(num, 0, float32);
+          obstacles.visible    = arrays.create(num, 0, uint8);
 
-          obstacles[ind.X]        = obstacleX      = arrays.create(num, 0, float32);
-          obstacles[ind.Y]        = obstacleY      = arrays.create(num, 0, float32);
-          obstacles[ind.WIDTH]    = obstacleWidth  = arrays.create(num, 0, float32);
-          obstacles[ind.HEIGHT]   = obstacleHeight = arrays.create(num, 0, float32);
-          obstacles[ind.MASS]     = obstacleMass   = arrays.create(num, 0, float32);
-          obstacles[ind.VX]       = obstacleVX     = arrays.create(num, 0, float32);
-          obstacles[ind.VY]       = obstacleVY     = arrays.create(num, 0, float32);
-          obstacles[ind.X_PREV]   = obstacleXPrev  = arrays.create(num, 0, float32);
-          obstacles[ind.Y_PREV]   = obstacleYPrev  = arrays.create(num, 0, float32);
-          obstacles[ind.COLOR_R]  = obstacleColorR = arrays.create(num, 0, float32);
-          obstacles[ind.COLOR_G]  = obstacleColorG = arrays.create(num, 0, float32);
-          obstacles[ind.COLOR_B]  = obstacleColorB = arrays.create(num, 0, float32);
-          obstacles[ind.VISIBLE]  = obstacleVisible = arrays.create(num, 0, uint8);
+          assignShortcutReferences.obstacles();
         },
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
@@ -5397,13 +5434,29 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         },
 
         updateObstaclePosition = function(i) {
-          var ob_vx = obstacleVX[i],
-              ob_vy = obstacleVY[i];
-          if (ob_vx || ob_vy) {
+          var ax, ay, drag,
+              vx = obstacleVX[i],
+              vy = obstacleVY[i],
+              // External forces are defined per mass unit!
+              // So, they are accelerations in fact.
+              extFx = obstacleExtFX[i],
+              extFy = obstacleExtFY[i];
+
+          if (vx || vy || extFx || extFy) {
+            drag = viscosity * obstacleFriction[i];
+            ax = extFx - drag * vx;
+            ay = extFy - drag * vy;
+
             obstacleXPrev[i] = obstacleX[i];
             obstacleYPrev[i] = obstacleY[i];
-            obstacleX[i] += ob_vx*dt;
-            obstacleY[i] += ob_vy*dt;
+
+            // Update positions.
+            obstacleX[i] += vx * dt + 0.5 * ax * dt_sq;
+            obstacleY[i] += vy * dt + 0.5 * ay * dt_sq;
+
+            // Update velocities.
+            obstacleVX[i] += ax * dt;
+            obstacleVY[i] += ay * dt;
           }
         },
 
@@ -5643,7 +5696,7 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
               fx,
               fy;
 
-          for (i = 0, len = radialBonds[0].length; i < len; i++) {
+          for (i = 0, len = radialBondAtom1Index.length; i < len; i++) {
             i1 = radialBondAtom1Index[i];
             i2 = radialBondAtom2Index[i];
 
@@ -5682,7 +5735,7 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
               forceInXForI, forceInYForI, forceInXForK, forceInYForK,
               commonPrefactor, temp;
 
-          for (i = 0, len = angularBonds[0].length; i < len; i++) {
+          for (i = 0, len = angularBonds.atom1.length; i < len; i++) {
             i1 = angularBondAtom1Index[i];
             i2 = angularBondAtom2Index[i];
             i3 = angularBondAtom3Index[i];
@@ -5823,22 +5876,6 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         }
       },
 
-      setIntegrationDuration: function(duration) {
-        if (typeof duration === "number" && duration >= 0) {
-          integrationDuration = duration;
-        } else {
-          throw new Error("The integrationDuration must be a number greater than or equal to 1");
-        }
-      },
-
-      setTimeStep: function(ts) {
-        if (typeof ts === "number" && ts >= 0) {
-          dt = ts;
-        } else {
-          throw new Error("The timeStep must be a time in fs greater than 0");
-        }
-      },
-
       setTargetTemperature: function(v) {
         validateTemperature(v);
         T_target = v;
@@ -5868,70 +5905,34 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         return ljCalculator;
       },
 
-      /*
-        Expects an array of element properties such as
-        [
-          [ mass_of_elem_0 ],
-          [ mass_of_elem_1 ]
-        ]
-      */
-      setElements: function(elems) {
-        var i, j;
-
-        if (atomsHaveBeenCreated) {
-          throw new Error("md2d: setElements cannot be called after atoms have been created");
-        }
-        elements = elems;
-
-        for (i = 0; i < elements.length; i++) {
-          epsilon[i] = [];
-          sigma[i] = [];
-          ljCalculator[i] = [];
-          cutoffDistance_LJ_sq[i] = [];
-        }
-
-        for (i = 0; i < elements.length; i++) {
-          // the radius is derived from sigma
-          elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius( elements[i][ELEMENT_INDICES.SIGMA] );
-
-          for (j = i; j < elements.length; j++) {
-            setPairwiseLJProperties(i,j);
-          }
-        }
-        elementsHaveBeenCreated = true;
-        engine.elements = elements;
-      },
-
       setElementProperties: function(i, properties) {
         var j, newRadius;
-
-
         // FIXME we cached mass into its own array, which is now probably unnecessary (position-update
         // calculations have since been speeded up by batching the computation of accelerations from
         // forces.) If we remove the mass[] array we also remove the need for the loop below:
 
-        if (properties.mass != null && properties.mass !== elements[i][ELEMENT_INDICES.MASS]) {
-          elements[i][ELEMENT_INDICES.MASS] = properties.mass;
+        if (properties.mass != null && properties.mass !== elementMass[i]) {
+            elementMass[i] = properties.mass;
           for (j = 0; j < N; j++) {
             if (element[j] === i) mass[j] = properties.mass;
           }
         }
 
         if (properties.sigma != null) {
-          elements[i][ELEMENT_INDICES.SIGMA] = properties.sigma;
+          elementSigma[i] = properties.sigma;
           newRadius = lennardJones.radius(properties.sigma);
 
-          if (elements[i][ELEMENT_INDICES.RADIUS] !== newRadius) {
-            elements[i][ELEMENT_INDICES.RADIUS] = newRadius;
+          if (elementRadius[i] !== newRadius) {
+            elementRadius[i] = newRadius;
             for (j = 0; j < N; j++) {
               if (element[j] === i) radius[j] = newRadius;
             }
           }
         }
 
-        if (properties.epsilon != null) elements[i][ELEMENT_INDICES.EPSILON] = properties.epsilon;
+        if (properties.epsilon != null) elementEpsilon[i] = properties.epsilon;
 
-        for (j = 0; j < elements.length; j++) {
+        for (j = 0; j < N_elements; j++) {
           setPairwiseLJProperties(i, j);
         }
       },
@@ -5975,24 +5976,24 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
           throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
         }
 
-        atoms  = engine.atoms  = arrays.create(ATOM_PROPERTY_LIST.length, null, 'regular');
+        atoms  = engine.atoms  = {};
 
         // TODO. DRY this up by letting the property list say what type each array is
-        atoms[ATOM_INDICES.RADIUS]    = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.PX]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.PY]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.X]         = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.Y]         = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.VX]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.VY]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.SPEED]     = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.AX]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.AY]        = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.CHARGE]    = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.FRICTION]  = arrays.create(num, 0, float32);
-        atoms[ATOM_INDICES.ELEMENT]   = arrays.create(num, 0, uint8);
-        atoms[ATOM_INDICES.PINNED]    = arrays.create(num, 0, uint8);
-        atoms[ATOM_INDICES.MASS]      = arrays.create(num, 0, float32);
+        atoms.radius   = arrays.create(num, 0, float32);
+        atoms.px       = arrays.create(num, 0, float32);
+        atoms.py       = arrays.create(num, 0, float32);
+        atoms.x        = arrays.create(num, 0, float32);
+        atoms.y        = arrays.create(num, 0, float32);
+        atoms.vx       = arrays.create(num, 0, float32);
+        atoms.vy       = arrays.create(num, 0, float32);
+        atoms.speed    = arrays.create(num, 0, float32);
+        atoms.ax       = arrays.create(num, 0, float32);
+        atoms.ay       = arrays.create(num, 0, float32);
+        atoms.charge   = arrays.create(num, 0, float32);
+        atoms.friction = arrays.create(num, 0, float32);
+        atoms.element  = arrays.create(num, 0, uint8);
+        atoms.pinned   = arrays.create(num, 0, uint8);
+        atoms.mass     = arrays.create(num, 0, float32);
 
         assignShortcutReferences.atoms();
 
@@ -6009,24 +6010,23 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         @returns the index of the new atom
       */
       addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, atom_pinned) {
-        var el, atom_mass;
+        var atom_mass;
 
-        if (N + 1 > atoms[0].length) {
+        if (N + 1 > atoms.x.length) {
           extendArrays(atoms, N + 10);
           assignShortcutReferences.atoms();
         }
 
         // Allow these values to be optional, and use the default if not defined:
 
-        if (atom_charge == null)   atom_charge   = DEFAULT_VALUES.CHARGE;
-        if (atom_friction == null) atom_friction = DEFAULT_VALUES.FRICTION;
-        if (atom_pinned == null )  atom_pinned   = DEFAULT_VALUES.PINNED;
+        if (atom_charge == null)   atom_charge   = DEFAULT_VALUES.charge;
+        if (atom_friction == null) atom_friction = DEFAULT_VALUES.friction;
+        if (atom_pinned == null )  atom_pinned   = DEFAULT_VALUES.pinned;
 
-        el = elements[atom_element];
-        atom_mass = el[ELEMENT_INDICES.MASS];
+        atom_mass = elementMass[atom_element];
 
         element[N]   = atom_element;
-        radius[N]    = elements[atom_element][ELEMENT_INDICES.RADIUS];
+        radius[N]    = elementRadius[atom_element];
         x[N]         = atom_x;
         y[N]         = atom_y;
         vx[N]        = atom_vx;
@@ -6049,23 +6049,50 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
       },
 
       /**
-        The canonical method for adding a radial bond to the collection of radial bonds.
+        The canonical method for adding an element.
+      */
+      addElement: function(props) {
+        var i;
 
-        If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
-        extends the length of the typed arrays by one to contain one more atom with listed properties.
+        if (N_elements >= elementEpsilon.length) {
+          extendArrays(elements, N_elements + 10);
+          assignShortcutReferences.N_elements();
+        }
+
+        elementMass[N_elements]    = props.mass;
+        elementEpsilon[N_elements] = props.epsilon;
+        elementSigma[N_elements]   = props.sigma;
+        elementRadius[N_elements]  = lennardJones.radius(props.sigma);
+
+        epsilon[N_elements]              = [];
+        sigma[N_elements]                = [];
+        ljCalculator[N_elements]         = [];
+        cutoffDistance_LJ_sq[N_elements] = [];
+
+        for (i = 0; i <= N_elements; i++) {
+          setPairwiseLJProperties(N_elements,i);
+        }
+
+        elementsHaveBeenCreated = true;
+        N_elements++;
+      },
+
+      /**
+        The canonical method for adding a radial bond to the collection of radial bonds.
       */
       addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength, bondStyle) {
-        if (bondStyle == null )  bondStyle   = DEFAULT_VALUES.RADIAL_BOND_STYLE;
-        if (N_radialBonds + 1 > radialBonds[0].length) {
+        if (bondStyle == null )  bondStyle = DEFAULT_VALUES.RADIAL_BOND_STYLE;
+
+        if (N_radialBonds >= radialBondAtom1Index.length) {
           extendArrays(radialBonds, N_radialBonds + 10);
           assignShortcutReferences.radialBonds();
         }
 
-        radialBondResults[N_radialBonds][1] = radialBondAtom1Index[N_radialBonds] = atom1Index;
-        radialBondResults[N_radialBonds][2] = radialBondAtom2Index[N_radialBonds] = atom2Index;
-        radialBondResults[N_radialBonds][3] = radialBondLength[N_radialBonds]     = bondLength;
-        radialBondResults[N_radialBonds][4] = radialBondStrength[N_radialBonds]   = bondStrength;
-        radialBondResults[N_radialBonds][5] = radialBondStyle[N_radialBonds]      = bondStyle;
+        radialBondResults[N_radialBonds].atom1    = radialBondAtom1Index[N_radialBonds] = atom1Index;
+        radialBondResults[N_radialBonds].atom2    = radialBondAtom2Index[N_radialBonds] = atom2Index;
+        radialBondResults[N_radialBonds].lenght   = radialBondLength[N_radialBonds]     = bondLength;
+        radialBondResults[N_radialBonds].strength = radialBondStrength[N_radialBonds]   = bondStrength;
+        radialBondResults[N_radialBonds].style    = radialBondStyle[N_radialBonds]      = bondStyle;
 
         if ( ! radialBondMatrix[atom1Index] ) radialBondMatrix[atom1Index] = [];
         radialBondMatrix[atom1Index][atom2Index] = true;
@@ -6083,7 +6110,7 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         extends the length of the typed arrays by ten to have room for more bonds.
       */
       addAngularBond: function(atom1Index, atom2Index, atom3Index, bondAngle, bondStrength) {
-        if (N_angularBonds + 1 > angularBonds[0].length) {
+        if (N_angularBonds + 1 > angularBonds.atom1.length) {
           extendArrays(angularBonds, N_angularBonds + 10);
           assignShortcutReferences.angularBonds();
         }
@@ -6134,11 +6161,12 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         return springForceAtomIndex[i];
       },
 
-      addObstacle: function(x, y, vx, vy, width, height, density, color, visible) {
+      addObstacle: function(x, y, vx, vy, externalFx, externalFy, friction, width, height, density, color, visible) {
         var obstaclemass;
 
-        if (N_obstacles + 1 > obstacles[0].length) {
-          extendArrays(obstacles, N_obstacles + 10);
+        if (N_obstacles + 1 > obstacles.x.length) {
+          extendArrays(obstacles, N_obstacles + 1);
+          assignShortcutReferences.obstacles();
         }
 
         obstacleX[N_obstacles] = x;
@@ -6146,11 +6174,16 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         obstacleXPrev[N_obstacles] = x;
         obstacleYPrev[N_obstacles] = y;
 
-        obstacleWidth[N_obstacles]  = width;
-        obstacleHeight[N_obstacles] = height;
-
         obstacleVX[N_obstacles] = vx;
         obstacleVY[N_obstacles] = vy;
+
+        obstacleExtFX[N_obstacles] = externalFx;
+        obstacleExtFY[N_obstacles] = externalFy;
+
+        obstacleFriction[N_obstacles] = friction;
+
+        obstacleWidth[N_obstacles]  = width;
+        obstacleHeight[N_obstacles] = height;
 
         density = parseFloat(density);      // may be string "Infinity"
         obstaclemass = density * width * height;
@@ -6221,24 +6254,24 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         var x, y, vx, vy, charge, element, friction, pinned,
             i, ii;
 
-        if (!(props.X && props.Y)) {
+        if (!(props.x && props.y)) {
           throw new Error("md2d: initializeAtomsFromProperties must specify at minimum X and Y locations.");
         }
 
-        if (!(props.VX && props.VY)) {
+        if (!(props.vx && props.vy)) {
           // We may way to support authored locations with random velocities in the future
           throw new Error("md2d: For now, velocities must be set when locations are set.");
         }
 
-        for (i=0, ii=props.X.length; i<ii; i++){
-          element = props.ELEMENT ? props.ELEMENT[i] : 0;
-          x = props.X[i];
-          y = props.Y[i];
-          vx = props.VX[i];
-          vy = props.VY[i];
-          charge = props.CHARGE ? props.CHARGE[i] : 0;
-          pinned = props.PINNED ? props.PINNED[i] : 0;
-          friction = props.FRICTION ? props.FRICTION[i] : 0;
+        for (i=0, ii=props.x.length; i<ii; i++){
+          element = props.element ? props.element[i] : 0;
+          x = props.x[i];
+          y = props.y[i];
+          vx = props.vx[i];
+          vy = props.vy[i];
+          charge = props.charge ? props.charge[i] : 0;
+          pinned = props.pinned ? props.pinned[i] : 0;
+          friction = props.friction ? props.friction[i] : 0;
 
           engine.addAtom(element, x, y, vx, vy, charge, friction, pinned);
         }
@@ -6253,7 +6286,7 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
             temperature = options.temperature || 100,
 
             // fill up the entire 'atoms' array if not otherwise requested
-            num         = options.num         || atoms[0].length,
+            num = options.num || atoms.x.length,
 
             nrows = Math.floor(Math.sqrt(num)),
             ncols = Math.ceil(num/nrows),
@@ -6276,7 +6309,7 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
             i++;
             if (i === num) break;
 
-            element    = Math.floor(Math.random() * elements.length);     // random element
+            element    = Math.floor(Math.random() * elementEpsilon.length);     // random element
             vMagnitude = math.normal(1, 1/4);
             vDirection = 2 * Math.random() * Math.PI;
 
@@ -6318,6 +6351,9 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
             props.y[i],
             props.vx[i],
             props.vy[i],
+            props.externalFx[i],
+            props.externalFy[i],
+            props.friction[i],
             props.width[i],
             props.height[i],
             props.density[i],
@@ -6325,6 +6361,18 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
             props.visible[i]
           );
         }
+      },
+
+      initializeElements: function(elems) {
+        var num = elems.length,
+            i;
+
+        createElementsArray(num);
+
+        for (i = 0; i < num; i++) {
+          engine.addElement(elems[i]);
+        }
+        elementsHaveBeenCreated = true;
       },
 
       initializeRadialBonds: function(props) {
@@ -6382,12 +6430,12 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
             r_sq,
             x_i,
             y_i,
-            element_i,
-            element_j,
             sigma_i,
             epsilon_i,
             sigma_j,
             epsilon_j,
+            index_i,
+            index_j,
             sig,
             eps,
             distanceCutoff_sq = 4; // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
@@ -6396,23 +6444,24 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
 
         for (i = 0; i < N; i++) {
           // pairwise interactions
-          element_i = elements[element[i]];
-          sigma_i   = element_i[ELEMENT_INDICES.SIGMA];
-          epsilon_i = element_i[ELEMENT_INDICES.EPSILON];
+          index_i = element[i];
+          sigma_i   = elementSigma[index_i];
+          epsilon_i = elementSigma[index_i];
           x_i = x[i];
           y_i = y[i];
 
           for (j = i+1; j < N; j++) {
             if (N_radialBonds !== 0 && (radialBondMatrix[i] && radialBondMatrix[i][j])) continue;
 
-            element_j = elements[element[j]];
+            index_j = element[j];
+            sigma_j   = elementSigma[index_j];
+            epsilon_j = elementSigma[index_j];
+
             if (charge[i]*charge[j] <= 0) {
               dx = x[j] - x_i;
               dy = y[j] - y_i;
               r_sq = dx*dx + dy*dy;
 
-              sigma_j = element_j[ELEMENT_INDICES.SIGMA];
-              epsilon_j = element_j[ELEMENT_INDICES.EPSILON];
 
               sig = 0.5 * (sigma_i+sigma_j);
               sig *= sig;
@@ -6445,7 +6494,7 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         }
       },
 
-      integrate: function(duration) {
+      integrate: function(duration, _dt) {
 
         var radius,
             inverseMass;
@@ -6454,13 +6503,18 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
           throw new Error("md2d: integrate called before atoms created.");
         }
 
-        if (duration == null)  duration = integrationDuration;  // how much time to integrate over, in fs
+        // How much time to integrate over, in fs
+        if (duration == null)  duration = 100;
 
-        dt_sq = dt*dt;                      // time step, squared
+        // The length of an integration timestep, in fs
+        if (_dt == null) _dt = 1;
+
+        dt = _dt;       // dt is a closure variable that helpers need access to
+        dt_sq = dt*dt;  // the squared time step is also needed by some helpers
 
         // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
         // assuming just one radius as below
-        radius = elements[element[0]][ELEMENT_INDICES.RADIUS];
+        radius = elementRadius[0];
 
         var t_start = time,
             n_steps = Math.floor(duration/dt),  // number of steps
@@ -6549,7 +6603,7 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
       },
 
       getRadiusOfElement: function(el) {
-        return elements[el][ELEMENT_INDICES.RADIUS];
+        return elementRadius[el];
       },
 
       getNumberOfAtoms: function() {
@@ -6635,10 +6689,10 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
 
           // Also save the updated position of the two bonded atoms
           // in a row in the radialBondResults array.
-          radialBondResults[i][6] = x[i1];
-          radialBondResults[i][7] = y[i1];
-          radialBondResults[i][8] = x[i2];
-          radialBondResults[i][9] = y[i2];
+          radialBondResults[i].x1 = x[i1];
+          radialBondResults[i].y1 = y[i1];
+          radialBondResults[i].x2 = x[i2];
+          radialBondResults[i].y2 = y[i2];
         }
 
         // Angular bonds.
@@ -6757,7 +6811,7 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
       */
       findMinimumPELocation: function(el, x, y, charge) {
         var pot    = engine.newPotentialCalculator(el, charge, true),
-            radius = elements[el][ELEMENT_INDICES.RADIUS],
+            radius = elementRadius[el],
 
             res =  math.minimize(pot, [x, y], {
               bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
@@ -6790,7 +6844,7 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
               return [f*f, grad];
             },
 
-            radius = elements[el][ELEMENT_INDICES.RADIUS],
+            radius = elementRadius[el],
 
             res = math.minimize(potsq, [x, y], {
               bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ],
@@ -6842,7 +6896,7 @@ define('md2d/models/engine/md2d',['require','exports','module','common/console',
         var bondedAtoms = [],
             j, jj;
         if (radialBonds) {
-          for (j = 0, jj = radialBonds[0].length; j < jj; j++) {
+          for (j = 0, jj = radialBondAtom1Index.length; j < jj; j++) {
             // console.log("looking at bond from "+radialBonds)
             if (radialBondAtom1Index[j] === i) {
               bondedAtoms.push(radialBondAtom2Index[j]);
@@ -7024,16 +7078,10 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
 
           set_viewRefreshInterval: function(vri) {
             this.viewRefreshInterval = vri;
-            if (engine) {
-              engine.setIntegrationDuration(vri);
-            }
           },
 
           set_timeStep: function(ts) {
             this.timeStep = ts;
-            if (engine) {
-              engine.setTimeStep(ts);
-            }
           },
 
           set_viscosity: function(v) {
@@ -7068,14 +7116,11 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
     function setupIndices() {
       var prop,
           i,
-          offset,
-          shortName;
+          offset;
       //
       // Indexes into the atoms array for the individual node property arrays
       //
-      model.INDICES = {};
       model.ATOM_PROPERTY_LIST = [];
-      model.ATOM_PROPERTY_SHORT_NAMES = {};
 
       // Copy ATOM property indices and names from md2d
       offset = 0;
@@ -7083,51 +7128,42 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
         prop = md2d.ATOM_PROPERTY_LIST[i];
 
         model.ATOM_PROPERTY_LIST[i] = prop;
-        model.INDICES[prop]         = md2d.ATOM_INDICES[prop] + offset;
       }
 
-      model.RADIAL_BOND_INDICES = {};
       model.RADIAL_BOND_PROPERTY_LIST = [];
 
-      // Copy RADIAL_BOND property indices and names from md2d
-      offset = 0;
+      // Copy Radial Bond properties from md2d
       for (i = 0; i < md2d.RADIAL_BOND_PROPERTY_LIST.length; i++) {
         prop = md2d.RADIAL_BOND_PROPERTY_LIST[i];
         model.RADIAL_BOND_PROPERTY_LIST[i] = prop;
-        model.RADIAL_BOND_INDICES[prop]    = md2d.RADIAL_BOND_INDICES[prop] + offset;
       }
 
-      model.ANGULAR_BOND_INDICES = {};
       model.ANGULAR_BOND_PROPERTY_LIST = [];
 
-      // Copy ANGULAR_BOND property indices and names from md2d
-      offset = 0;
+      // Copy ANGULAR_BOND properties from md2d
       for (i = 0; i < md2d.ANGULAR_BOND_PROPERTY_LIST.length; i++) {
         prop = md2d.ANGULAR_BOND_PROPERTY_LIST[i];
         model.ANGULAR_BOND_PROPERTY_LIST[i] = prop;
-        model.ANGULAR_BOND_INDICES[prop]    = md2d.ANGULAR_BOND_INDICES[prop] + offset;
       }
 
-      model.ELEMENT_INDICES = {};
       model.ELEMENT_PROPERTY_LIST = [];
 
-      // Copy ELEMENT property indices and names from md2d
+      // Copy ELEMENT properties from md2d
       for (i = 0; i < md2d.ELEMENT_PROPERTY_LIST.length; i++) {
         prop = md2d.ELEMENT_PROPERTY_LIST[i];
         model.ELEMENT_PROPERTY_LIST[i] = prop;
-        model.ELEMENT_INDICES[prop]    = md2d.ELEMENT_INDICES[prop];
       }
 
       model.NON_ENGINE_PROPERTY_LIST = [
-        "VISIBLE",
-        "MARKED",
-        "DRAGGABLE"
+        "visible",
+        "marked",
+        "draggable"
       ];
 
-      model.NON_ENGINE_PROPERTY_SHORT_NAMES = {
-        VISIBLE: "visible",
-        MARKED: "marked",
-        DRAGGABLE: "draggable"
+      model.NON_ENGINE_DEFAULT_VALUES = {
+        visible: 1,
+        marked: 0,
+        draggable: 0
       };
 
       model.RADIAL_BOND_STYLES = {
@@ -7141,57 +7177,30 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
         RADIAL_BOND_TRIPLE_BOND_STYLE:    108
       };
 
-      model.NON_ENGINE_DEFAULT_VALUES = {
-        VISIBLE: 1,
-        MARKED: 0,
-        DRAGGABLE: 0
-      };
-
       // Add non-engine properties to the end of the list of property indices and names
       offset = model.ATOM_PROPERTY_LIST.length;
       for (i = 0; i < model.NON_ENGINE_PROPERTY_LIST.length; i++) {
         prop = model.NON_ENGINE_PROPERTY_LIST[i];
-
         model.ATOM_PROPERTY_LIST.push(prop);
-        model.INDICES[prop]             = i + offset;
-        model.ATOM_PROPERTY_SHORT_NAMES[prop] = model.NON_ENGINE_PROPERTY_SHORT_NAMES[prop];
-      }
-
-      // Inverse of ATOM_PROPERTY_SHORT_NAMES...
-      model.ATOM_PROPERTY_LONG_NAMES = {};
-
-      for (prop in model.ATOM_PROPERTY_SHORT_NAMES) {
-        if (model.ATOM_PROPERTY_SHORT_NAMES.hasOwnProperty(prop)) {
-          shortName = model.ATOM_PROPERTY_SHORT_NAMES[prop];
-          model.ATOM_PROPERTY_LONG_NAMES[shortName] = prop;
-        }
       }
 
       // TODO. probably save everything *except* a list of "non-saveable properties"
       model.SAVEABLE_PROPERTIES =  [
-        "X",
-        "Y",
-        "VX",
-        "VY",
-        "CHARGE",
-        "ELEMENT",
-        "PINNED",
-        "FRICTION",
-        "VISIBLE",
-        "MARKED",
-        "DRAGGABLE"
+        "x",
+        "y",
+        "vx",
+        "vy",
+        "charge",
+        "element",
+        "pinned",
+        "friction",
+        "visible",
+        "marked",
+        "draggable"
       ];
 
-      model.OBSTACLE_INDICES = {
-        X        : md2d.OBSTACLE_INDICES.X,
-        Y        : md2d.OBSTACLE_INDICES.Y,
-        WIDTH    : md2d.OBSTACLE_INDICES.WIDTH,
-        HEIGHT   : md2d.OBSTACLE_INDICES.HEIGHT,
-        COLOR_R  : md2d.OBSTACLE_INDICES.COLOR_R,
-        COLOR_G  : md2d.OBSTACLE_INDICES.COLOR_G,
-        COLOR_B  : md2d.OBSTACLE_INDICES.COLOR_B,
-        VISIBLE  : md2d.OBSTACLE_INDICES.VISIBLE
-      };
+      // TODO: restrict access to some internal properties?
+      model.OBSTACLE_PROPERTY_LIST = md2d.OBSTACLE_PROPERTY_LIST;
 
       model.VDW_INDICES = md2d.VDW_INDICES;
 
@@ -7229,7 +7238,7 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
 
     function average_speed() {
       var i, s = 0, n = model.get_num_atoms();
-      i = -1; while (++i < n) { s += engine.speed[i]; }
+      i = -1; while (++i < n) { s += engine.atoms.speed[i]; }
       return s/n;
     }
 
@@ -7261,7 +7270,10 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
       }
 
       if (doIntegration) {
-        engine.integrate();
+        // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
+        // However, in MD2D we prefer the more physical notion of integrating for a particular
+        // length of time.
+        engine.integrate(viewRefreshInterval * timeStep, timeStep);
         readModelState();
 
         pressures.push(pressure);
@@ -7282,12 +7294,12 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
     }
 
     function tick_history_list_push() {
-      var i,
-          newAtoms = [],
-          n = atoms.length;
+      var prop,
+          newAtoms = {};
 
-      i = -1; while (++i < n) {
-        newAtoms[i] = arrays.clone(atoms[i]);
+      for (prop in atoms) {
+        if (atoms.hasOwnProperty(prop))
+          newAtoms[prop] = arrays.clone(atoms[prop]);
       }
       tick_history_list.length = tick_history_list_index;
       tick_history_list_index++;
@@ -7324,15 +7336,16 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
     }
 
     function tick_history_list_extract(index) {
-      var i, n=atoms.length;
+      var prop;
       if (index < 0) {
         throw new Error("modeler: request for tick_history_list[" + index + "]");
       }
       if (index >= tick_history_list.length) {
         throw new Error("modeler: request for tick_history_list[" + index + "], tick_history_list.length=" + tick_history_list.length);
       }
-      i = -1; while(++i < n) {
-        arrays.copy(tick_history_list[index].atoms[i], atoms[i]);
+      for (prop in atoms) {
+        if (atoms.hasOwnProperty(prop))
+          arrays.copy(tick_history_list[index].atoms[prop], atoms[prop]);
       }
       ke = tick_history_list[index].ke;
       time = tick_history_list[index].time;
@@ -7379,18 +7392,19 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
     */
     function readModelState() {
       var i,
-          len,
-          j,
+          prop,
           n;
 
       engine.computeOutputState(modelOutputState);
 
       extendResultsArray();
 
-      // Transpose 'atoms' array into 'results' for easier consumption by view code
-      for (j = 0, len = atoms.length; j < len; j++) {
-        for (i = 0, n = model.get_num_atoms(); i < n; i++) {
-          results[i][j+1] = atoms[j][i];
+      // Transpose 'atoms' object into 'results' for easier consumption by view code
+      for (prop in atoms) {
+        if (atoms.hasOwnProperty(prop)) {
+          for (i = 0, n = model.get_num_atoms(); i < n; i++) {
+            results[i][prop] = atoms[prop][i];
+          }
         }
       }
 
@@ -7412,21 +7426,21 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
 
       for (i = results.length, n = model.get_num_atoms(); i < n; i++) {
         if (!results[i]) {
-          results[i] = arrays.create(1 + model.ATOM_PROPERTY_LIST.length,  0, arrayType);
-          results[i][0] = i;
+          results[i] = {};
+          results[i].idx = i;
         }
       }
     }
 
     function setToDefaultValue(prop) {
       for (var i = 0; i < model.get_num_atoms(); i++) {
-        atoms[model.INDICES[prop]][i] = model.NON_ENGINE_DEFAULT_VALUES[prop];
+        atoms[prop][i] = model.NON_ENGINE_DEFAULT_VALUES[prop];
       }
     }
 
     function setFromSerializedArray(prop, serializedArray) {
       for (var i = 0; i < model.get_num_atoms(); i++) {
-        atoms[model.INDICES[prop]][i] = serializedArray[i];
+        atoms[prop][i] = serializedArray[i];
       }
     }
 
@@ -7436,7 +7450,7 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
 
       for (i = 0; i < model.NON_ENGINE_PROPERTY_LIST.length; i++) {
         prop = model.NON_ENGINE_PROPERTY_LIST[i];
-        atoms[model.INDICES[prop]] = arrays.create(model.get_num_atoms(), 0, arrayType);
+        atoms[prop] = arrays.create(model.get_num_atoms(), 0, arrayType);
 
         if (serializedAtomProps[prop]) {
           setFromSerializedArray(prop, serializedAtomProps[prop]);
@@ -7450,16 +7464,13 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
     /**
       Each entry in engine.atoms is a reference to a typed array. When the engine needs to create
       a larger typed array, it must create a new object. Therefore, this function exists to copy
-      over any references to newly created typed arrays from engine.atoms to our atoms array.
+      over any references to newly created typed arrays from engine.atoms to our atoms object.
     */
     function copyEngineAtomReferences() {
-      var prop;
-      // Note that the indirection below allows us to correctly account for arbitrary differences
-      // between the ordering of indices in model and the ordering in the engine.
-
-      for (var i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
+      var i, prop;
+      for (i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
         prop = md2d.ATOM_PROPERTY_LIST[i];
-        atoms[ model.INDICES[prop] ] = engine.atoms[ md2d.ATOM_INDICES[prop] ];
+        atoms[prop] = engine.atoms[prop];
       }
     }
 
@@ -7481,7 +7492,7 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
 
       for (i=0, len = model.SAVEABLE_PROPERTIES.length; i < len; i++) {
         prop = model.SAVEABLE_PROPERTIES[i];
-        array = atoms[model.INDICES[prop]];
+        array = atoms[prop];
         serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
       }
 
@@ -7610,27 +7621,20 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
       left in whatever grid the engine's initialization leaves them in.
     */
     model.createNewAtoms = function(config) {
-      var elemsArray, element, i, ii, num;
+      var num;
 
       if (typeof config === 'number') {
         num = config;
       } else if (config.num != null) {
         num = config.num;
-      } else if (config.X) {
-        num = config.X.length;
-      }
-
-      // convert from easily-readble json format to simplified array format
-      elemsArray = [];
-      for (i=0, ii=elements.length; i<ii; i++){
-        element = elements[i];
-        elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
+      } else if (config.x) {
+        num = config.x.length;
       }
 
       // get a fresh model
       engine = md2d.createEngine();
       engine.setSize([width,height]);
-      engine.setElements(elemsArray);
+      engine.initializeElements(elements);
       engine.createAtoms({
         num: num
       });
@@ -7654,12 +7658,10 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
       engine.useThermostat(temperature_control);
       engine.setViscosity(viscosity);
       engine.setGravitationalField(gravitationalField);
-      engine.setIntegrationDuration(viewRefreshInterval*timeStep);
-      engine.setTimeStep(timeStep);
 
       engine.setTargetTemperature(temperature);
 
-      if (config.X && config.Y) {
+      if (config.x && config.y) {
         engine.initializeAtomsFromProperties(config);
       } else {
         engine.initializeAtomsRandomly({
@@ -7668,7 +7670,7 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
         if (config.relax) engine.relaxToTemperature();
       }
 
-      atoms = [];
+      atoms = {};
       copyEngineAtomReferences(engine.atoms);
       initializeNonEngineProperties(config);
 
@@ -7805,8 +7807,8 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
           newLength,
           i;
 
-      if (visible == null)   visible   = model.NON_ENGINE_DEFAULT_VALUES.VISIBLE;
-      if (draggable == null) draggable = model.NON_ENGINE_DEFAULT_VALUES.DRAGGABLE;
+      if (visible == null)   visible   = model.NON_ENGINE_DEFAULT_VALUES.visible;
+      if (draggable == null) draggable = model.NON_ENGINE_DEFAULT_VALUES.draggable;
 
       // As a convenience to script authors, bump the atom within bounds
       if (x < radius) x = radius;
@@ -7824,15 +7826,15 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
         // or something we could ask the engine to do on our behalf, but it may make more sense when
         // you realize this is a temporary step until we modify the code further in order to maintain
         // the 'visible', 'draggable' propeties *only* in what is now being called the 'results' array
-        newLength = atoms[model.INDICES.ELEMENT].length;
+        newLength = atoms.element.length;
 
-        if (atoms[model.INDICES.VISIBLE].length < newLength) {
-          atoms[model.INDICES.VISIBLE]   = arrays.extend(atoms[model.INDICES.VISIBLE], newLength);
-          atoms[model.INDICES.DRAGGABLE] = arrays.extend(atoms[model.INDICES.DRAGGABLE], newLength);
+        if (atoms.visible.length < newLength) {
+          atoms.visible   = arrays.extend(atoms.visible, newLength);
+          atoms.draggable = arrays.extend(atoms.draggable, newLength);
         }
 
-        atoms[model.INDICES.VISIBLE][i]   = visible;
-        atoms[model.INDICES.DRAGGABLE][i] = draggable;
+        atoms.visible[i]   = visible;
+        atoms.draggable[i] = draggable;
 
         readModelState();
         dispatch.addAtom();
@@ -7868,9 +7870,9 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
       moleculeAtoms.push(atomIndex);
 
       for (i = 0; i < moleculeAtoms.length; i++) {
-        x = atoms[model.INDICES.X][moleculeAtoms[i]];
-        y = atoms[model.INDICES.Y][moleculeAtoms[i]];
-        r = atoms[model.INDICES.RADIUS][moleculeAtoms[i]];
+        x = atoms.x[moleculeAtoms[i]];
+        y = atoms.y[moleculeAtoms[i]];
+        r = atoms.radius[moleculeAtoms[i]];
 
         if (x-r < left  ) left   = x-r;
         if (x+r > right ) right  = x+r;
@@ -7878,8 +7880,8 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
         if (y+r > top   ) top    = y+r;
       }
 
-      cx = atoms[model.INDICES.X][atomIndex];
-      cy = atoms[model.INDICES.Y][atomIndex];
+      cx = atoms.x[atomIndex];
+      cy = atoms.y[atomIndex];
 
       return { top: top-cy, left: left-cx, bottom: bottom-cy, right: right-cx };
     },
@@ -7901,17 +7903,16 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
           dx, dy,
           new_x, new_y,
           j, jj,
-          key,
-          propName;
+          key;
 
       if (moveMolecule) {
         moleculeAtoms = engine.getMoleculeAtoms(i);
         if (moleculeAtoms.length > 0) {
-          dx = typeof props.x === "number" ? props.x - atoms[model.INDICES.X][i] : 0;
-          dy = typeof props.y === "number" ? props.y - atoms[model.INDICES.Y][i] : 0;
+          dx = typeof props.x === "number" ? props.x - atoms.x[i] : 0;
+          dy = typeof props.y === "number" ? props.y - atoms.y[i] : 0;
           for (j = 0, jj=moleculeAtoms.length; j<jj; j++) {
-            new_x = atoms[model.INDICES.X][moleculeAtoms[j]] + dx;
-            new_y = atoms[model.INDICES.Y][moleculeAtoms[j]] + dy;
+            new_x = atoms.x[moleculeAtoms[j]] + dx;
+            new_y = atoms.y[moleculeAtoms[j]] + dy;
             if (!model.setAtomProperties(moleculeAtoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
               return false;
             }
@@ -7920,9 +7921,9 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
       }
 
       if (checkLocation) {
-        var x  = typeof props.x === "number" ? props.x : atoms[model.INDICES.X][i],
-            y  = typeof props.y === "number" ? props.y : atoms[model.INDICES.Y][i],
-            el = typeof props.element === "number" ? props.y : atoms[model.INDICES.ELEMENT][i];
+        var x  = typeof props.x === "number" ? props.x : atoms.x[i],
+            y  = typeof props.y === "number" ? props.y : atoms.y[i],
+            el = typeof props.element === "number" ? props.y : atoms.element[i];
 
         if (!engine.canPlaceAtom(el, x, y, i)) {
           return false;
@@ -7932,8 +7933,7 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
       // Actually set properties
       for (key in props) {
         if (props.hasOwnProperty(key)) {
-          propName = key.toUpperCase();
-          if (propName) atoms[model.INDICES[propName]][i] = props[key];
+          atoms[key][i] = props[key];
         }
       }
 
@@ -7942,10 +7942,11 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
     };
 
     model.getAtomProperties = function(i) {
-      var p,
+      var p, propName,
           props = {};
       for (p = 0; p < model.ATOM_PROPERTY_LIST.length; p++) {
-        props[model.ATOM_PROPERTY_LIST[p].toLowerCase()] = atoms[p][i];
+        propName = model.ATOM_PROPERTY_LIST[p];
+        props[propName] = atoms[propName][i];
       }
       return props;
     };
@@ -7957,19 +7958,40 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
 
     model.getElementProperties = function(i) {
       var p,
-          props = {};
+          props = {},
+          propName;
       for (p = 0; p < model.ELEMENT_PROPERTY_LIST.length; p++) {
-        props[model.ELEMENT_PROPERTY_LIST[p].toLowerCase()] = engine.elements[p][i];
+        propName = model.ELEMENT_PROPERTY_LIST[p];
+        props[propName] = engine.elements[propName][i];
+      }
+      return props;
+    };
+
+    model.setObstacleProperties = function(i, props) {
+      var key;
+      for (key in props) {
+        if (props.hasOwnProperty(key)) {
+          obstacles[key][i] = props[key];
+        }
+      }
+      readModelState();
+    };
+
+    model.getObstacleProperties = function(i) {
+      var p, propName,
+          props = {};
+      for (p = 0; p < model.OBSTACLE_PROPERTY_LIST.length; p++) {
+        propName = model.OBSTACLE_PROPERTY_LIST[p];
+        props[propName] = obstacles[propName][i];
       }
       return props;
     };
 
     model.setRadialBondProperties = function(i, props) {
-      var key, p;
+      var key;
       for (key in props) {
         if (props.hasOwnProperty(key)) {
-          p = model.RADIAL_BOND_INDICES[key.toUpperCase()];
-          radialBonds[p][i] = props[key];
+          radialBonds[key][i] = props[key];
         }
       }
       readModelState();
@@ -7977,19 +7999,20 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
 
     model.getRadialBondProperties = function(i) {
       var p,
-          props = {};
+          props = {},
+          propName;
       for (p = 0; p < model.RADIAL_BOND_PROPERTY_LIST.length; p++) {
-        props[model.RADIAL_BOND_PROPERTY_LIST[p].toLowerCase()] = radialBonds[p][i];
+        propName = model.RADIAL_BOND_PROPERTY_LIST[p];
+        props[propName] = radialBonds[propName][i];
       }
       return props;
     };
 
     model.setAngularBondProperties = function(i, props) {
-      var key, p;
+      var key;
       for (key in props) {
         if (props.hasOwnProperty(key)) {
-          p = model.ANGULAR_BOND_INDICES[key.toUpperCase()];
-          angularBonds[p][i] = props[key];
+          angularBonds[key][i] = props[key];
         }
       }
       readModelState();
@@ -7997,9 +8020,11 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
 
     model.getAngularBondProperties = function(i) {
       var p,
-          props = {};
+          props = {},
+          propName;
       for (p = 0; p < model.ANGULAR_BOND_PROPERTY_LIST.length; p++) {
-        props[model.ANGULAR_BOND_PROPERTY_LIST[p].toLowerCase()] = angularBonds[p][i];
+        propName = model.ANGULAR_BOND_PROPERTY_LIST[p];
+        props[propName] = model.ANGULAR_BOND_PROPERTY_LIST[propName][i];
       }
       return props;
     };
@@ -8039,11 +8064,18 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
       adjusting the friction of the dragged atom.
     */
     model.liveDragStart = function(atomIndex, x, y) {
-      if (x == null) x = atoms[model.INDICES.X][atomIndex];
-      if (y == null) y = atoms[model.INDICES.Y][atomIndex];
+      if (x == null) x = atoms.x[atomIndex];
+      if (y == null) y = atoms.y[atomIndex];
 
-      liveDragSavedFriction = atoms[model.INDICES.FRICTION][atomIndex];
-      atoms[model.INDICES.FRICTION][atomIndex] = model.LIVE_DRAG_FRICTION;
+      liveDragSavedFriction = model.getAtomProperties(atomIndex).friction;
+
+      // Use setAtomProperties so that we handle things correctly if a web worker is integrating
+      // the model. (Here we follow the rule that we must assume that an integration might change
+      // any property of an atom, and therefore cause changes to atom properties in the main thread
+      // to be be lost. This is true even though common sense tells us that the friction property
+      // won't change during an integration.)
+
+      model.setAtomProperties(atomIndex, { friction: model.LIVE_DRAG_FRICTION });
 
       liveDragSpringForceIndex = model.addSpringForce(atomIndex, x, y, 500);
     };
@@ -8062,13 +8094,13 @@ define('md2d/models/modeler',['require','common/console','arrays','md2d/models/e
     model.liveDragEnd = function() {
       var atomIndex = engine.springForceAtomIndex(liveDragSpringForceIndex);
 
-      atoms[model.INDICES.FRICTION][atomIndex] = liveDragSavedFriction;
+      model.setAtomProperties(atomIndex, { friction: liveDragSavedFriction });
       model.removeSpringForce(liveDragSpringForceIndex);
     };
 
     // return a copy of the array of speeds
     model.get_speed = function() {
-      return arrays.copy(engine.speed, []);
+      return arrays.copy(engine.atoms.speed, []);
     };
 
     model.get_rate = function() {
@@ -8703,12 +8735,22 @@ define('common/layout/layout',['require'],function (require) {
   };
 
   layout.setBodyEmsize = function() {
-    var emsize;
+    var emsize,
+        $buttons = $('button.component'),
+        minButtonFontSize;
     if (!layout.display) {
       layout.display = layout.getDisplayProperties();
     }
     emsize = Math.min(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
     $('body').css('font-size', emsize + 'em');
+    if (emsize <= 0.5) {
+      minButtonFontSize = 1.4 * 0.5/emsize;
+      $buttons.css('font-size', minButtonFontSize + 'em');
+      // $buttons.css('height', minButtonFontSize 'em');
+    } else {
+      $buttons.css('font-size', '');
+      // $buttons.css('height', '');
+    }
   };
 
   layout.getVizProperties = function(obj) {
@@ -9016,6 +9058,7 @@ define('common/layout/layout',['require'],function (require) {
           modelWidthFactor,
           modelPaddingFactor,
           modelHeightFactor = 0.85,
+          bottomFactor = 0.0025;
           viewSizes = {},
           containerWidth = $(window).width(),
           containerHeight = $(window).height(),
@@ -9036,10 +9079,17 @@ define('common/layout/layout',['require'],function (require) {
       if (viewLists.energyGraphs) {
         modelWidthFactor -= 0.35;
       }
+
+      // account for proportionally larger buttons when embeddable size gets very small
+      if (emsize <= 0.5) {
+        bottomFactor *= 0.5/emsize;
+      }
+
       viewLists.bottomItems = $('#bottom').children().length;
       if (viewLists.bottomItems) {
-        modelHeightFactor -= ($('#bottom').height() * 0.0025);
+        modelHeightFactor -= ($('#bottom').height() * bottomFactor);
       }
+
       modelWidth = containerWidth * modelWidthFactor;
       modelHeight = modelWidth / modelAspectRatio;
       if (modelHeight > containerHeight * modelHeightFactor) {
@@ -9390,23 +9440,6 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
         },
 
         model,
-        model_md2d_results_RADIUS,
-        model_md2d_results_PX,
-        model_md2d_results_PY,
-        model_md2d_results_X,
-        model_md2d_results_Y,
-        model_md2d_results_VX,
-        model_md2d_results_VY,
-        model_md2d_results_SPEED,
-        model_md2d_results_AX,
-        model_md2d_results_AY,
-        model_md2d_results_CHARGE,
-        model_md2d_results_FRICTION,
-        model_md2d_results_VISIBLE,
-        model_md2d_results_MARKED,
-        model_md2d_results_DRAGGABLE,
-        model_md2d_results_ELEMENT,
-        model_md2d_results_MASS,
 
         RADIAL_BOND_STANDARD_STICK_STYLE,
         RADIAL_BOND_LONG_SPRING_STYLE,
@@ -9458,29 +9491,11 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
       textBoxes = options.textBoxes || [];
       if (options.interactiveUrl) {
         interactiveUrl = options.interactiveUrl;
-        imagePath = interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
+        imagePath = ACTUAL_ROOT + interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
       }
       if (!options.showClock) {
         options.showClock = model.get("showClock");
       }
-
-      model_md2d_results_RADIUS   = model.INDICES.RADIUS+1;
-      model_md2d_results_PX       = model.INDICES.PX+1;
-      model_md2d_results_PY       = model.INDICES.PY+1;
-      model_md2d_results_X        = model.INDICES.X+1;
-      model_md2d_results_Y        = model.INDICES.Y+1;
-      model_md2d_results_VX       = model.INDICES.VX+1;
-      model_md2d_results_VY       = model.INDICES.VY+1;
-      model_md2d_results_SPEED    = model.INDICES.SPEED+1;
-      model_md2d_results_AX       = model.INDICES.AX+1;
-      model_md2d_results_AY       = model.INDICES.AY+1;
-      model_md2d_results_CHARGE   = model.INDICES.CHARGE+1;
-      model_md2d_results_FRICTION = model.INDICES.FRICTION+1;
-      model_md2d_results_VISIBLE  = model.INDICES.VISIBLE+1;
-      model_md2d_results_MARKED   = model.INDICES.MARKED+1;
-      model_md2d_results_DRAGGABLE= model.INDICES.DRAGGABLE+1;
-      model_md2d_results_ELEMENT  = model.INDICES.ELEMENT+1;
-      model_md2d_results_MASS     = model.INDICES.MASS+1;
 
       RADIAL_BOND_STANDARD_STICK_STYLE = 101;
       RADIAL_BOND_LONG_SPRING_STYLE    = 102;
@@ -9602,30 +9617,30 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
     }
 
     function get_obstacle_x(i) {
-      return obstacles[model.OBSTACLE_INDICES.X][i];
+      return obstacles.x[i];
     }
 
     function get_obstacle_y(i) {
-      return obstacles[model.OBSTACLE_INDICES.Y][i];
+      return obstacles.y[i];
     }
 
     function get_obstacle_width(i) {
-      return obstacles[model.OBSTACLE_INDICES.WIDTH][i];
+      return obstacles.width[i];
     }
 
     function get_obstacle_height(i) {
-      return obstacles[model.OBSTACLE_INDICES.HEIGHT][i];
+      return obstacles.height[i];
     }
 
     function get_obstacle_color(i) {
       return "rgb(" +
-        obstacles[model.OBSTACLE_INDICES.COLOR_R][i] + "," +
-        obstacles[model.OBSTACLE_INDICES.COLOR_G][i] + "," +
-        obstacles[model.OBSTACLE_INDICES.COLOR_B][i] + ")";
+        obstacles.colorR[i] + "," +
+        obstacles.colorG[i] + "," +
+        obstacles.colorB[i] + ")";
     }
 
     function get_obstacle_visible(i) {
-      return obstacles[model.OBSTACLE_INDICES.VISIBLE][i];
+      return obstacles.visible[i];
     }
 
     function get_radial_bond_atom_1(i) {
@@ -9981,10 +9996,10 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
       function getParticleGradient(d) {
           var ke, keIndex, charge;
 
-          if (d[model_md2d_results_MARKED]) return "url(#mark-grad)";
+          if (d.marked) return "url(#mark-grad)";
 
           if (keShadingMode) {
-            ke  = model.getAtomKineticEnergy(d[0]),
+            ke  = model.getAtomKineticEnergy(d.idx),
             // Convert Kinetic Energy to [0, 1] range
             // using empirically tested transformations.
             // K.E. shading should be similar to the classic MW K.E. shading.
@@ -9994,13 +10009,13 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
           }
 
           if (chargeShadingMode) {
-            charge = d[model_md2d_results_CHARGE];
+            charge = d.charge;
 
             if (charge === 0) return "url(#neutral-grad)";
             return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
           }
 
-          return "url('#"+gradientNameForElement[d[model_md2d_results_ELEMENT] % 4]+"')";
+          return "url('#"+gradientNameForElement[d.element % 4]+"')";
       }
 
       // Create key images which can be shown in the
@@ -10072,7 +10087,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
       }
 
       function updateMoleculeRadius() {
-        vis.selectAll("circle").data(results).attr("r",  function(d) { return x(d[model_md2d_results_RADIUS]); });
+        vis.selectAll("circle").data(results).attr("r",  function(d) { return x(d.radius); });
         // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
       }
 
@@ -10084,12 +10099,12 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
         particle.enter().append("circle")
             .attr({
               "class": "draggable",
-              "r":  function(d) { return x(d[model_md2d_results_RADIUS]); },
-              "cx": function(d) { return x(d[model_md2d_results_X]); },
-              "cy": function(d) { return y(d[model_md2d_results_Y]); }
+              "r":  function(d) { return x(d.radius); },
+              "cx": function(d) { return x(d.x); },
+              "cy": function(d) { return y(d.y); }
             })
             .style({
-              "fill-opacity": function(d) { return d[model_md2d_results_VISIBLE]; },
+              "fill-opacity": function(d) { return d.visible; },
               "fill": getParticleGradient
             })
             .on("mousedown", molecule_mousedown)
@@ -10126,7 +10141,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
               if (isSpringBond(d)) {
                 return 0.3 * scaling_factor;
               } else {
-                return x(Math.min(results[d[1]][model_md2d_results_RADIUS], results[d[2]][model_md2d_results_RADIUS])) * 0.75;
+                return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
             })
             .style("stroke", function(d, i) {
@@ -10135,7 +10150,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
                 return "#000000";
               } else {
                 if (chargeShadingMode) {
-                  charge = results[d[1]][model_md2d_results_CHARGE];
+                  charge = results[d.atom1].charge;
                   if (charge > 0) {
                       return  bondColorArray[4];
                   } else if (charge < 0){
@@ -10144,7 +10159,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
                     return "#A4A4A4";
                   }
                 } else {
-                  element = results[d[1]][model_md2d_results_ELEMENT] % 4;
+                  element = results[d.atom1].element % 4;
                   grad = bondColorArray[element];
                   return grad;
                 }
@@ -10160,7 +10175,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
               if (isSpringBond(d)) {
                 return 0.3 * scaling_factor;
               } else {
-                return x(Math.min(results[d[1]][model_md2d_results_RADIUS], results[d[2]][model_md2d_results_RADIUS])) * 0.75;
+                return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
             })
             .style("stroke", function(d, i) {
@@ -10169,7 +10184,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
                 return "#000000";
               } else {
                 if (chargeShadingMode) {
-                  charge = results[d[2]][model_md2d_results_CHARGE];
+                  charge = results[d.atom2].charge;
                   if (charge > 0) {
                       return  bondColorArray[4];
                   } else if (charge < 0){
@@ -10178,7 +10193,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
                     return "#A4A4A4";
                   }
                 } else {
-                  element = results[d[2]][model_md2d_results_ELEMENT] % 4;
+                  element = results[d.atom2].element % 4;
                   grad = bondColorArray[element];
                   return grad;
                 }
@@ -10201,20 +10216,20 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
             sintheta,
             length, numSpikes = 10;
 
-        x1 = x(d[6]);
-        y1 = y(d[7]);
-        x2 = x(d[8]);
-        y2 = y(d[9]);
+        x1 = x(d.x1);
+        y1 = y(d.y1);
+        x2 = x(d.x2);
+        y2 = y(d.y2);
         dx = x2 - x1;
         dy = y2 - y1;
         length = Math.sqrt(dx*dx + dy*dy)/scaling_factor;
         costheta = dx / length;
         sintheta = dy / length;
 
-        radius_x1 = x(results[d[1]][model_md2d_results_RADIUS]) * costheta;
-        radius_x2 = x(results[d[2]][model_md2d_results_RADIUS]) * costheta;
-        radius_y1 = x(results[d[1]][model_md2d_results_RADIUS]) * sintheta;
-        radius_y2 = x(results[d[2]][model_md2d_results_RADIUS]) * sintheta;
+        radius_x1 = x(results[d.atom1].radius) * costheta;
+        radius_x2 = x(results[d.atom2].radius) * costheta;
+        radius_y1 = x(results[d.atom1].radius) * sintheta;
+        radius_y2 = x(results[d.atom2].radius) * sintheta;
         radiusFactorX = radius_x1 - radius_x2;
         radiusFactorY = radius_y1 - radius_y2;
 
@@ -10244,7 +10259,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
       }
 
       function isSpringBond(d){
-        return d[5] === model.RADIAL_BOND_STYLES.RADIAL_BOND_SHORT_SPRING_STYLE;
+        return d.style === model.RADIAL_BOND_STYLES.RADIAL_BOND_SHORT_SPRING_STYLE;
       }
 
       function drawAttractionForces() {
@@ -10264,10 +10279,10 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
           if (atom1 !== 0 || atom2 !== 0) {
             VDWLines_container.append("line")
               .attr("class", "attractionforce")
-              .attr("x1", x(results[atom1][model_md2d_results_X]))
-              .attr("y1", y(results[atom1][model_md2d_results_Y]))
-              .attr("x2", x(results[atom2][model_md2d_results_X]))
-              .attr("y2", y(results[atom2][model_md2d_results_Y]))
+              .attr("x1", x(results[atom1].x))
+              .attr("y1", y(results[atom1].y))
+              .attr("x2", x(results[atom2].x))
+              .attr("y2", y(results[atom2].y))
               .style("stroke-width", 2 * scaling_factor)
               .style("stroke-dasharray", 3 * scaling_factor + " " + 2 * scaling_factor);
           }
@@ -10307,8 +10322,8 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
 
               if (imglayer === 1) {
                 image_container_top.append("image")
-                  .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
-                  .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } })
+                  .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
+                  .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } })
                   .attr("class", "image_attach"+i+" draggable")
                   .attr("xlink:href", img[i].src)
                   .attr("width", img_width)
@@ -10316,8 +10331,8 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
                   .attr("pointer-events", "none");
               } else {
                 image_container_below.append("image")
-                  .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
-                  .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } })
+                  .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
+                  .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } })
                   .attr("class", "image_attach"+i+" draggable")
                   .attr("xlink:href", img[i].src)
                   .attr("width", img_width)
@@ -10404,28 +10419,28 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
         labelEnter = label.enter().append("g")
             .attr("class", "label")
             .attr("transform", function(d) {
-              return "translate(" + x(d[model_md2d_results_X]) + "," + y(d[model_md2d_results_Y]) + ")";
+              return "translate(" + x(d.x) + "," + y(d.y) + ")";
             });
 
         if (options.atom_mubers) {
           labelEnter.append("text")
               .attr("class", "index")
-              .attr("font-size", function(d) { return 1.6 * textShrinkFactor * x(d[model_md2d_results_RADIUS]); })
+              .attr("font-size", function(d) { return 1.6 * textShrinkFactor * x(d.radius); })
               .attr("style", "font-weight: bold; opacity: .7")
               .attr("x", 0)
               .attr("y", "0.31em")
               .attr("pointer-events", "none")
-              .text(d[0]);
+              .text(d.idx);
         } else {
           labelEnter.append("text")
               .attr("class", "index")
-              .attr("font-size", function(d) { return 1.6 * x(d[model_md2d_results_RADIUS]); })
+              .attr("font-size", function(d) { return 1.6 * x(d.radius); })
               .attr("style", "font-weight: bold; opacity: .7")
               .attr("x", "-0.31em")
               .attr("y", "0.31em")
               .attr("pointer-events", "none")
               .text(function(d) {
-                  var charge = d[model_md2d_results_CHARGE];
+                  var charge = d.charge;
                   // Draw +/- signs also when KE shading is enabled.
                   if (chargeShadingMode || keShadingMode) {
                       if (charge > 0){
@@ -10443,7 +10458,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
       function setup_obstacles() {
         gradient_container.selectAll("rect").remove();
         if (obstacles) {
-          mock_obstacles_array.length = obstacles[0].length;
+          mock_obstacles_array.length = obstacles.x.length;
           obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
           obstacleEnter();
         }
@@ -10509,19 +10524,19 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
               .style("opacity", 1.0)
               .style("display", "inline")
               .style("background", "rgba(100%, 100%, 100%, 0.7)")
-              .style("left", x(results[i][model_md2d_results_X]) + offset_left + 60 + "px")
-              .style("top",  y(results[i][model_md2d_results_Y]) + offset_top - 30 + "px")
+              .style("left", x(results[i].x) + offset_left + 60 + "px")
+              .style("top",  y(results[i].y) + offset_top - 30 + "px")
               .style("zIndex", 100)
               .transition().duration(250);
 
         molecule_div_pre.text(
             "atom: " + i + "\n" +
             "time: " + modelTimeLabel() + "\n" +
-            "speed: " + d3.format("+6.3e")(results[i][model_md2d_results_SPEED]) + "\n" +
-            "vx:    " + d3.format("+6.3e")(results[i][model_md2d_results_VX])    + "\n" +
-            "vy:    " + d3.format("+6.3e")(results[i][model_md2d_results_VY])    + "\n" +
-            "ax:    " + d3.format("+6.3e")(results[i][model_md2d_results_AX])    + "\n" +
-            "ay:    " + d3.format("+6.3e")(results[i][model_md2d_results_AY])    + "\n"
+            "speed: " + d3.format("+6.3e")(results[i].speed) + "\n" +
+            "vx:    " + d3.format("+6.3e")(results[i].vx)    + "\n" +
+            "vy:    " + d3.format("+6.3e")(results[i].vy)    + "\n" +
+            "ax:    " + d3.format("+6.3e")(results[i].ax)    + "\n" +
+            "ay:    " + d3.format("+6.3e")(results[i].ay)    + "\n"
           );
       }
 
@@ -10562,8 +10577,8 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
         }
 
         particle.attr({
-          "cx": function(d) { return x(d[model_md2d_results_X]); },
-          "cy": function(d) { return y(d[model_md2d_results_Y]); }
+          "cx": function(d) { return x(d.x); },
+          "cy": function(d) { return y(d.y); }
         });
 
         // When Kinetic Energy Shading is enabled, update style of atoms
@@ -10573,7 +10588,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
         }
 
         label.attr("transform", function(d, i) {
-          return "translate(" + x(d[model_md2d_results_X]) + "," + y(d[model_md2d_results_Y]) + ")";
+          return "translate(" + x(d.x) + "," + y(d.y) + ")";
         });
 
         if (atom_tooltip_on === 0 || atom_tooltip_on > 0) {
@@ -10601,12 +10616,12 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
           img_height = img.height*scaling_factor;
           if(imglayer == 1) {
             image_container_top.selectAll("image.image_attach"+i)
-            .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
-            .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } });
+            .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
+            .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } });
           } else {
             image_container_below.selectAll("image.image_attach"+i)
-              .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost[model_md2d_results_X])-img_width/2); } })
-              .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost[model_md2d_results_Y])-img_height/2); } });
+              .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
+              .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } });
           }
         }
       }
@@ -10614,9 +10629,9 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
       function node_dragstart(d, i) {
         if ( is_stopped() ) {
           // cache the *original* atom position so we can go back to it if drag is disallowed
-          drag_origin = [d[model_md2d_results_X], d[model_md2d_results_Y]];
+          drag_origin = [d.x, d.y];
         }
-        else if ( d[model_md2d_results_DRAGGABLE] ) {
+        else if ( d.draggable ) {
           model.liveDragStart(i);
         }
       }
@@ -10658,7 +10673,7 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
           set_position(i, drag.x, drag.y, false, true);
           update_drawable_positions();
         }
-        else if ( d[model_md2d_results_DRAGGABLE] ) {
+        else if ( d.draggable ) {
           drag = dragPoint(dragX, dragY);
           model.liveDrag(drag.x, drag.y);
         }
@@ -10670,13 +10685,13 @@ define('md2d/views/molecule-container',['require','cs!common/components/play_res
 
         if ( is_stopped() ) {
 
-          if (!set_position(i, d[model_md2d_results_X], d[model_md2d_results_Y], true, true)) {
+          if (!set_position(i, d.x, d.y, true, true)) {
             alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
             set_position(i, drag_origin[0], drag_origin[1], false, true);
           }
           update_drawable_positions();
         }
-        else if ( d[model_md2d_results_DRAGGABLE] ) {
+        else if ( d.draggable ) {
           // here we just assume we are removing the one and only spring force.
           // This assumption will have to change if we can have more than one.
           model.liveDragEnd();
@@ -11404,6 +11419,16 @@ define('md2d/controllers/interactives-controller',['require','md2d/controllers/m
             },
 
             /**
+              Observe property `propertyName` on the model, and perform `action` when it changes.
+              Pass property value to action.
+            */
+            onPropertyChange: function onPropertyChange(propertyName, action) {
+              model.addPropertiesListener([propertyName], function() {
+                action( model.get(propertyName) );
+              });
+            },
+
+            /**
               Sets individual atom properties using human-readable hash.
               e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
             */
@@ -11420,16 +11445,6 @@ define('md2d/controllers/interactives-controller',['require','md2d/controllers/m
               return model.getAtomProperties(i);
             },
 
-            /**
-              Observe property `propertyName` on the model, and perform `action` when it changes.
-              Pass property value to action.
-            */
-            onPropertyChange: function onPropertyChange(propertyName, action) {
-              model.addPropertiesListener([propertyName], function() {
-                action( model.get(propertyName) );
-              });
-            },
-
             setElementProperties: function setElementProperties(i, props) {
               model.setElementProperties(i, props);
               scriptingAPI.repaint();
@@ -11437,6 +11452,23 @@ define('md2d/controllers/interactives-controller',['require','md2d/controllers/m
 
             getElementProperties: function getElementProperties(i) {
               return model.getElementProperties(i);
+            },
+
+            /**
+              Sets individual obstacle properties using human-readable hash.
+              e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalFx: 0.00001})
+            */
+            setObstacleProperties: function setObstacleProperties(i, props) {
+              model.setObstacleProperties(i, props);
+              scriptingAPI.repaint();
+            },
+
+            /**
+              Returns obstacle properties as a human-readable hash.
+              e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalFx: 0.00001, ... }
+            */
+            getObstacleProperties: function getObstacleProperties(i) {
+              return model.getObstacleProperties(i);
             },
 
             setRadialBondProperties: function setRadialBondProperties(i, props) {
@@ -11675,8 +11707,8 @@ define('md2d/controllers/interactives-controller',['require','md2d/controllers/m
     }
 
     function createCheckbox(component) {
-      var propertyName = component.property,
-          action = component.action,
+      var propertyName  = component.property,
+          onClickScript = component.onClick,
           $checkbox,
           $label;
 
@@ -11685,11 +11717,11 @@ define('md2d/controllers/interactives-controller',['require','md2d/controllers/m
       // Append class to label, as it's the most outer container in this case.
       $label.addClass("component");
 
-      // Process action script if it is defined.
-      if (action) {
-        action = getStringFromArray(action);
+      // Process onClick script if it is defined.
+      if (onClickScript) {
+        onClickScript = getStringFromArray(onClickScript);
         // Create a function which assumes we pass it a parameter called 'value'.
-        action = makeFunctionInScriptContext('value', action);
+        onClickScript = makeFunctionInScriptContext('value', onClickScript);
       }
 
       // Connect checkbox with model's property if its name is defined.
@@ -11725,10 +11757,10 @@ define('md2d/controllers/interactives-controller',['require','md2d/controllers/m
           propObj[propertyName] = value;
           model.set(propObj);
         }
-        // Finally, if checkbox has action script attached,
+        // Finally, if checkbox has onClick script attached,
         // call it in script context with checkbox status passed.
-        if (action !== undefined) {
-          action(value);
+        if (onClickScript !== undefined) {
+          onClickScript(value);
         }
       });
 
@@ -11962,7 +11994,7 @@ define('md2d/controllers/interactives-controller',['require','md2d/controllers/m
 
           model.addPropertiesListener(['viewRefreshInterval'], function() {
             options.sample = model.get("viewRefreshInterval")/1000;
-            energyGraph.reset(options);
+            energyGraph.reset('#' + thisComponent.id, options);
           });
 
           // Create energyGraph only if it hasn't been drawn before:
@@ -13303,14 +13335,14 @@ require(['md2d/public-api'], undefined, undefined, true); }());(function(){
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "2e4b2ae7134aa67f0bf7557fe62f1fd6c6b802b8",
-        "short_sha":      "2e4b2ae7",
-        "url":            "https://github.com/concord-consortium/lab/commit/2e4b2ae7",
+        "sha":           "0f681ec0f4a4f6dc096250930977fb3b320fbf3c",
+        "short_sha":      "0f681ec0",
+        "url":            "https://github.com/concord-consortium/lab/commit/0f681ec0",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2012-10-15 16:02:10 -0400",
-        "short_message": "Link to Interactive at home location works w/distribution",
-        "message":       "Link to Interactive at home location works w/distribution\n\n[#37801099]\n\nNeeded to be more explicit with paths to make sure the About\nbox link to the &#x27;Home&#x27; version of the Interactive worked\nwhen running from a downloaded distribution.\n\nSee: http://lab.dev.concord.org/readme.html#distribution-of-project-and-examples"
+        "date":          "2012-10-18 17:32:50 -0400",
+        "short_message": "distribution in nested dir: load Images correctly",
+        "message":       "distribution in nested dir: load Images correctly\n\n[#38053031]\n\nImages in Interactives aren&#x27;t loaded correctly when\na user uses a distribution archive to serve Lab content\nin a web directory which is not at the root level of\nthe web server."
       },
       "dirty": false
     }
@@ -13321,8 +13353,8 @@ if (typeof Lab === 'undefined') Lab = {};
 Lab.config = {
   "sharing": false,
   "home": "http://lab.concord.org",
-  "home_interactive_path": "/examples/interactives/interactive.html",
-  "home_embeddable_path": "/examples/interactives/embeddable.html",
-  "aboutContent": "<p>This interactive was created by the <a href='http://concord.org/' class='opens-in-new-window' target='_blank'>Concord Consortium</a> using our <a href='http://mw.concord.org/nextgen/' class='opens-in-new-window' target='_blank'>Next-Generation Molecular Workbench</a> software, with funding by a grant from <a href='http://www.google.org/' class='opens-in-new-window' target='_blank'>Google.org</a>.</p>"
+  "homeInteractivePath": "/examples/interactives/interactive.html",
+  "homeEmbeddablePath": "/examples/interactives/embeddable.html",
+  "utmCampaign": "EdX"
 }
 })();

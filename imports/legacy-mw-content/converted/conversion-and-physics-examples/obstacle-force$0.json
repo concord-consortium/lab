@@ -1,0 +1,114 @@
+{
+  "temperature_control": false,
+  "width": 3.5,
+  "height": 2,
+  "viscosity": 1,
+  "keShading": false,
+  "chargeShading": false,
+  "showVDWLines": false,
+  "VDWLinesRatio": 2,
+  "gravitationalField": false,
+  "showClock": true,
+  "viewRefreshInterval": 50,
+  "timeStep": 1,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 20,
+      "sigma": 0.07,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 40,
+      "sigma": 0.14,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 60,
+      "sigma": 0.21,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 80,
+      "sigma": 0.28,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "x": [
+      2.1
+    ],
+    "y": [
+      1.76
+    ],
+    "vx": [
+      0
+    ],
+    "vy": [
+      0
+    ],
+    "charge": [
+      0
+    ],
+    "friction": [
+      0
+    ],
+    "element": [
+      0
+    ],
+    "pinned": [
+      0
+    ]
+  },
+  "obstacles": {
+    "x": [
+      0.29
+    ],
+    "y": [
+      0.17999999999999994
+    ],
+    "vx": [
+      0
+    ],
+    "vy": [
+      0
+    ],
+    "externalFx": [
+      1.0000000000000001e-7
+    ],
+    "externalFy": [
+      0
+    ],
+    "friction": [
+      0
+    ],
+    "height": [
+      1.52
+    ],
+    "width": [
+      0.52
+    ],
+    "density": [
+      120000
+    ],
+    "color": [
+      [
+        128,
+        128,
+        128
+      ]
+    ],
+    "visible": [
+      true
+    ]
+  }
+}

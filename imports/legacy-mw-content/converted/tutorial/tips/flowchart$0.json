@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 6,
   "height": 2.5,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,111 +44,29 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       3.254599999999375
     ],
-    "Y": [
+    "y": [
       0.12964679998322368
     ],
-    "VX": [
+    "vx": [
       -0.00030000000000000003
     ],
-    "VY": [
+    "vy": [
       -0.00006000000284984703
     ],
-    "CHARGE": [
+    "charge": [
       0
     ],
-    "FRICTION": [
+    "friction": [
       0
     ],
-    "ELEMENT": [
+    "element": [
       3
     ],
-    "PINNED": [
+    "pinned": [
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Flow chart demo</p>",
-      "x": 2.47,
-      "y": 0.03
-    },
-    {
-      "text": "<p>CEO</p>",
-      "x": 2.74,
-      "y": 0.47
-    },
-    {
-      "text": "<p>CTO</p>",
-      "x": 1.34,
-      "y": 1.02
-    },
-    {
-      "text": "<p>Project Manager</p>",
-      "x": 1.33,
-      "y": 1.44
-    },
-    {
-      "text": "<p>CFO</p>",
-      "x": 2.24,
-      "y": 1.03
-    },
-    {
-      "text": "<p>VP</p>",
-      "x": 3.41,
-      "y": 1.02
-    },
-    {
-      "text": "<p>Employee A</p>",
-      "x": 0.62,
-      "y": 1.92
-    },
-    {
-      "text": "<p>HR Director</p>",
-      "x": 4.53,
-      "y": 1.24
-    },
-    {
-      "text": "<p>Project Manager</p>",
-      "x": 3.08,
-      "y": 1.43
-    },
-    {
-      "text": "<p>Employee B</p>",
-      "x": 1.47,
-      "y": 1.92
-    },
-    {
-      "text": "<p>Employee C</p>",
-      "x": 2.3,
-      "y": 1.92
-    },
-    {
-      "text": "<p>Employee D</p>",
-      "x": 3.12,
-      "y": 1.92
-    },
-    {
-      "text": "<p>Marketing</p>\n<p>Director</p>",
-      "x": 4.53,
-      "y": 0.71
-    },
-    {
-      "text": "<p>Employee E</p>",
-      "x": 3.94,
-      "y": 1.92
-    },
-    {
-      "text": "<p>Employee F</p>",
-      "x": 4.74,
-      "y": 1.92
-    },
-    {
-      "text": "<p>Nonexistence Inc.</p>\n<p></p>",
-      "x": 2.499600067138672,
-      "y": 2.245353240966797
-    }
-  ]
+  }
 }

@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 3.48,
   "height": 2.88,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,38 +44,31 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       0.91
     ],
-    "Y": [
+    "y": [
       2.01
     ],
-    "VX": [
+    "vx": [
       0.0002
     ],
-    "VY": [
+    "vy": [
       -0.0002
     ],
-    "CHARGE": [
+    "charge": [
       0
     ],
-    "FRICTION": [
+    "friction": [
       0
     ],
-    "ELEMENT": [
+    "element": [
       0
     ],
-    "PINNED": [
+    "pinned": [
       0
     ]
   },
-  "textBoxes": [
-    {
-      "text": "<p>2D</p>",
-      "x": null,
-      "y": null
-    }
-  ],
   "obstacles": {
     "x": [
       0.38,
@@ -93,6 +86,21 @@
       0
     ],
     "vy": [
+      0,
+      0,
+      0
+    ],
+    "externalFx": [
+      0,
+      0,
+      0
+    ],
+    "externalFy": [
+      0,
+      0,
+      0
+    ],
+    "friction": [
       0,
       0,
       0

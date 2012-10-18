@@ -72,7 +72,17 @@ var ROOT = "/examples",
     }
   }
 
-  if (hash = document.location.hash) {
+  function getHash() {
+    var match,
+        h = document.location.hash;
+    if (h) {
+      match = h.match(/(.*?\.json)/);
+      h = match[1];
+    }
+    return h;
+  }
+
+  if (hash = getHash()) {
     interactiveUrl = hash.substr(1, hash.length);
 
     $.get(interactiveUrl).done(function(results) {
@@ -113,13 +123,15 @@ var ROOT = "/examples",
   });
 
   $(window).bind('hashchange', function() {
-    if (document.location.hash !== hash) {
+    if (getHash() !== hash) {
       location.reload();
     }
   });
 
   function setupAboutPane() {
     var interactiveAboutUrl,
+        newWindow,
+        titleString,
         $aboutContent = $('#about-content');
     $aboutLink.click(function() {
       $aboutPane.show(100);
@@ -129,10 +141,26 @@ var ROOT = "/examples",
     });
     $aboutPane.draggable();
     $("#about-pane-title").text("About: " + interactive.title);
-    $aboutContent.append(Lab.config.aboutContent);
+
+    concordUrl = 'http://concord.org';
+    nextGenUrl = 'http://mw.concord.org/nextgen/';
+    interactiveAboutUrl = Lab.config.home + Lab.config.homeEmbeddablePath + hash;
+    newWindow = " class='opens-in-new-window' target='_blank";
+    utmString = "utm_source=" + encodeURIComponent(interactive.title.replace(/ /gi,"+")) + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
+
+    if (Lab.config.utmCampaign) {
+      concordUrl += "?" + utmString;
+      nextGenUrl += "?" + utmString;
+      interactiveAboutUrl += "&" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
+    }
+
+    concordLink = "<a href='" + concordUrl + "'" + newWindow + "'>Concord Consortium</a>";
+    nextGenLink = "<a href='" + nextGenUrl + "'" + newWindow + "'>Next-Generation Molecular Workbench</a>";
+    interactiveAboutLink = "<a href='" + "'" + interactiveAboutUrl + newWindow + "'>shareable version</a>";
+    googleOrgLink = "<a href='http://www.google.org/' " + newWindow + "'>Google.org</a>";
+    $aboutContent.append('<p>This interactive was created by the ' + concordLink + ' using our ' + nextGenLink + ' software, with funding by a grant from ' + googleOrgLink + '.</p>');
     if (!Lab.config.sharing) {
-      interactiveAboutUrl = Lab.config.home + Lab.config.home_embeddable_path + hash;
-      $('#about-content').append('<p>Explore or embed a <a href=' + interactiveAboutUrl + ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive, and discover other open source interactives for math, science and engineering at <a href="http://concord.org" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
+      $aboutContent.append('<p>Explore or embed a <a href=' + interactiveAboutUrl + ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive, and discover other open source interactives for math, science and engineering at <a href="' + concordUrl + '" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
     }
   }
 

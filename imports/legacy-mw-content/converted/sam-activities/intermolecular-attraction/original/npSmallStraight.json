@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4,
   "height": 2.1,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": true,
   "showVDWLines": true,
@@ -44,70 +44,70 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       0.63,
       0.63,
       0.8810859121778124,
       0.8787263932793421,
       1.26
     ],
-    "Y": [
+    "y": [
       0.9275387780838712,
       1.1729400871034412,
       0.927065133507517,
       1.1724550989484173,
       1.05
     ],
-    "VX": [
+    "vx": [
       0,
       0,
       -0.00012246462818924327,
       -0.000045279432135749796,
       0
     ],
-    "VY": [
+    "vy": [
       0,
       0,
       -0.000018035502581396377,
       0.00002488694987782323,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0,
       0,
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0.24,
       0.24,
       0.24,
       0.24,
       0.24
     ],
-    "ELEMENT": [
+    "element": [
       1,
       1,
       1,
       1,
       0
     ],
-    "PINNED": [
+    "pinned": [
       1,
       1,
       0,
       0,
       0
     ],
-    "VISIBLE": [
+    "visible": [
       1,
       1,
       1,
       1,
       0
     ],
-    "DRAGGABLE": [
+    "draggable": [
       0,
       0,
       0,
@@ -155,13 +155,6 @@
       "imageLayer": 1,
       "imageX": 112,
       "imageY": 92
-    }
-  ],
-  "textBoxes": [
-    {
-      "text": "<p>Small Straight Molecules</p>",
-      "x": 1.12,
-      "y": 0.12
     }
   ]
 }

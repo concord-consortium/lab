@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4,
   "height": 3,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,49 +44,49 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       2.0983337914425557,
       1.19,
       1.78,
       1.24
     ],
-    "Y": [
+    "y": [
       1.5873570869161207,
       1.7,
       1.32,
       2.04
     ],
-    "VX": [
+    "vx": [
       0,
       -0.0003,
       0,
       0
     ],
-    "VY": [
+    "vy": [
       0,
       -0.00015,
       0,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0,
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0,
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       0,
       3,
       1,
       2
     ],
-    "PINNED": [
+    "pinned": [
       1,
       0,
       0,
@@ -119,12 +119,5 @@
       101,
       101
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>Am I more chaotic than the my</p>\n<p>double-pendulum brother?</p>",
-      "x": 1.94,
-      "y": 0.11
-    }
-  ]
+  }
 }

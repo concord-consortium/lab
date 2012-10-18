@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 3,
   "height": 2,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,52 +44,45 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       1.224722665824135,
       1.5058089693690937,
       1.7088670695016421
     ],
-    "Y": [
+    "y": [
       1.295260500368185,
       1.4091323902184558,
       1.533494144409499
     ],
-    "VX": [
+    "vx": [
       0.00006498328744260678,
       -0.00011138726965683134,
       0.00012529960814975223
     ],
-    "VY": [
+    "vy": [
       -0.000008820899584860815,
       -0.00003101727674549639,
       0.00007526590286828497
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       2,
       3,
       1
     ],
-    "PINNED": [
+    "pinned": [
       0,
       0,
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>What is my coordinate reading?</p>",
-      "x": 0.73,
-      "y": 1.05
-    }
-  ]
+  }
 }

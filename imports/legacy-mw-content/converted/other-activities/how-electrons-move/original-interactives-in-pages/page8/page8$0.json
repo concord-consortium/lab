@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4.5,
   "height": 3.5,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,41 +44,29 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       1.1
     ],
-    "Y": [
+    "y": [
       0.5
     ],
-    "VX": [
+    "vx": [
       0
     ],
-    "VY": [
+    "vy": [
       0.001
     ],
-    "CHARGE": [
+    "charge": [
       -1
     ],
-    "FRICTION": [
+    "friction": [
       0
     ],
-    "ELEMENT": [
+    "element": [
       0
     ],
-    "PINNED": [
+    "pinned": [
       0
     ]
-  },
-  "textBoxes": [
-    {
-      "text": "<p>x  x  x  x  x  x  x  x</p>\n<p></p>\n<p>x  x  x  x  x  x  x  x</p>\n<p></p>\n<p>x  x  x  x  x  x  x  x</p>\n<p></p>\n<p>x  x  x  x  x  x  x  x</p>\n<p></p>\n<p>x  x  x  x  x  x  x  x</p>\n<p></p>\n<p>x  x  x  x  x  x  x  x</p>",
-      "x": 0.34,
-      "y": 1.03
-    },
-    {
-      "text": "<p>A model for a</p>\n<p>mass spectrometer</p>",
-      "x": 0.05,
-      "y": 0.05
-    }
-  ]
+  }
 }

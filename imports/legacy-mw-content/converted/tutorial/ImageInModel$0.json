@@ -2,7 +2,7 @@
   "temperature_control": false,
   "width": 4.88,
   "height": 3.88,
-  "viscosity": 0,
+  "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,
@@ -44,42 +44,42 @@
     }
   ],
   "atoms": {
-    "X": [
+    "x": [
       4.1,
       1.61,
       0.66
     ],
-    "Y": [
+    "y": [
       2.29,
       1.57,
       3.03
     ],
-    "VX": [
+    "vx": [
       0.000040462705361978813,
       0.000060415962723627404,
       0.0001
     ],
-    "VY": [
+    "vy": [
       0,
       0,
       0
     ],
-    "CHARGE": [
+    "charge": [
       0,
       0,
       0
     ],
-    "FRICTION": [
+    "friction": [
       0,
       0,
       0
     ],
-    "ELEMENT": [
+    "element": [
       0,
       0,
       0
     ],
-    "PINNED": [
+    "pinned": [
       0,
       0,
       0
@@ -125,23 +125,6 @@
       "imageLayer": 2,
       "imageX": 271,
       "imageY": 201
-    }
-  ],
-  "textBoxes": [
-    {
-      "text": "<p>A JPEG image</p>",
-      "x": 1.78,
-      "y": 1.39
-    },
-    {
-      "text": "<p>An animated GIF image</p>\n<p>not attached to any particle</p>",
-      "x": 3.13,
-      "y": 2.91
-    },
-    {
-      "text": "<p>An animated GIF image</p>\n<p>attached to a particle</p>",
-      "x": 0.48,
-      "y": 0.14
     }
   ]
 }

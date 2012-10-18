@@ -16,17 +16,19 @@
   </head>
   <body>
     <div id="main">
-      <h1 id="labhttplabdevconcordorg"><a href="http://lab.dev.concord.org/">Lab</a></h1>
+      <h1 id="labconcordorghttplabconcordorg"><a href="http://lab.concord.org/">lab.concord.org</a></h1>
 
 <p>HTML5-based open source scientific models, visualizations, graphing, and probeware from the
 <a href="http://www.concord.org">Concord Consortium</a>.</p>
 
 <dl>
-  <dt>Development site:</dt>
+  <dt><strong>Production site:</strong></dt>
+  <dd><strong><a href="http://lab.concord.org/">lab.concord.org</a></strong></dd>
+  <dt><strong>Technical Readme:</strong></dt>
+  <dd><strong><a href="http://lab.concord.org/readme.html">lab.concord.org/readme.html</a></strong></dd>
+  <dt><strong>Development site:</strong></dt>
   <dd><strong><a href="http://lab.dev.concord.org/">lab.dev.concord.org</a></strong></dd>
-  <dt>Readme on the development site:</dt>
-  <dd><strong><a href="http://lab.dev.concord.org/readme.html">lab.dev.concord.org/readme.html</a></strong></dd>
-  <dt>Source code repository:</dt>
+  <dt><strong>Source code repository:</strong></dt>
   <dd><strong><a href="https://github.com/concord-consortium/lab">github.com/concord-consortium/lab</a></strong></dd>
 </dl>
 
@@ -34,7 +36,7 @@
 from a web-server and do not resolve properly at
 <a href="https://github.com/concord-consortium/lab">github.com/concord-consortium/lab</a>.
 A live version of the readme is always available here:
-<a href="http://lab.dev.concord.org/readme.html">lab.dev.concord.org/readme.html</a>.</em></p>
+<a href="http://lab.concord.org/readme.html">lab.concord.org/readme.html</a>.</em></p>
 
 <p><strong>Table of Contents</strong></p>
 
@@ -86,7 +88,12 @@ A live version of the readme is always available here:
       </li>
     </ul>
   </li>
-  <li><a href="#project-configuration">Project Configuration</a></li>
+  <li><a href="#project-configuration">Project Configuration</a>    <ul>
+      <li><a href="#interactive-share-link">Interactive Share link</a></li>
+      <li><a href="#google-analytics">Google Analytics</a></li>
+      <li><a href="#limitations-changing-configuration-in-an-archive-distribution">Limitations changing configuration in an archive distribution</a></li>
+    </ul>
+  </li>
   <li><a href="#contributing-to-lab">Contributing to Lab</a></li>
   <li><a href="#continuous-integration-on-travis-ci">Continuous Integration on travis-ci</a>    <ul>
       <li><a href="#setting-up-travis-ci-integration">Setting up travis-ci integration</a></li>
@@ -103,7 +110,7 @@ A live version of the readme is always available here:
           <li><a href="#srcvendor"><code>src/vendor</code></a></li>
           <li><a href="#srcresources"><code>src/resources</code></a></li>
           <li><a href="#srcsass"><code>src/sass</code></a></li>
-          <li><a href="#srcmw-helpers"><code>src/mw-helpers</code></a></li>
+          <li><a href="#srchelpers"><code>src/helpers</code></a></li>
           <li><a href="#srcjnlp"><code>src/jnlp</code></a></li>
         </ul>
       </li>
@@ -939,27 +946,88 @@ content-encoding: pack200-gzip
 
 <h2 id="project-configuration">Project Configuration</h2>
 
-<p>Configruation variables used by the runtime JavaScript code are available in the JavaScript global
+<p>Configuration variables used by the runtime JavaScript code are available in the JavaScript global
 object <code>Lab.config</code>.</p>
-
-<p>Currently the only attribute in <code>Lab.config</code> is a boolean attribute named <code>sharing</code> which is used to
-determine if the <strong>Sharing</strong> link in the Interactives will be enabled. The default value for this
-is <code>true</code>.</p>
 
 <p>In a full build environment the JavaScript configuration is set in the <code>:jsconfg</code> section of
 <code>config/config.yml</code>:</p>
 
 <pre><code>:jsconfig:
   :sharing: true
+  :home: http://lab.concord.org
+  :homeInteractivePath: /examples/interactives/interactive.html
+  :homeEmbeddablePath: /examples/interactives/embeddable.html
+  :utmCampaign: &lt;external-campaign-key&gt;
 </code></pre>
+
+<p><strong><code>sharing</code></strong> A boolean attribute used to determine if the <strong>Share</strong> link in the Interactives will be enabled.
+The default value for this is <code>true</code>.</p>
+
+<p><strong><code>home</code></strong> Url used to reference cannonical site when sharing is turned off.</p>
+
+<p><strong><code>homeInteractivePath</code></strong> Path to page to run non-embeddable version of Interactives.</p>
+
+<p><strong><code>homeEmbeddablePath</code></strong> Path to page to run embeddable version of Interactives.</p>
+
+<p><strong><code>utmCampaign</code></strong> If present a UTM suffix is added to links in the About box.
+Set to a string which identifies the external organization.</p>
 
 <p>When the build environment is active these values are used to generate JavaScript code integrated
 into the project by the Ruby program:
 <a href="https://github.com/concord-consortium/lab/blob/master/script/generate-js-config.rb"><code>script/generate-js-config.rb</code></a></p>
 
-<p>If you have downloaded a distribution archive and you can find the code that initializes the JavaScript
+<h3 id="interactive-share-link">Interactive Share link</h3>
+
+<p>Normally the <strong>Share</strong> link in an Interactive is enabled. The <strong>Share</strong> dialog allows a user to more easily
+share the Interactive in an email or IM, and also provides generated HTML content that can be copied and pasted
+to embed the Interactive into a blog or web page.</p>
+
+<p>If you are hosting this content on an external server where supporting
+sharing is impractical in some manner you can disable the display of the Interactive <strong>Share</strong> link by setting
+<code>:sharing</code> in <code>config/config.yml</code> to <code>false</code>:</p>
+
+<pre><code>:jsconfig:
+  :sharing: false
+  :home: http://lab.concord.org
+  :homeInteractivePath: /examples/interactives/interactive.html
+  :homeEmbeddablePath: /examples/interactives/embeddable.html
+  :utmCampaign: &lt;external-campaign-key&gt;
+</code></pre>
+
+<p>The additional values for <code>:home</code>, <code>homeInteractivePath</code>, and <code>homeEmbeddablePath</code> are used to construct an
+additional paragraph in the Interactive <strong>About</strong> box providing a link to the Interactive on the production
+<a href="http://lab.concord.org">site for the project</a>.</p>
+
+<p>The value for <code>utmCampaign</code> is optional. If present and the <strong>home</strong> site has enabled Google Analytics
+setting a value for <code>utmCampaign</code> will allow better tracking of users who click through links in the
+Interactive <strong>About</strong> box.</p>
+
+<h3 id="google-analytics">Google Analytics</h3>
+
+<p>In addition there is a optional section in <code>config/config.yml</code> which if present enables embedding google
+analytics script into the head of the main <code>index.html</code> and all html pages in the <code>examples/</code> and <code>doc/</code>
+directories. This includes all the Interactives which are located in <code>examples/interactives</code> directory.</p>
+
+<p>Include your Google Analytics account number here to enable insertion of the Google Analytics
+script by the build system into the generated HTML pages.</p>
+
+<pre><code>:google_analytics:
+  :account_id: &lt;account-id&gt;
+</code></pre>
+
+<p>The content from which the embedded Google Analytics script is generated is contained in this Ruby file:
+<a href="https://github.com/concord-consortium/lab/blob/master/script/setup.rb"><code>script/setup.rb</code></a>.</p>
+
+<h3 id="limitations-changing-configuration-in-an-archive-distribution">Limitations changing configuration in an archive distribution</h3>
+
+<p>If you have downloaded a distribution archive you can manually modify the code that initializes the JavaScript
 runtime configuration in the files: <code>lab/lab.js</code> and <code>lab/lab.min.js</code>. Editing the value for <code>Lab.config.sharing</code>
 in these files will affect the JavaScript runtime settings when these files are loaded.</p>
+
+<p>Additionally you can turn on UTM suffixes by adding a string value to <code>Lab.config.utmCampaign</code>`.</p>
+
+<p>However generation and insertion of the Google Analytics script into HTML pages can only be done by
+setting a value for the <code>:google_analytics :account_id</code> and running the build process.</p>
 
 <h2 id="contributing-to-lab">Contributing to Lab</h2>
 
@@ -1129,10 +1197,10 @@ one or more of the following licenses: <a href="http://www.opensource.org/licens
 <p>The <strong><code>src/sass</code></strong> directory contains Sass templates and the Bourbon Sass library are are used
 during the build process to generate CSS resources.</p>
 
-<h4 id="srcmw-helpers"><code>src/mw-helpers</code></h4>
+<h4 id="srchelpers"><code>src/helpers</code></h4>
 
-<p>The <strong><code>src/mw-helpers</code></strong> directory contains JavaScript modules only used as part of the testing and
-build process and are not copied to <strong><code>server/public/resources</code></strong>.</p>
+<p>The <strong><code>src/helpers</code></strong> directory contains CoffeeScript and JavaScript modules as well as Ruby programs
+only used as part of the testing and build process and are not copied to <strong><code>server/public/resources</code></strong>.</p>
 
 <h4 id="srcjnlp"><code>src/jnlp</code></h4>
 
