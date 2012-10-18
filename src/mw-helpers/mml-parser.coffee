@@ -104,7 +104,11 @@ parseMML = (mmlString) ->
         # Unit conversion.
         vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
         vy = -vy / 100
-        friction = friction * CLASSIC_TO_NEXTGEN_FRICTION_RATIO
+
+        # Divide by 120, as friction for obstacles is defined *per mass unit*!
+        # CLASSIC_TO_NEXTGEN_FRICTION_RATIO includes mass conversion,
+        # which is unnecessary when value is defined *per mass unit*.
+        friction *= CLASSIC_TO_NEXTGEN_FRICTION_RATIO / 120
 
         # External forces are specified per mass unit. So, in fact it's acceleration.
         # Convert from units of 0.1Å/fs^2 to units of nm/fs^2
