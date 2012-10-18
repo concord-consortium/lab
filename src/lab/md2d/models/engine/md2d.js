@@ -1933,6 +1933,45 @@ define(function (require, exports, module) {
         } // end of integration loop
       },
 
+      /**
+        Returns just enough information about the engine state to allow a second engine to act as a
+        clone of this one for purposes of model integration.
+
+        The results are an internal data structure, intended not for serialization, but for passing
+        to readCompleteStateFromJSON in order to allow a second engine instance in a worker thread
+        to perform the integration, while still allowing this instance to be queried for useful
+        information.
+
+        @returns JSON (i.e., an object that can be passed to JSON.stringify) which represents the
+        engine state.
+      */
+      getCompleteStateAsJSON: function() {
+        return {
+          useLennardJonesInteraction : useLennardJonesInteraction,
+          useCoulombInteraction      : useCoulombInteraction,
+          hasChargedAtoms            : hasChargedAtoms,
+          useThermostat              : useThermostat,
+          gravitationalField         : gravitationalField,
+          T_target                   : T_target,
+          size                       : size,
+          viscosity                  : viscosity,
+          time                       : time,
+          N_elements                 : N_elements,
+          elements                   : elements,
+          N                          : N,
+          atoms                      : atoms,
+          N_radialBonds              : N_radialBonds,
+          radialBonds                : radialBonds,
+          radialBondMatrix           : radialBondMatrix,
+          N_angularBonds             : N_angularBonds,
+          angularBonds               : angularBonds,
+          N_obstacles                : N_obstacles,
+          obstacles                  : obstacles,
+          N_springForces             : N_springForces,
+          springForces               : springForces
+        };
+      },
+
       getTotalMass: function() {
         return totalMass;
       },
