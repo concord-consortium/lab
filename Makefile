@@ -211,7 +211,7 @@ server/public/imports:
 	rsync -aq imports/ server/public/imports/
 	./node-bin/convert-mml-files
 	./node-bin/create-mml-html-index
-	./src/mw-helpers/post-batch-processor.rb
+	./src/helpers/md2d/post-batch-processor.rb
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/sam-activities server/public/imports/legacy-mw-content/converted/
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/conversion-and-physics-examples server/public/imports/legacy-mw-content/converted/
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/other-activities server/public/imports/legacy-mw-content/converted/

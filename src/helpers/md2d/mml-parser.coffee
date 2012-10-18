@@ -1,5 +1,5 @@
 cheerio   = require 'cheerio'
-constants = require '../lab/md2d/models/engine/constants'
+constants = require '../../lab/md2d/models/engine/constants'
 unit      = constants.unit
 
 # Used throughout Classic MW to convert energy gradient values measured in units of eV/0.1Å to

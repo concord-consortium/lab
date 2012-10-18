@@ -3,7 +3,7 @@
 fs         = require 'fs'
 path       = require 'path'
 
-mw_helpers = path.normalize(path.dirname(require.main.filename) + "/../src/mw-helpers")
+mw_helpers = path.normalize(path.dirname(require.main.filename) + "/../src/helpers/md2d")
 
 md2dLoader = require mw_helpers  + '/md2d-loader'
 

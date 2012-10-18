@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var converter = require('../src/mw-helpers/mw-batch-converter'),
+var converter = require('../src/helpers/md2d/mw-batch-converter'),
     sys = require('sys'),
     nConverted;
 

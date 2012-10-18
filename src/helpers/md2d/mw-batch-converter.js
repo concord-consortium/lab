@@ -18,8 +18,8 @@ var parseMML = require('./mml-parser').parseMML,
     sys = require('sys'),
 
     rootPath = require.main ? path.dirname(require.main.filename) : process.cwd(),
-    legacyFolderPath = path.normalize(rootPath + '/../imports/legacy-mw-content/'),
-    convertedFolderPath = path.normalize(rootPath + '/../server/public/imports/legacy-mw-content/converted/'),
+    legacyFolderPath = path.normalize(rootPath + '../../imports/legacy-mw-content/'),
+    convertedFolderPath = path.normalize(rootPath + '../../server/public/imports/legacy-mw-content/converted/'),
     templatePath = legacyFolderPath + 'legacyMMLRunnables.jade';
 
 /**

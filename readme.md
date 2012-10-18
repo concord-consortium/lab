@@ -893,10 +893,10 @@ The **`src/resources`** directory contains image resources and are copied direct
 The **`src/sass`** directory contains Sass templates and the Bourbon Sass library are are used
 during the build process to generate CSS resources.
 
-#### `src/mw-helpers`
+#### `src/helpers`
 
-The **`src/mw-helpers`** directory contains JavaScript modules only used as part of the testing and
-build process and are not copied to **`server/public/resources`**.
+The **`src/helpers`** directory contains CoffeeScript and JavaScript modules as well as Ruby programs
+only used as part of the testing and build process and are not copied to **`server/public/resources`**.
 
 #### `src/jnlp`
 

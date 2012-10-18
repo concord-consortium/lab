@@ -5,7 +5,7 @@
   inserting into CouchDB.
 ###
 
-parseMML = require '../src/mw-helpers/mml-parser'
+parseMML = require '../src/helpers/md2d/mml-parser'
 fs       = require 'fs'
 mkdirp   = require 'mkdirp'
 
