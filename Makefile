@@ -48,6 +48,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.js
 
 all: \
+	check-ruby \
 	src/vendor/d3 \
 	node_modules \
 	bin \
@@ -61,6 +62,10 @@ all: \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	server/public/index.css
+
+.PHONY: check-rub
+check-ruby:
+	ruby script/check-ruby.rb
 
 .PHONY: everything
 everything:
@@ -96,6 +101,7 @@ clean:
 	rm -f src/vendor/jquery/dist/jquery*.js
 	rm -f src/vendor/jquery-ui/dist/jquery-ui*.js
 	rm -f src/vendor/lightgl.js/lightgl.js
+	cd src/vendor/jquery && npm install grunt@0.3.15
 
 clean-jnlp:
 	rm -rf server/public/jnlp
