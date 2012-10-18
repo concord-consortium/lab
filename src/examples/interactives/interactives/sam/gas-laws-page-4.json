@@ -29,12 +29,12 @@
     {
       "type": "slider",
       "id": "temperature-slider",
-      "min": 0.001,
+      "min": 100,
       "max": 1000,
       "labels": [
         {
-          "value": 0.001,
-          "label": "0 K"
+          "value": 100,
+          "label": "100 K"
         },
         {
           "value": 1000,
