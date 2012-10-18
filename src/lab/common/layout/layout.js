@@ -58,12 +58,20 @@ define(function (require) {
   };
 
   layout.setBodyEmsize = function() {
-    var emsize;
+    var emsize,
+        $buttons = $('button.component');
     if (!layout.display) {
       layout.display = layout.getDisplayProperties();
     }
     emsize = Math.min(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
     $('body').css('font-size', emsize + 'em');
+    if (emsize <= 0.5) {
+      $buttons.css('font-size', '2em');
+      $buttons.css('height', '2em');
+    } else {
+      $buttons.css('font-size', '');
+      $buttons.css('height', '');
+    }
   };
 
   layout.getVizProperties = function(obj) {
