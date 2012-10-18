@@ -48,6 +48,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.js
 
 all: \
+	check-ruby \
 	src/vendor/d3 \
 	node_modules \
 	bin \
