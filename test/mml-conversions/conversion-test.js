@@ -1,10 +1,10 @@
-var mmlParser = require('../../src/mw-helpers/mml-parser'),
+var mmlParser = require('../../src/helpers/md2d/mml-parser'),
     fs = require("fs"),
 
     vows = require("vows"),
     assert = require("assert"),
 
-    suite = vows.describe('mw-helpers/mml-parser');
+    suite = vows.describe('helpers/md2d/mml-parser');
 
 suite.addBatch({
   "MML to JSON Conversion": {
