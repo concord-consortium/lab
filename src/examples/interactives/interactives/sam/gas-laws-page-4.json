@@ -30,64 +30,20 @@
       "type": "slider",
       "id": "temperature-slider",
       "min": 0.001,
-      "max": 5000,
+      "max": 1000,
       "labels": [
         {
           "value": 0.001,
           "label": "0 K"
         },
         {
-          "value": 5000,
-          "label": "5000 K"
+          "value": 1000,
+          "label": "1000 K"
         }
       ],
       "steps": 50,
       "title": "Temperature",
       "property": "temperature"
-    },
-    {
-      "type": "slider",
-      "id": "force-slider",
-      "min": -10,
-      "max": 10,
-      "labels": [
-        {
-          "value": -10,
-          "label": "left"
-        },
-        {
-          "value": 0,
-          "label": "0"
-        },
-        {
-          "value": 10,
-          "label": "right"
-        }
-      ],
-      "steps": 50,
-      "title": "Obstacle Horizonal Force",
-      "initialValue": -1,
-      "action": "setObstacleProperties(0, {externalFx: value * 1e-6})"
-    },
-    {
-      "type": "slider",
-      "id": "mass-slider",
-      "min": 1,
-      "max": 10000,
-      "labels": [
-        {
-          "value": 1,
-          "label": "1 Dal"
-        },
-        {
-          "value": 10000,
-          "label": "10000 Dal"
-        }
-      ],
-      "steps": 200,
-      "title": "Obstacle Mass",
-      "initialValue": 7320,
-      "action": "setObstacleProperties(0, {mass: value})"
     }
   ]
 }
