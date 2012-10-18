@@ -59,18 +59,20 @@ define(function (require) {
 
   layout.setBodyEmsize = function() {
     var emsize,
-        $buttons = $('button.component');
+        $buttons = $('button.component'),
+        minButtonFontSize;
     if (!layout.display) {
       layout.display = layout.getDisplayProperties();
     }
     emsize = Math.min(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
     $('body').css('font-size', emsize + 'em');
     if (emsize <= 0.5) {
-      $buttons.css('font-size', '2em');
-      $buttons.css('height', '2em');
+      minButtonFontSize = 1.4 * 0.5;
+      $buttons.css('font-size', minButtonFontSize + 'em');
+      // $buttons.css('height', minButtonFontSize 'em');
     } else {
       $buttons.css('font-size', '');
-      $buttons.css('height', '');
+      // $buttons.css('height', '');
     }
   };
 
