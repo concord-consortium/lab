@@ -67,7 +67,7 @@ define(function (require) {
     emsize = Math.min(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
     $('body').css('font-size', emsize + 'em');
     if (emsize <= 0.5) {
-      minButtonFontSize = 1.4 * 0.5;
+      minButtonFontSize = 1.4 * 0.5/emsize;
       $buttons.css('font-size', minButtonFontSize + 'em');
       // $buttons.css('height', minButtonFontSize 'em');
     } else {
@@ -381,6 +381,7 @@ define(function (require) {
           modelWidthFactor,
           modelPaddingFactor,
           modelHeightFactor = 0.85,
+          bottomFactor = 0.0025;
           viewSizes = {},
           containerWidth = $(window).width(),
           containerHeight = $(window).height(),
@@ -401,10 +402,17 @@ define(function (require) {
       if (viewLists.energyGraphs) {
         modelWidthFactor -= 0.35;
       }
+
+      // account for proportionally larger buttons when embeddable size gets very small
+      if (emsize <= 0.5) {
+        bottomFactor *= 0.5/emsize;
+      }
+
       viewLists.bottomItems = $('#bottom').children().length;
       if (viewLists.bottomItems) {
-        modelHeightFactor -= ($('#bottom').height() * 0.0025);
+        modelHeightFactor -= ($('#bottom').height() * bottomFactor);
       }
+
       modelWidth = containerWidth * modelWidthFactor;
       modelHeight = modelWidth / modelAspectRatio;
       if (modelHeight > containerHeight * modelHeightFactor) {
