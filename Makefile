@@ -15,6 +15,8 @@ COMMON_SRC_FILES := $(shell find src/lab/common -type f -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f -print)
 ENERGY2D_SRC_FILES := $(shell find src/lab/energy2d -type f -print)
 MD2D_SRC_FILES := $(shell find src/lab/md2d -type f -print)
+MD2D_WORKER_FILES := $(shell find src/lab/md2d/models/engine -type f -print) \
+  src/lab/md2d/worker.js
 
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
 LAB_GLSL_FILES := $(shell find src/lab -name '*.glsl' -print)
@@ -43,6 +45,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.md2d.js \
+	server/public/lab/lab.md2d-worker.js \
 	server/public/lab/lab.version.js \
 	server/public/lab/lab.config.js \
 	server/public/lab/lab.js
@@ -421,6 +424,10 @@ server/public/lab/lab.md2d.js: \
 	$(MD2D_SRC_FILES) \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/md2d/md2d.build.js
+
+server/public/lab/lab.md2d-worker.js: \
+	$(MD2D_WORKER_FILES)
+	$(R_OPTIMIZER) -o src/lab/md2d/md2d-worker.build.js
 
 server/public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
 	cat $^ | $(COFFEESCRIPT_COMPILER) --stdio --print > $@
