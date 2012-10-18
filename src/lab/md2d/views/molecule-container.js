@@ -286,8 +286,8 @@ define(function (require) {
     function get_obstacle_color(i) {
       return "rgb(" +
         obstacles.colorR[i] + "," +
-        obstacles.colorB[i] + "," +
-        obstacles.colorG[i] + ")";
+        obstacles.colorG[i] + "," +
+        obstacles.colorB[i] + ")";
     }
 
     function get_obstacle_visible(i) {
