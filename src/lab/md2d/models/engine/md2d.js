@@ -179,11 +179,15 @@ define(function (require, exports, module) {
     "mass",
     "vx",
     "vy",
-    "externalFx",
-    "externalFy",
-    "friction",
-    "xPrev",
-    "yPrev",
+    "externalFx", // External horizontal force, per mass unit.
+    "externalFy", // External vertical force, per mass unit.
+    "friction",   // Damping force, per mass unit.
+    "westProbe",  // Pressure probe, west side.
+    "northProbe", // Pressure probe, north side.
+    "eastProbe",  // Pressure probe, east side.
+    "southProbe", // Pressure probe, south side.
+    "xPrev",      // [Internal property used in calculations!]
+    "yPrev",      // [Internal property used in calculations!]
     "colorR",
     "colorG",
     "colorB",
@@ -345,12 +349,19 @@ define(function (require, exports, module) {
         obstacleExtFY,
         obstacleFriction,
         obstacleMass,
-        obstacleXPrev,
-        obstacleYPrev,
+        obstacleWestProbe,
+        obstacleNorthProbe,
+        obstacleEastProbe,
+        obstacleSouthProbe,
         obstacleColorR,
         obstacleColorG,
         obstacleColorB,
         obstacleVisible,
+
+        // Properties used only during internal calculations (e.g. shouldn't
+        // be returned during getObstacleProperties(i) call).
+        obstacleXPrev,
+        obstacleYPrev,
 
         // An object that contains references to the above obstacle-property arrays.
         // Left undefined if there are no obstacles.
@@ -515,22 +526,26 @@ define(function (require, exports, module) {
           },
 
           obstacles: function() {
-            obstacleX        = obstacles.x;
-            obstacleY        = obstacles.y;
-            obstacleWidth    = obstacles.width;
-            obstacleHeight   = obstacles.height;
-            obstacleMass     = obstacles.mass;
-            obstacleVX       = obstacles.vx;
-            obstacleVY       = obstacles.vy;
-            obstacleExtFX    = obstacles.externalFx;
-            obstacleExtFY    = obstacles.externalFy;
-            obstacleFriction = obstacles.friction;
-            obstacleXPrev    = obstacles.xPrev;
-            obstacleYPrev    = obstacles.yPrev;
-            obstacleColorR   = obstacles.colorR;
-            obstacleColorG   = obstacles.colorG;
-            obstacleColorB   = obstacles.colorB;
-            obstacleVisible  = obstacles.visible;
+            obstacleX          = obstacles.x;
+            obstacleY          = obstacles.y;
+            obstacleWidth      = obstacles.width;
+            obstacleHeight     = obstacles.height;
+            obstacleMass       = obstacles.mass;
+            obstacleVX         = obstacles.vx;
+            obstacleVY         = obstacles.vy;
+            obstacleExtFX      = obstacles.externalFx;
+            obstacleExtFY      = obstacles.externalFy;
+            obstacleFriction   = obstacles.friction;
+            obstacleWestProbe  = obstacles.westProbe;
+            obstacleNorthProbe = obstacles.northProbe;
+            obstacleEastProbe  = obstacles.eastProbe;
+            obstacleSouthProbe = obstacles.southProbe;
+            obstacleXPrev      = obstacles.xPrev;
+            obstacleYPrev      = obstacles.yPrev;
+            obstacleColorR     = obstacles.colorR;
+            obstacleColorG     = obstacles.colorG;
+            obstacleColorB     = obstacles.colorB;
+            obstacleVisible    = obstacles.visible;
           },
 
           springForces: function() {
@@ -611,6 +626,10 @@ define(function (require, exports, module) {
           obstacles.externalFx = arrays.create(num, 0, float32);
           obstacles.externalFy = arrays.create(num, 0, float32);
           obstacles.friction   = arrays.create(num, 0, float32);
+          obstacles.westProbe  = arrays.create(num, 0, uint8);
+          obstacles.northProbe = arrays.create(num, 0, uint8);
+          obstacles.eastProbe  = arrays.create(num, 0, uint8);
+          obstacles.southProbe = arrays.create(num, 0, uint8);
           obstacles.xPrev      = arrays.create(num, 0, float32);
           obstacles.yPrev      = arrays.create(num, 0, float32);
           obstacles.colorR     = arrays.create(num, 0, float32);
@@ -1496,7 +1515,11 @@ define(function (require, exports, module) {
         return springForceAtomIndex[i];
       },
 
-      addObstacle: function(x, y, vx, vy, externalFx, externalFy, friction, width, height, density, color, visible) {
+      // TODO: Refactor this function with monster argument lists. Pass object with properties
+      //       instead. Both addObstacle and initializeObstacles functions will be simpler.
+      //       Refactor other addX functions to keep consistency.
+      addObstacle: function(x, y, vx, vy, externalFx, externalFy, friction, width, height,
+        density, westProbe, northProbe, eastProbe, southProbe, color, visible) {
         var obstaclemass;
 
         if (N_obstacles + 1 > obstacles.x.length) {
@@ -1524,6 +1547,11 @@ define(function (require, exports, module) {
         obstaclemass = density * width * height;
 
         obstacleMass[N_obstacles] = obstaclemass;
+
+        obstacleWestProbe[N_obstacles]  = westProbe;
+        obstacleNorthProbe[N_obstacles] = northProbe;
+        obstacleEastProbe[N_obstacles]  = eastProbe;
+        obstacleSouthProbe[N_obstacles] = southProbe;
 
         obstacleColorR[N_obstacles] = color[0];
         obstacleColorG[N_obstacles] = color[1];
@@ -1692,6 +1720,10 @@ define(function (require, exports, module) {
             props.width[i],
             props.height[i],
             props.density[i],
+            props.westProbe[i],
+            props.northProbe[i],
+            props.eastProbe[i],
+            props.southProbe[i],
             props.color[i],
             props.visible[i]
           );
