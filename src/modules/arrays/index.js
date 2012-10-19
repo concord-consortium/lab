@@ -14,8 +14,8 @@ define(function (require, exports, module) {
       // ... except Safari.
       notSafari = (function() {
         var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-            match = navigator.userAgent.match(safarimatch);
-        return (match && match[3]) ? false: true;
+            match = (typeof navigator !== 'undefined') && navigator.userAgent.match(safarimatch);
+        return !match || !match[3];
       }());
 
   arrays.version = '0.0.1';
