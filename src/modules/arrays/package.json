@@ -2,7 +2,7 @@
   "author": "Stephen Bannasch <sbannasch@concord.org>",
   "name": "arrays",
   "description": "Utilities for creating and manipulating Typed or Regular Arrays",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "amdefine": ">=0.0.2"
   },
