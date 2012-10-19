@@ -159,7 +159,9 @@ node_modules/jade:
 node_modules/mkdirp:
 	npm install
 
-node_modules/arrays:
+node_modules/arrays: \
+	src/modules/arrays/index.js \
+	src/modules/arrays/package.json
 	npm install src/modules/arrays
 
 bin:
