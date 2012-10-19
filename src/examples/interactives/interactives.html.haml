@@ -29,8 +29,10 @@
     #header
       %a#logo{:href => "http://www.concord.org/"}
         %img{:src => "../../resources/layout/cc-logo.png"}/
-      %h1
-        Next Generation MW Interactives Demo
+      %h1<
+        %a(href='../..')> Lab
+        \:
+        %a(href="") Next Generation MW Interactives
       Select Interactive:
       %select#select-interactive
         %optgroup{:label => "Basic Interactive Examples"}
