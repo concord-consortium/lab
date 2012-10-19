@@ -123,8 +123,23 @@ define(function (require, exports, module) {
   arrays.copy = function(source, dest) {
     var len = source.length,
         i = -1;
-    while(++i < len) { dest[i] = source[i]; }
-    if (arrays.constructor_function(dest) === Array) dest.length = len;
+
+    if (arrays.constructor_function(dest) === Array) {
+      while(++i < len) { dest[i] = source[i]; }
+      dest.length = len;
+    } else {
+      // destination is a Typed Array, can use set method
+      if (dest.length >= source.length) {
+        dest.set(source);
+      } else {
+        if (arrays.constructor_function(source) === Array) {
+          dest.set(source.slice(0, dest.length));
+        } else {
+          dest.set(source.subarray(0, dest.length));
+        }
+      }
+    }
+
     return dest;
   };
 
