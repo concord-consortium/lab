@@ -1640,6 +1640,15 @@ define(function (require, exports, module) {
 
         density = parseFloat(density);      // may be string "Infinity"
 
+        // Mimic Classic MW behavior. When obstacle density is
+        // bigger than 500 (500 * 1.2e6 in Next Gen units),
+        // it's considered to be fixed (in Next Gen Infinity mass
+        // is expected).
+        // TODO: describe unit conversion better.
+        if (density >= 500 * 1.2e6) {
+          density = Infinity;
+        }
+
         obstaclemass = density * width * height;
 
         obstacleMass[N_obstacles] = obstaclemass;
