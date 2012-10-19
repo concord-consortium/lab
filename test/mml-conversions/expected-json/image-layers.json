@@ -205,6 +205,18 @@
     "density": [
       "Infinity"
     ],
+    "westProbe": [
+      false
+    ],
+    "northProbe": [
+      false
+    ],
+    "eastProbe": [
+      false
+    ],
+    "southProbe": [
+      false
+    ],
     "color": [
       [
         204,

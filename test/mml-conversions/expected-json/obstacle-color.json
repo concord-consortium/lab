@@ -64,6 +64,10 @@
       "width": [ 1.11 ],
       "height": [ 0.56 ],
       "density": [ "Infinity" ],
+      "westProbe": [ false ],
+      "northProbe": [ false ],
+      "eastProbe": [ false ],
+      "southProbe": [ false ],
       "color": [ [0, 0, 255] ],
       "visible": [ true ]
   }

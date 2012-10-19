@@ -1,7 +1,7 @@
 {
   "temperature_control": false,
-  "width": 4,
-  "height": 4,
+  "width": 3.88,
+  "height": 1.98,
   "viscosity": 1,
   "keShading": false,
   "chargeShading": false,
@@ -55,66 +55,114 @@
   },
   "obstacles": {
     "x": [
-      0.74,
-      2.06
+      0.4,
+      1.19,
+      1.98,
+      2.87
     ],
     "y": [
-      0.3700000000000001,
-      1.82
+      0.8,
+      0.77,
+      0.67,
+      0.59
     ],
     "vx": [
+      0,
+      0,
       0,
       0
     ],
     "vy": [
       0,
+      0,
+      0,
       0
     ],
     "externalFx": [
+      0,
+      0,
       0,
       0
     ],
     "externalFy": [
       0,
+      0,
+      0,
       0
     ],
     "friction": [
       0,
+      0,
+      0,
       0
     ],
     "height": [
-      3.46,
-      0.76
+      0.77,
+      0.79,
+      0.85,
+      0.91
     ],
     "width": [
-      0.78,
-      1.53
+      0.44,
+      0.45,
+      0.42,
+      0.44
     ],
     "density": [
+      "Infinity",
+      "Infinity",
       "Infinity",
       "Infinity"
     ],
     "westProbe": [
+      true,
+      false,
       false,
       false
     ],
     "northProbe": [
       false,
+      true,
+      false,
       false
     ],
     "eastProbe": [
       false,
+      false,
+      true,
       false
     ],
     "southProbe": [
       false,
-      false
+      false,
+      false,
+      true
     ],
     "color": [
-      [ 128, 128, 128 ],
-      [ 128, 128, 128 ]
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ]
     ],
     "visible": [
+      true,
+      true,
       true,
       true
     ]

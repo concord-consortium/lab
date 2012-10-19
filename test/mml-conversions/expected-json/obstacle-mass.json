@@ -75,6 +75,10 @@
       "externalFy": [ 0 ],
       "friction": [ 0 ],
       "density": [ 240000 ],
+      "westProbe": [ false ],
+      "northProbe": [ false ],
+      "eastProbe": [ false ],
+      "southProbe": [ false ],
       "visible": [ true ]
   }
 }
