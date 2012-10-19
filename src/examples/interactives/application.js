@@ -536,7 +536,7 @@ var ROOT = "/examples",
         timeFormatter = d3.format("5.0f"),
         timePrefix = "",
         timeSuffix = " (fs)",
-        column_titles = ['X', 'Y', 'VX', 'VY', 'AX', 'AY', 'PX', 'PY', 'SPEED', 'CHARGE', 'RADIUS', 'FRICTION', 'VISIBLE', 'ELEMENT', 'MASS'],
+        column_titles = ['x', 'y', 'vx', 'vy', 'ax', 'ay', 'px', 'py', 'speed', 'charge', 'radius', 'friction', 'visible', 'element', 'mass'],
         i_formatter = d3.format(" 2d"),
         charge_formatter = d3.format(" 1.1f"),
         f2_formatter = d3.format(" 1.2f"),
@@ -548,7 +548,7 @@ var ROOT = "/examples",
                       e_formatter, e_formatter, e_formatter,
                       charge_formatter, f2_formatter, f2_formatter, i_formatter, i_formatter, i_formatter];
 
-    atoms.length = nodes[0].length;
+    atoms.length = nodes.x.length;
     reset = reset || false;
 
     function table_is_empty() {
@@ -584,7 +584,7 @@ var ROOT = "/examples",
         $cells[0].textContent = index;
         for(i = 0; i < column_titles.length; i++) {
           column = column_titles[i];
-          value = nodes[model.INDICES[column]][index];
+          value = nodes[column][index];
           textValue = formatters[i](value);
           $cells[i+1].textContent = textValue;
         }
@@ -592,7 +592,7 @@ var ROOT = "/examples",
         add_data($row, index);
         for(i = 0; i < column_titles.length; i++) {
           column = column_titles[i];
-          value = nodes[model.INDICES[column]][index];
+          value = nodes[column][index];
           textValue = formatters[i](value);
           add_data($row, textValue);
         }
