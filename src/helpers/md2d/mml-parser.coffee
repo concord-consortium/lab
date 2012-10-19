@@ -99,6 +99,10 @@ parseMML = (mmlString) ->
         externalFy = parseFloat (getProperty $node, 'externalFy') || 0
         friction   = parseFloat (getProperty $node, 'friction') || 0
         density    = parseFloat getProperty $node, 'density'
+        westProbe  = parseBoolean (getProperty $node, 'westProbe'), false
+        northProbe = parseBoolean (getProperty $node, 'northProbe'), false
+        eastProbe  = parseBoolean (getProperty $node, 'eastProbe'), false
+        southProbe = parseBoolean (getProperty $node, 'southProbe'), false
         visible    = parseBoolean (getProperty $node, 'visible'), true
 
         # Unit conversion.
@@ -141,7 +145,16 @@ parseMML = (mmlString) ->
         [height, width] = toNextgenLengths height, width
         y               = y - height     # flip to lower-left coordinate system
 
-        obstacles.push { x, y, vx, vy, externalFx, externalFy, friction, height, width, density, color, visible }
+        obstacles.push {
+          x, y,
+          height, width,
+          vx, vy,
+          externalFx, externalFy,
+          friction,
+          density,
+          westProbe, northProbe, eastProbe, southProbe,
+          color, visible
+        }
 
       obstacles
 
@@ -520,7 +533,8 @@ parseMML = (mmlString) ->
     #   json.textBoxes = textBoxes
 
     if obstacles.length > 0
-      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction', 'height', 'width', 'density', 'color', 'visible'
+      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction',
+        'height', 'width', 'density', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
 
     json.temperature = temperature if temperature
 
