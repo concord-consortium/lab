@@ -469,6 +469,27 @@ define(function (require, exports, module) {
         },
 
         /**
+          Copy all the arrays in source to dest. Here, `source` (like `dest`) is expected to be
+          either an array or a hash containing the arrays to be copied.
+        */
+        copyArrays = function(source, dest) {
+          var i, len, prop;
+
+          if (Array.isArray(source)) {
+            for (i = 0, len = source.length; i < len; i++) {
+              if (!source[i]) source[i] = [];
+              arrays.copy(source[i], dest[i]);
+            }
+          } else {
+            for (prop in source) {
+              if (source.hasOwnProperty(prop)) {
+                arrays.copy(source[prop], dest[prop]);
+              }
+            }
+          }
+        },
+
+        /**
           Set up "shortcut" references, e.g., x = atoms.x
         */
         assignShortcutReferences = {
@@ -1932,6 +1953,114 @@ define(function (require, exports, module) {
           adjustTemperature();
         } // end of integration loop
       },
+
+      /**
+        Given a JSON hash returned by getCompleteStateFromJSON(), updates the model state to match.
+
+        Intended for creating a clone of the main-thread engine in a Web Worker.
+      */
+      setCompleteStateFromJSON: function(json) {
+        var i, j, len;
+
+        useLennardJonesInteraction = json.useLennardJonesInteraction;
+        useCoulombInteraction      = json.useCoulombInteraction;
+        hasChargedAtoms            = json.hasChargedAtoms;
+        useThermostat              = json.useThermostat;
+        gravitationalField         = json.gravitationalField;
+        T_target                   = json.T_target;
+        size                       = json.size;
+        viscosity                  = json.viscosity,
+        time                       = json.time;
+
+        // TODO: now that we've worked out the fiddly bits of *what* to do, _DRY this up!!!_:
+
+        // elements
+        if (json.elements && !elements) createElementsArray(json.elements.mass.length);
+
+        if (elements.mass.length !== json.elements.mass.length) {
+          extendArrays(elements, json.elements.mass.length);
+          assignShortcutReferences.elements();
+        }
+        copyArrays(json.elements, elements);
+        N_elements = json.N_elements;
+
+        for (i = 0; i < N_elements; i++) {
+          if (!epsilon[i]) epsilon[i] = [];
+          if (!sigma[i]) sigma[i] = [];
+          if (!cutoffDistance_LJ_sq[i]) cutoffDistance_LJ_sq[i] = [];
+          if (!ljCalculator[i]) ljCalculator[i] = [];
+
+          for (j = 0; j <= i; j++) {
+            setPairwiseLJProperties(i, j);
+          }
+        }
+        elementsHaveBeenCreated = true;
+
+        // atoms
+        if (json.atoms) {
+          if (!atoms) engine.createAtoms({num: json.atoms.x.length});
+          if (atoms.x.length !== json.atoms.x.length) {
+            extendArrays(atoms, json.atoms.x.length);
+            assignShortcutReferences.atoms();
+          }
+          copyArrays(json.atoms, atoms);
+        }
+        N = json.N;
+
+        // radial bonds
+        if (json.radialBonds) {
+          if(!radialBonds) createRadialBondsArray(json.radialBonds.atom1.length);
+          if (radialBonds.atom1.length !== json.radialBonds.atom1.length) {
+            extendArrays(radialBonds, json.radialBonds.atom1.length);
+            assignShortcutReferences.radialBonds();
+          }
+          copyArrays(json.radialBonds, radialBonds);
+        }
+        radialBondMatrix = json.radialBondMatrix;
+        N_radialBonds = json.N_radialBonds;
+
+        // angular bonds
+        if (json.angularBonds) {
+          if(!angularBonds) createAngularBondsArray(json.angularBonds.atom1.length);
+          if (angularBonds.atom1.length !== json.angularBonds.atom1.length) {
+            extendArrays(angularBonds, json.angularBonds.atom1.length);
+            assignShortcutReferences.angularBonds();
+          }
+          copyArrays(json.angularBonds, angularBonds);
+        }
+        N_angularBonds = json.N_angularBonds;
+
+        // obstacles
+        if (json.obstacles) {
+          if(!obstacles) createObstaclesArray(json.obstacles.x.length);
+          if (obstacles.x.length !== json.obstacles.x.length) {
+            extendArrays(obstacles, json.obstacles.x.length);
+            assignShortcutReferences.obstacles();
+          }
+          copyArrays(json.obstacles, obstacles);
+          // obstacleMass may be Infinity -- this serializes to a JSON null value and then
+          // that null value gets converted to 0 by array copy operation; so convert back by
+          // checking original JSON value
+          for (i = 0, len = obstacleMass.length; i < len; i++ ) {
+            if (json.obstacles.mass[i] === null) {
+              obstacleMass[i] = Infinity;
+            }
+          }
+        }
+        N_obstacles = json.N_obstacles;
+
+        // spring forces
+        if (json.springForces) {
+          if(!springForces) createSpringForcesArray(json.springForces[0].length);
+          if (springForces[0].length !== json.springForces[0].length) {
+            extendArrays(springForces, json.springForce[0].length);
+            assignShortcutReferences.springForces();
+          }
+          copyArrays(json.springForces, springForces);
+        }
+        N_springForces = json.N_springForces;
+      },
+
 
       /**
         Returns just enough information about the engine state to allow a second engine to act as a
