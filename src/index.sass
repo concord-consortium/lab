@@ -3,6 +3,9 @@ $directory: ""
 @import 'sass/bourbon/bourbon'
 @import 'sass/lab/lab'
 
+a
+  font-weight: 600
+
 #header
   @include linear-gradient(#3a878b, #8cbbb8, $fallback: #3a878b)
   color: #fff
@@ -14,7 +17,6 @@ $directory: ""
     margin-right: 11em
     a
       color: #fff
-      text-decoration: none
   a#logo
     display: block
     height: 3.25em
@@ -81,14 +83,16 @@ ul
   p
     margin-left: 0em
     padding: 0em
+    a
+      text-decoration: none
   ul
     list-style-type: none
     margin: .5em 0em 0.5em 0em
     padding: 0em
     li
-      margin: .5em 0.2em 0em 0em
+      margin: .5em 0.2em 0em 0.5em
       padding: 0em
-      font-weight: bold
+      font-weight: 600
       p
         margin-left: 1em
         margin-top: 0.5em
@@ -112,6 +116,8 @@ ul
 .content
   h2, h3, p
     margin: 1em
+    a
+      text-decoration: none
   ul
     margin: 1em 1em 1em 2em
   .float-right
