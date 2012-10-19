@@ -911,10 +911,10 @@ define(function (require, exports, module) {
               } else if (x_prev >= x_right_prev) {
                 x[i] = x_right + (x_right - xi);
                 bounceDirection = 1;
-              } else if (y_prev <= y_top_prev) {
+              } else if (y_prev <= y_bottom_prev) {
                 y[i] = y_bottom - (yi - y_bottom);
                 bounceDirection = -1;
-              } else if (y_prev >= y_bottom_prev) {
+              } else if (y_prev >= y_top_prev) {
                 y[i] = y_top  + (y_top - yi);
                 bounceDirection = -1;
               }
