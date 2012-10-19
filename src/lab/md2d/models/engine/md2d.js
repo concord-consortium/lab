@@ -363,6 +363,15 @@ define(function (require, exports, module) {
         obstacleXPrev,
         obstacleYPrev,
 
+        // Pressure calculation, helper variables.
+        obstacleWProbeValue,
+        obstacleNProbeValue,
+        obstacleEProbeValue,
+        obstacleSProbeValue,
+
+        pressureBuffers = {},
+        PRESSURE_BUFFERS_LEN = 60,
+
         // An object that contains references to the above obstacle-property arrays.
         // Left undefined if there are no obstacles.
         obstacles,
@@ -526,26 +535,30 @@ define(function (require, exports, module) {
           },
 
           obstacles: function() {
-            obstacleX          = obstacles.x;
-            obstacleY          = obstacles.y;
-            obstacleWidth      = obstacles.width;
-            obstacleHeight     = obstacles.height;
-            obstacleMass       = obstacles.mass;
-            obstacleVX         = obstacles.vx;
-            obstacleVY         = obstacles.vy;
-            obstacleExtFX      = obstacles.externalFx;
-            obstacleExtFY      = obstacles.externalFy;
-            obstacleFriction   = obstacles.friction;
-            obstacleWestProbe  = obstacles.westProbe;
-            obstacleNorthProbe = obstacles.northProbe;
-            obstacleEastProbe  = obstacles.eastProbe;
-            obstacleSouthProbe = obstacles.southProbe;
-            obstacleXPrev      = obstacles.xPrev;
-            obstacleYPrev      = obstacles.yPrev;
-            obstacleColorR     = obstacles.colorR;
-            obstacleColorG     = obstacles.colorG;
-            obstacleColorB     = obstacles.colorB;
-            obstacleVisible    = obstacles.visible;
+            obstacleX           = obstacles.x;
+            obstacleY           = obstacles.y;
+            obstacleWidth       = obstacles.width;
+            obstacleHeight      = obstacles.height;
+            obstacleMass        = obstacles.mass;
+            obstacleVX          = obstacles.vx;
+            obstacleVY          = obstacles.vy;
+            obstacleExtFX       = obstacles.externalFx;
+            obstacleExtFY       = obstacles.externalFy;
+            obstacleFriction    = obstacles.friction;
+            obstacleWestProbe   = obstacles.westProbe;
+            obstacleNorthProbe  = obstacles.northProbe;
+            obstacleEastProbe   = obstacles.eastProbe;
+            obstacleSouthProbe  = obstacles.southProbe;
+            obstacleWProbeValue = obstacles.wProbeValue;
+            obstacleNProbeValue = obstacles.nProbeValue;
+            obstacleEProbeValue = obstacles.eProbeValue;
+            obstacleSProbeValue = obstacles.sProbeValue;
+            obstacleXPrev       = obstacles.xPrev;
+            obstacleYPrev       = obstacles.yPrev;
+            obstacleColorR      = obstacles.colorR;
+            obstacleColorG      = obstacles.colorG;
+            obstacleColorB      = obstacles.colorB;
+            obstacleVisible     = obstacles.visible;
           },
 
           springForces: function() {
@@ -616,28 +629,72 @@ define(function (require, exports, module) {
         createObstaclesArray = function(num) {
           obstacles = engine.obstacles = {};
 
-          obstacles.x          = arrays.create(num, 0, float32);
-          obstacles.y          = arrays.create(num, 0, float32);
-          obstacles.width      = arrays.create(num, 0, float32);
-          obstacles.height     = arrays.create(num, 0, float32);
-          obstacles.mass       = arrays.create(num, 0, float32);
-          obstacles.vx         = arrays.create(num, 0, float32);
-          obstacles.vy         = arrays.create(num, 0, float32);
-          obstacles.externalFx = arrays.create(num, 0, float32);
-          obstacles.externalFy = arrays.create(num, 0, float32);
-          obstacles.friction   = arrays.create(num, 0, float32);
-          obstacles.westProbe  = arrays.create(num, 0, uint8);
-          obstacles.northProbe = arrays.create(num, 0, uint8);
-          obstacles.eastProbe  = arrays.create(num, 0, uint8);
-          obstacles.southProbe = arrays.create(num, 0, uint8);
-          obstacles.xPrev      = arrays.create(num, 0, float32);
-          obstacles.yPrev      = arrays.create(num, 0, float32);
-          obstacles.colorR     = arrays.create(num, 0, float32);
-          obstacles.colorG     = arrays.create(num, 0, float32);
-          obstacles.colorB     = arrays.create(num, 0, float32);
-          obstacles.visible    = arrays.create(num, 0, uint8);
+          obstacles.x           = arrays.create(num, 0, float32);
+          obstacles.y           = arrays.create(num, 0, float32);
+          obstacles.width       = arrays.create(num, 0, float32);
+          obstacles.height      = arrays.create(num, 0, float32);
+          obstacles.mass        = arrays.create(num, 0, float32);
+          obstacles.vx          = arrays.create(num, 0, float32);
+          obstacles.vy          = arrays.create(num, 0, float32);
+          obstacles.externalFx  = arrays.create(num, 0, float32);
+          obstacles.externalFy  = arrays.create(num, 0, float32);
+          obstacles.friction    = arrays.create(num, 0, float32);
+          obstacles.westProbe   = arrays.create(num, 0, uint8);
+          obstacles.northProbe  = arrays.create(num, 0, uint8);
+          obstacles.eastProbe   = arrays.create(num, 0, uint8);
+          obstacles.southProbe  = arrays.create(num, 0, uint8);
+          obstacles.wProbeValue = arrays.create(num, 0, float32);
+          obstacles.nProbeValue = arrays.create(num, 0, float32);
+          obstacles.eProbeValue = arrays.create(num, 0, float32);
+          obstacles.sProbeValue = arrays.create(num, 0, float32);
+          obstacles.xPrev       = arrays.create(num, 0, float32);
+          obstacles.yPrev       = arrays.create(num, 0, float32);
+          obstacles.colorR      = arrays.create(num, 0, float32);
+          obstacles.colorG      = arrays.create(num, 0, float32);
+          obstacles.colorB      = arrays.create(num, 0, float32);
+          obstacles.visible     = arrays.create(num, 0, uint8);
 
           assignShortcutReferences.obstacles();
+        },
+
+        // Function initializes special structure for keeping pressure probes data.
+        // Arrays store historical data used during interpolation.
+        // To read final, interpolated pressure value in Bar call function:
+        // getPressureFromProbe(i, name)
+        // where 'obstacleIdx' is obstacle index
+        // and 'probeName' is: 'west', 'north', 'east', 'south'.
+        initializePressureBuffers = function() {
+          var i;
+          for (i = 0; i < N_obstacles; i++) {
+            if (obstacleWestProbe[i]) {
+              pressureBuffers[i] = pressureBuffers[i] || {};
+              pressureBuffers[i].west = pressureBuffers[i].west || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
+              pressureBuffers[i].westIdx = pressureBuffers[i].westIdx || 0;
+            }
+            if (obstacleNorthProbe[i]) {
+              pressureBuffers[i] = pressureBuffers[i] || {};
+              pressureBuffers[i].north = pressureBuffers[i].north || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
+              pressureBuffers[i].northIdx = pressureBuffers[i].northIdx || 0;
+            }
+            if (obstacleEastProbe[i]) {
+              pressureBuffers[i] = pressureBuffers[i] || {};
+              pressureBuffers[i].east = pressureBuffers[i].east || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
+              pressureBuffers[i].eastIdx = pressureBuffers[i].eastIdx || 0;
+            }
+            if (obstacleSouthProbe[i]) {
+              pressureBuffers[i] = pressureBuffers[i] || {};
+              pressureBuffers[i].south = pressureBuffers[i].south || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
+              pressureBuffers[i].southIdx = pressureBuffers[i].southIdx || 0;
+            }
+          }
+        },
+
+        getPressureFromProbe = function (obstacleIdx, probeName) {
+          // Magic Classic MW pressure constant, converted to Next Gen units:
+          // 1666667 / 120 = 13888.89
+          // TODO: describe it better.
+          return arrays.average(pressureBuffers[obstacleIdx][probeName]) *
+            13888.89 / obstacleHeight[obstacleIdx];
         },
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
@@ -885,7 +942,7 @@ define(function (require, exports, module) {
               atom_mass,
               obs_mass,
               totalMass,
-              bounceDirection = 0; // if we bounce horz: 1, vert: -1
+              bounceDirection = 0; // if we bounce horz: > 0, vert: < 0
 
           r = radius[i];
           xi = x[i];
@@ -907,16 +964,16 @@ define(function (require, exports, module) {
             if (xi > x_left && xi < x_right && yi > y_bottom && yi < y_top) {
               if (x_prev <= x_left_prev) {
                 x[i] = x_left - (xi - x_left);
-                bounceDirection = 1;
+                bounceDirection = 1; // West wall collision.
               } else if (x_prev >= x_right_prev) {
                 x[i] = x_right + (x_right - xi);
-                bounceDirection = 1;
+                bounceDirection = 2; // East wall collision.
               } else if (y_prev <= y_bottom_prev) {
                 y[i] = y_bottom - (yi - y_bottom);
-                bounceDirection = -1;
+                bounceDirection = -1; // South wall collision.
               } else if (y_prev >= y_top_prev) {
                 y[i] = y_top  + (y_top - yi);
-                bounceDirection = -1;
+                bounceDirection = -2; // North wall collision.
               }
             }
 
@@ -927,7 +984,7 @@ define(function (require, exports, module) {
                 // if we have real mass, perform a perfectly-elastic collision
                 atom_mass = mass[i];
                 totalMass = obs_mass + atom_mass;
-                if (bounceDirection === 1) {
+                if (bounceDirection > 0) {
                   vxPrev = vx[i];
                   obs_vxPrev = obstacleVX[j];
 
@@ -942,16 +999,54 @@ define(function (require, exports, module) {
                 }
               } else {
                 // if we have infinite mass, just reflect (like a wall)
-                if (bounceDirection === 1) {
+                if (bounceDirection > 0) {
                   vx[i] *= -1;
                 } else {
                   vy[i] *= -1;
+                }
+                // Update pressure probes.
+                if (bounceDirection === 1 && obstacleWestProbe[j]) {
+                  obstacleWProbeValue[j] += mass[i] * -2 * vx[i];
                 }
               }
             }
           }
         },
 
+        // Update special pressure buffers.
+        updatePressureProbesBuffers = function(duration) {
+          var i;
+          for (i = 0; i < N_obstacles; i++) {
+            if (obstacleWestProbe[i]) {
+              pressureBuffers[i].west[pressureBuffers[i].westIdx++] = obstacleWProbeValue[i] / duration;
+              obstacleWProbeValue[i] = 0;
+              if (pressureBuffers[i].westIdx > PRESSURE_BUFFERS_LEN) {
+                pressureBuffers[i].westIdx = 0;
+              }
+            }
+            if (obstacleNorthProbe[i]) {
+              pressureBuffers[i].north[pressureBuffers[i].northIdx++] = obstacleNProbeValue[i] / duration;
+              obstacleNProbeValue[i] = 0;
+              if (pressureBuffers[i].northIdx > PRESSURE_BUFFERS_LEN) {
+                pressureBuffers[i].northIdx = 0;
+              }
+            }
+            if (obstacleEastProbe[i]) {
+              pressureBuffers[i].east[pressureBuffers[i].eastIdx++] = obstacleEProbeValue[i] / duration;
+              obstacleEProbeValue[i] = 0;
+              if (pressureBuffers[i].eastIdx > PRESSURE_BUFFERS_LEN) {
+                pressureBuffers[i].eastIdx = 0;
+              }
+            }
+            if (obstacleSouthProbe[i]) {
+              pressureBuffers[i].south[pressureBuffers[i].southIdx++] = obstacleSProbeValue[i] / duration;
+              obstacleSProbeValue[i] = 0;
+              if (pressureBuffers[i].southIdx > PRESSURE_BUFFERS_LEN) {
+                pressureBuffers[i].southIdx = 0;
+              }
+            }
+          }
+        },
 
         // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
         // call once when a = a(t) and once when a = a(t+dt)
@@ -1544,6 +1639,7 @@ define(function (require, exports, module) {
         obstacleHeight[N_obstacles] = height;
 
         density = parseFloat(density);      // may be string "Infinity"
+
         obstaclemass = density * width * height;
 
         obstacleMass[N_obstacles] = obstaclemass;
@@ -1560,6 +1656,10 @@ define(function (require, exports, module) {
         obstacleVisible[N_obstacles] = visible;
 
         N_obstacles++;
+
+        // Call it to check if new obstacle has any pressure probe.
+        // If so, special buffers will be created.
+        initializePressureBuffers();
       },
 
       atomInBounds: function(_x, _y, i) {
@@ -1728,6 +1828,9 @@ define(function (require, exports, module) {
             props.visible[i]
           );
         }
+
+        // Creates special buffers for pressure probes.
+        initializePressureBuffers();
       },
 
       initializeElements: function(elems) {
@@ -1963,6 +2066,8 @@ define(function (require, exports, module) {
 
           adjustTemperature();
         } // end of integration loop
+
+        updatePressureProbesBuffers(duration);
       },
 
       getTotalMass: function() {
@@ -1991,9 +2096,14 @@ define(function (require, exports, module) {
             cosTheta, theta,
             r_sq, rij, rkj,
             k, dr, angleDiff,
+            value,
             gravPEInMWUnits,
-            KEinMWUnits,       // total kinetic energy, in MW units
-            PE;                // potential energy, in eV
+            // Total kinetic energy, in MW units.
+            KEinMWUnits,
+            // Potential energy, in eV.
+            PE,
+            // Pressure value for obstacles probes.
+            pressure;
 
         // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
         // integration loop!
@@ -2098,11 +2208,28 @@ define(function (require, exports, module) {
           }
         }
 
+        // Calculate final pressure values.
+        // Try to reuse existing object (state.pressureProbes).
+        pressure = state.pressureProbes || {};
+        for (i in pressureBuffers) {
+          if (pressureBuffers[i].west !== undefined) {
+            pressure[i] = pressure[i] || {};
+            pressure[i].west = getPressureFromProbe(i, 'west');
+          }
+        }
+
         // State to be read by the rest of the system:
         state.time     = time;
         state.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
         state.PE       = PE;
         state.KE       = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+
+        // state.pressureProbes = pressure;
+        // TODO: FOR TESTS ONLY !!! REMOVE IT.
+        // if (pressure[0] && pressure[0].west) {
+        //   state.KE       = pressure[0].west;
+        // }
+
         state.temperature = T;
         state.pCM      = [px_CM, py_CM];
         state.CM       = [x_CM, y_CM];
