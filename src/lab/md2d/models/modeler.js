@@ -316,7 +316,7 @@ define(function(require) {
       return s/n;
     }
 
-
+    var persistentEngine = md2d.createEngine();
 
     function tick(elapsedTime, dontDispatchTickEvent) {
       var t,
@@ -344,10 +344,28 @@ define(function(require) {
       }
 
       if (doIntegration) {
+        var state = JSON.parse(JSON.stringify(engine.getCompleteStateAsJSON())),
+            expected,
+            actual;
+
         // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
         // However, in MD2D we prefer the more physical notion of integrating for a particular
         // length of time.
         engine.integrate(viewRefreshInterval * timeStep, timeStep);
+
+        expected = JSON.stringify(engine.getCompleteStateAsJSON());
+
+        persistentEngine.setCompleteStateFromJSON(state);
+        persistentEngine.integrate(viewRefreshInterval * timeStep, timeStep);
+        actual = JSON.stringify(persistentEngine.getCompleteStateAsJSON());
+        if (expected !== actual) debugger;
+
+        var transientEngine = md2d.createEngine();
+        transientEngine.setCompleteStateFromJSON(state);
+        transientEngine.integrate(viewRefreshInterval * timeStep, timeStep);
+        actual = JSON.stringify(transientEngine.getCompleteStateAsJSON());
+        if (expected !== actual) debugger;
+
         readModelState();
 
         pressures.push(pressure);
