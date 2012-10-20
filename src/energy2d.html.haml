@@ -76,7 +76,7 @@
           modeling and greatly expand the view features. However in this summer's effort we didn't
           focus on making a web-based authoring environment for creating new models. Instead we
           implemented scripts to automatically convert the XML-based serialization format to JSON.
-          Currently the Java version of Energy2D models is used to create new models. 
+          Currently the Java version of Energy2D models is used to create new models.
         %p
           At the end of the summer Piotr re-implemented the physics solvers and views for
           %a{:href => 'examples/energy2d-gpu-model/energy2d-model.html'} Energy2D in WebGL
@@ -84,6 +84,11 @@
           We have only implemented a few of the 80 models in
           %a{:href => 'examples/energy2d-gpu-model/energy2d-model.html'} Energy2D-WebGL
           but initial results indicate speedups ranging from 2X to 15X!
+        %p
+          Piotr wrote an article titled: "Under the Hood: Using WebGL to Accelerate Advanced Physics
+          Simulations in the Browser", which is available on page 14 of our
+          %a{:href => 'http://concord.org/sites/default/files/newsletters/2012/fall/at-concord-fall-2012.pdf#page=14'} Fall 2012
+          newsletter.
         %p
           The speedups are particularly noticable in the following cases:
           %ul.item-list
