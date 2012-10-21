@@ -17,7 +17,8 @@ var
   // Application logic.
   var applicationCallback = function () {
     var
-      DEFAULT_INTERACTIVE = "fixed-flux-boundary512",
+      DEFAULT_INTERACTIVE = "vortex100",
+      // DEFAULT_INTERACTIVE = "fixed-flux-boundary512",
       hash,
       interactive_url,
       interactive_options,
