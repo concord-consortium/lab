@@ -805,6 +805,7 @@ define(function(require) {
 
       engine.initializeObstacles(_obstacles);
       obstacles = engine.obstacles;
+      readModelState();
       return model;
     };
 
@@ -1300,6 +1301,10 @@ define(function(require) {
 
     model.pressure = function() {
       return container_pressure();
+    };
+
+    model.pressureProbes = function() {
+      return modelOutputState.pressureProbes;
     };
 
     model.temperature = function(x) {
