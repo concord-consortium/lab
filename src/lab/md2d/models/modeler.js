@@ -28,7 +28,7 @@ define(function(require) {
         pressure, pressures = [0],
         modelSampleRate = 60,
         lastSampleTime,
-        sampleTimes = [],
+        timeBetweenSamples = [],
 
         // N.B. this is the thermostat (temperature control) setting
         temperature,
@@ -320,64 +320,59 @@ define(function(require) {
 
     function tick(elapsedTime, dontDispatchTickEvent) {
       var t,
-          sampleTime,
-          doIntegration;
+          timeSinceLastSample;
 
-      if (stopped) {
-        doIntegration = true;
-      } else {
+      // If the model is continuously running (i.e., is not in the stopped state) then we should
+      // skip the integration if tick() called before 1/sample rate seconds have elapsed, and we
+      // should keep statistics about between-tick times.
+      if ( ! stopped ) {
         t = Date.now();
         if (lastSampleTime) {
-          sampleTime  = t - lastSampleTime;
-          if (1000/sampleTime < modelSampleRate) {
-            doIntegration = true;
-            lastSampleTime = t;
-            sampleTimes.push(sampleTime);
-            sampleTimes.splice(0, sampleTimes.length - 128);
-          } else {
-            doIntegration = false;
+          timeSinceLastSample = t - lastSampleTime;
+
+          // 1000/modelSampleRate === minimum # of milliseconds to allow between ticks
+          if (timeSinceLastSample < 1000/modelSampleRate) {
+            return;
           }
-        } else {
-          lastSampleTime = t;
-          doIntegration = true;
+
+          timeBetweenSamples.push(timeSinceLastSample);
+          timeBetweenSamples.splice(0, timeBetweenSamples.length - 128);
         }
+        lastSampleTime = t;
       }
 
-      if (doIntegration) {
-        var state = JSON.parse(JSON.stringify(engine.getCompleteStateAsJSON())),
-            expected,
-            actual;
+      var state = JSON.parse(JSON.stringify(engine.getCompleteStateAsJSON())),
+          expected,
+          actual;
 
-        // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
-        // However, in MD2D we prefer the more physical notion of integrating for a particular
-        // length of time.
-        engine.integrate(viewRefreshInterval * timeStep, timeStep);
+      // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
+      // However, in MD2D we prefer the more physical notion of integrating for a particular
+      // length of time.
+      engine.integrate(viewRefreshInterval * timeStep, timeStep);
 
-        expected = JSON.stringify(engine.getCompleteStateAsJSON());
+      expected = JSON.stringify(engine.getCompleteStateAsJSON());
 
-        persistentEngine.setCompleteStateFromJSON(state);
-        persistentEngine.integrate(viewRefreshInterval * timeStep, timeStep);
-        actual = JSON.stringify(persistentEngine.getCompleteStateAsJSON());
-        if (expected !== actual) debugger;
+      persistentEngine.setCompleteStateFromJSON(state);
+      persistentEngine.integrate(viewRefreshInterval * timeStep, timeStep);
+      actual = JSON.stringify(persistentEngine.getCompleteStateAsJSON());
+      if (expected !== actual) debugger;
 
-        var transientEngine = md2d.createEngine();
-        transientEngine.setCompleteStateFromJSON(state);
-        transientEngine.integrate(viewRefreshInterval * timeStep, timeStep);
-        actual = JSON.stringify(transientEngine.getCompleteStateAsJSON());
-        if (expected !== actual) debugger;
+      var transientEngine = md2d.createEngine();
+      transientEngine.setCompleteStateFromJSON(state);
+      transientEngine.integrate(viewRefreshInterval * timeStep, timeStep);
+      actual = JSON.stringify(transientEngine.getCompleteStateAsJSON());
+      if (expected !== actual) debugger;
 
-        readModelState();
+      readModelState();
 
-        pressures.push(pressure);
-        pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
+      pressures.push(pressure);
+      pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
-        tick_history_list_push();
+      tick_history_list_push();
 
-        if (!dontDispatchTickEvent) {
-          dispatch.tick();
-        }
+      if (!dontDispatchTickEvent) {
+        dispatch.tick();
       }
-
       return stopped;
     }
 
@@ -449,8 +444,8 @@ define(function(require) {
     }
 
     function average_rate() {
-      var i, ave, s = 0, n = sampleTimes.length;
-      i = -1; while (++i < n) { s += sampleTimes[i]; }
+      var i, ave, s = 0, n = timeBetweenSamples.length;
+      i = -1; while (++i < n) { s += timeBetweenSamples[i]; }
       ave = s/n;
       return (ave ? 1/ave*1000: 0);
     }
