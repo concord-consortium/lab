@@ -364,7 +364,9 @@ define(function(require) {
       // length of time.
 
       if (!useWebWorkers || !worker) {
-        return tickSync(elapsedTime, dontDispatchTickEvent, cb);
+        tickSync();
+        if (cb) cb(dontDispatchTickEvent);
+        return stopped;
       }
 
       // async path
@@ -382,10 +384,8 @@ define(function(require) {
     }
 
 
-    function tickSync(elapsedTime, dontDispatchTickEvent, cb) {
+    function tickSync() {
       engine.integrate(viewRefreshInterval * timeStep, timeStep);
-      if (typeof cb === 'function') cb(dontDispatchTickEvent);
-      return stopped;
     }
 
     function tickCompleted(dontDispatchTickEvent) {
@@ -727,7 +727,8 @@ define(function(require) {
           tick_counter++;
           if (model_listener) { model_listener(); }
         } else {
-          tickSync(null, false, tickCompleted);
+          tickSync(null, false);
+          tickCompleted();
         }
       }
       return tick_counter;
@@ -1294,7 +1295,8 @@ define(function(require) {
       if (tickInProgress) throw new Error("Can't tickSync while an async tick is in progress.");
 
       while(++i < num) {
-        tickSync(null, dontDispatchTickEvent, tickCompleted);
+        tickSync();
+        tickCompleted(dontDispatchTickEvent);
       }
       return model;
     };
