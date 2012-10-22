@@ -359,18 +359,28 @@ define(function (require, exports, module) {
         obstacleVisible,
 
         // Properties used only during internal calculations (e.g. shouldn't
-        // be returned during getObstacleProperties(i) call).
+        // be returned during getObstacleProperties(i) call - TODO!).
         obstacleXPrev,
         obstacleYPrev,
 
-        // Pressure calculation, helper variables.
+        // ### Pressure calculation ###
+        // Arrays containing sum of impulses 2mv/dt from atoms hitting the probe.
+        // These values are later stored in pressureBuffers object, interpolated
+        // (last average of last PRESSURE_BUFFERS_LEN values) and converted
+        // to value in Bar by getPressureFromProbe() function.
         obstacleWProbeValue,
         obstacleNProbeValue,
         obstacleEProbeValue,
         obstacleSProbeValue,
 
+        // Special structure containing buffers with last PRESSURE_BUFFERS_LEN values
+        // used for pressure calculations.
+        // Call initializePressureBuffers() when obstacles are created to initialize
+        // this structure. Each time a new obstacle is added, this function should
+        // also be called!
         pressureBuffers = {},
         PRESSURE_BUFFERS_LEN = 60,
+        // #####
 
         // An object that contains references to the above obstacle-property arrays.
         // Left undefined if there are no obstacles.
@@ -658,10 +668,12 @@ define(function (require, exports, module) {
         },
 
         // Function initializes special structure for keeping pressure probes data.
-        // Arrays store historical data used during interpolation.
-        // To read final, interpolated pressure value in Bar call function:
+        // Arrays store historical data used during interpolation. This function
+        // doesn't expect any arguments - it always validates all buffers and create
+        // new if it's necessary (e.g. when obstacle was added).
+        // To read final, interpolated pressure value in Bar, call this function:
         // getPressureFromProbe(i, name)
-        // where 'obstacleIdx' is obstacle index
+        // where 'obstacleIdx' is an index of obstacle containing this probe
         // and 'probeName' is: 'west', 'north', 'east', 'south'.
         initializePressureBuffers = function() {
           var i;
@@ -689,10 +701,21 @@ define(function (require, exports, module) {
           }
         },
 
+        // Returns final, interpolated pressure value in Bar.
+        // 'obstacleIdx' is an index of obstacle containing desired probe,
+        // 'probeName' is: 'west', 'north', 'east', 'south'.
         getPressureFromProbe = function (obstacleIdx, probeName) {
-          // Magic Classic MW pressure constant, converted to Next Gen units:
-          // 1666667 / 120 = 13888.89
-          // TODO: describe it better.
+          // Classic MW converts impulses 2mv/dt to pressure in Bar using constant: 1666667.
+          // See: the header of org.concord.mw2d.models.RectangularObstacle.
+          // However, Classic MW also uses different units for mass and length:
+          // - 120amu instead of 1amu,
+          // - 0.1A instead of 1nm.
+          // We should convert mass, velocity and obstacle height to Next Gen units.
+          // Length units reduce themselves (velocity divided by height), only mass is left.
+          // So, divide classic MW constant 1666667 by 120 - the result is 13888.89.
+          // [ There is unit module available, however for reduction of computational cost,
+          // include conversion in the pressure constant, especially considering the fact that
+          // conversion from 120amu to amu is quite simple. ]
           return arrays.average(pressureBuffers[obstacleIdx][probeName]) *
             13888.89 / obstacleHeight[obstacleIdx];
         },
@@ -1640,11 +1663,10 @@ define(function (require, exports, module) {
 
         density = parseFloat(density);      // may be string "Infinity"
 
-        // Mimic Classic MW behavior. When obstacle density is
-        // bigger than 500 (500 * 1.2e6 in Next Gen units),
-        // it's considered to be fixed (in Next Gen Infinity mass
-        // is expected).
-        // TODO: describe unit conversion better.
+        // Mimic Classic MW behavior. When obstacle density is bigger than
+        // 500 [120amu/0.1A^2] (= 500 * 1.2e6 [amu/nm^2]), it is considered to be fixed
+        // (in Next Gen MW 'Infinity' mass is expected). It is important as it affects
+        // kinetic energy calculations (temperature), particles bouncing etc.
         if (density >= 500 * 1.2e6) {
           density = Infinity;
         }
