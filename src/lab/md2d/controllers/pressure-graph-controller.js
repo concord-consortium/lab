@@ -23,7 +23,6 @@ define(function (require) {
           ymax:   3.0
         },
 
-
         // Initializes pressureData structure, sets 0 for
         // every existing pressure probe.
         initPressureData = function () {
@@ -45,11 +44,10 @@ define(function (require) {
           }
         },
 
-        // Creates grapher view.
-        createGrapher = function (id, options) {
-          options = options || {};
-          options.dataset = pressureData;
-          grapherView = realTimeGraph('#' + id, options);
+        // Updates options which are strongly connected
+        // with model and resets grapher.
+        updateModelRelatedOptions = function () {
+          options.sample = model.get("viewRefreshInterval") / 1000;
         },
 
         // Collects pressure data, saves it in pressureData
@@ -77,56 +75,51 @@ define(function (require) {
           grapherView.add_points(result);
         },
 
-        resetPressureData = function (index) {
-          var modelsteps = model.stepCounter(),
-              i, len;
+        // Sets length pf pressureData arrays to desired value.
+        // It is useful e.g. during seek operation.
+        setPressureDataLength = function (newLength) {
+          var i, len;
 
-          if (index) {
+          if (newLength > 0) {
             for (i = 0, len = pressureData.length; i < len; i++) {
-              pressureData[i].length = modelsteps;
+              pressureData[i].length = newLength;
             }
-            return index;
           } else {
+            // Do not create empty arrays, instead fill them
+            // with initial values (= 0).
             initPressureData();
-            return 0;
           }
         },
 
         // Registers all necessary callbacks, should be called
         // whenever a new model is created.
         registerModelCallbacks = function () {
-          // Update refresh interval.
-          model.addPropertiesListener(['viewRefreshInterval'], function() {
-            options.sample = model.get("viewRefreshInterval") / 1000;
-            grapherView.reset('#' + component.id, options);
-          });
 
           model.on('tick.pressureGraph', update);
 
           model.on('play.pressureGraph', function() {
             if (grapherView.number_of_points() && model.stepCounter() < grapherView.number_of_points()) {
-              resetPressureData(model.stepCounter());
+              setPressureDataLength(model.stepCounter());
               grapherView.new_data(pressureData);
             }
             grapherView.show_canvas();
           });
 
           model.on('reset.pressureGraph', function() {
-            sample = model.get("viewRefreshInterval") / 1000;
-            options.sample = sample;
-            resetPressureData();
+            options.sample = model.get("viewRefreshInterval") / 1000;
+            initPressureData();
             grapherView.reset('#' + component.id, options);
             grapherView.new_data(pressureData);
           });
 
           model.on('seek.pressureGraph', function() {
-            var modelsteps = model.stepCounter();
-            if (modelsteps > 0) {
-              resetPressureData(modelsteps);
-            } else {
-              resetPressureData();
-            }
+            setPressureDataLength(model.stepCounter());
             grapherView.new_data(pressureData);
+          });
+
+          model.addPropertiesListener(['viewRefreshInterval'], function() {
+            updateModelRelatedOptions();
+            grapherView.reset('#' + component.id, options);
           });
         };
 
@@ -135,21 +128,24 @@ define(function (require) {
       modelLoadedCallback: function () {
         var $container = $('#' + component.id);
 
-        resetPressureData();
+        // Initialize pressure data.
+        initPressureData();
 
-        // Set options.
-        options.sample = model.get("viewRefreshInterval") / 1000;
+        // Use options obtained from model.
+        updateModelRelatedOptions();
         // Use options provided in component definition.
         $.extend(options, component.options || {});
 
         // Create pressureGraph only if it hasn't been drawn before.
         if (!grapherView) {
-          $.extend(options, component.options || []);
-          createGrapher(component.id, options);
+          options.dataset = pressureData;
+          grapherView = realTimeGraph('#' + component.id, options);
         } else {
+          // If grapher exists, just reset.
           grapherView.reset('#' + component.id, options, $container[0]);
         }
 
+        // Set dimensions if provided.
         if (component.dimensions) {
           grapherView.resize(component.dimensions.width, component.dimensions.height);
         }
