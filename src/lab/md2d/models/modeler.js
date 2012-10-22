@@ -336,8 +336,7 @@ define(function(require) {
 
       var t,
           timeSinceLastSample,
-          message,
-          duration;
+          message;
 
       // If the model is continuously running (i.e., is not in the stopped state) then we should
       // skip the integration if tick() called before 1/sample rate seconds have elapsed, and we
@@ -359,26 +358,22 @@ define(function(require) {
         lastSampleTime = t;
       }
 
-      // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
-      // However, in MD2D we prefer the more physical notion of integrating for a particular
-      // length of time.
+      if (worker && useWebWorkers) {
+        // async path
+        tickInProgress = true;
+        tickCallback = function() {
+          cb(dontDispatchTickEvent);
+        };
+        message = engine.getCompleteStateAsJSON();
+        message.duration = viewRefreshInterval * timeStep;
+        message.dt = timeStep;
 
-      if (!useWebWorkers || !worker) {
+        worker.postMessage( message );
+      } else {
+        // sync path
         tickSync();
         if (cb) cb(dontDispatchTickEvent);
-        return stopped;
       }
-
-      // async path
-      tickInProgress = true;
-      tickCallback = function() {
-        cb(dontDispatchTickEvent);
-      };
-      message = engine.getCompleteStateAsJSON();
-      message.duration = viewRefreshInterval * timeStep;
-      message.dt = timeStep;
-
-      worker.postMessage( message );
 
       return stopped;
     }
