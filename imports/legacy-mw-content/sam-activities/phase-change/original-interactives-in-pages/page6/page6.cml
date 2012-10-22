@@ -25,7 +25,7 @@
     
   &lt;/head&gt;
   &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
-    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Have you ever 
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Have you ever 
     poured boiling water on snow? What happens to the molecules if you do so?&lt;br&gt;&lt;br&gt;In 
     this model, atoms are color-coded by their kinetic energy (KE). White 
     means low KE; red means high KE. The left part of the model is filled with 
@@ -35,7 +35,7 @@
     is in place. &lt;/font&gt;
 
     &lt;p&gt;
-      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Run the 
+      &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Run the 
       model with the wall for a minute and then hit the &amp;quot;Withdraw the barrier&amp;quot; 
       button to remove it. Observe what happens in the model and the bar graph 
       on the right, which records the average kinetic energy (representing 

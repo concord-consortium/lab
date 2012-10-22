@@ -2,7 +2,7 @@
   "title": "Intermolecular Attractions Page 5: Strengthening London Dispersion Attraction",
   "about": "Interactive example",
   "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json",
+    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.json",
     "viewOptions": {
       "controlButtons": ""
     }
@@ -14,7 +14,7 @@
       "options": [
         {
           "text": "Select a pair of molecules",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5Title.json"
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.json"
         },
         {
           "text": "small molecules",

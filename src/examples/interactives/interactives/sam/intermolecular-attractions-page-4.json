@@ -2,7 +2,7 @@
   "title": "Intermolecular Attractions Page 4: Strengthening Dipole-Dipole Attractions",
   "about": "Interactive example",
   "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/leastPolarPull.json",
+    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json",
     "viewOptions": {
       "controlButtons": ""
     }
@@ -14,7 +14,7 @@
       "options": [
         {
           "text": "Select a pair of molecules",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/page4Title.json"
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json"
         },
         {
           "text": "least polar molecules",
