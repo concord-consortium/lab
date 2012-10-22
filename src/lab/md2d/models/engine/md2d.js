@@ -379,7 +379,7 @@ define(function (require, exports, module) {
         // this structure. Each time a new obstacle is added, this function should
         // also be called!
         pressureBuffers = {},
-        PRESSURE_BUFFERS_LEN = 60,
+        PRESSURE_BUFFERS_LEN = 50,
         // #####
 
         // An object that contains references to the above obstacle-property arrays.
@@ -1027,10 +1027,21 @@ define(function (require, exports, module) {
                 } else {
                   vy[i] *= -1;
                 }
-                // Update pressure probes.
-                if (bounceDirection === 1 && obstacleWestProbe[j]) {
-                  obstacleWProbeValue[j] += mass[i] * -2 * vx[i];
-                }
+              }
+
+              // Update pressure probes if there are any.
+              if (obstacleWestProbe[j] && bounceDirection === 1) {
+                // 1 is west wall collision.
+                obstacleWProbeValue[j] += mass[i] * ((vxPrev ? vxPrev : -vx[i]) - vx[i]);
+              } else if (obstacleEastProbe[j] && bounceDirection === 2) {
+                // 2 is west east collision.
+                obstacleEProbeValue[j] += mass[i] * (vx[i] - (vxPrev ? vxPrev : -vx[i]));
+              } else if (obstacleSouthProbe[j] && bounceDirection === -1) {
+                // -1 is south wall collision.
+                obstacleSProbeValue[j] += mass[i] * ((vyPrev ? vyPrev : -vy[i]) - vy[i]);
+              } else if (obstacleNorthProbe[j] && bounceDirection === -2) {
+                // -2 is north wall collision.
+                obstacleNProbeValue[j] += mass[i] * (vy[i] - (vyPrev ? vyPrev : -vy[i]));
               }
             }
           }
@@ -2133,8 +2144,8 @@ define(function (require, exports, module) {
             KEinMWUnits,
             // Potential energy, in eV.
             PE,
-            // Pressure value for obstacles probes.
-            pressure;
+            // Pressure probes data.
+            probes;
 
         // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
         // integration loop!
@@ -2231,41 +2242,48 @@ define(function (require, exports, module) {
           PE += 0.5 * angularBondStrength[i] * angleDiff * angleDiff;
         }
 
-        // Obstacles.
+        // During obstacles loop calculate final probes values.
+        // Try to reuse existing object (state.pressureProbes).
+        probes = state.pressureProbes || {};
+
+        // Process all obstacles.
         for (i = 0; i < N_obstacles; i++) {
+          // Kinetic energy calculation.
           if (obstacleMass[i] !== Infinity) {
             KEinMWUnits += 0.5 * obstacleMass[i] *
                 (obstacleVX[i] * obstacleVX[i] + obstacleVY[i] * obstacleVY[i]);
           }
-        }
 
-        // Calculate final pressure values.
-        // Try to reuse existing object (state.pressureProbes).
-        pressure = state.pressureProbes || {};
-        for (i in pressureBuffers) {
-          if (pressureBuffers[i].west !== undefined) {
-            pressure[i] = pressure[i] || {};
-            pressure[i].west = getPressureFromProbe(i, 'west');
+          // Pressure calculation.
+          if (obstacleWestProbe[i]) {
+            probes[i] = probes[i] || {};
+            probes[i].west = getPressureFromProbe(i, 'west');
+          }
+          if (obstacleNorthProbe[i]) {
+            probes[i] = probes[i] || {};
+            probes[i].north = getPressureFromProbe(i, 'north');
+          }
+          if (obstacleEastProbe[i]) {
+            probes[i] = probes[i] || {};
+            probes[i].east = getPressureFromProbe(i, 'east');
+          }
+          if (obstacleSouthProbe[i]) {
+            probes[i] = probes[i] || {};
+            probes[i].south = getPressureFromProbe(i, 'south');
           }
         }
 
         // State to be read by the rest of the system:
-        state.time     = time;
-        state.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
-        state.PE       = PE;
-        state.KE       = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
-
-        // state.pressureProbes = pressure;
-        // TODO: FOR TESTS ONLY !!! REMOVE IT.
-        // if (pressure[0] && pressure[0].west) {
-        //   state.KE       = pressure[0].west;
-        // }
-
-        state.temperature = T;
-        state.pCM      = [px_CM, py_CM];
-        state.CM       = [x_CM, y_CM];
-        state.vCM      = [vx_CM, vy_CM];
-        state.omega_CM = omega_CM;
+        state.time           = time;
+        state.pressure       = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
+        state.pressureProbes = probes;
+        state.PE             = PE;
+        state.KE             = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+        state.temperature    = T;
+        state.pCM            = [px_CM, py_CM]; // TODO: GC optimization? New array created each time.
+        state.CM             = [x_CM, y_CM];
+        state.vCM            = [vx_CM, vy_CM];
+        state.omega_CM       = omega_CM;
       },
 
 
