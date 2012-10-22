@@ -338,29 +338,29 @@ var ROOT = "/examples",
     benchmarksToRun = [
       {
         name: "commit",
-        run: function() {
+        run: function(done) {
           var link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
           if (Lab.version.repo.dirty) {
             link += " <i>dirty</i>";
           }
-          return link;
+          done(link);
         }
       },
       {
         name: "molecules",
-        run: function() {
-          return model.get_num_atoms();
+        run: function(done) {
+          done(model.get_num_atoms());
         }
       },
       {
         name: "temperature",
-        run: function() {
-          return model.get("temperature");
+        run: function(done) {
+          done(model.get("temperature"));
         }
       },
       {
         name: "just graphics (steps/s)",
-        run: function() {
+        run: function(done) {
           var elapsed, start, i;
 
           model.stop();
@@ -370,12 +370,12 @@ var ROOT = "/examples",
             controller.modelController.moleculeContainer.update_drawable_positions();
           }
           elapsed = Date.now() - start;
-          return d3.format("5.1f")(100/elapsed*1000);
+          done(d3.format("5.1f")(100/elapsed*1000));
         }
       },
       {
         name: "model (steps/s)",
-        run: function() {
+        run: function(done) {
           var elapsed, start, i;
 
           model.stop();
@@ -383,31 +383,29 @@ var ROOT = "/examples",
           i = -1;
           while (i++ < 100) {
             // advance model 1 tick, but don't paint the display
-            model.tick(1, { dontDispatchTickEvent: true });
+            model.tickSync(1, { dontDispatchTickEvent: true });
           }
           elapsed = Date.now() - start;
-          return d3.format("5.1f")(100/elapsed*1000);
+          done(d3.format("5.1f")(100/elapsed*1000));
         }
       },
       {
         name: "model+graphics (steps/s)",
-        run: function() {
-          var elapsed, start, i;
+        run: function(done) {
+          var start;
 
           model.stop();
           start = +Date.now();
-          i = -1;
-          while (i++ < 100) {
-            model.tick();
-          }
-          elapsed = Date.now() - start;
-          return d3.format("5.1f")(100/elapsed*1000);
+          model.run(100, function() {
+            var elapsed = Date.now() - start;
+            done(d3.format("5.1f")(100/elapsed*1000));
+          });
         }
       },
       {
         name: "interactive",
-        run: function() {
-          return window.location.pathname + window.location.hash;
+        run: function(done) {
+          done(window.location.pathname + window.location.hash);
         }
       }
     ];

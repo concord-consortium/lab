@@ -1,4 +1,5 @@
 /*globals define: false, d3: false */
+/*jshint loopfunc: true*/
 // ------------------------------------------------------------
 //
 // Simple benchmark runner and results generator
@@ -214,21 +215,40 @@ define(function (require) {
   }
 
   function run(benchmarks_table, benchmarks_to_run) {
-    var i = 0, b, browser_info, results = [];
+    var i = 0,
+        browser_info,
+        results_row,
+        formatter,
+        col_number = 0,
+        col_numbers = {},
+        title_row,
+        title_cells,
+        len,
+        rows;
+
     benchmarks_table.style.display = "";
 
-    var empty_table = benchmarks_table.getElementsByTagName("tr").length === 0;
-    function add_row() {
-      return benchmarks_table.appendChild(document.createElement("tr"));
+    function add_column(title) {
+      var title_row = benchmarks_table.getElementsByTagName("tr")[0],
+          cell = title_row.appendChild(document.createElement("th"));
+
+      cell.innerHTML = title;
+      col_numbers[title] = col_number++;
     }
 
-    var title_row = add_row(),
-        results_row = add_row();
+    function add_row(num_cols) {
+      num_cols = num_cols || 0;
+      var tr =  benchmarks_table.appendChild(document.createElement("tr")),
+          i;
 
-    function add_data(row, content, el) {
-      var cell;
-      el = el || "td";
-      cell = row.appendChild(document.createElement(el));
+      for (i = 0; i < num_cols; i++) {
+        tr.appendChild(document.createElement("td"));
+      }
+      return tr;
+    }
+
+    function add_result(name, content) {
+      var cell = results_row.getElementsByTagName("td")[col_numbers[name]];
       if (typeof content === "string" && content.slice(0,1) === "<") {
         cell.innerHTML = content;
       } else {
@@ -236,22 +256,41 @@ define(function (require) {
       }
     }
 
-    function add_column(title, data) {
-      if (empty_table) { add_data(title_row, title, "th"); }
-      add_data(results_row, data);
+    rows = benchmarks_table.getElementsByTagName("tr");
+
+    if (rows.length === 0) {
+      add_row();
+      add_column("browser");
+      add_column("version");
+      add_column("cpu/os");
+      add_column("date");
+      for (i = 0; i < benchmarks_to_run.length; i++) {
+        add_column(benchmarks_to_run[i].name);
+      }
+    } else {
+      title_row = rows[0];
+      title_cells = title_row.getElementsByTagName("th");
+      for (i = 0, len = title_cells.length; i < len; i++) {
+        col_numbers[title_cells[i].innerHTML] = col_number++;
+      }
     }
 
-    browser_info = what_browser();
-    add_column("browser", browser_info.browser);
-    add_column("version", browser_info.version);
-    add_column("cpu/os", browser_info.oscpu);
+    results_row = add_row(col_number);
 
-    var formatter = d3.time.format("%Y-%m-%d %H:%M");
-    add_column("date", formatter(new Date()));
+    browser_info = what_browser();
+    formatter = d3.time.format("%Y-%m-%d %H:%M");
+
+    add_result("browser", browser_info.browser);
+    add_result("version", browser_info.version);
+    add_result("cpu/os", browser_info.oscpu);
+    add_result("date", formatter(new Date()));
 
     for (i = 0; i < benchmarks_to_run.length; i++) {
-      b = benchmarks_to_run[i];
-      add_column(b.name, b.run());
+      (function(b) {
+        b.run(function(result) {
+         add_result(b.name, result);
+        });
+      }(benchmarks_to_run[i]));
     }
   }
 
