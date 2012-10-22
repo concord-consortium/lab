@@ -2,10 +2,11 @@
 /*jshint eqnull: true boss: true */
 define(function (require) {
   // Dependencies.
-  var ModelController        = require('md2d/controllers/model-controller'),
-      Thermometer            = require('cs!common/components/thermometer'),
-      layout                 = require('common/layout/layout'),
-      setupInteractiveLayout = require('common/layout/interactive-layout');
+  var ModelController         = require('md2d/controllers/model-controller'),
+      PressureGraphController = require('md2d/controllers/pressure-graph-controller'),
+      Thermometer             = require('cs!common/components/thermometer'),
+      layout                  = require('common/layout/layout'),
+      setupInteractiveLayout  = require('common/layout/interactive-layout');
 
   return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
 
@@ -21,6 +22,8 @@ define(function (require) {
         thermometer,
         energyGraph,
         energyData = [[],[],[]],
+        // Pressure Graph Controller, handles pressure data and its graphing.
+        pressureGraphController,
 
         setupScreenCalledTwice = false,
 
@@ -330,6 +333,12 @@ define(function (require) {
           return thermometer;
         case 'energyGraph':
           return createEnergyGraph(component);
+        case 'pressureGraph':
+          pressureGraphController = PressureGraphController(component);
+          return {
+            elem:     pressureGraphController.getViewContainer(),
+            callback: pressureGraphController.modelLoadedCallback
+          };
         case 'slider':
           return createSlider(component);
       }
@@ -840,6 +849,7 @@ define(function (require) {
       layout.addView('moleculeContainers', modelController.moleculeContainer);
       if (thermometer) layout.addView('thermometers', thermometer.component);
       if (energyGraph) layout.addView('energyGraphs', energyGraph);
+      if (pressureGraphController) layout.addView('energyGraphs', pressureGraphController.getView());
       $(window).unbind('resize');
 
       if (layoutStyle) {
