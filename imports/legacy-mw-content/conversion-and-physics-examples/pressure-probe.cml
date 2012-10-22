@@ -20,7 +20,7 @@
 <time_series_y1 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5" smoother="1">West pressure:Obstacle #0</time_series_y1>
 <autofity>false</autofity>
 <axis_y_min>0.0</axis_y_min>
-<axis_y_max>15.0</axis_y_max>
+<axis_y_max>2.0</axis_y_max>
 <width>700</width>
 <height>600</height>
 <axis_x_title>x</axis_x_title>
@@ -35,7 +35,7 @@
 <component><class>org.concord.modeler.PageSlider</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
-<value>1568.0000000000002</value>
+<value>294.0</value>
 <minimum>100.0</minimum>
 <maximum>5000.0</maximum>
 <nstep>50</nstep>
@@ -44,7 +44,7 @@
 <height>60</height>
 <opaque>false</opaque>
 <tick>true</tick>
-<labeltable>{value=&quot;4998.0&quot;, label=&quot;5000 K&quot;}{value=&quot;98.00000000000001&quot;, label=&quot;100 K&quot;}</labeltable>
+<labeltable>{value=&quot;4998.0&quot;, label=&quot;5000K&quot;}{value=&quot;98.00000000000001&quot;, label=&quot;100K&quot;}</labeltable>
 <change>Temperature</change>
 </component></content>
 
