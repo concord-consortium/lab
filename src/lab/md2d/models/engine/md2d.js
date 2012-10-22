@@ -711,13 +711,19 @@ define(function (require, exports, module) {
           // - 120amu instead of 1amu,
           // - 0.1A instead of 1nm.
           // We should convert mass, velocity and obstacle height to Next Gen units.
-          // Length units reduce themselves (velocity divided by height), only mass is left.
+          // Length units reduce themselves (velocity divided by height or width), only mass is left.
           // So, divide classic MW constant 1666667 by 120 - the result is 13888.89.
           // [ There is unit module available, however for reduction of computational cost,
           // include conversion in the pressure constant, especially considering the fact that
           // conversion from 120amu to amu is quite simple. ]
+          var dim;
+          if (probeName === 'west' || probeName === 'south')
+            dim = obstacleHeight[obstacleIdx];
+          else
+            dim = obstacleWidth[obstacleIdx];
+
           return arrays.average(pressureBuffers[obstacleIdx][probeName]) *
-            13888.89 / obstacleHeight[obstacleIdx];
+            13888.89 / dim;
         },
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
