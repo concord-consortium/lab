@@ -626,9 +626,8 @@ define(function(require) {
     if (worker) {
       worker.addEventListener('message', function(message) {
         engine.setCompleteStateFromJSON(message.data);
-        if (tickCallback) tickCallback();
-        tickCallback = null;
         tickInProgress = false;
+        if (tickCallback) tickCallback();
       });
     }
 
@@ -1293,6 +1292,43 @@ define(function(require) {
         tickSync();
         tickCompleted(dontDispatchTickEvent);
       }
+      return model;
+    };
+
+    /**
+      Run model asynchronously while updating graphics, etc, "flat out" (with any model rate
+      governing turned off and no timer delays)
+    */
+    model.run = function(num, done) {
+      var counter = 0,
+          savedSampleRate = modelSampleRate;
+
+      // i.e., never skip a tick
+      modelSampleRate = Infinity;
+
+      function tickRepeatedly() {
+        ++counter;
+        tick(null, false, function() {
+          tickCompleted();
+          if (counter >= num) {
+            if (done) done();
+            modelSampleRate = savedSampleRate;
+          } else {
+            tickRepeatedly();
+          }
+        });
+
+        if (counter >= num) {
+          stopped = true;
+          dispatch.stop();
+        }
+      }
+
+      // Recursively tick
+      tickRepeatedly();
+
+      stopped = false;
+      dispatch.play();
       return model;
     };
 
