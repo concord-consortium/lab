@@ -1,4 +1,4 @@
-/*global define: false, d3: false, $: false */
+/*global define: false, d3: false, $: false Modernizr*/
 /*jslint onevar: true devel:true eqnull: true */
 
 define(function(require) {
@@ -11,6 +11,19 @@ define(function(require) {
 
   return function Model(initialProperties) {
     var model = {},
+        // Ignored if Modernizr reports no web worker support:
+        useWebWorkers = true,
+
+        // The web worker used to do model integration.
+        // TODO: not sure how to remove the magic knowledge of the worker URL
+        worker = (typeof Modernizr !== 'undefined') && Modernizr.webworkers && new Worker('../../lab/lab.md2d-worker.js'),
+
+        // set to true while the worker is integrating.
+        tickInProgress = false,
+
+        // Called to finish processing after the worker's integration results are copied back
+        tickCallback,
+
         elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
         temperature_control,
@@ -316,15 +329,20 @@ define(function(require) {
       return s/n;
     }
 
-    var persistentEngine = md2d.createEngine();
+    function tick(elapsedTime, dontDispatchTickEvent, cb) {
 
-    function tick(elapsedTime, dontDispatchTickEvent) {
+      // Just drop the tick on the floor if the worker is still working
+      if (tickInProgress) return;
+
       var t,
-          timeSinceLastSample;
+          timeSinceLastSample,
+          message,
+          duration;
 
       // If the model is continuously running (i.e., is not in the stopped state) then we should
       // skip the integration if tick() called before 1/sample rate seconds have elapsed, and we
       // should keep statistics about between-tick times.
+
       if ( ! stopped ) {
         t = Date.now();
         if (lastSampleTime) {
@@ -341,28 +359,36 @@ define(function(require) {
         lastSampleTime = t;
       }
 
-      var state = JSON.parse(JSON.stringify(engine.getCompleteStateAsJSON())),
-          expected,
-          actual;
-
       // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
       // However, in MD2D we prefer the more physical notion of integrating for a particular
       // length of time.
+
+      if (!useWebWorkers || !worker) {
+        return tickSync(elapsedTime, dontDispatchTickEvent, cb);
+      }
+
+      // async path
+      tickInProgress = true;
+      tickCallback = function() {
+        cb(dontDispatchTickEvent);
+      };
+      message = engine.getCompleteStateAsJSON();
+      message.duration = viewRefreshInterval * timeStep;
+      message.dt = timeStep;
+
+      worker.postMessage( message );
+
+      return stopped;
+    }
+
+
+    function tickSync(elapsedTime, dontDispatchTickEvent, cb) {
       engine.integrate(viewRefreshInterval * timeStep, timeStep);
+      if (typeof cb === 'function') cb(dontDispatchTickEvent);
+      return stopped;
+    }
 
-      expected = JSON.stringify(engine.getCompleteStateAsJSON());
-
-      persistentEngine.setCompleteStateFromJSON(state);
-      persistentEngine.integrate(viewRefreshInterval * timeStep, timeStep);
-      actual = JSON.stringify(persistentEngine.getCompleteStateAsJSON());
-      if (expected !== actual) debugger;
-
-      var transientEngine = md2d.createEngine();
-      transientEngine.setCompleteStateFromJSON(state);
-      transientEngine.integrate(viewRefreshInterval * timeStep, timeStep);
-      actual = JSON.stringify(transientEngine.getCompleteStateAsJSON());
-      if (expected !== actual) debugger;
-
+    function tickCompleted(dontDispatchTickEvent) {
       readModelState();
 
       pressures.push(pressure);
@@ -601,6 +627,15 @@ define(function(require) {
     // set the rest of the regular properties
     set_properties(initialProperties);
 
+    // setup the worker callback
+    if (worker) {
+      worker.addEventListener('message', function(message) {
+        engine.setCompleteStateFromJSON(message.data);
+        if (tickCallback) tickCallback();
+        tickCallback = null;
+        tickInProgress = false;
+      });
+    }
 
 
     // ------------------------------------------------------------
@@ -692,7 +727,7 @@ define(function(require) {
           tick_counter++;
           if (model_listener) { model_listener(); }
         } else {
-          tick();
+          tickSync(null, false, tickCompleted);
         }
       }
       return tick_counter;
@@ -1247,14 +1282,19 @@ define(function(require) {
       return model;
     };
 
-    model.tick = function(num, opts) {
+    /**
+      Synchronous model tick
+    */
+    model.tickSync = function(num, opts) {
       if (!arguments.length) num = 1;
 
       var dontDispatchTickEvent = opts && opts.dontDispatchTickEvent || false,
           i = -1;
 
+      if (tickInProgress) throw new Error("Can't tickSync while an async tick is in progress.");
+
       while(++i < num) {
-        tick(null, dontDispatchTickEvent);
+        tickSync(null, dontDispatchTickEvent, tickCompleted);
       }
       return model;
     };
@@ -1277,7 +1317,7 @@ define(function(require) {
         // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
         if (stopped) return true;
 
-        tick(elapsedTime, false);
+        tick(elapsedTime, false, tickCompleted);
         return false;
       });
 

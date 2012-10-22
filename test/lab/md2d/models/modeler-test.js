@@ -226,7 +226,7 @@ requirejs([
         assert.equal(model.stepCounter(), 0);
       },
       "after running one tick the model is at step 1": function(model) {
-        model.tick();
+        model.tickSync();
         assert.equal(model.stepCounter(), 1);
         assert.isTrue(model.isNewStep());
       },
@@ -239,7 +239,7 @@ requirejs([
         );
       },
       "after running 10 more ticks the model is at step 10": function(model) {
-        model.tick(10);
+        model.tickSync(10);
         assert.equal(model.stepCounter(), 10);
         assert.isTrue(model.isNewStep());
       },
@@ -279,7 +279,7 @@ requirejs([
         assert.isFalse(model.isNewStep());
       },
       "after running 10 ticks and model.seek() is at step 0": function(model) {
-        model.tick(10);
+        model.tickSync(10);
         model.seek();
         assert.equal(model.stepCounter(), 0);
         assert.isFalse(model.isNewStep());

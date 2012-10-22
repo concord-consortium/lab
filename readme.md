@@ -1327,7 +1327,7 @@ Reset buttons as wells as the extended keyboard controls that allow stepping for
 First I created this test that passed:
 
     "after running running one tick the model is at step 1": function(model) {
-      model.tick();
+      model.tickSync();
       assert.equal(model.stepCounter(), 1);
       assert.isTrue(model.isNewStep());
     },
@@ -1335,11 +1335,11 @@ First I created this test that passed:
 In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized
 I'd like the capability to run a specific number of steps forward and then check the results.
 
-I then wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to
+I then wrote this test that failed -- because the model.tickSync() function didn't yet take an optional argument to
 run multiple steps forward:
 
     "after running 9 more ticks the model is at step 10": function(model) {
-      model.tick(9);
+      model.tickSync(9);
       assert.equal(model.stepCounter(), 10);
       assert.isTrue(model.isNewStep());
     },
@@ -1353,11 +1353,11 @@ thinking of how something should behave rather than in how to get it to actually
 
 Since I already had this function for running one model step:
 
-    model.tick()
+    model.tickSync()
 
 Adding an optional numeric argument for running more steps is a fine way to express the intent of the new feature:
 
-    model.tick(9)
+    model.tickSync(9)
 
 In more complicated coding thinking about how to express the intent clearly and then what the result
 should be if that intent is successful **FIRST** ... and then 'driving out' the actual implementation to

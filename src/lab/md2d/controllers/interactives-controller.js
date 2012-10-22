@@ -251,7 +251,7 @@ define(function (require) {
             },
 
             tick: function tick() {
-              model.tick();
+              model.tickSync();
             },
 
             repaint: function repaint() {
