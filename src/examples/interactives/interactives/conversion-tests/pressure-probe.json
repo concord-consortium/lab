@@ -27,8 +27,18 @@
       "steps": 50,
       "title": "Temperature",
       "property": "temperature"
+    },
+    {
+      "type": "pressureGraph",
+      "id": "pressure-chart"
     }
   ],
   "layout": {
+    "rightwide": [
+      "pressure-chart"
+    ],
+    "bottom": [
+      "temperature-slider"
+    ]
   }
 }
