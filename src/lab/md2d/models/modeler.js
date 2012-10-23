@@ -1,4 +1,4 @@
-/*global define: false, d3: false, $: false, Modernizr, performance, now */
+/*global define: false, d3: false, $: false, Modernizr, performance, now: true */
 /*jslint onevar: true devel:true eqnull: true */
 
 define(function(require) {
@@ -9,7 +9,7 @@ define(function(require) {
 
       engine;
 
-  window.now = (function() {
+  now = (function() {
     if (window.performance && window.performance.now) {
       return function() { return performance.now(); };
     } else if (window.performance && window.performance.webkitNow) {
@@ -208,7 +208,14 @@ define(function(require) {
           return true;
         }()),
 
-        arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
+        arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+
+        runStartTime,
+        timeRunning = 0,
+        waitStartTime,
+        timeWaiting = 0,
+        drawStartTime,
+        timeDrawing = 0;
 
     function setupIndices() {
       var prop,
@@ -378,6 +385,7 @@ define(function(require) {
         message.duration = viewRefreshInterval * timeStep;
         message.dt = timeStep;
 
+        waitStartTime = now();
         worker.postMessage( message );
       } else {
         // sync path
@@ -402,7 +410,9 @@ define(function(require) {
       tick_history_list_push();
 
       if (!dontDispatchTickEvent) {
+        drawStartTime = now();
         dispatch.tick();
+        timeDrawing += now() - drawStartTime;
       }
       return stopped;
     }
@@ -635,6 +645,7 @@ define(function(require) {
     // setup the worker callback
     if (worker) {
       worker.addEventListener('message', function(message) {
+        timeWaiting += now() - waitStartTime;
         engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
         if (tickCallback) tickCallback();
@@ -1321,6 +1332,10 @@ define(function(require) {
         tick(null, false, function() {
           tickCompleted();
           if (counter >= num) {
+            timeRunning = now() - runStartTime;
+            console.log("time running: ", timeRunning);
+            console.log("time waiting: ", timeWaiting);
+            console.log("time drawing: ", timeDrawing);
             if (done) done();
             modelSampleRate = savedSampleRate;
           } else {
@@ -1335,6 +1350,7 @@ define(function(require) {
       }
 
       // Recursively tick
+      runStartTime = now();
       tickRepeatedly();
 
       stopped = false;
