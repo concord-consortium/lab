@@ -9,14 +9,16 @@
 define(function (require) {
 
   var md2d   = require('md2d/models/engine/md2d'),
-      engine = md2d.createEngine();
+      engine = md2d.createEngine(),
+      integrateStartTime;
 
   self.addEventListener('message', function messageListener(message) {
     if ( ! message.data.skipLoadingState ) {
       engine.setCompleteStateFromJSON(message.data);
     }
+    integrateStartTime = Date.now();
     engine.integrate(message.data.duration, message.data.dt);
-    self.postMessage(null);
+    self.postMessage({ timeIntegrating: Date.now() - integrateStartTime });
     //self.postMessage(engine.getCompleteStateAsJSON());
   });
 

@@ -209,7 +209,9 @@ define(function(require) {
         waitStartTime,
         timeWaiting = 0,
         drawStartTime,
-        timeDrawing = 0;
+        timeDrawing = 0,
+        integrateStartTime,
+        timeIntegrating = 0;
 
     function setupIndices() {
       var prop,
@@ -399,7 +401,9 @@ define(function(require) {
 
 
     function tickSync() {
+      integrateStartTime = now();
       engine.integrate(viewRefreshInterval * timeStep, timeStep);
+      timeIntegrating += now() - integrateStartTime;
     }
 
     function dispatchTick() {
@@ -650,6 +654,7 @@ define(function(require) {
       worker.addEventListener('message', function(message) {
         timeWaiting += now() - waitStartTime;
         waitStartTime = NaN;
+        timeIntegrating += message.data.timeIntegrating;
         // engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
         if (tickCallback) tickCallback();
@@ -1339,10 +1344,14 @@ define(function(require) {
             timeRunning = now() - runStartTime;
             console.log("time running: ", timeRunning);
             console.log("time waiting: ", timeWaiting);
+            console.log("time integrating: ", timeIntegrating);
             console.log("time drawing: ", timeDrawing);
-            timeWaiting = 0;
-            timeDrawing = 0;
+
             timeRunning = 0;
+            timeWaiting = 0;
+            timeIntegrating = 0;
+            timeDrawing = 0;
+
             if (done) done();
             modelSampleRate = savedSampleRate;
           } else {
