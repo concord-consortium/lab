@@ -1332,6 +1332,10 @@ define(function(require) {
       return model;
     };
 
+    model.setUseWebWorkers = function(_useWebWorkers) {
+      useWebWorkers = _useWebWorkers;
+    };
+
     model.relax = function() {
       engine.relaxToTemperature();
       return model;
