@@ -12,7 +12,9 @@ define(function (require) {
       engine = md2d.createEngine();
 
   self.addEventListener('message', function messageListener(message) {
-    engine.setCompleteStateFromJSON(message.data);
+    if ( ! message.data.skipLoadingState ) {
+      engine.setCompleteStateFromJSON(message.data);
+    }
     engine.integrate(message.data.duration, message.data.dt);
     self.postMessage(engine.getCompleteStateAsJSON());
   });

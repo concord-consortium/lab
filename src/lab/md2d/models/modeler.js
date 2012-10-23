@@ -25,6 +25,9 @@ define(function(require) {
         // Called to finish processing after the worker's integration results are copied back
         tickCallback,
 
+        // Temporary: flag to indicate state has been passed to worker at least once
+        statePassed = false,
+
         elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
         temperature_control,
@@ -373,12 +376,18 @@ define(function(require) {
         tickCallback = function() {
           cb(dontDispatchTickEvent);
         };
-        message = engine.getCompleteStateAsJSON();
+        if ( statePassed )
+          message = { skipLoadingState: true };
+        else {
+          message = engine.getCompleteStateAsJSON();
+          statePassed = true;
+        }
+
         message.duration = viewRefreshInterval * timeStep;
         message.dt = timeStep;
 
-
         worker.postMessage( message );
+
       } else {
         // sync path
         tickSync();
