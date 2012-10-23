@@ -401,9 +401,10 @@ define(function(require) {
 
 
     function tickSync() {
-      integrateStartTime = now();
+      // use Date.now() because it's consistent with what the worker has to use
+      integrateStartTime = Date.now();
       engine.integrate(viewRefreshInterval * timeStep, timeStep);
-      timeIntegrating += now() - integrateStartTime;
+      timeIntegrating += Date.now() - integrateStartTime;
     }
 
     function dispatchTick() {
