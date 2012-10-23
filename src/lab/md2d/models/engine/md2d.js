@@ -1960,7 +1960,7 @@ define(function (require, exports, module) {
         Intended for creating a clone of the main-thread engine in a Web Worker.
       */
       setCompleteStateFromJSON: function(json) {
-        var i, j, len;
+        var i, j, len, elementsChanged;
 
         useLennardJonesInteraction = json.useLennardJonesInteraction;
         useCoulombInteraction      = json.useCoulombInteraction;
@@ -1975,26 +1975,50 @@ define(function (require, exports, module) {
         // TODO: now that we've worked out the fiddly bits of *what* to do, _DRY this up!!!_:
 
         // elements
-        if (json.elements && !elements) createElementsArray(json.elements.mass.length);
+        elementsChanged = false;
 
-        if (elements.mass.length !== json.elements.mass.length) {
+        if (json.elements && !elements) {
+
+          createElementsArray(json.elements.mass.length);
+          elementsHaveBeenCreated = true;
+          elementsChanged = true;
+
+        } else if (elements.mass.length !== json.elements.mass.length) {
+
           extendArrays(elements, json.elements.mass.length);
           assignShortcutReferences.elements();
-        }
-        copyArrays(json.elements, elements);
-        N_elements = json.N_elements;
+          elementsChanged = true;
 
-        for (i = 0; i < N_elements; i++) {
-          if (!epsilon[i]) epsilon[i] = [];
-          if (!sigma[i]) sigma[i] = [];
-          if (!cutoffDistance_LJ_sq[i]) cutoffDistance_LJ_sq[i] = [];
-          if (!ljCalculator[i]) ljCalculator[i] = [];
+        } else {
 
-          for (j = 0; j <= i; j++) {
-            setPairwiseLJProperties(i, j);
+          // Try to guard against deoptimization of the integrate method by not changing the array
+          // of ljCalculators unless absolutely necessary.
+          for (i = 0; i < elements.mass.length; i++) {
+            if (elements.mass[i] !== json.elements.mass[i] ||
+                elements.sigma[i] !== json.elements.sigma[i] ||
+                elements.epsilon[i] !== json.elements.epsilon[i] ) {
+              elementsChanged = true;
+              break;
+            }
           }
         }
-        elementsHaveBeenCreated = true;
+
+        if (elementsChanged) {
+          copyArrays(json.elements, elements);
+          N_elements = json.N_elements;
+
+          for (i = 0; i < N_elements; i++) {
+            if (!epsilon[i]) epsilon[i] = [];
+            if (!sigma[i]) sigma[i] = [];
+            if (!cutoffDistance_LJ_sq[i]) cutoffDistance_LJ_sq[i] = [];
+            if (!ljCalculator[i]) ljCalculator[i] = [];
+
+            for (j = 0; j <= i; j++) {
+              setPairwiseLJProperties(i, j);
+            }
+          }
+        }
+
 
         // atoms
         if (json.atoms) {
