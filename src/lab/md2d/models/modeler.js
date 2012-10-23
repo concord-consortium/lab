@@ -1359,7 +1359,6 @@ define(function(require) {
 
       stopped = false;
       dispatch.play();
-      return model;
     };
 
     model.setUseWebWorkers = function(_useWebWorkers) {
