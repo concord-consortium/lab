@@ -1,4 +1,4 @@
-/*global define: false, d3: false, $: false, Modernizr, performance, now: true */
+/*global define: false, d3: false, $: false, Modernizr */
 /*jslint onevar: true devel:true eqnull: true */
 
 define(function(require) {
