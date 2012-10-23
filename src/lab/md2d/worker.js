@@ -16,7 +16,8 @@ define(function (require) {
       engine.setCompleteStateFromJSON(message.data);
     }
     engine.integrate(message.data.duration, message.data.dt);
-    self.postMessage(engine.getCompleteStateAsJSON());
+    self.postMessage(null);
+    //self.postMessage(engine.getCompleteStateAsJSON());
   });
 
 });

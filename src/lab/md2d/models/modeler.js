@@ -650,7 +650,7 @@ define(function(require) {
       worker.addEventListener('message', function(message) {
         timeWaiting += now() - waitStartTime;
         waitStartTime = NaN;
-        engine.setCompleteStateFromJSON(message.data);
+        // engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
         if (tickCallback) tickCallback();
       });
