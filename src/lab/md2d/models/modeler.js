@@ -393,7 +393,7 @@ define(function(require) {
       } else {
         // sync path
         tickSync();
-        if (cb) cb(dontDispatchTickEvent);
+        if (cb) cb({ dontDispatchTickEvent: dontDispatchTickEvent, sync: true });
       }
 
       return stopped;
@@ -412,7 +412,10 @@ define(function(require) {
       timeDrawing += now() - drawStartTime;
     }
 
-    function tickCompleted(dontDispatchTickEvent) {
+    function tickCompleted(opts) {
+      var dontDispatchTickEvent = opts.dontDispatchTickEvent || false,
+          sync = opts.sync || false;
+
       readModelState();
 
       pressures.push(pressure);
@@ -420,7 +423,13 @@ define(function(require) {
 
       tick_history_list_push();
 
-      if (!dontDispatchTickEvent) setTimeout(dispatchTick, 0);
+      if (  !dontDispatchTickEvent ) {
+        if (sync) {
+          dispatchTick();
+        } else {
+          setTimeout(dispatchTick, 0);
+        }
+      }
       return stopped;
     }
 
@@ -657,7 +666,7 @@ define(function(require) {
         timeIntegrating += message.data.timeIntegrating;
         // engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
-        if (tickCallback) tickCallback();
+        if (tickCallback) tickCallback({ sync: false });
       });
     }
 
@@ -752,7 +761,7 @@ define(function(require) {
           if (model_listener) { model_listener(); }
         } else {
           tickSync(null, false);
-          tickCompleted();
+          tickCompleted({ sync: true });
         }
       }
       return tick_counter;
@@ -1320,7 +1329,7 @@ define(function(require) {
 
       while(++i < num) {
         tickSync();
-        tickCompleted(dontDispatchTickEvent);
+        tickCompleted({ dontDispatchTickEvent: dontDispatchTickEvent, sync: true });
       }
       return model;
     };
@@ -1338,8 +1347,8 @@ define(function(require) {
 
       function tickRepeatedly() {
         ++counter;
-        tick(null, false, function() {
-          tickCompleted();
+        tick(null, false, function(opts) {
+          tickCompleted(opts);
           if (counter >= num) {
             timeRunning = now() - runStartTime;
             console.log("time running: ", timeRunning);
