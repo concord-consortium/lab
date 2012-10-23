@@ -378,6 +378,7 @@ define(function(require) {
       if (worker && useWebWorkers) {
         // async path
         tickInProgress = true;
+        waitStartTime = now();
         tickCallback = function() {
           cb(dontDispatchTickEvent);
         };
@@ -385,7 +386,7 @@ define(function(require) {
         message.duration = viewRefreshInterval * timeStep;
         message.dt = timeStep;
 
-        waitStartTime = now();
+
         worker.postMessage( message );
       } else {
         // sync path
@@ -648,6 +649,7 @@ define(function(require) {
     if (worker) {
       worker.addEventListener('message', function(message) {
         timeWaiting += now() - waitStartTime;
+        waitStartTime = NaN;
         engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
         if (tickCallback) tickCallback();
