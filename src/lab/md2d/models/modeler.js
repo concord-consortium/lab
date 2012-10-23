@@ -1,4 +1,4 @@
-/*global define: false, d3: false, $: false Modernizr*/
+/*global define: false, d3: false, $: false, Modernizr, performance, now */
 /*jslint onevar: true devel:true eqnull: true */
 
 define(function(require) {
@@ -8,6 +8,16 @@ define(function(require) {
       md2d    = require('md2d/models/engine/md2d'),
 
       engine;
+
+  window.now = (function() {
+    if (window.performance && window.performance.now) {
+      return function() { return performance.now(); };
+    } else if (window.performance && window.performance.webkitNow) {
+      return function() { return performance.webkitNow(); };
+    } else {
+      return function() { return Date.now(); };
+    }
+  }());
 
   return function Model(initialProperties) {
     var model = {},
