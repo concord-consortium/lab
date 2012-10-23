@@ -971,7 +971,7 @@ define(function (require, exports, module) {
               atom_mass,
               obs_mass,
               totalMass,
-              bounceDirection = 0; // if we bounce horz: > 0, vert: < 0
+              bounceDirection;
 
           r = radius[i];
           xi = x[i];
@@ -989,7 +989,9 @@ define(function (require, exports, module) {
             y_top_prev = obstacleYPrev[j] + obstacleHeight[j] + r;
             y_bottom_prev = obstacleYPrev[j] - r;
 
-
+            // Reset bounceDirection, which indicates collision type.
+            bounceDirection = 0;
+            // Check all possibilities for a collision with the rectangular obstacle.
             if (xi > x_left && xi < x_right && yi > y_bottom && yi < y_top) {
               if (x_prev <= x_left_prev) {
                 x[i] = x_left - (xi - x_left);
@@ -1008,7 +1010,7 @@ define(function (require, exports, module) {
 
             obs_mass = obstacleMass[j];
 
-            if (bounceDirection) {
+            if (bounceDirection !== 0) {
               if (obs_mass !== Infinity) {
                 // if we have real mass, perform a perfectly-elastic collision
                 atom_mass = mass[i];
