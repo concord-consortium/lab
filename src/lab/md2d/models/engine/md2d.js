@@ -717,7 +717,7 @@ define(function (require, exports, module) {
           // include conversion in the pressure constant, especially considering the fact that
           // conversion from 120amu to amu is quite simple. ]
           var dim;
-          if (probeName === 'west' || probeName === 'south')
+          if (probeName === 'west' || probeName === 'east')
             dim = obstacleHeight[obstacleIdx];
           else
             dim = obstacleWidth[obstacleIdx];
