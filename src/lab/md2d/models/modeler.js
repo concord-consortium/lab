@@ -401,6 +401,12 @@ define(function(require) {
       engine.integrate(viewRefreshInterval * timeStep, timeStep);
     }
 
+    function dispatchTick() {
+      drawStartTime = now();
+      dispatch.tick();
+      timeDrawing += now() - drawStartTime;
+    }
+
     function tickCompleted(dontDispatchTickEvent) {
       readModelState();
 
@@ -409,11 +415,7 @@ define(function(require) {
 
       tick_history_list_push();
 
-      if (!dontDispatchTickEvent) {
-        drawStartTime = now();
-        dispatch.tick();
-        timeDrawing += now() - drawStartTime;
-      }
+      if (!dontDispatchTickEvent) setTimeout(dispatchTick, 0);
       return stopped;
     }
 
