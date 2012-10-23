@@ -65,7 +65,7 @@ define(function (require) {
               for (name in probe) {
                 if (probe.hasOwnProperty(name)) {
                   result.push(probe[name]);
-                  pressureData[i].push(probe[name]);
+                  pressureData[i++].push(probe[name]);
                 }
               }
             }
