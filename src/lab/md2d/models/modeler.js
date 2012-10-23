@@ -6,18 +6,9 @@ define(function(require) {
   require('common/console');
   var arrays  = require('arrays'),
       md2d    = require('md2d/models/engine/md2d'),
+      now     = require('common/now'),
 
       engine;
-
-  now = (function() {
-    if (window.performance && window.performance.now) {
-      return function() { return performance.now(); };
-    } else if (window.performance && window.performance.webkitNow) {
-      return function() { return performance.webkitNow(); };
-    } else {
-      return function() { return Date.now(); };
-    }
-  }());
 
   return function Model(initialProperties) {
     var model = {},
