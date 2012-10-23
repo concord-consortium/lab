@@ -874,6 +874,9 @@ define(function (require, exports, module) {
         },
 
         updateObstaclePosition = function(i) {
+          // Fast path when obstacle isn't movable.
+          if (obstacleMass[i] === Infinity) return;
+
           var ax, ay, drag,
               vx = obstacleVX[i],
               vy = obstacleVY[i],
