@@ -347,7 +347,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1350564310000</long>
+     <long>1350989011000</long>
     </object>
    </void>
    <void method="put">
@@ -356,7 +356,7 @@
    </void>
    <void method="put">
     <string>size</string>
-    <long>10360</long>
+    <long>10290</long>
    </void>
    <void method="put">
     <string>codebase</string>
@@ -403,10 +403,10 @@
  </object>
  <object class="org.concord.mw2d.models.Atom">
   <void property="rx">
-   <double>210.0</double>
+   <double>213.0</double>
   </void>
   <void property="ry">
-   <double>24.0</double>
+   <double>41.0</double>
   </void>
  </object>
  <object class="org.concord.mw2d.models.MolecularModel$State"/>
