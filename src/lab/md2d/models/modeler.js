@@ -1340,6 +1340,9 @@ define(function(require) {
             console.log("time running: ", timeRunning);
             console.log("time waiting: ", timeWaiting);
             console.log("time drawing: ", timeDrawing);
+            timeWaiting = 0;
+            timeDrawing = 0;
+            timeRunning = 0;
             if (done) done();
             modelSampleRate = savedSampleRate;
           } else {
