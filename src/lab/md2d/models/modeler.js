@@ -1063,12 +1063,7 @@ define(function(require) {
     };
 
     model.setRadialBondProperties = function(i, props) {
-      var key;
-      for (key in props) {
-        if (props.hasOwnProperty(key)) {
-          radialBonds[key][i] = props[key];
-        }
-      }
+      engine.setRadialBondProperties(i, props);
       readModelState();
     };
 

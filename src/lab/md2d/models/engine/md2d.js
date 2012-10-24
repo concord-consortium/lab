@@ -1439,6 +1439,16 @@ define(function (require, exports, module) {
         return ljCalculator;
       },
 
+      setRadialBondProperties: function(i, props) {
+        var key;
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            radialBonds[key][i] = props[key];
+            radialBondResults[i][key] = props[key];
+          }
+        }
+      },
+
       setElementProperties: function(i, properties) {
         var j, newRadius;
         // FIXME we cached mass into its own array, which is now probably unnecessary (position-update
