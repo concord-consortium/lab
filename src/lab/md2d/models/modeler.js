@@ -35,7 +35,6 @@ define(function(require) {
         showClock,
         lennard_jones_forces, coulomb_forces,
         gravitationalField = false,
-        viewRefreshInterval = 50,
         timeStep = 1,
         stopped = true,
         tick_history_list = [],
@@ -385,7 +384,7 @@ define(function(require) {
           statePassed = true;
         }
 
-        message.duration = viewRefreshInterval * timeStep;
+        message.duration = model.get('viewRefreshInterval') * timeStep;
         message.dt = timeStep;
 
         worker.postMessage( message );
@@ -403,7 +402,7 @@ define(function(require) {
     function tickSync() {
       // use Date.now() because it's consistent with what the worker has to use
       integrateStartTime = Date.now();
-      engine.integrate(viewRefreshInterval * timeStep, timeStep);
+      engine.integrate(model.get('viewRefreshInterval') * timeStep, timeStep);
       timeIntegrating += Date.now() - integrateStartTime;
     }
 
@@ -805,7 +804,6 @@ define(function(require) {
       showVDWLines        = properties.showVDWLines;
       VDWLinesRatio       = properties.VDWLinesRatio;
       showClock           = properties.showClock;
-      viewRefreshInterval = properties.viewRefreshInterval;
       timeStep            = properties.timeStep;
       viscosity           = properties.viscosity;
       gravitationalField  = properties.gravitationalField;
