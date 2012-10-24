@@ -320,7 +320,7 @@
    <void method="add">
     <object class="org.concord.mw2d.models.RectangularObstacle$Delegate">
      <void property="density">
-      <double>100.0</double>
+      <double>0.001</double>
      </void>
      <void property="fillMode">
       <object class="org.concord.modeler.draw.FillMode$ColorFill">
@@ -376,7 +376,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1351068669000</long>
+     <long>1351083556000</long>
     </object>
    </void>
    <void method="put">
@@ -385,7 +385,7 @@
    </void>
    <void method="put">
     <string>size</string>
-    <long>11683</long>
+    <long>12070</long>
    </void>
    <void method="put">
     <string>codebase</string>
