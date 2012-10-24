@@ -885,10 +885,10 @@ define(function (require, exports, module) {
               extFx = obstacleExtFX[i],
               extFy = obstacleExtFY[i];
 
-          if (vx || vy || extFx || extFy) {
+          if (vx || vy || extFx || extFy || gravitationalField) {
             drag = viscosity * obstacleFriction[i];
             ax = extFx - drag * vx;
-            ay = extFy - drag * vy;
+            ay = extFy - drag * vy - gravitationalField;
 
             obstacleXPrev[i] = obstacleX[i];
             obstacleYPrev[i] = obstacleY[i];
