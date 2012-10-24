@@ -1634,7 +1634,7 @@ define(function (require, exports, module) {
 
         radialBondResults[N_radialBonds].atom1    = radialBondAtom1Index[N_radialBonds] = atom1Index;
         radialBondResults[N_radialBonds].atom2    = radialBondAtom2Index[N_radialBonds] = atom2Index;
-        radialBondResults[N_radialBonds].lenght   = radialBondLength[N_radialBonds]     = bondLength;
+        radialBondResults[N_radialBonds].length   = radialBondLength[N_radialBonds]     = bondLength;
         radialBondResults[N_radialBonds].strength = radialBondStrength[N_radialBonds]   = bondStrength;
         radialBondResults[N_radialBonds].style    = radialBondStyle[N_radialBonds]      = bondStyle;
 
