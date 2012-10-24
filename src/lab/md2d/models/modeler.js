@@ -657,15 +657,16 @@ define(function(require) {
     if (worker) {
       worker.addEventListener('message', function(message) {
         var endTime = now();
-        timeWaiting += endTime - waitStartTime;
+
         console.log('  message received at ', endTime);
 
         timeIntegrating += message.data.timeIntegrating;
         timeWorking += message.data.timeWorking;
+        timeWaiting += (endTime - waitStartTime - message.data.timeWorking);
 
         console.log('    integrate time was ', message.data.timeIntegrating);
         console.log('    working time was ', message.data.timeWorking);
-        console.log('    message passing time: ', endTime - waitStartTime - message.data.timeWorking);
+        console.log('    waiting time: ', endTime - waitStartTime - message.data.timeWorking);
 
         engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
@@ -1340,12 +1341,13 @@ define(function(require) {
       Run model similarly to its use in a real model for 'num' ticks, then call
       completion callback 'done' with stats
     */
-    model.run = function(num, done) {
+    model.run = function(num, intervalLength, done) {
+      intervalLength = intervalLength || 100;
+
       var counter = 0,
           savedSampleRate = modelSampleRate,
           ret,
-          intervalID,
-          intervalLength = 100;
+          intervalID;
 
       stopped = false;
       dispatch.play();
@@ -1365,9 +1367,9 @@ define(function(require) {
 
             ret = {
               running:     timeRunning,
-              waiting:     timeWaiting,
               integrating: timeIntegrating,
               working:     timeWorking,
+              waiting:     timeWaiting,
               drawing:     timeDrawing
             };
 
@@ -1377,9 +1379,9 @@ define(function(require) {
             if (done) done(ret);
 
             timeRunning = 0;
-            timeWaiting = 0;
             timeIntegrating = 0;
             timeWorking = 0;
+            timeWaiting = 0;
             timeDrawing = 0;
 
             modelSampleRate = savedSampleRate;
