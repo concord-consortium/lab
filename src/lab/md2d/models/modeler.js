@@ -666,10 +666,10 @@ define(function(require) {
       worker.addEventListener('message', function(message) {
         var endTime = now();
         timeWaiting += endTime - waitStartTime;
-        waitStartTime = NaN;
         console.log('  message received at ', endTime);
         timeIntegrating += message.data.timeIntegrating;
         console.log('    integrate time was ', message.data.timeIntegrating);
+        console.log('    message passing time: ', endTime - waitStartTime - message.data.timeIntegrating);
         // engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
         if (tickCallback) tickCallback({ sync: true });
