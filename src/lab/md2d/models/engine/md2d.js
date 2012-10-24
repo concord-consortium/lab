@@ -903,9 +903,49 @@ define(function (require, exports, module) {
           }
         },
 
+        // Constrain obstacle i to the area between the walls by simulating perfectly elastic collisions with the walls.
+        bounceObstacleOffWalls = function(i) {
+          var leftwall   = 0,
+              bottomwall = 0,
+              width  = size[0],
+              height = size[1],
+              rightwall = width - obstacleWidth[i],
+              topwall   = height - obstacleHeight[i];
+
+          // Bounce off vertical walls.
+          if (obstacleX[i] < leftwall) {
+            while (obstacleX[i] < leftwall - width) {
+              obstacleX[i] += width;
+            }
+            obstacleX[i]  = leftwall + (leftwall - obstacleX[i]);
+            obstacleVX[i] *= -1;
+          } else if (obstacleX[i] > rightwall) {
+            while (obstacleX[i] > rightwall + width) {
+              obstacleX[i] -= width;
+            }
+            obstacleX[i]  = rightwall - (obstacleX[i] - rightwall);
+            obstacleVX[i] *= -1;
+          }
+
+          // Bounce off horizontal walls.
+          if (obstacleY[i] < bottomwall) {
+            while (obstacleY[i] < bottomwall - height) {
+              obstacleY[i] += height;
+            }
+            obstacleY[i]  = bottomwall + (bottomwall - obstacleY[i]);
+            obstacleVY[i] *= -1;
+          } else if (obstacleY[i] > topwall) {
+            while (obstacleY[i] > topwall + width) {
+              obstacleY[i] -= width;
+            }
+            obstacleY[i]  = topwall - (obstacleY[i] - topwall);
+            obstacleVY[i] *= -1;
+          }
+        },
+
         // Constrain particle i to the area between the walls by simulating perfectly elastic collisions with the walls.
         // Note this may change the linear and angular momentum.
-        bounceOffWalls = function(i) {
+        bounceAtomOffWalls = function(i) {
           var r = radius[i],
               leftwall = r,
               bottomwall = r,
@@ -2035,7 +2075,7 @@ define(function (require, exports, module) {
         dt = _dt;       // dt is a closure variable that helpers need access to
         dt_sq = dt*dt;  // the squared time step is also needed by some helpers
 
-        // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
+        // FIXME we still need to make bounceAtomOffWalls respect each atom's actual radius, rather than
         // assuming just one radius as below
         radius = elementRadius[0];
 
@@ -2055,7 +2095,7 @@ define(function (require, exports, module) {
 
             // Update r(t+dt) using v(t) and a(t)
             updatePosition(i);
-            bounceOffWalls(i);
+            bounceAtomOffWalls(i);
             bounceOffObstacles(i, x_prev, y_prev);
 
             // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
@@ -2077,6 +2117,7 @@ define(function (require, exports, module) {
           // Move obstacles
           for (i = 0; i < N_obstacles; i++) {
             updateObstaclePosition(i);
+            bounceObstacleOffWalls(i);
           }
 
           // Accumulate forces from radially bonded interactions into a(t+dt)
