@@ -2300,8 +2300,14 @@ define(function (require, exports, module) {
 
         // Process all obstacles.
         for (i = 0; i < N_obstacles; i++) {
-          // Kinetic energy calculation.
+
           if (obstacleMass[i] !== Infinity) {
+            // Gravitational potential energy.
+            if (gravitationalField) {
+              gravPEInMWUnits = obstacleMass[i] * gravitationalField * obstacleY[i];
+              PE += constants.convert(gravPEInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+            }
+            // Kinetic energy.
             KEinMWUnits += 0.5 * obstacleMass[i] *
                 (obstacleVX[i] * obstacleVX[i] + obstacleVY[i] * obstacleVY[i]);
           }
