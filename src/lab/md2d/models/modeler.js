@@ -669,7 +669,7 @@ define(function(require) {
 
         engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
-        if (tickCallback) tickCallback({ sync: true });
+        if (tickCallback) tickCallback({ sync: false });
       });
     }
 
