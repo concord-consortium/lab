@@ -385,7 +385,7 @@ define(function(require) {
         message.duration = model.get('viewRefreshInterval') * timeStep;
         message.dt = timeStep;
         waitStartTime = now();
-        console.log('        message sent at ', waitStartTime);
+        console.log('message sent at ', waitStartTime);
         worker.postMessage( message );
 
       } else {
@@ -408,11 +408,11 @@ define(function(require) {
     function dispatchTick() {
       var endTime;
       drawStartTime = now();
-      console.log('    starting draw at ', drawStartTime);
+      console.log('      starting draw at ', drawStartTime);
       dispatch.tick();
       endTime = now();
       timeDrawing += endTime - drawStartTime;
-      console.log('      ending draw at ', endTime);
+      console.log('        ending draw at ', endTime);
     }
 
     function tickCompleted(opts) {
@@ -667,13 +667,12 @@ define(function(require) {
         var endTime = now();
         timeWaiting += endTime - waitStartTime;
         waitStartTime = NaN;
-        console.log('message received at ', endTime);
+        console.log('  message received at ', endTime);
         timeIntegrating += message.data.timeIntegrating;
-        console.log('  integrate time was ', message.data.timeIntegrating);
+        console.log('    integrate time was ', message.data.timeIntegrating);
         // engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
         if (tickCallback) tickCallback({ sync: true });
-        console.log('          ending message listener at ', now());
       });
     }
 
