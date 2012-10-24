@@ -351,6 +351,22 @@
      </void>
     </object>
    </void>
+   <void method="add">
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate">
+     <void property="height">
+      <double>33.0</double>
+     </void>
+     <void property="width">
+      <double>39.0</double>
+     </void>
+     <void property="x">
+      <double>65.0</double>
+     </void>
+     <void property="y">
+      <double>10.0</double>
+     </void>
+    </object>
+   </void>
   </void>
   <void property="properties">
    <void method="put">
@@ -360,7 +376,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1351068656000</long>
+     <long>1351068669000</long>
     </object>
    </void>
    <void method="put">
@@ -369,7 +385,7 @@
    </void>
    <void method="put">
     <string>size</string>
-    <long>11682</long>
+    <long>11683</long>
    </void>
    <void method="put">
     <string>codebase</string>
