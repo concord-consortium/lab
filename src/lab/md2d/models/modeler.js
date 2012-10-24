@@ -385,7 +385,7 @@ define(function(require) {
         message.duration = model.get('viewRefreshInterval') * timeStep;
         message.dt = timeStep;
         waitStartTime = now();
-        console.log('    message sent at ', waitStartTime);
+        console.log('        message sent at ', waitStartTime);
         worker.postMessage( message );
 
       } else {
