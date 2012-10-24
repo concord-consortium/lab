@@ -865,7 +865,14 @@ define(function (require) {
             path,
             costheta,
             sintheta,
-            length, numSpikes = 10;
+            length,
+            strength,
+            numSpikes,
+            springDiameter,
+            cosThetaDiameter,
+            sinThetaDiameter,
+            cosThetaSpikes,
+            sinThetaSpikes;
 
         x1 = x(d.x1);
         y1 = y(d.y1);
@@ -873,9 +880,18 @@ define(function (require) {
         y2 = y(d.y2);
         dx = x2 - x1;
         dy = y2 - y1;
+
+        strength = d.strength;
+        numSpikes = Math.floor(d.length * 10 * Math.log(strength+2));
         length = Math.sqrt(dx*dx + dy*dy)/scaling_factor;
+        springDiameter = length / numSpikes * (1/Math.log(strength+2));
+
         costheta = dx / length;
         sintheta = dy / length;
+        cosThetaDiameter = costheta * springDiameter;
+        sinThetaDiameter = sintheta * springDiameter;
+        cosThetaSpikes = costheta * numSpikes;
+        sinThetaSpikes = sintheta * numSpikes;
 
         radius_x1 = x(results[d.atom1].radius) * costheta;
         radius_x2 = x(results[d.atom2].radius) * costheta;
@@ -885,16 +901,15 @@ define(function (require) {
         radiusFactorY = radius_y1 - radius_y2;
 
         if (isSpringBond(d)) {
-          var delta = length / numSpikes;
           path = "M "+x1+","+y1+" " ;
           for (j = 0; j < numSpikes; j++) {
             if (j % 2 === 0) {
-              pointX = x1 + (j + 0.5) * costheta * delta - 0.5 * sintheta * numSpikes;
-              pointY = y1 + (j + 0.5) * sintheta * delta + 0.5 * costheta * numSpikes;
+              pointX = x1 + (j + 0.5) * cosThetaDiameter - 0.5 * sinThetaSpikes;
+              pointY = y1 + (j + 0.5) * sinThetaDiameter + 0.5 * cosThetaSpikes;
             }
             else {
-              pointX = x1 + (j + 0.5) * costheta * delta + 0.5 * sintheta * numSpikes;
-              pointY = y1 + (j + 0.5) * sintheta * delta - 0.5 * costheta * numSpikes;
+              pointX = x1 + (j + 0.5) * cosThetaDiameter + 0.5 * sinThetaSpikes;
+              pointY = y1 + (j + 0.5) * sinThetaDiameter - 0.5 * cosThetaSpikes;
             }
             lineTo = " L "+pointX+","+pointY;
             path += lineTo;
