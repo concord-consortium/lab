@@ -54,7 +54,7 @@
       "type":   "slider",
       "id":     "spring-constant-slider",
       "min":    0.1,
-      "max":    15,
+      "max":    45,
       "initialValue": 8,
       "labels": [
         {
@@ -62,8 +62,8 @@
           "label": "0.1"
         },
         {
-          "value": 15,
-          "label": "10"
+          "value": 45,
+          "label": "30"
         }
       ],
       "steps":  50,
