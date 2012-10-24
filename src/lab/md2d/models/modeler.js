@@ -410,11 +410,11 @@ define(function(require) {
     function dispatchTick() {
       var endTime;
       drawStartTime = now();
-      console.log('starting draw at ', drawStartTime);
+      console.log('    starting draw at ', drawStartTime);
       dispatch.tick();
       endTime = now();
       timeDrawing += endTime - drawStartTime;
-      console.log('  ending draw at ', endTime);
+      console.log('      ending draw at ', endTime);
     }
 
     function tickCompleted(opts) {
@@ -674,8 +674,8 @@ define(function(require) {
         console.log('  integrate time was ', message.data.timeIntegrating);
         // engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
-        if (tickCallback) tickCallback({ sync: false });
-        console.log('      ending message listener at ', now());
+        if (tickCallback) tickCallback({ sync: true });
+        console.log('          ending message listener at ', now());
       });
     }
 
