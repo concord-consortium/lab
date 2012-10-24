@@ -374,9 +374,7 @@ define(function(require) {
         // async path
         tickInProgress = true;
 
-        tickCallback = function() {
-          cb(dontDispatchTickEvent);
-        };
+        tickCallback = cb;
         if ( statePassed )
           message = { skipLoadingState: true };
         else {
