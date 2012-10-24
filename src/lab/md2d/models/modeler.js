@@ -1340,51 +1340,52 @@ define(function(require) {
     };
 
     /**
-      Run model asynchronously while updating graphics, etc, "flat out" (with any model rate
-      governing turned off and no timer delays)
+      Run model similarly to its use in a real model
     */
     model.run = function(num, done) {
       var counter = 0,
-          savedSampleRate = modelSampleRate;
+          savedSampleRate = modelSampleRate,
+          ret;
+
+      stopped = false;
+      dispatch.play();
+      runStartTime = now();
 
       // i.e., never skip a tick
       modelSampleRate = Infinity;
 
-      function tickRepeatedly() {
-        ++counter;
+      d3.timer(function timerTick(elapsedTime) {
+        counter++;
+        if (counter > num) return true; // cancels timer
+
         tick(null, false, function(opts) {
           tickCompleted(opts);
-          if (counter >= num) {
+          if (counter === num) {
             timeRunning = now() - runStartTime;
-            console.log("time running: ", timeRunning);
-            console.log("time waiting: ", timeWaiting);
-            console.log("time integrating: ", timeIntegrating);
-            console.log("time drawing: ", timeDrawing);
+
+            ret = {
+              running:     timeRunning,
+              waiting:     timeWaiting,
+              integrating: timeIntegrating,
+              drawing:     timeDrawing
+            };
+
+            console.log("times for " + num + " ticks: ", ret);
+
+            // "done" callback might be, e.g., benchmarking code, so pass it timing results
+            if (done) done(ret);
 
             timeRunning = 0;
             timeWaiting = 0;
             timeIntegrating = 0;
             timeDrawing = 0;
 
-            if (done) done();
             modelSampleRate = savedSampleRate;
-          } else {
-            tickRepeatedly();
+            stopped = true;
+            dispatch.stop();
           }
         });
-
-        if (counter >= num) {
-          stopped = true;
-          dispatch.stop();
-        }
-      }
-
-      // Recursively tick
-      runStartTime = now();
-      tickRepeatedly();
-
-      stopped = false;
-      dispatch.play();
+      });
     };
 
     model.setUseWebWorkers = function(_useWebWorkers) {
