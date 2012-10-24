@@ -373,7 +373,7 @@ define(function(require) {
       if (worker && useWebWorkers) {
         // async path
         tickInProgress = true;
-        waitStartTime = now();
+
         tickCallback = function() {
           cb(dontDispatchTickEvent);
         };
@@ -386,7 +386,8 @@ define(function(require) {
 
         message.duration = model.get('viewRefreshInterval') * timeStep;
         message.dt = timeStep;
-
+        waitStartTime = now();
+        console.log('    message sent at ', waitStartTime);
         worker.postMessage( message );
 
       } else {
@@ -407,9 +408,13 @@ define(function(require) {
     }
 
     function dispatchTick() {
+      var endTime;
       drawStartTime = now();
+      console.log('starting draw at ', drawStartTime);
       dispatch.tick();
-      timeDrawing += now() - drawStartTime;
+      endTime = now();
+      timeDrawing += endTime - drawStartTime;
+      console.log('  ending draw at ', endTime);
     }
 
     function tickCompleted(opts) {
@@ -661,12 +666,16 @@ define(function(require) {
     // setup the worker callback
     if (worker) {
       worker.addEventListener('message', function(message) {
-        timeWaiting += now() - waitStartTime;
+        var endTime = now();
+        timeWaiting += endTime - waitStartTime;
         waitStartTime = NaN;
+        console.log('message received at ', endTime);
         timeIntegrating += message.data.timeIntegrating;
+        console.log('  integrate time was ', message.data.timeIntegrating);
         // engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
         if (tickCallback) tickCallback({ sync: false });
+        console.log('      ending message listener at ', now());
       });
     }
 
