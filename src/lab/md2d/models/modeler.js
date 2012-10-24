@@ -25,9 +25,6 @@ define(function(require) {
         // Called to finish processing after the worker's integration results are copied back
         tickCallback,
 
-        // Temporary: flag to indicate state has been passed to worker at least once
-        statePassed = false,
-
         elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
         temperature_control,
@@ -210,7 +207,8 @@ define(function(require) {
         drawStartTime,
         timeDrawing = 0,
         integrateStartTime,
-        timeIntegrating = 0;
+        timeIntegrating = 0,
+        timeWorking = 0;
 
     function setupIndices() {
       var prop,
@@ -375,13 +373,7 @@ define(function(require) {
         tickInProgress = true;
 
         tickCallback = cb;
-        if ( statePassed )
-          message = { skipLoadingState: true };
-        else {
-          message = engine.getCompleteStateAsJSON();
-          statePassed = true;
-        }
-
+        message = engine.getCompleteStateAsJSON();
         message.duration = model.get('viewRefreshInterval') * timeStep;
         message.dt = timeStep;
         waitStartTime = now();
@@ -667,10 +659,15 @@ define(function(require) {
         var endTime = now();
         timeWaiting += endTime - waitStartTime;
         console.log('  message received at ', endTime);
+
         timeIntegrating += message.data.timeIntegrating;
+        timeWorking += message.data.timeWorking;
+
         console.log('    integrate time was ', message.data.timeIntegrating);
-        console.log('    message passing time: ', endTime - waitStartTime - message.data.timeIntegrating);
-        // engine.setCompleteStateFromJSON(message.data);
+        console.log('    working time was ', message.data.timeWorking);
+        console.log('    message passing time: ', endTime - waitStartTime - message.data.timeWorking);
+
+        engine.setCompleteStateFromJSON(message.data);
         tickInProgress = false;
         if (tickCallback) tickCallback({ sync: true });
       });
@@ -1340,12 +1337,15 @@ define(function(require) {
     };
 
     /**
-      Run model similarly to its use in a real model
+      Run model similarly to its use in a real model for 'num' ticks, then call
+      completion callback 'done' with stats
     */
     model.run = function(num, done) {
       var counter = 0,
           savedSampleRate = modelSampleRate,
-          ret;
+          ret,
+          intervalID,
+          intervalLength = 100;
 
       stopped = false;
       dispatch.play();
@@ -1354,9 +1354,9 @@ define(function(require) {
       // i.e., never skip a tick
       modelSampleRate = Infinity;
 
-      d3.timer(function timerTick(elapsedTime) {
+      intervalID = window.setInterval(function timerTick(elapsedTime) {
         counter++;
-        if (counter > num) return true; // cancels timer
+        if (counter > num) window.clearInterval(intervalID);
 
         tick(null, false, function(opts) {
           tickCompleted(opts);
@@ -1367,6 +1367,7 @@ define(function(require) {
               running:     timeRunning,
               waiting:     timeWaiting,
               integrating: timeIntegrating,
+              working:     timeWorking,
               drawing:     timeDrawing
             };
 
@@ -1378,6 +1379,7 @@ define(function(require) {
             timeRunning = 0;
             timeWaiting = 0;
             timeIntegrating = 0;
+            timeWorking = 0;
             timeDrawing = 0;
 
             modelSampleRate = savedSampleRate;
@@ -1385,7 +1387,7 @@ define(function(require) {
             dispatch.stop();
           }
         });
-      });
+      }, intervalLength);
     };
 
     model.setUseWebWorkers = function(_useWebWorkers) {
