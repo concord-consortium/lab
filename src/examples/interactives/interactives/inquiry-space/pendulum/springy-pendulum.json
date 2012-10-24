@@ -1,0 +1,134 @@
+{
+  "title": "Spring and Mass",
+  "about": "Interactive example",
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+    "viewOptions": {
+      "controlButtons": "play_reset",
+      "gridLines": true
+    },
+    "onLoad": "setRadialBondProperties(0, { length: 0.75, style: 106 });"
+  },
+  "components": [
+    {
+      "type":   "slider",
+      "id":     "mass-slider",
+      "min":    1.0,
+      "max":    50.0,
+      "initialValue": 15,
+      "labels": [
+        {
+          "value": 1.0,
+          "label": "10"
+        },
+        {
+          "value": 50,
+          "label": "500"
+        }
+      ],
+      "steps":  45,
+      "title":  "Mass of the ball (grams)",
+      "action": "setElementProperties(3, { mass: value*120 });"
+    },
+    {
+      "type":   "slider",
+      "id":     "angle-slider",
+      "min":    -45,
+      "max":    45,
+      "initialValue": 45,
+      "labels": [
+        {
+          "value": -45,
+          "label": "-45&deg;"
+        },
+        {
+          "value": 45,
+          "label": "45&deg;"
+        }
+      ],
+      "steps":  90,
+      "title":  "Starting Angle of Pendulum",
+      "action": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
+    },
+    {
+      "type":   "slider",
+      "id":     "length-slider",
+      "min":    0.0666,
+      "max":    2.0,
+      "initialValue": 1.25,
+      "labels": [
+        {
+          "value": 0.0666,
+          "label": "0.1"
+        },
+        {
+          "value": 2.0,
+          "label": "3.0"
+        }
+      ],
+      "steps":  30,
+      "title":  "Starting length (m)",
+      "action": "var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
+    },
+    {
+      "type":   "slider",
+      "id":     "spring-constant-slider",
+      "min":    0.1,
+      "max":    45,
+      "initialValue": 8,
+      "labels": [
+        {
+          "value": 0.1,
+          "label": "0.1"
+        },
+        {
+          "value": 45,
+          "label": "30"
+        }
+      ],
+      "steps":  50,
+      "title":  "Spring Constant (N/m)",
+      "action": "setRadialBondProperties(0, { strength: value });"
+    },
+    {
+      "type":   "slider",
+      "id":     "friction-slider",
+      "min":    0,
+      "max":    1.0,
+      "initialValue": 0,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 1.0,
+          "label": "Max"
+        }
+      ],
+      "steps":  25,
+      "title":  "Friction",
+      "action": "setAtomProperties(1, { friction: value });"
+    },
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE Shading",
+      "property": "keShading"
+    },
+    {
+      "type": "energyGraph",
+      "id": "ke-chart",
+      "dimensions": { "width": 500, "height": 296 },
+      "options": { "ymin": -0.1, "ymax": 1.0, "xmax": 20 }
+    }
+  ],
+  "layout": {
+    "rightwide": [
+      "ke-chart"
+    ],
+    "bottom": [
+      "mass-slider"
+    ]
+  }
+}
