@@ -1,11 +1,13 @@
 {
-  "title": "Pendulum 1",
+  "title": "Spring and Mass",
   "about": "Interactive example",
   "model": {
     "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
     "viewOptions": {
-      "controlButtons": "play_reset"
-    }
+      "controlButtons": "play_reset",
+      "gridLines": true
+    },
+    "onLoad": "setRadialBondProperties(0, { length: 0.75, style: 106 }); var a0 = getAtomProperties(0), angle = 0*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, { x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0 }); start();"
   },
   "components": [
     {
@@ -33,7 +35,7 @@
       "id":     "length-slider",
       "min":    0.0666,
       "max":    2.0,
-      "initialValue": 1.0,
+      "initialValue": 1.25,
       "labels": [
         {
           "value": 0.0666,
@@ -45,28 +47,28 @@
         }
       ],
       "steps":  30,
-      "title":  "Length of Pendulum (m)",
-      "action": "var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: value }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
+      "title":  "Starting length (m)",
+      "action": "stop(); var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = 0; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
     },
     {
       "type":   "slider",
-      "id":     "angle-slider",
-      "min":    -45,
-      "max":    45,
-      "initialValue": 45,
+      "id":     "spring-constant-slider",
+      "min":    0.1,
+      "max":    15,
+      "initialValue": 8,
       "labels": [
         {
-          "value": -45,
-          "label": "-45&deg;"
+          "value": 0.1,
+          "label": "0.1"
         },
         {
-          "value": 45,
-          "label": "45&deg;"
+          "value": 15,
+          "label": "10"
         }
       ],
-      "steps":  90,
-      "title":  "Starting Angle of Pendulum",
-      "action": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
+      "steps":  50,
+      "title":  "Spring Constant (N/m)",
+      "action": "setRadialBondProperties(0, { strength: value });"
     },
     {
       "type":   "slider",
