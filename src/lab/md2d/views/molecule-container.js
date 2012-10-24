@@ -790,7 +790,7 @@ define(function (require) {
             .attr("class", "radialbond1")
             .style("stroke-width", function (d, i) {
               if (isSpringBond(d)) {
-                return 0.3 * scaling_factor;
+                return Math.log(d.strength)/4+0.25 * scaling_factor;
               } else {
                 return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
@@ -798,7 +798,7 @@ define(function (require) {
             .style("stroke", function(d, i) {
               var charge, element, grad;
               if (isSpringBond(d)) {
-                return "#000000";
+                return "#888";
               } else {
                 if (chargeShadingMode) {
                   charge = results[d.atom1].charge;
@@ -824,7 +824,7 @@ define(function (require) {
             .attr("class", "radialbond2")
             .style("stroke-width", function (d, i) {
               if (isSpringBond(d)) {
-                return 0.3 * scaling_factor;
+                return Math.log(d.strength)/4+0.25 * scaling_factor;
               } else {
                 return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
@@ -832,7 +832,7 @@ define(function (require) {
             .style("stroke", function(d, i) {
               var charge, element, grad;
               if (isSpringBond(d)) {
-                return "#000000";
+                return "#888";
               } else {
                 if (chargeShadingMode) {
                   charge = results[d.atom2].charge;
@@ -861,13 +861,12 @@ define(function (require) {
             y1, y2,
             radius_x1, radius_x2, radiusFactorX,
             radius_y1, radius_y2, radiusFactorY,
-            lineTo,
             path,
             costheta,
             sintheta,
             length,
             strength,
-            numSpikes,
+            numTurns,
             springDiameter,
             cosThetaDiameter,
             sinThetaDiameter,
@@ -882,16 +881,17 @@ define(function (require) {
         dy = y2 - y1;
 
         strength = d.strength;
-        numSpikes = Math.floor(d.length * 10 * Math.log(strength+2));
         length = Math.sqrt(dx*dx + dy*dy)/scaling_factor;
-        springDiameter = length / numSpikes * (1/Math.log(strength+2));
+
+        numTurns = Math.floor(d.length * 24);
+        springDiameter = length / numTurns;
 
         costheta = dx / length;
         sintheta = dy / length;
         cosThetaDiameter = costheta * springDiameter;
         sinThetaDiameter = sintheta * springDiameter;
-        cosThetaSpikes = costheta * numSpikes;
-        sinThetaSpikes = sintheta * numSpikes;
+        cosThetaSpikes = costheta * numTurns;
+        sinThetaSpikes = sintheta * numTurns;
 
         radius_x1 = x(results[d.atom1].radius) * costheta;
         radius_x2 = x(results[d.atom2].radius) * costheta;
@@ -902,7 +902,7 @@ define(function (require) {
 
         if (isSpringBond(d)) {
           path = "M "+x1+","+y1+" " ;
-          for (j = 0; j < numSpikes; j++) {
+          for (j = 0; j < numTurns; j++) {
             if (j % 2 === 0) {
               pointX = x1 + (j + 0.5) * cosThetaDiameter - 0.5 * sinThetaSpikes;
               pointY = y1 + (j + 0.5) * sinThetaDiameter + 0.5 * cosThetaSpikes;
@@ -911,8 +911,7 @@ define(function (require) {
               pointX = x1 + (j + 0.5) * cosThetaDiameter + 0.5 * sinThetaSpikes;
               pointY = y1 + (j + 0.5) * sinThetaDiameter - 0.5 * cosThetaSpikes;
             }
-            lineTo = " L "+pointX+","+pointY;
-            path += lineTo;
+            path += " L "+pointX+","+pointY;;
           }
           return path += " L "+x2+","+y2;
         } else {
