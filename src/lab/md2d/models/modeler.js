@@ -19,11 +19,18 @@ define(function(require) {
         // TODO: not sure how to remove the magic knowledge of the worker URL
         worker = (typeof Modernizr !== 'undefined') && Modernizr.webworkers && new Worker('../../lab/lab.md2d-worker.js'),
 
-        // set to true while the worker is integrating.
-        tickInProgress = false,
+        // Indicates the engine has been updated with new integration results but the corresponding
+        // 'tick' event event (which, for example, causes those results to be rendered) has not yet
+        // been dispatched
+        dispatchIsPending = false,
 
-        // Called to finish processing after the worker's integration results are copied back
-        tickCallback,
+        // Optional callback to do more work immediately after worker has called back with
+        // integration results
+        integrationCallback,
+
+        // The latest integration results from worker are saved here, if the worker returns with new
+        // engine state before the tick event has been processed for the current engine state.
+        nextState,
 
         elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
@@ -200,14 +207,13 @@ define(function(require) {
 
         arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
 
-        runStartTime,
-        timeRunning = 0,
-        waitStartTime,
-        timeWaiting = 0,
-        drawStartTime,
+        // Total time in drawing (waiting for dispatch.tick() to return)
         timeDrawing = 0,
-        integrateStartTime,
+
+        // Total time spent in integating
         timeIntegrating = 0,
+
+        // Total time spent in web worker
         timeWorking = 0;
 
     function setupIndices() {
@@ -339,93 +345,137 @@ define(function(require) {
       return s/n;
     }
 
-    function tick(elapsedTime, dontDispatchTickEvent, cb) {
-
-      // Just drop the tick on the floor if the worker is still working
-      if (tickInProgress) return;
-
-      var t,
-          timeSinceLastSample,
-          message;
-
-      // If the model is continuously running (i.e., is not in the stopped state) then we should
-      // skip the integration if tick() called before 1/sample rate seconds have elapsed, and we
-      // should keep statistics about between-tick times.
-
-      if ( ! stopped ) {
-        t = Date.now();
-        if (lastSampleTime) {
-          timeSinceLastSample = t - lastSampleTime;
-
-          // 1000/modelSampleRate === minimum # of milliseconds to allow between ticks
-          if (timeSinceLastSample < 1000/modelSampleRate) {
-            return;
-          }
-
-          timeBetweenSamples.push(timeSinceLastSample);
-          timeBetweenSamples.splice(0, timeBetweenSamples.length - 128);
-        }
-        lastSampleTime = t;
-      }
-
-      if (worker && useWebWorkers) {
-        // async path
-        tickInProgress = true;
-
-        tickCallback = cb;
-        message = engine.getCompleteStateAsJSON();
-        message.duration = model.get('viewRefreshInterval') * timeStep;
-        message.dt = timeStep;
-        waitStartTime = now();
-        console.log('message sent at ', waitStartTime);
-        worker.postMessage( message );
-
-      } else {
-        // sync path
-        tickSync();
-        if (cb) cb({ dontDispatchTickEvent: dontDispatchTickEvent, sync: true });
-      }
-
-      return stopped;
-    }
-
-
-    function tickSync() {
+    function integrateSync() {
       // use Date.now() because it's consistent with what the worker has to use
-      integrateStartTime = Date.now();
+      var startTime = Date.now();
       engine.integrate(model.get('viewRefreshInterval') * timeStep, timeStep);
-      timeIntegrating += Date.now() - integrateStartTime;
+      timeIntegrating += Date.now() - startTime;
     }
 
-    function dispatchTick() {
-      var endTime;
-      drawStartTime = now();
-      console.log('      starting draw at ', drawStartTime);
+    function requestIntegration(callback) {
+      var message = engine.getCompleteStateAsJSON();
+
+      message.duration = model.get('viewRefreshInterval') * timeStep;
+      message.dt = timeStep;
+      worker.postMessage(message);
+      integrationCallback = callback;
+    }
+
+    /**
+      Processes integration results from the web worker
+    */
+    function workerCallback(message) {
+      var data = message.data;
+
+      timeWorking     += data.timeWorking;
+      timeIntegrating += data.timeIntegrating;
+
+      if (dispatchIsPending) {
+        // Tick event hasn't even been sent for the current engine state, so cache the new state
+        // until the timer tick is processed. We'll request new data when we move nextState into
+        // the engine at the next timer tick.
+        nextState = data;
+        if (integrationCallback) integrationCallback();
+      } else {
+        // tick event has been dispatched, so it's safe to update engine state with the new results
+        updateEngineState(data);
+        dispatchIsPending = true;
+
+        // do this before requesting another integration
+        if (integrationCallback) integrationCallback();
+
+        // Immediately request the next results (if running continuously)--don't wait for the timer!
+        if ( !stopped ) requestIntegration();
+      }
+    }
+
+    /**
+      Updates engine state with the latest integration results
+    */
+    function updateEngineState(state) {
+      engine.setCompleteStateFromJSON(state);
+      engineStateUpdated();
+    }
+
+    /**
+      Post processing (to find thermodynamic state, etc) after the engine state has been
+      updated by integration.
+    */
+    function engineStateUpdated() {
+      readModelState();
+      tick_history_list_push();
+    }
+
+    /**
+      Basic steps to be done once per timer tick, if integration is being async
+    */
+    function tickAsync() {
+      if ( ! dispatchIsPending ) {
+        // nothing to do -- we're waiting for results
+        return;
+      }
+
+      if (nextState) {
+        // we're about to make room for new results,  so fire off a request for new state *before*
+        // doing anything lengthy in dispatchTickEvent()
+        if (!stopped) requestIntegration();
+
+        dispatchTickEvent();
+        // Move nextState into engine, and remember to dispatch tick event on next call
+        updateEngineState(nextState);
+        nextState = null;
+        dispatchIsPending = true;
+      } else {
+        // no next state is pending yet, just dispatch tick event to draw what we have
+        dispatchTickEvent();
+        dispatchIsPending = false;
+      }
+    }
+
+    /**
+      Basic steps to be done once per timer tick, if integration is being sync
+    */
+    function tickSync() {
+      integrateSync();
+      engineStateUpdated();
+      dispatchTickEvent();
+    }
+
+    /**
+      Throttles continuation function 'cont' so it's called at no more than modelSampleRate times/s.
+
+      (When called repeatedly, calls through to 'cont' only if one model sampling period has passed
+      since the last the last call to cont)
+    */
+    function throttleModelRate(cont) {
+      var t = now(),
+          timeSinceLastSample;
+
+      if (lastSampleTime) {
+        timeSinceLastSample = t - lastSampleTime;
+
+        // 1000/modelSampleRate === minimum # of milliseconds to allow between ticks
+        if (timeSinceLastSample < 1000/modelSampleRate) {
+          return;
+        }
+
+        timeBetweenSamples.push(timeSinceLastSample);
+        timeBetweenSamples.splice(0, timeBetweenSamples.length - 128);
+      }
+
+      lastSampleTime = t;
+      cont();
+    }
+
+    function dispatchTickEvent() {
+      var endTime,
+          startTime = now();
+
+      console.log('      starting draw at ', startTime);
       dispatch.tick();
       endTime = now();
-      timeDrawing += endTime - drawStartTime;
+      timeDrawing += (endTime - startTime);
       console.log('        ending draw at ', endTime);
-    }
-
-    function tickCompleted(opts) {
-      var dontDispatchTickEvent = opts.dontDispatchTickEvent || false,
-          sync = opts.sync || false;
-
-      readModelState();
-
-      pressures.push(pressure);
-      pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-
-      tick_history_list_push();
-
-      if (  !dontDispatchTickEvent ) {
-        if (sync) {
-          dispatchTick();
-        } else {
-          setTimeout(dispatchTick, 0);
-        }
-      }
-      return stopped;
     }
 
     function tick_history_list_is_empty() {
@@ -654,25 +704,7 @@ define(function(require) {
     set_properties(initialProperties);
 
     // setup the worker callback
-    if (worker) {
-      worker.addEventListener('message', function(message) {
-        var endTime = now();
-
-        console.log('  message received at ', endTime);
-
-        timeIntegrating += message.data.timeIntegrating;
-        timeWorking += message.data.timeWorking;
-        timeWaiting += (endTime - waitStartTime - message.data.timeWorking);
-
-        console.log('    integrate time was ', message.data.timeIntegrating);
-        console.log('    working time was ', message.data.timeWorking);
-        console.log('    waiting time: ', endTime - waitStartTime - message.data.timeWorking);
-
-        engine.setCompleteStateFromJSON(message.data);
-        tickInProgress = false;
-        if (tickCallback) tickCallback({ sync: false });
-      });
-    }
+    if (worker) worker.addEventListener('message', workerCallback);
 
 
     // ------------------------------------------------------------
@@ -764,8 +796,7 @@ define(function(require) {
           tick_counter++;
           if (model_listener) { model_listener(); }
         } else {
-          tickSync(null, false);
-          tickCompleted({ sync: true });
+          tickSync();
         }
       }
       return tick_counter;
@@ -1323,16 +1354,17 @@ define(function(require) {
       Synchronous model tick
     */
     model.tickSync = function(num, opts) {
+
+      if ( ! stopped ) {
+        throw new Error("Can't perform tick while model is running");
+      }
+
       if (!arguments.length) num = 1;
 
-      var dontDispatchTickEvent = opts && opts.dontDispatchTickEvent || false,
-          i = -1;
-
-      if (tickInProgress) throw new Error("Can't tickSync while an async tick is in progress.");
+      var i = -1;
 
       while(++i < num) {
-        tickSync();
-        tickCompleted({ dontDispatchTickEvent: dontDispatchTickEvent, sync: true });
+        tickSync(opts);
       }
       return model;
     };
@@ -1342,54 +1374,55 @@ define(function(require) {
       completion callback 'done' with stats
     */
     model.run = function(num, intervalLength, done) {
-      intervalLength = intervalLength || 100;
+      done();
+      // intervalLength = intervalLength || 100;
 
-      var counter = 0,
-          savedSampleRate = modelSampleRate,
-          ret,
-          intervalID;
+      // var counter = 0,
+      //     savedSampleRate = modelSampleRate,
+      //     ret,
+      //     intervalID;
 
-      stopped = false;
-      dispatch.play();
-      runStartTime = now();
+      // stopped = false;
+      // dispatch.play();
+      // startTime = now();
 
-      // i.e., never skip a tick
-      modelSampleRate = Infinity;
+      // // i.e., never skip a tick
+      // modelSampleRate = Infinity;
 
-      intervalID = window.setInterval(function timerTick(elapsedTime) {
-        counter++;
-        if (counter > num) window.clearInterval(intervalID);
+      // intervalID = window.setInterval(function timerTick(elapsedTime) {
+      //   counter++;
+      //   if (counter > num) window.clearInterval(intervalID);
 
-        tick(null, false, function(opts) {
-          tickCompleted(opts);
-          if (counter === num) {
-            timeRunning = now() - runStartTime;
+      //   tick(null, false, function(opts) {
+      //     tickCompleted(opts);
+      //     if (counter === num) {
+      //       timeRunning = now() - runStartTime;
 
-            ret = {
-              running:     timeRunning,
-              integrating: timeIntegrating,
-              working:     timeWorking,
-              waiting:     timeWaiting,
-              drawing:     timeDrawing
-            };
+      //       ret = {
+      //         running:     timeRunning,
+      //         integrating: timeIntegrating,
+      //         working:     timeWorking,
+      //         waiting:     timeWaiting,
+      //         drawing:     timeDrawing
+      //       };
 
-            console.log("times for " + num + " ticks: ", ret);
+      //       console.log("times for " + num + " ticks: ", ret);
 
-            // "done" callback might be, e.g., benchmarking code, so pass it timing results
-            if (done) done(ret);
+      //       // "done" callback might be, e.g., benchmarking code, so pass it timing results
+      //       if (done) done(ret);
 
-            timeRunning = 0;
-            timeIntegrating = 0;
-            timeWorking = 0;
-            timeWaiting = 0;
-            timeDrawing = 0;
+      //       timeRunning = 0;
+      //       timeIntegrating = 0;
+      //       timeWorking = 0;
+      //       timeWaiting = 0;
+      //       timeDrawing = 0;
 
-            modelSampleRate = savedSampleRate;
-            stopped = true;
-            dispatch.stop();
-          }
-        });
-      }, intervalLength);
+      //       modelSampleRate = savedSampleRate;
+      //       stopped = true;
+      //       dispatch.stop();
+      //     }
+      //   });
+      // }, intervalLength);
     };
 
     model.setUseWebWorkers = function(_useWebWorkers) {
@@ -1407,18 +1440,29 @@ define(function(require) {
 
     model.resume = function() {
       stopped = false;
-
-      d3.timer(function timerTick(elapsedTime) {
-        // Cancel the timer and refuse to to step the model, if the model is stopped.
-        // This is necessary because there is no direct way to cancel a d3 timer.
-        // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
-        if (stopped) return true;
-
-        tick(elapsedTime, false, tickCompleted);
-        return false;
-      });
-
       dispatch.play();
+
+      if (useWebWorkers && worker) {
+        // async path
+        requestIntegration(function() {
+          d3.timer(function() {
+            // Always execute a tick event -- integration
+            throttleModelRate(tickAsync);
+            // cancel timer if stopped
+            return stopped;
+          });
+        });
+
+      } else {
+        // sync path
+        d3.timer(function() {
+          // Refuse to integrate
+          if (stopped) return true;
+          throttleModelRate(tickSync);
+          return false;
+        });
+      }
+
       return model;
     };
 
