@@ -16,6 +16,7 @@ define(function (require, exports, module) {
       math         = require('./math/index'),
       coulomb      = require('./potentials/index').coulomb,
       lennardJones = require('./potentials/index').lennardJones,
+      CellList     = require('./cell-list').cellList,
 
       // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
       notSafari = (function() {
@@ -130,7 +131,8 @@ define(function (require, exports, module) {
     "element",
     "pinned",
     "friction",
-    "mass"
+    "mass",
+    "cell"
   ];
 
   // Radial Bonds
@@ -272,7 +274,7 @@ define(function (require, exports, module) {
         //                      Atom Properties
 
         // Individual property arrays for the atoms, indexed by atom number
-        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
+        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass, cell,
 
         // An object that contains references to the above atom-property arrays
         atoms,
@@ -429,6 +431,10 @@ define(function (require, exports, module) {
         // The number of spring forces currently being applied in the model.
         N_springForces = 0,
 
+        // Cell list structure.
+        cellList,
+
+        //
         // The location of the center of mass, in nanometers.
         x_CM, y_CM,
 
@@ -459,6 +465,7 @@ define(function (require, exports, module) {
         // cutoff for force calculations, as a factor of sigma
         cutoff = 5.0,
         cutoffDistance_LJ_sq = [],
+        maxCutoff = 0,
 
         // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
         // potential between elements i and j
@@ -490,6 +497,27 @@ define(function (require, exports, module) {
             epsilon: e,
             sigma:   s
           }, ljCoefficientChangeError);
+        },
+
+        computeMaxCutoff = function(usedElements) {
+          var sigmaI,
+              sigmaJ,
+              sigma,
+              i, j;
+
+          for (i = 0; i < N_elements; i++) {
+            for (j = 0; j <= i; j++) {
+              if (usedElements[i] && usedElements[j]) {
+                sigmaI = elementSigma[i];
+                sigmaJ = elementSigma[j];
+                sigma = lennardJones.pairwiseSigma(sigmaI, sigmaJ);
+
+                if (cutoff * sigma > maxCutoff) {
+                  maxCutoff = cutoff * sigma;
+                }
+              }
+            }
+          }
         },
 
         /**
@@ -535,6 +563,7 @@ define(function (require, exports, module) {
             element  = atoms.element;
             pinned   = atoms.pinned;
             mass     = atoms.mass;
+            cell     = atoms.cell;
           },
 
           radialBonds: function() {
@@ -1185,31 +1214,62 @@ define(function (require, exports, module) {
         // Accumulate forces into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between
         // particles i and j where j < i. Note that data from the previous time step should be cleared
         // from arrays ax and ay before calling this function.
-        updatePairwiseForces = function(i) {
-          var j, dx, dy, r_sq, f_over_r, fx, fy,
+        updateShortRangeForces = function(i) {
+          var c, k, j, dx, dy, r_sq, f_over_r, fx, fy,
               el_i = element[i],
+              cellIdx = cell[i],
+              cells = cellList.getNeighboringCells(cellIdx),
+              atomsInCell,
               el_j,
+              bondingPartners = radialBondMatrix && radialBondMatrix[i];
+
+          for (c = 0; c < cells.length; c++) {
+            atomsInCell = cellList.getCell(cells[c]);
+            for (k = 0; k < atomsInCell.length; k++) {
+              j = atomsInCell[k];
+
+              if (bondingPartners && bondingPartners[j]) continue;
+
+              el_j = element[j];
+
+              dx = x[j] - x[i];
+              dy = y[j] - y[i];
+              r_sq = dx*dx + dy*dy;
+
+              f_over_r = 0;
+
+              if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
+                f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq);
+              }
+
+              if (f_over_r) {
+                fx = f_over_r * dx;
+                fy = f_over_r * dy;
+                ax[i] += fx;
+                ay[i] += fy;
+                ax[j] -= fx;
+                ay[j] -= fy;
+              }
+            }
+          }
+        },
+
+        updateLongRangeForces = function(i) {
+          // Fast path.
+          if (!useCoulombInteraction || !hasChargedAtoms) return;
+
+          var j, dx, dy, r_sq, f_over_r, fx, fy,
               q_i = charge[i],
               bondingPartners = radialBondMatrix && radialBondMatrix[i];
 
           for (j = 0; j < i; j++) {
             if (bondingPartners && bondingPartners[j]) continue;
 
-            el_j = element[j];
-
             dx = x[j] - x[i];
             dy = y[j] - y[i];
             r_sq = dx*dx + dy*dy;
 
-            f_over_r = 0;
-
-            if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
-              f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq);
-            }
-
-            if (useCoulombInteraction && hasChargedAtoms) {
-              f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
-            }
+            f_over_r = coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
 
             if (f_over_r) {
               fx = f_over_r * dx;
@@ -1609,6 +1669,7 @@ define(function (require, exports, module) {
         atoms.element  = arrays.create(num, 0, uint8);
         atoms.pinned   = arrays.create(num, 0, uint8);
         atoms.mass     = arrays.create(num, 0, float32);
+        atoms.cell     = arrays.create(num, 0, uint8);
 
         assignShortcutReferences.atoms();
 
@@ -1909,7 +1970,8 @@ define(function (require, exports, module) {
       // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
       initializeAtomsFromProperties: function(props) {
         var x, y, vx, vy, charge, element, friction, pinned,
-            i, ii;
+            i, ii,
+            usedElements = {};
 
         if (!(props.x && props.y)) {
           throw new Error("md2d: initializeAtomsFromProperties must specify at minimum X and Y locations.");
@@ -1931,10 +1993,16 @@ define(function (require, exports, module) {
           friction = props.friction ? props.friction[i] : 0;
 
           engine.addAtom(element, x, y, vx, vy, charge, friction, pinned);
+
+          usedElements[element] = true;
         }
 
         // Publish the current state
         T = computeTemperature();
+
+        computeMaxCutoff(usedElements);
+        // TODO: change place of initialization...
+        cellList = CellList(size[0], size[1], maxCutoff);
       },
 
       initializeAtomsRandomly: function(options) {
@@ -2206,6 +2274,7 @@ define(function (require, exports, module) {
         for (iloop = 1; iloop <= n_steps; iloop++) {
           time = t_start + iloop*dt;
 
+          cellList.clearCells();
           for (i = 0; i < N; i++) {
             x_prev = x[i];
             y_prev = y[i];
@@ -2221,11 +2290,18 @@ define(function (require, exports, module) {
             // Zero out a(t, i) for accumulation of forces into a(t+dt, i)
             ax[i] = ay[i] = 0;
 
+
+            cell[i] = cellList.addToCell(i, x[i], y[i]);
+          }
+
+          for (i = 0; i < N; i++) {
             // Accumulate _forces_ for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i)
             // won't be usable until this loop completes; it won't have contributions from a(t+dt, k)
             // for k > i
-            updatePairwiseForces(i);
+            updateShortRangeForces(i);
+            updateLongRangeForces(i);
           }
+
 
           //
           // ax and ay are FORCES below this point
