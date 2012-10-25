@@ -12,6 +12,27 @@
   "components": [
     {
       "type":   "slider",
+      "id":     "length-slider",
+      "min":    0.0666,
+      "max":    2.0,
+      "initialValue": 1.333,
+      "displayValue": "return format('1.1f')(value*1.5)",
+      "labels": [
+        {
+          "value": 0.0666,
+          "label": "0.1"
+        },
+        {
+          "value": 2.0,
+          "label": "3.0"
+        }
+      ],
+      "steps":  29,
+      "title":  "Starting length (m)",
+      "action": "stop(); var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = 0; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
+    },
+    {
+      "type":   "slider",
       "id":     "mass-slider",
       "min":    1.0,
       "max":    50.0,
@@ -30,27 +51,6 @@
       "steps":  49,
       "title":  "Mass of the ball (grams)",
       "action": "setElementProperties(3, { mass: value*120 });"
-    },
-    {
-      "type":   "slider",
-      "id":     "length-slider",
-      "min":    0.0666,
-      "max":    2.0,
-      "initialValue": 1.25,
-      "displayValue": "return format('1.1f')(value*1.5)",
-      "labels": [
-        {
-          "value": 0.0666,
-          "label": "0.1"
-        },
-        {
-          "value": 2.0,
-          "label": "3.0"
-        }
-      ],
-      "steps":  30,
-      "title":  "Starting length (m)",
-      "action": "stop(); var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = 0; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
     },
     {
       "type":   "slider",
@@ -110,9 +110,6 @@
   "layout": {
     "rightwide": [
       "ke-chart"
-    ],
-    "bottom": [
-      "mass-slider"
     ]
   }
 }

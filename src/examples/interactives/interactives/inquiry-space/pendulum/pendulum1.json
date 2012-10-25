@@ -10,27 +10,6 @@
   "components": [
     {
       "type":   "slider",
-      "id":     "mass-slider",
-      "min":    1.0,
-      "max":    50.0,
-      "initialValue": 15,
-      "displayValue": "return format('f')(value*10)",
-      "labels": [
-        {
-          "value": 1.0,
-          "label": "10"
-        },
-        {
-          "value": 50,
-          "label": "500"
-        }
-      ],
-      "steps":  49,
-      "title":  "Mass of the ball (grams)",
-      "action": "setElementProperties(3, { mass: value*120 });"
-    },
-    {
-      "type":   "slider",
       "id":     "length-slider",
       "min":    0.0666,
       "max":    2.0,
@@ -47,7 +26,7 @@
         }
       ],
       "steps":  30,
-      "title":  "Length of Pendulum (m)",
+      "title":  "Starting Length (m)",
       "action": "var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: value }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
     },
     {
@@ -68,8 +47,29 @@
         }
       ],
       "steps":  90,
-      "title":  "Starting Angle of Pendulum",
+      "title":  "Starting Angle",
       "action": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
+    },
+    {
+      "type":   "slider",
+      "id":     "mass-slider",
+      "min":    1.0,
+      "max":    50.0,
+      "initialValue": 15,
+      "displayValue": "return format('f')(value*10)",
+      "labels": [
+        {
+          "value": 1.0,
+          "label": "10"
+        },
+        {
+          "value": 50,
+          "label": "500"
+        }
+      ],
+      "steps":  49,
+      "title":  "Mass of the ball (grams)",
+      "action": "setElementProperties(3, { mass: value*120 });"
     },
     {
       "type":   "slider",
@@ -108,9 +108,6 @@
   "layout": {
     "rightwide": [
       "ke-chart"
-    ],
-    "bottom": [
-      "mass-slider"
     ]
   }
 }
