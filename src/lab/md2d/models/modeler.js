@@ -357,7 +357,7 @@ define(function(require) {
     function requestIntegration(callback) {
       var message = engine.getCompleteStateAsJSON();
 
-      console.log('requesting integration at ', now());
+      //console.log('requesting integration at ', now());
 
       message.duration = model.get('viewRefreshInterval') * timeStep;
       message.dt = timeStep;
@@ -376,9 +376,9 @@ define(function(require) {
       timeWorking     += data.timeWorking;
       timeIntegrating += data.timeIntegrating;
 
-      console.log('retrieved integration at ', callbackTime);
-      console.log('working time was', data.timeWorking);
-      console.log('nonworking time was', callbackTime - lastRequestTime - data.timeWorking);
+      //console.log('retrieved integration at ', callbackTime);
+      // console.log('working time was', data.timeWorking);
+      //console.log('nonworking time was', callbackTime - lastRequestTime - data.timeWorking);
 
       if (dispatchIsPending) {
         // Tick event hasn't even been sent for the current engine state, so cache the new state
@@ -421,7 +421,7 @@ define(function(require) {
     */
     function tickAsync() {
       if ( ! dispatchIsPending ) {
-        console.log("dropping tick (current state is drawn)");
+        //console.log("dropping tick (current state is drawn)");
         // nothing to do -- we're waiting for results
         return;
       }
@@ -467,7 +467,7 @@ define(function(require) {
 
         // 1000/modelSampleRate === minimum # of milliseconds to allow between ticks
         if (timeSinceLastSample < 1000/modelSampleRate) {
-          console.log('skipping; timeSinceLastSample = ', timeSinceLastSample);
+          // console.log('skipping; timeSinceLastSample = ', timeSinceLastSample);
           return;
         }
 
@@ -476,7 +476,7 @@ define(function(require) {
       }
 
       lastSampleTime = t;
-      console.log('not skipping; timeSinceLastSample = ', timeSinceLastSample);
+      // console.log('not skipping; timeSinceLastSample = ', timeSinceLastSample);
       cont();
     }
 
@@ -484,11 +484,11 @@ define(function(require) {
       var endTime,
           startTime = now();
 
-      console.log('      starting draw at ', startTime);
+      // console.log('starting draw at ', startTime);
       dispatch.tick();
       endTime = now();
       timeDrawing += (endTime - startTime);
-      console.log('        ending draw at ', endTime);
+      // console.log('ending draw at ', endTime);
     }
 
     function tick_history_list_is_empty() {
@@ -1459,7 +1459,7 @@ define(function(require) {
         // async path
         requestIntegration(function() {
           d3.timer(function() {
-            console.log('tick at ', now());
+           // console.log('tick at ', now());
             // Always execute a tick event -- integration
             throttleModelRate(tickAsync);
             // cancel timer if stopped
