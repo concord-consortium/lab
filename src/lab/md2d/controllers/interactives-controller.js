@@ -569,12 +569,14 @@ define(function (require) {
           initialValue = component.initialValue,
           title = component.title || "",
           labels = component.labels || [],
+          displayValue = component.displayValue,
           i,
           $elem,
           $title,
           label,
           $label,
           $slider,
+          $sliderHandle,
           $container;
 
       if (min == null) min = 0;
@@ -593,6 +595,8 @@ define(function (require) {
         step: (max - min) / steps
       });
 
+      $sliderHandle = $slider.find(".ui-slider-handle");
+
       $elem = $('<div class="interactive-slider">')
                 .append($title)
                 .append($container);
@@ -604,12 +608,19 @@ define(function (require) {
         $container.append($label);
       }
 
+      if (displayValue) {
+        displayValue = makeFunctionInScriptContext('value', displayValue);
+      }
+
       if (action) {
         // The 'action' property is a source of a function which assumes we pass it a parameter
         // called 'value'.
         action = makeFunctionInScriptContext('value', action);
         $slider.bind('slide', function(event, ui) {
           action(ui.value);
+          if (displayValue) {
+            $sliderHandle.text(displayValue(ui.value));
+          }
         });
       }
 
@@ -619,6 +630,9 @@ define(function (require) {
           var obj = {};
           obj[propertyName] = ui.value;
           if (model) model.set(obj);
+          if (displayValue) {
+            $sliderHandle.text(displayValue(12));
+          }
         });
 
         modelLoadedCallbacks.push(function() {
@@ -636,6 +650,9 @@ define(function (require) {
           modelLoadedCallbacks.push(function() {
             $slider.slider('value', initialValue);
             action(initialValue);
+            if (displayValue) {
+              $sliderHandle.text(displayValue(initialValue));
+            }
           });
         }
 
@@ -649,9 +666,11 @@ define(function (require) {
       } else if (propertyName) {
         modelLoadedCallbacks.push(function() {
           $slider.slider('value', model.get(propertyName));
+          if (displayValue) {
+            $sliderHandle.text(displayValue(12));
+          }
         });
       }
-
       return { elem: $elem };
     }
 
