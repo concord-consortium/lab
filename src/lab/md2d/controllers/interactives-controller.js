@@ -81,6 +81,8 @@ define(function (require) {
             deg2rad: Math.PI/180,
             rad2deg: 180/Math.PI,
 
+            format: d3.format,
+
             /* Returns number of atoms in the system. */
             getNumberOfAtoms: function addAtom() {
               return model.get_num_atoms();
