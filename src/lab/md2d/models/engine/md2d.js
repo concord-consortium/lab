@@ -16,6 +16,7 @@ define(function (require, exports, module) {
       math         = require('./math/index'),
       coulomb      = require('./potentials/index').coulomb,
       lennardJones = require('./potentials/index').lennardJones,
+      quadtree     = require('./quadtree').quadtree,
 
       // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
       notSafari = (function() {
@@ -444,6 +445,8 @@ define(function (require, exports, module) {
         cutoff = 5.0,
         cutoffDistance_LJ_sq = [],
 
+        maxCutOffDistanceLJ = [],
+
         // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
         // potential between elements i and j
         ljCalculator = [],
@@ -469,6 +472,14 @@ define(function (require, exports, module) {
           s = sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
 
           cutoffDistance_LJ_sq[i][j] = cutoffDistance_LJ_sq[j][i] = (cutoff * s) * (cutoff * s);
+
+          if (maxCutOffDistanceLJ[i] === undefined || cutoff * s > maxCutOffDistanceLJ[i]) {
+            maxCutOffDistanceLJ[i] = cutoff * s;
+          }
+          if (maxCutOffDistanceLJ[j] === undefined || cutoff * s > maxCutOffDistanceLJ[j]) {
+            maxCutOffDistanceLJ[j] = cutoff * s;
+          }
+
 
           ljCalculator[i][j] = ljCalculator[j][i] = lennardJones.newLJCalculator({
             epsilon: e,
@@ -1176,6 +1187,78 @@ define(function (require, exports, module) {
             if (useCoulombInteraction && hasChargedAtoms) {
               f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
             }
+
+            if (f_over_r) {
+              fx = f_over_r * dx;
+              fy = f_over_r * dy;
+              ax[i] += fx;
+              ay[i] += fy;
+              ax[j] -= fx;
+              ay[j] -= fy;
+            }
+          }
+        },
+
+        updateLJForces = function (i) {
+          var el_i = element[i],
+              bondingPartners = radialBondMatrix && radialBondMatrix[i],
+              r = maxCutOffDistanceLJ[el_i],
+              nx1 = x[i] - r,
+              nx2 = x[i] + r,
+              ny1 = y[i] - r,
+              ny2 = y[i] + r,
+              xi  = x[i];
+          return function calcLJForce(quad, x1, y1, x2, y2) {
+            var j, el_j, dx, dy, r_sq, f_over_r, fx, fy;
+            if (quad.point !== undefined && (quad.point !== i)) {
+              j = quad.point;
+
+              if (bondingPartners && bondingPartners[j]) return;
+
+              el_j = element[j];
+
+              dx = x[j] - x[i];
+              dy = y[j] - y[i];
+              r_sq = dx*dx + dy*dy;
+
+              f_over_r = 0;
+
+              if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
+                f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq);
+              }
+
+              if (f_over_r) {
+                fx = f_over_r * dx;
+                fy = f_over_r * dy;
+                ax[i] += fx;
+                ay[i] += fy;
+                ax[j] -= fx;
+                ay[j] -= fy;
+              }
+            }
+            return x1 > xi  ||
+                   x2 < nx1 ||
+                   y1 > ny2 ||
+                   y2 < ny1;
+          };
+        },
+
+        updateCoulombForces = function(i) {
+          // Fast path if there is no Coulomb interaction.
+          if (!useCoulombInteraction || !hasChargedAtoms) return;
+
+          var j, dx, dy, r_sq, f_over_r, fx, fy,
+              q_i = charge[i],
+              bondingPartners = radialBondMatrix && radialBondMatrix[i];
+
+          for (j = 0; j < i; j++) {
+            if (bondingPartners && bondingPartners[j]) continue;
+
+            dx = x[j] - x[i];
+            dy = y[j] - y[i];
+            r_sq = dx*dx + dy*dy;
+
+            f_over_r = coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
 
             if (f_over_r) {
               fx = f_over_r * dx;
@@ -2094,7 +2177,8 @@ define(function (require, exports, module) {
             iloop,
             i,
             x_prev,
-            y_prev;
+            y_prev,
+            qtree;
 
         for (iloop = 1; iloop <= n_steps; iloop++) {
           time = t_start + iloop*dt;
@@ -2117,7 +2201,15 @@ define(function (require, exports, module) {
             // Accumulate _forces_ for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i)
             // won't be usable until this loop completes; it won't have contributions from a(t+dt, k)
             // for k > i
-            updatePairwiseForces(i);
+            // Part 1. Coulomb Forces.
+            updateCoulombForces(i);
+          }
+
+          qtree = quadtree(x, y);
+
+          // Part 2. LJ Forces.
+          for (i = 0; i < N; i++) {
+            qtree.visit(updateLJForces(i));
           }
 
           //
