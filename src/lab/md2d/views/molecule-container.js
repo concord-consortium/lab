@@ -790,7 +790,7 @@ define(function (require) {
             .attr("class", "radialbond1")
             .style("stroke-width", function (d, i) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength)/4+0.25 * scaling_factor;
+                return Math.log(d.strength)/4+0.5 * scaling_factor;
               } else {
                 return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
@@ -824,7 +824,7 @@ define(function (require) {
             .attr("class", "radialbond2")
             .style("stroke-width", function (d, i) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength)/4+0.25 * scaling_factor;
+                return Math.log(d.strength)/4+0.5 * scaling_factor;
               } else {
                 return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
