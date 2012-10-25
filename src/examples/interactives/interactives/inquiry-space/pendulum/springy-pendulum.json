@@ -16,6 +16,7 @@
       "min":    1.0,
       "max":    50.0,
       "initialValue": 15,
+      "displayValue": "return format('f')(value*10)",
       "labels": [
         {
           "value": 1.0,
@@ -26,7 +27,7 @@
           "label": "500"
         }
       ],
-      "steps":  45,
+      "steps":  49,
       "title":  "Mass of the ball (grams)",
       "action": "setElementProperties(3, { mass: value*120 });"
     },
@@ -36,6 +37,7 @@
       "min":    -45,
       "max":    45,
       "initialValue": 45,
+      "displayValue": "return format('f')(value)",
       "labels": [
         {
           "value": -45,
@@ -55,7 +57,8 @@
       "id":     "length-slider",
       "min":    0.0666,
       "max":    2.0,
-      "initialValue": 1.25,
+      "initialValue": 1.333,
+      "displayValue": "return format('1.1f')(value*1.5)",
       "labels": [
         {
           "value": 0.0666,
@@ -66,27 +69,28 @@
           "label": "3.0"
         }
       ],
-      "steps":  30,
+      "steps":  29,
       "title":  "Starting length (m)",
       "action": "var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
     },
     {
       "type":   "slider",
       "id":     "spring-constant-slider",
-      "min":    0.1,
+      "min":    0.5,
       "max":    45,
       "initialValue": 8,
+      "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
-          "value": 0.1,
-          "label": "0.1"
+          "value": 0.5,
+          "label": "0.5"
         },
         {
           "value": 45,
-          "label": "30"
+          "label": "45"
         }
       ],
-      "steps":  50,
+      "steps":  89,
       "title":  "Spring Constant (N/m)",
       "action": "setRadialBondProperties(0, { strength: value });"
     },
@@ -96,6 +100,7 @@
       "min":    0,
       "max":    1.0,
       "initialValue": 0,
+      "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
           "value": 0,
@@ -120,7 +125,7 @@
       "type": "energyGraph",
       "id": "ke-chart",
       "dimensions": { "width": 500, "height": 296 },
-      "options": { "ymin": -0.1, "ymax": 1.0, "xmax": 20 }
+      "options": { "ymin": -0.1, "ymax": 2.0, "xmax": 20 }
     }
   ],
   "layout": {
