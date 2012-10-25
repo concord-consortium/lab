@@ -12,6 +12,27 @@
   "components": [
     {
       "type":   "slider",
+      "id":     "gravity-slider",
+      "min":    0.1,
+      "max":    4.0,
+      "initialValue": 1.0,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0.1,
+          "label": "0.1"
+        },
+        {
+          "value": 4.0,
+          "label": "4.0"
+        }
+      ],
+      "steps":  39,
+      "title":  "Starting Gravity",
+      "action": "set({ gravitationalField: value*8e-8 });"
+    },
+    {
+      "type":   "slider",
       "id":     "length-slider",
       "min":    0.0666,
       "max":    2.0,
