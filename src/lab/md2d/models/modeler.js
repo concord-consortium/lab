@@ -32,6 +32,9 @@ define(function(require) {
         // engine state before the tick event has been processed for the current engine state.
         nextState,
 
+        // True if there were no results to draw in the last timer/animation frame callback
+        lastAnimationFrameWasEmpty = false,
+
         elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
         temperature_control,
@@ -391,10 +394,19 @@ define(function(require) {
       } else {
         // tick event has been dispatched, so it's safe to update engine state with the new results
         updateEngineState(data.stateData);
-        dispatchIsPending = true;
 
         // do this before requesting another integration
         if (integrationCallback) integrationCallback();
+
+        if (lastAnimationFrameWasEmpty) {
+          dispatchTickEvent();
+          dispatchIsPending = false;
+          lastAnimationFrameWasEmpty = false;
+        } else {
+          // wait for animation timer before drawing
+          dispatchIsPending = true;
+        }
+
 
         // Immediately request the next results (if running continuously)--don't wait for the timer!
         if ( !stopped ) requestIntegration();
@@ -426,6 +438,7 @@ define(function(require) {
       if ( ! dispatchIsPending ) {
         //console.log("dropping tick (current state is drawn)");
         // nothing to do -- we're waiting for results
+        lastAnimationFrameWasEmpty = true;
         return;
       }
 
@@ -444,6 +457,8 @@ define(function(require) {
         dispatchTickEvent();
         dispatchIsPending = false;
       }
+
+      lastAnimationFrameWasEmpty = false;
     }
 
     /**
