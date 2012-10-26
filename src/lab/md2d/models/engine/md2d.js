@@ -1260,7 +1260,7 @@ define(function (require, exports, module) {
           var rows = cellList.getRowsNum(),
               cols = cellList.getColsNum(),
               i, j, temp, cellIdx, cell1, cell2,
-              a, b, c, atom1Idx, cell1Len, cell2Len,
+              a, b, atom1Idx, cell1Len, cell2Len,
               n, nLen, cellNeighbors;
 
           for (i = 0; i < rows; i++) {
@@ -1281,8 +1281,8 @@ define(function (require, exports, module) {
                 // Interactions between neighboring cells.
                 for (n = 0, nLen = cellNeighbors.length; n < nLen; n++) {
                   cell2 = cellNeighbors[n];
-                  for (c = 0, cell2Len = cell2.length; c < cell2Len; c++) {
-                    calculateLJInteraction(cell1[a], cell2[c]);
+                  for (b = 0, cell2Len = cell2.length; b < cell2Len; b++) {
+                    calculateLJInteraction(atom1Idx, cell2[b]);
                   }
                 }
               }
