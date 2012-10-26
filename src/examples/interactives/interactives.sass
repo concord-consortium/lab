@@ -73,7 +73,11 @@ $max-width: 100%
   display: inline-block
 
 #rightwide
-  @include span-columns(4 of 12, inline-block)
+  display: inline-block
+  height: 100%
+  vertical-align: top
+  .interactive-rightwide-row
+    height: 100%
   .label
     margin: 0.5em auto 0.5em auto
     text-align: center
@@ -99,9 +103,9 @@ button.component
   font-size: 0.9em
 
 label.component
-  padding: 0.2em 0.4em
+  padding: 0.4em
   font-size: 1.1em
-  vertical-align: baseline
+  vertical-align: text-top
 
 input[type="checkbox"]
   -webkit-transform: scale(1,1)
