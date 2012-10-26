@@ -229,6 +229,9 @@ define(function (require, exports, module) {
         // Whether any atoms actually have charges
         hasChargedAtoms = false,
 
+        // List of atoms with charge (optimization)
+        chargedAtomsList = [],
+
         // Whether to simulate Lennard Jones forces between particles.
         useLennardJonesInteraction = true,
 
@@ -1250,11 +1253,8 @@ define(function (require, exports, module) {
           }
         },
 
-        // Accumulate forces into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between
-        // particles i and j where j < i. Note that data from the previous time step should be cleared
-        // from arrays ax and ay before calling this function.
         updateShortRangeForces = function () {
-          // Fast path, when Lennard Jones Interaction is disabled.
+          // Fast path if Lennard Jones interaction is disabled.
           if (!useLennardJonesInteraction) return;
 
           var rows = cellList.getRowsNum(),
@@ -1290,30 +1290,34 @@ define(function (require, exports, module) {
           }
         },
 
-        updateLongRangeForces = function(i) {
-          // Fast path.
+        updateLongRangeForces = function() {
+          // Fast path if Coulomb interaction is disabled or there are no charged atoms.
           if (!useCoulombInteraction || !hasChargedAtoms) return;
 
-          var j, dx, dy, r_sq, f_over_r, fx, fy,
-              q_i = charge[i],
-              bondingPartners = radialBondMatrix && radialBondMatrix[i];
+          var i, j, len, dx, dy, rSq, fOverR, fx, fy,
+              charge1, atom1Idx, atom2Idx,
+              bondingPartners;
 
-          for (j = 0; j < i; j++) {
-            if (bondingPartners && bondingPartners[j]) continue;
+          for (i = 0, len = chargedAtomsList.length; i < len; i++) {
+            atom1Idx = chargedAtomsList[i];
+            charge1 = charge[atom1Idx];
+            bondingPartners = radialBondMatrix && radialBondMatrix[atom1Idx];
+            for (j = 0; j < i; j++) {
+              atom2Idx = chargedAtomsList[j];
+              if (bondingPartners && bondingPartners[atom2Idx]) continue;
 
-            dx = x[j] - x[i];
-            dy = y[j] - y[i];
-            r_sq = dx*dx + dy*dy;
+              dx = x[atom2Idx] - x[atom1Idx];
+              dy = y[atom2Idx] - y[atom1Idx];
+              rSq = dx*dx + dy*dy;
 
-            f_over_r = coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
+              fOverR = coulomb.forceOverDistanceFromSquaredDistance(rSq, charge1, charge[atom2Idx]);
 
-            if (f_over_r) {
-              fx = f_over_r * dx;
-              fy = f_over_r * dy;
-              ax[i] += fx;
-              ay[i] += fy;
-              ax[j] -= fx;
-              ay[j] -= fy;
+              fx = fOverR * dx;
+              fy = fOverR * dy;
+              ax[atom1Idx] += fx;
+              ay[atom1Idx] += fy;
+              ax[atom2Idx] -= fx;
+              ay[atom2Idx] -= fy;
             }
           }
         },
@@ -1752,7 +1756,11 @@ define(function (require, exports, module) {
         pinned[N]    = atom_pinned;
         mass[N]      = atom_mass;
 
-        if (atom_charge) hasChargedAtoms = true;
+        if (atom_charge) {
+          hasChargedAtoms = true;
+          // Save indexes of charged atoms.
+          chargedAtomsList.push(N);
+        }
 
         totalMass += atom_mass;
 
@@ -2308,7 +2316,10 @@ define(function (require, exports, module) {
         for (iloop = 1; iloop <= n_steps; iloop++) {
           time = t_start + iloop*dt;
 
+
+          // Clear lists at the beginning of integration step.
           cellList.clearCells();
+
           for (i = 0; i < N; i++) {
             x_prev = x[i];
             y_prev = y[i];
@@ -2318,25 +2329,21 @@ define(function (require, exports, module) {
             bounceAtomOffWalls(i);
             bounceOffObstacles(i, x_prev, y_prev);
 
+            // When position is updated, add particle to appropriate cell.
+            cellList.addToCell(i, x[i], y[i]);
+
             // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
             halfUpdateVelocity(i);
 
             // Zero out a(t, i) for accumulation of forces into a(t+dt, i)
             ax[i] = ay[i] = 0;
-
-
-            cellList.addToCell(i, x[i], y[i]);
           }
 
+          // Accumulate forces into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between
+          // particles. Note that data from the previous time step should be cleared
+          // from arrays ax and ay before calling this function.
           updateShortRangeForces();
-
-          for (i = 0; i < N; i++) {
-            // Accumulate _forces_ for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i)
-            // won't be usable until this loop completes; it won't have contributions from a(t+dt, k)
-            // for k > i
-            updateLongRangeForces(i);
-          }
-
+          updateLongRangeForces();
 
           //
           // ax and ay are FORCES below this point
