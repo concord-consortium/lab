@@ -469,7 +469,7 @@ define(function (require) {
           $label;
 
       $checkbox = $('<input type="checkbox">').attr('id', component.id);
-      $label = $('<label>').append($checkbox).append(component.text);
+      $label = $('<label>').append(component.text).append($checkbox);
       // Append class to label, as it's the most outer container in this case.
       $label.addClass("component");
 
