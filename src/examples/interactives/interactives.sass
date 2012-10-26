@@ -73,11 +73,7 @@ $max-width: 100%
   display: inline-block
 
 #rightwide
-  display: inline-block
-  height: 100%
-  vertical-align: top
-  .interactive-rightwide-row
-    height: 100%
+  @include span-columns(4 of 12, inline-block)
   .label
     margin: 0.5em auto 0.5em auto
     text-align: center
