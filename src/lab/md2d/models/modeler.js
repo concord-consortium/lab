@@ -1464,7 +1464,7 @@ define(function(require) {
           d3.timer(function() {
            // console.log('tick at ', now());
             // Always execute a tick event -- integration
-            throttleModelRate(tickAsync);
+            tickAsync();
             // cancel timer if stopped
             return stopped;
           });
