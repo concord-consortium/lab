@@ -1418,7 +1418,7 @@ define(function (require, exports, module) {
 
         if (N_elements >= elementEpsilon.length) {
           extendArrays(elements, N_elements + 10);
-          assignShortcutReferences.N_elements();
+          assignShortcutReferences.elements();
         }
 
         elementMass[N_elements]    = props.mass;
