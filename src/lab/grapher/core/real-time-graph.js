@@ -113,9 +113,16 @@ define(function (require) {
         cy = elem.property("clientHeight");
       } else {
         cx = w;
-        cy = h;
         node.style.width =  cx +"px";
-        node.style.height = cy +"px";
+        if (!h) {
+          node.style.height = "100%";
+          h = elem.property("clientHeight");
+          cy = h;
+          node.style.height = cy +"px";
+        } else {
+          cy = h;
+          node.style.height = cy +"px";
+        }
       }
       calculateSizeType();
       // displayProperties = layout.getDisplayProperties();
