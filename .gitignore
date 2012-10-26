@@ -1,6 +1,8 @@
 *~
 /bin
 /server/bin
+/src/lab/lab.version.js
+/src/lab/lab.config.js
 .bundle
 .sass-cache
 /node_modules

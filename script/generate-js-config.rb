@@ -2,7 +2,7 @@
 require_relative 'setup.rb'
 require 'json'
 
-JS_CONFIG_PATH = File.join(SERVER_PUBLIC_PATH, 'lab', 'lab.config.js')
+JS_CONFIG_PATH = File.join(SRC_LAB_PATH, 'lab.config.js')
 
 # default jsconfig "sharing" is true
 if CONFIG[:jsconfig] == nil || CONFIG[:jsconfig][:sharing] == nil
@@ -10,10 +10,11 @@ if CONFIG[:jsconfig] == nil || CONFIG[:jsconfig][:sharing] == nil
 end
 
 jsconfig = <<HEREDOC
-(function(){
+// this file is generated during build process by: ./script/generate-js-config.rb
+define(function (require) {
 if (typeof Lab === 'undefined') Lab = {};
 Lab.config = #{JSON.pretty_generate(CONFIG[:jsconfig])}
-})();
+});
 HEREDOC
 
 File.open(JS_CONFIG_PATH, 'w') { |f| f.write jsconfig }

@@ -43,8 +43,6 @@ LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.md2d.js \
-	server/public/lab/lab.version.js \
-	server/public/lab/lab.config.js \
 	server/public/lab/lab.js
 
 all: \
@@ -396,15 +394,16 @@ server/public/lab:
 server/public/lab/lab.js: \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.md2d.js \
-	server/public/lab/lab.version.js \
-	server/public/lab/lab.config.js
+	src/lab/lab.version.js \
+	src/lab/lab.config.js
+	$(R_OPTIMIZER) -o src/lab/lab.build.js
 
-.PHONY: server/public/lab/lab.version.js
-server/public/lab/lab.version.js:
+.PHONY: src/lab/lab.version.js
+src/lab/lab.version.js:
 	./script/generate-js-version.rb
 
-.PHONY: server/public/lab/lab.config.js
-server/public/lab/lab.config.js:
+.PHONY: src/lab/lab.config.js
+src/lab/lab.config.js:
 	./script/generate-js-config.rb
 
 server/public/lab/lab.energy2d.js: \

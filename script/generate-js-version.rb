@@ -15,7 +15,7 @@ def cleanup_string(str)
   clean.gsub("\r", "\\n")
 end
 
-JS_VERSION_PATH = File.join(SERVER_PUBLIC_PATH, 'lab', 'lab.version.js')
+JS_VERSION_PATH = File.join(SRC_LAB_PATH, 'lab.version.js')
 
 def dirty?
   !system("git diff --exit-code --quiet")
@@ -34,7 +34,8 @@ short_message = "".html_safe + commit.short_message.gsub("\n", "\\n")
 message = "".html_safe + commit.message.gsub("\n", "\\n")
 
 version = <<HEREDOC
-(function(){
+// this file is generated during build process by: ./script/generate-js-version.rb
+define(function (require) {
   if (typeof Lab === 'undefined') Lab = {};
   Lab.version = {
     "repo": {
@@ -52,6 +53,6 @@ version = <<HEREDOC
       "dirty": #{dirty?}
     }
   };
-})();
+});
 HEREDOC
 File.open(JS_VERSION_PATH, 'w') { |f| f.write version }
