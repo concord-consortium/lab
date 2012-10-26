@@ -1,0 +1,77 @@
+{
+  "title": "Explore 100 Atoms",
+  "about": "Interactive example",
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms-charged.json",
+    "viewOptions": {
+      "controlButtons": "play_reset"
+    },
+    "onLoad": "start();"
+  },
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "label": "Select Atoms",
+      "options": [
+        {
+          "text": "Charged Atoms",
+          "loadModel": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms-charged.json"
+        },
+        {
+          "text": "Neutral Atoms",
+          "loadModel": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json"
+        }
+      ]
+    },
+    {
+      "type":   "slider",
+      "id":     "epsilon-slider",
+      "min":    0.001,
+      "max":    0.40,
+      "initialValue":  0.1,
+      "labels": [
+        {
+          "value": 0.001,
+          "label": "weak"
+        },
+        {
+          "value": 0.40,
+          "label": "strong"
+        }
+      ],
+      "steps":  50,
+      "title":  "Attraction between atoms",
+      "initialValue":  0.144,
+      "action": "setElementProperties(2, { epsilon: -value });"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 10,
+      "max": 5000,
+      "initialValue": 400,
+      "displayValue": "return format('4f')(value)",
+      "labels": [
+        {
+          "value": 100,
+          "label": "100 K"
+        },
+        {
+          "value": 5000,
+          "label": "5000 K"
+        }
+      ],
+      "steps": 499,
+      "title": "Temperature",
+      "action": "set({ temperature: value });"
+    }
+  ],
+  "layout": {
+    "bottom": [
+    "pulldown1",
+      "epsilon-slider",
+      "temperature-slider"
+    ]
+  }
+}
