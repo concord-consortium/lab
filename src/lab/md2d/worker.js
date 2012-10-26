@@ -14,24 +14,25 @@ define(function (require) {
       workerStartTime;
 
   self.addEventListener('message', function messageListener(message) {
-    var timeIntegrating,
-        timeWorking,
-        message;
+    var stateData,
+        timeIntegrating,
+        timeWorking;
 
     workerStartTime = Date.now();
-    engine.setCompleteStateFromJSON(message.data);
+    engine.setCompleteStateFromMessageData(message.data.stateData);
 
     integrateStartTime = Date.now();
     engine.integrate(message.data.duration, message.data.dt);
     timeIntegrating = Date.now() - integrateStartTime;
 
-    message = engine.getCompleteStateAsJSON();
+    stateData = engine.getCompleteState();
     timeWorking = Date.now() - workerStartTime;
 
-    message.timeIntegrating = timeIntegrating;
-    message.timeWorking = timeWorking;
-
-    self.postMessage(message);
+    self.postMessage({
+      stateData: stateData,
+      timeIntegrating: timeIntegrating,
+      timeWorking: timeWorking
+    });
   });
 
 });

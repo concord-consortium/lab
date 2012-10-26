@@ -495,6 +495,7 @@ define(function (require, exports, module) {
         assignShortcutReferences = {
 
           atoms: function() {
+            if (!atoms) return;
             radius   = atoms.radius;
             px       = atoms.px;
             py       = atoms.py;
@@ -513,6 +514,7 @@ define(function (require, exports, module) {
           },
 
           radialBonds: function() {
+            if (!radialBonds) return;
             radialBondAtom1Index  = radialBonds.atom1;
             radialBondAtom2Index  = radialBonds.atom2;
             radialBondLength      = radialBonds.length;
@@ -521,6 +523,7 @@ define(function (require, exports, module) {
           },
 
           angularBonds: function() {
+            if (!angularBonds) return;
             angularBondAtom1Index  = angularBonds.atom1;
             angularBondAtom2Index  = angularBonds.atom2;
             angularBondAtom3Index  = angularBonds.atom3;
@@ -529,6 +532,7 @@ define(function (require, exports, module) {
           },
 
           elements: function() {
+            if (!elements) return;
             elementMass    = elements.mass;
             elementEpsilon = elements.epsilon;
             elementSigma   = elements.sigma;
@@ -536,6 +540,7 @@ define(function (require, exports, module) {
           },
 
           obstacles: function() {
+            if (!obstacles) return;
             obstacleX        = obstacles.x;
             obstacleY        = obstacles.y;
             obstacleWidth    = obstacles.width;
@@ -555,6 +560,7 @@ define(function (require, exports, module) {
           },
 
           springForces: function() {
+            if (!springForces) return;
             springForceAtomIndex = springForces[0];
             springForceX         = springForces[1];
             springForceY         = springForces[2];
@@ -1955,57 +1961,74 @@ define(function (require, exports, module) {
       },
 
       /**
-        Given a JSON hash returned by getCompleteStateFromJSON(), updates the model state to match.
+        Given a hash returned by getCompleteState(), and copied via the "structured clone"
+        operation used by postMessage, updates the engine state to match.
 
         Intended for creating a clone of the main-thread engine in a Web Worker.
+
+        Note that if the message data has been serialized to JSON
       */
-      setCompleteStateFromJSON: function(json) {
-        var i, j, len, elementsChanged;
+      setCompleteStateFromMessageData: function(stateData) {
+        useLennardJonesInteraction = stateData.useLennardJonesInteraction;
+        useCoulombInteraction      = stateData.useCoulombInteraction;
+        hasChargedAtoms            = stateData.hasChargedAtoms;
+        useThermostat              = stateData.useThermostat;
+        gravitationalField         = stateData.gravitationalField;
+        T_target                   = stateData.T_target;
+        size                       = stateData.size;
+        viscosity                  = stateData.viscosity,
+        time                       = stateData.time;
 
-        useLennardJonesInteraction = json.useLennardJonesInteraction;
-        useCoulombInteraction      = json.useCoulombInteraction;
-        hasChargedAtoms            = json.hasChargedAtoms;
-        useThermostat              = json.useThermostat;
-        gravitationalField         = json.gravitationalField;
-        T_target                   = json.T_target;
-        size                       = json.size;
-        viscosity                  = json.viscosity,
-        time                       = json.time;
+        atoms = engine.atoms = stateData.atoms;
+        atomsHaveBeenCreated = true;
+        assignShortcutReferences.atoms();
+        N = stateData.N;
 
-        // TODO: now that we've worked out the fiddly bits of *what* to do, _DRY this up!!!_:
+        radialBonds = stateData.radialBonds;
+        assignShortcutReferences.radialBonds();
+        radialBondMatrix = stateData.radialBondMatrix;
+        N_radialBonds = stateData.N_radialBonds;
 
-        // elements
-        elementsChanged = false;
+        angularBonds = stateData.angularBonds;
+        assignShortcutReferences.angularBonds();
+        N_angularBonds = stateData.N_angularBonds;
 
-        if (json.elements && !elements) {
+        obstacles = stateData.obstacles;
+        assignShortcutReferences.obstacles();
+        N_obstacles = stateData.N_obstacles;
 
-          createElementsArray(json.elements.mass.length);
-          elementsHaveBeenCreated = true;
-          elementsChanged = true;
+        springForces = stateData.springForces;
+        assignShortcutReferences.springForces();
+        N_springForces = stateData.N_springForces;
 
-        } else if (elements.mass.length !== json.elements.mass.length) {
+        // Treat elements specially, because the inner loop calls ljCalculator methods tied specific
+        // to closures. Unnecessarily wwapping out for the ljCalculator objects for new ones will
+        // probably throw away JIT optimizations of the methods (and we're unlikely to change
+        // element properties often.)
 
-          extendArrays(elements, json.elements.mass.length);
-          assignShortcutReferences.elements();
-          elementsChanged = true;
-
+        if ( !elements || N_elements !== stateData.N_elements ) {
+          reassignElements();
         } else {
-
           // Try to guard against deoptimization of the integrate method by not changing the array
           // of ljCalculators unless absolutely necessary.
-          for (i = 0; i < elements.mass.length; i++) {
-            if (elements.mass[i] !== json.elements.mass[i] ||
-                elements.sigma[i] !== json.elements.sigma[i] ||
-                elements.epsilon[i] !== json.elements.epsilon[i] ) {
-              elementsChanged = true;
+          for (var i = 0; i < N_elements; i++) {
+            if (elements.mass[i] !== stateData.elements.mass[i] ||
+                elements.sigma[i] !== stateData.elements.sigma[i] ||
+                elements.epsilon[i] !== stateData.elements.epsilon[i] ) {
+              reassignElements();
               break;
             }
           }
         }
 
-        if (elementsChanged) {
-          copyArrays(json.elements, elements);
-          N_elements = json.N_elements;
+        // if needed:
+        function reassignElements() {
+          var i, j;
+
+          elements = stateData.elements;
+          assignShortcutReferences.elements();
+          elementsHaveBeenCreated = true;
+          N_elements = stateData.N_elements;
 
           for (i = 0; i < N_elements; i++) {
             if (!epsilon[i]) epsilon[i] = [];
@@ -2019,70 +2042,6 @@ define(function (require, exports, module) {
           }
         }
 
-
-        // atoms
-        if (json.atoms) {
-          if (!atoms) engine.createAtoms({num: json.atoms.x.length});
-          if (atoms.x.length !== json.atoms.x.length) {
-            extendArrays(atoms, json.atoms.x.length);
-            assignShortcutReferences.atoms();
-          }
-          copyArrays(json.atoms, atoms);
-        }
-        N = json.N;
-
-        // radial bonds
-        if (json.radialBonds) {
-          if(!radialBonds) createRadialBondsArray(json.radialBonds.atom1.length);
-          if (radialBonds.atom1.length !== json.radialBonds.atom1.length) {
-            extendArrays(radialBonds, json.radialBonds.atom1.length);
-            assignShortcutReferences.radialBonds();
-          }
-          copyArrays(json.radialBonds, radialBonds);
-        }
-        radialBondMatrix = json.radialBondMatrix;
-        N_radialBonds = json.N_radialBonds;
-
-        // angular bonds
-        if (json.angularBonds) {
-          if(!angularBonds) createAngularBondsArray(json.angularBonds.atom1.length);
-          if (angularBonds.atom1.length !== json.angularBonds.atom1.length) {
-            extendArrays(angularBonds, json.angularBonds.atom1.length);
-            assignShortcutReferences.angularBonds();
-          }
-          copyArrays(json.angularBonds, angularBonds);
-        }
-        N_angularBonds = json.N_angularBonds;
-
-        // obstacles
-        if (json.obstacles) {
-          if(!obstacles) createObstaclesArray(json.obstacles.x.length);
-          if (obstacles.x.length !== json.obstacles.x.length) {
-            extendArrays(obstacles, json.obstacles.x.length);
-            assignShortcutReferences.obstacles();
-          }
-          copyArrays(json.obstacles, obstacles);
-          // obstacleMass may be Infinity -- this serializes to a JSON null value and then
-          // that null value gets converted to 0 by array copy operation; so convert back by
-          // checking original JSON value
-          for (i = 0, len = obstacleMass.length; i < len; i++ ) {
-            if (json.obstacles.mass[i] === null) {
-              obstacleMass[i] = Infinity;
-            }
-          }
-        }
-        N_obstacles = json.N_obstacles;
-
-        // spring forces
-        if (json.springForces) {
-          if(!springForces) createSpringForcesArray(json.springForces[0].length);
-          if (springForces[0].length !== json.springForces[0].length) {
-            extendArrays(springForces, json.springForce[0].length);
-            assignShortcutReferences.springForces();
-          }
-          copyArrays(json.springForces, springForces);
-        }
-        N_springForces = json.N_springForces;
       },
 
 
@@ -2091,14 +2050,14 @@ define(function (require, exports, module) {
         clone of this one for purposes of model integration.
 
         The results are an internal data structure, intended not for serialization, but for passing
-        to readCompleteStateFromJSON in order to allow a second engine instance in a worker thread
-        to perform the integration, while still allowing this instance to be queried for useful
-        information.
+        to readCompleteStateFromMessageData in order to allow a second engine instance in a worker
+        thread to perform the integration, while still allowing this instance to be queried for
+        useful information.
 
         @returns JSON (i.e., an object that can be passed to JSON.stringify) which represents the
         engine state.
       */
-      getCompleteStateAsJSON: function() {
+      getCompleteState: function() {
         return {
           useLennardJonesInteraction : useLennardJonesInteraction,
           useCoulombInteraction      : useCoulombInteraction,
@@ -2109,8 +2068,6 @@ define(function (require, exports, module) {
           size                       : size,
           viscosity                  : viscosity,
           time                       : time,
-          N_elements                 : N_elements,
-          elements                   : elements,
           N                          : N,
           atoms                      : atoms,
           N_radialBonds              : N_radialBonds,
@@ -2121,7 +2078,9 @@ define(function (require, exports, module) {
           N_obstacles                : N_obstacles,
           obstacles                  : obstacles,
           N_springForces             : N_springForces,
-          springForces               : springForces
+          springForces               : springForces,
+          N_elements                 : N_elements,
+          elements                   : elements
         };
       },
 

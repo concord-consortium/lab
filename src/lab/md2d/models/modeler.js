@@ -355,12 +355,14 @@ define(function(require) {
     }
 
     function requestIntegration(callback) {
-      var message = engine.getCompleteStateAsJSON();
+      var message = {
+        stateData: engine.getCompleteState(),
+        duration:  model.get('viewRefreshInterval') * timeStep,
+        dt:        timeStep
+      };
 
       //console.log('requesting integration at ', now());
 
-      message.duration = model.get('viewRefreshInterval') * timeStep;
-      message.dt = timeStep;
       lastRequestTime = now();
       worker.postMessage(message);
       integrationCallback = callback;
@@ -384,11 +386,11 @@ define(function(require) {
         // Tick event hasn't even been sent for the current engine state, so cache the new state
         // until the timer tick is processed. We'll request new data when we move nextState into
         // the engine at the next timer tick.
-        nextState = data;
+        nextState = data.stateData;
         if (integrationCallback) integrationCallback();
       } else {
         // tick event has been dispatched, so it's safe to update engine state with the new results
-        updateEngineState(data);
+        updateEngineState(data.stateData);
         dispatchIsPending = true;
 
         // do this before requesting another integration
@@ -402,8 +404,8 @@ define(function(require) {
     /**
       Updates engine state with the latest integration results
     */
-    function updateEngineState(state) {
-      engine.setCompleteStateFromJSON(state);
+    function updateEngineState(stateData) {
+      engine.setCompleteStateFromMessageData(stateData);
       engineStateUpdated();
     }
 
@@ -412,6 +414,7 @@ define(function(require) {
       updated by integration.
     */
     function engineStateUpdated() {
+      atoms = engine.atoms;
       readModelState();
       tick_history_list_push();
     }
