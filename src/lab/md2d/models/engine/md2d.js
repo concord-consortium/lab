@@ -131,8 +131,7 @@ define(function (require, exports, module) {
     "element",
     "pinned",
     "friction",
-    "mass",
-    "cell"
+    "mass"
   ];
 
   // Radial Bonds
@@ -274,7 +273,7 @@ define(function (require, exports, module) {
         //                      Atom Properties
 
         // Individual property arrays for the atoms, indexed by atom number
-        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass, cell,
+        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
 
         // An object that contains references to the above atom-property arrays
         atoms,
@@ -293,6 +292,10 @@ define(function (require, exports, module) {
 
         // Number of actual elements (may be smaller than the length of the property arrays).
         N_elements = 0,
+
+        // Additional structure, keeping information if given element is represented by
+        // some atom in the model. Necessary for effective max cut-off distance calculation.
+        elementUsed = [],
 
         // ####################################################################
         //                      Radial Bond Properties
@@ -465,7 +468,6 @@ define(function (require, exports, module) {
         // cutoff for force calculations, as a factor of sigma
         cutoff = 5.0,
         cutoffDistance_LJ_sq = [],
-        maxCutoff = 0,
 
         // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
         // potential between elements i and j
@@ -499,15 +501,19 @@ define(function (require, exports, module) {
           }, ljCoefficientChangeError);
         },
 
-        computeMaxCutoff = function(usedElements) {
-          var sigmaI,
+        // Calculates maximal cut-off used in the current model. Functions checks all used
+        // elements at the moment. When new atom is added, maximum cut-off distance should
+        // be recalculated.
+        computeMaxCutoff = function() {
+          var maxCutoff = 0,
+              sigmaI,
               sigmaJ,
               sigma,
               i, j;
 
           for (i = 0; i < N_elements; i++) {
             for (j = 0; j <= i; j++) {
-              if (usedElements[i] && usedElements[j]) {
+              if (elementUsed[i] && elementUsed[j]) {
                 sigmaI = elementSigma[i];
                 sigmaJ = elementSigma[j];
                 sigma = lennardJones.pairwiseSigma(sigmaI, sigmaJ);
@@ -517,6 +523,17 @@ define(function (require, exports, module) {
                 }
               }
             }
+          }
+          return maxCutoff;
+        },
+
+        // Initializes special structure for short-range forces calculation
+        // optimization.
+        initializeCellList = function () {
+          if (cellList === undefined) {
+            cellList = CellList(size[0], size[1], computeMaxCutoff());
+          } else {
+            cellList.reinitialize(computeMaxCutoff());
           }
         },
 
@@ -563,7 +580,6 @@ define(function (require, exports, module) {
             element  = atoms.element;
             pinned   = atoms.pinned;
             mass     = atoms.mass;
-            cell     = atoms.cell;
           },
 
           radialBonds: function() {
@@ -1211,44 +1227,64 @@ define(function (require, exports, module) {
           vx[i] = vy[i] = ax[i] = ay[i] = 0;
         },
 
+        // Calculate distance and force (if distance < cut-off distance).
+        calculateLJInteraction = function(i, j) {
+          // Fast path.
+          if (radialBondMatrix && radialBondMatrix[i] && radialBondMatrix[i][j]) return;
+
+          var elI = element[i],
+              elJ = element[j],
+              dx  = x[j] - x[i],
+              dy  = y[j] - y[i],
+              rSq = dx * dx + dy * dy,
+              fOverR, fx, fy;
+
+          if (rSq < cutoffDistance_LJ_sq[elI][elJ]) {
+            fOverR = ljCalculator[elI][elJ].forceOverDistanceFromSquaredDistance(rSq);
+            fx = fOverR * dx;
+            fy = fOverR * dy;
+            ax[i] += fx;
+            ay[i] += fy;
+            ax[j] -= fx;
+            ay[j] -= fy;
+          }
+        },
+
         // Accumulate forces into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between
         // particles i and j where j < i. Note that data from the previous time step should be cleared
         // from arrays ax and ay before calling this function.
-        updateShortRangeForces = function(i) {
-          var c, k, j, dx, dy, r_sq, f_over_r, fx, fy,
-              el_i = element[i],
-              cellIdx = cell[i],
-              cells = cellList.getNeighboringCells(cellIdx),
-              atomsInCell,
-              el_j,
-              bondingPartners = radialBondMatrix && radialBondMatrix[i];
+        updateShortRangeForces = function () {
+          // Fast path, when Lennard Jones Interaction is disabled.
+          if (!useLennardJonesInteraction) return;
 
-          for (c = 0; c < cells.length; c++) {
-            atomsInCell = cellList.getCell(cells[c]);
-            for (k = 0; k < atomsInCell.length; k++) {
-              j = atomsInCell[k];
+          var rows = cellList.getRowsNum(),
+              cols = cellList.getColsNum(),
+              i, j, temp, cellIdx, cell1, cell2,
+              a, b, c, atom1Idx, cell1Len, cell2Len,
+              n, nLen, cellNeighbors;
 
-              if (bondingPartners && bondingPartners[j]) continue;
+          for (i = 0; i < rows; i++) {
+            temp = i * cols;
+            for (j = 0; j < cols; j++) {
+              cellIdx = temp + j;
 
-              el_j = element[j];
+              cell1 = cellList.getCell(cellIdx);
+              cellNeighbors = cellList.getNeighboringCells(i, j);
 
-              dx = x[j] - x[i];
-              dy = y[j] - y[i];
-              r_sq = dx*dx + dy*dy;
+              for (a = 0, cell1Len = cell1.length; a < cell1Len; a++) {
+                atom1Idx = cell1[a];
 
-              f_over_r = 0;
-
-              if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
-                f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq);
-              }
-
-              if (f_over_r) {
-                fx = f_over_r * dx;
-                fy = f_over_r * dy;
-                ax[i] += fx;
-                ay[i] += fy;
-                ax[j] -= fx;
-                ay[j] -= fy;
+                // Interactions inside the cell.
+                for (b = 0; b < a; b++) {
+                  calculateLJInteraction(atom1Idx, cell1[b]);
+                }
+                // Interactions between neighboring cells.
+                for (n = 0, nLen = cellNeighbors.length; n < nLen; n++) {
+                  cell2 = cellNeighbors[n];
+                  for (c = 0, cell2Len = cell2.length; c < cell2Len; c++) {
+                    calculateLJInteraction(cell1[a], cell2[c]);
+                  }
+                }
               }
             }
           }
@@ -1669,7 +1705,6 @@ define(function (require, exports, module) {
         atoms.element  = arrays.create(num, 0, uint8);
         atoms.pinned   = arrays.create(num, 0, uint8);
         atoms.mass     = arrays.create(num, 0, float32);
-        atoms.cell     = arrays.create(num, 0, uint8);
 
         assignShortcutReferences.atoms();
 
@@ -1720,6 +1755,9 @@ define(function (require, exports, module) {
         if (atom_charge) hasChargedAtoms = true;
 
         totalMass += atom_mass;
+
+        elementUsed[atom_element] = true;
+        initializeCellList();
 
         return N++;
       },
@@ -1999,10 +2037,6 @@ define(function (require, exports, module) {
 
         // Publish the current state
         T = computeTemperature();
-
-        computeMaxCutoff(usedElements);
-        // TODO: change place of initialization...
-        cellList = CellList(size[0], size[1], maxCutoff);
       },
 
       initializeAtomsRandomly: function(options) {
@@ -2291,14 +2325,15 @@ define(function (require, exports, module) {
             ax[i] = ay[i] = 0;
 
 
-            cell[i] = cellList.addToCell(i, x[i], y[i]);
+            cellList.addToCell(i, x[i], y[i]);
           }
+
+          updateShortRangeForces();
 
           for (i = 0; i < N; i++) {
             // Accumulate _forces_ for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i)
             // won't be usable until this loop completes; it won't have contributions from a(t+dt, k)
             // for k > i
-            updateShortRangeForces(i);
             updateLongRangeForces(i);
           }
 

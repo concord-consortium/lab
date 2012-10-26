@@ -22,33 +22,46 @@ define(function (require, exports, module) {
           }
         };
 
+    init ();
+
     // Public API.
     api = {
-      addToCell: function (idx, x, y) {
-        var cellIdx;
-        x = Math.floor(x / cellSize);
-        y = Math.floor(y / cellSize);
-        cellIdx = y * colsNum + x;
-        if (cellIdx > cellsNum) {
-          cellIdx--;
+      reinitialize: function (newCellSize) {
+        if (newCellSize !== cellSize) {
+          cellSize = newCellSize;
+          init();
         }
-        cell[cellIdx].push(idx);
-        return cellIdx;
       },
 
-      getCell: function (cellIdx) {
-        return cell[cellIdx];
+      addToCell: function (atomIdx, x, y) {
+        var cellIdx = Math.floor(y / cellSize) * colsNum + Math.floor(x / cellSize);
+        cell[cellIdx].push(atomIdx);
       },
 
-      getNeighboringCells: function (cellIdx) {
-        var result = [cellIdx],
-            colIdx = cellIdx % colsNum,
-            rowIdx = Math.floor(cellIdx / colsNum);
+      getCell: function (idx) {
+        return cell[idx];
+      },
 
-        if (colIdx + 1 < colsNum && rowIdx + 1 < rowsNum) result.push(cellIdx + colsNum + 1);
-        if (colIdx + 1 < colsNum) result.push(cellIdx + 1);
-        if (colIdx + 1 < colsNum && rowIdx - 1 >= 0) result.push(cellIdx - colsNum + 1);
-        if (rowIdx - 1 >= 0) result.push(cellIdx - colsNum);
+      getRowsNum: function () {
+        return rowsNum;
+      },
+
+      getColsNum: function () {
+        return colsNum;
+      },
+
+      getNeighboringCells: function (rowIdx, colIdx) {
+        var cellIdx = rowIdx * colsNum + colIdx,
+            result = [];
+
+        // Upper right.
+        if (colIdx + 1 < colsNum && rowIdx + 1 < rowsNum) result.push(cell[cellIdx + colsNum + 1]);
+        // Right.
+        if (colIdx + 1 < colsNum) result.push(cell[cellIdx + 1]);
+        // Bottom right.
+        if (colIdx + 1 < colsNum && rowIdx - 1 >= 0) result.push(cell[cellIdx - colsNum + 1]);
+        // Bottom.
+        if (rowIdx - 1 >= 0) result.push(cell[cellIdx - colsNum]);
 
         return result;
       },
@@ -61,7 +74,6 @@ define(function (require, exports, module) {
       }
     };
 
-    init ();
     return api;
   };
 
