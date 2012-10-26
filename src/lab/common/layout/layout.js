@@ -255,11 +255,12 @@ define(function (require) {
           modelWidthFactor,
           modelPaddingFactor,
           modelHeightFactor = 0.85,
-          bottomFactor = 0.0025;
+          bottomFactor = 0.0015,
           viewSizes = {},
           containerWidth = $(window).width(),
           containerHeight = $(window).height(),
-          mcWidth = $('#molecule-container').width();
+          mcWidth = $('#molecule-container').width(),
+          modelHeight;
 
       modelDimensions = viewLists.moleculeContainers[0].scale();
       modelAspectRatio = modelDimensions[2] / modelDimensions[3];
@@ -270,9 +271,11 @@ define(function (require) {
 
       modelHeightPaddingFactor = modelDimensions[1]/modelDimensions[3] - 1.05;
       modelHeightFactor -= modelHeightPaddingFactor;
+
       if (viewLists.thermometers) {
         modelWidthFactor -= 0.05;
       }
+
       if (viewLists.energyGraphs) {
         modelWidthFactor -= 0.35;
       }
@@ -295,9 +298,19 @@ define(function (require) {
       }
       viewSizes.moleculeContainers = [modelWidth, modelHeight];
       if (viewLists.energyGraphs) {
-        viewSizes.energyGraphs = [containerWidth * 0.40, modelHeight * 1.2];
+        viewSizes.energyGraphs = [containerWidth * 0.40];
       }
+
+
+      // Resize moleculeContainer first to determine actual container height for right-side
+      // Probably a way to do this with CSS ...
+      viewLists.moleculeContainers[0].resize(modelWidth, modelHeight);
+
+      modelHeight = $("#molecule-container").height();
+      $("#rightwide").height(modelHeight);
+
       for (viewType in viewLists) {
+        if (viewType === "moleculeContainers") continue
         if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
           i = -1;  while(++i < viewLists[viewType].length) {
             if (viewSizes[viewType]) {
