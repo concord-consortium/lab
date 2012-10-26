@@ -152,6 +152,10 @@
   "layout": {
     "rightwide": [
       "ke-chart"
+    ],
+    "bottom": [
+      ["gravity-slider", "angle-slider", "length-slider", "ke-shading"],
+      ["mass-slider", "spring-constant-slider", "friction-slider"]
     ]
   }
 }

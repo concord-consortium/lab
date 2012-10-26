@@ -933,10 +933,11 @@ define(function (require) {
           components = {},
           component,
           divArray,
+          $row, items,
           div,
           componentId,
           $top, $right, $rightwide, $bottom,
-          i, ii;
+          i, j, k, ii;
 
       componentCallbacks = [];
       interactive = newInteractive;
@@ -949,7 +950,7 @@ define(function (require) {
           $top.append($right);
         }
         if (interactive.layout && interactive.layout.rightwide) {
-          $rightwide = $('<div class="interactive-top" id="rightwide"/>');
+          $rightwide = $('<div id="rightwide"/>');
           $top.append($rightwide);
         }
         $interactiveContainer.append($top);
@@ -1003,14 +1004,22 @@ define(function (require) {
         for (div in interactive.layout) {
           if (interactive.layout.hasOwnProperty(div)) {
             divArray = interactive.layout[div];
-            for (i = 0, ii = divArray.length; i<ii; i++) {
-              componentId = divArray[i];
-              if (components[componentId]) {
-                $('#'+div).append(components[componentId].elem);
-                if (components[componentId].callback) {
-                  componentCallbacks.push(components[componentId].callback);
+            if (Object.prototype.toString.call(divArray[0]) !== "[object Array]") {
+              divArray = [divArray];
+            }
+            for (i = 0; i < divArray.length; i++) {
+              items = divArray[i];
+              $row = $('<div class="interactive-' + div + '-row"/>');
+              $('#'+div).append($row);
+              for (j = 0; j < items.length; j++) {
+                componentId = items[j];
+                if (components[componentId]) {
+                  $row.append(components[componentId].elem);
+                  if (components[componentId].callback) {
+                    componentCallbacks.push(components[componentId].callback);
+                  }
+                  delete components[componentId];
                 }
-                delete components[componentId];
               }
             }
           }
@@ -1018,12 +1027,15 @@ define(function (require) {
       }
 
       // add the remaining components to #bottom
+      if (!$row) {
+        $row = $('<div class="interactive-' + div + '-row"/>');
+        $('#bottom').append($row);
+      }
       for (componentId in components) {
         if (components.hasOwnProperty(componentId)) {
-          $('#bottom').append(components[componentId].elem);
+          $row.append(components[componentId].elem);
         }
       }
-
 
     }
 
