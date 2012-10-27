@@ -44,7 +44,7 @@ guard 'shell' do
 
   watch(/(^src\/lab\/.+)|(^src\/mw-helpers\/.+)/) do |match|
     file = match[0]
-    unless f =~ /(lab.config.js)|(lab.version.js)/
+    unless file =~ /(lab.config.js)|(lab.version.js)/
       puts "***" + file
       puts "re-generating javascript libraries and css resources for these libraries ..."
       command("make src")
