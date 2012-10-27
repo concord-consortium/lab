@@ -1027,7 +1027,7 @@ define(function (require) {
       }
 
       // add the remaining components to #bottom
-      if (!$row) {
+      if ($('#bottom.row').length === 0) {
         $row = $('<div class="interactive-' + div + '-row"/>');
         $('#bottom').append($row);
       }
