@@ -7,7 +7,7 @@
       "controlButtons": "play_reset",
       "gridLines": true
     },
-    "onLoad": "setRadialBondProperties(0, { length: 0.75, style: 106 }); var a0 = getAtomProperties(0), angle = 0*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, { x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0 }); start();"
+    "onLoad": "set({ lennard_jones_forces: false, coulomb_forces: false }); setRadialBondProperties(0, { length: 0.75, style: 106 }); var a0 = getAtomProperties(0), angle = 0*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, { x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0 }); start();"
   },
   "components": [
     {
@@ -131,6 +131,10 @@
   "layout": {
     "rightwide": [
       "ke-chart"
+    ],
+    "bottom": [
+      ["gravity-slider", "length-slider", "ke-shading"],
+      ["spring-constant-slider", "mass-slider", "friction-slider"]
     ]
   }
 }

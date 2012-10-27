@@ -5,7 +5,8 @@
     "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
     "viewOptions": {
       "controlButtons": "play_reset"
-    }
+    },
+    "onLoad": "set({ lennard_jones_forces: false, coulomb_forces: false });"
   },
   "components": [
     {
@@ -129,6 +130,10 @@
   "layout": {
     "rightwide": [
       "ke-chart"
+    ],
+    "bottom": [
+      ["gravity-slider", "angle-slider", "length-slider", "ke-shading"],
+      ["mass-slider", "friction-slider"]
     ]
   }
 }
