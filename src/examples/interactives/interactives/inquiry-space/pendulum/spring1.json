@@ -4,7 +4,7 @@
   "model": {
     "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
     "viewOptions": {
-      "controlButtons": "play_reset",
+      "controlButtons": "play_reset_step",
       "gridLines": true
     },
     "onLoad": "setRadialBondProperties(0, { length: 0.75, style: 106 }); var a0 = getAtomProperties(0), angle = 0*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, { x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0 }); start();"
