@@ -112,6 +112,16 @@ define(function (require) {
             grapherView.new_data(pressureData);
           });
 
+          model.on('stepForward.pressureGraph', function() {
+            grapherView.update(model.stepCounter());
+            grapherView.showMarker(model.stepCounter());
+          });
+
+          model.on('stepBack.pressureGraph', function() {
+            grapherView.update(model.stepCounter());
+            grapherView.showMarker(model.stepCounter());
+          });
+
           model.on('seek.pressureGraph', function() {
             setPressureDataLength(model.stepCounter());
             grapherView.new_data(pressureData);

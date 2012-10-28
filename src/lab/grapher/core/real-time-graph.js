@@ -793,18 +793,24 @@ define(function (require) {
             yOrigin = yScale(0.00001),
             lines = options.lines,
             bars = options.bars,
-            twopi = 2 * Math.PI;
+            twopi = 2 * Math.PI,
+            pointsLength = pointArray[0].length,
+            numberOfLines = pointArray.length;
 
         if (typeof currentSample === 'undefined') {
-          samplePoint = pointArray[0].length;
+          samplePoint = pointsLength;
         } else {
-          samplePoint = currentSample;
+          if (currentSample === pointsLength-1) {
+            samplePoint = pointsLength-1;
+          } else {
+            samplePoint = currentSample;
+          }
         }
         if (points.length === 0) { return; }
         clear_canvas();
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         if (lines) {
-          for (i = 0; i < pointArray.length; i++) {
+          for (i = 0; i < numberOfLines; i++) {
             points = pointArray[i];
             px = xScale(0);
             py = yScale(points[0].y);
@@ -834,7 +840,7 @@ define(function (require) {
             }
           }
         } else if (bars) {
-          for (i = 0; i < pointArray.length; i++) {
+          for (i = 0; i < numberOfLines; i++) {
             points = pointArray[i];
             lengthX = 0;
             setStrokeColor(i);
@@ -866,7 +872,7 @@ define(function (require) {
             }
           }
         } else {
-          for (i = 0; i < pointArray.length; i++) {
+          for (i = 0; i < numberOfLines; i++) {
             points = pointArray[i];
             lengthX = 0;
             setFillColor(i);

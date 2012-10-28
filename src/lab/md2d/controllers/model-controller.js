@@ -228,9 +228,16 @@ define(function (require) {
         // ------------------------------------------------------------
 
         model_player = new ModelPlayer(modelProxy, false);
-        // disable its 'forward' and 'back' actions:
-        model_player.forward = function() {},
-        model_player.back = function() {},
+        model_player.forward = function() {
+          model.stepForward();
+          if (!model.isNewStep()) {
+            moleculeContainer.update_drawable_positions();
+          }
+        },
+        model_player.back = function() {
+          model.stepBack();
+          moleculeContainer.update_drawable_positions();
+        },
 
         moleculeContainer = MoleculeContainer(moleculeViewId, getModelInterface());
 

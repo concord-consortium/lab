@@ -686,6 +686,7 @@ define(function(require) {
           tick_history_list_index--;
           tick_counter--;
           tick_history_list_extract(tick_history_list_index-1);
+          dispatch.stepBack();
           if (model_listener) { model_listener(); }
         }
       }
@@ -701,6 +702,7 @@ define(function(require) {
           tick_history_list_extract(tick_history_list_index);
           tick_history_list_index++;
           tick_counter++;
+          dispatch.stepForward();
           if (model_listener) { model_listener(); }
         } else {
           tick();

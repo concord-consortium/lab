@@ -808,6 +808,20 @@ define(function (require) {
             energyGraph.new_data(energyData);
           });
 
+          model.on('stepForward.energyGraph', function() {
+            if (model.isNewStep()) {
+              updateEnergyGraph();
+            } else {
+              energyGraph.update(model.stepCounter());
+              energyGraph.showMarker(model.stepCounter());
+            }
+          });
+
+          model.on('stepBack.energyGraph', function() {
+            energyGraph.update(model.stepCounter());
+            energyGraph.showMarker(model.stepCounter());
+          });
+
           model.on('seek.energyGraph', function() {
             var modelsteps = model.stepCounter();
             if (modelsteps > 0) {
