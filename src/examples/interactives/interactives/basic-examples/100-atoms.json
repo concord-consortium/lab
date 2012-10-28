@@ -6,7 +6,7 @@
     "viewOptions": {
       "controlButtons": "play_reset"
     },
-    "onLoad": "start();"
+    "onLoad": ""
   },
   "components": [
     {
