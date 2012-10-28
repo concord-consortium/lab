@@ -378,22 +378,30 @@ define(function(require) {
 
     function tick_history_list_push() {
       var prop,
-          newAtoms = {};
+          newAtoms = {},
+          newObstacles = {};
 
       for (prop in atoms) {
         if (atoms.hasOwnProperty(prop))
           newAtoms[prop] = arrays.clone(atoms[prop]);
       }
+
+      for (prop in obstacles) {
+        if (obstacles.hasOwnProperty(prop))
+          newObstacles[prop] = arrays.clone(obstacles[prop]);
+      }
+
       tick_history_list.length = tick_history_list_index;
       tick_history_list_index++;
       tick_counter++;
       new_step = true;
       tick_history_list.push({
-        atoms:    newAtoms,
-        pressure: modelOutputState.pressure,
-        pe:       modelOutputState.PE,
-        ke:       modelOutputState.KE,
-        time:     modelOutputState.time
+        atoms:     newAtoms,
+        obstacles: newObstacles,
+        pressure:  modelOutputState.pressure,
+        pe:        modelOutputState.PE,
+        ke:        modelOutputState.KE,
+        time:      modelOutputState.time
       });
       if (tick_history_list_index > 1000) {
         tick_history_list.splice(1,1);
@@ -430,9 +438,16 @@ define(function(require) {
         if (atoms.hasOwnProperty(prop))
           arrays.copy(tick_history_list[index].atoms[prop], atoms[prop]);
       }
+
+      for (prop in obstacles) {
+        if (obstacles.hasOwnProperty(prop))
+          arrays.copy(tick_history_list[index].obstacles[prop], obstacles[prop]);
+      }
+
       ke = tick_history_list[index].ke;
       time = tick_history_list[index].time;
       engine.setTime(time);
+      readModelState();
     }
 
     function container_pressure() {
