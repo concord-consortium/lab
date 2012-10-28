@@ -60,10 +60,14 @@
       "type": "pulldown",
       "id": "pulldown2",
       "options": [
-        {},
+        {
+          "text": "select  model ...",
+          "disabled": true
+        },
         {
           "text": "Load Oil and Water",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json"
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
+          "selected": true
         },
         {
           "text": "Load Oil and Water Mixed",
@@ -120,5 +124,12 @@
       ],
       "action": "set({temperature: value});"
     }
-  ]
+  ],
+  "layout": {
+    "bottom": [
+      ["abs-zero", "add-heat", "log-model", "throw-error"],
+      ["pulldown1", "pulldown2"],
+      ["temperature-property-slider", "temperature-action-slider"]
+    ]
+  }
 }
