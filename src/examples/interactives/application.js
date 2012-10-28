@@ -444,6 +444,16 @@ var ROOT = "/examples",
           modelEnergyGraph.reset();
         });
 
+        model.on('stepForward.modelEnergyGraph', function() {
+          modelEnergyGraph.update(model.stepCounter());
+          modelEnergyGraph.showMarker(model.stepCounter());
+        });
+
+        model.on('stepBack.modelEnergyGraph', function() {
+          modelEnergyGraph.update(model.stepCounter());
+          modelEnergyGraph.showMarker(model.stepCounter());
+        });
+
         model.on('seek.modelEnergyGraph', function() {
         });
         $modelEnergyGraphContent.show(100);
