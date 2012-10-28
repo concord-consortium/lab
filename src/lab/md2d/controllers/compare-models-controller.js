@@ -43,6 +43,7 @@ define(function (require) {
         timeStep            = modelConfig.timeStep,
         radialBonds         = modelConfig.radialBonds,
         angularBonds        = modelConfig.angularBonds,
+        restraints          = modelConfig.restraints,
         obstacles           = modelConfig.obstacles,
         viscosity           = modelConfig.viscosity,
         gravitationalField  = modelConfig.gravitationalField,
@@ -108,6 +109,7 @@ define(function (require) {
         timeStep            = modelConfig.timeStep;
         radialBonds         = modelConfig.radialBonds;
         angularBonds        = modelConfig.angularBonds;
+        restraints          = modelConfig.restraints;
         obstacles           = modelConfig.obstacles;
         viscosity           = modelConfig.viscosity;
         gravitationalField  = modelConfig.gravitationalField;
@@ -153,6 +155,7 @@ define(function (require) {
 
         if (radialBonds) model.createRadialBonds(radialBonds);
         if (angularBonds) model.createAngularBonds(angularBonds);
+        if (restraints) model.createRestraints(restraints);
         if (showVDWLines) model.createVdwPairs(atoms);
         if (obstacles) model.createObstacles(obstacles);
       }

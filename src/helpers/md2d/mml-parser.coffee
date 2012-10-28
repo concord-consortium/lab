@@ -377,8 +377,11 @@ parseMML = (mmlString) ->
           {...
         ]
     ###
+
     parseAtoms = ->
       atoms = []
+      restraints = []
+
       atomNodes = $mml(".org-concord-mw2d-models-Atom")
 
       for node in atomNodes
@@ -402,9 +405,24 @@ parseMML = (mmlString) ->
         vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
         vy = -vy / 100
 
+        restraint = $node.find '[property=restraint]'
+        if restraint.length > 0
+          $restraint = cheerio restraint
+
+          atomIndex = atoms.length
+          k         = parseFloat $restraint.find('[property=k]').text() || 20
+          x0        = parseFloat $restraint.find('[property=x0]').text() || 0
+          y0        = parseFloat $restraint.find('[property=y0]').text() || 0
+
+          [x0, y0] = toNextgenCoordinates x0, y0
+
+          # MML reports spring constant strength in units of eV per 0.01 nm. Convert to eV/nm ???
+          k *= 100
+          restraints.push { atomIndex, k, x0, y0 }
+
         atoms.push { elemId, x, y, vx, vy, charge, friction, pinned, marked, visible, draggable }
 
-      atoms
+      [atoms, restraints]
 
     ###
       radial bonds
@@ -467,7 +485,9 @@ parseMML = (mmlString) ->
       temperature = parseFloat heatBath.find("double").text()
 
     ### Put everything together into Lab's JSON format ###
-    atoms = parseAtoms()
+    results = parseAtoms()
+    atoms = results[0]
+    restraints = results[1]
 
     x  = (atom.x for atom in atoms)
     y  = (atom.y for atom in atoms)
@@ -531,6 +551,9 @@ parseMML = (mmlString) ->
 
     if angularBonds.length > 0
       json.angularBonds = unroll angularBonds, 'atom1Index', 'atom2Index', 'atom3Index', 'bondAngle', 'bondStrength'
+
+    if restraints.length > 0
+      json.restraints = unroll restraints, 'atomIndex', 'k', 'x0', 'y0'
 
     if imageProps.length > 0
       json.images = images

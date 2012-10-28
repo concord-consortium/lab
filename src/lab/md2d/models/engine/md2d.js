@@ -319,6 +319,22 @@ define(function (require, exports, module) {
         N_radialBonds = 0,
 
         // ####################################################################
+        //                      Restraint Properties
+
+        // Individual property arrays for the "restraint" bonds, indexed by bond number.
+        restraintAtomIndex,
+        restraintK,
+        restraintX0,
+        restraintY0,
+
+        // An object that contains references to the above restraint-property arrays.
+        // Left undefined if there are no restraints.
+        restraints,
+
+        // Number of actual restraint bonds (may be smaller than the length of the property arrays).
+        N_restraints = 0,
+
+        // ####################################################################
         //                      Angular Bond Properties
 
         // Individual property arrays for the "angular" bonds, indexed by bond number.
@@ -529,6 +545,13 @@ define(function (require, exports, module) {
             radialBondStyle       = radialBonds.style;
           },
 
+          restraints: function() {
+            restraintAtomIndex  = restraints.atomIndex;
+            restraintK          = restraints.k;
+            restraintX0         = restraints.x0;
+            restraintY0         = restraints.y0;
+          },
+
           angularBonds: function() {
             angularBondAtom1Index  = angularBonds.atom1;
             angularBondAtom2Index  = angularBonds.atom2;
@@ -611,6 +634,17 @@ define(function (require, exports, module) {
             radialBondResults[i] = {};
             radialBondResults[i].idx = i;
           }
+        },
+
+        createRestraintsArray = function(num) {
+          restraints = engine.restraints = {};
+
+          restraints.atomIndex = arrays.create(num, 0, uint16);
+          restraints.k         = arrays.create(num, 0, float32);
+          restraints.x0        = arrays.create(num, 0, float32);
+          restraints.y0        = arrays.create(num, 0, float32);
+
+          assignShortcutReferences.restraints();
         },
 
         createAngularBondsArray = function(num) {
@@ -1326,6 +1360,43 @@ define(function (require, exports, module) {
           }
         },
 
+        // FIXME: eliminate duplication with springForces
+        updateRestraintForces = function() {
+          // fast path if no restraints have been defined
+          if (N_restraints < 1) return;
+
+          var i,
+              dx, dy,
+              r, r_sq,
+              k,
+              f_over_r,
+              fx, fy,
+              a;
+
+          for (i = 0; i < N_restraints; i++) {
+            a = restraintAtomIndex[i];
+
+            dx = restraintX0[i] - x[a];
+            dy = restraintY0[i] - y[a];
+
+            if (dx === 0 && dy === 0) continue;   // force will be zero
+
+            r_sq = dx*dx + dy*dy;
+            r = Math.sqrt(r_sq);
+
+            // eV/nm^2
+            k = restraintK[i];
+
+            f_over_r = constants.convert(k*r, { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+            fx = f_over_r * dx;
+            fy = f_over_r * dy;
+
+            ax[a] += fx;
+            ay[a] += fy;
+          }
+        },
+
         updateSpringForces = function() {
           if (N_springForces < 1) return;
 
@@ -1648,6 +1719,26 @@ define(function (require, exports, module) {
       },
 
       /**
+        The canonical method for adding an 'restraint' bond to the collection of restraints.
+
+        If there isn't enough room in the 'restraints' array, it (somewhat inefficiently)
+        extends the length of the typed arrays by ten to have room for more bonds.
+      */
+      addRestraint: function(atomIndex, k, x0, y0) {
+        if (N_restraints + 1 > restraints.atomIndex.length) {
+          extendArrays(restraints, N_restraints + 10);
+          assignShortcutReferences.restraints();
+        }
+
+        restraintAtomIndex[N_restraints] = atomIndex;
+        restraintK[N_restraints]         = k;
+        restraintX0[N_restraints]        = x0;
+        restraintY0[N_restraints]        = y0;
+
+        N_restraints++;
+      },
+
+      /**
         The canonical method for adding an angular bond to the collection of angular bonds.
 
         If there isn't enough room in the 'angularBonds' array, it (somewhat inefficiently)
@@ -1966,6 +2057,22 @@ define(function (require, exports, module) {
         }
       },
 
+      initializeRestraints: function(props) {
+        var num = props.atomIndex.length,
+            i;
+
+        createRestraintsArray(num);
+
+        for (i = 0; i < num; i++) {
+          engine.addRestraint(
+            props.atomIndex[i],
+            props.k[i],
+            props.x0[i],
+            props.y0[i]
+          );
+        }
+      },
+
       initializeAngularBonds: function(props) {
         var num = props.atom1Index.length,
             i;
@@ -2135,6 +2242,9 @@ define(function (require, exports, module) {
 
           // Accumulate forces from angularly bonded interactions into a(t+dt)
           updateAngularBondForces();
+
+          // Accumulate forces from restraint forces into a(t+dt)
+          updateRestraintForces();
 
           // Accumulate forces from spring forces into a(t+dt)
           updateSpringForces();

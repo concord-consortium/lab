@@ -69,6 +69,8 @@ define(function(require) {
         radialBonds,
         // Angular Bonds
         angularBonds,
+        // Restraints (currently atom-only)
+        restraints,
         // VDW Pairs
         vdwPairs,
 
@@ -786,6 +788,13 @@ define(function(require) {
       return model;
     };
 
+    model.createRestraints = function(_restraints) {
+      engine.initializeRestraints(_restraints);
+      restraints = engine.restraints;
+      readModelState();
+      return model;
+    };
+
     model.createVdwPairs = function(_atoms) {
       engine.createVdwPairsArray(_atoms);
       vdwPairs = engine.vdwPairs;
@@ -1085,6 +1094,27 @@ define(function(require) {
       return props;
     };
 
+    model.setRestraintProperties = function(i, props) {
+      var key;
+      for (key in props) {
+        if (props.hasOwnProperty(key)) {
+          restraints[key][i] = props[key];
+        }
+      }
+      readModelState();
+    };
+
+    model.getRestraintProperties = function(i) {
+      var p,
+          props = {},
+          propName;
+      for (p = 0; p < model.RESTRAINT_PROPERTY_LIST.length; p++) {
+        propName = model.RESTRAINT_PROPERTY_LIST[p];
+        props[propName] = model.RESTRAINT_PROPERTY_LIST[propName][i];
+      }
+      return props;
+    };
+
     model.setAngularBondProperties = function(i, props) {
       var key;
       for (key in props) {
@@ -1220,6 +1250,10 @@ define(function(require) {
 
     model.get_radial_bonds = function() {
       return radialBonds;
+    };
+
+    model.get_restraints = function() {
+      return restraints;
     };
 
     model.get_vdw_pairs = function() {
