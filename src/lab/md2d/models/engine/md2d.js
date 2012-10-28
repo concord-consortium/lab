@@ -2430,15 +2430,7 @@ define(function (require, exports, module) {
           dr = Math.sqrt(r_sq);
 
           PE += 0.5*k*dr*dr;
-
-          // Remove the Lennard Jones potential for the bonded pair
-          if (useLennardJonesInteraction) {
-            PE += ljCalculator[el1][el2].potentialFromSquaredDistance(r_sq);
-          }
-          if (useCoulombInteraction && charge[i1] && charge[i2]) {
-            PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2]);
-          }
-        }
+       }
 
         // During obstacles loop calculate final probes values.
         // Try to reuse existing object (state.pressureProbes).
