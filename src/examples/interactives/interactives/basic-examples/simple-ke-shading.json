@@ -47,11 +47,8 @@
   ],
   "layout": {
     "bottom": [
-      "ke-shading",
-      "temperature-control",
-      "temperature-control-action",
-      "mark-two-atoms",
-      "unmark-all-atoms"
+      ["ke-shading", "temperature-control", "temperature-control-action"],
+      ["mark-two-atoms", "unmark-all-atoms", "add-atom"]
     ]
   }
 }
