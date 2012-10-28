@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>force-lines</page_title>
+<text> 
+VDW Force Lines Display:  </text>
+<section start="0" end="29">
+<paragraph start="0" end="2">
+<content start="0" end="1">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>vdw-force-lines$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Rotate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="29">
+<content start="2" end="26">
+<size>18</size></content>
+
+<content start="26" end="27">
+</content>
+
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Execute MW script</action>
+<script>{option=&quot;short&quot;, script=&quot;load vdw-force-lines$0.mml&quot;}
+{option=&quot;medium&quot;, script=&quot;load vdw-force-lines-medium.mml&quot;}
+{option=&quot;long&quot;, script=&quot;load vdw-force-lines-long.mml&quot;}
+</script>
+</component></content>
+
+</paragraph>
+</section>
+</document>

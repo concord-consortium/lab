@@ -292,16 +292,16 @@
   <void property="boundary"> 
    <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
     <void property="height"> 
-     <double>400.0</double> 
+     <double>350.0</double> 
     </void> 
     <void property="viewSize"> 
      <object class="java.awt.Dimension"> 
-      <int>400</int> 
-      <int>400</int> 
+      <int>300</int> 
+      <int>350</int> 
      </object> 
     </void> 
     <void property="width"> 
-     <double>400.0</double> 
+     <double>300.0</double> 
     </void> 
    </object> 
   </void> 
@@ -314,21 +314,21 @@
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
-    <string>force-lines-medium$0.mml</string> 
+    <string>vdw-force-lines-long.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1349801290000</long> 
+     <long>1346965046000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/force-lines-medium$0.mml</string> 
+    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/vdw-force-lines-long.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>11909</long> 
+    <long>11903</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -346,9 +346,6 @@
   </void> 
  </object> 
  <object class="org.concord.mw2d.AtomisticView$State"> 
-  <void property="VDWLinesRatio"> 
-   <float>1.67</float> 
-  </void> 
   <void property="colorCode"> 
    <string>None</string> 
   </void> 

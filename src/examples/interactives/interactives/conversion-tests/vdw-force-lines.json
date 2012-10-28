@@ -1,0 +1,42 @@
+{
+  "title": "VDW Force Lines",
+  "about": "Interactive example",
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines$0.json",
+    "viewOptions": {
+      "controlButtons": "",
+      "enableKeyboardHandlers": false
+    }
+  },
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "vdw-lines",
+      "text": "Show Attraction Forces",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown",
+      "options": [
+        {
+          "text": "Display VDW Lines ...",
+          "disabled": true
+        },
+        {
+          "text": "Short",
+          "loadModel": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines$0.json",
+          "selected": true
+        },
+        {
+          "text": "Medium",
+          "loadModel": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines-medium.json"
+        },
+        {
+          "text": "Long",
+          "loadModel": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines-long.json"
+        }
+      ]
+    }
+  ]
+}
