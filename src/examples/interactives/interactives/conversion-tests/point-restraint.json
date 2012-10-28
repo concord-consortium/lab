@@ -2,7 +2,7 @@
   "title": "Testing: Point Restraints",
   "about": "Interactive example",
   "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/point-restraint-test$0.json",
+    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/point-restraint$0.json",
     "viewOptions": {
       "controlButtons": "play_reset_step",
       "modelTimeLabel": true

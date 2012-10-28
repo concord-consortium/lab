@@ -320,7 +320,7 @@
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
-    <string>point-restraint-test$0.mml</string> 
+    <string>point-restraint$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
@@ -330,7 +330,7 @@
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/point-restraint-test$0.mml</string> 
+    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/point-restraint$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
