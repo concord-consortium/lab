@@ -2414,6 +2414,32 @@ define(function (require, exports, module) {
           PE += 0.5 * angularBondStrength[i] * angleDiff * angleDiff;
         }
 
+        // update PE for 'restraint' bonds
+        for (i = 0; i < N_restraints; i++) {
+          i1 = restraintAtomIndex[i];
+          el1 = element[i1];
+
+          dx = restraintX0[i] - x[i1];
+          dy = restraintY0[i] - y[i1];
+          r_sq = dx*dx + dy*dy;
+
+          // eV/nm^2
+          k = restraintK[i];
+
+          // nm
+          dr = Math.sqrt(r_sq);
+
+          PE += 0.5*k*dr*dr;
+
+          // Remove the Lennard Jones potential for the bonded pair
+          if (useLennardJonesInteraction) {
+            PE += ljCalculator[el1][el2].potentialFromSquaredDistance(r_sq);
+          }
+          if (useCoulombInteraction && charge[i1] && charge[i2]) {
+            PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2]);
+          }
+        }
+
         // During obstacles loop calculate final probes values.
         // Try to reuse existing object (state.pressureProbes).
         probes = state.pressureProbes || {};
