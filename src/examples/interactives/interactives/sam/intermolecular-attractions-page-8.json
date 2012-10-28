@@ -4,7 +4,8 @@
   "model": {
     "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/page8$0.json",
     "viewOptions": {
-      "controlButtons": "play"
+      "controlButtons": "play",
+      "enableKeyboardHandlers": false
     }
   },
   "components": [

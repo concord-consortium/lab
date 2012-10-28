@@ -4,7 +4,8 @@
   "model": {
     "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/pulling-uncharged-atoms$0.json",
     "viewOptions": {
-      "controlButtons": ""
+      "controlButtons": "",
+      "enableKeyboardHandlers": false
     },
     "onLoad": "start();"
   },
