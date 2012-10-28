@@ -7,7 +7,7 @@
       "controlButtons": "play_reset",
       "gridLines": true
     },
-    "onLoad": "set({ lennard_jones_forces: false, coulomb_forces: false }); setRadialBondProperties(0, { length: 0.75, style: 106 });"
+    "onLoad": "setRadialBondProperties(0, { length: 0.75, style: 106 });"
   },
   "components": [
     {
