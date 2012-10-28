@@ -1,4 +1,6 @@
 {
+  "lennardJonesForces": true, 
+  "coulombForces": true,
   "temperature_control": false,
   "width": 3.5,
   "height": 2.2,

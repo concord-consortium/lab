@@ -1,4 +1,6 @@
 {
+  "lennardJonesForces": true, 
+  "coulombForces": true,
   "viscosity": 0.25,
   "temperature_control": true,
   "width": 4.38,

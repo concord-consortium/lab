@@ -16,8 +16,8 @@ var ROOT = "/examples",
 
   var modelConfig = {
         mol_number          : 50,
-        lennard_jones_forces: true,
-        coulomb_forces      : false,
+        lennardJonesForces  : true,
+        coulombForces       : false,
         width               : 10,
         height              : 10
       },

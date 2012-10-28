@@ -30,6 +30,8 @@ define(function (require) {
         elements,
         atoms,
         mol_number,
+        lennardJonesForces,
+        coulombForces,
         temperature_control,
         temperature,
         width,
@@ -109,6 +111,8 @@ define(function (require) {
         elements            = modelConfig.elements;
         atoms               = modelConfig.atoms;
         mol_number          = modelConfig.mol_number;
+        lennardJonesForces  = modelConfig.lennardJonesForces;
+        coulombForces       = modelConfig.coulombForces;
         temperature_control = modelConfig.temperature_control;
         temperature         = modelConfig.temperature;
         width               = modelConfig.width;
@@ -138,6 +142,8 @@ define(function (require) {
         model = Model({
             elements            : elements,
             temperature         : temperature,
+            lennardJonesForces  : lennardJonesForces,
+            coulombForces       : coulombForces,
             temperature_control : temperature_control,
             width               : width,
             height              : height,

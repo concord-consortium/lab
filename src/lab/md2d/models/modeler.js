@@ -16,7 +16,7 @@ define(function(require) {
         temperature_control,
         keShading, chargeShading, showVDWLines,VDWLinesRatio,
         showClock,
-        lennard_jones_forces, coulomb_forces,
+        lennardJoneForces, coulombForces,
         gravitationalField = false,
         viewRefreshInterval = 50,
         timeStep = 1,
@@ -92,8 +92,8 @@ define(function(require) {
         properties = {
           temperature           : 300,
           modelSampleRate       : 60,
-          coulomb_forces        : true,
-          lennard_jones_forces  : true,
+          coulombForces         : true,
+          lennardJonesForces    : true,
           temperature_control   : true,
           gravitationalField    : false,
           keShading             : false,
@@ -128,8 +128,15 @@ define(function(require) {
             }
           },
 
-          set_coulomb_forces: function(cf) {
-            this.coulomb_forces = cf;
+          set_lennardJonesForces: function(lj) {
+            this.lennardJonesForces = lj;
+            if (engine) {
+              engine.useLennardJonesInteraction(lj);
+            }
+          },
+
+          set_coulombForces: function(cf) {
+            this.coulombForces = cf;
             if (engine) {
               engine.useCoulombInteraction(cf);
             }
@@ -727,8 +734,8 @@ define(function(require) {
       viscosity           = properties.viscosity;
       gravitationalField  = properties.gravitationalField;
 
-      engine.useLennardJonesInteraction(properties.lennard_jones_forces);
-      engine.useCoulombInteraction(properties.coulomb_forces);
+      engine.useLennardJonesInteraction(properties.lennardJonesForces);
+      engine.useCoulombInteraction(properties.coulombForces);
       engine.useThermostat(temperature_control);
       engine.setViscosity(viscosity);
       engine.setGravitationalField(gravitationalField);
@@ -1181,13 +1188,13 @@ define(function(require) {
       return stopped;
     };
 
-    model.set_lennard_jones_forces = function(lj) {
-     lennard_jones_forces = lj;
+    model.set_lennardJonesForces = function(lj) {
+     lennardJonesForces = lj;
      engine.useLennardJonesInteraction(lj);
     };
 
-    model.set_coulomb_forces = function(cf) {
-     coulomb_forces = cf;
+    model.set_coulombForces = function(cf) {
+     coulombForces = cf;
      engine.useCoulombInteraction(cf);
     };
 

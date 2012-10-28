@@ -1,4 +1,6 @@
 {
+  "lennardJonesForces": true, 
+  "coulombForces": true,
   "width": 9.11,
   "height": 1.18,
   "viscosity": 1,

@@ -47,7 +47,7 @@ parseMML = (mmlString) ->
     $mml = cheerio.load mmlString
 
     getNode = ($entity) ->
-      # an node may be an object, or it may be a reference to another object. It should
+      # a node may be an object, or it may be a reference to another object. It should
       # be treated the same in either case
       if $entity.attr("idref")
         return $mml("##{$entity.attr("idref")}")
@@ -165,6 +165,12 @@ parseMML = (mmlString) ->
     viewProps = $mml(".org-concord-mw2d-models-RectangularBoundary-Delegate")
     width  = parseInt viewProps.find("[property=width] double").text()
     height = parseInt viewProps.find("[property=height] double").text()
+
+    ###
+      Find the force interaction booleans
+    ###
+    lennardJonesForces  = parseBoolean($mml("[property=LJBetweenBondPairs] boolean").text(), true)
+    coulombForces       = parseBoolean($mml("[property=interCoulomb] boolean").text(), true)
 
     ###
       Find the chargeShading
@@ -485,6 +491,8 @@ parseMML = (mmlString) ->
       unrolled
 
     json =
+      lennardJonesForces  : lennardJonesForces
+      coulombForces       : coulombForces
       temperature_control : !!temperature
       width               : width
       height              : height
