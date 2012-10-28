@@ -5,8 +5,32 @@
     "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/visible-and-invisible$0.json",
     "viewOptions": {
       "controlButtons": "play_reset"
+    },
+    "energyGraphOptions": {
+      "ymin": -1.0,
+      "ymax":  1.0,
+      "xmax":  50.0
     }
   },
   "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Change Visibility of 4 Large Atoms...",
+          "disabled": true
+        },
+        {
+          "text": "Make 4 Large Atoms Invisible",
+          "action": "setAtomProperties(4, { visible: false }); setAtomProperties(5, { visible: false }); setAtomProperties(6, { visible: false }); setAtomProperties(7, { visible: false });",
+          "default": true
+        },
+        {
+          "text": "Make 4 Large Atoms Visible",
+          "action": "setAtomProperties(4, { visible: true }); setAtomProperties(5, { visible: true }); setAtomProperties(6, { visible: true }); setAtomProperties(7, { visible: true });"
+        }
+      ]
+    }
   ]
 }

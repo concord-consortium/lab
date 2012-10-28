@@ -83,7 +83,7 @@
       "type": "energyGraph",
       "id": "ke-chart",
       "dimensions": { "width": 500, "height": 296 },
-      "options": { "ymin": -30, "ymax": 30.0 }
+      "options": { "ymin": -15, "ymax": 10.0, "xmax": 5 }
     }
   ],
   "layout": {

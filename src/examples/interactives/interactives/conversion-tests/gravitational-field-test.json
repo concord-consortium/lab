@@ -5,6 +5,11 @@
     "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/gravitational-field-test$0.json",
     "viewOptions": {
       "controlButtons": "play_reset"
+    },
+    "energyGraphOptions": {
+      "ymin": -1.0,
+      "ymax":  6.0,
+      "xmax":  50.0
     }
   },
   "components": [

@@ -479,6 +479,7 @@ var ROOT = "/examples",
             ymax:      5.0
           };
 
+      $.extend(options, interactive.model.energyGraphOptions || []);
       resetModelEnergyData();
       options.dataset = modelEnergyData;
       modelEnergyGraph = grapher.realTimeGraph('#model-energy-graph-chart', options);

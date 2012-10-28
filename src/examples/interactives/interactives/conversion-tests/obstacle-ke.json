@@ -6,6 +6,11 @@
     "viewOptions": {
       "controlButtons": "play_reset_step",
       "modelTimeLabel": true
+    },
+    "energyGraphOptions": {
+      "ymin": -1.0,
+      "ymax":  6.0,
+      "xmax":  50.0
     }
   },
   "components": [
