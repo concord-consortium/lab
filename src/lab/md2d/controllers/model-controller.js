@@ -25,6 +25,7 @@ define(function (require) {
         modelTimeLabel,
         fit_to_parent,
         enableAtomTooltips,
+        enableKeyboardHandlers,
 
         // properties read from the modelConfig hash
         elements,
@@ -106,6 +107,7 @@ define(function (require) {
         controlButtons      = playerConfig.controlButtons;
         modelTimeLabel      = playerConfig.modelTimeLabel;
         enableAtomTooltips  = playerConfig.enableAtomTooltips || false;
+        enableKeyboardHandlers = playerConfig.enableKeyboardHandlers;
         fit_to_parent       = playerConfig.fit_to_parent;
         interactiveUrl      = playerConfig.interactiveUrl;
 
@@ -196,6 +198,7 @@ define(function (require) {
           keShading:               keShading,
           chargeShading:           chargeShading,
           enableAtomTooltips:      enableAtomTooltips,
+          enableKeyboardHandlers:  enableKeyboardHandlers,
           images:                  images,
           interactiveUrl:          interactiveUrl,
           textBoxes:               textBoxes,

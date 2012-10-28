@@ -74,20 +74,21 @@ define(function (require) {
         getVdwPairs,
         bondColorArray,
         default_options = {
-          fit_to_parent:        false,
-          title:                false,
-          xlabel:               false,
-          ylabel:               false,
-          controlButtons:      "play",
-          grid_lines:           false,
-          xunits:               false,
-          yunits:               false,
-          atom_mubers:          false,
-          enableAtomTooltips:   false,
-          xmin:                 0,
-          xmax:                 10,
-          ymin:                 0,
-          ymax:                 10
+          fit_to_parent:          false,
+          title:                  false,
+          xlabel:                 false,
+          ylabel:                 false,
+          controlButtons:         "play",
+          grid_lines:             false,
+          xunits:                 false,
+          yunits:                 false,
+          atom_mubers:            false,
+          enableAtomTooltips:     false,
+          enableKeyboardHandlers: true,
+          xmin:                   0,
+          xmax:                   10,
+          ymin:                   0,
+          ymax:                   10
         },
 
         model,
@@ -405,11 +406,13 @@ define(function (require) {
 
         molecule_div_pre = molecule_div.append("pre");
 
-        d3.select(node)
-          .attr("tabindex", 0)
-          .on("mousedown", mousedown);
+        if (options.enableKeyboardHandlers) {
+          d3.select(node)
+            .attr("tabindex", 0)
+            .on("mousedown", mousedown);
+        }
 
-        registerKeyboardHandlers();
+        setupKeyboardHandler();
 
         redraw();
         create_gradients();
@@ -1157,7 +1160,49 @@ define(function (require) {
       }
 
       function mousedown() {
-        node.focus();
+        if (options.enableKeyboardHandlers) {
+          node.focus();
+        }
+      }
+
+      function setupKeyboardHandler() {
+        if (!options.enableKeyboardHandlers) return;
+        $(node).keydown(function(event) {
+          var keycode = event.keycode || event.which;
+          switch(keycode) {
+            case 13:                 // return
+            event.preventDefault();
+            model_player.play();
+            break;
+
+            case 32:                 // space
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.play();
+            }
+            break;
+
+            case 37:                 // left-arrow
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.back();
+            }
+            break;
+
+            case 39:                 // right-arrow
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.forward();
+            }
+            break;
+          }
+        });
       }
 
       function molecule_mouseover(d, i) {
