@@ -760,12 +760,6 @@ define(function(require) {
       window.state = modelOutputState = {};
       readModelState();
 
-      // tick history stuff
-      reset_tick_history_list();
-      tick_history_list_push();
-      tick_counter = 0;
-      new_step = true;
-
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
 
@@ -823,6 +817,14 @@ define(function(require) {
       obstacles = engine.obstacles;
       readModelState();
       return model;
+    };
+
+    model.initializeHistory = function() {
+      // tick history stuff
+      reset_tick_history_list();
+      tick_history_list_push();
+      tick_counter = 0;
+      new_step = true;
     };
 
     model.reset = function() {

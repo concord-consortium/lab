@@ -174,6 +174,7 @@ define(function (require) {
         if (restraints) model.createRestraints(restraints);
         if (showVDWLines) model.createVdwPairs(atoms);
         if (obstacles) model.createObstacles(obstacles);
+        model.initializeHistory();
       }
 
       function setupModel() {
