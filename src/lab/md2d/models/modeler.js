@@ -356,8 +356,12 @@ define(function(require) {
         // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
         // However, in MD2D we prefer the more physical notion of integrating for a particular
         // length of time.
+        console.time('integration');
         engine.integrate(viewRefreshInterval * timeStep, timeStep);
+        console.timeEnd('integration');
+        console.time('reading model state');
         readModelState();
+        console.timeEnd('reading model state');
 
         pressures.push(pressure);
         pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
@@ -1314,7 +1318,9 @@ define(function(require) {
     model.resume = function() {
       stopped = false;
 
+      console.time('gap between frames');
       d3.timer(function timerTick(elapsedTime) {
+        console.timeEnd('gap between frames');
         // Cancel the timer and refuse to to step the model, if the model is stopped.
         // This is necessary because there is no direct way to cancel a d3 timer.
         // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
@@ -1322,6 +1328,7 @@ define(function(require) {
 
         tick(elapsedTime, false);
 
+        console.time('gap between frames');
         return false;
       });
 

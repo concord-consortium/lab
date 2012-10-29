@@ -1261,6 +1261,7 @@ define(function (require) {
       }
 
       function update_drawable_positions() {
+        console.time('view update');
         if (obstacles) {
           obstacle
               .attr("x", function(d, i) { return x(get_obstacle_x(i)); })
@@ -1277,6 +1278,7 @@ define(function (require) {
         if(imageProp && imageProp.length !== 0) {
           updateImageAttachment();
         }
+        console.timeEnd('view update');
       }
 
       // TODO: this function name seems to be inappropriate to
