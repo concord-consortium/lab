@@ -6,7 +6,8 @@
 // ------------------------------------------------------------
 define(function (require) {
   // Dependencies.
-  var PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
+  var console               = require('common/console'),
+      PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
       layout                = require('common/layout/layout');

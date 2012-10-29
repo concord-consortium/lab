@@ -3,7 +3,7 @@
 ############################################
 define (require) ->
   # Dependencies.
-  require 'common/console'
+  console = require 'common/console'
 
   class ModelControllerComponent
 

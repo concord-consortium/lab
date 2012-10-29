@@ -3,8 +3,8 @@
 
 define(function(require) {
   // Dependencies.
-  require('common/console');
-  var arrays  = require('arrays'),
+  var console = require('common/console'),
+      arrays  = require('arrays'),
       md2d    = require('md2d/models/engine/md2d'),
 
       engine;
@@ -1321,6 +1321,7 @@ define(function(require) {
         if (stopped) return true;
 
         tick(elapsedTime, false);
+
         return false;
       });
 

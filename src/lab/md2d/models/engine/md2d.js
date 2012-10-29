@@ -9,8 +9,8 @@ if (typeof define !== 'function') {
 
 define(function (require, exports, module) {
 
-  require('common/console');
-  var arrays       = require('arrays'),
+  var console      = require('common/console'),
+      arrays       = require('arrays'),
       constants    = require('./constants/index'),
       unit         = constants.unit,
       math         = require('./math/index'),

@@ -11,6 +11,8 @@ if (typeof define !== 'function') {
 }
 
 define(function (require, exports, module) {
+  // Dependencies.
+  var console = require('common/console');
 
   exports.minimize = function(f, x0, opts) {
     opts = opts || {};

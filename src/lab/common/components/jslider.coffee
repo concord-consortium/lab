@@ -1,4 +1,6 @@
 define (require) ->
+  # Dependencies.
+  console = require 'common/console'
 
   class JSliderComponent
 
