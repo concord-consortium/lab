@@ -17,6 +17,7 @@ define(function (require, exports, module) {
       coulomb      = require('./potentials/index').coulomb,
       lennardJones = require('./potentials/index').lennardJones,
       CellList     = require('./cell-list').cellList,
+      NeighborList = require('./neighbor-list').neighborList,
 
       // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
       notSafari = (function() {
@@ -440,6 +441,13 @@ define(function (require, exports, module) {
         // Cell list structure.
         cellList,
 
+        // Neighbor (Verlet) list structure.
+        neighborList,
+
+        // Information whether neighbor list should be
+        // recalculated in the current integration step.
+        updateNeighborList,
+
         //
         // The location of the center of mass, in nanometers.
         x_CM, y_CM,
@@ -472,6 +480,10 @@ define(function (require, exports, module) {
         cutoff = 5.0,
         cutoffDistance_LJ_sq = [],
 
+        // cutoff for neighbor list calculations, as a factor of sigma
+        cutoffList = 5.2,
+        cutoffNeighborListSquared = [],
+
         // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
         // potential between elements i and j
         ljCalculator = [],
@@ -483,8 +495,8 @@ define(function (require, exports, module) {
           throw new Error("md2d: Don't change the epsilon or sigma parameters of the LJ calculator being used by MD2D. Use the setElementProperties method instead.");
         },
 
-        // Initialize epsilon, sigma, cutoffDistance_LJ_sq, and ljCalculator array elements for
-        // element pair i and j
+        // Initialize epsilon, sigma, cutoffDistance_LJ_sq, cutoffNeighborListSquared, and ljCalculator
+        // array elements for element pair i and j
         setPairwiseLJProperties = function(i, j) {
           var epsilon_i = elementEpsilon[i],
               epsilon_j = elementEpsilon[j],
@@ -496,7 +508,10 @@ define(function (require, exports, module) {
           e = epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
           s = sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
 
+          // Cutoff for Lennard-Jones interactions.
           cutoffDistance_LJ_sq[i][j] = cutoffDistance_LJ_sq[j][i] = (cutoff * s) * (cutoff * s);
+          // Cutoff for neighbor lists calculations.
+          cutoffNeighborListSquared[i][j] = cutoffNeighborListSquared[j][i] = (cutoffList * s) * (cutoffList * s);
 
           ljCalculator[i][j] = ljCalculator[j][i] = lennardJones.newLJCalculator({
             epsilon: e,
@@ -521,8 +536,9 @@ define(function (require, exports, module) {
                 sigmaJ = elementSigma[j];
                 sigma = lennardJones.pairwiseSigma(sigmaI, sigmaJ);
 
-                if (cutoff * sigma > maxCutoff) {
-                  maxCutoff = cutoff * sigma;
+                // Use cutoffList, as cell lists are used to calculate neighbor lists.
+                if (cutoffList * sigma > maxCutoff) {
+                  maxCutoff = cutoffList * sigma;
                 }
               }
             }
@@ -530,13 +546,51 @@ define(function (require, exports, module) {
           return maxCutoff;
         },
 
+        // Returns a minimal difference between "real" cutoff
+        // and cutoff used in neighbor list. This can be considered
+        // as a minimal displacement of atom, which triggers neighbor
+        // list recalculation (or maximal allowed displacement to avoid
+        // recalculation).
+        computeNeighborListMaxDisplacement = function() {
+          var maxDisplacement = Infinity,
+              sigmaI,
+              sigmaJ,
+              sigma,
+              i, j;
+
+          for (i = 0; i < N_elements; i++) {
+            for (j = 0; j <= i; j++) {
+              if (elementUsed[i] && elementUsed[j]) {
+                sigmaI = elementSigma[i];
+                sigmaJ = elementSigma[j];
+                sigma = lennardJones.pairwiseSigma(sigmaI, sigmaJ);
+
+                if ((cutoffList - cutoff) * sigma < maxDisplacement) {
+                  maxDisplacement = (cutoffList - cutoff) * sigma;
+                }
+              }
+            }
+          }
+          return maxDisplacement;
+        },
+
         // Initializes special structure for short-range forces calculation
-        // optimization.
+        // optimization. Cell lists support neighbor list.
         initializeCellList = function () {
           if (cellList === undefined) {
             cellList = CellList(size[0], size[1], computeMaxCutoff());
           } else {
             cellList.reinitialize(computeMaxCutoff());
+          }
+        },
+
+        // Initializes special structure for short-range forces calculation
+        // optimization. Neighbor list cooperates with cell list.
+        initializeNeighborList = function () {
+          if (neighborList === undefined) {
+            neighborList = NeighborList(N, computeNeighborListMaxDisplacement());
+          } else {
+            neighborList.reinitialize(N, computeNeighborListMaxDisplacement());
           }
         },
 
@@ -1242,6 +1296,10 @@ define(function (require, exports, module) {
               rSq = dx * dx + dy * dy,
               fOverR, fx, fy;
 
+          if (updateNeighborList && rSq < cutoffNeighborListSquared[elI][elJ]) {
+            neighborList.markNeighbors(i, j);
+          }
+
           if (rSq < cutoffDistance_LJ_sq[elI][elJ]) {
             fOverR = ljCalculator[elI][elJ].forceOverDistanceFromSquaredDistance(rSq);
             fx = fOverR * dx;
@@ -1257,6 +1315,18 @@ define(function (require, exports, module) {
           // Fast path if Lennard Jones interaction is disabled.
           if (!useLennardJonesInteraction) return;
 
+          if (updateNeighborList) {
+            console.time('cell lists');
+            shortRangeForcesCellList();
+            console.timeEnd('cell lists');
+          } else {
+            console.time('neighbor list');
+            shortRangeForcesNeighborList();
+            console.timeEnd('neighbor list');
+          }
+        },
+
+        shortRangeForcesCellList = function () {
           var rows = cellList.getRowsNum(),
               cols = cellList.getColsNum(),
               i, j, temp, cellIdx, cell1, cell2,
@@ -1286,6 +1356,18 @@ define(function (require, exports, module) {
                   }
                 }
               }
+            }
+          }
+        },
+
+        shortRangeForcesNeighborList = function () {
+          var nlist = neighborList.getList(),
+              atom1Idx, atom2Idx, i, len;
+
+          for (atom1Idx = 0; atom1Idx < N; atom1Idx++) {
+            for (i = neighborList.getStartIdxFor(atom1Idx), len = neighborList.getEndIdxFor(atom1Idx); i < len; i++) {
+              atom2Idx = nlist[i];
+              calculateLJInteraction(atom1Idx, atom2Idx);
             }
           }
         },
@@ -1765,9 +1847,16 @@ define(function (require, exports, module) {
         totalMass += atom_mass;
 
         elementUsed[atom_element] = true;
-        initializeCellList();
 
-        return N++;
+        // Increase number of atoms.
+        N++;
+
+        // Initialize helper structures for
+        // optimizations.
+        initializeCellList();
+        initializeNeighborList();
+
+        return N;
       },
 
       /**
@@ -1786,10 +1875,11 @@ define(function (require, exports, module) {
         elementSigma[N_elements]   = props.sigma;
         elementRadius[N_elements]  = lennardJones.radius(props.sigma);
 
-        epsilon[N_elements]              = [];
-        sigma[N_elements]                = [];
-        ljCalculator[N_elements]         = [];
-        cutoffDistance_LJ_sq[N_elements] = [];
+        epsilon[N_elements]                   = [];
+        sigma[N_elements]                     = [];
+        ljCalculator[N_elements]              = [];
+        cutoffDistance_LJ_sq[N_elements]      = [];
+        cutoffNeighborListSquared[N_elements] = [];
 
         for (i = 0; i <= N_elements; i++) {
           setPairwiseLJProperties(N_elements,i);
@@ -2316,10 +2406,6 @@ define(function (require, exports, module) {
         for (iloop = 1; iloop <= n_steps; iloop++) {
           time = t_start + iloop*dt;
 
-
-          // Clear lists at the beginning of integration step.
-          cellList.clearCells();
-
           for (i = 0; i < N; i++) {
             x_prev = x[i];
             y_prev = y[i];
@@ -2329,9 +2415,6 @@ define(function (require, exports, module) {
             bounceAtomOffWalls(i);
             bounceOffObstacles(i, x_prev, y_prev);
 
-            // When position is updated, add particle to appropriate cell.
-            cellList.addToCell(i, x[i], y[i]);
-
             // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
             halfUpdateVelocity(i);
 
@@ -2339,11 +2422,32 @@ define(function (require, exports, module) {
             ax[i] = ay[i] = 0;
           }
 
+          // Check if neighbor list should be recalculated.
+          updateNeighborList = neighborList.shouldUpdate(x, y);
+
+          if (updateNeighborList) {
+            // Clear both lists.
+            cellList.clear();
+            neighborList.clear();
+
+            for (i = 0; i < N; i++) {
+              // Add particle to appropriate cell.
+              cellList.addToCell(i, x[i], y[i]);
+              // And save its initial position
+              // ("initial" = position during neighbor list creation).
+              neighborList.saveAtomPosition(i, x[i], y[i]);
+            }
+          }
+
           // Accumulate forces into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between
           // particles. Note that data from the previous time step should be cleared
           // from arrays ax and ay before calling this function.
+          console.time('short-range forces');
           updateShortRangeForces();
+          console.timeEnd('short-range forces');
+          console.time('long-range forces');
           updateLongRangeForces();
+          console.timeEnd('long-range forces');
 
           //
           // ax and ay are FORCES below this point
@@ -2772,6 +2876,21 @@ define(function (require, exports, module) {
       getAtomKineticEnergy: function(i) {
         var KEinMWUnits = 0.5 * mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
         return constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+      },
+
+      getAtomNeighbors: function(idx) {
+        var res = [],
+            list = neighborList.getList(),
+            i, len;
+
+        for (i = neighborList.getStartIdxFor(idx), len = neighborList.getEndIdxFor(idx); i < len; i++) {
+          res.push(list[i]);
+        }
+        return res;
+      },
+
+      getNeighborList: function () {
+        return neighborList;
       },
 
       setViscosity: function(v) {
