@@ -43,7 +43,7 @@ requirejs([
           assert.equal(cell[0], i);
         }
 
-        cellList.clearCells();
+        cellList.clear();
       },
       "should handle atoms correctly - vol 2": function (cellList) {
         var i, cell;
@@ -71,7 +71,7 @@ requirejs([
         assert.equal(cell[2], 6);
         assert.equal(cell[3], 7);
 
-        cellList.clearCells();
+        cellList.clear();
       },
       "should provide neighbors correctly": function (cellList) {
         assert.equal(cellList.getNeighboringCells(0, 0).length, 2);

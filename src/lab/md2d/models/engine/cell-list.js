@@ -66,7 +66,7 @@ define(function (require, exports, module) {
         return result;
       },
 
-      clearCells: function () {
+      clear: function () {
         var i;
         for (i = 0; i < cellsNum; i++) {
           cell[i].length = 0;
