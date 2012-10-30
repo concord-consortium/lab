@@ -19,7 +19,6 @@ define(function(require) {
         showClock,
         lennardJoneForces, coulombForces,
         gravitationalField = false,
-        viewRefreshInterval = 50,
         timeStep = 1,
         stopped = true,
         restart = false,
@@ -156,10 +155,6 @@ define(function(require) {
             if (engine) {
               engine.setGravitationalField(gf);
             }
-          },
-
-          set_viewRefreshInterval: function(vri) {
-            this.viewRefreshInterval = vri;
           },
 
           set_modelSampleRate: function(rate) {
@@ -350,7 +345,7 @@ define(function(require) {
       // However, in MD2D we prefer the more physical notion of integrating for a particular
       // length of time.
       console.time('integration');
-      engine.integrate(viewRefreshInterval * timeStep, timeStep);
+      engine.integrate(model.get('viewRefreshInterval') * timeStep, timeStep);
       console.timeEnd('integration');
       console.time('reading model state');
       readModelState();
@@ -665,7 +660,6 @@ define(function(require) {
       showVDWLines        = properties.showVDWLines;
       VDWLinesRatio       = properties.VDWLinesRatio;
       showClock           = properties.showClock;
-      viewRefreshInterval = properties.viewRefreshInterval;
       timeStep            = properties.timeStep;
       viscosity           = properties.viscosity;
       gravitationalField  = properties.gravitationalField;
