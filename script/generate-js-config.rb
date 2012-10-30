@@ -12,8 +12,7 @@ end
 jsconfig = <<HEREDOC
 // this file is generated during build process by: ./script/generate-js-config.rb
 define(function (require) {
-if (typeof Lab === 'undefined') Lab = {};
-Lab.config = #{JSON.pretty_generate(CONFIG[:jsconfig])}
+  return #{JSON.pretty_generate(CONFIG[:jsconfig])};
 });
 HEREDOC
 

@@ -36,8 +36,7 @@ message = "".html_safe + commit.message.gsub("\n", "\\n")
 version = <<HEREDOC
 // this file is generated during build process by: ./script/generate-js-version.rb
 define(function (require) {
-  if (typeof Lab === 'undefined') Lab = {};
-  Lab.version = {
+  return {
     "repo": {
       "branch": "#{head.name if head != nil}",
       "commit": {

@@ -1,16 +1,21 @@
 /*globals define: false, Lab: true */
 
 define(function (require) {
-  require('lab.version');
-  require('lab.config');
   require('md2d/public-api');
   require('grapher/public-api');
+  var version = require('lab.version'),
+      config  = require('lab.config'),
+      console = require('common/console'),
 
-  var console = require('common/console');
-  // Export Lab.console API.
-  if (typeof Lab === 'undefined') Lab = {};
-  Lab.console = {
+      publicAPI;
+
+  // Create or get 'Lab' global object (namespace).
+  window.Lab = window.Lab || {};
+  // Export some objects.
+  window.Lab.console = {
     logging: console.logging,
     tracing: console.tracing
   };
+  window.Lab.version = version;
+  window.Lab.config = config;
 });
