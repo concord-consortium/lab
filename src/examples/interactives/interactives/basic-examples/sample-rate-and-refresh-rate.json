@@ -48,6 +48,26 @@
       "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
     },
     {
+      "type": "button",
+      "id": "calc-fps",
+      "text": "Get FPS",
+      "action": [
+        "start();",
+        "setTimeout(function() {",
+          "stop();",
+          "var startTime = getTime();",
+          "setTimeout(function() {",
+            "start();",
+            "setTimeout(function() {",
+              "stop();",
+              "var time = getTime() - startTime;",
+              "alert( (time / get('viewRefreshInterval') / 2) + ' fps');",
+            "}, 2000);",
+          "}, 100);",
+        "}, 2000);"
+      ]
+    },
+    {
       "type": "pulldown",
       "id": "select-refresh-rate",
       "options": [
@@ -135,6 +155,7 @@
     "cool",
     "heat",
     "select-refresh-rate",
-    "select-model-sample-rate"
+    "select-model-sample-rate",
+    "calc-fps"
   ]
 }

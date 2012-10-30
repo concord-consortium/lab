@@ -239,6 +239,10 @@ define(function (require) {
               return model.getAngularBondProperties(i);
             },
 
+            getTime: function getTime() {
+              return model.getTime();
+            },
+
             pe: function pe() {
               return model.pe();
             },
