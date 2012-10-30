@@ -1,6 +1,8 @@
 ---
 :jsconfig:
   :sharing: true
+  :logging: true
+  :tracing: false
   :home: http://lab.concord.org
   :homeInteractivePath: /examples/interactives/interactive.html
   :homeEmbeddablePath: /examples/interactives/embeddable.html

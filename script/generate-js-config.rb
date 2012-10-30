@@ -4,10 +4,12 @@ require 'json'
 
 JS_CONFIG_PATH = File.join(SRC_LAB_PATH, 'lab.config.js')
 
-# default jsconfig "sharing" is true
-if CONFIG[:jsconfig] == nil || CONFIG[:jsconfig][:sharing] == nil
-  CONFIG[:jsconfig] = { :sharing => true }
-end
+# Provide default values for some values.
+CONFIG[:jsconfig] = {} if CONFIG[:jsconfig] == nil
+
+CONFIG[:jsconfig][:sharing] = true  if CONFIG[:jsconfig][:sharing] == nil
+CONFIG[:jsconfig][:logging] = true  if CONFIG[:jsconfig][:logging] == nil
+CONFIG[:jsconfig][:tracing] = false if CONFIG[:jsconfig][:tracing] == nil
 
 jsconfig = <<HEREDOC
 // this file is generated during build process by: ./script/generate-js-config.rb

@@ -1,13 +1,11 @@
 /*globals define: false */
 
 define(function (require) {
-      // Object to be returned.
-  var publicAPI,
-      // Configuration option - logging is enabled by default.
-      logging = true,
-      // Configuration option - tracing is disabled by default.
-      tracing = false,
+  // Dependencies.
+  var labConfig = require('lab.config'),
 
+      // Object to be returned.
+      publicAPI,
       cons,
       emptyFunction = function () {};
 
@@ -34,48 +32,28 @@ define(function (require) {
 
   publicAPI = {
     log: function () {
-      if (logging)
+      if (labConfig.logging)
         cons.log.apply(cons, arguments);
     },
     info: function () {
-      if (logging)
+      if (labConfig.logging)
         cons.info.apply(cons, arguments);
     },
     warn: function () {
-      if (logging)
+      if (labConfig.logging)
         cons.warn.apply(cons, arguments);
     },
     error: function () {
-      if (logging)
+      if (labConfig.logging)
         cons.error.apply(cons, arguments);
     },
     time: function () {
-      if (tracing)
+      if (labConfig.tracing)
         cons.time.apply(cons, arguments);
     },
     timeEnd: function () {
-      if (tracing)
+      if (labConfig.tracing)
         cons.timeEnd.apply(cons, arguments);
-    },
-
-    // When called without arguments, returns information
-    // whether logging is disabled or enabled.
-    // Called with argument, sets logging enabled or disabled.
-    logging: function (val) {
-      if (arguments.length < 1)
-        return logging;
-
-      logging = val;
-    },
-
-    // When called without arguments, returns information
-    // whether tracing is disabled or enabled.
-    // Called with argument, sets tracing enabled or disabled.
-    tracing: function (val) {
-      if (arguments.length < 1)
-        return tracing;
-
-      tracing = val;
     }
   };
 
