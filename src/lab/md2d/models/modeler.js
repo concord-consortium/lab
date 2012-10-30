@@ -3,9 +3,10 @@
 
 define(function(require) {
   // Dependencies.
-  var console = require('common/console'),
-      arrays  = require('arrays'),
-      md2d    = require('md2d/models/engine/md2d'),
+  var console     = require('common/console'),
+      arrays      = require('arrays'),
+      md2d        = require('md2d/models/engine/md2d'),
+      TickHistory = require('md2d/models/tick-history'),
 
       engine;
 
@@ -21,10 +22,7 @@ define(function(require) {
         viewRefreshInterval = 50,
         timeStep = 1,
         stopped = true,
-        tick_history_list = [],
-        tick_history_list_index = 0,
-        tick_counter = 0,
-        new_step = false,
+        newStep = false,
         pressure, pressures = [0],
         modelSampleRate = 60,
         lastSampleTime,
@@ -44,6 +42,7 @@ define(function(require) {
 
         modelOutputState,
         model_listener,
+        tickHistory,
 
         width = initialProperties.width,
         height = initialProperties.height,
@@ -366,7 +365,8 @@ define(function(require) {
         pressures.push(pressure);
         pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
-        tick_history_list_push();
+        tickHistory.push();
+        newStep = true;
 
         if (!dontDispatchTickEvent) {
           dispatch.tick();
@@ -374,84 +374,6 @@ define(function(require) {
       }
 
       return stopped;
-    }
-
-    function tick_history_list_is_empty() {
-      return tick_history_list_index === 0;
-    }
-
-    function tick_history_list_push() {
-      var prop,
-          newAtoms = {},
-          newObstacles = {};
-
-      for (prop in atoms) {
-        if (atoms.hasOwnProperty(prop))
-          newAtoms[prop] = arrays.clone(atoms[prop]);
-      }
-
-      for (prop in obstacles) {
-        if (obstacles.hasOwnProperty(prop))
-          newObstacles[prop] = arrays.clone(obstacles[prop]);
-      }
-
-      tick_history_list.length = tick_history_list_index;
-      tick_history_list_index++;
-      tick_counter++;
-      new_step = true;
-      tick_history_list.push({
-        atoms:     newAtoms,
-        obstacles: newObstacles,
-        pressure:  modelOutputState.pressure,
-        pe:        modelOutputState.PE,
-        ke:        modelOutputState.KE,
-        time:      modelOutputState.time
-      });
-      if (tick_history_list_index > 1000) {
-        tick_history_list.splice(1,1);
-        tick_history_list_index = 1000;
-      }
-    }
-
-    function restoreFirstStateinTickHistory() {
-      tick_history_list_index = 0;
-      tick_counter = 0;
-      tick_history_list.length = 1;
-      tick_history_list_extract(tick_history_list_index);
-    }
-
-    function reset_tick_history_list() {
-      tick_history_list = [];
-      tick_history_list_index = 0;
-      tick_counter = 0;
-    }
-
-    function tick_history_list_reset_to_ptr() {
-      tick_history_list.length = tick_history_list_index + 1;
-    }
-
-    function tick_history_list_extract(index) {
-      var prop;
-      if (index < 0) {
-        throw new Error("modeler: request for tick_history_list[" + index + "]");
-      }
-      if (index >= tick_history_list.length) {
-        throw new Error("modeler: request for tick_history_list[" + index + "], tick_history_list.length=" + tick_history_list.length);
-      }
-      for (prop in atoms) {
-        if (atoms.hasOwnProperty(prop))
-          arrays.copy(tick_history_list[index].atoms[prop], atoms[prop]);
-      }
-
-      for (prop in obstacles) {
-        if (obstacles.hasOwnProperty(prop))
-          arrays.copy(tick_history_list[index].obstacles[prop], obstacles[prop]);
-      }
-
-      ke = tick_history_list[index].ke;
-      time = tick_history_list[index].time;
-      engine.setTime(time);
-      readModelState();
     }
 
     function container_pressure() {
@@ -630,7 +552,7 @@ define(function(require) {
         ke          : ke,
         temperature : temperature,
         pressure    : container_pressure(),
-        current_step: tick_counter,
+        current_step: tickHistory.get("counter"),
         steps       : tick_history_list.length-1
       };
     };
@@ -654,65 +576,64 @@ define(function(require) {
       Current seek position
     */
     model.stepCounter = function() {
-      return tick_counter;
+      return tickHistory.get("counter");
     };
 
     /** Total number of ticks that have been run & are stored, regardless of seek
         position
     */
     model.steps = function() {
-      return tick_history_list.length - 1;
+      return tickHistory.get("length") - 1;
     };
 
     model.isNewStep = function() {
-      return new_step;
+      return newStep;
     };
 
     model.seek = function(location) {
       if (!arguments.length) { location = 0; }
       stopped = true;
-      new_step = false;
-      tick_history_list_index = location;
-      tick_counter = location;
-      tick_history_list_extract(tick_history_list_index);
+      newStep = false;
+      tickHistory.extract(location);
       dispatch.seek();
       if (model_listener) { model_listener(); }
-      return tick_counter;
+      return tickHistory.get("counter");
     };
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      var i = -1;
+      var i, index;
       stopped = true;
-      new_step = false;
-      while(++i < num) {
-        if (tick_history_list_index > 1) {
-          tick_history_list_index--;
-          tick_counter--;
-          tick_history_list_extract(tick_history_list_index-1);
+      newStep = false;
+      index = tickHistory.get("index");
+      i=-1; while(++i < num) {
+        if (index > 1) {
+          tickHistory.decrement();
+          tickHistory.extract(index-2);
+          readModelState();
           dispatch.stepBack();
           if (model_listener) { model_listener(); }
         }
       }
-      return tick_counter;
+      return tickHistory.get("counter");
     };
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      var i = -1;
+      var i;
       stopped = true;
-      while(++i < num) {
-        if (tick_history_list_index < tick_history_list.length) {
-          tick_history_list_extract(tick_history_list_index);
-          tick_history_list_index++;
-          tick_counter++;
+      i=-1; while(++i < num) {
+        if (tickHistory.get("index") < tickHistory.get("length")) {
+          tickHistory.extract();
+          readModelState();
+          tickHistory.increment();
           dispatch.stepForward();
           if (model_listener) { model_listener(); }
         } else {
           tick();
         }
       }
-      return tick_counter;
+      return tickHistory.get("counter");
     };
 
     /**
@@ -841,16 +762,36 @@ define(function(require) {
     };
 
     model.initializeHistory = function() {
-      // tick history stuff
-      reset_tick_history_list();
-      tick_history_list_push();
-      tick_counter = 0;
-      new_step = true;
+      tickHistory = TickHistory({
+        input: [
+          "temperature",
+          "lennardJonesForces",
+          "coulombForces",
+          "temperature_control",
+          "keShading",
+          "chargeShading",
+          "showVDWLines",
+          "showClock",
+          "viewRefreshInterval",
+          "timeStep",
+          "viscosity",
+          "gravitationalField"
+        ],
+        output: [
+          "KE",
+          "PE",
+          "pressure",
+          "temperature",
+          "time"
+        ],
+        state: [atoms, obstacles]
+      }, modelOutputState, model, engine.setTime, 1000);
+      newStep = true;
     };
 
     model.reset = function() {
       model.resetTime();
-      restoreFirstStateinTickHistory();
+      tickHistory.restoreFirstState();
       dispatch.reset();
     };
 
