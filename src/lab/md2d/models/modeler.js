@@ -791,7 +791,7 @@ define(function(require) {
 
     model.reset = function() {
       model.resetTime();
-      tickHistory.restoreFirstState();
+      tickHistory.restoreInitialState();
       dispatch.reset();
     };
 

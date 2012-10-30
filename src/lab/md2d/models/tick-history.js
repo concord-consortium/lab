@@ -107,7 +107,7 @@ define(function(require) {
     }
 
     //
-    // Public methods and properties
+    // Public methods
     //
     tickHistory.isEmpty = function() {
       return listState.index === 0;
@@ -128,7 +128,7 @@ define(function(require) {
       extract(list[i]);
     };
 
-    tickHistory.restoreFirstState = function() {
+    tickHistory.restoreInitialState = function() {
       reset();
       extract(initialState);
       push();
