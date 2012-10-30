@@ -159,7 +159,7 @@ define(function(require) {
 
           set_modelSampleRate: function(rate) {
             this.modelSampleRate = rate;
-            if (!model.is_stopped()) model.restart();
+            if (!stopped) model.restart();
           },
 
           set_timeStep: function(ts) {
