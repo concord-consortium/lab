@@ -1,0 +1,140 @@
+{
+  "title": "View Refresh Rate and Model Sample Rate Examples",
+  "about": "Interactive example",
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+    "viewOptions": {
+      "controlButtons": "play_reset_step",
+      "modelTimeLabel": true
+    }
+  },
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "select-model",
+      "options": [
+        {
+          "text": "Select a model",
+          "disabled": true
+        },
+        {
+          "text": "Monatomic Gas",
+          "loadModel": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json"
+        },
+        {
+          "text": "Multiatomic Gas",
+          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page2/gas2.json"
+        },
+        {
+          "text": "Pendulum",
+          "loadModel": "/imports/legacy-mw-content/converted/student/classic/pendulum/pendulum1$0.json"
+        },
+        {
+          "text": "Plastic Forces",
+          "loadModel": "/imports/legacy-mw-content/converted/visual/Recycling/plasticforcesimple$0.json"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "Heat",
+      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-refresh-rate",
+      "options": [
+        {
+          "text": "View Refresh Rate (steps/frame)",
+          "disabled": true
+        },
+        {
+          "text": "10",
+          "action": "set({ 'viewRefreshInterval' : 10 });"
+        },
+        {
+          "text": "15",
+          "action": "set({ 'viewRefreshInterval' : 15 });"
+        },
+        {
+          "text": "20",
+          "action": "set({ 'viewRefreshInterval' : 20 });"
+        },
+        {
+          "text": "30",
+          "action": "set({ 'viewRefreshInterval' : 30 });"
+        },
+        {
+          "text": "60",
+          "selected": true,
+          "action": "set({ 'viewRefreshInterval' : 60 });"
+        },
+        {
+          "text": "120",
+          "action": "set({ 'viewRefreshInterval' : 120 });"
+        },
+        {
+          "text": "180",
+          "action": "set({ 'viewRefreshInterval' : 180 });"
+        },
+        {
+          "text": "240",
+          "action": "set({ 'viewRefreshInterval' : 240 });"
+        },
+        {
+          "text": "360",
+          "action": "set({ 'viewRefreshInterval' : 360 });"
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "select-model-sample-rate",
+      "options": [
+        {
+          "text": "Model Sample Rate (Hz) ...",
+          "disabled": true
+        },
+        {
+          "text": "10",
+          "action": "set({ 'modelSampleRate' : 10 });"
+        },
+        {
+          "text": "15",
+          "action": "set({ 'modelSampleRate' : 15 });"
+        },
+        {
+          "text": "20",
+          "action": "set({ 'modelSampleRate' : 20 });"
+        },
+        {
+          "text": "30",
+          "action": "set({ 'modelSampleRate' : 30 });"
+        },
+        {
+          "text": "default (requestAnimationFrame)",
+          "selected": true,
+          "action": "set({ 'modelSampleRate' : 'default' });"
+        },
+        {
+          "text": "120",
+          "action": "set({ 'modelSampleRate' : 120 });"
+        }
+      ]
+    }
+  ],
+  "bottom": [
+    "select-model",
+    "cool",
+    "heat",
+    "select-refresh-rate",
+    "select-model-sample-rate"
+  ]
+}
