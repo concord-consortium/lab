@@ -73,9 +73,9 @@
           "action": "set({ 'modelSampleRate' : 30 });"
         },
         {
-          "text": "60",
+          "text": "default",
           "selected": true,
-          "action": "set({ 'modelSampleRate' : 60 });"
+          "action": "set({ 'modelSampleRate' : 'default' });"
         }
       ]
     },

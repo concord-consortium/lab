@@ -22,9 +22,9 @@ define(function(require) {
         viewRefreshInterval = 50,
         timeStep = 1,
         stopped = true,
+        restart = false,
         newStep = false,
         pressure, pressures = [0],
-        modelSampleRate = 60,
         lastSampleTime,
         sampleTimes = [],
 
@@ -92,7 +92,7 @@ define(function(require) {
 
         properties = {
           temperature           : 300,
-          modelSampleRate       : 60,
+          modelSampleRate       : 'default',
           coulombForces         : true,
           lennardJonesForces    : true,
           temperature_control   : true,
@@ -160,6 +160,11 @@ define(function(require) {
 
           set_viewRefreshInterval: function(vri) {
             this.viewRefreshInterval = vri;
+          },
+
+          set_modelSampleRate: function(rate) {
+            this.modelSampleRate = rate;
+            if (!model.is_stopped()) model.restart();
           },
 
           set_timeStep: function(ts) {
@@ -328,49 +333,37 @@ define(function(require) {
 
     function tick(elapsedTime, dontDispatchTickEvent) {
       var t,
-          sampleTime,
-          doIntegration;
+          sampleTime;
 
-      if (stopped) {
-        doIntegration = true;
-      } else {
+      if (!stopped) {
         t = Date.now();
         if (lastSampleTime) {
-          sampleTime  = t - lastSampleTime;
-          if (1000/sampleTime < modelSampleRate) {
-            doIntegration = true;
-            lastSampleTime = t;
-            sampleTimes.push(sampleTime);
-            sampleTimes.splice(0, sampleTimes.length - 128);
-          } else {
-            doIntegration = false;
-          }
+          sampleTime = t - lastSampleTime;
+          sampleTimes.push(sampleTime);
+          sampleTimes.splice(0, sampleTimes.length - 128);
         } else {
           lastSampleTime = t;
-          doIntegration = true;
         }
       }
 
-      if (doIntegration) {
-        // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
-        // However, in MD2D we prefer the more physical notion of integrating for a particular
-        // length of time.
-        console.time('integration');
-        engine.integrate(viewRefreshInterval * timeStep, timeStep);
-        console.timeEnd('integration');
-        console.time('reading model state');
-        readModelState();
-        console.timeEnd('reading model state');
+      // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
+      // However, in MD2D we prefer the more physical notion of integrating for a particular
+      // length of time.
+      console.time('integration');
+      engine.integrate(viewRefreshInterval * timeStep, timeStep);
+      console.timeEnd('integration');
+      console.time('reading model state');
+      readModelState();
+      console.timeEnd('reading model state');
 
-        pressures.push(pressure);
-        pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
+      pressures.push(pressure);
+      pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
-        tickHistory.push();
-        newStep = true;
+      tickHistory.push();
+      newStep = true;
 
-        if (!dontDispatchTickEvent) {
-          dispatch.tick();
-        }
+      if (!dontDispatchTickEvent) {
+        dispatch.tick();
       }
 
       return stopped;
@@ -667,7 +660,6 @@ define(function(require) {
       // Initialize properties
       temperature_control = properties.temperature_control;
       temperature         = properties.temperature;
-      modelSampleRate     = properties.modelSampleRate,
       keShading           = properties.keShading,
       chargeShading       = properties.chargeShading;
       showVDWLines        = properties.showVDWLines;
@@ -1256,16 +1248,29 @@ define(function(require) {
       return model.resume();
     };
 
+    /**
+      Restart the model (call model.resume()) after the next tick completes.
+
+      This is useful for changing the modelSampleRate interactively.
+    */
+    model.restart = function() {
+      restart = true;
+    };
+
     model.resume = function() {
-      stopped = false;
 
       console.time('gap between frames');
-      d3.timer(function timerTick(elapsedTime) {
+      model.timer(function timerTick(elapsedTime) {
         console.timeEnd('gap between frames');
         // Cancel the timer and refuse to to step the model, if the model is stopped.
         // This is necessary because there is no direct way to cancel a d3 timer.
         // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
         if (stopped) return true;
+
+        if (restart) {
+          setTimeout(model.resume, 0);
+          return true;
+        }
 
         tick(elapsedTime, false);
 
@@ -1273,8 +1278,40 @@ define(function(require) {
         return false;
       });
 
-      dispatch.play();
+      restart = false;
+      if (stopped) {
+        stopped = false;
+        dispatch.play();
+      }
+
       return model;
+    };
+
+    /**
+      Repeatedly calls `f` at an interval defined by the modelSampleRate property, until f returns
+      true. (This is the same signature as d3.timer.)
+
+      If modelSampleRate === 'default', try to run at the "requestAnimationFrame rate"
+      (i.e., using d3.timer(), after running f, also request to run f at the next animation frame)
+
+      If modelSampleRate !== 'default', instead uses setInterval to schedule regular calls of f with
+      period (1000 / sampleRate) ms, corresponding to sampleRate calls/s
+    */
+    model.timer = function(f) {
+      var intervalID,
+          sampleRate = model.get("modelSampleRate");
+
+      if (sampleRate === 'default') {
+        // use requestAnimationFrame via d3.timer
+        d3.timer(f);
+      } else {
+        // set an interval to run the model more slowly.
+        intervalID = window.setInterval(function() {
+          if ( f() ) {
+            window.clearInterval(intervalID);
+          }
+        }, 1000/sampleRate);
+      }
     };
 
     model.stop = function() {
