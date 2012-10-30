@@ -59,12 +59,11 @@ define(function(require) {
           listItem,
           i;
 
-      list.length = listState.index;
       list.push(newState());
-      copyModelState(list[listState.index]);
       listState.index++;
       listState.counter++;
-      listState.length = listState.index;
+      copyModelState(list[listState.index]);
+      listState.length = listState.index+1;
       if (listState.index > maxSize) {
         list.splice(1,1);
         listState.index = maxSize;
@@ -101,7 +100,7 @@ define(function(require) {
         }
       }
       // reset model engine time
-      if (savedState.output.time && typeof engineSetTimeCallback === 'function') {
+      if (typeof savedState.output.time === "number" && typeof engineSetTimeCallback === 'function') {
         engineSetTimeCallback(savedState.output.time);
       }
     }
@@ -131,21 +130,30 @@ define(function(require) {
     tickHistory.restoreInitialState = function() {
       reset();
       extract(initialState);
-      push();
+      list[0] = newState();
+      copyModelState(list[0]);
     };
 
     tickHistory.reset = function() {
       reset();
     };
 
-    tickHistory.decrement = function() {
+    tickHistory.decrementExtract = function() {
       listState.index--;
       listState.counter--;
+      extract(list[listState.index]);
     };
 
-    tickHistory.increment = function() {
+    tickHistory.incrementExtract = function() {
       listState.index++;
       listState.counter++;
+      extract(list[listState.index]);
+    };
+
+    tickHistory.seekExtract = function(ptr) {
+      listState.index = ptr;
+      listState.counter = ptr;
+      extract(list[listState.index]);
     };
 
     tickHistory.get = function(key) {
@@ -164,7 +172,8 @@ define(function(require) {
     initialState = newState();
     copyModelState(initialState);
     reset();
-    push();
+    list[0] = newState();
+    copyModelState(list[0]);
 
     return tickHistory;
 

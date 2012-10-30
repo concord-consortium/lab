@@ -571,7 +571,7 @@ define(function(require) {
         position
     */
     model.steps = function() {
-      return tickHistory.get("length") - 1;
+      return tickHistory.get("length");
     };
 
     model.isNewStep = function() {
@@ -582,7 +582,7 @@ define(function(require) {
       if (!arguments.length) { location = 0; }
       stopped = true;
       newStep = false;
-      tickHistory.extract(location);
+      tickHistory.seekExtract(location);
       dispatch.seek();
       if (model_listener) { model_listener(); }
       return tickHistory.get("counter");
@@ -590,14 +590,13 @@ define(function(require) {
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      var i, index;
+      var i, index, size;
       stopped = true;
       newStep = false;
-      index = tickHistory.get("index");
       i=-1; while(++i < num) {
-        if (index > 1) {
-          tickHistory.decrement();
-          tickHistory.extract(index-2);
+        index = tickHistory.get("index");
+        if (index > 0) {
+          tickHistory.decrementExtract();
           readModelState();
           dispatch.stepBack();
           if (model_listener) { model_listener(); }
@@ -608,13 +607,14 @@ define(function(require) {
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      var i;
+      var i, index, size;
       stopped = true;
       i=-1; while(++i < num) {
-        if (tickHistory.get("index") < tickHistory.get("length")) {
-          tickHistory.extract();
+        index = tickHistory.get("index");
+        size = tickHistory.get("length");
+        if (index < size-1) {
+          tickHistory.incrementExtract();
           readModelState();
-          tickHistory.increment();
           dispatch.stepForward();
           if (model_listener) { model_listener(); }
         } else {
