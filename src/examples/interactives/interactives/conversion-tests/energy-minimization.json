@@ -32,12 +32,13 @@
       "text": "Volume &#8593;",
       "action": [
         "var props = getObstacleProperties(0);",
-        "props.x *= 1.1;",
-        "props.xPrev *= 1.1;",
+        "if (props.x > 1.8) return;",
+        "props.x *= 5;",
+        "props.xPrev *= 5;",
         "setObstacleProperties(0, props);",
         "for(var i = 0; i < getNumberOfAtoms(); i++) {",
         "  props = getAtomProperties(i);",
-        "  props.x *= 1.1;",
+        "  props.x *= 5;",
         "  setAtomProperties(i, props);",
         "}"
       ]
@@ -48,13 +49,13 @@
       "text": "Volume &#8595;",
       "action": [
         "var props = getObstacleProperties(0);",
-        "if (props.x < 0.5) return;",
-        "props.x *= 0.9;",
-        "props.xPrev *= 0.9;",
+        "if (props.x < 1.8) return;",
+        "props.x *= 0.2;",
+        "props.xPrev *= 0.2;",
         "setObstacleProperties(0, props);",
         "for(var i = 0; i < getNumberOfAtoms(); i++) {",
         "  props = getAtomProperties(i);",
-        "  props.x *= 0.89;",
+        "  props.x *= 0.19;",
         "  setAtomProperties(i, props);",
         "}"
       ]
