@@ -56,7 +56,8 @@
         "  props = getAtomProperties(i);",
         "  props.x *= 0.89;",
         "  setAtomProperties(i, props);",
-        "}"
+        "}",
+        "minimizeEnergy();"
       ]
     },
     {
