@@ -1125,7 +1125,7 @@ define(function (require, exports, module) {
           }
         },
 
-        bounceOffObstacles = function(i, x_prev, y_prev) {
+        bounceOffObstacles = function(i, x_prev, y_prev, updatePressure) {
           // fast path if no obstacles
           if (N_obstacles < 1) return;
 
@@ -1216,20 +1216,23 @@ define(function (require, exports, module) {
                 }
               }
 
-              // Update pressure probes if there are any.
-              if (obstacleWestProbe[j] && bounceDirection === 1) {
-                // 1 is west wall collision.
-                obstacleWProbeValue[j] += mass[i] * ((vxPrev ? vxPrev : -vx[i]) - vx[i]);
-              } else if (obstacleEastProbe[j] && bounceDirection === 2) {
-                // 2 is west east collision.
-                obstacleEProbeValue[j] += mass[i] * (vx[i] - (vxPrev ? vxPrev : -vx[i]));
-              } else if (obstacleSouthProbe[j] && bounceDirection === -1) {
-                // -1 is south wall collision.
-                obstacleSProbeValue[j] += mass[i] * ((vyPrev ? vyPrev : -vy[i]) - vy[i]);
-              } else if (obstacleNorthProbe[j] && bounceDirection === -2) {
-                // -2 is north wall collision.
-                obstacleNProbeValue[j] += mass[i] * (vy[i] - (vyPrev ? vyPrev : -vy[i]));
+              if (updatePressure) {
+                // Update pressure probes if there are any.
+                if (obstacleWestProbe[j] && bounceDirection === 1) {
+                  // 1 is west wall collision.
+                  obstacleWProbeValue[j] += mass[i] * ((vxPrev ? vxPrev : -vx[i]) - vx[i]);
+                } else if (obstacleEastProbe[j] && bounceDirection === 2) {
+                  // 2 is west east collision.
+                  obstacleEProbeValue[j] += mass[i] * (vx[i] - (vxPrev ? vxPrev : -vx[i]));
+                } else if (obstacleSouthProbe[j] && bounceDirection === -1) {
+                  // -1 is south wall collision.
+                  obstacleSProbeValue[j] += mass[i] * ((vyPrev ? vyPrev : -vy[i]) - vy[i]);
+                } else if (obstacleNorthProbe[j] && bounceDirection === -2) {
+                  // -2 is north wall collision.
+                  obstacleNProbeValue[j] += mass[i] * (vy[i] - (vyPrev ? vyPrev : -vy[i]));
+                }
               }
+
             }
           }
         },
@@ -1611,6 +1614,80 @@ define(function (require, exports, module) {
 
             ax[a] += fx;
             ay[a] += fy;
+          }
+        },
+
+        // Accumulate acceleration into a(t+dt, i) and a(t+dt, j) for all possible interactions, fields
+        // and forces connected with atoms. Note that data from the previous time step should be cleared
+        // from arrays ax and ay before calling this function!
+        updateParticlesAccelerations = function () {
+          var i, inverseMass;
+
+          // Check if the neighbor list should be recalculated.
+          updateNeighborList = neighborList.shouldUpdate(x, y);
+
+          if (updateNeighborList) {
+            // Clear both lists.
+            cellList.clear();
+            neighborList.clear();
+
+            for (i = 0; i < N; i++) {
+              // Add particle to appropriate cell.
+              cellList.addToCell(i, x[i], y[i]);
+              // And save its initial position
+              // ("initial" = position during neighbor list creation).
+              neighborList.saveAtomPosition(i, x[i], y[i]);
+            }
+          }
+
+          // ######################################
+          // ax and ay are FORCES below this point
+          // ######################################
+
+          // Accumulate forces into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between
+          // particles:
+          // Short-range forces (Lennard-Jones interaction).
+          console.time('short-range forces');
+          updateShortRangeForces();
+          console.timeEnd('short-range forces');
+          // Long-range forces (Coulomb interaction).
+          console.time('long-range forces');
+          updateLongRangeForces();
+          console.timeEnd('long-range forces');
+
+          // Accumulate forces from radially bonded interactions into a(t+dt).
+          updateRadialBondForces();
+
+          // Accumulate forces from angularly bonded interactions into a(t+dt).
+          updateAngularBondForces();
+
+          // Accumulate forces from restraint forces into a(t+dt).
+          updateRestraintForces();
+
+          // Accumulate forces from spring forces into a(t+dt).
+          updateSpringForces();
+
+          // Accumulate drag forces into a(t+dt).
+          updateFrictionForces();
+
+          // Convert ax, ay from forces to accelerations!
+          for (i = 0; i < N; i++) {
+            inverseMass = 1/mass[i];
+            ax[i] *= inverseMass;
+            ay[i] *= inverseMass;
+          }
+
+          // ############################################
+          // ax and ay are ACCELERATIONS below this point
+          // ############################################
+
+          // Accumulate optional gravitational accelerations into a(t+dt).
+          updateGravitationalAccelerations();
+
+          for (i = 0; i < N; i++) {
+            // Clearing the acceleration here from pinned atoms will cause the acceleration
+            // to be zero for both halfUpdateVelocity methods and updatePosition, freezing the atom.
+            if (pinned[i]) pinAtom(i);
           }
         },
 
@@ -2412,8 +2489,10 @@ define(function (require, exports, module) {
 
             // Update r(t+dt) using v(t) and a(t)
             updatePosition(i);
+            // Bounce off walls.
             bounceAtomOffWalls(i);
-            bounceOffObstacles(i, x_prev, y_prev);
+            // Bounce off obstacles, update pressure probes.
+            bounceOffObstacles(i, x_prev, y_prev, true);
 
             // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
             halfUpdateVelocity(i);
@@ -2422,77 +2501,12 @@ define(function (require, exports, module) {
             ax[i] = ay[i] = 0;
           }
 
-          // Check if neighbor list should be recalculated.
-          updateNeighborList = neighborList.shouldUpdate(x, y);
-
-          if (updateNeighborList) {
-            // Clear both lists.
-            cellList.clear();
-            neighborList.clear();
-
-            for (i = 0; i < N; i++) {
-              // Add particle to appropriate cell.
-              cellList.addToCell(i, x[i], y[i]);
-              // And save its initial position
-              // ("initial" = position during neighbor list creation).
-              neighborList.saveAtomPosition(i, x[i], y[i]);
-            }
-          }
-
-          // Accumulate forces into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between
-          // particles. Note that data from the previous time step should be cleared
-          // from arrays ax and ay before calling this function.
-          console.time('short-range forces');
-          updateShortRangeForces();
-          console.timeEnd('short-range forces');
-          console.time('long-range forces');
-          updateLongRangeForces();
-          console.timeEnd('long-range forces');
-
-          //
-          // ax and ay are FORCES below this point
-          //
-
-          // Move obstacles
-          for (i = 0; i < N_obstacles; i++) {
-            updateObstaclePosition(i);
-            bounceObstacleOffWalls(i);
-          }
-
-          // Accumulate forces from radially bonded interactions into a(t+dt)
-          updateRadialBondForces();
-
-          // Accumulate forces from angularly bonded interactions into a(t+dt)
-          updateAngularBondForces();
-
-          // Accumulate forces from restraint forces into a(t+dt)
-          updateRestraintForces();
-
-          // Accumulate forces from spring forces into a(t+dt)
-          updateSpringForces();
-
-          // Accumulate drag forces into a(t+dt)
-          updateFrictionForces();
-
-          // Convert ax, ay from forces to accelerations
-          for (i = 0; i < N; i++) {
-            inverseMass = 1/mass[i];
-            ax[i] *= inverseMass;
-            ay[i] *= inverseMass;
-          }
-
-          //
-          // ax and ay are ACCELERATIONS below this point
-          //
-
-          // Accumulate optional gravitational accelerations into a(t+dt)
-          updateGravitationalAccelerations();
+          // Accumulate acceleration into a(t+dt, i) and a(t+dt, j) for all possible interactions, fields
+          // and forces connected with atoms. Note that data from the previous time step should be cleared
+          // from arrays ax and ay before calling this function!
+          updateParticlesAccelerations();
 
           for (i = 0; i < N; i++) {
-            // Clearing the acceleration here from pinned atoms will cause the acceleration
-            // to be zero for both halfUpdateVelocity methods and updatePosition, freezing the atom
-            if (pinned[i]) pinAtom(i);
-
             // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
             halfUpdateVelocity(i);
 
@@ -2500,10 +2514,62 @@ define(function (require, exports, module) {
             speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
           }
 
+          // Move obstacles
+          for (i = 0; i < N_obstacles; i++) {
+            updateObstaclePosition(i);
+            bounceObstacleOffWalls(i);
+          }
+
           adjustTemperature();
         } // end of integration loop
 
         updatePressureProbesBuffers(duration);
+      },
+
+      minimizeEnergy: function () {
+            // Maximal length of displacement during one step of minimization.
+        var stepLength   = 1e-4,
+            // Maximal acceleration allowed.
+            accThreshold = 1e-4,
+            maxAcc, delta, xPrev, yPrev, i;
+
+        // Calculate accelerations.
+        updateParticlesAccelerations();
+        // Get maximum value.
+        maxAcc = 0;
+        for (i = 0; i < N; i++) {
+          if (maxAcc < Math.abs(ax[i]))
+            maxAcc = Math.abs(ax[i]);
+          if (maxAcc < Math.abs(ay[i]))
+            maxAcc = Math.abs(ay[i]);
+        }
+
+        while (maxAcc > accThreshold) {
+          delta = stepLength / maxAcc;
+
+          for (i = 0; i < N; i++) {
+            xPrev = x[i];
+            yPrev = y[i];
+            x[i] += ax[i] * delta;
+            y[i] += ay[i] * delta;
+
+            // Keep atoms in bounds.
+            bounceAtomOffWalls(i);
+            // Bounce off obstacles, but DO NOT update pressure probes.
+            bounceOffObstacles(i, xPrev, yPrev, false);
+          }
+
+          // Calculate accelerations.
+          updateParticlesAccelerations();
+          // Get maximum value.
+          maxAcc = 0;
+          for (i = 0; i < N; i++) {
+            if (maxAcc < Math.abs(ax[i]))
+              maxAcc = Math.abs(ax[i]);
+            if (maxAcc < Math.abs(ay[i]))
+              maxAcc = Math.abs(ay[i]);
+          }
+        }
       },
 
       getTotalMass: function() {

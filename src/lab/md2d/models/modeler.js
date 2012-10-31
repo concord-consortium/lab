@@ -1238,6 +1238,12 @@ define(function(require) {
       return model;
     };
 
+    model.minimizeEnergy = function () {
+      engine.minimizeEnergy();
+      readModelState();
+      return model;
+    };
+
     model.start = function() {
       return model.resume();
     };
