@@ -405,6 +405,26 @@ var ROOT = "/examples",
         }
       },
       {
+        name: "fps",
+        run: function(done) {
+          // warmup
+          model.start();
+          setTimeout(function() {
+            model.stop();
+            var start = model.getTime();
+            setTimeout(function() {
+              // actual fps calculation
+              model.start();
+              setTimeout(function() {
+                model.stop();
+                var elapsedModelTime = model.getTime() - start;
+                done( elapsedModelTime / (model.get('viewRefreshInterval') * model.get('timeStep')) / 2 );
+              }, 2000);
+            }, 100);
+          }, 1000);
+        }
+      },
+      {
         name: "interactive",
         run: function(done) {
           done(window.location.pathname + window.location.hash);
