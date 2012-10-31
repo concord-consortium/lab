@@ -2475,24 +2475,36 @@ define(function (require, exports, module) {
 
         var t_start = time,
             n_steps = Math.floor(duration/dt),  // number of steps
+            width100  = size[0] * 100,
+            height100 = size[1] * 100,
             iloop,
             i,
-            x_prev,
-            y_prev;
+            xPrev,
+            yPrev;
 
         for (iloop = 1; iloop <= n_steps; iloop++) {
           time = t_start + iloop*dt;
 
           for (i = 0; i < N; i++) {
-            x_prev = x[i];
-            y_prev = y[i];
+            xPrev = x[i];
+            yPrev = y[i];
 
             // Update r(t+dt) using v(t) and a(t)
             updatePosition(i);
+
+            // Simple check if model has diverged. Prevents web browser from crashing.
+            // isNaN tests not only x, y, but also vx, vy, ax, ay as test is done after
+            // updatePosition(). If a displacement during one step is larger than width * 100
+            // (or height * 100) it means that the velocity is far too big for the current time step.
+            if (isNaN(x[i]) || isNaN(y[i]) ||
+                Math.abs(x[i]) > width100 || Math.abs(y[i]) > height100) {
+              throw new Error("Model has diverged!");
+            }
+
             // Bounce off walls.
             bounceAtomOffWalls(i);
             // Bounce off obstacles, update pressure probes.
-            bounceOffObstacles(i, x_prev, y_prev, true);
+            bounceOffObstacles(i, xPrev, yPrev, true);
 
             // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
             halfUpdateVelocity(i);
