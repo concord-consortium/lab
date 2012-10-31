@@ -216,7 +216,7 @@ define(function (require) {
     }
   }
 
-  function run(benchmarks_table, benchmarks_to_run) {
+  function run(benchmarks_table, benchmarks_to_run, start_callback, end_callback) {
     var i = 0,
         browser_info,
         results_row,
@@ -226,7 +226,8 @@ define(function (require) {
         title_row,
         title_cells,
         len,
-        rows;
+        rows,
+        benchmarks_completed;
 
     benchmarks_table.style.display = "";
 
@@ -287,10 +288,13 @@ define(function (require) {
     add_result("cpu/os", browser_info.oscpu);
     add_result("date", formatter(new Date()));
 
+    benchmarks_completed = 0;
+    if (start_callback) start_callback();
     for (i = 0; i < benchmarks_to_run.length; i++) {
       (function(b) {
         b.run(function(result) {
          add_result(b.name, result);
+         if (end_callback && ++benchmarks_completed === benchmarks_to_run.length) end_callback();
         });
       }(benchmarks_to_run[i]));
     }
@@ -302,8 +306,8 @@ define(function (require) {
     what_browser: function() {
       return what_browser();
     },
-    run: function(benchmarks_table, benchmarks_to_run) {
-      run(benchmarks_table, benchmarks_to_run);
+    run: function(benchmarks_table, benchmarks_to_run, start_callback, end_callback) {
+      run(benchmarks_table, benchmarks_to_run, start_callback, end_callback);
     }
   };
 });

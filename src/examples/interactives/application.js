@@ -413,7 +413,11 @@ var ROOT = "/examples",
     ];
 
     $runBenchmarksButton.click(function() {
-      benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun);
+      benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun, function() {
+        $runBenchmarksButton.attr('disabled', true);
+      }, function() {
+        $runBenchmarksButton.attr('disabled', false);
+      });
     });
 
     //
