@@ -19,19 +19,19 @@
         },
         {
           "text": "Monatomic Gas",
-          "loadModel": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json"
+          "loadModel": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json"
         },
         {
           "text": "Multiatomic Gas",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page2/gas2.json"
+          "loadModel": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/multiatomic-gas.json"
         },
         {
           "text": "Pendulum",
-          "loadModel": "/imports/legacy-mw-content/converted/student/classic/pendulum/pendulum1$0.json"
+          "loadModel": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/pendulum1$0.json"
         },
         {
           "text": "Plastic Forces",
-          "loadModel": "/imports/legacy-mw-content/converted/visual/Recycling/plasticforcesimple$0.json"
+          "loadModel": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/plasticforcesimple$0.json"
         }
       ]
     },
