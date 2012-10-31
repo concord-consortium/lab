@@ -432,7 +432,11 @@ var ROOT = "/examples",
       }
     ];
 
-    $runBenchmarksButton.click(function() {
+    // The enclosing function ends up getting called when a model is loaded, so make sure benchmarks
+    // run only once per click!
+    $runBenchmarksButton.off('click');
+    $runBenchmarksButton.on('click', function() {
+      console.log('clicked');
       benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun, function() {
         $runBenchmarksButton.attr('disabled', true);
       }, function() {
