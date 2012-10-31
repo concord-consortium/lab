@@ -1,0 +1,71 @@
+{
+  "title": "Testing: Energy Minimization",
+  "about": "Interactive example",
+  "model": {
+    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/energy-minimization$0.json",
+    "viewOptions": {
+      "controlButtons": ""
+    }
+  },
+  "components": [
+    {
+      "type": "button",
+      "id": "run",
+      "text": "Run",
+      "action": "start();"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "type": "button",
+      "id": "increase-volume",
+      "text": "Volume &#8593;",
+      "action": [
+        "var props = getObstacleProperties(0);",
+        "props.x *= 1.1;",
+        "props.xPrev *= 1.1;",
+        "setObstacleProperties(0, props);",
+        "for(var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  props = getAtomProperties(i);",
+        "  props.x *= 1.1;",
+        "  setAtomProperties(i, props);",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "decrease-volume",
+      "text": "Volume &#8595;",
+      "action": [
+        "var props = getObstacleProperties(0);",
+        "if (props.x < 0.5) return;",
+        "props.x *= 0.9;",
+        "props.xPrev *= 0.9;",
+        "setObstacleProperties(0, props);",
+        "for(var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  props = getAtomProperties(i);",
+        "  props.x *= 0.89;",
+        "  setAtomProperties(i, props);",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "minimize-energy",
+      "text": "Minimize Energy",
+      "action": "minimizeEnergy();"
+    }
+  ],
+  "layout": {
+  }
+}
