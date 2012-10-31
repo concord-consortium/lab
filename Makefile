@@ -444,11 +444,6 @@ test-src: test/layout.html \
 	$(JS_COMPILER) < $< > $@
 	@chmod ug+w $@
 
-lab.%: Makefile
-	@rm -f $@
-	cat $(filter %.js,$^) > $@
-	@chmod ug+w $@
-
 test/%.html: test/%.html.haml
 	haml $< $@
 
