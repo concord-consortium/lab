@@ -268,6 +268,11 @@ define(function (require) {
               model.tick();
             },
 
+            minimizeEnergy: function minimizeEnergy() {
+              model.minimizeEnergy();
+              scriptingAPI.repaint();
+            },
+
             repaint: function repaint() {
               modelController.repaint();
             },
