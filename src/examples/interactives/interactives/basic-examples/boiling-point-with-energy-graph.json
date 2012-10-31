@@ -22,64 +22,6 @@
       "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
     },
     {
-      "type": "pulldown",
-      "id": "pulldown-refresh",
-      "options": [
-        {
-          "text": "View Refresh Rate ...",
-          "disabled": true
-        },
-        {
-          "text": "10",
-          "action": "set({ 'viewRefreshInterval' : 10 });"
-        },
-        {
-          "text": "20",
-          "action": "set({ 'viewRefreshInterval' : 20 });"
-        },
-        {
-          "text": "50",
-          "selected": true,
-          "action": "set({ 'viewRefreshInterval' : 50 });"
-        },
-        {
-          "text": "100",
-          "action": "set({ 'viewRefreshInterval' : 100 });"
-        },
-        {
-          "text": "200",
-          "action": "set({ 'viewRefreshInterval' : 200 });"
-        },
-        {
-          "text": "500",
-          "action": "set({ 'viewRefreshInterval' : 500 });"
-        }
-      ]
-    },
-    {
-      "type": "pulldown",
-      "id": "pulldown-model-sample",
-      "options": [
-        {
-          "text": "Model Sample Rate (Hz) ...",
-          "disabled": true
-        },
-        {
-          "text": "10",
-          "action": "set({ 'modelSampleRate' : 10 });"
-        },
-        {
-          "text": "30",
-          "action": "set({ 'modelSampleRate' : 30 });"
-        },
-        {
-          "text": "default",
-          "selected": true,
-          "action": "set({ 'modelSampleRate' : 'default' });"
-        }
-      ]
-    },
-    {
       "type": "energyGraph",
       "id": "ke-chart",
       "dimensions": { "width": 500, "height": 296 },
