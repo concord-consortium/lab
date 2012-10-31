@@ -6,7 +6,8 @@
     "viewOptions": {
       "controlButtons": "play_reset_step",
       "modelTimeLabel": true
-    }
+    },
+    "onLoad": "set({ temperature: 200 });"
   },
   "components": [
     {
@@ -19,13 +20,33 @@
       "type": "button",
       "id": "heat",
       "text": "Heat",
-      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
+      "action": "adjustTemperature(1.1); limitHighTemperature(4000);"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 0,
+      "max": 4000,
+      "displayValue": "return format('1f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0 K"
+        },
+        {
+          "value": 4000,
+          "label": "4000 K"
+        }
+      ],
+      "steps": 400,
+      "title": "Temperature",
+      "property": "temperature"
     },
     {
       "type": "energyGraph",
       "id": "ke-chart",
       "dimensions": { "width": 500, "height": 296 },
-      "options": { "ymin": -15, "ymax": 10.0, "xmax": 5 }
+      "options": { "ymin": -15, "ymax": 15.0, "xmax": 30 }
     }
   ],
   "layout": {
@@ -35,8 +56,7 @@
     "bottom": [
       "heat",
       "cool",
-      "pulldown-refresh",
-      "pulldown-model-sample"
+      "temperature-slider"
     ]
   }
 }
