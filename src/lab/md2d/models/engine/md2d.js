@@ -2528,10 +2528,12 @@ define(function (require, exports, module) {
 
       minimizeEnergy: function () {
             // Maximal length of displacement during one step of minimization.
-        var stepLength   = 1e-4,
+        var stepLength   = 1e-3,
             // Maximal acceleration allowed.
             accThreshold = 1e-4,
-            maxAcc, delta, xPrev, yPrev, i;
+            // Maximal number of iterations allowed.
+            iterLimit    = 3000,
+            maxAcc, delta, xPrev, yPrev, i, iter;
 
         // Calculate accelerations.
         updateParticlesAccelerations();
@@ -2544,9 +2546,11 @@ define(function (require, exports, module) {
             maxAcc = Math.abs(ay[i]);
         }
 
-        while (maxAcc > accThreshold) {
-          delta = stepLength / maxAcc;
+        iter = 0;
+        while (maxAcc > accThreshold && iter < iterLimit) {
+          iter++;
 
+          delta = stepLength / maxAcc;
           for (i = 0; i < N; i++) {
             xPrev = x[i];
             yPrev = y[i];
