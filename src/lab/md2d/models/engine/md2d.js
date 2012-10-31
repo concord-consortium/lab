@@ -1116,8 +1116,8 @@ define(function (require, exports, module) {
             vy[i] *= -1;
             py[i] *= -1;
           } else if (y[i] > topwall) {
-            while (y[i] > topwall + width) {
-              y[i] -= width;
+            while (y[i] > topwall + height) {
+              y[i] -= height;
             }
             y[i]  = topwall - (y[i] - topwall);
             vy[i] *= -1;
