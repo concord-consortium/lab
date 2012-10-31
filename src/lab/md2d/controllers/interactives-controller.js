@@ -642,13 +642,17 @@ define(function (require) {
           obj[propertyName] = ui.value;
           if (model) model.set(obj);
           if (displayValue) {
-            $sliderHandle.text(displayValue(12));
+            $sliderHandle.text(displayValue(ui.value));
           }
         });
 
         modelLoadedCallbacks.push(function() {
           model.addPropertiesListener([propertyName], function() {
-            $slider.slider('value', model.get(propertyName));
+            var value = model.get(propertyName);
+            $slider.slider('value', value);
+            if (displayValue) {
+              $sliderHandle.text(displayValue(value));
+            }
           });
         });
       }
@@ -676,9 +680,10 @@ define(function (require) {
         }
       } else if (propertyName) {
         modelLoadedCallbacks.push(function() {
-          $slider.slider('value', model.get(propertyName));
+          var value = model.get(propertyName);
+          $slider.slider('value', value);
           if (displayValue) {
-            $sliderHandle.text(displayValue(12));
+            $sliderHandle.text(displayValue(value));
           }
         });
       }
