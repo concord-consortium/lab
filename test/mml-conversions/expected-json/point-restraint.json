@@ -1,5 +1,5 @@
 {
-  "lennardJonesForces": false, 
+  "lennardJonesForces": true,
   "coulombForces": false,
   "temperature_control": false,
   "width": 5,

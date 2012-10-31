@@ -169,7 +169,6 @@ parseMML = (mmlString) ->
     ###
       Find the force interaction booleans
     ###
-    lennardJonesForces  = parseBoolean($mml("[property=LJBetweenBondPairs] boolean").text(), true)
     coulombForces       = parseBoolean($mml("[property=interCoulomb] boolean").text(), true)
 
     ###
@@ -511,7 +510,7 @@ parseMML = (mmlString) ->
       unrolled
 
     json =
-      lennardJonesForces  : lennardJonesForces
+      lennardJonesForces  : true
       coulombForces       : coulombForces
       temperature_control : !!temperature
       width               : width
