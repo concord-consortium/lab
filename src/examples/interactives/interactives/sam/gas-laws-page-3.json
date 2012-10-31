@@ -62,7 +62,8 @@
     },
     {
       "type": "pressureGraph",
-      "id": "pressure-chart"
+      "id": "pressure-chart",
+      "options": { "xmax": 100 }
     }
   ],
   "layout": {
