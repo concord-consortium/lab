@@ -198,7 +198,7 @@ function selectDataHandler() {
       value1 = Math.sin(twopifreq1 * time) * amplitude1;
       value2 = Math.sin(twopifreq2 * time) * amplitude2;
       graph.add_data([time, value1 + value2]);
-      return time > maxtime * 0.95 || stopStreaming;
+      return time > maxtime * 2 || stopStreaming;
     });
     break;
   }

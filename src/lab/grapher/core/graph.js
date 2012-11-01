@@ -23,6 +23,9 @@ define(function (require) {
         notification,
         margin, padding, size,
         xScale, yScale, xValue, yValue, line,
+        shiftingX = false,
+        cubicEase = d3.ease('cubic'),
+        ds,
         stroke, tx, ty, fx, fy,
         circleCursorStyle,
         displayProperties,
@@ -50,6 +53,7 @@ define(function (require) {
           "yFormatter":     "3.3r",
           "xscaleExponent": 0.5,
           "yscaleExponent": 0.5,
+          "axisShift":       10,
           "xmax":            60,
           "xmin":             0,
           "ymax":            40,
@@ -88,6 +92,7 @@ define(function (require) {
       } else {
         options = default_options;
       }
+      if (options.axisShift < 1) options.axisShift = 1;
       return options;
     }
 
@@ -696,6 +701,43 @@ define(function (require) {
         dragged = null;
       }
 
+      function updateOrRescale() {
+        var i,
+            domain = xScale.domain(),
+            xextent = domain[1] - domain[0],
+            shiftPoint = xextent * 0.8;
+
+        if (shiftingX) {
+          if (shiftingX = ds()) {
+            redraw();
+          } else {
+            update();
+          }
+        } else {
+          if (points[points.length-1][0] > domain[0] + shiftPoint) {
+            ds = shiftXDomain(shiftPoint*0.75, options.axisShift);
+            shiftingX = ds();
+            redraw();
+          } else {
+            update();
+          }
+        }
+      }
+
+      function shiftXDomain(shift, steps) {
+        var d0 = xScale.domain()[0],
+            d1 = xScale.domain()[1],
+            increment = 1/steps,
+            index = 0;
+        return function() {
+          var factor;
+          index += increment;
+          factor = shift * cubicEase(index);
+          xScale.domain([ d0 + factor, d1 + factor]);
+          return xScale.domain()[0] < (d0 + shift);
+        };
+      }
+
       // make these private variables and functions available
       graph.elem = elem;
       graph.redraw = redraw;
@@ -706,6 +748,7 @@ define(function (require) {
       graph.updateXScale = updateXScale;
       graph.updateYScale = updateYScale;
       graph.scale = scale;
+      graph.updateOrRescale = updateOrRescale;
 
     }
 
@@ -883,14 +926,7 @@ define(function (require) {
           }
         }
       }
-      if (points[points.length-1][0] > domain[1]) {
-        domain[0] += shift;
-        domain[1] += shift;
-        xScale.domain(domain);
-        graph.redraw();
-      } else {
-        graph.update();
-      }
+      graph.updateOrRescale();
       return graph;
     };
 

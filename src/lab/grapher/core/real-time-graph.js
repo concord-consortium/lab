@@ -19,6 +19,9 @@ define(function (require) {
         notification,
         padding, size,
         xScale, yScale, line,
+        shiftingX = false,
+        cubicEase = d3.ease('cubic'),
+        ds,
         circleCursorStyle,
         displayProperties,
         emsize, strokeWidth,
@@ -56,6 +59,7 @@ define(function (require) {
           yscaleExponent: 0.5,
           xFormatter: "3.2r",
           yFormatter: "3.2r",
+          axisShift:  10,
           xmax:       10,
           xmin:       0,
           ymax:       10,
@@ -82,6 +86,7 @@ define(function (require) {
       } else {
         options = default_options;
       }
+      if (options.axisShift < 1) options.axisShift = 1;
       return options;
     }
 
@@ -126,7 +131,7 @@ define(function (require) {
       }
       calculateSizeType();
       // displayProperties = layout.getDisplayProperties();
-      emsize = parseFloat($('#viz').css('font-size') || $('body').css('font-size'))/12;
+      emsize = parseFloat($('#viz').css('font-size') || $('body').css('font-size'))/10;
       // emsize = displayProperties.emsize;
     }
 
@@ -638,17 +643,39 @@ define(function (require) {
             domain = xScale.domain(),
             xextent = domain[1] - domain[0],
             maxExtent = (points.length) * sample,
-            shift = xextent * 0.9;
+            shiftPoint = xextent * 0.8;
 
-        if (maxExtent > domain[1]) {
-          domain[0] += shift;
-          domain[1] += shift;
-          xScale.domain(domain);
-          redraw();
+        if (shiftingX) {
+          if (shiftingX = ds()) {
+            redraw();
+          } else {
+            update();
+          }
         } else {
-          update();
+          if (maxExtent > domain[0] + shiftPoint) {
+            ds = shiftXDomain(shiftPoint*0.75, options.axisShift);
+            shiftingX = ds();
+            redraw();
+          } else {
+            update();
+          }
         }
       }
+
+      function shiftXDomain(shift, steps) {
+        var d0 = xScale.domain()[0],
+            d1 = xScale.domain()[1],
+            increment = 1/steps,
+            index = 0;
+        return function() {
+          var factor;
+          index += increment;
+          factor = shift * cubicEase(index);
+          xScale.domain([ d0 + factor, d1 + factor]);
+          return xScale.domain()[0] < (d0 + shift);
+        };
+      }
+
 
       function _add_point(p) {
         if (points.length === 0) { return; }
@@ -658,7 +685,6 @@ define(function (require) {
             point = { x: lengthX, y: p },
             newx, newy;
         points.push(point);
-        updateOrRescale();
       }
 
       function add_point(p) {
@@ -986,6 +1012,7 @@ define(function (require) {
       var domain = xScale.domain(),
           xextent = domain[1] - domain[0],
           shift = xextent * 0.8,
+          ds;
           i;
       if (newdata instanceof Array && newdata.length > 0) {
         if (newdata[0] instanceof Array) {
@@ -1000,14 +1027,7 @@ define(function (require) {
           }
         }
       }
-      if (points[points.length-1][0] > domain[1]) {
-        domain[0] += shift;
-        domain[1] += shift;
-        xScale.domain(domain);
-        graph.redraw();
-      } else {
-        graph.update();
-      }
+      updateOrRescale();
       return graph;
     };
 

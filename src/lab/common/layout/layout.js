@@ -64,7 +64,7 @@ define(function (require) {
     if (!layout.display) {
       layout.display = layout.getDisplayProperties();
     }
-    emsize = Math.min(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
+    emsize = Math.max(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
     $('body').css('font-size', emsize + 'em');
     if (emsize <= 0.5) {
       minButtonFontSize = 1.4 * 0.5/emsize;
