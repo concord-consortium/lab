@@ -5,13 +5,15 @@ define(function(require) {
   // Dependencies.
   var arrays  = require('arrays');
 
-  return function TickHistory(modelState, outputState, model, engineSetTimeCallback, maxSize) {
+  return function TickHistory(modelState, outputState, model, engineSetTimeCallback, size) {
     var tickHistory = {},
         initialState,
         list = [],
         listState = {
+          maxSize: size,
           index: 0,
           counter: 0,
+          startCounter: 0,
           length: 0
         },
         defaultSize = 1000;
@@ -64,10 +66,11 @@ define(function(require) {
       listState.counter++;
       copyModelState(list[listState.index]);
       listState.length = list.length
-      if (listState.length > maxSize) {
+      if (listState.length > listState.maxSize) {
         list.splice(1,1);
         listState.length = list.length
-        listState.index = maxSize-1;
+        listState.index = listState.maxSize-1;
+        listState.startCounter++;
       }
     }
 
@@ -140,9 +143,11 @@ define(function(require) {
     };
 
     tickHistory.decrementExtract = function() {
-      listState.index--;
-      listState.counter--;
-      extract(list[listState.index]);
+      if (listState.counter > listState.startCounter) {
+        listState.index--;
+        listState.counter--;
+        extract(list[listState.index]);
+      }
     };
 
     tickHistory.incrementExtract = function() {
@@ -168,7 +173,7 @@ define(function(require) {
     //
     // Initialization
     //
-    if (typeof maxSize === 'undefined') maxSize = defaultSize;
+    if (typeof listState.maxSize === 'undefined') listState.maxSize = defaultSize;
 
     initialState = newState();
     copyModelState(initialState);

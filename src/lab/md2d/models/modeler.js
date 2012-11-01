@@ -20,6 +20,7 @@ define(function(require) {
         lennardJoneForces, coulombForces,
         gravitationalField = false,
         timeStep = 1,
+        defaultMaxTickHistory = 1000,
         stopped = true,
         restart = false,
         newStep = false,
@@ -567,6 +568,14 @@ define(function(require) {
       return tickHistory.get("counter");
     };
 
+    /**
+      Current position of first value in tick history, normally this will be 0.
+      This will be greater than 0 if maximum size of tick history has been exceeded.
+    */
+    model.stepStartCounter = function() {
+      return tickHistory.get("startCounter");
+    };
+
     /** Total number of ticks that have been run & are stored, regardless of seek
         position
     */
@@ -747,7 +756,8 @@ define(function(require) {
       return model;
     };
 
-    model.initializeHistory = function() {
+    model.initializeHistory = function(maxSize) {
+      maxsize = maxSize || defaultMaxTickHistory;
       tickHistory = TickHistory({
         input: [
           "temperature",
@@ -771,7 +781,7 @@ define(function(require) {
           "time"
         ],
         state: [atoms, obstacles]
-      }, modelOutputState, model, engine.setTime, 1000);
+      }, modelOutputState, model, engine.setTime, maxsize);
       newStep = true;
     };
 
