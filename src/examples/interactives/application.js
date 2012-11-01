@@ -453,9 +453,10 @@ var ROOT = "/examples",
     }
 
     $showModelEnergyGraph.change(function() {
+      var options;
       if (this.checked) {
         model.on("tick.modelEnergyGraph", function() {
-          modelEnergyGraph.add_points(updateModelEnergyData());
+          updateModelEnergyGraph();
         });
 
         model.on('play.modelEnergyGraph', function() {
@@ -467,32 +468,43 @@ var ROOT = "/examples",
         });
 
         model.on('reset.modelEnergyGraph', function() {
-          resetModelEnergyData();
-          modelEnergyGraph.new_data(modelEnergyData);
-          modelEnergyGraph.reset();
+          renderModelEnergyGraph();
         });
 
         model.on('stepForward.modelEnergyGraph', function() {
-          modelEnergyGraph.updateOrRescale(model.stepCounter());
-          modelEnergyGraph.showMarker(model.stepCounter());
+          if (model.isNewStep()) {
+            updateModelEnergyGraph();
+          } else {
+            modelEnergyGraph.updateOrRescale(model.stepCounter());
+            modelEnergyGraph.showMarker(model.stepCounter());
+          }
         });
 
         model.on('stepBack.modelEnergyGraph', function() {
-          modelEnergyGraph.update(model.stepCounter());
+          modelEnergyGraph.updateOrRescale(model.stepCounter());
           modelEnergyGraph.showMarker(model.stepCounter());
         });
 
         model.on('seek.modelEnergyGraph', function() {
         });
+
         $modelEnergyGraphContent.show(100);
+
       } else {
+        // remove listeners
         model.on("tick.modelEnergyGraph");
         model.on('play.modelEnergyGraph');
         model.on('reset.modelEnergyGraph');
         model.on('seek.modelEnergyGraph');
+        model.on('stepForward.modelEnergyGraph');
+        model.on('stepBack.modelEnergyGraph');
         $modelEnergyGraphContent.hide(100);
       }
     }).change();
+
+    function updateModelEnergyGraph() {
+      modelEnergyGraph.add_points(updateModelEnergyData());
+    }
 
     function renderModelEnergyGraph() {
       var sample = model.get("viewRefreshInterval")/1000,
