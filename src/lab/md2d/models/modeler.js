@@ -399,17 +399,16 @@ define(function(require) {
         if (integrationCallback) integrationCallback();
 
         if (lastAnimationFrameWasEmpty) {
+          if ( !stopped ) requestIntegration();
           dispatchTickEvent();
           dispatchIsPending = false;
           lastAnimationFrameWasEmpty = false;
         } else {
           // wait for animation timer before drawing
           dispatchIsPending = true;
+          // Immediately request the next results (if running continuously)--don't wait for the timer!
+          if ( !stopped ) requestIntegration();
         }
-
-
-        // Immediately request the next results (if running continuously)--don't wait for the timer!
-        if ( !stopped ) requestIntegration();
       }
     }
 
