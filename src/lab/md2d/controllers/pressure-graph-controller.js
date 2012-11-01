@@ -113,12 +113,12 @@ define(function (require) {
           });
 
           model.on('stepForward.pressureGraph', function() {
-            grapherView.update(model.stepCounter());
+            grapherView.updateOrRescale(model.stepCounter());
             grapherView.showMarker(model.stepCounter());
           });
 
           model.on('stepBack.pressureGraph', function() {
-            grapherView.update(model.stepCounter());
+            grapherView.updateOrRescale(model.stepCounter());
             grapherView.showMarker(model.stepCounter());
           });
 

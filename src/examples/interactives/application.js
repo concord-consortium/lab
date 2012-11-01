@@ -473,7 +473,7 @@ var ROOT = "/examples",
         });
 
         model.on('stepForward.modelEnergyGraph', function() {
-          modelEnergyGraph.update(model.stepCounter());
+          modelEnergyGraph.updateOrRescale(model.stepCounter());
           modelEnergyGraph.showMarker(model.stepCounter());
         });
 
