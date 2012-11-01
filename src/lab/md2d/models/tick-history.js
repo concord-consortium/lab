@@ -63,10 +63,11 @@ define(function(require) {
       listState.index++;
       listState.counter++;
       copyModelState(list[listState.index]);
-      listState.length = listState.index+1;
-      if (listState.index > maxSize) {
+      listState.length = list.length
+      if (listState.length > maxSize) {
         list.splice(1,1);
-        listState.index = maxSize;
+        listState.length = list.length
+        listState.index = maxSize-1;
       }
     }
 

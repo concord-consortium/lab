@@ -826,13 +826,13 @@ define(function (require) {
             if (model.isNewStep()) {
               updateEnergyGraph();
             } else {
-              energyGraph.update(model.stepCounter());
+              energyGraph.updateOrRescale(model.stepCounter());
               energyGraph.showMarker(model.stepCounter());
             }
           });
 
           model.on('stepBack.energyGraph', function() {
-            energyGraph.update(model.stepCounter());
+            energyGraph.updateOrRescale(model.stepCounter());
             energyGraph.showMarker(model.stepCounter());
           });
 

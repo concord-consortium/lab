@@ -638,44 +638,54 @@ define(function (require) {
         markedPoint = { x: points[index].x, y: points[index].y };
       }
 
-      function updateOrRescale() {
+      function updateOrRescale(currentSample) {
         var i,
             domain = xScale.domain(),
             xextent = domain[1] - domain[0],
-            maxExtent = (points.length) * sample,
-            shiftPoint = xextent * 0.8;
+            currentSample = currentSample || points.length,
+            currentExtent = currentSample * sample,
+            shiftPoint = xextent * 0.9;
 
         if (shiftingX) {
           if (shiftingX = ds()) {
             redraw();
           } else {
-            update();
+            update(currentSample);
           }
         } else {
-          if (maxExtent > domain[0] + shiftPoint) {
-            ds = shiftXDomain(shiftPoint*0.75, options.axisShift);
+          if (currentExtent > domain[0] + shiftPoint) {
+            ds = shiftXDomain(shiftPoint*0.9, options.axisShift);
             shiftingX = ds();
             redraw();
+          } else if (currentExtent < domain[1] - shiftPoint && currentSample < points.length) {
+            ds = shiftXDomain(shiftPoint*0.9, options.axisShift, -1);
+            shiftingX = ds();
+            redraw()
           } else {
-            update();
+            update(currentSample);
           }
         }
       }
 
-      function shiftXDomain(shift, steps) {
+      function shiftXDomain(shift, steps, direction) {
         var d0 = xScale.domain()[0],
             d1 = xScale.domain()[1],
             increment = 1/steps,
-            index = 0;
+            index = 0,
+            direction = direction || 1;
         return function() {
           var factor;
           index += increment;
           factor = shift * cubicEase(index);
-          xScale.domain([ d0 + factor, d1 + factor]);
-          return xScale.domain()[0] < (d0 + shift);
+          if (direction > 0) {
+            xScale.domain([d0 + factor, d1 + factor]);
+            return xScale.domain()[0] < (d0 + shift);
+          } else {
+            xScale.domain([d0 - factor, d1 - factor]);
+            return xScale.domain()[0] > (d0 - shift);
+          }
         };
       }
-
 
       function _add_point(p) {
         if (points.length === 0) { return; }
@@ -821,7 +831,10 @@ define(function (require) {
             bars = options.bars,
             twopi = 2 * Math.PI,
             pointsLength = pointArray[0].length,
-            numberOfLines = pointArray.length;
+            numberOfLines = pointArray.length,
+            start = Math.round(xScale.domain()[0]/sample),
+            end = Math.round(xScale.domain()[1]/sample);
+
 
         if (typeof currentSample === 'undefined') {
           samplePoint = pointsLength;
@@ -838,16 +851,15 @@ define(function (require) {
         if (lines) {
           for (i = 0; i < numberOfLines; i++) {
             points = pointArray[i];
-            px = xScale(0);
-            py = yScale(points[0].y);
-            index = 0;
-            lengthX = 0;
+            lengthX = start * sample;
+            px = xScale(lengthX);
+            py = yScale(points[start].y);
             setStrokeColor(i);
             gctx.beginPath();
             gctx.moveTo(px, py);
             pointStop = samplePoint - 1;
-            for (index=1; index < pointStop; index++) {
-              lengthX += sample;
+            for (index=start+1; index < pointStop; index++) {
+              lengthX = index * sample;
               px = xScale(lengthX);
               py = yScale(points[index].y);
               gctx.lineTo(px, py);
@@ -857,7 +869,7 @@ define(function (require) {
             if (index < pointStop) {
               setStrokeColor(i, true);
               for (;index < pointStop; index++) {
-                lengthX += sample;
+                lengthX = index * sample;
                 px = xScale(lengthX);
                 py = yScale(points[index].y);
                 gctx.lineTo(px, py);
@@ -868,10 +880,10 @@ define(function (require) {
         } else if (bars) {
           for (i = 0; i < numberOfLines; i++) {
             points = pointArray[i];
-            lengthX = 0;
             setStrokeColor(i);
             pointStop = samplePoint - 1;
-            for (index=0; index < pointStop; index++) {
+            for (index=start; index < pointStop; index++) {
+              lengthX = index * sample;
               px = xScale(lengthX);
               py = yScale(points[index].y);
               if (py === 0) {
@@ -881,19 +893,18 @@ define(function (require) {
               gctx.moveTo(px, yOrigin);
               gctx.lineTo(px, py);
               gctx.stroke();
-              lengthX += sample;
             }
             pointStop = points.length-1;
             if (index < pointStop) {
               setStrokeColor(i, true);
               for (;index < pointStop; index++) {
+                lengthX = index * sample;
                 px = xScale(lengthX);
                 py = yScale(points[index].y);
                 gctx.beginPath();
                 gctx.moveTo(px, yOrigin);
                 gctx.lineTo(px, py);
                 gctx.stroke();
-                lengthX += sample;
               }
             }
           }
@@ -986,6 +997,7 @@ define(function (require) {
       graph.node = node;
       graph.scale = scale;
       graph.update = update;
+      graph.updateOrRescale = updateOrRescale;
       graph.redraw = redraw;
       graph.initialize = initialize;
       graph.notify = notify;
