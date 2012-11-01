@@ -1,19 +1,30 @@
 {
   "title": "Oil and Water",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
-    "viewOptions": {
-      "controlButtons": "play_reset",
-      "enableKeyboardHandlers": false
+  "models": [
+    {
+      "id": "page3",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "oilAndWaterMix",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "enableKeyboardHandlers": false
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "button",
       "id": "shake",
       "text": "Shake up the oil and water mixture",
-      "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json');"
+      "action": "loadModel('oilAndWaterMix');"
     }
   ],
   "layout": {

@@ -15,6 +15,8 @@ define(function (require) {
     var controller = {},
         modelController,
         $interactiveContainer,
+        models = [],
+        modelsHash = {},
         propertiesListeners = [],
         playerConfig,
         componentCallbacks = [],
@@ -112,9 +114,9 @@ define(function (require) {
               if (model.get('temperature') > t) model.set({temperature: t});
             },
 
-            loadModel: function loadModel(modelUrl, cb) {
+            loadModel: function loadModel(modelId, cb) {
               model.stop();
-              controller.loadModel(modelUrl);
+              controller.loadModel(modelId);
 
               // Assume that existing onLoadScripts are only relevant to the previous model
               onLoadScripts = [];
@@ -309,15 +311,41 @@ define(function (require) {
       };
     }
 
+    function getModel(modelId) {
+      if (modelsHash[modelId]) {
+        return modelsHash[modelId];
+      }
+      throw new Error("No model found with id "+modelId);
+    }
+
     /**
       Load the model from the url specified in the 'model' key. 'modelLoaded' is called
       after the model loads.
 
       @param: modelUrl
     */
-    function loadModel(modelUrl) {
+    function loadModel(modelId) {
+      var model = getModel(modelId);
 
-      modelUrl = ACTUAL_ROOT + modelUrl;
+      controller.currentModel = model;
+
+      onLoad = model.onLoad;
+
+      if (model.viewOptions) {
+        // make a deep copy of model.viewOptions, so we can freely mutate playerConfig
+        // without the results being serialized or displayed in the interactives editor.
+        playerConfig = $.extend(true, {}, model.viewOptions);
+      } else {
+        playerConfig = { controlButtons: 'play' };
+      }
+      playerConfig.fit_to_parent = !layoutStyle;
+      playerConfig.interactiveUrl = model.url;
+
+      if (onLoad != null) {
+        onLoadScripts.push( makeFunctionInScriptContext( getStringFromArray(onLoad) ) );
+      }
+
+      modelUrl = ACTUAL_ROOT + model.url;
 
       $.get(modelUrl).done(function(modelConfig) {
 
@@ -957,7 +985,9 @@ define(function (require) {
         jQuery selector that finds the element to put the interactive view into
     */
     function loadInteractive(newInteractive, viewSelector) {
-      var modelUrl,
+      var model,
+          modelURL,
+          onLoad,
           componentJsons,
           components = {},
           component,
@@ -997,26 +1027,16 @@ define(function (require) {
         }
       }
 
-      if (interactive.model != null) {
-        var onLoad = interactive.model.onLoad;
-
-        modelUrl = interactive.model.url;
-        if (interactive.model.viewOptions) {
-          // make a deep copy of interactive.model.viewOptions, so we can freely mutate playerConfig
-          // without the results being serialized or displayed in the interactives editor.
-          playerConfig = $.extend(true, {}, interactive.model.viewOptions);
-        } else {
-          playerConfig = { controlButtons: 'play' };
+      // set up the list of possible models
+      if (interactive.models != null && interactive.models.length > 0) {
+        models = interactive.models;
+        for (i=0, ii=models.length; i<ii; i++) {
+          model = models[i];
+          model.id = model.id || "model"+i;
+          modelsHash[model.id] = model;
         }
-        playerConfig.fit_to_parent = !layoutStyle;
-        playerConfig.interactiveUrl = modelUrl;
-
-        if (onLoad != null) {
-          onLoadScripts.push( makeFunctionInScriptContext( getStringFromArray(onLoad) ) );
-        }
+        loadModel(models[0].id);
       }
-
-      if (modelUrl) loadModel(modelUrl);
 
       componentJsons = interactive.components || [];
 
