@@ -641,12 +641,19 @@ define(function (require) {
       function updateOrRescale(currentSample) {
         var i,
             domain = xScale.domain(),
+            xAxisStart = Math.round(domain[0]/sample),
+            xAxisEnd = Math.round(domain[1]/sample),
+            start = Math.max(0, xAxisStart),
             xextent = domain[1] - domain[0],
-            currentSample = currentSample || points.length,
-            currentExtent = currentSample * sample,
-            shiftPoint = xextent * 0.9;
+            shiftPoint = xextent * 0.9,
+            currentSample,
+            currentExtent;
 
-        if (shiftingX) {
+         if (typeof currentSample !== "number") {
+           currentSample = points.length
+         }
+         currentExtent = currentSample * sample;
+         if (shiftingX) {
           if (shiftingX = ds()) {
             redraw();
           } else {
@@ -657,7 +664,7 @@ define(function (require) {
             ds = shiftXDomain(shiftPoint*0.9, options.axisShift);
             shiftingX = ds();
             redraw();
-          } else if (currentExtent < domain[1] - shiftPoint && currentSample < points.length) {
+          } else if (currentExtent < domain[1] - shiftPoint && currentSample < points.length && xAxisStart > 0) {
             ds = shiftXDomain(shiftPoint*0.9, options.axisShift, -1);
             shiftingX = ds();
             redraw()
@@ -832,8 +839,10 @@ define(function (require) {
             twopi = 2 * Math.PI,
             pointsLength = pointArray[0].length,
             numberOfLines = pointArray.length,
-            start = Math.round(xScale.domain()[0]/sample),
-            end = Math.round(xScale.domain()[1]/sample);
+            xAxisStart = Math.round(xScale.domain()[0]/sample),
+            xAxisEnd = Math.round(xScale.domain()[1]/sample),
+            start = Math.max(0, xAxisStart),
+            end
 
 
         if (typeof currentSample === 'undefined') {
@@ -845,9 +854,9 @@ define(function (require) {
             samplePoint = currentSample;
           }
         }
-        if (points.length === 0) { return; }
         clear_canvas();
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+        if (points.length === 0 || xAxisStart > points.length) { return; }
         if (lines) {
           for (i = 0; i < numberOfLines; i++) {
             points = pointArray[i];
