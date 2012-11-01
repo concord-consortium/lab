@@ -646,15 +646,15 @@ define(function (require) {
             start = Math.max(0, xAxisStart),
             xextent = domain[1] - domain[0],
             shiftPoint = xextent * 0.9,
-            currentSample,
             currentExtent;
 
          if (typeof currentSample !== "number") {
-           currentSample = points.length
+           currentSample = points.length;
          }
          currentExtent = currentSample * sample;
          if (shiftingX) {
-          if (shiftingX = ds()) {
+           shiftingX = ds();
+            if (shiftingX) {
             redraw();
           } else {
             update(currentSample);
@@ -664,10 +664,17 @@ define(function (require) {
             ds = shiftXDomain(shiftPoint*0.9, options.axisShift);
             shiftingX = ds();
             redraw();
-          } else if (currentExtent < domain[1] - shiftPoint && currentSample < points.length && xAxisStart > 0) {
+          } else if ( currentExtent < domain[1] - shiftPoint &&
+                      currentSample < points.length &&
+                      xAxisStart > 0) {
             ds = shiftXDomain(shiftPoint*0.9, options.axisShift, -1);
             shiftingX = ds();
-            redraw()
+            redraw();
+          } else if (currentExtent < domain[0]) {
+            ds = shiftXDomain(shiftPoint*0.1, 1, -1);
+            shiftingX = ds();
+            redraw();
+
           } else {
             update(currentSample);
           }
@@ -678,10 +685,10 @@ define(function (require) {
         var d0 = xScale.domain()[0],
             d1 = xScale.domain()[1],
             increment = 1/steps,
-            index = 0,
-            direction = direction || 1;
+            index = 0;
         return function() {
           var factor;
+          direction = direction || 1;
           index += increment;
           factor = shift * cubicEase(index);
           if (direction > 0) {
@@ -841,8 +848,7 @@ define(function (require) {
             numberOfLines = pointArray.length,
             xAxisStart = Math.round(xScale.domain()[0]/sample),
             xAxisEnd = Math.round(xScale.domain()[1]/sample),
-            start = Math.max(0, xAxisStart),
-            end
+            start = Math.max(0, xAxisStart);
 
 
         if (typeof currentSample === 'undefined') {
@@ -856,7 +862,7 @@ define(function (require) {
         }
         clear_canvas();
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-        if (points.length === 0 || xAxisStart > points.length) { return; }
+        if (points.length === 0 || xAxisStart >= points.length) { return; }
         if (lines) {
           for (i = 0; i < numberOfLines; i++) {
             points = pointArray[i];
