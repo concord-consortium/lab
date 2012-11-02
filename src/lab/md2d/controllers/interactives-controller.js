@@ -116,10 +116,12 @@ define(function (require) {
 
             loadModel: function loadModel(modelId, cb) {
               model.stop();
-              controller.loadModel(modelId);
 
               // Assume that existing onLoadScripts are only relevant to the previous model
               onLoadScripts = [];
+
+              controller.loadModel(modelId);
+
               if (typeof cb === 'function') {
                 onLoadScripts.push(cb);
               }
