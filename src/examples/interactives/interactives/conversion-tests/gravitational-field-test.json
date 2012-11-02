@@ -1,17 +1,15 @@
 {
   "title": "Testing Gravitational Field",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/gravitational-field-test$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step"
-    },
-    "energyGraphOptions": {
-      "ymin": -1.0,
-      "ymax":  6.0,
-      "xmax":  50.0
+  "models": [
+    {
+      "id": "gravitational-field-test$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/gravitational-field-test$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "pulldown",

@@ -1,12 +1,15 @@
 {
   "title": "Testing: Multiple Attached Images on Multiple Atoms",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/potential-tests/multiple-images-on-multiple-atoms/multiple-images-on-multiple-atoms$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
+  "models": [
+    {
+      "id": "multiple-images-on-multiple-atoms$0",
+      "url": "/imports/legacy-mw-content/converted/potential-tests/multiple-images-on-multiple-atoms/multiple-images-on-multiple-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "button",

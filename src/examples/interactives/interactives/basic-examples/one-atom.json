@@ -1,13 +1,15 @@
 {
   "title": "Testing: Only One Atom",
   "about": "Interactive example",
-  "model": {
-    "url": "models/one-atom.json",
-    "viewOptions": {
-      "controlButtons": "play_reset",
-      "enableAtomTooltips": true
+  "models": [
+    {
+      "id": "one-atom",
+      "url": "models/one-atom.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "enableAtomTooltips": true
+      }
     }
-  },
-  "components": [
-  ]
+  ],
+  "components": []
 }

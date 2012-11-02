@@ -1,12 +1,15 @@
 {
   "title": "Testing Coulomb Forces",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step"
+  "models": [
+    {
+      "id": "testingForces$0",
+      "url": "/imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "button",

@@ -1,10 +1,13 @@
 {
   "title": "Testing Friction",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/potential-tests/friction/friction$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
+  "models": [
+    {
+      "id": "friction$0",
+      "url": "/imports/legacy-mw-content/converted/potential-tests/friction/friction$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
     }
-  }
+  ]
 }

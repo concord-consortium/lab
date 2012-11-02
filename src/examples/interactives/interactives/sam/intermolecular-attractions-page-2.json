@@ -1,13 +1,40 @@
 {
   "title": "Intermolecular Attractions Page 2: Comparing Dipole-Dipole to London Dispersion",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json",
-    "viewOptions": {
-      "controlButtons": "",
-      "enableKeyboardHandlers": false
+  "models": [
+    {
+      "id": "instructions",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "npPulling",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "polarPulling",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "polarNpPulling",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "pulldown",
@@ -15,19 +42,19 @@
       "options": [
         {
           "text": "Select a pair of molecules",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json"
+          "loadModel": "instructions"
         },
         {
           "text": "Pull apart two non-polar molecules",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json', start);"
+          "action": "loadModel('npPulling', start);"
         },
         {
           "text": "Pull apart two polar molecules",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.json', start);"
+          "action": "loadModel('polarPulling', start);"
         },
         {
           "text": "Pull apart a non-polar and polar molecules",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json', start);"
+          "action": "loadModel('polarNpPulling', start);"
         }
       ]
     },

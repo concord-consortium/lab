@@ -1,18 +1,16 @@
 {
   "title": "Testing: Pressure Probe",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/pressure-probe$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step",
-      "modelTimeLabel": true
-    },
-    "energyGraphOptions": {
-      "ymin": -2.0,
-      "ymax":  12.0,
-      "xmax":  50.0
+  "models": [
+    {
+      "id": "pressure-probe$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/pressure-probe$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "slider",

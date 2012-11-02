@@ -1,13 +1,48 @@
 {
   "title": "Intermolecular Attractions Page 8: Your Immune System",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/page8$0.json",
-    "viewOptions": {
-      "controlButtons": "play",
-      "enableKeyboardHandlers": false
+  "models": [
+    {
+      "id": "page8$0",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/page8$0.json",
+      "viewOptions": {
+        "controlButtons": "play",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "antibodyDesign1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign1.json",
+      "viewOptions": {
+        "controlButtons": "play",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "antibodyDesign2",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign2.json",
+      "viewOptions": {
+        "controlButtons": "play",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "antibodyDesign3",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign3.json",
+      "viewOptions": {
+        "controlButtons": "play",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "antibodyDesign4",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign4.json",
+      "viewOptions": {
+        "controlButtons": "play",
+        "enableKeyboardHandlers": false
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "pulldown",
@@ -15,23 +50,23 @@
       "options": [
         {
           "text": "Select an antibody shape",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/page8$0.json"
+          "loadModel": "page8$0"
         },
         {
           "text": "shape1",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign1.json', start);"
+          "action": "loadModel('antibodyDesign1', start);"
         },
         {
           "text": "shape2",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign2.json', start);"
+          "action": "loadModel('antibodyDesign2', start);"
         },
         {
           "text": "shape3",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign3.json', start);"
+          "action": "loadModel('antibodyDesign3', start);"
         },
         {
           "text": "shape4",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign4.json', start);"
+          "action": "loadModel('antibodyDesign4', start);"
         }
       ]
     }

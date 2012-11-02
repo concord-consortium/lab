@@ -1,12 +1,15 @@
 {
   "title": "Simple KE Shading",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
+  "models": [
+    {
+      "id": "simple-ke-shading$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "checkbox",
@@ -47,8 +50,16 @@
   ],
   "layout": {
     "bottom": [
-      ["ke-shading", "temperature-control", "temperature-control-action"],
-      ["mark-two-atoms", "unmark-all-atoms", "add-atom"]
+      [
+        "ke-shading",
+        "temperature-control",
+        "temperature-control-action"
+      ],
+      [
+        "mark-two-atoms",
+        "unmark-all-atoms",
+        "add-atom"
+      ]
     ]
   }
 }

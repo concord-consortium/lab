@@ -1,20 +1,16 @@
 {
   "title": "Testing: Point Restraints",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/point-restraint$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step",
-      "modelTimeLabel": true
-    },
-    "energyGraphOptions": {
-      "ymin": -10.0,
-      "ymax":  40.0,
-      "xmax":  20.0
+  "models": [
+    {
+      "id": "point-restraint$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/point-restraint$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
     }
-  },
-  "components": [
   ],
-  "layout": {
-  }
+  "components": [],
+  "layout": {}
 }

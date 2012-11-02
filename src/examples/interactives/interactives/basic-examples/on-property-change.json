@@ -1,15 +1,20 @@
 {
   "title": "onPropertyChange Demo",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
-    },
-    "onLoad": ["onPropertyChange('temperature_control', function(tc) {",
-               "  alert('Temperature control is now ' + (tc ? 'on.' : 'off.')); ",
-               "});"]
-  },
+  "models": [
+    {
+      "id": "simple-ke-shading$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "onPropertyChange('temperature_control', function(tc) {",
+        "  alert('Temperature control is now ' + (tc ? 'on.' : 'off.')); ",
+        "});"
+      ]
+    }
+  ],
   "components": [
     {
       "type": "checkbox",

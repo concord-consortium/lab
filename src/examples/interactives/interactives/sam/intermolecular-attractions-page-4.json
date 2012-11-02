@@ -1,13 +1,40 @@
 {
   "title": "Intermolecular Attractions Page 4: Strengthening Dipole-Dipole Attractions",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json",
-    "viewOptions": {
-      "controlButtons": "",
-      "enableKeyboardHandlers": false
+  "models": [
+    {
+      "id": "instructions",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "leastPolarPull",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/leastPolarPull.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "medPolarPull",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/medPolarPull.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "mostPolarPull",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/mostPolarPull.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "pulldown",
@@ -15,19 +42,19 @@
       "options": [
         {
           "text": "Select a pair of molecules",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json"
+          "loadModel": "instructions"
         },
         {
           "text": "least polar molecules",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/leastPolarPull.json', start);"
+          "action": "loadModel('leastPolarPull', start);"
         },
         {
           "text": "medium polar molecules",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/medPolarPull.json', start);"
+          "action": "loadModel('medPolarPull', start);"
         },
         {
           "text": "most polar molecules",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/mostPolarPull.json', start);"
+          "action": "loadModel('mostPolarPull', start);"
         }
       ]
     },

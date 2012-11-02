@@ -1,13 +1,23 @@
 {
   "title": "Explore 100 Atoms",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms-charged.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
+  "models": [
+    {
+      "id": "100-atoms-charged",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms-charged.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": ""
     },
-    "onLoad": ""
-  },
+    {
+      "id": "100-atoms$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
   "components": [
     {
       "type": "pulldown",
@@ -16,33 +26,32 @@
       "options": [
         {
           "text": "Charged Atoms",
-          "loadModel": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms-charged.json"
+          "loadModel": "100-atoms-charged"
         },
         {
           "text": "Neutral Atoms",
-          "loadModel": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json"
+          "loadModel": "100-atoms$0"
         }
       ]
     },
     {
-      "type":   "slider",
-      "id":     "epsilon-slider",
-      "min":    0.001,
-      "max":    0.40,
-      "initialValue":  0.1,
+      "type": "slider",
+      "id": "epsilon-slider",
+      "min": 0.001,
+      "max": 0.4,
+      "initialValue": 0.144,
       "labels": [
         {
           "value": 0.001,
           "label": "weak"
         },
         {
-          "value": 0.40,
+          "value": 0.4,
           "label": "strong"
         }
       ],
-      "steps":  50,
-      "title":  "Attraction between atoms",
-      "initialValue":  0.144,
+      "steps": 50,
+      "title": "Attraction between atoms",
       "action": "setElementProperties(2, { epsilon: -value });"
     },
     {
@@ -69,7 +78,7 @@
   ],
   "layout": {
     "bottom": [
-    "pulldown1",
+      "pulldown1",
       "epsilon-slider",
       "temperature-slider"
     ]

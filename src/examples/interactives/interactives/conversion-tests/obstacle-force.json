@@ -1,23 +1,19 @@
 {
   "title": "Testing: Obstacle External Force",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-force$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step",
-      "modelTimeLabel": true
-    },
-    "energyGraphOptions": {
-      "ymin": -10.0,
-      "ymax":  400.0,
-      "xmax":  20.0
-    },
-    "onLoad": [
-      "alert('External force test: the obstacle should reach an atom after ~5 000 fs! You can also observe the Kinetic Energy graph.');"
-    ]
-  },
-  "components": [
+  "models": [
+    {
+      "id": "obstacle-force$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-force$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      },
+      "onLoad": [
+        "alert('External force test: the obstacle should reach an atom after ~5 000 fs! You can also observe the Kinetic Energy graph.');"
+      ]
+    }
   ],
-  "layout": {
-  }
+  "components": [],
+  "layout": {}
 }

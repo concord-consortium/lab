@@ -1,13 +1,56 @@
 {
   "title": "Intermolecular Attractions Page 5: Strengthening London Dispersion Attraction",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.json",
-    "viewOptions": {
-      "controlButtons": "",
-      "enableKeyboardHandlers": false
+  "models": [
+    {
+      "id": "instructions",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "npSmallStraight",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "npLargeStraight",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npLargeStraight.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "npStraightJagged",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightJagged.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "npStraightRound",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightRound.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "npCurvedRound",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npCurvedRound.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "pulldown",
@@ -15,27 +58,27 @@
       "options": [
         {
           "text": "Select a pair of molecules",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.json"
+          "loadModel": "instructions"
         },
         {
           "text": "small molecules",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json', start);"
+          "action": "loadModel('npSmallStraight', start);"
         },
         {
           "text": "large straight molecules",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npLargeStraight.json', start);"
+          "action": "loadModel('npLargeStraight', start);"
         },
         {
           "text": "large straight and bent",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightJagged.json', start);"
+          "action": "loadModel('npStraightJagged', start);"
         },
         {
           "text": "large straight and circular",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightRound.json', start);"
+          "action": "loadModel('npStraightRound', start);"
         },
         {
           "text": "large curved and circular",
-          "action": "loadModel('/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npCurvedRound.json', start);"
+          "action": "loadModel('npCurvedRound', start);"
         }
       ]
     },

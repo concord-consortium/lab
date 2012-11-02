@@ -1,12 +1,15 @@
 {
   "title": "Boiling Point Non-Polar Only",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/potential-tests/boiling-point-non-polar-only/boiling-point-non-polar-only$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
+  "models": [
+    {
+      "id": "boiling-point-non-polar-only$0",
+      "url": "/imports/legacy-mw-content/converted/potential-tests/boiling-point-non-polar-only/boiling-point-non-polar-only$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "button",
@@ -15,7 +18,7 @@
       "action": [
         "adjustTemperature(0.9);",
         "console.log(get('temperature'));"
-        ]
+      ]
     },
     {
       "type": "button",
@@ -24,7 +27,7 @@
       "action": [
         "adjustTemperature(1.1);",
         "console.log(get('temperature'));"
-        ]
+      ]
     },
     {
       "type": "thermometer",

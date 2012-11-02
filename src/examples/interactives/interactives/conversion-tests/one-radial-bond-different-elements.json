@@ -1,12 +1,15 @@
 {
   "title": "Testing: One Radial Bond, Different Elements",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
+  "models": [
+    {
+      "id": "one-radial-bond_different_elements$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "button",

@@ -1,13 +1,40 @@
 {
   "title": "View Refresh Rate and Model Sample Rate Examples",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step",
-      "modelTimeLabel": true
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    },
+    {
+      "id": "multiatomic-gas$0",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/multiatomic-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    },
+    {
+      "id": "pendulum1$0",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/pendulum1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    },
+    {
+      "id": "plasticforcesimple$0",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/plasticforcesimple$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "pulldown",
@@ -19,19 +46,19 @@
         },
         {
           "text": "Monatomic Gas",
-          "loadModel": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json"
+          "loadModel": "simple-gas$0"
         },
         {
           "text": "Multiatomic Gas",
-          "loadModel": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/multiatomic-gas$0.json"
+          "loadModel": "multiatomic-gas$0"
         },
         {
           "text": "Pendulum",
-          "loadModel": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/pendulum1$0.json"
+          "loadModel": "pendulum1$0"
         },
         {
           "text": "Plastic Forces",
-          "loadModel": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/plasticforcesimple$0.json"
+          "loadModel": "plasticforcesimple$0"
         }
       ]
     },
@@ -54,16 +81,16 @@
       "action": [
         "start();",
         "setTimeout(function() {",
-          "stop();",
-          "var startTime = getTime();",
-          "setTimeout(function() {",
-            "start();",
-            "setTimeout(function() {",
-              "stop();",
-              "var time = getTime() - startTime;",
-              "alert( (time / (get('viewRefreshInterval') * get('timeStep')) / 2) + ' fps');",
-            "}, 2000);",
-          "}, 100);",
+        "stop();",
+        "var startTime = getTime();",
+        "setTimeout(function() {",
+        "start();",
+        "setTimeout(function() {",
+        "stop();",
+        "var time = getTime() - startTime;",
+        "alert( (time / (get('viewRefreshInterval') * get('timeStep')) / 2) + ' fps');",
+        "}, 2000);",
+        "}, 100);",
         "}, 2000);"
       ]
     },
@@ -149,13 +176,5 @@
         }
       ]
     }
-  ],
-  "bottom": [
-    "select-model",
-    "cool",
-    "heat",
-    "select-refresh-rate",
-    "select-model-sample-rate",
-    "calc-fps"
   ]
 }

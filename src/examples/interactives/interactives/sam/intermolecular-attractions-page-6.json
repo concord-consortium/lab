@@ -1,19 +1,22 @@
 {
   "title": "Intermolecular Attractions Page 6: Hydrogen Bonds, a Special Type of Attraction",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page6/page6$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step"
-    },
-  "onLoad": "set({temperature_control: true});"
-  },
+  "models": [
+    {
+      "id": "page6$0",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page6/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({temperature_control: true});"
+    }
+  ],
   "components": [
     {
-        "type": "button",
-        "id": "cool",
-        "text": "Cool",
-        "action": "adjustTemperature(0.9);"
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
     },
     {
       "type": "button",
@@ -44,5 +47,4 @@
       "heat"
     ]
   }
-
 }

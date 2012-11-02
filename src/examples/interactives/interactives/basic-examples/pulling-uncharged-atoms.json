@@ -1,14 +1,17 @@
 {
   "title": "Testing: Pulling Uncharged Atoms",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/pulling-uncharged-atoms$0.json",
-    "viewOptions": {
-      "controlButtons": "",
-      "enableKeyboardHandlers": false
-    },
-    "onLoad": "start();"
-  },
+  "models": [
+    {
+      "id": "pulling-uncharged-atoms$0",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/pulling-uncharged-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      },
+      "onLoad": "start();"
+    }
+  ],
   "components": [
     {
       "type": "button",

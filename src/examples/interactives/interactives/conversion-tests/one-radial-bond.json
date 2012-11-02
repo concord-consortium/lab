@@ -1,13 +1,16 @@
 {
   "title": "Testing: One Radial Bond",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/one-radial-bond$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step",
-      "modelTimeLabel": true
+  "models": [
+    {
+      "id": "one-radial-bond$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/one-radial-bond$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "button",
@@ -75,8 +78,17 @@
     {
       "type": "energyGraph",
       "id": "ke-chart",
-      "dimensions": { "width": 600, "height": 500 },
-      "options": { "xmax": 40, "ymin": -1, "ymax": 1, "xFormatter": "3.2s", "yFormatter": "3.2s" }
+      "dimensions": {
+        "width": 600,
+        "height": 500
+      },
+      "options": {
+        "xmax": 40,
+        "ymin": -1,
+        "ymax": 1,
+        "xFormatter": "3.2s",
+        "yFormatter": "3.2s"
+      }
     }
   ],
   "layout": {

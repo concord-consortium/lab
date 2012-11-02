@@ -1,19 +1,22 @@
 {
   "title": "Pendulum 1",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step"
+  "models": [
+    {
+      "id": "pendulum1$0",
+      "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
     }
-  },
+  ],
   "components": [
     {
-      "type":   "slider",
-      "id":     "gravity-slider",
-      "min":    0.1,
-      "max":    4.0,
-      "initialValue": 1.0,
+      "type": "slider",
+      "id": "gravity-slider",
+      "min": 0.1,
+      "max": 4,
+      "initialValue": 1,
       "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
@@ -21,20 +24,20 @@
           "label": "0.1"
         },
         {
-          "value": 4.0,
+          "value": 4,
           "label": "4.0"
         }
       ],
-      "steps":  39,
-      "title":  "Starting Gravity",
+      "steps": 39,
+      "title": "Starting Gravity",
       "action": "set({ gravitationalField: value*8e-8 });"
     },
     {
-      "type":   "slider",
-      "id":     "length-slider",
-      "min":    0.0666,
-      "max":    2.0,
-      "initialValue": 1.0,
+      "type": "slider",
+      "id": "length-slider",
+      "min": 0.0666,
+      "max": 2,
+      "initialValue": 1,
       "displayValue": "return format('1.1f')(value*1.5)",
       "labels": [
         {
@@ -42,19 +45,19 @@
           "label": "0.1"
         },
         {
-          "value": 2.0,
+          "value": 2,
           "label": "3.0"
         }
       ],
-      "steps":  30,
-      "title":  "Starting Length (m)",
+      "steps": 30,
+      "title": "Starting Length (m)",
       "action": "var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: value }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
     },
     {
-      "type":   "slider",
-      "id":     "angle-slider",
-      "min":    -45,
-      "max":    45,
+      "type": "slider",
+      "id": "angle-slider",
+      "min": -45,
+      "max": 45,
       "initialValue": 45,
       "displayValue": "return format('f')(value)",
       "labels": [
@@ -67,20 +70,20 @@
           "label": "45&deg;"
         }
       ],
-      "steps":  90,
-      "title":  "Starting Angle",
+      "steps": 90,
+      "title": "Starting Angle",
       "action": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0, ax: 0, ay: 0});"
     },
     {
-      "type":   "slider",
-      "id":     "mass-slider",
-      "min":    1.0,
-      "max":    50.0,
+      "type": "slider",
+      "id": "mass-slider",
+      "min": 1,
+      "max": 50,
       "initialValue": 15,
       "displayValue": "return format('f')(value*10)",
       "labels": [
         {
-          "value": 1.0,
+          "value": 1,
           "label": "10"
         },
         {
@@ -88,15 +91,15 @@
           "label": "500"
         }
       ],
-      "steps":  49,
-      "title":  "Mass of the ball (grams)",
+      "steps": 49,
+      "title": "Mass of the ball (grams)",
       "action": "setElementProperties(3, { mass: value*120 });"
     },
     {
-      "type":   "slider",
-      "id":     "friction-slider",
-      "min":    0,
-      "max":    1.0,
+      "type": "slider",
+      "id": "friction-slider",
+      "min": 0,
+      "max": 1,
       "initialValue": 0,
       "displayValue": "return format('1.1f')(value)",
       "labels": [
@@ -105,12 +108,12 @@
           "label": "0"
         },
         {
-          "value": 1.0,
+          "value": 1,
           "label": "1.0"
         }
       ],
-      "steps":  25,
-      "title":  "Friction",
+      "steps": 25,
+      "title": "Friction",
       "action": "setAtomProperties(1, { friction: value });"
     },
     {
@@ -122,8 +125,15 @@
     {
       "type": "energyGraph",
       "id": "ke-chart",
-      "dimensions": { "width": 500, "height": 296 },
-      "options": { "ymin": -0.1, "ymax": 1.0, "xmax": 20 }
+      "dimensions": {
+        "width": 500,
+        "height": 296
+      },
+      "options": {
+        "ymin": -0.1,
+        "ymax": 1,
+        "xmax": 20
+      }
     }
   ],
   "layout": {
@@ -131,8 +141,16 @@
       "ke-chart"
     ],
     "bottom": [
-      ["gravity-slider", "angle-slider", "length-slider", "ke-shading"],
-      ["mass-slider", "friction-slider"]
+      [
+        "gravity-slider",
+        "angle-slider",
+        "length-slider",
+        "ke-shading"
+      ],
+      [
+        "mass-slider",
+        "friction-slider"
+      ]
     ]
   }
 }

@@ -1,10 +1,13 @@
 {
   "title": "Simple Gas",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
     }
-  }
+  ]
 }

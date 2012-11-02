@@ -1,14 +1,17 @@
 {
   "title": "Boiling Point with Energy Graph",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/boiling-point-with-clock$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step",
-      "modelTimeLabel": true
-    },
-    "onLoad": "set({ temperature: 200 });"
-  },
+  "models": [
+    {
+      "id": "boiling-point-with-clock$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/boiling-point-with-clock$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      },
+      "onLoad": "set({ temperature: 200 });"
+    }
+  ],
   "components": [
     {
       "type": "button",
@@ -45,8 +48,15 @@
     {
       "type": "energyGraph",
       "id": "ke-chart",
-      "dimensions": { "width": 500, "height": 296 },
-      "options": { "ymin": -15, "ymax": 15.0, "xmax": 30 }
+      "dimensions": {
+        "width": 500,
+        "height": 296
+      },
+      "options": {
+        "ymin": -15,
+        "ymax": 15,
+        "xmax": 30
+      }
     }
   ],
   "layout": {

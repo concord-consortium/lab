@@ -1,10 +1,13 @@
 {
   "title": "Testing: Mark Atoms",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/potential-tests/mark-atoms/mark-atoms$0.json",
-    "viewOptions": {
-      "controlButtons": ""
+  "models": [
+    {
+      "id": "mark-atoms$0",
+      "url": "/imports/legacy-mw-content/converted/potential-tests/mark-atoms/mark-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
     }
-  }
+  ]
 }

@@ -1,18 +1,19 @@
 {
   "title": "Testing: Obstacle Friction",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-friction$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step",
-      "modelTimeLabel": true
-    },
-    "onLoad": [
-      "alert('Friction test: the obstacle should reach an atom after ~11 000 fs! You can also observe the Kinetic Energy graph.');"
-    ]
-  },
-  "components": [
+  "models": [
+    {
+      "id": "obstacle-friction$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-friction$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      },
+      "onLoad": [
+        "alert('Friction test: the obstacle should reach an atom after ~11 000 fs! You can also observe the Kinetic Energy graph.');"
+      ]
+    }
   ],
-  "layout": {
-  }
+  "components": [],
+  "layout": {}
 }

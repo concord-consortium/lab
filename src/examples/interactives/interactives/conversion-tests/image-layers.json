@@ -1,10 +1,13 @@
 {
   "title": "Testing Image Layers",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/potential-tests/image-layers/image-layers$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
+  "models": [
+    {
+      "id": "image-layers$0",
+      "url": "/imports/legacy-mw-content/converted/potential-tests/image-layers/image-layers$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
     }
-  }
+  ]
 }

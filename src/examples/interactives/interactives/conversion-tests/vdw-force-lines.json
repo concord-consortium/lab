@@ -1,13 +1,32 @@
 {
   "title": "VDW Force Lines",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines$0.json",
-    "viewOptions": {
-      "controlButtons": "",
-      "enableKeyboardHandlers": false
+  "models": [
+    {
+      "id": "vdw-force-lines$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "vdw-force-lines-medium",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines-medium.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "vdw-force-lines-long",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines-long.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "checkbox",
@@ -25,16 +44,16 @@
         },
         {
           "text": "Short",
-          "loadModel": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines$0.json",
+          "loadModel": "vdw-force-lines$0",
           "selected": true
         },
         {
           "text": "Medium",
-          "loadModel": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines-medium.json"
+          "loadModel": "vdw-force-lines-medium"
         },
         {
           "text": "Long",
-          "loadModel": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines-long.json"
+          "loadModel": "vdw-force-lines-long"
         }
       ]
     }

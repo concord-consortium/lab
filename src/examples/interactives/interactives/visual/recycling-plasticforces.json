@@ -1,13 +1,16 @@
 {
   "title": "Recycling: Plastic Forces",
   "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/visual/Recycling/plasticforcesimple$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step",
-      "modelTimeLabel": true
+  "models": [
+    {
+      "id": "plasticforcesimple$0",
+      "url": "/imports/legacy-mw-content/converted/visual/Recycling/plasticforcesimple$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "button",
