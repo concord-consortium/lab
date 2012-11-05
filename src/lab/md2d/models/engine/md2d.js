@@ -2491,6 +2491,13 @@ define(function (require, exports, module) {
             xPrev,
             yPrev;
 
+        // Update accelerations directly only during first step.
+        // Later this is not necessary, as accelerations are
+        // available due to the previous integration calculations.
+        if (time === 0) {
+          updateParticlesAccelerations();
+        }
+
         for (iloop = 1; iloop <= n_steps; iloop++) {
           time = t_start + iloop*dt;
 
