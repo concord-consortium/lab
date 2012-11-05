@@ -1008,8 +1008,8 @@ define(function (require, exports, module) {
 
         // Calculate x(t+dt, i) from v(t) and a(t)
         updatePosition = function(i) {
-          x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
-          y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
+          x[i] += vx[i] * dt;
+          y[i] += vy[i] * dt;
         },
 
         updateObstaclePosition = function(i) {
@@ -2498,6 +2498,9 @@ define(function (require, exports, module) {
             xPrev = x[i];
             yPrev = y[i];
 
+            // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
+            halfUpdateVelocity(i);
+
             // Update r(t+dt) using v(t) and a(t)
             updatePosition(i);
 
@@ -2514,9 +2517,6 @@ define(function (require, exports, module) {
             bounceAtomOffWalls(i);
             // Bounce off obstacles, update pressure probes.
             bounceOffObstacles(i, xPrev, yPrev, true);
-
-            // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
-            halfUpdateVelocity(i);
 
             // Zero out a(t, i) for accumulation of forces into a(t+dt, i)
             ax[i] = ay[i] = 0;
