@@ -564,6 +564,8 @@ var ROOT = "/examples",
         model.on('play.dataTable', renderModelDatatable);
         model.on('reset.dataTable', renderModelDatatable);
         model.on('seek.dataTable', renderModelDatatable);
+        model.on('stepForward.dataTable', renderModelDatatable);
+        model.on('stepBack.dataTable', renderModelDatatable);
         renderModelDatatable();
         $modelDatatableContent.show(100);
       } else {
@@ -571,6 +573,8 @@ var ROOT = "/examples",
         model.on('play.dataTable');
         model.on('reset.dataTable');
         model.on('seek.dataTable');
+        model.on('stepForward.dataTable');
+        model.on('stepBack.dataTable');
         $modelDatatableContent.hide(100);
       }
     }).change();
