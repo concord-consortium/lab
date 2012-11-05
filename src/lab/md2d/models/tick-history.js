@@ -131,13 +131,23 @@ define(function(require) {
     };
 
     tickHistory.returnTick = function(ptr) {
-      var i = ptr || listState.index;
+      var i;
+      if (typeof ptr === 'number') {
+        i = ptr;
+      } else {
+        i = listState.index;
+      }
       checkIndexArg(i);
       return list[i];
     };
 
     tickHistory.extract = function(ptr) {
-      var i = ptr || listState.index;
+      var i;
+      if (typeof ptr === 'number') {
+        i = ptr;
+      } else {
+        i = listState.index;
+      }
       checkIndexArg(i);
       extract(list[i]);
     };

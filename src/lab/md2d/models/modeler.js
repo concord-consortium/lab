@@ -564,15 +564,21 @@ define(function(require) {
     };
 
     // A convenience for interactively getting energy averages
-    model.getStatsHistory = function() {
-      var i, len,
+    model.getStatsHistory = function(num) {
+      var i, len, start,
           tick,
-          KE, PE,
+          ke, pe,
           ret = [];
 
+      len = tickHistory.get("length");
+      if (!arguments.length) {
+        start = 0;
+      } else {
+        start = Math.max(len-num, 0);
+      }
       ret.push("time (fs)\ttotal PE (eV)\ttotal KE (eV)\ttotal energy (eV)");
 
-      for (i = 0, len = tickHistory.get("length"); i < len; i++) {
+      for (i = start; i < len; i++) {
         tick = tickHistory.returnTick(i);
         pe = tick.output.PE;
         ke = tick.output.KE;
