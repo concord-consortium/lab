@@ -920,6 +920,8 @@ define(function (require) {
     function modelLoaded() {
       var i, listener;
 
+      setupCustomOutputs(controller.currentModel.outputs, interactive.outputs);
+
       for(i = 0; i < componentCallbacks.length; i++) {
         componentCallbacks[i]();
       }
@@ -1080,6 +1082,34 @@ define(function (require) {
         }
       }
 
+    }
+
+    /**
+      After a model loads, this method sets up the custom output properties specified in the "model"
+      section of the interactive and in the interactive.
+
+      Any output property definitions in the model section of the interactive specification override
+      properties with the same that are specified in the main body if the interactive specification.
+    */
+    function setupCustomOutputs(modelOutputs, interactiveOutputs) {
+      if (!modelOutputs && !interactiveOutputs) return;
+
+          // per-model output definitions override output definition from interactive
+      var outputs = $.extend({}, interactiveOutputs, modelOutputs),
+          prop,
+          output;
+
+      for (prop in outputs) {
+        if (outputs.hasOwnProperty(prop)) {
+          output = outputs[prop];
+          // DOM elements (and, by analogy, Next Gen MW interactive components like slides)
+          // have "ids". But, in English, properties have "names", but not "ids".
+          model.addOutput(prop.name, {
+            label: output.label,
+            units: output.units
+          }, makeFunctionInScriptContext(prop.value));
+        }
+      }
     }
 
     // run this when controller is created
