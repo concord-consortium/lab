@@ -625,7 +625,7 @@ define(function(require) {
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      var i, index, size;
+      var i, index;
       stopped = true;
       newStep = false;
       i=-1; while(++i < num) {
@@ -784,7 +784,7 @@ define(function(require) {
     };
 
     model.initializeHistory = function(maxSize) {
-      maxsize = maxSize || defaultMaxTickHistory;
+      maxSize = maxSize || defaultMaxTickHistory;
       tickHistory = TickHistory({
         input: [
           "temperature",
@@ -808,7 +808,7 @@ define(function(require) {
           "time"
         ],
         state: [atoms, obstacles]
-      }, modelOutputState, model, engine.setTime, maxsize);
+      }, modelOutputState, model, engine.setTime, maxSize);
       newStep = true;
     };
 
