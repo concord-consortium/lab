@@ -24,7 +24,6 @@ define(function(require) {
           "long": 2.0
         },
         showClock,
-        lennardJoneForces, coulombForces,
         gravitationalField = false,
         timeStep = 1,
         defaultMaxTickHistory = 1000,
@@ -1203,16 +1202,6 @@ define(function(require) {
 
     model.is_stopped = function() {
       return stopped;
-    };
-
-    model.set_lennardJonesForces = function(lj) {
-     lennardJonesForces = lj;
-     engine.useLennardJonesInteraction(lj);
-    };
-
-    model.set_coulombForces = function(cf) {
-     coulombForces = cf;
-     engine.useCoulombInteraction(cf);
     };
 
     model.get_atoms = function() {
