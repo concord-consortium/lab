@@ -69,6 +69,7 @@ define(function (require) {
         drawVdwLines,
         getRadialBonds,
         imageProp,
+        imageSizes = [],
         textBoxes,
         interactiveUrl,
         imagePath,
@@ -992,8 +993,12 @@ define(function (require) {
               imglayer = imageProp[i].imageLayer;
               imgX = imageProp[i].imageX;
               imgY = imageProp[i].imageY;
-              img_width = img[i].width * scaling_factor;
-              img_height = img[i].height * scaling_factor;
+              // cache the image width and height
+              imageSizes[i] = [img[i].width, img[i].height];
+              img_width = imageSizes[i][0] * scaling_factor;
+              img_height = imageSizes[i][1] * scaling_factor;
+
+
 
               container = imglayer === 1 ? image_container_top : image_container_below;
               container.append("image")
@@ -1319,10 +1324,8 @@ define(function (require) {
           imgX =  imageProp[i].imageX;
           imgY =  imageProp[i].imageY;
           imglayer =  imageProp[i].imageLayer;
-          img = new Image();
-          img.src = getImagePath(imageProp[i]);
-          img_width = img.width*scaling_factor;
-          img_height = img.height*scaling_factor;
+          img_width  = imageSizes[i][0] * scaling_factor;
+          img_height = imageSizes[i][1] * scaling_factor;
           container = imglayer === 1 ? image_container_top : image_container_below;
           container.selectAll("image.image_attach"+i)
             .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
