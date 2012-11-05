@@ -971,6 +971,7 @@ define(function (require) {
             imgHostType,
             imglayer,
             imgX,
+            container,
             i;
 
         image_container_top.selectAll("image").remove();
@@ -994,25 +995,15 @@ define(function (require) {
               img_width = img[i].width * scaling_factor;
               img_height = img[i].height * scaling_factor;
 
-              if (imglayer === 1) {
-                image_container_top.append("image")
-                  .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
-                  .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } })
-                  .attr("class", "image_attach"+i+" draggable")
-                  .attr("xlink:href", img[i].src)
-                  .attr("width", img_width)
-                  .attr("height", img_height)
-                  .attr("pointer-events", "none");
-              } else {
-                image_container_below.append("image")
-                  .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
-                  .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } })
-                  .attr("class", "image_attach"+i+" draggable")
-                  .attr("xlink:href", img[i].src)
-                  .attr("width", img_width)
-                  .attr("height", img_height)
-                  .attr("pointer-events", "none");
-              }
+              container = imglayer === 1 ? image_container_top : image_container_below;
+              container.append("image")
+                .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
+                .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } })
+                .attr("class", "image_attach"+i+" draggable")
+                .attr("xlink:href", img[i].src)
+                .attr("width", img_width)
+                .attr("height", img_height)
+                .attr("pointer-events", "none");
             };
           })(i);
         }
@@ -1320,27 +1311,22 @@ define(function (require) {
       }
 
       function updateImageAttachment(){
-        var numImages, img, img_height, img_width, imgHost, imgHostType, imglayer, imgX, imgY;
+        var numImages, img, img_height, img_width, imgHost, imgHostType, imglayer, imgX, imgY, container, i;
         numImages= imageProp.length;
-        for(var i = 0;i < numImages;i++) {
+        for(i = 0; i < numImages; i++) {
           imgHost =  results[imageProp[i].imageHostIndex];
           imgHostType =  imageProp[i].imageHostType;
           imgX =  imageProp[i].imageX;
           imgY =  imageProp[i].imageY;
           imglayer =  imageProp[i].imageLayer;
           img = new Image();
-          img.src =   imagePath+imageProp[i].imageUri;
+          img.src = getImagePath(imageProp[i]);
           img_width = img.width*scaling_factor;
           img_height = img.height*scaling_factor;
-          if(imglayer == 1) {
-            image_container_top.selectAll("image.image_attach"+i)
+          container = imglayer === 1 ? image_container_top : image_container_below;
+          container.selectAll("image.image_attach"+i)
             .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
             .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } });
-          } else {
-            image_container_below.selectAll("image.image_attach"+i)
-              .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
-              .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } });
-          }
         }
       }
 
