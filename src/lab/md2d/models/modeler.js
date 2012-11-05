@@ -533,22 +533,6 @@ define(function(require) {
       return serializedData;
     }
 
-    // ------------------------------
-    // finish setting up the model
-    // ------------------------------
-
-    setupIndices();
-
-    // Friction parameter temporarily applied to the live-dragged atom.
-    model.LIVE_DRAG_FRICTION = 10;
-
-    // who is listening to model tick completions
-    model_listener = initialProperties.model_listener;
-
-    // set the rest of the regular properties
-    set_properties(initialProperties);
-
-
 
     // ------------------------------------------------------------
     //
@@ -1471,6 +1455,21 @@ define(function(require) {
       propCopy.height = height;
       return propCopy;
     };
+
+    // ------------------------------
+    // finish setting up the model
+    // ------------------------------
+
+    setupIndices();
+
+    // Friction parameter temporarily applied to the live-dragged atom.
+    model.LIVE_DRAG_FRICTION = 10;
+
+    // who is listening to model tick completions
+    model_listener = initialProperties.model_listener;
+
+    // set the rest of the regular properties
+    set_properties(initialProperties);
 
     return model;
   };
