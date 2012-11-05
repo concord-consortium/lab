@@ -190,6 +190,12 @@ define(function(require) {
           }
         },
 
+        // The list of all 'output' properties (which change once per tick)
+        outputNames = [],
+
+        // Information about the metadata and calculating function for 'output' properties
+        outputsByName = {},
+
         // TODO: notSafari and hasTypedArrays belong in the arrays module
         // Check for Safari. Typed arrays are faster almost everywhere
         // ... except Safari.
@@ -1391,7 +1397,10 @@ define(function(require) {
     };
 
     model.get = function(property) {
-      return properties[property];
+      if (properties[property]) return properties[property];
+      // TODO? Optimization opportunity: calculate any output property only once per tick. Invalidate
+      // in readModelState.
+      if (outputsByName[property]) return outputsByName[property].calculate();
     };
 
     /**
@@ -1426,6 +1435,28 @@ define(function(require) {
           addListener(properties[i]);
         }
       }
+    };
+
+    /**
+      Add an "output" property to the model. Output properties are expected to change at every
+      model tick, and may also be changed indirectly, outside of a model tick,by a change to the
+      model parameters or to the configuration of atoms and other objects in the model.
+
+      `name` should be the name of the parameter. The property value will be accessed by
+      `model.get(<name>);`
+
+      `metadata` should be  a hash of metadata about the property. Right now, these metadata are not
+      used. However, example metadata include the label and units name to be used when graphing
+      this property.
+
+      `calculate` should be a no-arg function which should calculate the property value.
+    */
+    model.addOutput = function(name, metadata, calculate) {
+      outputNames.push(name);
+      outputsByName[name] = {
+        metadata: metadata,
+        calculate: calculate
+      };
     };
 
     model.serialize = function(includeAtoms) {
