@@ -217,6 +217,9 @@ server/public/imports:
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/other-activities server/public/imports/legacy-mw-content/converted/
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/potential-tests server/public/imports/legacy-mw-content/converted
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/tutorial server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/student server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/inquiry-space server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/new-examples-for-nextgen server/public/imports/legacy-mw-content/converted/
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/visual server/public/imports/legacy-mw-content/converted/
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/validation server/public/imports/legacy-mw-content/converted/
 
