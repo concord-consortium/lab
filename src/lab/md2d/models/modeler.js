@@ -30,7 +30,6 @@ define(function(require) {
         stopped = true,
         restart = false,
         newStep = false,
-        pressure, pressures = [0],
         lastSampleTime,
         sampleTimes = [],
 
@@ -373,9 +372,6 @@ define(function(require) {
       readModelState();
       console.timeEnd('reading model state');
 
-      pressures.push(pressure);
-      pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-
       tickHistory.push();
       newStep = true;
 
@@ -384,10 +380,6 @@ define(function(require) {
       }
 
       return stopped;
-    }
-
-    function container_pressure() {
-      return pressures.reduce(function(j,k) { return j+k; })/pressures.length;
     }
 
     function average_rate() {
@@ -442,7 +434,6 @@ define(function(require) {
         }
       }
 
-      pressure = modelOutputState.pressure;
       pe       = modelOutputState.PE;
       ke       = modelOutputState.KE;
       time     = modelOutputState.time;
@@ -546,7 +537,6 @@ define(function(require) {
         speed       : average_speed(),
         ke          : ke,
         temperature : temperature,
-        pressure    : container_pressure(),
         current_step: tickHistory.get("counter"),
         steps       : tickHistory.get("length")-1
       };
@@ -1354,10 +1344,6 @@ define(function(require) {
 
     model.speed = function() {
       return average_speed();
-    };
-
-    model.pressure = function() {
-      return container_pressure();
     };
 
     model.pressureProbes = function() {

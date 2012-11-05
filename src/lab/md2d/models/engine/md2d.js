@@ -2784,7 +2784,6 @@ define(function (require, exports, module) {
 
         // State to be read by the rest of the system:
         state.time           = time;
-        state.pressure       = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
         state.pressureProbes = probes;
         state.PE             = PE;
         state.KE             = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
