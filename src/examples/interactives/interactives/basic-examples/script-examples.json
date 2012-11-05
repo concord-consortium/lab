@@ -29,7 +29,7 @@
       "type": "button",
       "id": "abs-zero",
       "text": "Set to absolute zero",
-      "action": "set({temperature: 0.00001});"
+      "action": "set({targetTemperature: 0.00001});"
     },
     {
       "type": "button",
@@ -40,7 +40,7 @@
         "if (newTemp > 4000) {",
         "  newTemp = 4000;",
         "}",
-        "set({temperature: newTemp});"
+        "set({targetTemperature: newTemp});"
       ]
     },
     {
@@ -109,7 +109,7 @@
           "label": "3000 K"
         }
       ],
-      "property": "temperature"
+      "property": "targetTemperature"
     },
     {
       "type": "slider",
@@ -133,7 +133,7 @@
           "label": "3000 K"
         }
       ],
-      "action": "set({temperature: value});"
+      "action": "set({targetTemperature: value});"
     }
   ],
   "layout": {

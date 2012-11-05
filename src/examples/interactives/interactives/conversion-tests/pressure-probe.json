@@ -29,7 +29,7 @@
       ],
       "steps": 50,
       "title": "Temperature",
-      "property": "temperature"
+      "property": "targetTemperature"
     },
     {
       "type": "pressureGraph",

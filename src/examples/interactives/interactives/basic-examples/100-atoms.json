@@ -73,7 +73,7 @@
       ],
       "steps": 499,
       "title": "Temperature",
-      "action": "set({ temperature: value });"
+      "action": "set({ targetTemperature: value });"
     }
   ],
   "layout": {

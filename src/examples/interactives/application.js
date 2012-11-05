@@ -353,7 +353,7 @@ var ROOT = "/examples",
         }
       },
       {
-        name: "temperature",
+        name: "targetTemperature",
         run: function(done) {
           done(model.get("temperature"));
         }

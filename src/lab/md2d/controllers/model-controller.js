@@ -35,7 +35,7 @@ define(function (require) {
         lennardJonesForces,
         coulombForces,
         temperature_control,
-        temperature,
+        targetTemperature,
         width,
         height,
         keShading,
@@ -120,7 +120,7 @@ define(function (require) {
         lennardJonesForces  = modelConfig.lennardJonesForces;
         coulombForces       = modelConfig.coulombForces;
         temperature_control = modelConfig.temperature_control;
-        temperature         = modelConfig.temperature;
+        targetTemperature   = modelConfig.targetTemperature;
         width               = modelConfig.width;
         height              = modelConfig.height;
         keShading           = modelConfig.keShading;
@@ -149,7 +149,7 @@ define(function (require) {
         initializeLocalVariables();
         model = Model({
             elements            : elements,
-            temperature         : temperature,
+            targetTemperature   : targetTemperature,
             lennardJonesForces  : lennardJonesForces,
             coulombForces       : coulombForces,
             temperature_control : temperature_control,

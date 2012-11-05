@@ -107,11 +107,11 @@ define(function (require) {
             },
 
             adjustTemperature: function adjustTemperature(fraction) {
-              model.set({temperature: fraction * model.get('temperature')});
+              model.set({targetTemperature: fraction * model.get('temperature')});
             },
 
             limitHighTemperature: function limitHighTemperature(t) {
-              if (model.get('temperature') > t) model.set({temperature: t});
+              if (model.get('targetTemperature') > t) model.set({targetTemperature: t});
             },
 
             loadModel: function loadModel(modelId, cb) {
@@ -755,8 +755,8 @@ define(function (require) {
         temperature = scale*temperature + offset;
         $label.text(temperature.toFixed(digits) + " " + units);
       }
-
-      queuePropertiesListener(['temperature'], function() { self.update(); });
+      // TODO: update to observe actual system temperature once output properties are observable
+      queuePropertiesListener(['targetTemperature'], function() { self.update(); });
 
       return self = {
         elem:      $elem,
@@ -768,7 +768,7 @@ define(function (require) {
         },
 
         update: function() {
-          var t = model.get('temperature');
+          var t = model.get('targetTemperature');
           thermometerComponent.add_value(t);
           if (labelIsReading) updateLabel(t);
         }

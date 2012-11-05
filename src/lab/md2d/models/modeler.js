@@ -34,10 +34,13 @@ define(function(require) {
         sampleTimes = [],
 
         // N.B. this is the thermostat (temperature control) setting
-        temperature,
+        targetTemperature,
 
         // current model time, in fs
         time,
+
+        // actual system temperature
+        temperature,
 
         // potential energy
         pe,
@@ -96,7 +99,7 @@ define(function(require) {
         listeners = {},
 
         properties = {
-          temperature           : 300,
+          targetTemperature     : 300,
           modelSampleRate       : 'default',
           coulombForces         : true,
           lennardJonesForces    : true,
@@ -120,8 +123,8 @@ define(function(require) {
             done automatically
           */
 
-          set_temperature: function(t) {
-            this.temperature = t;
+          set_targetTemperature: function(t) {
+            this.targetTemperature = t;
             if (engine) {
               engine.setTargetTemperature(t);
             }
@@ -389,8 +392,8 @@ define(function(require) {
       return (ave ? 1/ave*1000: 0);
     }
 
-    function set_temperature(t) {
-      temperature = t;
+    function set_targetTemperature(t) {
+      targetTemperature = t;
       engine.setTargetTemperature(t);
     }
 
@@ -434,9 +437,10 @@ define(function(require) {
         }
       }
 
-      pe       = modelOutputState.PE;
-      ke       = modelOutputState.KE;
-      time     = modelOutputState.time;
+      temperature = modelOutputState.temperature;
+      pe          = modelOutputState.PE;
+      ke          = modelOutputState.KE;
+      time        = modelOutputState.time;
     }
 
     /**
@@ -668,7 +672,7 @@ define(function(require) {
 
       // Initialize properties
       temperature_control = properties.temperature_control;
-      temperature         = properties.temperature;
+      targetTemperature   = properties.targetTemperature;
       keShading           = properties.keShading,
       chargeShading       = properties.chargeShading;
       showVDWLines        = properties.showVDWLines;
@@ -685,13 +689,13 @@ define(function(require) {
       engine.setVDWLinesRatio(VDWLinesCutoffMap[VDWLinesCutoff]);
       engine.setGravitationalField(gravitationalField);
 
-      engine.setTargetTemperature(temperature);
+      engine.setTargetTemperature(targetTemperature);
 
       if (config.x && config.y) {
         engine.initializeAtomsFromProperties(config);
       } else {
         engine.initializeAtomsRandomly({
-          temperature: temperature
+          temperature: targetTemperature
         });
         if (config.relax) engine.relaxToTemperature();
       }
@@ -766,7 +770,7 @@ define(function(require) {
       maxSize = maxSize || defaultMaxTickHistory;
       tickHistory = TickHistory({
         input: [
-          "temperature",
+          "targetTemperature",
           "lennardJonesForces",
           "coulombForces",
           "temperature_control",
@@ -1338,6 +1342,10 @@ define(function(require) {
       return modelOutputState.PE;
     };
 
+    model.temperature = function() {
+      return modelOutputState.temperature;
+    };
+
     model.ave_pe = function() {
       return modelOutputState.PE / model.get_num_atoms();
     };
@@ -1350,9 +1358,9 @@ define(function(require) {
       return modelOutputState.pressureProbes;
     };
 
-    model.temperature = function(x) {
-      if (!arguments.length) return temperature;
-      set_temperature(x);
+    model.targetTemperature = function(x) {
+      if (!arguments.length) return targetTemperature;
+      set_targetTemperature(x);
       return model;
     };
 
@@ -1477,6 +1485,13 @@ define(function(require) {
       units: "eV"
     }, function() {
       return model.pe();
+    });
+
+    model.addOutput('temperature', {
+      label: "Temperature",
+      units: "K"
+    }, function() {
+      return model.temperature();
     });
 
     return model;

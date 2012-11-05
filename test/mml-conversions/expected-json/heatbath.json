@@ -1,5 +1,5 @@
 {
-  "lennardJonesForces": true, 
+  "lennardJonesForces": true,
   "coulombForces": true,
   "temperature_control": true,
   "width": 4.38,
@@ -79,5 +79,5 @@
       0
     ]
   },
-  "temperature": 6321.80541535
+  "targetTemperature": 6321.80541535
 }

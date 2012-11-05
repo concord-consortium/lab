@@ -9,7 +9,7 @@
         "controlButtons": "play_reset_step",
         "modelTimeLabel": true
       },
-      "onLoad": "set({ temperature: 200 });"
+      "onLoad": "set({ targetTemperature: 200 });"
     }
   ],
   "components": [
@@ -43,7 +43,7 @@
       ],
       "steps": 400,
       "title": "Temperature",
-      "property": "temperature"
+      "property": "targetTemperature"
     },
     {
       "type": "energyGraph",

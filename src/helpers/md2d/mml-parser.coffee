@@ -487,7 +487,7 @@ parseMML = (mmlString) ->
     ###
     heatBath = $mml(".org-concord-mw2d-models-HeatBath").find("[property=expectedTemperature]")
     if heatBath.length > 0
-      temperature = parseFloat heatBath.find("double").text()
+      targetTemperature = parseFloat heatBath.find("double").text()
 
     ### Put everything together into Lab's JSON format ###
     results = parseAtoms()
@@ -518,7 +518,7 @@ parseMML = (mmlString) ->
     json =
       lennardJonesForces  : true
       coulombForces       : coulombForces
-      temperature_control : !!temperature
+      temperature_control : !!targetTemperature
       width               : width
       height              : height
       viscosity           : viscosity
@@ -572,7 +572,7 @@ parseMML = (mmlString) ->
       json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction',
         'height', 'width', 'density', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
 
-    json.temperature = temperature if temperature
+    json.targetTemperature = targetTemperature if targetTemperature
 
     return json: json
   catch e
