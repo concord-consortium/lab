@@ -26,6 +26,7 @@ define(function (require) {
         fit_to_parent,
         enableAtomTooltips,
         enableKeyboardHandlers,
+        imageMapping,
 
         // properties read from the modelConfig hash
         elements,
@@ -111,6 +112,7 @@ define(function (require) {
         enableKeyboardHandlers = playerConfig.enableKeyboardHandlers;
         fit_to_parent       = playerConfig.fit_to_parent;
         interactiveUrl      = playerConfig.interactiveUrl;
+        imageMapping        = playerConfig.imageMapping || {};
 
         elements            = modelConfig.elements;
         atoms               = modelConfig.atoms;
@@ -205,6 +207,7 @@ define(function (require) {
           images:                  images,
           interactiveUrl:          interactiveUrl,
           textBoxes:               textBoxes,
+          imageMapping:            imageMapping,
           get_results:             function() { return model.get_results(); },
           get_radial_bond_results: function() { return model.get_radial_bond_results(); },
           get_radial_bonds:        function() { return model.get_radial_bonds(); },

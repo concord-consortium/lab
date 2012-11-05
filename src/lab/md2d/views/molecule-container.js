@@ -89,7 +89,8 @@ define(function (require) {
           xmin:                   0,
           xmax:                   10,
           ymin:                   0,
-          ymax:                   10
+          ymax:                   10,
+          imageMapping:           {}
         },
 
         model,
@@ -958,6 +959,10 @@ define(function (require) {
         }
       }
 
+      function getImagePath(imgProp) {
+        return imagePath + (options.imageMapping[imgProp.imageUri] || imgProp.imageUri);
+      }
+
       function drawImageAttachment() {
         var img = [],
             img_height,
@@ -975,7 +980,7 @@ define(function (require) {
 
         for (i = 0; i < imageProp.length; i++) {
           img[i] = new Image();
-          img[i].src = imagePath+imageProp[i].imageUri;
+          img[i].src = getImagePath(imageProp[i]);
           img[i].onload = (function(i) {
             return function() {
               image_container_top.selectAll("image.image_attach"+i).remove();
