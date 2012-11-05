@@ -1471,6 +1471,28 @@ define(function(require) {
     // set the rest of the regular properties
     set_properties(initialProperties);
 
+    // Define some default output properties.
+    model.addOutput('time', {
+      label: "Time",
+      units: "fs"
+    }, function() {
+      return model.getTime();
+    });
+
+    model.addOutput('kineticEnergy', {
+      label: "Kinetic Energy",
+      units: "eV"
+    }, function() {
+      return model.ke();
+    });
+
+    model.addOutput('potentialEnergy', {
+      label: "Potential Energy",
+      units: "eV"
+    }, function() {
+      return model.pe();
+    });
+
     return model;
   };
 });
