@@ -1414,19 +1414,28 @@ define(function(require) {
       return model;
     };
 
-    // Add a listener that will be notified any time any of the properties
-    // in the passed-in array of properties is changed.
-    // This is a simple way for views to update themselves in response to
-    // properties being set on the model object.
-    // Observer all properties with addPropertiesListener(["all"], callback);
+    /**
+      Add a listener callback that will be notified when any of the properties in the passed-in
+      array of properties is changed. (The argument `properties` can also be a string, if only a
+      single name needs to be passed.) This is a simple way for views to update themselves in
+      response to property changes.
+
+      Observe all properties with `addPropertiesListener('all', callback);`
+    */
     model.addPropertiesListener = function(properties, callback) {
-      var i, ii, prop;
-      for (i=0, ii=properties.length; i<ii; i++){
-        prop = properties[i];
-        if (!listeners[prop]) {
-          listeners[prop] = [];
-        }
+      var i;
+
+      function addListener(prop) {
+        if (!listeners[prop]) listeners[prop] = [];
         listeners[prop].push(callback);
+      }
+
+      if (typeof properties === 'string') {
+        addListener(properties);
+      } else {
+        for (i = 0; i < properties.length; i++) {
+          addListener(properties[i]);
+        }
       }
     };
 
