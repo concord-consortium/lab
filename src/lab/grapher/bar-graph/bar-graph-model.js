@@ -14,7 +14,7 @@ define(function (require) {
       padding: {
         left:   10,
         top:    10,
-        right:  30,
+        right:  40,
         bottom: 10
       },
 

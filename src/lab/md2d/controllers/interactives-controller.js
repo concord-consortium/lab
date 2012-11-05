@@ -4,6 +4,7 @@ define(function (require) {
   // Dependencies.
   var ModelController         = require('md2d/controllers/model-controller'),
       PressureGraphController = require('md2d/controllers/pressure-graph-controller'),
+      BarGraphController      = require('md2d/controllers/bar-graph-controller'),
       Thermometer             = require('cs!common/components/thermometer'),
       layout                  = require('common/layout/layout'),
       setupInteractiveLayout  = require('common/layout/interactive-layout');
@@ -26,6 +27,8 @@ define(function (require) {
         energyData = [[],[],[]],
         // Pressure Graph Controller, handles pressure data and its graphing.
         pressureGraphController,
+        // Bar graphs controllers list.
+        barGraphControllers = [],
 
         setupScreenCalledTwice = false,
 
@@ -361,6 +364,8 @@ define(function (require) {
     }
 
     function createComponent(component) {
+      var controller;
+
       switch (component.type) {
         case 'button':
           return createButton(component);
@@ -373,6 +378,13 @@ define(function (require) {
         case 'thermometer':
           thermometer = createThermometer(component);
           return thermometer;
+        case 'barGraph':
+          controller = BarGraphController(component);
+          barGraphControllers.push(controller);
+          return {
+            elem:     controller.getViewContainer(),
+            callback: controller.modelLoadedCallback
+          };
         case 'energyGraph':
           return createEnergyGraph(component);
         case 'pressureGraph':
