@@ -117,9 +117,6 @@ define(function (require) {
             loadModel: function loadModel(modelId, cb) {
               model.stop();
 
-              // Assume that existing onLoadScripts are only relevant to the previous model
-              onLoadScripts = [];
-
               controller.loadModel(modelId);
 
               if (typeof cb === 'function') {
@@ -331,8 +328,6 @@ define(function (require) {
 
       controller.currentModel = model;
 
-      onLoad = model.onLoad;
-
       if (model.viewOptions) {
         // make a deep copy of model.viewOptions, so we can freely mutate playerConfig
         // without the results being serialized or displayed in the interactives editor.
@@ -343,8 +338,9 @@ define(function (require) {
       playerConfig.fit_to_parent = !layoutStyle;
       playerConfig.interactiveUrl = model.url;
 
-      if (onLoad != null) {
-        onLoadScripts.push( makeFunctionInScriptContext( getStringFromArray(onLoad) ) );
+      onLoadScripts = [];
+      if (model.onLoad) {
+        onLoadScripts.push( makeFunctionInScriptContext( getStringFromArray(model.onLoad) ) );
       }
 
       modelUrl = ACTUAL_ROOT + model.url;
@@ -989,7 +985,6 @@ define(function (require) {
     function loadInteractive(newInteractive, viewSelector) {
       var model,
           modelURL,
-          onLoad,
           componentJsons,
           components = {},
           component,
