@@ -104,6 +104,7 @@ define(function (require) {
         keShading           = modelConfig.keShading;
         chargeShading       = modelConfig.chargeShading;
         showVDWLines        = modelConfig.showVDWLines;
+        VDWLinesCutoff       = modelConfig.VDWLinesCutoff;
         showClock           = modelConfig.showClock;
         viewRefreshInterval = modelConfig.viewRefreshInterval;
         timeStep            = modelConfig.timeStep;
@@ -136,6 +137,7 @@ define(function (require) {
             keShading           : keShading,
             chargeShading       : chargeShading,
             showVDWLines        : showVDWLines,
+            VDWLinesCutoff       : VDWLinesCutoff,
             showClock           : showClock,
             viewRefreshInterval : viewRefreshInterval,
             timeStep            : timeStep,

@@ -25,6 +25,11 @@ RADIAL_BOND_TRIPLE_BOND_STYLE = 108
 
 RadialBondStyleDefault = RADIAL_BOND_STANDARD_STICK_STYLE
 
+VDWLinesRatioMap =
+  1.33: "short"
+  1.67: "medium"
+  2.0:  "long"
+
 # window.MWHelpers = {};
 
 ###
@@ -187,7 +192,8 @@ parseMML = (mmlString) ->
     ###
     showVDWLines = parseBoolean($mml("[property=showVDWLines] boolean").text(), false)
     VDWLinesRatio = $mml("[property=VDWLinesRatio] float")
-    VDWLinesRatio = if VDWLinesRatio.length != 0 then parseFloat(VDWLinesRatio.text()) else 2
+    VDWLinesRatio = if VDWLinesRatio.length != 0 then parseFloat(VDWLinesRatio.text()) else 1.67
+    VDWLinesCutoff = VDWLinesRatioMap[VDWLinesRatio]
 
     ###
       Viscosity
@@ -519,7 +525,7 @@ parseMML = (mmlString) ->
       keShading           : keShading
       chargeShading       : !!chargeShading
       showVDWLines        : !!showVDWLines
-      VDWLinesRatio       : VDWLinesRatio
+      VDWLinesCutoff      : VDWLinesCutoff
       gravitationalField  : gravitationalField
       showClock           : showClock
       viewRefreshInterval : viewRefreshInterval

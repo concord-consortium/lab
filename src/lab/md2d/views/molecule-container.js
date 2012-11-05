@@ -333,7 +333,7 @@ define(function (require) {
       // Subscribe for model events.
       model.addPropertiesListener(["temperature_control"], drawSymbolImages);
       // Redraw container each time when some visual-related property is changed.
-      model.addPropertiesListener(["keShading", "chargeShading", "showVDWLines", "showClock"],
+      model.addPropertiesListener(["keShading", "chargeShading", "showVDWLines", "VDWLinesCutoff", "showClock"],
           setup_drawables);
 
       // create container, or update properties if it already exists

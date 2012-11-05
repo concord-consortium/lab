@@ -239,6 +239,9 @@ define(function (require, exports, module) {
         // Whether to use the thermostat to maintain the system temperature near T_target.
         useThermostat = false,
 
+        // A value to use in calculating if two atoms are close enough for a VDW line to be displayed
+        vdwLinesRatio = 1.67,
+
         // If a numeric value include gravitational field in force calculations,
         // otherwise value should be false
         gravitationalField = false,
@@ -1732,6 +1735,12 @@ define(function (require, exports, module) {
         useThermostat = !!v;
       },
 
+      setVDWLinesRatio: function(vdwlr) {
+        if (typeof vdwlr === "number" && vdwlr !== 0) {
+          VDWLinesRatio = vdwlr;
+        }
+      },
+
       setGravitationalField: function(gf) {
         if (typeof gf === "number" && gf !== 0) {
           gravitationalField = gf;
@@ -2395,7 +2404,7 @@ define(function (require, exports, module) {
             index_j,
             sig,
             eps,
-            distanceCutoff_sq = 4; // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
+            distanceCutoff_sq = VDWLinesRatio * VDWLinesRatio;
 
         N_vdwPairs = 0;
 

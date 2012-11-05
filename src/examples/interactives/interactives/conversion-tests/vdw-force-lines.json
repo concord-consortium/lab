@@ -36,16 +36,16 @@
     },
     {
       "type": "pulldown",
-      "id": "pulldown",
+      "id": "pulldown1",
       "options": [
         {
-          "text": "Display VDW Lines ...",
+          "text": "Select Model with different VDW Line Cutoff ...",
+          "selected": true,
           "disabled": true
         },
         {
-          "text": "Short",
-          "loadModel": "vdw-force-lines$0",
-          "selected": true
+          "text": "Short ",
+          "loadModel": "vdw-force-lines$0"
         },
         {
           "text": "Medium",
@@ -54,6 +54,29 @@
         {
           "text": "Long",
           "loadModel": "vdw-force-lines-long"
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown2",
+      "options": [
+        {
+          "text": "Set length of VDW Line Cutoff using script ...",
+          "selected": true,
+          "disabled": true
+        },
+        {
+          "text": "Short",
+          "action": "set({ VDWLinesCutoff: 'short' })"
+        },
+        {
+          "text": "Medium",
+          "action": "set({ VDWLinesCutoff: 'medium' })"
+        },
+        {
+          "text": "Long",
+          "action": "set({ VDWLinesCutoff: 'long' })"
         }
       ]
     }

@@ -15,7 +15,14 @@ define(function(require) {
         elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
         temperature_control,
-        keShading, chargeShading, showVDWLines,VDWLinesRatio,
+        keShading, chargeShading,
+        showVDWLines,
+        VDWLinesCutoff = "medium",
+        VDWLinesCutoffMap = {
+          "short": 1.33,
+          "medium": 1.67,
+          "long": 2.0
+        },
         showClock,
         lennardJoneForces, coulombForces,
         gravitationalField = false,
@@ -103,7 +110,7 @@ define(function(require) {
           showClock             : true,
           viewRefreshInterval   : 50,
           timeStep              : 1,
-          VDWLinesRatio         : 1.99,
+          VDWLinesCutoff        : "medium",
           viscosity             : 0,
 
           /**
@@ -149,6 +156,15 @@ define(function(require) {
 
           set_sigma: function(s) {
             console.log("set_sigma: This method is temporarily deprecated");
+          },
+
+          set_VDWLinesCutoff: function(cutoff) {
+            var ratio;
+            this.VDWLinesCutoff = cutoff;
+            ratio = VDWLinesCutoffMap[cutoff];
+            if (ratio && engine) {
+              engine.setVDWLinesRatio(ratio);
+            }
           },
 
           set_gravitationalField: function(gf) {
@@ -671,7 +687,7 @@ define(function(require) {
       keShading           = properties.keShading,
       chargeShading       = properties.chargeShading;
       showVDWLines        = properties.showVDWLines;
-      VDWLinesRatio       = properties.VDWLinesRatio;
+      VDWLinesCutoff      = properties.VDWLinesCutoff;
       showClock           = properties.showClock;
       timeStep            = properties.timeStep;
       viscosity           = properties.viscosity;
@@ -681,6 +697,7 @@ define(function(require) {
       engine.useCoulombInteraction(properties.coulombForces);
       engine.useThermostat(temperature_control);
       engine.setViscosity(viscosity);
+      engine.setVDWLinesRatio(VDWLinesCutoffMap[VDWLinesCutoff]);
       engine.setGravitationalField(gravitationalField);
 
       engine.setTargetTemperature(temperature);

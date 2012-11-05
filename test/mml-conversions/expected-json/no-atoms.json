@@ -8,7 +8,7 @@
   "keShading": false,
   "chargeShading": true,
   "showVDWLines": false,
-  "VDWLinesRatio": 2,
+  "VDWLinesCutoff": "long",
   "gravitationalField": false,
   "showClock": true,
   "viewRefreshInterval": 50,

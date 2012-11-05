@@ -4,7 +4,7 @@
   "height": 0.5,
   "chargeShading": false,
   "showVDWLines": false,
-  "VDWLinesRatio": 1.99,
+  "VDWLinesCutoff": "long",
   "elements": [
     {
       "id": 0,
