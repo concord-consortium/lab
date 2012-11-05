@@ -65,10 +65,10 @@ define(function(require) {
       listState.index++;
       listState.counter++;
       copyModelState(list[listState.index]);
-      listState.length = list.length
+      listState.length = list.length;
       if (listState.length > listState.maxSize) {
         list.splice(1,1);
-        listState.length = list.length
+        listState.length = list.length;
         listState.index = listState.maxSize-1;
         listState.startCounter++;
       }
@@ -109,6 +109,16 @@ define(function(require) {
       }
     }
 
+    function checkIndexArg(index) {
+      if (index < 0) {
+        throw new Error("TickHistory: extract index [" + index + "] less than 0");
+      }
+      if (index >= list.length) {
+        throw new Error("TickHistory: extract index [" + index + "] greater than list.length: " + list.length);
+      }
+      return index;
+    }
+
     //
     // Public methods
     //
@@ -120,14 +130,15 @@ define(function(require) {
       push();
     };
 
+    tickHistory.returnTick = function(ptr) {
+      var i = ptr || listState.index;
+      checkIndexArg(i);
+      return list[i];
+    };
+
     tickHistory.extract = function(ptr) {
       var i = ptr || listState.index;
-      if (i < 0) {
-        throw new Error("TickHistory: extract index [" + i + "] less than 0");
-      }
-      if (i >= list.length) {
-        throw new Error("TickHistory: extract index [" + i + "] greater than list.length: " + list.length);
-      }
+      checkIndexArg(i);
       extract(list[i]);
     };
 

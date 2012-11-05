@@ -550,13 +550,16 @@ define(function(require) {
     model.getStatsHistory = function() {
       var i, len,
           tick,
+          KE, PE,
           ret = [];
 
       ret.push("time (fs)\ttotal PE (eV)\ttotal KE (eV)\ttotal energy (eV)");
 
-      for (i = 0, len = tick_history_list.length; i < len; i++) {
-        tick = tick_history_list[i];
-        ret.push(tick.time + "\t" + tick.pe + "\t" + tick.ke + "\t" + (tick.pe+tick.ke));
+      for (i = 0, len = tickHistory.get("length"); i < len; i++) {
+        tick = tickHistory.returnTick(i);
+        pe = tick.output.PE;
+        ke = tick.output.KE;
+        ret.push(tick.output.time + "\t" + pe + "\t" + ke + "\t" + (pe+ke));
       }
       return ret.join('\n');
     };
