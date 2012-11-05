@@ -1,4 +1,4 @@
-/*global define model layout $ alert ACTUAL_ROOT grapher */
+/*global define model $ alert ACTUAL_ROOT grapher d3*/
 /*jshint eqnull: true boss: true */
 define(function (require) {
   // Dependencies.
@@ -343,9 +343,7 @@ define(function (require) {
         onLoadScripts.push( makeFunctionInScriptContext( getStringFromArray(model.onLoad) ) );
       }
 
-      modelUrl = ACTUAL_ROOT + model.url;
-
-      $.get(modelUrl).done(function(modelConfig) {
+      $.get(ACTUAL_ROOT + model.url).done(function(modelConfig) {
 
         // Deal with the servers that return the json as text/plain
         modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
@@ -984,7 +982,6 @@ define(function (require) {
     */
     function loadInteractive(newInteractive, viewSelector) {
       var model,
-          modelURL,
           componentJsons,
           components = {},
           component,
@@ -993,7 +990,7 @@ define(function (require) {
           div,
           componentId,
           $top, $right, $rightwide, $bottom,
-          i, j, k, ii;
+          i, j, ii;
 
       componentCallbacks = [];
       interactive = newInteractive;
