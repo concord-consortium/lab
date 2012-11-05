@@ -64,16 +64,17 @@
       ]
     },
     {
-      "type": "pressureGraph",
-      "id": "pressure-chart",
+      "type": "barGraph",
+      "id": "bar-graph",
       "options": {
-        "xmax": 100
+        "minValue": 0,
+        "maxValue": 2
       }
     }
   ],
   "layout": {
     "rightwide": [
-      "pressure-chart"
+      "bar-graph"
     ]
   }
 }
