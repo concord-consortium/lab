@@ -542,7 +542,7 @@ define(function(require) {
         temperature : temperature,
         pressure    : container_pressure(),
         current_step: tickHistory.get("counter"),
-        steps       : tick_history_list.length-1
+        steps       : tickHistory.get("length")-1
       };
     };
 
