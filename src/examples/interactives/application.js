@@ -252,7 +252,7 @@ var ROOT = "/examples",
     // construct link to embeddable version of Interactive
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
-    jsonModelPath = controller.currentModel.url;
+    jsonModelPath = interactive.models[0].url;
     $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
 
     // construct Java MW link for running Interactive via jnlp
@@ -519,7 +519,7 @@ var ROOT = "/examples",
             ymax:      5.0
           };
 
-      $.extend(options, controller.currentModel.energyGraphOptions || []);
+      $.extend(options, interactive.models[0].energyGraphOptions || []);
       resetModelEnergyData();
       options.dataset = modelEnergyData;
       modelEnergyGraph = grapher.realTimeGraph('#model-energy-graph-chart', options);
