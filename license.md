@@ -80,6 +80,7 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
 21. [jQuery UI Touch Punch](http://http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 22. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
+23. [underscore](https://github.com/documentcloud/underscore): [MIT](http://www.opensource.org/licenses/MIT)
 
 The Sass mixins in the directories: `src/sass/bourbon` and `src/sass/neat` are used to produce some
 of the CSS used in the Lab project and are distributed under the MIT license.

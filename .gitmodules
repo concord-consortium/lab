@@ -67,3 +67,6 @@
 [submodule "src/vendor/backbone"]
 	path = src/vendor/backbone
 	url = git://github.com/documentcloud/backbone.git
+[submodule "src/vendor/underscore"]
+	path = src/vendor/underscore
+	url = git://github.com/documentcloud/underscore.git

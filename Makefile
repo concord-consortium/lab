@@ -246,6 +246,7 @@ server/public/vendor: \
 	server/public/vendor/text \
 	server/public/vendor/domReady \
 	server/public/vendor/backbone \
+	server/public/vendor/underscore \
 	server/public/favicon.ico
 
 server/public/vendor/dsp.js:
@@ -368,6 +369,12 @@ server/public/vendor/backbone:
 	cp src/vendor/backbone/backbone.js server/public/vendor/backbone
 	cp src/vendor/backbone/LICENSE server/public/vendor/backbone
 	cp src/vendor/backbone/README.md server/public/vendor/backbone
+
+server/public/vendor/underscore:
+	mkdir -p server/public/vendor/underscore
+	cp src/vendor/underscore/underscore.js server/public/vendor/underscore
+	cp src/vendor/underscore/LICENSE server/public/vendor/underscore
+	cp src/vendor/underscore/README.md server/public/vendor/underscore
 
 server/public/vendor/codemirror:
 	mkdir -p server/public/vendor/codemirror
