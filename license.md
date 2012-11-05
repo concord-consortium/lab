@@ -55,8 +55,6 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
     Codemirror2 includes a number of modules from third parties. All of the modules are licensed under either the MIT or BSD
     license except for the following which are excluded during the Make process where resources from `src/vendor/` are
     generated and copied to `server/public/vendor/`.
-21. [jQuery UI Touch Punch](http://http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
-    and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 
     **Licensing of Excluded Modules**
 
@@ -78,6 +76,10 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
     10.  src/vendor/codemirror2/mode/xquery/xquery.js: MIT
     11.  src/vendor/codemirror2/theme/xq-dark.css: MIT
     12.  src/vendor/codemirror2/lib/util/foldcode.js: MIT
+
+21. [jQuery UI Touch Punch](http://http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+    and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
+22. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
 
 The Sass mixins in the directories: `src/sass/bourbon` and `src/sass/neat` are used to produce some
 of the CSS used in the Lab project and are distributed under the MIT license.

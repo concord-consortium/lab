@@ -245,6 +245,7 @@ server/public/vendor: \
 	server/public/vendor/requirejs \
 	server/public/vendor/text \
 	server/public/vendor/domReady \
+	server/public/vendor/backbone \
 	server/public/favicon.ico
 
 server/public/vendor/dsp.js:
@@ -361,6 +362,12 @@ server/public/vendor/domReady:
 	cp src/vendor/domReady/domReady.js server/public/vendor/domReady
 	cp src/vendor/domReady/LICENSE server/public/vendor/domReady
 	cp src/vendor/domReady/README.md server/public/vendor/domReady
+
+server/public/vendor/backbone:
+	mkdir -p server/public/vendor/backbone
+	cp src/vendor/backbone/backbone.js server/public/vendor/backbone
+	cp src/vendor/backbone/LICENSE server/public/vendor/backbone
+	cp src/vendor/backbone/README.md server/public/vendor/backbone
 
 server/public/vendor/codemirror:
 	mkdir -p server/public/vendor/codemirror

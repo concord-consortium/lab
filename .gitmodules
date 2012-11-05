@@ -64,3 +64,6 @@
 [submodule "src/vendor/jquery-ui-touch-punch"]
 	path = src/vendor/jquery-ui-touch-punch
 	url = git://github.com/furf/jquery-ui-touch-punch.git
+[submodule "src/vendor/backbone"]
+	path = src/vendor/backbone
+	url = git://github.com/documentcloud/backbone.git
