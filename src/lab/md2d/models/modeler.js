@@ -537,6 +537,7 @@ define(function(require) {
 
     model.getStats = function() {
       return {
+        time        : time,
         speed       : average_speed(),
         ke          : ke,
         temperature : temperature,
