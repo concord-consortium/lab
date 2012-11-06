@@ -23,17 +23,10 @@ requirejs([
   };
 
   var initialization_options = {
-        lennard_jones_forces: true,
-        coulomb_forces: true,
         mol_number: 50,
+        lennardJonesForces: true,
+        coulombForces: true,
         viewRefreshInterval: 100
-      },
-      node_options = {
-        xdomain: 100,
-        ydomain: 100,
-        temperature: 3,
-        rmin: 4.4,
-        mol_rmin_radius_factor: 0.38
       };
 
   suite.addBatch({
@@ -287,30 +280,6 @@ requirejs([
       }
     }
   });
-
-  // Failing ATM. Maybe later, after we start using physical units. RPK 3-2-2012
-  // suite.addBatch({
-  //   "model energy calculations": {
-  //     topic: function() {
-  //       return model = modeler.model();
-  //     },
-  //     "10 molecules at a temperature of 5 have an average speed of 0.2": function(model) {
-  //       node_options.num = 10;
-  //       model.nodes(node_options).initialize(initialization_options);
-  //       assert.inDelta(model.speed(), 0.1, 0.025);
-  //     },
-  //     "100 molecules at a temperature of 5 have an average speed of 0.2": function(model) {
-  //       node_options.num = 100;
-  //       model.nodes(node_options).initialize(initialization_options);
-  //       assert.inDelta(model.speed(), 0.2, 0.05);
-  //     },
-  //     "10 molecules at a temperature of 3 have an average speed of 0.1": function(model) {
-  //       node_options.num = 10;
-  //       model.nodes(node_options).initialize(initialization_options);
-  //       assert.inDelta(model.speed(), 0.01, 0.0025);
-  //     },
-  //   }
-  // });
 
   suite.export(module);
 });
