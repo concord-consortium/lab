@@ -37,7 +37,7 @@
     {
       "type": "slider",
       "id": "epsilon-slider",
-      "min": 0.001,
+      "min": 0.002,
       "max": 0.400,
       "initialValue": 0.14,
       "displayValue": "return format('1.3f')(value)",
@@ -51,7 +51,7 @@
           "label": "strong"
         }
       ],
-      "steps": 399,
+      "steps": 199,
       "title": "Attraction between atoms",
       "action": "setElementProperties(2, { epsilon: -value });"
     },
