@@ -806,65 +806,6 @@ define(function (require, exports, module) {
           assignShortcutReferences.obstacles();
         },
 
-        // Function initializes special structure for keeping pressure probes data.
-        // Arrays store historical data used during interpolation. This function
-        // doesn't expect any arguments - it always validates all buffers and create
-        // new if it's necessary (e.g. when obstacle was added).
-        // To read final, interpolated pressure value in Bar, call this function:
-        // getPressureFromProbe(i, name)
-        // where 'obstacleIdx' is an index of obstacle containing this probe
-        // and 'probeName' is: 'west', 'north', 'east', 'south'.
-        initializePressureBuffers = function() {
-          var i;
-          for (i = 0; i < N_obstacles; i++) {
-            if (obstacleWestProbe[i]) {
-              pressureBuffers[i] = pressureBuffers[i] || {};
-              pressureBuffers[i].west = pressureBuffers[i].west || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
-              pressureBuffers[i].westIdx = pressureBuffers[i].westIdx || 0;
-            }
-            if (obstacleNorthProbe[i]) {
-              pressureBuffers[i] = pressureBuffers[i] || {};
-              pressureBuffers[i].north = pressureBuffers[i].north || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
-              pressureBuffers[i].northIdx = pressureBuffers[i].northIdx || 0;
-            }
-            if (obstacleEastProbe[i]) {
-              pressureBuffers[i] = pressureBuffers[i] || {};
-              pressureBuffers[i].east = pressureBuffers[i].east || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
-              pressureBuffers[i].eastIdx = pressureBuffers[i].eastIdx || 0;
-            }
-            if (obstacleSouthProbe[i]) {
-              pressureBuffers[i] = pressureBuffers[i] || {};
-              pressureBuffers[i].south = pressureBuffers[i].south || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
-              pressureBuffers[i].southIdx = pressureBuffers[i].southIdx || 0;
-            }
-          }
-        },
-
-        // Returns final, interpolated pressure value in Bar.
-        // 'obstacleIdx' is an index of obstacle containing desired probe,
-        // 'probeName' is: 'west', 'north', 'east', 'south'.
-        getPressureFromProbe = function (obstacleIdx, probeName) {
-          // Classic MW converts impulses 2mv/dt to pressure in Bar using constant: 1666667.
-          // See: the header of org.concord.mw2d.models.RectangularObstacle.
-          // However, Classic MW also uses different units for mass and length:
-          // - 120amu instead of 1amu,
-          // - 0.1A instead of 1nm.
-          // We should convert mass, velocity and obstacle height to Next Gen units.
-          // Length units reduce themselves (velocity divided by height or width), only mass is left.
-          // So, divide classic MW constant 1666667 by 120 - the result is 13888.89.
-          // [ There is unit module available, however for reduction of computational cost,
-          // include conversion in the pressure constant, especially considering the fact that
-          // conversion from 120amu to amu is quite simple. ]
-          var dim;
-          if (probeName === 'west' || probeName === 'east')
-            dim = obstacleHeight[obstacleIdx];
-          else
-            dim = obstacleWidth[obstacleIdx];
-
-          return arrays.average(pressureBuffers[obstacleIdx][probeName]) *
-            13888.89 / dim;
-        },
-
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
         T_windowed,
 
@@ -1006,41 +947,109 @@ define(function (require, exports, module) {
           computeSystemRotation();
         },
 
-        // Calculate x(t+dt, i) from v(t) and a(t)
-        updatePosition = function(i) {
-          x[i] += vx[i] * dt;
-          y[i] += vy[i] * dt;
-        },
 
-        updateObstaclePosition = function(i) {
-          // Fast path when obstacle isn't movable.
-          if (obstacleMass[i] === Infinity) return;
 
-          var ax, ay, drag,
-              vx = obstacleVX[i],
-              vy = obstacleVY[i],
-              // External forces are defined per mass unit!
-              // So, they are accelerations in fact.
-              extFx = obstacleExtFX[i],
-              extFy = obstacleExtFY[i];
+        // ####################################################################
+        // #             Functions handling pressure calculation.             #
+        // ####################################################################
 
-          if (vx || vy || extFx || extFy || gravitationalField) {
-            drag = viscosity * obstacleFriction[i];
-            ax = extFx - drag * vx;
-            ay = extFy - drag * vy - gravitationalField;
-
-            obstacleXPrev[i] = obstacleX[i];
-            obstacleYPrev[i] = obstacleY[i];
-
-            // Update positions.
-            obstacleX[i] += vx * dt + 0.5 * ax * dt_sq;
-            obstacleY[i] += vy * dt + 0.5 * ay * dt_sq;
-
-            // Update velocities.
-            obstacleVX[i] += ax * dt;
-            obstacleVY[i] += ay * dt;
+        // Function initializes special structure for keeping pressure probes data.
+        // Arrays store historical data used during interpolation. This function
+        // doesn't expect any arguments - it always validates all buffers and create
+        // new if it's necessary (e.g. when obstacle was added).
+        // To read final, interpolated pressure value in Bar, call this function:
+        // getPressureFromProbe(i, name)
+        // where 'obstacleIdx' is an index of obstacle containing this probe
+        // and 'probeName' is: 'west', 'north', 'east', 'south'.
+        initializePressureBuffers = function() {
+          var i;
+          for (i = 0; i < N_obstacles; i++) {
+            if (obstacleWestProbe[i]) {
+              pressureBuffers[i] = pressureBuffers[i] || {};
+              pressureBuffers[i].west = pressureBuffers[i].west || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
+              pressureBuffers[i].westIdx = pressureBuffers[i].westIdx || 0;
+            }
+            if (obstacleNorthProbe[i]) {
+              pressureBuffers[i] = pressureBuffers[i] || {};
+              pressureBuffers[i].north = pressureBuffers[i].north || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
+              pressureBuffers[i].northIdx = pressureBuffers[i].northIdx || 0;
+            }
+            if (obstacleEastProbe[i]) {
+              pressureBuffers[i] = pressureBuffers[i] || {};
+              pressureBuffers[i].east = pressureBuffers[i].east || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
+              pressureBuffers[i].eastIdx = pressureBuffers[i].eastIdx || 0;
+            }
+            if (obstacleSouthProbe[i]) {
+              pressureBuffers[i] = pressureBuffers[i] || {};
+              pressureBuffers[i].south = pressureBuffers[i].south || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
+              pressureBuffers[i].southIdx = pressureBuffers[i].southIdx || 0;
+            }
           }
         },
+
+        // Returns final, interpolated pressure value in Bar.
+        // 'obstacleIdx' is an index of obstacle containing desired probe,
+        // 'probeName' is: 'west', 'north', 'east', 'south'.
+        getPressureFromProbe = function (obstacleIdx, probeName) {
+          // Classic MW converts impulses 2mv/dt to pressure in Bar using constant: 1666667.
+          // See: the header of org.concord.mw2d.models.RectangularObstacle.
+          // However, Classic MW also uses different units for mass and length:
+          // - 120amu instead of 1amu,
+          // - 0.1A instead of 1nm.
+          // We should convert mass, velocity and obstacle height to Next Gen units.
+          // Length units reduce themselves (velocity divided by height or width), only mass is left.
+          // So, divide classic MW constant 1666667 by 120 - the result is 13888.89.
+          // [ There is unit module available, however for reduction of computational cost,
+          // include conversion in the pressure constant, especially considering the fact that
+          // conversion from 120amu to amu is quite simple. ]
+          var dim;
+          if (probeName === 'west' || probeName === 'east')
+            dim = obstacleHeight[obstacleIdx];
+          else
+            dim = obstacleWidth[obstacleIdx];
+
+          return arrays.average(pressureBuffers[obstacleIdx][probeName]) *
+            13888.89 / dim;
+        },
+
+        // Update special pressure buffers.
+        updatePressureProbesBuffers = function(duration) {
+          var i;
+          for (i = 0; i < N_obstacles; i++) {
+            if (obstacleWestProbe[i]) {
+              pressureBuffers[i].west[pressureBuffers[i].westIdx++] = obstacleWProbeValue[i] / duration;
+              obstacleWProbeValue[i] = 0;
+              if (pressureBuffers[i].westIdx > PRESSURE_BUFFERS_LEN) {
+                pressureBuffers[i].westIdx = 0;
+              }
+            }
+            if (obstacleNorthProbe[i]) {
+              pressureBuffers[i].north[pressureBuffers[i].northIdx++] = obstacleNProbeValue[i] / duration;
+              obstacleNProbeValue[i] = 0;
+              if (pressureBuffers[i].northIdx > PRESSURE_BUFFERS_LEN) {
+                pressureBuffers[i].northIdx = 0;
+              }
+            }
+            if (obstacleEastProbe[i]) {
+              pressureBuffers[i].east[pressureBuffers[i].eastIdx++] = obstacleEProbeValue[i] / duration;
+              obstacleEProbeValue[i] = 0;
+              if (pressureBuffers[i].eastIdx > PRESSURE_BUFFERS_LEN) {
+                pressureBuffers[i].eastIdx = 0;
+              }
+            }
+            if (obstacleSouthProbe[i]) {
+              pressureBuffers[i].south[pressureBuffers[i].southIdx++] = obstacleSProbeValue[i] / duration;
+              obstacleSProbeValue[i] = 0;
+              if (pressureBuffers[i].southIdx > PRESSURE_BUFFERS_LEN) {
+                pressureBuffers[i].southIdx = 0;
+              }
+            }
+          }
+        },
+
+        // ####################################################################
+        // #              Functions handling different collisions.            #
+        // ####################################################################
 
         // Constrain obstacle i to the area between the walls by simulating perfectly elastic collisions with the walls.
         bounceObstacleOffWalls = function(i) {
@@ -1084,7 +1093,7 @@ define(function (require, exports, module) {
 
         // Constrain particle i to the area between the walls by simulating perfectly elastic collisions with the walls.
         // Note this may change the linear and angular momentum.
-        bounceAtomOffWalls = function(i) {
+        bounceParticleOffWalls = function(i) {
           var r = radius[i],
               leftwall = r,
               bottomwall = r,
@@ -1128,7 +1137,7 @@ define(function (require, exports, module) {
           }
         },
 
-        bounceOffObstacles = function(i, x_prev, y_prev, updatePressure) {
+        bounceParticleOffObstacles = function(i, x_prev, y_prev, updatePressure) {
           // fast path if no obstacles
           if (N_obstacles < 1) return;
 
@@ -1240,55 +1249,9 @@ define(function (require, exports, module) {
           }
         },
 
-        // Update special pressure buffers.
-        updatePressureProbesBuffers = function(duration) {
-          var i;
-          for (i = 0; i < N_obstacles; i++) {
-            if (obstacleWestProbe[i]) {
-              pressureBuffers[i].west[pressureBuffers[i].westIdx++] = obstacleWProbeValue[i] / duration;
-              obstacleWProbeValue[i] = 0;
-              if (pressureBuffers[i].westIdx > PRESSURE_BUFFERS_LEN) {
-                pressureBuffers[i].westIdx = 0;
-              }
-            }
-            if (obstacleNorthProbe[i]) {
-              pressureBuffers[i].north[pressureBuffers[i].northIdx++] = obstacleNProbeValue[i] / duration;
-              obstacleNProbeValue[i] = 0;
-              if (pressureBuffers[i].northIdx > PRESSURE_BUFFERS_LEN) {
-                pressureBuffers[i].northIdx = 0;
-              }
-            }
-            if (obstacleEastProbe[i]) {
-              pressureBuffers[i].east[pressureBuffers[i].eastIdx++] = obstacleEProbeValue[i] / duration;
-              obstacleEProbeValue[i] = 0;
-              if (pressureBuffers[i].eastIdx > PRESSURE_BUFFERS_LEN) {
-                pressureBuffers[i].eastIdx = 0;
-              }
-            }
-            if (obstacleSouthProbe[i]) {
-              pressureBuffers[i].south[pressureBuffers[i].southIdx++] = obstacleSProbeValue[i] / duration;
-              obstacleSProbeValue[i] = 0;
-              if (pressureBuffers[i].southIdx > PRESSURE_BUFFERS_LEN) {
-                pressureBuffers[i].southIdx = 0;
-              }
-            }
-          }
-        },
-
-        // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
-        // call once when a = a(t) and once when a = a(t+dt)
-        halfUpdateVelocity = function(i) {
-          var m = mass[i];
-          vx[i] += 0.5*ax[i]*dt;
-          px[i] = m * vx[i];
-          vy[i] += 0.5*ay[i]*dt;
-          py[i] = m * vy[i];
-        },
-
-        // Removes velocity and acceleration from atom i
-        pinAtom = function(i) {
-          vx[i] = vy[i] = ax[i] = ay[i] = 0;
-        },
+        // ####################################################################
+        // #         Functions calculating forces and accelerations.          #
+        // ####################################################################
 
         // Calculate distance and force (if distance < cut-off distance).
         calculateLJInteraction = function(i, j) {
@@ -1407,16 +1370,6 @@ define(function (require, exports, module) {
               ax[atom2Idx] -= fx;
               ay[atom2Idx] -= fy;
             }
-          }
-        },
-
-        updateGravitationalAccelerations = function() {
-          // fast path if there is no gravitationalField
-          if (!gravitationalField) return;
-          var i;
-
-          for (i = 0; i < N; i++) {
-            ay[i] -= gravitationalField;
           }
         },
 
@@ -1620,11 +1573,29 @@ define(function (require, exports, module) {
           }
         },
 
-        // Accumulate acceleration into a(t+dt, i) and a(t+dt, j) for all possible interactions, fields
-        // and forces connected with atoms. Note that data from the previous time step should be cleared
-        // from arrays ax and ay before calling this function!
+        updateGravitationalAccelerations = function() {
+          // fast path if there is no gravitationalField
+          if (!gravitationalField) return;
+          var i;
+
+          for (i = 0; i < N; i++) {
+            ay[i] -= gravitationalField;
+          }
+        },
+
+        // ####################################################################
+        // #               Integration main helper functions.                 #
+        // ####################################################################
+
+        // Accumulate acceleration into a(t + dt) from all possible interactions, fields
+        // and forces connected with atoms.
         updateParticlesAccelerations = function () {
           var i, inverseMass;
+
+          // Zero out a(t) for accumulation of forces into a(t + dt).
+          for (i = 0; i < N; i++) {
+            ax[i] = ay[i] = 0;
+          }
 
           // Check if the neighbor list should be recalculated.
           updateNeighborList = neighborList.shouldUpdate(x, y);
@@ -1647,7 +1618,7 @@ define(function (require, exports, module) {
           // ax and ay are FORCES below this point
           // ######################################
 
-          // Accumulate forces into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between
+          // Accumulate forces into a(t + dt) for all pairwise interactions between
           // particles:
           // Short-range forces (Lennard-Jones interaction).
           console.time('short-range forces');
@@ -1658,19 +1629,19 @@ define(function (require, exports, module) {
           updateLongRangeForces();
           console.timeEnd('long-range forces');
 
-          // Accumulate forces from radially bonded interactions into a(t+dt).
+          // Accumulate forces from radially bonded interactions into a(t + dt).
           updateRadialBondForces();
 
-          // Accumulate forces from angularly bonded interactions into a(t+dt).
+          // Accumulate forces from angularly bonded interactions into a(t + dt).
           updateAngularBondForces();
 
-          // Accumulate forces from restraint forces into a(t+dt).
+          // Accumulate forces from restraint forces into a(t + dt).
           updateRestraintForces();
 
-          // Accumulate forces from spring forces into a(t+dt).
+          // Accumulate forces from spring forces into a(t + dt).
           updateSpringForces();
 
-          // Accumulate drag forces into a(t+dt).
+          // Accumulate drag forces into a(t + dt).
           updateFrictionForces();
 
           // Convert ax, ay from forces to accelerations!
@@ -1684,13 +1655,106 @@ define(function (require, exports, module) {
           // ax and ay are ACCELERATIONS below this point
           // ############################################
 
-          // Accumulate optional gravitational accelerations into a(t+dt).
+          // Accumulate optional gravitational accelerations into a(t + dt).
           updateGravitationalAccelerations();
+        },
+
+        // Half of the update of v(t + dt) and p(t + dt) using a. During a single integration loop,
+        // call once when a = a(t) and once when a = a(t+dt).
+        halfUpdateVelocity = function() {
+          var i, m;
+          for (i = 0; i < N; i++) {
+            m = mass[i];
+            vx[i] += 0.5 * ax[i] * dt;
+            px[i] = m * vx[i];
+            vy[i] += 0.5 * ay[i] * dt;
+            py[i] = m * vy[i];
+          }
+        },
+
+        // Calculate r(t + dt, i) from v(t + 0.5 * dt).
+        updateParticlesPosition = function() {
+          var width100  = size[0] * 100,
+              height100 = size[1] * 100,
+              xPrev, yPrev, i;
 
           for (i = 0; i < N; i++) {
-            // Clearing the acceleration here from pinned atoms will cause the acceleration
-            // to be zero for both halfUpdateVelocity methods and updatePosition, freezing the atom.
-            if (pinned[i]) pinAtom(i);
+            xPrev = x[i];
+            yPrev = y[i];
+
+            x[i] += vx[i] * dt;
+            y[i] += vy[i] * dt;
+
+            // Simple check if model has diverged. Prevents web browser from crashing.
+            // isNaN tests not only x, y, but also vx, vy, ax, ay as test is done after
+            // updateParticlesPosition(). If a displacement during one step is larger than width * 100
+            // (or height * 100) it means that the velocity is far too big for the current time step.
+            if (isNaN(x[i]) || isNaN(y[i]) ||
+                Math.abs(x[i]) > width100 || Math.abs(y[i]) > height100) {
+              throw new Error("Model has diverged!");
+            }
+
+            // Bounce off walls.
+            bounceParticleOffWalls(i);
+            // Bounce off obstacles, update pressure probes.
+            bounceParticleOffObstacles(i, xPrev, yPrev, true);
+          }
+        },
+
+        // Removes velocity and acceleration from pinned atoms.
+        pinAtoms = function() {
+          var i;
+
+          for (i = 0; i < N; i++) {
+            if (pinned[i]) {
+              vx[i] = vy[i] = ax[i] = ay[i] = 0;
+            }
+          }
+        },
+
+        // Update speed using velocities.
+        updateParticlesSpeed = function() {
+          var i;
+
+          for (i = 0; i < N; i++) {
+            speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
+          }
+        },
+
+        // Calculate new obstacles position using simple integration method.
+        updateObstaclesPosition = function() {
+          var ax, ay, vx, vy,
+              drag, extFx, extFy, i;
+
+          for (i = 0; i < N_obstacles; i++) {
+            // Fast path when obstacle isn't movable.
+            if (obstacleMass[i] === Infinity) continue;
+
+            vx = obstacleVX[i],
+            vy = obstacleVY[i],
+            // External forces are defined per mass unit!
+            // So, they are accelerations in fact.
+            extFx = obstacleExtFX[i],
+            extFy = obstacleExtFY[i];
+
+            if (vx || vy || extFx || extFy || gravitationalField) {
+              drag = viscosity * obstacleFriction[i];
+              ax = extFx - drag * vx;
+              ay = extFy - drag * vy - gravitationalField;
+
+              obstacleXPrev[i] = obstacleX[i];
+              obstacleYPrev[i] = obstacleY[i];
+
+              // Update positions.
+              obstacleX[i] += vx * dt + 0.5 * ax * dt_sq;
+              obstacleY[i] += vy * dt + 0.5 * ay * dt_sq;
+
+              // Update velocities.
+              obstacleVX[i] += ax * dt;
+              obstacleVY[i] += ay * dt;
+
+              bounceObstacleOffWalls(i);
+            }
           }
         },
 
@@ -1720,6 +1784,8 @@ define(function (require, exports, module) {
           }
         };
 
+        // ####################################################################
+        // ####################################################################
 
     return engine = {
 
@@ -2460,100 +2526,76 @@ define(function (require, exports, module) {
         }
       },
 
+      // Velocity Verlet integration scheme.
+      // See: http://en.wikipedia.org/wiki/Verlet_integration#Velocity_Verlet
+      // The current implementation is:
+      // 1. Calculate: v(t + 0.5 * dt) = v(t) + 0.5 * a(t) * dt
+      // 2. Calculate: r(t + dt) = r(t) + v(t + 0.5 * dt) * dt
+      // 3. Derive a(t + dt) from the interaction potential using r(t + dt)
+      // 4. Calculate: v(t + dt) = v(t + 0.5 * dt) + 0.5 * a(t + dt) * dt
       integrate: function(duration, _dt) {
-
-        var radius,
-            inverseMass;
+        var steps, iloop;
 
         if (!atomsHaveBeenCreated) {
           throw new Error("md2d: integrate called before atoms created.");
         }
 
-        // How much time to integrate over, in fs
-        if (duration == null)  duration = 100;
+        // How much time to integrate over, in fs.
+        if (duration === undefined)  duration = 100;
 
-        // The length of an integration timestep, in fs
-        if (_dt == null) _dt = 1;
+        // The length of an integration timestep, in fs.
+        if (_dt === undefined) _dt = 1;
 
-        dt = _dt;       // dt is a closure variable that helpers need access to
-        dt_sq = dt*dt;  // the squared time step is also needed by some helpers
+        dt = _dt;        // dt is a closure variable that helpers need access to
+        dt_sq = dt * dt; // the squared time step is also needed by some helpers.
 
-        // FIXME we still need to make bounceAtomOffWalls respect each atom's actual radius, rather than
-        // assuming just one radius as below
-        radius = elementRadius[0];
-
-        var t_start = time,
-            n_steps = Math.floor(duration/dt),  // number of steps
-            width100  = size[0] * 100,
-            height100 = size[1] * 100,
-            iloop,
-            i,
-            xPrev,
-            yPrev;
-
-        // Update accelerations directly only during first step.
-        // Later this is not necessary, as accelerations are
-        // available due to the previous integration calculations.
+        // Calculate accelerations a(t), where t = 0.
+        // Later this is not necessary, as a(t + dt) from
+        // previous step is used as a(t) in the current step.
         if (time === 0) {
           updateParticlesAccelerations();
         }
 
-        for (iloop = 1; iloop <= n_steps; iloop++) {
-          time = t_start + iloop*dt;
+        // Number of steps.
+        steps = Math.floor(duration / dt);
 
-          for (i = 0; i < N; i++) {
-            xPrev = x[i];
-            yPrev = y[i];
+        for (iloop = 1; iloop <= steps; iloop++) {
+          time += iloop * dt;
 
-            // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
-            halfUpdateVelocity(i);
+          // Calculate v(t + 0.5 * dt) using v(t) and a(t).
+          halfUpdateVelocity();
 
-            // Update r(t+dt) using v(t) and a(t)
-            updatePosition(i);
+          // Update r(t + dt) using v(t + 0.5 * dt).
+          updateParticlesPosition();
 
-            // Simple check if model has diverged. Prevents web browser from crashing.
-            // isNaN tests not only x, y, but also vx, vy, ax, ay as test is done after
-            // updatePosition(). If a displacement during one step is larger than width * 100
-            // (or height * 100) it means that the velocity is far too big for the current time step.
-            if (isNaN(x[i]) || isNaN(y[i]) ||
-                Math.abs(x[i]) > width100 || Math.abs(y[i]) > height100) {
-              throw new Error("Model has diverged!");
-            }
-
-            // Bounce off walls.
-            bounceAtomOffWalls(i);
-            // Bounce off obstacles, update pressure probes.
-            bounceOffObstacles(i, xPrev, yPrev, true);
-
-            // Zero out a(t, i) for accumulation of forces into a(t+dt, i)
-            ax[i] = ay[i] = 0;
-          }
-
-          // Accumulate acceleration into a(t+dt, i) and a(t+dt, j) for all possible interactions, fields
-          // and forces connected with atoms. Note that data from the previous time step should be cleared
-          // from arrays ax and ay before calling this function!
+          // Accumulate accelerations into a(t + dt) from all possible interactions, fields
+          // and forces connected with atoms.
           updateParticlesAccelerations();
 
-          for (i = 0; i < N; i++) {
-            // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
-            halfUpdateVelocity(i);
+          // Clearing the acceleration here from pinned atoms will cause the acceleration
+          // to be zero for both halfUpdateVelocity methods and updateParticlesPosition, freezing the atom.
+          pinAtoms();
 
-            // Now that we have velocity, update speed
-            speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
-          }
+          // Calculate v(t + dt) using v(t + 0.5 * dt) and a(t + dt).
+          halfUpdateVelocity();
 
-          // Move obstacles
-          for (i = 0; i < N_obstacles; i++) {
-            updateObstaclePosition(i);
-            bounceObstacleOffWalls(i);
-          }
+          // Now that we have velocity v(t + dt), update speed.
+          updateParticlesSpeed();
 
+          // Move obstacles using very simple integration.
+          updateObstaclesPosition();
+
+          // Adjust temperature, e.g. when heat bath is enabled.
           adjustTemperature();
+
         } // end of integration loop
 
+        // Collisions between particles and obstacles are collected during
+        // updateParticlesPosition() execution.
         updatePressureProbesBuffers(duration);
       },
 
+      // Minimize energy using steepest descend method.
       minimizeEnergy: function () {
             // Maximal length of displacement during one step of minimization.
         var stepLength   = 1e-3,
@@ -2586,9 +2628,9 @@ define(function (require, exports, module) {
             y[i] += ay[i] * delta;
 
             // Keep atoms in bounds.
-            bounceAtomOffWalls(i);
+            bounceParticleOffWalls(i);
             // Bounce off obstacles, but DO NOT update pressure probes.
-            bounceOffObstacles(i, xPrev, yPrev, false);
+            bounceParticleOffObstacles(i, xPrev, yPrev, false);
           }
 
           // Calculate accelerations.
