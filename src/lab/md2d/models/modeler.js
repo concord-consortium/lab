@@ -389,6 +389,10 @@ define(function(require) {
       var property, propsChanged = [];
       for (property in hash) {
         if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
+          // skip read-only properties
+          if (outputsByName[property]) {
+            throw new Error("Attempt to set read-only output property \"" + property + "\".");
+          }
           // look for set method first, otherwise just set the property
           if (properties["set_"+property]) {
             properties["set_"+property](hash[property]);
