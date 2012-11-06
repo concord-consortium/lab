@@ -368,6 +368,8 @@ define(function (require) {
           return createCheckbox(component);
         case 'pulldown':
           return createPulldown(component);
+        case 'radio':
+          return createRadio(component);
         case 'thermometer':
           thermometer = createThermometer(component);
           return thermometer;
@@ -593,6 +595,49 @@ define(function (require) {
       });
 
       return { elem: $pulldown };
+    }
+
+    function createRadio(component) {
+      var $div, $option, $span,
+          options = component.options || [],
+          option,
+          id = component.id,
+          i, ii;
+
+      $div = $('<div>').attr('id', id);
+      $div.addClass("component");
+
+      for (i=0, ii=options.length; i<ii; i++) {
+        option = options[i];
+        $option = $('<input>')
+          .attr('type', "radio")
+          .attr('name', id);
+        if (option.disabled) {
+          $option.attr("disabled", option.disabled);
+        }
+        if (option.selected) {
+          $option.attr("checked", option.selected);
+        }
+        $span = $('<span>')
+          .append($option)
+          .append(option.text);
+        $div.append($span).append("<br/>");
+
+        $option.change((function(option) {
+          return function() {
+            var scriptStr;
+            if (option.action){
+              scriptStr = getStringFromArray(option.action);
+              makeFunctionInScriptContext(scriptStr)();
+            } else if (option.loadModel){
+              model.stop();
+              loadModel(option.loadModel);
+            }
+          };
+        })(option));
+      }
+
+      return { elem: $div };
     }
 
     function createSlider(component) {
@@ -1040,7 +1085,6 @@ define(function (require) {
         component = createComponent(componentJsons[i]);
         components[componentJsons[i].id] = component;
       }
-
 
       // look at each div defined in layout, and add any components in that
       // array to that div. Then rm the component from components so we can
