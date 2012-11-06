@@ -27,8 +27,8 @@ define(function (require) {
         energyData = [[],[],[]],
         // Pressure Graph Controller, handles pressure data and its graphing.
         pressureGraphController,
-        // Bar graphs controllers list.
-        barGraphControllers = [],
+        // Bar graph controller.
+        barGraphController,
 
         setupScreenCalledTwice = false,
 
@@ -364,8 +364,6 @@ define(function (require) {
     }
 
     function createComponent(component) {
-      var controller;
-
       switch (component.type) {
         case 'button':
           return createButton(component);
@@ -379,11 +377,10 @@ define(function (require) {
           thermometer = createThermometer(component);
           return thermometer;
         case 'barGraph':
-          controller = BarGraphController(component);
-          barGraphControllers.push(controller);
+          barGraphController = BarGraphController(component);
           return {
-            elem:     controller.getViewContainer(),
-            callback: controller.modelLoadedCallback
+            elem:     barGraphController.getViewContainer(),
+            callback: barGraphController.modelLoadedCallback
           };
         case 'energyGraph':
           return createEnergyGraph(component);
@@ -986,7 +983,10 @@ define(function (require) {
       layout.addView('moleculeContainers', modelController.moleculeContainer);
       if (thermometer) layout.addView('thermometers', thermometer.component);
       if (energyGraph) layout.addView('energyGraphs', energyGraph);
+      // TODO: energyGraphs should be changed to lineGraphs?
       if (pressureGraphController) layout.addView('energyGraphs', pressureGraphController.getView());
+      if (barGraphController) layout.addView('barGraphs', barGraphController);
+
       $(window).unbind('resize');
 
       if (layoutStyle) {

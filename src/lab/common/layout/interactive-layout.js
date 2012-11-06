@@ -78,6 +78,10 @@ define(function (require) {
       setThermometerHeight(layout.views.thermometers[0], 0.8 * h);
     }
 
+    if (layout.views.barGraphs) {
+      layout.views.barGraphs[0].resize(h * 0.1, 0.8 * h);
+    }
+
     // FIXME this is a temporary hack ... put in layout code instead of memorializing it in the CSS,
     // which doesn't tend to get reviewed as closely.
 

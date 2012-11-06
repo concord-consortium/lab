@@ -13,7 +13,7 @@ define(function (require) {
         barGraphView = new BarGraphView({model: barGraphModel, id: component.id}),
 
         update = function () {
-          // FIXME: hardcoded just for testing.
+          // FIXME: hardcoded just for testing !!!
           barGraphModel.set({value: model.pressureProbes()[0].west});
         };
 
@@ -28,6 +28,19 @@ define(function (require) {
       // Returns view container (div).
       getViewContainer: function () {
         return barGraphView.$el;
+      },
+
+      resize: function (width, height) {
+        var newDim = {};
+
+        if (width !== undefined) {
+          newDim.width = width;
+        }
+        if (height !== undefined) {
+          newDim.height = height;
+        }
+
+        barGraphModel.set(newDim);
       }
     };
 

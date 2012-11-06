@@ -31,11 +31,17 @@ define(function (require) {
           // property2 = model.get("property2");
           // etc.
       var options = this.model.toJSON(),
-          padding = options.padding;
+          padding = {
+            left:   10,
+            top:    10,
+            right:  60,
+            bottom: 10
+          },
+          realWidth = options.width + padding.right + padding.left;
 
       // Set SVG element dimensions.
       this.vis.attr({
-        width:  options.width,
+        width:  realWidth,
         height: options.height
       });
 
@@ -57,13 +63,13 @@ define(function (require) {
 
       // Append Y axis.
       this.axisContainer
-        .attr("transform", "translate(" + (options.width - padding.right) + ", 0)")
+        .attr("transform", "translate(" + (realWidth - padding.right + 5) + ", 0)")
         .call(this.yAxis);
 
       // Setup bar.
       this.bar
         .attr({
-          width: (options.width - padding.left - padding.right) * options.barWidth,
+          width: (realWidth - padding.left - padding.right),
           x: padding.left
         })
         .style({
