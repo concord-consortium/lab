@@ -119,14 +119,14 @@ define(function (require) {
         mol_number          = modelConfig.mol_number;
         lennardJonesForces  = modelConfig.lennardJonesForces;
         coulombForces       = modelConfig.coulombForces;
-        temperatureControl = modelConfig.temperatureControl;
+        temperatureControl  = modelConfig.temperatureControl;
         targetTemperature   = modelConfig.targetTemperature;
         width               = modelConfig.width;
         height              = modelConfig.height;
         keShading           = modelConfig.keShading;
         chargeShading       = modelConfig.chargeShading;
         showVDWLines        = modelConfig.showVDWLines;
-        VDWLinesCutoff       = modelConfig.VDWLinesCutoff;
+        VDWLinesCutoff      = modelConfig.VDWLinesCutoff;
         showClock           = modelConfig.showClock;
         viewRefreshInterval = modelConfig.viewRefreshInterval;
         timeStep            = modelConfig.timeStep;
@@ -148,24 +148,24 @@ define(function (require) {
       function createModel() {
         initializeLocalVariables();
         model = Model({
-            elements            : elements,
-            targetTemperature   : targetTemperature,
-            lennardJonesForces  : lennardJonesForces,
-            coulombForces       : coulombForces,
-            temperatureControl : temperatureControl,
-            width               : width,
-            height              : height,
-            keShading           : keShading,
-            chargeShading       : chargeShading,
-            showVDWLines        : showVDWLines,
-            VDWLinesCutoff       : VDWLinesCutoff,
-            showClock           : showClock,
-            viewRefreshInterval : viewRefreshInterval,
-            timeStep            : timeStep,
-            viscosity           : viscosity,
-            gravitationalField  : gravitationalField,
-            images              : images
-          });
+          elements            : elements,
+          targetTemperature   : targetTemperature,
+          lennardJonesForces  : lennardJonesForces,
+          coulombForces       : coulombForces,
+          temperatureControl  : temperatureControl,
+          width               : width,
+          height              : height,
+          keShading           : keShading,
+          chargeShading       : chargeShading,
+          showVDWLines        : showVDWLines,
+          VDWLinesCutoff      : VDWLinesCutoff,
+          showClock           : showClock,
+          viewRefreshInterval : viewRefreshInterval,
+          timeStep            : timeStep,
+          viscosity           : viscosity,
+          gravitationalField  : gravitationalField,
+          images              : images
+        });
 
         if (atoms) {
           model.createNewAtoms(atoms);
