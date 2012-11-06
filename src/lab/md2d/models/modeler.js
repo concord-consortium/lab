@@ -380,11 +380,6 @@ define(function(require) {
       return (ave ? 1/ave*1000: 0);
     }
 
-    function set_targetTemperature(t) {
-      targetTemperature = t;
-      engine.setTargetTemperature(t);
-    }
-
     function set_properties(hash) {
       var property, propsChanged = [];
       for (property in hash) {
