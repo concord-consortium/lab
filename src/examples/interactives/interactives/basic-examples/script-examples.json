@@ -89,6 +89,29 @@
       ]
     },
     {
+      "type": "radio",
+      "id": "radio",
+      "options": [
+        {
+          "text": "Oil and Water",
+          "loadModel": "page3$1",
+          "selected": true
+        },
+        {
+          "text": "Oil and Water Mixed",
+          "loadModel": "oilAndWaterMix"
+        },
+        {
+          "text": "Show alert dialog",
+          "action": "alert('Alert!')"
+        },
+        {
+          "text": "This option is disabled",
+          "disabled": true
+        }
+      ]
+    },
+    {
       "type": "slider",
       "id": "temperature-property-slider",
       "title": "Temperature (set via property link)",
