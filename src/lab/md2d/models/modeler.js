@@ -79,7 +79,7 @@ define(function(require) {
           modelSampleRate       : 'default',
           coulombForces         : true,
           lennardJonesForces    : true,
-          temperature_control   : true,
+          temperatureControl   : true,
           gravitationalField    : false,
           keShading             : false,
           chargeShading         : false,
@@ -106,8 +106,8 @@ define(function(require) {
             }
           },
 
-          set_temperature_control: function(tc) {
-            this.temperature_control = tc;
+          set_temperatureControl: function(tc) {
+            this.temperatureControl = tc;
             if (engine) {
               engine.useThermostat(tc);
             }
@@ -633,7 +633,7 @@ define(function(require) {
 
       engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
       engine.useCoulombInteraction(model.get('coulombForces'));
-      engine.useThermostat(model.get('temperature_control'));
+      engine.useThermostat(model.get('temperatureControl'));
       engine.setViscosity(model.get('viscosity'));
       engine.setVDWLinesRatio(VDWLinesCutoffMap[model.get('VDWLinesCutoff')]);
       engine.setGravitationalField(model.get('gravitationalField'));
@@ -721,7 +721,7 @@ define(function(require) {
           "targetTemperature",
           "lennardJonesForces",
           "coulombForces",
-          "temperature_control",
+          "temperatureControl",
           "keShading",
           "chargeShading",
           "showVDWLines",

@@ -333,7 +333,7 @@ define(function (require) {
       scale();
 
       // Subscribe for model events.
-      model.addPropertiesListener(["temperature_control"], drawSymbolImages);
+      model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener(["keShading", "chargeShading", "showVDWLines", "VDWLinesCutoff", "showClock"],
           setup_drawables);
@@ -709,7 +709,7 @@ define(function (require) {
       // Place them in one row, dynamically calculate
       // y position.
       function drawSymbolImages() {
-          var heatBath = model.get('temperature_control'),
+          var heatBath = model.get('temperatureControl'),
               imageSelect, imageHeight,
               // Variables used for calculating proper y positions.
               // The unit for these values is percentage points!

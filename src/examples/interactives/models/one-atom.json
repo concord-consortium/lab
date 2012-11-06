@@ -1,5 +1,5 @@
 {
-  "temperature_control": false,
+  "temperatureControl": false,
   "width": 0.5,
   "height": 0.5,
   "chargeShading": false,

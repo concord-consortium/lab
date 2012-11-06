@@ -1,7 +1,7 @@
 {
-  "lennardJonesForces": true, 
+  "lennardJonesForces": true,
   "coulombForces": true,
-  "temperature_control": false,
+  "temperatureControl": false,
   "width": 7.2,
   "height": 4.5,
   "viscosity": 1,
@@ -4195,17 +4195,17 @@
   },
   "restraints": {
     "atomIndex": [
-      45, 
-      114, 
-      175, 
+      45,
+      114,
+      175,
       233
-    ], 
+    ],
     "k": [
-      1000, 
-      1000, 
-      1000, 
+      1000,
+      1000,
+      1000,
       1000
-    ], 
+    ],
     "x0": [
       6.352532179752181,
       6.926799103988826,

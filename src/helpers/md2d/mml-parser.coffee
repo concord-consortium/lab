@@ -518,7 +518,7 @@ parseMML = (mmlString) ->
     json =
       lennardJonesForces  : true
       coulombForces       : coulombForces
-      temperature_control : !!targetTemperature
+      temperatureControl  : !!targetTemperature
       width               : width
       height              : height
       viscosity           : viscosity

@@ -1,7 +1,7 @@
 {
-  "lennardJonesForces": true, 
+  "lennardJonesForces": true,
   "coulombForces": true,
-  "temperature_control": false,
+  "temperatureControl": false,
   "width": 3.88,
   "height": 2.38,
   "viscosity": 1,

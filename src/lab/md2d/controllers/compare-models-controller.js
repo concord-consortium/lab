@@ -31,7 +31,7 @@ define(function (require) {
         mol_number          = modelConfig.mol_number,
         lennardJonesForces  = modelConfig.lennardJonesForces,
         coulombForces       = modelConfig.coulombForces,
-        temperature_control = modelConfig.temperature_control,
+        temperatureControl = modelConfig.temperatureControl,
         targetTemperature   = modelConfig.targetTemperature,
         width               = modelConfig.width,
         height              = modelConfig.height,
@@ -97,7 +97,7 @@ define(function (require) {
         mol_number          = modelConfig.mol_number;
         lennardJonesForces  = modelConfig.lennardJonesForces;
         coulombForces       = modelConfig.coulombForces;
-        temperature_control = modelConfig.temperature_control;
+        temperatureControl = modelConfig.temperatureControl;
         targetTemperature   = modelConfig.targetTemperature;
         width               = modelConfig.width;
         height              = modelConfig.height;
@@ -131,7 +131,7 @@ define(function (require) {
             targetTemperature   : targetTemperature,
             lennardJonesForces  : lennardJonesForces,
             coulombForces       : coulombForces,
-            temperature_control : temperature_control,
+            temperatureControl : temperatureControl,
             width               : width,
             height              : height,
             keShading           : keShading,

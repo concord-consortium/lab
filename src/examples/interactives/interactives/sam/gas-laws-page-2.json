@@ -15,7 +15,7 @@
       "type": "button",
       "id": "abs-zero",
       "text": "Set to absolute zero",
-      "action": "set({temperature_control: true, targetTemperature: 0.00001});"
+      "action": "set({temperatureControl: true, targetTemperature: 0.00001});"
     },
     {
       "type": "button",
@@ -26,7 +26,7 @@
         "if (newTemp > 4000) {",
         "  newTemp = 4000;",
         "}",
-        "set({temperature_control: true, targetTemperature: newTemp});"
+        "set({temperatureControl: true, targetTemperature: newTemp});"
       ]
     },
     {
@@ -38,7 +38,7 @@
         "if (newTemp < 1) {",
         "  newTemp = 1;",
         "}",
-        "set({temperature_control: true, targetTemperature: newTemp});"
+        "set({temperatureControl: true, targetTemperature: newTemp});"
       ]
     }
   ]

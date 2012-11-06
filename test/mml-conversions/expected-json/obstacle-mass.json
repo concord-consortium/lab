@@ -1,10 +1,10 @@
 {
-  "lennardJonesForces": true, 
+  "lennardJonesForces": true,
   "coulombForces": true,
   "width": 9.11,
   "height": 1.18,
   "viscosity": 1,
-  "temperature_control": false,
+  "temperatureControl": false,
   "keShading": false,
   "chargeShading": false,
   "showVDWLines": false,

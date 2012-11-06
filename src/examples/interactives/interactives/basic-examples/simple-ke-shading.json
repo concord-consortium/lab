@@ -21,13 +21,13 @@
       "type": "checkbox",
       "id": "temperature-control",
       "text": "Temperature Control (property link)",
-      "property": "temperature_control"
+      "property": "temperatureControl"
     },
     {
       "type": "checkbox",
       "id": "temperature-control-action",
       "text": "Temperature Control (onClick script defined)",
-      "onClick": "set({temperature_control: value})"
+      "onClick": "set({temperatureControl: value})"
     },
     {
       "type": "button",

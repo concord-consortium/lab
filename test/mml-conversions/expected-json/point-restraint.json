@@ -1,7 +1,7 @@
 {
   "lennardJonesForces": true,
   "coulombForces": false,
-  "temperature_control": false,
+  "temperatureControl": false,
   "width": 5,
   "height": 3,
   "viscosity": 1,
@@ -196,17 +196,17 @@
       5000
     ],
     "x0": [
-      0.45, 
-      1.35, 
-      2.25, 
-      3.15, 
+      0.45,
+      1.35,
+      2.25,
+      3.15,
       4.05
-    ], 
+    ],
     "y0": [
-      2.55, 
-      2.55, 
-      2.55, 
-      2.55, 
+      2.55,
+      2.55,
+      2.55,
+      2.55,
       2.55
     ]
   }

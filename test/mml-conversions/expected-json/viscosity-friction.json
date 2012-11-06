@@ -2,7 +2,7 @@
   "lennardJonesForces": true,
   "coulombForces": true,
   "viscosity": 0.25,
-  "temperature_control": true,
+  "temperatureControl": true,
   "width": 4.38,
   "height": 2.88,
   "keShading": false,

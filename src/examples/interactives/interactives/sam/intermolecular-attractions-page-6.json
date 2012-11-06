@@ -8,7 +8,7 @@
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
-      "onLoad": "set({temperature_control: true});"
+      "onLoad": "set({temperatureControl: true});"
     }
   ],
   "components": [
