@@ -27,7 +27,6 @@ define(function(require) {
         sampleTimes = [],
 
         modelOutputState,
-        model_listener,
         tickHistory,
 
         width = initialProperties.width,
@@ -563,7 +562,6 @@ define(function(require) {
       newStep = false;
       tickHistory.seekExtract(location);
       dispatch.seek();
-      if (model_listener) { model_listener(); }
       return tickHistory.get("counter");
     };
 
@@ -578,7 +576,6 @@ define(function(require) {
           tickHistory.decrementExtract();
           readModelState();
           dispatch.stepBack();
-          if (model_listener) { model_listener(); }
         }
       }
       return tickHistory.get("counter");
@@ -595,7 +592,6 @@ define(function(require) {
           tickHistory.incrementExtract();
           readModelState();
           dispatch.stepForward();
-          if (model_listener) { model_listener(); }
         } else {
           tick();
         }
@@ -1308,15 +1304,6 @@ define(function(require) {
     };
 
     /**
-      Set the 'model_listener' function, which is called on tick events.
-    */
-    model.setModelListener = function(listener) {
-      model_listener = listener;
-      model.on('tick', model_listener);
-      return model;
-    };
-
-    /**
       Add a listener callback that will be notified when any of the properties in the passed-in
       array of properties is changed. (The argument `properties` can also be a string, if only a
       single name needs to be passed.) This is a simple way for views to update themselves in
@@ -1384,9 +1371,6 @@ define(function(require) {
 
     // Friction parameter temporarily applied to the live-dragged atom.
     model.LIVE_DRAG_FRICTION = 10;
-
-    // who is listening to model tick completions
-    model_listener = initialProperties.model_listener;
 
     // set the rest of the regular properties
     set_properties(initialProperties);
