@@ -14,27 +14,17 @@ define(function(require) {
     var model = {},
         elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
-        temperature_control,
-        keShading, chargeShading,
-        showVDWLines,
-        VDWLinesCutoff = "medium",
         VDWLinesCutoffMap = {
           "short": 1.33,
           "medium": 1.67,
           "long": 2.0
         },
-        showClock,
-        gravitationalField = false,
-        timeStep = 1,
         defaultMaxTickHistory = 1000,
         stopped = true,
         restart = false,
         newStep = false,
         lastSampleTime,
         sampleTimes = [],
-
-        // N.B. this is the thermostat (temperature control) setting
-        targetTemperature,
 
         modelOutputState,
         model_listener,
@@ -68,8 +58,6 @@ define(function(require) {
         restraints,
         // VDW Pairs
         vdwPairs,
-
-        viscosity,
 
         // The index of the "spring force" used to implement dragging of atoms in a running model
         liveDragSpringForceIndex,
@@ -336,10 +324,9 @@ define(function(require) {
       return s/n;
     }
 
-
-
     function tick(elapsedTime, dontDispatchTickEvent) {
       var t,
+          timeStep = model.get('timeStep'),
           sampleTime;
 
       if (!stopped) {
@@ -652,32 +639,19 @@ define(function(require) {
         num: num
       });
 
-      // Initialize properties
-      temperature_control = properties.temperature_control;
-      targetTemperature   = properties.targetTemperature;
-      keShading           = properties.keShading,
-      chargeShading       = properties.chargeShading;
-      showVDWLines        = properties.showVDWLines;
-      VDWLinesCutoff      = properties.VDWLinesCutoff;
-      showClock           = properties.showClock;
-      timeStep            = properties.timeStep;
-      viscosity           = properties.viscosity;
-      gravitationalField  = properties.gravitationalField;
-
-      engine.useLennardJonesInteraction(properties.lennardJonesForces);
-      engine.useCoulombInteraction(properties.coulombForces);
-      engine.useThermostat(temperature_control);
-      engine.setViscosity(viscosity);
-      engine.setVDWLinesRatio(VDWLinesCutoffMap[VDWLinesCutoff]);
-      engine.setGravitationalField(gravitationalField);
-
-      engine.setTargetTemperature(targetTemperature);
+      engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
+      engine.useCoulombInteraction(model.get('coulombForces'));
+      engine.useThermostat(model.get('temperature_control'));
+      engine.setViscosity(model.get('viscosity'));
+      engine.setVDWLinesRatio(VDWLinesCutoffMap[model.get('VDWLinesCutoff')]);
+      engine.setGravitationalField(model.get('gravitationalField'));
+      engine.setTargetTemperature(model.get('targetTemperature'));
 
       if (config.x && config.y) {
         engine.initializeAtomsFromProperties(config);
       } else {
         engine.initializeAtomsRandomly({
-          temperature: targetTemperature
+          temperature: model.get('targetTemperature')
         });
         if (config.relax) engine.relaxToTemperature();
       }
