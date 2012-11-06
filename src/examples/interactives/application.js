@@ -62,7 +62,8 @@ var ROOT = "/examples",
       interactive,
       hash,
       jsonModelPath, contentItems, mmlPath,
-      viewType;
+      viewType,
+      buttonHandlersAdded = false;
 
   if (!document.location.hash) {
     if ($selectInteractive.length > 0) {
@@ -303,37 +304,48 @@ var ROOT = "/examples",
       });
     }
 
-    $updateInteractiveButton.click(function() {
-      interactive = JSON.parse(editor.getValue());
-      controller.loadInteractive(interactive, '#interactive-container');
-    });
+    if (!buttonHandlersAdded) {
+      buttonHandlersAdded = true;
+      $updateInteractiveButton.on('click', function() {
+        interactive = JSON.parse(editor.getValue());
+        controller.loadInteractive(interactive, '#interactive-container');
+      });
 
-    $autoFormatSelectionButton.click(function() {
-      var range = getSelectedRange();
-      editor.autoFormatRange(range.from, range.to);
-    });
+      $autoFormatSelectionButton.on('click', function() {
+        var range = getSelectedRange();
+        editor.autoFormatRange(range.from, range.to);
+      });
 
-    $showEditor.change(function() {
-      if (this.checked) {
-        $editorContent.show(100);
-      } else {
-        $editorContent.hide(100);
-      }
-    }).change();
+      $showEditor.change(function() {
+        if (this.checked) {
+          $editorContent.show(100);
+        } else {
+          $editorContent.hide(100);
+        }
+      }).change();
 
-    //
-    // Benchmarks
-    //
-    $showBenchmarks.change(function() {
-      if (this.checked) {
-        $benchmarksContent.show(100);
-        $showModelEnergyGraph.attr("checked", false).change();
-        $showModelDatatable.attr("checked", false).change();
-        $showEditor.attr("checked", false).change();
-      } else {
-        $benchmarksContent.hide(100);
-      }
-    }).change();
+      //
+      // Benchmarks
+      //
+      $showBenchmarks.change(function() {
+        if (this.checked) {
+          $benchmarksContent.show(100);
+          $showModelEnergyGraph.attr("checked", false).change();
+          $showModelDatatable.attr("checked", false).change();
+          $showEditor.attr("checked", false).change();
+        } else {
+          $benchmarksContent.hide(100);
+        }
+      }).change();
+
+      $runBenchmarksButton.on('click', function() {
+        benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun, function() {
+          $runBenchmarksButton.attr('disabled', true);
+        }, function() {
+          $runBenchmarksButton.attr('disabled', false);
+        });
+      });
+    }
 
     benchmarksToRun = [
       {
@@ -431,18 +443,6 @@ var ROOT = "/examples",
         }
       }
     ];
-
-    // The enclosing function ends up getting called when a model is loaded, so make sure benchmarks
-    // run only once per click!
-    $runBenchmarksButton.off('click');
-    $runBenchmarksButton.on('click', function() {
-      console.log('clicked');
-      benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun, function() {
-        $runBenchmarksButton.attr('disabled', true);
-      }, function() {
-        $runBenchmarksButton.attr('disabled', false);
-      });
-    });
 
     //
     // Energy Graph
