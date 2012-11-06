@@ -143,24 +143,16 @@ define(function (require) {
           timeStep            : timeStep,
           viscosity           : viscosity,
           gravitationalField  : gravitationalField,
-          images              : images
+          images              : images,
+          atoms               : atoms,
+          mol_number          : mol_number,
+          relax               : !!mol_number,
+          radialBonds         : radialBonds,
+          angularBonds        : angularBonds,
+          restraints          : restraints,
+          createVdwPairs      : showVDWLines,
+          obstacles           : obstacles
         });
-
-        if (atoms) {
-          model.createNewAtoms(atoms);
-        } else if (mol_number) {
-          model.createNewAtoms(mol_number);
-          model.relax();
-        } else {
-          throw new Error("ModelController: tried to create a model without atoms or mol_number.");
-        }
-
-        if (radialBonds) model.createRadialBonds(radialBonds);
-        if (angularBonds) model.createAngularBonds(angularBonds);
-        if (restraints) model.createRestraints(restraints);
-        if (showVDWLines) model.createVdwPairs(atoms);
-        if (obstacles) model.createObstacles(obstacles);
-        model.initializeHistory();
       }
 
       /**

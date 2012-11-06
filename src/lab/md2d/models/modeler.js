@@ -649,7 +649,6 @@ define(function(require) {
       initializeNonEngineProperties(config);
 
       window.state = modelOutputState = {};
-      readModelState();
 
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
@@ -662,28 +661,24 @@ define(function(require) {
       engine.initializeRadialBonds(_radialBonds);
       radialBonds = engine.radialBonds;
       radialBondResults = engine.radialBondResults;
-      readModelState();
       return model;
     };
 
     model.createAngularBonds = function(_angularBonds) {
       engine.initializeAngularBonds(_angularBonds);
       angularBonds = engine.angularBonds;
-      readModelState();
       return model;
     };
 
     model.createRestraints = function(_restraints) {
       engine.initializeRestraints(_restraints);
       restraints = engine.restraints;
-      readModelState();
       return model;
     };
 
     model.createVdwPairs = function(_atoms) {
       engine.createVdwPairsArray(_atoms);
       vdwPairs = engine.vdwPairs;
-      readModelState();
       return model;
     };
 
@@ -706,11 +701,11 @@ define(function(require) {
 
       engine.initializeObstacles(_obstacles);
       obstacles = engine.obstacles;
-      readModelState();
       return model;
     };
 
     model.initializeHistory = function(maxSize) {
+      readModelState();
       maxSize = maxSize || defaultMaxTickHistory;
       tickHistory = TickHistory({
         input: [
@@ -1350,6 +1345,7 @@ define(function(require) {
       };
     };
 
+    // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function(includeAtoms) {
       var propCopy = $.extend({}, properties);
       if (includeAtoms) {
@@ -1403,6 +1399,28 @@ define(function(require) {
     }, function() {
       return modelOutputState.temperature;
     });
+
+    // Finally, if provided, set up the model objects (atoms, bonds, obstacles, and the rest)
+    // However if these are not provided, client code can create atoms, etc piecemeal
+
+    if (initialProperties.atoms) {
+      model.createNewAtoms(initialProperties.atoms);
+    } else if (initialProperties.mol_number) {
+      model.createNewAtoms(initialProperties.mol_number);
+      if (initialProperties.relax) model.relax();
+    }
+
+    if (initialProperties.radialBonds)  model.createRadialBonds(initialProperties.radialBonds);
+    if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
+    if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
+    if (initialProperties.showVDWLines) model.createVdwPairs(initialProperties.atoms);
+    if (initialProperties.obstacles)    model.createObstacles(initialProperties.obstacles);
+
+    // Initialize history if user provided atoms, etc, to save. Client code not passing in
+    // atoms needs to set up history itself, if it wants history to be saved.
+    if (atoms) {
+      model.initializeHistory();
+    }
 
     return model;
   };

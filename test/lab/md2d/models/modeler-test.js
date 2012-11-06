@@ -81,51 +81,49 @@ requirejs([
         assert.equal(total_charge, 0);
       },
       "creates a model with json and then gets values in json, modifies the model with new json, and confirms that settable properties change and immutable ones don't": function(model) {
+        var mol_number = 5;
         initialization_options = {
-          lennard_jones_forces: true,
-          coulomb_forces: true,
-          model_listener: false,
-          mol_number: 5,
+          lennardJonesForces: true,
+          colombForces: true,
+          mol_number: mol_number,
+          relax: false,
           width: 3,
           height: 4
         };
         model = Model(initialization_options);
-        model.createNewAtoms(initialization_options.mol_number);
 
         modelHash = model.serialize(true);
-        assert.equal(modelHash.lennard_jones_forces, initialization_options.lennard_jones_forces);
-        assert.equal(modelHash.coulomb_forces, initialization_options.coulomb_forces);
-        assert.equal(modelHash.atoms.x.length, initialization_options.mol_number);
+        assert.equal(modelHash.lennardJonesForces, initialization_options.lennardJonesForces);
+        assert.equal(modelHash.coulomb_forces, initialization_options.coulombForces);
+        assert.equal(modelHash.atoms.x.length, mol_number);
         assert.equal(modelHash.width, initialization_options.width);
         assert.equal(modelHash.height, initialization_options.height);
 
+        mol_number = 10;
         new_options = {
-          lennard_jones_forces: false,
-          coulomb_forces: false,
-          model_listener: true,
-          mol_number: 10,
+          lennardJonesForces: false,
+          colombForces: false,
           width: 4,
           height: 5
         };
         model.set(new_options);
-        model.createNewAtoms(new_options.mol_number);
+        model.createNewAtoms(mol_number);
 
         modelHash = model.serialize(true);
-        assert.equal(modelHash.lennard_jones_forces, new_options.lennard_jones_forces);
-        assert.equal(modelHash.coulomb_forces, new_options.coulomb_forces);
-        assert.equal(modelHash.atoms.x.length, new_options.mol_number);
+        assert.equal(modelHash.lennardJonesForces, new_options.lennardJonesForces);
+        assert.equal(modelHash.colombForces, new_options.colombForces);
+        assert.equal(modelHash.atoms.x.length, mol_number);
         assert.equal(modelHash.width, initialization_options.width);
         assert.equal(modelHash.height, initialization_options.height);
       },
       "creates a model, saves atom state, loads atom state": function(model) {
         new_initialization_options = {
-          lennard_jones_forces: true,
-          coulomb_forces: true,
-          model_listener: false,
-          mol_number: 5
+          lennardJonesForces: true,
+          coulombForces: true,
+          mol_number: 5,
+          relax: false
         };
         model = Model(new_initialization_options);
-        model.createNewAtoms(new_initialization_options.mol_number);
 
         oldModelHash = model.serialize(true);
         assert.isObject(oldModelHash.atoms);
