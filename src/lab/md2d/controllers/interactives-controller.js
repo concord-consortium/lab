@@ -241,15 +241,15 @@ define(function (require) {
             },
 
             getTime: function getTime() {
-              return model.getTime();
+              return model.get('time');
             },
 
             pe: function pe() {
-              return model.pe();
+              return model.get('potentialEnergy');
             },
 
             ke: function ke() {
-              return model.ke();
+              return model.get('kineticEnergy');
             },
 
             start: function start() {
@@ -886,8 +886,8 @@ define(function (require) {
 
     // Add another sample of model KE, PE, and TE to the arrays in energyData
     function updateEnergyData() {
-      var ke = model.ke(),
-          pe = model.pe(),
+      var ke = model.get('kineticEnergy'),
+          pe = model.get('potentialEnergy'),
           te = ke + pe;
       energyData[0].push(ke);
       energyData[1].push(pe);

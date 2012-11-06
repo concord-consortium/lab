@@ -411,13 +411,13 @@ var ROOT = "/examples",
           model.start();
           setTimeout(function() {
             model.stop();
-            var start = model.getTime();
+            var start = model.get('time');
             setTimeout(function() {
               // actual fps calculation
               model.start();
               setTimeout(function() {
                 model.stop();
-                var elapsedModelTime = model.getTime() - start;
+                var elapsedModelTime = model.get('time') - start;
                 done( elapsedModelTime / (model.get('viewRefreshInterval') * model.get('timeStep')) / 2 );
               }, 2000);
             }, 100);
@@ -527,8 +527,8 @@ var ROOT = "/examples",
 
     // Add another sample of model KE, PE, and TE to the arrays in resetModelEnergyData
     function updateModelEnergyData() {
-      var ke = model.ke(),
-          pe = model.pe(),
+      var ke = model.get('kineticEnergy'),
+          pe = model.get('potentialEnergy'),
           te = ke + pe;
       modelEnergyData[0].push(ke);
       modelEnergyData[1].push(pe);
@@ -720,7 +720,7 @@ var ROOT = "/examples",
       return $tbody.find(".data");
     }
 
-    $modelDatatableStats.text(timePrefix + timeFormatter(model.getTime()) + timeSuffix);
+    $modelDatatableStats.text(timePrefix + timeFormatter(model.get('time')) + timeSuffix);
 
     if (titlerows.length === 0) {
       var $title_row = add_row($thead, "title");

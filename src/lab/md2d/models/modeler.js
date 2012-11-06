@@ -36,18 +36,6 @@ define(function(require) {
         // N.B. this is the thermostat (temperature control) setting
         targetTemperature,
 
-        // current model time, in fs
-        time,
-
-        // actual system temperature
-        temperature,
-
-        // potential energy
-        pe,
-
-        // kinetic energy
-        ke,
-
         modelOutputState,
         model_listener,
         tickHistory,
@@ -436,11 +424,6 @@ define(function(require) {
           }
         }
       }
-
-      temperature = modelOutputState.temperature;
-      pe          = modelOutputState.PE;
-      ke          = modelOutputState.KE;
-      time        = modelOutputState.time;
     }
 
     /**
@@ -537,10 +520,10 @@ define(function(require) {
 
     model.getStats = function() {
       return {
-        time        : time,
+        time        : model.get('time'),
         speed       : average_speed(),
-        ke          : ke,
-        temperature : temperature,
+        ke          : model.get('kineticEnergy'),
+        temperature : model.get('temperature'),
         current_step: tickHistory.get("counter"),
         steps       : tickHistory.get("length")-1
       };
@@ -803,10 +786,6 @@ define(function(require) {
 
     model.resetTime = function() {
       engine.setTime(0);
-    };
-
-    model.getTime = function() {
-      return modelOutputState ? modelOutputState.time : undefined;
     };
 
     model.getTotalMass = function() {
@@ -1330,20 +1309,8 @@ define(function(require) {
       return model;
     };
 
-    model.ke = function() {
-      return modelOutputState.KE;
-    };
-
     model.ave_ke = function() {
       return modelOutputState.KE / model.get_num_atoms();
-    };
-
-    model.pe = function() {
-      return modelOutputState.PE;
-    };
-
-    model.temperature = function() {
-      return modelOutputState.temperature;
     };
 
     model.ave_pe = function() {
@@ -1356,12 +1323,6 @@ define(function(require) {
 
     model.pressureProbes = function() {
       return modelOutputState.pressureProbes;
-    };
-
-    model.targetTemperature = function(x) {
-      if (!arguments.length) return targetTemperature;
-      set_targetTemperature(x);
-      return model;
     };
 
     model.size = function(x) {
@@ -1470,28 +1431,28 @@ define(function(require) {
       label: "Time",
       units: "fs"
     }, function() {
-      return model.getTime();
+      return modelOutputState.time;
     });
 
     model.addOutput('kineticEnergy', {
       label: "Kinetic Energy",
       units: "eV"
     }, function() {
-      return model.ke();
+      return modelOutputState.KE;
     });
 
     model.addOutput('potentialEnergy', {
       label: "Potential Energy",
       units: "eV"
     }, function() {
-      return model.pe();
+      return modelOutputState.PE;
     });
 
     model.addOutput('temperature', {
       label: "Temperature",
       units: "K"
     }, function() {
-      return model.temperature();
+      return modelOutputState.temperature;
     });
 
     return model;

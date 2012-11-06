@@ -264,7 +264,7 @@ define(function (require) {
     }
 
     function modelTimeLabel() {
-      return time_prefix + model_time_formatter(model.getTime()) + time_suffix;
+      return time_prefix + model_time_formatter(model.get('time')) + time_suffix;
     }
 
     function set_position(i, xpos, ypos, checkPosition, moveMolecule) {
