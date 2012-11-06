@@ -38,11 +38,12 @@
       "type": "slider",
       "id": "epsilon-slider",
       "min": 0.001,
-      "max": 0.4,
-      "initialValue": 0.144,
+      "max": 0.400,
+      "initialValue": 0.14,
+      "displayValue": "return format('1.3f')(value)",
       "labels": [
         {
-          "value": 0.001,
+          "value": 0.00,
           "label": "weak"
         },
         {
@@ -50,7 +51,7 @@
           "label": "strong"
         }
       ],
-      "steps": 50,
+      "steps": 399,
       "title": "Attraction between atoms",
       "action": "setElementProperties(2, { epsilon: -value });"
     },
@@ -63,8 +64,8 @@
       "displayValue": "return format('4f')(value)",
       "labels": [
         {
-          "value": 100,
-          "label": "100 K"
+          "value": 10,
+          "label": "10 K"
         },
         {
           "value": 5000,
@@ -74,9 +75,25 @@
       "steps": 499,
       "title": "Temperature",
       "action": "set({ targetTemperature: value });"
+    },
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": 0,
+      "max": 5000,
+      "labelIsReading": true,
+      "reading": {
+        "units": "K",
+        "offset": 0,
+        "scale": 1,
+        "digits": 0
+      }
     }
   ],
   "layout": {
+    "right": [
+      "thermometer"
+    ],
     "bottom": [
       "pulldown1",
       "epsilon-slider",
