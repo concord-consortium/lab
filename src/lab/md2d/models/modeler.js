@@ -127,14 +127,6 @@ define(function(require) {
             }
           },
 
-          set_epsilon: function(e) {
-            console.log("set_epsilon: This method is temporarily deprecated");
-          },
-
-          set_sigma: function(s) {
-            console.log("set_sigma: This method is temporarily deprecated");
-          },
-
           set_VDWLinesCutoff: function(cutoff) {
             var ratio;
             this.VDWLinesCutoff = cutoff;
