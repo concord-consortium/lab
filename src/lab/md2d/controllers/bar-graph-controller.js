@@ -37,10 +37,10 @@ define(function (require) {
         var newDim = {};
 
         if (width !== undefined) {
-          newDim.width = width;
+          newDim.viewWidth = width;
         }
         if (height !== undefined) {
-          newDim.height = height;
+          newDim.viewHeight = height;
         }
 
         barGraphModel.set(newDim);

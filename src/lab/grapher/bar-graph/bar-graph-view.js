@@ -4,6 +4,15 @@ define(function (require) {
   // Dependencies.
   var Backbone = require('backbone'),
 
+      VIEW = {
+        padding: {
+          left:   10,
+          top:    10,
+          right:  10,
+          bottom: 10
+        }
+      },
+
       BarGraphView = Backbone.View.extend({
         // Container is a DIV.
         tagName: "div",
@@ -12,8 +21,10 @@ define(function (require) {
 
         initialize: function () {
           // Create all variables.
+          // Avoid recreation of SVG elements while rendering.
           this.vis = d3.select(this.el).append("svg");
           this.bar = this.vis.append("rect");
+          this.title = this.vis.append("text");
           this.axisContainer = this.vis.append("g");
 
           this.yScale = d3.scale.linear();
@@ -31,28 +42,30 @@ define(function (require) {
               // property2 = model.get("property2");
               // etc.
           var options = this.model.toJSON(),
-              padding = {
-                left:   10,
-                top:    10,
-                right:  60,
-                bottom: 10
-              };
+              defColor = "#555",
+              rightShift = VIEW.padding.right;
 
-          // Set SVG element dimensions.
-          this.vis.attr({
-            width:  options.width,
-            height: options.height
-          });
+          // Setup SVG element.
+          this.vis
+            .attr({
+              width:  options.viewWidth,
+              height: options.viewHeight,
+              viewBox: "0 0 " + options.width + " " + options.height,
+              preserveAspectRatio: "xMinYMax"
+            })
+            .style({
+              "font-size": "17px"
+            });
 
           // Setup Y scale.
           this.yScale
             .domain([options.minValue, options.maxValue])
-            .range([options.height - padding.top, padding.bottom]);
+            .range([options.height - VIEW.padding.top, VIEW.padding.bottom]);
 
           // Setup scale used to translation of the bar height.
           this.heightScale
             .domain([options.minValue, options.maxValue])
-            .range([0, options.height - padding.top - padding.bottom]);
+            .range([0, options.height - VIEW.padding.top - VIEW.padding.bottom]);
 
           // Setup Y axis.
           this.yAxis
@@ -60,20 +73,35 @@ define(function (require) {
             .ticks(options.ticks)
             .orient("right");
 
+          // Add title.
+          if (options.title !== undefined) {
+            rightShift += 15;
+            this.title
+              .text( options.title)
+              .attr("transform", "translate(" + (options.width - rightShift) + ", " + options.height / 2 + ") rotate(90)")
+              .style({
+                "font-size": "150%",
+                "text-anchor": "middle",
+                "fill": defColor
+              });
+          }
+
           // Append Y axis.
+          rightShift += 50;
           this.axisContainer
-            .attr("transform", "translate(" + (options.width - padding.right) + ", 0)")
+            .attr("transform", "translate(" + (options.width - rightShift) + ", 0)")
             .call(this.yAxis);
 
           // Style Y axis.
           this.axisContainer
-            .style("fill", "#555");
+            .style("fill", defColor);
 
           // Setup bar.
+          rightShift += 5;
           this.bar
             .attr({
-              width: (options.width - padding.left - padding.right - 5),
-              x: padding.left
+              width: (options.width - VIEW.padding.left - rightShift),
+              x: VIEW.padding.left
             })
             .style({
               fill: options.barColor

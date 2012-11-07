@@ -68,7 +68,8 @@
       "id": "bar-graph",
       "options": {
         "minValue": 0,
-        "maxValue": 2
+        "maxValue": 2,
+        "title": "Pressure (Bar)"
       }
     }
   ],

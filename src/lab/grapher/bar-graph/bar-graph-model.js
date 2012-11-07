@@ -10,8 +10,13 @@ define(function (require) {
           minValue: 0,
           maxValue: 10,
 
-          width:    120,
-          height:   300,
+          title: undefined,
+
+          width:       150,
+          height:      500,
+          scaleWidth:  150,
+          scaleHeight: 500,
+
           barColor: "green",
           ticks:    10
         }
