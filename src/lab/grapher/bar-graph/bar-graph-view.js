@@ -13,6 +13,11 @@ define(function (require) {
         }
       },
 
+      // Tested empirically that works pretty well.
+      getFontSize = function(height) {
+        return 7 + height / 60;
+      },
+
       BarGraphView = Backbone.View.extend({
         // Container is a DIV.
         tagName: "div",
@@ -43,18 +48,17 @@ define(function (require) {
               // etc.
           var options = this.model.toJSON(),
               defColor = "#555",
-              rightShift = VIEW.padding.right;
+              rightShift = VIEW.padding.right,
+              fontSize = getFontSize(options.height);
 
           // Setup SVG element.
           this.vis
             .attr({
-              width:  options.viewWidth,
-              height: options.viewHeight,
-              viewBox: "0 0 " + options.width + " " + options.height,
-              preserveAspectRatio: "xMinYMax"
+              width:  options.width,
+              height: options.height
             })
             .style({
-              "font-size": "17px"
+              "font-size": fontSize + "px"
             });
 
           // Setup Y scale.
@@ -75,7 +79,7 @@ define(function (require) {
 
           // Add title.
           if (options.title !== undefined) {
-            rightShift += 15;
+            rightShift += fontSize;
             this.title
               .text( options.title)
               .attr("transform", "translate(" + (options.width - rightShift) + ", " + options.height / 2 + ") rotate(90)")
@@ -87,7 +91,7 @@ define(function (require) {
           }
 
           // Append Y axis.
-          rightShift += 50;
+          rightShift += 3 * fontSize;
           this.axisContainer
             .attr("transform", "translate(" + (options.width - rightShift) + ", 0)")
             .call(this.yAxis);
