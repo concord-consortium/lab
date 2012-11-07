@@ -1150,20 +1150,30 @@ define(function (require) {
     function setupCustomOutputs(modelOutputs, interactiveOutputs) {
       if (!modelOutputs && !interactiveOutputs) return;
 
-          // per-model output definitions override output definition from interactive
-      var outputs = $.extend({}, interactiveOutputs, modelOutputs),
+      var outputs = {},
           prop,
           output;
+
+      function processOutputsArray(outputsArray) {
+        if (!outputsArray) return;
+        for (var i = 0; i < outputsArray.length; i++) {
+          outputs[outputsArray[i].name] = outputsArray[i];
+        }
+      }
+
+      // per-model output definitions override output definitions from interactives
+      processOutputsArray(interactiveOutputs);
+      processOutputsArray(modelOutputs);
 
       for (prop in outputs) {
         if (outputs.hasOwnProperty(prop)) {
           output = outputs[prop];
           // DOM elements (and, by analogy, Next Gen MW interactive components like slides)
           // have "ids". But, in English, properties have "names", but not "ids".
-          model.addOutput(prop.name, {
+          model.addOutput(output.name, {
             label: output.label,
             units: output.units
-          }, makeFunctionInScriptContext(prop.value));
+          }, makeFunctionInScriptContext(getStringFromArray(output.value)));
         }
       }
     }
