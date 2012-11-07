@@ -476,15 +476,14 @@ define(function(require) {
           // Though we invalidated all cached values above, nevertheless some outputs may have been
           // computed & cached during a previous pass through this loop, as a side effect of the
           // calculation of some other property. Therefore we can respect hasCachedValue here.
-
           if (!output.hasCachedValue) {
             output.cachedValue = output.calculate();
             output.hasCachedValue = true;
+          }
 
-            if (output.cachedValue !== outputPreviousValues[outputName]) {
-              for (j = 0; j < l.length; j++) {
-                listenersToNotify.push(l[j]);
-              }
+          if (output.cachedValue !== outputPreviousValues[outputName]) {
+            for (j = 0; j < l.length; j++) {
+              listenersToNotify.push(l[j]);
             }
           }
         }
