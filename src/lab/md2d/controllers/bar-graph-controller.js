@@ -22,6 +22,9 @@ define(function (require) {
       modelLoadedCallback: function () {
         model.on('tick.' + component.id, update);
 
+        // Reset value.
+        barGraphModel.set({ value: 0});
+        // Render.
         barGraphView.render();
       },
 
