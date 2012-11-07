@@ -1,5 +1,5 @@
 /*global define: false, d3: false, $: false */
-/*jslint onevar: true devel:true eqnull: true */
+/*jslint onevar: true devel:true eqnull: true boss: true */
 
 define(function(require) {
   // Dependencies.
@@ -164,6 +164,9 @@ define(function(require) {
 
         // Information about the metadata and calculating function for 'output' properties
         outputsByName = {},
+
+        // Used to notify of changed property values
+        outputPreviousValues,
 
         // TODO: notSafari and hasTypedArrays belong in the arrays module
         // Check for Safari. Typed arrays are faster almost everywhere
@@ -338,7 +341,7 @@ define(function(require) {
       engine.integrate(model.get('viewRefreshInterval') * timeStep, timeStep);
       console.timeEnd('integration');
       console.time('reading model state');
-      readModelState();
+      updateAllOutputProperties();
       console.timeEnd('reading model state');
 
       tickHistory.push();
@@ -381,8 +384,130 @@ define(function(require) {
     }
 
     /**
-      Use this method to refresh the results array and macrostate variables (KE, PE, temperature)
-      whenever an engine integration occurs or the model state is otherwise changed.
+      Call this method after moving to a different model time (e.g., after stepping the model
+      forward or back, seeking to a different time, or on model initialization) to update all output
+      properties and notify their listeners. This method is more efficient for that case than
+      updateOutputPropertiesAfterChange because it can assume that all output properties are
+      invalidated by the model step. It therefore does not need to calculate any output property
+      values; it allows them to be evaluated lazily instead. Property values are calculated when and
+      if listeners request them. This method also guarantees that all properties have their updated
+      value when they are requested by any listener.
+
+      Technically, this method first updates the 'results' array and macrostate variables, then
+      invalidates any  cached output-property values, and finally notifies all output-property
+      listeners.
+
+      Note that this method and updateOutputPropertiesAfterChange are the only methods which can
+      flush the cached value of an output property. Therefore, be sure to not to make changes
+      which would invalidate a cached value without also calling one of these two methods.
+    */
+    function updateAllOutputProperties() {
+      var i, j, l;
+
+      readModelState();
+
+      // invalidate all cached values before notifying any listeners
+      for (i = 0; i < outputNames.length; i++) {
+        outputsByName[outputNames[i]].hasCachedValue = false;
+      }
+
+      for (i = 0; i < outputNames.length; i++) {
+        if (l = listeners[outputNames[i]]) {
+          for (j = 0; j < l.length; j++) {
+            l[j]();
+          }
+        }
+      }
+    }
+
+    /**
+      Call this method *before* changing any "universe" property or model property (including any
+      property of a model object such as the position of an atom) to save the output-property
+      values before the change. This is required to enabled updateOutputPropertiesAfterChange to be
+      able to detect property value changes.
+
+      After the change is made, call updateOutputPropertiesAfterChange to notify listeners.
+    */
+    function storeOutputPropertiesBeforeChange() {
+      var i, outputName, output, l;
+
+      outputPreviousValues = {};
+
+      for (i = 0; i < outputNames.length; i++) {
+        outputName = outputNames[i];
+        if ((l = listeners[outputName]) && l.length > 0) {
+          output = outputsByName[outputName];
+          // Can't save previous value in output.cachedValue because, before we check it, the
+          // cachedValue may be overwritten with an updated value as a side effect of the
+          // calculation of the updated value of some other property
+          outputPreviousValues[outputName] = output.hasCachedValue ? output.cachedValue : output.calculate();
+        }
+      }
+    }
+
+    /**
+      Before changing any "universe" property or model property (including any
+      property of a model object such as the position of an atom), call the method
+      storeOutputPropertiesBeforeChange; after changing the property, call this method  to detect
+      changed output-property values and to notify listeners of the output properties which have
+      changed. (However, don't call either method after a model tick or step;
+      updateAllOutputProperties is more efficient for that case.)
+    */
+    function updateOutputPropertiesAfterChange() {
+      var i, j, output, outputName, l, listenersToNotify = [];
+
+      readModelState();
+
+      // Mark _all_ cached values invalid ... we're not going to be checking the values of the
+      // unobserved properties, so we have to assume their value changed.
+      for (i = 0; i < outputNames.length; i++) {
+        output = outputsByName[outputNames[i]];
+        output.hasCachedValue = false;
+      }
+
+      // Keep a list of output properties that are being observed and which changed ... and
+      // cache the updated values while we're at it
+      for (i = 0; i < outputNames.length; i++) {
+        outputName = outputNames[i];
+
+        if ((l = listeners[outputName]) && l.length > 0) {
+          output = outputsByName[outputName];
+
+          // Though we invalidated all cached values above, nevertheless some outputs may have been
+          // computed & cached during a previous pass through this loop, as a side effect of the
+          // calculation of some other property. Therefore we can respect hasCachedValue here.
+
+          if (!output.hasCachedValue) {
+            output.cachedValue = output.calculate();
+            output.hasCachedValue = true;
+
+            if (output.cachedValue !== outputPreviousValues[outputName]) {
+              for (j = 0; j < l.length; j++) {
+                listenersToNotify.push(l[j]);
+              }
+            }
+          }
+        }
+      }
+
+      // Now that we're done with 'outputPreviousValues', allow them to be GC'd (in case any are
+      // large objects)
+      outputPreviousValues = null;
+
+      // Finally, now that all the changed properties have been cached, notify listeners
+      for (i = 0; i < listenersToNotify.length; i++) {
+        listenersToNotify[i]();
+      }
+    }
+
+    /**
+      This method is called to refresh the results array and macrostate variables (KE, PE,
+      temperature) whenever an engine integration occurs or the model state is otherwise changed.
+
+      Normally, you should call the methods updateOutputPropertiesAfterChange or
+      updateAllOutputProperties rather than calling this method. Calling this method directly does
+      not cause output-property listeners to be notified, and calling it prematurely will confuse
+      the detection of changed properties.
     */
     function readModelState() {
       var i,
@@ -561,6 +686,7 @@ define(function(require) {
       stopped = true;
       newStep = false;
       tickHistory.seekExtract(location);
+      updateAllOutputProperties();
       dispatch.seek();
       return tickHistory.get("counter");
     };
@@ -574,7 +700,7 @@ define(function(require) {
         index = tickHistory.get("index");
         if (index > 0) {
           tickHistory.decrementExtract();
-          readModelState();
+          updateAllOutputProperties();
           dispatch.stepBack();
         }
       }
@@ -590,7 +716,7 @@ define(function(require) {
         size = tickHistory.get("length");
         if (index < size-1) {
           tickHistory.incrementExtract();
-          readModelState();
+          updateAllOutputProperties();
           dispatch.stepForward();
         } else {
           tick();
@@ -705,7 +831,7 @@ define(function(require) {
     };
 
     model.initializeHistory = function(maxSize) {
-      readModelState();
+      updateAllOutputProperties();
       maxSize = maxSize || defaultMaxTickHistory;
       tickHistory = TickHistory({
         input: [
@@ -815,6 +941,8 @@ define(function(require) {
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
       if (engine.canPlaceAtom(el, x, y)) {
 
+        storeOutputPropertiesBeforeChange();
+
         i = engine.addAtom(el, x, y, vx, vy, charge, friction, pinned);
         copyEngineAtomReferences();
 
@@ -832,7 +960,7 @@ define(function(require) {
         atoms.visible[i]   = visible;
         atoms.draggable[i] = draggable;
 
-        readModelState();
+        updateOutputPropertiesAfterChange();
         dispatch.addAtom();
 
         return true;
@@ -926,6 +1054,8 @@ define(function(require) {
         }
       }
 
+      storeOutputPropertiesBeforeChange();
+
       // Actually set properties
       for (key in props) {
         if (props.hasOwnProperty(key)) {
@@ -933,7 +1063,7 @@ define(function(require) {
         }
       }
 
-      readModelState();
+      updateOutputPropertiesAfterChange();
       return true;
     };
 
@@ -948,8 +1078,9 @@ define(function(require) {
     };
 
     model.setElementProperties = function(i, props) {
+      storeOutputPropertiesBeforeChange();
       engine.setElementProperties(i, props);
-      readModelState();
+      updateOutputPropertiesAfterChange();
     };
 
     model.getElementProperties = function(i) {
@@ -965,12 +1096,13 @@ define(function(require) {
 
     model.setObstacleProperties = function(i, props) {
       var key;
+      storeOutputPropertiesBeforeChange();
       for (key in props) {
         if (props.hasOwnProperty(key)) {
           obstacles[key][i] = props[key];
         }
       }
-      readModelState();
+      updateOutputPropertiesAfterChange();
     };
 
     model.getObstacleProperties = function(i) {
@@ -984,8 +1116,9 @@ define(function(require) {
     };
 
     model.setRadialBondProperties = function(i, props) {
+      storeOutputPropertiesBeforeChange();
       engine.setRadialBondProperties(i, props);
-      readModelState();
+      updateOutputPropertiesAfterChange();
     };
 
     model.getRadialBondProperties = function(i) {
@@ -1001,12 +1134,13 @@ define(function(require) {
 
     model.setRestraintProperties = function(i, props) {
       var key;
+      storeOutputPropertiesBeforeChange();
       for (key in props) {
         if (props.hasOwnProperty(key)) {
           restraints[key][i] = props[key];
         }
       }
-      readModelState();
+      updateOutputPropertiesAfterChange();
     };
 
     model.getRestraintProperties = function(i) {
@@ -1022,12 +1156,13 @@ define(function(require) {
 
     model.setAngularBondProperties = function(i, props) {
       var key;
+      storeOutputPropertiesBeforeChange();
       for (key in props) {
         if (props.hasOwnProperty(key)) {
           angularBonds[key][i] = props[key];
         }
       }
-      readModelState();
+      updateOutputPropertiesAfterChange();
     };
 
     model.getAngularBondProperties = function(i) {
@@ -1184,8 +1319,9 @@ define(function(require) {
     };
 
     model.minimizeEnergy = function () {
+      storeOutputPropertiesBeforeChange();
       engine.minimizeEnergy();
-      readModelState();
+      updateOutputPropertiesAfterChange();
       return model;
     };
 
@@ -1288,14 +1424,22 @@ define(function(require) {
     };
 
     model.set = function(hash) {
+      if (engine) storeOutputPropertiesBeforeChange();
       set_properties(hash);
+      if (engine) updateOutputPropertiesAfterChange();
     };
 
     model.get = function(property) {
+      var output;
+
       if (properties[property]) return properties[property];
-      // TODO? Optimization opportunity: calculate any output property only once per tick. Invalidate
-      // in readModelState.
-      if (outputsByName[property]) return outputsByName[property].calculate();
+
+      if (output = outputsByName[property]) {
+        if (output.hasCachedValue) return output.cachedValue;
+        output.hasCachedValue = true;
+        output.cachedValue = output.calculate();
+        return output.cachedValue;
+      }
     };
 
     /**
@@ -1341,7 +1485,8 @@ define(function(require) {
       outputNames.push(name);
       outputsByName[name] = {
         metadata: metadata,
-        calculate: calculate
+        calculate: calculate,
+        hasCachedValue: false
       };
     };
 
