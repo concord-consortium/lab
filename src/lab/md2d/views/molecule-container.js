@@ -1101,7 +1101,7 @@ define(function (require) {
               .attr("x", 0)
               .attr("y", "0.31em")
               .attr("pointer-events", "none")
-              .text(d.idx);
+              .text(function(d) { return d.idx; });
         } else {
           labelEnter.append("text")
               .attr("class", "index")
