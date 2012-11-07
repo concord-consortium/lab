@@ -1,4 +1,4 @@
-/*globals define: false, d3: false */
+/*globals $ alert ACTUAL_ROOT model_player define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   Molecule Container
@@ -53,6 +53,7 @@ define(function (require) {
         molecule_div, molecule_div_pre,
         get_num_atoms,
         results,
+        radialBonds,
         radialBondResults,
         set_atom_properties,
         is_stopped,
@@ -626,7 +627,7 @@ define(function (require) {
       }
 
       function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
-        gradient = gradient_container.append("defs")
+        var gradient = gradient_container.append("defs")
             .append("radialGradient")
             .attr("id", id)
             .attr("cx", "50%")
@@ -917,7 +918,7 @@ define(function (require) {
               pointX = x1 + (j + 0.5) * cosThetaDiameter + 0.5 * sinThetaSpikes;
               pointY = y1 + (j + 0.5) * sinThetaDiameter - 0.5 * cosThetaSpikes;
             }
-            path += " L "+pointX+","+pointY;;
+            path += " L "+pointX+","+pointY;
           }
           return path += " L "+x2+","+y2;
         } else {
@@ -971,7 +972,7 @@ define(function (require) {
             imgHost,
             imgHostType,
             imglayer,
-            imgX,
+            imgX, imgY,
             container,
             i;
 
@@ -1035,7 +1036,7 @@ define(function (require) {
         }).each(function(d) {
           d3.select(this).select("body")
             .attr("class", "textBoxBody")
-            .html(d.text)
+            .html(d.text);
             // layout.js (used by embeddables) sets font-size of all 'body' elements.
             // The line below can be removed when layout is fiexed.
             // .style("font-size", "inherit");

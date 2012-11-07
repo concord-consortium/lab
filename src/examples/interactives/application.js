@@ -1,4 +1,4 @@
-/*global $ d3 CodeMirror controllers model modelList benchmark DEVELOPMENT: true */
+/*global Lab $ d3 CodeMirror controllers model modelList benchmark layout grapher DEVELOPMENT: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -133,7 +133,12 @@ var ROOT = "/examples",
     var interactiveAboutUrl,
         newWindow,
         titleString,
+        concordUrl, nextGenUrl,
+        concordLink, nextGenLink,
+        interactiveAboutLink, googleOrgLink,
+        utmString,
         $aboutContent = $('#about-content');
+
     $aboutLink.click(function() {
       $aboutPane.show(100);
     });
@@ -632,7 +637,7 @@ var ROOT = "/examples",
           value,
           textValue,
           column,
-          $row = $tbody.find(".data#row_" + index);
+          $row = $tbody.find(".data#row_" + index),
           $cells = $row.find('td');
 
       if ($cells.length > 0) {
