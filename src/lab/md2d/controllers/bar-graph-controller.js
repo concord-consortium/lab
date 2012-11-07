@@ -34,16 +34,18 @@ define(function (require) {
       },
 
       resize: function (width, height) {
-        var newDim = {};
+        if (arguments.length === 0) return;
 
-        if (width !== undefined) {
-          newDim.width = width;
-        }
-        if (height !== undefined) {
-          newDim.height = height;
+        if (width !== undefined && height === undefined) {
+          // Fit to parent.
+          barGraphView.$el.css("height", "100%");
+          height = barGraphView.$el.height();
         }
 
-        barGraphModel.set(newDim);
+        barGraphModel.set({
+          width: width,
+          height: height
+        });
       }
     };
 
