@@ -36,12 +36,11 @@ define(function (require) {
                 top:    10,
                 right:  60,
                 bottom: 10
-              },
-              realWidth = options.width + padding.right + padding.left;
+              };
 
           // Set SVG element dimensions.
           this.vis.attr({
-            width:  realWidth,
+            width:  options.width,
             height: options.height
           });
 
@@ -63,13 +62,17 @@ define(function (require) {
 
           // Append Y axis.
           this.axisContainer
-            .attr("transform", "translate(" + (realWidth - padding.right + 5) + ", 0)")
+            .attr("transform", "translate(" + (options.width - padding.right) + ", 0)")
             .call(this.yAxis);
+
+          // Style Y axis.
+          this.axisContainer
+            .style("fill", "#555");
 
           // Setup bar.
           this.bar
             .attr({
-              width: (realWidth - padding.left - padding.right),
+              width: (options.width - padding.left - padding.right - 5),
               x: padding.left
             })
             .style({
