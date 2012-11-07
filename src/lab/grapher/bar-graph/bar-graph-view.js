@@ -1,123 +1,123 @@
-/*globals define, d3, $, Backbone */
+/*global define, d3 */
 
 define(function (require) {
   // Dependencies.
+  var Backbone = require('backbone'),
 
-  var BarGraphView = Backbone.View.extend({
+      BarGraphView = Backbone.View.extend({
+        // Container is a DIV.
+        tagName: "div",
 
-    // Container is a DIV.
-    tagName: "div",
+        className: "bar-graph",
 
-    className: "bar-graph",
+        initialize: function () {
+          // Create all variables.
+          this.vis = d3.select(this.el).append("svg");
+          this.bar = this.vis.append("rect");
+          this.axisContainer = this.vis.append("g");
 
-    initialize: function () {
-      // Create all variables.
-      this.vis = d3.select(this.el).append("svg");
-      this.bar = this.vis.append("rect");
-      this.axisContainer = this.vis.append("g");
+          this.yScale = d3.scale.linear();
+          this.heightScale = d3.scale.linear();
+          this.yAxis = d3.svg.axis();
 
-      this.yScale = d3.scale.linear();
-      this.heightScale = d3.scale.linear();
-      this.yAxis = d3.svg.axis();
+          // Register callbacks!
+          this.model.on("change", this.modelChanged, this);
+        },
 
-      // Register callbacks!
-      this.model.on("change", this.modelChanged, this);
-    },
+        render: function () {
+              // toJSON() returns all attributes of the model.
+              // This is equivalent to many calls like:
+              // property1 = model.get("property1");
+              // property2 = model.get("property2");
+              // etc.
+          var options = this.model.toJSON(),
+              padding = {
+                left:   10,
+                top:    10,
+                right:  60,
+                bottom: 10
+              },
+              realWidth = options.width + padding.right + padding.left;
 
-    render: function () {
-          // toJSON() returns all attributes of the model.
-          // This is equivalent to many calls like:
-          // property1 = model.get("property1");
-          // property2 = model.get("property2");
-          // etc.
-      var options = this.model.toJSON(),
-          padding = {
-            left:   10,
-            top:    10,
-            right:  60,
-            bottom: 10
-          },
-          realWidth = options.width + padding.right + padding.left;
+          // Set SVG element dimensions.
+          this.vis.attr({
+            width:  realWidth,
+            height: options.height
+          });
 
-      // Set SVG element dimensions.
-      this.vis.attr({
-        width:  realWidth,
-        height: options.height
-      });
+          // Setup Y scale.
+          this.yScale
+            .domain([options.minValue, options.maxValue])
+            .range([options.height - padding.top, padding.bottom]);
 
-      // Setup Y scale.
-      this.yScale
-        .domain([options.minValue, options.maxValue])
-        .range([options.height - padding.top, padding.bottom]);
+          // Setup scale used to translation of the bar height.
+          this.heightScale
+            .domain([options.minValue, options.maxValue])
+            .range([0, options.height - padding.top - padding.bottom]);
 
-      // Setup scale used to translation of the bar height.
-      this.heightScale
-        .domain([options.minValue, options.maxValue])
-        .range([0, options.height - padding.top - padding.bottom]);
+          // Setup Y axis.
+          this.yAxis
+            .scale(this.yScale)
+            .ticks(options.ticks)
+            .orient("right");
 
-      // Setup Y axis.
-      this.yAxis
-        .scale(this.yScale)
-        .ticks(options.ticks)
-        .orient("right");
+          // Append Y axis.
+          this.axisContainer
+            .attr("transform", "translate(" + (realWidth - padding.right + 5) + ", 0)")
+            .call(this.yAxis);
 
-      // Append Y axis.
-      this.axisContainer
-        .attr("transform", "translate(" + (realWidth - padding.right + 5) + ", 0)")
-        .call(this.yAxis);
+          // Setup bar.
+          this.bar
+            .attr({
+              width: (realWidth - padding.left - padding.right),
+              x: padding.left
+            })
+            .style({
+              fill: options.barColor
+            });
 
-      // Setup bar.
-      this.bar
-        .attr({
-          width: (realWidth - padding.left - padding.right),
-          x: padding.left
-        })
-        .style({
-          fill: options.barColor
-        });
+          // Finally, update bar.
+          this.updateBar();
+        },
 
-      // Finally, update bar.
-      this.updateBar();
-    },
+        // Updates only bar height.
+        updateBar: function () {
+          var value = this.model.get("value");
+          this.bar
+            .attr("height", this.heightScale(value))
+            .attr("y", this.yScale(value));
+        },
 
-    // Updates only bar height.
-    updateBar: function () {
-      var value = this.model.get("value");
-      this.bar
-        .attr("height", this.heightScale(value))
-        .attr("y", this.yScale(value));
-    },
+        // Function called whenever model attribute is changed.
+        modelChanged: function () {
+          var changedAttributes = this.model.changedAttributes(),
+              changedAttrsCount = 0,
+              name;
 
-    // Function called whenever model attribute is changed.
-    modelChanged: function () {
-      var changedAttributes = this.model.changedAttributes(),
-          changedAttrsCount = 0,
-          name;
+          // There are two possible cases.
+          // Only "value" has changed, so update only bar height.
+          // Other attributes have changed, so redraw whole bar graph.
 
-      // There are two possible cases.
-      // Only "value" has changed, so update only bar height.
-      // Other attributes have changed, so redraw whole bar graph.
+          // Case 1. Check how many attributes have been changed.
+          for (name in changedAttributes) {
+            if (changedAttributes.hasOwnProperty()) {
+              changedAttrsCount++;
+              if (changedAttrsCount > 1) {
+                // If 2 or more, redraw whole bar graph.
+                this.render();
+                return;
+              }
+            }
+          }
 
-      // Case 1. Check how many attributes have been changed.
-      for (name in changedAttributes) {
-        if (changedAttributes.hasOwnProperty()) {
-          changedAttrsCount++;
-          if (changedAttrsCount > 1) {
-            // If 2 or more, redraw whole bar graph.
+          // Case 2. Only one attribute has changed, check if it's "value".
+          if (changedAttributes.value) {
+            this.updateBar();
+          } else {
             this.render();
-            return;
           }
         }
-      }
-
-      // Case 2. Only one attribute has changed, check if it's "value".
-      if (changedAttributes.value) {
-        this.updateBar();
-      } else {
-        this.render();
-      }
-    }
-  });
+      });
 
   return BarGraphView;
 });
