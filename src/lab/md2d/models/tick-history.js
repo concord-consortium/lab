@@ -3,7 +3,7 @@
 
 define(function(require) {
 
-  return function TickHistory(modelState, outputState, model, size) {
+  return function TickHistory(modelState, model, size) {
     var tickHistory = {},
         initialState,
         list = [],

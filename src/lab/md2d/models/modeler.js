@@ -850,7 +850,7 @@ define(function(require) {
           "gravitationalField"
         ],
         state: engine.getState()
-      }, modelOutputState, model, maxSize);
+      }, model, maxSize);
       newStep = true;
     };
 
