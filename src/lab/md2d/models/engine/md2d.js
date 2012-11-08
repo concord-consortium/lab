@@ -9,15 +9,16 @@ if (typeof define !== 'function') {
 
 define(function (require, exports, module) {
 
-  var console      = require('common/console'),
-      arrays       = require('arrays'),
-      constants    = require('./constants/index'),
-      unit         = constants.unit,
-      math         = require('./math/index'),
-      coulomb      = require('./potentials/index').coulomb,
-      lennardJones = require('./potentials/index').lennardJones,
-      CellList     = require('./cell-list').cellList,
-      NeighborList = require('./neighbor-list').neighborList,
+  var console         = require('common/console'),
+      arrays          = require('arrays'),
+      constants       = require('./constants/index'),
+      unit            = constants.unit,
+      math            = require('./math/index'),
+      coulomb         = require('./potentials/index').coulomb,
+      lennardJones    = require('./potentials/index').lennardJones,
+      PressureBuffers = require('./pressure-buffers').pressureBuffers,
+      CellList        = require('./cell-list').cellList,
+      NeighborList    = require('./neighbor-list').neighborList,
 
       // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
       notSafari = (function() {
@@ -401,13 +402,11 @@ define(function (require, exports, module) {
         obstacleEProbeValue,
         obstacleSProbeValue,
 
-        // Special structure containing buffers with last PRESSURE_BUFFERS_LEN values
-        // used for pressure calculations.
-        // Call initializePressureBuffers() when obstacles are created to initialize
-        // this structure. Each time a new obstacle is added, this function should
-        // also be called!
-        pressureBuffers = {},
-        PRESSURE_BUFFERS_LEN = 50,
+        // Special structure containing buffers used for pressure calculations.
+        // Call pressureBuffers.initialize(obstacles, N_obstacles) when obstacles
+        // are created to initialize this structure.
+        // Each time a new obstacle is added, this function should also be called!
+        pressureBuffers = PressureBuffers(),
         // #####
 
         // An object that contains references to the above obstacle-property arrays.
@@ -945,106 +944,6 @@ define(function (require, exports, module) {
         computeCMMotion = function() {
           computeSystemTranslation();
           computeSystemRotation();
-        },
-
-
-
-        // ####################################################################
-        // #             Functions handling pressure calculation.             #
-        // ####################################################################
-
-        // Function initializes special structure for keeping pressure probes data.
-        // Arrays store historical data used during interpolation. This function
-        // doesn't expect any arguments - it always validates all buffers and create
-        // new if it's necessary (e.g. when obstacle was added).
-        // To read final, interpolated pressure value in Bar, call this function:
-        // getPressureFromProbe(i, name)
-        // where 'obstacleIdx' is an index of obstacle containing this probe
-        // and 'probeName' is: 'west', 'north', 'east', 'south'.
-        initializePressureBuffers = function() {
-          var i;
-          for (i = 0; i < N_obstacles; i++) {
-            if (obstacleWestProbe[i]) {
-              pressureBuffers[i] = pressureBuffers[i] || {};
-              pressureBuffers[i].west = pressureBuffers[i].west || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
-              pressureBuffers[i].westIdx = pressureBuffers[i].westIdx || 0;
-            }
-            if (obstacleNorthProbe[i]) {
-              pressureBuffers[i] = pressureBuffers[i] || {};
-              pressureBuffers[i].north = pressureBuffers[i].north || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
-              pressureBuffers[i].northIdx = pressureBuffers[i].northIdx || 0;
-            }
-            if (obstacleEastProbe[i]) {
-              pressureBuffers[i] = pressureBuffers[i] || {};
-              pressureBuffers[i].east = pressureBuffers[i].east || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
-              pressureBuffers[i].eastIdx = pressureBuffers[i].eastIdx || 0;
-            }
-            if (obstacleSouthProbe[i]) {
-              pressureBuffers[i] = pressureBuffers[i] || {};
-              pressureBuffers[i].south = pressureBuffers[i].south || arrays.create(PRESSURE_BUFFERS_LEN, 0, float32);
-              pressureBuffers[i].southIdx = pressureBuffers[i].southIdx || 0;
-            }
-          }
-        },
-
-        // Returns final, interpolated pressure value in Bar.
-        // 'obstacleIdx' is an index of obstacle containing desired probe,
-        // 'probeName' is: 'west', 'north', 'east', 'south'.
-        getPressureFromProbe = function (obstacleIdx, probeName) {
-          // Classic MW converts impulses 2mv/dt to pressure in Bar using constant: 1666667.
-          // See: the header of org.concord.mw2d.models.RectangularObstacle.
-          // However, Classic MW also uses different units for mass and length:
-          // - 120amu instead of 1amu,
-          // - 0.1A instead of 1nm.
-          // We should convert mass, velocity and obstacle height to Next Gen units.
-          // Length units reduce themselves (velocity divided by height or width), only mass is left.
-          // So, divide classic MW constant 1666667 by 120 - the result is 13888.89.
-          // [ There is unit module available, however for reduction of computational cost,
-          // include conversion in the pressure constant, especially considering the fact that
-          // conversion from 120amu to amu is quite simple. ]
-          var dim;
-          if (probeName === 'west' || probeName === 'east')
-            dim = obstacleHeight[obstacleIdx];
-          else
-            dim = obstacleWidth[obstacleIdx];
-
-          return arrays.average(pressureBuffers[obstacleIdx][probeName]) *
-            13888.89 / dim;
-        },
-
-        // Update special pressure buffers.
-        updatePressureProbesBuffers = function(duration) {
-          var i;
-          for (i = 0; i < N_obstacles; i++) {
-            if (obstacleWestProbe[i]) {
-              pressureBuffers[i].west[pressureBuffers[i].westIdx++] = obstacleWProbeValue[i] / duration;
-              obstacleWProbeValue[i] = 0;
-              if (pressureBuffers[i].westIdx > PRESSURE_BUFFERS_LEN) {
-                pressureBuffers[i].westIdx = 0;
-              }
-            }
-            if (obstacleNorthProbe[i]) {
-              pressureBuffers[i].north[pressureBuffers[i].northIdx++] = obstacleNProbeValue[i] / duration;
-              obstacleNProbeValue[i] = 0;
-              if (pressureBuffers[i].northIdx > PRESSURE_BUFFERS_LEN) {
-                pressureBuffers[i].northIdx = 0;
-              }
-            }
-            if (obstacleEastProbe[i]) {
-              pressureBuffers[i].east[pressureBuffers[i].eastIdx++] = obstacleEProbeValue[i] / duration;
-              obstacleEProbeValue[i] = 0;
-              if (pressureBuffers[i].eastIdx > PRESSURE_BUFFERS_LEN) {
-                pressureBuffers[i].eastIdx = 0;
-              }
-            }
-            if (obstacleSouthProbe[i]) {
-              pressureBuffers[i].south[pressureBuffers[i].southIdx++] = obstacleSProbeValue[i] / duration;
-              obstacleSProbeValue[i] = 0;
-              if (pressureBuffers[i].southIdx > PRESSURE_BUFFERS_LEN) {
-                pressureBuffers[i].southIdx = 0;
-              }
-            }
-          }
         },
 
         // ####################################################################
@@ -2202,7 +2101,7 @@ define(function (require, exports, module) {
 
         // Call it to check if new obstacle has any pressure probe.
         // If so, special buffers will be created.
-        initializePressureBuffers();
+        pressureBuffers.initialize(obstacles, N_obstacles);
       },
 
       atomInBounds: function(_x, _y, i) {
@@ -2376,7 +2275,7 @@ define(function (require, exports, module) {
         }
 
         // Creates special buffers for pressure probes.
-        initializePressureBuffers();
+        pressureBuffers.initialize(obstacles, N_obstacles);
       },
 
       initializeElements: function(elems) {
@@ -2592,7 +2491,7 @@ define(function (require, exports, module) {
 
         // Collisions between particles and obstacles are collected during
         // updateParticlesPosition() execution.
-        updatePressureProbesBuffers(duration);
+        pressureBuffers.updateBuffers(duration);
       },
 
       // Minimize energy using steepest descend method.
@@ -2815,19 +2714,19 @@ define(function (require, exports, module) {
           // Pressure calculation.
           if (obstacleWestProbe[i]) {
             probes[i] = probes[i] || {};
-            probes[i].west = getPressureFromProbe(i, 'west');
+            probes[i].west = pressureBuffers.getPressureFromProbe(i, 'west');
           }
           if (obstacleNorthProbe[i]) {
             probes[i] = probes[i] || {};
-            probes[i].north = getPressureFromProbe(i, 'north');
+            probes[i].north = pressureBuffers.getPressureFromProbe(i, 'north');
           }
           if (obstacleEastProbe[i]) {
             probes[i] = probes[i] || {};
-            probes[i].east = getPressureFromProbe(i, 'east');
+            probes[i].east = pressureBuffers.getPressureFromProbe(i, 'east');
           }
           if (obstacleSouthProbe[i]) {
             probes[i] = probes[i] || {};
-            probes[i].south = getPressureFromProbe(i, 'south');
+            probes[i].south = pressureBuffers.getPressureFromProbe(i, 'south');
           }
         }
 
