@@ -1,9 +1,7 @@
-/*global define: false, d3: false, $: false */
+/*global define: false */
 /*jslint onevar: true devel:true eqnull: true */
 
 define(function(require) {
-  // Dependencies.
-  var arrays  = require('arrays');
 
   return function TickHistory(modelState, outputState, model, engineSetTimeCallback, size) {
     var tickHistory = {},
@@ -38,15 +36,10 @@ define(function(require) {
         prop = modelState.input[i];
         destination.input[prop] = model.get(prop);
       }
-      // save model array state values
+      // save model objects defining state
       state = modelState.state;
       for (i = 0; i < state.length; i++) {
-        destination.state[i] = {};
-        for (prop in state[i]) {
-          if (state[i].hasOwnProperty(prop)) {
-            destination.state[i][prop] = arrays.clone(state[i][prop]);
-          }
-        }
+        destination.state[i] = state[i].clone();
       }
       // save model output properties
       for (i = 0; i < modelState.output.length; i++) {
@@ -56,11 +49,6 @@ define(function(require) {
     }
 
     function push() {
-      var prop,
-          state,
-          listItem,
-          i;
-
       list.push(newState());
       listState.index++;
       listState.counter++;
@@ -88,14 +76,10 @@ define(function(require) {
           model.set(setter);
         }
       }
-      // restore model array state values
+      // restore model objects defining state
       state = savedState.state;
       for (i = 0; i < state.length; i++) {
-        for (prop in state[i]) {
-          if (state[i].hasOwnProperty(prop)) {
-            arrays.copy(state[i][prop], modelState.state[i][prop]);
-          }
-        }
+        modelState.state[i].restore(state[i]);
       }
       // restore model output properties
       for (prop in savedState.output) {

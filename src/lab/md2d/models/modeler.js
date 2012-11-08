@@ -854,7 +854,7 @@ define(function(require) {
           "temperature",
           "time"
         ],
-        state: [atoms, obstacles]
+        state: engine.getState()
       }, modelOutputState, model, engine.setTime, maxSize);
       newStep = true;
     };

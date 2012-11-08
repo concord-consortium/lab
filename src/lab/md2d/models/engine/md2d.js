@@ -9,16 +9,17 @@ if (typeof define !== 'function') {
 
 define(function (require, exports, module) {
 
-  var console         = require('common/console'),
-      arrays          = require('arrays'),
-      constants       = require('./constants/index'),
-      unit            = constants.unit,
-      math            = require('./math/index'),
-      coulomb         = require('./potentials/index').coulomb,
-      lennardJones    = require('./potentials/index').lennardJones,
-      PressureBuffers = require('./pressure-buffers').pressureBuffers,
-      CellList        = require('./cell-list').cellList,
-      NeighborList    = require('./neighbor-list').neighborList,
+  var console             = require('common/console'),
+      arrays              = require('arrays'),
+      constants           = require('./constants/index'),
+      unit                = constants.unit,
+      math                = require('./math/index'),
+      coulomb             = require('./potentials/index').coulomb,
+      lennardJones        = require('./potentials/index').lennardJones,
+      PressureBuffers     = require('./pressure-buffers').pressureBuffers,
+      CloneRestoreWrapper = require('./clone-restore-wrapper').cloneRestoreWrapper,
+      CellList            = require('./cell-list').cellList,
+      NeighborList        = require('./neighbor-list').neighborList,
 
       // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
       notSafari = (function() {
@@ -2933,6 +2934,24 @@ define(function (require, exports, module) {
 
       setViscosity: function(v) {
         viscosity = v;
+      },
+
+      // ######################################################################
+      //                State definition of the engine
+
+      // Return array of objects defining state of the engine.
+      // Each object in this list should implement following interface:
+      // * .clone()        - returning complete state of that object.
+      // * .restore(state) - restoring state of the object, using 'state'
+      //                     as input (returned by clone()).
+      getState: function() {
+        return [
+          // Use wrapper providing clone-restore interface.
+          CloneRestoreWrapper(atoms),
+          // Use wrapper providing clone-restore interface.
+          CloneRestoreWrapper(obstacles),
+          pressureBuffers
+        ];
       }
     };
   };
