@@ -174,7 +174,6 @@ define(function (require) {
           radialBonds         : radialBonds,
           angularBonds        : angularBonds,
           restraints          : restraints,
-          createVdwPairs      : showVDWLines,
           obstacles           : obstacles
         });
       }
