@@ -6,7 +6,7 @@
       "id": "page3$0",
       "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page3/page3$0.json",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "play_reset_step"
       }
     }
   ],
@@ -21,24 +21,6 @@
     }
   ],
   "components": [
-    {
-      "type": "button",
-      "id": "run",
-      "text": "Run",
-      "action": "start();"
-    },
-    {
-      "type": "button",
-      "id": "stop",
-      "text": "Stop",
-      "action": "stop();"
-    },
-    {
-      "type": "button",
-      "id": "reset",
-      "text": "Reset",
-      "action": "reset();"
-    },
     {
       "type": "button",
       "id": "increase-volume",
