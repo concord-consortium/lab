@@ -42,6 +42,7 @@ define(function (require) {
         chargeShading,
         showVDWLines,
         VDWLinesCutoff,
+        showVelocityVectors,
         radialBonds,
         angularBonds,
         restraints,
@@ -127,6 +128,7 @@ define(function (require) {
         chargeShading       = modelConfig.chargeShading;
         showVDWLines        = modelConfig.showVDWLines;
         VDWLinesCutoff      = modelConfig.VDWLinesCutoff;
+        showVelocityVectors = modelConfig.showVelocityVectors;
         showClock           = modelConfig.showClock;
         viewRefreshInterval = modelConfig.viewRefreshInterval;
         timeStep            = modelConfig.timeStep;
@@ -159,6 +161,7 @@ define(function (require) {
           chargeShading       : chargeShading,
           showVDWLines        : showVDWLines,
           VDWLinesCutoff      : VDWLinesCutoff,
+          showVelocityVectors : showVelocityVectors,
           showClock           : showClock,
           viewRefreshInterval : viewRefreshInterval,
           timeStep            : timeStep,
@@ -194,6 +197,7 @@ define(function (require) {
           ymax:                    height,
           keShading:               keShading,
           chargeShading:           chargeShading,
+          showVelocityVectors:     showVelocityVectors,
           enableAtomTooltips:      enableAtomTooltips,
           enableKeyboardHandlers:  enableKeyboardHandlers,
           images:                  images,

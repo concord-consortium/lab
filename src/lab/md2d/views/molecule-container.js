@@ -68,6 +68,9 @@ define(function (require) {
         chargeShadingChars = ["+", "-", ""],
         keShadingMode,
         drawVdwLines,
+        drawVelocityVectors,
+        velocityVectorColor = "#F00",
+        vector,
         getRadialBonds,
         imageProp,
         imageSizes = [],
@@ -336,7 +339,11 @@ define(function (require) {
       // Subscribe for model events.
       model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
       // Redraw container each time when some visual-related property is changed.
-      model.addPropertiesListener(["keShading", "chargeShading", "showVDWLines", "VDWLinesCutoff", "showClock"],
+      model.addPropertiesListener([
+        "keShading", "chargeShading",
+        "showVDWLines", "VDWLinesCutoff",
+        "showVelocityVectors",
+        "showClock"],
           setup_drawables);
 
       // create container, or update properties if it already exists
@@ -421,6 +428,7 @@ define(function (require) {
         redraw();
         create_gradients();
         createSymbolImages();
+        createVectorArrowHeads(velocityVectorColor);
       } else {
 
         if ( !options.fit_to_parent ) {
@@ -649,6 +657,23 @@ define(function (require) {
             .attr("offset", "100%");
       }
 
+      function createVectorArrowHeads(color) {
+        var arrowHead = gradient_container.append("defs")
+          .append("marker")
+          .attr("id", "Triangle")
+          .attr("viewBox", "0 0 10 10")
+          .attr("refX", "0")
+          .attr("refY", "5")
+          .attr("markerUnits", "strokeWidth")
+          .attr("markerWidth", "4")
+          .attr("markerHeight", "3")
+          .attr("orient", "auto")
+          .attr("stroke", color)
+          .attr("fill", color);
+        arrowHead.append("path")
+            .attr("d", "M 0 0 L 10 5 L 0 10 z");
+      }
+
       // Returns gradient appropriate for a given atom.
       // d - atom data.
       function getParticleGradient(d) {
@@ -773,6 +798,21 @@ define(function (require) {
               .on("drag", node_drag)
               .on("dragend", node_dragend)
             );
+      }
+
+      function vectorEnter() {
+        vector.enter().append("path")
+          .attr({
+            "class": "vector",
+            "marker-end": "url(#Triangle)",
+            "d": get_vector_path
+          })
+          .style({
+            "stroke-width": get_vector_stroke_width,
+            "stroke": velocityVectorColor,
+            "stroke-opacity": 0.7,
+            "fill": "none"
+          })
       }
 
       function obstacleEnter() {
@@ -1065,6 +1105,7 @@ define(function (require) {
         setupVdwPairs();
         setup_radial_bonds();
         setup_particles();
+        setup_vectors();
         setupClock();
         drawSymbolImages();
         drawImageAttachment();
@@ -1152,6 +1193,16 @@ define(function (require) {
         drawVdwLines = model.get("showVDWLines");
         if (drawVdwLines) {
           updateVdwPairs();
+        }
+      }
+
+      function setup_vectors() {
+        gradient_container.selectAll("path.vector").remove();
+
+        drawVelocityVectors = model.get("showVelocityVectors");
+        if (drawVelocityVectors) {
+          vector = gradient_container.selectAll("path.vector").data(results);
+          vectorEnter();
         }
       }
 
@@ -1277,6 +1328,9 @@ define(function (require) {
           update_radial_bonds();
         }
         update_molecule_positions();
+        if (drawVelocityVectors) {
+          update_vectors();
+        }
         if(imageProp && imageProp.length !== 0) {
           updateImageAttachment();
         }
@@ -1309,6 +1363,26 @@ define(function (require) {
         if (atom_tooltip_on === 0 || atom_tooltip_on > 0) {
           render_atom_tooltip(atom_tooltip_on);
         }
+      }
+
+      function get_vector_path(d) {
+        var x_pos = x(d.x),
+            y_pos = y(d.y),
+            path = "M "+x_pos+","+y_pos;
+        return path + " L "+(x_pos + x(d.vx*500))+","+(y_pos - y_flip(d.vy*500));
+      }
+
+      function get_vector_stroke_width(d) {
+        return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? 1.5 : 0;
+      }
+
+      function update_vectors() {
+        vector.attr({
+           "d": get_vector_path
+        })
+        .style({
+          "stroke-width": get_vector_stroke_width
+        });
       }
 
       function update_radial_bonds() {
