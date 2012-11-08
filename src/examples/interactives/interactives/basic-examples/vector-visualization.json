@@ -1,0 +1,72 @@
+{
+  "title": "Vector Visualization",
+  "about": "Interactive example",
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": "set({showVelocityVectors: true})"
+    },
+    {
+      "id": "page3$1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "enableKeyboardHandlers": false
+      },
+      "onLoad": "set({showVelocityVectors: true})"
+    },
+    {
+      "id": "pendulum1$0",
+      "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({showVelocityVectors: true})"
+    }
+  ],
+  "components": [
+   {
+      "type": "checkbox",
+      "id": "velocity_vectors",
+      "text": "Velocity Vectors",
+      "property": "showVelocityVectors"
+    },
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE Shading",
+      "property": "keShading"
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown",
+      "options": [
+        {
+          "text": "Simple Gas",
+          "loadModel": "simple-gas$0"
+        },
+        {
+          "text": "Oil and Water",
+          "loadModel": "page3$1"
+        },
+        {
+          "text": "Pendulum",
+          "loadModel": "pendulum1$0"
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      [
+        "pulldown",
+        "velocity_vectors",
+        "ke-shading"
+      ]
+    ]
+  }
+}
