@@ -847,15 +847,8 @@ define(function(require) {
           "viscosity",
           "gravitationalField"
         ],
-        output: [
-          "KE",
-          "PE",
-          "pressure",
-          "temperature",
-          "time"
-        ],
         state: engine.getState()
-      }, modelOutputState, model, engine.setTime, maxSize);
+      }, modelOutputState, model, maxSize);
       newStep = true;
     };
 

@@ -2946,10 +2946,24 @@ define(function (require, exports, module) {
       //                     as input (returned by clone()).
       getState: function() {
         return [
+          // Atoms define internal state.
           // Use wrapper providing clone-restore interface.
           CloneRestoreWrapper(atoms),
+          // As well as obstacles.
           // Use wrapper providing clone-restore interface.
           CloneRestoreWrapper(obstacles),
+          // Save time value.
+          // Create one-line wrapper to provide required interface.
+          {
+            clone: function () {
+              return time;
+            },
+            restore: function(state) {
+              engine.setTime(state);
+            }
+          },
+          // Save pressufe buffers.
+          // This object defines clone / restore itself.
           pressureBuffers
         ];
       }

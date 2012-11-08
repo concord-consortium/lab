@@ -3,7 +3,7 @@
 
 define(function(require) {
 
-  return function TickHistory(modelState, outputState, model, engineSetTimeCallback, size) {
+  return function TickHistory(modelState, outputState, model, size) {
     var tickHistory = {},
         initialState,
         list = [],
@@ -17,7 +17,7 @@ define(function(require) {
         defaultSize = 1000;
 
     function newState() {
-      return { input: {}, output: {}, state: [] };
+      return { input: {}, state: [] };
     }
 
     function reset() {
@@ -40,11 +40,6 @@ define(function(require) {
       state = modelState.state;
       for (i = 0; i < state.length; i++) {
         destination.state[i] = state[i].clone();
-      }
-      // save model output properties
-      for (i = 0; i < modelState.output.length; i++) {
-        prop = modelState.output[i];
-        destination.output[prop] = outputState[prop];
       }
     }
 
@@ -80,16 +75,6 @@ define(function(require) {
       state = savedState.state;
       for (i = 0; i < state.length; i++) {
         modelState.state[i].restore(state[i]);
-      }
-      // restore model output properties
-      for (prop in savedState.output) {
-        if (savedState.output.hasOwnProperty(prop) && outputState.hasOwnProperty(prop)) {
-          outputState[prop] = savedState.output[prop];
-        }
-      }
-      // reset model engine time
-      if (typeof savedState.output.time === "number" && typeof engineSetTimeCallback === 'function') {
-        engineSetTimeCallback(savedState.output.time);
       }
     }
 
