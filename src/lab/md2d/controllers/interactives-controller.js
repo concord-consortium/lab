@@ -243,6 +243,16 @@ define(function (require) {
               return model.getAngularBondProperties(i);
             },
 
+            /**
+              Returns current value in Bars of the given pressure probe.
+              obstacleId  - id of the obstacle containing pressure probe (e.g. 0)
+              orientation - string describing placement of the pressure probe
+                            ('west', 'north', 'east' or 'south')
+            */
+            getPressureProbeValue: function getPressureProbe(obstacleId, orientation) {
+              return model.pressureProbes()[obstacleId][orientation];
+            },
+
             getTime: function getTime() {
               return model.get('time');
             },

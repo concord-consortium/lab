@@ -1,4 +1,4 @@
-/*global define: false, $: false, model: false */
+/*global define: false, model: false */
 
 define(function (require) {
   var BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
@@ -11,19 +11,20 @@ define(function (require) {
         barGraphModel = new BarGraphModel(component.options),
         // Main view.
         barGraphView = new BarGraphView({model: barGraphModel, id: component.id}),
+        // First data channel.
+        input1 = component.input1,
 
         update = function () {
-          // FIXME: hardcoded just for testing !!!
-          barGraphModel.set({value: model.pressureProbes()[0].west});
+          barGraphModel.set({value: model.get(input1)});
         };
 
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
-        model.on('tick.' + component.id, update);
-
-        // Reset value.
-        barGraphModel.set({ value: 0});
+        var input1 = component.input1;
+        if (input1) {
+          model.addPropertiesListener([input1], update);
+        }
         // Render.
         barGraphView.render();
       },

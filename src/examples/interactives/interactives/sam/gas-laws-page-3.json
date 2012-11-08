@@ -10,6 +10,16 @@
       }
     }
   ],
+  "outputs": [
+    {
+      "name": "pressureProbe",
+      "units": "Bar",
+      "label": "Pressure Gauge",
+      "value": [
+        "return getPressureProbeValue(0, 'west');"
+      ]
+    }
+  ],
   "components": [
     {
       "type": "button",
@@ -70,7 +80,8 @@
         "minValue": 0,
         "maxValue": 2,
         "title": "Pressure (Bar)"
-      }
+      },
+      "input1": "pressureProbe"
     }
   ],
   "layout": {
