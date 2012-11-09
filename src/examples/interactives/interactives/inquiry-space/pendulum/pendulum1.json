@@ -132,7 +132,7 @@
       "options": {
         "ymin": -0.1,
         "ymax": 1,
-        "xmax": 20
+        "xmax": 50
       }
     }
   ],
