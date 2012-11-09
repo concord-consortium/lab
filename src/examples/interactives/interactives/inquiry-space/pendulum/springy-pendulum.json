@@ -176,14 +176,16 @@
       [
         "gravity-slider",
         "angle-slider",
-        "length-slider",
-        "ke-shading",
-        "velocity-vectors"
+        "length-slider"
       ],
       [
         "mass-slider",
         "spring-constant-slider",
         "friction-slider"
+      ],
+      [
+        "velocity-vectors",
+        "ke-shading"
       ]
     ]
   }

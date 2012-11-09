@@ -154,14 +154,16 @@
     "bottom": [
       [
         "gravity-slider",
-        "length-slider",
-        "ke-shading",
-        "velocity-vectors"
+        "length-slider"
       ],
       [
         "spring-constant-slider",
         "mass-slider",
         "friction-slider"
+      ],
+      [
+        "velocity-vectors",
+        "ke-shading"
       ]
     ]
   }
