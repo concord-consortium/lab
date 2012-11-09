@@ -6,12 +6,12 @@
   "height": 2.88,
   "viscosity": 1,
   "keShading": false,
-  "chargeShading": false,
+  "chargeShading": true,
   "showVDWLines": false,
   "VDWLinesCutoff": "medium",
   "gravitationalField": false,
   "showClock": true,
-  "showVelocityVectors": false,
+  "showVelocityVectors": true,
   "viewRefreshInterval": 50,
   "timeStep": 1,
   "elements":[
@@ -48,36 +48,20 @@
   ],
   "atoms": {
     "x": [
-      2.53,
-      1.74
     ],
     "y": [
-      1.39,
-      1.4
     ],
     "vx": [
-      0,
-      0
     ],
     "vy": [
-      0,
-      0
     ],
     "charge": [
-      0.75,
-      -0.75
     ],
     "friction": [
-      0,
-      0
     ],
     "element": [
-      0,
-      0
     ],
     "pinned": [
-      0,
-      1
     ]
   }
 }

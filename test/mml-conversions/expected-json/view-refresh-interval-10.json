@@ -11,6 +11,7 @@
   "VDWLinesCutoff": "medium",
   "gravitationalField": 8.000000000000001e-7,
   "showClock": true,
+  "showVelocityVectors": false,
   "viewRefreshInterval": 10,
   "timeStep": 1,
   "elements": [

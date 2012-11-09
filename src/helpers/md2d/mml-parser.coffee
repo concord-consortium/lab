@@ -218,6 +218,11 @@ parseMML = (mmlString) ->
     showClock = parseBoolean($mml("[property=showClock] boolean").text(), true)
 
     ###
+      Show velocity vectors
+    ###
+    showVelocityVectors = parseBoolean($mml("[property=showVVectors] boolean").text(), false)
+
+    ###
       GravitationalField
     ###
     gravitationalProps = $mml(".org-concord-mw2d-models-GravitationalField")
@@ -528,6 +533,7 @@ parseMML = (mmlString) ->
       VDWLinesCutoff      : VDWLinesCutoff
       gravitationalField  : gravitationalField
       showClock           : showClock
+      showVelocityVectors : showVelocityVectors
       viewRefreshInterval : viewRefreshInterval
       timeStep            : timeStep
       elements            : elemTypes
