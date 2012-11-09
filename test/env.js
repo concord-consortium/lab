@@ -1,27 +1,25 @@
-/*global screen: true, $: true */
+/*global screen: true, $: true Sizzle: true*/
 
-var fs = require('fs'),
-    d3 = require('d3');
+var fs = require('fs');
 
-// Setup browser-specific variables.
-var url  = url ?  url : "./test/layout.html",
-    html = fs.readFileSync(url).toString();
+process.env.TZ = "America/New_York";
 
-// D3 automatically includes JSDOM, setups simple document
-// and creates window (see: d3/index.js).
-// Use "./test/layout.html" page instead.
-window.document.innerHTML = html;
-
-// Export 'screen' global variable, as lab/layout/layout.js access this name.
+document = require("jsdom").jsdom(fs.readFileSync('test/layout.html'));
+window = document.createWindow();
+navigator = window.navigator;
 screen = window.screen;
 
-process.env.TZ = "America/Los_Angeles";
+// Sizzle is required for d3 to work well in a jsdom environment; we require the version from
+// node_modules instead of server/public because d3 doesn't require Sizzle to operate in our target
+// browser environments.
+Sizzle = require('sizzle');
 
-// Setup additional libraries (as now DOM is ready).
-require("../server/public/vendor/jquery/jquery.min");
+// Set up any vendored libraries that are ormally included via script tag in the modules under test:
+require("../server/public/vendor/jquery/jquery.min.js");
+require("../server/public/vendor/d3/d3.v2.min.js");
 $ = window.jQuery;
 
-// Additional features.
+// Additional environment features for testing.
 require("./env-assert");
 require("./env-xhr");
 require("./env-fragment");
