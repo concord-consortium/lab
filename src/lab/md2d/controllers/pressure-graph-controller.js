@@ -50,9 +50,9 @@ define(function (require) {
           options.sample = modelSampleSizeInPs();
         },
 
-        function modelSampleSizeInPs() {
+        modelSampleSizeInPs = function() {
           return model.get("viewRefreshInterval") * model.get("timeStep")/1000;
-        }
+        },
 
         // Collects pressure data, saves it in pressureData
         // array and finally updates the graph view.
