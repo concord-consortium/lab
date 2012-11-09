@@ -4,7 +4,7 @@
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
 COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 MARKDOWN_COMPILER = bin/kramdown
-JS_TESTER   = ./node_modules/vows/bin/vows --no-color
+VOWS   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
@@ -447,12 +447,12 @@ test: test/layout.html \
 	server/public \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
-	@$(JS_TESTER)
+	@$(VOWS)
 
 test-src: test/layout.html \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
-	@$(JS_TESTER)
+	@$(VOWS)
 
 %.min.js: %.js Makefile
 	@rm -f $@
