@@ -29,6 +29,10 @@ define(function (require) {
           // Number of subdivisions between major ticks.
           tickSubdivide: 1,
           // Format of labels.
+          // See the specification of this format:
+          // https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
+          // or:
+          // http://docs.python.org/release/3.1.3/library/string.html#formatspec
           labelFormat: "0.1f"
         }
       });
