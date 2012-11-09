@@ -124,11 +124,17 @@ define(function (require) {
         options = newOptions;
       }
       if (options) {
-        for(var p in default_options) {
-          if (options[p] === undefined) {
-            options[p] = default_options[p];
+        function setDefaults(opts, defaults) {
+          for(var p in defaults) {
+            if (opts[p] === undefined) {
+              opts[p] = defaults[p];
+            } else if (typeof opts[p] === "object") {
+              opts[p] = setDefaults(opts[p], defaults[p]);
+            }
           }
+          return opts;
         }
+        options = setDefaults(options, default_options);
       } else {
         options = default_options;
       }
