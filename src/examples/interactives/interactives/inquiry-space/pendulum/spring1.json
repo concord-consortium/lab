@@ -125,6 +125,12 @@
       "property": "keShading"
     },
     {
+      "type": "checkbox",
+      "id": "velocity-vectors",
+      "text": "Velocity Vectors",
+      "property": "showVelocityVectors"
+    },
+    {
       "type": "energyGraph",
       "id": "ke-chart",
       "dimensions": {
@@ -146,7 +152,8 @@
       [
         "gravity-slider",
         "length-slider",
-        "ke-shading"
+        "ke-shading",
+        "velocity-vectors"
       ],
       [
         "spring-constant-slider",
