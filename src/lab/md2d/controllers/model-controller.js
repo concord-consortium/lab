@@ -27,6 +27,7 @@ define(function (require) {
         enableAtomTooltips,
         enableKeyboardHandlers,
         imageMapping,
+        velocityVectors,
 
         // properties read from the modelConfig hash
         elements,
@@ -114,6 +115,7 @@ define(function (require) {
         fit_to_parent       = playerConfig.fit_to_parent;
         interactiveUrl      = playerConfig.interactiveUrl;
         imageMapping        = playerConfig.imageMapping || {};
+        velocityVectors     = playerConfig.velocityVectors;
 
         elements            = modelConfig.elements;
         atoms               = modelConfig.atoms;
@@ -197,6 +199,7 @@ define(function (require) {
           keShading:               keShading,
           chargeShading:           chargeShading,
           showVelocityVectors:     showVelocityVectors,
+          velocityVectors:         velocityVectors,
           enableAtomTooltips:      enableAtomTooltips,
           enableKeyboardHandlers:  enableKeyboardHandlers,
           images:                  images,
@@ -256,7 +259,6 @@ define(function (require) {
         // reset player and container view for model
         //
         // ------------------------------------------------------------
-
         moleculeContainer.reset(getModelInterface());
         moleculeContainer.updateMoleculeRadius();
         moleculeContainer.setup_drawables();

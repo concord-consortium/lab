@@ -69,7 +69,9 @@ define(function (require) {
         keShadingMode,
         drawVdwLines,
         drawVelocityVectors,
-        velocityVectorColor = "#F00",
+        velocityVectorColor,
+        velocityVectorWidth,
+        velocityVectorLength,
         vector,
         getRadialBonds,
         imageProp,
@@ -95,7 +97,12 @@ define(function (require) {
           xmax:                   10,
           ymin:                   0,
           ymax:                   10,
-          imageMapping:           {}
+          imageMapping:           {},
+          velocityVectors:        {
+            color: "#0A0",
+            width: 1.5,
+            length: 5
+          }
         },
 
         model,
@@ -161,6 +168,9 @@ define(function (require) {
       if (!options.showClock) {
         options.showClock = model.get("showClock");
       }
+      velocityVectorColor = options.velocityVectors.color;
+      velocityVectorWidth  = options.velocityVectors.width;
+      velocityVectorLength = options.velocityVectors.length;
 
       RADIAL_BOND_STANDARD_STICK_STYLE = 101;
       RADIAL_BOND_LONG_SPRING_STYLE    = 102;
@@ -488,6 +498,7 @@ define(function (require) {
         if (options.playback_controller) {
           playback_component.position(pc_xpos, pc_ypos, scale_factor);
         }
+        createVectorArrowHeads(velocityVectorColor);
         redraw();
 
       }
@@ -818,7 +829,7 @@ define(function (require) {
             "stroke": velocityVectorColor,
             "stroke-opacity": 0.7,
             "fill": "none"
-          })
+          });
       }
 
       function obstacleEnter() {
@@ -1374,12 +1385,13 @@ define(function (require) {
       function get_vector_path(d) {
         var x_pos = x(d.x),
             y_pos = y(d.y),
-            path = "M "+x_pos+","+y_pos;
-        return path + " L "+(x_pos + x(d.vx*500))+","+(y_pos - y_flip(d.vy*500));
+            path = "M "+x_pos+","+y_pos,
+            scale = velocityVectorLength * 100;
+        return path + " L "+(x_pos + x(d.vx*scale))+","+(y_pos - y_flip(d.vy*scale));
       }
 
       function get_vector_stroke_width(d) {
-        return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? 1.5 : 0;
+        return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? velocityVectorWidth*scale_factor : 0;
       }
 
       function update_vectors() {
