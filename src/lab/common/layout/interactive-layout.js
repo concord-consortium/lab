@@ -59,6 +59,10 @@ define(function (require) {
       viewSizes.energyGraphs = [containerWidth * 0.45, modelHeight];
     }
 
+    if (viewLists.barGraphs) {
+      viewSizes.barGraphs = [40 + containerWidth * 0.09, modelHeight];
+    }
+
     for (viewType in viewLists) {
       if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
         i = -1;  while(++i < viewLists[viewType].length) {
@@ -76,10 +80,6 @@ define(function (require) {
 
     if (layout.views.thermometers) {
       setThermometerHeight(layout.views.thermometers[0], 0.8 * h);
-    }
-
-    if (layout.views.barGraphs) {
-      layout.views.barGraphs[0].resize(40 + containerWidth * 0.09, h);
     }
 
     // FIXME this is a temporary hack ... put in layout code instead of memorializing it in the CSS,
