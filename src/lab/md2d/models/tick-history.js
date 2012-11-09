@@ -6,14 +6,8 @@ define(function(require) {
   return function TickHistory(modelState, model, size) {
     var tickHistory = {},
         initialState,
-        list = [],
-        listState = {
-          maxSize: size,
-          index: 0,
-          counter: 0,
-          startCounter: 0,
-          length: 0
-        },
+        list,
+        listState,
         defaultSize = 1000;
 
     function newState() {
@@ -22,8 +16,19 @@ define(function(require) {
 
     function reset() {
       list = [];
-      listState.index = 0;
-      listState.counter = 0;
+      listState = {
+        // Equal to list.length:
+        length: 0,
+        // Drop oldest state in order to keep list no longer than this:
+        maxSize: size,
+        // Index into `list` of the current state:
+        index: -1,
+        // Total length of "total history" (counting valid history states that have been dropped)
+        counter: -1,
+        // Index in "total history" of the oldest state in the list.
+        // Invariant: counter == index + startCounter
+        startCounter: 0
+      };
     }
 
     function copyModelState(destination) {
@@ -43,18 +48,33 @@ define(function(require) {
       }
     }
 
+    /** Copy the current model state into the list at list[listState.index+1] and updates listState.
+        Removes any (now-invalid) states in the list that come after the newly pushed state.
+    */
     function push() {
-      list.push(newState());
-      listState.index++;
-      listState.counter++;
-      copyModelState(list[listState.index]);
-      listState.length = list.length;
-      if (listState.length > listState.maxSize) {
-        list.splice(1,1);
-        listState.length = list.length;
-        listState.index = listState.maxSize-1;
+      var lastState = newState();
+
+      copyModelState(lastState);
+      list[listState.index+1] = lastState;
+
+      // Drop the oldest state if we went over the max list size
+      if (list.length > listState.maxSize) {
+        list.splice(0,1);
         listState.startCounter++;
+      } else {
+        listState.index++;
       }
+      listState.counter = listState.index + listState.startCounter;
+
+      invalidateFollowingState();
+      listState.length = list.length;
+    }
+
+    /** Invalidate (remove) all history after current index. For example, after seeking backwards
+        and then pushing new state */
+    function invalidateFollowingState() {
+      list.length = listState.index+1;
+      listState.length = list.length;
     }
 
     function extract(savedState) {
@@ -124,8 +144,7 @@ define(function(require) {
     tickHistory.restoreInitialState = function() {
       reset();
       extract(initialState);
-      list[0] = newState();
-      copyModelState(list[0]);
+      push();
     };
 
     tickHistory.reset = function() {
@@ -147,8 +166,10 @@ define(function(require) {
     };
 
     tickHistory.seekExtract = function(ptr) {
-      listState.index = ptr;
+      if (ptr < listState.startCounter) ptr = listState.startCounter;
+      if (ptr > listState.counter) ptr = listState.counter;
       listState.counter = ptr;
+      listState.index = ptr - listState.startCounter;
       extract(list[listState.index]);
     };
 
@@ -163,15 +184,12 @@ define(function(require) {
     //
     // Initialization
     //
-    if (typeof listState.maxSize === 'undefined') listState.maxSize = defaultSize;
-
+    if (size == null) size = defaultSize;
     initialState = newState();
     copyModelState(initialState);
+
     reset();
-    list[0] = newState();
-    copyModelState(list[0]);
-
+    push();
     return tickHistory;
-
   };
 });

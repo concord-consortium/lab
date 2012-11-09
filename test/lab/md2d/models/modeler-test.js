@@ -210,17 +210,20 @@ requirejs([
         atom0InitialPosition = [model.get_atoms().x[0], model.get_atoms().y[0]];
         return model;
       },
-      "a newly initialized model starts at step 0": function(model) {
-        assert.equal(model.steps(), 0);
+      "a newly initialized model has 1 step saved": function(model) {
+        assert.equal(model.steps(), 1);
         assert.isTrue(model.isNewStep());
       },
-      "a newly initialized model stepCounter also starts at 0": function(model) {
+      "a newly initialized model should be at step number 0": function(model) {
         assert.equal(model.stepCounter(), 0);
       },
-      "after running one tick the model is at step 1": function(model) {
+      "after running one tick the model is at step number 1": function(model) {
         model.tick();
         assert.equal(model.stepCounter(), 1);
         assert.isTrue(model.isNewStep());
+      },
+      "after running one tick the model has 2 steps saved": function(model) {
+        assert.equal(model.steps(), 2);
       },
       "after stepping back one step the model is at step 0 and atom0 is in the same initial position": function(model) {
         model.stepBack();
@@ -235,39 +238,42 @@ requirejs([
         assert.equal(model.stepCounter(), 10);
         assert.isTrue(model.isNewStep());
       },
-      "the model should be at step 9 after stepBack() and total steps: 11": function(model) {
+      "after running 10 more ticks the model should have 11 steps saved": function(model) {
+        assert.equal(model.steps(), 11);
+      },
+      "the model should be at step 9 after stepBack() and still have 11 steps saved": function(model) {
         model.stepBack();
         assert.equal(model.stepCounter(), 9);
         var total_steps = model.steps();
         assert.equal(total_steps, 11, "total steps should equal 11 but instead it was " + total_steps);
         assert.isFalse(model.isNewStep());
       },
-      "the model should be at step 5 after stepBack(4) and total steps: 11": function(model) {
+      "the model should be at step 5 after stepBack(4) and still have 11 steps saved": function(model) {
         model.stepBack(4);
         assert.equal(model.stepCounter(), 5);
         var total_steps = model.steps();
         assert.equal(total_steps, 11, "total steps should equal 11 but instead it was " + total_steps);
         assert.isFalse(model.isNewStep());
       },
-      "the model should be at step 15 after stepForward(10) and total steps: 16": function(model) {
+      "the model should be at step 15 after stepForward(10) and have 16 steps saved": function(model) {
         model.stepForward(10);
         assert.equal(model.stepCounter(), 15);
         var total_steps = model.steps();
         assert.equal(total_steps, 16, "total steps should equal 16 but instead it was " + total_steps);
         assert.isTrue(model.isNewStep());
       },
-      "the model should be at step 0 after stepBack(15) and total steps: 16": function(model) {
+      "the model should be at step 0 after stepBack(15) and have 16 steps saved": function(model) {
         model.stepBack(15);
         assert.equal(model.stepCounter(), 0);
         var total_steps = model.steps();
         assert.equal(total_steps, 16, "total steps should equal 16 but instead it was " + total_steps);
         assert.isFalse(model.isNewStep());
       },
-      "the model should still be at step 0 after stepBack(100) and total steps: 16": function(model) {
+      "the model should still be at step 0 after stepBack(100) and have 16 steps saved": function(model) {
         model.stepBack(100);
         assert.equal(model.stepCounter(), 0);
         var total_steps = model.steps();
-        assert.equal(total_steps, 16, "total steps should equal 15 but instead it was " + total_steps);
+        assert.equal(total_steps, 16, "total steps should equal 16 but instead it was " + total_steps);
         assert.isFalse(model.isNewStep());
       },
       "after running 10 ticks and model.seek() is at step 0": function(model) {
