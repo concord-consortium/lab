@@ -527,13 +527,7 @@ parseMML = (mmlString) ->
       width               : width
       height              : height
       viscosity           : viscosity
-      keShading           : keShading
-      chargeShading       : !!chargeShading
-      showVDWLines        : !!showVDWLines
-      VDWLinesCutoff      : VDWLinesCutoff
       gravitationalField  : gravitationalField
-      showClock           : showClock
-      showVelocityVectors : showVelocityVectors
       viewRefreshInterval : viewRefreshInterval
       timeStep            : timeStep
       elements            : elemTypes
@@ -549,6 +543,13 @@ parseMML = (mmlString) ->
         marked: marked
         visible: visible
         draggable: draggable
+      viewOptions :
+        keShading           : keShading
+        chargeShading       : !!chargeShading
+        showVDWLines        : !!showVDWLines
+        VDWLinesCutoff      : VDWLinesCutoff
+        showClock           : showClock
+        showVelocityVectors : showVelocityVectors
 
     removeArrayIfDefault = (name, array, defaultVal) ->
       delete json.atoms[name] if array.every (i)-> i is defaultVal

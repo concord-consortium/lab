@@ -108,14 +108,34 @@ define(function (require) {
       // ------------------------------------------------------------
 
       function initializeLocalVariables() {
-        controlButtons      = playerConfig.controlButtons;
-        modelTimeLabel      = playerConfig.modelTimeLabel;
-        enableAtomTooltips  = playerConfig.enableAtomTooltips || false;
-        enableKeyboardHandlers = playerConfig.enableKeyboardHandlers;
-        fit_to_parent       = playerConfig.fit_to_parent;
-        interactiveUrl      = playerConfig.interactiveUrl;
-        imageMapping        = playerConfig.imageMapping || {};
-        velocityVectors     = playerConfig.velocityVectors;
+        var viewOptions = modelConfig.viewOptions || {};
+
+        function meldOptions(base, overlay) {
+          for(var p in base) {
+            if (overlay[p] === undefined) {
+              overlay[p] = base[p];
+            } else if (typeof overlay[p] === "object") {
+              overlay[p] = meldOptions(base[p], overlay[p]);
+            }
+          }
+          return overlay;
+        }
+        viewOptions = meldOptions(viewOptions, playerConfig);
+
+        controlButtons      = viewOptions.controlButtons;
+        modelTimeLabel      = viewOptions.modelTimeLabel;
+        enableAtomTooltips  = viewOptions.enableAtomTooltips || false;
+        enableKeyboardHandlers = viewOptions.enableKeyboardHandlers;
+        fit_to_parent       = viewOptions.fit_to_parent;
+        interactiveUrl      = viewOptions.interactiveUrl;
+        imageMapping        = viewOptions.imageMapping || {};
+        velocityVectors     = viewOptions.velocityVectors;
+        keShading           = viewOptions.keShading;
+        chargeShading       = viewOptions.chargeShading;
+        showVDWLines        = viewOptions.showVDWLines;
+        VDWLinesCutoff      = viewOptions.VDWLinesCutoff;
+        showVelocityVectors = viewOptions.showVelocityVectors;
+        showClock           = viewOptions.showClock;
 
         elements            = modelConfig.elements;
         atoms               = modelConfig.atoms;
@@ -126,12 +146,6 @@ define(function (require) {
         targetTemperature   = modelConfig.targetTemperature;
         width               = modelConfig.width;
         height              = modelConfig.height;
-        keShading           = modelConfig.keShading;
-        chargeShading       = modelConfig.chargeShading;
-        showVDWLines        = modelConfig.showVDWLines;
-        VDWLinesCutoff      = modelConfig.VDWLinesCutoff;
-        showVelocityVectors = modelConfig.showVelocityVectors;
-        showClock           = modelConfig.showClock;
         viewRefreshInterval = modelConfig.viewRefreshInterval;
         timeStep            = modelConfig.timeStep;
         radialBonds         = modelConfig.radialBonds;
