@@ -1,5 +1,8 @@
 /*global define: false, model: false */
 
+// Bar graph controller.
+// It provides specific interface used in MD2D environment
+// (by interactives-controller and layout module).
 define(function (require) {
   var BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
       BarGraphView  = require('grapher/bar-graph/bar-graph-view');
@@ -10,7 +13,7 @@ define(function (require) {
         // Model with options and current value.
         barGraphModel = new BarGraphModel(component.options),
         // Main view.
-        barGraphView = new BarGraphView({model: barGraphModel, id: component.id}),
+        barGraphView  = new BarGraphView({model: barGraphModel, id: component.id}),
         // First data channel.
         input1 = component.input1,
 
@@ -21,11 +24,10 @@ define(function (require) {
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
-        var input1 = component.input1;
         if (input1) {
           model.addPropertiesListener([input1], update);
         }
-        // Render.
+        // Initial render.
         barGraphView.render();
       },
 
@@ -34,14 +36,13 @@ define(function (require) {
         return barGraphView.$el;
       },
 
+      // Method required by layout module.
       resize: function (width, height) {
-        if (arguments.length === 0) return;
+        if (width === undefined)
+          width = barGraphView.getParentWidth();
 
-        if (width !== undefined && height === undefined) {
-          // Fit to parent.
-          barGraphView.$el.css("height", "100%");
-          height = barGraphView.$el.height();
-        }
+        if (height === undefined)
+          height = barGraphView.getParentHeight();
 
         barGraphModel.set({
           width: width,

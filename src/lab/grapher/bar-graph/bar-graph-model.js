@@ -6,16 +6,26 @@ define(function (require) {
 
       BarGraphModel = Backbone.Model.extend({
         defaults: {
-          value:    0,
-          minValue: 0,
-          maxValue: 10,
+          // Current value displayed by bar graph.
+          value:     0,
+          // Min value displayed.
+          minValue:  0,
+          // Max value displayed.
+          maxValue:  10,
 
-          width:    150,
-          height:   500,
+          // Dimensions of the bar graph
+          // (including axis and labels).
+          width:     150,
+          height:    500,
 
-          title:    undefined,
-          barColor: "green",
-          ticks:    10
+          // Graph title.
+          title:     undefined,
+          // Color of the main bar.
+          barColor:  "green",
+          // Color of axis, labels, title.
+          textColor: "#555",
+          // Number of ticks displayed on the axis.
+          ticks:     10
         }
       });
 

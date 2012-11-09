@@ -46,10 +46,9 @@ define(function (require) {
               // property1 = model.get("property1");
               // property2 = model.get("property2");
               // etc.
-          var options = this.model.toJSON(),
-              defColor = "#555",
-              rightShift = VIEW.padding.right,
-              fontSize = getFontSize(options.height);
+          var options    = this.model.toJSON(),
+              fontSize   = getFontSize(options.height),
+              rightShift = VIEW.padding.right;
 
           // Setup SVG element.
           this.vis
@@ -86,7 +85,7 @@ define(function (require) {
               .style({
                 "font-size": "150%",
                 "text-anchor": "middle",
-                "fill": defColor
+                "fill": options.textColor
               });
           }
 
@@ -98,7 +97,7 @@ define(function (require) {
 
           // Style Y axis.
           this.axisContainer
-            .style("fill", defColor);
+            .style("fill", options.textColor);
 
           // Setup bar.
           rightShift += 5;
@@ -121,6 +120,14 @@ define(function (require) {
           this.bar
             .attr("height", this.heightScale(value))
             .attr("y", this.yScale(value));
+        },
+
+        getParentHeight: function () {
+          return this.$el.parent().height();
+        },
+
+        getParentWidth: function () {
+          return this.$el.parent().width();
         },
 
         // Function called whenever model attribute is changed.
