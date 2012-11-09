@@ -265,6 +265,14 @@ define(function (require) {
               return model.get('kineticEnergy');
             },
 
+            atomsKe: function atomsKe(atomsList) {
+              var sum = 0, i;
+              for (i = 0; i < atomsList.length; i++) {
+                sum += model.getAtomKineticEnergy(atomsList[i]);
+              }
+              return sum;
+            },
+
             start: function start() {
               model.start();
             },
