@@ -12,11 +12,31 @@ define(function (require) {
           bottom: 10
         }
       },
-      BASIC_HEIGHT = 500,
 
-      // Tested empirically that works pretty well.
-      getFontSize = function(height) {
-        return 7 + height / 60;
+      // Get real width SVG of element using bounding box.
+      getRealWidth = function (d3selection) {
+        return d3selection.node().getBBox().width;
+      },
+
+      // Get real height SVG of element using bounding box.
+      getRealHeight = function (d3selection) {
+        return d3selection.node().getBBox().height;
+      },
+
+      // Bar graph scales itself according to the given height.
+      // We assume some CANONICAL_HEIGHT. All values which should
+      // be scaled, should assume this canonical height as basic
+      // reference.
+      CANONICAL_HEIGHT = 500,
+      getScaleFunc = function (height) {
+        var factor = height / CANONICAL_HEIGHT;
+        // Prevent from too small fonts.
+        if (factor < 0.6)
+          factor = 0.6;
+
+        return function (val) {
+          return val * factor;
+        };
       },
 
       BarGraphView = Backbone.View.extend({
@@ -26,7 +46,7 @@ define(function (require) {
         className: "bar-graph",
 
         initialize: function () {
-          // Create all variables.
+          // Create all SVG elements ONLY in this function.
           // Avoid recreation of SVG elements while rendering.
           this.vis = d3.select(this.el).append("svg");
           this.bar = this.vis.append("rect");
@@ -41,6 +61,7 @@ define(function (require) {
           this.model.on("change", this.modelChanged, this);
         },
 
+        // Render whole bar graph.
         render: function () {
               // toJSON() returns all attributes of the model.
               // This is equivalent to many calls like:
@@ -48,11 +69,18 @@ define(function (require) {
               // property2 = model.get("property2");
               // etc.
           var options    = this.model.toJSON(),
-              rightShift = VIEW.padding.right,
-              scale = options.height / BASIC_HEIGHT;
-
-          if (scale < 0.6)
-            scale = 0.6;
+              // Scale function.
+              scale      = getScaleFunc(options.height),
+              // Basic padding (scaled).
+              paddingLeft   = scale(VIEW.padding.left),
+              paddingTop    = scale(VIEW.padding.top),
+              paddingBottom = scale(VIEW.padding.bottom),
+              // Note that right padding is especially important
+              // in this function, as we are constructing bar graph
+              // from right to left side. This variable holds current
+              // padding. Later it is modified by appending of title,
+              // axis, labels and all necessary elements.
+              paddingRight  = scale(VIEW.padding.right);
 
           // Setup SVG element.
           this.vis
@@ -61,51 +89,60 @@ define(function (require) {
               height: options.height
             })
             .style({
-              "font-size": (scale * 15) + "px"
+              "font-size": scale(15) + "px"
             });
 
           // Setup Y scale.
           this.yScale
             .domain([options.minValue, options.maxValue])
-            .range([options.height - VIEW.padding.top, VIEW.padding.bottom]);
+            .range([options.height - paddingTop, paddingBottom]);
 
           // Setup scale used to translation of the bar height.
           this.heightScale
             .domain([options.minValue, options.maxValue])
-            .range([0, options.height - VIEW.padding.top - VIEW.padding.bottom]);
+            .range([0, options.height - paddingTop - paddingBottom]);
 
           // Setup Y axis.
           this.yAxis
             .scale(this.yScale)
             .ticks(options.ticks)
-            .tickSubdivide(options.ticksSubdivide)
-            .tickSize(10 * scale, 5 * scale, 0)
+            .tickSubdivide(options.tickSubdivide)
+            .tickFormat(d3.format(options.labelFormat))
+            .tickSize(scale(10), scale(5), 0)
             .orient("right");
 
-          // Add title.
+          // Setup title.
           if (options.title !== undefined) {
-            rightShift += (scale * 15);
             this.title
-              .text( options.title)
-              .attr("transform", "translate(" + (options.width - rightShift) + ", " + options.height / 2 + ") rotate(90)")
+              .text(options.title)
               .style({
-                "font-size": "150%",
+                "font-size": "140%",
                 "text-anchor": "middle",
                 "fill": options.textColor
               });
+
+            // Rotate title and translate it into right place.
+            // We do we use height for calculating right margin?
+            // Text will be rotated 90*, so current height is expected width.
+            paddingRight += getRealHeight(this.title);
+            this.title
+              .attr("transform", "translate(" + (options.width - paddingRight) + ", " + options.height / 2 + ") rotate(90)");
           }
 
-          // Append Y axis.
-          rightShift += 3 * (scale * 15);
+          // Create and append Y axis.
           this.axisContainer
-            .attr("transform", "translate(" + (options.width - rightShift) + ", 0)")
             .call(this.yAxis);
+
+          // Translate axis into right place, add narrow empty space.
+          paddingRight += getRealWidth(this.axisContainer) + scale(7);
+          this.axisContainer
+            .attr("transform", "translate(" + (options.width - paddingRight) + ", 0)");
 
           // Style Y axis.
           this.axisContainer
             .style({
               "stroke": options.textColor,
-              "stroke-width": 2,
+              "stroke-width": scale(2),
               "fill": "none"
             });
 
@@ -117,11 +154,11 @@ define(function (require) {
             });
 
           // Setup bar.
-          rightShift += 5 * scale;
+          paddingRight += scale(5);
           this.bar
             .attr({
-              width: (options.width - VIEW.padding.left - rightShift),
-              x: VIEW.padding.left
+              width: (options.width - paddingLeft - paddingRight),
+              x: paddingLeft
             })
             .style({
               fill: options.barColor
@@ -139,15 +176,21 @@ define(function (require) {
             .attr("y", this.yScale(value));
         },
 
+        // Returns real height of parent DOM element.
+        // Might be useful for getting "fit to parent"
+        // behavior.
         getParentHeight: function () {
           return this.$el.parent().height();
         },
 
+        // Returns real width of parent DOM element.
+        // Might be useful for getting "fit to parent"
+        // behavior.
         getParentWidth: function () {
           return this.$el.parent().width();
         },
 
-        // Function called whenever model attribute is changed.
+        // This function should be called whenever model attribute is changed.
         modelChanged: function () {
           var changedAttributes = this.model.changedAttributes(),
               changedAttrsCount = 0,

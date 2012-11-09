@@ -27,7 +27,9 @@ define(function (require) {
           // Number of ticks displayed on the axis.
           ticks:          10,
           // Number of subdivisions between major ticks.
-          ticksSubdivide: 1
+          tickSubdivide: 1,
+          // Format of labels.
+          labelFormat: "0.1f"
         }
       });
 
