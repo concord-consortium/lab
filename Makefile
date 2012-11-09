@@ -113,6 +113,9 @@ node_modules: node_modules/coffee-script \
 	node_modules/jsdom \
 	node_modules/uglify-js	\
 	node_modules/vows \
+	node_modules/mocha \
+	node_modules/should \
+	node_modules/sinon \
 	node_modules/node-inspector \
 	node_modules/d3 \
 	node_modules/science \
@@ -133,6 +136,15 @@ node_modules/uglify-js:
 	npm install
 
 node_modules/vows:
+	npm install
+
+node_modules/mocha:
+	npm install
+
+node_modules/should:
+	npm install
+
+node_modules/sinon:
 	npm install
 
 node_modules/node-inspector:

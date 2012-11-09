@@ -34,7 +34,10 @@
     "jade": "*",
     "mkdirp": "0.3.2",
     "requirejs": "2.0.6",
-    "amdefine": ">=0.0.2"
+    "amdefine": ">=0.0.2",
+    "mocha": ">=1.7.0",
+    "should": ">=1.2.1",
+    "sinon": ">=1.5.0"
   },
   "directories": {
     "bin": "node-bin"
