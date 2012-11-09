@@ -2434,7 +2434,7 @@ define(function (require, exports, module) {
       // 3. Derive a(t + dt) from the interaction potential using r(t + dt)
       // 4. Calculate: v(t + dt) = v(t + 0.5 * dt) + 0.5 * a(t + dt) * dt
       integrate: function(duration, _dt) {
-        var steps, iloop;
+        var steps, iloop, tStart = time;
 
         if (!atomsHaveBeenCreated) {
           throw new Error("md2d: integrate called before atoms created.");
@@ -2460,7 +2460,7 @@ define(function (require, exports, module) {
         steps = Math.floor(duration / dt);
 
         for (iloop = 1; iloop <= steps; iloop++) {
-          time += iloop * dt;
+          time = tStart + iloop * dt;
 
           // Calculate v(t + 0.5 * dt) using v(t) and a(t).
           halfUpdateVelocity();
