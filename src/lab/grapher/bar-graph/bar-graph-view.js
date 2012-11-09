@@ -12,6 +12,7 @@ define(function (require) {
           bottom: 10
         }
       },
+      BASIC_HEIGHT = 500,
 
       // Tested empirically that works pretty well.
       getFontSize = function(height) {
@@ -47,8 +48,11 @@ define(function (require) {
               // property2 = model.get("property2");
               // etc.
           var options    = this.model.toJSON(),
-              fontSize   = getFontSize(options.height),
-              rightShift = VIEW.padding.right;
+              rightShift = VIEW.padding.right,
+              scale = options.height / BASIC_HEIGHT;
+
+          if (scale < 0.6)
+            scale = 0.6;
 
           // Setup SVG element.
           this.vis
@@ -57,7 +61,7 @@ define(function (require) {
               height: options.height
             })
             .style({
-              "font-size": fontSize + "px"
+              "font-size": (scale * 15) + "px"
             });
 
           // Setup Y scale.
@@ -74,11 +78,13 @@ define(function (require) {
           this.yAxis
             .scale(this.yScale)
             .ticks(options.ticks)
+            .tickSubdivide(options.ticksSubdivide)
+            .tickSize(10 * scale, 5 * scale, 0)
             .orient("right");
 
           // Add title.
           if (options.title !== undefined) {
-            rightShift += fontSize;
+            rightShift += (scale * 15);
             this.title
               .text( options.title)
               .attr("transform", "translate(" + (options.width - rightShift) + ", " + options.height / 2 + ") rotate(90)")
@@ -90,14 +96,25 @@ define(function (require) {
           }
 
           // Append Y axis.
-          rightShift += 3 * fontSize;
+          rightShift += 3 * (scale * 15);
           this.axisContainer
             .attr("transform", "translate(" + (options.width - rightShift) + ", 0)")
             .call(this.yAxis);
 
           // Style Y axis.
           this.axisContainer
-            .style("fill", options.textColor);
+            .style({
+              "stroke": options.textColor,
+              "stroke-width": 2,
+              "fill": "none"
+            });
+
+          // Style Y axis labels.
+          this.axisContainer.selectAll("text")
+            .style({
+              "fill": options.textColor,
+              "stroke-width": 0
+            });
 
           // Setup bar.
           rightShift += 5;
