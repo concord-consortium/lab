@@ -6,7 +6,10 @@
       "id": "pendulum1$0",
       "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step"
+        "controlButtons": "play_reset_step",
+        "velocityVectors": {
+          "length": 10
+        }
       }
     }
   ],
