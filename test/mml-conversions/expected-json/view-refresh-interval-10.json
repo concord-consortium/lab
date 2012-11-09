@@ -5,15 +5,17 @@
   "width": 3,
   "height": 1.5,
   "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": false,
-  "VDWLinesCutoff": "medium",
   "gravitationalField": 8.000000000000001e-7,
-  "showClock": true,
-  "showVelocityVectors": false,
   "viewRefreshInterval": 10,
   "timeStep": 1,
+  "viewOptions": {
+    "keShading": false,
+    "chargeShading": false,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showClock": true,
+    "showVelocityVectors": false
+  },
   "elements": [
     {
       "id": 0,
