@@ -302,7 +302,7 @@ define(function (require) {
       }
 
       if (viewLists.barGraphs) {
-        viewSizes.barGraphs = [50 + containerWidth * 0.1];
+        viewSizes.barGraphs = [40 + containerWidth * 0.09];
       }
 
       // Resize moleculeContainer first to determine actual container height for right-side

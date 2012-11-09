@@ -79,7 +79,7 @@ define(function (require) {
     }
 
     if (layout.views.barGraphs) {
-      layout.views.barGraphs[0].resize(70 + containerWidth * 0.05, h);
+      layout.views.barGraphs[0].resize(40 + containerWidth * 0.09, h);
     }
 
     // FIXME this is a temporary hack ... put in layout code instead of memorializing it in the CSS,

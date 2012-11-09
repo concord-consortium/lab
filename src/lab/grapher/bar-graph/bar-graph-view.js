@@ -117,7 +117,7 @@ define(function (require) {
             });
 
           // Setup bar.
-          rightShift += 5;
+          rightShift += 5 * scale;
           this.bar
             .attr({
               width: (options.width - VIEW.padding.left - rightShift),
