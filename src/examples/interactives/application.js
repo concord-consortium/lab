@@ -511,14 +511,17 @@ var ROOT = "/examples",
       modelEnergyGraph.add_points(updateModelEnergyData());
     }
 
+    function modelSampleSizeInPs() {
+      return model.get("viewRefreshInterval") * model.get("timeStep")/1000;
+    }
+
     function renderModelEnergyGraph() {
-      var sample = model.get("viewRefreshInterval")/1000,
-          options = {
+      var options = {
             title:     "Energy of the System (KE:red, PE:green, TE:blue)",
             xlabel:    "Model Time (ps)",
             xmin:      0,
             xmax:     50,
-            sample:    sample,
+            sample:    modelSampleSizeInPs(),
             ylabel:    "eV",
             ymin:      -5.0,
             ymax:      5.0

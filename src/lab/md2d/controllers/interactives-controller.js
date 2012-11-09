@@ -855,13 +855,12 @@ define(function (require) {
 
           var thisComponent = component,
               $container = $('#' + thisComponent.id),
-              sample = model.get("viewRefreshInterval")/1000,
               options = {
                 title:     "Energy of the System (KE:red, PE:green, TE:blue)",
                 xlabel:    "Model Time (ps)",
                 xmin:      0,
                 xmax:     20,
-                sample:    sample,
+                sample:    modelSampleSizeInPs(),
                 ylabel:    "eV",
                 ymin:      -5.0,
                 ymax:      5.0
@@ -870,7 +869,7 @@ define(function (require) {
           resetEnergyData();
 
           model.addPropertiesListener(['viewRefreshInterval'], function() {
-            options.sample = model.get("viewRefreshInterval")/1000;
+            options.sample = modelSampleSizeInPs();
             energyGraph.reset('#' + thisComponent.id, options);
           });
 
@@ -879,8 +878,7 @@ define(function (require) {
             $.extend(options, thisComponent.options || []);
             newEnergyGraph(thisComponent.id, options);
           } else {
-            sample = model.get("viewRefreshInterval")/1000;
-            options.sample = sample;
+            options.sample = modelSampleSizeInPs();
             $.extend(options, thisComponent.options || []);
             energyGraph.reset('#' + thisComponent.id, options, $container[0]);
           }
@@ -903,8 +901,7 @@ define(function (require) {
           });
 
           model.on('reset.energyGraph', function() {
-            sample = model.get("viewRefreshInterval")/1000;
-            options.sample = sample;
+            options.sample = modelSampleSizeInPs();
             resetEnergyData();
             energyGraph.reset('#' + thisComponent.id, options);
             energyGraph.new_data(energyData);
@@ -936,6 +933,10 @@ define(function (require) {
 
         }
       };
+    }
+
+    function modelSampleSizeInPs() {
+      return model.get("viewRefreshInterval") * model.get("timeStep")/1000;
     }
 
     function newEnergyGraph(id, options) {

@@ -47,8 +47,12 @@ define(function (require) {
         // Updates options which are strongly connected
         // with model and resets grapher.
         updateModelRelatedOptions = function () {
-          options.sample = model.get("viewRefreshInterval") / 1000;
+          options.sample = modelSampleSizeInPs();
         },
+
+        function modelSampleSizeInPs() {
+          return model.get("viewRefreshInterval") * model.get("timeStep")/1000;
+        }
 
         // Collects pressure data, saves it in pressureData
         // array and finally updates the graph view.
@@ -106,7 +110,7 @@ define(function (require) {
           });
 
           model.on('reset.pressureGraph', function() {
-            options.sample = model.get("viewRefreshInterval") / 1000;
+            options.sample = modelSampleSizeInPs();
             initPressureData();
             grapherView.reset('#' + component.id, options);
             grapherView.new_data(pressureData);
