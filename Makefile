@@ -4,7 +4,7 @@
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
 COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 MARKDOWN_COMPILER = bin/kramdown
-VOWS   = ./node_modules/vows/bin/vows --no-color
+VOWS   = ./node_modules/vows/bin/vows --no-color --isolate
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
