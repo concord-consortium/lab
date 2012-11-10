@@ -13,6 +13,7 @@ define(function (require, exports, module) {
       // Check for Safari. Typed arrays are faster almost everywhere
       // ... except Safari.
       notSafari = (function() {
+        if (typeof navigator === 'undefined') return true;
         var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
             match = navigator.userAgent.match(safarimatch);
         return (match && match[3]) ? false: true;

@@ -1,4 +1,4 @@
-/*globals define: false */
+/*global define: false console: true */
 
 define(function (require) {
   // Dependencies.
@@ -12,10 +12,11 @@ define(function (require) {
   // Prevent a console.log from blowing things up if we are on a browser that
   // does not support it ... like IE9.
   if (typeof console === 'undefined') {
-    window.console = {};
+    console = {};
+    if (window) window.console = console;
   }
   // Assign shortcut.
-  cons = window.console;
+  cons = console;
   // Make sure that every method is defined.
   if (cons.log === undefined)
     cons.log = emptyFunction;
