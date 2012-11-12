@@ -3,8 +3,10 @@
 define(function (require) {
   'use strict';
   var
-    graph                   = require('grapher/core/graph'),
-    realTimeGraph           = require('grapher/core/real-time-graph'),
+    graph         = require('grapher/core/graph'),
+    realTimeGraph = require('grapher/core/real-time-graph'),
+    BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
+    BarGraphView  = require('grapher/bar-graph/bar-graph-view'),
     // Object to be returned.
     publicAPI;
 
@@ -15,7 +17,11 @@ define(function (require) {
     // - graph constructor,
     graph: graph,
     // - realTimeGraph constructor,
-    realTimeGraph: realTimeGraph
+    realTimeGraph: realTimeGraph,
+    // - bar graph model,
+    BarGraphModel: BarGraphModel,
+    // - bar graph view.
+    BarGraphView: BarGraphView
     // ==========================================================================
   };
 

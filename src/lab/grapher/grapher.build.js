@@ -15,6 +15,28 @@
   //Allow "use strict"; be included in the RequireJS files.
   useStrict: true,
 
+  // The shim config allows us to configure dependencies for
+  // scripts that do not call define() to register a module
+  shim: {
+    'underscore': {
+      exports: '_'
+    },
+    'backbone': {
+      deps: [
+        'underscore'
+        //'jquery' is also required, but the whole 'Lab' libary depends on jQuery,
+        // which is expected to be available on the host website.
+      ],
+      exports: 'Backbone'
+    }
+  },
+
+  // Additional modules.
+  paths: {
+    'underscore': '../vendor/underscore/underscore',
+    'backbone': '../vendor/backbone/backbone'
+  },
+
   // Protect global namespace and call export of API.
   wrap: {
     start: "(function() {",
