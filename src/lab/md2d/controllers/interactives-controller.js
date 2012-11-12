@@ -1,4 +1,4 @@
-/*global define model $ alert ACTUAL_ROOT grapher d3*/
+/*global define model $ alert ACTUAL_ROOT Lab d3*/
 /*jshint eqnull: true boss: true */
 define(function (require) {
   // Dependencies.
@@ -950,7 +950,7 @@ define(function (require) {
     function newEnergyGraph(id, options) {
       options = options || {};
       options.dataset = energyData;
-      energyGraph = grapher.realTimeGraph('#' + id, options);
+      energyGraph = Lab.grapher.realTimeGraph('#' + id, options);
     }
 
     function updateEnergyGraph() {

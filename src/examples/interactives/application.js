@@ -1,4 +1,4 @@
-/*global Lab $ d3 CodeMirror controllers model modelList benchmark layout grapher DEVELOPMENT: true */
+/*global Lab $ d3 CodeMirror controllers model modelList benchmark layout DEVELOPMENT: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -530,7 +530,7 @@ var ROOT = "/examples",
       $.extend(options, interactive.models[0].energyGraphOptions || []);
       resetModelEnergyData();
       options.dataset = modelEnergyData;
-      modelEnergyGraph = grapher.realTimeGraph('#model-energy-graph-chart', options);
+      modelEnergyGraph = Lab.grapher.realTimeGraph('#model-energy-graph-chart', options);
     }
 
     // Add another sample of model KE, PE, and TE to the arrays in resetModelEnergyData

@@ -1,4 +1,4 @@
-/*globals document interactivesIndex window location $ */
+/*global Lab d3 document window $ */
 /*jslint indent: 2 */
 // ------------------------------------------------------------
 //
@@ -52,7 +52,7 @@ function selectDataHandler() {
   hash = "#" + interactive_url;
   document.location.hash = hash;
   if (!graph) {
-    graph = grapher.graph('#chart')
+    graph = Lab.grapher.graph('#chart');
   }
   switch(selectData.value) {
     case "fake":

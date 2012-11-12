@@ -1,4 +1,4 @@
-/*global defineClass extendClass grapher d3 */
+/*global defineClass extendClass Lab d3 */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 (function() {
@@ -119,7 +119,7 @@ ISImporter.GraphController = defineClass({
   },
 
   initGraph: function() {
-    this.graph = grapher.graph(this.element, {
+    this.graph = Lab.grapher.graph(this.element, {
       title       : this.title,
       xlabel      : this.xLabel,
       xmin        : 0,
