@@ -14,7 +14,7 @@ TIMESTAMP = Time.now.strftime("%Y%m%d.%H%M%S")
 
 MAVEN_CLEAN = "mvn clean"
 
-MAVEN_STD_BUILD = "mvn -Dmaven.compiler.source=1.5 -Dmaven.test.skip=true package"
+MAVEN_STD_BUILD = "mvn -Dmaven.compiler.source=1.5 -Dmaven.test.skip=true package install"
 MAVEN_STD_CLEAN_BUILD = MAVEN_CLEAN + ';' + MAVEN_STD_BUILD
 
 MAVEN_SMALL_BUILD = "mvn -Dmaven.compiler.source=1.5 -Dmaven.compiler.debuglevel=none -Dmaven.test.skip=true package"
@@ -33,32 +33,9 @@ MW_ANT_BUILD = "ant clean; ant dist2"
 # Compiling MW this way drops the size from 7.2 to 5.4 MB
 
 PROJECT_LIST = {
-  'otrunk'         => { :build_type => :maven,
-                        :build => MAVEN_STD_CLEAN_BUILD,
-                        :repository => 'git://github.com/concord-consortium/otrunk.git',
-                        :branch => 'trunk',
-                        :path => 'org/concord/otrunk',
-                        :has_applet_class => true,
-                        :sign => true },
-
-  'framework'      => { :build_type => :maven,
-                        :build => MAVEN_STD_CLEAN_BUILD,
-                        :repository => 'git://github.com/concord-consortium/framework.git',
-                        :branch => 'trunk',
-                        :path => 'org/concord/framework',
-                        :sign => true },
-
-  'data'           => { :build_type => :maven,
-                        :build => MAVEN_STD_CLEAN_BUILD,
-                        :repository => 'git://github.com/concord-consortium/data.git',
-                        :branch => 'trunk',
-                        :path => 'org/concord/data',
-                        :sign => true },
-
-  'sensor'         => { :build_type => :maven,
-                        :build => MAVEN_STD_CLEAN_BUILD,
-                        :repository => 'git://github.com/concord-consortium/sensor.git',
-                        :branch => 'before-trunk-sensor-split',
+  'sensor'         => { :build_type => :download,
+                        :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/sensor/1.0-SNAPSHOT/sensor-1.0-20121109.222028-20.jar',
+                        :verison => '1.0-20121109.222028-20',
                         :path => 'org/concord/sensor',
                         :sign => true },
 
@@ -70,30 +47,22 @@ PROJECT_LIST = {
                         :has_applet_class => true,
                         :sign => true },
 
-  'sensor-native'  => { :build_type => :maven,
-                        :build => MAVEN_STD_CLEAN_BUILD,
-                        :repository => 'git://github.com/concord-consortium/sensor-native.git',
-                        :branch => 'new-master-merge-with-trunk',
-                        :path => 'org/concord/sensor-native',
+  'sensor-vernier' => { :build_type => :download,
+                        :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/sensor-vernier/1.0-SNAPSHOT/sensor-vernier-1.0-20121109.222028-21.jar',
+                        :version => '1.0-20121109.222028-21',
+                        :path => 'org/concord/sensor/sensor-vernier',
                         :sign => true },
 
-  'frameworkview'  => { :build_type => :maven,
-                        :build => MAVEN_STD_CLEAN_BUILD,
-                        :repository => 'git://github.com/concord-consortium/frameworkview.git',
-                        :branch => 'trunk',
-                        :path => 'org/concord/frameworkview',
+  'goio-jna'       => { :build_type => :download,
+                        :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/goio-jna/1.0-SNAPSHOT/goio-jna-1.0-20121109.222028-22.jar',
+                        :version => '1.0-20121109.222028-22',
+                        :path => 'org/concord/sensor/goio-jna',
                         :sign => true },
 
-  'jdom'           => { :build_type => :download,
-                        :url => 'http://repo1.maven.org/maven2/jdom/jdom/1.0/jdom-1.0.jar',
-                        :path => 'jdom/jdom',
-                        :version => '1.0',
-                        :sign => true },
-
-  'jug'            => { :build_type => :download,
-                        :url => 'http://repo1.maven.org/maven2/jug/jug/1.1.2/jug-1.1.2.jar',
-                        :path => 'jug/jug',
-                        :version => '1.1.2',
+  'jna'            => { :build_type => :download,
+                        :url => 'https://github.com/twall/jna/blob/3.5.1/dist/jna.jar?raw=true',
+                        :version => '3.5.1',
+                        :path => 'com/sun/jna',
                         :sign => true },
 
   'energy2d'       => { :build_type => :custom,
