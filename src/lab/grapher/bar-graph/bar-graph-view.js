@@ -215,7 +215,7 @@ define(function (require) {
 
           // Case 1. Check how many attributes have been changed.
           for (name in changedAttributes) {
-            if (changedAttributes.hasOwnProperty()) {
+            if (changedAttributes.hasOwnProperty(name)) {
               changedAttrsCount++;
               if (changedAttrsCount > 1) {
                 // If 2 or more, redraw whole bar graph.

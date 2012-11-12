@@ -19,7 +19,7 @@ define(function (require) {
           height:    500,
 
           // Graph title.
-          title:     undefined,
+          title:     "",
           // Color of the main bar.
           barColor:  "green",
           // Color of the area behind the bar.
