@@ -17,9 +17,10 @@
     <p class="sensor-selector">Select a Vernier GoIO Sensor Type:
       <select id="sensor-type-selector">
         <option value="select-sensor" disabled selected>select sensor ...</option>
-        <option value="temperature">temperature</option>
-        <option value="light">light</option>
-        <option value="distance">distance</option>
+        <option value="GoIO temperature">GoIO temperature</option>
+        <option value="LabQuest temperature">LabQuest temperature</option>
+        <option value="GoIO light">GoIO light</option>
+        <option value="GoIO distance">GoIO distance</option>
       </select>
     </p>
     <div id="vis">
@@ -64,7 +65,7 @@
           light_data = [],
           sensorType,
           sensorConfigurations = {
-            "temperature": {
+            "GoIO temperature": {
               "graphOptions": {
                 title: "GoIO Temperature Sensor",
                 xlabel:    "Time (s)",
@@ -90,7 +91,33 @@
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
             },
-            "distance": {
+            "LabQuest temperature": {
+              "graphOptions": {
+                title: "LabQuest Temperature Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "Temperature, (Degrees C)",
+                ymin: 10, ymax: 40,
+                points: temperature_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="device" value="labquest"/>',
+                               '  <param name="probeType" value="temperature"/>',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "GoIO distance": {
               "graphOptions": {
                 title: "GoIO Distance Sensor",
                 xlabel:    "Time (s)",
@@ -116,7 +143,7 @@
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
             },
-            "light": {
+            "GoIO light": {
               "graphOptions": {
                 title: "GoIO Light Sensor",
                 xlabel:    "Time (s)",

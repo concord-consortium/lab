@@ -35,7 +35,7 @@ MW_ANT_BUILD = "ant clean; ant dist2"
 PROJECT_LIST = {
   'sensor'         => { :build_type => :download,
                         :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/sensor/1.0-SNAPSHOT/sensor-1.0-20121109.222028-20.jar',
-                        :verison => '1.0-20121109.222028-20',
+                        :version => '1.0-20121109.222028-20',
                         :path => 'org/concord/sensor',
                         :sign => true },
 
@@ -57,6 +57,12 @@ PROJECT_LIST = {
                         :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/goio-jna/1.0-SNAPSHOT/goio-jna-1.0-20121109.222028-22.jar',
                         :version => '1.0-20121109.222028-22',
                         :path => 'org/concord/sensor/goio-jna',
+                        :sign => true },
+
+  'labquest-jna'   => { :build_type => :download,
+                        :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/labquest-jna/1.0-SNAPSHOT/labquest-jna-1.0-20121109.222028-21.jar',
+                        :version => '1.0-20121109.222028-21',
+                        :path => 'org/concord/sensor/labquest-jna',
                         :sign => true },
 
   'jna'            => { :build_type => :download,
