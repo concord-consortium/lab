@@ -49,6 +49,7 @@ define(function (require) {
           // Create all SVG elements ONLY in this function.
           // Avoid recreation of SVG elements while rendering.
           this.vis = d3.select(this.el).append("svg");
+          this.fill = this.vis.append("rect");
           this.bar = this.vis.append("rect");
           this.title = this.vis.append("text");
           this.axisContainer = this.vis.append("g");
@@ -153,8 +154,20 @@ define(function (require) {
               "stroke-width": 0
             });
 
-          // Setup bar.
+          // Setup background of the bar.
           paddingRight += scale(5);
+          this.fill
+            .attr({
+              width: (options.width - paddingLeft - paddingRight),
+              height: this.heightScale(options.maxValue),
+              x: paddingLeft,
+              y: this.yScale(options.maxValue)
+            })
+            .style({
+              fill: options.fillColor
+            });
+
+          // Setup the main bar.
           this.bar
             .attr({
               width: (options.width - paddingLeft - paddingRight),

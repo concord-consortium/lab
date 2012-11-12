@@ -22,6 +22,8 @@ define(function (require) {
           title:     undefined,
           // Color of the main bar.
           barColor:  "green",
+          // Color of the area behind the bar.
+          fillColor: "white",
           // Color of axis, labels, title.
           textColor: "#555",
           // Number of ticks displayed on the axis.
