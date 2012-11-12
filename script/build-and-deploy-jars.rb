@@ -45,7 +45,8 @@ def checkout_project(project_path, project, options)
       when :download
         unless @skip_build
           name = "#{project}-#{options[:version]}.jar"
-          `curl #{options[:url]} -o #{name}` unless File.exists? name
+          # FIXME Sometimes this works, but sometimes it doesn't wait around for all the redirects...
+          `curl -L #{options[:url]} -o #{name}` unless File.exists? name
           print <<-HEREDOC
 
   from:    #{options[:url]}
