@@ -5,6 +5,7 @@ define(function (require) {
   var ModelController         = require('md2d/controllers/model-controller'),
       PressureGraphController = require('md2d/controllers/pressure-graph-controller'),
       BarGraphController      = require('md2d/controllers/bar-graph-controller'),
+      RealTimeGraph           = require('grapher/core/real-time-graph'),
       Thermometer             = require('cs!common/components/thermometer'),
       layout                  = require('common/layout/layout'),
       setupInteractiveLayout  = require('common/layout/interactive-layout');
@@ -950,7 +951,7 @@ define(function (require) {
     function newEnergyGraph(id, options) {
       options = options || {};
       options.dataset = energyData;
-      energyGraph = Lab.grapher.realTimeGraph('#' + id, options);
+      energyGraph = RealTimeGraph('#' + id, options);
     }
 
     function updateEnergyGraph() {
