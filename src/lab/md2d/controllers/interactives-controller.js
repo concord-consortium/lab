@@ -90,7 +90,7 @@ define(function (require) {
             format: d3.format,
 
             /* Returns number of atoms in the system. */
-            getNumberOfAtoms: function addAtom() {
+            getNumberOfAtoms: function getNumberOfAtoms() {
               return model.get_num_atoms();
             },
 
