@@ -12,10 +12,8 @@ requirejs.config(config.labConfig);
 
 requirejs([
   "md2d/models/engine/neighbor-list"
-], function (neighborList) {
-  var NeighborList = neighborList.neighborList,
-
-      suite = vows.describe("md2d/models/engine/neighbor-list");
+], function (NeighborList) {
+  var suite = vows.describe("md2d/models/engine/neighbor-list");
 
   suite.addBatch({
     "Neighbor list": {

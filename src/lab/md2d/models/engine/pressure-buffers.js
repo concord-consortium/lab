@@ -1,15 +1,19 @@
+// Special structure for keeping pressure probes data.
+// Buffers store historical values used during interpolation
+// (running average).
+
 if (typeof define !== 'function') {
   var define = require('amdefine')(module);
 }
 
-define(function (require, exports, module) {
-
+define(function (require) {
+  // Dependencies.
   var arrays = require('arrays'),
 
       PRESSURE_BUFFERS_LEN = 50,
       ARRAY_TYPE = 'Float32Array';
 
-  exports.pressureBuffers = function () {
+  return function PressureBuffers() {
     var api,
         obstaclesData,
         obstaclesCount,
@@ -17,8 +21,6 @@ define(function (require, exports, module) {
 
     // Public API.
     api = {
-      // Function initializes special structure for keeping pressure probes data.
-      // Arrays store historical data used during interpolation.
       // This function always validates all buffers and create
       // new if it's necessary (e.g. when obstacle was added).
       // To read final, interpolated pressure value in Bar, call this function:

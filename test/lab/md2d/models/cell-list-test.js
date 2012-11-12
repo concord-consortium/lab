@@ -12,10 +12,8 @@ requirejs.config(config.labConfig);
 
 requirejs([
   "md2d/models/engine/cell-list"
-], function (cellList) {
-  var CellList = cellList.cellList,
-
-      suite = vows.describe("md2d/models/engine/cell-list");
+], function (CellList) {
+  var suite = vows.describe("md2d/models/engine/cell-list");
 
   suite.addBatch({
     "Cell list": {

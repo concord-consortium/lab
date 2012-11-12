@@ -11,11 +11,11 @@ if (typeof define !== 'function') {
   var define = require('amdefine')(module);
 }
 
-define(function (require, exports, module) {
-
+define(function (require) {
+  // Dependencies.
   var arrays = require('arrays');
 
-  exports.cloneRestoreWrapper = function (hashOfArrays) {
+  return function CloneRestoreWrapper(hashOfArrays) {
     // Public API.
     return {
       // Clone hash of arrays

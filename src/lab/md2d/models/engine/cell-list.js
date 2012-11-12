@@ -1,10 +1,15 @@
+// Cell lists (also sometimes referred to as Cell linked-lists) are a tool for
+// finding all atom pairs within a given cut-off distance of each other in
+// Molecular dynamics simulations.
+// See: http://en.wikipedia.org/wiki/Cell_lists
+
 if (typeof define !== 'function') {
   var define = require('amdefine')(module);
 }
 
-define(function (require, exports, module) {
+define(function () {
 
-  exports.cellList = function (width, height, cellSize) {
+  return function CellList(width, height, cellSize) {
     var api,
         colsNum,
         rowsNum,

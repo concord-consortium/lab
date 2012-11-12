@@ -16,10 +16,10 @@ define(function (require, exports, module) {
       math                = require('./math/index'),
       coulomb             = require('./potentials/index').coulomb,
       lennardJones        = require('./potentials/index').lennardJones,
-      PressureBuffers     = require('./pressure-buffers').pressureBuffers,
-      CloneRestoreWrapper = require('./clone-restore-wrapper').cloneRestoreWrapper,
-      CellList            = require('./cell-list').cellList,
-      NeighborList        = require('./neighbor-list').neighborList,
+      PressureBuffers     = require('./pressure-buffers'),
+      CloneRestoreWrapper = require('./clone-restore-wrapper'),
+      CellList            = require('./cell-list'),
+      NeighborList        = require('./neighbor-list'),
 
       // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
       notSafari = (function() {
