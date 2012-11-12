@@ -8,7 +8,8 @@ if (typeof define !== 'function') {
 
 define(function (require) {
   // Dependencies.
-  var arrays = require('arrays');
+  var arrays     = require('arrays'),
+      arrayTypes = require('common/array-types');
 
   return function NeighborList(atomsNum, maxDisplacement) {
     var api,
@@ -21,30 +22,19 @@ define(function (require) {
         x,
         y,
 
-        // TODO: Move this check somewhere. Arrays module?
-        // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
-        notSafari = (function() {
-          var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-              match = navigator.userAgent.match(safarimatch);
-          return !match || !match[3];
-        }()),
-
-        float32 = (arrays.typed && notSafari) ? 'Float32Array' : 'regular',
-        int16  = (arrays.typed && notSafari) ? 'Int16Array'  : 'regular',
-
         init = function () {
           // Keep maximum capacity of lists bigger than actual number of atoms.
           maxAtomsNum = atomsNum + 10;
           listIdx = 0;
           listCapacity = maxAtomsNum * (maxAtomsNum - 1) / 2;
 
-          list = arrays.create(listCapacity, 0, int16);
-          head = arrays.create(maxAtomsNum, -1, int16);
-          tail = arrays.create(maxAtomsNum, -1, int16);
+          list = arrays.create(listCapacity, 0, arrayTypes.int16);
+          head = arrays.create(maxAtomsNum, -1, arrayTypes.int16);
+          tail = arrays.create(maxAtomsNum, -1, arrayTypes.int16);
           // Fill x and y with Infinity, so shouldUpdate(..)
           // will return true during first call after initialization.
-          x    = arrays.create(maxAtomsNum, Infinity, float32);
-          y    = arrays.create(maxAtomsNum, Infinity, float32);
+          x    = arrays.create(maxAtomsNum, Infinity, arrayTypes.float);
+          y    = arrays.create(maxAtomsNum, Infinity, arrayTypes.float);
         };
 
     init();
