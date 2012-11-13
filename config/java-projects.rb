@@ -34,8 +34,8 @@ MW_ANT_BUILD = "ant clean; ant dist2"
 
 PROJECT_LIST = {
   'sensor'         => { :build_type => :download,
-                        :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/sensor/1.0-SNAPSHOT/sensor-1.0-20121109.222028-20.jar',
-                        :version => '1.0-20121109.222028-20',
+                        :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/sensor/1.0-SNAPSHOT/sensor-1.0-20121113.162830-21.jar',
+                        :version => '1.0-20121113.162830-21',
                         :path => 'org/concord/sensor',
                         :sign => true },
 
