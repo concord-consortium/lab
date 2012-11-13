@@ -21,6 +21,11 @@
         <option value="LabQuest temperature">LabQuest temperature</option>
         <option value="GoIO light">GoIO light</option>
         <option value="GoIO distance">GoIO distance</option>
+        <option value="GoIO force (5N) (manual config)">GoIO force (5N) (manual config)</option>
+        <option value="GoIO force (5N) (built-in config)">GoIO force (5N) (built-in config)</option>
+        <option value="GoIO force (50N)">GoIO force (50N)</option>
+        <option value="GoIO CO2">GoIO CO2</option>
+        <option value="Pseudo Sound">Pseudo Sound</option>
       </select>
     </p>
     <div id="vis">
@@ -64,6 +69,8 @@
           distance_data = [],
           force_data = [],
           light_data = [],
+          co2_data = [],
+          sound_data = [],
           sensorType,
           sensorConfigurations = {
             "GoIO temperature": {
@@ -150,7 +157,7 @@
                 xlabel:    "Time (s)",
                 xmin: 0, xmax: 60,
                 ylabel:    "Force, (N)",
-                ymin: 0, ymax: 5,
+                ymin: -5, ymax: 5,
                 points: force_data,
                 circleRadius: false,
                 dataChange: false
@@ -174,6 +181,117 @@
                                '  <param name="sensorPort" value="0"/>',
                                '  <param name="stepSize" value="0.01"/>',
                                '  <param name="sensorType" value="5"/>',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "GoIO force (5N) (built-in config)": {
+              "graphOptions": {
+                title: "GoIO Force (5N) Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "Force, (N)",
+                ymin: -5, ymax: 5,
+                points: force_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="device" value="golink"/>',
+                               '  <param name="probeType" value="force 5n"/>',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "GoIO force (50N)": {
+              "graphOptions": {
+                title: "GoIO Force (50N) Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "Force, (N)",
+                ymin: -50, ymax: 50,
+                points: force_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="device" value="golink"/>',
+                               '  <param name="probeType" value="force 50n"/>',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "GoIO CO2": {
+              "graphOptions": {
+                title: "GoIO CO2 Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "CO2, (ppm)",
+                ymin: 0, ymax: 5000,
+                points: co2_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="device" value="golink"/>',
+                               '  <param name="probeType" value="force 50n"/>',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "Pseudo Sound": {
+              "graphOptions": {
+                title: "Pseudo Sound Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "Sound level, (db)",
+                ymin: 0, ymax: 120,
+                points: sound_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="device" value="pseudo"/>',
+                               '  <param name="probeType" value="manual"/>',
+                               '  <param name="period" value="0.1"/>',
+                               '  <param name="precision" value="-1"/>',
+                               '  <param name="min" value="0.0"/>',
+                               '  <param name="max" value="120.0"/>',
+                               '  <param name="sensorPort" value="0"/>',
+                               '  <param name="stepSize" value="1.0"/>',
+                               '  <param name="sensorType" value="14"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
