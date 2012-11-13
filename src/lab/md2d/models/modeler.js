@@ -3,8 +3,9 @@
 
 define(function(require) {
   // Dependencies.
-  var console     = require('common/console'),
-      arrays      = require('arrays'),
+  var arrays      = require('arrays'),
+      arrayTypes  = require('common/array-types'),
+      console     = require('common/console'),
       md2d        = require('md2d/models/engine/md2d'),
       TickHistory = require('md2d/models/tick-history'),
 
@@ -167,28 +168,7 @@ define(function(require) {
         outputsByName = {},
 
         // Used to notify of changed property values
-        outputPreviousValues,
-
-        // TODO: notSafari and hasTypedArrays belong in the arrays module
-        // Check for Safari. Typed arrays are faster almost everywhere
-        // ... except Safari.
-        notSafari = (function() {
-          var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-              match = navigator.userAgent.match(safarimatch);
-          return (match && match[3]) ? false: true;
-        }()),
-
-        hasTypedArrays = (function() {
-          try {
-            new Float32Array();
-          }
-          catch(e) {
-            return false;
-          }
-          return true;
-        }()),
-
-        arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
+        outputPreviousValues;
 
     function setupIndices() {
       var prop,
@@ -564,7 +544,7 @@ define(function(require) {
 
       for (i = 0; i < model.NON_ENGINE_PROPERTY_LIST.length; i++) {
         prop = model.NON_ENGINE_PROPERTY_LIST[i];
-        atoms[prop] = arrays.create(model.get_num_atoms(), 0, arrayType);
+        atoms[prop] = arrays.create(model.get_num_atoms(), 0, arrayTypes.float);
 
         if (serializedAtomProps[prop]) {
           setFromSerializedArray(prop, serializedAtomProps[prop]);
