@@ -3,10 +3,6 @@
 // Molecular dynamics simulations.
 // See: http://en.wikipedia.org/wiki/Cell_lists
 
-if (typeof define !== 'function') {
-  var define = require('amdefine')(module);
-}
-
 define(function () {
 
   return function CellList(width, height, cellSize) {

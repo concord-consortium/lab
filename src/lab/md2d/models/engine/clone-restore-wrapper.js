@@ -7,10 +7,6 @@
 // (...)
 // obj.restore(state);
 
-if (typeof define !== 'function') {
-  var define = require('amdefine')(module);
-}
-
 define(function (require) {
   // Dependencies.
   var arrays = require('arrays');

@@ -2,10 +2,6 @@
 // to efficiently maintain a list of all particles within a given cut-off distance of each other.
 // See: http://en.wikipedia.org/wiki/Verlet_list
 
-if (typeof define !== 'function') {
-  var define = require('amdefine')(module);
-}
-
 define(function (require) {
   // Dependencies.
   var arrays     = require('arrays'),

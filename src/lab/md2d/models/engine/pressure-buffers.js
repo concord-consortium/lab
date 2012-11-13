@@ -2,10 +2,6 @@
 // Buffers store historical values used during interpolation
 // (running average).
 
-if (typeof define !== 'function') {
-  var define = require('amdefine')(module);
-}
-
 define(function (require) {
   // Dependencies.
   var arrays = require('arrays'),
