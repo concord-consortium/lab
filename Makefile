@@ -4,7 +4,9 @@
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
 COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 MARKDOWN_COMPILER = bin/kramdown
-VOWS   = ./node_modules/vows/bin/vows --no-color --isolate
+# Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
+# the test's title, not its pathname. So we need to find everything in test/vows first.
+VOWS = find test/vows -name *.js -print | xargs ./node_modules/.bin/vows --no-color --isolate
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
