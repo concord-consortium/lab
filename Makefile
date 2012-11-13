@@ -311,6 +311,7 @@ server/public/vendor/jquery-ui/jquery-ui.min.js: \
 	src/vendor/jquery-ui/dist/jquery-ui.min.js \
 	server/public/vendor/jquery-ui
 	cp -r src/vendor/jquery-ui/dist/* server/public/vendor/jquery-ui
+	cp -r src/vendor/jquery-ui/themes/base/images server/public/vendor/jquery-ui
 	cp src/vendor/jquery-ui/MIT-LICENSE.txt server/public/vendor/jquery-ui
 
 server/public/vendor/jquery-ui:
