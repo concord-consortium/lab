@@ -155,7 +155,7 @@ def generate_md2d_data_file(num)
   input_json_file = File.join(NEXTGEN_PATH, "model#{num}.json")
   output_txt_file = File.join(NEXTGEN_PATH, "model#{num}.data.txt")
   total_time = 41000
-  cmd = "#{generator} '#{input_json_file}' #{output_txt_file} #{total_time}"
+  cmd = "#{generator} -i '#{input_json_file}' -o #{output_txt_file} -t #{total_time}"
   puts "\ncommand:\n#{cmd}"
   system(cmd)
 end
