@@ -99,9 +99,9 @@ define(function (require) {
           ymax:                   10,
           imageMapping:           {},
           velocityVectors:        {
-            color: "#0A0",
-            width: 1.5,
-            length: 5
+            color: "#000",
+            width: 1.1,
+            length: 2
           }
         },
 
@@ -827,7 +827,6 @@ define(function (require) {
           .style({
             "stroke-width": get_vector_stroke_width,
             "stroke": velocityVectorColor,
-            "stroke-opacity": 0.7,
             "fill": "none"
           });
       }
