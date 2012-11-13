@@ -14,7 +14,12 @@
     "showVDWLines": false,
     "VDWLinesCutoff": "medium",
     "showClock": true,
-    "showVelocityVectors": true
+    "showVelocityVectors": true,
+    "velocityVectors": {
+      "length": 2,
+      "width": 2,
+      "color": "rgb(100,200,300)"
+    }
   },
   "elements":[
     {

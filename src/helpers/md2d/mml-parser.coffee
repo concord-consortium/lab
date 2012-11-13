@@ -222,6 +222,18 @@ parseMML = (mmlString) ->
     ###
     showVelocityVectors = parseBoolean($mml("[property=showVVectors] boolean").text(), false)
 
+    velocityVectorProps = $mml("[property=velocityFlavor]")
+    if velocityVectorProps.length > 0
+      velocityVectorWidth   = parseFloat velocityVectorProps.find("[property=width] float").text()
+      velocityVectorLength  = parseInt velocityVectorProps.find("[property=length] int").text()
+      velocityVectorLength /= 100
+      velocityColorDef  = velocityVectorProps.find ".java-awt-Color>int"
+      if velocityColorDef and velocityColorDef.length > 0
+        velocityVectorColor    = "rgb("
+        velocityVectorColor   += parseInt(cheerio(velocityColorDef[0]).text()) + ","
+        velocityVectorColor   += parseInt(cheerio(velocityColorDef[1]).text()) + ","
+        velocityVectorColor   += parseInt(cheerio(velocityColorDef[2]).text()) + ")"
+
     ###
       GravitationalField
     ###
@@ -569,6 +581,12 @@ parseMML = (mmlString) ->
 
     if imageProps.length > 0
       json.images = images
+
+    if velocityVectorLength or velocityVectorWidth or velocityVectorColor
+      json.viewOptions.velocityVectors = vOpts = {}
+      vOpts.length = velocityVectorLength if velocityVectorLength
+      vOpts.width  = velocityVectorWidth  if velocityVectorWidth
+      vOpts.color  = velocityVectorColor  if velocityVectorColor
 
     # Temporarily remove text boxes from converted models; see
     # https://www.pivotaltracker.com/story/show/37081141

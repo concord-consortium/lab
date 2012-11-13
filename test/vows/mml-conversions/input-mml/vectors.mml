@@ -358,6 +358,23 @@
    </void>
   </void>
  </object>
+ <void property="velocityFlavor">
+   <void property="color">
+    <object class="java.awt.Color">
+     <int>100</int>
+     <int>200</int>
+     <int>300</int>
+     <int>255</int>
+    </object>
+   </void>
+   <void property="length">
+    <int>200</int>
+   </void>
+   <void property="width">
+    <float>2.0</float>
+   </void>
+  </void>
+ </object>
  <void property="chargeShading">
   <boolean>true</boolean>
  </void>
