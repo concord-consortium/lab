@@ -1,4 +1,4 @@
-/*global define: false */
+/*global define: true */
 
 // Tiny module which contains definition of preferred
 // array types used across whole Lab project.
@@ -11,6 +11,10 @@ define(function (require) {
 
       // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
       notSafari = (function() {
+        // Node.js?
+        if (typeof navigator === 'undefined')
+          return true;
+        // Safari?
         var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
             match = navigator.userAgent.match(safarimatch);
         return !match || !match[3];
