@@ -151,10 +151,11 @@ def convert_mml_file(num)
 end
 
 def generate_md2d_data_file(num)
-  generator =  File.join(PROJECT_ROOT, "node_modules/.bin/coffee") + ' ' +  File.join(PROJECT_ROOT, "node-bin/get-md2d-data.coffee")
+  generator =  File.join(PROJECT_ROOT, "node_modules/.bin/coffee") + ' ' +  File.join(PROJECT_ROOT, "node-bin/run-md2d")
   input_json_file = File.join(NEXTGEN_PATH, "model#{num}.json")
   output_txt_file = File.join(NEXTGEN_PATH, "model#{num}.data.txt")
-  cmd = "#{generator} '#{input_json_file}' #{output_txt_file}"
+  total_time = 41000
+  cmd = "#{generator} '#{input_json_file}' #{output_txt_file} #{total_time}"
   puts "\ncommand:\n#{cmd}"
   system(cmd)
 end
