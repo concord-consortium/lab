@@ -3,6 +3,17 @@
   "about": "Interactive example",
   "models": [
     {
+      "id": "pendulum1$0",
+      "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "velocityVectors": {
+          "length": 15
+        }
+      },
+      "onLoad": "set({showVelocityVectors: true})"
+    },
+    {
       "id": "simple-gas$0",
       "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
@@ -21,17 +32,6 @@
       "viewOptions": {
         "controlButtons": "play_reset",
         "enableKeyboardHandlers": false
-      },
-      "onLoad": "set({showVelocityVectors: true})"
-    },
-    {
-      "id": "pendulum1$0",
-      "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
-      "viewOptions": {
-        "controlButtons": "play_reset_step",
-        "velocityVectors": {
-          "length": 15
-        }
       },
       "onLoad": "set({showVelocityVectors: true})"
     }
@@ -54,16 +54,16 @@
       "id": "pulldown",
       "options": [
         {
+          "text": "Pendulum",
+          "loadModel": "pendulum1$0"
+        },
+        {
           "text": "Simple Gas",
           "loadModel": "simple-gas$0"
         },
         {
           "text": "Oil and Water",
           "loadModel": "page3$1"
-        },
-        {
-          "text": "Pendulum",
-          "loadModel": "pendulum1$0"
         }
       ]
     }
