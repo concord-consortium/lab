@@ -66,7 +66,7 @@ PROJECT_LIST = {
                         :sign => true },
 
   'jna'            => { :build_type => :download,
-                        :url => 'https://github.com/twall/jna/blob/3.5.1/dist/jna.jar?raw=true',
+                        :url => 'http://search.maven.org/remotecontent?filepath=net/java/dev/jna/jna/3.5.1/jna-3.5.1.jar',
                         :version => '3.5.1',
                         :path => 'com/sun/jna',
                         :sign => true },
