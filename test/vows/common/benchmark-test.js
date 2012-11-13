@@ -1,7 +1,7 @@
-require("../../../../env");
+require("../../env");
 
 var requirejs = require('requirejs'),
-    config    = require('../../../../requirejs-config'),
+    config    = require('../../requirejs-config'),
     vows = require("vows"),
     assert = require("assert");
 
@@ -9,15 +9,15 @@ var requirejs = require('requirejs'),
 requirejs.config(config.labConfig);
 
 requirejs([
-  'common/layout/layout'
-], function (layout) {
+  'common/benchmark/benchmark'
+], function (benchmark) {
 
-  var suite = vows.describe("common/layout");
+  var suite = vows.describe("common/benchmark");
 
   suite.addBatch({
     "version": {
       topic: function() {
-        return layout.version;
+        return benchmark.version;
       },
       "reports version": function(version) {
         assert.equal(version, "0.0.1");

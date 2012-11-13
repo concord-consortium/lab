@@ -1,8 +1,8 @@
 /*globals $ */
-require("../../../env");
+require("../../env");
 
 var requirejs = require('requirejs'),
-    config    = require('../../../requirejs-config'),
+    config    = require('../../requirejs-config'),
     vows      = require("vows"),
     assert    = require("assert");
 
