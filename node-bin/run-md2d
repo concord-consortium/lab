@@ -1,0 +1,45 @@
+#!/usr/bin/env coffee
+
+fs          = require "fs"
+md2dNodeApi = require "../src/helpers/md2d/md2d-node-api"
+
+runSimulation = (inFilePath, outFilePath, totalTime) ->
+
+  modelJSON = JSON.parse fs.readFileSync(inFilePath).toString()
+
+  # Create MD2D modeler.
+  model = md2dNodeApi.Modeler modelJSON
+  model.resetTime()
+
+  console.log """\nModel file: #{inFilePath}
+                 Output: #{outFilePath}
+                 Integration time: #{totalTime}
+                 time\tKE\tTE"""
+
+  out = fs.openSync outFilePath, 'w'
+
+  while (model.get('time') <= totalTime)
+    str =  "#{model.get 'time'}\t"
+    str += "#{model.get('kineticEnergy').toFixed(4)}\t"
+    str += "#{(model.get('kineticEnergy') + model.get('potentialEnergy')).toFixed(4)}"
+    console.log str
+    fs.writeSync out, str + "\n"
+    # Integrate
+    model.tick()
+  fs.closeSync out
+
+# Begin script.
+
+# Expected call:
+# coffee get-md2d-data.coffee path/to/md2d_model_path path/to/outputfile integration_time
+if process.argv.length < 5
+  console.log """Arguments missing.
+                 Correct usage:
+                 coffee get-md2d-data.coffee path/to/md2d_model_path path/to/outputfile integration_time"""
+  return
+
+modelFilePath   = process.argv[2]
+outFilePath     = process.argv[3]
+totalTime       = Number process.argv[4]
+
+runSimulation modelFilePath, outFilePath, totalTime
