@@ -35,7 +35,7 @@ runSimulation = (inFilePath, outFilePath, totalTime) ->
 if process.argv.length < 5
   console.log """Arguments missing.
                  Correct usage:
-                 coffee get-md2d-data.coffee path/to/md2d_model_path path/to/outputfile integration_time"""
+                 run-md2d path/to/md2d_model_path path/to/outputfile integration_time"""
   return
 
 modelFilePath   = process.argv[2]
