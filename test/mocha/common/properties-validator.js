@@ -1,12 +1,5 @@
 /*global describe it beforeEach */
 
-var should    = require('should'),
-    requirejs = require('requirejs'),
-    config    = require('../../requirejs-config');
-
-// Use Lab RequireJS configuration.
-requirejs.config(config.labConfig);
-
 requirejs([
   'common/properties-validator'
 ], function (PropertiesValidator) {
