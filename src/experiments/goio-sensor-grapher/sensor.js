@@ -201,7 +201,7 @@ sensor.AppletGrapher.prototype.AddButtons = function() {
     var self = this;
     return function() {
       applet.stopCollecting();
-      self.graph.data([]);
+      self.graph.new_data([[]]);
       self.time = 0;
       self.graph.reset();
       self.clearButton.className = "inactive";
