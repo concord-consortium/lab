@@ -14,21 +14,30 @@
     <script src="sensor.js"></script>
   </head>
   <body>
-    <p class="sensor-selector">Select a Vernier GoIO Sensor Type:
+    <p class="sensor-selector">Interface and Sensor Type:
       <select id="sensor-type-selector">
-        <option value="select-sensor" disabled selected>select sensor ...</option>
-        <option value="GoIO temperature">GoIO temperature</option>
-        <option value="LabQuest temperature">LabQuest temperature</option>
-        <option value="GoIO light">GoIO light</option>
-        <option value="LabQuest light">LabQuest light</option>
-        <option value="GoIO distance">GoIO distance</option>
-        <option value="GoIO force (5N) (manual config)">GoIO force (5N) (manual config)</option>
-        <option value="GoIO force (5N) (built-in config)">GoIO force (5N) (built-in config)</option>
-        <option value="LabQuest force (5N)">LabQuest force (5N)</option>
-        <option value="GoIO force (50N)">GoIO force (50N)</option>
-        <option value="LabQuest force (50N)">LabQuest force (50N)</option>
-        <option value="GoIO CO2">GoIO CO2</option>
-        <option value="Pseudo Sound">Pseudo Sound</option>
+        <option value="select-sensor" disabled selected>select interface and sensor ...</option>
+        <optgroup label='GoIO'>
+          <option value="GoIO temperature">GoIO Temperature</option>
+          <option value="GoIO light">GoIO Light</option>
+          <option value="GoIO force (5N) (manual config)">GoIO Force (5N) (manual config)</option>
+          <option value="GoIO force (5N) (built-in config)">GoIO Force (5N) (built-in config)</option>
+          <option value="GoIO force (50N)">GoIO Force (50N)</option>
+          <option value="GoIO CO2">GoIO CO2</option>
+        </optgroup>
+        <optgroup label='GoMotion'>
+          <option value="GoIO distance">GoMotion</option>
+        </optgroup>
+        <optgroup label='LabQuest'>
+          <option value="LabQuest temperature">LabQuest Temperature</option>
+          <option value="LabQuest light">LabQuest Light</option>
+          <option value="LabQuest force (5N)">LabQuest Force (5N)</option>
+          <option value="LabQuest force (50N)">LabQuest Force (50N)</option>
+        </optgroup>
+        <optgroup label='Pseudo Probes'>
+          <option value="Pseudo Sound">Pseudo Sound</option>
+        </optgroup>
+
       </select>
     </p>
     <div id="vis">
