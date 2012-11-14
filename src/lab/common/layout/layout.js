@@ -301,16 +301,17 @@ define(function (require) {
         viewSizes.energyGraphs = [containerWidth * 0.40];
       }
 
-      if (viewLists.barGraphs) {
-        viewSizes.barGraphs = [40 + containerWidth * 0.09];
-      }
-
       // Resize moleculeContainer first to determine actual container height for right-side
       // Probably a way to do this with CSS ...
       viewLists.moleculeContainers[0].resize(modelWidth, modelHeight);
 
       modelHeight = $("#molecule-container").height();
       $("#rightwide").height(modelHeight);
+
+      if (viewLists.barGraphs) {
+        // Keep width of the bar graph proportional to its height.
+        viewSizes.barGraphs = [35 + modelHeight * 0.22];
+      }
 
       for (viewType in viewLists) {
         if (viewType === "moleculeContainers") continue

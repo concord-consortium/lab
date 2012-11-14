@@ -60,7 +60,8 @@ define(function (require) {
     }
 
     if (viewLists.barGraphs) {
-      viewSizes.barGraphs = [40 + containerWidth * 0.09, modelHeight];
+      // Keep width of the bar graph proportional to its height.
+      viewSizes.barGraphs = [35 + modelHeight * 0.22, modelHeight];
     }
 
     for (viewType in viewLists) {
