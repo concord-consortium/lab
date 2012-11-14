@@ -469,6 +469,10 @@ test-src: test/layout.html \
 test-mocha:
 	@$(MOCHA)
 
+.PHONY: debug-mocha
+debug-mocha:
+	@$(MOCHA) --debug-brk
+
 %.min.js: %.js Makefile
 	@rm -f $@
 	$(JS_COMPILER) < $< > $@
