@@ -14,7 +14,8 @@
     "showVDWLines": false,
     "VDWLinesCutoff": "medium",
     "showClock": false,
-    "showVelocityVectors": false
+    "showVelocityVectors": false,
+    "showForceVectors": false
   },
   "elements": [
     {

@@ -15,10 +15,14 @@
     "VDWLinesCutoff": "medium",
     "showClock": true,
     "showVelocityVectors": true,
+    "showForceVectors": true,
     "velocityVectors": {
       "length": 2,
       "width": 2,
       "color": "rgb(100,200,300)"
+    },
+    "forceVectors": {
+      "color": "rgb(0,0,255)"
     }
   },
   "elements":[

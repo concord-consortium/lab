@@ -235,6 +235,24 @@ parseMML = (mmlString) ->
         velocityVectorColor   += parseInt(cheerio(velocityColorDef[2]).text()) + ")"
 
     ###
+      Show force vectors
+    ###
+    showForceVectors = parseBoolean($mml("[property=showFVectors] boolean").text(), false)
+
+    forceVectorProps = $mml("[property=forceFlavor]")
+    if forceVectorProps.length > 0
+      forceVectorWidth   = parseFloat forceVectorProps.find("[property=width] float").text()
+      forceVectorLength  = parseInt forceVectorProps.find("[property=length] int").text()
+      forceVectorLength /= 1000
+      forceColorDef  = forceVectorProps.find ".java-awt-Color>int"
+      if forceColorDef and forceColorDef.length > 0
+        forceVectorColor    = "rgb("
+        forceVectorColor   += parseInt(cheerio(forceColorDef[0]).text()) + ","
+        forceVectorColor   += parseInt(cheerio(forceColorDef[1]).text()) + ","
+        forceVectorColor   += parseInt(cheerio(forceColorDef[2]).text()) + ")"
+      if forceVectorColor is "rgb(255,0,255)" then forceVectorColor = null
+
+    ###
       GravitationalField
     ###
     gravitationalProps = $mml(".org-concord-mw2d-models-GravitationalField")
@@ -562,6 +580,7 @@ parseMML = (mmlString) ->
         VDWLinesCutoff      : VDWLinesCutoff
         showClock           : showClock
         showVelocityVectors : showVelocityVectors
+        showForceVectors    : showForceVectors
 
     removeArrayIfDefault = (name, array, defaultVal) ->
       delete json.atoms[name] if array.every (i)-> i is defaultVal
@@ -587,6 +606,12 @@ parseMML = (mmlString) ->
       vOpts.length = velocityVectorLength if velocityVectorLength
       vOpts.width  = velocityVectorWidth  if velocityVectorWidth
       vOpts.color  = velocityVectorColor  if velocityVectorColor
+
+    if forceVectorLength or forceVectorWidth or forceVectorColor
+      json.viewOptions.forceVectors = vOpts = {}
+      vOpts.length = forceVectorLength if forceVectorLength
+      vOpts.width  = forceVectorWidth  if forceVectorWidth
+      vOpts.color  = forceVectorColor  if forceVectorColor
 
     # Temporarily remove text boxes from converted models; see
     # https://www.pivotaltracker.com/story/show/37081141

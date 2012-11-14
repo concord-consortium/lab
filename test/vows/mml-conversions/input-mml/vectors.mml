@@ -314,6 +314,9 @@
   <void property="showVVectors">
    <boolean>true</boolean>
   </void>
+  <void property="showFVectors">
+   <boolean>true</boolean>
+  </void>
   <void property="lightSource">
    <object class="org.concord.mw2d.models.LightSource"/>
   </void>
@@ -340,7 +343,7 @@
   <void property="forceFlavor">
    <void property="color">
     <object class="java.awt.Color">
-     <int>255</int>
+     <int>0</int>
      <int>0</int>
      <int>255</int>
      <int>255</int>
