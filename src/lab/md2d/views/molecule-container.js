@@ -106,7 +106,7 @@ define(function (require) {
             length: 2
           },
           forceVectors:        {
-            color: "#00A",
+            color: "#F0F",
             width: 1.1,
             length: 2
           }
