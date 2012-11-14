@@ -86,8 +86,8 @@ define(function (require) {
           // Setup SVG element.
           this.vis
             .attr({
-              width:  options.width,
-              height: options.height
+              "width":  options.width,
+              "height": options.height
             })
             .style({
               "font-size": scale(15) + "px"
@@ -102,15 +102,6 @@ define(function (require) {
           this.heightScale
             .domain([options.minValue, options.maxValue])
             .range([0, options.height - paddingTop - paddingBottom]);
-
-          // Setup Y axis.
-          this.yAxis
-            .scale(this.yScale)
-            .ticks(options.ticks)
-            .tickSubdivide(options.tickSubdivide)
-            .tickFormat(d3.format(options.labelFormat))
-            .tickSize(scale(10), scale(5), 0)
-            .orient("right");
 
           // Setup title.
           if (options.title !== undefined) {
@@ -130,14 +121,18 @@ define(function (require) {
               .attr("transform", "translate(" + (options.width - paddingRight) + ", " + options.height / 2 + ") rotate(90)");
           }
 
+          // Setup Y axis.
+          this.yAxis
+            .scale(this.yScale)
+            .ticks(options.ticks)
+            .tickSubdivide(options.tickSubdivide)
+            .tickFormat(d3.format(options.labelFormat))
+            .tickSize(scale(10), scale(5), 0)
+            .orient("right");
+
           // Create and append Y axis.
           this.axisContainer
             .call(this.yAxis);
-
-          // Translate axis into right place, add narrow empty space.
-          paddingRight += getRealWidth(this.axisContainer) + scale(7);
-          this.axisContainer
-            .attr("transform", "translate(" + (options.width - paddingRight) + ", 0)");
 
           // Style Y axis.
           this.axisContainer
@@ -151,30 +146,40 @@ define(function (require) {
           this.axisContainer.selectAll("text")
             .style({
               "fill": options.textColor,
-              "stroke-width": 0
-            });
+              "stroke-width": 0,
+              // Workaround for hiding numeric labels. D3 doesn't provide any convenient function
+              // for that. Returning empty string as tickFormat causes that bounding box width is
+              // calculated incorrectly.
+              "font-size": options.displayLabels ? "100%" : 0
+          });
+
+          // Translate axis into right place, add narrow empty space.
+          // Note that this *have* to be done after all styling to get correct width of bounding box!
+          paddingRight += getRealWidth(this.axisContainer) + scale(7);
+          this.axisContainer
+            .attr("transform", "translate(" + (options.width - paddingRight) + ", 0)");
 
           // Setup background of the bar.
           paddingRight += scale(5);
           this.fill
             .attr({
-              width: (options.width - paddingLeft - paddingRight),
-              height: this.heightScale(options.maxValue),
-              x: paddingLeft,
-              y: this.yScale(options.maxValue)
+              "width": (options.width - paddingLeft - paddingRight),
+              "height": this.heightScale(options.maxValue),
+              "x": paddingLeft,
+              "y": this.yScale(options.maxValue)
             })
             .style({
-              fill: options.fillColor
+              "fill": options.fillColor
             });
 
           // Setup the main bar.
           this.bar
             .attr({
-              width: (options.width - paddingLeft - paddingRight),
-              x: paddingLeft
+              "width": (options.width - paddingLeft - paddingRight),
+              "x": paddingLeft
             })
             .style({
-              fill: options.barColor
+              "fill": options.barColor
             });
 
           // Finally, update bar.
@@ -226,7 +231,7 @@ define(function (require) {
           }
 
           // Case 2. Only one attribute has changed, check if it's "value".
-          if (changedAttributes.value) {
+          if (changedAttributes.value !== undefined) {
             this.updateBar();
           } else {
             this.render();

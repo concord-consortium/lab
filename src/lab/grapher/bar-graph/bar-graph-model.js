@@ -30,6 +30,8 @@ define(function (require) {
           ticks:          10,
           // Number of subdivisions between major ticks.
           tickSubdivide: 1,
+          // Enables or disables displaying of numerical labels.
+          displayLabels: true,
           // Format of labels.
           // See the specification of this format:
           // https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
