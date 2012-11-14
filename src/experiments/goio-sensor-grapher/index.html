@@ -20,10 +20,13 @@
         <option value="GoIO temperature">GoIO temperature</option>
         <option value="LabQuest temperature">LabQuest temperature</option>
         <option value="GoIO light">GoIO light</option>
+        <option value="LabQuest light">LabQuest light</option>
         <option value="GoIO distance">GoIO distance</option>
         <option value="GoIO force (5N) (manual config)">GoIO force (5N) (manual config)</option>
         <option value="GoIO force (5N) (built-in config)">GoIO force (5N) (built-in config)</option>
+        <option value="LabQuest force (5N)">LabQuest force (5N)</option>
         <option value="GoIO force (50N)">GoIO force (50N)</option>
+        <option value="LabQuest force (50N)">LabQuest force (50N)</option>
         <option value="GoIO CO2">GoIO CO2</option>
         <option value="Pseudo Sound">Pseudo Sound</option>
       </select>
@@ -211,6 +214,32 @@
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
             },
+            "LabQuest force (5N)": {
+              "graphOptions": {
+                title: "LabQuest Force (5N) Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "Force, (N)",
+                ymin: -5, ymax: 5,
+                points: force_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="device" value="labquest"/>',
+                               '  <param name="probeType" value="force 5n"/>',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
             "GoIO force (50N)": {
               "graphOptions": {
                 title: "GoIO Force (50N) Sensor",
@@ -232,6 +261,32 @@
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
                                '  <param name="device" value="golink"/>',
+                               '  <param name="probeType" value="force 50n"/>',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "LabQuest force (50N)": {
+              "graphOptions": {
+                title: "LabQuest Force (50N) Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "Force, (N)",
+                ymin: -50, ymax: 50,
+                points: force_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="device" value="labquest"/>',
                                '  <param name="probeType" value="force 50n"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
@@ -317,6 +372,32 @@
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
                                '  <param name="device" value="golink"/>',
+                               '  <param name="probeType" value="light"/>',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "LabQuest light": {
+              "graphOptions": {
+                title: "LabQuest Light Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "Light, (Lux)",
+                ymin: 0, ymax: 10000,
+                points: light_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="device" value="labquest"/>',
                                '  <param name="probeType" value="light"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
