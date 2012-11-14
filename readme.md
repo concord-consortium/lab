@@ -936,22 +936,80 @@ The source code of the core molecular dynamics engine is currently located in th
 [`src/lab/md2d/models/engine`](https://github.com/concord-
 consortium/lab/tree/master/src/lab/md2d/models/engine) directory, which is organized as a set of
 related RequireJS modules. These modules are compatible both with the Web browser environment and
-Node. When used in Node, [amdefine](https://github.com/jrburke/amdefine) package must be available
-(it is listed as an dependency in the Lab [`packages.json`](https://github.com/concord-
-consortium/lab/blob/master/package.json) file). The entry point for external Node.js applications is
-the file [`src/lab/md2d/models/engine/md2d.js`](https://github.com/concord-
-consortium/lab/blob/master/src/lab/md2d/models/engine/md2d.js).
+Node.
 
-In addition, Node-based executables can be written and placed in
-[`src/lab/md2d/models/engine`](https://github.com/concord-
-consortium/lab/tree/master/src/lab/md2d/models/engine) or a subdirectory. These are expected to be
-useful for verifying and tuning the model by running the model headless and saving summary results
-into a file for offline analysis; see, e.g., [https://github.com/rklancer/script-md](https://github.com/rklancer/script-md).
+##### MD2D Headless Mode
+
+###### [`node-bin/run-md2d`](https://github.com/concord-consortium/lab/blob/master/node-bin/run-md2d)
+
+There is one working script for now:
+[`node-bin/run-md2d`](https://github.com/concord-consortium/lab/blob/master/node-bin/run-md2d)
+
+It runs simulation for desired time and prints Time, Kinetic Energy, Total Energy every tick.
+
+Usage:
+
+    ./node-bin/run-md2d -i [path] -o [path or stdout] -i [num]
+
+    Options:
+      -i, --input   Model JSON file        [string]  [required]
+      -o, --output  Output file or stdout  [string]  [default: "stdout"]
+      -t, --time    Integration time       [default: 100]
+
+Example results:
+
+    Model file: server/public/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json
+    Output: stdout
+    Integration time: 150
+    time    KE      TE
+    0       3.0988  3.1003
+    50      3.1748  3.1011
+    100     3.1748  3.0998
+    150     3.1868  3.0986
+
+###### Writing new scripts
+
+In addition, new Node-based executables can be written. These are expected to be useful for verifying and tuning the model by running the model headless and saving summary results into a file for offline analysis.
+
+If you want to create your own script running simulation in headless mode, the most reasonable solution is to use [`src/lab/md2d/models/modeler.js`](https://github.com/concord-
+consortium/lab/blob/master/src/lab/md2d/models/modeler.js) as it provides high level API and
+allows to load model description using JSON file. To run simulation use the `tick()` method.
+
+[RequireJS](https://http://requirejs.org/) package must be correctly configured and used to load this module (see [the section about
+RequireJS](#javascript-dependency-management-and-build-process---requrejs)). It also depends on [jQuery](http://jquery.com/) and [d3.js](http://mbostock.github.com/d3/) libraries.
+
+Fortunately, you do not have to think about this configuration each time. There is prepared the entry point for external Node.js applications:
+
+[`src/helpers/md2d/md2d-node-api.js`](https://github.com/concord-consortium/lab/blob/master/src/helpers/md2d/md2d-node-api.js)
+
+This module configures RequireJS loader, environment (D3, jQuery) and exports MD2D Node API using Node.js/CommonJS approach.
+
+Usage:
+
+    var md2dAPI = require("../src/helpers/md2d/md2d-node-api");
+    // (...)
+    // To create e.g. Modeler mentioned above:
+    var model = md2dAPI.Modeler(properties);
+
+If you need to use something what is not included in this API, you can:
+
+- Extend API defined in [`md2d-node-api.js`](https://github.com/concord-consortium/lab/blob/master/src/helpers/md2d/md2d-node-api.js). It should easy to do it looking at the existing code.
+- Configure RequireJS yourself and use it to load module. Again, take a look at [`md2d-node-api.js`](https://github.com/concord-consortium/lab/blob/master/src/helpers/md2d/md2d-node-api.js) how to do it.
+
+There is a chance that existing RequireJS config won't be sufficient (e.g. if you wan't to use dynamic cs files loading).
+
+- The official, complete documentation:
+
+  [http://requirejs.org/docs/api.html#config](http://requirejs.org/docs/api.html#config)
+
+- RequireJS config for tests, as they also use similar approach:
+
+  [`test/requirejs-config.js`](https://github.com/concord-consortium/lab/blob/master/test/requirejs-config.js)
+
 
 Hashbang scripts for starting these executables (i.e., files which start with the line
 `#!/usr/bin/env node` and which have the execute bit set) should be placed in the directory
-[`node-bin`](https://github.com/concord-consortium/lab/tree/master/node-bin), and should execute by
-`require()`ing the appropriate module and calling its entry point method. Lab's
+[`node-bin`](https://github.com/concord-consortium/lab/tree/master/node-bin). Lab's
 [`packages.json`](https://github.com/concord-consortium/lab/blob/master/package.json) file
 specifies [`node-bin`](https://github.com/concord-consortium/lab/tree/master/node-bin) as the
 location of the executable scripts which `npm` should make available whenever Lab is imported into
