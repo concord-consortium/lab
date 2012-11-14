@@ -60,8 +60,8 @@ PROJECT_LIST = {
                         :sign => true },
 
   'labquest-jna'   => { :build_type => :download,
-                        :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/labquest-jna/1.0-SNAPSHOT/labquest-jna-1.0-20121109.222028-21.jar',
-                        :version => '1.0-20121109.222028-21',
+                        :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/labquest-jna/1.0-SNAPSHOT/labquest-jna-1.0-20121114.213045-24.jar',
+                        :version => '1.0-20121114.213045-24',
                         :path => 'org/concord/sensor/labquest-jna',
                         :sign => true },
 
