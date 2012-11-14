@@ -127,7 +127,7 @@ define(function (require) {
             .ticks(options.ticks)
             .tickSubdivide(options.tickSubdivide)
             .tickFormat(d3.format(options.labelFormat))
-            .tickSize(scale(10), scale(5), 0)
+            .tickSize(scale(10), scale(5), scale(10))
             .orient("right");
 
           // Create and append Y axis.

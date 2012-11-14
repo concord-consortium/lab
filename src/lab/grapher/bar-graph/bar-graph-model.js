@@ -27,6 +27,8 @@ define(function (require) {
           // Color of axis, labels, title.
           textColor: "#555",
           // Number of ticks displayed on the axis.
+          // This value is *only* a suggestion. The most clean
+          // and human-readable values are used.
           ticks:          10,
           // Number of subdivisions between major ticks.
           tickSubdivide: 1,
