@@ -72,7 +72,9 @@ define(function (require) {
         velocityVectorColor,
         velocityVectorWidth,
         velocityVectorLength,
-        vector,
+        drawForceVectors,
+        velVector,
+        forceVector,
         getRadialBonds,
         imageProp,
         imageSizes = [],
@@ -102,6 +104,11 @@ define(function (require) {
             color: "#000",
             width: 1.1,
             length: 2
+          },
+          forceVectors:        {
+            color: "#00A",
+            width: 1.1,
+            length: 2
           }
         },
 
@@ -114,7 +121,10 @@ define(function (require) {
         RADIAL_BOND_UNICOLOR_STICK_STYLE,
         RADIAL_BOND_SHORT_SPRING_STYLE,
         RADIAL_BOND_DOUBLE_BOND_STYLE,
-        RADIAL_BOND_TRIPLE_BOND_STYLE;
+        RADIAL_BOND_TRIPLE_BOND_STYLE,
+
+        VELOCITY_STR = "velocity",
+        FORCE_STR    = "force";
 
     processOptions();
 
@@ -171,6 +181,10 @@ define(function (require) {
       velocityVectorColor = options.velocityVectors.color;
       velocityVectorWidth  = options.velocityVectors.width;
       velocityVectorLength = options.velocityVectors.length;
+
+      forceVectorColor = options.forceVectors.color;
+      forceVectorWidth  = options.forceVectors.width;
+      forceVectorLength = options.forceVectors.length;
 
       RADIAL_BOND_STANDARD_STICK_STYLE = 101;
       RADIAL_BOND_LONG_SPRING_STYLE    = 102;
@@ -358,7 +372,7 @@ define(function (require) {
       model.addPropertiesListener([
         "keShading", "chargeShading",
         "showVDWLines", "VDWLinesCutoff",
-        "showVelocityVectors",
+        "showVelocityVectors", "showForceVectors",
         "showClock"],
           setup_drawables);
 
@@ -444,7 +458,8 @@ define(function (require) {
         redraw();
         create_gradients();
         createSymbolImages();
-        createVectorArrowHeads(velocityVectorColor);
+        createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
+        createVectorArrowHeads(forceVectorColor, FORCE_STR);
       } else {
 
         if ( !options.fit_to_parent ) {
@@ -498,7 +513,8 @@ define(function (require) {
         if (options.playback_controller) {
           playback_component.position(pc_xpos, pc_ypos, scale_factor);
         }
-        createVectorArrowHeads(velocityVectorColor);
+        createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
+        createVectorArrowHeads(forceVectorColor, FORCE_STR);
         redraw();
 
       }
@@ -674,10 +690,10 @@ define(function (require) {
             .attr("offset", "100%");
       }
 
-      function createVectorArrowHeads(color) {
+      function createVectorArrowHeads(color, name) {
         var arrowHead = gradient_container.append("defs")
           .append("marker")
-          .attr("id", "Triangle")
+          .attr("id", "Triangle-"+name)
           .attr("viewBox", "0 0 10 10")
           .attr("refX", "0")
           .attr("refY", "5")
@@ -817,16 +833,16 @@ define(function (require) {
             );
       }
 
-      function vectorEnter() {
+      function vectorEnter(vector, pathFunc, widthFunc, color, name) {
         vector.enter().append("path")
           .attr({
-            "class": "vector",
-            "marker-end": "url(#Triangle)",
-            "d": get_vector_path
+            "class": "vector-"+name,
+            "marker-end": "url(#Triangle-"+name+")",
+            "d": pathFunc
           })
           .style({
-            "stroke-width": get_vector_stroke_width,
-            "stroke": velocityVectorColor,
+            "stroke-width": widthFunc,
+            "stroke": color,
             "fill": "none"
           });
       }
@@ -1213,12 +1229,18 @@ define(function (require) {
       }
 
       function setup_vectors() {
-        gradient_container.selectAll("path.vector").remove();
+        gradient_container.selectAll("path.vector-"+VELOCITY_STR).remove();
+        gradient_container.selectAll("path.vector-"+FORCE_STR).remove();
 
         drawVelocityVectors = model.get("showVelocityVectors");
+        drawForceVectors    = model.get("showForceVectors");
         if (drawVelocityVectors) {
-          vector = gradient_container.selectAll("path.vector").data(results);
-          vectorEnter();
+          velVector = gradient_container.selectAll("path.vector-"+VELOCITY_STR).data(results);
+          vectorEnter(velVector, get_vel_vector_path, get_vel_vector_width, velocityVectorColor, VELOCITY_STR);
+        }
+        if (drawForceVectors) {
+          forceVector = gradient_container.selectAll("path.vector-"+FORCE_STR).data(results);
+          vectorEnter(forceVector, get_force_vector_path, get_force_vector_width, forceVectorColor, FORCE_STR);
         }
       }
 
@@ -1345,7 +1367,10 @@ define(function (require) {
         }
         update_molecule_positions();
         if (drawVelocityVectors) {
-          update_vectors();
+          update_vectors(velVector, get_vel_vector_path, get_vel_vector_width);
+        }
+        if (drawForceVectors) {
+          update_vectors(forceVector, get_force_vector_path, get_force_vector_width);
         }
         if(imageProp && imageProp.length !== 0) {
           updateImageAttachment();
@@ -1381,7 +1406,7 @@ define(function (require) {
         }
       }
 
-      function get_vector_path(d) {
+      function get_vel_vector_path(d) {
         var x_pos = x(d.x),
             y_pos = y(d.y),
             path = "M "+x_pos+","+y_pos,
@@ -1389,16 +1414,29 @@ define(function (require) {
         return path + " L "+(x_pos + x(d.vx*scale))+","+(y_pos - y_flip(d.vy*scale));
       }
 
-      function get_vector_stroke_width(d) {
+      function get_force_vector_path(d) {
+        var x_pos = x(d.x),
+            y_pos = y(d.y),
+            mass  = d.mass,
+            scale = forceVectorLength * 100,
+            path  = "M "+x_pos+","+y_pos;
+        return path + " L "+(x_pos + x(d.ax*mass*scale))+","+(y_pos - y_flip(d.ay*mass*scale));
+      }
+
+      function get_vel_vector_width(d) {
         return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? velocityVectorWidth*scale_factor : 0;
       }
 
-      function update_vectors() {
+      function get_force_vector_width(d) {
+        return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? forceVectorWidth*scale_factor : 0;
+      }
+
+      function update_vectors(vector, pathFunc, widthFunc) {
         vector.attr({
-           "d": get_vector_path
+           "d": pathFunc
         })
         .style({
-          "stroke-width": get_vector_stroke_width
+          "stroke-width": widthFunc
         });
       }
 
