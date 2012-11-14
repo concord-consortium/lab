@@ -1077,7 +1077,7 @@ define(function (require) {
       if ($interactiveContainer.children().length === 0) {
         $top = $('<div class="interactive-top" id="top"/>');
         $top.append('<div class="interactive-top" id="molecule-container"/>');
-        if (interactive.layout && interactive.layout.right) {
+        if (interactive.layout && interactive.layout.right != undefined) {
           $right = $('<div class="interactive-top" id="right"/>');
           $top.append($right);
         }
@@ -1124,22 +1124,27 @@ define(function (require) {
       if (interactive.layout) {
         for (div in interactive.layout) {
           if (interactive.layout.hasOwnProperty(div)) {
-            divArray = interactive.layout[div];
-            if (Object.prototype.toString.call(divArray[0]) !== "[object Array]") {
-              divArray = [divArray];
-            }
-            for (i = 0; i < divArray.length; i++) {
-              items = divArray[i];
-              $row = $('<div class="interactive-' + div + '-row"/>');
-              $('#'+div).append($row);
-              for (j = 0; j < items.length; j++) {
-                componentId = items[j];
-                if (components[componentId]) {
-                  $row.append(components[componentId].elem);
-                  if (components[componentId].callback) {
-                    componentCallbacks.push(components[componentId].callback);
+            divContents = interactive.layout[div];
+            if (typeof divContents == "string") {
+              // simply add the author-defined html in its entirety
+              $('#'+div).html(divContents);
+            } else {
+              if (Object.prototype.toString.call(divContents[0]) !== "[object Array]") {
+                divContents = [divContents];
+              }
+              for (i = 0; i < divContents.length; i++) {
+                items = divContents[i];
+                $row = $('<div class="interactive-' + div + '-row"/>');
+                $('#'+div).append($row);
+                for (j = 0; j < items.length; j++) {
+                  componentId = items[j];
+                  if (components[componentId]) {
+                    $row.append(components[componentId].elem);
+                    if (components[componentId].callback) {
+                      componentCallbacks.push(components[componentId].callback);
+                    }
+                    delete components[componentId];
                   }
-                  delete components[componentId];
                 }
               }
             }
@@ -1147,14 +1152,19 @@ define(function (require) {
         }
       }
 
-      // add the remaining components to #bottom
+      // add the remaining components -- first try to append them to dom elements that
+      // may have been defined by the author, and if that fails, add them to #bottom
       if ($('#bottom.row').length === 0) {
         $row = $('<div class="interactive-' + div + '-row"/>');
         $('#bottom').append($row);
       }
       for (componentId in components) {
         if (components.hasOwnProperty(componentId)) {
-          $row.append(components[componentId].elem);
+          if ($('#interactive-container #'+componentId).length > 0) {
+            $('#interactive-container #'+componentId).append(components[componentId].elem);
+          } else {
+            $row.append(components[componentId].elem);
+          }
         }
       }
 
