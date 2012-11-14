@@ -1687,7 +1687,7 @@ define(function (require, exports, module) {
 
       setVDWLinesRatio: function(vdwlr) {
         if (typeof vdwlr === "number" && vdwlr !== 0) {
-          VDWLinesRatio = vdwlr;
+          vdwLinesRatio = vdwlr;
         }
       },
 
@@ -2354,7 +2354,7 @@ define(function (require, exports, module) {
             index_j,
             sig,
             eps,
-            distanceCutoff_sq = VDWLinesRatio * VDWLinesRatio;
+            distanceCutoff_sq = vdwLinesRatio * vdwLinesRatio;
 
         N_vdwPairs = 0;
 
@@ -2556,7 +2556,6 @@ define(function (require, exports, module) {
             cosTheta, theta,
             r_sq, rij, rkj,
             k, dr, angleDiff,
-            value,
             gravPEInMWUnits,
             // Total kinetic energy, in MW units.
             KEinMWUnits,
