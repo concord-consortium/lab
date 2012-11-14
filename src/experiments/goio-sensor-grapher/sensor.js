@@ -38,11 +38,12 @@ sensor.VERSION = '0.1.0';
 //     var st = 'temperature';
 //     ag = new sensor.AppletGrapher(a, g, st, "ag.JsListener()");
 
-sensor.AppletGrapher = function(applet, container, graph, sensor_type, listener_str, appletReadyCallback) {
+sensor.AppletGrapher = function(applet, container, graph, sensor_type, sampleInterval, listener_str, appletReadyCallback) {
   this.applet = applet;
   this.container = container;
   this.graph = graph;
   this.time = 0;
+  this.sampleInterval = sampleInterval;
   this.sensor_type = sensor_type;
   this.listener_str = listener_str;
   this.applet_ready = false;
@@ -110,14 +111,14 @@ sensor.AppletGrapher.prototype.JsListener = function() {
         newdata = [];
         if (count > 1) {
           for(i= 0; i < count; i++) {
-            newdata.push([self.time, data[i]]);
-            self.time += 0.1;
+            newdata.push(data[i]);
+            self.time += this.sampleInterval;
           }
         } else {
-          newdata = [self.time, data[0]];
-          self.time += 0.1;
+          newdata = [data[0]];
+          self.time += this.sampleInterval;
         }
-        self.graph.add_data(newdata);
+        self.graph.add_points(newdata);
       }
     },
     // called whenever meta data about the data stream changes, data is an array of floats
@@ -126,14 +127,14 @@ sensor.AppletGrapher.prototype.JsListener = function() {
         newdata = [];
         if (count > 1) {
           for(i= 0; i < count; i++) {
-            newdata.push([self.time, data[i]]);
-            self.time += 0.1;
+            newdata.push(data[i]);
+            self.time += this.sampleInterval;
           }
         } else {
-          newdata = [self.time, data[0]];
-          self.time += 0.1;
+          newdata = [data[0]];
+          self.time += this.sampleInterval;
         }
-        self.graph.add_data(newdata);
+        self.graph.add_points(newdata);
       }
     },
     sensorsReady: function() {
