@@ -28,6 +28,7 @@ define(function (require) {
         enableKeyboardHandlers,
         imageMapping,
         velocityVectors,
+        forceVectors,
 
         // properties read from the modelConfig hash
         elements,
@@ -44,6 +45,7 @@ define(function (require) {
         showVDWLines,
         VDWLinesCutoff,
         showVelocityVectors,
+        showForceVectors,
         radialBonds,
         angularBonds,
         restraints,
@@ -130,11 +132,13 @@ define(function (require) {
         interactiveUrl      = viewOptions.interactiveUrl;
         imageMapping        = viewOptions.imageMapping || {};
         velocityVectors     = viewOptions.velocityVectors;
+        forceVectors        = viewOptions.forceVectors;
         keShading           = viewOptions.keShading;
         chargeShading       = viewOptions.chargeShading;
         showVDWLines        = viewOptions.showVDWLines;
         VDWLinesCutoff      = viewOptions.VDWLinesCutoff;
         showVelocityVectors = viewOptions.showVelocityVectors;
+        showForceVectors    = viewOptions.showForceVectors;
         showClock           = viewOptions.showClock;
 
         elements            = modelConfig.elements;
@@ -178,6 +182,7 @@ define(function (require) {
           showVDWLines        : showVDWLines,
           VDWLinesCutoff      : VDWLinesCutoff,
           showVelocityVectors : showVelocityVectors,
+          showForceVectors    : showForceVectors,
           showClock           : showClock,
           viewRefreshInterval : viewRefreshInterval,
           timeStep            : timeStep,
@@ -214,6 +219,8 @@ define(function (require) {
           chargeShading:           chargeShading,
           showVelocityVectors:     showVelocityVectors,
           velocityVectors:         velocityVectors,
+          showForceVectors:        showForceVectors,
+          forceVectors:            forceVectors,
           enableAtomTooltips:      enableAtomTooltips,
           enableKeyboardHandlers:  enableKeyboardHandlers,
           images:                  images,
