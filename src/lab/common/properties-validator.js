@@ -1,7 +1,5 @@
 /*global define: false */
 
-// TODO: prepare extensive unit tests of this toolkit!
-
 // For now, only defaultValue and readOnly properties of meta description
 // are supported.
 define(function() {
@@ -55,11 +53,12 @@ define(function() {
 
             if (input[prop] === undefined) {
               // Value is not declared in the input data.
-              if (propMetaData.defaultValue !== undefined) {
+              if (propMetaData.required === true) {
+                throw new Error("Definition of " + type + " is missing required property " + prop);
+              }
+              else if (propMetaData.defaultValue !== undefined) {
                 // Use defaultValue if defined.
                 result[prop] = propMetaData.defaultValue;
-              } else {
-                throw new Error("Definition of " + type + " is missing required property " + prop);
               }
             } else {
               result[prop] = input[prop];
@@ -68,7 +67,7 @@ define(function() {
         }
 
         // Perform standard check like for hash meant to update object.
-        return this.validateUpdateHash(type, result);
+        return this.validate(type, result);
       }
     };
   };

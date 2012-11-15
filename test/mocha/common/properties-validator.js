@@ -27,11 +27,11 @@ requirejs([
 
         // Case 1.
         input = {
-          optionalProp: 234
+          optionalProp: 1
         };
         result = validator.validate('someType', input);
 
-        result.optionalProp.should.equal(234);
+        result.optionalProp.should.equal(1);
         // Why? This is only validate!
         // For 'required' check, use validateCompleteness!
         result.should.not.have.property('requiredProp');
@@ -39,19 +39,30 @@ requirejs([
 
         // Case 2.
         input = {
-          requiredProp: 123,
-          optionalProp: 234
+          requiredProp: 1,
+          optionalProp: 2
         };
         result = validator.validate('someType', input);
 
-        result.requiredProp.should.equal(123);
-        result.optionalProp.should.equal(234);
+        result.requiredProp.should.equal(1);
+        result.optionalProp.should.equal(2);
         result.should.not.have.property('readOnlyProp');
       });
 
-      it('should fail while input contains read-only properties', function() {
+      it('should filter out properties not present in meta model', function () {
         var input = {
-          readOnlyProp: 123
+              optionalProp: 1,
+              someOtherProp: 2
+            },
+            result = validator.validate('someType', input);
+
+        result.optionalProp.should.equal(1);
+        result.should.not.have.property('someOtherProp');
+      });
+
+      it('should fail when input contains read-only properties', function() {
+        var input = {
+          readOnlyProp: 1
         };
 
         (function () {
@@ -60,6 +71,30 @@ requirejs([
       });
     });
 
-  });
 
+    describe('.validateCompleteness()', function() {
+      it('should use default values when some properties are not defined in input', function () {
+        var input = {
+              requiredProp: 1
+            },
+            result = validator.validateCompleteness('someType', input);
+
+        result.requiredProp.should.equal(1);
+        // Default value -1 should be used.
+        result.optionalProp.should.equal(-1);
+        // This property is not required, but it also doesn't define default value.
+        result.should.not.have.property('readOnlyProp');
+      });
+
+      it('should fail when input does not contain required properties', function () {
+        var input = {
+          optionalProp: 1
+        };
+
+        (function () {
+          validator.validateCompleteness('someType', input);
+        }).should.throwError();
+      });
+    });
+  });
 });
