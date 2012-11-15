@@ -15,7 +15,7 @@ screen = window.screen;
 Sizzle = require('sizzle');
 
 // Set up any vendored libraries that are ormally included via script tag in the modules under test:
-require("../server/public/vendor/jquery/jquery.min.js");
+require("../server/public/vendor/jquery/jquery.js");
 require("../server/public/vendor/d3/d3.v2.min.js");
 $ = window.jQuery;
 
