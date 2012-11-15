@@ -1,6 +1,6 @@
+/*global sinon $*/
 var fs = require('fs');
 
-/*global sinon */
 /**
   Sets up a simulated browser environment using jsdom, layout.html, jQuery, and d3.
 */
@@ -10,6 +10,21 @@ exports.setupBrowserEnvironment = function() {
   global.ACTUAL_ROOT = '';
 };
 
+/**
+  Performs "continuation" (presumably some kind of operation that causes interactives controller
+  to load a model) with a stubbed XHR, then unstubs XHR and calls the XHR completion callback with
+  the passed-in model.
+*/
+exports.withModel = function(model, continuation) {
+  var doneCallback, stub;
+
+  stub = sinon.stub($, 'get').returns({
+    done: function(callback) { doneCallback = callback; }
+  });
+
+  continuation();
+  stub.restore();
+  doneCallback(model);
 };
 
 /**
