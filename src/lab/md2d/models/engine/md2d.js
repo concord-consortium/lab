@@ -2029,35 +2029,37 @@ define(function (require, exports, module) {
         return springForceAtomIndex[i];
       },
 
-      // TODO: Refactor this function with monster argument lists. Pass object with properties
-      //       instead. Both addObstacle and initializeObstacles functions will be simpler.
-      //       Refactor other addX functions to keep consistency.
-      addObstacle: function(x, y, vx, vy, externalFx, externalFy, friction, width, height,
-        density, westProbe, northProbe, eastProbe, southProbe, color, visible) {
-        var obstaclemass;
+      addObstacle: function(props) {
+        var density, obstaclemass;
 
+        if (N_obstacles === 0) {
+          // During first call, create obstacles arrays.
+          createObstaclesArray(1);
+        }
         if (N_obstacles + 1 > obstacles.x.length) {
+          // Extend arrays each time (as there are only
+          // a few obstacles in typical model).
           extendArrays(obstacles, N_obstacles + 1);
           assignShortcutReferences.obstacles();
         }
 
-        obstacleX[N_obstacles] = x;
-        obstacleY[N_obstacles] = y;
-        obstacleXPrev[N_obstacles] = x;
-        obstacleYPrev[N_obstacles] = y;
+        obstacleX[N_obstacles] = props.x;
+        obstacleY[N_obstacles] = props.y;
+        obstacleXPrev[N_obstacles] = props.x;
+        obstacleYPrev[N_obstacles] = props.y;
 
-        obstacleVX[N_obstacles] = vx;
-        obstacleVY[N_obstacles] = vy;
+        obstacleVX[N_obstacles] = props.vx;
+        obstacleVY[N_obstacles] = props.vy;
 
-        obstacleExtFX[N_obstacles] = externalFx;
-        obstacleExtFY[N_obstacles] = externalFy;
+        obstacleExtFX[N_obstacles] = props.externalFx;
+        obstacleExtFY[N_obstacles] = props.externalFy;
 
-        obstacleFriction[N_obstacles] = friction;
+        obstacleFriction[N_obstacles] = props.friction;
 
-        obstacleWidth[N_obstacles]  = width;
-        obstacleHeight[N_obstacles] = height;
+        obstacleWidth[N_obstacles]  = props.width;
+        obstacleHeight[N_obstacles] = props.height;
 
-        density = parseFloat(density);      // may be string "Infinity"
+        density = parseFloat(props.density);      // may be string "Infinity"
 
         // Mimic Classic MW behavior. When obstacle density is bigger than
         // 500 [120amu/0.1A^2] (= 500 * 1.2e6 [amu/nm^2]), it is considered to be fixed
@@ -2067,20 +2069,20 @@ define(function (require, exports, module) {
           density = Infinity;
         }
 
-        obstaclemass = density * width * height;
+        obstaclemass = density * props.width * props.height;
 
         obstacleMass[N_obstacles] = obstaclemass;
 
-        obstacleWestProbe[N_obstacles]  = westProbe;
-        obstacleNorthProbe[N_obstacles] = northProbe;
-        obstacleEastProbe[N_obstacles]  = eastProbe;
-        obstacleSouthProbe[N_obstacles] = southProbe;
+        obstacleWestProbe[N_obstacles]  = props.westProbe;
+        obstacleNorthProbe[N_obstacles] = props.northProbe;
+        obstacleEastProbe[N_obstacles]  = props.eastProbe;
+        obstacleSouthProbe[N_obstacles] = props.southProbe;
 
-        obstacleColorR[N_obstacles] = color[0];
-        obstacleColorG[N_obstacles] = color[1];
-        obstacleColorB[N_obstacles] = color[2];
+        obstacleColorR[N_obstacles] = props.colorR;
+        obstacleColorG[N_obstacles] = props.colorG;
+        obstacleColorB[N_obstacles] = props.colorB;
 
-        obstacleVisible[N_obstacles] = visible;
+        obstacleVisible[N_obstacles] = props.visible;
 
         N_obstacles++;
 
@@ -2231,36 +2233,6 @@ define(function (require, exports, module) {
 
         // Publish the current state
         T = computeTemperature();
-      },
-
-      initializeObstacles: function (props) {
-        var num = props.x.length,
-            i;
-
-        createObstaclesArray(num);
-        for (i = 0; i < num; i++) {
-          engine.addObstacle(
-            props.x[i],
-            props.y[i],
-            props.vx[i],
-            props.vy[i],
-            props.externalFx[i],
-            props.externalFy[i],
-            props.friction[i],
-            props.width[i],
-            props.height[i],
-            props.density[i],
-            props.westProbe[i],
-            props.northProbe[i],
-            props.eastProbe[i],
-            props.southProbe[i],
-            props.color[i],
-            props.visible[i]
-          );
-        }
-
-        // Creates special buffers for pressure probes.
-        pressureBuffers.initialize(obstacles, N_obstacles);
       },
 
       initializeElements: function(elems) {

@@ -3,13 +3,18 @@
 
 define(function(require) {
   // Dependencies.
-  var arrays      = require('arrays'),
-      arrayTypes  = require('common/array-types'),
-      console     = require('common/console'),
-      md2d        = require('md2d/models/engine/md2d'),
-      TickHistory = require('md2d/models/tick-history'),
+  var arrays              = require('arrays'),
+      arrayTypes          = require('common/array-types'),
+      console             = require('common/console'),
+      md2d                = require('md2d/models/engine/md2d'),
+      TickHistory         = require('md2d/models/tick-history'),
+      metaModel           = require('md2d/models/meta-model'),
+      PropertiesValidator = require('common/properties-validator'),
 
-      engine;
+      engine,
+      // As there is only one metaModel defined and required above,
+      // use common properties validator for all instances of Model.
+      propertiesValidator = PropertiesValidator(metaModel);
 
   return function Model(initialProperties) {
     var model = {},
@@ -64,13 +69,6 @@ define(function(require) {
 
         // Cached value of the 'friction' property of the atom being dragged in a running model
         liveDragSavedFriction,
-
-        default_obstacle_properties = {
-          vx: 0,
-          vy: 0,
-          density: Infinity,
-          color: [128, 128, 128]
-        },
 
         listeners = {},
 
@@ -791,22 +789,22 @@ define(function(require) {
 
     model.createObstacles = function(_obstacles) {
       var numObstacles = _obstacles.x.length,
-          i, prop;
+          i, prop, obstacleProps;
 
-      // ensure that every property either has a value or the default value
+      // _obstacles is hash of arrays (as specified in JSON model).
+      // So, for each index, create object containing properties of
+      // obstacle 'i'. Later, use these properties to add obstacle
+      // using basic addObstacle method.
       for (i = 0; i < numObstacles; i++) {
-        for (prop in default_obstacle_properties) {
-          if (!default_obstacle_properties.hasOwnProperty(prop)) continue;
-          if (!_obstacles[prop]) {
-            _obstacles[prop] = [];
-          }
-          if (typeof _obstacles[prop][i] === "undefined") {
-            _obstacles[prop][i] = default_obstacle_properties[prop];
+        obstacleProps = {};
+        for (prop in _obstacles) {
+          if (_obstacles.hasOwnProperty(prop)) {
+            obstacleProps[prop] = _obstacles[prop][i];
           }
         }
+        model.addObstacle(obstacleProps);
       }
 
-      engine.initializeObstacles(_obstacles);
       obstacles = engine.obstacles;
       return model;
     };
@@ -943,6 +941,27 @@ define(function(require) {
       }
       // return false on failure
       return false;
+    },
+
+    model.addObstacle = function(props) {
+      var validatedProps;
+
+      if (props.color !== undefined && props.colorR === undefined) {
+        // Convert color definition.
+        // Both forms are supported:
+        //   color: [ 128, 128, 255 ]
+        // or
+        //   colorR: 128,
+        //   colorB: 128,
+        //   colorG: 255
+        props.colorR = props.color[0];
+        props.colorG = props.color[1];
+        props.colorB = props.color[2];
+      }
+      // Validate properties, use default values if there is such need.
+      validatedProps = propertiesValidator.validateCompleteness('obstacle', props);
+      // Finally, add obstacle.
+      engine.addObstacle(validatedProps);
     },
 
     /** Return the bounding box of the molecule containing atom 'atomIndex', with atomic radii taken
