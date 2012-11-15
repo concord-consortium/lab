@@ -1090,13 +1090,9 @@ define(function(require) {
     };
 
     model.setObstacleProperties = function(i, props) {
-      var key;
+      var validatedProps = propertiesValidator.validate('obstacle', props);
       storeOutputPropertiesBeforeChange();
-      for (key in props) {
-        if (props.hasOwnProperty(key)) {
-          obstacles[key][i] = props[key];
-        }
-      }
+      engine.setObstacleProperties(i, validatedProps);
       updateOutputPropertiesAfterChange();
     };
 

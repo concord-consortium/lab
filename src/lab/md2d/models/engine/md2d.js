@@ -1770,6 +1770,25 @@ define(function (require, exports, module) {
         }
       },
 
+      setObstacleProperties: function (i, props) {
+        var key;
+
+        // If position is manually changed, update previous
+        // position also.
+        if (props.x !== undefined) {
+          props.xPrev = props.x;
+        }
+        if (props.y !== undefined) {
+          props.yPrev = props.y;
+        }
+
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            obstacles[key][i] = props[key];
+          }
+        }
+      },
+
       /**
         Allocates 'atoms' array of arrays, sets number of atoms.
 
