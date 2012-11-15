@@ -85,7 +85,7 @@ describe "MD2D output properties", ->
 
         describe "after a change forces recomputation of output properties", ->
           beforeEach ->
-            model.set gravitationalField: 1
+            forceRecomputation()
 
           describe "and the output property is looked up", ->
             beforeEach ->
@@ -110,7 +110,6 @@ describe "MD2D output properties", ->
                 forceRecomputation()
 
               it "should not be recomputed", ->
-                forceRecomputation()
                 nonObservedCalculator.callCount.should.equal 0
 
           describe "but that is depended on by an observed property", ->
@@ -196,7 +195,7 @@ describe "MD2D output properties", ->
               model.get('potentialEnergy').should.equal initialPE
               peObserver.callCount.should.equal 1
 
-      describe "selective notfication of properties after an invalidating change", ->
+      describe "selective notification of properties after an invalidating change", ->
         describe "when a model property is changed (invalidating output properties)", ->
           initialPE = initialTime = null
 
