@@ -73,6 +73,9 @@ define(function (require) {
         velocityVectorWidth,
         velocityVectorLength,
         drawForceVectors,
+        forceVectorColor,
+        forceVectorWidth,
+        forceVectorLength,
         velVector,
         forceVector,
         getRadialBonds,
@@ -137,11 +140,12 @@ define(function (require) {
     stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
     function processOptions(newOptions) {
+      var setDefaults;
       if (newOptions) {
         options = newOptions;
       }
       if (options) {
-        function setDefaults(opts, defaults) {
+        setDefaults = function(opts, defaults) {
           for(var p in defaults) {
             if (opts[p] === undefined) {
               opts[p] = defaults[p];
@@ -150,7 +154,7 @@ define(function (require) {
             }
           }
           return opts;
-        }
+        };
         options = setDefaults(options, default_options);
       } else {
         options = default_options;

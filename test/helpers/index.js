@@ -1,5 +1,6 @@
 var fs = require('fs');
 
+/*global sinon */
 /**
   Sets up a simulated browser environment using jsdom, layout.html, jQuery, and d3.
 */
