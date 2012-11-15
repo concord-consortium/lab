@@ -529,18 +529,18 @@ the `master` branch of the git mirror here: [concord-consortium/mw](https://gith
 
 1. `:maven`
 
-    Concord's OTrunk framework uses the `:maven` build strategy:
+    Concord's sensor applet framework uses the `:maven` build strategy:
 
-        'otrunk' => { :repository => 'git://github.com/concord-consortium/otrunk.git',
-                      :branch => 'trunk',
-                      :path => 'org/concord/otrunk',
-                      :build_type => :maven,
-                      :build => MAVEN_STD_CLEAN_BUILD,
-                      :has_applet_class => true,
-                      :sign => true },
+        'sensor-applets' => { :build_type => :maven,
+                              :build => MAVEN_STD_CLEAN_BUILD,
+                              :repository => 'git://github.com/concord-consortium/sensor-applets.git',
+                              :branch => 'master',
+                              :path => 'org/concord/sensor/sensor-applets',
+                              :has_applet_class => true,
+                              :sign => true },
 
-    The `trunk` branch of the otrunk repo will be checked out into `./java/otrunk` and be built using Maven.
-    Because the otrunk jar is used with the sensor-applet code (which uses a native library) it must also be signed.
+    The `master` branch of the sensor-applets repo will be checked out into `./java/sensor-applets` and be built using Maven.
+    Because the sensor-applets jar is used with native libraries, it must also be signed.
 
     **Deploying both signed and unsigned jars**
 
@@ -585,13 +585,13 @@ the `master` branch of the git mirror here: [concord-consortium/mw](https://gith
 4. `:copy_jars`
 5. `:download`
 
-    JDom uses the `:download` build strategy:
+    goio-jna uses the `:download` build strategy:
 
-    'jdom'           => { :build_type => :download,
-                          :url => 'http://repo1.maven.org/maven2/jdom/jdom/1.0/jdom-1.0.jar',
-                          :path => 'jdom/jdom',
-                          :version => '1.0',
-                          :sign => true }
+        'goio-jna'       => { :build_type => :download,
+                              :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/goio-jna/1.0-SNAPSHOT/goio-jna-1.0-20121109.222028-22.jar',
+                              :version => '1.0-20121109.222028-22',
+                              :path => 'org/concord/sensor/goio-jna',
+                              :sign => true }
 
 The script that runs the checkout-build-pack-sign-deploy can either operate on ALL projects specified or on a smaller number.
 
@@ -603,6 +603,33 @@ Optionally you can specify one or more projects to operate on. This builds just 
 
 The Jar resources deployed to the `server/public/jnlp` directory include a timestamp in the deployed artifact so unless you specifically
 request an earlier version you will always get the latest version deployed.
+
+##### Working with the Sensor projects source
+
+Most of the sensor related java jars are being downloaded as jars, not
+compiled from source. If you're interested in building them from source:
+
+1. Clone the sensor-projects repo from the concord-consortium github: https://github.com/concord-consortium/sensor-projects
+
+        git clone https://github.com/concord-consortium/sensor-projects.git sensor-projects
+
+2. Link the individual project folder into java/
+
+        rm -rf java/goio-jna
+        ln -s /path/to/sensor-projects/goio-jna java/goio-jna
+
+3. Update config/java-projects.rb to use a `:maven` type build, but *without* `:repo` or `:branch` specified
+
+        'goio-jna'  => { :build_type => :maven,
+                         :build => MAVEN_STD_CLEAN_BUILD,
+                         :path => 'org/concord/sensor/goio-jna',
+                         :sign => true }
+
+4. Rebuild the project using script/build-and-deploy-jars.rb
+
+        script/build-and-deploy-jars.rb --maven-update goio-jna
+
+5. Repeat 2 - 4 for any other projects you'd like to build from source
 
 ##### JnlpApp Rack Application Service
 
@@ -653,7 +680,7 @@ If a request like the following produces an error:
     $ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
     HTTP/1.1 500 Internal Server Error
 
-Restart the server and the request should now suceed:
+Restart the server and the request should now succeed:
 
     $ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
     HTTP/1.1 200 OK
