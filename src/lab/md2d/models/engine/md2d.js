@@ -2049,8 +2049,6 @@ define(function (require, exports, module) {
       },
 
       addObstacle: function(props) {
-        var density, obstaclemass;
-
         if (N_obstacles === 0) {
           // During first call, create obstacles arrays.
           createObstaclesArray(1);
@@ -2078,19 +2076,8 @@ define(function (require, exports, module) {
         obstacleWidth[N_obstacles]  = props.width;
         obstacleHeight[N_obstacles] = props.height;
 
-        density = parseFloat(props.density);      // may be string "Infinity"
-
-        // Mimic Classic MW behavior. When obstacle density is bigger than
-        // 500 [120amu/0.1A^2] (= 500 * 1.2e6 [amu/nm^2]), it is considered to be fixed
-        // (in Next Gen MW 'Infinity' mass is expected). It is important as it affects
-        // kinetic energy calculations (temperature), particles bouncing etc.
-        if (density >= 500 * 1.2e6) {
-          density = Infinity;
-        }
-
-        obstaclemass = density * props.width * props.height;
-
-        obstacleMass[N_obstacles] = obstaclemass;
+        // Parse mass, as it may be string "Infinity".
+        obstacleMass[N_obstacles] = parseFloat(props.mass);
 
         obstacleWestProbe[N_obstacles]  = props.westProbe;
         obstacleNorthProbe[N_obstacles] = props.northProbe;

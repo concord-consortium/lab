@@ -70,9 +70,7 @@ define(function() {
         defaultValue: 1.2e9
       },
       mass: {
-        // Calculated using density!
-        readOnly: true,
-        serialize: false
+        defaultValue: Infinity
       },
       vx: {
         defaultValue: 0
@@ -107,16 +105,6 @@ define(function() {
       // Pressure probe, south side.
       southProbe: {
         defaultValue: false
-      },
-      // TODO: Definitely separate somehow model definition from
-      // internal engine properties!
-      // [Internal property used in calculations!]
-      xPrev: {
-        defaultValue: 0
-      },
-      // [Internal property used in calculations!]
-      yPrev: {
-        defaultValue: 0
       },
       colorR: {
         defaultValue: 128

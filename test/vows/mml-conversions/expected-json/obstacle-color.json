@@ -69,7 +69,7 @@
       "friction": [ 0 ],
       "width": [ 1.11 ],
       "height": [ 0.56 ],
-      "density": [ "Infinity" ],
+      "mass": [ "Infinity" ],
       "westProbe": [ false ],
       "northProbe": [ false ],
       "eastProbe": [ false ],

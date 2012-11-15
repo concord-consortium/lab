@@ -114,6 +114,10 @@ parseMML = (mmlString) ->
         vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
         vy = -vy / 100
 
+        [x, y]          = toNextgenCoordinates x, y
+        [height, width] = toNextgenLengths height, width
+        y               = y - height     # flip to lower-left coordinate system
+
         # Divide by 120, as friction for obstacles is defined *per mass unit*!
         # CLASSIC_TO_NEXTGEN_FRICTION_RATIO includes mass conversion,
         # which is unnecessary when value is defined *per mass unit*.
@@ -125,6 +129,13 @@ parseMML = (mmlString) ->
         externalFx *= 0.01
         externalFy *= 0.01
 
+        # Mimic Classic MW behavior. When obstacle density is bigger than
+        # 500 [120amu/0.1A^2], it is considered to be fixed
+        # (in Next Gen MW 'Infinity' mass is expected). It is important as it affects
+        # kinetic energy calculations (temperature), particles bouncing etc.
+        if (density >= 500)
+          density = Infinity
+
         # Classic MW saves density in units of 120amu / (0.1Å)^2
         # (As usual, the claim its user interface makes regarding units is spurious.)
         # Convert to units of amu/nm^2 (aka Dalton/nm^2)
@@ -134,7 +145,13 @@ parseMML = (mmlString) ->
         density *= 1.2e6
 
         if density isnt density     # if NaN
-          density = "Infinity"
+          density = Infinity
+
+        # Calculate mass. Next Gen MW uses *only* mass, density isn't stored anywhere.
+        mass = density * height * width
+
+        # JSON doesn't accept Infinity numeric value, use string instead.
+        mass = "Infinity" if mass == Infinity
 
         color  = null
         colorDef  = $node.find ".java-awt-Color>int"
@@ -146,17 +163,13 @@ parseMML = (mmlString) ->
         else
           color    = [128, 128, 128]
 
-        [x, y]          = toNextgenCoordinates x, y
-        [height, width] = toNextgenLengths height, width
-        y               = y - height     # flip to lower-left coordinate system
-
         obstacles.push {
           x, y,
           height, width,
           vx, vy,
           externalFx, externalFy,
           friction,
-          density,
+          mass,
           westProbe, northProbe, eastProbe, southProbe,
           color, visible
         }
@@ -620,7 +633,7 @@ parseMML = (mmlString) ->
 
     if obstacles.length > 0
       json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction',
-        'height', 'width', 'density', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
+        'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
 
     json.targetTemperature = targetTemperature if targetTemperature
 

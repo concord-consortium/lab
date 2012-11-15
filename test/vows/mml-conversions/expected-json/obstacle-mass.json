@@ -80,7 +80,7 @@
       "externalFx": [ 0 ],
       "externalFy": [ 0 ],
       "friction": [ 0 ],
-      "density": [ 240000 ],
+      "mass": [ 154224 ],
       "westProbe": [ false ],
       "northProbe": [ false ],
       "eastProbe": [ false ],
