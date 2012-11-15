@@ -26,14 +26,13 @@
       "id": "increase-volume",
       "text": "Volume &#8593;",
       "action": [
-        "var props = getObstacleProperties(0);",
-        "props.x *= 1.1;",
-        "props.xPrev *= 1.1;",
-        "setObstacleProperties(0, props);",
+        "var x = getObstacleProperties(0).x;",
+        "x *= 1.1;",
+        "setObstacleProperties(0, {x : x});",
         "for(var i = 0; i < getNumberOfAtoms(); i++) {",
-        "  props = getAtomProperties(i);",
-        "  props.x *= 1.1;",
-        "  setAtomProperties(i, props);",
+        "  x = getAtomProperties(i).x;",
+        "  x *= 1.1;",
+        "  setAtomProperties(i, {x: x});",
         "}"
       ]
     },
@@ -42,15 +41,14 @@
       "id": "decrease-volume",
       "text": "Volume &#8595;",
       "action": [
-        "var props = getObstacleProperties(0);",
-        "if (props.x < 0.5) return;",
-        "props.x *= 0.9;",
-        "props.xPrev *= 0.9;",
-        "setObstacleProperties(0, props);",
+        "var x = getObstacleProperties(0).x;",
+        "if (x < 0.5) return;",
+        "x *= 0.9;",
+        "setObstacleProperties(0, {x: x});",
         "for(var i = 0; i < getNumberOfAtoms(); i++) {",
-        "  props = getAtomProperties(i);",
-        "  props.x *= 0.89;",
-        "  setAtomProperties(i, props);",
+        "  x = getAtomProperties(i).x;",
+        "  x *= 0.89;",
+        "  setAtomProperties(i, {x: x});",
         "}",
         "minimizeEnergy();"
       ]
