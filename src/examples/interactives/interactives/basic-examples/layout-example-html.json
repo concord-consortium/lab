@@ -49,7 +49,7 @@
     }
   ],
   "layout": {
-    "bottom": "<img src='http://localhost:3000/resources/layout/cc-logo.png'/> <span id='start' style='position: absolute; left: 30%'/> <span id='stop' style='position: absolute; left: 35%'/>  <span style='position: absolute; left: 45%;'>Click here to reset: <span id='reset'/></span>",
+    "bottom": "<img src='http://lab.dev.concord.org/resources/layout/cc-logo.png'/> <span id='start' style='position: absolute; left: 30%'/> <span id='stop' style='position: absolute; left: 35%'/>  <span style='position: absolute; left: 45%;'>Click here to reset: <span id='reset'/></span>",
     "right": ""
   }
 }
