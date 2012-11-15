@@ -20,6 +20,10 @@ define(function() {
             result = {},
             prop, propMetaData;
 
+        if (typeMetaData === undefined) {
+          throw new Error("Uknow type " + type);
+        }
+
         for (prop in input) {
           if (input.hasOwnProperty(prop)) {
             // Try to get meta-data for this property.
@@ -47,11 +51,15 @@ define(function() {
             result = {},
             prop, propMetaData;
 
+        if (typeMetaData === undefined) {
+          throw new Error("Uknow type " + type);
+        }
+
         for (prop in typeMetaData) {
           if (typeMetaData.hasOwnProperty(prop)) {
             propMetaData = typeMetaData[prop];
 
-            if (input[prop] === undefined) {
+            if (input[prop] === undefined || input[prop] === null) {
               // Value is not declared in the input data.
               if (propMetaData.required === true) {
                 throw new Error("Definition of " + type + " is missing required property " + prop);
