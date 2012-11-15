@@ -115,6 +115,7 @@ src/vendor/d3:
 node_modules: node_modules/coffee-script \
 	node_modules/jsdom \
 	node_modules/sizzle \
+	node_modules/backbone \
 	node_modules/uglify-js	\
 	node_modules/vows \
 	node_modules/mocha \
@@ -137,6 +138,9 @@ node_modules/jsdom:
 	npm install
 
 node_modules/sizzle:
+	npm install
+
+node_modules/backbone:
 	npm install
 
 node_modules/uglify-js:
