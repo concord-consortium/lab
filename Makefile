@@ -124,7 +124,7 @@ node_modules: node_modules/coffee-script \
 	node_modules/d3 \
 	node_modules/science \
 	node_modules/browserify \
-	node_modules/cherrio \
+	node_modules/cheerio \
 	node_modules/jade \
 	node_modules/mkdirp \
 	node_modules/arrays
@@ -166,7 +166,7 @@ node_modules/science:
 node_modules/browserify:
 	npm install
 
-node_modules/cherrio:
+node_modules/cheerio:
 	npm install
 
 node_modules/jade:
