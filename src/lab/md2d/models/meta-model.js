@@ -53,12 +53,6 @@ define(function() {
 
     obstacle: {
       // Required properties:
-      x: {
-        required: true
-      },
-      y: {
-        required: true
-      },
       width: {
         required: true
       },
@@ -66,6 +60,12 @@ define(function() {
         required: true
       },
       // Optional properties:
+      x: {
+        defaultValue: 0
+      },
+      y: {
+        defaultValue: 0
+      },
       density: {
         defaultValue: 1.2e9
       },
