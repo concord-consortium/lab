@@ -89,7 +89,7 @@ describe "Lab interactives: custom output properties", ->
             it "uses the property defined in the model section", ->
               model.get('customOutput').should.equal 'output2'
 
-            describe "and loadModel is used to load a model with a model-specific custom output property", ->
+            describe "and loadModel is used to load a model without a model-specific custom output property", ->
               beforeEach ->
                 helpers.withModel simpleGasModel, ->
                   controller.loadModel 'model2'
