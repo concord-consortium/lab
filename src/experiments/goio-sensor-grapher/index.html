@@ -33,6 +33,7 @@
           <option value="LabQuest light">LabQuest Light</option>
           <option value="LabQuest force (5N)">LabQuest Force (5N)</option>
           <option value="LabQuest force (50N)">LabQuest Force (50N)</option>
+          <option value="LabQuest CO2">LabQuest CO2</option>
         </optgroup>
         <optgroup label='Pseudo Probes'>
           <option value="Pseudo Sound">Pseudo Sound</option>
@@ -332,6 +333,33 @@
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
                                '  <param name="device" value="golink"/>',
+                               '  <param name="probeType" value="co2"/>',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "LabQuest CO2": {
+              "graphOptions": {
+                title: "GoIO CO2 Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "CO2, (ppm)",
+                ymin: 0, ymax: 5000,
+                points: co2_data,
+                sample: 1.0,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="device" value="labquest"/>',
                                '  <param name="probeType" value="co2"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
