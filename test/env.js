@@ -21,5 +21,4 @@ $ = window.jQuery;
 
 // Additional environment features for testing.
 require("./env-assert");
-require("./env-xhr");
 require("./env-fragment");
