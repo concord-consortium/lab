@@ -1,6 +1,10 @@
 cheerio   = require 'cheerio'
 constants = require '../../lab/md2d/models/engine/constants'
+md2dAPI   = require '../../helpers/md2d/md2d-node-api'
 unit      = constants.unit
+
+# Create properties validator
+validator = md2dAPI.PropertiesValidator md2dAPI.metaModel
 
 # Used throughout Classic MW to convert energy gradient values measured in units of eV/0.1Å to
 # the equivalent forces measured in units of 120 amu * 0.1Å / fs^2 (Classic's "natural" unit system
@@ -68,6 +72,21 @@ parseMML = (mmlString) ->
       else
         bool == "true"
 
+    # Return parsed float property or 'undefined' if property is not found.
+    getFloatProperty = ($node, propertyName) ->
+      prop = getProperty $node, propertyName
+      # Property found, so parse it.
+      return parseFloat prop if prop.length
+      # Property not found, so return undefined.
+      return undefined
+
+    getBooleanProperty = ($node, propertyName) ->
+      prop = getProperty $node, propertyName
+      # Property found, so parse it.
+      return parseBoolean prop if prop.length
+      # Property not found, so return undefined.
+      return undefined
+
     ### Convert a cheerio node whose text is a number, to an actual number ###
     toNumber = ($node, {defaultValue}) ->
       val = $node.text()
@@ -94,29 +113,36 @@ parseMML = (mmlString) ->
       for node in obstacleNodes
         $node = getNode cheerio node
 
-        height     = parseFloat getProperty $node, 'height'
-        width      = parseFloat getProperty $node, 'width'
-        x          = parseFloat getProperty $node, 'x'
-        y          = parseFloat getProperty $node, 'y'
-        vx         = parseFloat (getProperty $node, 'vx') || 0
-        vy         = parseFloat (getProperty $node, 'vy') || 0
-        externalFx = parseFloat (getProperty $node, 'externalFx') || 0
-        externalFy = parseFloat (getProperty $node, 'externalFy') || 0
-        friction   = parseFloat (getProperty $node, 'friction') || 0
-        density    = parseFloat getProperty $node, 'density'
-        westProbe  = parseBoolean (getProperty $node, 'westProbe'), false
-        northProbe = parseBoolean (getProperty $node, 'northProbe'), false
-        eastProbe  = parseBoolean (getProperty $node, 'eastProbe'), false
-        southProbe = parseBoolean (getProperty $node, 'southProbe'), false
-        visible    = parseBoolean (getProperty $node, 'visible'), true
+        height     = getFloatProperty $node, 'height'
+        width      = getFloatProperty $node, 'width'
+        x          = getFloatProperty $node, 'x'
+        y          = getFloatProperty $node, 'y'
+        vx         = getFloatProperty $node, 'vx'
+        vy         = getFloatProperty $node, 'vy'
+        externalFx = getFloatProperty $node, 'externalFx'
+        externalFy = getFloatProperty $node, 'externalFy'
+        friction   = getFloatProperty $node, 'friction'
+        density    = getFloatProperty $node, 'density'
+        westProbe  = getBooleanProperty $node, 'westProbe'
+        northProbe = getBooleanProperty $node, 'northProbe'
+        eastProbe  = getBooleanProperty $node, 'eastProbe'
+        southProbe = getBooleanProperty $node, 'southProbe'
+        visible    = getBooleanProperty $node, 'visible'
+
+        colorDef  = $node.find ".java-awt-Color>int"
+        if colorDef and colorDef.length > 0
+          colorR = parseInt cheerio(colorDef[0]).text()
+          colorG = parseInt cheerio(colorDef[1]).text()
+          colorB = parseInt cheerio(colorDef[2]).text()
 
         # Unit conversion.
-        vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
-        vy = -vy / 100
-
         [x, y]          = toNextgenCoordinates x, y
         [height, width] = toNextgenLengths height, width
         y               = y - height     # flip to lower-left coordinate system
+
+        # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
+        vx = vx / 100
+        vy = -vy / 100
 
         # Divide by 120, as friction for obstacles is defined *per mass unit*!
         # CLASSIC_TO_NEXTGEN_FRICTION_RATIO includes mass conversion,
@@ -153,17 +179,7 @@ parseMML = (mmlString) ->
         # JSON doesn't accept Infinity numeric value, use string instead.
         mass = "Infinity" if mass == Infinity
 
-        color  = null
-        colorDef  = $node.find ".java-awt-Color>int"
-        if colorDef and colorDef.length > 0
-          color    = []
-          color[0] = parseInt cheerio(colorDef[0]).text()
-          color[1] = parseInt cheerio(colorDef[1]).text()
-          color[2] = parseInt cheerio(colorDef[2]).text()
-        else
-          color    = [128, 128, 128]
-
-        obstacles.push {
+        rawData = {
           x, y,
           height, width,
           vx, vy,
@@ -171,11 +187,30 @@ parseMML = (mmlString) ->
           friction,
           mass,
           westProbe, northProbe, eastProbe, southProbe,
-          color, visible
+          colorR, colorB, colorG,
+          visible
         }
 
-      obstacles
+        # Unit conversion performed on undefined values could convert them to NaN.
+        # Revert back all NaNs to undefined, as we do not expect any NaN
+        # as property.
+        # Undefined values will be replaced by default values by validator.
+        for own prop of rawData
+          delete rawData[prop] if isNaN rawData[prop]
 
+        # Validate all properties and provides default values for undefined values.
+        validatedData = validator.validateCompleteness 'obstacle', rawData
+
+        # Change colorR, colorB, colorG to array...
+        # TODO: ugly, use just one convention. colorR/G/B should be easier.
+        validatedData.color = []
+        validatedData.color[0] = validatedData.colorR
+        validatedData.color[1] = validatedData.colorG
+        validatedData.color[2] = validatedData.colorB
+
+        obstacles.push validatedData
+
+      obstacles
 
     ###
       Find the container size

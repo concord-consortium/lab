@@ -15,8 +15,13 @@ requirejs.config({
 });
 
 requirejs([
-  'md2d/models/modeler'
-], function (Modeler) {
+  'md2d/models/modeler',
+  'md2d/models/meta-model',
+  'common/properties-validator'
+], function (Modeler, metaModel, PropertiesValidator) {
   // Export API for Node.js scripts.
-  exports.Modeler = Modeler;
+  exports.Modeler             = Modeler;
+  // Used by MML -> JSON conversion script.
+  exports.metaModel           = metaModel;
+  exports.PropertiesValidator = PropertiesValidator;
 });
