@@ -15,7 +15,7 @@
       "type": "button",
       "id": "add-atom",
       "text": "Add an atom",
-      "action": "addAtom(0, 0, 0, 0.001, 0.001)"
+      "action": "addAtom({ element: 0, x: 0, y: 0, vx: 0.001, vy: 0.001 });"
     }
   ]
 }
