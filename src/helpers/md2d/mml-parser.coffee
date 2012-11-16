@@ -62,8 +62,9 @@ parseMML = (mmlString) ->
         return $mml("##{$entity.attr("idref")}")
       $entity
 
-    getProperty = ($node, propertyName) ->
-      $node.find("[property=#{propertyName}]").text()
+    getProperty = ($node, propertyName, additionalSelector) ->
+      additionalSelector = '' if not additionalSelector?
+      $node.find("[property=#{propertyName}] #{additionalSelector}").text()
 
     parseBoolean = (str, defaultOption) ->
       bool = str.replace(/^\s+|\s+$/g, '')
@@ -73,15 +74,23 @@ parseMML = (mmlString) ->
         bool == "true"
 
     # Return parsed float property or 'undefined' if property is not found.
-    getFloatProperty = ($node, propertyName) ->
-      prop = getProperty $node, propertyName
+    getFloatProperty = ($node, propertyName, additionalSelector) ->
+      prop = getProperty $node, propertyName, additionalSelector
       # Property found, so parse it.
       return parseFloat prop if prop.length
       # Property not found, so return undefined.
       return undefined
 
-    getBooleanProperty = ($node, propertyName) ->
-      prop = getProperty $node, propertyName
+    # Return parsed int property or 'undefined' if property is not found. additional Selector
+    getIntProperty = ($node, propertyName, additionalSelector) ->
+      prop = getProperty $node, propertyName, additionalSelector
+      # Property found, so parse it.
+      return parseInt prop if prop.length
+      # Property not found, so return undefined.
+      return undefined
+
+    getBooleanProperty = ($node, propertyName, additionalSelector) ->
+      prop = getProperty $node, propertyName, additionalSelector
       # Property found, so parse it.
       return parseBoolean prop if prop.length
       # Property not found, so return undefined.
@@ -475,17 +484,27 @@ parseMML = (mmlString) ->
       for node in atomNodes
         $node = getNode(cheerio(node))
 
-        elemId = parseInt   $node.find("[property=ID] int").text() || 0
-        x      = parseFloat $node.find("[property=rx]").text()
-        y      = parseFloat $node.find("[property=ry]").text()
-        vx     = parseFloat $node.find("[property=vx]").text() || 0
-        vy     = parseFloat $node.find("[property=vy]").text() || 0
-        charge = parseFloat $node.find("[property=charge]").text() || 0
-        friction  = parseFloat $node.find("[property=friction]").text() || 0
-        visible   = if (parseBoolean (getProperty $node, 'visible'), true) then 1 else 0
-        pinned    = if $node.find("[property=movable]").text() then 1 else 0
-        marked    = if $node.find("[property=marked]").text() then 1 else 0
-        draggable = if $node.find("[property=userField]").text() then 1 else 0
+        element = getIntProperty $node, 'ID', 'int' # selector = "[property=ID] int"
+        x       = getFloatProperty $node, 'rx'
+        y       = getFloatProperty $node, 'ry'
+        vx      = getFloatProperty $node, 'vx'
+        vy      = getFloatProperty $node, 'vy'
+        charge  = getFloatProperty $node, 'charge'
+        friction  = getFloatProperty $node, 'friction'
+        visible   = getBooleanProperty $node, 'visible'
+        marked    = getBooleanProperty $node, 'marked'
+        movable   = getBooleanProperty $node, 'movable'
+        # userField is *not* a boolean property. If it exists, assume that
+        # atom is draggable. Otherwise, use default value.
+        draggable = if getProperty $node, 'userField' then 1 else undefined
+
+        # Classic MW uses movable, while Next Gen MW uses pinned property. Convert.
+        pinned  = if movable? then not movable else undefined
+
+        # Change all Boolean values to 0/1.
+        pinned    = Number pinned if pinned?
+        visible   = Number visible if visible?
+        marked    = Number marked if marked?
 
         # unit conversions
         [x, y] = toNextgenCoordinates x, y
@@ -508,7 +527,19 @@ parseMML = (mmlString) ->
           k *= 100
           restraints.push { atomIndex, k, x0, y0 }
 
-        atoms.push { elemId, x, y, vx, vy, charge, friction, pinned, marked, visible, draggable }
+
+        atomRawData = { element, x, y, vx, vy, charge, friction, pinned, marked, visible, draggable }
+        # Unit conversion performed on undefined values could convert them to NaN.
+        # Revert back all NaNs to undefined, as we do not expect any NaN
+        # as property.
+        # Undefined values will be replaced by default values by validator.
+        for own prop of atomRawData
+          delete atomRawData[prop] if isNaN atomRawData[prop]
+
+        # Validate all properties and provides default values for undefined values.
+        atomValidatedData = validator.validateCompleteness 'atom', atomRawData
+
+        atoms.push atomValidatedData
 
       [atoms, restraints]
 
@@ -583,13 +614,13 @@ parseMML = (mmlString) ->
     vy = (atom.vy for atom in atoms)
     charge = (atom.charge for atom in atoms)
     friction = (atom.friction for atom in atoms)
-    element = (atom.elemId for atom in atoms)
+    element = (atom.element for atom in atoms)
     pinned = (atom.pinned for atom in atoms)
     marked = (atom.marked for atom in atoms)
     visible = (atom.visible for atom in atoms)
     draggable = (atom.draggable for atom in atoms)
 
-    id = atoms[0]?.elemId || 0
+    id = atoms[0]?.element || 0
 
     ### Convert array of hashes to a hash of arrays, for use by MD2D ###
     unroll = (array, props...) ->
