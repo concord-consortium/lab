@@ -1728,6 +1728,22 @@ define(function (require, exports, module) {
         return ljCalculator;
       },
 
+      setAtomProperties: function (i, props) {
+        var key;
+
+        // Update mass when element is changed.
+        // FIXME: keeping redundant values isn't reasonable.
+        if (props.element !== undefined) {
+          props.mass = elementMass[props.element];
+        }
+
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            atoms[key][i] = props[key];
+          }
+        }
+      },
+
       setRadialBondProperties: function(i, props) {
         var key;
         for (key in props) {
@@ -1790,14 +1806,9 @@ define(function (require, exports, module) {
       },
 
       /**
-        Allocates 'atoms' array of arrays, sets number of atoms.
-
-        options:
-          num: the number of atoms to create
+        Allocates 'atoms' hash of arrays.
       */
-      createAtoms: function(options) {
-        var num;
-
+      createAtomsArray: function(num) {
         if (!elementsHaveBeenCreated) {
           throw new Error("md2d: createAtoms was called before setElements.");
         }
@@ -1808,24 +1819,17 @@ define(function (require, exports, module) {
         atomsHaveBeenCreated = true;
         sizeHasBeenInitialized = true;
 
-        if (typeof options === 'undefined') {
-          throw new Error("md2d: createAtoms was called without options specifying the atoms to create.");
-        }
-
-        //  number of atoms
-        num = options.num;
-
-        if (typeof num === 'undefined') {
+        if (num === undefined) {
           throw new Error("md2d: createAtoms was called without the required 'num' option specifying the number of atoms to create.");
         }
         if (num !== Math.floor(num)) {
           throw new Error("md2d: createAtoms was passed a non-integral 'num' option.");
         }
         if (num < N_MIN) {
-          throw new Error("md2d: create Atoms was passed an 'num' option equal to: " + num + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
+          throw new Error("md2d: createAtoms was passed an 'num' option equal to: " + num + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
         }
         if (num > N_MAX) {
-          throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
+          throw new Error("md2d: createAtoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
         }
 
         atoms  = engine.atoms  = {};
@@ -1861,47 +1865,41 @@ define(function (require, exports, module) {
 
         @returns the index of the new atom
       */
-      addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, atom_pinned) {
-        var atom_mass;
+      addAtom: function(props) {
+        var atomMass;
 
         if (N + 1 > atoms.x.length) {
           extendArrays(atoms, N + 10);
           assignShortcutReferences.atoms();
         }
 
-        // Allow these values to be optional, and use the default if not defined:
+        atomMass = elementMass[props.element];
 
-        if (atom_charge == null)   atom_charge   = DEFAULT_VALUES.charge;
-        if (atom_friction == null) atom_friction = DEFAULT_VALUES.friction;
-        if (atom_pinned == null )  atom_pinned   = DEFAULT_VALUES.pinned;
-
-        atom_mass = elementMass[atom_element];
-
-        element[N]   = atom_element;
-        radius[N]    = elementRadius[atom_element];
-        x[N]         = atom_x;
-        y[N]         = atom_y;
-        vx[N]        = atom_vx;
-        vy[N]        = atom_vy;
-        px[N]        = atom_vx * atom_mass;
-        py[N]        = atom_vy * atom_mass;
+        element[N]   = props.element;
+        radius[N]    = elementRadius[props.element];
+        x[N]         = props.x;
+        y[N]         = props.y;
+        vx[N]        = props.vx;
+        vy[N]        = props.vy;
+        px[N]        = props.vx * atomMass;
+        py[N]        = props.vx * atomMass;
         ax[N]        = 0;
         ay[N]        = 0;
-        speed[N]     = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
-        charge[N]    = atom_charge;
-        friction[N]  = atom_friction;
-        pinned[N]    = atom_pinned;
-        mass[N]      = atom_mass;
+        speed[N]     = Math.sqrt(props.vx * props.vx + props.vy * props.vy);
+        charge[N]    = props.charge;
+        friction[N]  = props.friction;
+        pinned[N]    = props.pinned;
+        mass[N]      = atomMass;
 
-        if (atom_charge) {
+        if (props.charge !== 0) {
           hasChargedAtoms = true;
           // Save indexes of charged atoms.
           chargedAtomsList.push(N);
         }
 
-        totalMass += atom_mass;
+        totalMass += atomMass;
 
-        elementUsed[atom_element] = true;
+        elementUsed[props.element] = true;
 
         // Increase number of atoms.
         N++;
@@ -1911,7 +1909,8 @@ define(function (require, exports, module) {
         initializeCellList();
         initializeNeighborList();
 
-        return N;
+        // Return index of the new atom, not number of atoms.
+        return N - 1;
       },
 
       /**
@@ -2147,59 +2146,21 @@ define(function (require, exports, module) {
         return PEAtLocation <= 0;
       },
 
-      // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
-      initializeAtomsFromProperties: function(props) {
-        var x, y, vx, vy, charge, element, friction, pinned,
-            i, ii,
-            usedElements = {};
-
-        if (!(props.x && props.y)) {
-          throw new Error("md2d: initializeAtomsFromProperties must specify at minimum X and Y locations.");
-        }
-
-        if (!(props.vx && props.vy)) {
-          // We may way to support authored locations with random velocities in the future
-          throw new Error("md2d: For now, velocities must be set when locations are set.");
-        }
-
-        for (i=0, ii=props.x.length; i<ii; i++){
-          element = props.element ? props.element[i] : 0;
-          x = props.x[i];
-          y = props.y[i];
-          vx = props.vx[i];
-          vy = props.vy[i];
-          charge = props.charge ? props.charge[i] : 0;
-          pinned = props.pinned ? props.pinned[i] : 0;
-          friction = props.friction ? props.friction[i] : 0;
-
-          engine.addAtom(element, x, y, vx, vy, charge, friction, pinned);
-
-          usedElements[element] = true;
-        }
-
-        // Publish the current state
-        T = computeTemperature();
-      },
-
-      initializeAtomsRandomly: function(options) {
+      setupAtomsRandomly: function(options) {
 
         var // if a temperature is not explicitly requested, we just need any nonzero number
             temperature = options.temperature || 100,
 
-            // fill up the entire 'atoms' array if not otherwise requested
-            num = options.num || atoms.x.length,
-
-            nrows = Math.floor(Math.sqrt(num)),
-            ncols = Math.ceil(num/nrows),
+            nrows = Math.floor(Math.sqrt(N)),
+            ncols = Math.ceil(N/nrows),
 
             i, r, c, rowSpacing, colSpacing,
-            vMagnitude, vDirection,
-            x, y, vx, vy, charge, element;
+            vMagnitude, vDirection, props;
 
         validateTemperature(temperature);
 
-        colSpacing = size[0] / (1+ncols);
-        rowSpacing = size[1] / (1+nrows);
+        colSpacing = size[0] / (1 + ncols);
+        rowSpacing = size[1] / (1 + nrows);
 
         // Arrange molecules in a lattice. Not guaranteed to have CM exactly on center, and is an artificially low-energy
         // configuration. But it works OK for now.
@@ -2208,20 +2169,19 @@ define(function (require, exports, module) {
         for (r = 1; r <= nrows; r++) {
           for (c = 1; c <= ncols; c++) {
             i++;
-            if (i === num) break;
-
-            element    = Math.floor(Math.random() * elementEpsilon.length);     // random element
+            if (i === N) break;
             vMagnitude = math.normal(1, 1/4);
             vDirection = 2 * Math.random() * Math.PI;
 
-            x = c*colSpacing;
-            y = r*rowSpacing;
-            vx = vMagnitude * Math.cos(vDirection);
-            vy = vMagnitude * Math.sin(vDirection);
-
-            charge = 2*(i%2)-1;      // alternate negative and positive charges
-
-            engine.addAtom(element, x, y, vx, vy, charge, 0, 0, 1, 0);
+            props = {
+              element: Math.floor(Math.random() * elementEpsilon.length), // random element
+              x:       c * colSpacing,
+              y:       r * rowSpacing,
+              vx:      vMagnitude * Math.cos(vDirection),
+              vy:      vMagnitude * Math.sin(vDirection),
+              charge:  2 * (i % 2) - 1 // alternate negative and positive charges
+            };
+            engine.setAtomProperties(i, props);
           }
         }
 
@@ -2236,9 +2196,6 @@ define(function (require, exports, module) {
         // configuration.
         //
         adjustTemperature(temperature, true);
-
-        // Publish the current state
-        T = computeTemperature();
       },
 
       initializeElements: function(elems) {
@@ -2509,6 +2466,11 @@ define(function (require, exports, module) {
       },
 
       getTotalMass: function() {
+        var i;
+        totalMass = 0;
+        for (i = 0; i < N; i++) {
+          totalMass += mass[i];
+        }
         return totalMass;
       },
 
@@ -2691,6 +2653,9 @@ define(function (require, exports, module) {
             probes[i].south = pressureBuffers.getPressureFromProbe(i, 'south');
           }
         }
+
+        // Update temperature.
+        T = KE_to_T(KEinMWUnits, N);
 
         // State to be read by the rest of the system:
         state.time           = time;

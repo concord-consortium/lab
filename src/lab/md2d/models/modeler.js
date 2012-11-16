@@ -216,12 +216,6 @@ define(function(require) {
         "draggable"
       ];
 
-      model.NON_ENGINE_DEFAULT_VALUES = {
-        visible: 1,
-        marked: 0,
-        draggable: 0
-      };
-
       model.RADIAL_BOND_STYLES = {
         RADIAL_BOND_STANDARD_STICK_STYLE: 101,
         RADIAL_BOND_LONG_SPRING_STYLE:    102,
@@ -525,35 +519,6 @@ define(function(require) {
       }
     }
 
-    function setToDefaultValue(prop) {
-      for (var i = 0; i < model.get_num_atoms(); i++) {
-        atoms[prop][i] = model.NON_ENGINE_DEFAULT_VALUES[prop];
-      }
-    }
-
-    function setFromSerializedArray(prop, serializedArray) {
-      for (var i = 0; i < model.get_num_atoms(); i++) {
-        atoms[prop][i] = serializedArray[i];
-      }
-    }
-
-    function initializeNonEngineProperties(serializedAtomProps) {
-      var prop,
-          i;
-
-      for (i = 0; i < model.NON_ENGINE_PROPERTY_LIST.length; i++) {
-        prop = model.NON_ENGINE_PROPERTY_LIST[i];
-        atoms[prop] = arrays.create(model.get_num_atoms(), 0, arrayTypes.float);
-
-        if (serializedAtomProps[prop]) {
-          setFromSerializedArray(prop, serializedAtomProps[prop]);
-        }
-        else {
-          setToDefaultValue(prop);
-        }
-      }
-    }
-
     /**
       Each entry in engine.atoms is a reference to a typed array. When the engine needs to create
       a larger typed array, it must create a new object. Therefore, this function exists to copy
@@ -714,7 +679,7 @@ define(function(require) {
       left in whatever grid the engine's initialization leaves them in.
     */
     model.createNewAtoms = function(config) {
-      var num;
+      var i, num, prop, atomProps;
 
       if (typeof config === 'number') {
         num = config;
@@ -725,12 +690,11 @@ define(function(require) {
       }
 
       // get a fresh model
+      // TODO: why is this done during createNewAtoms call?...
       engine = md2d.createEngine();
       engine.setSize([width,height]);
       engine.initializeElements(elements);
-      engine.createAtoms({
-        num: num
-      });
+      engine.createAtomsArray(num);
 
       engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
       engine.useCoulombInteraction(model.get('coulombForces'));
@@ -740,20 +704,45 @@ define(function(require) {
       engine.setGravitationalField(model.get('gravitationalField'));
       engine.setTargetTemperature(model.get('targetTemperature'));
 
-      if (config.x && config.y) {
-        engine.initializeAtomsFromProperties(config);
-      } else {
-        engine.initializeAtomsRandomly({
-          temperature: model.get('targetTemperature')
-        });
-        if (config.relax) engine.relaxToTemperature();
-      }
+      window.state = modelOutputState = {};
 
       atoms = {};
-      copyEngineAtomReferences(engine.atoms);
-      initializeNonEngineProperties(config);
+      // Initialize non-engine properties. This is only temporary
+      // solution, only 'result' array should contain these properties.
+      atoms.marked    = arrays.create(num, 0, arrayTypes.float);
+      atoms.visible   = arrays.create(num, 0, arrayTypes.float);
+      atoms.draggable = arrays.create(num, 0, arrayTypes.float);
 
-      window.state = modelOutputState = {};
+      // TODO: this branching based on x, y isn't very clear.
+      if (config.x && config.y) {
+        // config is hash of arrays (as specified in JSON model).
+        // So, for each index, create object containing properties of
+        // atom 'i'. Later, use these properties to add atom
+        // using basic addAtom method.
+        for (i = 0; i < num; i++) {
+          atomProps = {};
+          for (prop in config) {
+            if (config.hasOwnProperty(prop)) {
+              atomProps[prop] = config[prop][i];
+            }
+          }
+          model.addAtom(atomProps, true);
+        }
+      } else {
+        for (i = 0; i < num; i++) {
+          // Provide only required values.
+          atomProps = {x: 0, y: 0};
+          model.addAtom(atomProps, true);
+        }
+        // This function rearrange all atoms randomly.
+        engine.setupAtomsRandomly({
+          temperature: model.get('targetTemperature')
+        });
+        if (config.relax)
+          engine.relaxToTemperature();
+      }
+
+      copyEngineAtomReferences(engine.atoms);
 
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
@@ -879,15 +868,15 @@ define(function(require) {
         // findMinimimuPELocation will return false if minimization doesn't converge, in which case
         // try again from a different x, y
         loc = engine.findMinimumPELocation(el, x, y, 0, 0, charge);
-        if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge, 0, 0)) return true;
+        if (loc && model.addAtom({ element: el, x: loc[0], y: loc[1], charge: charge })) return true;
       } while (++numTries < maxTries);
 
       return false;
     },
 
     /**
-      Adds a new atom with element 'el', charge 'charge', and velocity '[vx, vy]' to the model
-      at position [x, y]. (Intended to be exposed as a script API method.)
+      Adds a new atom defined by properties.
+      Intended to be exposed as a script API method also.
 
       Adjusts (x,y) if needed so that the whole atom is within the walls of the container.
 
@@ -896,51 +885,56 @@ define(function(require) {
       intrudes into the repulsive region of another atom.)
 
       Otherwise, returns true.
+
+      silent = true disables this check.
     */
-    model.addAtom = function(el, x, y, vx, vy, charge, friction, pinned, visible, draggable) {
-      var size      = model.size(),
-          radius    = engine.getRadiusOfElement(el),
+    model.addAtom = function(props, silent) {
+      var size = model.size(),
+          radius,
           newLength,
           i;
 
-      if (visible == null)   visible   = model.NON_ENGINE_DEFAULT_VALUES.visible;
-      if (draggable == null) draggable = model.NON_ENGINE_DEFAULT_VALUES.draggable;
+      // Validate properties, provide default values.
+      props = propertiesValidator.validateCompleteness('atom', props);
 
       // As a convenience to script authors, bump the atom within bounds
-      if (x < radius) x = radius;
-      if (x > size[0]-radius) x = size[0]-radius;
-      if (y < radius) y = radius;
-      if (y > size[1]-radius) y = size[1]-radius;
+      radius = engine.getRadiusOfElement(props.element);
+      if (props.x < radius) props.x = radius;
+      if (props.x > size[0] - radius) props.x = size[0] - radius;
+      if (props.y < radius) props.y = radius;
+      if (props.y > size[1] - radius) props.y = size[1] - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-      if (engine.canPlaceAtom(el, x, y)) {
-
-        storeOutputPropertiesBeforeChange();
-
-        i = engine.addAtom(el, x, y, vx, vy, charge, friction, pinned);
-        copyEngineAtomReferences();
-
-        // Extend the atoms arrays which the engine doesn't know about. This may seem duplicative,
-        // or something we could ask the engine to do on our behalf, but it may make more sense when
-        // you realize this is a temporary step until we modify the code further in order to maintain
-        // the 'visible', 'draggable' propeties *only* in what is now being called the 'results' array
-        newLength = atoms.element.length;
-
-        if (atoms.visible.length < newLength) {
-          atoms.visible   = arrays.extend(atoms.visible, newLength);
-          atoms.draggable = arrays.extend(atoms.draggable, newLength);
-        }
-
-        atoms.visible[i]   = visible;
-        atoms.draggable[i] = draggable;
-
-        updateOutputPropertiesAfterChange();
-        dispatch.addAtom();
-
-        return true;
+      if (!silent && !engine.canPlaceAtom(props.element, props.x, props.y)) {
+        // return false on failure
+        return false;
       }
-      // return false on failure
-      return false;
+
+      storeOutputPropertiesBeforeChange();
+
+      i = engine.addAtom(props);
+      copyEngineAtomReferences();
+
+      // Extend the atoms arrays which the engine doesn't know about. This may seem duplicative,
+      // or something we could ask the engine to do on our behalf, but it may make more sense when
+      // you realize this is a temporary step until we modify the code further in order to maintain
+      // the 'visible', 'draggable' propeties *only* in what is now being called the 'results' array
+      newLength = atoms.element.length;
+
+      if (atoms.visible.length < newLength) {
+        atoms.marked    = arrays.extend(atoms.marked, newLength);
+        atoms.visible   = arrays.extend(atoms.visible, newLength);
+        atoms.draggable = arrays.extend(atoms.draggable, newLength);
+      }
+
+      atoms.marked[i]    = props.marked;
+      atoms.visible[i]   = props.visible;
+      atoms.draggable[i] = props.draggable;
+
+      updateOutputPropertiesAfterChange();
+      dispatch.addAtom();
+
+      return true;
     },
 
     model.addObstacle = function(props) {
@@ -1024,6 +1018,9 @@ define(function(require) {
           j, jj,
           key;
 
+      // Validate properties.
+      props = propertiesValidator.validate('atom', props);
+
       if (moveMolecule) {
         moleculeAtoms = engine.getMoleculeAtoms(i);
         if (moleculeAtoms.length > 0) {
@@ -1050,14 +1047,7 @@ define(function(require) {
       }
 
       storeOutputPropertiesBeforeChange();
-
-      // Actually set properties
-      for (key in props) {
-        if (props.hasOwnProperty(key)) {
-          atoms[key][i] = props[key];
-        }
-      }
-
+      engine.setAtomProperties(i, props);
       updateOutputPropertiesAfterChange();
       return true;
     };
@@ -1090,9 +1080,9 @@ define(function(require) {
     };
 
     model.setObstacleProperties = function(i, props) {
-      var validatedProps = propertiesValidator.validate('obstacle', props);
+      props = propertiesValidator.validate('obstacle', props);
       storeOutputPropertiesBeforeChange();
-      engine.setObstacleProperties(i, validatedProps);
+      engine.setObstacleProperties(i, props);
       updateOutputPropertiesAfterChange();
     };
 
