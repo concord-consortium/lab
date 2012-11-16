@@ -190,9 +190,6 @@ define(function (require, exports, module) {
   };
 
   exports.DEFAULT_VALUES = DEFAULT_VALUES = {
-    charge            : 0,
-    friction          : 0,
-    pinned            : 0,
     RADIAL_BOND_STYLE : RADIAL_BOND_STYLES.RADIAL_BOND_STANDARD_STICK_STYLE
   };
 
