@@ -51,6 +51,69 @@ define(function() {
       }
     },
 
+    atom: {
+      // Required properties:
+      x: {
+        required: true
+      },
+      y: {
+        required: true
+      },
+      // Optional properties:
+      element: {
+        defaultValue: 0
+      },
+      vx: {
+        defaultValue: 0
+      },
+      vy: {
+        defaultValue: 0
+      },
+      charge: {
+        defaultValue: 0
+      },
+      friction: {
+        defaultValue: 0
+      },
+      visible: {
+        defaultValue: 1
+      },
+      pinned: {
+        defaultValue: 0
+      },
+      marked: {
+        defaultValue: 0
+      },
+      draggable: {
+        defaultValue: 0
+      },
+      // Read-only values, can be set only by engine:
+      radius: {
+        readOnly: true,
+        serialize: false
+      },
+      px: {
+        readOnly: true,
+        serialize: false
+      },
+      py: {
+        readOnly: true,
+        serialize: false
+      },
+      speed: {
+        readOnly: true,
+        serialize: false
+      },
+      ax: {
+        readOnly: true,
+        serialize: false
+      },
+      ay: {
+        readOnly: true,
+        serialize: false
+      }
+    },
+
     obstacle: {
       // Required properties:
       width: {
