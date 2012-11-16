@@ -97,8 +97,12 @@ jnlp-all: clean-jnlp \
 	script/build-and-deploy-jars.rb --maven-update
 
 clean:
+	# Server dir cleanup.
 	bash -O extglob -c 'rm -rf server/public/!(.git|jnlp)'
-	rm -rf lab
+	# Remove auto-generated files.
+	rm -f src/lab/lab.config.js
+	rm -f src/lab/lab.version.js
+	# Node modules.
 	rm -rf node_modules
 	git submodule update --init --recursive
 	rm -f src/vendor/jquery/dist/jquery*.js
@@ -228,8 +232,12 @@ server/public/jnlp:
 	mkdir -p server/public/jnlp
 	rsync -aq src/jnlp server/public/
 
+# MML->JSON conversion uses MD2D models for validation and default values handling
+# so it depends on appropriate sources.
 .PHONY: server/public/imports
-server/public/imports:
+server/public/imports: \
+	$(MD2D_SRC_FILES) \
+	$(COMMON_SRC_FILES)
 	mkdir -p server/public/imports
 	rsync -aq imports/ server/public/imports/
 	./node-bin/convert-mml-files
