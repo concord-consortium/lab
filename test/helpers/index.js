@@ -33,7 +33,7 @@ exports.withModel = function(model, continuation) {
 */
 exports.getModel = function(filename) {
   if (endsWith(filename, '.json')) {
-    return getModelJSONFromFile(filename);
+    return JSON.parse(getModelJSONFromFile(filename));
   } else if (endsWith(filename, '.mml')) {
     return getModelJSONFromMMLFile(filename);
   } else {
