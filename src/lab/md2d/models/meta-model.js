@@ -214,6 +214,21 @@ define(function() {
       angle: {
         required: true
       }
+    },
+
+    restraint: {
+      atomIndex: {
+        required: true
+      },
+      k: {
+        defaultValue: 2000
+      },
+      x0: {
+        defaultValue: 0
+      },
+      y0: {
+        defaultValue: 0
+      }
     }
   };
 });

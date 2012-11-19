@@ -1721,6 +1721,16 @@ define(function (require, exports, module) {
         }
       },
 
+      setRestraintProperties: function(i, props) {
+        var key;
+        // Set all properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            restraints[key][i] = props[key];
+          }
+        }
+      },
+
       setElementProperties: function(i, properties) {
         var j, newRadius;
         // FIXME we cached mass into its own array, which is now probably unnecessary (position-update
@@ -1932,18 +1942,20 @@ define(function (require, exports, module) {
         If there isn't enough room in the 'restraints' array, it (somewhat inefficiently)
         extends the length of the typed arrays by ten to have room for more bonds.
       */
-      addRestraint: function(atomIndex, k, x0, y0) {
+      addRestraint: function(props) {
+        if (N_restraints === 0) {
+          // Initialize structures during first call.
+          createRestraintsArray(10);
+        }
         if (N_restraints + 1 > restraints.atomIndex.length) {
           extendArrays(restraints, N_restraints + 10);
           assignShortcutReferences.restraints();
         }
 
-        restraintAtomIndex[N_restraints] = atomIndex;
-        restraintK[N_restraints]         = k;
-        restraintX0[N_restraints]        = x0;
-        restraintY0[N_restraints]        = y0;
-
         N_restraints++;
+
+        // Set new restraint properties.
+        engine.setRestraintProperties(N_restraints - 1, props);
       },
 
       /**
@@ -2135,22 +2147,6 @@ define(function (require, exports, module) {
           engine.addElement(elems[i]);
         }
         elementsHaveBeenCreated = true;
-      },
-
-      initializeRestraints: function(props) {
-        var num = props.atomIndex.length,
-            i;
-
-        createRestraintsArray(num);
-
-        for (i = 0; i < num; i++) {
-          engine.addRestraint(
-            props.atomIndex[i],
-            props.k[i],
-            props.x0[i],
-            props.y0[i]
-          );
-        }
       },
 
       createVdwPairsArray: function() {

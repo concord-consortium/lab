@@ -522,15 +522,26 @@ parseMML = (mmlString) ->
           $restraint = cheerio restraint
 
           atomIndex = atoms.length
-          k         = parseFloat $restraint.find('[property=k]').text() || 20
-          x0        = parseFloat $restraint.find('[property=x0]').text() || 0
-          y0        = parseFloat $restraint.find('[property=y0]').text() || 0
+          k         = getFloatProperty $restraint, 'k'
+          x0        = getFloatProperty $restraint, 'x0'
+          y0        = getFloatProperty $restraint, 'y0'
 
           [x0, y0] = toNextgenCoordinates x0, y0
 
           # MML reports spring constant strength in units of eV per 0.01 nm. Convert to eV/nm ???
           k *= 100
-          restraints.push { atomIndex, k, x0, y0 }
+
+          restraintRawData = { atomIndex, k, x0, y0 }
+
+          # Unit conversion performed on undefined values can convert them to NaN.
+          # Revert back all NaNs to undefined, as we do not expect any NaN
+          # as property. Undefined values will be replaced by default values by validator.
+          removeNaNProperties restraintRawData
+
+          # Validate all properties and provides default values for undefined values.
+          restraintValidatedData = validator.validateCompleteness 'restraint', restraintRawData
+
+          restraints.push restraintValidatedData
 
 
         atomRawData = { element, x, y, vx, vy, charge, friction, pinned, marked, visible, draggable }

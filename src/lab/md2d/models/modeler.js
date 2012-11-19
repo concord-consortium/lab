@@ -743,7 +743,23 @@ define(function(require) {
     };
 
     model.createRestraints = function(_restraints) {
-      engine.initializeRestraints(_restraints);
+      var num = _restraints.atomIndex.length,
+          i, prop, restraintsProps;
+
+      // _restraints is hash of arrays (as specified in JSON model).
+      // So, for each index, create object containing properties of
+      // restraint 'i'. Later, use these properties to add restraint
+      // using basic addRestraint method.
+      for (i = 0; i < num; i++) {
+        restraintsProps = {};
+        for (prop in _restraints) {
+          if (_restraints.hasOwnProperty(prop)) {
+            restraintsProps[prop] = _restraints[prop][i];
+          }
+        }
+        model.addRestraint(restraintsProps);
+      }
+
       restraints = engine.restraints;
       return model;
     };
@@ -932,6 +948,15 @@ define(function(require) {
       validatedProps = propertiesValidator.validateCompleteness('angularBond', props);
       // Finally, add angular bond.
       engine.addAngularBond(validatedProps);
+    },
+
+    model.addRestraint = function(props) {
+      var validatedProps;
+
+      // Validate properties, use default values if there is such need.
+      validatedProps = propertiesValidator.validateCompleteness('restraint', props);
+      // Finally, add restraint.
+      engine.addRestraint(validatedProps);
     },
 
     /** Return the bounding box of the molecule containing atom 'atomIndex', with atomic radii taken
