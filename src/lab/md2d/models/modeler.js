@@ -318,7 +318,10 @@ define(function(require) {
       updateAllOutputProperties();
       console.timeEnd('reading model state');
 
+      console.time('tick history push');
       tickHistory.push();
+      console.timeEnd('tick history push');
+
       newStep = true;
 
       if (!dontDispatchTickEvent) {
@@ -519,19 +522,6 @@ define(function(require) {
       }
     }
 
-    /**
-      Each entry in engine.atoms is a reference to a typed array. When the engine needs to create
-      a larger typed array, it must create a new object. Therefore, this function exists to copy
-      over any references to newly created typed arrays from engine.atoms to our atoms object.
-    */
-    function copyEngineAtomReferences() {
-      var i, prop;
-      for (i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
-        prop = md2d.ATOM_PROPERTY_LIST[i];
-        atoms[prop] = engine.atoms[prop];
-      }
-    }
-
     function copyTypedArray(arr) {
       var copy = [];
       for (var i=0,ii=arr.length; i<ii; i++){
@@ -706,13 +696,6 @@ define(function(require) {
 
       window.state = modelOutputState = {};
 
-      atoms = {};
-      // Initialize non-engine properties. This is only temporary
-      // solution, only 'result' array should contain these properties.
-      atoms.marked    = arrays.create(num, 0, arrayTypes.float);
-      atoms.visible   = arrays.create(num, 0, arrayTypes.float);
-      atoms.draggable = arrays.create(num, 0, arrayTypes.float);
-
       // TODO: this branching based on x, y isn't very clear.
       if (config.x && config.y) {
         // config is hash of arrays (as specified in JSON model).
@@ -742,7 +725,8 @@ define(function(require) {
           engine.relaxToTemperature();
       }
 
-      copyEngineAtomReferences(engine.atoms);
+      // Copy reference to atoms properties.
+      atoms = engine.atoms;
 
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
@@ -890,9 +874,7 @@ define(function(require) {
     */
     model.addAtom = function(props, silent) {
       var size = model.size(),
-          radius,
-          newLength,
-          i;
+          radius;
 
       // Validate properties, provide default values.
       props = propertiesValidator.validateCompleteness('atom', props);
@@ -911,27 +893,9 @@ define(function(require) {
       }
 
       storeOutputPropertiesBeforeChange();
-
-      i = engine.addAtom(props);
-      copyEngineAtomReferences();
-
-      // Extend the atoms arrays which the engine doesn't know about. This may seem duplicative,
-      // or something we could ask the engine to do on our behalf, but it may make more sense when
-      // you realize this is a temporary step until we modify the code further in order to maintain
-      // the 'visible', 'draggable' propeties *only* in what is now being called the 'results' array
-      newLength = atoms.element.length;
-
-      if (atoms.visible.length < newLength) {
-        atoms.marked    = arrays.extend(atoms.marked, newLength);
-        atoms.visible   = arrays.extend(atoms.visible, newLength);
-        atoms.draggable = arrays.extend(atoms.draggable, newLength);
-      }
-
-      atoms.marked[i]    = props.marked;
-      atoms.visible[i]   = props.visible;
-      atoms.draggable[i] = props.draggable;
-
+      engine.addAtom(props);
       updateOutputPropertiesAfterChange();
+
       dispatch.addAtom();
 
       return true;

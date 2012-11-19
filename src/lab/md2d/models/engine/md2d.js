@@ -256,9 +256,6 @@ define(function (require, exports, module) {
         // The number of atoms in the system.
         N,
 
-        // Total mass of all particles in the system, in Dalton (atomic mass units).
-        totalMass,
-
         // ####################################################################
         //                      Atom Properties
 
@@ -884,6 +881,7 @@ define(function (require, exports, module) {
               y_sum = 0,
               px_sum = 0,
               py_sum = 0,
+              totalMass = engine.getTotalMass(),
               i;
 
           for (i = 0; i < N; i++) {
@@ -1726,19 +1724,42 @@ define(function (require, exports, module) {
       },
 
       setAtomProperties: function (i, props) {
-        var key;
+        var key, idx, rest;
 
-        // Update mass when element is changed.
-        // FIXME: keeping redundant values isn't reasonable.
         if (props.element !== undefined) {
-          props.mass = elementMass[props.element];
+          // Mark element as used by some atom (used by performance optimizations).
+          elementUsed[props.element] = true;
+
+          // Update mass and radius when element is changed.
+          props.mass   = elementMass[props.element];
+          props.radius = elementRadius[props.element];
         }
 
+        // Update charged atoms list (performance optimization).
+        if (charge[i] === 0 && props.charge !== undefined && props.charge !== 0) {
+          // Save index of charged atom.
+          chargedAtomsList.push(i);
+        } else if (charge[i] !== 0 && props.charge === 0) {
+          // Remove index from charged atoms list.
+          idx = chargedAtomsList.indexOf(i);
+          rest = chargedAtomsList.slice(idx + 1);
+          chargedAtomsList.length = idx;
+          Array.prototype.push.apply(chargedAtomsList, rest);
+        }
+        // Update optimization flag.
+        hasChargedAtoms = !!chargedAtomsList.length;
+
+        // Set all properties from props hash.
         for (key in props) {
           if (props.hasOwnProperty(key)) {
             atoms[key][i] = props[key];
           }
         }
+
+        // Update properties which depend on other properties.
+        px[i]    = vx[i] * mass[i];
+        py[i]    = vy[i] * mass[i];
+        speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
       },
 
       setRadialBondProperties: function(i, props) {
@@ -1832,26 +1853,31 @@ define(function (require, exports, module) {
         atoms  = engine.atoms  = {};
 
         // TODO. DRY this up by letting the property list say what type each array is
-        atoms.radius   = arrays.create(num, 0, arrayTypes.float);
-        atoms.px       = arrays.create(num, 0, arrayTypes.float);
-        atoms.py       = arrays.create(num, 0, arrayTypes.float);
-        atoms.x        = arrays.create(num, 0, arrayTypes.float);
-        atoms.y        = arrays.create(num, 0, arrayTypes.float);
-        atoms.vx       = arrays.create(num, 0, arrayTypes.float);
-        atoms.vy       = arrays.create(num, 0, arrayTypes.float);
-        atoms.speed    = arrays.create(num, 0, arrayTypes.float);
-        atoms.ax       = arrays.create(num, 0, arrayTypes.float);
-        atoms.ay       = arrays.create(num, 0, arrayTypes.float);
-        atoms.charge   = arrays.create(num, 0, arrayTypes.float);
-        atoms.friction = arrays.create(num, 0, arrayTypes.float);
-        atoms.element  = arrays.create(num, 0, arrayTypes.uint8);
-        atoms.pinned   = arrays.create(num, 0, arrayTypes.uint8);
-        atoms.mass     = arrays.create(num, 0, arrayTypes.float);
+        atoms.radius    = arrays.create(num, 0, arrayTypes.float);
+        atoms.px        = arrays.create(num, 0, arrayTypes.float);
+        atoms.py        = arrays.create(num, 0, arrayTypes.float);
+        atoms.x         = arrays.create(num, 0, arrayTypes.float);
+        atoms.y         = arrays.create(num, 0, arrayTypes.float);
+        atoms.vx        = arrays.create(num, 0, arrayTypes.float);
+        atoms.vy        = arrays.create(num, 0, arrayTypes.float);
+        atoms.speed     = arrays.create(num, 0, arrayTypes.float);
+        atoms.ax        = arrays.create(num, 0, arrayTypes.float);
+        atoms.ay        = arrays.create(num, 0, arrayTypes.float);
+        atoms.charge    = arrays.create(num, 0, arrayTypes.float);
+        atoms.friction  = arrays.create(num, 0, arrayTypes.float);
+        atoms.element   = arrays.create(num, 0, arrayTypes.uint8);
+        atoms.pinned    = arrays.create(num, 0, arrayTypes.uint8);
+        atoms.mass      = arrays.create(num, 0, arrayTypes.float);
+        // For the sake of clarity, manage all atoms properties in one
+        // place (engine). In the future, think about separation of engine
+        // properties and view-oriented properties like these:
+        atoms.marked    = arrays.create(num, 0, arrayTypes.uint8);
+        atoms.visible   = arrays.create(num, 0, arrayTypes.uint8);
+        atoms.draggable = arrays.create(num, 0, arrayTypes.uint8);
 
         assignShortcutReferences.atoms();
 
         N = 0;
-        totalMass = 0;
       },
 
       /**
@@ -1863,50 +1889,25 @@ define(function (require, exports, module) {
         @returns the index of the new atom
       */
       addAtom: function(props) {
-        var atomMass;
-
         if (N + 1 > atoms.x.length) {
           extendArrays(atoms, N + 10);
           assignShortcutReferences.atoms();
         }
 
-        atomMass = elementMass[props.element];
-
-        element[N]   = props.element;
-        radius[N]    = elementRadius[props.element];
-        x[N]         = props.x;
-        y[N]         = props.y;
-        vx[N]        = props.vx;
-        vy[N]        = props.vy;
-        px[N]        = props.vx * atomMass;
-        py[N]        = props.vx * atomMass;
-        ax[N]        = 0;
-        ay[N]        = 0;
-        speed[N]     = Math.sqrt(props.vx * props.vx + props.vy * props.vy);
-        charge[N]    = props.charge;
-        friction[N]  = props.friction;
-        pinned[N]    = props.pinned;
-        mass[N]      = atomMass;
-
-        if (props.charge !== 0) {
-          hasChargedAtoms = true;
-          // Save indexes of charged atoms.
-          chargedAtomsList.push(N);
-        }
-
-        totalMass += atomMass;
-
-        elementUsed[props.element] = true;
+        // Set acceleration of new atom to zero.
+        props.ax = props.ay = 0;
 
         // Increase number of atoms.
         N++;
 
-        // Initialize helper structures for
-        // optimizations.
+        // Set provided properties of new atom.
+        engine.setAtomProperties(N - 1, props);
+
+        // Initialize helper structures for optimizations.
         initializeCellList();
         initializeNeighborList();
 
-        // Return index of the new atom, not number of atoms.
+        // Return index of the new atom.
         return N - 1;
       },
 
@@ -2462,9 +2463,9 @@ define(function (require, exports, module) {
         }
       },
 
+      // Total mass of all particles in the system, in Dalton (atomic mass units).
       getTotalMass: function() {
-        var i;
-        totalMass = 0;
+        var totalMass = 0, i;
         for (i = 0; i < N; i++) {
           totalMass += mass[i];
         }
