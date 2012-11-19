@@ -130,19 +130,19 @@
     ]
   },
   "angularBonds": {
-    "atom1Index": [
+    "atom1": [
       2
     ],
-    "atom2Index": [
+    "atom2": [
       4
     ],
-    "atom3Index": [
+    "atom3": [
       3
     ],
-    "bondAngle": [
+    "angle": [
       2.0943951023931953
     ],
-    "bondStrength": [
+    "strength": [
       2
     ]
   },
