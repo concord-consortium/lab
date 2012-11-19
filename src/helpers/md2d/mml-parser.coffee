@@ -85,7 +85,7 @@ parseMML = (mmlString) ->
     getIntProperty = ($node, propertyName, additionalSelector) ->
       prop = getProperty $node, propertyName, additionalSelector
       # Property found, so parse it.
-      return parseInt prop if prop.length
+      return parseInt prop, 10 if prop.length
       # Property not found, so return undefined.
       return undefined
 
@@ -95,6 +95,13 @@ parseMML = (mmlString) ->
       return parseBoolean prop if prop.length
       # Property not found, so return undefined.
       return undefined
+
+    # Unit conversion performed on undefined values can convert them to NaN.
+    # Revert back all NaNs to undefined, when we do not expect any NaN
+    # as property. Undefined values will be replaced by default values by validator.
+    removeNaNProperties = (props) ->
+      for own prop of props
+        delete props[prop] if isNaN props[prop]
 
     ### Convert a cheerio node whose text is a number, to an actual number ###
     toNumber = ($node, {defaultValue}) ->
@@ -200,12 +207,10 @@ parseMML = (mmlString) ->
           visible
         }
 
-        # Unit conversion performed on undefined values could convert them to NaN.
+        # Unit conversion performed on undefined values can convert them to NaN.
         # Revert back all NaNs to undefined, as we do not expect any NaN
-        # as property.
-        # Undefined values will be replaced by default values by validator.
-        for own prop of rawData
-          delete rawData[prop] if isNaN rawData[prop]
+        # as property. Undefined values will be replaced by default values by validator.
+        removeNaNProperties rawData
 
         # Validate all properties and provides default values for undefined values.
         validatedData = validator.validateCompleteness 'obstacle', rawData
@@ -529,12 +534,11 @@ parseMML = (mmlString) ->
 
 
         atomRawData = { element, x, y, vx, vy, charge, friction, pinned, marked, visible, draggable }
-        # Unit conversion performed on undefined values could convert them to NaN.
+
+        # Unit conversion performed on undefined values can convert them to NaN.
         # Revert back all NaNs to undefined, as we do not expect any NaN
-        # as property.
-        # Undefined values will be replaced by default values by validator.
-        for own prop of atomRawData
-          delete atomRawData[prop] if isNaN atomRawData[prop]
+        # as property. Undefined values will be replaced by default values by validator.
+        removeNaNProperties atomRawData
 
         # Validate all properties and provides default values for undefined values.
         atomValidatedData = validator.validateCompleteness 'atom', atomRawData
@@ -556,21 +560,31 @@ parseMML = (mmlString) ->
       # the second atom in the order atoms are found in the file. The atom[1|2] property is NOT
       # written to the file at all if it has the default value 0.
 
-      atom1Index    = parseInt($node.find('[property=atom1]').text(), 10) || 0
-      atom2Index    = parseInt($node.find('[property=atom2]').text(), 10) || 0
-      bondLength    = parseFloat $node.find('[property=bondLength]').text()
-      bondStrength  = parseFloat $node.find('[property=bondStrength]').text()
-      bondStyle     = parseInt($node.find('[property=style] byte').text()) || RadialBondStyleDefault
+      atom1    = getIntProperty $node, 'atom1'
+      atom2    = getIntProperty $node, 'atom2'
+      length   = getFloatProperty $node, 'bondLength'
+      strength = getFloatProperty $node, 'bondStrength'
+      style    = getIntProperty $node, 'style', 'byte'
 
       # convert from MML units to Lab units.
 
       # MML reports bondStrength in units of eV per 0.01 nm. Convert to eV/nm
-      bondStrength *= 1e4
+      strength *= 1e4
 
       # MML reports bondLength in units of 0.01 nm. Convert to nm.
-      bondLength *= 0.01
+      length *= 0.01
 
-      radialBonds.push { atom1Index, atom2Index, bondLength, bondStrength, bondStyle }
+      radialBondRawData = { atom1, atom2, length, strength, style }
+
+      # Unit conversion performed on undefined values can convert them to NaN.
+      # Revert back all NaNs to undefined, as we do not expect any NaN
+      # as property. Undefined values will be replaced by default values by validator.
+      removeNaNProperties radialBondRawData
+
+      # Validate all properties and provides default values for undefined values.
+      radialBondValidatedData = validator.validateCompleteness 'radialBond', radialBondRawData
+
+      radialBonds.push radialBondValidatedData
 
     ###
       angular bonds
@@ -669,7 +683,7 @@ parseMML = (mmlString) ->
     removeArrayIfDefault("draggable", draggable, 0)
 
     if radialBonds.length > 0
-      json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength',  'bondStyle'
+      json.radialBonds = unroll radialBonds, 'atom1', 'atom2', 'length', 'strength',  'style'
 
     if angularBonds.length > 0
       json.angularBonds = unroll angularBonds, 'atom1Index', 'atom2Index', 'atom3Index', 'bondAngle', 'bondStrength'

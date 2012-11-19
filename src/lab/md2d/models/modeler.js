@@ -172,14 +172,6 @@ define(function(require) {
     function setupIndices() {
       var prop, i;
 
-      model.RADIAL_BOND_PROPERTY_LIST = [];
-
-      // Copy Radial Bond properties from md2d
-      for (i = 0; i < md2d.RADIAL_BOND_PROPERTY_LIST.length; i++) {
-        prop = md2d.RADIAL_BOND_PROPERTY_LIST[i];
-        model.RADIAL_BOND_PROPERTY_LIST[i] = prop;
-      }
-
       model.ANGULAR_BOND_PROPERTY_LIST = [];
 
       // Copy ANGULAR_BOND properties from md2d
@@ -706,7 +698,23 @@ define(function(require) {
     };
 
     model.createRadialBonds = function(_radialBonds) {
-      engine.initializeRadialBonds(_radialBonds);
+      var num = _radialBonds.strength.length,
+          i, prop, radialBondProps;
+
+      // _radialBonds is hash of arrays (as specified in JSON model).
+      // So, for each index, create object containing properties of
+      // radial bond 'i'. Later, use these properties to add radial bond
+      // using basic addRadialBond method.
+      for (i = 0; i < num; i++) {
+        radialBondProps = {};
+        for (prop in _radialBonds) {
+          if (_radialBonds.hasOwnProperty(prop)) {
+            radialBondProps[prop] = _radialBonds[prop][i];
+          }
+        }
+        model.addRadialBond(radialBondProps);
+      }
+
       radialBonds = engine.radialBonds;
       radialBondResults = engine.radialBondResults;
       return model;
@@ -892,6 +900,15 @@ define(function(require) {
       engine.addObstacle(validatedProps);
     },
 
+    model.addRadialBond = function(props) {
+      var validatedProps;
+
+      // Validate properties, use default values if there is such need.
+      validatedProps = propertiesValidator.validateCompleteness('radialBond', props);
+      // Finally, add obstacle.
+      engine.addRadialBond(validatedProps);
+    },
+
     /** Return the bounding box of the molecule containing atom 'atomIndex', with atomic radii taken
         into account.
 
@@ -1041,12 +1058,13 @@ define(function(require) {
     };
 
     model.getRadialBondProperties = function(i) {
-      var p,
+      var radialBondMetaData = metaModel.radialBond,
           props = {},
           propName;
-      for (p = 0; p < model.RADIAL_BOND_PROPERTY_LIST.length; p++) {
-        propName = model.RADIAL_BOND_PROPERTY_LIST[p];
-        props[propName] = radialBonds[propName][i];
+      for (propName in radialBondMetaData) {
+        if (radialBondMetaData.hasOwnProperty(propName)) {
+          props[propName] = radialBonds[propName][i];
+        }
       }
       return props;
     };

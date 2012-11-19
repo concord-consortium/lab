@@ -35,8 +35,6 @@ define(function (require, exports, module) {
 
       ELEMENT_PROPERTY_LIST,
 
-      RADIAL_BOND_PROPERTY_LIST,
-
       ANGULAR_BOND_PROPERTY_LIST,
 
       VDW_INDICES,
@@ -100,15 +98,6 @@ define(function (require, exports, module) {
         }
       };
 
-  // Radial Bonds
-  exports.RADIAL_BOND_PROPERTY_LIST = RADIAL_BOND_PROPERTY_LIST = [
-    "atom1",
-    "atom2",
-    "length",
-    "strength",
-    "style"
-  ];
-
   // Angular Bonds
   exports.ANGULAR_BOND_PROPERTY_LIST = ANGULAR_BOND_PROPERTY_LIST = [
     "atom1",
@@ -142,10 +131,6 @@ define(function (require, exports, module) {
     COUNT : 0,
     ATOM1 : 1,
     ATOM2 : 2
-  };
-
-  exports.DEFAULT_VALUES = DEFAULT_VALUES = {
-    RADIAL_BOND_STYLE : RADIAL_BOND_STYLES.RADIAL_BOND_STANDARD_STICK_STYLE
   };
 
   exports.createEngine = function() {
@@ -653,8 +638,6 @@ define(function (require, exports, module) {
         },
 
         createRadialBondsArray = function(num) {
-          var i;
-
           radialBonds = engine.radialBonds = {};
 
           radialBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16);
@@ -664,14 +647,6 @@ define(function (require, exports, module) {
           radialBonds.style    = arrays.create(num, 0, arrayTypes.uint8);
 
           assignShortcutReferences.radialBonds();
-
-          //  Initialize radialBondResults[] array consisting of hashes of radial bond
-          //  index numbers and transposed radial bond properties.
-          radialBondResults = engine.radialBondResults = [];
-          for (i = 0; i < num; i++) {
-            radialBondResults[i] = {};
-            radialBondResults[i].idx = i;
-          }
         },
 
         createRestraintsArray = function(num) {
@@ -1225,28 +1200,18 @@ define(function (require, exports, module) {
           // fast path if no radial bonds have been defined
           if (N_radialBonds < 1) return;
 
-          var i,
-              len,
-              i1,
-              i2,
-              dx,
-              dy,
-              r_sq,
-              r,
-              k,
-              r0,
-              f_over_r,
-              fx,
-              fy;
+          var i, i1, i2, dx, dy,
+              rSq, r, k, r0,
+              fOverR, fx, fy;
 
-          for (i = 0, len = radialBondAtom1Index.length; i < len; i++) {
+          for (i = 0; i < N_radialBonds; i++) {
             i1 = radialBondAtom1Index[i];
             i2 = radialBondAtom2Index[i];
 
             dx = x[i2] - x[i1];
             dy = y[i2] - y[i1];
-            r_sq = dx*dx + dy*dy;
-            r = Math.sqrt(r_sq);
+            rSq = dx*dx + dy*dy;
+            r = Math.sqrt(rSq);
 
             // eV/nm^2
             k = radialBondStrength[i];
@@ -1255,10 +1220,10 @@ define(function (require, exports, module) {
             r0 = radialBondLength[i];
 
             // "natural" Next Gen MW force units / nm
-            f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+            fOverR = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
 
-            fx = f_over_r * dx;
-            fy = f_over_r * dy;
+            fx = fOverR * dx;
+            fy = fOverR * dy;
 
             ax[i1] += fx;
             ay[i1] += fy;
@@ -1718,13 +1683,33 @@ define(function (require, exports, module) {
       },
 
       setRadialBondProperties: function(i, props) {
-        var key;
+        var key, atom1Idx, atom2Idx;
+
+        // Unset current radial bond matrix entry.
+        // Matrix will be updated when new properties are set.
+        atom1Idx = radialBondAtom1Index[i];
+        atom2Idx = radialBondAtom2Index[i];
+        if (radialBondMatrix[atom1Idx] && radialBondMatrix[atom1Idx][atom2Idx])
+          radialBondMatrix[atom1Idx][atom2Idx] = false;
+        if (radialBondMatrix[atom2Idx] && radialBondMatrix[atom2Idx][atom1Idx])
+          radialBondMatrix[atom2Idx][atom1Idx] = false;
+
+        // Set all properties from props hash.
         for (key in props) {
           if (props.hasOwnProperty(key)) {
-            radialBonds[key][i] = props[key];
+            radialBonds[key][i]       = props[key];
+            // Update radial bond results also.
             radialBondResults[i][key] = props[key];
           }
         }
+
+        // Update radial bond matrix.
+        atom1Idx = radialBondAtom1Index[i];
+        atom2Idx = radialBondAtom2Index[i];
+        if (!radialBondMatrix[atom1Idx]) radialBondMatrix[atom1Idx] = [];
+        radialBondMatrix[atom1Idx][atom2Idx] = true;
+        if (!radialBondMatrix[atom2Idx]) radialBondMatrix[atom2Idx] = [];
+        radialBondMatrix[atom2Idx][atom1Idx] = true;
       },
 
       setElementProperties: function(i, properties) {
@@ -1910,27 +1895,26 @@ define(function (require, exports, module) {
       /**
         The canonical method for adding a radial bond to the collection of radial bonds.
       */
-      addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength, bondStyle) {
-        if (bondStyle == null )  bondStyle = DEFAULT_VALUES.RADIAL_BOND_STYLE;
-
-        if (N_radialBonds >= radialBondAtom1Index.length) {
+      addRadialBond: function(props) {
+        if (N_radialBonds === 0) {
+          // Initialize structures during first call.
+          createRadialBondsArray(10);
+          radialBondMatrix = [];
+          //  Initialize radialBondResults[] array consisting of hashes of radial bond
+          //  index numbers and transposed radial bond properties.
+          radialBondResults = engine.radialBondResults = [];
+        }
+        if (N_radialBonds + 1 > radialBondAtom1Index.length) {
           extendArrays(radialBonds, N_radialBonds + 10);
           assignShortcutReferences.radialBonds();
         }
 
-        radialBondResults[N_radialBonds].atom1    = radialBondAtom1Index[N_radialBonds] = atom1Index;
-        radialBondResults[N_radialBonds].atom2    = radialBondAtom2Index[N_radialBonds] = atom2Index;
-        radialBondResults[N_radialBonds].length   = radialBondLength[N_radialBonds]     = bondLength;
-        radialBondResults[N_radialBonds].strength = radialBondStrength[N_radialBonds]   = bondStrength;
-        radialBondResults[N_radialBonds].style    = radialBondStyle[N_radialBonds]      = bondStyle;
-
-        if ( ! radialBondMatrix[atom1Index] ) radialBondMatrix[atom1Index] = [];
-        radialBondMatrix[atom1Index][atom2Index] = true;
-
-        if ( ! radialBondMatrix[atom2Index] ) radialBondMatrix[atom2Index] = [];
-        radialBondMatrix[atom2Index][atom1Index] = true;
-
         N_radialBonds++;
+
+        // Add results object.
+        radialBondResults[N_radialBonds - 1] = {idx: N_radialBonds - 1};
+        // Set new radial bond properties.
+        engine.setRadialBondProperties(N_radialBonds - 1, props);
       },
 
       /**
@@ -2141,24 +2125,6 @@ define(function (require, exports, module) {
           engine.addElement(elems[i]);
         }
         elementsHaveBeenCreated = true;
-      },
-
-      initializeRadialBonds: function(props) {
-        var num = props.atom1Index.length,
-            i;
-
-        radialBondMatrix = [];
-        createRadialBondsArray(num);
-
-        for (i = 0; i < num; i++) {
-          engine.addRadialBond(
-            props.atom1Index[i],
-            props.atom2Index[i],
-            props.bondLength[i],
-            props.bondStrength[i],
-            props.bondStyle[i]
-          );
-        }
       },
 
       initializeRestraints: function(props) {
@@ -2755,7 +2721,7 @@ define(function (require, exports, module) {
         var bondedAtoms = [],
             j, jj;
         if (radialBonds) {
-          for (j = 0, jj = radialBondAtom1Index.length; j < jj; j++) {
+          for (j = 0, jj = N_radialBonds; j < jj; j++) {
             // console.log("looking at bond from "+radialBonds)
             if (radialBondAtom1Index[j] === i) {
               bondedAtoms.push(radialBondAtom2Index[j]);

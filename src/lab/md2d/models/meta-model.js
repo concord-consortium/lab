@@ -178,6 +178,24 @@ define(function() {
       visible: {
         defaultValue: true
       }
+    },
+
+    radialBond: {
+      atom1: {
+        defaultValue: 0
+      },
+      atom2: {
+        defaultValue: 0
+      },
+      length: {
+        required: true
+      },
+      strength: {
+        required: true
+      },
+      style: {
+        defaultValue: 101
+      }
     }
   };
 });
