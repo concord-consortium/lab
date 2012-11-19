@@ -1,0 +1,86 @@
+{
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "width": 4.5,
+  "height": 3,
+  "viscosity": 1,
+  "gravitationalField": false,
+  "viewRefreshInterval": 1,
+  "timeStep": 1,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 20,
+      "sigma": 0.1,
+      "epsilon": -0.4000000059604645
+    },
+    {
+      "id": 1,
+      "mass": 40,
+      "sigma": 0.14,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 60,
+      "sigma": 0.21,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 6720,
+      "sigma": 0.22,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "x": [
+      2.1875,
+      2.3125
+    ],
+    "y": [
+      1.5,
+      1.5
+    ],
+    "vx": [
+      0,
+      0
+    ],
+    "vy": [
+      0,
+      0
+    ],
+    "charge": [
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0
+    ],
+    "element": [
+      0,
+      0
+    ],
+    "pinned": [
+      0,
+      0
+    ]
+  },
+  "viewOptions": {
+    "keShading": false,
+    "chargeShading": false,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showClock": true,
+    "showVelocityVectors": false,
+    "showForceVectors": false
+  }
+}
