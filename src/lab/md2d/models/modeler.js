@@ -165,7 +165,10 @@ define(function(require) {
         outputsByName = {},
 
         // Used to notify of changed property values
-        outputPreviousValues;
+        outputPreviousValues,
+
+        // the currently-defined parameters
+        parameterNames = [];
 
     function setupIndices() {
       var prop, i;
@@ -801,7 +804,10 @@ define(function(require) {
           "viscosity",
           "gravitationalField"
         ],
-        state: engine.getState()
+        state: engine.getState(),
+        getParameterNames: function() {
+          return parameterNames;
+        }
       }, model, maxSize);
       newStep = true;
     };
@@ -1458,6 +1464,44 @@ define(function(require) {
         calculate: calculate,
         hasCachedValue: false
       };
+    };
+
+    /**
+      Define a property of the model to be treated as a parameter. Parameters are custom read/write
+      properties that trigger a setter action when set, and whose value are persisted in the tick
+      history (although the setter is not called again when moving in the tick history; it is
+      asssumed that the value of the property at any time is fully reflected in the full state of
+      the model.
+    */
+    model.defineParameter = function(name, metadata, setter) {
+      parameterNames.push(name);
+      properties['set_'+name] = function(value) {
+        properties[name] = value;
+        // set a useful 'this' binding in the setter:
+        setter.call(model, value);
+      };
+    };
+
+    /**
+      Restores a list of parameter values, notifying their listeners after the whole list is
+      updated, and without triggering setters. Sets parameters not in the passed-in list to
+      undefined.
+    */
+    model.restoreParameters = function(names, values) {
+      var i;
+
+      for (i = 0; i < names.length; i++) {
+        properties[names[i]] = values[i];
+      }
+
+      // remove parameter values that aren't defined at this point in history
+      for (i = 0; i < parameterNames.length; i++) {
+        if (names.indexOf(parameterNames[i]) < 0) {
+          properties[parameterNames[i]] = undefined;
+        }
+      }
+      parameterNames = names;
+      notifyPropertyListenersOfEvents(names);
     };
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.

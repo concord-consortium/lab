@@ -11,7 +11,7 @@ define(function(require) {
         defaultSize = 1000;
 
     function newState() {
-      return { input: {}, state: [] };
+      return { input: {}, state: [], parameterNames: [], parameterValues: [] };
     }
 
     function reset() {
@@ -34,13 +34,24 @@ define(function(require) {
     function copyModelState(destination) {
       var i,
           prop,
-          state;
+          state,
+          parameterNames,
+          name;
 
       // save model input properties
       for (i = 0; i < modelState.input.length; i++) {
         prop = modelState.input[i];
         destination.input[prop] = model.get(prop);
       }
+
+      // save model parameters
+      parameterNames = modelState.getParameterNames();
+      for (i = 0; i < parameterNames.length; i++) {
+        name = parameterNames[i];
+        destination.parameterNames.push(name);
+        destination.parameterValues.push(model.get(name))
+      }
+
       // save model objects defining state
       state = modelState.state;
       for (i = 0; i < state.length; i++) {
@@ -81,7 +92,9 @@ define(function(require) {
       var i,
           prop,
           setter,
-          state;
+          state,
+          names = [],
+          values = [];
 
       // restore model input properties
       for (prop in savedState.input) {
@@ -91,6 +104,10 @@ define(function(require) {
           model.set(setter);
         }
       }
+
+      // restore parameters
+      model.restoreParameters(savedState.parameterNames, savedState.parameterValues);
+
       // restore model objects defining state
       state = savedState.state;
       for (i = 0; i < state.length; i++) {
