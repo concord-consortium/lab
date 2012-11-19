@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html;charset=utf-8' http-equiv='Content-Type' />
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
+    <title>Lab: HTML Layout</title>
+    <script src='../../vendor/modernizr/modernizr.js' type='text/javascript'></script>
+    <script src='../../vendor/d3/d3.v2.js' type='text/javascript'></script>
+    <script src='../../vendor/jquery/jquery.min.js' type='text/javascript'></script>
+    <script src='../../vendor/jquery-ui/jquery-ui.min.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/mode/xml/xml.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/mode/javascript/javascript.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/mode/css/css.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/mode/htmlmixed/htmlmixed.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/lib/util/formatting.js' type='text/javascript'></script>
+    <script src='http://use.typekit.com/hdw8ayt.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      try{Typekit.load();}catch(e){}
+      if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
+    </script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css' />
+    <link href="../../vendor/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
+    <link href="../../vendor/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href='../../examples/examples.css' rel='stylesheet' type='text/css' />
+    <link href='html-layout.css' rel='stylesheet' type='text/css' />
+  </head>
+  <body>
+    <div id='header'>
+      <a href='http://www.concord.org/' id='logo'>
+        <img src='../../resources/layout/cc-logo.png' />
+      </a>
+      <h1><a href='../..'>Lab</a>:
+      <a href=''>HTML Layout</a></h1>
+    </div>
+    <div id='content'>
+      <div class='cols'>
+        <h2>Rendered layout</h2>
+        <div class="view"></div>
+
+        <h2>HTML Layout Template</h2>
+        Edit layout and / or components and
+        <button id='update-layout'>update rendered layout</button>
+        <textarea id='layout-textarea'>
+<div id="interactive-container" style="width: 100%; height: 100%; border: 1px solid; overflow: hidden;">
+  <div class="top-section" style="width: 100%;">
+    <div id="slider" data-width="model-width" style="margin-left: 10%; display: inline-block;"></div>
+    <div id="button1" style="display: inline-block;"></div>
+  </div>
+  <div class="middle-section" style="width: 100%;">
+    <div id="bar-graph" data-width="10%" data-height="model-height" style="display: inline-block;"></div>
+    <div id="model" data-width="50%" style="display: inline-block;"></div>
+    <div id="line-graph" data-width="40%" data-height="model-height" style="display: inline-block;"></div>
+  </div>
+  <div class="bottom-section" style="width: 100%;">
+    <div id="button2" style="display: inline-block;"></div>
+    <div id="button3" style="display: inline-block;"></div>
+    <div id="button4" style="display: inline-block; margin-left: 20%;"></div>
+  </div>
+</div>
+        </textarea>
+
+        <h2>Interactive Components Options</h2>
+        <textarea id='interactive-textarea'>
+[
+  {
+    "model": true,
+    "id": "model",
+    "aspectRatio": 0.7,
+    "color": "orange"
+  },
+  {
+    "id": "bar-graph",
+    "color": "gold"
+  },
+  {
+    "id": "line-graph",
+    "color": "blue"
+  },
+  {
+    "id": "slider",
+    "color": "pink",
+    "canonicalHeight": "30px"
+  },
+  {
+    "id": "button1",
+    "color": "red",
+    "canonicalWidth": "60px",
+    "canonicalHeight": "30px"
+  },
+  {
+    "id": "button2",
+    "color": "gray",
+    "canonicalWidth": "60px",
+    "canonicalHeight": "30px"
+  },
+  {
+    "id": "button3",
+    "color": "green",
+    "canonicalWidth": "120px",
+    "canonicalHeight": "30px"
+  },
+  {
+    "id": "button4",
+    "color": "purple",
+    "canonicalWidth": "80px",
+    "canonicalHeight": "30px"
+  }
+]
+        </textarea>
+      </div>
+      <div class="cols">
+        <div class='help'>
+          <h2>About this experiment</h2>
+          <p>This page presents possible implementation of the HTML layout system for interactives.</p>
+          <p>Try to resize interactive container (take a look at its lower right corner). This layout is
+             based on width. Height is adjusted appropriately to manage required aspect ratio.</p>
+          <p>It allows to set whole layout using typical HTML. The only difference is usage of
+            <b>data-width</b> and <b>data-height</b> attributes for components. They are automatically
+            turned into CSS rules. This is justified by two things:
+            <ul>
+              <li>Special values like <b>model-width</b> or <b>model-height</b> can be used.</li>
+              <li>Layout system is able to determine if width and / or height was explicitly set
+                by user. This is probably impossible while using typical CSS, as CSS values are *always*
+                provided for each DOM element (e.g. defaults set by browser).
+              </li>
+            </ul>
+          </p>
+          <p>Why do we need to know if width / height are set explicitly by user? See the description
+            of the layout algorithm below.</p>
+          <h2>Layout algorithm</h2>
+          <ul>
+            <li>Use data-width and data-height attributes if provided.</li>
+            <li>Replace model-with and model-height values with real model width and height.</li>
+            <li>If there is no data-width attribute, use canonicalWidth value from component definition.</li>
+            <li>If there is no data-height attribute, use aspectRatio value from component definition.
+                If there is no aspectRatio also, use canonicalHeight.
+            </li>
+          </ul>
+          <h2>Note that</h2>
+          <ul>
+            <li><b>canonicalWidth and canonicalHeight</b> are exposed directly in component options
+                only in this prototype. In the real life, these values would be managed by component
+                class which should implement interface:
+                <b>getPreferredWidth()</b>,
+                <b>getPreferredHeight()</b></li>
+            <li><b>aspectRatio</b> - the same situation. It should be managed by component class also.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src='html-layout.js' type='text/javascript'></script>
+  </body>
+</html>
