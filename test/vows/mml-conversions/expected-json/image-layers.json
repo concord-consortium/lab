@@ -108,23 +108,23 @@
     ]
   },
   "radialBonds": {
-    "atom1Index": [
+    "atom1": [
       2,
       4
     ],
-    "atom2Index": [
+    "atom2": [
       3,
       3
     ],
-    "bondLength": [
+    "length": [
       0.2,
       0.2
     ],
-    "bondStrength": [
+    "strength": [
       2000,
       2000
     ],
-    "bondStyle": [
+    "style": [
       101,
       101
     ]
