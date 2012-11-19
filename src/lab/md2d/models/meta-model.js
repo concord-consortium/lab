@@ -129,9 +129,6 @@ define(function() {
       y: {
         defaultValue: 0
       },
-      density: {
-        defaultValue: 1.2e9
-      },
       mass: {
         defaultValue: Infinity
       },

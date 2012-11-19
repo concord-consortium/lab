@@ -1815,11 +1815,22 @@ define(function (require, exports, module) {
         if (props.y !== undefined) {
           props.yPrev = props.y;
         }
+        // Try to parse mass, as it may be string "Infinity".
+        if (typeof props.mass === 'string') {
+          props.mass = parseFloat(props.mass);
+        }
 
+        // Set properties from props hash.
         for (key in props) {
           if (props.hasOwnProperty(key)) {
             obstacles[key][i] = props[key];
           }
+        }
+
+        // Check if new obstacle has any pressure probe.
+        if (props.westProbe || props.northProbe || props.eastProbe || props.southProbe) {
+          // Special pressure buffers will be created (or updated).
+          pressureBuffers.initialize(obstacles, N_obstacles);
         }
       },
 
@@ -2057,41 +2068,10 @@ define(function (require, exports, module) {
           assignShortcutReferences.obstacles();
         }
 
-        obstacleX[N_obstacles] = props.x;
-        obstacleY[N_obstacles] = props.y;
-        obstacleXPrev[N_obstacles] = props.x;
-        obstacleYPrev[N_obstacles] = props.y;
-
-        obstacleVX[N_obstacles] = props.vx;
-        obstacleVY[N_obstacles] = props.vy;
-
-        obstacleExtFX[N_obstacles] = props.externalFx;
-        obstacleExtFY[N_obstacles] = props.externalFy;
-
-        obstacleFriction[N_obstacles] = props.friction;
-
-        obstacleWidth[N_obstacles]  = props.width;
-        obstacleHeight[N_obstacles] = props.height;
-
-        // Parse mass, as it may be string "Infinity".
-        obstacleMass[N_obstacles] = parseFloat(props.mass);
-
-        obstacleWestProbe[N_obstacles]  = props.westProbe;
-        obstacleNorthProbe[N_obstacles] = props.northProbe;
-        obstacleEastProbe[N_obstacles]  = props.eastProbe;
-        obstacleSouthProbe[N_obstacles] = props.southProbe;
-
-        obstacleColorR[N_obstacles] = props.colorR;
-        obstacleColorG[N_obstacles] = props.colorG;
-        obstacleColorB[N_obstacles] = props.colorB;
-
-        obstacleVisible[N_obstacles] = props.visible;
-
         N_obstacles++;
 
-        // Call it to check if new obstacle has any pressure probe.
-        // If so, special buffers will be created.
-        pressureBuffers.initialize(obstacles, N_obstacles);
+        // Set properties of new obstacle.
+        engine.setObstacleProperties(N_obstacles - 1, props);
       },
 
       atomInBounds: function(_x, _y, i) {
