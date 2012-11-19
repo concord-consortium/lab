@@ -1,6 +1,6 @@
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
-simpleGasModel = helpers.getModel 'simple-gas$0.mml'
+simpleModel = helpers.getModel 'simple-model.json'
 
 output1 =
   {
@@ -38,13 +38,13 @@ describe "Lab interactives: custom output properties", ->
 
       it "lets you define a custom output property at the toplevel of the interactive definition", ->
         interactive.outputs = [output1]
-        helpers.withModel simpleGasModel, ->
+        helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
         model.get('customOutput').should.equal 'output1'
 
       it "lets you define a custom output property in the models section of the interactive definition", ->
         interactive.models[0].outputs = [output1]
-        helpers.withModel simpleGasModel, ->
+        helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
         model.get('customOutput').should.equal 'output1'
 
@@ -56,7 +56,7 @@ describe "Lab interactives: custom output properties", ->
           beforeEach ->
             interactive.models.length = 1
             interactive.models[0].outputs = [output2]
-            helpers.withModel simpleGasModel, ->
+            helpers.withModel simpleModel, ->
               controller = interactivesController interactive, 'body'
 
           it "uses the property defined in the models section", ->
@@ -66,7 +66,7 @@ describe "Lab interactives: custom output properties", ->
           describe "and the default model has no model-specific custom output property", ->
             beforeEach ->
               interactive.models[1].outputs = [output2]
-              helpers.withModel simpleGasModel, ->
+              helpers.withModel simpleModel, ->
                 controller = interactivesController interactive, 'body'
 
             it "uses the property defined at the toplevel", ->
@@ -74,7 +74,7 @@ describe "Lab interactives: custom output properties", ->
 
             describe "and loadModel is used to load a model with a model-specific custom output property", ->
               beforeEach ->
-                helpers.withModel simpleGasModel, ->
+                helpers.withModel simpleModel, ->
                   controller.loadModel 'model2'
 
               it "uses the property defined in the model section", ->
@@ -83,7 +83,7 @@ describe "Lab interactives: custom output properties", ->
           describe "and the default model has a model-specific custom output property", ->
             beforeEach ->
               interactive.models[0].outputs = [output2]
-              helpers.withModel simpleGasModel, ->
+              helpers.withModel simpleModel, ->
                 controller = interactivesController interactive, 'body'
 
             it "uses the property defined in the model section", ->
@@ -91,7 +91,7 @@ describe "Lab interactives: custom output properties", ->
 
             describe "and loadModel is used to load a model without a model-specific custom output property", ->
               beforeEach ->
-                helpers.withModel simpleGasModel, ->
+                helpers.withModel simpleModel, ->
                   controller.loadModel 'model2'
 
               it "uses the property defined at the toplevel", ->

@@ -1,6 +1,6 @@
 helpers = require '../../helpers'
 
-simpleGasModel = helpers.getModel 'simple-gas$0.mml'
+simpleModel = helpers.getModel 'simple-model.json'
 helpers.setupBrowserEnvironment()
 
 describe "MD2D output properties", ->
@@ -9,7 +9,7 @@ describe "MD2D output properties", ->
 
     describe "default properties and their initial values", ->
       before ->
-        model = Model simpleGasModel
+        model = Model simpleModel
 
       describe "time", ->
         it "should be 0", ->
@@ -32,7 +32,7 @@ describe "MD2D output properties", ->
     describe "custom properties", ->
       describe "an output property defined using Model#defineOutput", ->
         before ->
-          model = Model simpleGasModel
+          model = Model simpleModel
           model.defineOutput 'testProperty', {}, -> model.get('time') + 10
 
         it "can be accessed using Model#get", ->
@@ -53,7 +53,7 @@ describe "MD2D output properties", ->
       forceRecomputation = -> model.set gravitationalField: 1
       calculator = null
       beforeEach ->
-        model = Model simpleGasModel
+        model = Model simpleModel
         calculator = sinon.spy()
         model.defineOutput 'testProperty', {}, calculator
 
@@ -176,7 +176,7 @@ describe "MD2D output properties", ->
       peObserver = timeObserver = null
 
       beforeEach ->
-        model = Model simpleGasModel
+        model = Model simpleModel
         # forces potential energy to be 0 (until gravitation is turned on)
         model.set lennardJonesForces: false
         peObserver = sinon.spy()
