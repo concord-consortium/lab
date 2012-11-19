@@ -37,8 +37,6 @@ define(function (require, exports, module) {
 
       ANGULAR_BOND_PROPERTY_LIST,
 
-      VDW_INDICES,
-
       RADIAL_BOND_STYLES,
 
       cross = function(a0, a1, b0, b1) {
@@ -125,13 +123,6 @@ define(function (require, exports, module) {
     "sigma",
     "radius"
   ];
-
-  // VDW pairs
-  exports.VDW_INDICES = VDW_INDICES = {
-    COUNT : 0,
-    ATOM1 : 1,
-    ATOM2 : 2
-  };
 
   exports.createEngine = function() {
 
@@ -337,7 +328,7 @@ define(function (require, exports, module) {
 
         // ####################################################################
         //                      Misc Properties
-        // Array of arrays containing VdW pairs
+        // Hash of arrays containing VdW pairs
         vdwPairs,
 
         // Number of VdW pairs
@@ -2152,11 +2143,11 @@ define(function (require, exports, module) {
       createVdwPairsArray: function() {
         var maxNumPairs = N * (N-1) / 2;
 
-        vdwPairs = engine.vdwPairs = [];
+        vdwPairs = engine.vdwPairs = {};
 
-        vdwPairs[VDW_INDICES.COUNT] = N_vdwPairs;
-        vdwPairs[VDW_INDICES.ATOM1] = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, arrayTypes.uint16);
-        vdwPairs[VDW_INDICES.ATOM2] = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, arrayTypes.uint16);
+        vdwPairs.count = N_vdwPairs;
+        vdwPairs.atom1 = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, arrayTypes.uint16);
+        vdwPairs.atom2 = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, arrayTypes.uint16);
 
         engine.updateVdwPairsArray();
       },
@@ -2215,7 +2206,7 @@ define(function (require, exports, module) {
           }
         }
 
-        vdwPairs[VDW_INDICES.COUNT] = N_vdwPairs;
+        vdwPairs.count = N_vdwPairs;
       },
 
       relaxToTemperature: function(T) {

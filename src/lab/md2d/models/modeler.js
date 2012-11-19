@@ -213,9 +213,6 @@ define(function(require) {
         "marked",
         "draggable"
       ];
-
-      model.VDW_INDICES = md2d.VDW_INDICES;
-
     }
 
     function notifyPropertyListeners(listeners) {

@@ -353,11 +353,11 @@ define(function (require) {
     }
 
     function get_vdw_line_atom_1(i) {
-      return vdwPairs[model.VDW_INDICES.ATOM1][i];
+      return vdwPairs.atom1[i];
     }
 
     function get_vdw_line_atom_2(i) {
-      return vdwPairs[model.VDW_INDICES.ATOM2][i];
+      return vdwPairs.atom2[i];
     }
 
     function container() {
@@ -1015,7 +1015,7 @@ define(function (require) {
         VDWLines_container.selectAll("line.attractionforce").remove();
         if (!vdwPairs) return;
 
-        var numVdwPairs = vdwPairs[model.VDW_INDICES.COUNT],
+        var numVdwPairs = vdwPairs.count,
             atom1,
             atom2,
             i;
