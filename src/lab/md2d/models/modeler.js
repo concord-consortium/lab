@@ -170,21 +170,7 @@ define(function(require) {
         outputPreviousValues;
 
     function setupIndices() {
-      var prop,
-          i,
-          offset;
-      //
-      // Indexes into the atoms array for the individual node property arrays
-      //
-      model.ATOM_PROPERTY_LIST = [];
-
-      // Copy ATOM property indices and names from md2d
-      offset = 0;
-      for (i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
-        prop = md2d.ATOM_PROPERTY_LIST[i];
-
-        model.ATOM_PROPERTY_LIST[i] = prop;
-      }
+      var prop, i;
 
       model.RADIAL_BOND_PROPERTY_LIST = [];
 
@@ -210,12 +196,6 @@ define(function(require) {
         model.ELEMENT_PROPERTY_LIST[i] = prop;
       }
 
-      model.NON_ENGINE_PROPERTY_LIST = [
-        "visible",
-        "marked",
-        "draggable"
-      ];
-
       model.RADIAL_BOND_STYLES = {
         RADIAL_BOND_STANDARD_STICK_STYLE: 101,
         RADIAL_BOND_LONG_SPRING_STYLE:    102,
@@ -226,13 +206,6 @@ define(function(require) {
         RADIAL_BOND_DOUBLE_BOND_STYLE:    107,
         RADIAL_BOND_TRIPLE_BOND_STYLE:    108
       };
-
-      // Add non-engine properties to the end of the list of property indices and names
-      offset = model.ATOM_PROPERTY_LIST.length;
-      for (i = 0; i < model.NON_ENGINE_PROPERTY_LIST.length; i++) {
-        prop = model.NON_ENGINE_PROPERTY_LIST[i];
-        model.ATOM_PROPERTY_LIST.push(prop);
-      }
 
       // TODO. probably save everything *except* a list of "non-saveable properties"
       model.SAVEABLE_PROPERTIES =  [
@@ -248,9 +221,6 @@ define(function(require) {
         "marked",
         "draggable"
       ];
-
-      // TODO: restrict access to some internal properties?
-      model.OBSTACLE_PROPERTY_LIST = md2d.OBSTACLE_PROPERTY_LIST;
 
       model.VDW_INDICES = md2d.VDW_INDICES;
 
@@ -1017,11 +987,13 @@ define(function(require) {
     };
 
     model.getAtomProperties = function(i) {
-      var p, propName,
-          props = {};
-      for (p = 0; p < model.ATOM_PROPERTY_LIST.length; p++) {
-        propName = model.ATOM_PROPERTY_LIST[p];
-        props[propName] = atoms[propName][i];
+      var atomMetaData = metaModel.atom,
+          props = {},
+          propName;
+      for (propName in atomMetaData) {
+        if (atomMetaData.hasOwnProperty(propName)) {
+          props[propName] = atoms[propName][i];
+        }
       }
       return props;
     };
@@ -1051,11 +1023,13 @@ define(function(require) {
     };
 
     model.getObstacleProperties = function(i) {
-      var p, propName,
-          props = {};
-      for (p = 0; p < model.OBSTACLE_PROPERTY_LIST.length; p++) {
-        propName = model.OBSTACLE_PROPERTY_LIST[p];
-        props[propName] = obstacles[propName][i];
+      var obstacleMetaData = metaModel.obstacle,
+          props = {},
+          propName;
+      for (propName in obstacleMetaData) {
+        if (obstacleMetaData.hasOwnProperty(propName)) {
+          props[propName] = obstacles[propName][i];
+        }
       }
       return props;
     };

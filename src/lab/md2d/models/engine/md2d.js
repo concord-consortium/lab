@@ -33,8 +33,6 @@ define(function (require, exports, module) {
 
       DEFAULT_VALUES,
 
-      ATOM_PROPERTY_LIST,
-
       ELEMENT_PROPERTY_LIST,
 
       RADIAL_BOND_PROPERTY_LIST,
@@ -102,25 +100,6 @@ define(function (require, exports, module) {
         }
       };
 
-  // Atoms
-  exports.ATOM_PROPERTY_LIST = ATOM_PROPERTY_LIST = [
-    "radius",
-    "px",
-    "py",
-    "x",
-    "y",
-    "vx",
-    "vy",
-    "speed",
-    "ax",
-    "ay",
-    "charge",
-    "element",
-    "pinned",
-    "friction",
-    "mass"
-  ];
-
   // Radial Bonds
   exports.RADIAL_BOND_PROPERTY_LIST = RADIAL_BOND_PROPERTY_LIST = [
     "atom1",
@@ -156,30 +135,6 @@ define(function (require, exports, module) {
     "epsilon",
     "sigma",
     "radius"
-  ];
-
-  // Obstacles
-  exports.OBSTACLE_PROPERTY_LIST = [
-    "x",
-    "y",
-    "width",
-    "height",
-    "mass",
-    "vx",
-    "vy",
-    "externalFx", // External horizontal force, per mass unit.
-    "externalFy", // External vertical force, per mass unit.
-    "friction",   // Damping force, per mass unit.
-    "westProbe",  // Pressure probe, west side.
-    "northProbe", // Pressure probe, north side.
-    "eastProbe",  // Pressure probe, east side.
-    "southProbe", // Pressure probe, south side.
-    "xPrev",      // [Internal property used in calculations!]
-    "yPrev",      // [Internal property used in calculations!]
-    "colorR",
-    "colorG",
-    "colorB",
-    "visible"
   ];
 
   // VDW pairs
