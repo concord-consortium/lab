@@ -1451,7 +1451,7 @@ define(function(require) {
 
       `calculate` should be a no-arg function which should calculate the property value.
     */
-    model.addOutput = function(name, metadata, calculate) {
+    model.defineOutput = function(name, metadata, calculate) {
       outputNames.push(name);
       outputsByName[name] = {
         metadata: metadata,
@@ -1487,28 +1487,28 @@ define(function(require) {
     set_properties(initialProperties);
 
     // Define some default output properties.
-    model.addOutput('time', {
+    model.defineOutput('time', {
       label: "Time",
       units: "fs"
     }, function() {
       return modelOutputState.time;
     });
 
-    model.addOutput('kineticEnergy', {
+    model.defineOutput('kineticEnergy', {
       label: "Kinetic Energy",
       units: "eV"
     }, function() {
       return modelOutputState.KE;
     });
 
-    model.addOutput('potentialEnergy', {
+    model.defineOutput('potentialEnergy', {
       label: "Potential Energy",
       units: "eV"
     }, function() {
       return modelOutputState.PE;
     });
 
-    model.addOutput('temperature', {
+    model.defineOutput('temperature', {
       label: "Temperature",
       units: "K"
     }, function() {

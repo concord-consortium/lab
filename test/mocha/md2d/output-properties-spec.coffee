@@ -28,10 +28,10 @@ describe "MD2D output properties", ->
           model.get('temperature').should.be.above 0
 
     describe "custom properties", ->
-      describe "an output property defined using Model#addOutput", ->
+      describe "an output property defined using Model#defineOutput", ->
         before ->
           model = Model simpleGasModel
-          model.addOutput 'testProperty', {}, -> model.get('time') + 10
+          model.defineOutput 'testProperty', {}, -> model.get('time') + 10
 
         it "can be accessed using Model#get", ->
           model.get('testProperty').should.equal 10
@@ -53,7 +53,7 @@ describe "MD2D output properties", ->
       beforeEach ->
         model = Model simpleGasModel
         calculator = sinon.spy()
-        model.addOutput 'testProperty', {}, calculator
+        model.defineOutput 'testProperty', {}, calculator
 
       describe "the first time a property is looked up", ->
         beforeEach ->
@@ -100,7 +100,7 @@ describe "MD2D output properties", ->
           nonObservedCalculator = null
           beforeEach ->
             nonObservedCalculator = sinon.stub().returns 1
-            model.addOutput 'nonObservedProperty', {}, nonObservedCalculator
+            model.defineOutput 'nonObservedProperty', {}, nonObservedCalculator
             model.get('nonObservedProperty').should.equal 1
             nonObservedCalculator.reset()
 
@@ -114,7 +114,7 @@ describe "MD2D output properties", ->
 
           describe "but that is depended on by an observed property", ->
             beforeEach ->
-              model.addOutput 'observedProperty', {}, -> model.get('nonObservedProperty') + 1
+              model.defineOutput 'observedProperty', {}, -> model.get('nonObservedProperty') + 1
               model.addPropertiesListener 'observedProperty', ->
 
             describe "when a change forces recomputation of output properties", ->
@@ -134,7 +134,7 @@ describe "MD2D output properties", ->
 
             describe "and that is additionally depended on by a second observed property", ->
               beforeEach ->
-                model.addOutput 'observedProperty2', {}, -> model.get('nonObservedProperty') + 2
+                model.defineOutput 'observedProperty2', {}, -> model.get('nonObservedProperty') + 2
                 model.addPropertiesListener 'observedProperty2', ->
                 nonObservedCalculator.reset()
 
@@ -149,7 +149,7 @@ describe "MD2D output properties", ->
           observedCalculator = null
           beforeEach ->
             observedCalculator = sinon.stub().returns 2
-            model.addOutput 'observedProperty', {}, observedCalculator
+            model.defineOutput 'observedProperty', {}, observedCalculator
             model.addPropertiesListener 'observedProperty', ->
             model.get('observedProperty').should.equal 2
             observedCalculator.reset()

@@ -1200,7 +1200,7 @@ define(function (require) {
           output = outputs[prop];
           // DOM elements (and, by analogy, Next Gen MW interactive components like slides)
           // have "ids". But, in English, properties have "names", but not "ids".
-          model.addOutput(output.name, {
+          model.defineOutput(output.name, {
             label: output.label,
             units: output.units
           }, makeFunctionInScriptContext(getStringFromArray(output.value)));
