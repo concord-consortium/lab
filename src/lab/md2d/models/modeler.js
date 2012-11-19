@@ -1402,7 +1402,7 @@ define(function(require) {
     model.get = function(property) {
       var output;
 
-      if (properties[property]) return properties[property];
+      if (properties.hasOwnProperty(property)) return properties[property];
 
       if (output = outputsByName[property]) {
         if (output.hasCachedValue) return output.cachedValue;
