@@ -599,16 +599,21 @@ parseMML = (mmlString) ->
       # the second atom in the order atoms are found in the file. The atom[1|2] property is NOT
       # written to the file at all if it has the default value 0.
 
-      atom1Index   = parseInt($node.find('[property=atom1]').text(), 10) || 0
-      atom2Index   = parseInt($node.find('[property=atom2]').text(), 10) || 0
-      atom3Index   = parseInt($node.find('[property=atom3]').text(), 10) || 0
+      atom1    = getIntProperty $node, 'atom1'
+      atom2    = getIntProperty $node, 'atom2'
+      atom3    = getIntProperty $node, 'atom3'
       # unit: radian
-      bondAngle    = parseFloat $node.find('[property=bondAngle]').text()
+      angle    = getFloatProperty $node, 'bondAngle'
       # unit: eV/radian^2
-      bondStrength = parseFloat $node.find('[property=bondStrength]').text()
+      strength = getFloatProperty $node, 'bondStrength'
       # Unit conversion is unnecessary.
 
-      angularBonds.push { atom1Index, atom2Index, atom3Index, bondAngle, bondStrength }
+      angularBondRawData = { atom1, atom2, atom3, angle, strength }
+
+       # Validate all properties and provides default values for undefined values.
+      angularBondValidatedData = validator.validateCompleteness 'angularBond', angularBondRawData
+
+      angularBonds.push angularBondValidatedData
 
     ###
       heatBath settings
@@ -686,7 +691,7 @@ parseMML = (mmlString) ->
       json.radialBonds = unroll radialBonds, 'atom1', 'atom2', 'length', 'strength',  'style'
 
     if angularBonds.length > 0
-      json.angularBonds = unroll angularBonds, 'atom1Index', 'atom2Index', 'atom3Index', 'bondAngle', 'bondStrength'
+      json.angularBonds = unroll angularBonds, 'atom1', 'atom2', 'atom3', 'angle', 'strength'
 
     if restraints.length > 0
       json.restraints = unroll restraints, 'atomIndex', 'k', 'x0', 'y0'

@@ -196,6 +196,24 @@ define(function() {
       style: {
         defaultValue: 101
       }
+    },
+
+    angularBond: {
+      atom1: {
+        defaultValue: 0
+      },
+      atom2: {
+        defaultValue: 0
+      },
+      atom3: {
+        defaultValue: 0
+      },
+      strength: {
+        required: true
+      },
+      angle: {
+        required: true
+      }
     }
   };
 });

@@ -1236,14 +1236,13 @@ define(function (require, exports, module) {
           // Fast path if no angular bonds have been defined.
           if (N_angularBonds < 1) return;
 
-          var i, len,
-              i1, i2, i3,
+          var i, i1, i2, i3,
               dxij, dyij, dxkj, dykj, rijSquared, rkjSquared, rij, rkj,
               k, angle, theta, cosTheta, sinTheta,
               forceInXForI, forceInYForI, forceInXForK, forceInYForK,
               commonPrefactor, temp;
 
-          for (i = 0, len = angularBonds.atom1.length; i < len; i++) {
+          for (i = 0; i < N_angularBonds; i++) {
             i1 = angularBondAtom1Index[i];
             i2 = angularBondAtom2Index[i];
             i3 = angularBondAtom3Index[i];
@@ -1712,6 +1711,16 @@ define(function (require, exports, module) {
         radialBondMatrix[atom2Idx][atom1Idx] = true;
       },
 
+      setAngularBondProperties: function(i, props) {
+        var key;
+        // Set all properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            angularBonds[key][i] = props[key];
+          }
+        }
+      },
+
       setElementProperties: function(i, properties) {
         var j, newRadius;
         // FIXME we cached mass into its own array, which is now probably unnecessary (position-update
@@ -1943,19 +1952,20 @@ define(function (require, exports, module) {
         If there isn't enough room in the 'angularBonds' array, it (somewhat inefficiently)
         extends the length of the typed arrays by ten to have room for more bonds.
       */
-      addAngularBond: function(atom1Index, atom2Index, atom3Index, bondAngle, bondStrength) {
+      addAngularBond: function(props) {
+        if (N_angularBonds === 0) {
+          // Initialize structures during first call.
+          createAngularBondsArray(10);
+        }
         if (N_angularBonds + 1 > angularBonds.atom1.length) {
           extendArrays(angularBonds, N_angularBonds + 10);
           assignShortcutReferences.angularBonds();
         }
 
-        angularBondAtom1Index[N_angularBonds] = atom1Index;
-        angularBondAtom2Index[N_angularBonds] = atom2Index;
-        angularBondAtom3Index[N_angularBonds] = atom3Index;
-        angularBondAngle[N_angularBonds]      = bondAngle;
-        angularBondStrength[N_angularBonds]   = bondStrength;
-
         N_angularBonds++;
+
+        // Set new angular bond properties.
+        engine.setAngularBondProperties(N_angularBonds - 1, props);
       },
 
       /**
@@ -2139,23 +2149,6 @@ define(function (require, exports, module) {
             props.k[i],
             props.x0[i],
             props.y0[i]
-          );
-        }
-      },
-
-      initializeAngularBonds: function(props) {
-        var num = props.atom1Index.length,
-            i;
-
-        createAngularBondsArray(num);
-
-        for (i = 0; i < num; i++) {
-          engine.addAngularBond(
-            props.atom1Index[i],
-            props.atom2Index[i],
-            props.atom3Index[i],
-            props.bondAngle[i],
-            props.bondStrength[i]
           );
         }
       },

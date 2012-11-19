@@ -721,7 +721,23 @@ define(function(require) {
     };
 
     model.createAngularBonds = function(_angularBonds) {
-      engine.initializeAngularBonds(_angularBonds);
+      var num = _angularBonds.strength.length,
+          i, prop, angularBondProps;
+
+      // _angularBonds is hash of arrays (as specified in JSON model).
+      // So, for each index, create object containing properties of
+      // angular bond 'i'. Later, use these properties to add angular bond
+      // using basic addAngularBond method.
+      for (i = 0; i < num; i++) {
+        angularBondProps = {};
+        for (prop in _angularBonds) {
+          if (_angularBonds.hasOwnProperty(prop)) {
+            angularBondProps[prop] = _angularBonds[prop][i];
+          }
+        }
+        model.addAngularBond(angularBondProps);
+      }
+
       angularBonds = engine.angularBonds;
       return model;
     };
@@ -905,8 +921,17 @@ define(function(require) {
 
       // Validate properties, use default values if there is such need.
       validatedProps = propertiesValidator.validateCompleteness('radialBond', props);
-      // Finally, add obstacle.
+      // Finally, add radial bond.
       engine.addRadialBond(validatedProps);
+    },
+
+    model.addAngularBond = function(props) {
+      var validatedProps;
+
+      // Validate properties, use default values if there is such need.
+      validatedProps = propertiesValidator.validateCompleteness('angularBond', props);
+      // Finally, add angular bond.
+      engine.addAngularBond(validatedProps);
     },
 
     /** Return the bounding box of the molecule containing atom 'atomIndex', with atomic radii taken
@@ -1092,13 +1117,8 @@ define(function(require) {
     };
 
     model.setAngularBondProperties = function(i, props) {
-      var key;
       storeOutputPropertiesBeforeChange();
-      for (key in props) {
-        if (props.hasOwnProperty(key)) {
-          angularBonds[key][i] = props[key];
-        }
-      }
+      engine.setAngularBondProperties(i, props);
       updateOutputPropertiesAfterChange();
     };
 
