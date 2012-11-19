@@ -20,8 +20,7 @@
         <optgroup label='GoIO'>
           <option value="GoIO temperature">GoIO Temperature</option>
           <option value="GoIO light">GoIO Light</option>
-          <option value="GoIO force (5N) (manual config)">GoIO Force (5N) (manual config)</option>
-          <option value="GoIO force (5N) (built-in config)">GoIO Force (5N) (built-in config)</option>
+          <option value="GoIO force (5N)">GoIO Force (5N) (built-in config)</option>
           <option value="GoIO force (50N)">GoIO Force (50N)</option>
           <option value="GoIO CO2">GoIO CO2</option>
         </optgroup>
@@ -99,6 +98,12 @@
                 circleRadius: false,
                 dataChange: false
               },
+              "sensor": {
+                "deviceType": "golink",
+                "sensors": [
+                  { "type": "temperature" }
+                ]
+              },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
                                '     archive="',
@@ -108,8 +113,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="golink"/>',
-                               '  <param name="probeType" value="temperature"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -126,6 +129,12 @@
                 circleRadius: false,
                 dataChange: false
               },
+              "sensor": {
+                "deviceType": "labquest",
+                "sensors": [
+                  { "type": "temperature" }
+                ]
+              },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
                                '     archive="',
@@ -135,8 +144,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="labquest"/>',
-                               '  <param name="probeType" value="temperature"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -153,32 +160,11 @@
                 circleRadius: false,
                 dataChange: false
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="device" value="golink"/>',
-                               '  <param name="probeType" value="distance"/>',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
-            },
-            "GoIO force (5N) (manual config)": {
-              "graphOptions": {
-                title: "GoIO Force (5N) Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 20,
-                ylabel:    "Force, (N)",
-                ymin: -5, ymax: 5,
-                points: force_data,
-                sample: 0.01,
-                circleRadius: false,
-                dataChange: false
+              "sensor": {
+                "deviceType": "golink",
+                "sensors": [
+                  { "type": "distance" }
+                ]
               },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
@@ -189,16 +175,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="manual"/>',
-                               '  <param name="deviceId" value="13"/>',
-                               '  <param name="probeType" value="manual"/>',
-                               '  <param name="period" value="0.01"/>',
-                               '  <param name="precision" value="-2"/>',
-                               '  <param name="min" value="-4.0"/>',
-                               '  <param name="max" value="4.0"/>',
-                               '  <param name="sensorPort" value="0"/>',
-                               '  <param name="stepSize" value="0.01"/>',
-                               '  <param name="sensorType" value="5"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -215,6 +191,12 @@
                 circleRadius: false,
                 dataChange: false
               },
+              "sensor": {
+                "deviceType": "golink",
+                "sensors": [
+                  { "type": "force 5n" }
+                ]
+              },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
                                '     archive="',
@@ -224,8 +206,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="golink"/>',
-                               '  <param name="probeType" value="force 5n"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -242,6 +222,12 @@
                 circleRadius: false,
                 dataChange: false
               },
+              "sensor": {
+                "deviceType": "labquest",
+                "sensors": [
+                  { "type": "force 5n" }
+                ]
+              },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
                                '     archive="',
@@ -251,8 +237,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="labquest"/>',
-                               '  <param name="probeType" value="force 5n"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -269,6 +253,12 @@
                 circleRadius: false,
                 dataChange: false
               },
+              "sensor": {
+                "deviceType": "golink",
+                "sensors": [
+                  { "type": "force 50n" }
+                ]
+              },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
                                '     archive="',
@@ -278,8 +268,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="golink"/>',
-                               '  <param name="probeType" value="force 50n"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -296,6 +284,12 @@
                 circleRadius: false,
                 dataChange: false
               },
+              "sensor": {
+                "deviceType": "labquest",
+                "sensors": [
+                  { "type": "force 50n" }
+                ]
+              },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
                                '     archive="',
@@ -305,8 +299,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="labquest"/>',
-                               '  <param name="probeType" value="force 50n"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -323,6 +315,12 @@
                 circleRadius: false,
                 dataChange: false
               },
+              "sensor": {
+                "deviceType": "golink",
+                "sensors": [
+                  { "type": "co2" }
+                ]
+              },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
                                '     archive="',
@@ -332,15 +330,13 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="golink"/>',
-                               '  <param name="probeType" value="co2"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
             },
             "LabQuest CO2": {
               "graphOptions": {
-                title: "GoIO CO2 Sensor",
+                title: "LabQuest CO2 Sensor",
                 xlabel:    "Time (s)",
                 xmin: 0, xmax: 60,
                 ylabel:    "CO2, (ppm)",
@@ -349,6 +345,12 @@
                 sample: 1.0,
                 circleRadius: false,
                 dataChange: false
+              },
+              "sensor": {
+                "deviceType": "labquest",
+                "sensors": [
+                  { "type": "co2" }
+                ]
               },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
@@ -359,8 +361,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="labquest"/>',
-                               '  <param name="probeType" value="co2"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -377,6 +377,19 @@
                 circleRadius: false,
                 dataChange: false
               },
+              "sensor": {
+                "deviceType": "pseudo",
+                "sensors": [
+                  {
+                    "type": "manual",
+                    "precision": 1,
+                    "min": 0.0,
+                    "max": 120.0,
+                    "stepSize": 1.0,
+                    "type": 14
+                  }
+                ]
+              },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
                                '     archive="',
@@ -386,15 +399,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="pseudo"/>',
-                               '  <param name="probeType" value="manual"/>',
-                               '  <param name="period" value="0.1"/>',
-                               '  <param name="precision" value="-1"/>',
-                               '  <param name="min" value="0.0"/>',
-                               '  <param name="max" value="120.0"/>',
-                               '  <param name="sensorPort" value="0"/>',
-                               '  <param name="stepSize" value="1.0"/>',
-                               '  <param name="sensorType" value="14"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -411,6 +415,12 @@
                 circleRadius: false,
                 dataChange: false
               },
+              "sensor": {
+                "deviceType": "golink",
+                "sensors": [
+                  { "type": "light" }
+                ]
+              },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
                                '     archive="',
@@ -420,8 +430,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="golink"/>',
-                               '  <param name="probeType" value="light"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -438,6 +446,12 @@
                 circleRadius: false,
                 dataChange: false
               },
+              "sensor": {
+                "deviceType": "labquest",
+                "sensors": [
+                  { "type": "light" }
+                ]
+              },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
                                '     archive="',
@@ -447,8 +461,6 @@
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
-                               '  <param name="device" value="labquest"/>',
-                               '  <param name="probeType" value="light"/>',
                                '  <param name="MAYSCRIPT" value="true"/>',
                                '  Your browser is completely ignoring the applet tag!',
                                '</applet>'].join('\n')
@@ -463,7 +475,7 @@
         d3.selectAll(".sensorbuttons").remove();
         appletContainer.innerHTML = sensorConfig.appletString;
         applet = document.getElementById("sensor-applet");
-        applet_grapher = new sensor.AppletGrapher(applet, vis, graph, sensorType, sensorConfig.graphOptions.sample, "applet_grapher.JsListener()", graph.notify);
+        applet_grapher = new sensor.AppletGrapher(applet, vis, graph, sensorConfig.sensor, sensorConfig.graphOptions.sample, "applet_grapher.JsListener()", graph.notify);
       }
       sensorTypeSelector.value = "select-sensor";
       sensorTypeSelector.onchange = sensorTypeSelectorHandler;

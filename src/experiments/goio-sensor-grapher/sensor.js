@@ -38,13 +38,13 @@ sensor.VERSION = '0.1.0';
 //     var st = 'temperature';
 //     ag = new sensor.AppletGrapher(a, g, st, "ag.JsListener()");
 
-sensor.AppletGrapher = function(applet, container, graph, sensor_type, sampleInterval, listener_str, appletReadyCallback) {
+sensor.AppletGrapher = function(applet, container, graph, sensorConfig, sampleInterval, listener_str, appletReadyCallback) {
   this.applet = applet;
   this.container = container;
   this.graph = graph;
   this.time = 0;
   this.sampleInterval = sampleInterval;
-  this.sensor_type = sensor_type;
+  this.sensorConfig = sensorConfig;
   this.listener_str = listener_str;
   this.applet_ready = false;
   this.AddButtons();
@@ -77,12 +77,30 @@ sensor.AppletGrapher.prototype.InitSensorInterface = function() {
   //      a property instead of calling it.
 
   try {
-    self.applet_ready = self.applet &&  self.applet.initSensorInterface(self.listener_str);
+    self.applet_ready = self.applet && !!self.applet.getSensorRequest('manual');
+    console.log("Applet ready: " + self.applet_ready);
   } catch (e) {
     // Do nothing--we'll try again in the next timer interval.
   }
 
   if(self.applet_ready) {
+    console.log("Applet was ready");
+    var sensor, sensorReq;
+    var sensors = [];
+    for (var i = 0; i < self.sensorConfig.sensors.length; i++) {
+      sensor = self.sensorConfig.sensors[i];
+      sensorReq = self.applet.getSensorRequest(sensor.type);
+      if (sensor.type == 'manual') {
+        sensorReq.setDisplayPrecision(sensor.precision);
+        sensorReq.setRequiredMin(sensor.min);
+        sensorReq.setRequiredMax(sensor.max);
+        sensorReq.setStepSize(sensor.stepSize);
+        sensorReq.setType(sensor.type);
+        sensorReq.setPort(0); // port is ignored for now
+      }
+      sensors.push(sensorReq);
+    }
+    self.applet.initSensorInterface(self.listener_str, self.sensorConfig.deviceType, sensors)
     self.startButton.className = "active";
     if(self.appletInitializationTimer) {
       clearInterval(self.appletPoller);
