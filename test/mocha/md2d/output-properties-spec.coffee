@@ -16,16 +16,18 @@ describe "MD2D output properties", ->
           model.get('time').should.equal 0
 
       describe "kineticEnergy", ->
-        it "should be a number greater than 0", ->
-          model.get('kineticEnergy').should.be.above 0
+        it "should be a non-negative number", ->
+          model.get('kineticEnergy').should.be.a 'number'
+          model.get('kineticEnergy').should.not.be.below 0
 
       describe "potentialEnergy", ->
         it "should be a number", ->
           model.get('potentialEnergy').should.be.a 'number'
 
       describe "temperature", ->
-        it "should be a number greater than 0", ->
-          model.get('temperature').should.be.above 0
+        it "should be a non-negative number", ->
+          model.get('temperature').should.be.a 'number'
+          model.get('temperature').should.not.be.below 0
 
     describe "custom properties", ->
       describe "an output property defined using Model#defineOutput", ->
