@@ -31,8 +31,6 @@ define(function (require, exports, module) {
 
       BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-      DEFAULT_VALUES,
-
       ELEMENT_PROPERTY_LIST,
 
       ANGULAR_BOND_PROPERTY_LIST,
@@ -661,6 +659,16 @@ define(function (require, exports, module) {
           angularBonds.strength = arrays.create(num, 0, arrayTypes.float);
 
           assignShortcutReferences.angularBonds();
+        },
+
+        createVdwPairsArray = function() {
+          var maxNumPairs = N * (N-1) / 2;
+
+          vdwPairs = engine.vdwPairs = {};
+
+          vdwPairs.count = 0;
+          vdwPairs.atom1 = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, arrayTypes.uint16);
+          vdwPairs.atom2 = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, arrayTypes.uint16);
         },
 
         createSpringForcesArray = function(num) {
@@ -2140,19 +2148,7 @@ define(function (require, exports, module) {
         elementsHaveBeenCreated = true;
       },
 
-      createVdwPairsArray: function() {
-        var maxNumPairs = N * (N-1) / 2;
-
-        vdwPairs = engine.vdwPairs = {};
-
-        vdwPairs.count = N_vdwPairs;
-        vdwPairs.atom1 = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, arrayTypes.uint16);
-        vdwPairs.atom2 = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, arrayTypes.uint16);
-
-        engine.updateVdwPairsArray();
-      },
-
-      updateVdwPairsArray: function() {
+      getVdwPairsArray: function() {
         var i,
             j,
             dx,
@@ -2169,6 +2165,11 @@ define(function (require, exports, module) {
             sig,
             eps,
             distanceCutoff_sq = vdwLinesRatio * vdwLinesRatio;
+
+        // Lazy initialization of necessary structures during first function call.
+        if (vdwPairs === undefined) {
+          createVdwPairsArray();
+        }
 
         N_vdwPairs = 0;
 

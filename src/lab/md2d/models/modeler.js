@@ -61,8 +61,6 @@ define(function(require) {
         angularBonds,
         // Restraints (currently atom-only)
         restraints,
-        // VDW Pairs
-        vdwPairs,
 
         // The index of the "spring force" used to implement dragging of atoms in a running model
         liveDragSpringForceIndex,
@@ -761,12 +759,6 @@ define(function(require) {
       return model;
     };
 
-    model.createVdwPairs = function(_atoms) {
-      engine.createVdwPairsArray(_atoms);
-      vdwPairs = engine.vdwPairs;
-      return model;
-    };
-
     model.createObstacles = function(_obstacles) {
       var numObstacles = _obstacles.x.length,
           i, prop, obstacleProps;
@@ -1266,8 +1258,7 @@ define(function(require) {
     };
 
     model.get_vdw_pairs = function() {
-      if (vdwPairs) engine.updateVdwPairsArray();
-      return vdwPairs;
+      return engine.getVdwPairsArray();
     };
 
     model.on = function(type, listener) {
@@ -1537,7 +1528,6 @@ define(function(require) {
     if (initialProperties.radialBonds)  model.createRadialBonds(initialProperties.radialBonds);
     if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
     if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
-    if (initialProperties.showVDWLines) model.createVdwPairs(initialProperties.atoms);
     if (initialProperties.obstacles)    model.createObstacles(initialProperties.obstacles);
 
     // Initialize history if user provided atoms, etc, to save. Client code not passing in
