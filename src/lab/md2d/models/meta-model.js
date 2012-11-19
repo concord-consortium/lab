@@ -69,6 +69,14 @@ define(function() {
       vy: {
         defaultValue: 0
       },
+      ax: {
+        defaultValue: 0,
+        serialize: false
+      },
+      ay: {
+        defaultValue: 0,
+        serialize: false
+      },
       charge: {
         defaultValue: 0
       },
@@ -101,14 +109,6 @@ define(function() {
         serialize: false
       },
       speed: {
-        readOnly: true,
-        serialize: false
-      },
-      ax: {
-        readOnly: true,
-        serialize: false
-      },
-      ay: {
         readOnly: true,
         serialize: false
       }
