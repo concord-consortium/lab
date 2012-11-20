@@ -33,6 +33,7 @@
           <option value="LabQuest force (5N)">LabQuest Force (5N)</option>
           <option value="LabQuest force (50N)">LabQuest Force (50N)</option>
           <option value="LabQuest CO2">LabQuest CO2</option>
+          <option value="LabQuest distance">LabQuest Distance</option>
         </optgroup>
         <optgroup label='Pseudo Probes'>
           <option value="Pseudo Sound">Pseudo Sound</option>
@@ -172,6 +173,37 @@
                                '           com/sun/jna/jna.jar,',
                                '           org/concord/sensor/sensor.jar,',
                                '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "LabQuest distance": {
+              "graphOptions": {
+                title: "LabQuest Distance Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 20,
+                ylabel:    "Distance, (m)",
+                ymin: 0, ymax: 4,
+                points: distance_data,
+                sample: 0.1,
+                circleRadius: false,
+                dataChange: false
+              },
+              "sensor": {
+                "deviceType": "labquest",
+                "sensors": [
+                  { "type": "distance" }
+                ]
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
                                '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
                                '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
                                '     MAYSCRIPT="true">',
