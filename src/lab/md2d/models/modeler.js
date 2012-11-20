@@ -925,6 +925,10 @@ define(function(require) {
       engine.addObstacle(validatedProps);
     },
 
+    model.removeObstacle = function (idx) {
+      engine.removeObstacle(idx);
+    };
+
     model.addRadialBond = function(props) {
       var validatedProps;
 

@@ -113,6 +113,17 @@ define(function (require) {
         }
       },
 
+      obstacleRemoved: function(idx) {
+        var i;
+        if (obstaclesCount > 0) {
+          obstaclesCount--;
+          for (i = idx; i < obstaclesCount; i++) {
+            pressureBuffers[i] = pressureBuffers[i+1];
+          }
+          delete pressureBuffers[obstaclesCount];
+        }
+      },
+
       // ######################################################################
       //            Interface for saving and restoring internal state.
 

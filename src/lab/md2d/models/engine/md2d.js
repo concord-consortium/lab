@@ -2034,6 +2034,32 @@ define(function (require, exports, module) {
         engine.setObstacleProperties(N_obstacles - 1, props);
       },
 
+      removeObstacle: function(idx) {
+        var i, prop;
+
+        N_obstacles--;
+
+        // Shift obstacles properties.
+        // It can be optimized by just replacing the last
+        // obstacle with obstacle 'i', however this approach
+        //  preserves more expectable obstacles indexing.
+        for (i = idx; i < N_obstacles; i++) {
+          for (prop in obstacles) {
+            if (obstacles.hasOwnProperty(prop)) {
+              obstacles[prop][i] = obstacles[prop][i + 1];
+            }
+          }
+        }
+
+        // FIXME: This shouldn't be necessary, however various modules
+        // (e.g. views) use obstacles.x.length as the real number of obstacles.
+        extendArrays(obstacles, N_obstacles);
+
+        // TODO: emit event, listeners should handle that event
+        // automatically?
+        pressureBuffers.obstacleRemoved(idx);
+      },
+
       atomInBounds: function(_x, _y, i) {
         var r = radius[i], j;
 
@@ -2498,8 +2524,7 @@ define(function (require, exports, module) {
        }
 
         // During obstacles loop calculate final probes values.
-        // Try to reuse existing object (state.pressureProbes).
-        probes = state.pressureProbes || {};
+        probes = {};
 
         // Process all obstacles.
         for (i = 0; i < N_obstacles; i++) {
