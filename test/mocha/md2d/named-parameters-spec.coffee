@@ -148,9 +148,9 @@ describe "MD2D named parameters", ->
             model.stepCounter().should.equal 2
 
             observer1 = sinon.spy ->
-              model.get 'testParameter'
-            observer2 = sinon.spy ->
               model.get 'testParameter2'
+            observer2 = sinon.spy ->
+              model.get 'testParameter'
 
             model.addPropertiesListener 'testParameter', observer1
             model.addPropertiesListener 'testParameter2', observer2
@@ -160,5 +160,5 @@ describe "MD2D named parameters", ->
               model.stepBack()
 
             it "should be notified strictly after both parameter values have been restored", ->
-              observer1.returnValues[0].should.equal 1
-              observer2.returnValues[0].should.equal 2
+              observer1.returnValues[0].should.equal 2
+              observer2.returnValues[0].should.equal 1
