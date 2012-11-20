@@ -86,6 +86,11 @@ define(function (require) {
         imagePath,
         getVdwPairs,
         bondColorArray,
+        drawAtomTrace,
+        atomTraceId,
+        atomTraceColor,
+        atomTrace,
+        atomTracePath,
         default_options = {
           fit_to_parent:          false,
           title:                  false,
@@ -98,6 +103,7 @@ define(function (require) {
           atom_mubers:            false,
           enableAtomTooltips:     false,
           enableKeyboardHandlers: true,
+          atomTraceColor:         "#AAA",
           xmin:                   0,
           xmax:                   10,
           ymin:                   0,
@@ -189,6 +195,8 @@ define(function (require) {
       forceVectorColor = options.forceVectors.color;
       forceVectorWidth  = options.forceVectors.width;
       forceVectorLength = options.forceVectors.length;
+
+      atomTraceColor = options.atomTraceColor;
 
       RADIAL_BOND_STANDARD_STICK_STYLE = 101;
       RADIAL_BOND_LONG_SPRING_STYLE    = 102;
@@ -377,6 +385,7 @@ define(function (require) {
         "keShading", "chargeShading",
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
+        "showAtomTrace", "atomTraceId",
         "showClock"],
           setup_drawables);
 
@@ -851,6 +860,20 @@ define(function (require) {
           });
       }
 
+      function atomTraceEnter() {
+        atomTrace.enter().append("path")
+          .attr({
+            "class": "atomTrace",
+            "d": getAtomTracePath
+          })
+          .style({
+            "stroke-width": scaling_factor,
+            "stroke": atomTraceColor,
+            "fill": "none",
+            "stroke-dasharray": "6, 6"
+          })
+      }
+
       function obstacleEnter() {
         obstacle.enter().append("rect")
             .attr({
@@ -1142,6 +1165,7 @@ define(function (require) {
         setup_radial_bonds();
         setup_particles();
         setup_vectors();
+        setup_atomTrace();
         setupClock();
         drawSymbolImages();
         drawImageAttachment();
@@ -1245,6 +1269,18 @@ define(function (require) {
         if (drawForceVectors) {
           forceVector = gradient_container.selectAll("path.vector-"+FORCE_STR).data(results);
           vectorEnter(forceVector, get_force_vector_path, get_force_vector_width, forceVectorColor, FORCE_STR);
+        }
+      }
+
+      function setup_atomTrace() {
+        gradient_container.selectAll("path.atomTrace").remove();
+        atomTracePath = "";
+
+        drawAtomTrace = model.get("showAtomTrace");
+        atomTraceId = model.get("atomTraceId") || 0;
+        if (drawAtomTrace) {
+          atomTrace = gradient_container.selectAll("path.atomTrace").data([results[atomTraceId]]);
+          atomTraceEnter();
         }
       }
 
@@ -1376,6 +1412,9 @@ define(function (require) {
         if (drawForceVectors) {
           update_vectors(forceVector, get_force_vector_path, get_force_vector_width);
         }
+        if (drawAtomTrace) {
+          update_atomTrace();
+        }
         if(imageProp && imageProp.length !== 0) {
           updateImageAttachment();
         }
@@ -1441,6 +1480,34 @@ define(function (require) {
         })
         .style({
           "stroke-width": widthFunc
+        });
+      }
+
+      function getAtomTracePath(d) {
+        // until we implement buffered array model output properties,
+        // we just keep the path history in the path string
+        var dx = Math.floor(x(d.x) * 100) / 100,
+            dy = Math.floor(y(d.y) * 100) / 100;
+        if (!atomTracePath) {
+          atomTracePath = "M"+dx+","+dy+"L";
+          return "M "+dx+","+dy;
+        } else {
+          atomTracePath += dx+","+dy + " ";
+        }
+
+        // fake buffered array functionality by knocking out the first
+        // element of the string when we get too big
+        if (atomTracePath.length > 4000) {
+          lIndex = atomTracePath.indexOf("L");
+          sIndex = atomTracePath.indexOf(" ");
+          atomTracePath = "M" + atomTracePath.slice(lIndex+1, sIndex) + "L" + atomTracePath.slice(sIndex+1);
+        }
+        return atomTracePath;
+      }
+
+      function update_atomTrace() {
+        atomTrace.attr({
+          "d": getAtomTracePath
         });
       }
 
