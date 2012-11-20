@@ -10,6 +10,7 @@ define(function(require) {
       TickHistory         = require('md2d/models/tick-history'),
       metaModel           = require('md2d/models/meta-model'),
       PropertiesValidator = require('common/properties-validator'),
+      _ = require('underscore'),
 
       engine,
       // As there is only one metaModel defined and required above,
@@ -214,7 +215,7 @@ define(function(require) {
     }
 
     function notifyPropertyListeners(listeners) {
-      $.unique(listeners);
+      listeners = _.uniq(listeners);
       for (var i=0, ii=listeners.length; i<ii; i++){
         listeners[i]();
       }
