@@ -226,6 +226,12 @@ define(function (require) {
               return model.getObstacleProperties(i);
             },
 
+            /* Removes obstacle 'i'. */
+            removeObstacle: function removeObstacle(i) {
+              model.removeObstacle(i);
+              scriptingAPI.repaint();
+            },
+
             setRadialBondProperties: function setRadialBondProperties(i, props) {
               model.setRadialBondProperties(i, props);
               scriptingAPI.repaint();
