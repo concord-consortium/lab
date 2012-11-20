@@ -21,6 +21,7 @@ h2 {
   width: 650px;
   height: 350px;
   margin: 0 2em;
+  border: 1px dashed #aaa;
 }
 .help {
   margin-top: 2em;
