@@ -92,6 +92,30 @@
           ph_data = [],
           sound_data = [],
           sensorType,
+          goioAppletString = ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n'),
+          labquestAppletString = ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n'),
           sensorConfigurations = {
             "GoIO temperature": {
               "graphOptions": {
@@ -111,18 +135,7 @@
                   { "type": "temperature" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": goioAppletString
             },
             "LabQuest temperature": {
               "graphOptions": {
@@ -142,18 +155,7 @@
                   { "type": "temperature" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": labquestAppletString
             },
             "GoIO distance": {
               "graphOptions": {
@@ -173,18 +175,7 @@
                   { "type": "distance" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": goioAppletString
             },
             "LabQuest distance": {
               "graphOptions": {
@@ -204,18 +195,7 @@
                   { "type": "distance" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": labquestAppletString
             },
             "GoIO force (5N) (built-in config)": {
               "graphOptions": {
@@ -235,18 +215,7 @@
                   { "type": "force 5n" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": goioAppletString
             },
             "LabQuest force (5N)": {
               "graphOptions": {
@@ -266,18 +235,7 @@
                   { "type": "force 5n" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": labquestAppletString
             },
             "GoIO force (50N)": {
               "graphOptions": {
@@ -297,18 +255,7 @@
                   { "type": "force 50n" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": goioAppletString
             },
             "LabQuest force (50N)": {
               "graphOptions": {
@@ -328,18 +275,7 @@
                   { "type": "force 50n" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": labquestAppletString
             },
             "GoIO CO2": {
               "graphOptions": {
@@ -359,18 +295,7 @@
                   { "type": "co2" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": goioAppletString
             },
             "LabQuest CO2": {
               "graphOptions": {
@@ -390,18 +315,7 @@
                   { "type": "co2" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": labquestAppletString
             },
             "GoIO O2": {
               "graphOptions": {
@@ -421,18 +335,7 @@
                   { "type": "o2" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": goioAppletString
             },
             "LabQuest O2": {
               "graphOptions": {
@@ -452,18 +355,7 @@
                   { "type": "o2" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": labquestAppletString
             },
             "GoIO pH": {
               "graphOptions": {
@@ -483,18 +375,7 @@
                   { "type": "ph" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": goioAppletString
             },
             "LabQuest pH": {
               "graphOptions": {
@@ -514,18 +395,7 @@
                   { "type": "ph" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": labquestAppletString
             },
             "Pseudo Sound": {
               "graphOptions": {
@@ -552,18 +422,7 @@
                   }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": goioAppletString
             },
             "GoIO light": {
               "graphOptions": {
@@ -583,18 +442,7 @@
                   { "type": "light" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": goioAppletString
             },
             "LabQuest light": {
               "graphOptions": {
@@ -614,18 +462,7 @@
                   { "type": "light" }
                 ]
               },
-              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n')
+              "appletString": labquestAppletString
             }
           };
 
