@@ -139,7 +139,7 @@ describe "MD2D named parameters", ->
           model.defineParameter 'testParameter2', {}, (value) ->
             this.set viscosity: value
 
-        describe "their observers", ->
+        describe "notification of observers", ->
           beforeEach ->
             model.set { testParameter: 1, testParameter2: 2 }
             model.tick()
@@ -159,6 +159,21 @@ describe "MD2D named parameters", ->
             beforeEach ->
               model.stepBack()
 
-            it "should be notified strictly after both parameter values have been restored", ->
+            it "should notify parameter observers strictly after both parameter values have been restored", ->
               observer1.returnValues[0].should.equal 2
               observer2.returnValues[0].should.equal 1
+
+
+          describe "when only one parameter value is restored by stepping in the tick history", ->
+            beforeEach ->
+              model.set testParameter: 100
+              model.tick()
+              observer1.reset()
+              observer2.reset()
+              model.stepBack()
+
+            it "should notify the observer of the parameter that actually changed", ->
+              observer1.callCount.should.equal 1
+
+            it "should not notify the observer of the parameter that did not change", ->
+              observer2.callCount.should.equal 0

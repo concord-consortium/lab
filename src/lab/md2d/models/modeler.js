@@ -1497,10 +1497,12 @@ define(function(require) {
 
       for (parameterName in savedParameters) {
         if (savedParameters.hasOwnProperty(parameterName)) {
-          properties[parameterName] = savedParameters[parameterName];
-          parametersByName[parameterName].isDefined = true;
-          // FIXME. Should only notify changed parameters.
-          observersToNotify.push(parameterName);
+          // restore the property value if it was different or not defined in the current time step
+          if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
+            properties[parameterName] = savedParameters[parameterName];
+            parametersByName[parameterName].isDefined = true;
+            observersToNotify.push(parameterName);
+          }
         }
       }
 
@@ -1508,6 +1510,7 @@ define(function(require) {
       for (parameterName in parametersByName) {
         if (parametersByName.hasOwnProperty(parameterName) && !savedParameters.hasOwnProperty(parameterName)) {
           parametersByName[parameterName].isDefined = false;
+          properties[parameterName] = undefined;
         }
       }
 
