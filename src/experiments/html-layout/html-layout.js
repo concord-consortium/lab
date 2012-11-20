@@ -106,7 +106,9 @@ $(function () {
         indentUnit: INDENT,
         lineNumbers: true,
         lineWrapping: false
-      });
+      }),
+
+      initialLayout;
 
   function update() {
     var newLayout     = layoutEditor.getValue(),
@@ -139,6 +141,7 @@ $(function () {
   });
 
   // Set default layout and trigger its setup.
-  layoutEditor.setValue($("#width-oriented").text());
+  initialLayout = document.location.hash !== "" ? document.location.hash : "#width-oriented";
+  layoutEditor.setValue($(initialLayout).text());
   update();
 });
