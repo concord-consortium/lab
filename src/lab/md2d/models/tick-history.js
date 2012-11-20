@@ -96,7 +96,7 @@ define(function(require) {
 
       // restore model input properties
       for (prop in savedState.input) {
-        if (savedState.input.hasOwnProperty(prop) && model.hasOwnProperty(prop)) {
+        if (savedState.input.hasOwnProperty(prop)) {
           setter = {};
           setter[prop] = savedState.input[prop];
           model.set(setter);
