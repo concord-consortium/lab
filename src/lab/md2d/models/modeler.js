@@ -164,9 +164,6 @@ define(function(require) {
         // Information about the metadata and calculating function for 'output' properties
         outputsByName = {},
 
-        // Used to notify of changed property values
-        outputPreviousValues,
-
         // the currently-defined parameters
         parametersByName = {};
 
@@ -368,8 +365,6 @@ define(function(require) {
     function storeOutputPropertiesBeforeChange() {
       var i, outputName, output, l;
 
-      outputPreviousValues = {};
-
       for (i = 0; i < outputNames.length; i++) {
         outputName = outputNames[i];
         if ((l = listeners[outputName]) && l.length > 0) {
@@ -377,7 +372,7 @@ define(function(require) {
           // Can't save previous value in output.cachedValue because, before we check it, the
           // cachedValue may be overwritten with an updated value as a side effect of the
           // calculation of the updated value of some other property
-          outputPreviousValues[outputName] = output.hasCachedValue ? output.cachedValue : output.calculate();
+          output.previousValue = output.hasCachedValue ? output.cachedValue : output.calculate();
         }
       }
     }
@@ -406,10 +401,9 @@ define(function(require) {
       // cache the updated values while we're at it
       for (i = 0; i < outputNames.length; i++) {
         outputName = outputNames[i];
+        output = outputsByName[outputName];
 
         if ((l = listeners[outputName]) && l.length > 0) {
-          output = outputsByName[outputName];
-
           // Though we invalidated all cached values above, nevertheless some outputs may have been
           // computed & cached during a previous pass through this loop, as a side effect of the
           // calculation of some other property. Therefore we can respect hasCachedValue here.
@@ -418,17 +412,17 @@ define(function(require) {
             output.hasCachedValue = true;
           }
 
-          if (output.cachedValue !== outputPreviousValues[outputName]) {
+          if (output.cachedValue !== output.previousValue) {
             for (j = 0; j < l.length; j++) {
               listenersToNotify.push(l[j]);
             }
           }
         }
+        // Now that we're done with it, allow previousValue to be GC'd. (Of course, since we're
+        // using an equality test to check for changes, it doesn't make sense to let outputs be
+        // objects or arrays, yet)
+        output.previousValue = null;
       }
-
-      // Now that we're done with 'outputPreviousValues', allow them to be GC'd (in case any are
-      // large objects)
-      outputPreviousValues = null;
 
       // Finally, now that all the changed properties have been cached, notify listeners
       for (i = 0; i < listenersToNotify.length; i++) {
@@ -1464,7 +1458,10 @@ define(function(require) {
       outputsByName[name] = {
         metadata: metadata,
         calculate: calculate,
-        hasCachedValue: false
+        hasCachedValue: false,
+        // Used to keep track of whether this property changed as a side effect of some other change
+        // null here is just a placeholder
+        previousValue: null
       };
     };
 
