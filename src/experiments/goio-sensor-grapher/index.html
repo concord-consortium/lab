@@ -23,6 +23,8 @@
           <option value="GoIO force (5N)">GoIO Force (5N) (built-in config)</option>
           <option value="GoIO force (50N)">GoIO Force (50N)</option>
           <option value="GoIO CO2">GoIO CO2</option>
+          <option value="GoIO pH">GoIO pH</option>
+          <option value="GoIO O2">GoIO Oxygen Gas</option>
         </optgroup>
         <optgroup label='GoMotion'>
           <option value="GoIO distance">GoMotion</option>
@@ -34,6 +36,8 @@
           <option value="LabQuest force (50N)">LabQuest Force (50N)</option>
           <option value="LabQuest CO2">LabQuest CO2</option>
           <option value="LabQuest distance">LabQuest Distance</option>
+          <option value="LabQuest pH">LabQuest pH</option>
+          <option value="LabQuest O2">LabQuest Oxygen Gas</option>
         </optgroup>
         <optgroup label='Pseudo Probes'>
           <option value="Pseudo Sound">Pseudo Sound</option>
@@ -84,6 +88,8 @@
           force_data = [],
           light_data = [],
           co2_data = [],
+          o2_data = [],
+          ph_data = [],
           sound_data = [],
           sensorType,
           sensorConfigurations = {
@@ -382,6 +388,130 @@
                 "deviceType": "labquest",
                 "sensors": [
                   { "type": "co2" }
+                ]
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "GoIO O2": {
+              "graphOptions": {
+                title: "GoIO O2 Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "O2, (%)",
+                ymin: 0, ymax: 100,
+                points: o2_data,
+                sample: 1.0,
+                circleRadius: false,
+                dataChange: false
+              },
+              "sensor": {
+                "deviceType": "golink",
+                "sensors": [
+                  { "type": "o2" }
+                ]
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "LabQuest O2": {
+              "graphOptions": {
+                title: "LabQuest O2 Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "O2, (%)",
+                ymin: 0, ymax: 100,
+                points: o2_data,
+                sample: 1.0,
+                circleRadius: false,
+                dataChange: false
+              },
+              "sensor": {
+                "deviceType": "labquest",
+                "sensors": [
+                  { "type": "o2" }
+                ]
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "GoIO pH": {
+              "graphOptions": {
+                title: "GoIO pH Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "pH, (pH)",
+                ymin: 0, ymax: 14,
+                points: ph_data,
+                sample: 0.1,
+                circleRadius: false,
+                dataChange: false
+              },
+              "sensor": {
+                "deviceType": "golink",
+                "sensors": [
+                  { "type": "ph" }
+                ]
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="',
+                               '           com/sun/jna/jna.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
+                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "LabQuest pH": {
+              "graphOptions": {
+                title: "LabQuest pH Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "pH, (pH)",
+                ymin: 0, ymax: 14,
+                points: ph_data,
+                sample: 0.1,
+                circleRadius: false,
+                dataChange: false
+              },
+              "sensor": {
+                "deviceType": "labquest",
+                "sensors": [
+                  { "type": "ph" }
                 ]
               },
               "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
