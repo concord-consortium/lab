@@ -37,6 +37,12 @@ define(function() {
       showClock: {
         defaultValue: true
       },
+      showAtomTrace: {
+        defaultValue: false
+      },
+      atomTraceId: {
+        defaultValue: 0
+      },
       viewRefreshInterval: {
         defaultValue: 50
       },
