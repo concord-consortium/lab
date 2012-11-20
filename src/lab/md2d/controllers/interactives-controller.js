@@ -1237,13 +1237,20 @@ define(function (require) {
           parameter,
           // append modelParameters second so they're processed later (and override entries of the
           // same name in interactiveParameters)
-          parameters = (interactiveParameters || []).concat(modelParameters || []);
+          parameters = (interactiveParameters || []).concat(modelParameters || []),
+          initialValues = {};
 
       for (i = 0; i < parameters.length; i++) {
         parameter = parameters[i];
         model.defineParameter(parameter.name, {},
           makeFunctionInScriptContext('value', getStringFromArray(parameter.onChange)));
+
+        if (parameter.initialValue !== undefined) {
+          initialValues[parameter.name] = parameter.initialValue;
+        }
       }
+
+      model.set(initialValues);
     }
 
     // run this when controller is created
