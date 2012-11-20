@@ -155,10 +155,10 @@ describe "MD2D named parameters", ->
             model.addPropertiesListener 'testParameter', observer1
             model.addPropertiesListener 'testParameter2', observer2
 
-            describe "when the parameter values are restored by stepping in the tick history", ->
-              beforeEach ->
-                model.stepBack()
+          describe "when the parameter values are restored by stepping in the tick history", ->
+            beforeEach ->
+              model.stepBack()
 
-              it "should be notified strictly after both parameter values have been restored", ->
-                observer1.returnValues[0].should.equal 1
-                observer2.returnValues[0].should.equal 2
+            it "should be notified strictly after both parameter values have been restored", ->
+              observer1.returnValues[0].should.equal 1
+              observer2.returnValues[0].should.equal 2
