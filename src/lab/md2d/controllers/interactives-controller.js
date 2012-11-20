@@ -173,6 +173,17 @@ define(function (require) {
               scriptingAPI.repaint();
             },
 
+            traceAtom: function traceAtom(i) {
+              if (i === null) return;
+
+              model.set({atomTraceId: i});
+              model.set({showAtomTrace: true});
+            },
+
+            untraceAtom: function untraceAtom() {
+              model.set({showAtomTrace: false});
+            },
+
             /**
               Observe property `propertyName` on the model, and perform `action` when it changes.
               Pass property value to action.
