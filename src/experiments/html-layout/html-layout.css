@@ -1,12 +1,12 @@
+select, button {
+  font-size: 0.9em;
+}
+h2 {
+  margin-top: 1em;
+}
 #content {
   margin-left: 2em;
 }
-
-#update-layout {
-  font-size: 1.3em;
-  margin: 0.5em;
-}
-
 .title {
   font-size: 1.3em;
 }
@@ -14,26 +14,18 @@
   float: left;
   margin: 0 2em;
 }
-.opt {
-  font-weight: bold;
+.hidden {
+  display: none;
 }
-
 .view {
-  width: 500px;
-  height: 300px;
+  width: 650px;
+  height: 350px;
   margin: 0 2em;
-  font-size: 0px;
 }
-
-h2 {
-  margin-top: 1em;
-}
-
 .help {
   margin-top: 2em;
   width: 700px;
 }
-
 .CodeMirror {
   width: 700px;
   border: 1px gray dashed;

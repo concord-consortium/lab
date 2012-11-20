@@ -2,30 +2,59 @@
 
 function setupComponent(component, $modelContainer) {
   var $container = $('#' + component.id),
-      $el        = $('<div></div>');
+      $el        = $('<div></div>'),
+
+      getDataWidth = function () {
+        if ($container.data('width') === "model-width")
+          return $modelContainer.width();
+        return $container.data('width');
+      },
+
+      getDataHeight = function () {
+        if ($container.data('height') === "model-height")
+          return $modelContainer.height();
+        return $container.data('height');
+      };
 
   // ID not found in the layout definition.
   if ($container.length === 0)
     return;
 
-  if ($container.data('width')) {
-    if ($container.data('width') === "model-width")
-      $container.width($modelContainer.width());
-    else
-      $container.width($container.data('width'));
-  }
-  if (component.canonicalWidth) {
-    $container.width(component.canonicalWidth);
-  }
+  // Case 1.
+  // There is defined data-width attribute at least.
+  if ($container.data('width') !== undefined) {
+    // Setup width.
+    $container.width(getDataWidth());
 
-  if ($container.data('height')) {
-    if ($container.data('height') === "model-height")
-      $container.height($modelContainer.height());
-    else
-      $container.height($container.data('height'));
-  } else if (component.aspectRatio) {
-    $container.height($container.width() * component.aspectRatio);
-  } else if (component.canonicalHeight) {
+    // Setup height.
+    if ($container.data('height'))
+      // 1. Try to use data-height attribute.
+      $container.height(getDataHeight());
+    else if (component.aspectRatio)
+      // 2. Try to use aspectRatio.
+      $container.height($container.width() * component.aspectRatio);
+    else if (component.canonicalHeight)
+      // 3. Try to use canonicalHeight.
+      $container.height(component.canonicalHeight);
+  }
+  // Case 2.
+  // There is defined data-height but not data-width attribute.
+  else if ($container.data('height') !== undefined) {
+    // Setup height.
+    $container.height(getDataHeight());
+
+    // Setup width (not defined explicitly in layout).
+    if (component.aspectRatio)
+      // 1. Try to use aspectRatio.
+      $container.width($container.height() / component.aspectRatio);
+    else if (component.canonicalWidth)
+      // 2. Try to use canonicalWidth.
+      $container.width(component.canonicalWidth);
+  }
+  // Case 3.
+  // There are no data-width and data-height attributes.
+  else {
+    $container.width(component.canonicalWidth);
     $container.height(component.canonicalHeight);
   }
 
@@ -81,11 +110,14 @@ $(function () {
 
   function update() {
     var newLayout     = layoutEditor.getValue(),
-        newComponents = interactiveEditor.getValue();
+        newComponents = interactiveEditor.getValue(),
+        $wrapper      = $('#wrapper');
 
-    $('#interactive-container').remove();
-    $('.view').append(newLayout);
+    $wrapper.remove();
+    $wrapper = $('<div id="wrapper"></div>').append(newLayout);
+    $wrapper.css({width: "100%", height: "100%"});
 
+    $('.view').append($wrapper);
     setupLayout(newLayout, JSON.parse(newComponents));
   }
 
@@ -95,6 +127,18 @@ $(function () {
   // Update model button.
   $("#update-layout").on('click', update);
 
-  // Trigger layout setup.
-  $("#update-layout").click();
+  // Select ready example.
+  $("#preload").change(function () {
+    document.location.hash = '#' + $("#preload").val();
+  });
+
+  // Update editor.
+  $(window).bind('hashchange', function() {
+    layoutEditor.setValue($(document.location.hash).text());
+    update();
+  });
+
+  // Set default layout and trigger its setup.
+  layoutEditor.setValue($("#width-oriented").text());
+  update();
 });
