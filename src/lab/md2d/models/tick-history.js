@@ -11,7 +11,7 @@ define(function(require) {
         defaultSize = 1000;
 
     function newState() {
-      return { input: {}, state: [], parameterNames: [], parameterValues: [] };
+      return { input: {}, state: [], parameters: {} };
     }
 
     function reset() {
@@ -35,7 +35,7 @@ define(function(require) {
       var i,
           prop,
           state,
-          parameterNames,
+          parameters,
           name;
 
       // save model input properties
@@ -45,11 +45,11 @@ define(function(require) {
       }
 
       // save model parameters
-      parameterNames = modelState.getParameterNames();
-      for (i = 0; i < parameterNames.length; i++) {
-        name = parameterNames[i];
-        destination.parameterNames.push(name);
-        destination.parameterValues.push(model.get(name))
+      parameters = modelState.parameters;
+      for (name in parameters) {
+        if (parameters.hasOwnProperty(name) && parameters[name].isDefined) {
+          destination.parameters[name] = model.get(name);
+        }
       }
 
       // save model objects defining state
@@ -92,9 +92,7 @@ define(function(require) {
       var i,
           prop,
           setter,
-          state,
-          names = [],
-          values = [];
+          state;
 
       // restore model input properties
       for (prop in savedState.input) {
@@ -106,7 +104,7 @@ define(function(require) {
       }
 
       // restore parameters
-      model.restoreParameters(savedState.parameterNames, savedState.parameterValues);
+      model.restoreParameters(savedState.parameters);
 
       // restore model objects defining state
       state = savedState.state;

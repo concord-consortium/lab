@@ -168,7 +168,7 @@ define(function(require) {
         outputPreviousValues,
 
         // the currently-defined parameters
-        parameterNames = [];
+        parametersByName = {};
 
     function setupIndices() {
       var prop, i;
@@ -805,9 +805,7 @@ define(function(require) {
           "gravitationalField"
         ],
         state: engine.getState(),
-        getParameterNames: function() {
-          return parameterNames;
-        }
+        parameters: parametersByName
       }, model, maxSize);
       newStep = true;
     };
@@ -1474,11 +1472,17 @@ define(function(require) {
       the model.
     */
     model.defineParameter = function(name, metadata, setter) {
-      parameterNames.push(name);
+      parametersByName[name] = {
+        metadata: metadata,
+        setter: setter,
+        isDefined: false
+      };
+
       properties['set_'+name] = function(value) {
         properties[name] = value;
+        parametersByName[name].isDefined = true;
         // set a useful 'this' binding in the setter:
-        setter.call(model, value);
+        parametersByName[name].setter.call(model, value);
       };
     };
 
@@ -1487,21 +1491,27 @@ define(function(require) {
       updated, and without triggering setters. Sets parameters not in the passed-in list to
       undefined.
     */
-    model.restoreParameters = function(names, values) {
-      var i;
+    model.restoreParameters = function(savedParameters) {
+      var parameterName,
+          observersToNotify = [];
 
-      for (i = 0; i < names.length; i++) {
-        properties[names[i]] = values[i];
+      for (parameterName in savedParameters) {
+        if (savedParameters.hasOwnProperty(parameterName)) {
+          properties[parameterName] = savedParameters[parameterName];
+          parametersByName[parameterName].isDefined = true;
+          // FIXME. Should only notify changed parameters.
+          observersToNotify.push(parameterName);
+        }
       }
 
       // remove parameter values that aren't defined at this point in history
-      for (i = 0; i < parameterNames.length; i++) {
-        if (names.indexOf(parameterNames[i]) < 0) {
-          properties[parameterNames[i]] = undefined;
+      for (parameterName in parametersByName) {
+        if (parametersByName.hasOwnProperty(parameterName) && !savedParameters.hasOwnProperty(parameterName)) {
+          parametersByName[parameterName].isDefined = false;
         }
       }
-      parameterNames = names;
-      notifyPropertyListenersOfEvents(names);
+
+      notifyPropertyListenersOfEvents(observersToNotify);
     };
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
