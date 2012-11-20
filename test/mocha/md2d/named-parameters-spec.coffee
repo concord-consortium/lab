@@ -2,7 +2,7 @@ helpers = require '../../helpers'
 simpleModel = helpers.getModel 'simple-model.json'
 helpers.setupBrowserEnvironment()
 
-describe "MD2D named parameters", ->
+describe "MD2D custom parameters", ->
   requirejs ['md2d/models/modeler'], (Model) ->
     model = null
     setter = null
@@ -14,7 +14,7 @@ describe "MD2D named parameters", ->
         this.set gravitationalField: 10*value
       model.defineParameter 'testParameter', {}, setter
 
-    describe "named parameters as read/write model properties", ->
+    describe "custom parameters as read/write model properties", ->
 
       it "should be possible to set the parameter's value using Model#set and retrieve it using Model#get", ->
         model.set testParameter: 1
@@ -48,7 +48,7 @@ describe "MD2D named parameters", ->
         # ... I don't think there's any reason to care that observers of properties set by the
         # parameter setter get called before the parameter observer gets called.
 
-    describe "interaction of named parameters with tick history", ->
+    describe "interaction of custom parameters with tick history", ->
 
       describe "starting at step 1", ->
         beforeEach ->
@@ -132,7 +132,7 @@ describe "MD2D named parameters", ->
               it "should not call the setter", ->
                 setter.callCount.should.equal 0
 
-      describe "when there are two named parameters", ->
+      describe "when there are two custom parameters", ->
         observer1 = null
         observer2 = null
         beforeEach ->
@@ -162,7 +162,6 @@ describe "MD2D named parameters", ->
             it "should notify parameter observers strictly after both parameter values have been restored", ->
               observer1.returnValues[0].should.equal 2
               observer2.returnValues[0].should.equal 1
-
 
           describe "when only one parameter value is restored by stepping in the tick history", ->
             beforeEach ->

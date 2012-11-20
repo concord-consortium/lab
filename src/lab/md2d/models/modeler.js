@@ -1465,11 +1465,16 @@ define(function(require) {
     };
 
     /**
-      Define a property of the model to be treated as a parameter. Parameters are custom read/write
-      properties that trigger a setter action when set, and whose value are persisted in the tick
-      history (although the setter is not called again when moving in the tick history; it is
-      asssumed that the value of the property at any time is fully reflected in the full state of
-      the model.
+      Define a property of the model to be treated as a custom parameter. Custom parameters are
+      (generally, user-defined) read/write properties that trigger a setter action when set, and
+      whose values are automatically persisted in the tick history.
+
+      Because custom parameters are not intended to be interpreted by the engine, but instead simply
+      *represent* states of the model that are otherwise fully specified by the engine state and
+      other properties of the model, and because the setter function might not limit itself to a
+      purely functional mapping from parameter value to model properties, but might perform any
+      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
+      parameters are updated by the tick history.
     */
     model.defineParameter = function(name, metadata, setter) {
       parametersByName[name] = {
