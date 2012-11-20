@@ -1012,6 +1012,7 @@ define(function (require) {
       var i, listener;
 
       setupCustomOutputs(controller.currentModel.outputs, interactive.outputs);
+      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
 
       for(i = 0; i < componentCallbacks.length; i++) {
         componentCallbacks[i]();
@@ -1222,6 +1223,26 @@ define(function (require) {
             units: output.units
           }, makeFunctionInScriptContext(getStringFromArray(output.value)));
         }
+      }
+    }
+
+    /**
+      After a model loads, this method is used to set up the custom parameters specified in the
+      model section of the interactive, or in the toplevel of the interactive
+    */
+    function setupCustomParameters(modelParameters, interactiveParameters) {
+      if (!modelParameters && !interactiveParameters) return;
+
+      var i,
+          parameter,
+          // append modelParameters second so they're processed later (and override entries of the
+          // same name in interactiveParameters)
+          parameters = (interactiveParameters || []).concat(modelParameters || []);
+
+      for (i = 0; i < parameters.length; i++) {
+        parameter = parameters[i];
+        model.defineParameter(parameter.name, {},
+          makeFunctionInScriptContext('value', getStringFromArray(parameter.onChange)));
       }
     }
 
