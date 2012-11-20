@@ -116,7 +116,6 @@ describe "MD2D named parameters", ->
 
           describe "and after stepping back to step 2", ->
             beforeEach ->
-              setter.reset()
               model.stepBack()
 
             it "should not update the parameter value", ->
@@ -137,26 +136,29 @@ describe "MD2D named parameters", ->
         observer1 = null
         observer2 = null
         beforeEach ->
-          model.defineParameter 'testParameter2', {}, (value) -> this.set viscosity: value
+          model.defineParameter 'testParameter2', {}, (value) ->
+            this.set viscosity: value
 
-        describe "their observers, when the parameter values are restored by stepping in the tick history", ->
-            beforeEach ->
-              model.set { testParameter: 1, testParameter2: 2 }
-              model.tick()
-              model.set { testParameter: 10, testParameter2: 20 }
-              model.tick()
-              model.stepCounter().should.equal 2
+        describe "their observers", ->
+          beforeEach ->
+            model.set { testParameter: 1, testParameter2: 2 }
+            model.tick()
+            model.set { testParameter: 10, testParameter2: 20 }
+            model.tick()
+            model.stepCounter().should.equal 2
 
-              observer1 = sinon.spy ->
-                model.get 'testParameter'
-              observer2 = sinon.spy ->
-                model.get 'testParameter2'
+            observer1 = sinon.spy ->
+              model.get 'testParameter'
+            observer2 = sinon.spy ->
+              model.get 'testParameter2'
 
-              model.addPropertiesListener 'testParameter', observer1
-              model.addPropertiesListener 'testParameter2', observer2
+            model.addPropertiesListener 'testParameter', observer1
+            model.addPropertiesListener 'testParameter2', observer2
 
-              model.stepBack()
+            describe "when the parameter values are restored by stepping in the tick history", ->
+              beforeEach ->
+                model.stepBack()
 
-            it "should be notified strictly after both parameter values have been restored", ->
-              observer1.returnValues[0].should.equal 1
-              observer2.returnValues[0].should.equal 2
+              it "should be notified strictly after both parameter values have been restored", ->
+                observer1.returnValues[0].should.equal 1
+                observer2.returnValues[0].should.equal 2
