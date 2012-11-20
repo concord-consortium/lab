@@ -1441,6 +1441,33 @@ define(function(require) {
     };
 
     /**
+      Restores a set of "input" properties, notifying their listeners of only those properties which
+      changed, and only after the whole set of properties has been updated.
+    */
+    model.restoreProperties = function(savedProperties) {
+      var property,
+          changedProperties = [];
+
+      for (property in savedProperties) {
+        if (savedProperties.hasOwnProperty(property)) {
+          // skip read-only properties
+          if (outputsByName[property]) {
+            throw new Error("Attempt to restore output property \"" + property + "\".");
+          }
+          if (properties[property] !== savedProperties[property]) {
+            if (properties["set_"+property]) {
+              properties["set_"+property](properties[property]);
+            } else {
+              properties[property] = properties[property];
+            }
+            changedProperties.push(property);
+          }
+        }
+      }
+    },
+
+
+    /**
       Add an "output" property to the model. Output properties are expected to change at every
       model tick, and may also be changed indirectly, outside of a model tick,by a change to the
       model parameters or to the configuration of atoms and other objects in the model.

@@ -95,7 +95,7 @@ define(function(require) {
           state;
 
       // restore model input properties
-      model.set(savedState.input);
+      model.restoreProperties(savedState.input);
 
       // restore parameters
       model.restoreParameters(savedState.parameters);
