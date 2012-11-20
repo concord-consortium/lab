@@ -167,7 +167,7 @@ define(function(require) {
 
     tickHistory.seekExtract = function(ptr) {
       if (ptr < listState.startCounter) ptr = listState.startCounter;
-      if (ptr > listState.counter) ptr = listState.counter;
+      if (ptr >= listState.startCounter + listState.length) ptr = listState.startCounter + listState.length - 1;
       listState.counter = ptr;
       listState.index = ptr - listState.startCounter;
       extract(list[listState.index]);
