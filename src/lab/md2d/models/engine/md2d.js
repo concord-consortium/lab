@@ -2770,12 +2770,15 @@ define(function (require, exports, module) {
       //                     as input (returned by clone()).
       getState: function() {
         return [
-          // Atoms define internal state.
-          // Use wrapper providing clone-restore interface.
+          // Use wrapper providing clone-restore interface to save the hashes-of-arrays
+          // that represent model state.
+          CloneRestoreWrapper(elements),
           CloneRestoreWrapper(atoms),
-          // As well as obstacles.
-          // Use wrapper providing clone-restore interface.
           CloneRestoreWrapper(obstacles),
+          CloneRestoreWrapper(radialBonds),
+          CloneRestoreWrapper(angularBonds),
+          CloneRestoreWrapper(restraints),
+          CloneRestoreWrapper(springForces),
           // Save time value.
           // Create one-line wrapper to provide required interface.
           {
