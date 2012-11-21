@@ -1035,15 +1035,6 @@ define(function (require) {
       }
 
       function vdwLinesEnter() {
-        // append new lines
-        vdwLines.enter().append('line').attr({
-            "class": "attractionforce"
-          })
-          .style({
-            "stroke-width": 2 * scaling_factor,
-            "stroke-dasharray":  3 * scaling_factor + " " + 2 * scaling_factor
-          })
-
         // update existing lines
         vdwLines.attr({
           "x1": function(d) { return x(results[d[0]].x) },
@@ -1051,6 +1042,20 @@ define(function (require) {
           "x2": function(d) { return x(results[d[1]].x) },
           "y2": function(d) { return y(results[d[1]].y) }
         });
+
+        // append new lines
+        vdwLines.enter().append('line')
+          .attr({
+            "class": "attractionforce",
+            "x1": function(d) { return x(results[d[0]].x) },
+            "y1": function(d) { return y(results[d[0]].y) },
+            "x2": function(d) { return x(results[d[1]].x) },
+            "y2": function(d) { return y(results[d[1]].y) }
+          })
+          .style({
+            "stroke-width": 2 * scaling_factor,
+            "stroke-dasharray":  3 * scaling_factor + " " + 2 * scaling_factor
+          });
 
         // remove old lines
         vdwLines.exit().remove();
