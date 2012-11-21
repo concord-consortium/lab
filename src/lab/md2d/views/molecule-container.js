@@ -63,7 +63,8 @@ define(function (require) {
         mock_obstacles_array = [],
         mock_radial_bond_array = [],
         radialBond1, radialBond2,
-        vdwPairs,
+        vdwPairs = [],
+        vdwLines,
         chargeShadingMode,
         chargeShadingChars = ["+", "-", ""],
         keShadingMode,
@@ -1033,31 +1034,52 @@ define(function (require) {
         return d.style === model.RADIAL_BOND_STYLES.RADIAL_BOND_SHORT_SPRING_STYLE;
       }
 
-      function drawAttractionForces() {
+      function vdwLinesEnter() {
+        // append new lines
+        vdwLines.enter().append('line').attr({
+            "class": "attractionforce"
+          })
+          .style({
+            "stroke-width": 2 * scaling_factor,
+            "stroke-dasharray":  3 * scaling_factor + " " + 2 * scaling_factor
+          })
+
+        // update existing lines
+        vdwLines.attr({
+          "x1": function(d) { return x(results[d[0]].x) },
+          "y1": function(d) { return y(results[d[0]].y) },
+          "x2": function(d) { return x(results[d[1]].x) },
+          "y2": function(d) { return y(results[d[1]].y) }
+        });
+
+        // remove old lines
+        vdwLines.exit().remove();
+
         // Remove old lines if there are any.
-        VDWLines_container.selectAll("line.attractionforce").remove();
-        if (!vdwPairs) return;
+       // VDWLines_container.selectAll("line.attractionforce").remove();
+       // if (!vdwPairs) return;
 
-        var numVdwPairs = vdwPairs.count,
-            atom1,
-            atom2,
-            i;
 
-        for (i = 0; i < numVdwPairs; i++) {
-          atom1 = get_vdw_line_atom_1(i);
-          atom2 = get_vdw_line_atom_2(i);
+        // var numVdwPairs = vdwPairs.count,
+        //     atom1,
+        //     atom2,
+        //     i;
 
-          if (atom1 !== 0 || atom2 !== 0) {
-            VDWLines_container.append("line")
-              .attr("class", "attractionforce")
-              .attr("x1", x(results[atom1].x))
-              .attr("y1", y(results[atom1].y))
-              .attr("x2", x(results[atom2].x))
-              .attr("y2", y(results[atom2].y))
-              .style("stroke-width", 2 * scaling_factor)
-              .style("stroke-dasharray", 3 * scaling_factor + " " + 2 * scaling_factor);
-          }
-        }
+        // for (i = 0; i < numVdwPairs; i++) {
+        //   atom1 = get_vdw_line_atom_1(i);
+        //   atom2 = get_vdw_line_atom_2(i);
+
+        //   if (atom1 !== 0 || atom2 !== 0) {
+        //     VDWLines_container.append("line")
+        //       .attr("class", "attractionforce")
+        //       .attr("x1", x(results[atom1].x))
+        //       .attr("y1", y(results[atom1].y))
+        //       .attr("x2", x(results[atom2].x))
+        //       .attr("y2", y(results[atom2].y))
+        //       .style("stroke-width", 2 * scaling_factor)
+        //       .style("stroke-dasharray", 3 * scaling_factor + " " + 2 * scaling_factor);
+        //   }
+        // }
       }
 
       function getImagePath(imgProp) {
@@ -1250,10 +1272,24 @@ define(function (require) {
 
       function setupVdwPairs() {
         VDWLines_container.selectAll("line.attractionforce").remove();
+        updateVdwPairsArray();
         drawVdwLines = model.get("showVDWLines");
         if (drawVdwLines) {
-          updateVdwPairs();
+          vdwLines = VDWLines_container.selectAll("line.attractionforce").data(vdwPairs);
+          vdwLinesEnter();
         }
+      }
+
+      // The vdw hash returned by md2d consists of typed arrays of length N*N-1/2
+      // To make these d3-friendly we turn them into an array of atom pairs, only
+      // as long as we need.
+      function updateVdwPairsArray() {
+        var vdwHash = getVdwPairs();
+        for (var i = 0; i < vdwHash.count; i++) {
+          vdwPairs[i] = [vdwHash.atom1[i], vdwHash.atom2[i]];
+        }
+        // if vdwPairs was longer at the previous tick, trim the end
+        vdwPairs.splice(vdwHash.count);
       }
 
       function setup_vectors() {
@@ -1286,9 +1322,18 @@ define(function (require) {
 
       function updateVdwPairs() {
         // Get new set of pairs from model.
-        vdwPairs = getVdwPairs();
-        // And draw them.
-        drawAttractionForces();
+        updateVdwPairsArray();
+
+        vdwLines = VDWLines_container.selectAll("line.attractionforce").data(vdwPairs);
+        vdwLinesEnter();
+        // vdwLines.enter().append('line')
+        //   .attr({
+        //     "x1": function(d) { return x(results[d[0]].x) },
+        //     "y1": function(d) { return y(results[d[0]].y) },
+        //     "x2": function(d) { return x(results[d[1]].x) },
+        //     "y2": function(d) { return y(results[d[1]].y) }
+        //   });
+        //vdwLines.exit().remove();
       }
 
       function mousedown() {
