@@ -609,23 +609,38 @@ request an earlier version you will always get the latest version deployed.
 Most of the sensor related java jars are being downloaded as jars, not
 compiled from source. If you're interested in building them from source:
 
-1. Clone the sensor-projects repo from the concord-consortium github: https://github.com/concord-consortium/sensor-projects
+1. Clone the [concord-consortium/sensor-projects](https://github.com/concord-consortium/sensor-projects) repo: 
 
         git clone https://github.com/concord-consortium/sensor-projects.git sensor-projects
+    
+    sensor-projects includes these resources:
 
-2. Link the individual project folder into java/
+        sensor-projects/
+          README
+          ftdi-serial-wrapper/
+          goio-jna/
+          labpro-usb-jna/
+          labquest-jna/
+          pasco-jna/
+          pom.xml/
+          sensor/
+          sensor-native/
+          sensor-pasco/
+          sensor-vernier/
+
+2. Link the individual project folder into `java/`
 
         rm -rf java/goio-jna
         ln -s /path/to/sensor-projects/goio-jna java/goio-jna
 
-3. Update config/java-projects.rb to use a `:maven` type build, but *without* `:repo` or `:branch` specified
+3. Update `config/java-projects.rb` to use a `:maven` type build, but *without* `:repo` or `:branch` specified
 
         'goio-jna'  => { :build_type => :maven,
                          :build => MAVEN_STD_CLEAN_BUILD,
                          :path => 'org/concord/sensor/goio-jna',
                          :sign => true }
 
-4. Rebuild the project using script/build-and-deploy-jars.rb
+4. Rebuild the project using `script/build-and-deploy-jars.rb`
 
         script/build-and-deploy-jars.rb --maven-update goio-jna
 
