@@ -15,6 +15,7 @@ npm-debug.log
 /server/public
 /config/config.yml
 /java
+/sensor-projects
 /lab.*
 **/couchdb.stderr
 **/couchdb.stdout
