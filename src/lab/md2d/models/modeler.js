@@ -364,6 +364,20 @@ define(function(require) {
     }
 
     /**
+      ALWAYS CALL THIS FUNCTION before any change to model state outside a model step.
+    */
+    function invalidatingChangePreHook() {
+      storeOutputPropertiesBeforeChange();
+    }
+
+    /**
+      ALWAYS CALL THIS FUNCTION AFTER any change TO model state outside a model step.
+    */
+    function invalidatingChangePostHook() {
+      updateOutputPropertiesAfterChange();
+    }
+
+    /**
       Call this method *before* changing any "universe" property or model property (including any
       property of a model object such as the position of an atom) to save the output-property
       values before the change. This is required to enabled updateOutputPropertiesAfterChange to be
@@ -933,9 +947,9 @@ define(function(require) {
         return false;
       }
 
-      storeOutputPropertiesBeforeChange();
+      invalidatingChangePreHook();
       engine.addAtom(props);
-      updateOutputPropertiesAfterChange();
+      invalidatingChangePostHook();
 
       dispatch.addAtom();
 
@@ -1090,9 +1104,9 @@ define(function(require) {
         }
       }
 
-      storeOutputPropertiesBeforeChange();
+      invalidatingChangePreHook();
       engine.setAtomProperties(i, props);
-      updateOutputPropertiesAfterChange();
+      invalidatingChangePostHook();
       return true;
     };
 
@@ -1109,9 +1123,9 @@ define(function(require) {
     };
 
     model.setElementProperties = function(i, props) {
-      storeOutputPropertiesBeforeChange();
+      invalidatingChangePreHook();
       engine.setElementProperties(i, props);
-      updateOutputPropertiesAfterChange();
+      invalidatingChangePostHook();
     };
 
     model.getElementProperties = function(i) {
@@ -1127,9 +1141,9 @@ define(function(require) {
 
     model.setObstacleProperties = function(i, props) {
       props = propertiesValidator.validate('obstacle', props);
-      storeOutputPropertiesBeforeChange();
+      invalidatingChangePreHook();
       engine.setObstacleProperties(i, props);
-      updateOutputPropertiesAfterChange();
+      invalidatingChangePostHook();
     };
 
     model.getObstacleProperties = function(i) {
@@ -1145,9 +1159,9 @@ define(function(require) {
     };
 
     model.setRadialBondProperties = function(i, props) {
-      storeOutputPropertiesBeforeChange();
+      invalidatingChangePreHook();
       engine.setRadialBondProperties(i, props);
-      updateOutputPropertiesAfterChange();
+      invalidatingChangePostHook();
     };
 
     model.getRadialBondProperties = function(i) {
@@ -1164,13 +1178,13 @@ define(function(require) {
 
     model.setRestraintProperties = function(i, props) {
       var key;
-      storeOutputPropertiesBeforeChange();
+      invalidatingChangePreHook();
       for (key in props) {
         if (props.hasOwnProperty(key)) {
           restraints[key][i] = props[key];
         }
       }
-      updateOutputPropertiesAfterChange();
+      invalidatingChangePostHook();
     };
 
     model.getRestraintProperties = function(i) {
@@ -1185,9 +1199,9 @@ define(function(require) {
     };
 
     model.setAngularBondProperties = function(i, props) {
-      storeOutputPropertiesBeforeChange();
+      invalidatingChangePreHook();
       engine.setAngularBondProperties(i, props);
-      updateOutputPropertiesAfterChange();
+      invalidatingChangePostHook();
     };
 
     model.getAngularBondProperties = function(i) {
@@ -1343,9 +1357,9 @@ define(function(require) {
     };
 
     model.minimizeEnergy = function () {
-      storeOutputPropertiesBeforeChange();
+      invalidatingChangePreHook();
       engine.minimizeEnergy();
-      updateOutputPropertiesAfterChange();
+      invalidatingChangePostHook();
       return model;
     };
 
@@ -1448,9 +1462,9 @@ define(function(require) {
     };
 
     model.set = function(hash) {
-      if (engine) storeOutputPropertiesBeforeChange();
+      if (engine) invalidatingChangePreHook();
       set_properties(hash);
-      if (engine) updateOutputPropertiesAfterChange();
+      if (engine) invalidatingChangePostHook();
     };
 
     model.get = function(property) {
