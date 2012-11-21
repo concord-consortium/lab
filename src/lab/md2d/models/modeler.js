@@ -375,6 +375,7 @@ define(function(require) {
     */
     function invalidatingChangePostHook() {
       updateOutputPropertiesAfterChange();
+      if (tickHistory) tickHistory.invalidateFollowingState();
     }
 
     /**

@@ -156,9 +156,7 @@ define(function(require) {
       push();
     };
 
-    tickHistory.reset = function() {
-      reset();
-    };
+    tickHistory.reset = reset;
 
     tickHistory.decrementExtract = function() {
       if (listState.counter > listState.startCounter) {
@@ -181,6 +179,8 @@ define(function(require) {
       listState.index = ptr - listState.startCounter;
       extract(list[listState.index]);
     };
+
+    tickHistory.invalidateFollowingState = invalidateFollowingState;
 
     tickHistory.get = function(key) {
       return listState[key];
