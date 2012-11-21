@@ -1297,14 +1297,6 @@ define(function (require) {
 
         vdwLines = VDWLines_container.selectAll("line.attractionforce").data(vdwPairs);
         vdwLinesEnter();
-        // vdwLines.enter().append('line')
-        //   .attr({
-        //     "x1": function(d) { return x(results[d[0]].x) },
-        //     "y1": function(d) { return y(results[d[0]].y) },
-        //     "x2": function(d) { return x(results[d[1]].x) },
-        //     "y2": function(d) { return y(results[d[1]].y) }
-        //   });
-        //vdwLines.exit().remove();
       }
 
       function mousedown() {
