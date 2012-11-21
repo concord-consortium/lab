@@ -2226,6 +2226,8 @@ define(function (require, exports, module) {
         }
 
         vdwPairs.count = N_vdwPairs;
+
+        return vdwPairs;
       },
 
       relaxToTemperature: function(T) {
