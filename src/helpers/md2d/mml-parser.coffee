@@ -422,10 +422,10 @@ parseMML = (mmlString) ->
     for type in typesArr
       name  = type.attribs.id
       $type = cheerio(type)
-      id    = parseFloat $type.find("[property=ID] int").text() || 0
-      mass  = parseFloat $type.find("[property=mass] double").text() || 1
-      sigma = parseFloat $type.find("[property=sigma] double").text() || 30
-      epsilon = parseFloat $type.find("[property=epsilon] double").text() || 0.1
+      id    = getIntProperty $type, 'ID', 'int'
+      mass  = getFloatProperty $type, 'mass', 'double'
+      sigma =  getFloatProperty $type, 'sigma', 'double'
+      epsilon = getFloatProperty $type, 'epsilon', 'double'
 
       # scale sigma to nm
       [sigma] = toNextgenLengths sigma
@@ -435,7 +435,17 @@ parseMML = (mmlString) ->
       # scale to NextGen units
       mass *= 120         #convert to mass in Daltons
 
-      elemTypes[id] = id: id, mass: mass, sigma: sigma, epsilon: epsilon
+      elementRawData = { id, mass, sigma, epsilon }
+
+      # Unit conversion performed on undefined values can convert them to NaN.
+      # Revert back all NaNs to undefined, as we do not expect any NaN
+      # as property. Undefined values will be replaced by default values by validator.
+      removeNaNProperties elementRawData
+
+      # Validate all properties and provides default values for undefined values.
+      elementValidatedData = validator.validateCompleteness 'element', elementRawData
+
+      elemTypes[elementValidatedData.id] = elementValidatedData
 
     ###
       Find all the epsilon forces between elements. Add the properties to the elementTypes

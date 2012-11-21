@@ -120,6 +120,21 @@ define(function() {
       }
     },
 
+    element: {
+      id: {
+        defaultValue: 0
+      },
+      mass: {
+        defaultValue: 120
+      },
+      sigma: {
+        defaultValue: 0.3
+      },
+      epsilon: {
+        defaultValue: -0.1
+      }
+    },
+
     obstacle: {
       // Required properties:
       width: {

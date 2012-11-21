@@ -19,7 +19,6 @@ define(function(require) {
 
   return function Model(initialProperties) {
     var model = {},
-        elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
         VDWLinesCutoffMap = {
           "short": 1.33,
@@ -39,29 +38,38 @@ define(function(require) {
         width = initialProperties.width,
         height = initialProperties.height,
 
-        //
-        // A two dimensional array consisting of arrays of atom property values
-        //
+        // An array of elements object.
+        elements,
+
+        // ######################### Main Data Structures #####################
+        // They are initialized at the end of this function. These data strucutres
+        // are mainly managed by the engine.
+
+        // A hash of arrays  consisting of arrays of atom property values
         atoms,
 
-        //
+        // A hash of arrays consisting of arrays of obstacle property values
+        obstacles,
+
+        // A hash of arrays consisting of arrays of radial bond property values
+        radialBonds,
+
+        // A hash of arrays consisting of arrays of angular bond property values
+        angularBonds,
+
+        // A hash of arrays consisting of arrays of restraint property values
+        // (currently atom-only)
+        restraints,
+
+        // ####################################################################
+
         // A two dimensional array consisting of atom index numbers and atom
         // property values - in effect transposed from the atom property arrays.
-        //
         results,
 
         // A two dimensional array consisting of radial bond index numbers, radial bond
         // properties, and the postions of the two bonded atoms.
         radialBondResults,
-
-        // list of obstacles
-        obstacles,
-        // Radial Bonds
-        radialBonds,
-        // Angular Bonds
-        angularBonds,
-        // Restraints (currently atom-only)
-        restraints,
 
         // The index of the "spring force" used to implement dragging of atoms in a running model
         liveDragSpringForceIndex,
@@ -615,7 +623,40 @@ define(function(require) {
     };
 
     /**
-      Creates a new md2d model with a new set of atoms and leaves it in 'engine'
+      Creates a new md2d engine and leaves it in 'engine'.
+    */
+    model.initializeEngine = function () {
+      engine = md2d.createEngine();
+
+      engine.setSize([width,height]);
+      engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
+      engine.useCoulombInteraction(model.get('coulombForces'));
+      engine.useThermostat(model.get('temperatureControl'));
+      engine.setViscosity(model.get('viscosity'));
+      engine.setVDWLinesRatio(VDWLinesCutoffMap[model.get('VDWLinesCutoff')]);
+      engine.setGravitationalField(model.get('gravitationalField'));
+      engine.setTargetTemperature(model.get('targetTemperature'));
+
+      window.state = modelOutputState = {};
+    };
+
+    model.createElements = function(_elements) {
+      var num = _elements.length, i;
+
+      // _elements is array of objects (as specified in JSON model).
+      // Add element using basic addElement method.
+      for (i = 0; i < num; i++) {
+        model.addElement(_elements[i]);
+      }
+      return model;
+    };
+
+    /**
+      Creates a new set of atoms, but new engine is created at the beginning.
+      TODO: this method makes no sense. Objects like obstacles, restraints etc.,
+      will be lost. It's confusing and used *only* in tests for now.
+      Think about API change. Probably the best option would be to just create new
+      modeler each time using constructor.
 
       @config: either the number of atoms (for a random setup) or
                a hash specifying the x,y,vx,vy properties of the atoms
@@ -624,6 +665,23 @@ define(function(require) {
       left in whatever grid the engine's initialization leaves them in.
     */
     model.createNewAtoms = function(config) {
+      model.initializeEngine();
+      model.createElements(elements);
+      model.createAtoms(config);
+
+      return model;
+    };
+
+    /**
+      Creates a new set of atoms.
+
+      @config: either the number of atoms (for a random setup) or
+               a hash specifying the x,y,vx,vy properties of the atoms
+      When random setup is used, the option 'relax' determines whether the model is requested to
+      relax to a steady-state temperature (and in effect gets thermalized). If false, the atoms are
+      left in whatever grid the engine's initialization leaves them in.
+    */
+    model.createAtoms = function(config) {
       var i, num, prop, atomProps;
 
       if (typeof config === 'number') {
@@ -634,22 +692,7 @@ define(function(require) {
         num = config.x.length;
       }
 
-      // get a fresh model
-      // TODO: why is this done during createNewAtoms call?...
-      engine = md2d.createEngine();
-      engine.setSize([width,height]);
-      engine.initializeElements(elements);
       engine.createAtomsArray(num);
-
-      engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
-      engine.useCoulombInteraction(model.get('coulombForces'));
-      engine.useThermostat(model.get('temperatureControl'));
-      engine.setViscosity(model.get('viscosity'));
-      engine.setVDWLinesRatio(VDWLinesCutoffMap[model.get('VDWLinesCutoff')]);
-      engine.setGravitationalField(model.get('gravitationalField'));
-      engine.setTargetTemperature(model.get('targetTemperature'));
-
-      window.state = modelOutputState = {};
 
       // TODO: this branching based on x, y isn't very clear.
       if (config.x && config.y) {
@@ -899,6 +942,15 @@ define(function(require) {
       return true;
     },
 
+    model.addElement = function(props) {
+      var validatedProps;
+
+      // Validate properties, use default values if there is such need.
+      validatedProps = propertiesValidator.validateCompleteness('element', props);
+      // Finally, add radial bond.
+      engine.addElement(validatedProps);
+    };
+
     model.addObstacle = function(props) {
       var validatedProps;
 
@@ -1008,8 +1060,7 @@ define(function(require) {
       var moleculeAtoms,
           dx, dy,
           new_x, new_y,
-          j, jj,
-          key;
+          j, jj;
 
       // Validate properties.
       props = propertiesValidator.validate('atom', props);
@@ -1606,13 +1657,27 @@ define(function(require) {
       return modelOutputState.temperature;
     });
 
-    // Finally, if provided, set up the model objects (atoms, bonds, obstacles, and the rest)
-    // However if these are not provided, client code can create atoms, etc piecemeal
+    model.initializeEngine();
+
+    // Finally, if provided, set up the model objects (elements, atoms, bonds, obstacles and the rest).
+    // However if these are not provided, client code can create atoms, etc piecemeal.
+
+    // TODO: Elements are stored and treated different from other objects.
+    // This is enforced by current createNewAtoms() method which should be
+    // depreciated. When it's changed, change also elements handling.
+    if (initialProperties.elements) {
+      elements = initialProperties.elements;
+    } else {
+      // Make sure that some elements are created.
+      // Provide array with one empty object. Default values will be used.
+      elements = [{}];
+    }
+    model.createElements(elements);
 
     if (initialProperties.atoms) {
-      model.createNewAtoms(initialProperties.atoms);
+      model.createAtoms(initialProperties.atoms);
     } else if (initialProperties.mol_number) {
-      model.createNewAtoms(initialProperties.mol_number);
+      model.createAtoms(initialProperties.mol_number);
       if (initialProperties.relax) model.relax();
     }
 

@@ -1886,6 +1886,10 @@ define(function (require, exports, module) {
       addElement: function(props) {
         var i;
 
+        if (N_elements === 0) {
+          // Initialize structures during first call.
+          createElementsArray(10);
+        }
         if (N_elements >= elementEpsilon.length) {
           extendArrays(elements, N_elements + 10);
           assignShortcutReferences.N_elements();
@@ -2138,7 +2142,7 @@ define(function (require, exports, module) {
             vDirection = 2 * Math.random() * Math.PI;
 
             props = {
-              element: Math.floor(Math.random() * elementEpsilon.length), // random element
+              element: Math.floor(Math.random() * N_elements), // random element
               x:       c * colSpacing,
               y:       r * rowSpacing,
               vx:      vMagnitude * Math.cos(vDirection),
@@ -2160,18 +2164,6 @@ define(function (require, exports, module) {
         // configuration.
         //
         adjustTemperature(temperature, true);
-      },
-
-      initializeElements: function(elems) {
-        var num = elems.length,
-            i;
-
-        createElementsArray(num);
-
-        for (i = 0; i < num; i++) {
-          engine.addElement(elems[i]);
-        }
-        elementsHaveBeenCreated = true;
       },
 
       getVdwPairsArray: function() {

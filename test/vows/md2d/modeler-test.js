@@ -33,8 +33,6 @@ requirejs([
     "model initialization": {
       topic: function() {
         model = Model(initialization_options);
-        model.createNewAtoms(initialization_options.mol_number);
-        model.initializeHistory();
         return model;
       },
       "creates default molecular model": function(model) {
