@@ -1497,7 +1497,8 @@ define(function(require) {
     */
     model.restoreProperties = function(savedProperties) {
       var property,
-          changedProperties = [];
+          changedProperties = [],
+          savedValue;
 
       for (property in savedProperties) {
         if (savedProperties.hasOwnProperty(property)) {
@@ -1505,16 +1506,18 @@ define(function(require) {
           if (outputsByName[property]) {
             throw new Error("Attempt to restore output property \"" + property + "\".");
           }
-          if (properties[property] !== savedProperties[property]) {
+          savedValue = savedProperties[property];
+          if (properties[property] !== savedValue) {
             if (properties["set_"+property]) {
-              properties["set_"+property](properties[property]);
+              properties["set_"+property](savedValue);
             } else {
-              properties[property] = properties[property];
+              properties[property] = savedValue;
             }
             changedProperties.push(property);
           }
         }
       }
+      notifyPropertyListenersOfEvents(changedProperties);
     },
 
 
