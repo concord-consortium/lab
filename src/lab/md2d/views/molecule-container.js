@@ -361,14 +361,6 @@ define(function (require) {
       return radialBonds[model.RADIAL_BOND_INDICES.STRENGTH][i];
     }
 
-    function get_vdw_line_atom_1(i) {
-      return vdwPairs.atom1[i];
-    }
-
-    function get_vdw_line_atom_2(i) {
-      return vdwPairs.atom2[i];
-    }
-
     function container() {
       // if (node.clientWidth && node.clientHeight) {
       //   cx = node.clientWidth;
@@ -872,7 +864,7 @@ define(function (require) {
             "stroke": atomTraceColor,
             "fill": "none",
             "stroke-dasharray": "6, 6"
-          })
+          });
       }
 
       function obstacleEnter() {
@@ -1037,20 +1029,20 @@ define(function (require) {
       function vdwLinesEnter() {
         // update existing lines
         vdwLines.attr({
-          "x1": function(d) { return x(results[d[0]].x) },
-          "y1": function(d) { return y(results[d[0]].y) },
-          "x2": function(d) { return x(results[d[1]].x) },
-          "y2": function(d) { return y(results[d[1]].y) }
+          "x1": function(d) { return x(results[d[0]].x); },
+          "y1": function(d) { return y(results[d[0]].y); },
+          "x2": function(d) { return x(results[d[1]].x); },
+          "y2": function(d) { return y(results[d[1]].y); }
         });
 
         // append new lines
         vdwLines.enter().append('line')
           .attr({
             "class": "attractionforce",
-            "x1": function(d) { return x(results[d[0]].x) },
-            "y1": function(d) { return y(results[d[0]].y) },
-            "x2": function(d) { return x(results[d[1]].x) },
-            "y2": function(d) { return y(results[d[1]].y) }
+            "x1": function(d) { return x(results[d[0]].x); },
+            "y1": function(d) { return y(results[d[0]].y); },
+            "x2": function(d) { return x(results[d[1]].x); },
+            "y2": function(d) { return y(results[d[1]].y); }
           })
           .style({
             "stroke-width": 2 * scaling_factor,
@@ -1059,32 +1051,6 @@ define(function (require) {
 
         // remove old lines
         vdwLines.exit().remove();
-
-        // Remove old lines if there are any.
-       // VDWLines_container.selectAll("line.attractionforce").remove();
-       // if (!vdwPairs) return;
-
-
-        // var numVdwPairs = vdwPairs.count,
-        //     atom1,
-        //     atom2,
-        //     i;
-
-        // for (i = 0; i < numVdwPairs; i++) {
-        //   atom1 = get_vdw_line_atom_1(i);
-        //   atom2 = get_vdw_line_atom_2(i);
-
-        //   if (atom1 !== 0 || atom2 !== 0) {
-        //     VDWLines_container.append("line")
-        //       .attr("class", "attractionforce")
-        //       .attr("x1", x(results[atom1].x))
-        //       .attr("y1", y(results[atom1].y))
-        //       .attr("x2", x(results[atom2].x))
-        //       .attr("y2", y(results[atom2].y))
-        //       .style("stroke-width", 2 * scaling_factor)
-        //       .style("stroke-dasharray", 3 * scaling_factor + " " + 2 * scaling_factor);
-        //   }
-        // }
       }
 
       function getImagePath(imgProp) {
@@ -1537,7 +1503,8 @@ define(function (require) {
         // until we implement buffered array model output properties,
         // we just keep the path history in the path string
         var dx = Math.floor(x(d.x) * 100) / 100,
-            dy = Math.floor(y(d.y) * 100) / 100;
+            dy = Math.floor(y(d.y) * 100) / 100,
+            lIndex, sIndex;
         if (!atomTracePath) {
           atomTracePath = "M"+dx+","+dy+"L";
           return "M "+dx+","+dy;
