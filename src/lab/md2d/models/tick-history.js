@@ -89,13 +89,14 @@ define(function() {
     }
 
     function extract(savedState) {
-      var i, state;
+      var i,
+          state;
 
       // restore model input properties
-      model.restoreProperties(savedState.input);
+      modelState.restoreProperties(savedState.input);
 
       // restore parameters
-      model.restoreParameters(savedState.parameters);
+      modelState.restoreParameters(savedState.parameters);
 
       // restore model objects defining state
       state = savedState.state;

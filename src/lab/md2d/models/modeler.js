@@ -183,6 +183,66 @@ define(function(require) {
       notifyPropertyListeners(waitingToBeNotified);
     }
 
+    /**
+      Restores a set of "input" properties, notifying their listeners of only those properties which
+      changed, and only after the whole set of properties has been updated.
+    */
+    function restoreProperties(savedProperties) {
+      var property,
+          changedProperties = [],
+          savedValue;
+
+      for (property in savedProperties) {
+        if (savedProperties.hasOwnProperty(property)) {
+          // skip read-only properties
+          if (outputsByName[property]) {
+            throw new Error("Attempt to restore output property \"" + property + "\".");
+          }
+          savedValue = savedProperties[property];
+          if (properties[property] !== savedValue) {
+            if (properties["set_"+property]) {
+              properties["set_"+property](savedValue);
+            } else {
+              properties[property] = savedValue;
+            }
+            changedProperties.push(property);
+          }
+        }
+      }
+      notifyPropertyListenersOfEvents(changedProperties);
+    }
+
+    /**
+      Restores a list of parameter values, notifying their listeners after the whole list is
+      updated, and without triggering setters. Sets parameters not in the passed-in list to
+      undefined.
+    */
+    function restoreParameters(savedParameters) {
+      var parameterName,
+          observersToNotify = [];
+
+      for (parameterName in savedParameters) {
+        if (savedParameters.hasOwnProperty(parameterName)) {
+          // restore the property value if it was different or not defined in the current time step
+          if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
+            properties[parameterName] = savedParameters[parameterName];
+            parametersByName[parameterName].isDefined = true;
+            observersToNotify.push(parameterName);
+          }
+        }
+      }
+
+      // remove parameter values that aren't defined at this point in history
+      for (parameterName in parametersByName) {
+        if (parametersByName.hasOwnProperty(parameterName) && !savedParameters.hasOwnProperty(parameterName)) {
+          parametersByName[parameterName].isDefined = false;
+          properties[parameterName] = undefined;
+        }
+      }
+
+      notifyPropertyListenersOfEvents(observersToNotify);
+    }
+
     function average_speed() {
       var i, s = 0, n = model.get_num_atoms();
       i = -1; while (++i < n) { s += engine.atoms.speed[i]; }
@@ -295,14 +355,18 @@ define(function(require) {
     }
 
     /**
-      ALWAYS CALL THIS FUNCTION before any change to model state outside a model step.
+      ALWAYS CALL THIS FUNCTION before any change to model state outside a model step
+      (i.e., outside a tick, seek, stepForward, stepBack)
+
+      Note:  Changes to view-only property changes that cannot change model physics might reasonably
+      by considered non-invalidating changes that don't require calling this hook.
     */
     function invalidatingChangePreHook() {
       storeOutputPropertiesBeforeChange();
     }
 
     /**
-      ALWAYS CALL THIS FUNCTION AFTER any change TO model state outside a model step.
+      ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
     */
     function invalidatingChangePostHook() {
       updateOutputPropertiesAfterChange();
@@ -763,8 +827,10 @@ define(function(require) {
           "viscosity",
           "gravitationalField"
         ],
-        state: engine.getState(),
-        parameters: parametersByName
+        restoreProperties: restoreProperties,
+        parameters: parametersByName,
+        restoreParameters: restoreParameters,
+        state: engine.getState()
       }, model, maxSize);
       newStep = true;
     };
@@ -1421,35 +1487,6 @@ define(function(require) {
       }
     };
 
-    /**
-      Restores a set of "input" properties, notifying their listeners of only those properties which
-      changed, and only after the whole set of properties has been updated.
-    */
-    model.restoreProperties = function(savedProperties) {
-      var property,
-          changedProperties = [],
-          savedValue;
-
-      for (property in savedProperties) {
-        if (savedProperties.hasOwnProperty(property)) {
-          // skip read-only properties
-          if (outputsByName[property]) {
-            throw new Error("Attempt to restore output property \"" + property + "\".");
-          }
-          savedValue = savedProperties[property];
-          if (properties[property] !== savedValue) {
-            if (properties["set_"+property]) {
-              properties["set_"+property](savedValue);
-            } else {
-              properties[property] = savedValue;
-            }
-            changedProperties.push(property);
-          }
-        }
-      }
-      notifyPropertyListenersOfEvents(changedProperties);
-    },
-
 
     /**
       Add an "output" property to the model. Output properties are expected to change at every
@@ -1502,37 +1539,6 @@ define(function(require) {
         // set a useful 'this' binding in the setter:
         parametersByName[name].setter.call(model, value);
       };
-    };
-
-    /**
-      Restores a list of parameter values, notifying their listeners after the whole list is
-      updated, and without triggering setters. Sets parameters not in the passed-in list to
-      undefined.
-    */
-    model.restoreParameters = function(savedParameters) {
-      var parameterName,
-          observersToNotify = [];
-
-      for (parameterName in savedParameters) {
-        if (savedParameters.hasOwnProperty(parameterName)) {
-          // restore the property value if it was different or not defined in the current time step
-          if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
-            properties[parameterName] = savedParameters[parameterName];
-            parametersByName[parameterName].isDefined = true;
-            observersToNotify.push(parameterName);
-          }
-        }
-      }
-
-      // remove parameter values that aren't defined at this point in history
-      for (parameterName in parametersByName) {
-        if (parametersByName.hasOwnProperty(parameterName) && !savedParameters.hasOwnProperty(parameterName)) {
-          parametersByName[parameterName].isDefined = false;
-          properties[parameterName] = undefined;
-        }
-      }
-
-      notifyPropertyListenersOfEvents(observersToNotify);
     };
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
