@@ -22,6 +22,8 @@ MAVEN_SMALL_CLEAN_BUILD = MAVEN_CLEAN + ';' + MAVEN_SMALL_BUILD
 
 MANUAL_JAR_BUILD = "rm -rf bin; mkdir bin; find src -name *.java | xargs javac -target 5 -sourcepath src -d bin; find src -type f ! -name '*.java' | xargs tar -c | tar --strip-components 1 -xC bin"
 
+MANUAL_JAR_ISO_8859_1_BUILD = "rm -rf bin; mkdir bin; find src -name *.java | xargs javac -encoding ISO-8859-1 -target 5 -sourcepath src -d bin; find src -type f ! -name '*.java' | xargs tar -c | tar --strip-components 1 -xC bin"
+
 MW_ANT_BUILD = "ant clean; ant dist2"
 
 # Compiling with -Dmaven.compiler.debuglevel=none can produce jars 25% smaller
@@ -72,7 +74,7 @@ PROJECT_LIST = {
                         :sign => true },
 
   'energy2d'       => { :build_type => :custom,
-                        :build => MANUAL_JAR_BUILD,
+                        :build => MANUAL_JAR_ISO_8859_1_BUILD,
                         :version => '0.1.0',
                         :repository => 'git://github.com/concord-consortium/energy2d.git',
                         :branch => 'trunk',
