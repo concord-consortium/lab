@@ -919,12 +919,11 @@ define(function (require) {
           model.on('tick.energyGraph', updateEnergyGraph);
 
           model.on('play.energyGraph', function() {
-            if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
-              resetEnergyData(model.stepCounter());
-              energyGraph.new_data(energyData);
-            }
+            invalidateFollowingEnergyData();
             energyGraph.show_canvas();
           });
+
+          model.on('invalidation.energyGraph', invalidateFollowingEnergyData);
 
           model.on('reset.energyGraph', function() {
             options.sample = modelSampleSizeInPs();
@@ -969,6 +968,13 @@ define(function (require) {
       options = options || {};
       options.dataset = energyData;
       energyGraph = RealTimeGraph('#' + id, options);
+    }
+
+    function invalidateFollowingEnergyData() {
+      if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
+        resetEnergyData(model.stepCounter());
+        energyGraph.new_data(energyData);
+      }
     }
 
     function updateEnergyGraph() {
