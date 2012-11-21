@@ -19,7 +19,7 @@ define(function(require) {
 
   return function Model(initialProperties) {
     var model = {},
-        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
+        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom", "invalidation"),
         VDWLinesCutoffMap = {
           "short": 1.33,
           "medium": 1.67,
@@ -376,6 +376,7 @@ define(function(require) {
     function invalidatingChangePostHook() {
       updateOutputPropertiesAfterChange();
       if (tickHistory) tickHistory.invalidateFollowingState();
+      dispatch.invalidation();
     }
 
     /**
