@@ -3,24 +3,45 @@
 define(function() {
 
   return {
-    properties: {
+    mainProperties: {
+      width: {
+        required: true
+      },
+      height: {
+        required: true
+      },
+      lennardJonesForces: {
+        defaultValue: true
+      },
+      coulombForces: {
+        defaultValue: true
+      },
+      temperatureControl: {
+        defaultValue: true
+      },
       targetTemperature: {
         defaultValue: 300
       },
       modelSampleRate: {
         defaultValue: "default"
       },
-      coulombForces: {
-        defaultValue: true
-      },
-      lennardJonesForces: {
-        defaultValue: true
-      },
-      temperatureControl: {
-        defaultValue: true
-      },
       gravitationalField: {
         defaultValue: false
+      },
+      timeStep: {
+        defaultValue: 1
+      },
+      viscosity: {
+        defaultValue: 1
+      },
+      viewRefreshInterval: {
+        defaultValue: 50
+      }
+    },
+
+    modelViewProperties: {
+      showClock: {
+        defaultValue: true
       },
       keShading: {
         defaultValue: false
@@ -31,28 +52,19 @@ define(function() {
       showVDWLines: {
         defaultValue: false
       },
+      VDWLinesCutoff: {
+        defaultValue: "medium"
+      },
       showVelocityVectors: {
         defaultValue: false
       },
-      showClock: {
-        defaultValue: true
+      showForceVectors: {
+        defaultValue: false
       },
       showAtomTrace: {
         defaultValue: false
       },
       atomTraceId: {
-        defaultValue: 0
-      },
-      viewRefreshInterval: {
-        defaultValue: 50
-      },
-      timeStep: {
-        defaultValue: 1
-      },
-      VDWLinesCutoff: {
-        defaultValue: "medium"
-      },
-      viscosity: {
         defaultValue: 0
       }
     },

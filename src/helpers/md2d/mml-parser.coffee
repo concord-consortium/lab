@@ -4,7 +4,8 @@ md2dAPI   = require '../../helpers/md2d/md2d-node-api'
 unit      = constants.unit
 
 # Create properties validator
-validator = md2dAPI.PropertiesValidator md2dAPI.metaModel
+metaModel = md2dAPI.metaModel
+validator = md2dAPI.PropertiesValidator metaModel
 
 # Used throughout Classic MW to convert energy gradient values measured in units of eV/0.1Å to
 # the equivalent forces measured in units of 120 amu * 0.1Å / fs^2 (Classic's "natural" unit system
@@ -45,7 +46,7 @@ VDWLinesRatioMap =
 ###
 parseMML = (mmlString) ->
 
-  try
+  #try
     ### perform any pre-processing on the string ###
 
     # MML classes have periods or $ in them, which is not valid in DOM
@@ -230,64 +231,64 @@ parseMML = (mmlString) ->
       Find the container size
     ###
     viewProps = $mml(".org-concord-mw2d-models-RectangularBoundary-Delegate")
-    width  = parseInt viewProps.find("[property=width] double").text()
-    height = parseInt viewProps.find("[property=height] double").text()
+    width  = getIntProperty viewProps, "width", "double"
+    height = getIntProperty viewProps, "height", "double"
 
     ###
       Find the force interaction booleans
     ###
-    coulombForces       = parseBoolean($mml("[property=interCoulomb] boolean").text(), true)
+    coulombForces = getBooleanProperty $mml.root(), "interCoulomb", "boolean"
 
     ###
       Find the chargeShading
     ###
     viewChargeShadingProps = $mml(".java-beans-XMLDecoder")
-    chargeShading  = viewChargeShadingProps.find("[property=chargeShading] boolean").text()
+    chargeShading = getBooleanProperty viewChargeShadingProps, "chargeShading", "boolean"
 
     ###
       Find the KE Shading
     ###
-    keShading = parseBoolean($mml("[property=shading] boolean").text(), false)
+    keShading = getBooleanProperty $mml.root(), "shading", "boolean"
 
     ###
       Show VDW Lines?
     ###
-    showVDWLines = parseBoolean($mml("[property=showVDWLines] boolean").text(), false)
-    VDWLinesRatio = $mml("[property=VDWLinesRatio] float")
-    VDWLinesRatio = if VDWLinesRatio.length != 0 then parseFloat(VDWLinesRatio.text()) else 1.67
+    showVDWLines = getBooleanProperty $mml.root(), "showVDWLines", "boolean"
+    VDWLinesRatio = getFloatProperty $mml.root(), "VDWLinesRatio", "float"
+    # if VDWLinesRatio is undefined, VDWLinesCutoff will also be undefined and
+    # finally replaced by default value.
     VDWLinesCutoff = VDWLinesRatioMap[VDWLinesRatio]
 
     ###
       Viscosity
     ###
     universeProps = $mml(".org-concord-mw2d-models-Universe")
-    # Viscosity default value, not stored in MML, is 1.
-    viscosity = parseFloat universeProps.find("[property=viscosity] float").text() || 1
+    viscosity = getFloatProperty universeProps, "viscosity", "float"
 
     ###
       viewRefreshInterval
     ###
-    viewRefreshInterval = parseFloat($mml("[property=viewRefreshInterval] int").text() || 50)
+    viewRefreshInterval = getFloatProperty $mml.root(), "viewRefreshInterval", "int"
 
     ###
       timeStep
     ###
-    timeStep = parseFloat($mml("[property=timeStep] double").text() || 1.0)
+    timeStep = getFloatProperty $mml.root(), "timeStep", "double"
 
     ###
       Show Clock
     ###
-    showClock = parseBoolean($mml("[property=showClock] boolean").text(), true)
+    showClock = getBooleanProperty $mml.root(), "showClock", "boolean"
 
     ###
       Show velocity vectors
     ###
-    showVelocityVectors = parseBoolean($mml("[property=showVVectors] boolean").text(), false)
+    showVelocityVectors = getBooleanProperty $mml.root(), "showVVectors", "boolean"
 
     velocityVectorProps = $mml("[property=velocityFlavor]")
     if velocityVectorProps.length > 0
-      velocityVectorWidth   = parseFloat velocityVectorProps.find("[property=width] float").text()
-      velocityVectorLength  = parseInt velocityVectorProps.find("[property=length] int").text()
+      velocityVectorWidth   = getFloatProperty velocityVectorProps, "width", "float"
+      velocityVectorLength  = getIntProperty velocityVectorProps, "length", "int"
       velocityVectorLength /= 100
       velocityColorDef  = velocityVectorProps.find ".java-awt-Color>int"
       if velocityColorDef and velocityColorDef.length > 0
@@ -299,12 +300,12 @@ parseMML = (mmlString) ->
     ###
       Show force vectors
     ###
-    showForceVectors = parseBoolean($mml("[property=showFVectors] boolean").text(), false)
+    showForceVectors = getBooleanProperty $mml.root(), "showFVectors", "boolean"
 
     forceVectorProps = $mml("[property=forceFlavor]")
     if forceVectorProps.length > 0
-      forceVectorWidth   = parseFloat forceVectorProps.find("[property=width] float").text()
-      forceVectorLength  = parseInt forceVectorProps.find("[property=length] int").text()
+      forceVectorWidth   = getFloatProperty forceVectorProps, "width", "float"
+      forceVectorLength  = getIntProperty forceVectorProps, "length", "int"
       forceVectorLength /= 1000
       forceColorDef  = forceVectorProps.find ".java-awt-Color>int"
       if forceColorDef and forceColorDef.length > 0
@@ -312,17 +313,21 @@ parseMML = (mmlString) ->
         forceVectorColor   += parseInt(cheerio(forceColorDef[0]).text()) + ","
         forceVectorColor   += parseInt(cheerio(forceColorDef[1]).text()) + ","
         forceVectorColor   += parseInt(cheerio(forceColorDef[2]).text()) + ")"
-      if forceVectorColor is "rgb(255,0,255)" then forceVectorColor = null
+      if forceVectorColor is "rgb(255,0,255)" then forceVectorColor = undefined
 
     ###
       GravitationalField
     ###
     gravitationalProps = $mml(".org-concord-mw2d-models-GravitationalField")
     if gravitationalProps.length > 0
-      gravitationalField = parseFloat gravitationalProps.find("[property=intensity] double").text() || 0.010
+      # Some default value must be provided, as this is MML-specific case.
+      # If we left gravitationalField undefined, it would be set to its "main" default value.
+      gravitationalField = getFloatProperty(gravitationalProps, "intensity", "double") || 0.010
+
       gravitationalField *= CLASSIC_TO_NEXTGEN_GRAVITATION_RATIO
     else
-      gravitationalField = false
+      # Use "main" default value provided by validator.
+      gravitationalField = undefined
 
     ###
       Object image Properties
@@ -669,44 +674,52 @@ parseMML = (mmlString) ->
         unrolled[prop] = (item[prop] for item in array)
       unrolled
 
+    # Main properties of the model.
     json =
-      lennardJonesForces  : true
       coulombForces       : coulombForces
       temperatureControl  : !!targetTemperature
+      targetTemperature   : targetTemperature
       width               : width
       height              : height
       viscosity           : viscosity
       gravitationalField  : gravitationalField
       viewRefreshInterval : viewRefreshInterval
       timeStep            : timeStep
-      elements            : elemTypes
-      atoms :
-        x : x
-        y : y
-        vx: vx
-        vy: vy
-        charge: charge
-        friction: friction
-        element: element
-        pinned: pinned
-        marked: marked
-        visible: visible
-        draggable: draggable
-      viewOptions :
-        keShading           : keShading
-        chargeShading       : !!chargeShading
-        showVDWLines        : !!showVDWLines
-        VDWLinesCutoff      : VDWLinesCutoff
-        showClock           : showClock
-        showVelocityVectors : showVelocityVectors
-        showForceVectors    : showForceVectors
 
-    removeArrayIfDefault = (name, array, defaultVal) ->
-      delete json.atoms[name] if array.every (i)-> i is defaultVal
+    # Unit conversion performed on undefined values can convert them to NaN.
+    # Revert back all NaNs to undefined, as they will be replaced by default values.
+    removeNaNProperties json
+    # Validate all properties and provides default values for undefined values.
+    json = validator.validateCompleteness 'mainProperties', json
 
-    removeArrayIfDefault("marked", marked, 0)
-    removeArrayIfDefault("visible", visible, 1)
-    removeArrayIfDefault("draggable", draggable, 0)
+    # Properties which are managed by model, but they define view.
+    # Model handles them, as they are e.g. stored in the history.
+    modelViewProperties =
+      keShading           : keShading
+      chargeShading       : !!chargeShading
+      showVDWLines        : !!showVDWLines
+      VDWLinesCutoff      : VDWLinesCutoff
+      showClock           : showClock
+      showVelocityVectors : showVelocityVectors
+      showForceVectors    : showForceVectors
+
+    # Validate all properties and provides default values for undefined values.
+    modelViewProperties = validator.validateCompleteness 'modelViewProperties', modelViewProperties
+
+    json.viewOptions = modelViewProperties
+    json.elements = elemTypes
+    json.atoms =
+      x : x
+      y : y
+      vx: vx
+      vy: vy
+      charge: charge
+      friction: friction
+      element: element
+      pinned: pinned
+      marked: marked
+      visible: visible
+      draggable: draggable
 
     if radialBonds.length > 0
       json.radialBonds = unroll radialBonds, 'atom1', 'atom2', 'length', 'strength',  'style'
@@ -720,6 +733,16 @@ parseMML = (mmlString) ->
     if imageProps.length > 0
       json.images = images
 
+    if obstacles.length > 0
+      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction',
+        'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
+
+    # Temporarily remove text boxes from converted models; see
+    # https://www.pivotaltracker.com/story/show/37081141
+    # if textBoxes.length > 0
+    #   json.textBoxes = textBoxes
+
+    # Additional view-only options (which are *not* managed by model).
     if velocityVectorLength or velocityVectorWidth or velocityVectorColor
       json.viewOptions.velocityVectors = vOpts = {}
       vOpts.length = velocityVectorLength if velocityVectorLength
@@ -732,19 +755,25 @@ parseMML = (mmlString) ->
       vOpts.width  = forceVectorWidth  if forceVectorWidth
       vOpts.color  = forceVectorColor  if forceVectorColor
 
-    # Temporarily remove text boxes from converted models; see
-    # https://www.pivotaltracker.com/story/show/37081141
-    # if textBoxes.length > 0
-    #   json.textBoxes = textBoxes
+    # Remove some properties from the final serialized model.
+    removeArrayIfDefault = (name, array, defaultVal) ->
+      delete json.atoms[name] if array.every (i)-> i is defaultVal
 
-    if obstacles.length > 0
-      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction',
-        'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
+    # Arrays which has only default values.
+    removeArrayIfDefault("marked", marked, metaModel.atom.marked.defaultValue)
+    removeArrayIfDefault("visible", visible, metaModel.atom.visible.defaultValue)
+    removeArrayIfDefault("draggable", draggable, metaModel.atom.draggable.defaultValue)
 
-    json.targetTemperature = targetTemperature if targetTemperature
+    # Remove targetTemperature when heat-bath is disabled.
+    delete json.targetTemperature if not json.temperatureControl
+    # Remove atomTraceId when atom tracing is disabled.
+    delete json.viewOptions.atomTraceId if not json.viewOptions.showAtomTrace
+
+    # Remove modelSampleRate as this is Next Gen MW specific option.
+    delete json.modelSampleRate
 
     return json: json
-  catch e
-    return error: e.toString()
+  # catch e
+  #   return error: e.toString()
 
 exports.parseMML = parseMML
