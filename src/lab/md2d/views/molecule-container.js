@@ -1284,7 +1284,7 @@ define(function (require) {
         atomTracePath = "";
 
         drawAtomTrace = model.get("showAtomTrace");
-        atomTraceId = model.get("atomTraceId") || 0;
+        atomTraceId = model.get("atomTraceId");
         if (drawAtomTrace) {
           atomTrace = gradient_container.selectAll("path.atomTrace").data([results[atomTraceId]]);
           atomTraceEnter();
