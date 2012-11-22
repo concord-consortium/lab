@@ -82,7 +82,7 @@ requirejs([
         var mol_number = 5;
         initialization_options = {
           lennardJonesForces: true,
-          colombForces: true,
+          coulombForces: true,
           mol_number: mol_number,
           relax: false,
           width: 3,
@@ -92,7 +92,7 @@ requirejs([
 
         modelHash = model.serialize(true);
         assert.equal(modelHash.lennardJonesForces, initialization_options.lennardJonesForces);
-        assert.equal(modelHash.coulomb_forces, initialization_options.coulombForces);
+        assert.equal(modelHash.coulombForces, initialization_options.coulombForces);
         assert.equal(modelHash.atoms.x.length, mol_number);
         assert.equal(modelHash.width, initialization_options.width);
         assert.equal(modelHash.height, initialization_options.height);
@@ -100,7 +100,7 @@ requirejs([
         mol_number = 10;
         new_options = {
           lennardJonesForces: false,
-          colombForces: false,
+          coulombForces: false,
           width: 4,
           height: 5
         };
@@ -109,7 +109,7 @@ requirejs([
 
         modelHash = model.serialize(true);
         assert.equal(modelHash.lennardJonesForces, new_options.lennardJonesForces);
-        assert.equal(modelHash.colombForces, new_options.colombForces);
+        assert.equal(modelHash.coulombForces, new_options.coulombForces);
         assert.equal(modelHash.atoms.x.length, mol_number);
         assert.equal(modelHash.width, initialization_options.width);
         assert.equal(modelHash.height, initialization_options.height);

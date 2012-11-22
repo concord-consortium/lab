@@ -80,23 +80,6 @@ define(function(require) {
         listeners = {},
 
         properties = {
-          targetTemperature     : 300,
-          modelSampleRate       : 'default',
-          coulombForces         : true,
-          lennardJonesForces    : true,
-          temperatureControl    : true,
-          gravitationalField    : false,
-          keShading             : false,
-          chargeShading         : false,
-          showVDWLines          : false,
-          showVelocityVectors   : false,
-          showForceVectors      : false,
-          showClock             : true,
-          viewRefreshInterval   : 50,
-          timeStep              : 1,
-          VDWLinesCutoff        : "medium",
-          viscosity             : 0,
-
           /**
             These functions are optional setters that will be called *instead* of simply setting
             a value when 'model.set({property: value})' is called, and are currently needed if you
@@ -1644,9 +1627,6 @@ define(function(require) {
     // Friction parameter temporarily applied to the live-dragged atom.
     model.LIVE_DRAG_FRICTION = 10;
 
-    // set the rest of the regular properties
-    set_properties(initialProperties);
-
     // Define some default output properties.
     model.defineOutput('time', {
       label: "Time",
@@ -1676,6 +1656,18 @@ define(function(require) {
       return modelOutputState.temperature;
     });
 
+
+    // Set the regular, main properties.
+    // Note that validation process will return hash without all properties which are
+    // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
+    set_properties(propertiesValidator.validateCompleteness('mainProperties', initialProperties));
+
+    // Set the model view options.
+    // These options are view-related, but are stored in model,
+    // as e.g. they should be saved in tick history.
+    set_properties(propertiesValidator.validateCompleteness('modelViewProperties', initialProperties.viewOptions || {}));
+
+    // Setup engine object.
     model.initializeEngine();
 
     // Finally, if provided, set up the model objects (elements, atoms, bonds, obstacles and the rest).

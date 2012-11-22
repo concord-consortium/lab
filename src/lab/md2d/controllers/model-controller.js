@@ -20,47 +20,7 @@ define(function (require) {
         // event dispatcher
         dispatch = d3.dispatch('modelReset'),
 
-        // properties read from the playerConfig hash
-        controlButtons,
-        modelTimeLabel,
-        fit_to_parent,
-        enableAtomTooltips,
-        enableKeyboardHandlers,
-        imageMapping,
-        velocityVectors,
-        forceVectors,
-        atomTraceColor,
-
-        // properties read from the modelConfig hash
-        elements,
-        atoms,
-        mol_number,
-        lennardJonesForces,
-        coulombForces,
-        temperatureControl,
-        targetTemperature,
-        width,
-        height,
-        keShading,
-        chargeShading,
-        showVDWLines,
-        VDWLinesCutoff,
-        showVelocityVectors,
-        showForceVectors,
-        showAtomTrace,
-        atomTraceId,
-        radialBonds,
-        angularBonds,
-        restraints,
-        obstacles,
-        viscosity,
-        gravitationalField,
-        images,
-        textBoxes,
-        interactiveUrl,
-        showClock,
-        viewRefreshInterval,
-        timeStep,
+        viewOptions,
 
         moleculeContainer,
 
@@ -105,18 +65,15 @@ define(function (require) {
         moleculeContainer.update_drawable_positions();
       }
 
-
       // ------------------------------------------------------------
       //
-      // Initialize (or update) local variables based on playerConfig and modelConfig objects
+      //   Molecular Model Setup
       //
-      // ------------------------------------------------------------
 
-      function initializeLocalVariables() {
-        var viewOptions = modelConfig.viewOptions || {};
-
-        function meldOptions(base, overlay) {
-          for(var p in base) {
+      function createModel() {
+        var meldOptions = function(base, overlay) {
+          var p;
+          for(p in base) {
             if (overlay[p] === undefined) {
               overlay[p] = base[p];
             } else if (typeof overlay[p] === "object") {
@@ -124,87 +81,20 @@ define(function (require) {
             }
           }
           return overlay;
-        }
-        viewOptions = meldOptions(viewOptions, playerConfig);
+        };
 
-        controlButtons      = viewOptions.controlButtons;
-        modelTimeLabel      = viewOptions.modelTimeLabel;
-        enableAtomTooltips  = viewOptions.enableAtomTooltips || false;
-        enableKeyboardHandlers = viewOptions.enableKeyboardHandlers;
-        fit_to_parent       = viewOptions.fit_to_parent;
-        interactiveUrl      = viewOptions.interactiveUrl;
-        imageMapping        = viewOptions.imageMapping || {};
-        velocityVectors     = viewOptions.velocityVectors;
-        forceVectors        = viewOptions.forceVectors;
-        keShading           = viewOptions.keShading;
-        chargeShading       = viewOptions.chargeShading;
-        showVDWLines        = viewOptions.showVDWLines;
-        VDWLinesCutoff      = viewOptions.VDWLinesCutoff;
-        showVelocityVectors = viewOptions.showVelocityVectors;
-        showForceVectors    = viewOptions.showForceVectors;
-        showClock           = viewOptions.showClock;
-        showAtomTrace       = viewOptions.showAtomTrace;
-        atomTraceId         = viewOptions.atomTraceId;
-        atomTraceColor      = viewOptions.atomTraceColor;
+        // Merge view options defined in interactive (playerConfig)
+        // with view options defined in the basic model description.
+        viewOptions = meldOptions(modelConfig.viewOptions || {}, playerConfig);
 
-        elements            = modelConfig.elements;
-        atoms               = modelConfig.atoms;
-        mol_number          = modelConfig.mol_number;
-        lennardJonesForces  = modelConfig.lennardJonesForces;
-        coulombForces       = modelConfig.coulombForces;
-        temperatureControl  = modelConfig.temperatureControl;
-        targetTemperature   = modelConfig.targetTemperature;
-        width               = modelConfig.width;
-        height              = modelConfig.height;
-        viewRefreshInterval = modelConfig.viewRefreshInterval;
-        timeStep            = modelConfig.timeStep;
-        radialBonds         = modelConfig.radialBonds;
-        angularBonds        = modelConfig.angularBonds;
-        restraints          = modelConfig.restraints;
-        obstacles           = modelConfig.obstacles;
-        viscosity           = modelConfig.viscosity;
-        gravitationalField  = modelConfig.gravitationalField;
-        images              = modelConfig.images;
-        textBoxes           = modelConfig.textBoxes;
-      }
-
-      // ------------------------------------------------------------
-      //
-      //   Molecular Model Setup
-      //
-
-      function createModel() {
-        initializeLocalVariables();
-        model = Model({
-          elements            : elements,
-          targetTemperature   : targetTemperature,
-          lennardJonesForces  : lennardJonesForces,
-          coulombForces       : coulombForces,
-          temperatureControl  : temperatureControl,
-          width               : width,
-          height              : height,
-          keShading           : keShading,
-          chargeShading       : chargeShading,
-          showVDWLines        : showVDWLines,
-          VDWLinesCutoff      : VDWLinesCutoff,
-          showVelocityVectors : showVelocityVectors,
-          showForceVectors    : showForceVectors,
-          showClock           : showClock,
-          showAtomTrace       : showAtomTrace,
-          atomTraceId         : atomTraceId,
-          viewRefreshInterval : viewRefreshInterval,
-          timeStep            : timeStep,
-          viscosity           : viscosity,
-          gravitationalField  : gravitationalField,
-          images              : images,
-          atoms               : atoms,
-          mol_number          : mol_number,
-          relax               : !!mol_number,
-          radialBonds         : radialBonds,
-          angularBonds        : angularBonds,
-          restraints          : restraints,
-          obstacles           : obstacles
-        });
+        // Update view options in the basic model description after merge.
+        // Note that many unnecessary options can be passed to Model constructor
+        // because of that (e.g. view-only options defined in the interactive).
+        // However, all options which are unknown for Model will be discarded
+        // during options validation, so this is not a problem
+        // (but significantly simplifies configuration).
+        modelConfig.viewOptions = viewOptions;
+        model = Model(modelConfig);
       }
 
       function setupModel() {
@@ -220,21 +110,21 @@ define(function (require) {
       function getModelInterface() {
         return {
           model:                   model,
-          fit_to_parent:           fit_to_parent,
-          xmax:                    width,
-          ymax:                    height,
-          keShading:               keShading,
-          chargeShading:           chargeShading,
-          velocityVectors:         velocityVectors,
-          forceVectors:            forceVectors,
-          atomTraceId:             atomTraceId,
-          atomTraceColor:          atomTraceColor,
-          enableAtomTooltips:      enableAtomTooltips,
-          enableKeyboardHandlers:  enableKeyboardHandlers,
-          images:                  images,
-          interactiveUrl:          interactiveUrl,
-          textBoxes:               textBoxes,
-          imageMapping:            imageMapping,
+          fit_to_parent:           viewOptions.fit_to_parent,
+          xmax:                    modelConfig.width,
+          ymax:                    modelConfig.height,
+          keShading:               viewOptions.keShading,
+          chargeShading:           viewOptions.chargeShading,
+          velocityVectors:         viewOptions.velocityVectors,
+          forceVectors:            viewOptions.forceVectors,
+          atomTraceId:             viewOptions.atomTraceId,
+          atomTraceColor:          viewOptions.atomTraceColor,
+          enableAtomTooltips:      viewOptions.enableAtomTooltips,
+          enableKeyboardHandlers:  viewOptions.enableKeyboardHandlers,
+          images:                  viewOptions.images,
+          interactiveUrl:          viewOptions.interactiveUrl,
+          textBoxes:               viewOptions.textBoxes,
+          imageMapping:            viewOptions.imageMapping,
           get_results:             function() { return model.get_results(); },
           get_radial_bond_results: function() { return model.get_radial_bond_results(); },
           get_radial_bonds:        function() { return model.get_radial_bonds(); },
@@ -244,8 +134,8 @@ define(function (require) {
           set_atom_properties:     function() { return model.setAtomProperties.apply(model, arguments);  },
           is_stopped:              function() { return model.is_stopped(); },
 
-          controlButtons:      controlButtons,
-          modelTimeLabel:      modelTimeLabel
+          controlButtons:      viewOptions.controlButtons,
+          modelTimeLabel:      viewOptions.modelTimeLabel
         };
       }
 

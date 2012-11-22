@@ -5,10 +5,10 @@ define(function() {
   return {
     mainProperties: {
       width: {
-        required: true
+        defaultValue: 10
       },
       height: {
-        required: true
+        defaultValue: 10
       },
       lennardJonesForces: {
         defaultValue: true
