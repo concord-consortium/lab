@@ -8,6 +8,7 @@ define(function(require) {
       md2d                = require('md2d/models/engine/md2d'),
       TickHistory         = require('md2d/models/tick-history'),
       metaModel           = require('md2d/models/meta-model'),
+      serialize           = require('common/serialize'),
       PropertiesValidator = require('common/properties-validator'),
       _ = require('underscore'),
 
@@ -157,23 +158,6 @@ define(function(require) {
 
         // the currently-defined parameters
         parametersByName = {};
-
-    function setupIndices() {
-      // TODO. probably save everything *except* a list of "non-saveable properties"
-      model.SAVEABLE_PROPERTIES =  [
-        "x",
-        "y",
-        "vx",
-        "vy",
-        "charge",
-        "element",
-        "pinned",
-        "friction",
-        "visible",
-        "marked",
-        "draggable"
-      ];
-    }
 
     function notifyPropertyListeners(listeners) {
       listeners = _.uniq(listeners);
@@ -453,32 +437,6 @@ define(function(require) {
         }
       }
     }
-
-    function copyTypedArray(arr) {
-      var copy = [];
-      for (var i=0,ii=arr.length; i<ii; i++){
-        copy[i] = arr[i];
-      }
-      return copy;
-    }
-
-
-    function serializeAtoms() {
-      var serializedData = {},
-          prop,
-          array,
-          i,
-          len;
-
-      for (i=0, len = model.SAVEABLE_PROPERTIES.length; i < len; i++) {
-        prop = model.SAVEABLE_PROPERTIES[i];
-        array = atoms[prop];
-        serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
-      }
-
-      return serializedData;
-    }
-
 
     // ------------------------------------------------------------
     //
@@ -1581,7 +1539,7 @@ define(function(require) {
     model.serialize = function(includeAtoms) {
       var propCopy = $.extend({}, properties);
       if (includeAtoms) {
-        propCopy.atoms = serializeAtoms();
+        propCopy.atoms = serialize(metaModel.atom, atoms);
       }
       if (elements) {
         propCopy.elements = elements;
@@ -1594,8 +1552,6 @@ define(function(require) {
     // ------------------------------
     // finish setting up the model
     // ------------------------------
-
-    setupIndices();
 
     // Friction parameter temporarily applied to the live-dragged atom.
     model.LIVE_DRAG_FRICTION = 10;
