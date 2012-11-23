@@ -18,7 +18,7 @@ define(function (require) {
       // use common properties validator for all instances of molecule container.
       propertiesValidator   = PropertiesValidator(metaOptions);
 
-  return function moleculeContainer(e, optionsAndModel) {
+  return function moleculeContainer(e, viewOptions, model) {
     var elem = d3.select(e),
         node = elem.node(),
         // in fit-to-parent mode, the d3 selection containing outermost container
@@ -56,11 +56,8 @@ define(function (require) {
         results,
         radialBonds,
         radialBondResults,
-        set_atom_properties,
-        is_stopped,
         obstacle,
         obstacles,
-        get_obstacles,
         mock_obstacles_array = [],
         radialBond1, radialBond2,
         vdwPairs = [],
@@ -79,14 +76,11 @@ define(function (require) {
         forceVectorLength,
         velVector,
         forceVector,
-        getRadialBonds,
-        getRadialBondsResults,
         imageProp,
         imageSizes = [],
         textBoxes,
         interactiveUrl,
         imagePath,
-        getVdwPairs,
         bondColorArray,
         drawAtomTrace,
         atomTraceId,
@@ -95,7 +89,6 @@ define(function (require) {
         atomTracePath,
 
         options,
-        model,
 
         RADIAL_BOND_STANDARD_STICK_STYLE,
         RADIAL_BOND_LONG_SPRING_STYLE,
@@ -119,30 +112,18 @@ define(function (require) {
     ty = function(d) { return "translate(0," + y(d) + ")"; };
     stroke = function(d) { return d ? "#ccc" : "#666"; };
 
-    function processOptions(newOptionsAndModel) {
-      if (newOptionsAndModel) {
-        optionsAndModel = newOptionsAndModel;
-      }
-
-      // First, extract Model Proxy API methods.
+    function processOptions(newViewOptions, newModel) {
+      viewOptions = newViewOptions || viewOptions;
+      model = newModel || model;
 
       // The model function get_results() returns a 2 dimensional array
       // of atom indices and properties that is update everymodel tick.
       // This array is not garbage collected so the view can be assured that
       // the latest results will be in this array when the view is executing
-      results = optionsAndModel.get_results();
-      radialBondResults = optionsAndModel.get_radial_bond_results();
-      get_obstacles = optionsAndModel.get_obstacles;
-      getRadialBonds = optionsAndModel.get_radial_bonds;
-      getRadialBondsResults = optionsAndModel.get_radial_bond_results;
-      getVdwPairs = optionsAndModel.get_vdw_pairs;
-      set_atom_properties = optionsAndModel.set_atom_properties;
-      is_stopped = optionsAndModel.is_stopped;
+      results = model.get_results();
 
-      model = optionsAndModel.model;
-
-      // Later, process typical view options.
-      options = propertiesValidator.validateCompleteness('viewOptions', optionsAndModel);
+      // Process typical view options.
+      options = propertiesValidator.validateCompleteness('viewOptions', viewOptions);
 
       imageProp = options.images;
       textBoxes = options.textBoxes;
@@ -276,7 +257,7 @@ define(function (require) {
     }
 
     function set_position(i, xpos, ypos, checkPosition, moveMolecule) {
-      return set_atom_properties(i, {x: xpos, y: ypos}, checkPosition, moveMolecule);
+      return model.setAtomProperties(i, {x: xpos, y: ypos}, checkPosition, moveMolecule);
     }
 
     function get_obstacle_x(i) {
@@ -1113,7 +1094,6 @@ define(function (require) {
       }
 
       function setup_drawables() {
-        obstacles = get_obstacles();
         setup_obstacles();
         setupVdwPairs();
         setup_radial_bonds();
@@ -1182,6 +1162,7 @@ define(function (require) {
       }
 
       function setup_obstacles() {
+        obstacles = model.get_obstacles();
         gradient_container.selectAll("rect").remove();
         if (obstacles) {
           mock_obstacles_array.length = obstacles.x.length;
@@ -1193,8 +1174,8 @@ define(function (require) {
       function setup_radial_bonds() {
         gradient_container.selectAll("path.radialbond1").remove();
         gradient_container.selectAll("path.radialbond2").remove();
-        radialBonds = getRadialBonds();
-        radialBondResults = getRadialBondsResults();
+        radialBonds = model.get_radial_bonds();
+        radialBondResults = model.get_radial_bond_results();
         if (radialBondResults) {
           radialBond1 = gradient_container.selectAll("path.radialbond1").data(radialBondResults);
           radialBond2 = gradient_container.selectAll("path.radialbond2").data(radialBondResults);
@@ -1216,7 +1197,7 @@ define(function (require) {
       // To make these d3-friendly we turn them into an array of atom pairs, only
       // as long as we need.
       function updateVdwPairsArray() {
-        var vdwHash = getVdwPairs();
+        var vdwHash = model.get_vdw_pairs();
         for (var i = 0; i < vdwHash.count; i++) {
           vdwPairs[i] = [vdwHash.atom1[i], vdwHash.atom2[i]];
         }
@@ -1502,7 +1483,7 @@ define(function (require) {
       }
 
       function node_dragstart(d, i) {
-        if ( is_stopped() ) {
+        if (model.is_stopped()) {
           // cache the *original* atom position so we can go back to it if drag is disallowed
           drag_origin = [d.x, d.y];
         }
@@ -1543,7 +1524,7 @@ define(function (require) {
             dragY = y.invert(d3.event.y),
             drag;
 
-        if ( is_stopped() ) {
+        if (model.is_stopped()) {
           drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
           set_position(i, drag.x, drag.y, false, true);
           update_drawable_positions();
@@ -1555,7 +1536,7 @@ define(function (require) {
       }
 
       function node_dragend(d, i) {
-        if (is_stopped()) {
+        if (model.is_stopped()) {
 
           if (!set_position(i, d.x, d.y, true, true)) {
             alert("You can't drop the atom there");     // should be changed to a nice Lab alert box

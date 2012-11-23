@@ -65,12 +65,8 @@ define(function (require) {
         moleculeContainer.update_drawable_positions();
       }
 
-      // ------------------------------------------------------------
-      //
-      //   Molecular Model Setup
-      //
 
-      function createModel() {
+      function processOptions() {
         var meldOptions = function(base, overlay) {
           var p;
           for(p in base) {
@@ -87,6 +83,10 @@ define(function (require) {
         // with view options defined in the basic model description.
         viewOptions = meldOptions(modelConfig.viewOptions || {}, playerConfig);
 
+        // Setup size of the container for view.
+        viewOptions.xmax = modelConfig.width;
+        viewOptions.ymax = modelConfig.height;
+
         // Update view options in the basic model description after merge.
         // Note that many unnecessary options can be passed to Model constructor
         // because of that (e.g. view-only options defined in the interactive).
@@ -94,48 +94,19 @@ define(function (require) {
         // during options validation, so this is not a problem
         // (but significantly simplifies configuration).
         modelConfig.viewOptions = viewOptions;
-        model = Model(modelConfig);
       }
 
+      // ------------------------------------------------------------
+      //
+      //   Molecular Model Setup
+      //
+
       function setupModel() {
-        createModel();
+        processOptions();
+        model = Model(modelConfig);
         model.resetTime();
         model.on('tick', tickHandler);
         model.on('addAtom', resetModelPlayer);
-      }
-
-      /**
-        Returns a customized interface to the model for use by the view
-      */
-      function getModelInterface() {
-        return {
-          model:                   model,
-          fit_to_parent:           viewOptions.fit_to_parent,
-          xmax:                    modelConfig.width,
-          ymax:                    modelConfig.height,
-          keShading:               viewOptions.keShading,
-          chargeShading:           viewOptions.chargeShading,
-          velocityVectors:         viewOptions.velocityVectors,
-          forceVectors:            viewOptions.forceVectors,
-          atomTraceColor:          viewOptions.atomTraceColor,
-          enableAtomTooltips:      viewOptions.enableAtomTooltips,
-          enableKeyboardHandlers:  viewOptions.enableKeyboardHandlers,
-          images:                  viewOptions.images,
-          interactiveUrl:          viewOptions.interactiveUrl,
-          textBoxes:               viewOptions.textBoxes,
-          imageMapping:            viewOptions.imageMapping,
-          get_results:             function() { return model.get_results(); },
-          get_radial_bond_results: function() { return model.get_radial_bond_results(); },
-          get_radial_bonds:        function() { return model.get_radial_bonds(); },
-          get_restraints:          function() { return model.get_restraints(); },
-          get_obstacles:           function() { return model.get_obstacles(); },
-          get_vdw_pairs:           function() { return model.get_vdw_pairs(); },
-          set_atom_properties:     function() { return model.setAtomProperties.apply(model, arguments);  },
-          is_stopped:              function() { return model.is_stopped(); },
-
-          controlButtons:      viewOptions.controlButtons,
-          modelTimeLabel:      viewOptions.modelTimeLabel
-        };
       }
 
       // ------------------------------------------------------------
@@ -164,7 +135,7 @@ define(function (require) {
           moleculeContainer.update_drawable_positions();
         },
 
-        moleculeContainer = MoleculeContainer(moleculeViewId, getModelInterface());
+        moleculeContainer = MoleculeContainer(moleculeViewId, viewOptions, model);
 
         moleculeContainer.updateMoleculeRadius();
         moleculeContainer.setup_drawables();
@@ -177,7 +148,7 @@ define(function (require) {
         // reset player and container view for model
         //
         // ------------------------------------------------------------
-        moleculeContainer.reset(getModelInterface());
+        moleculeContainer.reset(viewOptions, model);
         moleculeContainer.updateMoleculeRadius();
         moleculeContainer.setup_drawables();
       }
