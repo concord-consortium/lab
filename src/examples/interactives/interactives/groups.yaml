@@ -25,7 +25,6 @@
 - :path: basic-examples
   :name: "Basic Interactive Examples"
   :category: Examples
-  :default: oil-and-water-shake.json
 
 - :path: conversion-tests
   :name: "Physics Conversion Tests"
