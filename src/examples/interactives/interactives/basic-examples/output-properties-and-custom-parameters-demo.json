@@ -1,6 +1,8 @@
 {
   "title": "Pendulum 1",
-  "about": "Interactive example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "pendulum1$0",

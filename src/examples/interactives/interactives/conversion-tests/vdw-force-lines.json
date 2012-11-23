@@ -1,6 +1,8 @@
 {
   "title": "VDW Force Lines",
-  "about": "Interactive example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "vdw-force-lines$0",

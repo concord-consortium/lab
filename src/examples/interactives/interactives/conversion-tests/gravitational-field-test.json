@@ -1,6 +1,8 @@
 {
-  "title": "Testing Gravitational Field",
-  "about": "Interactive example",
+  "title": "Gravitational Fields",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "gravitational-field-test$0",

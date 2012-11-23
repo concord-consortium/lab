@@ -1,6 +1,8 @@
 {
   "title": "Add Random Atom",
-  "about": "Interactive example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "three-atoms-three-elements$0",

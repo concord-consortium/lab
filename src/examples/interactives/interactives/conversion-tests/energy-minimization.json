@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Energy Minimization",
-  "about": "Interactive example",
+  "title": "Energy Minimization",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "energy-minimization$0",

@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Obstacle External Force",
-  "about": "Interactive example",
+  "title": "Obstacle External Force",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "obstacle-force$0",

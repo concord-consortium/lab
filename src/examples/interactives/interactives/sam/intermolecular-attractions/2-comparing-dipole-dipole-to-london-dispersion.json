@@ -1,0 +1,79 @@
+{
+  "title": "Comparing Dipole-Dipole to London Dispersion",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "instructions",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "npPulling",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        }
+      }
+    },
+    {
+      "id": "polarPulling",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        }
+      }
+    },
+    {
+      "id": "polarNpPulling",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        }
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select a pair of molecules",
+          "loadModel": "instructions"
+        },
+        {
+          "text": "Pull apart two non-polar molecules",
+          "action": "loadModel('npPulling', start);"
+        },
+        {
+          "text": "Pull apart two polar molecules",
+          "action": "loadModel('polarPulling', start);"
+        },
+        {
+          "text": "Pull apart a non-polar and polar molecules",
+          "action": "loadModel('polarNpPulling', start);"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "reset",
+      "action": "reset();"
+    }
+  ]
+}

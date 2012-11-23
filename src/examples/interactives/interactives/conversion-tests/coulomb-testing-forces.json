@@ -1,6 +1,8 @@
 {
-  "title": "Testing Coulomb Forces",
-  "about": "Interactive example",
+  "title": "Coulomb Forces",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "testingForces$0",

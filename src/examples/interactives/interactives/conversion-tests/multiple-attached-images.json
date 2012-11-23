@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Multiple Attached Images",
-  "about": "Interactive example",
+  "title": "Multiple Attached Images",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "multiple-attached-images$0",

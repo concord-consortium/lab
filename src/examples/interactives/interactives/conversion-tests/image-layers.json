@@ -1,6 +1,8 @@
 {
-  "title": "Testing Image Layers",
-  "about": "Interactive example",
+  "title": "Image Layers",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "image-layers$0",

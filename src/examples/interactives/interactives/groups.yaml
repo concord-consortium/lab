@@ -1,0 +1,40 @@
+- :path: samples
+  :name: "Samples"
+  :category: Samples
+
+- :path: sam/intermolecular-attractions
+  :name: "Science of Atoms and Molecules: Intermolecular Attractions"
+  :category: Curriculum
+
+- :path: sam/gas-laws
+  :name: "Science of Atoms and Molecules: Gas Laws"
+  :category: Curriculum
+
+- :path: sam/phase-change
+  :name: "Science of Atoms and Molecules: Phase Change"
+  :category: Curriculum
+
+- :path: inquiry-space/pendulum
+  :name: "Inquiry Space: Pendulums"
+  :category: Curriculum
+
+- :path: visual/recycling
+  :name: "VISUAL: Recycling"
+  :category: Curriculum
+
+- :path: basic-examples
+  :name: "Basic Interactive Examples"
+  :category: Examples
+  :default: oil-and-water-shake.json
+
+- :path: conversion-tests
+  :name: "Physics Conversion Tests"
+  :category: Tests
+
+- :path: student/classic/pendulum
+  :name: "Classic Java MW Examples"
+  :category: Examples
+
+- :path: tutorial
+  :name: "Classic Java MW Tutorial"
+  :category: Examples

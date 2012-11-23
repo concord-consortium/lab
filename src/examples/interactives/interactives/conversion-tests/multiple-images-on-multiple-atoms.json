@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Multiple Attached Images on Multiple Atoms",
-  "about": "Interactive example",
+  "title": "Multiple Attached Images on Multiple Atoms",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "multiple-images-on-multiple-atoms$0",

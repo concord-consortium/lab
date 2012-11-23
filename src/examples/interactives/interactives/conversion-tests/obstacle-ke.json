@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Obstacle Kinetic Energy calculation",
-  "about": "Interactive example",
+  "title": "Obstacle Kinetic Energy calculation",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "obstacle-ke$0",

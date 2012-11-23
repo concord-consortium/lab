@@ -1,6 +1,8 @@
 {
   "title": "Testing: Only One Atom",
-  "about": "Interactive example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "one-atom",

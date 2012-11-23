@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Obstacle Friction",
-  "about": "Interactive example",
+  "title": "Obstacle Friction",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "obstacle-friction$0",

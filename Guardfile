@@ -76,10 +76,11 @@ guard 'shell' do
   end
 
   watch(/(^src\/examples\/[^.].+)$/) do |match|
-    unless match[0][/(\.haml)|(\.sass)|(\.scss)|(\.coffee)|(^\..+)$/]
+    unless match[0][/(\.haml)|(\.sass)|(\.scss)|(\.coffee)(\.yaml)|(^\..+)$/]
       source_path = match[0]
       destination_path = 'server/public/' + source_path[/src\/(.+?)$/, 1]
       command("cp -f #{source_path} #{destination_path}")
+      command("ruby src/helpers/examples/interactives/process-interactives.rb")
     end
   end
 

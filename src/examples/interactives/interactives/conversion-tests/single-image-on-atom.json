@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Single Image on an Atom",
-  "about": "Interactive example",
+  "title": "Single Image on an Atom",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "single-image-on-atom$0",

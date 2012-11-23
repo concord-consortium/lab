@@ -1,6 +1,8 @@
 {
   "title": "Boiling Point with Energy Graph",
-  "about": "Interactive example",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "boiling-point-with-clock$0",

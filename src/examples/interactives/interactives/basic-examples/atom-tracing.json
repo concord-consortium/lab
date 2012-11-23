@@ -1,5 +1,7 @@
 {
   "title": "Atom Tracing",
+  "publicationStatus": "public",
+  "subtitle": "",
   "about": "Atom Tracing example",
   "models": [
     {

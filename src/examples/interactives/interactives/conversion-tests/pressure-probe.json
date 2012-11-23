@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Pressure Probe",
-  "about": "Interactive example",
+  "title": "Pressure Probe",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "pressure-probe$0",

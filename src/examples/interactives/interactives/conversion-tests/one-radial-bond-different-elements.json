@@ -1,6 +1,8 @@
 {
-  "title": "Testing: One Radial Bond, Different Elements",
-  "about": "Interactive example",
+  "title": "One Radial Bond, Different Elements",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "one-radial-bond_different_elements$0",

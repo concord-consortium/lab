@@ -14,12 +14,21 @@ var ROOT = "/examples",
       origin,
       embeddablePath,
       embeddableUrl,
+      interactiveDescriptions,
+      interactives,
+      groups,
 
+      $interactiveHeader = $("#interactive-header"),
+      $interactiveTitle = $("#interactive-title"),
       $selectInteractive = $("#select-interactive"),
 
       $updateInteractiveButton = $("#update-interactive-button"),
       $autoFormatSelectionButton = $("#autoformat-selection-button"),
       $interactiveTextArea = $("#interactive-text-area"),
+
+      $creditsLink = $("#credits-link"),
+      $creditsPane = $("#credits-pane"),
+      $creditsPaneClose = $('#credits-pane-close'),
 
       $aboutLink = $("#about-link"),
       $aboutPane = $("#about-pane"),
@@ -66,10 +75,10 @@ var ROOT = "/examples",
       buttonHandlersAdded = false;
 
   if (!document.location.hash) {
-    if ($selectInteractive.length > 0) {
+    if ($selectInteractive.length > 0 && $selectInteractive.val()) {
       selectInteractiveHandler();
     } else {
-      document.location.hash = '#interactives/basic-examples/oil-and-water-shake.json';
+      document.location.hash = '#interactives/samples/1-oil-and-water-shake.json';
     }
   }
 
@@ -119,6 +128,7 @@ var ROOT = "/examples",
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
     embeddableUrl = origin + embeddablePath + hash;
 
+    setupCreditsPane();
     setupAboutPane();
     setupSharePane();
   });
@@ -129,44 +139,75 @@ var ROOT = "/examples",
     }
   });
 
-  function setupAboutPane() {
-    var interactiveAboutUrl,
+  function setupCreditsPane() {
+    var interactiveCreditsUrl,
         newWindow,
         titleString,
         concordUrl, nextGenUrl,
         concordLink, nextGenLink,
-        interactiveAboutLink, googleOrgLink,
+        interactiveCreditsLink, googleOrgLink,
         utmString,
-        $aboutContent = $('#about-content');
+        $creditsContent = $('#credits-content');
 
-    $aboutLink.click(function() {
-      $aboutPane.show(100);
+    $creditsLink.click(function() {
+      $creditsPane.show(100);
     });
-    $aboutPaneClose.click(function() {
-      $aboutPane.hide(100);
+    $creditsPaneClose.click(function() {
+      $creditsPane.hide(100);
     });
-    $aboutPane.draggable();
-    $("#about-pane-title").text("About: " + interactive.title);
+    $creditsPane.draggable();
+    $("#credits-pane-title").text("Credits: " + interactive.title);
 
     concordUrl = 'http://concord.org';
     nextGenUrl = 'http://mw.concord.org/nextgen/';
-    interactiveAboutUrl = Lab.config.home + Lab.config.homeEmbeddablePath + hash;
+    interactiveCreditsUrl = Lab.config.home + Lab.config.homeEmbeddablePath + hash;
     newWindow = " class='opens-in-new-window' target='_blank";
     utmString = "utm_source=" + encodeURIComponent(interactive.title.replace(/ /gi,"+")) + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
 
     if (Lab.config.utmCampaign) {
       concordUrl += "?" + utmString;
       nextGenUrl += "?" + utmString;
-      interactiveAboutUrl += "&" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
+      interactiveCreditsUrl += "&" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
     }
 
     concordLink = "<a href='" + concordUrl + "'" + newWindow + "'>Concord Consortium</a>";
     nextGenLink = "<a href='" + nextGenUrl + "'" + newWindow + "'>Next-Generation Molecular Workbench</a>";
-    interactiveAboutLink = "<a href='" + "'" + interactiveAboutUrl + newWindow + "'>shareable version</a>";
+    interactiveCreditsLink = "<a href='" + "'" + interactiveCreditsUrl + newWindow + "'>shareable version</a>";
     googleOrgLink = "<a href='http://www.google.org/' " + newWindow + "'>Google.org</a>";
-    $aboutContent.append('<p>This interactive was created by the ' + concordLink + ' using our ' + nextGenLink + ' software, with funding by a grant from ' + googleOrgLink + '.</p>');
+    $creditsContent.append('<p>This interactive was created by the ' + concordLink + ' using our ' + nextGenLink + ' software, with funding by a grant from ' + googleOrgLink + '.</p>');
     if (!Lab.config.sharing) {
-      $aboutContent.append('<p>Explore or embed a <a href=' + interactiveAboutUrl + ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive, and discover other open source interactives for math, science and engineering at <a href="' + concordUrl + '" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
+      $creditsContent.append('<p>Explore or embed a <a href=' + interactiveCreditsUrl +
+        ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive, and discover other open source interactives for math, science and engineering at <a href="' +
+        concordUrl + '" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
+    }
+  }
+
+  function setupAboutPane() {
+    var about = interactive.about,
+        $aboutContent = $('#about-content');
+
+    if (interactive.subtitle || about) {
+      $aboutLink.click(function() {
+        $aboutPane.show(100);
+      });
+      $aboutPaneClose.click(function() {
+        $aboutPane.hide(100);
+      });
+      $aboutPane.draggable();
+      $("#about-pane-title").text("About: " + interactive.title);
+
+      if (interactive.subtitle) {
+        $aboutContent.append('<p>' + interactive.subtitle + '</p>');
+      }
+
+      if (Object.prototype.toString.call(interactive.about) !== "[object Array]") {
+        about = [about];
+      }
+      _.each(about, function(p) {
+        $aboutContent.append('<p>' + p + '</p>');
+      });
+    } else {
+      $aboutLink.hide();
     }
   }
 
@@ -248,12 +289,103 @@ var ROOT = "/examples",
     return objects;
   }
 
+  function setupSelectList() {
+    $selectInteractive.empty();
+    $selectInteractive.append($("<option>")
+          .attr('value', 'select')
+          .text("Select an Interactive ...")
+          .attr('disabled', true));
+    saveSelectFiltersToCookie();
+    interactives = interactiveDescriptions.interactives;
+    groups = _.filter(interactiveDescriptions.groups, function(group) {
+      var curriculumFilter = $("#curriculum").is(':checked'),
+          examplesFilter = $("#examples").is(':checked'),
+          testsFilter = $("#tests").is(':checked');
+      if (group.category === "Samples") return true;
+      if (curriculumFilter && group.category === "Curriculum") return true;
+      if (examplesFilter && group.category === "Examples") return true;
+      if (testsFilter && group.category === "Tests") return true;
+      return false;
+    });
+    _.each(groups, function (group) {
+      var publicFilter = $("#public").is(':checked'),
+          draftFilter = $("#draft").is(':checked'),
+          interactiveGroup = interactives.filter(function (interactive) {
+            if (interactive.groupKey !== group.path) return false;
+            if (interactive.publicationStatus === 'sample') return true;
+            if (publicFilter && interactive.publicationStatus === 'public') return true;
+            if (draftFilter && interactive.publicationStatus === 'draft') return true;
+          }),
+          $optgroup = $("<optgroup>").attr('label', group.name);
+      interactiveGroup.forEach(function (interactive) {
+        var title;
+        if (interactive.publicationStatus === 'draft') {
+          title = "* " + interactive.title;
+        } else {
+          title = interactive.title;
+        }
+        $optgroup.append($("<option>")
+          .attr('value', interactive.path)
+          .text(title)
+          .attr('data-path', interactive.path));
+      });
+      if (interactiveGroup.length > 0) {
+        $selectInteractive.append($optgroup);
+      }
+    });
+    if ($selectInteractive.find('option[value="' + interactiveUrl + '"]').length === 0) {
+      $selectInteractive.val("select");
+    } else {
+      $selectInteractive.val(interactiveUrl);
+    }
+  }
+
   function setupFullPage() {
+    $.get('interactives.json').done(function(results) {
+      if (typeof results === 'string') results = JSON.parse(results);
+      interactiveDescriptions = results;
+      restoreSelectFiltersFromCookie();
+      setupSelectList();
+      $("#select-filters input").click(setupSelectList);
+      $interactiveTitle.text(interactive.title);
+      if (interactive.publicationStatus === 'draft') {
+        $interactiveTitle.append(" <i>(draft)</i>");
+      }
+      if (interactive.subtitle) {
+        $interactiveHeader.append('<div id="interactive-subtitle">' + interactive.subtitle + '</div>');
+      }
+      finishSetupFullPage();
+    });
+  }
+
+  function restoreSelectFiltersFromCookie() {
+    var cookie = document.cookie.match(/lab-interactive-select-filter=(.*)(;|$)/),
+        str,
+        settings;
+    if (cookie) {
+      str = cookie[1],
+      settings = str.split('&').map(function (i) { return i.split('='); });
+      $("#select-filters input").each(function(i, el) {
+        var match = _.find(settings, function(e) { return e[0] === el.id; }, this);
+        if (match && el.id === match[0]) {
+          el.checked = true;
+        } else {
+          el.checked = false;
+        }
+      });
+    }
+  }
+
+  function saveSelectFiltersToCookie() {
+    document.cookie = "lab-interactive-select-filter=" + $("#select-filters").serialize() + " ; max-age=" + 30*60*60*24;
+  }
+
+
+  function finishSetupFullPage() {
     var java_mw_href,
         java_mw_link = $("#java-mw-link"),
         origin;
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
-    $selectInteractive.val(interactiveUrl);
 
     // construct link to embeddable version of Interactive
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });

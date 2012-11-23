@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Non-Coulomb Forces",
-  "about": "Interactive example",
+  "title": "Non-Coulomb Forces",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "static-non-coulomb-test$0",

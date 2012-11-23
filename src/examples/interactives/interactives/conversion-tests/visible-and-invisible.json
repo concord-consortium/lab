@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Visible and Ivisible Atoms",
-  "about": "Interactive example",
+  "title": "Visible and Ivisible Atoms",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "visible-and-invisible$0",

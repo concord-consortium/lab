@@ -1,6 +1,8 @@
 {
   "title": "Vector Visualization",
-  "about": "Interactive example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "pendulum1$0",

@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Point Restraints",
-  "about": "Interactive example",
+  "title": "Point Restraints",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "point-restraint$0",

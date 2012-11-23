@@ -1,6 +1,8 @@
 {
   "title": "View Refresh Rate and Model Sample Rate Examples",
-  "about": "Interactive example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "simple-gas$0",

@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Mark Atoms",
-  "about": "Interactive example",
+  "title": "Mark Atoms",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "mark-atoms$0",

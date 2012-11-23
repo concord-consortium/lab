@@ -294,7 +294,7 @@ div.tooltip
     text-decoration: none
     color: #000
 
-#cc
+#credits
   float: left
   vertical-align: middle
   display: table-cell
@@ -319,7 +319,7 @@ $embeddable-pane-font-size: 1.3em
 #share-link
   display: none
 
-#about-pane, #share-pane
+#credits-pane, #about-pane, #share-pane
   display: none
   position: absolute
   border-radius: 0.5em
@@ -347,7 +347,7 @@ $embeddable-pane-font-size: 1.3em
   textarea#share-iframe-content
     height: $embeddable-pane-font-size*5
 
-#share-pane
+#about-pane, #share-pane
   left: inherit
   right: 2em
   min-height: $embeddable-pane-font-size*15
@@ -355,7 +355,11 @@ $embeddable-pane-font-size: 1.3em
     margin-top: 0.5em
     margin-bottom: 0.5em
 
-#about-pane-banner, #share-pane-banner
+#share-pane
+  top: 2em
+  right: 4em
+
+#credits-pane-banner, #about-pane-banner, #share-pane-banner
   width: 100.2%
   display: table
   opacity: 0.7
@@ -367,13 +371,13 @@ $embeddable-pane-font-size: 1.3em
   border-top-right-radius: 0.5em
   border-top-left-radius: 0.5em
 
-#about-pane-title, #share-pane-title
+#credits-pane-title, #about-pane-title, #share-pane-title
   vertical-align: middle
   display: table-cell
   font-size: $embeddable-pane-font-size
   font-weight: bold
 
-#about-pane-close, #share-pane-close
+#credits-pane-close, #about-pane-close, #share-pane-close
   float: right
   vertical-align: middle
   display: table-cell
@@ -384,7 +388,7 @@ $embeddable-pane-font-size: 1.3em
     cursor: pointer
     color: #DDD
 
-#about-content, #share-content
+#credits-content, #about-content, #share-content
   margin: 0.5em 1em 1em 1em
   font-size: $embeddable-pane-font-size
   a

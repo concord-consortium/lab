@@ -1,0 +1,47 @@
+{
+  "title": "What is Pressure?",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page2$0",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page2/page2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "abs-zero",
+      "text": "Set to absolute zero",
+      "action": "set({temperatureControl: true, targetTemperature: 0.00001});"
+    },
+    {
+      "type": "button",
+      "id": "add-heat",
+      "text": "Add lots of heat",
+      "action": [
+        "var curTemp = get('temperature'), newTemp = curTemp + 200;",
+        "if (newTemp > 4000) {",
+        "  newTemp = 4000;",
+        "}",
+        "set({temperatureControl: true, targetTemperature: newTemp});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "subtract-heat",
+      "text": "Subtract some heat",
+      "action": [
+        "var curTemp = get('temperature'), newTemp = curTemp - 50;",
+        "if (newTemp < 1) {",
+        "  newTemp = 1;",
+        "}",
+        "set({temperatureControl: true, targetTemperature: newTemp});"
+      ]
+    }
+  ]
+}

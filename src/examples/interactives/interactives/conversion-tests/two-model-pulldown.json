@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Select one of Two Models using Pulldown Menu",
-  "about": "Interactive example",
+  "title": "Select one of Two Models using Pulldown Menu",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "gas1",

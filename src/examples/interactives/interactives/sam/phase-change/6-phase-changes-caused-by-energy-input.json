@@ -1,0 +1,42 @@
+{
+  "title": "Phase Changes Caused by Energy Input",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page6$0",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page6/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "run",
+      "text": "Run",
+      "action": "start();"
+    },
+    {
+      "type": "button",
+      "id": "withdraw-barrier",
+      "text": "Withdraw the barrier",
+      "action": "removeObstacle(0);"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    }
+  ]
+}

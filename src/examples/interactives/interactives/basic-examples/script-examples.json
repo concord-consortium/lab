@@ -1,6 +1,8 @@
 {
   "title": "Test Button, Slider, and Pulldown Examples",
-  "about": "Interactive example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "page3$0-with-heatbath",

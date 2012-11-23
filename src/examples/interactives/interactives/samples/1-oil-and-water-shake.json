@@ -1,0 +1,41 @@
+{
+  "title": "Oil and Water",
+  "publicationStatus": "sample",
+  "subtitle": "A very simple simulation with polar water on the left and non-polar oil on the right.",
+  "about": [
+    "It is well known that \"oil and water don't mix\", but why is that the case?",
+    "The model to the left shows polar water and non-polar oil in a container together. Press \"run\" to see how they interact.",
+    "Salad dressing is typically made from oil and vinegar (primarily water). Use the button below to \"shake up the dressing\" and watch what happens to the oil and water as you let it \"settle\"."
+  ],
+  "models": [
+    {
+      "id": "page3$1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "oilAndWaterMix",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "enableKeyboardHandlers": false
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "shake",
+      "text": "Shake up the oil and water mixture",
+      "action": "loadModel('oilAndWaterMix');"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "shake"
+    ]
+  }
+}

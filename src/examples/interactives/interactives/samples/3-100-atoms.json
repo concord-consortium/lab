@@ -1,0 +1,105 @@
+{
+  "title": "Explore 100 Atoms",
+  "publicationStatus": "sample",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "100-atoms-charged",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms-charged.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": ""
+    },
+    {
+      "id": "100-atoms$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "label": "Select Atoms",
+      "options": [
+        {
+          "text": "Charged Atoms",
+          "loadModel": "100-atoms-charged"
+        },
+        {
+          "text": "Neutral Atoms",
+          "loadModel": "100-atoms$0"
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "epsilon-slider",
+      "min": 0.002,
+      "max": 0.400,
+      "initialValue": 0.14,
+      "displayValue": "return format('1.3f')(value)",
+      "labels": [
+        {
+          "value": 0.00,
+          "label": "weak"
+        },
+        {
+          "value": 0.4,
+          "label": "strong"
+        }
+      ],
+      "steps": 199,
+      "title": "Attraction between atoms",
+      "action": "setElementProperties(2, { epsilon: -value });"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 10,
+      "max": 5000,
+      "initialValue": 400,
+      "displayValue": "return format('4f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 K"
+        },
+        {
+          "value": 5000,
+          "label": "5000 K"
+        }
+      ],
+      "steps": 499,
+      "title": "Temperature",
+      "action": "set({ targetTemperature: value });"
+    },
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": 0,
+      "max": 5000,
+      "labelIsReading": true,
+      "reading": {
+        "units": "K",
+        "offset": 0,
+        "scale": 1,
+        "digits": 0
+      }
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "pulldown1",
+      "epsilon-slider",
+      "temperature-slider"
+    ]
+  }
+}

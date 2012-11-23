@@ -1,6 +1,8 @@
 {
   "title": "Microbuoyancy measured by gauges",
-  "about": "Interactive example",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "microbuoyancy$0",

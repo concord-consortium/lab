@@ -1,6 +1,8 @@
 {
   "title": "Bar Graph Example",
-  "about": "Interactive example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "simple-ke-shading$0",

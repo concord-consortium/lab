@@ -1,6 +1,8 @@
 {
-  "title": "Testing: Angular Bonds",
-  "about": "Interactive example",
+  "title": "Angular Bonds",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "angular-bonds$0",

@@ -1,6 +1,8 @@
 {
   "title": "Boiling Point Polar Only",
-  "about": "Interactive example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "boiling-point-polar-only$0",

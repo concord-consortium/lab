@@ -208,7 +208,8 @@ server/public/examples:
 	mkdir -p server/public/examples
 	# copy everything (including symbolic links) except files that are used to generate
   # resources from src/examples/ to server/public/examples/
-	rsync -aq --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.coffee' src/examples/ server/public/examples/
+	rsync -aq --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' src/examples/ server/public/examples/
+	ruby src/helpers/examples/interactives/process-interactives.rb
 
 server/public/doc: \
 	server/public/doc/interactives \

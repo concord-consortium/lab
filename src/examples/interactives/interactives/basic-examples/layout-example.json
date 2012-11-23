@@ -1,6 +1,8 @@
 {
   "title": "Testing: Layout Example",
-  "about": "Interactive example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
   "models": [
     {
       "id": "testingForces$0",
