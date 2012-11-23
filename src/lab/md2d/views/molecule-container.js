@@ -10,9 +10,15 @@ define(function (require) {
       PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
-      layout                = require('common/layout/layout');
+      layout                = require('common/layout/layout'),
+      metaOptions           = require('md2d/views/meta-view-options'),
+      PropertiesValidator   = require('common/properties-validator'),
 
-  return function moleculeContainer(e, options) {
+      // As there is only one metaOptions set defined and required above,
+      // use common properties validator for all instances of molecule container.
+      propertiesValidator   = PropertiesValidator(metaOptions);
+
+  return function moleculeContainer(e, optionsAndModel) {
     var elem = d3.select(e),
         node = elem.node(),
         // in fit-to-parent mode, the d3 selection containing outermost container
@@ -65,6 +71,7 @@ define(function (require) {
         radialBond1, radialBond2,
         vdwPairs = [],
         vdwLines,
+        showClock,
         chargeShadingMode,
         chargeShadingChars = ["+", "-", ""],
         keShadingMode,
@@ -80,6 +87,7 @@ define(function (require) {
         velVector,
         forceVector,
         getRadialBonds,
+        getRadialBondsResults,
         imageProp,
         imageSizes = [],
         textBoxes,
@@ -92,36 +100,8 @@ define(function (require) {
         atomTraceColor,
         atomTrace,
         atomTracePath,
-        default_options = {
-          fit_to_parent:          false,
-          title:                  false,
-          xlabel:                 false,
-          ylabel:                 false,
-          controlButtons:         "play",
-          grid_lines:             false,
-          xunits:                 false,
-          yunits:                 false,
-          atom_mubers:            false,
-          enableAtomTooltips:     false,
-          enableKeyboardHandlers: true,
-          atomTraceColor:         "#AAA",
-          xmin:                   0,
-          xmax:                   10,
-          ymin:                   0,
-          ymax:                   10,
-          imageMapping:           {},
-          velocityVectors:        {
-            color: "#000",
-            width: 1.1,
-            length: 2
-          },
-          forceVectors:        {
-            color: "#F0F",
-            width: 1.1,
-            length: 2
-          }
-        },
 
+        options,
         model,
 
         RADIAL_BOND_STANDARD_STICK_STYLE,
@@ -138,7 +118,7 @@ define(function (require) {
 
     processOptions();
 
-    if ( !options.fit_to_parent ) {
+    if (!options.fit_to_parent) {
       scale(cx, cy);
     }
 
@@ -146,48 +126,36 @@ define(function (require) {
     ty = function(d, i) { return "translate(0," + y(d) + ")"; };
     stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-    function processOptions(newOptions) {
-      var setDefaults;
-      if (newOptions) {
-        options = newOptions;
-      }
-      if (options) {
-        setDefaults = function(opts, defaults) {
-          for(var p in defaults) {
-            if (opts[p] === undefined) {
-              opts[p] = defaults[p];
-            } else if (typeof opts[p] === "object") {
-              opts[p] = setDefaults(opts[p], defaults[p]);
-            }
-          }
-          return opts;
-        };
-        options = setDefaults(options, default_options);
-      } else {
-        options = default_options;
+    function processOptions(newOptionsAndModel) {
+      if (newOptionsAndModel) {
+        optionsAndModel = newOptionsAndModel;
       }
 
-      model = options.model;
+      // First, extract Model Proxy API methods.
 
       // The model function get_results() returns a 2 dimensional array
       // of atom indices and properties that is update everymodel tick.
       // This array is not garbage collected so the view can be assured that
       // the latest results will be in this array when the view is executing
-      results = options.get_results();
-      radialBondResults = options.get_radial_bond_results();
-      get_obstacles = options.get_obstacles;
-      getRadialBonds = options.get_radial_bonds;
-      getVdwPairs = options.get_vdw_pairs;
-      set_atom_properties = options.set_atom_properties;
-      is_stopped = options.is_stopped;
+      results = optionsAndModel.get_results();
+      radialBondResults = optionsAndModel.get_radial_bond_results();
+      get_obstacles = optionsAndModel.get_obstacles;
+      getRadialBonds = optionsAndModel.get_radial_bonds;
+      getRadialBondsResults = optionsAndModel.get_radial_bond_results;
+      getVdwPairs = optionsAndModel.get_vdw_pairs;
+      set_atom_properties = optionsAndModel.set_atom_properties;
+      is_stopped = optionsAndModel.is_stopped;
+
+      model = optionsAndModel.model;
+
+      // Later, process typical view options.
+      options = propertiesValidator.validateCompleteness('viewOptions', optionsAndModel);
+
       imageProp = options.images;
-      textBoxes = options.textBoxes || [];
+      textBoxes = options.textBoxes;
       if (options.interactiveUrl) {
         interactiveUrl = options.interactiveUrl;
         imagePath = ACTUAL_ROOT + interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
-      }
-      if (!options.showClock) {
-        options.showClock = model.get("showClock");
       }
       velocityVectorColor = options.velocityVectors.color;
       velocityVectorWidth  = options.velocityVectors.width;
@@ -468,7 +436,7 @@ define(function (require) {
         createVectorArrowHeads(forceVectorColor, FORCE_STR);
       } else {
 
-        if ( !options.fit_to_parent ) {
+        if (!options.fit_to_parent) {
           d3.select(node).select("svg")
               .attr("width", cx)
               .attr("height", cy);
@@ -507,7 +475,7 @@ define(function (require) {
               .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
         }
 
-        if (options.showClock) {
+        if (showClock) {
           time_label.text(modelTimeLabel())
               .attr("x", 10)
               .attr("y", size.height - 35);
@@ -607,7 +575,7 @@ define(function (require) {
               .text(fy);
 
           // update model time display
-          if (options.showClock) {
+          if (showClock) {
             time_label.text(modelTimeLabel());
           }
 
@@ -1139,8 +1107,8 @@ define(function (require) {
         // add model time display
         vis.selectAll('.modelTimeLabel').remove();
         // Update clock status.
-        options.showClock = model.get("showClock");
-        if (options.showClock) {
+        showClock = model.get("showClock");
+        if (showClock) {
           time_label = vis.append("text")
             .attr("class", "modelTimeLabel")
             .text(modelTimeLabel())
@@ -1233,7 +1201,7 @@ define(function (require) {
         gradient_container.selectAll("path.radialbond1").remove();
         gradient_container.selectAll("path.radialbond2").remove();
         radialBonds = getRadialBonds();
-        radialBondResults = options.get_radial_bond_results();
+        radialBondResults = getRadialBondsResults();
         if (radialBondResults) {
           radialBond1 = gradient_container.selectAll("path.radialbond1").data(radialBondResults);
           radialBond2 = gradient_container.selectAll("path.radialbond2").data(radialBondResults);
@@ -1433,7 +1401,7 @@ define(function (require) {
       // its content.
       function update_molecule_positions() {
         // update model time display
-        if (options.showClock) {
+        if (showClock) {
           time_label.text(modelTimeLabel());
         }
 
