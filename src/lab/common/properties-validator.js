@@ -15,7 +15,7 @@ define(function() {
       // 'input' hash is allowed to be incomplete.
       // It should be used *only* for update of an object.
       // While creating new object, use validateCompleteness() instead!
-      validate: function (type, input) {
+      validate: function (type, input, ignoreImmutable) {
         var typeMetaData = metaModel[type],
             result = {},
             prop, propMetaData;
@@ -33,6 +33,9 @@ define(function() {
               // Check if this is readOnly property.
               if (propMetaData.readOnly === true) {
                 throw new Error("Definition of " + type + " tries to overwrite read-only property " + prop);
+              }
+              if (!ignoreImmutable && propMetaData.immutable === true) {
+                throw new Error("Definition of " + type + " tries to overwrite immutable property " + prop);
               }
               result[prop] = input[prop];
             }
@@ -52,7 +55,7 @@ define(function() {
             prop, propMetaData;
 
         if (typeMetaData === undefined) {
-          throw new Error("Uknow type " + type);
+          throw new Error("Unknown type " + type);
         }
 
         for (prop in typeMetaData) {
@@ -75,7 +78,9 @@ define(function() {
         }
 
         // Perform standard check like for hash meant to update object.
-        return this.validate(type, result);
+        // However, ignore immutable check, as these properties are supposed
+        // to create a new object.
+        return this.validate(type, result, true);
       }
     };
   };

@@ -14,6 +14,9 @@ requirejs([
       },
       readOnlyProp: {
         readOnly: true
+      },
+      immutableProp: {
+        immutable: true
       }
     }
   },
@@ -43,8 +46,9 @@ requirejs([
         result = validator.validate('someType', input);
 
         result.optionalProp.should.equal(1);
-        // Why? This is only validate!
-        // For 'required' check, use validateCompleteness!
+        // Why? This is validate() method supposed to be used during
+        // objct properties update. For 'required' meta-property check,
+        // use validateCompleteness()!
         result.should.not.have.property('requiredProp');
         result.should.not.have.property('readOnlyProp');
 
@@ -74,6 +78,16 @@ requirejs([
       it('should fail when input contains read-only properties', function() {
         var input = {
           readOnlyProp: 1
+        };
+
+        (function () {
+          validator.validate('someType', input);
+        }).should.throwError();
+      });
+
+      it('should fail when input contains immutable properties', function() {
+        var input = {
+          immutableProp: 1
         };
 
         (function () {
@@ -155,6 +169,19 @@ requirejs([
           (function () {
             validator.validateCompleteness('someType', input);
           }).should.throwError();
+        });
+      });
+
+      describe('when there is an immutable property in the input', function () {
+        it('it should be accepted', function () {
+          // note the difference between validate()!
+          var input = {
+                requiredProp: 1,
+                immutableProp: 2
+              },
+              result = validator.validateCompleteness('someType', input);
+
+          result.immutableProp.should.equal(2);
         });
       });
     });
