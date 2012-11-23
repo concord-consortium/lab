@@ -117,7 +117,6 @@ define(function (require) {
           chargeShading:           viewOptions.chargeShading,
           velocityVectors:         viewOptions.velocityVectors,
           forceVectors:            viewOptions.forceVectors,
-          atomTraceId:             viewOptions.atomTraceId,
           atomTraceColor:          viewOptions.atomTraceColor,
           enableAtomTooltips:      viewOptions.enableAtomTooltips,
           enableKeyboardHandlers:  viewOptions.enableKeyboardHandlers,
