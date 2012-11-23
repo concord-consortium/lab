@@ -108,7 +108,7 @@ end
 # MD2DImports
 #
 # An class for representing and extracting the content
-# from a legacy Java Energy2D page
+# from a legacy Java MW page
 #
 class MD2DImports
   attr_reader :model_list, :model_list_dot_js
