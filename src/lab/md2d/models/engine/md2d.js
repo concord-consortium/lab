@@ -31,12 +31,6 @@ define(function (require, exports, module) {
 
       BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-      ELEMENT_PROPERTY_LIST,
-
-      ANGULAR_BOND_PROPERTY_LIST,
-
-      RADIAL_BOND_STYLES,
-
       cross = function(a0, a1, b0, b1) {
         return a0*b1 - a1*b0;
       },
@@ -93,34 +87,6 @@ define(function (require, exports, module) {
           throw new Error("md2d: requested temperature was Infinity!");
         }
       };
-
-  // Angular Bonds
-  exports.ANGULAR_BOND_PROPERTY_LIST = ANGULAR_BOND_PROPERTY_LIST = [
-    "atom1",
-    "atom2",
-    "atom3",
-    "angle",
-    "strength"
-  ];
-
-  exports.RADIAL_BOND_STYLES = RADIAL_BOND_STYLES = {
-    RADIAL_BOND_STANDARD_STICK_STYLE : 101,
-    RADIAL_BOND_LONG_SPRING_STYLE    : 102,
-    RADIAL_BOND_SOLID_LINE_STYLE     : 103,
-    RADIAL_BOND_GHOST_STYLE          : 104,
-    RADIAL_BOND_UNICOLOR_STICK_STYLE : 105,
-    RADIAL_BOND_SHORT_SPRING_STYLE   : 106,
-    RADIAL_BOND_DOUBLE_BOND_STYLE    : 107,
-    RADIAL_BOND_TRIPLE_BOND_STYLE    : 108
-  };
-
-  // Elements
-  exports.ELEMENT_PROPERTY_LIST = ELEMENT_PROPERTY_LIST = [
-    "mass",
-    "epsilon",
-    "sigma",
-    "radius"
-  ];
 
   exports.createEngine = function() {
 

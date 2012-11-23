@@ -14,6 +14,17 @@ define(function (require) {
       metaOptions           = require('md2d/views/meta-view-options'),
       PropertiesValidator   = require('common/properties-validator'),
 
+      RADIAL_BOND_STYLES = {
+        RADIAL_BOND_STANDARD_STICK_STYLE : 101,
+        RADIAL_BOND_LONG_SPRING_STYLE    : 102,
+        RADIAL_BOND_SOLID_LINE_STYLE     : 103,
+        RADIAL_BOND_GHOST_STYLE          : 104,
+        RADIAL_BOND_UNICOLOR_STICK_STYLE : 105,
+        RADIAL_BOND_SHORT_SPRING_STYLE   : 106,
+        RADIAL_BOND_DOUBLE_BOND_STYLE    : 107,
+        RADIAL_BOND_TRIPLE_BOND_STYLE    : 108
+      },
+
       // As there is only one metaOptions set defined and required above,
       // use common properties validator for all instances of molecule container.
       propertiesValidator   = PropertiesValidator(metaOptions);
@@ -285,22 +296,6 @@ define(function (require) {
 
     function get_obstacle_visible(i) {
       return obstacles.visible[i];
-    }
-
-    function get_radial_bond_atom_1(i) {
-      return radialBonds[model.RADIAL_BOND_INDICES.ATOM1][i];
-    }
-
-    function get_radial_bond_atom_2(i) {
-      return radialBonds[model.RADIAL_BOND_INDICES.ATOM2][i];
-    }
-
-    function get_radial_bond_length(i) {
-      return radialBonds[model.RADIAL_BOND_INDICES.LENGTH][i];
-    }
-
-    function get_radial_bond_strength(i) {
-      return radialBonds[model.RADIAL_BOND_INDICES.STRENGTH][i];
     }
 
     function container() {
@@ -965,7 +960,7 @@ define(function (require) {
       }
 
       function isSpringBond(d){
-        return d.style === model.RADIAL_BOND_STYLES.RADIAL_BOND_SHORT_SPRING_STYLE;
+        return d.style === RADIAL_BOND_STYLES.RADIAL_BOND_SHORT_SPRING_STYLE;
       }
 
       function vdwLinesEnter() {

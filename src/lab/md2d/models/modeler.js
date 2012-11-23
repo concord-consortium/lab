@@ -4,7 +4,6 @@
 define(function(require) {
   // Dependencies.
   var arrays              = require('arrays'),
-      arrayTypes          = require('common/array-types'),
       console             = require('common/console'),
       md2d                = require('md2d/models/engine/md2d'),
       TickHistory         = require('md2d/models/tick-history'),
@@ -160,35 +159,6 @@ define(function(require) {
         parametersByName = {};
 
     function setupIndices() {
-      var prop, i;
-
-      model.ANGULAR_BOND_PROPERTY_LIST = [];
-
-      // Copy ANGULAR_BOND properties from md2d
-      for (i = 0; i < md2d.ANGULAR_BOND_PROPERTY_LIST.length; i++) {
-        prop = md2d.ANGULAR_BOND_PROPERTY_LIST[i];
-        model.ANGULAR_BOND_PROPERTY_LIST[i] = prop;
-      }
-
-      model.ELEMENT_PROPERTY_LIST = [];
-
-      // Copy ELEMENT properties from md2d
-      for (i = 0; i < md2d.ELEMENT_PROPERTY_LIST.length; i++) {
-        prop = md2d.ELEMENT_PROPERTY_LIST[i];
-        model.ELEMENT_PROPERTY_LIST[i] = prop;
-      }
-
-      model.RADIAL_BOND_STYLES = {
-        RADIAL_BOND_STANDARD_STICK_STYLE: 101,
-        RADIAL_BOND_LONG_SPRING_STYLE:    102,
-        RADIAL_BOND_SOLID_LINE_STYLE:     103,
-        RADIAL_BOND_GHOST_STYLE:          104,
-        RADIAL_BOND_UNICOLOR_STICK_STYLE: 105,
-        RADIAL_BOND_SHORT_SPRING_STYLE:   106,
-        RADIAL_BOND_DOUBLE_BOND_STYLE:    107,
-        RADIAL_BOND_TRIPLE_BOND_STYLE:    108
-      };
-
       // TODO. probably save everything *except* a list of "non-saveable properties"
       model.SAVEABLE_PROPERTIES =  [
         "x",
@@ -1114,12 +1084,13 @@ define(function(require) {
     };
 
     model.getElementProperties = function(i) {
-      var p,
+      var elementMetaData = metaModel.element,
           props = {},
           propName;
-      for (p = 0; p < model.ELEMENT_PROPERTY_LIST.length; p++) {
-        propName = model.ELEMENT_PROPERTY_LIST[p];
-        props[propName] = engine.elements[propName][i];
+      for (propName in elementMetaData) {
+        if (elementMetaData.hasOwnProperty(propName)) {
+          props[propName] = elements[propName][i];
+        }
       }
       return props;
     };
@@ -1173,12 +1144,13 @@ define(function(require) {
     };
 
     model.getRestraintProperties = function(i) {
-      var p,
+      var restraintMetaData = metaModel.restraint,
           props = {},
           propName;
-      for (p = 0; p < model.RESTRAINT_PROPERTY_LIST.length; p++) {
-        propName = model.RESTRAINT_PROPERTY_LIST[p];
-        props[propName] = model.RESTRAINT_PROPERTY_LIST[propName][i];
+      for (propName in restraintMetaData) {
+        if (restraintMetaData.hasOwnProperty(propName)) {
+          props[propName] = restraints[propName][i];
+        }
       }
       return props;
     };
@@ -1190,12 +1162,13 @@ define(function(require) {
     };
 
     model.getAngularBondProperties = function(i) {
-      var p,
+      var angularBondMetaData = metaModel.angularBond,
           props = {},
           propName;
-      for (p = 0; p < model.ANGULAR_BOND_PROPERTY_LIST.length; p++) {
-        propName = model.ANGULAR_BOND_PROPERTY_LIST[p];
-        props[propName] = model.ANGULAR_BOND_PROPERTY_LIST[propName][i];
+      for (propName in angularBondMetaData) {
+        if (angularBondMetaData.hasOwnProperty(propName)) {
+          props[propName] = angularBonds[propName][i];
+        }
       }
       return props;
     };
