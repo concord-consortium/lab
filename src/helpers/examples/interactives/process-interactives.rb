@@ -35,6 +35,8 @@ Dir.chdir(INTERACTIVE_EXAMPLES_PATH) do
   end
 end
 
+interactives = interactives.sort_by { |i| [i[:groupKey], i[:path]] }
+
 interactives_description = {
   :interactives => interactives,
   :groups => groups
