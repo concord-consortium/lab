@@ -1,3 +1,5 @@
+/*global define */
+
 // Simple wrapper for cloning and restoring hash of arrays.
 // Such structure is widely used in md2d engine for keeping
 // state of various objects (like atoms and obstacles).

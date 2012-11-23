@@ -30,9 +30,7 @@ define(function (require) {
         viewLists,
         viewSizes = {},
         viewType,
-        containerWidth = $('#content').width(),
-        containerHeight = $('#content').height(),
-        emsize;
+        containerWidth = $('#content').width();
 
     // grab 'viewLists' from legacy layout system
     viewLists = layout.views;

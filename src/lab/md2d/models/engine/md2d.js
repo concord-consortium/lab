@@ -47,7 +47,7 @@ define(function (require, exports, module) {
         Output units:
           T: K
       */
-      KE_to_T = function(totalKEinMWUnits, N) {
+      convertKEtoT = function(totalKEinMWUnits, N) {
         // In 2 dimensions, kT = (2/N_df) * KE
 
         var N_df = 2 * N,
@@ -65,7 +65,7 @@ define(function (require, exports, module) {
         Output units:
           KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
       */
-      T_to_KE = function(T, N) {
+      convertTtoKE = function(T, N) {
         var N_df = 2 * N,
             averageKEinJoules  = T * BOLTZMANN_CONSTANT_IN_JOULES,
             averageKEinMWUnits = constants.convert(averageKEinJoules, { from: unit.JOULE, to: unit.MW_ENERGY_UNIT }),
@@ -280,7 +280,7 @@ define(function (require, exports, module) {
         // Call pressureBuffers.initialize(obstacles, N_obstacles) when obstacles
         // are created to initialize this structure.
         // Each time a new obstacle is added, this function should also be called!
-        pressureBuffers = PressureBuffers(),
+        pressureBuffers = new PressureBuffers(),
         // #####
 
         // An object that contains references to the above obstacle-property arrays.
@@ -454,7 +454,7 @@ define(function (require, exports, module) {
         // optimization. Cell lists support neighbor list.
         initializeCellList = function () {
           if (cellList === undefined) {
-            cellList = CellList(size[0], size[1], computeMaxCutoff());
+            cellList = new CellList(size[0], size[1], computeMaxCutoff());
           } else {
             cellList.reinitialize(computeMaxCutoff());
           }
@@ -464,7 +464,7 @@ define(function (require, exports, module) {
         // optimization. Neighbor list cooperates with cell list.
         initializeNeighborList = function () {
           if (neighborList === undefined) {
-            neighborList = NeighborList(N, computeNeighborListMaxDisplacement());
+            neighborList = new NeighborList(N, computeNeighborListMaxDisplacement());
           } else {
             neighborList.reinitialize(N, computeNeighborListMaxDisplacement());
           }
@@ -680,7 +680,7 @@ define(function (require, exports, module) {
         },
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
-        T_windowed,
+        getTWindowed,
 
         // Dynamically determine an appropriate window size for use when measuring a windowed average of the temperature.
         getWindowSize = function() {
@@ -692,7 +692,7 @@ define(function (require, exports, module) {
         // the temperature comes within `tempTolerance` of `T_target`.
         beginTransientTemperatureChange = function()  {
           temperatureChangeInProgress = true;
-          T_windowed = math.getWindowedAverager( getWindowSize() );
+          getTWindowed = math.getWindowedAverager( getWindowSize() );
         },
 
         // Calculates & returns instantaneous temperature of the system.
@@ -712,7 +712,7 @@ define(function (require, exports, module) {
             }
           }
 
-          return KE_to_T( twoKE/2, N );
+          return convertKEtoT(twoKE / 2, N);
         },
 
         // Scales the velocity vector of particle i by `factor`.
@@ -1529,7 +1529,7 @@ define(function (require, exports, module) {
 
           T = computeTemperature();
 
-          if (temperatureChangeInProgress && Math.abs(T_windowed(T) - target) <= target * tempTolerance) {
+          if (temperatureChangeInProgress && Math.abs(getTWindowed(T) - target) <= target * tempTolerance) {
             temperatureChangeInProgress = false;
           }
 
@@ -2519,7 +2519,7 @@ define(function (require, exports, module) {
         }
 
         // Update temperature.
-        T = KE_to_T(KEinMWUnits, N);
+        T = convertKEtoT(KEinMWUnits, N);
 
         // State to be read by the rest of the system:
         state.time           = time;
@@ -2738,13 +2738,13 @@ define(function (require, exports, module) {
         return [
           // Use wrapper providing clone-restore interface to save the hashes-of-arrays
           // that represent model state.
-          CloneRestoreWrapper(elements),
-          CloneRestoreWrapper(atoms),
-          CloneRestoreWrapper(obstacles),
-          CloneRestoreWrapper(radialBonds),
-          CloneRestoreWrapper(angularBonds),
-          CloneRestoreWrapper(restraints),
-          CloneRestoreWrapper(springForces),
+          new CloneRestoreWrapper(elements),
+          new CloneRestoreWrapper(atoms),
+          new CloneRestoreWrapper(obstacles),
+          new CloneRestoreWrapper(radialBonds),
+          new CloneRestoreWrapper(angularBonds),
+          new CloneRestoreWrapper(restraints),
+          new CloneRestoreWrapper(springForces),
           // Save time value.
           // Create one-line wrapper to provide required interface.
           {

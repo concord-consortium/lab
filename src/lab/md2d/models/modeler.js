@@ -746,7 +746,7 @@ define(function(require) {
     model.initializeHistory = function(maxSize) {
       updateAllOutputProperties();
       maxSize = maxSize || defaultMaxTickHistory;
-      tickHistory = TickHistory({
+      tickHistory = new TickHistory({
         input: [
           "targetTemperature",
           "lennardJonesForces",

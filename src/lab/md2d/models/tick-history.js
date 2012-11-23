@@ -1,7 +1,7 @@
 /*global define: false */
 /*jslint onevar: true devel:true eqnull: true */
 
-define(function(require) {
+define(function() {
 
   return function TickHistory(modelState, model, size) {
     var tickHistory = {},
@@ -89,10 +89,7 @@ define(function(require) {
     }
 
     function extract(savedState) {
-      var i,
-          prop,
-          setter,
-          state;
+      var i, state;
 
       // restore model input properties
       model.restoreProperties(savedState.input);

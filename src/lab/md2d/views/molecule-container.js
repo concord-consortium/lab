@@ -1,4 +1,4 @@
-/*globals $ alert ACTUAL_ROOT model_player define: false, d3: false */
+/*global $ alert ACTUAL_ROOT model_player define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   Molecule Container

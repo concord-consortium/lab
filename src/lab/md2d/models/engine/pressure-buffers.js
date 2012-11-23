@@ -1,3 +1,5 @@
+/*global define */
+
 // Special structure for keeping pressure probes data.
 // Buffers store historical values used during interpolation
 // (running average).

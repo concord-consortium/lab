@@ -1,3 +1,5 @@
+/*global define */
+
 // Cell lists (also sometimes referred to as Cell linked-lists) are a tool for
 // finding all atom pairs within a given cut-off distance of each other in
 // Molecular dynamics simulations.

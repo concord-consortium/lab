@@ -1,4 +1,4 @@
-/*globals define: true */
+/*global define: true */
 /*jshint eqnull:true */
 /**
   Simple, good-enough minimization via gradient descent.

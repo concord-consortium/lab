@@ -113,7 +113,7 @@ define(function (require) {
 
       function setupModel() {
         processOptions();
-        model = Model(modelConfig);
+        model = new Model(modelConfig);
         model.resetTime();
         model.on('tick', tickHandler);
         model.on('addAtom', resetModelPlayer);
@@ -145,7 +145,7 @@ define(function (require) {
           moleculeContainer.update_drawable_positions();
         },
 
-        moleculeContainer = MoleculeContainer(moleculeViewId, viewOptions, model);
+        moleculeContainer = new MoleculeContainer(moleculeViewId, viewOptions, model);
 
         moleculeContainer.updateMoleculeRadius();
         moleculeContainer.setup_drawables();

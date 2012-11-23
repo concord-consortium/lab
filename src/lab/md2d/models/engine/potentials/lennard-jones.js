@@ -1,4 +1,4 @@
-/*globals define: true */
+/*global define: true */
 /*jshint eqnull:true boss:true */
 
 // Module can be used both in Node.js environment and in Web browser

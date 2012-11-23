@@ -1,4 +1,4 @@
-/*globals define: false, $: false, model: false */
+/*global define: false, $: false, model: false */
 // ------------------------------------------------------------
 //
 //   Screen Layout

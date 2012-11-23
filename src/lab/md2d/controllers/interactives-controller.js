@@ -1,4 +1,4 @@
-/*global define model $ alert ACTUAL_ROOT Lab d3*/
+/*global define model $ alert ACTUAL_ROOT d3*/
 /*jshint eqnull: true boss: true */
 define(function (require) {
   // Dependencies.
@@ -390,7 +390,7 @@ define(function (require) {
         if (modelController) {
           modelController.reload(modelConfig, playerConfig);
         } else {
-          modelController = ModelController('#molecule-container', modelConfig, playerConfig);
+          modelController = new ModelController('#molecule-container', modelConfig, playerConfig);
           modelLoaded();
           // also be sure to get notified when the underlying model changes
           modelController.on('modelReset', modelLoaded);
@@ -413,7 +413,7 @@ define(function (require) {
           thermometer = createThermometer(component);
           return thermometer;
         case 'barGraph':
-          barGraphController = BarGraphController(component);
+          barGraphController = new BarGraphController(component);
           return {
             elem:     barGraphController.getViewContainer(),
             callback: barGraphController.modelLoadedCallback
@@ -421,7 +421,7 @@ define(function (require) {
         case 'energyGraph':
           return createEnergyGraph(component);
         case 'pressureGraph':
-          pressureGraphController = PressureGraphController(component);
+          pressureGraphController = new PressureGraphController(component);
           return {
             elem:     pressureGraphController.getViewContainer(),
             callback: pressureGraphController.modelLoadedCallback
@@ -967,7 +967,7 @@ define(function (require) {
     function newEnergyGraph(id, options) {
       options = options || {};
       options.dataset = energyData;
-      energyGraph = RealTimeGraph('#' + id, options);
+      energyGraph = new RealTimeGraph('#' + id, options);
     }
 
     function invalidateFollowingEnergyData() {
@@ -1088,7 +1088,7 @@ define(function (require) {
           componentJsons,
           components = {},
           component,
-          divArray,
+          divContents,
           $row, items,
           div,
           componentId,
@@ -1101,7 +1101,7 @@ define(function (require) {
       if ($interactiveContainer.children().length === 0) {
         $top = $('<div class="interactive-top" id="top"/>');
         $top.append('<div class="interactive-top" id="molecule-container"/>');
-        if (interactive.layout && interactive.layout.right != undefined) {
+        if (interactive.layout && interactive.layout.right !== undefined) {
           $right = $('<div class="interactive-top" id="right"/>');
           $top.append($right);
         }
@@ -1149,7 +1149,7 @@ define(function (require) {
         for (div in interactive.layout) {
           if (interactive.layout.hasOwnProperty(div)) {
             divContents = interactive.layout[div];
-            if (typeof divContents == "string") {
+            if (typeof divContents === "string") {
               // simply add the author-defined html in its entirety
               $('#'+div).html(divContents);
             } else {

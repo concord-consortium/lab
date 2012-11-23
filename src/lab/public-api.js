@@ -1,4 +1,4 @@
-/*globals define: false, Lab: true */
+/*global define: false */
 
 define(function (require) {
   var version = require('lab.version'),

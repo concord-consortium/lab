@@ -1,4 +1,4 @@
-/*globals
+/*global
 
   define
   DEVELOPMENT
@@ -126,7 +126,7 @@ define(function (require) {
 
       function createModel() {
         initializeLocalVariables();
-        model = Model({
+        model = new Model({
           elements            : elements,
           targetTemperature   : targetTemperature,
           lennardJonesForces  : lennardJonesForces,
@@ -200,7 +200,7 @@ define(function (require) {
 
         model_player = new ModelPlayer(model, autostart);
 
-        moleculeContainer = MoleculeContainer(moleculeViewId, getModelInterface());
+        moleculeContainer = new MoleculeContainer(moleculeViewId, getModelInterface());
 
         moleculeContainer.updateMoleculeRadius();
         moleculeContainer.setup_drawables();
@@ -219,7 +219,7 @@ define(function (require) {
         } else {
           appletOptions = {};
         }
-        appletContainer = AppletContainer(appletContainerID, appletOptions);
+        appletContainer = new AppletContainer(appletContainerID, appletOptions);
 
         // ------------------------------------------------------------
         //
@@ -392,7 +392,7 @@ define(function (require) {
       function setupMWApplet() {
         if (currentCMLPath()) {
           appletOptions = { params: [["script", "page:0:import " + currentCMLPath()]] };
-          appletContainer = AppletContainer(appletContainerID, appletOptions);
+          appletContainer = new AppletContainer(appletContainerID, appletOptions);
           runMWScript("page:0:set frank false");
           layout.setView('appletContainers', [appletContainer]);
           layout.setupScreen();

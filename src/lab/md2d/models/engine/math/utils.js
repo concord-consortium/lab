@@ -1,4 +1,4 @@
-/*globals define: true */
+/*global define: true */
 /*jslint eqnull: true */
 /**
   Returns a function which accepts a single numeric argument and returns:

@@ -1,4 +1,4 @@
-/*globals define: false, window: false */
+/*global define: false, window: false */
 
 // TODO: just temporary solution, refactor it.
 define(function (require) {
