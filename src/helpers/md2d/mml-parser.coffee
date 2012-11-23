@@ -4,8 +4,8 @@ md2dAPI   = require '../../helpers/md2d/md2d-node-api'
 unit      = constants.unit
 
 # Create properties validator
-metaModel = md2dAPI.metaModel
-validator = md2dAPI.PropertiesValidator metaModel
+metadata  = md2dAPI.metadata
+validator = md2dAPI.validator
 
 # Used throughout Classic MW to convert energy gradient values measured in units of eV/0.1Å to
 # the equivalent forces measured in units of 120 amu * 0.1Å / fs^2 (Classic's "natural" unit system
@@ -214,7 +214,7 @@ parseMML = (mmlString) ->
         removeNaNProperties rawData
 
         # Validate all properties and provides default values for undefined values.
-        validatedData = validator.validateCompleteness 'obstacle', rawData
+        validatedData = validator.validateCompleteness metadata.obstacle, rawData
 
         # Change colorR, colorB, colorG to array...
         # TODO: ugly, use just one convention. colorR/G/B should be easier.
@@ -448,7 +448,7 @@ parseMML = (mmlString) ->
       removeNaNProperties elementRawData
 
       # Validate all properties and provides default values for undefined values.
-      elementValidatedData = validator.validateCompleteness 'element', elementRawData
+      elementValidatedData = validator.validateCompleteness metadata.element, elementRawData
 
       elemTypes[elementValidatedData.id] = elementValidatedData
 
@@ -554,7 +554,7 @@ parseMML = (mmlString) ->
           removeNaNProperties restraintRawData
 
           # Validate all properties and provides default values for undefined values.
-          restraintValidatedData = validator.validateCompleteness 'restraint', restraintRawData
+          restraintValidatedData = validator.validateCompleteness metadata.restraint, restraintRawData
 
           restraints.push restraintValidatedData
 
@@ -567,7 +567,7 @@ parseMML = (mmlString) ->
         removeNaNProperties atomRawData
 
         # Validate all properties and provides default values for undefined values.
-        atomValidatedData = validator.validateCompleteness 'atom', atomRawData
+        atomValidatedData = validator.validateCompleteness metadata.atom, atomRawData
 
         atoms.push atomValidatedData
 
@@ -608,7 +608,7 @@ parseMML = (mmlString) ->
       removeNaNProperties radialBondRawData
 
       # Validate all properties and provides default values for undefined values.
-      radialBondValidatedData = validator.validateCompleteness 'radialBond', radialBondRawData
+      radialBondValidatedData = validator.validateCompleteness metadata.radialBond, radialBondRawData
 
       radialBonds.push radialBondValidatedData
 
@@ -637,7 +637,7 @@ parseMML = (mmlString) ->
       angularBondRawData = { atom1, atom2, atom3, angle, strength }
 
        # Validate all properties and provides default values for undefined values.
-      angularBondValidatedData = validator.validateCompleteness 'angularBond', angularBondRawData
+      angularBondValidatedData = validator.validateCompleteness metadata.angularBond, angularBondRawData
 
       angularBonds.push angularBondValidatedData
 
@@ -690,7 +690,7 @@ parseMML = (mmlString) ->
     # Revert back all NaNs to undefined, as they will be replaced by default values.
     removeNaNProperties json
     # Validate all properties and provides default values for undefined values.
-    json = validator.validateCompleteness 'mainProperties', json
+    json = validator.validateCompleteness metadata.mainProperties, json
 
     # Properties which are managed by model, but they define view.
     # Model handles them, as they are e.g. stored in the history.
@@ -704,7 +704,7 @@ parseMML = (mmlString) ->
       showForceVectors    : showForceVectors
 
     # Validate all properties and provides default values for undefined values.
-    modelViewProperties = validator.validateCompleteness 'modelViewProperties', modelViewProperties
+    modelViewProperties = validator.validateCompleteness metadata.modelViewProperties, modelViewProperties
 
     json.viewOptions = modelViewProperties
     json.elements = elemTypes
@@ -760,9 +760,9 @@ parseMML = (mmlString) ->
       delete json.atoms[name] if array.every (i)-> i is defaultVal
 
     # Arrays which has only default values.
-    removeArrayIfDefault("marked", marked, metaModel.atom.marked.defaultValue)
-    removeArrayIfDefault("visible", visible, metaModel.atom.visible.defaultValue)
-    removeArrayIfDefault("draggable", draggable, metaModel.atom.draggable.defaultValue)
+    removeArrayIfDefault("marked", marked, metadata.atom.marked.defaultValue)
+    removeArrayIfDefault("visible", visible, metadata.atom.visible.defaultValue)
+    removeArrayIfDefault("draggable", draggable, metadata.atom.draggable.defaultValue)
 
     # Remove targetTemperature when heat-bath is disabled.
     delete json.targetTemperature if not json.temperatureControl

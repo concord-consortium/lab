@@ -11,8 +11,8 @@ define(function (require) {
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
       layout                = require('common/layout/layout'),
-      metaOptions           = require('md2d/views/meta-view-options'),
-      PropertiesValidator   = require('common/properties-validator'),
+      optionsMetadata       = require('md2d/views/meta-view-options'),
+      validator             = require('common/validator'),
 
       RADIAL_BOND_STYLES = {
         RADIAL_BOND_STANDARD_STICK_STYLE : 101,
@@ -23,11 +23,7 @@ define(function (require) {
         RADIAL_BOND_SHORT_SPRING_STYLE   : 106,
         RADIAL_BOND_DOUBLE_BOND_STYLE    : 107,
         RADIAL_BOND_TRIPLE_BOND_STYLE    : 108
-      },
-
-      // As there is only one metaOptions set defined and required above,
-      // use common properties validator for all instances of molecule container.
-      propertiesValidator   = PropertiesValidator(metaOptions);
+      };
 
   return function moleculeContainer(e, viewOptions, model) {
     var elem = d3.select(e),
@@ -134,7 +130,7 @@ define(function (require) {
       results = model.get_results();
 
       // Process typical view options.
-      options = propertiesValidator.validateCompleteness('viewOptions', viewOptions);
+      options = validator.validateCompleteness(optionsMetadata, viewOptions);
 
       imageProp = options.images;
       textBoxes = options.textBoxes;

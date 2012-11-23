@@ -3,19 +3,16 @@
 
 define(function(require) {
   // Dependencies.
-  var arrays              = require('arrays'),
-      console             = require('common/console'),
-      md2d                = require('md2d/models/engine/md2d'),
-      TickHistory         = require('md2d/models/tick-history'),
-      metaModel           = require('md2d/models/meta-model'),
-      serialize           = require('common/serialize'),
-      PropertiesValidator = require('common/properties-validator'),
+  var arrays      = require('arrays'),
+      console     = require('common/console'),
+      md2d        = require('md2d/models/engine/md2d'),
+      TickHistory = require('md2d/models/tick-history'),
+      serialize   = require('common/serialize'),
+      metadata    = require('md2d/models/metadata'),
+      validator   = require('common/validator'),
       _ = require('underscore'),
 
-      engine,
-      // As there is only one metaModel defined and required above,
-      // use common properties validator for all instances of Model.
-      propertiesValidator = PropertiesValidator(metaModel);
+      engine;
 
   return function Model(initialProperties) {
     var model = {},
@@ -842,7 +839,7 @@ define(function(require) {
           radius;
 
       // Validate properties, provide default values.
-      props = propertiesValidator.validateCompleteness('atom', props);
+      props = validator.validateCompleteness(metadata.atom, props);
 
       // As a convenience to script authors, bump the atom within bounds
       radius = engine.getRadiusOfElement(props.element);
@@ -870,7 +867,7 @@ define(function(require) {
       var validatedProps;
 
       // Validate properties, use default values if there is such need.
-      validatedProps = propertiesValidator.validateCompleteness('element', props);
+      validatedProps = validator.validateCompleteness(metadata.element, props);
       // Finally, add radial bond.
       engine.addElement(validatedProps);
     };
@@ -891,7 +888,7 @@ define(function(require) {
         props.colorB = props.color[2];
       }
       // Validate properties, use default values if there is such need.
-      validatedProps = propertiesValidator.validateCompleteness('obstacle', props);
+      validatedProps = validator.validateCompleteness(metadata.obstacle, props);
       // Finally, add obstacle.
       engine.addObstacle(validatedProps);
     },
@@ -904,7 +901,7 @@ define(function(require) {
       var validatedProps;
 
       // Validate properties, use default values if there is such need.
-      validatedProps = propertiesValidator.validateCompleteness('radialBond', props);
+      validatedProps = validator.validateCompleteness(metadata.radialBond, props);
       // Finally, add radial bond.
       engine.addRadialBond(validatedProps);
     },
@@ -913,7 +910,7 @@ define(function(require) {
       var validatedProps;
 
       // Validate properties, use default values if there is such need.
-      validatedProps = propertiesValidator.validateCompleteness('angularBond', props);
+      validatedProps = validator.validateCompleteness(metadata.angularBond, props);
       // Finally, add angular bond.
       engine.addAngularBond(validatedProps);
     },
@@ -922,7 +919,7 @@ define(function(require) {
       var validatedProps;
 
       // Validate properties, use default values if there is such need.
-      validatedProps = propertiesValidator.validateCompleteness('restraint', props);
+      validatedProps = validator.validateCompleteness(metadata.restraint, props);
       // Finally, add restraint.
       engine.addRestraint(validatedProps);
     },
@@ -987,7 +984,7 @@ define(function(require) {
           j, jj;
 
       // Validate properties.
-      props = propertiesValidator.validate('atom', props);
+      props = validator.validate(metadata.atom, props);
 
       if (moveMolecule) {
         moleculeAtoms = engine.getMoleculeAtoms(i);
@@ -1021,7 +1018,7 @@ define(function(require) {
     };
 
     model.getAtomProperties = function(i) {
-      var atomMetaData = metaModel.atom,
+      var atomMetaData = metadata.atom,
           props = {},
           propName;
       for (propName in atomMetaData) {
@@ -1039,7 +1036,7 @@ define(function(require) {
     };
 
     model.getElementProperties = function(i) {
-      var elementMetaData = metaModel.element,
+      var elementMetaData = metadata.element,
           props = {},
           propName;
       for (propName in elementMetaData) {
@@ -1051,14 +1048,14 @@ define(function(require) {
     };
 
     model.setObstacleProperties = function(i, props) {
-      props = propertiesValidator.validate('obstacle', props);
+      props = validator.validate(metadata.obstacle, props);
       invalidatingChangePreHook();
       engine.setObstacleProperties(i, props);
       invalidatingChangePostHook();
     };
 
     model.getObstacleProperties = function(i) {
-      var obstacleMetaData = metaModel.obstacle,
+      var obstacleMetaData = metadata.obstacle,
           props = {},
           propName;
       for (propName in obstacleMetaData) {
@@ -1076,7 +1073,7 @@ define(function(require) {
     };
 
     model.getRadialBondProperties = function(i) {
-      var radialBondMetaData = metaModel.radialBond,
+      var radialBondMetaData = metadata.radialBond,
           props = {},
           propName;
       for (propName in radialBondMetaData) {
@@ -1099,7 +1096,7 @@ define(function(require) {
     };
 
     model.getRestraintProperties = function(i) {
-      var restraintMetaData = metaModel.restraint,
+      var restraintMetaData = metadata.restraint,
           props = {},
           propName;
       for (propName in restraintMetaData) {
@@ -1117,7 +1114,7 @@ define(function(require) {
     };
 
     model.getAngularBondProperties = function(i) {
-      var angularBondMetaData = metaModel.angularBond,
+      var angularBondMetaData = metadata.angularBond,
           props = {},
           propName;
       for (propName in angularBondMetaData) {
@@ -1378,8 +1375,8 @@ define(function(require) {
       // Perform validation in case of setting main properties or
       // model view properties. Attempts to set immutable or read-only
       // properties will be caught.
-      propertiesValidator.validate('mainProperties', hash);
-      propertiesValidator.validate('modelViewProperties', hash);
+      validator.validate(metadata.mainProperties, hash);
+      validator.validate(metadata.modelViewProperties, hash);
 
       if (engine) invalidatingChangePreHook();
       set_properties(hash);
@@ -1542,7 +1539,7 @@ define(function(require) {
     model.serialize = function(includeAtoms) {
       var propCopy = $.extend({}, properties);
       if (includeAtoms) {
-        propCopy.atoms = serialize(metaModel.atom, atoms);
+        propCopy.atoms = serialize(metadata.atom, atoms);
       }
       if (elements) {
         propCopy.elements = elements;
@@ -1592,12 +1589,12 @@ define(function(require) {
     // Set the regular, main properties.
     // Note that validation process will return hash without all properties which are
     // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
-    set_properties(propertiesValidator.validateCompleteness('mainProperties', initialProperties));
+    set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
 
     // Set the model view options.
     // These options are view-related, but are stored in model,
     // as e.g. they should be saved in tick history.
-    set_properties(propertiesValidator.validateCompleteness('modelViewProperties', initialProperties.viewOptions || {}));
+    set_properties(validator.validateCompleteness(metadata.modelViewProperties, initialProperties.viewOptions || {}));
 
     // Setup engine object.
     model.initializeEngine();

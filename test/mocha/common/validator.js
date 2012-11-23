@@ -1,11 +1,10 @@
 /*global describe it beforeEach */
 
 requirejs([
-  'common/properties-validator'
-], function (PropertiesValidator) {
+  'common/validator'
+], function (validator) {
 
-  var metaModel = {
-    someType: {
+  var metadata = {
       requiredProp: {
         required: true
       },
@@ -18,21 +17,24 @@ requirejs([
       immutableProp: {
         immutable: true
       }
-    }
-  },
-  validator = PropertiesValidator(metaModel);
+    };
 
-  describe('PropertiesValidator', function() {
+  describe('validator module', function() {
 
     describe('.validate()', function() {
-      it('should fail when an unknown type is provided', function () {
+      it('should fail when an incorrect arguments are provided', function () {
         // The input is correct.
         var input = {
           optionalProp: 1
         };
         (function () {
-          // But type is unknown.
-          validator.validate('someUnknownType', input);
+          validator.validate();
+        }).should.throwError();
+        (function () {
+          validator.validate(input);
+        }).should.throwError();
+        (function () {
+          validator.validate(metadata);
         }).should.throwError();
       });
 
@@ -43,7 +45,7 @@ requirejs([
         input = {
           optionalProp: 1
         };
-        result = validator.validate('someType', input);
+        result = validator.validate(metadata, input);
 
         result.optionalProp.should.equal(1);
         // Why? This is validate() method supposed to be used during
@@ -57,7 +59,7 @@ requirejs([
           requiredProp: 1,
           optionalProp: 2
         };
-        result = validator.validate('someType', input);
+        result = validator.validate(metadata, input);
 
         result.requiredProp.should.equal(1);
         result.optionalProp.should.equal(2);
@@ -69,7 +71,7 @@ requirejs([
               optionalProp: 1,
               someOtherProp: 2
             },
-            result = validator.validate('someType', input);
+            result = validator.validate(metadata, input);
 
         result.optionalProp.should.equal(1);
         result.should.not.have.property('someOtherProp');
@@ -81,7 +83,7 @@ requirejs([
         };
 
         (function () {
-          validator.validate('someType', input);
+          validator.validate(metadata, input);
         }).should.throwError();
       });
 
@@ -91,21 +93,26 @@ requirejs([
         };
 
         (function () {
-          validator.validate('someType', input);
+          validator.validate(metadata, input);
         }).should.throwError();
       });
     });
 
 
     describe('.validateCompleteness()', function() {
-      it('should fail when an unknown type is provided', function () {
+      it('should fail when an incorrect arguments are provided', function () {
         // The input is correct.
         var input = {
           requiredProp: 1
         };
         (function () {
-          // But the type is unknown.
-          validator.validateCompleteness('someUnknownType', input);
+          validator.validateCompleteness();
+        }).should.throwError();
+        (function () {
+          validator.validateCompleteness(input);
+        }).should.throwError();
+        (function () {
+          validator.validateCompleteness(metadata);
         }).should.throwError();
       });
 
@@ -114,7 +121,7 @@ requirejs([
           var input = {
                 requiredProp: 1
               },
-              result = validator.validateCompleteness('someType', input);
+              result = validator.validateCompleteness(metadata, input);
 
           result.requiredProp.should.equal(1);
           // Default value -1 should be used.
@@ -128,7 +135,7 @@ requirejs([
                 requiredProp: 1,
                 optionalProp: null
               },
-              result = validator.validateCompleteness('someType', input);
+              result = validator.validateCompleteness(metadata, input);
 
           result.requiredProp.should.equal(1);
           // Default value -1 should be used.
@@ -142,7 +149,7 @@ requirejs([
                 requiredProp: 1,
                 optionalProp: 2
               },
-              result = validator.validateCompleteness('someType', input);
+              result = validator.validateCompleteness(metadata, input);
 
           result.requiredProp.should.equal(1);
           // Default value -1 should be used.
@@ -157,7 +164,7 @@ requirejs([
           var input = {};
 
           (function () {
-            validator.validateCompleteness('someType', input);
+            validator.validateCompleteness(metadata, input);
           }).should.throwError();
         });
 
@@ -167,7 +174,7 @@ requirejs([
           };
 
           (function () {
-            validator.validateCompleteness('someType', input);
+            validator.validateCompleteness(metadata, input);
           }).should.throwError();
         });
       });
@@ -179,7 +186,7 @@ requirejs([
                 requiredProp: 1,
                 immutableProp: 2
               },
-              result = validator.validateCompleteness('someType', input);
+              result = validator.validateCompleteness(metadata, input);
 
           result.immutableProp.should.equal(2);
         });
