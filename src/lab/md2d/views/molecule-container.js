@@ -1609,8 +1609,8 @@ define(function (require) {
       container.setup_drawables();
     };
 
-    container.reset = function(newOptions) {
-      container.processOptions(newOptions);
+    container.reset = function(newViewOptions, newModel) {
+      container.processOptions(newViewOptions, newModel);
       container();
       container.setup_drawables();
       container.updateMoleculeRadius();
