@@ -35,9 +35,6 @@ define(function(require) {
         modelOutputState,
         tickHistory,
 
-        width = initialProperties.width,
-        height = initialProperties.height,
-
         // An array of elements object.
         elements,
 
@@ -555,7 +552,7 @@ define(function(require) {
     model.initializeEngine = function () {
       engine = md2d.createEngine();
 
-      engine.setSize([width,height]);
+      engine.setSize([model.get('width'), model.get('height')]);
       engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
       engine.useCoulombInteraction(model.get('coulombForces'));
       engine.useThermostat(model.get('temperatureControl'));
@@ -1378,6 +1375,12 @@ define(function(require) {
     };
 
     model.set = function(hash) {
+      // Perform validation in case of setting main properties or
+      // model view properties. Attempts to set immutable or read-only
+      // properties will be caught.
+      propertiesValidator.validate('mainProperties', hash);
+      propertiesValidator.validate('modelViewProperties', hash);
+
       if (engine) invalidatingChangePreHook();
       set_properties(hash);
       if (engine) invalidatingChangePostHook();
@@ -1544,8 +1547,8 @@ define(function(require) {
       if (elements) {
         propCopy.elements = elements;
       }
-      propCopy.width = width;
-      propCopy.height = height;
+      propCopy.width = model.get('width');
+      propCopy.height = model.get('height');
       return propCopy;
     };
 

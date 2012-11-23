@@ -5,10 +5,12 @@ define(function() {
   return {
     mainProperties: {
       width: {
-        defaultValue: 10
+        defaultValue: 10,
+        immutable: true
       },
       height: {
-        defaultValue: 10
+        defaultValue: 10,
+        immutable: true
       },
       lennardJonesForces: {
         defaultValue: true

@@ -78,7 +78,7 @@ requirejs([
         var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
         assert.equal(total_charge, 0);
       },
-      "creates a model with json and then gets values in json, modifies the model with new json, and confirms that settable properties change and immutable ones don't": function(model) {
+      "creates a model with json and then gets values in json, modifies the model with new json, and confirms that settable properties change and immutable causes an error": function(model) {
         var mol_number = 5;
         initialization_options = {
           lennardJonesForces: true,
@@ -101,8 +101,6 @@ requirejs([
         new_options = {
           lennardJonesForces: false,
           coulombForces: false,
-          width: 4,
-          height: 5
         };
         model.set(new_options);
         model.createNewAtoms(mol_number);
@@ -111,8 +109,13 @@ requirejs([
         assert.equal(modelHash.lennardJonesForces, new_options.lennardJonesForces);
         assert.equal(modelHash.coulombForces, new_options.coulombForces);
         assert.equal(modelHash.atoms.x.length, mol_number);
-        assert.equal(modelHash.width, initialization_options.width);
-        assert.equal(modelHash.height, initialization_options.height);
+
+        new_options = {
+          width: 4,
+          height: 5
+        };
+
+        assert.throws(function () { model.set(new_options); }, Error);
       },
       "creates a model, saves atom state, loads atom state": function(model) {
         new_initialization_options = {
