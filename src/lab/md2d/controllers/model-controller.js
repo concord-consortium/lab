@@ -87,6 +87,16 @@ define(function (require) {
         viewOptions.xmax = modelConfig.width;
         viewOptions.ymax = modelConfig.height;
 
+        // Move images and textBoxes the from model config to view options.
+        viewOptions.images    = modelConfig.images;
+        viewOptions.textBoxes = modelConfig.textBoxes;
+        // This is not necessary (images and textBoxes properties would be
+        // discarded by the properties validator), however clearly shows
+        // that images and text boxes should be specified in viewOptions.
+        // TODO: move images and textBoxes definition to viewOptions!
+        delete modelConfig.images;
+        delete modelConfig.textBoxes;
+
         // Update view options in the basic model description after merge.
         // Note that many unnecessary options can be passed to Model constructor
         // because of that (e.g. view-only options defined in the interactive).
