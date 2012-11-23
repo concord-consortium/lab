@@ -44,9 +44,6 @@ define(function (require) {
         VDWLines_container,
         image_container_below,
         image_container_top,
-        red_gradient,
-        blue_gradient,
-        green_gradient,
         gradientNameForElement,
         // Set of gradients used for Kinetic Energy Shading.
         gradientNameForKELevel = [],
@@ -54,10 +51,8 @@ define(function (require) {
         KE_SHADING_STEPS = 25,
         atom_tooltip_on,
         offset_left, offset_top,
-        particle, label, labelEnter, tail,
-        molRadius,
+        particle, label, labelEnter,
         molecule_div, molecule_div_pre,
-        get_num_atoms,
         results,
         radialBonds,
         radialBondResults,
@@ -67,13 +62,11 @@ define(function (require) {
         obstacles,
         get_obstacles,
         mock_obstacles_array = [],
-        mock_radial_bond_array = [],
         radialBond1, radialBond2,
         vdwPairs = [],
         vdwLines,
         showClock,
         chargeShadingMode,
-        chargeShadingChars = ["+", "-", ""],
         keShadingMode,
         drawVdwLines,
         drawVelocityVectors,
@@ -122,9 +115,9 @@ define(function (require) {
       scale(cx, cy);
     }
 
-    tx = function(d, i) { return "translate(" + x(d) + ",0)"; };
-    ty = function(d, i) { return "translate(0," + y(d) + ")"; };
-    stroke = function(d, i) { return d ? "#ccc" : "#666"; };
+    tx = function(d) { return "translate(" + x(d) + ",0)"; };
+    ty = function(d) { return "translate(0," + y(d) + ")"; };
+    stroke = function(d) { return d ? "#ccc" : "#666"; };
 
     function processOptions(newOptionsAndModel) {
       if (newOptionsAndModel) {
@@ -852,17 +845,17 @@ define(function (require) {
 
       function radialBondEnter() {
         radialBond1.enter().append("path")
-            .attr("d", function (d, i) {
+            .attr("d", function (d) {
               return findPoints(d,1);})
             .attr("class", "radialbond1")
-            .style("stroke-width", function (d, i) {
+            .style("stroke-width", function (d) {
               if (isSpringBond(d)) {
                 return Math.log(d.strength)/4+0.5 * scaling_factor;
               } else {
                 return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
             })
-            .style("stroke", function(d, i) {
+            .style("stroke", function (d) {
               var charge, element, grad;
               if (isSpringBond(d)) {
                 return "#888";
@@ -889,14 +882,14 @@ define(function (require) {
             .attr("d", function (d) {
               return findPoints(d,2); })
             .attr("class", "radialbond2")
-            .style("stroke-width", function (d, i) {
+            .style("stroke-width", function (d) {
               if (isSpringBond(d)) {
                 return Math.log(d.strength)/4+0.5 * scaling_factor;
               } else {
                 return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
             })
-            .style("stroke", function(d, i) {
+            .style("stroke", function (d) {
               var charge, element, grad;
               if (isSpringBond(d)) {
                 return "#888";
@@ -1076,7 +1069,7 @@ define(function (require) {
       }
 
       function drawTextBoxes() {
-        var htmlObjects, textBox, size;
+        var htmlObjects, size;
 
         size = model.size();
 
@@ -1358,9 +1351,6 @@ define(function (require) {
           );
       }
 
-      function molecule_mousemove(d) {
-      }
-
       function molecule_mouseout() {
         if (!atom_tooltip_on && atom_tooltip_on !== 0) {
           molecule_div.style("opacity", 1e-6).style("zIndex" -1);
@@ -1416,7 +1406,7 @@ define(function (require) {
           particle.style("fill", getParticleGradient);
         }
 
-        label.attr("transform", function(d, i) {
+        label.attr("transform", function (d) {
           return "translate(" + x(d.x) + "," + y(d.y) + ")";
         });
 
@@ -1494,7 +1484,7 @@ define(function (require) {
       }
 
       function updateImageAttachment(){
-        var numImages, img, img_height, img_width, imgHost, imgHostType, imglayer, imgX, imgY, container, i;
+        var numImages, img_height, img_width, imgHost, imgHostType, imglayer, imgX, imgY, container, i;
         numImages= imageProp.length;
         for(i = 0; i < numImages; i++) {
           imgHost =  results[imageProp[i].imageHostIndex];
@@ -1565,10 +1555,7 @@ define(function (require) {
       }
 
       function node_dragend(d, i) {
-        var dragX,
-            dragY;
-
-        if ( is_stopped() ) {
+        if (is_stopped()) {
 
           if (!set_position(i, d.x, d.y, true, true)) {
             alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
@@ -1576,7 +1563,7 @@ define(function (require) {
           }
           update_drawable_positions();
         }
-        else if ( d.draggable ) {
+        else if (d.draggable) {
           // here we just assume we are removing the one and only spring force.
           // This assumption will have to change if we can have more than one.
           model.liveDragEnd();
