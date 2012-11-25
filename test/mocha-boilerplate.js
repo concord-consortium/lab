@@ -1,12 +1,11 @@
 /*global requirejs: true, sinon: true */
 
-var config = require('./requirejs-config');
+var config  = require('./requirejs-config'),
+    helpers = require('./helpers');
 
 // Make these global and therefore predefined in Mocha tests:
-requirejs  = require('requirejs');
-sinon      = require('sinon');
-
-requirejs.config(config.labConfig);
+sinon     = require('sinon');
+requirejs = helpers.getRequireJS();
 
 // The following is required because the require('should') defines a getter-only property called
 // 'should' on Object.prototype. Since the global object inherits from Object, it becomes impossible

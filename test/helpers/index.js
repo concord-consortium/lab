@@ -41,6 +41,37 @@ exports.getModel = function(filename) {
   }
 };
 
+/**
+  Returns a freshly imported 'requirejs' and configures it using the labConfig defined in test/
+
+  Use this in any test which modifies the requirejs config (for example to mock dependencies
+  by defining a substitute module and mapping it to the real module name by manipulating requirejs'
+  'map' config)
+*/
+exports.getRequireJS = function() {
+  // Forces reloading of the cached requirejs module
+  delete require.cache[require.resolve('requirejs')];
+
+  var config    = require('../requirejs-config'),
+      requirejs = require('requirejs');
+
+  requirejs.config(config.labConfig);
+  return requirejs;
+};
+
+/**
+  Passes a freshly created 'requirejs' to 'continuation' which may modify its requirejs config
+  freely. Subsequently sets the global 'requirejs' to a fresh instance of requirejs unaffected
+  by the changed config. (Note that it appears that you cannot reuse the original requirejs import.)
+*/
+exports.withIsolatedRequireJS = function(continuation) {
+  continuation(exports.getRequireJS());
+  // It turns out that, having deleted the old requirejs module from Node's require cache, we can't
+  // keep using the reference to it which we still have (tests break when I try to do so). However,
+  // a freshly created 'requirejs' global works fine.
+  global.requirejs = exports.getRequireJS();
+};
+
 // helpers helpers
 function endsWith(str, suffix) {
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
