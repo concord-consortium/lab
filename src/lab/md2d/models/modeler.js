@@ -1294,6 +1294,10 @@ define(function(require) {
       return obstacles;
     };
 
+    model.getNumberOfObstacles = function () {
+      return engine.getNumberOfObstacles();
+    };
+
     model.get_radial_bonds = function() {
       return radialBonds;
     };

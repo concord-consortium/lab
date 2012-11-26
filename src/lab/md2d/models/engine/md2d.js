@@ -2347,6 +2347,10 @@ define(function (require, exports, module) {
         return N;
       },
 
+      getNumberOfObstacles: function() {
+        return N_obstacles;
+      },
+
       /**
         Compute the model state and store into the passed-in 'state' object.
         (Avoids GC hit of throwaway object creation.)
