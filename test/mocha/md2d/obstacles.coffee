@@ -3,28 +3,35 @@ helpers.setupBrowserEnvironment()
 
 describe "MD2D modeler", ->
   requirejs ['md2d/models/modeler'], (Model) ->
-    # Obstacles data.
-    data =
-        x: [4]
-        y: [4]
-        width: [2]
-        height: [2]
-
     model = null
 
     beforeEach ->
       # Use {} as an empty model definition. Default values will be used.
       # See: md2d/models/metadata.js
       model = new Model {}
+
+    it "should deserialize obstacles correctly", ->
+      # Obstacles data.
+      data =
+          x: [1, 4]
+          y: [1, 4]
+          width: [1, 2]
+          height: [1, 2]
+
       model.createObstacles data
 
-    it "should initialize obstacles correctly", ->
-      model.getNumberOfObstacles().should.equal 1
+      model.getNumberOfObstacles().should.equal 2
       obsData = model.getObstacleProperties 0
       obsData.x.should.equal data.x[0]
       obsData.y.should.equal data.y[0]
       obsData.width.should.equal data.width[0]
       obsData.height.should.equal data.height[0]
+
+      obsData = model.getObstacleProperties 0
+      obsData.x.should.equal data.x[1]
+      obsData.y.should.equal data.y[1]
+      obsData.width.should.equal data.width[1]
+      obsData.height.should.equal data.height[1]
 
 
     describe "when addObstacle() is called", ->
@@ -38,14 +45,21 @@ describe "MD2D modeler", ->
 
           model.addObstacle newObs
 
-          model.getNumberOfObstacles().should.equal 2
-          obsData = model.getObstacleProperties 1
+          model.getNumberOfObstacles().should.equal 1
+          obsData = model.getObstacleProperties 0
           obsData.x.should.equal newObs.x
           obsData.y.should.equal newObs.y
           obsData.width.should.equal newObs.width
           obsData.height.should.equal newObs.height
 
-          # Edge cases.
+          # Edge cases, close to existin obstacle.
+          nextObs =
+            x: 4
+            y: 4
+            width: 2
+            height: 2
+          model.addObstacle nextObs
+
           (-> model.addObstacle x: 2, y: 4, width: 2, height: 2).should.not.throw()
           (-> model.addObstacle x: 6, y: 4, width: 2, height: 2).should.not.throw()
           (-> model.addObstacle x: 4, y: 2, width: 2, height: 2).should.not.throw()
@@ -56,13 +70,13 @@ describe "MD2D modeler", ->
           # No width and height provided!
           # These are required parameters, see metadata.
           (-> model.addObstacle x: 1, y: 1).should.throw()
-          model.getNumberOfObstacles().should.equal 1
+          model.getNumberOfObstacles().should.equal 0
 
       describe "and the properties define an obstacle overlapping with an atom", ->
         it "should fail and report an error", ->
-          model.createAtoms x: [1.5], y: [1.5]
+          model.addAtom x: 1.5, y: 1.5
           (-> model.addObstacle x: 1, y: 1, width: 2, height: 2).should.throw()
-          model.getNumberOfObstacles().should.equal 1
+          model.getNumberOfObstacles().should.equal 0
 
       describe "and the properties define an obstacle overlapping with a wall", ->
         it "should fail and report an error", ->
@@ -70,10 +84,17 @@ describe "MD2D modeler", ->
           (-> model.addObstacle x: 1, y: -0.5, width: 2, height: 2).should.throw()
           (-> model.addObstacle x: 9, y: 1, width: 2, height: 2).should.throw()
           (-> model.addObstacle x: 1, y: 9, width: 2, height: 2).should.throw()
-          model.getNumberOfObstacles().should.equal 1
+          model.getNumberOfObstacles().should.equal 0
 
       describe "and the properties define an obstacle overlapping with another obstacle", ->
         it "should fail and report an error", ->
+          obs =
+            x: 4
+            y: 4
+            width: 2
+            height: 2
+          model.addObstacle obs
+
           (-> model.addObstacle x: 3, y: 3, width: 2, height: 2).should.throw()
           # Edge cases.
           (-> model.addObstacle x: 2.01, y: 4, width: 2, height: 2).should.throw()
@@ -85,14 +106,12 @@ describe "MD2D modeler", ->
     describe "when removeObstacle() is called", ->
 
       beforeEach ->
-        model.addObstacle x: 1, y: 1, width: 1, height: 1 # idx = 1
-        model.addObstacle x: 2, y: 2, width: 2, height: 2 # idx = 2
-        model.addObstacle x: 7, y: 7, width: 3, height: 3 # idx = 3
+        model.addObstacle x: 1, y: 1, width: 1, height: 1 # idx = 0
+        model.addObstacle x: 2, y: 2, width: 2, height: 2 # idx = 1
+        model.addObstacle x: 7, y: 7, width: 3, height: 3 # idx = 2
 
       describe "and provided index matches some obstacle", ->
         it "should remove it", ->
-          model.getNumberOfObstacles().should.equal 4
-          model.removeObstacle 0
           model.getNumberOfObstacles().should.equal 3
           model.removeObstacle 0
           model.getNumberOfObstacles().should.equal 2
@@ -103,26 +122,20 @@ describe "MD2D modeler", ->
 
         it "should shift other, remaining obstacles properties", ->
           model.removeObstacle 1
-          model.getNumberOfObstacles().should.equal 3
-          # First one, added at the beginning.
-          model.getObstacleProperties(0).x.should.equal 4
-          model.getObstacleProperties(0).y.should.equal 4
-          model.getObstacleProperties(0).width.should.equal 2
-          model.getObstacleProperties(0).height.should.equal 2
-          # Others, shifted.
-          model.getObstacleProperties(1).x.should.equal 2
-          model.getObstacleProperties(1).y.should.equal 2
-          model.getObstacleProperties(1).width.should.equal 2
-          model.getObstacleProperties(1).height.should.equal 2
-          model.getObstacleProperties(2).x.should.equal 7
-          model.getObstacleProperties(2).y.should.equal 7
-          model.getObstacleProperties(2).width.should.equal 3
-          model.getObstacleProperties(2).height.should.equal 3
+          model.getNumberOfObstacles().should.equal 2
+          # Remaining obstacles.
+          model.getObstacleProperties(0).x.should.equal 1
+          model.getObstacleProperties(0).y.should.equal 1
+          model.getObstacleProperties(0).width.should.equal 1
+          model.getObstacleProperties(0).height.should.equal 1
+          model.getObstacleProperties(1).x.should.equal 7
+          model.getObstacleProperties(1).y.should.equal 7
+          model.getObstacleProperties(1).width.should.equal 3
+          model.getObstacleProperties(1).height.should.equal 3
 
       describe "and provided index doesn't match any obstacle", ->
         it "should fail and report an error", ->
-          (-> model.removeObstacle 4).should.throw()
-          model.removeObstacle 0
+          (-> model.removeObstacle 3).should.throw()
           model.removeObstacle 0
           model.removeObstacle 0
           model.removeObstacle 0
