@@ -1991,7 +1991,7 @@ define(function (require, exports, module) {
 
       addObstacle: function(props) {
         if (!engine.canPlaceObstacle(props.x, props.y, props.width, props.height))
-          throw new Error("Obstacle can't be placed at " + props.x + ", " + props.y);
+          throw new Error("Obstacle can't be placed at " + props.x + ", " + props.y + ".");
 
         if (N_obstacles === 0) {
           // During first call, create obstacles arrays.
@@ -2012,6 +2012,10 @@ define(function (require, exports, module) {
 
       removeObstacle: function(idx) {
         var i, prop;
+
+        if (idx >= N_obstacles) {
+          throw new Error("Obstacle " + idx + " doesn't exist, so it can't be removed.");
+        }
 
         N_obstacles--;
 

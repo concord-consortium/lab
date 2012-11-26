@@ -81,3 +81,50 @@ describe "MD2D modeler", ->
           (-> model.addObstacle x: 4, y: 2.01, width: 2, height: 2).should.throw()
           (-> model.addObstacle x: 4, y: 5.99, width: 2, height: 2).should.throw()
           model.getNumberOfObstacles().should.equal 1
+
+    describe "when removeObstacle() is called", ->
+
+      beforeEach ->
+        model.addObstacle x: 1, y: 1, width: 1, height: 1 # idx = 1
+        model.addObstacle x: 2, y: 2, width: 2, height: 2 # idx = 2
+        model.addObstacle x: 7, y: 7, width: 3, height: 3 # idx = 3
+
+      describe "and provided index matches some obstacle", ->
+        it "should remove it", ->
+          model.getNumberOfObstacles().should.equal 4
+          model.removeObstacle 0
+          model.getNumberOfObstacles().should.equal 3
+          model.removeObstacle 0
+          model.getNumberOfObstacles().should.equal 2
+          model.removeObstacle 0
+          model.getNumberOfObstacles().should.equal 1
+          model.removeObstacle 0
+          model.getNumberOfObstacles().should.equal 0
+
+        it "should shift other, remaining obstacles properties", ->
+          model.removeObstacle 1
+          model.getNumberOfObstacles().should.equal 3
+          # First one, added at the beginning.
+          model.getObstacleProperties(0).x.should.equal 4
+          model.getObstacleProperties(0).y.should.equal 4
+          model.getObstacleProperties(0).width.should.equal 2
+          model.getObstacleProperties(0).height.should.equal 2
+          # Others, shifted.
+          model.getObstacleProperties(1).x.should.equal 2
+          model.getObstacleProperties(1).y.should.equal 2
+          model.getObstacleProperties(1).width.should.equal 2
+          model.getObstacleProperties(1).height.should.equal 2
+          model.getObstacleProperties(2).x.should.equal 7
+          model.getObstacleProperties(2).y.should.equal 7
+          model.getObstacleProperties(2).width.should.equal 3
+          model.getObstacleProperties(2).height.should.equal 3
+
+      describe "and provided index doesn't match any obstacle", ->
+        it "should fail and report an error", ->
+          (-> model.removeObstacle 4).should.throw()
+          model.removeObstacle 0
+          model.removeObstacle 0
+          model.removeObstacle 0
+          model.removeObstacle 0
+          model.getNumberOfObstacles().should.equal 0
+          (-> model.removeObstacle 0).should.throw()
