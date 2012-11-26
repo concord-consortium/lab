@@ -95,6 +95,11 @@ define(function (require) {
           }
         },
 
+        redrawCurrentStepPointer = function() {
+          grapherView.updateOrRescale(model.stepCounter());
+          grapherView.showMarker(model.stepCounter());
+        },
+
         // Registers all necessary callbacks, should be called
         // whenever a new model is created.
         registerModelCallbacks = function () {
@@ -116,20 +121,9 @@ define(function (require) {
             grapherView.new_data(pressureData);
           });
 
-          model.on('stepForward.pressureGraph', function() {
-            grapherView.updateOrRescale(model.stepCounter());
-            grapherView.showMarker(model.stepCounter());
-          });
-
-          model.on('stepBack.pressureGraph', function() {
-            grapherView.updateOrRescale(model.stepCounter());
-            grapherView.showMarker(model.stepCounter());
-          });
-
-          model.on('seek.pressureGraph', function() {
-            setPressureDataLength(model.stepCounter());
-            grapherView.new_data(pressureData);
-          });
+          model.on('stepForward.pressureGraph', redrawCurrentStepPointer);
+          model.on('stepBack.pressureGraph', redrawCurrentStepPointer);
+          model.on('seek.pressureGraph', redrawCurrentStepPointer);
 
           model.addPropertiesListener(['viewRefreshInterval'], function() {
             updateModelRelatedOptions();
