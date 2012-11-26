@@ -59,6 +59,19 @@ define(function (require) {
       // 'obstacleIdx' is an index of obstacle containing desired probe,
       // 'probeName' is: 'west', 'north', 'east', 'south'.
       getPressureFromProbe: function (obstacleIdx, probeName) {
+        var dim;
+
+        if (pressureBuffers[obstacleIdx]            === undefined ||
+            pressureBuffers[obstacleIdx][probeName] === undefined) {
+          throw new Error("Pressure buffers for obstacle " + obstacleIdx +
+                          " and side " + probeName + " doesn't exist");
+        }
+
+        if (probeName === 'west' || probeName === 'east')
+          dim = obstaclesData.height[obstacleIdx];
+        else
+          dim = obstaclesData.width[obstacleIdx];
+
         // Classic MW converts impulses 2mv/dt to pressure in Bar using constant: 1666667.
         // See: the header of org.concord.mw2d.models.RectangularObstacle.
         // However, Classic MW also uses different units for mass and length:
@@ -70,12 +83,6 @@ define(function (require) {
         // [ There is unit module available, however for reduction of computational cost,
         // include conversion in the pressure constant, especially considering the fact that
         // conversion from 120amu to amu is quite simple. ]
-        var dim;
-        if (probeName === 'west' || probeName === 'east')
-          dim = obstaclesData.height[obstacleIdx];
-        else
-          dim = obstaclesData.width[obstacleIdx];
-
         return arrays.average(pressureBuffers[obstacleIdx][probeName]) *
           13888.89 / dim;
       },
