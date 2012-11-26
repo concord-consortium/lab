@@ -16,12 +16,6 @@ define(function (require, exports, module) {
       CellList            = require('./cell-list'),
       NeighborList        = require('./neighbor-list'),
 
-      // make at least 1 atom
-      N_MIN = 1,
-
-      // make no more than this many atoms:
-      N_MAX = 1000,
-
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
       ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
       ARGON_LJ_SIGMA_IN_NM   = 0.34,
@@ -96,12 +90,6 @@ define(function (require, exports, module) {
         // Whether system dimensions have been set. This is only allowed to happen once.
         sizeHasBeenInitialized = false,
 
-        // Whether "atoms" (particles) have been created & initialized. This is only allowed to happen once.
-        atomsHaveBeenCreated = false,
-
-        // Whether "elements" (properties for groups of particles) have been created & initialized. This is only allowed to happen once.
-        elementsHaveBeenCreated = false,
-
         // Whether to simulate Coulomb forces between particles.
         useCoulombInteraction = false,
 
@@ -149,7 +137,7 @@ define(function (require, exports, module) {
         dt_sq,
 
         // The number of atoms in the system.
-        N,
+        N = 0,
 
         // ####################################################################
         //                      Atom Properties
@@ -364,6 +352,23 @@ define(function (require, exports, module) {
         // potential between elements i and j
         ljCalculator = [],
 
+        // Initializes basic data structures.
+        initialize = function () {
+          createElementsArray(0);
+          createAtomsArray(0);
+          createAngularBondsArray(0);
+          createRadialBondsArray(0);
+          createRestraintsArray(0);
+          createVdwPairsArray(0);
+          createSpringForcesArray(0);
+          createObstaclesArray(0);
+
+          radialBondMatrix = [];
+          //  Initialize radialBondResults[] array consisting of hashes of radial bond
+          //  index numbers and transposed radial bond properties.
+          radialBondResults = engine.radialBondResults = [];
+        },
+
         // Throws an informative error if a developer tries to use the setCoefficients method of an
         // in-use LJ calculator. (Hint: for an interactive LJ chart, create a new LJ calculator with
         // the desired coefficients; call setElementProperties to change the LJ properties in use.)
@@ -480,13 +485,15 @@ define(function (require, exports, module) {
           if (Array.isArray(arrayContainer)) {
             // Array of arrays.
             for (i = 0, len = arrayContainer.length; i < len; i++) {
-              arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+              if (arrays.isArray(arrayContainer[i]))
+                arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
             }
           } else {
             // Object with arrays defined as properties.
             for (i in arrayContainer) {
               if(arrayContainer.hasOwnProperty(i)) {
-                arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+                if (arrays.isArray(arrayContainer[i]))
+                  arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
               }
             }
           }
@@ -592,6 +599,35 @@ define(function (require, exports, module) {
           assignShortcutReferences.elements();
         },
 
+        createAtomsArray = function(num) {
+          atoms  = engine.atoms  = {};
+
+          // TODO. DRY this up by letting the property list say what type each array is
+          atoms.radius    = arrays.create(num, 0, arrayTypes.float);
+          atoms.px        = arrays.create(num, 0, arrayTypes.float);
+          atoms.py        = arrays.create(num, 0, arrayTypes.float);
+          atoms.x         = arrays.create(num, 0, arrayTypes.float);
+          atoms.y         = arrays.create(num, 0, arrayTypes.float);
+          atoms.vx        = arrays.create(num, 0, arrayTypes.float);
+          atoms.vy        = arrays.create(num, 0, arrayTypes.float);
+          atoms.speed     = arrays.create(num, 0, arrayTypes.float);
+          atoms.ax        = arrays.create(num, 0, arrayTypes.float);
+          atoms.ay        = arrays.create(num, 0, arrayTypes.float);
+          atoms.charge    = arrays.create(num, 0, arrayTypes.float);
+          atoms.friction  = arrays.create(num, 0, arrayTypes.float);
+          atoms.element   = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.pinned    = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.mass      = arrays.create(num, 0, arrayTypes.float);
+          // For the sake of clarity, manage all atoms properties in one
+          // place (engine). In the future, think about separation of engine
+          // properties and view-oriented properties like these:
+          atoms.marked    = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.visible   = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.draggable = arrays.create(num, 0, arrayTypes.uint8);
+
+          assignShortcutReferences.atoms();
+        },
+
         createRadialBondsArray = function(num) {
           radialBonds = engine.radialBonds = {};
 
@@ -627,19 +663,18 @@ define(function (require, exports, module) {
           assignShortcutReferences.angularBonds();
         },
 
-        createVdwPairsArray = function() {
-          var maxNumPairs = N * (N-1) / 2;
-
+        createVdwPairsArray = function(num) {
           vdwPairs = engine.vdwPairs = {};
 
           vdwPairs.count = 0;
-          vdwPairs.atom1 = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, arrayTypes.uint16);
-          vdwPairs.atom2 = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, arrayTypes.uint16);
+          vdwPairs.atom1 = vdwPairAtom1Index = arrays.create(num, 0, arrayTypes.uint16);
+          vdwPairs.atom2 = vdwPairAtom2Index = arrays.create(num, 0, arrayTypes.uint16);
         },
 
         createSpringForcesArray = function(num) {
           springForces = engine.springForces = [];
 
+          // TODO: not very descriptive. Use hash of arrays like elsewhere.
           springForces[0] = arrays.create(num, 0, arrayTypes.uint16);
           springForces[1] = arrays.create(num, 0, arrayTypes.float);
           springForces[2] = arrays.create(num, 0, arrayTypes.float);
@@ -1550,7 +1585,7 @@ define(function (require, exports, module) {
         // ####################################################################
         // ####################################################################
 
-    return engine = {
+    engine = {
 
       useCoulombInteraction: function(v) {
         useCoulombInteraction = !!v;
@@ -1597,6 +1632,7 @@ define(function (require, exports, module) {
         var width  = (v[0] && v[0] > 0) ? v[0] : 10,
             height = (v[1] && v[1] > 0) ? v[1] : 10;
         size = [width, height];
+        sizeHasBeenInitialized = true;
       },
 
       getSize: function() {
@@ -1611,6 +1647,10 @@ define(function (require, exports, module) {
         var key, idx, rest;
 
         if (props.element !== undefined) {
+          if (props.element < 0 || props.element >= N_elements) {
+            throw new Error("md2d: Unknown element " + props.element + ", an atom can't be created.");
+          }
+
           // Mark element as used by some atom (used by performance optimizations).
           elementUsed[props.element] = true;
 
@@ -1762,63 +1802,6 @@ define(function (require, exports, module) {
       },
 
       /**
-        Allocates 'atoms' hash of arrays.
-      */
-      createAtomsArray: function(num) {
-        if (!elementsHaveBeenCreated) {
-          throw new Error("md2d: createAtoms was called before setElements.");
-        }
-
-        if (atomsHaveBeenCreated) {
-          throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
-        }
-        atomsHaveBeenCreated = true;
-        sizeHasBeenInitialized = true;
-
-        if (num === undefined) {
-          throw new Error("md2d: createAtoms was called without the required 'num' option specifying the number of atoms to create.");
-        }
-        if (num !== Math.floor(num)) {
-          throw new Error("md2d: createAtoms was passed a non-integral 'num' option.");
-        }
-        if (num < N_MIN) {
-          throw new Error("md2d: createAtoms was passed an 'num' option equal to: " + num + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
-        }
-        if (num > N_MAX) {
-          throw new Error("md2d: createAtoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
-        }
-
-        atoms  = engine.atoms  = {};
-
-        // TODO. DRY this up by letting the property list say what type each array is
-        atoms.radius    = arrays.create(num, 0, arrayTypes.float);
-        atoms.px        = arrays.create(num, 0, arrayTypes.float);
-        atoms.py        = arrays.create(num, 0, arrayTypes.float);
-        atoms.x         = arrays.create(num, 0, arrayTypes.float);
-        atoms.y         = arrays.create(num, 0, arrayTypes.float);
-        atoms.vx        = arrays.create(num, 0, arrayTypes.float);
-        atoms.vy        = arrays.create(num, 0, arrayTypes.float);
-        atoms.speed     = arrays.create(num, 0, arrayTypes.float);
-        atoms.ax        = arrays.create(num, 0, arrayTypes.float);
-        atoms.ay        = arrays.create(num, 0, arrayTypes.float);
-        atoms.charge    = arrays.create(num, 0, arrayTypes.float);
-        atoms.friction  = arrays.create(num, 0, arrayTypes.float);
-        atoms.element   = arrays.create(num, 0, arrayTypes.uint8);
-        atoms.pinned    = arrays.create(num, 0, arrayTypes.uint8);
-        atoms.mass      = arrays.create(num, 0, arrayTypes.float);
-        // For the sake of clarity, manage all atoms properties in one
-        // place (engine). In the future, think about separation of engine
-        // properties and view-oriented properties like these:
-        atoms.marked    = arrays.create(num, 0, arrayTypes.uint8);
-        atoms.visible   = arrays.create(num, 0, arrayTypes.uint8);
-        atoms.draggable = arrays.create(num, 0, arrayTypes.uint8);
-
-        assignShortcutReferences.atoms();
-
-        N = 0;
-      },
-
-      /**
         The canonical method for adding an atom to the collections of atoms.
 
         If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
@@ -1844,9 +1827,6 @@ define(function (require, exports, module) {
         // Initialize helper structures for optimizations.
         initializeCellList();
         initializeNeighborList();
-
-        // Return index of the new atom.
-        return N - 1;
       },
 
       /**
@@ -1855,13 +1835,9 @@ define(function (require, exports, module) {
       addElement: function(props) {
         var i;
 
-        if (N_elements === 0) {
-          // Initialize structures during first call.
-          createElementsArray(10);
-        }
         if (N_elements >= elementEpsilon.length) {
           extendArrays(elements, N_elements + 10);
-          assignShortcutReferences.N_elements();
+          assignShortcutReferences.elements();
         }
 
         elementMass[N_elements]    = props.mass;
@@ -1879,7 +1855,6 @@ define(function (require, exports, module) {
           setPairwiseLJProperties(N_elements,i);
         }
 
-        elementsHaveBeenCreated = true;
         N_elements++;
       },
 
@@ -1887,14 +1862,6 @@ define(function (require, exports, module) {
         The canonical method for adding a radial bond to the collection of radial bonds.
       */
       addRadialBond: function(props) {
-        if (N_radialBonds === 0) {
-          // Initialize structures during first call.
-          createRadialBondsArray(10);
-          radialBondMatrix = [];
-          //  Initialize radialBondResults[] array consisting of hashes of radial bond
-          //  index numbers and transposed radial bond properties.
-          radialBondResults = engine.radialBondResults = [];
-        }
         if (N_radialBonds + 1 > radialBondAtom1Index.length) {
           extendArrays(radialBonds, N_radialBonds + 10);
           assignShortcutReferences.radialBonds();
@@ -1915,10 +1882,6 @@ define(function (require, exports, module) {
         extends the length of the typed arrays by ten to have room for more bonds.
       */
       addRestraint: function(props) {
-        if (N_restraints === 0) {
-          // Initialize structures during first call.
-          createRestraintsArray(10);
-        }
         if (N_restraints + 1 > restraints.atomIndex.length) {
           extendArrays(restraints, N_restraints + 10);
           assignShortcutReferences.restraints();
@@ -1937,10 +1900,6 @@ define(function (require, exports, module) {
         extends the length of the typed arrays by ten to have room for more bonds.
       */
       addAngularBond: function(props) {
-        if (N_angularBonds === 0) {
-          // Initialize structures during first call.
-          createAngularBondsArray(10);
-        }
         if (N_angularBonds + 1 > angularBonds.atom1.length) {
           extendArrays(angularBonds, N_angularBonds + 10);
           assignShortcutReferences.angularBonds();
@@ -1958,9 +1917,6 @@ define(function (require, exports, module) {
         @returns the index of the new spring force.
       */
       addSpringForce: function(atomIndex, x, y, strength) {
-
-        if (!springForces) createSpringForcesArray(1);
-
         // conservatively just add one spring force
         if (N_springForces > springForces[0].length) {
           extendArrays(springForces, N_springForces + 1);
@@ -1993,10 +1949,6 @@ define(function (require, exports, module) {
         if (!engine.canPlaceObstacle(props.x, props.y, props.width, props.height))
           throw new Error("Obstacle can't be placed at " + props.x + ", " + props.y + ".");
 
-        if (N_obstacles === 0) {
-          // During first call, create obstacles arrays.
-          createObstaclesArray(1);
-        }
         if (N_obstacles + 1 > obstacles.x.length) {
           // Extend arrays each time (as there are only
           // a few obstacles in typical model).
@@ -2209,11 +2161,6 @@ define(function (require, exports, module) {
             eps,
             distanceCutoff_sq = vdwLinesRatio * vdwLinesRatio;
 
-        // Lazy initialization of necessary structures during first function call.
-        if (vdwPairs === undefined) {
-          createVdwPairsArray();
-        }
-
         N_vdwPairs = 0;
 
         for (i = 0; i < N; i++) {
@@ -2242,6 +2189,9 @@ define(function (require, exports, module) {
               eps = epsilon_i * epsilon_j;
 
               if (r_sq < sig * distanceCutoff_sq && eps > 0) {
+                if (N_vdwPairs + 1 > vdwPairs.atom1.length) {
+                  extendArrays(vdwPairs, (N_vdwPairs + 1) * 2);
+                }
                 vdwPairAtom1Index[N_vdwPairs] = i;
                 vdwPairAtom2Index[N_vdwPairs] = j;
                 N_vdwPairs++;
@@ -2279,7 +2229,7 @@ define(function (require, exports, module) {
       integrate: function(duration, _dt) {
         var steps, iloop, tStart = time;
 
-        if (!atomsHaveBeenCreated) {
+        if (N === 0) {
           throw new Error("md2d: integrate called before atoms created.");
         }
 
@@ -2824,5 +2774,11 @@ define(function (require, exports, module) {
         ];
       }
     };
+
+    // Initialization
+    initialize();
+
+    // Return Public API.
+    return engine;
   };
 });

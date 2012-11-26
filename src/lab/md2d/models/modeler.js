@@ -624,6 +624,14 @@ define(function(require) {
       engine.setTargetTemperature(model.get('targetTemperature'));
 
       window.state = modelOutputState = {};
+
+      // Copy reference to basic properties.
+      atoms = engine.atoms;
+      radialBonds = engine.radialBonds;
+      radialBondResults = engine.radialBondResults;
+      angularBonds = engine.angularBonds;
+      restraints = engine.restraints;
+      obstacles = engine.obstacles;
     };
 
     model.createElements = function(_elements) {
@@ -678,8 +686,6 @@ define(function(require) {
         num = config.x.length;
       }
 
-      engine.createAtomsArray(num);
-
       // TODO: this branching based on x, y isn't very clear.
       if (config.x && config.y) {
         // config is hash of arrays (as specified in JSON model).
@@ -709,9 +715,6 @@ define(function(require) {
           engine.relaxToTemperature();
       }
 
-      // Copy reference to atoms properties.
-      atoms = engine.atoms;
-
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
 
@@ -737,8 +740,6 @@ define(function(require) {
         model.addRadialBond(radialBondProps);
       }
 
-      radialBonds = engine.radialBonds;
-      radialBondResults = engine.radialBondResults;
       return model;
     };
 
@@ -760,7 +761,6 @@ define(function(require) {
         model.addAngularBond(angularBondProps);
       }
 
-      angularBonds = engine.angularBonds;
       return model;
     };
 
@@ -782,7 +782,6 @@ define(function(require) {
         model.addRestraint(restraintsProps);
       }
 
-      restraints = engine.restraints;
       return model;
     };
 
@@ -804,7 +803,6 @@ define(function(require) {
         model.addObstacle(obstacleProps);
       }
 
-      obstacles = engine.obstacles;
       return model;
     };
 
@@ -1550,7 +1548,7 @@ define(function(require) {
     model.serialize = function(includeAtoms) {
       var propCopy = $.extend({}, properties);
       if (includeAtoms) {
-        propCopy.atoms = serialize(metadata.atom, atoms);
+        propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
       }
       if (elements) {
         propCopy.elements = elements;
