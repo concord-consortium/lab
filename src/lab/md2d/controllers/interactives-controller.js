@@ -221,6 +221,20 @@ define(function (require) {
             },
 
             /**
+              Adds an obstacle using human-readable hash of properties.
+              e.g. addObstacle({x: 1, y: 0.5, width: 1, height: 1})
+            */
+            addObstacle: function addObstacle(props, options) {
+              try {
+                model.addObstacle(props);
+              } catch (e) {
+                if (!options || !options.silent)
+                  throw e;
+              }
+              scriptingAPI.repaint();
+            },
+
+            /**
               Sets individual obstacle properties using human-readable hash.
               e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalFx: 0.00001})
             */
@@ -238,8 +252,14 @@ define(function (require) {
             },
 
             /* Removes obstacle 'i'. */
-            removeObstacle: function removeObstacle(i) {
-              model.removeObstacle(i);
+            removeObstacle: function removeObstacle(i, options) {
+              try {
+                model.removeObstacle(i);
+              } catch (e) {
+                if (!options || !options.silent)
+                  throw e;
+              }
+
               scriptingAPI.repaint();
             },
 
