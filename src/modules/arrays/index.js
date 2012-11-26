@@ -267,6 +267,14 @@ define(function (require, exports, module) {
     return extendedArray;
   };
 
+  arrays.isArray = function (object) {
+    try {
+      arrays.constructor_function(object);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
 
   // publish everything to exports
   for (var key in arrays) {
