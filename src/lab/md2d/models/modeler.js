@@ -10,9 +10,7 @@ define(function(require) {
       serialize   = require('common/serialize'),
       metadata    = require('md2d/models/metadata'),
       validator   = require('common/validator'),
-      _ = require('underscore'),
-
-      engine;
+      _ = require('underscore');
 
   return function Model(initialProperties) {
     var model = {},
@@ -31,6 +29,9 @@ define(function(require) {
 
         modelOutputState,
         tickHistory,
+
+        // Molecular Dynamics engine.
+        engine,
 
         // An array of elements object.
         elements,
