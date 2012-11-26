@@ -1,5 +1,4 @@
 helpers = require '../../helpers'
-emptyModel = helpers.getModel 'empty-model.json'
 helpers.setupBrowserEnvironment()
 
 describe "MD2D modeler", ->
@@ -14,7 +13,9 @@ describe "MD2D modeler", ->
     model = null
 
     beforeEach ->
-      model = new Model emptyModel
+      # Use {} as an empty model definition. Default values will be used.
+      # See: md2d/models/metadata.js
+      model = new Model {}
       model.createObstacles data
 
     it "should initialize obstacles correctly", ->
