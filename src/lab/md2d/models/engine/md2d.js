@@ -1731,6 +1731,9 @@ define(function (require, exports, module) {
       setObstacleProperties: function (i, props) {
         var key;
 
+        if (!engine.canPlaceObstacle(props.x, props.y, props.width, props.height, i))
+          throw new Error("Obstacle can't be placed at " + props.x + ", " + props.y);
+
         // If position is manually changed, update previous
         // position also.
         if (props.x !== undefined) {
@@ -1987,6 +1990,9 @@ define(function (require, exports, module) {
       },
 
       addObstacle: function(props) {
+        if (!engine.canPlaceObstacle(props.x, props.y, props.width, props.height))
+          throw new Error("Obstacle can't be placed at " + props.x + ", " + props.y);
+
         if (N_obstacles === 0) {
           // During first call, create obstacles arrays.
           createObstaclesArray(1);
@@ -2078,6 +2084,55 @@ define(function (require, exports, module) {
         }
 
         return PEAtLocation <= 0;
+      },
+
+      /**
+        Checks to see if an obstacle could be placed at location x, y
+        without being on an atom, another obstacle or past a wall.
+
+        idx parameter is optional. It should be defined and equal to id
+        of an existing obstacle when the existing obstacle should be checked.
+        It prevents an algorithm from comparing the obstacle with itself during
+        collisions detection.
+      */
+      canPlaceObstacle: function (obsX, obsY, obsWidth, obsHeight, idx) {
+        var obsXMax = obsX + obsWidth,
+            obsYMax = obsY + obsHeight,
+            testX, testY, testXMax, testYMax,
+            r, i;
+
+        // Check collision with walls.
+        if (obsX < 0 || obsXMax > size[0] || obsY < 0 || obsYMax > size[0]) {
+          return false;
+        }
+
+        // Check collision with atoms.
+        for (i = 0; i < N; i++) {
+          r = radius[i];
+          if (x[i] > (obsX - r) && x[i] < (obsXMax + r) &&
+              y[i] > (obsY - r) && y[i] < (obsYMax + r)) {
+            return false;
+          }
+        }
+
+        // Check collision with other obstacles.
+        for (i = 0; i < N_obstacles; i++) {
+          if (idx !== undefined && idx === i) {
+            // If we are checking existing obstacle,
+            // avoid comparing it with itself.
+            continue;
+          }
+          testX = obstacleX[i];
+          testY = obstacleY[i];
+          testXMax = testX + obstacleWidth[i];
+          testYMax = testY + obstacleHeight[i];
+          if ((obsXMax > testX && obsX < testXMax) &&
+              (obsYMax > testY && obsY < testYMax)) {
+            return false;
+          }
+        }
+
+        return true;
       },
 
       setupAtomsRandomly: function(options) {
