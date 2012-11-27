@@ -1926,7 +1926,7 @@ define(function (require, exports, module) {
       */
       addSpringForce: function(atomIndex, x, y, strength) {
         // conservatively just add one spring force
-        if (N_springForces > springForces[0].length) {
+        if (N_springForces + 1 > springForces[0].length) {
           extendArrays(springForces, N_springForces + 1);
           assignShortcutReferences.springForces();
         }
