@@ -584,6 +584,11 @@ define(function (require, exports, module) {
             springForceX         = springForces[1];
             springForceY         = springForces[2];
             springForceStrength  = springForces[3];
+          },
+
+          vdwPairs: function () {
+            vdwPairAtom1Index = vdwPairs.atom1;
+            vdwPairAtom2Index = vdwPairs.atom2;
           }
 
         },
@@ -667,8 +672,8 @@ define(function (require, exports, module) {
           vdwPairs = engine.vdwPairs = {};
 
           vdwPairs.count = 0;
-          vdwPairs.atom1 = vdwPairAtom1Index = arrays.create(num, 0, arrayTypes.uint16);
-          vdwPairs.atom2 = vdwPairAtom2Index = arrays.create(num, 0, arrayTypes.uint16);
+          vdwPairs.atom1 = arrays.create(num, 0, arrayTypes.uint16);
+          vdwPairs.atom2 = arrays.create(num, 0, arrayTypes.uint16);
         },
 
         createSpringForcesArray = function(num) {
@@ -1989,6 +1994,7 @@ define(function (require, exports, module) {
         // FIXME: This shouldn't be necessary, however various modules
         // (e.g. views) use obstacles.x.length as the real number of obstacles.
         extendArrays(obstacles, N_obstacles);
+        assignShortcutReferences.obstacles();
 
         // TODO: emit event, listeners should handle that event
         // automatically?
@@ -2194,6 +2200,7 @@ define(function (require, exports, module) {
               if (r_sq < sig * distanceCutoff_sq && eps > 0) {
                 if (N_vdwPairs + 1 > vdwPairs.atom1.length) {
                   extendArrays(vdwPairs, (N_vdwPairs + 1) * 2);
+                  assignShortcutReferences.vdwPairs();
                 }
                 vdwPairAtom1Index[N_vdwPairs] = i;
                 vdwPairAtom2Index[N_vdwPairs] = j;
