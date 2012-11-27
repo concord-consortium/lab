@@ -1,0 +1,23 @@
+{
+  "title": "Empty Model",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "empty-atom",
+      "url": "models/empty-model.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "add-atom",
+      "text": "Add a random atom",
+      "action": "addRandomAtom(undefined, 2.0 * Math.random() - 1.0);"
+    }
+  ]
+}
