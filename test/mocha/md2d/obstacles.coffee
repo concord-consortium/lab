@@ -27,7 +27,7 @@ describe "MD2D modeler", ->
       obsData.width.should.equal data.width[0]
       obsData.height.should.equal data.height[0]
 
-      obsData = model.getObstacleProperties 0
+      obsData = model.getObstacleProperties 1
       obsData.x.should.equal data.x[1]
       obsData.y.should.equal data.y[1]
       obsData.width.should.equal data.width[1]
