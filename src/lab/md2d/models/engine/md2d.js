@@ -1660,10 +1660,13 @@ define(function (require, exports, module) {
         }
 
         // Update charged atoms list (performance optimization).
-        if (charge[i] === 0 && props.charge !== undefined && props.charge !== 0) {
+        if (!charge[i] && props.charge) {
+          // !charge[i]   => shortcut for charge[i] === 0 || charge[i] === undefined (both cases can occur).
+          // props.charge => shortcut for props.charge !== undefined && props.charge !== 0.
           // Save index of charged atom.
           chargedAtomsList.push(i);
-        } else if (charge[i] !== 0 && props.charge === 0) {
+        } else if (charge[i] && props.charge === 0) {
+          // charge[i] => shortcut for charge[i] !== undefined && charge[i] !== 0 (both cases can occur).
           // Remove index from charged atoms list.
           idx = chargedAtomsList.indexOf(i);
           rest = chargedAtomsList.slice(idx + 1);
