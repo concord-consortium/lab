@@ -19,7 +19,7 @@ define(function() {
         defaultValue: true
       },
       temperatureControl: {
-        defaultValue: true
+        defaultValue: false
       },
       targetTemperature: {
         defaultValue: 300
