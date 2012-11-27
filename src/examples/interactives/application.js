@@ -502,9 +502,9 @@ var ROOT = "/examples",
         }
       },
       {
-        name: "targetTemperature",
+        name: "temperature",
         run: function(done) {
-          done(model.get("temperature"));
+          done(d3.format("5.1f")(model.get("temperature")));
         }
       },
       {
