@@ -352,6 +352,7 @@ var ROOT = "/examples",
         $interactiveTitle.append(" <i>(draft)</i>");
       }
       if (interactive.subtitle) {
+        $("#interactive-subtitle").remove();
         $interactiveHeader.append('<div id="interactive-subtitle">' + interactive.subtitle + '</div>');
       }
       finishSetupFullPage();
