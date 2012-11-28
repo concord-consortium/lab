@@ -97,6 +97,8 @@ jnlp-all: clean-jnlp \
 	script/build-and-deploy-jars.rb --maven-update
 
 clean:
+	bundle install --binstubs
+	cd server && bundle install --binstubs
 	# Server dir cleanup.
 	bash -O extglob -c 'rm -rf server/public/!(.git|jnlp)'
 	# Remove auto-generated files.
