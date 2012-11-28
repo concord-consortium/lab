@@ -15,8 +15,8 @@
   "outputs": [
     {
       "name":  "currentAngle",
-      "units": "degrees",
       "label": "Current Angle",
+      "units": "°",
       "value": [
           "var pivotAtom = getAtomProperties(0),",
               "swingingAtom = getAtomProperties(1),",
@@ -30,26 +30,34 @@
   "parameters": [
     {
       "name": "startingGravity",
+      "label": "Gravity",
       "onChange": "set({ gravitationalField: value*8e-8 });",
       "initialValue": 1.0
     },
     {
       "name": "startingLength",
+      "label": "Length",
+      "units": "m",
       "onChange": "var len = value/1.5, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
       "initialValue": 1.5
     },
     {
       "name": "startingAngle",
+      "label": "Starting Angle",
+      "units": "°",
       "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
       "initialValue": 45
     },
     {
       "name": "ballMass",
+      "label": "Mass",
+      "units": "g",
       "onChange": "var mass = value*12; setElementProperties(3, { mass: mass });",
       "initialValue": 150
     },
     {
       "name": "ballFriction",
+      "label": "Friction",
       "onChange": "setAtomProperties(1, { friction: value });",
       "initialValue": 0
     }
