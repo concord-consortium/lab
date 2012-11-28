@@ -4,6 +4,7 @@ helpers.setupBrowserEnvironment()
 describe "MD2D modeler", ->
   requirejs ['md2d/models/modeler'], (Model) ->
     model = null
+    callbacks = null
 
     beforeEach ->
       # Use {} as an empty model definition. Default values will be used.
@@ -42,6 +43,14 @@ describe "MD2D modeler", ->
           atomData.x.should.equal data.x
           atomData.y.should.equal data.y
 
+        it "should trigger 'addAtom' event", ->
+          callback = sinon.spy()
+          model.on 'addAtom', callback
+
+          callback.callCount.should.equal 0
+          model.addAtom x: 0, y: 0
+          callback.callCount.should.equal 1
+
       describe "and the properties are incomplete", ->
         it "should fail and report an error", ->
           # No y coordinate provided!
@@ -75,6 +84,18 @@ describe "MD2D modeler", ->
           model.getAtomProperties(1).x.should.equal 3
           model.getAtomProperties(1).y.should.equal 3
 
+        it "should trigger 'removeAtom' event", ->
+          callback = sinon.spy()
+          model.on 'removeAtom', callback
+
+          callback.callCount.should.equal 0
+          model.removeAtom 0
+          callback.callCount.should.equal 1
+          model.removeAtom 0
+          callback.callCount.should.equal 2
+          model.removeAtom 0
+          callback.callCount.should.equal 3
+
         describe "and there are radial bonds", ->
 
           beforeEach ->
@@ -97,6 +118,21 @@ describe "MD2D modeler", ->
             model.get_num_atoms().should.equal 1
 
             model.getNumberOfRadialBonds().should.equal 0
+
+          it "should trigger 'removeRadialBond' event if some radial bonds are removed", ->
+            callback = sinon.spy()
+            model.on 'removeRadialBond', callback
+
+            callback.callCount.should.equal 0
+            model.removeAtom 0
+            # So, first radial bonds is removed.
+            callback.callCount.should.equal 1
+            model.removeAtom 0
+            # Second radial bonds is removed.
+            callback.callCount.should.equal 2
+            model.removeAtom 0
+            # There were no more radial bonds connected to this atom.
+            callback.callCount.should.equal 2
 
       describe "and provided index doesn't match any atom", ->
         it "should fail and report an error", ->
