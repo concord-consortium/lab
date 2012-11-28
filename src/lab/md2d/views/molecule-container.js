@@ -132,8 +132,12 @@ define(function (require) {
       // Process typical view options.
       options = validator.validateCompleteness(optionsMetadata, viewOptions);
 
-      imageProp = options.images;
-      textBoxes = options.textBoxes;
+      // For convenience replace undefined collections with
+      // empty collections (like arrays or hashes).
+      imageProp = options.images || [];
+      textBoxes = options.textBoxes || [];
+      options.imageMapping = options.imageMapping || {};
+
       if (options.interactiveUrl) {
         interactiveUrl = options.interactiveUrl;
         imagePath = ACTUAL_ROOT + interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);

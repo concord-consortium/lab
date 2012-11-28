@@ -51,15 +51,6 @@ define(function() {
     ymax: {
       defaultValue: 10
     },
-    textBoxes: {
-      defaultValue: []
-    },
-    images: {
-      defaultValue: []
-    },
-    imageMapping: {
-      defaultValue: {}
-    },
     interactiveUrl: {
       defaultValue: ''
     },
@@ -76,6 +67,9 @@ define(function() {
         width: 1.1,
         length: 2
       }
-    }
+    },
+    textBoxes: {},
+    images: {},
+    imageMapping: {}
   };
 });

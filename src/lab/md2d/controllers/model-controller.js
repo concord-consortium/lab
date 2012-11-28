@@ -2,6 +2,7 @@
 
   define
   DEVELOPMENT
+  $
   d3
   alert
   model: true
@@ -14,12 +15,14 @@ define(function (require) {
       MoleculeContainer = require('md2d/views/molecule-container'),
       ModelPlayer       = require('cs!common/components/model_player');
 
-  return function modelController(moleculeViewId, modelConfig, playerConfig) {
+  return function modelController(moleculeViewId, modelConfig, viewConfig) {
     var controller = {},
 
         // event dispatcher
         dispatch = d3.dispatch('modelReset'),
 
+        // Options after processing performed by processOptions().
+        modelOptions,
         viewOptions,
 
         moleculeContainer,
@@ -46,7 +49,7 @@ define(function (require) {
             if (model.reset) {
               model.reset();
             }
-            reload(modelConfig, playerConfig);
+            reload(modelConfig, viewConfig);
           },
 
           is_stopped: function() {
@@ -79,9 +82,12 @@ define(function (require) {
           return overlay;
         };
 
-        // Merge view options defined in interactive (playerConfig)
+        // 1. Process view options.
+        // Do not modify initial configuration.
+        viewOptions = $.extend(true, {}, viewConfig);
+        // Merge view options defined in interactive (viewConfig)
         // with view options defined in the basic model description.
-        viewOptions = meldOptions(modelConfig.viewOptions || {}, playerConfig);
+        viewOptions = meldOptions(modelConfig.viewOptions || {}, viewOptions);
 
         // Setup size of the container for view.
         viewOptions.xmax = modelConfig.width;
@@ -90,12 +96,16 @@ define(function (require) {
         // Move images and textBoxes the from model config to view options.
         viewOptions.images    = modelConfig.images;
         viewOptions.textBoxes = modelConfig.textBoxes;
+
+        // 1. Process model options.
+        // Do not modify initial configuration.
+        modelOptions = $.extend(true, {}, modelConfig);
         // This is not necessary (images and textBoxes properties would be
         // discarded by the properties validator), however clearly shows
         // that images and text boxes should be specified in viewOptions.
         // TODO: move images and textBoxes definition to viewOptions!
-        delete modelConfig.images;
-        delete modelConfig.textBoxes;
+        delete modelOptions.images;
+        delete modelOptions.textBoxes;
 
         // Update view options in the basic model description after merge.
         // Note that many unnecessary options can be passed to Model constructor
@@ -103,7 +113,7 @@ define(function (require) {
         // However, all options which are unknown for Model will be discarded
         // during options validation, so this is not a problem
         // (but significantly simplifies configuration).
-        modelConfig.viewOptions = viewOptions;
+        modelOptions.viewOptions = viewOptions;
       }
 
       // ------------------------------------------------------------
@@ -113,7 +123,7 @@ define(function (require) {
 
       function setupModel() {
         processOptions();
-        model = new Model(modelConfig);
+        model = new Model(modelOptions);
         model.resetTime();
         model.on('tick', tickHandler);
         model.on('addAtom', resetModelPlayer);
@@ -164,12 +174,12 @@ define(function (require) {
       }
 
       /**
-        Note: newModelConfig, newPlayerConfig are optional. Calling this without
+        Note: newModelConfig, newViewConfig are optional. Calling this without
         arguments will simply reload the current model.
       */
-      function reload(newModelConfig, newPlayerConfig) {
+      function reload(newModelConfig, newViewConfig) {
         modelConfig = newModelConfig || modelConfig;
-        playerConfig = newPlayerConfig || playerConfig;
+        viewConfig = newViewConfig || viewConfig;
         setupModel();
         resetModelPlayer();
         dispatch.modelReset();
