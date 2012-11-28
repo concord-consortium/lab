@@ -182,22 +182,19 @@
       "property": "keShading"
     },
     {
-      "type": "energyGraph",
-      "id": "ke-chart",
-      "dimensions": {
-        "width": 500,
-        "height": 296
-      },
-      "options": {
-        "ymin": -0.1,
-        "ymax": 1,
-        "xmax": 20
-      }
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy vs. starting gravity and starting length",
+      "xmin": 0,
+      "xmax": 100,
+      "ymin": 0,
+      "ymax": 4.5,
+      "properties": ["kineticEnergy", "startingGravity", "startingLength"]
     }
   ],
   "layout": {
     "rightwide": [
-      "ke-chart"
+      "propertiesGraph"
     ],
     "bottom": [
       [
