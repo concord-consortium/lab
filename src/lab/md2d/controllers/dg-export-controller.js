@@ -41,6 +41,24 @@ define(function (require) {
       model.on('invalidation.dgExportController', removeDataAfterStepPointer);
     }
 
+    function getLabelForProperty(property) {
+      var desc = model.getPropertyDescription(property),
+          ret = "";
+
+      if (desc.label && desc.label.length > 0) {
+        ret += desc.label;
+      } else {
+        ret += property;
+      }
+
+      if (desc.units && desc.units.length > 0) {
+        ret += " (";
+        ret += desc.units;
+        ret += ")";
+      }
+      return ret;
+    }
+
     return controller = {
       modelLoadedCallback: function() {
         // Show time in picoseconds by default b/c ps are the time unit used by the standard graph.
@@ -56,14 +74,21 @@ define(function (require) {
       },
 
       exportData: function() {
-        var parameterValues = [],
+        var parameterLabels = [],
+            parameterValues = [],
+            outputLabels = [],
             i;
 
         for (i = 0; i < parameters.length; i++) {
+          parameterLabels[i] = getLabelForProperty(parameters[i]);
           parameterValues[i] = model.get(parameters[i]);
         }
 
-        dgExporter.exportData(parameters, parameterValues, outputs, outputValues);
+        for (i = 0; i < outputs.length; i++) {
+          outputLabels[i] = getLabelForProperty(outputs[i]);
+        }
+
+        dgExporter.exportData(parameterLabels, parameterValues, outputLabels, outputValues);
       }
     };
   };
