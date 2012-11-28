@@ -58,8 +58,12 @@ helpers.withIsolatedRequireJS (requirejs) ->
             it "should contain a single element", ->
               $container.should.have.length 1
 
-            it "should contain an element having the id specified in the component spec", ->
-              $container.attr('id').should.equal getComponentSpec().id
+            describe "the element", ->
+              it "should have the id specified in the component spec", ->
+                $container.attr('id').should.equal getComponentSpec().id
+
+              it "should have class .properties-graph", ->
+                $container.hasClass('properties-graph').should.be.true
 
         it "should have a getView method", ->
           controller.should.have.property 'getView'

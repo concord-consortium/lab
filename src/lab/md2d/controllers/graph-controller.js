@@ -27,9 +27,8 @@ define(function (require) {
       };
 
   return function graphController(component) {
-
     var // HTML element containing view
-        $container = $('<div>').attr('id', component.id),
+        $container = $('<div>').attr('id', component.id).addClass('properties-graph'),
         grapher,
         controller,
         properties,
