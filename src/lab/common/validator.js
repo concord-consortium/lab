@@ -4,6 +4,23 @@
 // meta-properties are supported.
 define(function() {
 
+  var fill = function (input, defaultObj) {
+    var result = {},
+        prop;
+
+    for (prop in defaultObj) {
+      if (defaultObj.hasOwnProperty(prop)) {
+        if (input[prop] === undefined || input[prop] === null) {
+          result[prop] = defaultObj[prop];
+        } else {
+          result[prop] = input[prop];
+        }
+      }
+    }
+
+    return result;
+  };
+
   return {
 
     // Basic validation.
@@ -61,11 +78,18 @@ define(function() {
             // Value is not declared in the input data.
             if (propMetadata.required === true) {
               throw new Error("Properties set is missing required property " + prop);
-            }
-            else if (propMetadata.defaultValue !== undefined) {
-              // Use defaultValue if defined.
+            } else if (typeof propMetadata.defaultValue === "object") {
+              // If default value is an object, copy it.
+              // result[prop] = propMetadata.defaultValue;
+              // is not enough, as we don't want to share object
+              // from metadata.
+              result[prop] = fill({}, propMetadata.defaultValue);
+            } else if (propMetadata.defaultValue !== undefined) {
+              // If it's basic type, just set value.
               result[prop] = propMetadata.defaultValue;
             }
+          } else if (typeof input[prop] === "object" && typeof propMetadata.defaultValue === "object") {
+            result[prop] = fill(input[prop], propMetadata.defaultValue);
           } else {
             result[prop] = input[prop];
           }
