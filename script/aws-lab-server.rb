@@ -111,7 +111,11 @@ file: ~/.fog
     @ipaddress = aquire_elastic_ip_address
     puts "\n*** associating server: #{@server.id}, #{@server.dns_name} with ipaddress: #{@ipaddress}"  if @options[:verbose]
     @compute.associate_address(@server.id, @ipaddress)
-    @dnsrecord = new_dns_record
+    if find_dns_record(@name)
+      update_dns_record(@name, @ipaddress)
+    else
+      new_dns_record(@name, @ipaddress)
+    end
     add_hostname_to_ssh_config
     erase_existing_host_key
     add_new_host_key
@@ -263,14 +267,14 @@ Host #{@name}
   end
 
   # Create a new dns record for the server and point it to the public IP address
-  def new_dns_record
+  def new_dns_record(name, ipaddress)
     puts "\n*** Creating new Type A DNS record: #{@name} => #{@ipaddress}" if @options[:verbose]
-    @zone.records.create({ :value => @ipaddress, :name => @name, :type => 'A' })
+    @dnsrecord = @zone.records.create({ :value => ipaddress, :name => name, :type => 'A' })
   end
 
   # find dns record for the hostname
   def find_dns_record(hostname)
-    record = @zone.records.get(hostname)
+    @dnsrecord = @zone.records.get(hostname)
   end
 
   # update ipaddress for dns record: hostname
@@ -278,6 +282,7 @@ Host #{@name}
     if record = find_dns_record(hostname)
       puts "\n*** Updating IP address for DNS record: #{record.name} from #{record.value} => #{ipaddress}" if @options[:verbose]
       record.modify(:value => [ipaddress])
+      @dnsrecord = record
     else
       puts "\n*** DNS record: #{hostname} not found" if @options[:verbose]
     end
