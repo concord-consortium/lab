@@ -119,9 +119,9 @@ helpers.withIsolatedRequireJS (requirejs) ->
                 dataPoint = newData[0]
                 dataPoint.should.eql [model.get('potentialEnergy'), model.get('kineticEnergy')]
 
-            it "should pass option.sample = viewRefreshRate * timeStep", ->
+            it "should pass option.sample = viewRefreshRate * timeStep (/ 1000)", ->
               options = mock.RealTimeGraph.getCall(0).args[1]
-              options.should.have.property 'sample', model.get('viewRefreshInterval') * model.get('timeStep')
+              options.should.have.property 'sample', model.get('viewRefreshInterval') * model.get('timeStep') / 1000
 
           describe "after 1 model tick", ->
             beforeEach ->
@@ -213,9 +213,9 @@ helpers.withIsolatedRequireJS (requirejs) ->
                 options = grapher.reset.getCall(0).args[1]
                 options.should.be.a 'object'
 
-              it "should pass option.sample = viewRefreshRate * timeStep", ->
+              it "should pass option.sample = viewRefreshRate * timeStep (/ 1000)", ->
                 options = grapher.reset.getCall(0).args[1]
-                options.should.have.property 'sample', model.get('viewRefreshInterval') * model.get('timeStep')
+                options.should.have.property 'sample', model.get('viewRefreshInterval') * model.get('timeStep') / 1000
 
               it "should pass an array of length 1 to new_data", ->
                 newData = grapher.new_data.getCall(0).args[0]
@@ -269,7 +269,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
               grapher.reset.callCount.should.equal 1
             sampleShouldBeCorrect = ->
               options = grapher.reset.getCall(0).args[1]
-              options.sample.should.equal model.get('viewRefreshInterval') * model.get('timeStep')
+              options.sample.should.equal model.get('viewRefreshInterval') * model.get('timeStep') / 1000
 
             it "should reset the graph and sample size after viewRefreshInterval is changed", ->
               model.set viewRefreshInterval: 2 * model.get 'viewRefreshInterval'
