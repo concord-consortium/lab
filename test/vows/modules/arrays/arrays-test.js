@@ -278,4 +278,18 @@ suite.addBatch({
   }
 });
 
+suite.addBatch({
+  "remove": {
+    topic: function() {
+      return arrays.remove;
+    },
+    "remove element from simple array": function(remove) {
+      assert.deepEqual(remove([0, 1, 2, 3], 0), [1, 2, 3]);
+      assert.deepEqual(remove([0, 1, 2, 3], 1), [0, 2, 3]);
+      assert.deepEqual(remove([0, 1, 2, 3], 2), [0, 1, 3]);
+      assert.deepEqual(remove([0, 1, 2, 3], 3), [0, 1, 2]);
+    }
+  }
+});
+
 suite.export(module);

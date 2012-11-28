@@ -246,9 +246,7 @@ define(function (require, exports, module) {
     therefore must pas a *new* object reference back to client code.
   */
   arrays.extend = function(array, newLength) {
-    var i,
-        len,
-        extendedArray,
+    var extendedArray,
         Constructor;
 
     Constructor = arrays.constructor_function(array);
@@ -265,6 +263,21 @@ define(function (require, exports, module) {
     extendedArray.set(array.subarray(0, newLength));
 
     return extendedArray;
+  };
+
+  arrays.remove = function(array, idx) {
+    var constructor = arrays.constructor_function(array),
+        rest;
+
+    if (constructor !== Array) {
+      throw new Error("arrays.remove for typed arrays not implemented yet.");
+    }
+
+    rest = array.slice(idx + 1);
+    array.length = idx;
+    Array.prototype.push.apply(array, rest);
+
+    return array;
   };
 
   arrays.isArray = function (object) {
