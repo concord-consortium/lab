@@ -10,18 +10,8 @@ define(function(require) {
     parentCollectionName: 'Parameters',
     childCollectionName: 'Time Series',
 
-    // TODO: Not entirely sure if these are required. Is perhaps the 'dimensions' property of the
-    // 'initGame' command optional?
-    width:  100,
-    height: 100,
-
     nMetadataLabels: 0,
     metadataLabelPositions: {},
-
-    init: function(width, height) {
-      this.width = width;
-      this.height = height;
-    },
 
     mockDGController: {
       doCommand: function(obj) {
@@ -89,8 +79,7 @@ define(function(require) {
 
       // Step 1. Tell DG we're a "game".
       this.doCommand('initGame', {
-        name: this.gameName,
-        dimensions: { width: this.width, height: this.height }
+        name: this.gameName
       });
 
       // Step 2. Create a parent table. Each row will have the value of each of the parameters,
