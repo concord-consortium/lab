@@ -19,12 +19,14 @@ define(function (require) {
         tail,
         x,
         y,
+        forceUpdate,
 
         init = function () {
           // Keep maximum capacity of lists bigger than actual number of atoms.
           maxAtomsNum = atomsNum + 10;
           listIdx = 0;
           listCapacity = maxAtomsNum * (maxAtomsNum - 1) / 2;
+          forceUpdate = true;
 
           list = arrays.create(listCapacity, 0, arrayTypes.int16);
           head = arrays.create(maxAtomsNum, -1, arrayTypes.int16);
@@ -75,10 +77,19 @@ define(function (require) {
         x[i] = xCoord;
         y[i] = yCoord;
       },
+      invalidate: function () {
+        forceUpdate = true;
+      },
       shouldUpdate: function (newX, newY) {
         var maxDx = -Infinity,
             maxDy = -Infinity,
             i;
+
+        if (forceUpdate) {
+          forceUpdate = false;
+          return true;
+        }
+
         for (i = 0; i < atomsNum; i++) {
           if (Math.abs(newX[i] - x[i]) > maxDx) {
             maxDx = Math.abs(newX[i] - x[i]);
