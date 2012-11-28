@@ -75,6 +75,29 @@ describe "MD2D modeler", ->
           model.getAtomProperties(1).x.should.equal 3
           model.getAtomProperties(1).y.should.equal 3
 
+        describe "and there are radial bonds", ->
+
+          beforeEach ->
+            model.addRadialBond atom1: 0, atom2: 1, length: 1, strength: 1
+            model.addRadialBond atom1: 1, atom2: 2, length: 2, strength: 2
+
+          it "should remove also connected radial bonds", ->
+            model.getNumberOfRadialBonds().should.equal 2
+
+            model.removeAtom 0
+            model.get_num_atoms().should.equal 2
+
+            model.getNumberOfRadialBonds().should.equal 1
+            model.getRadialBondProperties(0).atom1.should.equal 0
+            model.getRadialBondProperties(0).atom2.should.equal 1
+            model.getRadialBondProperties(0).length.should.equal 2
+            model.getRadialBondProperties(0).strength.should.equal 2
+
+            model.removeAtom 0
+            model.get_num_atoms().should.equal 1
+
+            model.getNumberOfRadialBonds().should.equal 0
+
       describe "and provided index doesn't match any atom", ->
         it "should fail and report an error", ->
           (-> model.removeAtom 3).should.throw()
