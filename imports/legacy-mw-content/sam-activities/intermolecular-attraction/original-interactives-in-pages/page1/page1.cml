@@ -19,7 +19,7 @@
 <Alignment>1</Alignment>
 <content start="1" end="2">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>page1$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+<resource>page1$0.mml</resource><statusbar>false</statusbar></component></content>
 
 <content start="2" end="4">
 </content>
@@ -36,19 +36,19 @@
     &lt;table border=&quot;0&quot;&gt;
       &lt;tr&gt;
         &lt;td&gt;
-          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;All 
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;All 
           molecules attract to each other, but there are different patterns 
           and strengths of attraction that occur. To the left is a bunch of 
           polar and non-polar molecules.&lt;/font&gt;
         &lt;/td&gt;
         &lt;td&gt;
-          &lt;img width=&quot;102&quot; height=&quot;100&quot; src=&quot;vdwPointerComp.png&quot;&gt;
+          &lt;img height=&quot;100&quot; width=&quot;102&quot; src=&quot;vdwPointerComp.png&quot;&gt;
           
         &lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td colspan=&quot;2&quot;&gt;
-          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Explore 
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Explore 
           how different or similar molecules form intermolecular attractions 
           when they are close together. &lt;/strong&gt;&lt;/font&gt;
         &lt;/td&gt;
