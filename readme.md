@@ -47,9 +47,9 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
 ### Molecular Modeling Examples
 
-- [A Simple Gas](/examples/interactives/interactives.html#interactives/basic-examples/simple-gas.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/basic-examples/simple-gas.json))
-- [Oil and Water](/examples/interactives/interactives.html#interactives/basic-examples/oil-and-water-shake.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/basic-examples/oil-and-water-shake.json))
-- [Boiling Point and Solubility](/examples/interactives/interactives.html#interactives/sam/intermolecular-attractions-page-3-2.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/sam/intermolecular-attractions-page-3-2.json))
+- [Oil and Water](/examples/interactives/interactives.html#interactives/samples/1-oil-and-water-shake.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/samples/1-oil-and-water-shake.json))
+- [A Simple Gas](/examples/interactives/interactives.html#interactives/samples/2-simple-gas.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/samples/2-simple-gas.json))
+- [Explore 100 Atoms](/examples/interactives/interactives.html#interactives/samples/3-100-atoms.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/samples/3-100-atoms.json))
 
 ### Energy2D Examples
 
