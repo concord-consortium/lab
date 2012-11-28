@@ -54,6 +54,10 @@
       "initialValue": 0
     }
   ],
+  "exports": {
+    "parameters": ["startingGravity", "startingLength", "startingAngle", "ballMass", "ballFriction"],
+    "outputs": ["currentAngle", "kineticEnergy"]
+  },
   "components": [
     {
       "type": "slider",
@@ -182,6 +186,12 @@
       "property": "keShading"
     },
     {
+      "type": "button",
+      "id": "export",
+      "text": "export",
+      "action": "exportData();"
+    },
+    {
       "type": "graph",
       "id": "propertiesGraph",
       "title": "Energy vs. starting gravity and starting length",
@@ -206,7 +216,8 @@
       [
         "mass-slider",
         "current-angle-slider",
-        "friction-slider"
+        "friction-slider",
+        "export"
       ]
     ]
   }
