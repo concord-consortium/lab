@@ -4,7 +4,10 @@ requirejs([
   'common/validator'
 ], function (validator) {
 
-  var metadata = {
+  var metadata;
+
+  beforeEach(function () {
+    metadata = {
       requiredProp: {
         required: true
       },
@@ -18,12 +21,13 @@ requirejs([
         immutable: true
       }
     };
+  });
 
   describe('validator module', function() {
 
     describe('.validate()', function() {
       it('should fail when an incorrect arguments are provided', function () {
-        // The input is correct.
+        // The input is incorrect.
         var input = {
           optionalProp: 1
         };
@@ -117,45 +121,158 @@ requirejs([
       });
 
       describe('when a default value is available', function () {
-        it('validation should use it if the input property is undefined', function () {
-          var input = {
-                requiredProp: 1
-              },
-              result = validator.validateCompleteness(metadata, input);
+        describe('and it is basic type like number', function () {
+          it('validation should use it if the input property is undefined', function () {
+            var input = {
+                  requiredProp: 1
+                },
+                result = validator.validateCompleteness(metadata, input);
 
-          result.requiredProp.should.equal(1);
-          // Default value -1 should be used.
-          result.optionalProp.should.equal(-1);
-          // This property is not required, but it also doesn't define default value.
-          result.should.not.have.property('readOnlyProp');
+            result.requiredProp.should.equal(1);
+            // Default value -1 should be used.
+            result.optionalProp.should.equal(-1);
+            // This property is not required, but it also doesn't define default value.
+            result.should.not.have.property('readOnlyProp');
+          });
+
+          it('validation should use it if the input property is null', function () {
+            var input = {
+                  requiredProp: 1,
+                  optionalProp: null
+                },
+                result = validator.validateCompleteness(metadata, input);
+
+            result.requiredProp.should.equal(1);
+            // Default value -1 should be used.
+            result.optionalProp.should.equal(-1);
+            // This property is not required, but it also doesn't define default value.
+            result.should.not.have.property('readOnlyProp');
+          });
+
+          it('validation should not use it if the input property is already defined', function () {
+            var input = {
+                  requiredProp: 1,
+                  optionalProp: 2
+                },
+                result = validator.validateCompleteness(metadata, input);
+
+            result.requiredProp.should.equal(1);
+            // Default value -1 should be used.
+            result.optionalProp.should.equal(2);
+            // This property is not required, but it also doesn't define default value.
+            result.should.not.have.property('readOnlyProp');
+          });
         });
 
-        it('validation should use it if the input property is null', function () {
-          var input = {
-                requiredProp: 1,
-                optionalProp: null
-              },
-              result = validator.validateCompleteness(metadata, input);
+        describe('and it is an object', function () {
 
-          result.requiredProp.should.equal(1);
-          // Default value -1 should be used.
-          result.optionalProp.should.equal(-1);
-          // This property is not required, but it also doesn't define default value.
-          result.should.not.have.property('readOnlyProp');
-        });
+          beforeEach(function (){
+            metadata.optionalProp = {
+              defaultValue: {
+                a: 1,
+                b: 2,
+                c: 3
+              }
+            };
+          });
 
-        it('validation should not use it if the input property is already defined', function () {
-          var input = {
-                requiredProp: 1,
-                optionalProp: 2
-              },
-              result = validator.validateCompleteness(metadata, input);
+          it('validation should use it if the input property is undefined', function () {
+            var input = {
+                  requiredProp: 1
+                },
+                result = validator.validateCompleteness(metadata, input);
 
-          result.requiredProp.should.equal(1);
-          // Default value -1 should be used.
-          result.optionalProp.should.equal(2);
-          // This property is not required, but it also doesn't define default value.
-          result.should.not.have.property('readOnlyProp');
+            result.requiredProp.should.equal(1);
+            // Default value should be used.
+            result.optionalProp.should.eql(metadata.optionalProp.defaultValue);
+            // But new object should be created, copying of reference is not enough!
+            result.optionalProp.should.not.equal(metadata.optionalProp.defaultValue);
+            // This property is not required, but it also doesn't define default value.
+            result.should.not.have.property('readOnlyProp');
+          });
+
+          it('validation should use it if the input property is null', function () {
+            var input = {
+                  requiredProp: 1,
+                  optionalProp: null
+                },
+                result = validator.validateCompleteness(metadata, input);
+
+            result.requiredProp.should.equal(1);
+            // Default value should be used.
+            result.optionalProp.should.eql(metadata.optionalProp.defaultValue);
+            // But new object should be created, copying of reference is not enough!
+            result.optionalProp.should.not.equal(metadata.optionalProp.defaultValue);
+            // This property is not required, but it also doesn't define default value.
+            result.should.not.have.property('readOnlyProp');
+          });
+
+          it('validation should not use it if the input property is already defined as basic type', function () {
+            var input = {
+                  requiredProp: 1,
+                  optionalProp: 2
+                },
+                result = validator.validateCompleteness(metadata, input);
+
+            result.requiredProp.should.equal(1);
+            result.optionalProp.should.equal(2);
+            // This property is not required, but it also doesn't define default value.
+            result.should.not.have.property('readOnlyProp');
+          });
+
+          it('validation should use it if the input property is empty object', function () {
+            var input = {
+                  requiredProp: 1,
+                  optionalProp: {}
+                },
+                result = validator.validateCompleteness(metadata, input);
+
+            result.requiredProp.should.equal(1);
+            // Default value should be used.
+            result.optionalProp.should.eql(metadata.optionalProp.defaultValue);
+            // But new object should be created, copying of reference is not enough!
+            result.optionalProp.should.not.equal(metadata.optionalProp.defaultValue);
+            // This property is not required, but it also doesn't define default value.
+            result.should.not.have.property('readOnlyProp');
+          });
+
+          it('validation should use it if the input property is an incomplete object', function () {
+            var input = {
+                  requiredProp: 1,
+                  optionalProp: {
+                    b: 15
+                  }
+                },
+                result = validator.validateCompleteness(metadata, input);
+
+            result.requiredProp.should.equal(1);
+            // Default value should be used.
+            result.optionalProp.should.eql({ a: 1, b: 15, c: 3 });
+            // And value should be different from defaultValue object.
+            result.optionalProp.should.not.eql(metadata.optionalProp.defaultValue);
+            // This property is not required, but it also doesn't define default value.
+            result.should.not.have.property('readOnlyProp');
+          });
+
+          it('validation should use it if the input property is an object with nulls', function () {
+            var input = {
+                  requiredProp: 1,
+                  optionalProp: {
+                    a: null,
+                    b: 15,
+                    c: null
+                  }
+                },
+                result = validator.validateCompleteness(metadata, input);
+
+            result.requiredProp.should.equal(1);
+            // Default value should be used.
+            result.optionalProp.should.eql({ a: 1, b: 15, c: 3 });
+            // And value should be different from defaultValue object.
+            result.optionalProp.should.not.eql(metadata.optionalProp.defaultValue);
+            // This property is not required, but it also doesn't define default value.
+            result.should.not.have.property('readOnlyProp');
+          });
         });
       });
 
