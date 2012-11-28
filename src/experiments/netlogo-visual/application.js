@@ -163,14 +163,16 @@ var ROOT = "/experiments",
 
   function exportDataReadyCallback() {
     var modelDataDesc,
+        dataSeries,
         dgExportDone = dgDataReady();
     if (dgExportDone) {
       clearInterval(clearDataReady);
       modelDataDesc = nl_read_global("MODELDATADESCRIPTION");
+      dataSeries = nl_read_global("DATASERIES");
       if (exportedData) {
-        exportedData.textContent = modelDataDesc;
+        exportedData.textContent = modelDataDesc + "\n" + dataSeries;
       } else {
-        console.log(modelDataDesc);
+        console.log(modelDataDesc + "\n" + dataSeries);
       }
     }
   }
