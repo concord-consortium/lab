@@ -109,15 +109,14 @@ helpers.withIsolatedRequireJS (requirejs) ->
             it "should call grapher.new_data", ->
               grapher.new_data.callCount.should.equal 1
 
-            it "should pass an array of length 1 to new_data", ->
+            it "should pass an array of length 2 to new_data", ->
               newData = grapher.new_data.getCall(0).args[0]
-              newData.should.have.length 1
+              newData.should.have.length 2
 
-            describe "the item in the array passed to new_data", ->
-              it "should be an array with the initial value of each of component.properties", ->
+            describe "the array passed to new_data", ->
+              it "should contain 2 arrays, each with the initial value of one of component.properties", ->
                 newData = grapher.new_data.getCall(0).args[0]
-                dataPoint = newData[0]
-                dataPoint.should.eql [model.get('potentialEnergy'), model.get('kineticEnergy')]
+                newData.should.eql [[model.get('potentialEnergy')], [model.get('kineticEnergy')]]
 
             it "should pass option.sample = viewRefreshRate * timeStep (/ 1000)", ->
               options = mock.RealTimeGraph.getCall(0).args[1]
@@ -217,15 +216,14 @@ helpers.withIsolatedRequireJS (requirejs) ->
                 options = grapher.reset.getCall(0).args[1]
                 options.should.have.property 'sample', model.get('viewRefreshInterval') * model.get('timeStep') / 1000
 
-              it "should pass an array of length 1 to new_data", ->
+              it "should pass 1 array of length 2 to new_data", ->
                 newData = grapher.new_data.getCall(0).args[0]
-                newData.should.have.length 1
+                newData.should.have.length 2
 
-              describe "the item in the array passed to new_data", ->
-                it "should be an array with the initial value of each of component.properties", ->
+              describe "the array passed to new_data", ->
+                it "should contain 2 arrays, each with the initial value of one of component.properties", ->
                   newData = grapher.new_data.getCall(0).args[0]
-                  dataPoint = newData[0]
-                  dataPoint.should.eql [model.get('potentialEnergy'), model.get('kineticEnergy')]
+                  newData.should.eql [[model.get('potentialEnergy')], [model.get('kineticEnergy')]]
 
           describe "an invalidating property change, after 2 model ticks and a stepBack", ->
             expectedData = null
@@ -247,19 +245,28 @@ helpers.withIsolatedRequireJS (requirejs) ->
             it "should call grapher.new_data", ->
               grapher.new_data.callCount.should.equal 1
 
-            describe "the argument to new_data", ->
+            describe "the array passed to new_data", ->
               newData = null
               beforeEach ->
                 newData = grapher.new_data.getCall(0).args[0]
 
-              it "should have original values of the properties as the first element", ->
-                newData[0].should.eql expectedData[0]
-
-              it "should have post-first-tick values of the properties as the second element", ->
-                newData[1].should.eql expectedData[1]
-
-              it "should not have a third element", ->
+              it "should contain 2 arrays", ->
                 newData.should.have.length 2
+
+              describe "the first element of each array", ->
+                it "should be the original values of each of the properties", ->
+                  newData[0][0].should.equal expectedData[0][0]
+                  newData[1][0].should.equal expectedData[0][1]
+
+              describe "the second element of each array", ->
+                it "should be the post-first-tick values of each of the properties", ->
+                  newData[0][1].should.equal expectedData[1][0]
+                  newData[1][1].should.equal expectedData[1][1]
+
+              describe "the third element of each array", ->
+                it "should not exist", ->
+                  newData[0].should.have.length 2
+                  newData[1].should.have.length 2
 
           describe "handling of sample size changes", ->
             beforeEach ->

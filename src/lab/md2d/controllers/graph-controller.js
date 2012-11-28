@@ -35,11 +35,11 @@ define(function (require) {
         data = [];
 
     /**
-      Returns the time interval that elapses between succeessive data points. The current
-      implementation of the grapher requires this knowledge.
+      Returns the time interval that elapses between succeessive data points, in picoseconds. (The
+      current implementation of the grapher requires this knowledge.)
     */
     function getSamplePeriod() {
-      return model.get('viewRefreshInterval') * model.get('timeStep');
+      return model.get('viewRefreshInterval') * model.get('timeStep') / 1000;
     }
 
     /**
@@ -61,7 +61,6 @@ define(function (require) {
     function getOptions() {
       var cProp,
           gOption,
-
           options = {
             sample: getSamplePeriod()
           };
@@ -80,8 +79,12 @@ define(function (require) {
       Resets the cached data array to a single, initial data point, and pushes that data into graph.
     */
     function resetData() {
-      data.length = 0;
-      data.push(getDataPoint());
+      var dataPoint = getDataPoint(),
+          i;
+
+      for (i = 0; i < dataPoint.length; i++) {
+        data[i] = [dataPoint[i]];
+      }
       grapher.new_data(data);
     }
 
@@ -90,11 +93,15 @@ define(function (require) {
       data array
     */
     function appendDataPoint() {
-      var point = getDataPoint();
-      data.push(point);
+      var dataPoint = getDataPoint(),
+          i;
+
+      for (i = 0; i < dataPoint.length; i++) {
+        data[i].push(dataPoint[i]);
+      }
       // The grapher considers each individual (property, time) pair to be a "point", and therefore
       // considers the set of properties at any 1 time (what we consider a "point") to be "points".
-      grapher.add_points(point);
+      grapher.add_points(dataPoint);
     }
 
     /**
@@ -102,8 +109,12 @@ define(function (require) {
       This is used when a change is made that invalidates the future data.
     */
     function removeDataAfterStepPointer() {
-      // Account for initial data, which corresponds to stepCounter == 0
-      data.length = model.stepCounter() + 1;
+      var i;
+
+      for (i = 0; i < properties.length; i++) {
+        // Account for initial data, which corresponds to stepCounter == 0
+        data[i].length = model.stepCounter() + 1;
+      }
       grapher.new_data(data);
     }
 
@@ -133,6 +144,12 @@ define(function (require) {
       model.on('reset.graphController', function() {
         resetGrapher();
         resetData();
+      });
+      model.on('play.pressureGraph', function() {
+        if (grapher.number_of_points() && model.stepCounter() < grapher.number_of_points()) {
+          removeDataAfterStepPointer();
+        }
+        grapher.show_canvas();
       });
       model.on('invalidation.graphController', removeDataAfterStepPointer);
 
