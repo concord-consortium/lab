@@ -6,6 +6,7 @@ define(function (require) {
       PressureGraphController = require('md2d/controllers/pressure-graph-controller'),
       BarGraphController      = require('md2d/controllers/bar-graph-controller'),
       GraphController         = require('md2d/controllers/graph-controller'),
+      DgExportController      = require('md2d/controllers/dg-export-controller'),
       RealTimeGraph           = require('grapher/core/real-time-graph'),
       Thermometer             = require('cs!common/components/thermometer'),
       layout                  = require('common/layout/layout'),
@@ -33,6 +34,8 @@ define(function (require) {
         pressureGraphController,
         // Bar graph controller.
         barGraphController,
+        // Handles exporting data to DataGames, if 'exports' are specified
+        dgExportController,
 
         setupScreenCalledTwice = false,
 
@@ -338,6 +341,11 @@ define(function (require) {
 
             repaint: function repaint() {
               modelController.repaint();
+            },
+
+            exportData: function exportData() {
+              if (!dgExportController) throw new Error("No exports have been specified.");
+              dgExportController.exportData();
             },
 
             // rudimentary debugging functionality
@@ -1170,6 +1178,14 @@ define(function (require) {
       for (i = 0, ii=componentJsons.length; i<ii; i++) {
         component = createComponent(componentJsons[i]);
         components[componentJsons[i].id] = component;
+      }
+
+      // Setup exporter, if any...
+      if (interactive.exports) {
+        dgExportController = new DgExportController(interactive.exports);
+        // componentCallbacks is just a list of callbacks to make when model loads; it should
+        // perhaps be renamed.
+        componentCallbacks.push(dgExportController.modelLoadedCallback);
       }
 
       // look at each div defined in layout, and add any components in that
