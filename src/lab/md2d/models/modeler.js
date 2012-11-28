@@ -149,7 +149,7 @@ define(function(require) {
         // The list of all 'output' properties (which change once per tick)
         outputNames = [],
 
-        // Information about the metadata and calculating function for 'output' properties
+        // Information about the description and calculating function for 'output' properties
         outputsByName = {},
 
         // the currently-defined parameters
@@ -1514,10 +1514,10 @@ define(function(require) {
 
       `calculate` should be a no-arg function which should calculate the property value.
     */
-    model.defineOutput = function(name, metadata, calculate) {
+    model.defineOutput = function(name, description, calculate) {
       outputNames.push(name);
       outputsByName[name] = {
-        metadata: metadata,
+        description: description,
         calculate: calculate,
         hasCachedValue: false,
         // Used to keep track of whether this property changed as a side effect of some other change
@@ -1538,9 +1538,9 @@ define(function(require) {
       arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
       parameters are updated by the tick history.
     */
-    model.defineParameter = function(name, metadata, setter) {
+    model.defineParameter = function(name, description, setter) {
       parametersByName[name] = {
-        metadata: metadata,
+        description: description,
         setter: setter,
         isDefined: false
       };
@@ -1551,6 +1551,21 @@ define(function(require) {
         // set a useful 'this' binding in the setter:
         parametersByName[name].setter.call(model, value);
       };
+    };
+
+    /**
+      Retrieve (a copy of) the hash describing property 'name', if one exists. This hash can store
+      an arbitrary set of key-value pairs, but is expected to have 'label' and 'units' properties
+      describing, respectively, the property's human-readable label and the short name of the units
+      in which the property is enumerated.
+
+      Right now, only output properties and custom parameters have a description hash.
+    */
+    model.getPropertyDescription = function(name) {
+      var property = outputsByName[name] || parametersByName[name];
+      if (property) {
+        return _.extend({}, property.description);
+      }
     };
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.

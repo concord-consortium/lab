@@ -12,13 +12,18 @@ describe "MD2D custom parameters", ->
       model.set gravitationalField: 0
       setter = sinon.spy (value) ->
         this.set gravitationalField: 10*value
-      model.defineParameter 'testParameter', {}, setter
+      model.defineParameter 'testParameter', {
+        property1: 'value'
+      }, setter
 
     describe "custom parameters as read/write model properties", ->
 
       it "should be possible to set the parameter's value using Model#set and retrieve it using Model#get", ->
         model.set testParameter: 1
         model.get('testParameter').should.equal 1
+
+      it "should be possible to retrieve the parameter's property description using Model#getPropertyDescription", ->
+        model.getPropertyDescription('testParameter').should.eql { property1: 'value' }
 
       describe "when the parameter's value is set using Model#set", ->
         observer = null

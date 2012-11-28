@@ -33,7 +33,9 @@ describe "MD2D output properties", ->
       describe "an output property defined using Model#defineOutput", ->
         before ->
           model = Model simpleModel
-          model.defineOutput 'testProperty', {}, -> model.get('time') + 10
+          model.defineOutput 'testProperty', {
+            property1: 'value'
+          }, -> model.get('time') + 10
 
         it "can be accessed using Model#get", ->
           model.get('testProperty').should.equal 10
@@ -42,6 +44,8 @@ describe "MD2D output properties", ->
           (-> model.set testProperty: 0).should.throw()
           model.get('testProperty').should.equal 10
 
+        it "can have its description retrieved by Model#getPropertyDescription", ->
+          model.getPropertyDescription('testProperty').should.eql { property1: 'value' }
         it "can be observed", ->
           observer = sinon.spy()
           model.addPropertiesListener 'testProperty', observer
