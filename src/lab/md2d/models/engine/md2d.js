@@ -1837,6 +1837,60 @@ define(function (require, exports, module) {
         initializeNeighborList();
       },
 
+      removeAtom: function(idx) {
+        var i, len, prop,
+            l, list, lists;
+
+        if (idx >= N) {
+          throw new Error("Atom " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        // Shift atoms properties and zero last element.
+        // It can be optimized by just replacing the last
+        // atom with atom 'i', however this approach
+        // preserves more expectable atoms indexing.
+        for (i = idx; i < N; i++) {
+          for (prop in atoms) {
+            if (atoms.hasOwnProperty(prop)) {
+              if (i === N - 1)
+                atoms[prop][i] = 0;
+              else
+                atoms[prop][i] = atoms[prop][i + 1];
+            }
+          }
+        }
+
+        N--;
+
+        // Try to remove atom from charged atoms list.
+        i = chargedAtomsList.indexOf(idx);
+        if (i !== -1) {
+          arrays.remove(chargedAtomsList, i);
+        }
+
+        // Shift indices of atoms in various lists.
+        lists = [
+          chargedAtomsList,
+          radialBondAtom1Index, radialBondAtom2Index,
+          angularBondAtom1Index, angularBondAtom2Index, angularBondAtom3Index
+        ];
+
+        for (l = 0; l < lists.length; l++) {
+          list = lists[l];
+          for (i = 0, len = list.length; i < len; i++) {
+            if (list[i] > idx)
+              list[i]--;
+          }
+        }
+
+        // (Re)initialize helper structures for optimizations.
+        initializeCellList();
+        initializeNeighborList();
+
+        neighborList.invalidate();
+        updateParticlesAccelerations();
+      },
+
       /**
         The canonical method for adding an element.
       */

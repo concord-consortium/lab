@@ -14,7 +14,8 @@ define(function(require) {
 
   return function Model(initialProperties) {
     var model = {},
-        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom", "invalidation"),
+        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
+                               "seek", "addAtom", "removeAtom", "invalidation"),
         VDWLinesCutoffMap = {
           "short": 1.33,
           "medium": 1.67,
@@ -926,6 +927,14 @@ define(function(require) {
       dispatch.addAtom();
 
       return true;
+    },
+
+    model.removeAtom = function(i) {
+      invalidatingChangePreHook();
+      engine.removeAtom(i);
+      results.length = 0;
+      invalidatingChangePostHook();
+      dispatch.removeAtom();
     },
 
     model.addElement = function(props) {

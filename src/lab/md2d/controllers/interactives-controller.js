@@ -104,6 +104,20 @@ define(function (require) {
               return model.addAtom.apply(model, arguments);
             },
 
+            /*
+              Removes atom 'i'.
+            */
+            removeAtom: function removeAtom(i, options) {
+              try {
+                model.removeAtom(i);
+              } catch (e) {
+                if (!options || !options.silent)
+                  throw e;
+              }
+
+              scriptingAPI.repaint();
+            },
+
             addRandomAtom: function addRandomAtom() {
               return model.addRandomAtom.apply(model, arguments);
             },
@@ -257,7 +271,9 @@ define(function (require) {
               return model.getObstacleProperties(i);
             },
 
-            /* Removes obstacle 'i'. */
+            /**
+              Removes obstacle 'i'.
+            */
             removeObstacle: function removeObstacle(i, options) {
               try {
                 model.removeObstacle(i);

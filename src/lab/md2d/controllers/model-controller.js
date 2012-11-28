@@ -127,6 +127,7 @@ define(function (require) {
         model.resetTime();
         model.on('tick', tickHandler);
         model.on('addAtom', resetModelPlayer);
+        model.on('removeAtom', resetModelPlayer);
       }
 
       // ------------------------------------------------------------
