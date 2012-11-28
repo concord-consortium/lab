@@ -32,7 +32,8 @@ namespace :deploy do
 
   desc "setup server"
   task :setup do
-    run "cd /var/www/app; git checkout master; git pull origin master"
+    run "cd /var/www/app; git fetch"
+    run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
     run "cd /var/www/app; bundle install"
     run "cd /var/www/app/server; bundle install"
     run "cd /var/www/app/server; cp config/couchdb.sample.yml config/couchdb.yml"
@@ -45,14 +46,14 @@ namespace :deploy do
 
   desc "update server"
   task :update do
-    run "cd /var/www/app; git checkout master; git pull origin master"
+    run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
     run "cd /var/www/app; bundle install"
     run "cd /var/www/app; make public"
   end
 
   desc "clean and update server"
   task :clean_and_update do
-    run "cd /var/www/app; git checkout master; git pull origin master"
+    run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
     run "cd /var/www/app; bundle install"
     run "cd /var/www/app; make clean; make"
   end
