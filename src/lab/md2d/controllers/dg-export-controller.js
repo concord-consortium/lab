@@ -7,7 +7,7 @@ define(function (require) {
 
   return function dgExportController(spec) {
     var parameters = spec.parameters.slice(),
-        outputs    = ['time'].concat(spec.outputs.slice()),
+        outputs    = ['timeInPs'].concat(spec.outputs.slice()),
         outputValues,
         controller;
 
@@ -43,6 +43,14 @@ define(function (require) {
 
     return controller = {
       modelLoadedCallback: function() {
+        // Show time in picoseconds by default b/c ps are the time unit used by the standard graph.
+        model.defineOutput('timeInPs', {
+          label: "Time",
+          units: "ps"
+        }, function() {
+          return model.get('time')/1000;
+        });
+
         resetData();
         registerModelListeners();
       },
