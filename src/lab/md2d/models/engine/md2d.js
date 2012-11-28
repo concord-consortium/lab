@@ -475,6 +475,22 @@ define(function (require, exports, module) {
           }
         },
 
+        // Calculates radial bond matrix using existing radial bonds.
+        calculateRadialBondMatrix = function () {
+          var i, atom1, atom2;
+
+          radialBondMatrix = [];
+
+          for (i = 0; i < N_radialBonds; i++) {
+            atom1 = radialBondAtom1Index[i];
+            atom2 = radialBondAtom2Index[i];
+            radialBondMatrix[atom1] = radialBondMatrix[atom1] || [];
+            radialBondMatrix[atom1][atom2] = true;
+            radialBondMatrix[atom2] = radialBondMatrix[atom2] || [];
+            radialBondMatrix[atom2][atom1] = true;
+          }
+        },
+
         /**
           Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `atoms`
           `elements`, `radialBonds`, etc. arrayContainer might be an array or an object.
@@ -1882,6 +1898,18 @@ define(function (require, exports, module) {
               list[i]--;
           }
         }
+
+        // Also in radial bonds results...
+        // TODO: they should be recalculated while computing output state.
+        for (i = 0, len = radialBondResults.length; i < len; i++) {
+          if (radialBondResults[i].atom1 > idx)
+            radialBondResults[i].atom1--;
+          if (radialBondResults[i].atom2 > idx)
+            radialBondResults[i].atom2--;
+        }
+
+        // Recalculate radial bond matrix.
+        calculateRadialBondMatrix();
 
         // (Re)initialize helper structures for optimizations.
         initializeCellList();
