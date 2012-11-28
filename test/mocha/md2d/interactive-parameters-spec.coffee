@@ -5,6 +5,8 @@ simpleModel = helpers.getModel 'simple-model.json'
 parameter1 =
   {
     "name":  "customParameter",
+    "units": "customUnit",
+    "label": "customLabel",
     "onChange": ["set({ parameterUsedAndValue: 'parameter1: ' + value });",
                  "set({ parameter1SetterCalled: true });"],
     "initialValue": 'initial value 1'
@@ -47,6 +49,18 @@ describe "Lab interactives: custom model parameters", ->
           controller = interactivesController interactive, 'body'
         model.set customParameter: 1
         model.get('parameterUsedAndValue').should.equal 'parameter1: 1'
+
+      it "respects the 'units' key of the parameter definition", ->
+        interactive.parameters = [parameter1]
+        helpers.withModel simpleModel, ->
+          controller = interactivesController interactive, 'body'
+        model.getPropertyDescription('customParameter').should.have.property 'units', 'customUnit'
+
+      it "respects the 'label' key of the parameter definition", ->
+        interactive.parameters = [parameter1]
+        helpers.withModel simpleModel, ->
+          controller = interactivesController interactive, 'body'
+        model.getPropertyDescription('customParameter').should.have.property 'label', 'customLabel'
 
       it "lets you define a custom parameter in the models section of the interactive definition", ->
         interactive.models[0].parameters = [parameter1]

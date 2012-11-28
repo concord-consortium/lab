@@ -1288,7 +1288,7 @@ define(function (require) {
           // have "ids". But, in English, properties have "names", but not "ids".
           model.defineOutput(output.name, {
             label: output.label,
-            units: output.units
+            units: output.units,
           }, makeFunctionInScriptContext(getStringFromArray(output.value)));
         }
       }
@@ -1310,8 +1310,10 @@ define(function (require) {
 
       for (i = 0; i < parameters.length; i++) {
         parameter = parameters[i];
-        model.defineParameter(parameter.name, {},
-          makeFunctionInScriptContext('value', getStringFromArray(parameter.onChange)));
+        model.defineParameter(parameter.name, {
+          label: parameter.label,
+          units: parameter.units
+        }, makeFunctionInScriptContext('value', getStringFromArray(parameter.onChange)));
 
         if (parameter.initialValue !== undefined) {
           initialValues[parameter.name] = parameter.initialValue;

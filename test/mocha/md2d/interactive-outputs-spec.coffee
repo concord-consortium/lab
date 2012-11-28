@@ -5,6 +5,8 @@ simpleModel = helpers.getModel 'simple-model.json'
 output1 =
   {
     "name":  "customOutput",
+    "label": "customLabel",
+    "units": "customUnit",
     "value": "return 'output1';"
   }
 
@@ -41,6 +43,18 @@ describe "Lab interactives: custom output properties", ->
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
         model.get('customOutput').should.equal 'output1'
+
+      it "respects the 'units' key of the property definition", ->
+        interactive.outputs = [output1]
+        helpers.withModel simpleModel, ->
+          controller = interactivesController interactive, 'body'
+        model.getPropertyDescription('customOutput').should.have.property 'units', 'customUnit'
+
+      it "respects the 'label' key of the property definition", ->
+        interactive.outputs = [output1]
+        helpers.withModel simpleModel, ->
+          controller = interactivesController interactive, 'body'
+        model.getPropertyDescription('customOutput').should.have.property 'label', 'customLabel'
 
       it "lets you define a custom output property in the models section of the interactive definition", ->
         interactive.models[0].outputs = [output1]
