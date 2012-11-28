@@ -5,6 +5,7 @@ define(function (require) {
   var ModelController         = require('md2d/controllers/model-controller'),
       PressureGraphController = require('md2d/controllers/pressure-graph-controller'),
       BarGraphController      = require('md2d/controllers/bar-graph-controller'),
+      GraphController         = require('md2d/controllers/graph-controller'),
       RealTimeGraph           = require('grapher/core/real-time-graph'),
       Thermometer             = require('cs!common/components/thermometer'),
       layout                  = require('common/layout/layout'),
@@ -26,6 +27,8 @@ define(function (require) {
         thermometer,
         energyGraph,
         energyData = [[],[],[]],
+        // A generic line graph of some set of properties
+        graph,
         // Pressure Graph Controller, handles pressure data and its graphing.
         pressureGraphController,
         // Bar graph controller.
@@ -445,6 +448,12 @@ define(function (require) {
           return {
             elem:     pressureGraphController.getViewContainer(),
             callback: pressureGraphController.modelLoadedCallback
+          };
+        case 'graph':
+          graph = new GraphController(component);
+          return {
+            elem:     graph.getViewContainer(),
+            callback: graph.modelLoadedCallback
           };
         case 'slider':
           return createSlider(component);
@@ -1049,6 +1058,7 @@ define(function (require) {
       if (energyGraph) layout.addView('energyGraphs', energyGraph);
       // TODO: energyGraphs should be changed to lineGraphs?
       if (pressureGraphController) layout.addView('energyGraphs', pressureGraphController.getView());
+      if (graph) layout.addView('energyGraphs', graph.getView());
       if (barGraphController) layout.addView('barGraphs', barGraphController);
 
       $(window).unbind('resize');
