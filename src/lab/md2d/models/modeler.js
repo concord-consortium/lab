@@ -15,7 +15,7 @@ define(function(require) {
   return function Model(initialProperties) {
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
-                               "seek", "addAtom", "removeAtom", "invalidation"),
+                               "seek", "addAtom", "removeAtom", "removeRadialBond", "invalidation"),
         VDWLinesCutoffMap = {
           "short": 1.33,
           "medium": 1.67,
@@ -930,11 +930,22 @@ define(function(require) {
     },
 
     model.removeAtom = function(i) {
+      var prevBondsCount = engine.getNumberOfRadialBonds();
+
       invalidatingChangePreHook();
       engine.removeAtom(i);
+      // Enforce modeler to recalculate results array.
       results.length = 0;
       invalidatingChangePostHook();
+
+      // Notify listeners that atoms is removed.
       dispatch.removeAtom();
+
+      // Removing of an atom can also cause removing of
+      // the connected radial bond. Detect it and notify listeners.
+      if (engine.getNumberOfRadialBonds() !== prevBondsCount) {
+        dispatch.removeRadialBond();
+      }
     },
 
     model.addElement = function(props) {
@@ -1303,6 +1314,10 @@ define(function(require) {
 
     model.getNumberOfObstacles = function () {
       return engine.getNumberOfObstacles();
+    };
+
+    model.getNumberOfRadialBonds = function () {
+      return engine.getNumberOfRadialBonds();
     };
 
     model.get_radial_bonds = function() {

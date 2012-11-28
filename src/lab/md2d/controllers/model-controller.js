@@ -128,6 +128,7 @@ define(function (require) {
         model.on('tick', tickHandler);
         model.on('addAtom', resetModelPlayer);
         model.on('removeAtom', resetModelPlayer);
+        model.on('removeRadialBond', resetModelPlayer);
       }
 
       // ------------------------------------------------------------

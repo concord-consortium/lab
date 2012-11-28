@@ -1854,7 +1854,7 @@ define(function (require, exports, module) {
       },
 
       removeAtom: function(idx) {
-        var i, len, prop,
+        var i, len, prop, bondsToRemove,
             l, list, lists;
 
         if (idx >= N) {
@@ -1899,13 +1899,21 @@ define(function (require, exports, module) {
           }
         }
 
+        bondsToRemove = [];
+
         // Also in radial bonds results...
         // TODO: they should be recalculated while computing output state.
         for (i = 0, len = radialBondResults.length; i < len; i++) {
+          if (radialBondResults[i].atom1 === idx || radialBondResults[i].atom2 === idx)
+            bondsToRemove.push(i);
           if (radialBondResults[i].atom1 > idx)
             radialBondResults[i].atom1--;
           if (radialBondResults[i].atom2 > idx)
             radialBondResults[i].atom2--;
+        }
+
+        for (i = 0, len = bondsToRemove.length; i < len; i++) {
+          engine.removeRadialBond(bondsToRemove[i]);
         }
 
         // Recalculate radial bond matrix.
@@ -1963,6 +1971,38 @@ define(function (require, exports, module) {
         radialBondResults[N_radialBonds - 1] = {idx: N_radialBonds - 1};
         // Set new radial bond properties.
         engine.setRadialBondProperties(N_radialBonds - 1, props);
+      },
+
+      removeRadialBond: function(idx) {
+        var i, prop;
+
+        if (idx >= N) {
+          throw new Error("Radial bond " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        // Shift radial bonds properties and zero last element.
+        // It can be optimized by just replacing the last
+        // radial bond with radial bond 'i', however this approach
+        // preserves more expectable indexing.
+        // TODO: create some general function for that, as it's duplicated
+        // in each removeObject method.
+        for (i = idx; i < N_radialBonds; i++) {
+          for (prop in radialBonds) {
+            if (radialBonds.hasOwnProperty(prop)) {
+              if (i === N_radialBonds - 1)
+                radialBonds[prop][i] = 0;
+              else
+                radialBonds[prop][i] = radialBonds[prop][i + 1];
+            }
+          }
+        }
+
+        N_radialBonds--;
+
+        arrays.remove(radialBondResults, idx);
+
+        // Recalculate radial bond matrix.
+        calculateRadialBondMatrix();
       },
 
       /**
@@ -2450,6 +2490,10 @@ define(function (require, exports, module) {
 
       getNumberOfObstacles: function() {
         return N_obstacles;
+      },
+
+      getNumberOfRadialBonds: function() {
+        return N_radialBonds;
       },
 
       /**
