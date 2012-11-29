@@ -24,8 +24,8 @@
 
 </paragraph>
 <paragraph start="2" end="5">
-<SpaceBelow>5.0</SpaceBelow>
 <Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
 <content start="2" end="3">
 <component><class>org.concord.modeler.PageTextBox</class>
 <width>750.0</width>
@@ -35,7 +35,7 @@
     
   &lt;/head&gt;
   &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
-    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;The Ideal Gas 
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;The Ideal Gas 
     Law states that the volume of a gas is &amp;#10066; &lt;a href=&quot;script:page:0:message &lt;t&gt;&lt;font face=verdana&gt;Proportional: having same or contant ratios.&lt;/font&gt;&lt;/t&gt;&quot;&gt;proportional&lt;/a&gt; 
     to the temperature under constant pressure. In the following model, you 
     can increase or decrease the temperature, and observe how the volume 
@@ -52,11 +52,11 @@
 
 </paragraph>
 <paragraph start="5" end="7">
-<SpaceBelow>5.0</SpaceBelow>
 <Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
 <content start="5" end="6">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>page4$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<resource>page4$0.mml</resource><recorderless>true</recorderless>
 </component></content>
 
 <content start="6" end="7">
@@ -64,8 +64,8 @@
 
 </paragraph>
 <paragraph start="7" end="9">
-<SpaceBelow>5.0</SpaceBelow>
 <Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
 <content start="7" end="8">
 <component><class>org.concord.modeler.PageSlider</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>

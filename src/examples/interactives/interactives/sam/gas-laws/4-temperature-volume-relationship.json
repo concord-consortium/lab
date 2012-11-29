@@ -8,29 +8,24 @@
       "id": "page4$0",
       "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page4/page4$0.json",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "ruler.png": "ruler.svg"
+        }
       }
     }
   ],
+  "outputs": [
+    {
+      "name": "volume",
+      "units": "nm?",
+      "label": "area",
+      "value": [
+        "return getObstacleProperties(0).x * 2;"
+      ]
+    }
+  ],
   "components": [
-    {
-      "type": "button",
-      "id": "run",
-      "text": "Run",
-      "action": "start();"
-    },
-    {
-      "type": "button",
-      "id": "stop",
-      "text": "Stop",
-      "action": "stop();"
-    },
-    {
-      "type": "button",
-      "id": "reset",
-      "text": "Reset",
-      "action": "reset();"
-    },
     {
       "type": "slider",
       "id": "temperature-slider",
@@ -49,6 +44,16 @@
       "steps": 50,
       "title": "Temperature",
       "property": "targetTemperature"
+    },
+    {
+      "type": "slider",
+      "id": "volume-slider",
+      "min": 0,
+      "max": 10,
+      "displayValue": "return format('1.2f')(value)",
+      "steps": 80,
+      "title": "Volume of Gas",
+      "property": "volume"
     }
   ]
 }
