@@ -34,8 +34,8 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
-    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;In the model 
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;In the model 
     below, we put a virtual gauge in the container to measure pressure. The 
     output is shown with a bar graph.&lt;/font&gt;
   &lt;/body&gt;
@@ -64,13 +64,13 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body marginheight=&quot;4&quot; marginwidth=&quot;10&quot; face=&quot;Verdana&quot;&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;4&quot; face=&quot;Verdana&quot;&gt;
     Use the following buttons to start, stop and reset the simulation:
 
     &lt;p&gt;
-      &lt;input type=&quot;submit&quot; name=&quot;run&quot; script=&quot;script:mw2d:1:run&quot; value=&quot;Run&quot;&gt;
-      &lt;input type=&quot;submit&quot; name=&quot;stop&quot; script=&quot;script:mw2d:1:stop&quot; value=&quot;Stop&quot;&gt;
-      &lt;input type=&quot;submit&quot; name=&quot;reset&quot; script=&quot;script:mw2d:1:reset&quot; value=&quot;Reset&quot;&gt;
+      &lt;input script=&quot;script:mw2d:1:run&quot; name=&quot;run&quot; value=&quot;Run&quot; type=&quot;submit&quot;&gt;
+      &lt;input script=&quot;script:mw2d:1:stop&quot; name=&quot;stop&quot; value=&quot;Stop&quot; type=&quot;submit&quot;&gt;
+      &lt;input script=&quot;script:mw2d:1:reset&quot; name=&quot;reset&quot; value=&quot;Reset&quot; type=&quot;submit&quot;&gt;
       
     &lt;/p&gt;
     &lt;p&gt;
@@ -87,7 +87,7 @@
 
 <content start="6" end="7">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>page5$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+<resource>page5$0.mml</resource><statusbar>false</statusbar></component></content>
 
 <content start="7" end="8">
 </content>

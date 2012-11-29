@@ -8,7 +8,10 @@
       "id": "page5$0",
       "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page5/page5$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step"
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "pressureGauge.png" : "pressureGauge.svg"
+        }
       }
     }
   ],
