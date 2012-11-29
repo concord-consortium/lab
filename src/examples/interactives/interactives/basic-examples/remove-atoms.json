@@ -1,11 +1,11 @@
 {
-  "title": "Remove Atoms",
+  "title": "Remove Atoms and Bonds",
   "publicationStatus": "public",
   "subtitle": "",
   "about": "",
   "models": [
     {
-      "id": "three-atoms-three-elements$0",
+      "id": "remove-atoms$0",
       "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/remove-atoms$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
@@ -18,6 +18,18 @@
       "id": "rm-atom",
       "text": "Remove an atom",
       "action": "removeAtom(0);"
+    },
+    {
+      "type": "button",
+      "id": "rm-radial-bond",
+      "text": "Remove a radial bond",
+      "action": "removeRadialBond(0);"
+    },
+    {
+      "type": "button",
+      "id": "rm-angular-bond",
+      "text": "Remove an angular bond",
+      "action": "removeAngularBond(0);"
     }
   ]
 }
