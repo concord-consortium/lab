@@ -15,7 +15,8 @@ define(function(require) {
   return function Model(initialProperties) {
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
-                               "seek", "addAtom", "removeAtom", "removeRadialBond", "invalidation"),
+                               "seek", "addAtom", "removeAtom", "removeRadialBond", "removeAngularBond",
+                               "invalidation"),
         VDWLinesCutoffMap = {
           "short": 1.33,
           "medium": 1.67,
@@ -934,7 +935,8 @@ define(function(require) {
     },
 
     model.removeAtom = function(i) {
-      var prevBondsCount = engine.getNumberOfRadialBonds();
+      var prevRadBondsCount = engine.getNumberOfRadialBonds(),
+          prevAngBondsCount = engine.getNumberOfAngularBonds();
 
       invalidatingChangePreHook();
       engine.removeAtom(i);
@@ -947,8 +949,11 @@ define(function(require) {
 
       // Removing of an atom can also cause removing of
       // the connected radial bond. Detect it and notify listeners.
-      if (engine.getNumberOfRadialBonds() !== prevBondsCount) {
+      if (engine.getNumberOfRadialBonds() !== prevRadBondsCount) {
         dispatch.removeRadialBond();
+      }
+      if (engine.getNumberOfAngularBonds() !== prevAngBondsCount) {
+        dispatch.removeAngularBond();
       }
     },
 
@@ -980,7 +985,7 @@ define(function(require) {
       validatedProps = validator.validateCompleteness(metadata.obstacle, props);
       // Finally, add obstacle.
       engine.addObstacle(validatedProps);
-    },
+    };
 
     model.removeObstacle = function (idx) {
       engine.removeObstacle(idx);
@@ -995,6 +1000,11 @@ define(function(require) {
       engine.addRadialBond(validatedProps);
     },
 
+    model.removeRadialBond = function(idx) {
+      engine.removeRadialBond(idx);
+      dispatch.removeRadialBond();
+    };
+
     model.addAngularBond = function(props) {
       var validatedProps;
 
@@ -1002,7 +1012,12 @@ define(function(require) {
       validatedProps = validator.validateCompleteness(metadata.angularBond, props);
       // Finally, add angular bond.
       engine.addAngularBond(validatedProps);
-    },
+    };
+
+    model.removeAngularBond = function(idx) {
+      engine.removeAngularBond(idx);
+      dispatch.removeAngularBond();
+    };
 
     model.addRestraint = function(props) {
       var validatedProps;
@@ -1011,7 +1026,7 @@ define(function(require) {
       validatedProps = validator.validateCompleteness(metadata.restraint, props);
       // Finally, add restraint.
       engine.addRestraint(validatedProps);
-    },
+    };
 
     /** Return the bounding box of the molecule containing atom 'atomIndex', with atomic radii taken
         into account.
