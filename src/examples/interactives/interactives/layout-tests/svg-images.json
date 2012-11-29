@@ -1,0 +1,77 @@
+{
+  "title": "Using SVG for Images",
+  "publicationStatus": "public",
+  "subtitle": "Experimenting with using SVG documents to replace images",
+  "about": [
+    "This Interactive displays an image with a suggestion for how to start using the Interactive. Without any imageMapping instructionBox.png will be used. By enabling imageMapping in the json definition for the Interactive replacement SVG documents can be referenced which will replace the png image.",
+    "Current possible replacements:",
+    "<ul><li>instructionBox.svg</li><li>instructionBox2.svg</li><li>instructionBox3.svg</li></ul>"
+  ],
+  "models": [
+    {
+      "id": "png",
+      "url": "/imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    },
+    {
+      "id": "svg1",
+      "url": "/imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "instructionBox.png": "instructionBox.svg"
+        }
+      }
+    },
+    {
+      "id": "svg2",
+      "url": "/imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "instructionBox.png": "instructionBox2.svg"
+        }
+      }
+    },
+    {
+      "id": "svg3",
+      "url": "/imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "instructionBox.png": "instructionBox3.svg"
+        }
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "instructionBox.png",
+          "loadModel": "png"
+        },
+        {
+          "text": "instructionBox.svg",
+          "loadModel": "svg1"
+        },
+        {
+          "text": "instructionBox2.svg",
+          "loadModel": "svg2"
+        },
+        {
+          "text": "instructionBox3.svg",
+          "loadModel": "svg3"
+        }
+      ]
+    }
+  ]
+}

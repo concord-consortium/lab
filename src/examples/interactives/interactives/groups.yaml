@@ -30,6 +30,10 @@
   :name: "Physics Conversion Tests"
   :category: Tests
 
+- :path: layout-tests
+  :name: "Layout Tests"
+  :category: Tests
+
 - :path: student/classic/pendulum
   :name: "Classic Java MW Examples"
   :category: Examples
