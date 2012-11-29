@@ -118,6 +118,34 @@ define(function (require) {
               scriptingAPI.repaint();
             },
 
+            /*
+              Removes radial bond 'i'.
+            */
+            removeRadialBond: function removeRadialBond(i, options) {
+              try {
+                model.removeRadialBond(i);
+              } catch (e) {
+                if (!options || !options.silent)
+                  throw e;
+              }
+
+              scriptingAPI.repaint();
+            },
+
+            /*
+              Removes angular bond 'i'.
+            */
+            removeAngularBond: function removeAngularBond(i, options) {
+              try {
+                model.removeAngularBond(i);
+              } catch (e) {
+                if (!options || !options.silent)
+                  throw e;
+              }
+
+              scriptingAPI.repaint();
+            },
+
             addRandomAtom: function addRandomAtom() {
               return model.addRandomAtom.apply(model, arguments);
             },
