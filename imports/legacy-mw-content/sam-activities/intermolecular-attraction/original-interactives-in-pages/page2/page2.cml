@@ -22,14 +22,14 @@
     
   &lt;/head&gt;
   &lt;body marginwidth=&quot;10&quot;&gt;
-    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;There is a 
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;There is a 
     weak attraction between all atoms and molecules called London dispersion.&lt;a href=&quot;script:page:0:message londonDisclaimer.html&quot;&gt;*&lt;/a&gt; 
     Polar molecules additionally attract via dipole-dipole attractions. 
     Together, the London dispersion and dipole-dipole attraction are what we 
     call intermolecular attractions.&lt;/font&gt;
 
     &lt;p&gt;
-      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;In the 
+      &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;In the 
       previous model, time was standing still, so you could explore when 
       intermolecular attractions form. In this model the molecules will be 
       allowed to feel those attractions and move accordingly. Use the model 
@@ -51,7 +51,7 @@
 <Alignment>1</Alignment>
 <content start="2" end="3">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>page2$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+<resource>page2$0.mml</resource><statusbar>false</statusbar></component></content>
 
 <content start="3" end="5">
 </content>
@@ -65,22 +65,22 @@
     
   &lt;/head&gt;
   &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
-    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Separate the 
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Separate the 
     molecules from each other by dragging the one attached to the green star. 
     The other molecule is fixed in place so it won&apos;t move. &lt;/font&gt;
 
     &lt;ul&gt;
       &lt;li&gt;
-        &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;choose a 
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;choose a 
         pair of molecules using the menu&lt;/font&gt;
       &lt;/li&gt;
       &lt;li&gt;
-        &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;use the 
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;use the 
         arrow keys to pull the star around (If the star doesn&apos;t move, click on 
         it.) &lt;/font&gt;
       &lt;/li&gt;
       &lt;li&gt;
-        &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;use the 
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;use the 
         &amp;quot;a&amp;quot; key to increase the pulling force and the &amp;quot;d&amp;quot; key to decrease it&lt;/font&gt;
       &lt;/li&gt;
     &lt;/ul&gt;

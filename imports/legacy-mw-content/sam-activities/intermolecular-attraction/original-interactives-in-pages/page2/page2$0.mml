@@ -316,7 +316,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1347561438000</long> 
+     <long>1354163753000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -325,7 +325,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>11416</long> 
+    <long>11403</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -384,16 +384,16 @@
     <void index="0"> 
      <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
       <void property="URI"> 
-       <string>instructionsFlat.png</string> 
+       <string>instructions.png</string> 
       </void> 
       <void property="layer"> 
        <int>1</int> 
       </void> 
       <void property="x"> 
-       <double>32.0</double> 
+       <double>41.0</double> 
       </void> 
       <void property="y"> 
-       <double>27.0</double> 
+       <double>23.0</double> 
       </void> 
      </object> 
     </void> 
