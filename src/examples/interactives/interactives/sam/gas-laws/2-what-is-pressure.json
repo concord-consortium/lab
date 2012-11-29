@@ -12,36 +12,81 @@
       }
     }
   ],
-  "components": [
+  "outputs": [
     {
-      "type": "button",
-      "id": "abs-zero",
-      "text": "Set to absolute zero",
-      "action": "set({temperatureControl: true, targetTemperature: 0.00001});"
-    },
-    {
-      "type": "button",
-      "id": "add-heat",
-      "text": "Add lots of heat",
-      "action": [
-        "var curTemp = get('temperature'), newTemp = curTemp + 200;",
-        "if (newTemp > 4000) {",
-        "  newTemp = 4000;",
+      "name": "atomInside",
+      "label": "Atoms Inside Balloon",
+      "units": "balloon",
+      "value": [
+        "var atomNum = 0;",
+        "var obsX = getObstacleProperties(0).x;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).x < obsX) {",
+        "    atomNum++;",
+        "  }",
         "}",
-        "set({temperatureControl: true, targetTemperature: newTemp});"
-      ]
-    },
-    {
-      "type": "button",
-      "id": "subtract-heat",
-      "text": "Subtract some heat",
-      "action": [
-        "var curTemp = get('temperature'), newTemp = curTemp - 50;",
-        "if (newTemp < 1) {",
-        "  newTemp = 1;",
-        "}",
-        "set({temperatureControl: true, targetTemperature: newTemp});"
+        "return atomNum;"
       ]
     }
-  ]
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "show-velocity",
+      "text": "Show Velocity",
+      "property": "showVelocityVectors"
+    },
+    {
+      "type": "button",
+      "id": "add-atom",
+      "text": "Add an Atom to the Balloon",
+      "action": [
+        "var elemNum = 3;",
+        "var obsX = getObstacleProperties(0).x;",
+        "var atomSigma = getElementProperties(elemNum).sigma;",
+        "var avgVx = 0;",
+        "var avgVy = 0;",
+        "var atomNum = getNumberOfAtoms();",
+        "for (var i = 0; i < atomNum; i++) {",
+        "  avgVx += Math.abs(getAtomProperties(i).vx);",
+        "  avgVy += Math.abs(getAtomProperties(i).vy);",
+        "}",
+        "avgVx /= atomNum;",
+        "avgVy /= atomNum;",
+        "addAtom({ element: elemNum, x: (obsX - atomSigma) * Math.random()  , y: get('height') * Math.random(), vx: avgVx, vy: avgVy});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "remove-atom",
+      "text": "Remove an Atom From the Balloon",
+      "action": [
+        "var atomNum = getNumberOfAtoms();",
+        "var obsx = getObstacleProperties(0).x;",
+        "if (atomNum > 0) {",
+        "  for (var i = 0; i < atomNum; i++) {",
+        "    if (getAtomProperties(i).x < obsx) {",
+        "      removeAtom(i);",
+        "      break;",
+        "    }",
+        "  }",
+        "}"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "atom-num",
+      "min": 0,
+      "max": 200,
+      "displayValue": "return format('i')(value)",
+      "steps": 200,
+      "title": "Atoms Inside the Balloon",
+      "property": "atomInside"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["add-atom", "remove-atom"]
+    ]
+  }
 }
