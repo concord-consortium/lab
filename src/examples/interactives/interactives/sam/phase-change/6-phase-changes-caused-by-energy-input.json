@@ -8,17 +8,37 @@
       "id": "page6$0",
       "url": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page6/page6$0.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "play_reset",
         "enableKeyboardHandlers": false
       }
     }
   ],
+  "outputs": [
+    {
+      "name": "largeAtomKE",
+      "label": "Kinetic Energy of Large Atoms",
+      "units": "eV",
+      "value": [
+        "var largeKE = 0;",
+        "var numLarge = 0;",
+        "var elemNum = 3;",
+        "var mass = getElementProperties(elemNum).mass;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).element == elemNum) {",
+        "    largeKE += 0.5 * mass * Math.pow(getAtomProperties(i).speed,2);",
+        "    numLarge++;",
+        "  }",
+        "}",
+        "return (largeKE/numLarge)*100000;"
+      ]
+    }
+  ],
   "components": [
     {
-      "type": "button",
-      "id": "run",
-      "text": "Run",
-      "action": "start();"
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE Shading",
+      "property": "keShading"
     },
     {
       "type": "button",
@@ -27,16 +47,19 @@
       "action": "removeObstacle(0);"
     },
     {
-      "type": "button",
-      "id": "stop",
-      "text": "Stop",
-      "action": "stop();"
-    },
-    {
-      "type": "button",
-      "id": "reset",
-      "text": "Reset",
-      "action": "reset();"
+      "type": "barGraph",
+      "id": "bar-graph",
+      "options": {
+        "minValue": 0,
+        "maxValue": 5,
+        "title": "Avg. Kinetic Energy of Large Atoms"
+      },
+      "input1": "largeAtomKE"
     }
-  ]
+  ],
+  "layout": {
+    "rightwide": [
+      "bar-graph"
+    ]
+  }
 }
