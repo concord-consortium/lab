@@ -9,7 +9,8 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page3/page3$0.json",
       "viewOptions": {
         "controlButtons": "play_reset",
-        "enableKeyboardHandlers": false
+        "enableKeyboardHandlers": false,
+        "showVDWLines": true
       }
     }
   ],
@@ -19,11 +20,32 @@
       "id": "mark-two-atoms",
       "text": "Mark two atoms",
       "action": "markAtoms(randomAtoms(2));"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-interactions",
+      "text": "Show Interactions",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "button",
+      "id": "trace-atom",
+      "text": "Trace a random atom",
+      "action": "traceAtom(randomAtoms(1));"
+    },
+    {
+      "type": "button",
+      "id": "untrace-atom",
+      "text": "Remove trace",
+      "action": "untraceAtom();"
     }
   ],
   "layout": {
     "bottom": [
-      "mark-two-atoms"
+      "mark-two-atoms",
+      "trace-atom",
+      "untrace-atom",
+      "show-interactions"
     ]
   }
 }
