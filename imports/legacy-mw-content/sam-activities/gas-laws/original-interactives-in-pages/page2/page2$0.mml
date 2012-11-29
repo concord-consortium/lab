@@ -344,9 +344,9 @@
       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
        <void property="color"> 
         <object class="java.awt.Color"> 
-         <int>0</int> 
-         <int>192</int> 
-         <int>192</int> 
+         <int>140</int> 
+         <int>187</int> 
+         <int>184</int> 
          <int>255</int> 
         </object> 
        </void> 
@@ -362,7 +362,7 @@
       <double>50.0</double> 
      </void> 
      <void property="x"> 
-      <double>169.43974843548912</double> 
+      <double>172.43974843548912</double> 
      </void> 
      <void property="y"> 
       <double>2.0</double> 
@@ -378,7 +378,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1337368949000</long> 
+     <long>1354197435000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -387,7 +387,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>50611</long> 
+    <long>50814</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -612,7 +612,7 @@ show selectionhalo on;</string>
    skin</string> 
       </void> 
       <void property="x"> 
-       <double>162.9397430419922</double> 
+       <double>165.9397430419922</double> 
       </void> 
       <void property="y"> 
        <double>107.0</double> 
@@ -1726,7 +1726,7 @@ show selectionhalo on;</string>
    <int>1</int> 
   </void> 
   <void property="rx"> 
-   <double>228.05739470559774</double> 
+   <double>233.05739470559774</double> 
   </void> 
   <void property="ry"> 
    <double>217.11287247043128</double> 
