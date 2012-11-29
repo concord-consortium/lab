@@ -8,7 +8,10 @@
       "id": "page3$0",
       "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page3/page3$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step"
+        "controlButtons": "play_reset_step",
+        "imageMapping": {
+          "ruler.png": "ruler.svg"
+        }
       }
     }
   ],
@@ -20,6 +23,14 @@
       "value": [
         "return getPressureProbeValue(0, 'west');"
       ]
+    },
+    {
+      "name": "volume",
+      "units": "nm?",
+      "label": "area",
+      "value": [
+        "return getObstacleProperties(0).x * 2;"
+      ]
     }
   ],
   "components": [
@@ -29,6 +40,7 @@
       "text": "Volume &#8593;",
       "action": [
         "var x = getObstacleProperties(0).x;",
+        "if (x > 3.5) return;",
         "x *= 1.1;",
         "setObstacleProperties(0, {x : x});",
         "for(var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -54,6 +66,16 @@
         "}",
         "minimizeEnergy();"
       ]
+    },
+    {
+      "type": "slider",
+      "id": "volume-slider",
+      "min": 0,
+      "max": 8,
+      "displayValue": "return format('1.2f')(value)",
+      "steps": 80,
+      "title": "Volume of Gas",
+      "property": "volume"
     },
     {
       "type": "barGraph",
