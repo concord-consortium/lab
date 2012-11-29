@@ -23,13 +23,13 @@
       "type": "button",
       "id": "heat",
       "text": "Heat",
-      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
+      "action": "adjustTemperature(1.1); limitHighTemperature(5000);"
     },
     {
       "type": "thermometer",
       "id": "thermometer",
       "min": 0,
-      "max": 2000,
+      "max": 5000,
       "labelIsReading": true,
       "reading": {
         "units": "K",
