@@ -1119,6 +1119,8 @@ define(function(require) {
     };
 
     model.setElementProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.element, props);
       invalidatingChangePreHook();
       engine.setElementProperties(i, props);
       invalidatingChangePostHook();
@@ -1141,6 +1143,7 @@ define(function(require) {
     };
 
     model.setObstacleProperties = function(i, props) {
+      // Validate properties.
       props = validator.validate(metadata.obstacle, props);
       invalidatingChangePreHook();
       engine.setObstacleProperties(i, props);
@@ -1160,6 +1163,8 @@ define(function(require) {
     };
 
     model.setRadialBondProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.radialBond, props);
       invalidatingChangePreHook();
       engine.setRadialBondProperties(i, props);
       invalidatingChangePostHook();
@@ -1178,13 +1183,10 @@ define(function(require) {
     };
 
     model.setRestraintProperties = function(i, props) {
-      var key;
+      // Validate properties.
+      props = validator.validate(metadata.restraint, props);
       invalidatingChangePreHook();
-      for (key in props) {
-        if (props.hasOwnProperty(key)) {
-          restraints[key][i] = props[key];
-        }
-      }
+      engine.setRestraintProperties(i, props);
       invalidatingChangePostHook();
     };
 
@@ -1201,6 +1203,8 @@ define(function(require) {
     };
 
     model.setAngularBondProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.angularBond, props);
       invalidatingChangePreHook();
       engine.setAngularBondProperties(i, props);
       invalidatingChangePostHook();
