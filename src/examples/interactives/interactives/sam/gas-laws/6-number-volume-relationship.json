@@ -1,65 +1,148 @@
 {
   "title": "The Number-Volume Relationship",
-  "publicationStatus": "public",
+  "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
   "models": [
     {
       "id": "page5$0",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page5/page5$0.json",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page6/page6$0.json",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "ruler.png": "ruler.svg"
+        }
       }
     }
   ],
+  "outputs": [
+    {
+      "name": "volume",
+      "units": "nm?",
+      "label": "area",
+      "value": [
+        "return getObstacleProperties(0).x * 2;"
+      ]
+    }
+  ],
   "components": [
-    {
-      "type": "button",
-      "id": "run",
-      "text": "Run",
-      "action": "start();"
-    },
-    {
-      "type": "button",
-      "id": "stop",
-      "text": "Stop",
-      "action": "stop();"
-    },
-    {
-      "type": "button",
-      "id": "reset",
-      "text": "Reset",
-      "action": "reset();"
-    },
     {
       "type": "pulldown",
       "id": "pulldown1",
       "options": [
         {
           "text": "120 molecules",
-          "action": ""
+          "action": [
+            "while (getNumberOfAtoms() > 0) {",
+            "console.log(getNumberOfAtoms());",
+            "  removeAtom(0);",
+            "  repaint();",
+            "}",
+            "var obsX = getObstacleProperties(0).x;",
+            "var xMax = obsX - getElementProperties(3).sigma;",
+            "var h = get('height');",
+            "while (getNumberOfAtoms() < 120) {",
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
+            "  repaint();",
+            "}"
+          ]
         },
         {
           "text": "100 molecules",
-          "action": ""
+          "action": [
+            "while (getNumberOfAtoms() > 0) {",
+            "console.log(getNumberOfAtoms());",
+            "  removeAtom(0);",
+            "  repaint();",
+            "}",
+            "var obsX = getObstacleProperties(0).x;",
+            "var xMax = obsX - getElementProperties(3).sigma;",
+            "var h = get('height');",
+            "while (getNumberOfAtoms() < 100) {",
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
+            "  repaint();",
+            "}"
+          ]
         },
         {
           "text": "80 molecules",
-          "action": ""
+          "action": [
+            "while (getNumberOfAtoms() > 0) {",
+            "console.log(getNumberOfAtoms());",
+            "  removeAtom(0);",
+            "  repaint();",
+            "}",
+            "var obsX = getObstacleProperties(0).x;",
+            "var xMax = obsX - getElementProperties(3).sigma;",
+            "var h = get('height');",
+            "while (getNumberOfAtoms() < 80) {",
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
+            "  repaint();",
+            "}"
+          ]
         },
         {
           "text": "60 molecules",
-          "action": ""
+          "action": [
+            "while (getNumberOfAtoms() > 0) {",
+            "console.log(getNumberOfAtoms());",
+            "  removeAtom(0);",
+            "  repaint();",
+            "}",
+            "var obsX = getObstacleProperties(0).x;",
+            "var xMax = obsX - getElementProperties(3).sigma;",
+            "var h = get('height');",
+            "while (getNumberOfAtoms() < 60) {",
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
+            "  repaint();",
+            "}"
+          ]
         },
         {
           "text": "40 molecules",
-          "action": ""
+          "action": [
+            "while (getNumberOfAtoms() > 0) {",
+            "console.log(getNumberOfAtoms());",
+            "  removeAtom(0);",
+            "  repaint();",
+            "}",
+            "var obsX = getObstacleProperties(0).x;",
+            "var xMax = obsX - getElementProperties(3).sigma;",
+            "var h = get('height');",
+            "while (getNumberOfAtoms() < 40) {",
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
+            "  repaint();",
+            "}"
+          ]
         },
         {
           "text": "20 molecules",
-          "action": ""
+          "action": [
+            "while (getNumberOfAtoms() > 0) {",
+            "console.log(getNumberOfAtoms());",
+            "  removeAtom(0);",
+            "  repaint();",
+            "}",
+            "var obsX = getObstacleProperties(0).x;",
+            "var xMax = obsX - getElementProperties(3).sigma;",
+            "var h = get('height');",
+            "while (getNumberOfAtoms() < 20) {",
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
+            "  repaint();",
+            "}"
+          ]
         }
       ]
+    },
+    {
+      "type": "slider",
+      "id": "volume-slider",
+      "min": 0,
+      "max": 8,
+      "displayValue": "return format('1.2f')(value)",
+      "steps": 80,
+      "title": "Volume of Gas",
+      "property": "volume"
     }
   ]
 }

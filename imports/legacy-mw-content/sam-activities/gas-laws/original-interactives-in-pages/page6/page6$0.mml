@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_31" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_35" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="sigma"> 
    <double>14.0</double> 
@@ -337,28 +337,14 @@
       <float>-1.0E-5</float> 
      </void> 
      <void property="fillMode"> 
-      <object class="org.concord.modeler.draw.FillMode$GradientFill"> 
-       <void property="color1"> 
+      <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+       <void property="color"> 
         <object class="java.awt.Color"> 
-         <int>255</int> 
-         <int>255</int> 
-         <int>255</int> 
+         <int>140</int> 
+         <int>187</int> 
+         <int>184</int> 
          <int>255</int> 
         </object> 
-       </void> 
-       <void property="color2"> 
-        <object class="java.awt.Color"> 
-         <int>128</int> 
-         <int>128</int> 
-         <int>128</int> 
-         <int>255</int> 
-        </object> 
-       </void> 
-       <void property="style"> 
-        <int>1032</int> 
-       </void> 
-       <void property="variant"> 
-        <int>1044</int> 
        </void> 
       </object> 
      </void> 
@@ -391,20 +377,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1337199265000</long> 
+     <long>1354223144000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/ddamelin/Development/lab.legacy-mw-content/sam-activities/gas-laws/original-interactives-in-pages/page6/page6$0.mml</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/gas-laws/original-interactives-in-pages/page6/page6$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>63905</long> 
+    <long>63588</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/ddamelin/Development/lab.legacy-mw-content/sam-activities/gas-laws/original-interactives-in-pages/page6</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/gas-laws/original-interactives-in-pages/page6</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -456,6 +442,29 @@
      <int>255</int> 
     </object> 
    </void> 
+  </void> 
+  <void property="images"> 
+   <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="1"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
+      <void property="URI"> 
+       <string>ruler.png</string> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>1</byte> 
+      </void> 
+      <void property="x"> 
+       <double>-1.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>3.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
   </void> 
   <void property="momentumFlavor"> 
    <void property="color"> 
