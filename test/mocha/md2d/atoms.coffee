@@ -102,22 +102,104 @@ describe "MD2D modeler", ->
             model.addRadialBond atom1: 0, atom2: 1, length: 1, strength: 1
             model.addRadialBond atom1: 1, atom2: 2, length: 2, strength: 2
 
-          it "should remove also connected radial bonds", ->
+          it "should also remove connected radial bonds", ->
+            model.get_num_atoms().should.equal 3
             model.getNumberOfRadialBonds().should.equal 2
 
             model.removeAtom 0
-            model.get_num_atoms().should.equal 2
 
+            model.get_num_atoms().should.equal 2
             model.getNumberOfRadialBonds().should.equal 1
+
+            # Note that indices of atoms should be shifter already.
             model.getRadialBondProperties(0).atom1.should.equal 0
             model.getRadialBondProperties(0).atom2.should.equal 1
             model.getRadialBondProperties(0).length.should.equal 2
             model.getRadialBondProperties(0).strength.should.equal 2
 
             model.removeAtom 0
-            model.get_num_atoms().should.equal 1
 
+            model.get_num_atoms().should.equal 1
             model.getNumberOfRadialBonds().should.equal 0
+
+
+          describe "and there are angular bonds also", ->
+
+            beforeEach ->
+              # Add some atoms and radial bond to create two angular bonds.
+              model.addAtom x: 4, y: 4 # idx = 3
+              model.addAtom x: 5, y: 5 # idx = 4
+              model.addRadialBond atom1: 1, atom2: 3, length: 3, strength: 3
+              model.addRadialBond atom1: 3, atom2: 4, length: 4, strength: 4
+
+              model.addAngularBond atom1: 0, atom2: 2, atom3: 1, angle: 1, strength: 1
+              model.addAngularBond atom1: 1, atom2: 4, atom3: 3, angle: 2, strength: 2
+              # Finally, atoms are connected like that:
+              #   3
+              #  / \
+              #  1  4
+              # / \
+              # 0  2
+              # angular bonds are between 0-2-1 and 1-4-3 (last atom is central).
+              # Note that lengths and angles of radial and angular bonds are random
+              # and doesn't match "picture" above. We are not testing physics here,
+              # just correct behavior while adding and removing atoms.
+
+            it "should also remove connected angular bonds", ->
+                model.get_num_atoms().should.equal 5
+                model.getNumberOfRadialBonds().should.equal 4
+                model.getNumberOfAngularBonds().should.equal 2
+
+                model.removeAtom 0
+
+                #   2
+                #  / \
+                #  0  3
+                #   \
+                #    1
+
+                model.get_num_atoms().should.equal 4
+                model.getNumberOfRadialBonds().should.equal 3
+                model.getNumberOfAngularBonds().should.equal 1
+
+                # Note that indices of atoms should be shifter already.
+                model.getRadialBondProperties(0).atom1.should.equal 0
+                model.getRadialBondProperties(0).atom2.should.equal 1
+                model.getRadialBondProperties(0).length.should.equal 2
+                model.getRadialBondProperties(0).strength.should.equal 2
+
+                model.getRadialBondProperties(1).atom1.should.equal 0
+                model.getRadialBondProperties(1).atom2.should.equal 2
+                model.getRadialBondProperties(1).length.should.equal 3
+                model.getRadialBondProperties(1).strength.should.equal 3
+
+                model.getRadialBondProperties(2).atom1.should.equal 2
+                model.getRadialBondProperties(2).atom2.should.equal 3
+                model.getRadialBondProperties(2).length.should.equal 4
+                model.getRadialBondProperties(2).strength.should.equal 4
+
+                model.getAngularBondProperties(0).atom1.should.equal 0
+                model.getAngularBondProperties(0).atom2.should.equal 3
+                model.getAngularBondProperties(0).atom3.should.equal 2
+                model.getAngularBondProperties(0).angle.should.equal 2
+                model.getAngularBondProperties(0).strength.should.equal 2
+
+                model.removeAtom 0
+
+                #   1
+                #    \
+                #     2
+                #
+                #    0
+
+                model.get_num_atoms().should.equal 3
+                model.getNumberOfRadialBonds().should.equal 1
+                model.getNumberOfAngularBonds().should.equal 0
+
+                model.getRadialBondProperties(0).atom1.should.equal 1
+                model.getRadialBondProperties(0).atom2.should.equal 2
+                model.getRadialBondProperties(0).length.should.equal 4
+                model.getRadialBondProperties(0).strength.should.equal 4
 
           it "should trigger 'removeRadialBond' event if some radial bonds are removed", ->
             callback = sinon.spy()
