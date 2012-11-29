@@ -334,28 +334,14 @@
       <float>-1.0E-5</float> 
      </void> 
      <void property="fillMode"> 
-      <object class="org.concord.modeler.draw.FillMode$GradientFill"> 
-       <void property="color1"> 
+      <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+       <void property="color"> 
         <object class="java.awt.Color"> 
-         <int>255</int> 
-         <int>255</int> 
-         <int>255</int> 
+         <int>140</int> 
+         <int>187</int> 
+         <int>184</int> 
          <int>255</int> 
         </object> 
-       </void> 
-       <void property="color2"> 
-        <object class="java.awt.Color"> 
-         <int>128</int> 
-         <int>128</int> 
-         <int>128</int> 
-         <int>255</int> 
-        </object> 
-       </void> 
-       <void property="style"> 
-        <int>1032</int> 
-       </void> 
-       <void property="variant"> 
-        <int>1044</int> 
        </void> 
       </object> 
      </void> 
@@ -388,7 +374,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1354220133000</long> 
+     <long>1354220305000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -397,7 +383,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>39853</long> 
+    <long>39854</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
