@@ -1854,12 +1854,37 @@ define(function (require, exports, module) {
       },
 
       removeAtom: function(idx) {
-        var i, len, prop, bondsToRemove,
+        var i, len, prop,
             l, list, lists;
 
         if (idx >= N) {
           throw new Error("Atom " + idx + " doesn't exist, so it can't be removed.");
         }
+
+        // Start from removing all bonds connected to this atom.
+        // Note that we are removing only radial bonds. Angular bonds
+        // will be removed while removing radial bond, not atom!
+
+        // Use such "strange" form of loop, as while removing one bonds,
+        // other change their indexing. So, after removal of bond 5, we
+        // should check bond 5 again, as it would be another bond (previously
+        // indexed as 6).
+        i = 0;
+        while (i < N_radialBonds) {
+          if (radialBondAtom1Index[i] === idx || radialBondAtom2Index[i] === idx)
+            engine.removeRadialBond(i);
+          else
+            i++;
+        }
+
+        // Try to remove atom from charged atoms list.
+        i = chargedAtomsList.indexOf(idx);
+        if (i !== -1) {
+          arrays.remove(chargedAtomsList, i);
+        }
+
+
+        // Finally, remove atom.
 
         // Shift atoms properties and zero last element.
         // It can be optimized by just replacing the last
@@ -1876,13 +1901,8 @@ define(function (require, exports, module) {
           }
         }
 
+        // Update number of atoms!
         N--;
-
-        // Try to remove atom from charged atoms list.
-        i = chargedAtomsList.indexOf(idx);
-        if (i !== -1) {
-          arrays.remove(chargedAtomsList, i);
-        }
 
         // Shift indices of atoms in various lists.
         lists = [
@@ -1899,24 +1919,16 @@ define(function (require, exports, module) {
           }
         }
 
-        bondsToRemove = [];
-
         // Also in radial bonds results...
         // TODO: they should be recalculated while computing output state.
         for (i = 0, len = radialBondResults.length; i < len; i++) {
-          if (radialBondResults[i].atom1 === idx || radialBondResults[i].atom2 === idx)
-            bondsToRemove.push(i);
           if (radialBondResults[i].atom1 > idx)
             radialBondResults[i].atom1--;
           if (radialBondResults[i].atom2 > idx)
             radialBondResults[i].atom2--;
         }
 
-        for (i = 0, len = bondsToRemove.length; i < len; i++) {
-          engine.removeRadialBond(bondsToRemove[i]);
-        }
-
-        // Recalculate radial bond matrix.
+        // Recalculate radial bond matrix, as indices have changed.
         calculateRadialBondMatrix();
 
         // (Re)initialize helper structures for optimizations.
@@ -1924,6 +1936,8 @@ define(function (require, exports, module) {
         initializeNeighborList();
 
         neighborList.invalidate();
+
+        // Update accelerations of atoms.
         updateParticlesAccelerations();
       },
 
@@ -1974,10 +1988,29 @@ define(function (require, exports, module) {
       },
 
       removeRadialBond: function(idx) {
-        var i, prop;
+        var i, prop, atom1, atom2;
 
-        if (idx >= N) {
+        if (idx >= N_radialBonds) {
           throw new Error("Radial bond " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        // Start from removing angular bonds.
+        atom1 = radialBondAtom1Index[idx];
+        atom2 = radialBondAtom2Index[idx];
+
+        // Use such "strange" form of loop, as while removing one bonds,
+        // other change their indexing. So, after removal of bond 5, we
+        // should check bond 5 again, as it would be another bond (previously
+        // indexed as 6).
+        i = 0;
+        while (i < N_angularBonds) {
+          // Remove angular bond only when one of atoms is the CENTRAL atom of the given angular bond.
+          // It means that this radial bond creates given angular bond.
+          // Atom3Index is index of central atom in angular bonds.
+          if (angularBondAtom3Index[i] === atom1 || angularBondAtom3Index[i] === atom2)
+            engine.removeAngularBond(i);
+          else
+            i++;
         }
 
         // Shift radial bonds properties and zero last element.
@@ -2039,6 +2072,33 @@ define(function (require, exports, module) {
 
         // Set new angular bond properties.
         engine.setAngularBondProperties(N_angularBonds - 1, props);
+      },
+
+      removeAngularBond: function(idx) {
+        var i, prop;
+
+        if (idx >= N_angularBonds) {
+          throw new Error("Angular bond " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        // Shift angular bonds properties and zero last element.
+        // It can be optimized by just replacing the last
+        // angular bond with angular bond 'i', however this approach
+        // preserves more expectable indexing.
+        // TODO: create some general function for that, as it's duplicated
+        // in each removeObject method.
+        for (i = idx; i < N_angularBonds; i++) {
+          for (prop in angularBonds) {
+            if (angularBonds.hasOwnProperty(prop)) {
+              if (i === N_angularBonds - 1)
+                angularBonds[prop][i] = 0;
+              else
+                angularBonds[prop][i] = angularBonds[prop][i + 1];
+            }
+          }
+        }
+
+        N_angularBonds--;
       },
 
       /**
@@ -2494,6 +2554,10 @@ define(function (require, exports, module) {
 
       getNumberOfRadialBonds: function() {
         return N_radialBonds;
+      },
+
+      getNumberOfAngularBonds: function() {
+        return N_angularBonds;
       },
 
       /**

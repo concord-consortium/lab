@@ -1320,6 +1320,10 @@ define(function(require) {
       return engine.getNumberOfRadialBonds();
     };
 
+    model.getNumberOfAngularBonds = function () {
+      return engine.getNumberOfAngularBonds();
+    };
+
     model.get_radial_bonds = function() {
       return radialBonds;
     };
