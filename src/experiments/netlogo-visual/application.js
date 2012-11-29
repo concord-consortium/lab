@@ -157,22 +157,22 @@ var ROOT = "/experiments",
   }
 
   function exportDataHandler() {
-    nl_cmd_execute("make-ModelDataDescription");
+    nl_cmd_execute("make-ModelData");
     clearDataReady = window.setInterval(exportDataReadyCallback, 250);
   }
 
   function exportDataReadyCallback() {
     var modelDataDesc,
         dataSeries,
+        runSeries,
         dgExportDone = dgDataReady();
     if (dgExportDone) {
       clearInterval(clearDataReady);
-      modelDataDesc = nl_read_global("MODELDATADESCRIPTION");
-      dataSeries = nl_read_global("DATASERIES");
+      modelData = nl_read_global("MODELDATA");
       if (exportedData) {
-        exportedData.textContent = modelDataDesc + "\n" + dataSeries;
+        exportedData.textContent = modelData;
       } else {
-        console.log(modelDataDesc + "\n" + dataSeries);
+        console.log(modelData);
       }
     }
   }
