@@ -10,10 +10,28 @@
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
-      "onLoad": "set({temperatureControl: true});"
+      "onLoad": "set({temperatureControl: true}); set({targetTemperature: 10000});"
     }
   ],
   "components": [
+    {
+      "type": "checkbox",
+      "id": "show_bonds",
+      "text": "Show hydrogen bonds",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_charge",
+      "text": "Show partial charges",
+      "property": "chargeShading"
+    },
+    {
+      "type": "checkbox",
+      "id": "slow_motion2",
+      "text": "Slow Motion",
+      "onClick": "if (value) { set({timeStep: 0.1}) } else { set({timeStep: 1})};"
+    },
     {
       "type": "button",
       "id": "cool",
@@ -24,14 +42,14 @@
       "type": "button",
       "id": "heat",
       "text": "Heat",
-      "action": "adjustTemperature(1.1); limitHighTemperature(8000);"
+      "action": "adjustTemperature(1.1); limitHighTemperature(25000);"
     },
     {
       "type": "thermometer",
       "id": "thermometer",
       "min": 0,
-      "max": 8000,
-      "labelIsReading": true,
+      "max": 25000,
+      "labelIsReading": false,
       "reading": {
         "units": "K",
         "offset": 200,
@@ -46,7 +64,10 @@
     ],
     "bottom": [
       "cool",
-      "heat"
+      "heat",
+      "show_bonds",
+      "show_charge",
+      "slow_motion2"
     ]
   }
 }
