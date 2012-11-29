@@ -96,13 +96,13 @@ describe "MD2D modeler", ->
           model.removeAtom 0
           callback.callCount.should.equal 3
 
-        describe "and there are radial bonds", ->
+        describe "and there are connected radial bonds", ->
 
           beforeEach ->
             model.addRadialBond atom1: 0, atom2: 1, length: 1, strength: 1
             model.addRadialBond atom1: 1, atom2: 2, length: 2, strength: 2
 
-          it "should also remove connected radial bonds", ->
+          it "should also remove them", ->
             model.get_num_atoms().should.equal 3
             model.getNumberOfRadialBonds().should.equal 2
 
@@ -122,8 +122,19 @@ describe "MD2D modeler", ->
             model.get_num_atoms().should.equal 1
             model.getNumberOfRadialBonds().should.equal 0
 
+          it "should also trigger 'removeRadialBond' event", ->
+            callback = sinon.spy()
+            model.on 'removeRadialBond', callback
 
-          describe "and there are angular bonds also", ->
+            callback.callCount.should.equal 0
+            model.removeAtom 0
+            # Why? Radial bond should be also removed, see test above.
+            callback.callCount.should.equal 1
+            model.removeAtom 0
+            callback.callCount.should.equal 2
+
+
+          describe "and there are connected angular bonds", ->
 
             beforeEach ->
               # Add some atoms and radial bond to create two angular bonds.
@@ -145,7 +156,7 @@ describe "MD2D modeler", ->
               # and doesn't match "picture" above. We are not testing physics here,
               # just correct behavior while adding and removing atoms.
 
-            it "should also remove connected angular bonds", ->
+            it "should also remove them", ->
                 model.get_num_atoms().should.equal 5
                 model.getNumberOfRadialBonds().should.equal 4
                 model.getNumberOfAngularBonds().should.equal 2
@@ -200,6 +211,17 @@ describe "MD2D modeler", ->
                 model.getRadialBondProperties(0).atom2.should.equal 2
                 model.getRadialBondProperties(0).length.should.equal 4
                 model.getRadialBondProperties(0).strength.should.equal 4
+
+              it "should also trigger 'removeAngularBond' event", ->
+                callback = sinon.spy()
+                model.on 'removeAngularBond', callback
+
+                callback.callCount.should.equal 0
+                model.removeAtom 0
+                # Why? Angular bond should be also removed, see test above.
+                callback.callCount.should.equal 1
+                model.removeAtom 0
+                callback.callCount.should.equal 2
 
           it "should trigger 'removeRadialBond' event if some radial bonds are removed", ->
             callback = sinon.spy()
