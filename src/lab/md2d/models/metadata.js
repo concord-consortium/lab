@@ -136,7 +136,8 @@ define(function() {
 
     element: {
       id: {
-        defaultValue: 0
+        defaultValue: 0,
+        immutable: true
       },
       mass: {
         defaultValue: 120
@@ -146,6 +147,9 @@ define(function() {
       },
       epsilon: {
         defaultValue: -0.1
+      },
+      radius: {
+        readOnly: true
       }
     },
 

@@ -35,14 +35,17 @@ define(function(require) {
         engine,
 
         // An array of elements object.
-        elements,
+        elementsObjects,
 
         // ######################### Main Data Structures #####################
         // They are initialized at the end of this function. These data strucutres
         // are mainly managed by the engine.
 
-        // A hash of arrays  consisting of arrays of atom property values
+        // A hash of arrays consisting of arrays of atom property values
         atoms,
+
+        // A hash of arrays consisting of arrays of element property values
+        elements,
 
         // A hash of arrays consisting of arrays of obstacle property values
         obstacles,
@@ -628,6 +631,7 @@ define(function(require) {
 
       // Copy reference to basic properties.
       atoms = engine.atoms;
+      elements = engine.elements;
       radialBonds = engine.radialBonds;
       radialBondResults = engine.radialBondResults;
       angularBonds = engine.angularBonds;
@@ -661,7 +665,7 @@ define(function(require) {
     */
     model.createNewAtoms = function(config) {
       model.initializeEngine();
-      model.createElements(elements);
+      model.createElements(elementsObjects);
       model.createAtoms(config);
 
       return model;
@@ -857,11 +861,11 @@ define(function(require) {
       Attempts to add an 0-velocity atom to a random location. Returns false if after 10 tries it
       can't find a location. (Intended to be exposed as a script API method.)
 
-      Optionally allows specifying the element (default is to randomly select from all elements) and
+      Optionally allows specifying the element (default is to randomly select from all elementsObjects) and
       charge (default is neutral).
     */
     model.addRandomAtom = function(el, charge) {
-      if (el == null) el = Math.floor( Math.random() * elements.length );
+      if (el == null) el = Math.floor( Math.random() * elementsObjects.length );
       if (charge == null) charge = 0;
 
       var size   = model.size(),
@@ -1125,7 +1129,11 @@ define(function(require) {
           props = {},
           propName;
       for (propName in elementMetaData) {
-        if (elementMetaData.hasOwnProperty(propName)) {
+        // Treat ID separately, as ID is not stored by
+        // engine explicitly.
+        if (propName === 'id') {
+          props.id = i;
+        } else if (elementMetaData.hasOwnProperty(propName)) {
           props[propName] = elements[propName][i];
         }
       }
@@ -1593,8 +1601,8 @@ define(function(require) {
       if (includeAtoms) {
         propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
       }
-      if (elements) {
-        propCopy.elements = elements;
+      if (elementsObjects) {
+        propCopy.elementsObjects = elementsObjects;
       }
       propCopy.width = model.get('width');
       propCopy.height = model.get('height');
@@ -1656,15 +1664,15 @@ define(function(require) {
 
     // TODO: Elements are stored and treated different from other objects.
     // This is enforced by current createNewAtoms() method which should be
-    // depreciated. When it's changed, change also elements handling.
+    // depreciated. When it's changed, change also elementsObjects handling.
     if (initialProperties.elements) {
-      elements = initialProperties.elements;
+      elementsObjects = initialProperties.elements;
     } else {
-      // Make sure that some elements are created.
+      // Make sure that some elementsObjects are created.
       // Provide array with one empty object. Default values will be used.
-      elements = [{}];
+      elementsObjects = [{}];
     }
-    model.createElements(elements);
+    model.createElements(elementsObjects);
 
     if (initialProperties.atoms) {
       model.createAtoms(initialProperties.atoms);
