@@ -37,7 +37,7 @@ define(function() {
       defaultValue: true
     },
     atomTraceColor: {
-      defaultValue: "#AAA"
+      defaultValue: "#6913c5"
     },
     xmin: {
       defaultValue: 0
