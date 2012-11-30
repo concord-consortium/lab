@@ -155,7 +155,7 @@ var ROOT = "/examples",
     $creditsPaneClose.click(function() {
       $creditsPane.hide(100);
     });
-    $creditsPane.draggable();
+    $creditsPane.draggable({ handle: "#credits-pane-banner" });
     $("#credits-pane-title").text("Credits: " + interactive.title);
 
     concordUrl = 'http://concord.org';
@@ -193,7 +193,7 @@ var ROOT = "/examples",
       $aboutPaneClose.click(function() {
         $aboutPane.hide(100);
       });
-      $aboutPane.draggable();
+      $aboutPane.draggable({ handle: "#about-pane-banner" });
       $("#about-pane-title").text("About: " + interactive.title);
 
       if (interactive.subtitle) {
@@ -221,7 +221,7 @@ var ROOT = "/examples",
         $sharePane.hide(100);
       });
       $shareSelectIframeSize.change(updateShareIframeContent);
-      $sharePane.draggable();
+      $sharePane.draggable({ handle: "#share-pane-banner" });
       $("#share-pane-title").text("Share: " + interactive.title);
       $("#share-embeddable-link").attr("href", embeddableUrl);
       $('#share-embeddable-link-content').val(embeddableUrl);
