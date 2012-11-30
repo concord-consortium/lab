@@ -1,8 +1,8 @@
 {
   "title": "The Temperature-Volume Relationship",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Investigate the relationship between temperature and the volume of a gas.",
+  "about": "This model contains gas molecules on the left side and a barrier that moves when the volume of gas expands or contracts, keeping the pressure constant. Run the model and change the temperature. Why does the barrier move when the temperature changes?",
   "models": [
     {
       "id": "page4$0",

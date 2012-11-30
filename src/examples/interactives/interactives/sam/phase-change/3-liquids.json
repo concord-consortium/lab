@@ -1,8 +1,8 @@
 {
-  "title": "Liquids",
+  "title": "Molecular View of a Liquid",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore how molecules in a liquid move.",
+  "about": "Molecules are in constant motion. “Mark two atoms,” then run the model to see how the molecules in a liquid move relative to each other. How does the movement of molecules explain why liquids take the shape of their containers?",
   "models": [
     {
       "id": "page3$0",

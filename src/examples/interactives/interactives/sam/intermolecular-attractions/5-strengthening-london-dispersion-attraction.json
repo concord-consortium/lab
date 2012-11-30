@@ -1,8 +1,8 @@
 {
-  "title": "Strengthening London Dispersion Attraction",
+  "title": "Factors Affecting London Dispersion Attractions",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore how differences in molecular size and shape affect the strength of London Dispersion attractions.",
+  "about": "Some non-polar molecules have stronger attractions than others. Choose a pair of molecules from the drop-down menu and “pull” on the star to separate the molecules. Why do size and shape affect the strength of attraction between two non-polar molecules?",
   "models": [
     {
       "id": "instructions",

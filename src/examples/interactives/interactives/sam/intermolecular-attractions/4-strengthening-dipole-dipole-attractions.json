@@ -1,8 +1,8 @@
 {
-  "title": "Strengthening Dipole-Dipole Attractions",
+  "title": "Polarity and Attractive Strength",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore the different attractive forces between molecules of varying polarity.",
+  "about": "Attractions between polar molecules vary. Choose a pair of molecules from the drop-down menu and “pull” on the star to separate the molecules. Why does polarity have an effect on the strength of attraction between molecules?",
   "models": [
     {
       "id": "instructions",

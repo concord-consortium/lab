@@ -1,8 +1,8 @@
 {
   "title": "The Temperature-Pressure Relationship",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Consider how temperature affects the pressure exerted by a gas.",
+  "about": "Run the model and change the temperature. What happens to the pressure when the temperature changes?",
   "models": [
     {
       "id": "page5$0",
