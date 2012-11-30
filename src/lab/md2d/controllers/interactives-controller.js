@@ -1329,8 +1329,9 @@ define(function (require) {
           // have "ids". But, in English, properties have "names", but not "ids".
           model.defineOutput(output.name, {
             label: output.label,
-            units: output.units,
-          }, makeFunctionInScriptContext(getStringFromArray(output.value)));
+            units: output.units
+          }, makeFunctionInScriptContext(getStringFromArray(output.value)),
+          output.filter);
         }
       }
     }
