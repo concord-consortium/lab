@@ -1,7 +1,7 @@
 {
   "title": "Replacing Bitmap Images with SVG",
   "publicationStatus": "public",
-  "subtitle": "Experiments replacing bitmap images with SVG documents to reserve quality when scaled up.",
+  "subtitle": "Experiments replacing bitmap images with SVG documents to preserve quality when scaled up.",
   "about": [
     "This Interactive displays an image with a suggestion for how to start using the Interactive.",
     "Current possible images including the SVG replacements for the png image:",
