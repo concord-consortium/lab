@@ -319,6 +319,10 @@ define(function (require) {
         "showClock"],
           setup_drawables);
 
+      model.on('addAtom', setup_drawables);
+      model.on('removeAtom', setup_drawables);
+      model.on('removeRadialBond', setup_drawables);
+
       // create container, or update properties if it already exists
       if (vis === undefined) {
 
