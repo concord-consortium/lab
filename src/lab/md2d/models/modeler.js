@@ -682,7 +682,10 @@ define(function(require) {
       left in whatever grid the engine's initialization leaves them in.
     */
     model.createAtoms = function(config) {
-      var i, num, prop, atomProps;
+      var options = {
+            supressCheck: true
+          },
+          i, num, prop, atomProps;
 
       if (typeof config === 'number') {
         num = config;
@@ -705,13 +708,13 @@ define(function(require) {
               atomProps[prop] = config[prop][i];
             }
           }
-          model.addAtom(atomProps, true);
+          model.addAtom(atomProps, options);
         }
       } else {
         for (i = 0; i < num; i++) {
           // Provide only required values.
           atomProps = {x: 0, y: 0};
-          model.addAtom(atomProps, true);
+          model.addAtom(atomProps, options);
         }
         // This function rearrange all atoms randomly.
         engine.setupAtomsRandomly({
@@ -905,9 +908,11 @@ define(function(require) {
 
       silent = true disables this check.
     */
-    model.addAtom = function(props, silent) {
+    model.addAtom = function(props, options) {
       var size = model.size(),
           radius;
+
+      options = options || {};
 
       // Validate properties, provide default values.
       props = validator.validateCompleteness(metadata.atom, props);
@@ -920,7 +925,7 @@ define(function(require) {
       if (props.y > size[1] - radius) props.y = size[1] - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-      if (!silent && !engine.canPlaceAtom(props.element, props.x, props.y)) {
+      if (!options.supressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
         // return false on failure
         return false;
       }
@@ -929,14 +934,18 @@ define(function(require) {
       engine.addAtom(props);
       invalidatingChangePostHook();
 
-      dispatch.addAtom();
+      if (!options.supressEvent) {
+        dispatch.addAtom();
+      }
 
       return true;
     },
 
-    model.removeAtom = function(i) {
+    model.removeAtom = function(i, options) {
       var prevRadBondsCount = engine.getNumberOfRadialBonds(),
           prevAngBondsCount = engine.getNumberOfAngularBonds();
+
+      options = options || {};
 
       invalidatingChangePreHook();
       engine.removeAtom(i);
@@ -944,16 +953,18 @@ define(function(require) {
       results.length = 0;
       invalidatingChangePostHook();
 
-      // Notify listeners that atoms is removed.
-      dispatch.removeAtom();
+      if (!options.supressEvent) {
+        // Notify listeners that atoms is removed.
+        dispatch.removeAtom();
 
-      // Removing of an atom can also cause removing of
-      // the connected radial bond. Detect it and notify listeners.
-      if (engine.getNumberOfRadialBonds() !== prevRadBondsCount) {
-        dispatch.removeRadialBond();
-      }
-      if (engine.getNumberOfAngularBonds() !== prevAngBondsCount) {
-        dispatch.removeAngularBond();
+        // Removing of an atom can also cause removing of
+        // the connected radial bond. Detect it and notify listeners.
+        if (engine.getNumberOfRadialBonds() !== prevRadBondsCount) {
+          dispatch.removeRadialBond();
+        }
+        if (engine.getNumberOfAngularBonds() !== prevAngBondsCount) {
+          dispatch.removeAngularBond();
+        }
       }
     },
 
