@@ -39,6 +39,23 @@ define(function (require) {
         };
       },
 
+      setupValueLabelPairs = function (yAxis, ticks) {
+        var values = [],
+            labels = {},
+            i, len;
+
+        for (i = 0, len = ticks.length; i < len; i++) {
+          values[i] = ticks[i].value;
+          labels[values[i]] = ticks[i].label;
+        }
+
+        yAxis
+          .tickValues(values)
+          .tickFormat(function (value) {
+            return labels[value];
+          });
+      },
+
       BarGraphView = Backbone.View.extend({
         // Container is a DIV.
         tagName: "div",
@@ -124,11 +141,19 @@ define(function (require) {
           // Setup Y axis.
           this.yAxis
             .scale(this.yScale)
-            .ticks(options.ticks)
             .tickSubdivide(options.tickSubdivide)
-            .tickFormat(d3.format(options.labelFormat))
             .tickSize(scale(10), scale(5), scale(10))
             .orient("right");
+
+          if (typeof options.ticks === "number") {
+            // Just normal tics.
+            this.yAxis
+              .ticks(options.ticks)
+              .tickFormat(d3.format(options.labelFormat));
+          } else {
+            // Array with value - label pairs.
+            setupValueLabelPairs(this.yAxis, options.ticks);
+          }
 
           // Create and append Y axis.
           this.axisContainer
@@ -152,6 +177,10 @@ define(function (require) {
               // calculated incorrectly.
               "font-size": options.displayLabels ? "100%" : 0
           });
+
+          // Remove axis completely if ticks are equal to 0.
+          if (options.ticks === 0)
+            this.axisContainer.selectAll("*").remove();
 
           // Translate axis into right place, add narrow empty space.
           // Note that this *have* to be done after all styling to get correct width of bounding box!
