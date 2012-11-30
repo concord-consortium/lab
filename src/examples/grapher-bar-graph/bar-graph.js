@@ -28,6 +28,19 @@ $(function () {
           "width": 75,
           "height": 150,
           "title": "Small size"
+        },
+        "value-label pairs": {
+          "value": 5,
+          "ticks": [
+            {
+              "value": 0,
+              "label": "low"
+            },
+            {
+              "value": 10,
+              "label": "high"
+            }
+          ]
         }
       },
 
