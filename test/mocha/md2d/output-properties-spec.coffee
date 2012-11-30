@@ -46,12 +46,39 @@ describe "MD2D output properties", ->
 
         it "can have its description retrieved by Model#getPropertyDescription", ->
           model.getPropertyDescription('testProperty').should.eql { property1: 'value' }
+
         it "can be observed", ->
           observer = sinon.spy()
           model.addPropertiesListener 'testProperty', observer
           observer.called.should.not.be.true
           model.tick()
           observer.called.should.be.true
+
+    describe "filters attached to outputs", ->
+      describe "custom property with valid filter specification", ->
+        before ->
+          model = Model simpleModel
+          filterSpec =
+            type: 'RunningAverage'
+            samples: 3
+
+          model.defineOutput 'filteredProperty', {},
+          -> model.get('time'),
+          filterSpec
+
+        it "can be accessed using Model#get", ->
+          model.get('filteredProperty').should.equal 0
+          # time => 1fs
+          model.tick()
+          model.get('filteredProperty').should.equal 0.5
+          # time => 2fs
+          model.tick()
+          model.get('filteredProperty').should.equal 1
+          # time => 3fs
+          model.tick()
+          model.get('filteredProperty').should.equal 2
+          # etc.
+
 
     describe "property caching", ->
       forceRecomputation = -> model.set gravitationalField: 1
