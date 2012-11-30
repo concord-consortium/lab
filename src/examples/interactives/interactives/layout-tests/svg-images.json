@@ -1,11 +1,11 @@
 {
-  "title": "Using SVG for Images",
+  "title": "Replacing Bitmap Images with SVG",
   "publicationStatus": "public",
-  "subtitle": "Experimenting with using SVG documents to replace images",
+  "subtitle": "Experiments replacing bitmap images with SVG documents to reserve quality when scaled up.",
   "about": [
-    "This Interactive displays an image with a suggestion for how to start using the Interactive. Without any imageMapping instructionBox.png will be used. By enabling imageMapping in the json definition for the Interactive replacement SVG documents can be referenced which will replace the png image.",
-    "Current possible replacements:",
-    "<ul><li>instructionBox.svg</li><li>instructionBox2.svg</li><li>instructionBox3.svg</li></ul>"
+    "This Interactive displays an image with a suggestion for how to start using the Interactive.",
+    "Current possible images including the SVG replacements for the png image:",
+    "<ol><li><a href='../../imports/legacy-mw-content/converted/layout-tests/svg-images/instructionBox.png' class='opens-in-new-window' target='_blank'>instructionBox.png</a> <i>(3.5K)</i><br>This is a 253x58 pixel png image. Will appear pixelated when scaled to larger sizes.</li><li><a href='../../imports/legacy-mw-content/converted/layout-tests/svg-images/instructionBox.svg' class='opens-in-new-window' target='_blank'>instructionBox.svg</a> <i>(33K)</i><br>Created with Adobe Illustrator this SVG image uses an embedded base64 image for the drop-shadow effect. Additionally explicit paths are used to draw the text instead of using SVG text objects, this makes the text rendering independent of whether a specific font is installed on the users computer.</li><li><a href='../../imports/legacy-mw-content/converted//layout-tests/svg-images/instructionBox2.svg' class='opens-in-new-window' target='_blank'>instructionBox2.svg</a> <i>(2.8K)</i><br>Created using the open-source Inkscape application this SVG image uses SVG text elements and does not have a drop shadow.</li><li><a href='../../imports/legacy-mw-content/converted//layout-tests/svg-images/instructionBox3.svg' class='opens-in-new-window' target='_blank'>instructionBox3.svg</a> <i>(1.2K)</i><br>Created by hand, this SVG image uses SVG text elements and the SVG feGaussianBlur filter to create the drop-shadow effect.</li></ol>"
   ],
   "models": [
     {
