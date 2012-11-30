@@ -3,13 +3,14 @@
 
 define(function(require) {
   // Dependencies.
-  var arrays      = require('arrays'),
-      console     = require('common/console'),
-      md2d        = require('md2d/models/engine/md2d'),
-      TickHistory = require('md2d/models/tick-history'),
-      serialize   = require('common/serialize'),
-      metadata    = require('md2d/models/metadata'),
-      validator   = require('common/validator'),
+  var arrays               = require('arrays'),
+      console              = require('common/console'),
+      md2d                 = require('md2d/models/engine/md2d'),
+      metadata             = require('md2d/models/metadata'),
+      TickHistory          = require('md2d/models/tick-history'),
+      RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+      serialize            = require('common/serialize'),
+      validator            = require('common/validator'),
       _ = require('underscore');
 
   return function Model(initialProperties) {
@@ -1579,8 +1580,29 @@ define(function(require) {
       this property.
 
       `calculate` should be a no-arg function which should calculate the property value.
+
+      `filter` should be an object with filter specification. It is an optional argument.
+               For now, only running average filter is supported. Example specification:
+               {
+                  type: 'RunningAverage',
+                  samples: 50
+               }
     */
-    model.defineOutput = function(name, description, calculate) {
+    model.defineOutput = function(name, description, calculate, filter) {
+      if (filter) {
+        // Construct filter object.
+        switch (filter.type) {
+          case 'RunningAverage':
+            filter = new RunningAverageFilter(filter, calculate);
+            break;
+          case 'ExponentialRunningAverage':
+            throw new Error("ExponentialRunningAverage not implemented yet.");
+          default:
+            throw new Error("Unknown filter type " + filter.type + ".");
+        }
+        // Replace calculate with filtered value.
+        calculate = function () { return filter.calculate(); };
+      }
       outputNames.push(name);
       outputsByName[name] = {
         description: description,
