@@ -1,6 +1,6 @@
 {
   "title": "The Number-Volume Relationship",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Explore how the volume of a gas is related to the number of gas molecules.",
   "about": "The model contains gas molecules under constant pressure. The barrier moves when the volume of gas expands or contracts. Run the model and select different numbers of molecules from the drop-down menu. What is the relationship between the number of molecules and the volume of a gas?",
   "models": [
