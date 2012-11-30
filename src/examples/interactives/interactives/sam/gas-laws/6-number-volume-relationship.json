@@ -33,103 +33,97 @@
         {
           "text": "120 molecules",
           "action": [
-            "while (getNumberOfAtoms() > 0) {",
-            "console.log(getNumberOfAtoms());",
-            "  removeAtom(0);",
-            "  repaint();",
-            "}",
+            "var opt = {supressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
             "while (getNumberOfAtoms() < 120) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
-            "  repaint();",
-            "}"
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
+            "}",
+            "while (getNumberOfAtoms() > 120) {",
+            "  removeAtom(getNumberOfAtoms() - 1, opt);",
+            "}",
+            "repaint();"
           ]
         },
         {
           "text": "100 molecules",
           "action": [
-            "while (getNumberOfAtoms() > 0) {",
-            "console.log(getNumberOfAtoms());",
-            "  removeAtom(0);",
-            "  repaint();",
-            "}",
+            "var opt = {supressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
             "while (getNumberOfAtoms() < 100) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
-            "  repaint();",
-            "}"
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
+            "}",
+            "while (getNumberOfAtoms() > 100) {",
+            "  removeAtom(getNumberOfAtoms() - 1, opt);",
+            "}",
+            "repaint();"
           ]
         },
         {
           "text": "80 molecules",
           "action": [
-            "while (getNumberOfAtoms() > 0) {",
-            "console.log(getNumberOfAtoms());",
-            "  removeAtom(0);",
-            "  repaint();",
-            "}",
+            "var opt = {supressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
             "while (getNumberOfAtoms() < 80) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
-            "  repaint();",
-            "}"
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
+            "}",
+            "while (getNumberOfAtoms() > 80) {",
+            "  removeAtom(getNumberOfAtoms() - 1, opt);",
+            "}",
+            "repaint();"
           ]
         },
         {
           "text": "60 molecules",
           "action": [
-            "while (getNumberOfAtoms() > 0) {",
-            "console.log(getNumberOfAtoms());",
-            "  removeAtom(0);",
-            "  repaint();",
-            "}",
+            "var opt = {supressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
             "while (getNumberOfAtoms() < 60) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
-            "  repaint();",
-            "}"
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
+            "}",
+            "while (getNumberOfAtoms() > 60) {",
+            "  removeAtom(getNumberOfAtoms() - 1, opt);",
+            "}",
+            "repaint();"
           ]
         },
         {
           "text": "40 molecules",
           "action": [
-            "while (getNumberOfAtoms() > 0) {",
-            "console.log(getNumberOfAtoms());",
-            "  removeAtom(0);",
-            "  repaint();",
-            "}",
+            "var opt = {supressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
             "while (getNumberOfAtoms() < 40) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
-            "  repaint();",
-            "}"
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
+            "}",
+            "while (getNumberOfAtoms() > 40) {",
+            "  removeAtom(getNumberOfAtoms() - 1, opt);",
+            "}",
+            "repaint();"
           ]
         },
         {
           "text": "20 molecules",
           "action": [
-            "while (getNumberOfAtoms() > 0) {",
-            "console.log(getNumberOfAtoms());",
-            "  removeAtom(0);",
-            "  repaint();",
-            "}",
+            "var opt = {supressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
             "while (getNumberOfAtoms() < 20) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()});",
-            "  repaint();",
-            "}"
+            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
+            "}",
+            "while (getNumberOfAtoms() > 20) {",
+            "  removeAtom(getNumberOfAtoms() - 1, opt);",
+            "}",
+            "repaint();"
           ]
         }
       ]
