@@ -995,48 +995,57 @@ define(function(require) {
       // Validate properties, use default values if there is such need.
       validatedProps = validator.validateCompleteness(metadata.obstacle, props);
       // Finally, add obstacle.
+      invalidatingChangePreHook();
       engine.addObstacle(validatedProps);
+      invalidatingChangePostHook();
     };
 
     model.removeObstacle = function (idx) {
+      invalidatingChangePreHook();
       engine.removeObstacle(idx);
+      invalidatingChangePostHook();
     };
 
     model.addRadialBond = function(props) {
-      var validatedProps;
-
       // Validate properties, use default values if there is such need.
-      validatedProps = validator.validateCompleteness(metadata.radialBond, props);
+      props = validator.validateCompleteness(metadata.radialBond, props);
       // Finally, add radial bond.
-      engine.addRadialBond(validatedProps);
+      invalidatingChangePreHook();
+      engine.addRadialBond(props);
+      invalidatingChangePostHook();
+      // TODO: emit events when function is exposed in Scripting API!
     },
 
     model.removeRadialBond = function(idx) {
+      invalidatingChangePreHook();
       engine.removeRadialBond(idx);
+      invalidatingChangePreHook();
       dispatch.removeRadialBond();
     };
 
     model.addAngularBond = function(props) {
-      var validatedProps;
-
       // Validate properties, use default values if there is such need.
-      validatedProps = validator.validateCompleteness(metadata.angularBond, props);
+      props = validator.validateCompleteness(metadata.angularBond, props);
       // Finally, add angular bond.
-      engine.addAngularBond(validatedProps);
+      invalidatingChangePreHook();
+      engine.addAngularBond(props);
+      invalidatingChangePostHook();
     };
 
     model.removeAngularBond = function(idx) {
+      invalidatingChangePreHook();
       engine.removeAngularBond(idx);
+      invalidatingChangePostHook();
       dispatch.removeAngularBond();
     };
 
     model.addRestraint = function(props) {
-      var validatedProps;
-
       // Validate properties, use default values if there is such need.
-      validatedProps = validator.validateCompleteness(metadata.restraint, props);
+      props = validator.validateCompleteness(metadata.restraint, props);
       // Finally, add restraint.
-      engine.addRestraint(validatedProps);
+      invalidatingChangePreHook();
+      engine.addRestraint(props);
+      invalidatingChangePostHook();
     };
 
     /** Return the bounding box of the molecule containing atom 'atomIndex', with atomic radii taken
