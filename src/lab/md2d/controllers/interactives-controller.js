@@ -100,22 +100,35 @@ define(function (require) {
               return model.get_num_atoms();
             },
 
-            addAtom: function addAtom() {
-              return model.addAtom.apply(model, arguments);
+            addAtom: function addAtom(props, options) {
+              if (options && options.supressRepaint) {
+                // Translate supressRepaint option to
+                // option understable by modeler.
+                // supresRepaint is a conveniance option for
+                // Scripting API users.
+                options.supressEvent = true;
+              }
+              return model.addAtom(props, options);
             },
 
             /*
               Removes atom 'i'.
             */
             removeAtom: function removeAtom(i, options) {
+              if (options && options.supressRepaint) {
+                // Translate supressRepaint option to
+                // option understable by modeler.
+                // supresRepaint is a conveniance option for
+                // Scripting API users.
+                options.supressEvent = true;
+                delete options.supressRepaint;
+              }
               try {
-                model.removeAtom(i);
+                model.removeAtom(i, options);
               } catch (e) {
                 if (!options || !options.silent)
                   throw e;
               }
-
-              scriptingAPI.repaint();
             },
 
             /*
