@@ -259,9 +259,11 @@ define(function (require) {
               Sets individual atom properties using human-readable hash.
               e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
             */
-            setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule) {
+            setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
               model.setAtomProperties(i, props, checkLocation, moveMolecule);
-              scriptingAPI.repaint();
+              if (!(options && options.supressRepaint)) {
+                scriptingAPI.repaint();
+              }
             },
 
             /**
