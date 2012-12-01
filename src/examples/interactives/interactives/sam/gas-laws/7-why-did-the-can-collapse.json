@@ -8,28 +8,138 @@
       "id": "page7$0",
       "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page7/page7$0.json",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "play_reset_step",
+        "showVelocityVectors": true
       }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "avgSpeed",
+      "units": "nm/fs?",
+      "label": "area",
+      "value": [
+        "var avgVx = 0;",
+        "var avgVy = 0;",
+        "var atomNum = getNumberOfAtoms();",
+        "for (var i = 0; i < atomNum; i++) {",
+        "  avgVx += Math.abs(getAtomProperties(i).vx);",
+        "  avgVy += Math.abs(getAtomProperties(i).vy);",
+        "}",
+        "avgVx /= atomNum;",
+        "avgVy /= atomNum;",
+        "return { 'avgVx' : avgVx, 'avgVy': avgVy};"
+     ]
     }
   ],
   "components": [
     {
       "type": "button",
-      "id": "run",
-      "text": "Run",
-      "action": "start();"
+      "id": "add-inside",
+      "text": "Add Molecule Inside",
+      "action": [
+        "var elemNum = 3;",
+        "var maxX = getObstacleProperties(0).x - getElementProperties(elemNum).sigma;",
+        "addAtom({ element: elemNum, x: maxX * Math.random()  , y: get('height') * Math.random(), vx: get('avgSpeed').avgVx, vy: get('avgSpeed').avgVy});"
+      ]
     },
     {
       "type": "button",
-      "id": "stop",
-      "text": "Stop",
-      "action": "stop();"
+      "id": "add-outside",
+      "text": "Add Molecule Outside",
+      "action": [
+        "var elemNum = 1;",
+        "var minX = getObstacleProperties(0).x + getObstacleProperties(0).width + getElementProperties(elemNum).sigma;",
+        "addAtom({ element: elemNum, x: (get('width') - minX) * Math.random() + minX , y: get('height') * Math.random(), vx: get('avgSpeed').avgVx, vy: get('avgSpeed').avgVy});"
+      ]
     },
     {
       "type": "button",
-      "id": "reset",
-      "text": "Reset",
-      "action": "reset();"
+      "id": "remove-inside",
+      "text": "Remove Inside Molecule",
+      "action": [
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).x < getObstacleProperties(0).x) {",
+        "     removeAtom(i);",
+        "     break;",
+        "   }",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "remove-outside",
+      "text": "Remove Outside Molecule",
+      "action": [
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).x > (getObstacleProperties(0).x + getObstacleProperties(0).width)) {",
+        "     removeAtom(i);",
+        "     break;",
+        "   }",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "heat-inside",
+      "text": "Heat Inside",
+      "action": [
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  var atom = getAtomProperties(i);",
+        "  if (atom.x < getObstacleProperties(0).x) {",
+        "     setAtomProperties(i, { vx: atom.vx * 1.1, vy: atom.vy * 1.1 }, false, false, {supressRepaint: true})",
+        "   }",
+        "}",
+        "repaint();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "heat-outside",
+      "text": "Heat Outside",
+      "action": [
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  var atom = getAtomProperties(i);",
+        "  if (atom.x > getObstacleProperties(0).x) {",
+        "     setAtomProperties(i, { vx: atom.vx * 1.1, vy: atom.vy * 1.1 }, false, false, {supressRepaint: true})",
+        "   }",
+        "}",
+        "repaint();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "cool-inside",
+      "text": "Cool Inside",
+      "action": [
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  var atom = getAtomProperties(i);",
+        "  if (atom.x < getObstacleProperties(0).x) {",
+        "     setAtomProperties(i, { vx: atom.vx * 0.9, vy: atom.vy * 0.9 }, false, false, {supressRepaint: true})",
+        "   }",
+        "}",
+        "repaint();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "cool-outside",
+      "text": "Cool Outside",
+      "action": [
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  var atom = getAtomProperties(i);",
+        "  if (atom.x > getObstacleProperties(0).x) {",
+        "     setAtomProperties(i, { vx: atom.vx * 0.9, vy: atom.vy * 0.9}, false, false, {supressRepaint: true})",
+        "   }",
+        "}",
+        "repaint();"
+      ]
     }
-  ]
+  ],
+  "layout": {
+    "bottom": [
+      ["add-inside","remove-inside","heat-inside","cool-inside"],
+      ["add-outside","remove-outside","heat-outside","cool-outside"]
+    ]
+  }
 }
