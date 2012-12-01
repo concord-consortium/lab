@@ -1,8 +1,11 @@
 {
-  "title": "Explore 100 Atoms",
+  "title": "Charged and Neutral Atoms",
   "publicationStatus": "sample",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore attractive forces between atoms and ions (charged atoms).",
+  "about": [
+    "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions), and van der Waals forces (an additional attractive force between all atoms).",
+    "What kinds of patterns tend to form with charged and neutral atoms? Which attractive force seems stronger? How does changing the van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
+  ],
   "models": [
     {
       "id": "100-atoms-charged",
@@ -11,13 +14,6 @@
         "controlButtons": "play_reset"
       },
       "onLoad": ""
-    },
-    {
-      "id": "100-atoms$0",
-      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
-      "viewOptions": {
-        "controlButtons": "play_reset"
-      }
     }
   ],
   "components": [
@@ -28,33 +24,45 @@
       "options": [
         {
           "text": "Charged Atoms",
-          "loadModel": "100-atoms-charged"
+          "action": [
+            "var chargeVal = 1;",
+            "for (var i=0; i < getNumberOfAtoms(); i++) {",
+              "setAtomProperties(i, {charge: chargeVal}, false, false, {supressRepaint: true});",
+              "chargeVal *= -1;",
+            "}",
+            "set({chargeShading: true});"
+          ]
         },
         {
           "text": "Neutral Atoms",
-          "loadModel": "100-atoms$0"
+          "action": [
+            "for (var i=0; i < getNumberOfAtoms(); i++) {",
+              "setAtomProperties(i, { charge: 0}, false, false, {supressRepaint: true});",
+            "}",
+            "set({chargeShading: false});"
+          ]
         }
       ]
     },
     {
       "type": "slider",
       "id": "epsilon-slider",
-      "min": 0.002,
-      "max": 0.400,
+      "min": 0.075,
+      "max": 0.300,
       "initialValue": 0.14,
       "displayValue": "return format('1.3f')(value)",
       "labels": [
         {
-          "value": 0.00,
+          "value": 0.075,
           "label": "weak"
         },
         {
-          "value": 0.4,
+          "value": 0.300,
           "label": "strong"
         }
       ],
       "steps": 199,
-      "title": "Attraction between atoms",
+      "title": "van der Waals Atrraction",
       "action": "setElementProperties(2, { epsilon: -value });"
     },
     {
