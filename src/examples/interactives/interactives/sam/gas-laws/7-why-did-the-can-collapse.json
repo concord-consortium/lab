@@ -84,13 +84,18 @@
       "id": "heat-inside",
       "text": "Heat Inside",
       "action": [
-        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
-        "  var atom = getAtomProperties(i);",
-        "  if (atom.x < getObstacleProperties(0).x) {",
-        "     setAtomProperties(i, { vx: atom.vx * 1.1, vy: atom.vy * 1.1 }, false, false, {supressRepaint: true})",
-        "   }",
+        "if (get('temperature') < 10000) {",
+        "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "    var atom = getAtomProperties(i);",
+        "    if (atom.x < getObstacleProperties(0).x) {",
+        "       setAtomProperties(i, { vx: atom.vx * 1.1, vy: atom.vy * 1.1 }, false, false, {supressRepaint: true})",
+        "    }",
+        "  }",
+        "  repaint();",
         "}",
-        "repaint();"
+        "else {",
+        "    alert('Max temperature reached.');",
+        "}"
       ]
     },
     {
@@ -98,13 +103,18 @@
       "id": "heat-outside",
       "text": "Heat Outside",
       "action": [
-        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
-        "  var atom = getAtomProperties(i);",
-        "  if (atom.x > getObstacleProperties(0).x) {",
-        "     setAtomProperties(i, { vx: atom.vx * 1.1, vy: atom.vy * 1.1 }, false, false, {supressRepaint: true})",
-        "   }",
+        "if (get('temperature') < 10000) {",
+        "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "    var atom = getAtomProperties(i);",
+        "    if (atom.x > getObstacleProperties(0).x) {",
+        "       setAtomProperties(i, { vx: atom.vx * 1.1, vy: atom.vy * 1.1 }, false, false, {supressRepaint: true})",
+        "    }",
+        "  }",
+        "  repaint();",
         "}",
-        "repaint();"
+        "else {",
+        "    alert('Max temperature reached.');",
+        "}"
       ]
     },
     {
