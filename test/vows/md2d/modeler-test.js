@@ -206,8 +206,6 @@ requirejs([
     "model stepping": {
       topic: function() {
         model = Model(initialization_options);
-        model.createNewAtoms(initialization_options.mol_number);
-        model.initializeHistory();
         atom0InitialPosition = [model.get_atoms().x[0], model.get_atoms().y[0]];
         return model;
       },

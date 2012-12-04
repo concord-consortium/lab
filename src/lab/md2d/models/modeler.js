@@ -839,34 +839,6 @@ define(function(require) {
       return model;
     };
 
-    model.initializeHistory = function(maxSize) {
-      updateAllOutputProperties();
-      maxSize = maxSize || defaultMaxTickHistory;
-      tickHistory = new TickHistory({
-        input: [
-          "targetTemperature",
-          "lennardJonesForces",
-          "coulombForces",
-          "temperatureControl",
-          "keShading",
-          "chargeShading",
-          "showVDWLines",
-          "showVelocityVectors",
-          "showForceVectors",
-          "showClock",
-          "viewRefreshInterval",
-          "timeStep",
-          "viscosity",
-          "gravitationalField"
-        ],
-        restoreProperties: restoreProperties,
-        parameters: parametersByName,
-        restoreParameters: restoreParameters,
-        state: engine.getState()
-      }, model, maxSize);
-      newStep = true;
-    };
-
     model.reset = function() {
       model.resetTime();
       tickHistory.restoreInitialState();
@@ -1835,11 +1807,31 @@ define(function(require) {
     if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
     if (initialProperties.obstacles)    model.createObstacles(initialProperties.obstacles);
 
-    // Initialize history if user provided atoms, etc, to save. Client code not passing in
-    // atoms needs to set up history itself, if it wants history to be saved.
-    if (atoms) {
-      model.initializeHistory();
-    }
+    // Initialize tick history.
+    tickHistory = new TickHistory({
+      input: [
+        "targetTemperature",
+        "lennardJonesForces",
+        "coulombForces",
+        "temperatureControl",
+        "keShading",
+        "chargeShading",
+        "showVDWLines",
+        "showVelocityVectors",
+        "showForceVectors",
+        "showClock",
+        "viewRefreshInterval",
+        "timeStep",
+        "viscosity",
+        "gravitationalField"
+      ],
+      restoreProperties: restoreProperties,
+      parameters: parametersByName,
+      restoreParameters: restoreParameters,
+      state: engine.getState()
+    }, model, defaultMaxTickHistory);
+
+    newStep = true;
 
     return model;
   };
