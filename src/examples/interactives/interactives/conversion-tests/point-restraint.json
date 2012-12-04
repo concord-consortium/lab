@@ -1,8 +1,8 @@
 {
   "title": "Point Restraints",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Atoms can be bound to a point with a spring-like bond.",
+  "about": "Using point restraints",
   "models": [
     {
       "id": "point-restraint$0",
