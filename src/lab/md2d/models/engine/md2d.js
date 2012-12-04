@@ -11,7 +11,6 @@ define(function (require, exports, module) {
       math                = require('./math/index'),
       coulomb             = require('./potentials/index').coulomb,
       lennardJones        = require('./potentials/index').lennardJones,
-      PressureBuffers     = require('./pressure-buffers'),
       CloneRestoreWrapper = require('./clone-restore-wrapper'),
       CellList            = require('./cell-list'),
       NeighborList        = require('./neighbor-list'),
@@ -263,13 +262,6 @@ define(function (require, exports, module) {
         obstacleNProbeValue,
         obstacleEProbeValue,
         obstacleSProbeValue,
-
-        // Special structure containing buffers used for pressure calculations.
-        // Call pressureBuffers.initialize(obstacles, N_obstacles) when obstacles
-        // are created to initialize this structure.
-        // Each time a new obstacle is added, this function should also be called!
-        pressureBuffers = new PressureBuffers(),
-        // #####
 
         // An object that contains references to the above obstacle-property arrays.
         // Left undefined if there are no obstacles.
@@ -1601,6 +1593,60 @@ define(function (require, exports, module) {
             }
             T = target;
           }
+        },
+
+        // ### Pressure calculation ###
+
+        // Zere values of pressure probes. It should be called
+        // at the beginning of the integration step.
+        zeroPressureValues = function () {
+          var i;
+          for (i = 0; i < N_obstacles; i++) {
+            if (obstacleNorthProbe[i]) {
+              obstacleNProbeValue[i] = 0;
+            }
+            if (obstacleSouthProbe[i]) {
+              obstacleSProbeValue[i] = 0;
+            }
+            if (obstacleEastProbe[i]) {
+              obstacleEProbeValue[i] = 0;
+            }
+            if (obstacleWestProbe[i]) {
+              obstacleWProbeValue[i] = 0;
+            }
+          }
+        },
+
+        // Update probes values so they contain final pressure value in Bar.
+        // It should be called at the end of the integration step.
+        calculateFinalPressureValues = function (duration) {
+          var mult, i;
+          // Classic MW converts impulses 2mv/dt to pressure in Bar using constant: 1666667.
+          // See: the header of org.concord.mw2d.models.RectangularObstacle.
+          // However, Classic MW also uses different units for mass and length:
+          // - 120amu instead of 1amu,
+          // - 0.1A instead of 1nm.
+          // We should convert mass, velocity and obstacle height to Next Gen units.
+          // Length units reduce themselves (velocity divided by height or width), only mass is left.
+          // So, divide classic MW constant 1666667 by 120 - the result is 13888.89.
+          // [ There is unit module available, however for reduction of computational cost,
+          // include conversion in the pressure constant, especially considering the fact that
+          // conversion from 120amu to amu is quite simple. ]
+          mult = 13888.89 / duration;
+          for (i = 0; i < N_obstacles; i++) {
+            if (obstacleNorthProbe[i]) {
+              obstacleNProbeValue[i] *= mult / obstacleWidth[i];
+            }
+            if (obstacleSouthProbe[i]) {
+              obstacleSProbeValue[i] *= mult / obstacleWidth[i];
+            }
+            if (obstacleEastProbe[i]) {
+              obstacleEProbeValue[i] *= mult / obstacleHeight[i];
+            }
+            if (obstacleWestProbe[i]) {
+              obstacleWProbeValue[i] *= mult / obstacleHeight[i];
+            }
+          }
         };
 
         // ####################################################################
@@ -1816,12 +1862,6 @@ define(function (require, exports, module) {
           if (props.hasOwnProperty(key)) {
             obstacles[key][i] = props[key];
           }
-        }
-
-        // Check if new obstacle has any pressure probe.
-        if (props.westProbe || props.northProbe || props.eastProbe || props.southProbe) {
-          // Special pressure buffers will be created (or updated).
-          pressureBuffers.initialize(obstacles, N_obstacles);
         }
       },
 
@@ -2177,10 +2217,6 @@ define(function (require, exports, module) {
         // (e.g. views) use obstacles.x.length as the real number of obstacles.
         extendArrays(obstacles, N_obstacles);
         assignShortcutReferences.obstacles();
-
-        // TODO: emit event, listeners should handle that event
-        // automatically?
-        pressureBuffers.obstacleRemoved(idx);
       },
 
       atomInBounds: function(_x, _y, i) {
@@ -2444,6 +2480,10 @@ define(function (require, exports, module) {
         // Number of steps.
         steps = Math.floor(duration / dt);
 
+        // Zero values of pressure probes at the beginning of
+        // each integration step.
+        zeroPressureValues();
+
         for (iloop = 1; iloop <= steps; iloop++) {
           time = tStart + iloop * dt;
 
@@ -2476,8 +2516,10 @@ define(function (require, exports, module) {
         } // end of integration loop
 
         // Collisions between particles and obstacles are collected during
-        // updateParticlesPosition() execution.
-        pressureBuffers.updateBuffers(duration);
+        // updateParticlesPosition() execution. This function takes into account
+        // time which passed and converts raw data from pressure probes to value
+        // in Bars.
+        calculateFinalPressureValues(duration);
       },
 
       // Minimize energy using steepest descend method.
@@ -2715,19 +2757,19 @@ define(function (require, exports, module) {
           // Pressure calculation.
           if (obstacleWestProbe[i]) {
             probes[i] = probes[i] || {};
-            probes[i].west = pressureBuffers.getPressureFromProbe(i, 'west');
+            probes[i].west = obstacleWProbeValue[i];
           }
           if (obstacleNorthProbe[i]) {
             probes[i] = probes[i] || {};
-            probes[i].north = pressureBuffers.getPressureFromProbe(i, 'north');
+            probes[i].north = obstacleNProbeValue[i];
           }
           if (obstacleEastProbe[i]) {
             probes[i] = probes[i] || {};
-            probes[i].east = pressureBuffers.getPressureFromProbe(i, 'east');
+            probes[i].east = obstacleEProbeValue[i];
           }
           if (obstacleSouthProbe[i]) {
             probes[i] = probes[i] || {};
-            probes[i].south = pressureBuffers.getPressureFromProbe(i, 'south');
+            probes[i].south = obstacleSProbeValue[i];
           }
         }
 
@@ -2967,10 +3009,7 @@ define(function (require, exports, module) {
             restore: function(state) {
               engine.setTime(state);
             }
-          },
-          // Save pressufe buffers.
-          // This object defines clone / restore itself.
-          pressureBuffers
+          }
         ];
       }
     };
