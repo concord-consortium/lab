@@ -27,8 +27,10 @@ define(function (require) {
         if (input1) {
           model.addPropertiesListener([input1], update);
         }
-        // Initial render.
+        // Initial render...
         barGraphView.render();
+        // and update.
+        update();
       },
 
       // Returns view container (div).
