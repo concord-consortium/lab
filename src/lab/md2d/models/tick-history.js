@@ -3,12 +3,35 @@
 
 define(function() {
 
+
+  /**
+    Class which handles tick history. It supports saving and restoring state
+    of core state objects defined by the modeler and engine. However, while
+    adding a new object which should also be saved in tick history, consider
+    utilization of "external objects" - this is special object which should
+    implement TickHistoryCompatible Interface:
+      #setHistoryLength(number)
+      #push()
+      #extract(index)
+      #invalidate(index)
+
+      Note that index argument is *always* limited to [0, historyLength) range.
+
+    "External objects" handle changes of the current step itself. TickHistory
+    only sends requests to perform various operations. To register new
+    external object use #registerExternalObject(object) method.
+
+    It allows to decentralize management of tick history and tight coupling
+    TickTistory with API of various objects.
+  */
   return function TickHistory(modelState, model, size) {
     var tickHistory = {},
         initialState,
         list,
         listState,
-        defaultSize = 1000;
+        defaultSize = 1000,
+        // List of objects defining TickHistoryCompatible Interface.
+        externalObjects = [];
 
     function newState() {
       return { input: {}, state: [], parameters: {} };
@@ -63,7 +86,8 @@ define(function() {
         Removes any (now-invalid) states in the list that come after the newly pushed state.
     */
     function push() {
-      var lastState = newState();
+      var lastState = newState(),
+          i;
 
       copyModelState(lastState);
       list[listState.index+1] = lastState;
@@ -77,6 +101,11 @@ define(function() {
       }
       listState.counter = listState.index + listState.startCounter;
 
+      // Send push request to external objects defining TickHistoryCompatible Interface.
+      for (i = 0; i < externalObjects.length; i++) {
+        externalObjects[i].push();
+      }
+
       invalidateFollowingState();
       listState.length = list.length;
     }
@@ -84,8 +113,15 @@ define(function() {
     /** Invalidate (remove) all history after current index. For example, after seeking backwards
         and then pushing new state */
     function invalidateFollowingState() {
+      var i;
+
       list.length = listState.index+1;
       listState.length = list.length;
+
+      // Invalidate external objects defining TickHistoryCompatible Interface.
+      for (i = 0; i < externalObjects.length; i++) {
+        externalObjects[i].invalidate(listState.index);
+      }
     }
 
     function extract(savedState) {
@@ -102,6 +138,11 @@ define(function() {
       state = savedState.state;
       for (i = 0; i < state.length; i++) {
         modelState.state[i].restore(state[i]);
+      }
+
+      // Send extract request to external objects defining TickHistoryCompatible Interface.
+      for (i = 0; i < externalObjects.length; i++) {
+        externalObjects[i].extract(listState.index);
       }
     }
 
@@ -186,6 +227,20 @@ define(function() {
 
     tickHistory.set = function(key, val) {
       return listState[key] = val;
+    };
+
+    /**
+      Registers a new external object. It is a special object, which handles changes of step itself.
+      TickHistory object only sends requests for various actions.
+      External object should implement TickHistoryCompatible Interface:
+        #setHistoryLength(number)
+        #push()
+        #extract(index)
+        #invalidate(index)
+    */
+    tickHistory.registerExternalObject = function (externalObj) {
+      externalObj.setHistoryLength(listState.maxSize);
+      externalObjects.push(externalObj);
     };
 
     //
