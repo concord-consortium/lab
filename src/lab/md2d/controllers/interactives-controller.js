@@ -1332,8 +1332,7 @@ define(function (require) {
           model.defineOutput(output.name, {
             label: output.label,
             units: output.units
-          }, makeFunctionInScriptContext(getStringFromArray(output.value)),
-          output.filter);
+          }, makeFunctionInScriptContext(getStringFromArray(output.value)));
         }
       }
     }
