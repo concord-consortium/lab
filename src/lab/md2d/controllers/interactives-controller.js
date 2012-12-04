@@ -3,7 +3,6 @@
 define(function (require) {
   // Dependencies.
   var ModelController         = require('md2d/controllers/model-controller'),
-      PressureGraphController = require('md2d/controllers/pressure-graph-controller'),
       BarGraphController      = require('md2d/controllers/bar-graph-controller'),
       GraphController         = require('md2d/controllers/graph-controller'),
       DgExportController      = require('md2d/controllers/dg-export-controller'),
@@ -30,8 +29,6 @@ define(function (require) {
         energyData = [[],[],[]],
         // A generic line graph of some set of properties
         graph,
-        // Pressure Graph Controller, handles pressure data and its graphing.
-        pressureGraphController,
         // Bar graph controller.
         barGraphController,
         // Handles exporting data to DataGames, if 'exports' are specified
@@ -510,12 +507,6 @@ define(function (require) {
           };
         case 'energyGraph':
           return createEnergyGraph(component);
-        case 'pressureGraph':
-          pressureGraphController = new PressureGraphController(component);
-          return {
-            elem:     pressureGraphController.getViewContainer(),
-            callback: pressureGraphController.modelLoadedCallback
-          };
         case 'graph':
           graph = new GraphController(component);
           return {
@@ -1127,7 +1118,6 @@ define(function (require) {
       if (thermometer) layout.addView('thermometers', thermometer.component);
       if (energyGraph) layout.addView('energyGraphs', energyGraph);
       // TODO: energyGraphs should be changed to lineGraphs?
-      if (pressureGraphController) layout.addView('energyGraphs', pressureGraphController.getView());
       if (graph) layout.addView('energyGraphs', graph.getView());
       if (barGraphController) layout.addView('barGraphs', barGraphController);
 
