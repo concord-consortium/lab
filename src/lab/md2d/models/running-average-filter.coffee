@@ -126,7 +126,8 @@ define (require) ->
     It allows to get average value of the function in various moments in time.
     ###
     setCurrentStep: (location) ->
-      if location < 0 || location >= value.length
+      # Note that location can be -1, e.g. while reseting buffers and starting from initial state.
+      if location < -1 || location >= value.length
         throw new Error "RunningAverageFilter: cannot seek, location outside available range."
       idx = location
 

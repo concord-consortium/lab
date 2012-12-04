@@ -136,7 +136,7 @@ describe "MD2D filters", ->
             runningAvg.getCurrentStep().should.eql 3
             runningAvg.getCurrentBufferLength().should.eql 4
             (-> runningAvg.setCurrentStep 4).should.throw()
-            (-> runningAvg.setCurrentStep -1).should.throw()
+            (-> runningAvg.setCurrentStep -2).should.throw()
 
 
       describe "[tests in modeler environment]", ->
