@@ -20,7 +20,7 @@
   ],
   "outputs": [
     {
-      "name": "pressureProbe",
+      "name": "pressureProbeInstantaneous",
       "units": "Bar",
       "label": "Pressure Gauge",
       "value": [
@@ -34,6 +34,16 @@
       "value": [
         "return getObstacleProperties(0).x * 2;"
       ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "pressureProbeFiltered",
+      "units": "Bar",
+      "label": "Pressure Gauge",
+      "property": "pressureProbeInstantaneous",
+      "type": "RunningAverage",
+      "period": 2500
     }
   ],
   "components": [
@@ -88,7 +98,7 @@
         "maxValue": 2,
         "title": "Pressure (Bar)"
       },
-      "input1": "pressureProbe"
+      "input1": "pressureProbeFiltered"
     }
   ],
   "layout": {

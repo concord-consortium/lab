@@ -17,12 +17,22 @@
   ],
   "outputs": [
     {
-      "name": "pressureProbe",
+      "name": "pressureProbeInstantaneous",
       "units": "Bar",
       "label": "Pressure Gauge",
       "value": [
         "return getPressureProbeValue(0, 'west');"
       ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "pressureProbeFiltered",
+      "units": "Bar",
+      "label": "Pressure Gauge",
+      "property": "pressureProbeInstantaneous",
+      "type": "RunningAverage",
+      "period": 2500
     }
   ],
   "components": [
@@ -53,7 +63,7 @@
         "maxValue": 0.8,
         "title": "Pressure (Bar)"
       },
-      "input1": "pressureProbe"
+      "input1": "pressureProbeFiltered"
     }
   ],
   "layout": {
