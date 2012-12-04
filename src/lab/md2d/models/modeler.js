@@ -151,13 +151,21 @@ define(function(require) {
           }
         },
 
-        // The list of all 'output' properties (which change once per tick)
+        // The list of all 'output' properties (which change once per tick).
         outputNames = [],
 
-        // Information about the description and calculating function for 'output' properties
+        // Information about the description and calculating function for 'output' properties.
         outputsByName = {},
 
-        // the currently-defined parameters
+        // The subset of outputName list, containing list of outputs which are filtered
+        // by one of the built-in filters (like running average filter).
+        filteredOutputNames = [],
+
+        // Function adding new sample for filtered outputs. Other properties of filtered output
+        // are stored in outputsByName object, as filtered output is just extension of normal output.
+        filteredOutputsByName = {},
+
+        // The currently-defined parameters.
         parametersByName = {};
 
     function notifyPropertyListeners(listeners) {
@@ -352,6 +360,14 @@ define(function(require) {
         outputsByName[outputNames[i]].hasCachedValue = false;
       }
 
+      // Update all filtered outputs.
+      // Note that this have to be performed after invalidation of all outputs
+      // (as filtered output can filter another output), but before notifying
+      // listeners (as we want to provide current, valid value).
+      for (i = 0; i < filteredOutputNames.length; i++) {
+        filteredOutputsByName[filteredOutputNames[i]].addSample();
+      }
+
       for (i = 0; i < outputNames.length; i++) {
         if (l = listeners[outputNames[i]]) {
           for (j = 0; j < l.length; j++) {
@@ -422,6 +438,13 @@ define(function(require) {
       for (i = 0; i < outputNames.length; i++) {
         output = outputsByName[outputNames[i]];
         output.hasCachedValue = false;
+      }
+
+      // Update all filtered outputs.
+      // Note that this have to be performed after invalidation of all outputs
+      // (as filtered output can filter another output).
+      for (i = 0; i < filteredOutputNames.length; i++) {
+        filteredOutputsByName[filteredOutputNames[i]].addSample();
       }
 
       // Keep a list of output properties that are being observed and which changed ... and
@@ -1569,40 +1592,19 @@ define(function(require) {
 
     /**
       Add an "output" property to the model. Output properties are expected to change at every
-      model tick, and may also be changed indirectly, outside of a model tick,by a change to the
+      model tick, and may also be changed indirectly, outside of a model tick, by a change to the
       model parameters or to the configuration of atoms and other objects in the model.
 
       `name` should be the name of the parameter. The property value will be accessed by
       `model.get(<name>);`
 
-      `metadata` should be  a hash of metadata about the property. Right now, these metadata are not
+      `description` should be a hash of metadata about the property. Right now, these metadata are not
       used. However, example metadata include the label and units name to be used when graphing
       this property.
 
       `calculate` should be a no-arg function which should calculate the property value.
-
-      `filter` should be an object with filter specification. It is an optional argument.
-               For now, only running average filter is supported. Example specification:
-               {
-                  type: 'RunningAverage',
-                  samples: 50
-               }
     */
-    model.defineOutput = function(name, description, calculate, filter) {
-      if (filter) {
-        // Construct filter object.
-        switch (filter.type) {
-          case 'RunningAverage':
-            filter = new RunningAverageFilter(filter, calculate);
-            break;
-          case 'ExponentialRunningAverage':
-            throw new Error("ExponentialRunningAverage not implemented yet.");
-          default:
-            throw new Error("Unknown filter type " + filter.type + ".");
-        }
-        // Replace calculate with filtered value.
-        calculate = function () { return filter.calculate(); };
-      }
+    model.defineOutput = function(name, description, calculate) {
       outputNames.push(name);
       outputsByName[name] = {
         description: description,
@@ -1612,6 +1614,82 @@ define(function(require) {
         // null here is just a placeholder
         previousValue: null
       };
+    };
+
+    /**
+      Add an "filtered output" property to the model. This is special kind of output property, which
+      is filtered by one of the built-in filters based on time (like running average). Note that filtered
+      outputs do not specify calculate function - instead, they specify property which should filtered.
+      It can be another output, model parameter or custom parameter.
+
+      Filtered output properties are extension of typical output properties. They share all features of
+      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
+      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
+      objects in the model.
+
+      `name` should be the name of the parameter. The property value will be accessed by
+      `model.get(<name>);`
+
+      `description` should be a hash of metadata about the property. Right now, these metadata are not
+      used. However, example metadata include the label and units name to be used when graphing
+      this property.
+
+      `property` should be name of the basic property which should be filtered.
+
+      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
+
+      `period` should be number defining length of time period used for calculating filtered value. It should
+      be specified in femtoseconds.
+
+    */
+    model.defineFilteredOutput = function(name, description, property, type, period) {
+      // Filter object.
+      var filter;
+
+      switch (type) {
+        case 'RunningAverage':
+          filter = new RunningAverageFilter(period);
+          break;
+        case 'ExponentialRunningAverage':
+          throw new Error("ExponentialRunningAverage not implemented yet.");
+        default:
+          throw new Error("Unknown filter type " + type + ".");
+      }
+
+      filteredOutputNames.push(name);
+      // filteredOutputsByName stores properties which are unique for filtered output.
+      // Other properties like description or calculate function are stored in outputsByName hash.
+      filteredOutputsByName[name] = {
+        addSample: function () {
+          filter.addSample(model.get('time'), model.get(property));
+        }
+      };
+
+      // Create simple adapter implementing TickHistoryCompatible Interface
+      // and register it in tick history.
+      tickHistory.registerExternalObject({
+        push: function () {
+          // Push is empty, as we store samples during each tick anyway.
+        },
+        extract: function (idx) {
+          filter.setCurrentStep(idx);
+        },
+        invalidate: function (idx) {
+          filter.invalidate(idx);
+        },
+        setHistoryLength: function (length) {
+          filter.setMaxBufferLength(length);
+        }
+      });
+
+      // Add initial sample.
+      filter.addSample(model.get('time'), model.get(property));
+
+      // Filtered output is still an output.
+      // Reuse existing, well tested logic for caching, observing etc.
+      model.defineOutput(name, description, function () {
+        return filter.calculate();
+      });
     };
 
     /**
