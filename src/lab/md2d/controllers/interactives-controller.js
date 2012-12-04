@@ -1113,8 +1113,11 @@ define(function (require) {
     function modelLoaded() {
       var i, listener;
 
-      setupCustomOutputs(controller.currentModel.outputs, interactive.outputs);
       setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
+      setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
+      // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
+      // to exist during its definition.
+      setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
 
       for(i = 0; i < componentCallbacks.length; i++) {
         componentCallbacks[i]();
@@ -1305,8 +1308,11 @@ define(function (require) {
 
       Any output property definitions in the model section of the interactive specification override
       properties with the same that are specified in the main body if the interactive specification.
+
+      @outputType - accept two values "basic" and "filtered", as this function can be used for processing
+        both types of outputs.
     */
-    function setupCustomOutputs(modelOutputs, interactiveOutputs) {
+    function setupCustomOutputs(outputType, modelOutputs, interactiveOutputs) {
       if (!modelOutputs && !interactiveOutputs) return;
 
       var outputs = {},
@@ -1329,10 +1335,20 @@ define(function (require) {
           output = outputs[prop];
           // DOM elements (and, by analogy, Next Gen MW interactive components like slides)
           // have "ids". But, in English, properties have "names", but not "ids".
-          model.defineOutput(output.name, {
-            label: output.label,
-            units: output.units
-          }, makeFunctionInScriptContext(getStringFromArray(output.value)));
+          switch (outputType) {
+            case "basic":
+              model.defineOutput(output.name, {
+                label: output.label,
+                units: output.units
+              }, makeFunctionInScriptContext(getStringFromArray(output.value)));
+              break;
+            case "filtered":
+              model.defineFilteredOutput(output.name, {
+                label: output.label,
+                units: output.units
+              }, output.property, output.type, output.period);
+              break;
+          }
         }
       }
     }
