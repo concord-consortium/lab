@@ -1644,7 +1644,7 @@ define(function(require) {
     */
     model.defineFilteredOutput = function(name, description, property, type, period) {
       // Filter object.
-      var filter;
+      var filter, initialValue;
 
       switch (type) {
         case 'RunningAverage':
@@ -1655,6 +1655,14 @@ define(function(require) {
         default:
           throw new Error("Unknown filter type " + type + ".");
       }
+
+      initialValue = model.get(property);
+      if (initialValue === undefined || isNaN(Number(initialValue))) {
+        throw new Error("FilteredOuput input property is not defined or it is not valid numeric value.");
+      }
+
+      // Add initial sample.
+      filter.addSample(model.get('time'), initialValue);
 
       filteredOutputNames.push(name);
       // filteredOutputsByName stores properties which are unique for filtered output.
@@ -1682,8 +1690,10 @@ define(function(require) {
         }
       });
 
-      // Add initial sample.
-      filter.addSample(model.get('time'), model.get(property));
+      // Extend description to contain information about filter.
+      description.property = property;
+      description.type = type;
+      description.period = period;
 
       // Filtered output is still an output.
       // Reuse existing, well tested logic for caching, observing etc.
