@@ -1168,7 +1168,6 @@ define(function (require) {
       for(i = 0; i < modelLoadedCallbacks.length; i++) {
         modelLoadedCallbacks[i]();
       }
-      model.initializeHistory();
     }
 
     /**
