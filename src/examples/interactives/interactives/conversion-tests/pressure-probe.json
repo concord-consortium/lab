@@ -13,6 +13,66 @@
       }
     }
   ],
+  "outputs": [
+    {
+      "name": "pressure0Instantaneous",
+      "units": "Bar",
+      "value": [
+        "return getPressureProbeValue(0, 'north');"
+      ]
+    },
+    {
+      "name": "pressure1Instantaneous",
+      "units": "Bar",
+      "value": [
+        "return getPressureProbeValue(1, 'south');"
+      ]
+    },
+    {
+      "name": "pressure2Instantaneous",
+      "units": "Bar",
+      "value": [
+        "return getPressureProbeValue(2, 'west');"
+      ]
+    },
+    {
+      "name": "pressure3Instantaneous",
+      "units": "Bar",
+      "value": [
+        "return getPressureProbeValue(3, 'east');"
+      ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "pressure0Filtered",
+      "units": "Bar",
+      "property": "pressure0Instantaneous",
+      "type": "RunningAverage",
+      "period": 2500
+    },
+    {
+      "name": "pressure1Filtered",
+      "units": "Bar",
+      "property": "pressure1Instantaneous",
+      "type": "RunningAverage",
+      "period": 2500
+    },
+    {
+      "name": "pressure2Filtered",
+      "units": "Bar",
+      "property": "pressure2Instantaneous",
+      "type": "RunningAverage",
+      "period": 2500
+    },
+    {
+      "name": "pressure3Filtered",
+      "units": "Bar",
+      "property": "pressure3Instantaneous",
+      "type": "RunningAverage",
+      "period": 2500
+    }
+  ],
   "components": [
     {
       "type": "slider",
@@ -34,13 +94,19 @@
       "property": "targetTemperature"
     },
     {
-      "type": "pressureGraph",
-      "id": "pressure-chart"
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Pressure",
+      "xmin": 0,
+      "xmax": 20,
+      "ymin": -1,
+      "ymax": 3,
+      "properties": ["pressure0Filtered", "pressure1Filtered", "pressure2Filtered", "pressure3Filtered"]
     }
   ],
   "layout": {
     "rightwide": [
-      "pressure-chart"
+      "propertiesGraph"
     ],
     "bottom": [
       "temperature-slider"
