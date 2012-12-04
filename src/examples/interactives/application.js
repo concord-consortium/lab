@@ -300,10 +300,12 @@ var ROOT = "/examples",
     groups = _.filter(interactiveDescriptions.groups, function(group) {
       var curriculumFilter = $("#curriculum").is(':checked'),
           examplesFilter = $("#examples").is(':checked'),
+          benchmarksFilter = $("#benchmarks").is(':checked')
           testsFilter = $("#tests").is(':checked');
       if (group.category === "Samples") return true;
       if (curriculumFilter && group.category === "Curriculum") return true;
       if (examplesFilter && group.category === "Examples") return true;
+      if (benchmarksFilter && group.category === "Benchmarks") return true;
       if (testsFilter && group.category === "Tests") return true;
       return false;
     });

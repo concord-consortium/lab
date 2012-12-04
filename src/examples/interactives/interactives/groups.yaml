@@ -41,3 +41,7 @@
 - :path: tutorial
   :name: "Classic Java MW Tutorial"
   :category: Examples
+
+- :path: benchmarks
+  :name: "Performance Benchmarks"
+  :category: Benchmarks

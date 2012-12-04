@@ -261,6 +261,7 @@ server/public/imports: \
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/visual server/public/imports/legacy-mw-content/converted/
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/validation server/public/imports/legacy-mw-content/converted/
 	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/layout-tests server/public/imports/legacy-mw-content/converted/
+	rsync -aq --filter '+ */' --exclude='*.mml' --exclude='*.cml'  server/public/imports/legacy-mw-content/benchmarks server/public/imports/legacy-mw-content/converted/
 
 server/public/resources:
 	cp -R ./src/resources ./server/public/
