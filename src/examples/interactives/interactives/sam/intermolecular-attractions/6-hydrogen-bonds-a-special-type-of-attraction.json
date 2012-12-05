@@ -24,7 +24,7 @@
       "type": "checkbox",
       "id": "show_charge",
       "text": "Show partial charges",
-      "property": "chargeShading"
+      "property": "showChargeSymbols"
     },
     {
       "type": "checkbox",
