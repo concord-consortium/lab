@@ -11,6 +11,7 @@
   "viewOptions": {
     "keShading": true,
     "chargeShading": false,
+    "showChargeSymbols": true,
     "showVDWLines": false,
     "VDWLinesCutoff": "medium",
     "showClock": true,

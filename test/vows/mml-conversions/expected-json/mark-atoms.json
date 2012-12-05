@@ -10,6 +10,7 @@
   "timeStep": 1,"viewOptions": {
     "keShading": false,
     "chargeShading": false,
+    "showChargeSymbols": true,
     "showVDWLines": false,
     "VDWLinesCutoff": "medium",
     "showClock": true,
