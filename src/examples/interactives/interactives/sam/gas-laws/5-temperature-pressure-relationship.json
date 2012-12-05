@@ -21,7 +21,7 @@
       "units": "Bar",
       "label": "Pressure Gauge",
       "value": [
-        "return getPressureProbeValue(0, 'west');"
+        "return getObstacleProperties(0).westProbeValue;"
       ]
     }
   ],

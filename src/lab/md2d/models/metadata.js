@@ -193,18 +193,35 @@ define(function() {
       westProbe: {
         defaultValue: false
       },
+      // Final value of pressure in Bars.
+      westProbeValue: {
+        readOnly: true
+      },
       // Pressure probe, north side.
       northProbe: {
         defaultValue: false
+      },
+      // Final value of pressure in Bars.
+      northProbeValue: {
+        readOnly: true
       },
       // Pressure probe, east side.
       eastProbe: {
         defaultValue: false
       },
+      // Final value of pressure in Bars.
+      eastProbeValue: {
+        readOnly: true
+      },
       // Pressure probe, south side.
       southProbe: {
         defaultValue: false
       },
+      // Final value of pressure in Bars.
+      southProbeValue: {
+        readOnly: true
+      },
+      // View options.
       colorR: {
         defaultValue: 128
       },

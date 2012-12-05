@@ -18,28 +18,28 @@
       "name": "pressure0Instantaneous",
       "units": "Bar",
       "value": [
-        "return getPressureProbeValue(0, 'north');"
+        "return getObstacleProperties(0).northProbeValue;"
       ]
     },
     {
       "name": "pressure1Instantaneous",
       "units": "Bar",
       "value": [
-        "return getPressureProbeValue(1, 'south');"
+        "return getObstacleProperties(1).southProbeValue;"
       ]
     },
     {
       "name": "pressure2Instantaneous",
       "units": "Bar",
       "value": [
-        "return getPressureProbeValue(2, 'west');"
+        "return getObstacleProperties(2).westProbeValue;"
       ]
     },
     {
       "name": "pressure3Instantaneous",
       "units": "Bar",
       "value": [
-        "return getPressureProbeValue(3, 'east');"
+        "return getObstacleProperties(3).eastProbeValue;"
       ]
     }
   ],

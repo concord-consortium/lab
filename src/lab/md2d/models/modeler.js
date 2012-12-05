@@ -1501,10 +1501,6 @@ define(function(require) {
       return average_speed();
     };
 
-    model.pressureProbes = function() {
-      return modelOutputState.pressureProbes;
-    };
-
     model.size = function(x) {
       if (!arguments.length) return engine.getSize();
       engine.setSize(x);

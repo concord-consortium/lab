@@ -575,10 +575,10 @@ define(function (require, exports, module) {
             obstacleNorthProbe  = obstacles.northProbe;
             obstacleEastProbe   = obstacles.eastProbe;
             obstacleSouthProbe  = obstacles.southProbe;
-            obstacleWProbeValue = obstacles.wProbeValue;
-            obstacleNProbeValue = obstacles.nProbeValue;
-            obstacleEProbeValue = obstacles.eProbeValue;
-            obstacleSProbeValue = obstacles.sProbeValue;
+            obstacleWProbeValue = obstacles.westProbeValue;
+            obstacleNProbeValue = obstacles.northProbeValue;
+            obstacleEProbeValue = obstacles.eastProbeValue;
+            obstacleSProbeValue = obstacles.southProbeValue;
             obstacleXPrev       = obstacles.xPrev;
             obstacleYPrev       = obstacles.yPrev;
             obstacleColorR      = obstacles.colorR;
@@ -713,10 +713,10 @@ define(function (require, exports, module) {
           obstacles.northProbe  = arrays.create(num, 0, arrayTypes.uint8);
           obstacles.eastProbe   = arrays.create(num, 0, arrayTypes.uint8);
           obstacles.southProbe  = arrays.create(num, 0, arrayTypes.uint8);
-          obstacles.wProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.nProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.eProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.sProbeValue = arrays.create(num, 0, arrayTypes.float);
+          obstacles.westProbeValue = arrays.create(num, 0, arrayTypes.float);
+          obstacles.northProbeValue = arrays.create(num, 0, arrayTypes.float);
+          obstacles.eastProbeValue = arrays.create(num, 0, arrayTypes.float);
+          obstacles.southProbeValue = arrays.create(num, 0, arrayTypes.float);
           obstacles.xPrev       = arrays.create(num, 0, arrayTypes.float);
           obstacles.yPrev       = arrays.create(num, 0, arrayTypes.float);
           obstacles.colorR      = arrays.create(num, 0, arrayTypes.float);
@@ -2620,9 +2620,7 @@ define(function (require, exports, module) {
             // Total kinetic energy, in MW units.
             KEinMWUnits,
             // Potential energy, in eV.
-            PE,
-            // Pressure probes data.
-            probes;
+            PE;
 
         // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
         // integration loop!
@@ -2737,9 +2735,6 @@ define(function (require, exports, module) {
           PE += 0.5*k*dr*dr;
        }
 
-        // During obstacles loop calculate final probes values.
-        probes = {};
-
         // Process all obstacles.
         for (i = 0; i < N_obstacles; i++) {
 
@@ -2753,24 +2748,6 @@ define(function (require, exports, module) {
             KEinMWUnits += 0.5 * obstacleMass[i] *
                 (obstacleVX[i] * obstacleVX[i] + obstacleVY[i] * obstacleVY[i]);
           }
-
-          // Pressure calculation.
-          if (obstacleWestProbe[i]) {
-            probes[i] = probes[i] || {};
-            probes[i].west = obstacleWProbeValue[i];
-          }
-          if (obstacleNorthProbe[i]) {
-            probes[i] = probes[i] || {};
-            probes[i].north = obstacleNProbeValue[i];
-          }
-          if (obstacleEastProbe[i]) {
-            probes[i] = probes[i] || {};
-            probes[i].east = obstacleEProbeValue[i];
-          }
-          if (obstacleSouthProbe[i]) {
-            probes[i] = probes[i] || {};
-            probes[i].south = obstacleSProbeValue[i];
-          }
         }
 
         // Update temperature.
@@ -2778,7 +2755,6 @@ define(function (require, exports, module) {
 
         // State to be read by the rest of the system:
         state.time           = time;
-        state.pressureProbes = probes;
         state.PE             = PE;
         state.KE             = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
         state.temperature    = T;
