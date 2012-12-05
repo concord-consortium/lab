@@ -51,6 +51,9 @@ define(function() {
       chargeShading: {
         defaultValue: false
       },
+      showChargeSymbols: {
+        defaultValue: true
+      },
       showVDWLines: {
         defaultValue: false
       },

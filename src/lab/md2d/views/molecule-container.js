@@ -312,7 +312,7 @@ define(function (require) {
       model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([
-        "keShading", "chargeShading",
+        "keShading", "chargeShading", "showChargeSymbols",
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
         "showAtomTrace", "atomTraceId",
@@ -1106,7 +1106,8 @@ define(function (require) {
       }
 
       function setup_particles() {
-        var textShrinkFactor = results.length <= 100 ? 1 : 0.9;
+        var textShrinkFactor = results.length <= 100 ? 1 : 0.9,
+            showChargeSymbols = model.get("showChargeSymbols");
 
         chargeShadingMode = model.get("chargeShading");
         keShadingMode = model.get("keShading");
@@ -1145,12 +1146,10 @@ define(function (require) {
               .attr("y", "0.31em")
               .attr("pointer-events", "none")
               .text(function(d) {
-                  var charge = d.charge;
-                  // Draw +/- signs also when KE shading is enabled.
-                  if (chargeShadingMode || keShadingMode) {
-                      if (charge > 0){
+                  if (showChargeSymbols) {
+                      if (d.charge > 0){
                           return  "+";
-                      } else if (charge < 0){
+                      } else if (d.charge < 0){
                           return  "-";
                       } else {
                           return;
