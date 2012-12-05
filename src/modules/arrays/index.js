@@ -96,9 +96,13 @@ define(function (require, exports, module) {
   };
 
   arrays.constructor_function = function(source) {
-    if (source.buffer && source.buffer.__proto__ && source.buffer.__proto__.constructor) {
+    if (source.buffer &&
+        source.buffer.__proto__ &&
+        source.buffer.__proto__.constructor &&
+        Object.prototype.toString.call(source) === "[object Array]") {
       return source.__proto__.constructor;
     }
+
     switch(source.constructor) {
       case Array: return Array;
       case Float32Array: return Float32Array;
