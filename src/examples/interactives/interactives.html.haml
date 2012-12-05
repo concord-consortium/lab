@@ -35,10 +35,14 @@
         %a(href="") Next Generation MW Interactives
       Select Interactive:
       %select#select-interactive
+      &nbsp;&nbsp;Additional links:
+      %a#embeddable-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} Embeddable
+      %a#java-mw-link{:href => "../../imports/legacy-mw-content/converted/", :class => "opens-in-new-window"} Java MW
+      %a#datagames-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} DataGames
 
       %br
       %form#select-filters
-        Categories:
+        Categories:&nbsp;
         %label{:for => 'curriculum-filter'} Curriculum
         %input#curriculum-filter{:type => :checkbox, :name => 'curriculum', :checked => 'checked'}
         %label{:for => 'examples-filter'} &nbsp;Examples
@@ -49,16 +53,11 @@
         %input#benchmarks-filter{:type => :checkbox, :name => 'benchmarks'}
 
         &nbsp;|&nbsp;&nbsp;
-        Publication Status:
+        Publication Status:&nbsp;
         %label{:for => 'public'} &nbsp;Public
         %input#public{:type => :checkbox, :name => 'public', :checked => "checked"}
         %label{:for => 'draft'} &nbsp;Draft*
         %input#draft{:type => :checkbox, :name => 'draft'}
-        &nbsp;|&nbsp;&nbsp;
-
-      %a#embeddable-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} Embeddable
-      %a#java-mw-link{:href => "../../imports/legacy-mw-content/converted/", :class => "opens-in-new-window"} Java MW
-      %a#datagames-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} DataGames
 
     #interactive-header
       #interactive-title
