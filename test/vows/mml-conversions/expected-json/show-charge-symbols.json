@@ -1,0 +1,135 @@
+{
+  "width": 4,
+  "height": 2.5,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "showClock": true,
+    "keShading": false,
+    "chargeShading": false,
+    "showChargeSymbols": false,
+    "showVDWLines": true,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false
+  },
+  "elements": [
+    {
+      "id": 0,
+      "mass": 120,
+      "sigma": 0.07,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 240,
+      "sigma": 0.14,
+      "epsilon": -0.009999999776482582
+    },
+    {
+      "id": 2,
+      "mass": 360,
+      "sigma": 0.21,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 480,
+      "sigma": 0.28,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "x": [
+      2.6339549231140595,
+      2.782049303951683,
+      2.712971120958415
+    ],
+    "y": [
+      0.9895900718819138,
+      0.8524970619959703,
+      0.7066643351241311
+    ],
+    "vx": [
+      0.0003147891048069782,
+      0.00009482771540979552,
+      0.0012128720346010252
+    ],
+    "vy": [
+      -0.0008963514604713496,
+      0.0001266884394604047,
+      0.00018233846250956598
+    ],
+    "charge": [
+      1,
+      -2,
+      1
+    ],
+    "friction": [
+      0,
+      0,
+      0
+    ],
+    "element": [
+      1,
+      2,
+      1
+    ],
+    "pinned": [
+      0,
+      0,
+      0
+    ]
+  },
+  "radialBonds": {
+    "atom1": [
+      0,
+      2
+    ],
+    "atom2": [
+      1,
+      1
+    ],
+    "length": [
+      0.2,
+      0.2
+    ],
+    "strength": [
+      2000,
+      2000
+    ],
+    "style": [
+      101,
+      101
+    ]
+  },
+  "angularBonds": {
+    "atom1": [
+      0
+    ],
+    "atom2": [
+      2
+    ],
+    "atom3": [
+      1
+    ],
+    "angle": [
+      1.8325957145940461
+    ],
+    "strength": [
+      5
+    ]
+  }
+}
