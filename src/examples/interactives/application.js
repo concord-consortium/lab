@@ -298,10 +298,10 @@ var ROOT = "/examples",
     saveSelectFiltersToCookie();
     interactives = interactiveDescriptions.interactives;
     groups = _.filter(interactiveDescriptions.groups, function(group) {
-      var curriculumFilter = $("#curriculum").is(':checked'),
-          examplesFilter = $("#examples").is(':checked'),
-          benchmarksFilter = $("#benchmarks").is(':checked')
-          testsFilter = $("#tests").is(':checked');
+      var curriculumFilter = $("#curriculum-filter").is(':checked'),
+          examplesFilter = $("#examples-filter").is(':checked'),
+          benchmarksFilter = $("#benchmarks-filter").is(':checked')
+          testsFilter = $("#tests-filter").is(':checked');
       if (group.category === "Samples") return true;
       if (curriculumFilter && group.category === "Curriculum") return true;
       if (examplesFilter && group.category === "Examples") return true;
