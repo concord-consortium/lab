@@ -242,8 +242,12 @@ parseMML = (mmlString) ->
     ###
       Find the chargeShading
     ###
-    viewChargeShadingProps = $mml(".java-beans-XMLDecoder")
-    chargeShading = getBooleanProperty viewChargeShadingProps, "chargeShading", "boolean"
+    chargeShading = getBooleanProperty $mml.root(), "chargeShading", "boolean"
+
+    ###
+      Find the showChargeSymbols
+    ###
+    showChargeSymbols = getBooleanProperty $mml.root(), "drawCharge", "boolean"
 
     ###
       Find the KE Shading
@@ -696,8 +700,9 @@ parseMML = (mmlString) ->
     # Model handles them, as they are e.g. stored in the history.
     modelViewProperties =
       keShading           : keShading
-      chargeShading       : !!chargeShading
-      showVDWLines        : !!showVDWLines
+      chargeShading       : chargeShading
+      showChargeSymbols   : showChargeSymbols
+      showVDWLines        : showVDWLines
       VDWLinesCutoff      : VDWLinesCutoff
       showClock           : showClock
       showVelocityVectors : showVelocityVectors
