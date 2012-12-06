@@ -5,6 +5,7 @@ require File.join(CONFIG_PATH, 'java-projects.rb')
 
 require 'optparse'
 require 'tempfile'
+require 'open-uri'
 
 puts <<HEREDOC
   JAVA_ROOT          #{JAVA_ROOT}
@@ -14,9 +15,11 @@ HEREDOC
 
 @maven_update = ""
 @skip_build = false
+@force_update = false
 
 opts = OptionParser.new
 opts.on("--maven-update")	{ |val| @maven_update = " -U " }
+opts.on("--force-update")	{ |val| @force_update = true }
 opts.on("--skip-build")	{ |val| @skip_build = true }
 project_names = opts.parse(ARGV)
 projects = {}
@@ -37,6 +40,11 @@ if projects.empty?
   HEREDOC
 end
 
+def download_file(source, destination)
+  resource = open(source)
+  File.open(destination, 'w') { |f| f.write resource.read }
+end
+
 def checkout_project(project_path, project, options)
   if File.exists? project_path
     print "\n\nUsing java project: '#{project}'\n"
@@ -45,8 +53,7 @@ def checkout_project(project_path, project, options)
       when :download
         unless @skip_build
           name = "#{project}-#{options[:version]}.jar"
-          # FIXME Sometimes this works, but sometimes it doesn't wait around for all the redirects...
-          `curl -L #{options[:url]} -o #{name}` unless File.exists? name
+          download_file(options[:url], name)
           print <<-HEREDOC
 
   from:    #{options[:url]}
@@ -82,7 +89,7 @@ def checkout_project(project_path, project, options)
       when :download
         name = "#{project}-#{options[:version]}.jar"
         print "\n\nDownloading java resource: '#{name}'\n"
-        `curl #{options[:url]} -o #{name}`
+        download_file(options[:url], name)
         print <<-HEREDOC
 
   from:    #{options[:url]}
@@ -201,7 +208,7 @@ projects.each do |project, options|
         versioned_name = project + version_str + '.jar'
       end
       destination = File.join(to_path, versioned_name)
-      if File.exists? destination
+      if (File.exists? destination) && !@force_update
         puts <<-HEREDOC
 Versioned Java Resource: '#{versioned_name}' already exists.
 Location: #{destination}
