@@ -809,18 +809,91 @@ define(function (require) {
       }
 
       function obstacleEnter() {
-        obstacle.enter().append("rect")
+        var obstacleGroup = obstacle.enter().append("g");
+
+        obstacleGroup
+          .attr("class", "obstacle")
+          .attr("transform",
+            function (d, i) {
+              return "translate(" + x(get_obstacle_x(i)) + " " + y(get_obstacle_y(i) + get_obstacle_height(i)) + ")";
+            }
+          );
+        obstacleGroup.append("rect")
+          .attr({
+            "class": "obstacle-shape",
+            "x": 0,
+            "y": 0,
+            "width": function(d, i) {return x(get_obstacle_width(i)); },
+            "height": function(d, i) {return y_flip(get_obstacle_height(i)); }
+          })
+          .style({
+            "fill": function(d, i) { return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; },
+            "stroke-width": function(d, i) { return get_obstacle_visible(i) ? 0.2 : 0.0; },
+            "stroke": function(d, i) { return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; }
+          });
+
+        // Append external force markers.
+        obstacleGroup.each(function (d, i) {
+          // Fast path, if no forces are defined.
+          if (!obstacles.externalFx[i] && !obstacles.externalFy[i])
+            return;
+
+          // Note that arrows indicating obstacle external force use
+          // the same options for styling like arrows indicating atom force.
+          // Only their length is fixed.
+          var obstacleGroupEl = d3.select(this),
+              obsHeight = get_obstacle_height(i),
+              obsWidth = get_obstacle_width(i),
+              obsFx = obstacles.externalFx[i],
+              obsFy = obstacles.externalFy[i],
+              // Use fixed length of force vectors.
+              vecLen = 0.06 * scale_factor,
+              space = 0.06 * scale_factor,
+              step, coords;
+
+          // Set arrows indicating horizontal force.
+          if (obsFx) {
+            // Make sure that arrows keep constant distance between both ends of an obstacle.
+            step = (obsHeight - 2 * space) / Math.round((obsHeight - 2 * space) / 0.2);
+            coords = d3.range(space, obsHeight, step);
+            obstacleGroupEl.selectAll("path.obstacle-force-hor").data(coords).enter().append("path")
+              .attr({
+                "class": "obstacle-force-hor",
+                "d": function (d) {
+                  if (obsFx < 0)
+                    return "M " + x(obsWidth + vecLen + space) + "," + y_flip(d) + " L " + x(obsWidth + space) + "," + y_flip(d);
+                  else
+                    return "M " + x(-vecLen - space) + "," + y_flip(d) + " L " + x(-space) + "," + y_flip(d);
+                }
+              });
+          }
+          // Later set arrows indicating vertical force.
+          if (obsFy) {
+            // Make sure that arrows keep constant distance between both ends of an obstacle.
+            step = (obsWidth - 2 * space) / Math.round((obsWidth - 2 * space) / 0.2);
+            coords = d3.range(space, obsWidth, step);
+            obstacleGroupEl.selectAll("path.obstacle-force-vert").data(coords).enter().append("path")
+              .attr({
+                "class": "obstacle-force-vert",
+                "d": function (d) {
+                  if (obsFy < 0)
+                    return "M " + x(d) + "," + y_flip(-vecLen - space) + " L " + x(d) + "," + y_flip(-space);
+                  else
+                    return "M " + x(d) + "," + y_flip(obsHeight + vecLen + space) + " L " + x(d) + "," + y_flip(obsHeight + space);
+                }
+              });
+          }
+          // Finally, set common attributes and stying for both vertical and horizontal forces.
+          obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
             .attr({
-              "x": function(d, i) { return x(get_obstacle_x(i)); },
-              "y": function(d, i) { return y(get_obstacle_y(i) + get_obstacle_height(i)); },
-              "width": function(d, i) {return x(get_obstacle_width(i)); },
-              "height": function(d, i) {return y_flip(get_obstacle_height(i)); }
+              "marker-end": "url(#Triangle-"+ FORCE_STR +")"
             })
             .style({
-              "fill": function(d, i) { return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; },
-              "stroke-width": function(d, i) { return get_obstacle_visible(i) ? 0.2 : 0.0; },
-              "stroke": function(d, i) { return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; }
+              "stroke-width": forceVectorWidth * scale_factor,
+              "stroke": forceVectorColor,
+              "fill": "none"
             });
+        });
       }
 
       function radialBondEnter() {
@@ -1113,7 +1186,7 @@ define(function (require) {
         keShadingMode = model.get("keShading");
 
         gradient_container.selectAll("circle").remove();
-        gradient_container.selectAll("g").remove();
+        gradient_container.selectAll("g.label").remove();
 
         particle = gradient_container.selectAll("circle").data(results);
 
@@ -1161,10 +1234,10 @@ define(function (require) {
 
       function setup_obstacles() {
         obstacles = model.get_obstacles();
-        gradient_container.selectAll("rect").remove();
+        gradient_container.selectAll("g.obstacle").remove();
         if (obstacles) {
           mock_obstacles_array.length = obstacles.x.length;
-          obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
+          obstacle = gradient_container.selectAll("g.obstacle").data(mock_obstacles_array);
           obstacleEnter();
         }
       }
@@ -1339,9 +1412,9 @@ define(function (require) {
       function update_drawable_positions() {
         console.time('view update');
         if (obstacles) {
-          obstacle
-              .attr("x", function(d, i) { return x(get_obstacle_x(i)); })
-              .attr("y", function(d, i) { return y(get_obstacle_y(i) + get_obstacle_height(i)); });
+          obstacle.attr("transform", function (d, i) {
+            return "translate(" + x(get_obstacle_x(i)) + " " + y(get_obstacle_y(i) + get_obstacle_height(i)) + ")";
+          });
         }
 
         if (drawVdwLines) {
