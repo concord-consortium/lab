@@ -3,8 +3,8 @@
   "publicationStatus": "sample",
   "subtitle": "Explore attractive forces between atoms and ions (charged atoms).",
   "about": [
-    "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions), and van der Waals forces (an additional attractive force between all atoms).",
-    "What kinds of patterns tend to form with charged and neutral atoms? Which attractive force seems stronger? How does changing the van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
+    "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions) and van der Waals forces (an additional attractive force between all atoms).",
+    "What kinds of patterns tend to form with charged and neutral atoms? How does changing the van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
   ],
   "models": [
     {
@@ -62,7 +62,7 @@
         }
       ],
       "steps": 199,
-      "title": "van der Waals Atrraction",
+      "title": "van der Waals Attraction",
       "action": "setElementProperties(2, { epsilon: -value });"
     },
     {
