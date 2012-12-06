@@ -9,7 +9,7 @@
   "models": [
     {
       "id": "100-atoms-charged",
-      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms-charged.json",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       },
@@ -18,30 +18,25 @@
   ],
   "components": [
     {
-      "type": "pulldown",
-      "id": "pulldown1",
-      "label": "Select Atoms",
-      "options": [
-        {
-          "text": "Charged Atoms",
-          "action": [
-            "var chargeVal = 1;",
-            "for (var i=0; i < getNumberOfAtoms(); i++) {",
-              "setAtomProperties(i, {charge: chargeVal}, false, false, {supressRepaint: true});",
-              "chargeVal *= -1;",
-            "}",
-            "set({chargeShading: true});"
-          ]
-        },
-        {
-          "text": "Neutral Atoms",
-          "action": [
-            "for (var i=0; i < getNumberOfAtoms(); i++) {",
-              "setAtomProperties(i, { charge: 0}, false, false, {supressRepaint: true});",
-            "}",
-            "set({chargeShading: false});"
-          ]
-        }
+      "type": "checkbox",
+      "id": "charged-box",
+      "text": "charged atoms",
+      "property": "chargeShading",
+      "onClick": [
+        "if (value) {",
+          "var chargeVal = 1.5;",
+          "for (var i=0; i < getNumberOfAtoms(); i++) {",
+            "setAtomProperties(i, {charge: chargeVal}, false, false, {supressRepaint: true});",
+            "chargeVal *= -1;",
+          "}",
+          "set({chargeShading: true});",
+        "}",
+        "else {",
+          "for (var i=0; i < getNumberOfAtoms(); i++) {",
+            "setAtomProperties(i, { charge: 0}, false, false, {supressRepaint: true});",
+          "}",
+          "set({chargeShading: false});",
+        "}"        
       ]
     },
     {
@@ -105,7 +100,7 @@
       "thermometer"
     ],
     "bottom": [
-      "pulldown1",
+      "charged-box",
       "epsilon-slider",
       "temperature-slider"
     ]
