@@ -251,12 +251,16 @@ define(function (require, exports, module) {
   */
   arrays.extend = function(array, newLength) {
     var extendedArray,
-        Constructor;
+        Constructor,
+        i;
 
     Constructor = arrays.constructor_function(array);
 
     if (Constructor === Array) {
+      i = array.length;
       array.length = newLength;
+      // replicate behavior of typed-arrays by filling with 0
+      for(;i < newLength; i++) { array[i] = 0; }
       return array;
     }
 
