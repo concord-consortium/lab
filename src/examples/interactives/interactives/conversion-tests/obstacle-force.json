@@ -2,7 +2,7 @@
   "title": "Obstacle External Force",
   "publicationStatus": "public",
   "subtitle": "",
-  "about": "",
+  "about": "External force test: the obstacle should reach an atom after ~5 000 fs when default setup is used.",
   "models": [
     {
       "id": "obstacle-force$0",
@@ -10,12 +10,29 @@
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "modelTimeLabel": true
-      },
-      "onLoad": [
-        "alert('External force test: the obstacle should reach an atom after ~5 000 fs! You can also observe the Kinetic Energy graph.');"
+      }
+    }
+  ],
+
+  "components": [
+    {
+      "type": "button",
+      "id": "invert-fx",
+      "text": "Invert horizontal force",
+      "action": [
+        "var fx = -1 * getObstacleProperties(0).externalFx;",
+        "setObstacleProperties(0, {externalFx: fx});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "invert-fy",
+      "text": "Invert vertical force",
+      "action": [
+        "var fy = -1 * getObstacleProperties(0).externalFy;",
+        "setObstacleProperties(0, {externalFy: fy});"
       ]
     }
   ],
-  "components": [],
   "layout": {}
 }

@@ -324,6 +324,9 @@
      <void property="externalFx">
       <float>1.0E-5</float>
      </void>
+     <void property="externalFy">
+      <float>1.0E-6</float>
+     </void>
      <void property="height">
       <double>152.0</double>
      </void>
