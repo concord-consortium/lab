@@ -34,6 +34,12 @@
   ],
   "components": [
     {
+      "type": "checkbox",
+      "id": "show-velocity",
+      "text": "Show Velocity",
+      "property": "showVelocityVectors"
+    },
+    {
       "type": "button",
       "id": "add-inside",
       "text": "Add Molecule Inside",
@@ -149,7 +155,8 @@
   "layout": {
     "bottom": [
       ["add-inside","remove-inside","heat-inside","cool-inside"],
-      ["add-outside","remove-outside","heat-outside","cool-outside"]
+      ["add-outside","remove-outside","heat-outside","cool-outside"],
+      ["show-velocity"]
     ]
   }
 }
