@@ -11,7 +11,7 @@
 <resource>metalforcesimple$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
 
 <content start="1" end="2">
-<size>14</size><bold>true</bold></content>
+<bold>true</bold><size>14</size></content>
 
 </paragraph>
 <paragraph start="2" end="10">
