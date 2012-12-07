@@ -1614,19 +1614,15 @@ define(function(require) {
       // Filter object.
       var filter, initialValue;
 
-      switch (type) {
-        case 'RunningAverage':
-          filter = new RunningAverageFilter(period);
-          break;
-        case 'ExponentialRunningAverage':
-          throw new Error("ExponentialRunningAverage not implemented yet.");
-        default:
-          throw new Error("Unknown filter type " + type + ".");
+      if (type === "RunningAverage") {
+        filter = new RunningAverageFilter(period);
+      } else {
+        throw new Error("FilteredOutput: unknown filter type " + type + ".");
       }
 
       initialValue = model.get(property);
       if (initialValue === undefined || isNaN(Number(initialValue))) {
-        throw new Error("FilteredOuput input property is not defined or it is not valid numeric value.");
+        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
       }
 
       // Add initial sample.
