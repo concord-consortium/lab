@@ -82,7 +82,7 @@
         "setTimeout(function() {",
         "stop();",
         "var time = getTime() - startTime;",
-        "alert( (time / (get('viewRefreshInterval') * get('timeStep')) / 2) + ' fps');",
+        "alert( (format('1.2f')(time / (get('viewRefreshInterval') * get('timeStep')) / 2)) + ' fps');",
         "}, 2000);",
         "}, 100);",
         "}, 2000);"
