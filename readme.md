@@ -609,10 +609,10 @@ request an earlier version you will always get the latest version deployed.
 Most of the sensor related java jars are being downloaded as jars, not
 compiled from source. If you're interested in building them from source:
 
-1. Clone the [concord-consortium/sensor-projects](https://github.com/concord-consortium/sensor-projects) repo: 
+1. Clone the [concord-consortium/sensor-projects](https://github.com/concord-consortium/sensor-projects) repo:
 
         git clone https://github.com/concord-consortium/sensor-projects.git sensor-projects
-    
+
     sensor-projects includes these resources:
 
         sensor-projects/
@@ -1057,6 +1057,40 @@ specifies [`node-bin`](https://github.com/concord-consortium/lab/tree/master/nod
 location of the executable scripts which `npm` should make available whenever Lab is imported into
 another project as a Node module. (For developer convenience, `bin/` is being reserved for Ruby
 executables made available via Bundler.)
+
+##### MD2D simulation stepping
+
+Main parameters which define speed and accuracy of simulation in MD2D are:
+
+- timeStep,
+- viewRefreshInterval,
+- modelSampleRate.
+
+To explain them let's start from the definition of the model "tick". One "tick" consists of:
+
+- running simulation for **viewRefreshInterval** * **timeStep** femtoseconds,
+- update of the view.
+
+The "tick" is constantly repeated while simulation is running.
+
+So, when viewRefreshInterval = 50 and timeStep = 1fs, one "tick" causes that the engine performs calculations for 50fs.
+
+**timeStep** defines a time value used during the one integration step in the engine internals. It affects accuracy of calculations.
+**viewRefreshInterval** in fact defines number of these integration steps during one "tick". It is defined because it makes no sense to refresh view too often.
+
+Using pseudo-code we can say that tick is:
+
+    for (i = 0 to viewRefreshInterval) {
+       engine.advanceBy(timeStep)
+    }
+    view.update()
+
+That's why viewRefreshInterval = 50 and timeStep = 1fs is different from viewRefreshInterval = 25 and timeStep = 2fs.
+First one will be more accurate and two times slower (more or less) than second one, however both configurations will cause that one "tick" advance model by 50fs (25 * 2fs or 50 * 1fs).
+
+**modelSampleRate** defines how often we should execute "tick". Of course, in most cases we should call it as often as it's possible and that's the default behavior (with upper limit of 60 times per second to avoid running simple models too fast).
+
+You can test how these parameters work using [this interactive](http://lab.dev.concord.org/examples/interactives/interactives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json).
 
 #### 2D Thermal Energy: [`energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d)
 
