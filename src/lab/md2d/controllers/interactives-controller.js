@@ -505,6 +505,8 @@ define(function (require) {
           };
         case 'slider':
           return createSlider(component);
+        case 'numericOutput':
+          return createNumericOutput(component);
       }
     }
 
@@ -879,6 +881,40 @@ define(function (require) {
         });
       }
       return { elem: $elem };
+    }
+
+    function createNumericOutput(component) {
+      var propertyName = component.property,
+          label = component.label,
+          displayValue = component.displayValue,
+          $numericOutput,
+          $label,
+          $number;
+
+
+      $label = $('<span class="label">' + label + ': </span>');
+      $number = $('<span class="output">   </span>');
+      $numericOutput = $('<div class="numeric-output">').attr('id', component.id)
+          .append($label)
+          .append($number);
+
+      if (displayValue) {
+        displayValue = makeFunctionInScriptContext('value', displayValue);
+      }
+
+      if (propertyName) {
+        modelLoadedCallbacks.push(function() {
+          model.addPropertiesListener([propertyName], function() {
+            var value = model.get(propertyName);
+            if (displayValue) {
+              $number.text(displayValue(value));
+            } else {
+              $number.text(value);
+            }
+          });
+        });
+      }
+      return { elem: $numericOutput };
     }
 
     /**

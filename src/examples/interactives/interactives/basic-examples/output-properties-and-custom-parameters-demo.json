@@ -168,6 +168,14 @@
       "property": "currentAngle"
     },
     {
+      "type": "numericOutput",
+      "id": "current-angle-output",
+      "label": "Current Angle&deg",
+      "property": "currentAngle",
+      "displayValue": "return format('f')(value)"
+    },
+
+    {
       "type": "slider",
       "id": "friction-slider",
       "min": 0,
@@ -223,8 +231,9 @@
       ],
       [
         "mass-slider",
-        "current-angle-slider",
         "friction-slider",
+        "current-angle-slider",
+        "current-angle-output",
         "export"
       ]
     ]
