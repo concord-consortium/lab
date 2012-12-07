@@ -8,17 +8,17 @@
       "id": "page3$1",
       "url": "/imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "enableKeyboardHandlers": false
-      }
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
     },
     {
       "id": "oilAndWaterMix",
       "url": "/imports/legacy-mw-content/converted/benchmarks/oil-and-water/oilAndWaterMix.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "enableKeyboardHandlers": false
-      }
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
     }
   ],
   "components": [

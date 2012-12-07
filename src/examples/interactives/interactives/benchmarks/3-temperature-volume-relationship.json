@@ -8,10 +8,11 @@
       "id": "page4$0",
       "url": "/imports/legacy-mw-content/converted/benchmarks/gas-laws-temperature-volume/page4$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
+        "controlButtons": "play_reset_step",
         "imageMapping": {
           "ruler.png": "ruler.svg"
-        }
+        },
+        "onLoad": "set({ showClock: true})"
       }
     }
   ],

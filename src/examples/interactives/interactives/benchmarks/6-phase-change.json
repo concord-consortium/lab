@@ -9,7 +9,8 @@
       "url": "/imports/legacy-mw-content/converted/benchmarks/phase-change-energy-input/page6$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
-      }
+      },
+      "onLoad": "set({ showClock: true})"
     }
   ],
   "outputs": [
