@@ -1,9 +1,8 @@
 {
   "title": "View Refresh Rate and Model Sample Rate Examples",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Experiment with parameters which define stepping of the simulation.",
   "about": [
-    "Experiment with parameters which define stepping of the simulation.",
     "Try to change timeStep, viewRefreshInterval or modelSampleRate and observe changes in the speed of simulation execution.",
     "See <a href=\"/readme.html#md2d-simulation-stepping\">readme</a> for more details."
   ],
