@@ -63,7 +63,7 @@ define(function() {
     },
     forceVectors: {
       defaultValue: {
-        color: "#F0F",
+        color: "#169C30",
         width: 1.1,
         length: 2
       }
