@@ -70,18 +70,6 @@
     },
     {
       "type": "button",
-      "id": "cool",
-      "text": "Cool",
-      "action": "adjustTemperature(0.9);"
-    },
-    {
-      "type": "button",
-      "id": "heat",
-      "text": "Heat",
-      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
-    },
-    {
-      "type": "button",
       "id": "calc-fps",
       "text": "Get FPS",
       "action": [
@@ -101,51 +89,44 @@
       ]
     },
     {
-      "type": "pulldown",
-      "id": "select-refresh-rate",
-      "options": [
+      "type": "slider",
+      "id": "timestep-slider",
+      "min": 0.01,
+      "max": 5,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
         {
-          "text": "View Refresh Rate (steps/frame)",
-          "disabled": true
+          "value": 0.01,
+          "label": "0.01"
         },
         {
-          "text": "10",
-          "action": "set({ 'viewRefreshInterval' : 10 });"
-        },
-        {
-          "text": "15",
-          "action": "set({ 'viewRefreshInterval' : 15 });"
-        },
-        {
-          "text": "20",
-          "action": "set({ 'viewRefreshInterval' : 20 });"
-        },
-        {
-          "text": "30",
-          "action": "set({ 'viewRefreshInterval' : 30 });"
-        },
-        {
-          "text": "60",
-          "selected": true,
-          "action": "set({ 'viewRefreshInterval' : 60 });"
-        },
-        {
-          "text": "120",
-          "action": "set({ 'viewRefreshInterval' : 120 });"
-        },
-        {
-          "text": "180",
-          "action": "set({ 'viewRefreshInterval' : 180 });"
-        },
-        {
-          "text": "240",
-          "action": "set({ 'viewRefreshInterval' : 240 });"
-        },
-        {
-          "text": "360",
-          "action": "set({ 'viewRefreshInterval' : 360 });"
+          "value": 5.0,
+          "label": "5.0"
         }
-      ]
+      ],
+      "steps": 500,
+      "title": "timeStep",
+      "property": "timeStep"
+    },
+    {
+      "type": "slider",
+      "id": "refreshrate-slider",
+      "min": 1,
+      "max": 150,
+      "displayValue": "return value;",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 150,
+          "label": "150"
+        }
+      ],
+      "steps": 149,
+      "title": "viewRefreshInterval",
+      "property": "viewRefreshInterval"
     },
     {
       "type": "pulldown",
