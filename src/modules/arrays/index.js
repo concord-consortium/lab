@@ -1,4 +1,4 @@
-/*globals window Uint8Array Uint8ClampedArray Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
+/*global window Uint8Array Uint8ClampedArray Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
 /*jshint newcap: false */
 
 // Module can be used both in Node.js environment and in Web browser
@@ -8,16 +8,7 @@ if (typeof define !== 'function') {
 }
 
 define(function (require, exports, module) {
-  var arrays = {},
-
-      // Check for Safari. Typed arrays are faster almost everywhere
-      // ... except Safari.
-      notSafari = (function() {
-        if (typeof navigator === 'undefined') return true;
-        var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-            match = navigator.userAgent.match(safarimatch);
-        return (match && match[3]) ? false: true;
-      }());
+  var arrays = {};
 
   arrays.version = '0.0.1';
 
