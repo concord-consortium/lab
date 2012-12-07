@@ -2346,7 +2346,7 @@ define(function (require, exports, module) {
             vDirection = 2 * Math.random() * Math.PI;
 
             props = {
-              element: Math.floor(Math.random() * N_elements), // random element
+              element: Math.floor(Math.random() * options.userElements), // random element
               x:       c * colSpacing,
               y:       r * rowSpacing,
               vx:      vMagnitude * Math.cos(vDirection),
@@ -2588,6 +2588,10 @@ define(function (require, exports, module) {
 
       getNumberOfAtoms: function() {
         return N;
+      },
+
+      getNumberOfElements: function() {
+        return N_elements;
       },
 
       getNumberOfObstacles: function() {

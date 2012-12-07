@@ -11,7 +11,14 @@ define(function(require) {
       RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
-      _ = require('underscore');
+      aminoacids           = require('md2d/models/aminoacids-props'),
+      units                = require('md2d/models/engine/constants/units'),
+      _ = require('underscore'),
+
+      // Constants.
+      EDITABLE_ELEMENT_LAST_IDX = 4,
+      AMINO_ELEMENT_FIRST_IDX   = 5,
+      AMINO_ELEMENT_LAST_IDX    = 24;
 
   return function Model(initialProperties) {
     var model = {},
@@ -37,7 +44,7 @@ define(function(require) {
         engine,
 
         // An array of elements object.
-        elementsObjects,
+        editableElements,
 
         // ######################### Main Data Structures #####################
         // They are initialized at the end of this function. These data strucutres
@@ -526,6 +533,46 @@ define(function(require) {
       }
     }
 
+    /**
+      Create set of amino acids elements. Use descriptions
+      provided in 'aminoacids' array.
+    */
+    function createAminoAcids() {
+      var sigmaInAngstroms,
+          sigmaInNm,
+          i, len;
+
+      // Note that amino acids ALWAYS have IDs from
+      // AMINO_ELEMENT_FIRST_IDX (= 5) to AMINO_ELEMENT_LAST_IDX (= 24).
+      // This is enforced by backward compatibility with Classic MW.
+
+      // At the beginning, ensure that elements from 0 to 24 exists.
+      for (i = engine.getNumberOfElements(); i <= AMINO_ELEMENT_LAST_IDX; i++) {
+        model.addElement({
+          id: i
+        });
+      }
+
+      // Set amino acids properties using elements from 5 to 24.
+      for (i = 0, len = aminoacids.length; i < len; i++) {
+        // Note that sigma is calculated using Classic MW approach.
+        // See: org.concord.mw2d.models.AminoAcidAdapter
+        sigmaInAngstroms = 18 * Math.pow(aminoacids[i].volume / aminoacids[0].volume, 0.3333333333333);
+        sigmaInNm = units.convert(sigmaInAngstroms, { from: units.unit.ANGSTROM, to: units.unit.NANOMETER });
+
+        // Use engine's method instead of modeler's method to avoid validation.
+        // Modeler's wrapper ensures that amino acid is immutable, so it won't allow
+        // to set properties of amino acid.
+        engine.setElementProperties(AMINO_ELEMENT_FIRST_IDX + i, {
+          mass: aminoacids[i].molWeight,
+          sigma: sigmaInNm
+          // Don't provide epsilon, as default value should be used.
+          // Classic MW uses epsilon 0.1 for all amino acids, which is default one.
+          // See: org.concord.mw2d.models.AtomicModel.resetElements()
+        });
+      }
+    }
+
     // ------------------------------------------------------------
     //
     // Public functions
@@ -665,13 +712,27 @@ define(function(require) {
     };
 
     model.createElements = function(_elements) {
-      var num = _elements.length, i;
+      var elementsByID = {},
+          i, len;
 
-      // _elements is array of objects (as specified in JSON model).
-      // Add element using basic addElement method.
-      for (i = 0; i < num; i++) {
-        model.addElement(_elements[i]);
+      for (i = 0, len = _elements.length; i < len; i++) {
+        elementsByID[_elements[i].id] = _elements[i];
       }
+
+      // Ensure that approprieate number of editable elements exist.
+      // This is enforced by backward compatibility with Classic MW.
+      // Every element with index > EDITABLE_ELEMENT_LAST_IDX specifies some immutable amino acid.
+      for (i = engine.getNumberOfElements(); i <= EDITABLE_ELEMENT_LAST_IDX; i++) {
+        if (elementsByID[i])
+          // Use element provided by model JSON.
+          model.addElement(elementsByID[i]);
+        else
+          // Add default, editable element.
+          model.addElement({
+            id: i
+          });
+      }
+
       return model;
     };
 
@@ -690,7 +751,7 @@ define(function(require) {
     */
     model.createNewAtoms = function(config) {
       model.initializeEngine();
-      model.createElements(elementsObjects);
+      model.createElements(editableElements);
       model.createAtoms(config);
 
       return model;
@@ -742,7 +803,9 @@ define(function(require) {
         }
         // This function rearrange all atoms randomly.
         engine.setupAtomsRandomly({
-          temperature: model.get('targetTemperature')
+          temperature: model.get('targetTemperature'),
+          // Provide number of user-defined, editable elements.
+          userElements: editableElements.length
         });
         if (config.relax)
           engine.relaxToTemperature();
@@ -861,11 +924,11 @@ define(function(require) {
       Attempts to add an 0-velocity atom to a random location. Returns false if after 10 tries it
       can't find a location. (Intended to be exposed as a script API method.)
 
-      Optionally allows specifying the element (default is to randomly select from all elementsObjects) and
+      Optionally allows specifying the element (default is to randomly select from all editableElements) and
       charge (default is neutral).
     */
     model.addRandomAtom = function(el, charge) {
-      if (el == null) el = Math.floor( Math.random() * elementsObjects.length );
+      if (el == null) el = Math.floor( Math.random() * editableElements.length );
       if (charge == null) charge = 0;
 
       var size   = model.size(),
@@ -965,12 +1028,10 @@ define(function(require) {
     },
 
     model.addElement = function(props) {
-      var validatedProps;
-
       // Validate properties, use default values if there is such need.
-      validatedProps = validator.validateCompleteness(metadata.element, props);
+      props = validator.validateCompleteness(metadata.element, props);
       // Finally, add radial bond.
-      engine.addElement(validatedProps);
+      engine.addElement(props);
     };
 
     model.addObstacle = function(props) {
@@ -1152,6 +1213,9 @@ define(function(require) {
     model.setElementProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.element, props);
+      if (i > EDITABLE_ELEMENT_LAST_IDX) {
+        throw new Error("Elements: elements with ID >= 5 cannot be edited, as they define amino acids.");
+      }
       invalidatingChangePreHook();
       engine.setElementProperties(i, props);
       invalidatingChangePostHook();
@@ -1714,8 +1778,8 @@ define(function(require) {
       if (includeAtoms) {
         propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
       }
-      if (elementsObjects) {
-        propCopy.elementsObjects = elementsObjects;
+      if (editableElements) {
+        propCopy.editableElements = editableElements;
       }
       propCopy.width = model.get('width');
       propCopy.height = model.get('height');
@@ -1777,15 +1841,18 @@ define(function(require) {
 
     // TODO: Elements are stored and treated different from other objects.
     // This is enforced by current createNewAtoms() method which should be
-    // depreciated. When it's changed, change also elementsObjects handling.
+    // depreciated. When it's changed, change also editableElements handling.
     if (initialProperties.elements) {
-      elementsObjects = initialProperties.elements;
+      editableElements = initialProperties.elements;
     } else {
-      // Make sure that some elementsObjects are created.
+      // Make sure that some editable elements are provided.
       // Provide array with one empty object. Default values will be used.
-      elementsObjects = [{}];
+      editableElements = [{}];
     }
-    model.createElements(elementsObjects);
+    // Create editable elements.
+    model.createElements(editableElements);
+    // Create elements which specify amino acids also.
+    createAminoAcids();
 
     if (initialProperties.atoms) {
       model.createAtoms(initialProperties.atoms);
