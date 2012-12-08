@@ -231,7 +231,9 @@
       ],
       [
         "mass-slider",
-        "friction-slider",
+        "friction-slider"
+      ],
+      [
         "current-angle-slider",
         "current-angle-output",
         "export"

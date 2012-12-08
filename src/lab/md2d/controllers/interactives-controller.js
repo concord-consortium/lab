@@ -889,10 +889,11 @@ define(function (require) {
           displayValue = component.displayValue,
           $numericOutput,
           $label,
-          $number;
+          $number,
+          value;
 
 
-      $label = $('<span class="label">' + label + ': </span>');
+      $label = $('<span class="label">' + label + '</span>');
       $number = $('<span class="output">   </span>');
       $numericOutput = $('<div class="numeric-output">').attr('id', component.id)
           .append($label)
@@ -902,16 +903,19 @@ define(function (require) {
         displayValue = makeFunctionInScriptContext('value', displayValue);
       }
 
+      function renderValue() {
+        var value = model.get(propertyName);
+        if (displayValue) {
+          $number.text(displayValue(value));
+        } else {
+          $number.text(value);
+        }
+      }
+
       if (propertyName) {
         modelLoadedCallbacks.push(function() {
-          model.addPropertiesListener([propertyName], function() {
-            var value = model.get(propertyName);
-            if (displayValue) {
-              $number.text(displayValue(value));
-            } else {
-              $number.text(value);
-            }
-          });
+          renderValue();
+          model.addPropertiesListener([propertyName], renderValue);
         });
       }
       return { elem: $numericOutput };
