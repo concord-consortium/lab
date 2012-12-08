@@ -20,7 +20,7 @@
     {
       "name": "atomInside",
       "label": "Atoms Inside Balloon",
-      "units": "balloon",
+      "units": "",
       "value": [
         "var atomNum = 0;",
         "var obsX = getObstacleProperties(0).x;",
@@ -78,14 +78,10 @@
       ]
     },
     {
-      "type": "slider",
-      "id": "atom-num",
-      "min": 0,
-      "max": 200,
-      "displayValue": "return format('i')(value)",
-      "steps": 200,
-      "title": "Atoms Inside the Balloon",
-      "property": "atomInside"
+      "type": "numericOutput",
+      "id": "current-atom-num",
+      "property": "atomInside",
+      "displayValue": "return format('f')(value)"
     }
   ],
   "layout": {
