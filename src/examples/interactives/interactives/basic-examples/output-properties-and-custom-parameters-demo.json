@@ -169,12 +169,24 @@
     },
     {
       "type": "numericOutput",
-      "id": "current-angle-output",
-      "label": "Current Angle&deg",
+      "id": "kinetic-energy1",
+      "property": "kineticEnergy",
+      "displayValue": "return format('1.3f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-angle-output1",
+      "property": "currentAngle",
+      "label": "Current Angle",
+      "units": "&deg;",
+      "displayValue": "return format('f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-angle-output2",
       "property": "currentAngle",
       "displayValue": "return format('f')(value)"
     },
-
     {
       "type": "slider",
       "id": "friction-slider",
@@ -204,7 +216,7 @@
     {
       "type": "button",
       "id": "export",
-      "text": "export",
+      "text": "Export to DataGames",
       "action": "exportData();"
     },
     {
@@ -234,8 +246,10 @@
         "friction-slider"
       ],
       [
+        "kinetic-energy1",
         "current-angle-slider",
-        "current-angle-output",
+        "current-angle-output1",
+        "current-angle-output2",
         "export"
       ]
     ]

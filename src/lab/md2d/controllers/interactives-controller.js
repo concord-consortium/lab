@@ -886,18 +886,25 @@ define(function (require) {
     function createNumericOutput(component) {
       var propertyName = component.property,
           label = component.label,
+          units = component.units,
           displayValue = component.displayValue,
           $numericOutput,
           $label,
           $number,
-          value;
+          $units,
+          value,
+          propertyDescription;
 
 
-      $label = $('<span class="label">' + label + '</span>');
-      $number = $('<span class="output">   </span>');
+      $label  = $('<span class="label"></span>');
+      $number = $('<span class="value"></span>');
+      $units  = $('<span class="units"></span>');
+      if (label) { $label.html(label); }
+      if (units) { $units.html(units); }
       $numericOutput = $('<div class="numeric-output">').attr('id', component.id)
           .append($label)
-          .append($number);
+          .append($number)
+          .append($units);
 
       if (displayValue) {
         displayValue = makeFunctionInScriptContext('value', displayValue);
@@ -914,6 +921,11 @@ define(function (require) {
 
       if (propertyName) {
         modelLoadedCallbacks.push(function() {
+          propertyDescription = model.getPropertyDescription(propertyName);
+          if (propertyDescription) {
+            if (!label) { $label.html(propertyDescription.label); }
+            if (!units) { $units.html(propertyDescription.units); }
+          }
           renderValue();
           model.addPropertiesListener([propertyName], renderValue);
         });
