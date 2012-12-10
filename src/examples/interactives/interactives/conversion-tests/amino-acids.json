@@ -13,6 +13,13 @@
       }
     }
   ],
-  "components": [],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "show-labels",
+      "text": "Show Amino Acids Labels",
+      "property": "showParticleLabels"
+    }
+  ],
   "layout": {}
 }
