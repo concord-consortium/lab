@@ -538,7 +538,7 @@ define(function(require) {
       provided in 'aminoacids' array.
     */
     function createAminoAcids() {
-      var sigmaInAngstroms,
+      var sigmaIn01Angstroms,
           sigmaInNm,
           i, len;
 
@@ -557,9 +557,9 @@ define(function(require) {
       for (i = 0, len = aminoacids.length; i < len; i++) {
         // Note that sigma is calculated using Classic MW approach.
         // See: org.concord.mw2d.models.AminoAcidAdapter
-        sigmaInAngstroms = 18 * Math.pow(aminoacids[i].volume / aminoacids[0].volume, 0.3333333333333);
-        sigmaInNm = units.convert(sigmaInAngstroms, { from: units.unit.ANGSTROM, to: units.unit.NANOMETER });
-
+        // Basic length unit in Classic MW is 0.1 Angstrom.
+        sigmaIn01Angstroms = 18 * Math.pow(aminoacids[i].volume / aminoacids[0].volume, 0.3333333333333);
+        sigmaInNm = units.convert(sigmaIn01Angstroms / 10, { from: units.unit.ANGSTROM, to: units.unit.NANOMETER });
         // Use engine's method instead of modeler's method to avoid validation.
         // Modeler's wrapper ensures that amino acid is immutable, so it won't allow
         // to set properties of amino acid.
@@ -723,14 +723,15 @@ define(function(require) {
       // This is enforced by backward compatibility with Classic MW.
       // Every element with index > EDITABLE_ELEMENT_LAST_IDX specifies some immutable amino acid.
       for (i = engine.getNumberOfElements(); i <= EDITABLE_ELEMENT_LAST_IDX; i++) {
-        if (elementsByID[i])
+        if (elementsByID[i]) {
           // Use element provided by model JSON.
           model.addElement(elementsByID[i]);
-        else
+        } else {
           // Add default, editable element.
           model.addElement({
             id: i
           });
+        }
       }
 
       return model;
@@ -1417,6 +1418,10 @@ define(function(require) {
 
     model.get_obstacles = function() {
       return obstacles;
+    };
+
+    model.getNumberOfElements = function () {
+      return engine.getNumberOfElements();
     };
 
     model.getNumberOfObstacles = function () {
