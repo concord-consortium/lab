@@ -17,8 +17,8 @@
     {
       "type": "checkbox",
       "id": "show-labels",
-      "text": "Show Amino Acids Labels",
-      "property": "showParticleLabels"
+      "text": "Use Three-Letter Codes",
+      "property": "useThreeLetterCode"
     }
   ],
   "layout": {}

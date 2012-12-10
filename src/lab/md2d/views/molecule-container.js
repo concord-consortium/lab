@@ -312,7 +312,7 @@ define(function (require) {
       model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([
-        "keShading", "chargeShading", "showChargeSymbols", "showParticleLabels",
+        "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
         "showAtomTrace", "atomTraceId",
@@ -1181,7 +1181,7 @@ define(function (require) {
       function setup_particles() {
         var textShrinkFactor = results.length <= 100 ? 1 : 0.9,
             showChargeSymbols = model.get("showChargeSymbols"),
-            showParticleLabels = model.get("showParticleLabels");
+            useThreeLetterCode = model.get("useThreeLetterCode");
 
         chargeShadingMode = model.get("chargeShading");
         keShadingMode = model.get("keShading");
@@ -1208,19 +1208,19 @@ define(function (require) {
           // Append appropriate label. For now:
           // If atom_mumbers (TODO: fix typo) option is enabled, use indices.
           // If not and there is available 'label'/'symbol' property, use one of them
-          // (check 'showParticleLabels' option to decide which one).
+          // (check 'useThreeLetterCode' option to decide which one).
           // If not and 'showChargeSymbols' option is enabled, use charge symbols.
           if (options.atom_mubers) {
             selection.append("text")
               .text(d.idx)
               .style("font-size", 1.6 * textShrinkFactor * x(d.radius));
           }
-          else if (showParticleLabels && d.label) {
+          else if (useThreeLetterCode && d.label) {
             selection.append("text")
               .text(d.label)
               .style("font-size", 0.9 * x(d.radius));
           }
-          else if (!showParticleLabels && d.symbol) {
+          else if (!useThreeLetterCode && d.symbol) {
             selection.append("text")
               .text(d.symbol)
               .style("font-size", 1.4 * x(d.radius));
