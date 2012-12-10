@@ -520,77 +520,63 @@ define(function (require) {
       what scripting API and semantics we want to support.
     */
     function makeFunctionInScriptContext() {
-      var prop,
-          whitelistedNames,
-          whitelistedObjectsArray,
-          scriptFunctionMakerSource,
 
-          // First n-1 arguments to this function are the names to bind to the arguments that are
-          // passed to the function we make
+          // This object is the outer context in which the script is executed. Every time the script
+          // is executed, it contains the value 'undefined' for all the currently defined globals.
+          // This prevents at least inadvertent reliance by the script on unintentinally exposed
+          // globals.
+      var shadowedGlobals = {},
+
+          // First n-1 arguments to this function are the names of the arguments to the script.
           argumentsToScript = Array.prototype.slice.call(arguments, 0, arguments.length - 1),
 
-          // Last argument is the function body of the script, as a string
-          scriptSource = arguments[arguments.length - 1];
+          // Last argument is the function body of the script, as a string or array of strings.
+          scriptSource = arguments[arguments.length - 1],
 
-      // Construct parallel arrays of the keys and values of the scripting API
-      whitelistedNames = [];
-      whitelistedObjectsArray = [];
+          scriptFunctionMakerSource,
+          scriptFunctionMaker,
+          scriptFunction;
 
-      for (prop in scriptingAPI) {
-        if (scriptingAPI.hasOwnProperty(prop) && argumentsToScript.indexOf(prop) < 0) {
-          whitelistedNames.push(prop);
-          whitelistedObjectsArray.push( scriptingAPI[prop] );
-        }
+      if (typeof scriptSource !== 'string') scriptSource = scriptSource.join('      \n');
+
+      scriptFunctionMakerSource =
+        "with (shadowedGlobals) {\n" +
+        "  with (scriptingAPI) {\n" +
+        "    return function(" + argumentsToScript.join(',') +  ") {\n" +
+        "      'use " + "strict';\n" +
+        "      " + scriptSource + "\n" +
+        "    };\n" +
+        "  }\n" +
+        "}";
+
+      try {
+        scriptFunctionMaker = new Function('shadowedGlobals', 'scriptingAPI', 'scriptSource', scriptFunctionMakerSource);
+        scriptFunction = scriptFunctionMaker(shadowedGlobals, scriptingAPI, scriptSource);
+      } catch (e) {
+        alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
       }
-
-      // Make sure the script runs in strict mode, so undeclared variables don't
-      // escape to the toplevel scope.
-      scriptFunctionMakerSource =  "return function(" + argumentsToScript.join(',') + ") { 'use " + "strict'; " + scriptSource + "};";
 
       // This function runs the script with all globals shadowed:
       return function() {
-        var prop,
-            blacklistedNames,
-            scriptArgumentList,
-            safedScript;
+        var prop;
 
-        // Blacklist all globals, except those we have whitelisted. (Don't move
-        // the construction of 'blacklistedNames' to the enclosing scope, because
-        // new globals -- in particular, 'model' -- are created in between the
-        // time the enclosing function executes and the time this function
-        // executes.)
-        blacklistedNames = [];
+        // TODO: use Object.defineProperty to prevent reading or writing shadowed globals?
         for (prop in window) {
-          if (window.hasOwnProperty(prop) && !scriptingAPI.hasOwnProperty(prop)) {
-            blacklistedNames.push(prop);
+          if (window.hasOwnProperty(prop)) {
+            shadowedGlobals[prop] = undefined;
           }
         }
-
-        // Here's the key. The Function constructor acccepts a list of argument
-        // names followed by the source of the *body* of the function to
-        // construct. We supply the whitelist names, followed by the "blacklist"
-        // of globals, followed by the script source. But when we invoke the
-        // function thus created, we will only provide values for the whitelisted
-        // names -- all of the "blacklist" names will therefore have the value
-        // 'undefined' inside the function body.
-        //
-        // (Additionally, remember that functions created by the Function
-        // constructor execute in the global context -- they don't capture names
-        // from the scope they were created in.)
-        scriptArgumentList = whitelistedNames.concat(blacklistedNames).concat(scriptFunctionMakerSource);
-
-        // TODO: obvious optimization: cache the result of the Function constructor
-        // and don't reinvoke the Function constructor unless the blacklistedNames array
-        // has changed. Create a unit test for this scenario.
-        try {
-          safedScript = Function.apply(null, scriptArgumentList).apply(null, whitelistedObjectsArray);
-        } catch (e) {
-          alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
+        // Also deal with edge case of names that *were* global last time around but aren't now
+        // and that were somehow written to by the script.
+        for (prop in shadowedGlobals) {
+          if (shadowedGlobals.hasOwnProperty(prop)) {
+            shadowedGlobals[prop] = undefined;
+          }
         }
 
         try {
           // invoke the script, passing only enough arguments for the whitelisted names
-          return safedScript.apply(null, Array.prototype.slice.call(arguments));
+          return scriptFunction.apply(null, Array.prototype.slice.call(arguments));
         } catch (e) {
           alert("Error running script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
         }
