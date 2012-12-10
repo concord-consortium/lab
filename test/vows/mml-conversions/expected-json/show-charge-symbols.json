@@ -12,6 +12,7 @@
     "showClock": true,
     "keShading": false,
     "chargeShading": false,
+    "useThreeLetterCode": true,
     "showChargeSymbols": false,
     "showVDWLines": true,
     "VDWLinesCutoff": "medium",

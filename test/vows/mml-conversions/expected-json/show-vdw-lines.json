@@ -11,6 +11,7 @@
   "viewOptions": {
     "keShading": false,
     "chargeShading": true,
+    "useThreeLetterCode": true,
     "showChargeSymbols": true,
     "showVDWLines": true,
     "VDWLinesCutoff": "medium",
