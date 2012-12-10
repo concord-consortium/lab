@@ -1201,35 +1201,50 @@ define(function (require) {
               return "translate(" + x(d.x) + "," + y(d.y) + ")";
             });
 
-        if (options.atom_mubers) {
-          labelEnter.append("text")
-              .attr("class", "index")
-              .attr("font-size", function(d) { return 1.6 * textShrinkFactor * x(d.radius); })
-              .attr("style", "font-weight: bold; opacity: .7")
-              .attr("x", 0)
-              .attr("y", "0.31em")
-              .attr("pointer-events", "none")
-              .text(function(d) { return d.idx; });
-        } else {
-          labelEnter.append("text")
-              .attr("class", "index")
-              .attr("font-size", function(d) { return 1.6 * x(d.radius); })
-              .attr("style", "font-weight: bold; opacity: .7")
-              .attr("x", "-0.31em")
-              .attr("y", "0.31em")
-              .attr("pointer-events", "none")
-              .text(function(d) {
-                  if (showChargeSymbols) {
-                      if (d.charge > 0){
-                          return  "+";
-                      } else if (d.charge < 0){
-                          return  "-";
-                      } else {
-                          return;
-                      }
-                  }
-              });
-        }
+        labelEnter.each(function (d) {
+          var selection = d3.select(this),
+              txtValue, txtSelection;
+          // Append appropriate label. For now:
+          // If atom_mumbers (TODO: fix typo) option is enabled, use indices.
+          // If not and there is available 'label' property, use it.
+          // If not and 'showChargeSymbols' option is enabled, use charge symbols.
+          if (options.atom_mubers) {
+            selection.append("text")
+              .text(d.idx)
+              .style("font-size", 1.6 * textShrinkFactor * x(d.radius));
+          }
+          else if (d.label) {
+            selection.append("text")
+              .text(d.label)
+              .style("font-size", 0.9 * x(d.radius));
+          } else if (showChargeSymbols) {
+            if (d.charge > 0){
+              txtValue = "+";
+            } else if (d.charge < 0){
+              txtValue = "-";
+            } else {
+              return;
+            }
+            selection.append("text")
+              .text(txtValue)
+              .style("font-size", 1.6 * x(d.radius));
+          }
+        // Set common attributes for labels.
+        txtSelection = selection.select("text");
+        txtSelection
+          .style({
+            "font-weight": "bold",
+            "opacity": 0.7
+          })
+          .attr({
+            "class": "index",
+            "pointer-events": "none",
+            // Center labels, use real width and height.
+            // Note that this attrs should be set after all previous styling options.
+            "x": -txtSelection.node().getBBox().width / 2,
+            "y":  txtSelection.node().getBBox().height / 4
+          });
+        });
       }
 
       function setup_obstacles() {
