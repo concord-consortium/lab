@@ -42,7 +42,7 @@ guard 'shell' do
     command("make src")
   end
 
-  watch(/(^src\/lab\/.+)|(^src\/mw-helpers\/.+)|(^src\/modules\/.+)/) do |match|
+  watch(/(^src\/lab\/.+)|(^src\/helpers\/.+)|(^src\/modules\/.+)/) do |match|
     file = match[0]
     unless file =~ /(lab.config.js)|(lab.version.js)/
       puts "***" + file
