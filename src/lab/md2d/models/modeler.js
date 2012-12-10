@@ -533,6 +533,7 @@ define(function(require) {
           // However it would be reasonable to perform such refactoring later, when all requirements
           // related to proteins engine are clearer.
           if (atoms.element[i] >= AMINO_ELEMENT_FIRST_IDX) {
+            results[i].symbol = aminoacids[atoms.element[i] - AMINO_ELEMENT_FIRST_IDX].symbol;
             results[i].label = aminoacids[atoms.element[i] - AMINO_ELEMENT_FIRST_IDX].abbreviation;
           }
         }
