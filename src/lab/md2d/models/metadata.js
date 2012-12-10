@@ -51,6 +51,9 @@ define(function() {
       chargeShading: {
         defaultValue: false
       },
+      showParticleLabels: {
+        defaultValue: true
+      },
       showChargeSymbols: {
         defaultValue: true
       },
