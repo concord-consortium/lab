@@ -12,6 +12,7 @@ EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
 R_OPTIMIZER = ./node_modules/.bin/r.js
+INTERACTIVES_JSON = ruby src/helpers/examples/interactives/process-interactives.rb
 
 LAB_SRC_FILES := $(shell find src/lab -type f -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f -print)
@@ -91,6 +92,7 @@ src: \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	server/public/lab-amd
+	$(INTERACTIVES_JSON)
 
 jnlp-all: clean-jnlp \
 	server/public/jnlp
@@ -211,7 +213,7 @@ server/public/examples:
 	# copy everything (including symbolic links) except files that are used to generate
   # resources from src/examples/ to server/public/examples/
 	rsync -aq --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' src/examples/ server/public/examples/
-	ruby src/helpers/examples/interactives/process-interactives.rb
+	$(INTERACTIVES_JSON)
 
 server/public/doc: \
 	server/public/doc/interactives \
