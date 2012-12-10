@@ -529,6 +529,12 @@ define(function(require) {
         if (!results[i]) {
           results[i] = {};
           results[i].idx = i;
+          // TODO: refactor it, think about more general way of detecting and representing amino acids.
+          // However it would be reasonable to perform such refactoring later, when all requirements
+          // related to proteins engine are clearer.
+          if (atoms.element[i] >= AMINO_ELEMENT_FIRST_IDX) {
+            results[i].label = aminoacids[atoms.element[i] - AMINO_ELEMENT_FIRST_IDX].abbreviation;
+          }
         }
       }
     }
