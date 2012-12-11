@@ -56,6 +56,12 @@ define(function (require) {
         gradientNameForKELevel = [],
         // Number of gradients used for Kinetic Energy Shading.
         KE_SHADING_STEPS = 25,
+        // Array which defines a gradient assigned to a given particle.
+        gradientNameForParticle = [],
+        // Hash which defines the main color of a given gradient.
+        // E.g. useful for radial bonds, which can adjust their color to gradient.
+        // Note that for convenience, keys are in forms of URLs (e.g. url(#some-gradient)).
+        mainColorOfGradient = {},
         atom_tooltip_on,
         offset_left, offset_top,
         particle, label, labelEnter,
@@ -88,7 +94,6 @@ define(function (require) {
         textBoxes,
         interactiveUrl,
         imagePath,
-        bondColorArray,
         drawAtomTrace,
         atomTraceId,
         atomTraceColor,
@@ -582,15 +587,15 @@ define(function (require) {
             .attr("height", size.height)
             .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-        // Charge gradients
+        // Charge gradients.
         create_radial_gradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", gradient_container);
         create_radial_gradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", gradient_container);
         create_radial_gradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", gradient_container);
 
-        // "Marked" atom gradient
+        // "Marked" atom gradient.
         create_radial_gradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", gradient_container);
 
-        // Element gradients
+        // Editable element gradients.
         create_radial_gradient("green-grad", "#dfffef", "#75a643", "#2a7216", gradient_container);
         create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", gradient_container);
         create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", gradient_container);
@@ -602,14 +607,10 @@ define(function (require) {
           KELevel = i / KE_SHADING_STEPS;
           create_radial_gradient(gradientName, "#FFFFFF", medColorScale(KELevel),
             darkColorScale(KELevel), gradient_container);
-          // Different from gradientNameForElement names convention, but
-          // it allows to avoid constructing final string during each update
-          // of atom shading.
-          gradientNameForKELevel[i] = "url('#" + gradientName + "')";
+          gradientNameForKELevel[i] = "url(#" + gradientName + ")";
         }
 
-        gradientNameForElement = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
-        bondColorArray = ["#538f2f", "#aa2bb1", "#2cb6af", "#b3831c", "#7781c2", "#ee7171"];
+        gradientNameForElement = ["url(#green-grad)", "url(#purple-grad)", "url(#aqua-grad)", "url(#orange-grad)"];
         image_container_top = vis.append("g");
         image_container_top.attr("class", "image_container_top");
       }
@@ -635,6 +636,10 @@ define(function (require) {
         gradient.append("stop")
             .attr("stop-color", medColor)
             .attr("offset", "100%");
+
+        // Store main color (for now - dark color) of the gradient.
+        // Useful for radial bonds. Keys are URLs for convenience.
+        mainColorOfGradient["url(#" + id + ")"] = darkColor;
       }
 
       function createVectorArrowHeads(color, name) {
@@ -678,7 +683,27 @@ define(function (require) {
             return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
           }
 
-          return "url('#"+gradientNameForElement[d.element % 4]+"')";
+          return gradientNameForElement[d.element % 4];
+      }
+
+      // Returns first color appropriate for a given radial bond (color next to atom1).
+      // d - radial bond data.
+      function getBondAtom1Color(d) {
+        if (isSpringBond(d)) {
+          return "#888";
+        } else {
+          return mainColorOfGradient[gradientNameForParticle[d.atom1]];
+        }
+      }
+
+      // Returns second color appropriate for a given radial bond (color next to atom2).
+      // d - radial bond data.
+      function getBondAtom2Color(d) {
+        if (isSpringBond(d)) {
+          return "#888";
+        } else {
+          return mainColorOfGradient[gradientNameForParticle[d.atom2]];
+        }
       }
 
       // Create key images which can be shown in the
@@ -768,7 +793,7 @@ define(function (require) {
             })
             .style({
               "fill-opacity": function(d) { return d.visible; },
-              "fill": getParticleGradient
+              "fill": function (d, i) { return gradientNameForParticle[i]; }
             })
             .on("mousedown", molecule_mousedown)
             .on("mouseover", molecule_mouseover)
@@ -908,27 +933,7 @@ define(function (require) {
                 return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
             })
-            .style("stroke", function (d) {
-              var charge, element, grad;
-              if (isSpringBond(d)) {
-                return "#888";
-              } else {
-                if (chargeShadingMode) {
-                  charge = results[d.atom1].charge;
-                  if (charge > 0) {
-                      return  bondColorArray[4];
-                  } else if (charge < 0){
-                      return  bondColorArray[5];
-                  } else {
-                    return "#A4A4A4";
-                  }
-                } else {
-                  element = results[d.atom1].element % 4;
-                  grad = bondColorArray[element];
-                  return grad;
-                }
-              }
-            })
+            .style("stroke", getBondAtom1Color)
             .style("fill", "none");
 
         radialBond2.enter().append("path")
@@ -942,27 +947,7 @@ define(function (require) {
                 return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
             })
-            .style("stroke", function (d) {
-              var charge, element, grad;
-              if (isSpringBond(d)) {
-                return "#888";
-              } else {
-                if (chargeShadingMode) {
-                  charge = results[d.atom2].charge;
-                  if (charge > 0) {
-                      return  bondColorArray[4];
-                  } else if (charge < 0){
-                      return  bondColorArray[5];
-                  } else {
-                    return "#A4A4A4";
-                  }
-                } else {
-                  element = results[d.atom2].element % 4;
-                  grad = bondColorArray[element];
-                  return grad;
-                }
-              }
-            })
+            .style("stroke", getBondAtom2Color)
             .style("fill", "none");
       }
 
@@ -1168,6 +1153,7 @@ define(function (require) {
       function setup_drawables() {
         setup_obstacles();
         setupVdwPairs();
+        setupColorsOfParticles();
         setup_radial_bonds();
         setup_particles();
         setup_vectors();
@@ -1176,6 +1162,13 @@ define(function (require) {
         drawSymbolImages();
         drawImageAttachment();
         drawTextBoxes();
+      }
+
+      function setupColorsOfParticles() {
+        var i, len;
+        gradientNameForParticle.length = results.length;
+        for (i = 0, len = results.length; i < len; i++)
+          gradientNameForParticle[i] = getParticleGradient(results[i]);
       }
 
       function setup_particles() {
@@ -1443,6 +1436,11 @@ define(function (require) {
         if (drawVdwLines) {
           updateVdwPairs();
         }
+        // When Kinetic Energy Shading is enabled, update style of atoms
+        // during each frame.
+        if (keShadingMode) {
+          setupColorsOfParticles();
+        }
         if (radialBondResults) {
           update_radial_bonds();
         }
@@ -1475,10 +1473,9 @@ define(function (require) {
           "cy": function(d) { return y(d.y); }
         });
 
-        // When Kinetic Energy Shading is enabled, update style of atoms
-        // during each frame.
         if (keShadingMode) {
-          particle.style("fill", getParticleGradient);
+          // Update particles color. Array of colors should be already updated.
+          particle.style("fill", function (d, i) { return gradientNameForParticle[i]; });
         }
 
         label.attr("transform", function (d) {
@@ -1554,8 +1551,14 @@ define(function (require) {
       }
 
       function update_radial_bonds() {
-        radialBond1.attr("d", function (d) { return findPoints(d,1); });
-        radialBond2.attr("d", function (d) { return findPoints(d,2); });
+        radialBond1.attr("d", function (d) { return findPoints(d, 1); });
+        radialBond2.attr("d", function (d) { return findPoints(d, 2); });
+
+        if (keShadingMode) {
+          // Update also radial bonds color when keShading is on.
+          radialBond1.style("stroke", getBondAtom1Color);
+          radialBond2.style("stroke", getBondAtom2Color);
+        }
       }
 
       function updateImageAttachment(){
