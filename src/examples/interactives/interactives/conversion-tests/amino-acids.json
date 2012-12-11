@@ -19,6 +19,33 @@
       "id": "show-labels",
       "text": "Use Three-Letter Codes",
       "property": "useThreeLetterCode"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-color-scheme",
+      "options": [
+        {
+          "text": "Select the color scheme for the amino acids",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "none",
+          "action": "set({aminoAcidColorScheme: 'none'});"
+        },
+        {
+          "text": "charge",
+          "action": "set({aminoAcidColorScheme: 'charge'});"
+        },
+        {
+          "text": "hydrophobicity",
+          "action": "set({aminoAcidColorScheme: 'hydrophobicity'});"
+        },
+        {
+          "text": "lego",
+          "action": "set({aminoAcidColorScheme: 'lego'});"
+        }
+      ]
     }
   ],
   "layout": {}
