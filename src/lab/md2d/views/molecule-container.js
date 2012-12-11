@@ -1253,19 +1253,22 @@ define(function (require) {
           }
         // Set common attributes for labels.
         txtSelection = selection.select("text");
-        txtSelection
-          .style({
-            "font-weight": "bold",
-            "opacity": 0.7
-          })
-          .attr({
-            "class": "index",
-            "pointer-events": "none",
-            // Center labels, use real width and height.
-            // Note that this attrs should be set after all previous styling options.
-            "x": -txtSelection.node().getBBox().width / 2,
-            "y":  txtSelection.node().getBBox().height / 4
-          });
+        // Check if node exists and if so, set appropriate attributes.
+        if (txtSelection.node()) {
+          txtSelection
+            .style({
+              "font-weight": "bold",
+              "opacity": 0.7
+            })
+            .attr({
+              "class": "index",
+              "pointer-events": "none",
+              // Center labels, use real width and height.
+              // Note that this attrs should be set after all previous styling options.
+              "x": -txtSelection.node().getBBox().width / 2,
+              "y":  txtSelection.node().getBBox().height / 4
+            });
+          }
         });
       }
 
