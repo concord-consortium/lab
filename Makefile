@@ -112,7 +112,6 @@ clean:
 	rm -f src/vendor/jquery/dist/jquery*.js
 	rm -f src/vendor/jquery-ui/dist/jquery-ui*.js
 	rm -f src/vendor/lightgl.js/lightgl.js
-	cd src/vendor/jquery && npm install grunt@0.3.15
 
 clean-jnlp:
 	rm -rf server/public/jnlp
