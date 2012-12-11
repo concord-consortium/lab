@@ -320,7 +320,7 @@ define(function (require) {
         "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
-        "showAtomTrace", "atomTraceId",
+        "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
         "showClock"],
           setup_drawables);
 
@@ -610,6 +610,7 @@ define(function (require) {
           gradientNameForKELevel[i] = "url(#" + gradientName + ")";
         }
 
+        // Gradients for editable elements.
         gradientNameForElement = ["url(#green-grad)", "url(#purple-grad)", "url(#aqua-grad)", "url(#orange-grad)"];
         image_container_top = vis.append("g");
         image_container_top.attr("class", "image_container_top");
@@ -683,7 +684,27 @@ define(function (require) {
             return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
           }
 
-          return gradientNameForElement[d.element % 4];
+          if (!d.isAminoAcid()) {
+            return gradientNameForElement[d.element % 4];
+          }
+          // Particle represents amino acid.
+          switch (model.get("aminoAcidColorScheme")) {
+            case "none":
+              return "url(#neutral-grad)";
+            case "hydrophobicity":
+              return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
+            case "charge":
+              if (d.charge === 0) return "url(#neutral-grad)";
+              return d.charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
+            case "lego":
+              if (d.charge < -0.000001)
+                return "url(#neg-grad)";
+              if (d.charge > 0.000001)
+                return "url(#pos-grad)";
+              return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
+            default:
+              throw new Error("MoleculeContainer: unknown amino acid color scheme.");
+          }
       }
 
       // Returns first color appropriate for a given radial bond (color next to atom1).
