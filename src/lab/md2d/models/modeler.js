@@ -520,21 +520,33 @@ define(function(require) {
       for containing the atom properties.
     */
     function extendResultsArray() {
-      var i,
-          n;
+      var isAminoAcid = function () {
+            return this.element >= AMINO_ELEMENT_FIRST_IDX;
+          },
+          aminoIdx, i, len;
+
+      // TODO: refactor whole approach to creation of objects from flat arrays.
+      // Think about more general way of detecting and representing amino acids.
+      // However it would be reasonable to perform such refactoring later, when all requirements
+      // related to proteins engine are clearer.
 
       if (!results) results = [];
 
-      for (i = results.length, n = model.get_num_atoms(); i < n; i++) {
+      for (i = results.length, len = model.get_num_atoms(); i < len; i++) {
         if (!results[i]) {
-          results[i] = {};
-          results[i].idx = i;
-          // TODO: refactor it, think about more general way of detecting and representing amino acids.
-          // However it would be reasonable to perform such refactoring later, when all requirements
-          // related to proteins engine are clearer.
+          results[i] = {
+            idx: i,
+            // Provide convenience function for view, do not force it to ask
+            // model / engine directly. In the future, atom objects should be
+            // represented by a separate class.
+            isAminoAcid: isAminoAcid
+          };
+
           if (atoms.element[i] >= AMINO_ELEMENT_FIRST_IDX) {
-            results[i].symbol = aminoacids[atoms.element[i] - AMINO_ELEMENT_FIRST_IDX].symbol;
-            results[i].label = aminoacids[atoms.element[i] - AMINO_ELEMENT_FIRST_IDX].abbreviation;
+            aminoIdx = atoms.element[i] - AMINO_ELEMENT_FIRST_IDX;
+            results[i].symbol = aminoacids[aminoIdx].symbol;
+            results[i].label = aminoacids[aminoIdx].abbreviation;
+            results[i].hydrophobicity = aminoacids[aminoIdx].hydrophobicity;
           }
         }
       }
