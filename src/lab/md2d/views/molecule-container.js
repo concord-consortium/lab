@@ -1218,7 +1218,7 @@ define(function (require) {
 
         labelEnter.each(function (d) {
           var selection = d3.select(this),
-              txtValue, txtSelection;
+              txtValue, txtSelection, bBox;
           // Append appropriate label. For now:
           // If atom_mumbers (TODO: fix typo) option is enabled, use indices.
           // If not and there is available 'label'/'symbol' property, use one of them
@@ -1230,11 +1230,21 @@ define(function (require) {
               .style("font-size", 1.6 * textShrinkFactor * x(d.radius));
           }
           else if (useThreeLetterCode && d.label) {
+            // Add shadow - a white stroke, which increases readability.
             selection.append("text")
               .text(d.label)
-              .style("font-size", 0.9 * x(d.radius));
+              .attr("class", "shadow")
+              .style("font-size", 1.0 * x(d.radius));
+            selection.append("text")
+              .text(d.label)
+              .style("font-size", 1.0 * x(d.radius));
           }
           else if (!useThreeLetterCode && d.symbol) {
+            // Add shadow - a white stroke, which increases readability.
+            selection.append("text")
+              .text(d.symbol)
+              .attr("class", "shadow")
+              .style("font-size", 1.4 * x(d.radius));
             selection.append("text")
               .text(d.symbol)
               .style("font-size", 1.4 * x(d.radius));
@@ -1251,24 +1261,34 @@ define(function (require) {
               .text(txtValue)
               .style("font-size", 1.6 * x(d.radius));
           }
-        // Set common attributes for labels.
-        txtSelection = selection.select("text");
-        // Check if node exists and if so, set appropriate attributes.
-        if (txtSelection.node()) {
-          txtSelection
-            .style({
-              "font-weight": "bold",
-              "opacity": 0.7
-            })
-            .attr({
-              "class": "index",
-              "pointer-events": "none",
-              // Center labels, use real width and height.
-              // Note that this attrs should be set after all previous styling options.
-              "x": -txtSelection.node().getBBox().width / 2,
-              "y":  txtSelection.node().getBBox().height / 4
-            });
+          // Set common attributes for labels (+ shadows).
+          txtSelection = selection.selectAll("text");
+          // Check if node exists and if so, set appropriate attributes.
+          if (txtSelection.node()) {
+            txtSelection
+              .attr("pointer-events", "none")
+              .style({
+                "font-weight": "bold",
+                "opacity": 0.7
+              });
+            // .node() will return first node in selection. It's OK - both texts
+            // (label and its shadow) have the same dimension.
+            bBox = txtSelection.node().getBBox();
+            txtSelection
+              .attr({
+                // Center labels, use real width and height.
+                // Note that this attrs should be set *after* all previous styling options.
+                "x": -bBox.width / 2,
+                "y":  bBox.height / 4
+              });
           }
+          // Set common attributes for shadows.
+          selection.select("text.shadow")
+            .style({
+              "stroke": "#fff",
+              "stroke-width": 0.15 * x(d.radius),
+              "stroke-opacity": 0.7
+            });
         });
       }
 
