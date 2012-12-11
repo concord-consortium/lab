@@ -7,7 +7,7 @@ MARKDOWN_COMPILER = bin/kramdown
 # Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
 # the test's title, not its pathname. So we need to find everything in test/vows first.
 VOWS = find test/vows -name *.js -print | xargs ./node_modules/.bin/vows --isolate
-MOCHA = node_modules/.bin/mocha  --recursive test/mocha
+MOCHA = bash -O extglob -c 'ls test/mocha/md2d/+(*-outputs*|interactive-parameters-spec*)' | xargs -n 1 node_modules/.bin/mocha; bash -O extglob -c 'ls test/mocha/md2d/!(*-outputs*|interactive-parameters-spec*)' | xargs node_modules/.bin/mocha
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
