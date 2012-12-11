@@ -12,6 +12,7 @@
     "keShading": false,
     "chargeShading": true,
     "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
     "showChargeSymbols": true,
     "showVDWLines": true,
     "VDWLinesCutoff": "medium",

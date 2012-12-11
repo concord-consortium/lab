@@ -13,6 +13,7 @@
     "chargeShading": true,
     "showChargeSymbols": true,
     "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
     "showVDWLines": false,
     "VDWLinesCutoff": "medium",
     "showClock": true,

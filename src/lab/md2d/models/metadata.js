@@ -54,6 +54,9 @@ define(function() {
       useThreeLetterCode: {
         defaultValue: true
       },
+      aminoAcidColorScheme: {
+        defaultValue: "hydrophobicity"
+      },
       showChargeSymbols: {
         defaultValue: true
       },
