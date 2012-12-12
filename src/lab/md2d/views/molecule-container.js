@@ -1218,7 +1218,7 @@ define(function (require) {
 
         labelEnter.each(function (d) {
           var selection = d3.select(this),
-              txtValue, txtSelection, bBox;
+              txtValue, txtSelection;
           // Append appropriate label. For now:
           // If atom_mumbers (TODO: fix typo) option is enabled, use indices.
           // If not and there is available 'label'/'symbol' property, use one of them
@@ -1271,15 +1271,14 @@ define(function (require) {
                 "font-weight": "bold",
                 "opacity": 0.7
               });
-            // .node() will return first node in selection. It's OK - both texts
-            // (label and its shadow) have the same dimension.
-            bBox = txtSelection.node().getBBox();
             txtSelection
               .attr({
                 // Center labels, use real width and height.
                 // Note that this attrs should be set *after* all previous styling options.
-                "x": -bBox.width / 2,
-                "y":  bBox.height / 4
+                // .node() will return first node in selection. It's OK - both texts
+                // (label and its shadow) have the same dimension.
+                "x": -txtSelection.node().getComputedTextLength() / 2,
+                "y": "0.31em"//bBox.height / 4
               });
           }
           // Set common attributes for shadows.
