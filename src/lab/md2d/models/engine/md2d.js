@@ -8,18 +8,13 @@ define(function (require, exports, module) {
       console             = require('common/console'),
       constants           = require('./constants/index'),
       unit                = constants.unit,
-      aminoacids          = require('md2d/models/aminoacids-props'),
+      aminoacidsHelper    = require('cs!md2d/models/aminoacids-helper'),
       math                = require('./math/index'),
       coulomb             = require('./potentials/index').coulomb,
       lennardJones        = require('./potentials/index').lennardJones,
       CloneRestoreWrapper = require('./clone-restore-wrapper'),
       CellList            = require('./cell-list'),
       NeighborList        = require('./neighbor-list'),
-
-      // TODO: the same information is defined in modeler.
-      // Move elements to a separate structure. Current implementation is a temporal
-      // solution while thinking about best organization for elements and amino acids.
-      AMINO_ELEMENT_FIRST_IDX = 5,
 
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
       ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
@@ -1731,9 +1726,11 @@ define(function (require, exports, module) {
           props.mass   = elementMass[props.element];
           props.radius = elementRadius[props.element];
 
-          if (props.element >= AMINO_ELEMENT_FIRST_IDX) {
+          if (aminoacidsHelper.isAminoAcid(props.element)) {
             // Setup properties which are relevant to amino acids.
-            props.charge = aminoacids[props.element - AMINO_ELEMENT_FIRST_IDX].charge;
+            props.charge = aminoacidsHelper.getAminoAcidByElement(props.element).charge;
+            // Note that we overwrite value set explicitly in the hash.
+            // So, while setting element of atom, it's impossible to set also its charge.
           }
         }
 

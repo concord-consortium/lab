@@ -12,13 +12,9 @@ define(function(require) {
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
       aminoacids           = require('md2d/models/aminoacids-props'),
+      aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
       units                = require('md2d/models/engine/constants/units'),
-      _ = require('underscore'),
-
-      // Constants.
-      EDITABLE_ELEMENT_LAST_IDX = 4,
-      AMINO_ELEMENT_FIRST_IDX   = 5,
-      AMINO_ELEMENT_LAST_IDX    = 24;
+      _ = require('underscore');
 
   return function Model(initialProperties) {
     var model = {},
@@ -497,20 +493,26 @@ define(function(require) {
       the detection of changed properties.
     */
     function readModelState() {
-      var i,
-          prop,
-          n;
+      var i, prop, n, amino;
 
       engine.computeOutputState(modelOutputState);
 
       extendResultsArray();
 
       // Transpose 'atoms' object into 'results' for easier consumption by view code
-      for (prop in atoms) {
-        if (atoms.hasOwnProperty(prop)) {
-          for (i = 0, n = model.get_num_atoms(); i < n; i++) {
+      for (i = 0, n = model.get_num_atoms(); i < n; i++) {
+        for (prop in atoms) {
+          if (atoms.hasOwnProperty(prop)) {
             results[i][prop] = atoms[prop][i];
           }
+        }
+
+        // Additional properties, used only by view.
+        if (aminoacidsHelper.isAminoAcid(atoms.element[i])) {
+          amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
+          results[i].symbol = amino.symbol;
+          results[i].label = amino.abbreviation;
+          results[i].hydrophobicity = amino.hydrophobicity;
         }
       }
     }
@@ -521,9 +523,9 @@ define(function(require) {
     */
     function extendResultsArray() {
       var isAminoAcid = function () {
-            return this.element >= AMINO_ELEMENT_FIRST_IDX;
+            return aminoacidsHelper.isAminoAcid(this.element);
           },
-          aminoIdx, i, len;
+          i, len;
 
       // TODO: refactor whole approach to creation of objects from flat arrays.
       // Think about more general way of detecting and representing amino acids.
@@ -541,13 +543,6 @@ define(function(require) {
             // represented by a separate class.
             isAminoAcid: isAminoAcid
           };
-
-          if (atoms.element[i] >= AMINO_ELEMENT_FIRST_IDX) {
-            aminoIdx = atoms.element[i] - AMINO_ELEMENT_FIRST_IDX;
-            results[i].symbol = aminoacids[aminoIdx].symbol;
-            results[i].label = aminoacids[aminoIdx].abbreviation;
-            results[i].hydrophobicity = aminoacids[aminoIdx].hydrophobicity;
-          }
         }
       }
     }
@@ -566,7 +561,7 @@ define(function(require) {
       // This is enforced by backward compatibility with Classic MW.
 
       // At the beginning, ensure that elements from 0 to 24 exists.
-      for (i = engine.getNumberOfElements(); i <= AMINO_ELEMENT_LAST_IDX; i++) {
+      for (i = engine.getNumberOfElements(); i <= aminoacidsHelper.lastElementID; i++) {
         model.addElement({
           id: i
         });
@@ -582,7 +577,7 @@ define(function(require) {
         // Use engine's method instead of modeler's method to avoid validation.
         // Modeler's wrapper ensures that amino acid is immutable, so it won't allow
         // to set properties of amino acid.
-        engine.setElementProperties(AMINO_ELEMENT_FIRST_IDX + i, {
+        engine.setElementProperties(aminoacidsHelper.firstElementID + i, {
           mass: aminoacids[i].molWeight,
           sigma: sigmaInNm
           // Don't provide epsilon, as default value should be used.
@@ -740,8 +735,8 @@ define(function(require) {
 
       // Ensure that approprieate number of editable elements exist.
       // This is enforced by backward compatibility with Classic MW.
-      // Every element with index > EDITABLE_ELEMENT_LAST_IDX specifies some immutable amino acid.
-      for (i = engine.getNumberOfElements(); i <= EDITABLE_ELEMENT_LAST_IDX; i++) {
+      // Every element with index < aminoacidsHelper.firstElementID specifies some immutable amino acid.
+      for (i = engine.getNumberOfElements(); i < aminoacidsHelper.firstElementID; i++) {
         if (elementsByID[i]) {
           // Use element provided by model JSON.
           model.addElement(elementsByID[i]);
@@ -1233,8 +1228,8 @@ define(function(require) {
     model.setElementProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.element, props);
-      if (i > EDITABLE_ELEMENT_LAST_IDX) {
-        throw new Error("Elements: elements with ID >= 5 cannot be edited, as they define amino acids.");
+      if (aminoacidsHelper.isAminoAcid(i)) {
+        throw new Error("Elements: elements with ID " + i + " cannot be edited, as they define amino acids.");
       }
       invalidatingChangePreHook();
       engine.setElementProperties(i, props);
