@@ -10,6 +10,7 @@ define(function (require) {
       PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
+      amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
       layout                = require('common/layout/layout'),
       optionsMetadata       = require('md2d/views/meta-view-options'),
       validator             = require('common/validator'),
@@ -328,6 +329,11 @@ define(function (require) {
       model.on('removeAtom', setup_drawables);
       model.on('removeRadialBond', setup_drawables);
 
+      // Register additional controls, context menus etc.
+      // Note that special selector for class is used. Typical class selectors
+      // (e.g. '.amino-acid') cause problems when interacting with SVG nodes.
+      amniacidContextMenu.register(model, container, '[class~="amino-acid"]');
+
       // create container, or update properties if it already exists
       if (vis === undefined) {
 
@@ -468,7 +474,6 @@ define(function (require) {
         createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
         createVectorArrowHeads(forceVectorColor, FORCE_STR);
         redraw();
-
       }
 
       // Process options that always have to be recreated when container is reloaded
@@ -807,7 +812,7 @@ define(function (require) {
       function particleEnter() {
         particle.enter().append("circle")
             .attr({
-              "class": "draggable",
+              "class": function (d) { return d.isAminoAcid() ? "draggable amino-acid" : "draggable"; },
               "r":  function(d) { return x(d.radius); },
               "cx": function(d) { return x(d.x); },
               "cy": function(d) { return y(d.y); }
