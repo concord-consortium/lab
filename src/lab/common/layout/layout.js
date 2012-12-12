@@ -412,54 +412,13 @@ define(function (require) {
 
   };
 
-  // Adapted from getPageSize() by quirksmode.com
   layout.getPageHeight = function() {
-    var windowHeight;
-    if (window.innerHeight) { // all except Explorer
-      windowHeight = window.innerHeight;
-    } else if (document.documentElement && document.documentElement.clientHeight) {
-      windowHeight = document.documentElement.clientHeight;
-    } else if (document.body) { // other Explorers
-      windowHeight = layout.display.window.height;
-    }
-    return windowHeight;
+    return $(document).height();
   };
 
   layout.getPageWidth = function() {
-    var windowWidth;
-    if (window.innerWidth) { // all except Explorer
-      windowWidth = window.innerWidth;
-    } else if (document.documentElement && document.documentElement.clientWidth) {
-      windowWidth = document.documentElement.clientWidth;
-    } else if (document.body) { // other Explorers
-      windowWidth = window.width;
-    }
-    return windowWidth;
+    return $(document).width();
   };
-
-  // http://www.zachstronaut.com/posts/2009/02/17/animate-css-transforms-firefox-webkit.html
-  layout.getTransformProperty = function(element) {
-      // Note that in some versions of IE9 it is critical that
-      // msTransform appear in this list before MozTransform
-      var properties = [
-          'transform',
-          'WebkitTransform',
-          'msTransform',
-          'MozTransform',
-          'OTransform'
-      ];
-      var p;
-      if (element) {
-        while (p = properties.shift()) {
-            if (typeof element.style[p] != 'undefined') {
-                return p;
-            }
-        }
-      }
-      return false;
-  };
-
-  layout.transform = layout.getTransformProperty(document.body);
 
   // Finally, return ready module.
   return layout;
