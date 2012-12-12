@@ -1,4 +1,4 @@
-/*global screen: true, $: true Sizzle: true*/
+/*global screen: true, $: true, jQuery: true, Sizzle: true*/
 
 var fs = require('fs');
 
@@ -17,7 +17,9 @@ Sizzle = require('sizzle');
 // Set up any vendored libraries that are ormally included via script tag in the modules under test:
 require("../server/public/vendor/jquery/jquery.js");
 require("../server/public/vendor/d3/d3.v2.min.js");
-$ = window.jQuery;
+$ = jQuery = window.jQuery;
+// Setup jQuery plugins.
+require("../server/public/vendor/jquery-context-menu/jquery.contextMenu.js");
 
 // Additional environment features for testing.
 require("./env-assert");
