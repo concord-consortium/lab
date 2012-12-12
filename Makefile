@@ -274,6 +274,7 @@ server/public/vendor: \
 	server/public/vendor/jquery-ui/jquery-ui.min.js \
 	server/public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
 	server/public/vendor/tinysort/jquery.tinysort.js \
+	server/public/vendor/jquery-context-menu \
 	server/public/vendor/science.js \
 	server/public/vendor/modernizr \
 	server/public/vendor/sizzle \
@@ -319,6 +320,11 @@ server/public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
 
 server/public/vendor/jquery-ui-touch-punch:
 	mkdir -p server/public/vendor/jquery-ui-touch-punch
+
+server/public/vendor/jquery-context-menu:
+	mkdir -p server/public/vendor/jquery-context-menu
+	cp src/vendor/jquery-context-menu/src/jquery.contextMenu.js server/public/vendor/jquery-context-menu
+	cp src/vendor/jquery-context-menu/src/jquery.contextMenu.css server/public/vendor/jquery-context-menu
 
 server/public/vendor/jquery/jquery.min.js: \
 	src/vendor/jquery/dist/jquery.min.js \
