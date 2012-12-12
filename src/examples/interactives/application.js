@@ -242,8 +242,8 @@ var ROOT = "/examples",
         actualWidth = $content.width();
         actualHeight = $content.height();
       } else {
-        actualWidth = document.width;
-        actualHeight = document.height;
+        actualWidth = $(document).width();
+        actualHeight = $(document).height();
       }
       switch(sizeChoice) {
         case "actual":
