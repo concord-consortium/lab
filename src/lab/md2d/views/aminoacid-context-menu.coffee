@@ -44,6 +44,19 @@ define (require) ->
       "background-size": "Auto 100%"
       "background-image": "url(../../resources/minus.svg)"
 
+  markNode = ($node) ->
+    $node.css
+      "border-top": "3px solid #777"
+      "border-bottom": "3px solid #777"
+
+  unmarkNode = ($node) ->
+    $node.css
+      "border-top": ""
+      "border-bottom": ""
+
+  getAminoProps = (node) ->
+
+
   ###
   Register context menu for DOM elements defined by @selector.
   @model, @view are associated model and view, used to set
@@ -58,6 +71,11 @@ define (require) ->
       callback: (key, options) ->
         # Get properties of atom representing amino acid.
         props = d3.select(options.$trigger[0]).datum()
+        # Remove current selection. It won't be handled by events.#hide callback defined below,
+        # because we modify element property. Also, do not setup new selection, as it makes
+        # no sense - after click the menu is hidden.
+        marked = aminoacids.getAminoAcidByElement(props.element).abbreviation
+        unmarkNode options.items[marked].$node
         # Translate abbreviation to element ID.
         elemId = aminoacids.abbrToElement key
         # Set amino acid type.
@@ -70,16 +88,13 @@ define (require) ->
         show: (options) ->
           props = d3.select(options.$trigger[0]).datum()
           key = aminoacids.getAminoAcidByElement(props.element).abbreviation
-          options.items[key].$node.css
-            "border-top": "3px solid #777"
-            "border-bottom": "3px solid #777"
+          markNode options.items[key].$node
+
         # Remove marker added above.
         hide: (options) ->
           props = d3.select(options.$trigger[0]).datum()
           key = aminoacids.getAminoAcidByElement(props.element).abbreviation
-          options.items[key].$node.css
-            "border-top": ""
-            "border-bottom": ""
+          unmarkNode options.items[key].$node
 
       items:
         "Gly": name: "Glycine", className: "#{HYDROPHOBIC_CLASS}"
