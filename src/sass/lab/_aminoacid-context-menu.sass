@@ -1,0 +1,39 @@
+.aminoacids-menu
+  // "min-width": "9em" is a workaround... However elements of this menu aren't dynamic,
+  // so we can use it. Without that hack width is always set to 120px by the jquery.contextMenu
+  // library. We are dynamically scaling font, so this was causing problems and text truncation.
+  min-width: 9em
+  font-size: 0.9em
+  font-family: inherit
+
+  // Each option in context menu (one row).
+  li
+    padding: 0 0 0 19%
+
+  li:hover
+    font-weight: bold
+
+  // Mixin for icons.
+  @mixin icon-bg($url)
+    background-repeat: no-repeat
+    background-position: 1%
+    background-size: auto 100%
+    background-image: url($url)
+
+  // Marker for current type of the amino acid.
+  .marked
+    border-top: 3px solid #777
+    border-bottom: 3px solid #777
+
+  // Style of options:
+  .hydrophobic
+    background: #E0A21B
+
+  .hydrophilic
+    background: #75a643
+
+  .pos-charge
+    @include icon-bg("../../resources/plus.svg")
+
+  .neg-charge
+    @include icon-bg("../../resources/minus.svg")
