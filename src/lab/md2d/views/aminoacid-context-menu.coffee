@@ -65,6 +65,22 @@ define (require) ->
         # Redraw view.
         # TODO: model should dispatch appropriate event, which should trigger repaint automatically.
         view.setup_drawables()
+      events:
+        # Mark currently selected AA type.
+        show: (options) ->
+          props = d3.select(options.$trigger[0]).datum()
+          key = aminoacids.getAminoAcidByElement(props.element).abbreviation
+          options.items[key].$node.css
+            "border-top": "3px solid #777"
+            "border-bottom": "3px solid #777"
+        # Remove marker added above.
+        hide: (options) ->
+          props = d3.select(options.$trigger[0]).datum()
+          key = aminoacids.getAminoAcidByElement(props.element).abbreviation
+          options.items[key].$node.css
+            "border-top": ""
+            "border-bottom": ""
+
       items:
         "Gly": name: "Glycine", className: "#{HYDROPHOBIC_CLASS}"
         "Ala": name: "Alanine", className: "#{HYDROPHOBIC_CLASS}"
@@ -81,11 +97,11 @@ define (require) ->
         "Gln": name: "Glutamine", className: "#{HYDROPHILIC_CLASS}"
         "Ser": name: "Serine", className: "#{HYDROPHILIC_CLASS}"
         "Thr": name: "Threonine", className: "#{HYDROPHILIC_CLASS}"
-        "Asp": name: "Asparticacid", className: "hydrophilic #{NEG_CHARGE_CLASS}"
-        "Glu": name: "Glutamicacid", className: "hydrophilic #{NEG_CHARGE_CLASS}"
-        "Lys": name: "Lysine", className: "hydrophilic #{POS_CHARGE_CLASS}"
-        "Arg": name: "Arginine", className: "hydrophilic #{POS_CHARGE_CLASS}"
-        "His": name: "Histidine", className: "hydrophilic #{POS_CHARGE_CLASS}"
+        "Asp": name: "Asparticacid", className: "#{HYDROPHILIC_CLASS} #{NEG_CHARGE_CLASS}"
+        "Glu": name: "Glutamicacid", className: "#{HYDROPHILIC_CLASS} #{NEG_CHARGE_CLASS}"
+        "Lys": name: "Lysine", className: "#{HYDROPHILIC_CLASS} #{POS_CHARGE_CLASS}"
+        "Arg": name: "Arginine", className: "#{HYDROPHILIC_CLASS} #{POS_CHARGE_CLASS}"
+        "His": name: "Histidine", className: "#{HYDROPHILIC_CLASS} #{POS_CHARGE_CLASS}"
 
       # Style context menu.
       style()
