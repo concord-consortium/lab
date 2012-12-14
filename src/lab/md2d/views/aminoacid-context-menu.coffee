@@ -20,15 +20,18 @@ define (require) ->
   MARKED_CLASS = "marked"
 
   # Shows given category.
-  showCategory = (type) ->
+  showCategory = (type, animate) ->
+    func =
+      show: if animate then "slideDown" else "show"
+      hide: if animate then "slideUp" else "hide"
     if type == "hydrophobic"
-      $(".#{HYDROPHOBIC_CLASS}").show()
-      $(".#{HYDROPHILIC_CLASS}").hide()
+      $(".#{HYDROPHOBIC_CLASS}")[func.show]()
+      $(".#{HYDROPHILIC_CLASS}")[func.hide]()
       $(".#{HYDROPHOBIC_CAT_CLASS}").addClass "expanded"
       $(".#{HYDROPHILIC_CAT_CLASS}").removeClass "expanded"
     else
-      $(".#{HYDROPHOBIC_CLASS}").hide()
-      $(".#{HYDROPHILIC_CLASS}").show()
+      $(".#{HYDROPHOBIC_CLASS}")[func.hide]()
+      $(".#{HYDROPHILIC_CLASS}")[func.show]()
       $(".#{HYDROPHOBIC_CAT_CLASS}").removeClass "expanded"
       $(".#{HYDROPHILIC_CAT_CLASS}").addClass "expanded"
 
@@ -46,6 +49,11 @@ define (require) ->
       selector: selector
       # Class of the menu.
       className: MENU_CLASS
+      # Disable animation of the whole menu. Use standard show/hide instead
+      # of slideDown/slideUp.
+      animation:
+        show: "show"
+        hide: "hide"
       # Default callback for every item.
       callback: (key, options) ->
         # Get properties of atom representing amino acid.
@@ -137,7 +145,7 @@ define (require) ->
       items:
         # Category header.
         "Hydrophobic": name: "Hydrophobic", className: "#{HYDROPHOBIC_CAT_CLASS}", callback: ->
-          showCategory "hydrophobic"
+          showCategory "hydrophobic", true
           # Return false to prevent menu from being hidden.
           false
         # Items below use default callback.
@@ -154,7 +162,7 @@ define (require) ->
         "Tyr": name: "Tyrosine", className: "#{HYDROPHOBIC_CLASS}"
         # Category header.
         "Hydrophilic": name: "Hydrophilic", className: "#{HYDROPHILIC_CAT_CLASS}", callback: ->
-          showCategory "hydrophilic"
+          showCategory "hydrophilic", true
           # Return false to prevent menu from being hidden.
           false
         # Items below use default callback.
