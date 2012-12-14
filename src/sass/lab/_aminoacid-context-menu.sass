@@ -6,7 +6,6 @@
   font-size: 0.9em
   font-family: inherit
   border: none
-  border-radius: 0.5em
 
   // Each option in context menu (one row).
   li
@@ -29,14 +28,14 @@
     @include icon-bg("../../resources/minus.svg", 2%, 90%)
 
   .hydrophobic
-    background-color: #E0A21B
+    background-color: #f3c35d
   .hydrophobic.marked
-    background-color: #ffdc00
+    background-color: #ffe64b
 
   .hydrophilic
-    background-color: #75a643
+    background-color: #9dc278
   .hydrophilic.marked
-    background-color: #abd87c
+    background-color: #bee299
 
   .hydrophobic-category
     font-size: 1.1em
@@ -44,8 +43,6 @@
     padding: 2% 0 2% 14%
     background-color: #E0A21B
     @include icon-bg("../../resources/col.svg", 4%, 40%)
-    label
-      cursor: pointer
 
   .hydrophilic-category
     font-size: 1.1em
@@ -53,8 +50,6 @@
     padding: 2% 0 2% 14%
     background-color: #75a643
     @include icon-bg("../../resources/col.svg", 4%, 40%)
-    label
-      cursor: pointer
 
   // Expanded category style.
   .expanded
