@@ -63,6 +63,53 @@ define (require) ->
         # TODO: model should dispatch appropriate event, which should trigger repaint automatically.
         view.setup_drawables()
 
+      # Note that this function is almost the same as the default implementation
+      # in jQuery.contextMenu. However, there is a small fix. Very often the height of menu was
+      # reported incorrectly what was causing incorrect positioning.
+      # For example menu was rendered at the bottom of the screen and truncated or scrollbars were needed,
+      # when there was a lot of free place above.
+      position: (opt, x, y) ->
+        $win = $(window)
+        # determine contextMenu position
+        if !x && !y
+          opt.determinePosition.call this, opt.$menu
+          return
+        else if x == "maintain" && y == "maintain"
+          # x and y must not be changed (after re-show on command click)
+          offset = opt.$menu.position();
+        else
+          # x and y are given (by mouse event)
+          triggerIsFixed = opt.$trigger.parents().andSelf()
+            .filter ->
+              return $(this).css('position') == "fixed";
+            .length
+
+          if triggerIsFixed
+            y -= $win.scrollTop()
+            x -= $win.scrollLeft()
+
+          offset = top: y, left: x
+
+        # correct offset if viewport demands it
+        bottom = $win.scrollTop() + $win.height()
+        right = $win.scrollLeft() + $win.width()
+
+        ###
+        !!! Workaround for the correct positioning:
+        Use scrollHeight / scrollWidth as these functions return correct height / width
+        in contrast to opt.$menu.height() / opt.$menu.width().
+        ###
+        height = opt.$menu[0].scrollHeight
+        width = opt.$menu[0].scrollWidth
+
+        if offset.top + height > bottom
+          offset.top -= height
+
+        if offset.left + width > right
+          offset.left -= width
+
+        opt.$menu.css(offset)
+
       events:
         # Mark currently selected AA type.
         show: (options) ->
