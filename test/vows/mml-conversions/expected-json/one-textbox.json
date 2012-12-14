@@ -9,6 +9,7 @@
   "viewRefreshInterval": 50,
   "timeStep": 1,
   "viewOptions": {
+    "backgroundColor": "rgba(225,239,222,255)",
     "keShading": false,
     "chargeShading": true,
     "showChargeSymbols": true,

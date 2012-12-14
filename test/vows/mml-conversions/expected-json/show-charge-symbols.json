@@ -10,6 +10,7 @@
   "viewRefreshInterval": 50,
   "viewOptions": {
     "showClock": true,
+    "backgroundColor": "#eeeeee",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,

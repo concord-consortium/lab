@@ -9,6 +9,7 @@
   "viewRefreshInterval": 10,
   "timeStep": 1,
   "viewOptions": {
+    "backgroundColor": "#eeeeee",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
