@@ -42,6 +42,9 @@ define(function() {
     },
 
     modelViewProperties: {
+      backgroundColor: {
+        defaultValue: "#eeeeee"
+      },
       showClock: {
         defaultValue: true
       },
