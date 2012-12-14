@@ -322,7 +322,7 @@ define(function (require) {
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "showClock"],
+        "showClock", "backgroundColor"],
           setup_drawables);
 
       model.on('addAtom', setup_drawables);
@@ -359,8 +359,7 @@ define(function (require) {
         plot = vis.append("rect")
           .attr("class", "plot")
           .attr("width", size.width)
-          .attr("height", size.height)
-          .style("fill", "#EEEEEE");
+          .attr("height", size.height);
 
         // add Chart Title
         if (options.title) {
@@ -436,8 +435,7 @@ define(function (require) {
 
         vis.select("rect.plot")
           .attr("width", size.width)
-          .attr("height", size.height)
-          .style("fill", "#EEEEEE");
+          .attr("height", size.height);
 
         vis.select("svg.container")
           .attr("top", 0)
@@ -1181,6 +1179,7 @@ define(function (require) {
       }
 
       function setup_drawables() {
+        setupBackground();
         setup_obstacles();
         setupVdwPairs();
         setupColorsOfParticles();
@@ -1192,6 +1191,13 @@ define(function (require) {
         drawSymbolImages();
         drawImageAttachment();
         drawTextBoxes();
+      }
+
+
+      // Setup background.
+      function setupBackground() {
+        // Just set the color.
+        plot.style("fill", model.get("backgroundColor"));
       }
 
       function setupColorsOfParticles() {
