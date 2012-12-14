@@ -5,6 +5,8 @@
   min-width: 9em
   font-size: 0.9em
   font-family: inherit
+  border: none
+  border-radius: 0.5em
 
   // Each option in context menu (one row).
   li
@@ -14,26 +16,53 @@
     font-weight: bold
 
   // Mixin for icons.
-  @mixin icon-bg($url)
+  @mixin icon-bg($url, $position, $size)
     background-repeat: no-repeat
-    background-position: 1%
-    background-size: auto 100%
+    background-position: $position
+    background-size: auto $size
     background-image: url($url)
 
-  // Marker for current type of the amino acid.
-  .marked
-    border-top: 3px solid #777
-    border-bottom: 3px solid #777
+  // Workaround for problems with jQuery.contextMenu.
+  // Finally, radio buttons are used for category headers.
+  // Hide "radio" symbol and use custom icons.
+  input[type=radio]
+    display: none
 
   // Style of options:
+  .pos-charge
+    @include icon-bg("../../resources/plus.svg", 2%, 90%)
+  .neg-charge
+    @include icon-bg("../../resources/minus.svg", 2%, 90%)
+
   .hydrophobic
-    background: #E0A21B
+    background-color: #E0A21B
+  .hydrophobic.marked
+    background-color: #ffdc00
 
   .hydrophilic
-    background: #75a643
+    background-color: #75a643
+  .hydrophilic.marked
+    background-color: #abd87c
 
-  .pos-charge
-    @include icon-bg("../../resources/plus.svg")
+  .hydrophobic-category
+    font-size: 1.1em
+    font-weight: bold
+    padding: 2% 0 2% 10%
+    background-color: #E0A21B
+    @include icon-bg("../../resources/col.svg", 4%, 40%)
+    label
+      cursor: pointer
 
-  .neg-charge
-    @include icon-bg("../../resources/minus.svg")
+  .hydrophilic-category
+    font-size: 1.1em
+    font-weight: bold
+    padding: 2% 0 2% 10%
+    background-color: #75a643
+    @include icon-bg("../../resources/col.svg", 4%, 40%)
+    label
+      cursor: pointer
+
+  // Expanded category style.
+  .expanded
+    @include icon-bg("../../resources/exp.svg", 4%, 40%)
+
