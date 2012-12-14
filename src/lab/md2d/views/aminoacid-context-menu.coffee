@@ -108,6 +108,8 @@ define (require) ->
         if offset.left + width > right
           offset.left -= width
 
+        # Increase offset to prevent accidental clicks.
+        offset.left += 1
         opt.$menu.css(offset)
 
       events:
@@ -129,15 +131,16 @@ define (require) ->
           props = d3.select(options.$trigger[0]).datum()
           key = aminoacids.getAminoAcidByElement(props.element).abbreviation
           options.items[key].$node.removeClass MARKED_CLASS
+          # Ensure that this callback returns true (required to hide menu).
+          true
 
       items:
-        # This is a category header. Note that type: "radio" is used. Basic type of item doesn't
-        # accept "events" object. Custom type described in jQuery.contextMenu docs was also closing the whole
-        # menu after every click. This is definitely not what we expect after selecting the category header.
-        # "Radio" type with overwritten "click" event works fine. It's reasonable to hide "radio" symbol and
-        # it's achieved using CSS styling.
-        "Hydrophobic": name: "Hydrophobic", className: "#{HYDROPHOBIC_CAT_CLASS}", type: "radio", events:
-          click: -> showCategory "hydrophobic"
+        # Category header.
+        "Hydrophobic": name: "Hydrophobic", className: "#{HYDROPHOBIC_CAT_CLASS}", callback: ->
+          showCategory "hydrophobic"
+          # Return false to prevent menu from being hidden.
+          false
+        # Items below use default callback.
         "Gly": name: "Glycine", className: "#{HYDROPHOBIC_CLASS}"
         "Ala": name: "Alanine", className: "#{HYDROPHOBIC_CLASS}"
         "Val": name: "Valine", className: "#{HYDROPHOBIC_CLASS}"
@@ -149,9 +152,12 @@ define (require) ->
         "Met": name: "Methionine", className: "#{HYDROPHOBIC_CLASS}"
         "Cys": name: "Cysteine", className: "#{HYDROPHOBIC_CLASS}"
         "Tyr": name: "Tyrosine", className: "#{HYDROPHOBIC_CLASS}"
-        # Next category header. See comments above.
-        "Hydrophilic": name: "Hydrophilic", className: "#{HYDROPHILIC_CAT_CLASS}", type: "radio", events:
-          click: -> showCategory "hydrophilic"
+        # Category header.
+        "Hydrophilic": name: "Hydrophilic", className: "#{HYDROPHILIC_CAT_CLASS}", callback: ->
+          showCategory "hydrophilic"
+          # Return false to prevent menu from being hidden.
+          false
+        # Items below use default callback.
         "Asn": name: "Asparagine", className: "#{HYDROPHILIC_CLASS}"
         "Gln": name: "Glutamine", className: "#{HYDROPHILIC_CLASS}"
         "Ser": name: "Serine", className: "#{HYDROPHILIC_CLASS}"
