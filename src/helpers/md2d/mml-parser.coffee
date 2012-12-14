@@ -240,6 +240,13 @@ parseMML = (mmlString) ->
     coulombForces = getBooleanProperty $mml.root(), "interCoulomb", "boolean"
 
     ###
+      Find the background color
+    ###
+    bgColors = (cheerio(n).text() for n in $mml "[property=background] > .java-awt-Color > int")
+    # If array of RGBA values is found, use it. Otherwise, left 'backgroundColor' undefined, so default value will be used.
+    backgroundColor = "rgba(#{bgColors[0]},#{bgColors[1]},#{bgColors[2]},#{bgColors[3]})" if bgColors.length == 4
+
+    ###
       Find the chargeShading
     ###
     chargeShading = getBooleanProperty $mml.root(), "chargeShading", "boolean"
@@ -699,6 +706,7 @@ parseMML = (mmlString) ->
     # Properties which are managed by model, but they define view.
     # Model handles them, as they are e.g. stored in the history.
     modelViewProperties =
+      backgroundColor     : backgroundColor
       keShading           : keShading
       chargeShading       : chargeShading
       showChargeSymbols   : showChargeSymbols
