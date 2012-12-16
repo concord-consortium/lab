@@ -9,7 +9,8 @@ define(function (require) {
       RealTimeGraph           = require('grapher/core/real-time-graph'),
       Thermometer             = require('cs!common/components/thermometer'),
       layout                  = require('common/layout/layout'),
-      setupInteractiveLayout  = require('common/layout/interactive-layout');
+      setupInteractiveLayout  = require('common/layout/interactive-layout'),
+      ParentMessageAPI        = require('md2d/controllers/parent-message-api');
 
   return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
 
@@ -33,6 +34,9 @@ define(function (require) {
         barGraphController,
         // Handles exporting data to DataGames, if 'exports' are specified
         dgExportController,
+
+        // doesn't currently have any public methods, but probably will.
+        parentMessageAPI,
 
         setupScreenCalledTwice = false,
 
@@ -1131,6 +1135,9 @@ define(function (require) {
     */
     function modelLoaded() {
       var i, listener;
+
+      // setup messaging with embedding parent window
+      parentMessageAPI = new ParentMessageAPI(model);
 
       setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
