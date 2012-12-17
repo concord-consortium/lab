@@ -4,8 +4,10 @@ define(function(require) {
   var parentMessageController = require('common/parent-message-controller');
 
   // Defines the default postMessage API used to communicate with parent window (i.e., an embedder)
-  return function() {
+  return function(model) {
     parentMessageController.removeAllListeners();
+
+    console.log('setting api');
 
     function sendPropertyValue(propertyName) {
       parentMessageController.post({
@@ -28,6 +30,17 @@ define(function(require) {
       });
       // Don't forget to send the initial value of the property too:
       sendPropertyValue(message.propertyName);
+    });
+
+    // on message 'set' propertyName: set the relevant property
+    parentMessageController.addListener('set', function(message) {
+      var setter = {};
+      setter[message.propertyName] = message.propertyValue;
+      model.set(setter);
+    });
+
+    parentMessageController.addListener('tick', function(message) {
+      model.tick(message.numTimes);
     });
 
     parentMessageController.initialize();
