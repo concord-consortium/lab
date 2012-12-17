@@ -9,6 +9,7 @@
   "viewRefreshInterval": 10,
   "timeStep": 1,
   "dielectricConstant": 1,
+  "solventForceFactor": 0,
   "viewOptions": {
     "backgroundColor": "#eeeeee",
     "keShading": false,

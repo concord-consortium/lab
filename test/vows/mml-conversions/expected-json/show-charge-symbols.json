@@ -7,6 +7,7 @@
   "gravitationalField": false,
   "timeStep": 1,
   "dielectricConstant": 1,
+  "solventForceFactor": 0,
   "viscosity": 1,
   "viewRefreshInterval": 50,
   "viewOptions": {
