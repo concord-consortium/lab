@@ -26,14 +26,17 @@
       "initialValue": 3,
       "onChange": [
         "var newX = value / 2,",
-        "    oldX = getObstacleProperties(0).x,",
-        "    scaleFactor = newX / oldX;",
-        "if (scaleFactor < 1) scaleFactor *= 0.9;",
+        "    maxX = 0,",
+        "    scaleFactor;",
         "for(var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).x > maxX) maxX = getAtomProperties(i).x;",
+        "}",
+        "scaleFactor = (newX - 0.1) / maxX;",
+        "for(i = 0; i < getNumberOfAtoms(); i++) {",
         "  setAtomProperties(i, { x: getAtomProperties(i).x * scaleFactor });",
         "}",
         "setObstacleProperties(0, { x: newX });",
-        "if (newX < oldX) {",
+        "if (scaleFactor < 1) {",
         "  minimizeEnergy();",
         "}"
       ]
