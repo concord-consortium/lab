@@ -97,6 +97,11 @@ define(function (require, exports, module) {
         // E.g. a dielectric of 80 means a Coulomb force 1/80th as strong.
         dielectricConst = 1,
 
+        // Parameter that reflects the watery extent of the solvent, when an effective
+        // hydrophobic/hydrophilic interaction is used. A negative value represents oil environment
+        // (usually -1). A positive one represents water environment (usually 1). A zero value means vacuum.
+        solventForceFactor = 0,
+
         // Whether any atoms actually have charges
         hasChargedAtoms = false,
 
@@ -1692,6 +1697,10 @@ define(function (require, exports, module) {
 
       setDielectricConstant: function(dc) {
         dielectricConst = dc;
+      },
+
+      setSolventForceFactor: function(sff) {
+        solventForceFactor = sff;
       },
 
       // Our timekeeping is really a convenience for users of this lib, so let them reset time at will
