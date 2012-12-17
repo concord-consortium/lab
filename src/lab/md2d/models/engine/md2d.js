@@ -1690,6 +1690,10 @@ define(function (require, exports, module) {
         T_target = v;
       },
 
+      setDielectricConstant: function(dc) {
+        dielectricConst = dc;
+      },
+
       // Our timekeeping is really a convenience for users of this lib, so let them reset time at will
       setTime: function(t) {
         time = t;

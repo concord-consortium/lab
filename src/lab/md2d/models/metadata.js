@@ -33,6 +33,9 @@ define(function() {
       timeStep: {
         defaultValue: 1
       },
+      dielectricConstant: {
+        defaultValue: 1
+      },
       viscosity: {
         defaultValue: 1
       },

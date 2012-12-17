@@ -121,6 +121,13 @@ define(function(require) {
             }
           },
 
+          set_dielectricConstant: function(dc) {
+            this.dielectricConstant = dc;
+            if (engine) {
+              engine.setDielectricConstant(dc);
+            }
+          },
+
           set_VDWLinesCutoff: function(cutoff) {
             var ratio;
             this.VDWLinesCutoff = cutoff;
@@ -712,6 +719,7 @@ define(function(require) {
       engine.setVDWLinesRatio(VDWLinesCutoffMap[model.get('VDWLinesCutoff')]);
       engine.setGravitationalField(model.get('gravitationalField'));
       engine.setTargetTemperature(model.get('targetTemperature'));
+      engine.setDielectricConstant(model.get('dielectricConstant'));
 
       window.state = modelOutputState = {};
 
