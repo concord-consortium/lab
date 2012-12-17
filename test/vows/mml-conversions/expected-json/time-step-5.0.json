@@ -8,6 +8,7 @@
   "gravitationalField": 8e-8,
   "viewRefreshInterval": 50,
   "timeStep": 5,
+  "dielectricConstant": 1,
   "viewOptions": {
     "backgroundColor": "#eeeeee",
     "keShading": false,
