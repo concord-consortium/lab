@@ -33,6 +33,29 @@
       ],
       "displayValue": "return format('1.2f')(value)",
       "property": "dielectricConstant"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-solvent",
+      "options": [
+        {
+          "text": "Select the solvent type",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "vacuum",
+          "action": "setSolvent('vacuum');"
+        },
+        {
+          "text": "oil",
+          "action": "setSolvent('oil');"
+        },
+        {
+          "text": "water",
+          "action": "setSolvent('water');"
+        }
+      ]
     }
   ],
   "layout": {}
