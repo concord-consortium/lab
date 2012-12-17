@@ -9,6 +9,7 @@ define(function(require) {
       metadata             = require('md2d/models/metadata'),
       TickHistory          = require('md2d/models/tick-history'),
       RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+      Solvent              = require('cs!md2d/models/solvent'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
       aminoacids           = require('md2d/models/aminoacids-props'),
@@ -118,6 +119,13 @@ define(function(require) {
             this.coulombForces = cf;
             if (engine) {
               engine.useCoulombInteraction(cf);
+            }
+          },
+
+          set_solventForceFactor: function(s) {
+            this.solventForceFactor = s;
+            if (engine) {
+              engine.setSolventForceFactor(s);
             }
           },
 
@@ -720,6 +728,7 @@ define(function(require) {
       engine.setGravitationalField(model.get('gravitationalField'));
       engine.setTargetTemperature(model.get('targetTemperature'));
       engine.setDielectricConstant(model.get('dielectricConstant'));
+      engine.setSolventForceFactor(model.get('setSolventForceFactor'));
 
       window.state = modelOutputState = {};
 
@@ -1338,6 +1347,16 @@ define(function(require) {
         }
       }
       return props;
+    };
+
+    model.setSolvent = function (solventName) {
+      var solvent = new Solvent(solventName),
+          props = {
+            solventForceFactor: solvent.forceFactor,
+            dielectricConstant: solvent.dielectricConstant,
+            backgroundColor: solvent.color
+          };
+      model.set(props);
     };
 
     /** A "spring force" is used to pull atom `atomIndex` towards (x, y). We expect this to be used

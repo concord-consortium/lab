@@ -36,6 +36,9 @@ define(function() {
       dielectricConstant: {
         defaultValue: 1
       },
+      solventForceFactor: {
+        defaultValue: 0
+      },
       viscosity: {
         defaultValue: 1
       },
