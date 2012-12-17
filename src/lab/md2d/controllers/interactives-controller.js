@@ -347,6 +347,15 @@ define(function (require) {
               return model.getAngularBondProperties(i);
             },
 
+            /**
+              Sets solvent. You can use three predefined solvents: "water", "oil" or "vacuum".
+              This is only a convenience method. The same effect can be achieved by manual setting
+              of 'solventForceFactor', 'dielectricConstant' and 'backgroundColor' properties.
+            */
+            setSolvent: function setSolvent(type) {
+              model.setSolvent(type);
+            },
+
             getTime: function getTime() {
               return model.get('time');
             },
