@@ -44,36 +44,39 @@ define(function (require, exports, module) {
   /** Input units:
        r: nanometers,
        q1, q2: elementary charges
+       dC: unitless, dielectric constant.
 
       Output units: eV
   */
-  potential = exports.potential = function(r, q1, q2) {
-    return k_ePotential * ((q1 * q2) / r);
+  potential = exports.potential = function(r, q1, q2, dC) {
+    return k_ePotential * ((q1 * q2) / r) / dC;
   },
 
 
   /** Input units:
       r_sq: nanometers^2
       q1, q2: elementary charges
+      dC: unitless, dielectric constant.
 
       Output units: "MW Force Units" (Dalton * nm / fs^2)
   */
-  forceFromSquaredDistance = exports.forceFromSquaredDistance = function(r_sq, q1, q2) {
-    return -k_eForce * ((q1 * q2) / r_sq);
+  forceFromSquaredDistance = exports.forceFromSquaredDistance = function(r_sq, q1, q2, dC) {
+    return -k_eForce * ((q1 * q2) / r_sq) / dC;
   },
 
 
-  forceOverDistanceFromSquaredDistance = exports.forceOverDistanceFromSquaredDistance = function(r_sq, q1, q2) {
-    return forceFromSquaredDistance(r_sq, q1, q2) / Math.sqrt(r_sq);
+  forceOverDistanceFromSquaredDistance = exports.forceOverDistanceFromSquaredDistance = function(r_sq, q1, q2, dC) {
+    return forceFromSquaredDistance(r_sq, q1, q2, dC) / Math.sqrt(r_sq);
   },
 
   /** Input units:
        r: nanometers,
        q1, q2: elementary charges
+       dC: unitless, dielectric constant.
 
       Output units: "MW Force Units" (Dalton * nm / fs^2)
   */
-  force = exports.force = function(r, q1, q2) {
-    return forceFromSquaredDistance(r*r, q1, q2);
+  force = exports.force = function(r, q1, q2, dC) {
+    return forceFromSquaredDistance(r*r, q1, q2, dC);
   };
 });

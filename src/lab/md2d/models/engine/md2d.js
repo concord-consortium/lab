@@ -93,6 +93,10 @@ define(function (require, exports, module) {
         // Whether to simulate Coulomb forces between particles.
         useCoulombInteraction = false,
 
+        // Dielectric constant, it influences Coulomb interaction.
+        // E.g. a dielectric of 80 means a Coulomb force 1/80th as strong.
+        dielectricConst = 1,
+
         // Whether any atoms actually have charges
         hasChargedAtoms = false,
 
@@ -136,9 +140,6 @@ define(function (require, exports, module) {
         // Square of integration time step, in fs^2.
         dt_sq,
 
-        // The number of atoms in the system.
-        N = 0,
-
         // ####################################################################
         //                      Atom Properties
 
@@ -147,6 +148,9 @@ define(function (require, exports, module) {
 
         // An object that contains references to the above atom-property arrays
         atoms,
+
+        // The number of atoms in the system.
+        N = 0,
 
         // ####################################################################
         //                      Element Properties
@@ -1184,7 +1188,7 @@ define(function (require, exports, module) {
               dy = y[atom2Idx] - y[atom1Idx];
               rSq = dx*dx + dy*dy;
 
-              fOverR = coulomb.forceOverDistanceFromSquaredDistance(rSq, charge1, charge[atom2Idx]);
+              fOverR = coulomb.forceOverDistanceFromSquaredDistance(rSq, charge1, charge[atom2Idx], dielectricConst);
 
               fx = fOverR * dx;
               fy = fOverR * dy;
@@ -2661,7 +2665,7 @@ define(function (require, exports, module) {
               PE -=ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
             }
             if (useCoulombInteraction && hasChargedAtoms) {
-              PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
+              PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j], dielectricConst);
             }
           }
         }
@@ -2690,7 +2694,7 @@ define(function (require, exports, module) {
             PE += ljCalculator[el1][el2].potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction && charge[i1] && charge[i2]) {
-            PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2]);
+            PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2], dielectricConst);
           }
 
           // Also save the updated position of the two bonded atoms
@@ -2816,9 +2820,9 @@ define(function (require, exports, module) {
 
             if (useCoulombInteraction && hasChargedAtoms && testCharge) {
               r = Math.sqrt(r_sq);
-              PE += -coulomb.potential(r, testCharge, charge[i]);
+              PE += -coulomb.potential(r, testCharge, charge[i], dielectricConst);
               if (calculateGradient) {
-                f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testCharge, charge[i]);
+                f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testCharge, charge[i], dielectricConst);
               }
             }
 
