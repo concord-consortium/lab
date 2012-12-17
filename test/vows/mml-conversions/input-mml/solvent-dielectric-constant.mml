@@ -314,21 +314,21 @@
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
-    <string>dielectric-constant$0.mml</string> 
+    <string>Untitled$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1355751224000</long> 
+     <long>1355763090000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/home/piotr/Concord/lab/test/vows/mml-conversions/input-mml/dielectric-constant$0.mml</string> 
+    <string>/home/piotr/Concord/lab/test/vows/mml-conversions/input-mml/Untitled$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>10583</long> 
+    <long>10917</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -350,6 +350,14 @@
   </void> 
  </object> 
  <object class="org.concord.mw2d.AtomisticView$State"> 
+  <void property="background"> 
+   <object class="java.awt.Color"> 
+    <int>134</int> 
+    <int>187</int> 
+    <int>246</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
   <void property="chargeShading"> 
    <boolean>true</boolean> 
   </void> 
@@ -408,5 +416,13 @@
    <double>120.0</double> 
   </void> 
  </object> 
- <object class="org.concord.mw2d.models.MolecularModel$State"/> 
+ <object class="org.concord.mw2d.models.MolecularModel$State"> 
+  <void property="solvent"> 
+   <object class="org.concord.mw2d.models.Solvent"> 
+    <void property="type"> 
+     <short>1</short> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
 </java> 

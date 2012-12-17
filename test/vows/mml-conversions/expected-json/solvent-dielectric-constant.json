@@ -7,11 +7,11 @@
   "gravitationalField": false,
   "timeStep": 1,
   "dielectricConstant": 80,
-  "solventForceFactor": 0,
+  "solventForceFactor": 1,
   "viscosity": 1,
   "viewRefreshInterval": 50,
   "viewOptions": {
-    "backgroundColor": "#eeeeee",
+    "backgroundColor": "rgba(134,187,246,255)",
     "showClock": true,
     "keShading": false,
     "chargeShading": true,
