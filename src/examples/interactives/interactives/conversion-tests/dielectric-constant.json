@@ -1,0 +1,39 @@
+{
+  "title": "Dielectric Constant",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "dielectric-constant$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/dielectric-constant$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "dielectric-constant",
+      "title": "Dielectric Constant",
+      "min": 1,
+      "max": 80,
+      "steps": 80,
+      "labels": [
+        {
+          "value": 1,
+          "label": "vacuum"
+        },
+        {
+          "value": 80,
+          "label": "water"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "dielectricConstant"
+    }
+  ],
+  "layout": {}
+}
