@@ -1136,9 +1136,6 @@ define(function (require) {
     function modelLoaded() {
       var i, listener;
 
-      // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model);
-
       setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
       // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
@@ -1148,6 +1145,9 @@ define(function (require) {
       for(i = 0; i < componentCallbacks.length; i++) {
         componentCallbacks[i]();
       }
+
+      // setup messaging with embedding parent window
+      parentMessageAPI = new ParentMessageAPI(model);
 
       layout.addView('moleculeContainers', modelController.moleculeContainer);
       if (thermometer) layout.addView('thermometers', thermometer.component);
