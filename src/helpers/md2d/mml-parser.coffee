@@ -240,6 +240,11 @@ parseMML = (mmlString) ->
     coulombForces = getBooleanProperty $mml.root(), "interCoulomb", "boolean"
 
     ###
+      Find the dielectric constant
+    ###
+    dielectricConstant = getFloatProperty $mml.root(), "dielectricConstant", "float"
+
+    ###
       Find the background color
     ###
     bgColors = (cheerio(n).text() for n in $mml "[property=background] > .java-awt-Color > int")
@@ -696,6 +701,7 @@ parseMML = (mmlString) ->
       gravitationalField  : gravitationalField
       viewRefreshInterval : viewRefreshInterval
       timeStep            : timeStep
+      dielectricConstant  : dielectricConstant
 
     # Unit conversion performed on undefined values can convert them to NaN.
     # Revert back all NaNs to undefined, as they will be replaced by default values.
