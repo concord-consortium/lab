@@ -43,6 +43,10 @@ define(function(require) {
       model.tick(message.numTimes);
     });
 
+    parentMessageController.addListener('play', function(message) {
+      model.resume();
+    });
+
     parentMessageController.initialize();
   };
 });
