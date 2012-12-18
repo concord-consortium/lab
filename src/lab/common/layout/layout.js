@@ -57,7 +57,7 @@ define(function (require) {
     return obj;
   };
 
-  layout.setBodyEmsize = function() {
+  layout.setBodyEmsize = function(scale) {
     var emsize,
         $buttons = $('button.component'),
         minButtonFontSize;
@@ -65,6 +65,9 @@ define(function (require) {
       layout.display = layout.getDisplayProperties();
     }
     emsize = Math.max(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
+    if (scale) {
+      emsize *= scale;
+    }
     $('body').css('font-size', emsize + 'em');
     if (emsize <= 0.5) {
       minButtonFontSize = 1.4 * 0.5/emsize;
@@ -234,6 +237,12 @@ define(function (require) {
         setupInteractiveIFrameScreen();
         break;
 
+        // like interactive-iframe, but has editor on left
+        case "interactive-author-iframe":
+        layout.setBodyEmsize(0.7);
+        setupInteractiveAuthorIFrameScreen();
+        break;
+
         default:
         layout.setVizEmsize();
         setupRegularScreen();
@@ -274,6 +283,94 @@ define(function (require) {
 
       if (viewLists.thermometers) {
         modelWidthFactor -= 0.05;
+      }
+
+      if (viewLists.energyGraphs) {
+        modelWidthFactor -= 0.35;
+      }
+
+      // account for proportionally larger buttons when embeddable size gets very small
+      if (emsize <= 0.5) {
+        bottomFactor *= 0.5/emsize;
+      }
+
+      viewLists.bottomItems = $('#bottom').children().length;
+      if (viewLists.bottomItems) {
+        modelHeightFactor -= ($('#bottom').height() * bottomFactor);
+      }
+
+      modelWidth = containerWidth * modelWidthFactor;
+      modelHeight = modelWidth / modelAspectRatio;
+      if (modelHeight > containerHeight * modelHeightFactor) {
+        modelHeight = containerHeight * modelHeightFactor;
+        modelWidth = modelHeight * modelAspectRatio;
+      }
+      viewSizes.moleculeContainers = [modelWidth, modelHeight];
+      if (viewLists.energyGraphs) {
+        viewSizes.energyGraphs = [containerWidth * 0.40];
+      }
+
+      // Resize moleculeContainer first to determine actual container height for right-side
+      // Probably a way to do this with CSS ...
+      viewLists.moleculeContainers[0].resize(modelWidth, modelHeight);
+
+      modelHeight = $("#molecule-container").height();
+      $("#rightwide").height(modelHeight);
+
+      if (viewLists.barGraphs) {
+        // Keep width of the bar graph proportional to its height.
+        viewSizes.barGraphs = [35 + modelHeight * 0.22];
+      }
+
+      for (viewType in viewLists) {
+        if (viewType === "moleculeContainers") continue
+        if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
+          i = -1;  while(++i < viewLists[viewType].length) {
+            if (viewSizes[viewType]) {
+              viewLists[viewType][i].resize(viewSizes[viewType][0], viewSizes[viewType][1]);
+            } else {
+              viewLists[viewType][i].resize();
+            }
+          }
+        }
+      }
+    }
+
+    //
+    //
+    // Interactive authoring iframe Screen Layout
+    //
+    function setupInteractiveAuthorIFrameScreen() {
+      var i,
+          modelWidth,
+          modelHeight,
+          modelDimensions,
+          modelAspectRatio,
+          modelWidthFactor,
+          modelPaddingFactor,
+          modelHeightFactor = 0.85,
+          bottomFactor = 0.0015,
+          viewSizes = {},
+          containerWidth = $("#content").width(),
+          containerHeight = $("#content").height(),
+          modelHeight;
+
+      modelDimensions = viewLists.moleculeContainers[0].scale();
+      modelAspectRatio = modelDimensions[2] / modelDimensions[3];
+      modelWidthFactor = 0.85;
+
+      modelWidthPaddingFactor = modelDimensions[0]/modelDimensions[2] - 1.05;
+      modelWidthFactor -= modelWidthPaddingFactor;
+
+      modelHeightPaddingFactor = modelDimensions[1]/modelDimensions[3] - 1.05;
+      modelHeightFactor -= modelHeightPaddingFactor;
+
+      if (viewLists.thermometers) {
+        modelWidthFactor -= 0.05;
+      }
+
+      if (viewLists.barGraphs) {
+        modelWidthFactor -= 0.15;
       }
 
       if (viewLists.energyGraphs) {

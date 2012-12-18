@@ -40,6 +40,7 @@ var ROOT = "/examples",
       $shareIframeContent = $("#share-iframe-content"),
       $shareSelectIframeSize = $("#share-select-iframe-size"),
 
+      $editor = $("#editor"),
       $editorExtrasItem = $("editor.extras-item"),
       $showEditor = $("#show-editor"),
       $editorContent = $("#editor-content"),
@@ -109,7 +110,12 @@ var ROOT = "/examples",
       if ($selectInteractive.length) {
         applicationCallbacks = [setupFullPage];
       } else {
-        viewType = 'interactive-iframe';
+        if ($editor.length) {
+          viewType = 'interactive-author-iframe';
+          applicationCallbacks = [setupEmbeddableAuthorPage];
+        } else {
+          viewType = 'interactive-iframe';
+        }
       }
 
       interactiveDefinitionLoaded.resolve();
@@ -300,7 +306,7 @@ var ROOT = "/examples",
     groups = _.filter(interactiveDescriptions.groups, function(group) {
       var curriculumFilter = $("#curriculum-filter").is(':checked'),
           examplesFilter = $("#examples-filter").is(':checked'),
-          benchmarksFilter = $("#benchmarks-filter").is(':checked')
+          benchmarksFilter = $("#benchmarks-filter").is(':checked'),
           testsFilter = $("#tests-filter").is(':checked');
       if (group.category === "Samples") return true;
       if (curriculumFilter && group.category === "Curriculum") return true;
@@ -340,6 +346,16 @@ var ROOT = "/examples",
     } else {
       $selectInteractive.val(interactiveUrl);
     }
+  }
+
+  function setupEmbeddableAuthorPage() {
+    var origin;
+    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
+
+    jsonModelPath = interactive.models[0].url;
+    $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
+
+    setupCodeEditor();
   }
 
   function setupFullPage() {
