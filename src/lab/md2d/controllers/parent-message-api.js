@@ -7,8 +7,6 @@ define(function(require) {
   return function(model) {
     parentMessageController.removeAllListeners();
 
-    console.log('setting api');
-
     function sendPropertyValue(propertyName) {
       parentMessageController.post({
         type: 'propertyValue',
