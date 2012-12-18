@@ -427,11 +427,16 @@ var ROOT = "/examples",
     //
     // Extras
     //
+    setupCodeEditor();
+    setupBenchmarks();
+    setupEnergyGraph();
+    setupAtomDataTable();
+  }
 
-    //
-    // Interactive Code Editor
-    //
-
+  //
+  // Interactive Code Editor
+  //
+  function setupCodeEditor() {
     $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
     foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     if (!editor) {
@@ -463,29 +468,32 @@ var ROOT = "/examples",
           $editorContent.hide(100);
         }
       }).change();
-
-      //
-      // Benchmarks
-      //
-      $showBenchmarks.change(function() {
-        if (this.checked) {
-          $benchmarksContent.show(100);
-          $showModelEnergyGraph.attr("checked", false).change();
-          $showModelDatatable.attr("checked", false).change();
-          $showEditor.attr("checked", false).change();
-        } else {
-          $benchmarksContent.hide(100);
-        }
-      }).change();
-
-      $runBenchmarksButton.on('click', function() {
-        benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun, function() {
-          $runBenchmarksButton.attr('disabled', true);
-        }, function() {
-          $runBenchmarksButton.attr('disabled', false);
-        });
-      });
     }
+  }
+
+
+  //
+  // Benchmarks
+  //
+  function setupBenchmarks() {
+    $showBenchmarks.change(function() {
+      if (this.checked) {
+        $benchmarksContent.show(100);
+        $showModelEnergyGraph.attr("checked", false).change();
+        $showModelDatatable.attr("checked", false).change();
+        $showEditor.attr("checked", false).change();
+      } else {
+        $benchmarksContent.hide(100);
+      }
+    }).change();
+
+    $runBenchmarksButton.on('click', function() {
+      benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun, function() {
+        $runBenchmarksButton.attr('disabled', true);
+      }, function() {
+        $runBenchmarksButton.attr('disabled', false);
+      });
+    });
 
     benchmarksToRun = [
       {
@@ -583,11 +591,12 @@ var ROOT = "/examples",
         }
       }
     ];
+  }
 
-    //
-    // Energy Graph
-    //
-
+  //
+  // Energy Graph
+  //
+  function setupEnergyGraph() {
     if (!modelEnergyGraph) {
       renderModelEnergyGraph();
     }
@@ -696,11 +705,13 @@ var ROOT = "/examples",
         return 0;
       }
     }
+  }
 
 
-    //
-    // Atom Data Table
-    //
+  //
+  // Atom Data Table
+  //
+  function setupAtomDataTable() {
     $showModelDatatable.change(function() {
       if (this.checked) {
         model.on("tick.dataTable", renderModelDatatable);
