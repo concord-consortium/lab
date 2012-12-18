@@ -4,13 +4,13 @@ define (require) ->
   Filter implementing running average.
   This filter assumes that provided samples are samples of some unknown function.
   The function is interpolated using linear interpolation. Later, integration is
-  used to get mean @_value of the function on the given @_time period.
+  used to get mean value of the function on the given time period.
   ###
   class RunningAverageFilter
 
     ###
     Construct new Running Average Filter.
-    @periodLength - length of @_time period, in fs, which is used to calculate averaged @_value.
+    @periodLength - length of time period, in fs, which is used to calculate averaged value.
     ###
     constructor: (@periodLength) ->
       @_value = []
@@ -22,9 +22,9 @@ define (require) ->
 
     ###
     Add a new sample of a function which is going to be averaged.
-    Note that samples must be provided in order, sorted by @_time.
-    @t - @_time
-    @val - @_value of the sample
+    Note that samples must be provided in order, sorted by time.
+    @t - time
+    @val - value of the sample
     ###
     addSample: (t, val) ->
       if @_time[@_idx] == t
@@ -34,7 +34,7 @@ define (require) ->
       else if @_time[@_idx] > t
         throw new Error "RunningAverageFilter: cannot add sample with @_time less than previous sample."
 
-      # Add new @_value and @_time.
+      # Add new value and time.
       @_idx++
       @_value.push val
       @_time.push t
@@ -46,14 +46,14 @@ define (require) ->
         @_idx--
 
     ###
-    Return averaged @_value n the specified @_time period (using available samples).
+    Return averaged value n the specified time period (using available samples).
     ###
     calculate: ->
-      # To get average @_value on [t - periodLength, t], we use
-      # intuitive "first mean @_value theorem for integration". See:
+      # To get average value on [t - periodLength, t], we use
+      # intuitive "first mean value theorem for integration". See:
       # http://en.wikipedia.org/wiki/Mean_value_theorem#Mean_value_theorems_for_integration
 
-      # Limit lower bound of @_time period to 0.
+      # Limit lower bound of time period to 0.
       minTime = Math.max @_time[@_idx] - @periodLength, 0
 
       valSum = 0
@@ -79,7 +79,7 @@ define (require) ->
         minVal = @_value[i - 1] + (@_value[i] - @_value[i - 1]) * (minTime - @_time[i - 1]) / (@_time[i] - @_time[i - 1])
         valSum += timeDiff * (@_value[i] + minVal) / 2.0
 
-      # Return mean @_value using mentioned theorem.
+      # Return mean value using mentioned theorem.
       if timeSum
         valSum / timeSum
       else
@@ -98,7 +98,7 @@ define (require) ->
       @_maxBufferLength = maxLength
 
     ###
-    Return current @_time.
+    Return current time.
     ###
     getCurrentTime: ->
       @_time[@_idx]
@@ -111,7 +111,7 @@ define (require) ->
 
     ###
     Set current step to @location.
-    It allows to get average @_value of the function in various moments in @_time.
+    It allows to get average value of the function in various moments in time.
     ###
     setCurrentStep: (location) ->
       # Note that location can be -1, e.g. while reseting buffers and starting from initial state.
