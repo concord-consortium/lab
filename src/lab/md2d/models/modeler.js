@@ -527,7 +527,6 @@ define(function(require) {
           amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
           results[i].symbol = amino.symbol;
           results[i].label = amino.abbreviation;
-          results[i].hydrophobicity = amino.hydrophobicity;
         }
       }
     }
@@ -728,7 +727,7 @@ define(function(require) {
       engine.setGravitationalField(model.get('gravitationalField'));
       engine.setTargetTemperature(model.get('targetTemperature'));
       engine.setDielectricConstant(model.get('dielectricConstant'));
-      engine.setSolventForceFactor(model.get('setSolventForceFactor'));
+      engine.setSolventForceFactor(model.get('solventForceFactor'));
 
       window.state = modelOutputState = {};
 
