@@ -149,7 +149,10 @@ define(function (require, exports, module) {
         //                      Atom Properties
 
         // Individual property arrays for the atoms, indexed by atom number
-        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
+        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass, hydrophobicity,
+        // Helper array, which may be used by various engine routines traversing atoms in untypical order.
+        // Make sure that you reset it before use. At the moment, it's used by updateAminoAcidForces() function.
+        visited,
 
         // An object that contains references to the above atom-property arrays
         atoms,
@@ -523,21 +526,23 @@ define(function (require, exports, module) {
         assignShortcutReferences = {
 
           atoms: function() {
-            radius   = atoms.radius;
-            px       = atoms.px;
-            py       = atoms.py;
-            x        = atoms.x;
-            y        = atoms.y;
-            vx       = atoms.vx;
-            vy       = atoms.vy;
-            speed    = atoms.speed;
-            ax       = atoms.ax;
-            ay       = atoms.ay;
-            charge   = atoms.charge;
-            friction = atoms.friction;
-            element  = atoms.element;
-            pinned   = atoms.pinned;
-            mass     = atoms.mass;
+            radius         = atoms.radius;
+            px             = atoms.px;
+            py             = atoms.py;
+            x              = atoms.x;
+            y              = atoms.y;
+            vx             = atoms.vx;
+            vy             = atoms.vy;
+            speed          = atoms.speed;
+            ax             = atoms.ax;
+            ay             = atoms.ay;
+            charge         = atoms.charge;
+            friction       = atoms.friction;
+            element        = atoms.element;
+            pinned         = atoms.pinned;
+            mass           = atoms.mass;
+            hydrophobicity = atoms.hydrophobicity;
+            visited        = atoms.visited;
           },
 
           radialBonds: function() {
@@ -626,27 +631,29 @@ define(function (require, exports, module) {
           atoms  = engine.atoms  = {};
 
           // TODO. DRY this up by letting the property list say what type each array is
-          atoms.radius    = arrays.create(num, 0, arrayTypes.float);
-          atoms.px        = arrays.create(num, 0, arrayTypes.float);
-          atoms.py        = arrays.create(num, 0, arrayTypes.float);
-          atoms.x         = arrays.create(num, 0, arrayTypes.float);
-          atoms.y         = arrays.create(num, 0, arrayTypes.float);
-          atoms.vx        = arrays.create(num, 0, arrayTypes.float);
-          atoms.vy        = arrays.create(num, 0, arrayTypes.float);
-          atoms.speed     = arrays.create(num, 0, arrayTypes.float);
-          atoms.ax        = arrays.create(num, 0, arrayTypes.float);
-          atoms.ay        = arrays.create(num, 0, arrayTypes.float);
-          atoms.charge    = arrays.create(num, 0, arrayTypes.float);
-          atoms.friction  = arrays.create(num, 0, arrayTypes.float);
-          atoms.element   = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.pinned    = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.mass      = arrays.create(num, 0, arrayTypes.float);
+          atoms.radius         = arrays.create(num, 0, arrayTypes.float);
+          atoms.px             = arrays.create(num, 0, arrayTypes.float);
+          atoms.py             = arrays.create(num, 0, arrayTypes.float);
+          atoms.x              = arrays.create(num, 0, arrayTypes.float);
+          atoms.y              = arrays.create(num, 0, arrayTypes.float);
+          atoms.vx             = arrays.create(num, 0, arrayTypes.float);
+          atoms.vy             = arrays.create(num, 0, arrayTypes.float);
+          atoms.speed          = arrays.create(num, 0, arrayTypes.float);
+          atoms.ax             = arrays.create(num, 0, arrayTypes.float);
+          atoms.ay             = arrays.create(num, 0, arrayTypes.float);
+          atoms.charge         = arrays.create(num, 0, arrayTypes.float);
+          atoms.friction       = arrays.create(num, 0, arrayTypes.float);
+          atoms.element        = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.pinned         = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.mass           = arrays.create(num, 0, arrayTypes.float);
+          atoms.hydrophobicity = arrays.create(num, 0, arrayTypes.int8);
+          atoms.visited        = arrays.create(num, 0, arrayTypes.uint8);
           // For the sake of clarity, manage all atoms properties in one
           // place (engine). In the future, think about separation of engine
           // properties and view-oriented properties like these:
-          atoms.marked    = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.visible   = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.draggable = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.marked         = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.visible        = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.draggable      = arrays.create(num, 0, arrayTypes.uint8);
 
           assignShortcutReferences.atoms();
         },
@@ -1394,6 +1401,71 @@ define(function (require, exports, module) {
           }
         },
 
+        // Returns center of mass of given atoms set (molecule).
+        getMoleculeCenterOfMass = function (molecule) {
+          var xcm = 0,
+              ycm = 0,
+              totalMass = 0,
+              atomIdx, atomMass, i, len;
+
+          for (i = 0, len = molecule.length; i < len; i++) {
+            atomIdx = molecule[i];
+            atomMass = mass[atomIdx];
+            xcm += x[atomIdx] * atomMass;
+            ycm += y[atomIdx] * atomMass;
+            totalMass += atomMass;
+          }
+          xcm /= totalMass;
+          ycm /= totalMass;
+          return {x: xcm, y: ycm};
+        },
+
+        updateAminoAcidForces = function () {
+          // Fast path if there is no solvent defined.
+          if (solventForceFactor === 0) return;
+
+          var moleculeAtoms, atomIdx, cm,
+              dx, dy, r, fx, fy, temp, i, j, len;
+
+          // Reset helper array.
+          for (i = 0; i < N; i++) {
+            visited[i] = 0;
+          }
+
+          for (i = 0; i < N; i++) {
+            // Calculate forces only *once* for amino acid.
+            if (visited[i] === 1) continue;
+
+            moleculeAtoms = engine.getMoleculeAtoms(i);
+            moleculeAtoms.push(i);
+
+            cm = getMoleculeCenterOfMass(moleculeAtoms);
+
+            for (j = 0, len = moleculeAtoms.length; j < len; j++) {
+              atomIdx = moleculeAtoms[j];
+              // Mark that atom was part of processed molecule to avoid
+              // calculating its molecule again.
+              visited[atomIdx] = 1;
+
+              if (hydrophobicity[atomIdx] !== 0) {
+                dx = x[atomIdx] - cm.x;
+                dy = y[atomIdx] - cm.y;
+                r = Math.sqrt(dx * dx + dy * dy);
+
+                // Constants used in Classic MW: 5 * 0.00001 = 0.00005.
+                // Multiply it by 0.01 * 120 = 1.2 to convert from
+                // 0.1A * 120amu / fs^2 to nm * amu / fs^2.
+                // Hydrophobicity and solventForce factor are the same like in Classic MW.
+                temp = 0.00006 * hydrophobicity[atomIdx] * solventForceFactor;
+                fx = temp * dx / r;
+                fy = temp * dy / r;
+                ax[atomIdx] -= fx;
+                ay[atomIdx] -= fy;
+              }
+            }
+          }
+        },
+
         updateGravitationalAccelerations = function() {
           // fast path if there is no gravitationalField
           if (!gravitationalField) return;
@@ -1464,6 +1536,10 @@ define(function (require, exports, module) {
 
           // Accumulate drag forces into a(t + dt).
           updateFrictionForces();
+
+          // Apply forces caused by the hydrophobicity.
+          // Affects only amino acids in the water or oil solvent.
+          updateAminoAcidForces();
 
           // Convert ax, ay from forces to accelerations!
           for (i = 0; i < N; i++) {
@@ -1729,7 +1805,7 @@ define(function (require, exports, module) {
       },
 
       setAtomProperties: function (i, props) {
-        var key, idx, rest;
+        var key, idx, rest, amino;
 
         if (props.element !== undefined) {
           if (props.element < 0 || props.element >= N_elements) {
@@ -1744,10 +1820,12 @@ define(function (require, exports, module) {
           props.radius = elementRadius[props.element];
 
           if (aminoacidsHelper.isAminoAcid(props.element)) {
+            amino = aminoacidsHelper.getAminoAcidByElement(props.element);
             // Setup properties which are relevant to amino acids.
-            props.charge = aminoacidsHelper.getAminoAcidByElement(props.element).charge;
+            props.charge = amino.charge;
             // Note that we overwrite value set explicitly in the hash.
             // So, while setting element of atom, it's impossible to set also its charge.
+            props.hydrophobicity = amino.hydrophobicity;
           }
         }
 
