@@ -598,6 +598,9 @@ define(function (require) {
         scriptFunction = scriptFunctionMaker(shadowedGlobals, scriptingAPI, scriptSource);
       } catch (e) {
         alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
+        return function() {
+          throw new Error("Cannot run a script that could not be compiled");
+        };
       }
 
       // This function runs the script with all globals shadowed:
