@@ -407,6 +407,8 @@ define(function (require) {
               dgExportController.exportData();
             },
 
+            Math: Math,
+
             // rudimentary debugging functionality
             alert: alert,
 
@@ -418,6 +420,9 @@ define(function (require) {
             }
           };
         }());
+
+    // Make the scripting API immutable once defined
+    Object.freeze(scriptingAPI);
 
     /**
       Allow console users to try script actions
@@ -538,6 +543,7 @@ define(function (require) {
           // is executed, it contains the value 'undefined' for all the currently defined globals.
           // This prevents at least inadvertent reliance by the script on unintentinally exposed
           // globals.
+
       var shadowedGlobals = {},
 
           // First n-1 arguments to this function are the names of the arguments to the script.
@@ -551,6 +557,31 @@ define(function (require) {
           scriptFunction;
 
       if (typeof scriptSource !== 'string') scriptSource = scriptSource.join('      \n');
+
+      // Make shadowedGlobals contain keys for all globals (properties of 'window')
+      // Also make set and get of any such property throw a ReferenceError exactly like
+      // reading or writing an undeclared variable in strict mode.
+      function setShadowedGlobals() {
+        var keys = Object.getOwnPropertyNames(window),
+            key,
+            i,
+            len,
+            err;
+
+        for (i = 0, len = keys.length; i < len; i++) {
+          key = keys[i];
+          if (!shadowedGlobals.hasOwnProperty(key)) {
+            err = (function(key) {
+              return function() { throw new ReferenceError(key + " is not defined"); };
+            }(key));
+
+            Object.defineProperty(shadowedGlobals, key, {
+              set: err,
+              get: err
+            });
+          }
+        }
+      }
 
       scriptFunctionMakerSource =
         "with (shadowedGlobals) {\n" +
@@ -571,22 +602,7 @@ define(function (require) {
 
       // This function runs the script with all globals shadowed:
       return function() {
-        var prop;
-
-        // TODO: use Object.defineProperty to prevent reading or writing shadowed globals?
-        for (prop in window) {
-          if (window.hasOwnProperty(prop)) {
-            shadowedGlobals[prop] = undefined;
-          }
-        }
-        // Also deal with edge case of names that *were* global last time around but aren't now
-        // and that were somehow written to by the script.
-        for (prop in shadowedGlobals) {
-          if (shadowedGlobals.hasOwnProperty(prop)) {
-            shadowedGlobals[prop] = undefined;
-          }
-        }
-
+        setShadowedGlobals();
         try {
           // invoke the script, passing only enough arguments for the whitelisted names
           return scriptFunction.apply(null, Array.prototype.slice.call(arguments));
