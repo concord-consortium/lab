@@ -38,6 +38,26 @@
       ]
     },
     {
+      "type": "slider",
+      "id": "solvent-force-factor-slider",
+      "title": "Solvent Force Factor",
+      "min": 0,
+      "max": 3,
+      "steps": 300,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 3,
+          "label": "3"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "solventForceFactor"
+    },
+    {
       "type": "pulldown",
       "id": "select-color-scheme",
       "options": [
