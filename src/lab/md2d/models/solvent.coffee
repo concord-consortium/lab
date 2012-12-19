@@ -2,15 +2,15 @@ define (require) ->
 
   TYPES =
     vacuum:
-      forceFactor: 0
+      forceType: 0
       dielectricConstant: 1
       color: "#eee"
     oil:
-      forceFactor: -1
+      forceType: -1
       dielectricConstant: 10
       color: "#f5f1dd"
     water:
-      forceFactor: 1
+      forceType: 1
       dielectricConstant: 80
       color: "#cee7e4"
 

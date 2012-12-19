@@ -252,15 +252,15 @@ parseMML = (mmlString) ->
     backgroundColor = "rgba(#{bgColors[0]},#{bgColors[1]},#{bgColors[2]},#{bgColors[3]})" if bgColors.length == 4
 
     ###
-      Find the solvent force factor.
+      Find the solvent force type.
       In Classic MW it's a type of solvent. However, to avoid confusion in Next Gen MW
-      it's named 'solventForceFactor', as it affects force driving amino acids. We do not
-      store solvent name explicitly as it's redundant information. Solvent specify
-      'solventForceFactor', 'dielectricConstant' and 'backgroundColor'. See:
+      it's named 'solventForceType', as it affects force driving amino acids. We do not
+      store solvent name explicitly as it's redundant information. The solvent specifies
+      'solventForceType', 'dielectricConstant' and 'backgroundColor'. See:
       md2d/models/solvent.coffee and md2d/models/modeler.#setSolvent(solventName)
     ###
     $solvent = $mml "[property=solvent] .org-concord-mw2d-models-Solvent"
-    solventForceFactor = getIntProperty $solvent, "type", "short"
+    solventForceType = getIntProperty $solvent, "type", "short"
 
     ###
       Find the chargeShading
@@ -713,7 +713,7 @@ parseMML = (mmlString) ->
       viewRefreshInterval : viewRefreshInterval
       timeStep            : timeStep
       dielectricConstant  : dielectricConstant
-      solventForceFactor  : solventForceFactor
+      solventForceType    : solventForceType
 
     # Unit conversion performed on undefined values can convert them to NaN.
     # Revert back all NaNs to undefined, as they will be replaced by default values.

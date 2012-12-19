@@ -100,7 +100,10 @@ define(function (require, exports, module) {
         // Parameter that reflects the watery extent of the solvent, when an effective
         // hydrophobic/hydrophilic interaction is used. A negative value represents oil environment
         // (usually -1). A positive one represents water environment (usually 1). A zero value means vacuum.
-        solventForceFactor = 0,
+        solventForceType = 0,
+
+        // Parameter that influences strength of force applied to amino acids by water of oil (solvent).
+        solventForceFactor = 1,
 
         // Whether any atoms actually have charges
         hasChargedAtoms = false,
@@ -1404,16 +1407,24 @@ define(function (require, exports, module) {
         },
 
         updateAminoAcidForces = function () {
-          // Fast path if there is no solvent defined.
-          if (solventForceFactor === 0) return;
+          // Fast path if there is no solvent defined or it doesn't have impact on AAs.
+          if (solventForceType === 0 || solventForceFactor === 0) return;
 
-          var moleculeAtoms, atomIdx, cm,
+          var moleculeAtoms, atomIdx, cm, solventFactor,
               dx, dy, r, fx, fy, temp, i, j, len;
 
           // Reset helper array.
           for (i = 0; i < N; i++) {
             visited[i] = 0;
           }
+
+          // Set multiplier of force produced by the solvent.
+          // Constants used in Classic MW: 5 * 0.00001 = 0.00005.
+          // Multiply it by 0.01 * 120 = 1.2 to convert from
+          // 0.1A * 120amu / fs^2 to nm * amu / fs^2.
+          // solventForceType is the same like in Classic MW (unitless).
+          // solventForceFactor is a new variable used only in Next Gen MW.
+          solventFactor = 0.00006 * solventForceType * solventForceFactor;
 
           for (i = 0; i < N; i++) {
             // Calculate forces only *once* for amino acid.
@@ -1435,11 +1446,7 @@ define(function (require, exports, module) {
                 dy = y[atomIdx] - cm.y;
                 r = Math.sqrt(dx * dx + dy * dy);
 
-                // Constants used in Classic MW: 5 * 0.00001 = 0.00005.
-                // Multiply it by 0.01 * 120 = 1.2 to convert from
-                // 0.1A * 120amu / fs^2 to nm * amu / fs^2.
-                // Hydrophobicity and solventForce factor are the same like in Classic MW.
-                temp = 0.00006 * hydrophobicity[atomIdx] * solventForceFactor;
+                temp = hydrophobicity[atomIdx] * solventFactor;
                 fx = temp * dx / r;
                 fy = temp * dy / r;
                 ax[atomIdx] -= fx;
@@ -1802,6 +1809,10 @@ define(function (require, exports, module) {
 
       setDielectricConstant: function(dc) {
         dielectricConst = dc;
+      },
+
+      setSolventForceType: function(sft) {
+        solventForceType = sft;
       },
 
       setSolventForceFactor: function(sff) {
@@ -2649,7 +2660,7 @@ define(function (require, exports, module) {
           // that the total momentum of each molecule is equal to zero.
           // This prevents amino acids chains from drifting towards one
           // boundary of the model.
-          if (solventForceFactor !== 0) {
+          if (solventForceType !== 0) {
             zeroTotalMomentumOfMolecules();
           }
 

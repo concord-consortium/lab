@@ -122,6 +122,13 @@ define(function(require) {
             }
           },
 
+          set_solventForceType: function(s) {
+            this.solventForceType = s;
+            if (engine) {
+              engine.setSolventForceType(s);
+            }
+          },
+
           set_solventForceFactor: function(s) {
             this.solventForceFactor = s;
             if (engine) {
@@ -727,6 +734,7 @@ define(function(require) {
       engine.setGravitationalField(model.get('gravitationalField'));
       engine.setTargetTemperature(model.get('targetTemperature'));
       engine.setDielectricConstant(model.get('dielectricConstant'));
+      engine.setSolventForceType(model.get('solventForceType'));
       engine.setSolventForceFactor(model.get('solventForceFactor'));
 
       window.state = modelOutputState = {};
@@ -1351,7 +1359,7 @@ define(function(require) {
     model.setSolvent = function (solventName) {
       var solvent = new Solvent(solventName),
           props = {
-            solventForceFactor: solvent.forceFactor,
+            solventForceType: solvent.forceType,
             dielectricConstant: solvent.dielectricConstant,
             backgroundColor: solvent.color
           };

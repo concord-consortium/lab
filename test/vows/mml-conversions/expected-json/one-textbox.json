@@ -9,7 +9,8 @@
   "viewRefreshInterval": 50,
   "timeStep": 1,
   "dielectricConstant": 1,
-  "solventForceFactor": 0,
+  "solventForceType": 0,
+  "solventForceFactor": 1,
   "viewOptions": {
     "backgroundColor": "rgba(225,239,222,255)",
     "keShading": false,

@@ -37,6 +37,12 @@ define(function() {
         defaultValue: 1
       },
       solventForceFactor: {
+        defaultValue: 1
+      },
+      solventForceType: {
+        //  0 - vacuum.
+        //  1 - water.
+        // -1 - oil.
         defaultValue: 0
       },
       viscosity: {
