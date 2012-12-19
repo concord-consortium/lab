@@ -1,0 +1,69 @@
+{
+  "title": "Amino Acids Momentum Test",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "amino-acids$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/amino-acids-momentum$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "select-solvent",
+      "options": [
+        {
+          "text": "Select the solvent type",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "vacuum",
+          "action": "setSolvent('vacuum');"
+        },
+        {
+          "text": "oil",
+          "action": "setSolvent('oil');"
+        },
+        {
+          "text": "water",
+          "action": "setSolvent('water');"
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "select-color-scheme",
+      "options": [
+        {
+          "text": "Select the color scheme for the amino acids",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "none",
+          "action": "set({aminoAcidColorScheme: 'none'});"
+        },
+        {
+          "text": "charge",
+          "action": "set({aminoAcidColorScheme: 'charge'});"
+        },
+        {
+          "text": "hydrophobicity",
+          "action": "set({aminoAcidColorScheme: 'hydrophobicity'});"
+        },
+        {
+          "text": "lego",
+          "action": "set({aminoAcidColorScheme: 'lego'});"
+        }
+      ]
+    }
+  ],
+  "layout": {}
+}
