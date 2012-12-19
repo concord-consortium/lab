@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>From DNA to Proteins: Working as a Ribosome</page_title>
+<referenced_files>CopyProteinSequence.html</referenced_files>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text> 
+ 
+
+  
+
+ 
+ 
+ 
+ 
+
+    
+
+ 
+   
+ 
+
+ 
+
+</text>
+<section start="0" end="37">
+<paragraph start="0" end="2">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;5&quot; color=&quot;#FFFFFF&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;From 
+    DNA to Proteins:&lt;/strong&gt; Doing the Work of a Ribosome&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table id=&quot;Table_01&quot; cellpadding=&quot;0&quot; width=&quot;100%&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;60&quot; border=&quot;0&quot; src=&quot;prev.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;59&quot; border=&quot;0&quot; src=&quot;next.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; src=&quot;page.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; border=&quot;0&quot; src=&quot;index.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page1.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page2.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page3.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; border=&quot;0&quot; src=&quot;page4Selected.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page5.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page6.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page7.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; border=&quot;0&quot; src=&quot;page8.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page9.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img width=&quot;25&quot; border=&quot;0&quot; src=&quot;page10.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="8">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="5" end="6">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>90</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;58&quot; src=&quot;atomMainIdea.png&quot; width=&quot;98&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Now it&apos;s 
+          your turn to perform the work of a ribosome and translate the DNA 
+          sequence into amino acids. Use the table below to work it out.&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="6" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="11">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>160.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;In the model 
+    below, the DNA has already been transcribed to mRNA. Your job is to 
+    translate the mRNA into protein using a table (below) that shows the 
+    genetic code. &lt;b&gt;Clicking on a codon in the table will insert an amino 
+    acid into the protein - if it is the correct codon. &lt;/b&gt;&lt;/font&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;To 
+        translate each codon, start with the first letter, where the table 
+        says &amp;quot;1st base&amp;quot;. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;In that 
+        row, move across to the column that has the second base. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;In that 
+        box, click on the codon with the correct third base. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Repeat 
+        until you&apos;ve translated the entire mRNA.&lt;/font&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>340.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        a { text-decoration: none }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;5&quot; face=&quot;verdana&quot; marginheight=&quot;0&quot;&gt;
+    &lt;center&gt;
+      &lt;font size=&quot;2&quot;&gt;&lt;b&gt;Genetic code table&lt;/b&gt;&lt;/font&gt; 
+
+      &lt;table border=&quot;1&quot; width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;td colspan=&quot;2&quot; rowspan=&quot;2&quot;&gt;
+            
+          &lt;/td&gt;
+          &lt;th colspan=&quot;4&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;2nd base&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;U&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;C&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;A&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;G &lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th rowspan=&quot;4&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;1st&lt;br&gt;base &lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;U&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate UUU&quot;&gt;UUU&amp;#160; &amp;#160;Phe&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UUC&quot;&gt;UUC&amp;#160; 
+            &amp;#160;Phe&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UUA&quot;&gt;UUA&amp;#160; &amp;#160;Leu&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UUG&quot;&gt;UUG&amp;#160; 
+            &amp;#160;Leu&lt;/a&gt;&lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate UCU&quot;&gt;UCU&amp;#160; &amp;#160;Ser&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UCC&quot;&gt;UCC&amp;#160; 
+            &amp;#160;Ser&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UCA&quot;&gt;UCA&amp;#160; &amp;#160;Ser&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UCG&quot;&gt;UCG&amp;#160; 
+            &amp;#160;Ser&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate UAU&quot;&gt;UAU&amp;#160; &amp;#160;Tyr&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UAC&quot;&gt;UAC&amp;#160; 
+            &amp;#160;Tyr&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UAA&quot;&gt;UAA&amp;#160; &amp;#160;&lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;script:mw2d:1:translate UAA&quot;&gt;&lt;font size=&quot;2&quot; color=&quot;red&quot;&gt;Stop&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UAG&quot;&gt;UAG&amp;#160; 
+            &amp;#160;&lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;script:mw2d:1:translate UAG&quot;&gt;&lt;font size=&quot;2&quot; color=&quot;red&quot;&gt;Stop&lt;/font&gt;&lt;/a&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate UGU&quot;&gt;UGU&amp;#160; &amp;#160;Cys&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UGC&quot;&gt;UGC&amp;#160; 
+            &amp;#160;Cys&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UGA&quot;&gt;UGA&amp;#160; &amp;#160;&lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;script:mw2d:1:translate UGA&quot;&gt;&lt;font size=&quot;2&quot; color=&quot;red&quot;&gt;Stop&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UGG&quot;&gt;UGG&amp;#160; 
+            &amp;#160;Trp&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;C&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate CUU&quot;&gt;CUU&amp;#160; &amp;#160;Leu&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CUC&quot;&gt;CUC&amp;#160; 
+            &amp;#160;Leu&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CUA&quot;&gt;CUA&amp;#160; &amp;#160;Leu&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CUG&quot;&gt;CUG&amp;#160; 
+            &amp;#160;Leu&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate CCU&quot;&gt;CCU&amp;#160; &amp;#160;Pro&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CCC&quot;&gt;CCC&amp;#160; 
+            &amp;#160;Pro&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CCA&quot;&gt;CCA&amp;#160; &amp;#160;Pro&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CCG&quot;&gt;CCG&amp;#160; 
+            &amp;#160;Pro&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate CAU&quot;&gt;CAU&amp;#160; &amp;#160;His&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CAC&quot;&gt;CAC&amp;#160; 
+            &amp;#160;His&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CAA&quot;&gt;CAA&amp;#160; &amp;#160;Gln&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CAG&quot;&gt;CAG&amp;#160; 
+            &amp;#160;Gln&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate CGU&quot;&gt;CGU&amp;#160; &amp;#160;Arg&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CGC&quot;&gt;CGC&amp;#160; 
+            &amp;#160;Arg&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CGA&quot;&gt;CGA&amp;#160; &amp;#160;Arg&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CGG&quot;&gt;CGG&amp;#160; 
+            &amp;#160;Arg&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;A&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate AUU&quot;&gt;AUU&amp;#160; &amp;#160;Ile&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AUC&quot;&gt;AUC&amp;#160; 
+            &amp;#160;Ile&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AUA&quot;&gt;AUA&amp;#160; &amp;#160;Ile&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AUG&quot;&gt;AUG&amp;#160; 
+            &amp;#160;Met&lt;/a&gt;&lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate ACU&quot;&gt;ACU&amp;#160; &amp;#160;Thr&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate ACC&quot;&gt;ACC&amp;#160; 
+            &amp;#160;Thr&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate ACA&quot;&gt;ACA&amp;#160; &amp;#160;Thr&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate ACG&quot;&gt;ACG&amp;#160; 
+            &amp;#160;Thr&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate AAU&quot;&gt;AAU&amp;#160; &amp;#160;Asn&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AAC&quot;&gt;AAC&amp;#160; 
+            &amp;#160;Asn&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AAA&quot;&gt;AAA&amp;#160; &amp;#160;Lys&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AAG&quot;&gt;AAG&amp;#160; 
+            &amp;#160;Lys&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate AGU&quot;&gt;AGU&amp;#160; &amp;#160;Ser&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AGC&quot;&gt;AGC&amp;#160; 
+            &amp;#160;Ser&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AGA&quot;&gt;AGA&amp;#160; &amp;#160;Arg&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AGG&quot;&gt;AGG&amp;#160; 
+            &amp;#160;Arg&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;G&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate GUU&quot;&gt;GUU&amp;#160; &amp;#160;Val&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GUC&quot;&gt;GUC&amp;#160; 
+            &amp;#160;Val&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GUA&quot;&gt;GUA&amp;#160; &amp;#160;Val&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GUG&quot;&gt;GUG&amp;#160; 
+            &amp;#160;Val&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate GCU&quot;&gt;GCU&amp;#160; &amp;#160;Ala&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GCC&quot;&gt;GCC&amp;#160; 
+            &amp;#160;Ala&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GCA&quot;&gt;GCA&amp;#160; &amp;#160;Ala&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GCG&quot;&gt;GCG&amp;#160; 
+            &amp;#160;Ala&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate GAU&quot;&gt;GAU&amp;#160; &amp;#160;Asp&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GAC&quot;&gt;GAC&amp;#160; 
+            &amp;#160;Asp&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GAA&quot;&gt;GAA&amp;#160; &amp;#160;Glu&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GAG&quot;&gt;GAG&amp;#160; 
+            &amp;#160;Glu&lt;/a&gt;&lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw2d:1:translate GGU&quot;&gt;GGU&amp;#160; &amp;#160;Gly&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GGC&quot;&gt;GGC&amp;#160; 
+            &amp;#160;Gly&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GGA&quot;&gt;GGA&amp;#160; &amp;#160;Gly&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GGG&quot;&gt;GGG&amp;#160; 
+            &amp;#160;Gly&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="15">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page4$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+<dna>ATGTTGACTCTAACTCGCATCCGCACTGTGTAG</dna><dna_dt1>20</dna_dt1><dna_dt2>1000</dna_dt2><dna_context>false</dna_context></component></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="17">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot without description</action>
+</component></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="23">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="18" end="19">
+<component><class>org.concord.modeler.ImageQuestion</class><width>380</width><height>300</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;5&quot; face=&quot;Arial&quot; marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;b&gt;Insert a snapshot of the protein you translated.&lt;/b&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="19" end="21">
+</content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>360</width>
+<height>300</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;5&quot; marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;What is the 
+    function of the final codon in the mRNA of this model?&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="26">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+<size>8</size><icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>16</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="25" end="26">
+<size>8</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="26" end="30">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>494.0</width><height>44</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;center&quot;&gt;
+      &lt;strong&gt;You have reached the end of Day 1.&lt;br&gt;Please submit a report.&lt;/strong&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="27" end="28">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<description>From DNA to Proteins: Day One</description>
+<group>page1.cml,page2.cml,page3.cml,page4.cml</group>
+<width>206</width><height>40</height>
+<action>Create a report for a page group in a new window</action></component></content>
+
+<content start="28" end="29">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>50.0</width><height>44</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="29" end="30">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="30" end="32">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<size>8</size><icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>16</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="32" end="33">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="33" end="35">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table id=&quot;Table_01&quot; cellpadding=&quot;0&quot; width=&quot;100%&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;60&quot; border=&quot;0&quot; src=&quot;prev.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;59&quot; border=&quot;0&quot; src=&quot;next.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; src=&quot;page.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; border=&quot;0&quot; src=&quot;index.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page1.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page2.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page3.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; border=&quot;0&quot; src=&quot;page4Selected.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page5.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page6.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page7.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; border=&quot;0&quot; src=&quot;page8.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; src=&quot;page9.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img width=&quot;25&quot; border=&quot;0&quot; src=&quot;page10.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+</paragraph>
+</section>
+</document>

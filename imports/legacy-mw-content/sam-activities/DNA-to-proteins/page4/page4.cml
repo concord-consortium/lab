@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>From DNA to Proteins: Working as a Ribosome</page_title>
+<referenced_files>CopyProteinSequence.html</referenced_files>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text> 
+ 
+ 
+ 
+</text>
+<section start="0" end="9">
+<paragraph start="0" end="2">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="1">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>160.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;In the model 
+    below, the DNA has already been transcribed to mRNA. Your job is to 
+    translate the mRNA into protein using a table (below) that shows the 
+    genetic code. &lt;b&gt;Clicking on a codon in the table will insert an amino 
+    acid into the protein - if it is the correct codon. &lt;/b&gt;&lt;/font&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;To 
+        translate each codon, start with the first letter, where the table 
+        says &amp;quot;1st base&amp;quot;. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;In that 
+        row, move across to the column that has the second base. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;In that 
+        box, click on the codon with the correct third base. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Repeat 
+        until you&apos;ve translated the entire mRNA.&lt;/font&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>340.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        a { text-decoration: none }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;5&quot; face=&quot;verdana&quot;&gt;
+    &lt;center&gt;
+      &lt;font size=&quot;2&quot;&gt;&lt;b&gt;Genetic code table&lt;/b&gt;&lt;/font&gt; 
+
+      &lt;table width=&quot;100%&quot; border=&quot;1&quot;&gt;
+        &lt;tr&gt;
+          &lt;td colspan=&quot;2&quot; rowspan=&quot;2&quot;&gt;
+            
+          &lt;/td&gt;
+          &lt;th colspan=&quot;4&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;2nd base&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;U&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;C&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;A&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;G &lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th rowspan=&quot;4&quot;&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;1st&lt;br&gt;base &lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;U&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate UUU&quot;&gt;&lt;font size=&quot;2&quot;&gt;UUU&amp;#160; &amp;#160;Phe&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UUC&quot;&gt;UUC&amp;#160; 
+            &amp;#160;Phe&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UUA&quot;&gt;UUA&amp;#160; &amp;#160;Leu&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UUG&quot;&gt;UUG&amp;#160; 
+            &amp;#160;Leu&lt;/a&gt;&lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate UCU&quot;&gt;&lt;font size=&quot;2&quot;&gt;UCU&amp;#160; &amp;#160;Ser&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UCC&quot;&gt;UCC&amp;#160; 
+            &amp;#160;Ser&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UCA&quot;&gt;UCA&amp;#160; &amp;#160;Ser&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UCG&quot;&gt;UCG&amp;#160; 
+            &amp;#160;Ser&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate UAU&quot;&gt;&lt;font size=&quot;2&quot;&gt;UAU&amp;#160; &amp;#160;Tyr&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UAC&quot;&gt;UAC&amp;#160; 
+            &amp;#160;Tyr&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UAA&quot;&gt;UAA&amp;#160; &amp;#160;&lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;script:mw2d:1:translate UAA&quot;&gt;&lt;font color=&quot;red&quot; size=&quot;2&quot;&gt;Stop&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UAG&quot;&gt;UAG&amp;#160; 
+            &amp;#160;&lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;script:mw2d:1:translate UAG&quot;&gt;&lt;font color=&quot;red&quot; size=&quot;2&quot;&gt;Stop&lt;/font&gt;&lt;/a&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate UGU&quot;&gt;&lt;font size=&quot;2&quot;&gt;UGU&amp;#160; &amp;#160;Cys&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UGC&quot;&gt;UGC&amp;#160; 
+            &amp;#160;Cys&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UGA&quot;&gt;UGA&amp;#160; &amp;#160;&lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;script:mw2d:1:translate UGA&quot;&gt;&lt;font color=&quot;red&quot; size=&quot;2&quot;&gt;Stop&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate UGG&quot;&gt;UGG&amp;#160; 
+            &amp;#160;Trp&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;C&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate CUU&quot;&gt;&lt;font size=&quot;2&quot;&gt;CUU&amp;#160; &amp;#160;Leu&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CUC&quot;&gt;CUC&amp;#160; 
+            &amp;#160;Leu&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CUA&quot;&gt;CUA&amp;#160; &amp;#160;Leu&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CUG&quot;&gt;CUG&amp;#160; 
+            &amp;#160;Leu&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate CCU&quot;&gt;&lt;font size=&quot;2&quot;&gt;CCU&amp;#160; &amp;#160;Pro&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CCC&quot;&gt;CCC&amp;#160; 
+            &amp;#160;Pro&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CCA&quot;&gt;CCA&amp;#160; &amp;#160;Pro&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CCG&quot;&gt;CCG&amp;#160; 
+            &amp;#160;Pro&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate CAU&quot;&gt;&lt;font size=&quot;2&quot;&gt;CAU&amp;#160; &amp;#160;His&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CAC&quot;&gt;CAC&amp;#160; 
+            &amp;#160;His&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CAA&quot;&gt;CAA&amp;#160; &amp;#160;Gln&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CAG&quot;&gt;CAG&amp;#160; 
+            &amp;#160;Gln&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate CGU&quot;&gt;&lt;font size=&quot;2&quot;&gt;CGU&amp;#160; &amp;#160;Arg&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CGC&quot;&gt;CGC&amp;#160; 
+            &amp;#160;Arg&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CGA&quot;&gt;CGA&amp;#160; &amp;#160;Arg&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate CGG&quot;&gt;CGG&amp;#160; 
+            &amp;#160;Arg&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;A&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate AUU&quot;&gt;&lt;font size=&quot;2&quot;&gt;AUU&amp;#160; &amp;#160;Ile&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AUC&quot;&gt;AUC&amp;#160; 
+            &amp;#160;Ile&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AUA&quot;&gt;AUA&amp;#160; &amp;#160;Ile&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AUG&quot;&gt;AUG&amp;#160; 
+            &amp;#160;Met&lt;/a&gt;&lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate ACU&quot;&gt;&lt;font size=&quot;2&quot;&gt;ACU&amp;#160; &amp;#160;Thr&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate ACC&quot;&gt;ACC&amp;#160; 
+            &amp;#160;Thr&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate ACA&quot;&gt;ACA&amp;#160; &amp;#160;Thr&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate ACG&quot;&gt;ACG&amp;#160; 
+            &amp;#160;Thr&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate AAU&quot;&gt;&lt;font size=&quot;2&quot;&gt;AAU&amp;#160; &amp;#160;Asn&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AAC&quot;&gt;AAC&amp;#160; 
+            &amp;#160;Asn&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AAA&quot;&gt;AAA&amp;#160; &amp;#160;Lys&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AAG&quot;&gt;AAG&amp;#160; 
+            &amp;#160;Lys&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate AGU&quot;&gt;&lt;font size=&quot;2&quot;&gt;AGU&amp;#160; &amp;#160;Ser&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AGC&quot;&gt;AGC&amp;#160; 
+            &amp;#160;Ser&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AGA&quot;&gt;AGA&amp;#160; &amp;#160;Arg&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate AGG&quot;&gt;AGG&amp;#160; 
+            &amp;#160;Arg&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;
+            &lt;font size=&quot;2&quot;&gt;&lt;b&gt;G&lt;/b&gt;&lt;/font&gt;
+          &lt;/th&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate GUU&quot;&gt;&lt;font size=&quot;2&quot;&gt;GUU&amp;#160; &amp;#160;Val&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GUC&quot;&gt;GUC&amp;#160; 
+            &amp;#160;Val&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GUA&quot;&gt;GUA&amp;#160; &amp;#160;Val&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GUG&quot;&gt;GUG&amp;#160; 
+            &amp;#160;Val&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate GCU&quot;&gt;&lt;font size=&quot;2&quot;&gt;GCU&amp;#160; &amp;#160;Ala&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GCC&quot;&gt;GCC&amp;#160; 
+            &amp;#160;Ala&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GCA&quot;&gt;GCA&amp;#160; &amp;#160;Ala&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GCG&quot;&gt;GCG&amp;#160; 
+            &amp;#160;Ala&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate GAU&quot;&gt;&lt;font size=&quot;2&quot;&gt;GAU&amp;#160; &amp;#160;Asp&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GAC&quot;&gt;GAC&amp;#160; 
+            &amp;#160;Asp&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GAA&quot;&gt;GAA&amp;#160; &amp;#160;Glu&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GAG&quot;&gt;GAG&amp;#160; 
+            &amp;#160;Glu&lt;/a&gt;&lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;a href=&quot;script:mw2d:1:translate GGU&quot;&gt;&lt;font size=&quot;2&quot;&gt;GGU&amp;#160; &amp;#160;Gly&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GGC&quot;&gt;GGC&amp;#160; 
+            &amp;#160;Gly&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GGA&quot;&gt;GGA&amp;#160; &amp;#160;Gly&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw2d:1:translate GGG&quot;&gt;GGG&amp;#160; 
+            &amp;#160;Gly&lt;/a&gt; &lt;/font&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page4$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+<dna>ATGTTGACTCTAACTCGCATCCGCACTGTGTAG</dna><dna_dt1>20</dna_dt1><dna_dt2>1000</dna_dt2><dna_context>false</dna_context></component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot without description</action>
+</component></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+</paragraph>
+</section>
+</document>

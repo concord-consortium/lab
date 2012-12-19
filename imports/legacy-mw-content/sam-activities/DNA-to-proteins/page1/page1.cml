@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>From DNA to Proteins: Introduction</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+ 
+ 
+</text>
+<section start="0" end="6">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageJContainer</class>
+<appletjar>JmolApplet.jar</appletjar>
+<appletjar>netscape.jar</appletjar>
+<appletclass>org.jmol.applet.MwPlugin</appletclass>
+<resource>page1$plugin$0.aps</resource><parameter>{name=&quot;load&quot; value=&quot;dna1.pdb&quot;}
+{name=&quot;nostatepersistence&quot; value=&quot;true&quot;}
+{name=&quot;script&quot; value=&quot;script dna-horizontal.spt; set echo myecho 0% 0%
+echo To rotate, click and drag. To zoom, hold down the SHIFT key while dragging.
+color echo [x999999]
+font echo 14 sans bold&quot;}
+</parameter>
+<width>700</width><height>350</height>
+<border>Raised Etched</border><codebase>http://mw2.concord.org/public/plugin/</codebase><cachefile>dna-horizontal.spt, all-off.spt</cachefile></component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>700.0</width>
+<height>160.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .pagetitle { margin-top: 0px; font-size: 14px; margin-right: 0px; margin-left: 0px; color: #FFFFFF; margin-bottom: 0px; font-family: Verdana, Arial, Helvetica, sans-serif }
+        body { font-family: Verdana, Arial, Helvetica, sans-serif }
+        .mainidea { margin-top: 0px; font-size: 11px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px; font-family: Verdana, Arial, Helvetica, sans-serif }
+        body.mainidea { margin-top: 5px }
+        p { font-size: 11px }
+        ul { list-style-image: file:/Users/freichsman/Documents/Projects/Concord/RITES/proposed%20activities/DNA%20structure/listBullet.png }
+        table p { margin-top: 11px; font-size: 11px }
+        li { font-size: 11px }
+        .firstp { margin-top: 0px; font-size: 11px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px }
+        .question { margin-top: 0px; font-weight: bold; font-size: 11px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px; font-family: Arial, Helvetica, sans-serif }
+        body.subhead { background-image: subHeadingBackground.png }
+        body.question { margin-top: 5px; background-color: #e6e6e6; margin-left: 5px; margin-bottom: 5px }
+        .subhead { margin-top: 0px; font-weight: bold; font-size: 14px; margin-right: 0px; margin-left: 0px; color: #5c7b67; margin-bottom: 0px; font-family: Verdana, Arial, Helvetica, sans-serif }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          &lt;b&gt;Show DNA as:&lt;/b&gt;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          &lt;b&gt;Show or hide: &lt;/b&gt;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          &lt;b&gt;Color by:&lt;/b&gt;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;input value=&quot;Reset Model&quot; selfscript=&quot;selectcomponent cpk true; selectcomponent strand1 true; selectcomponent strand2 true; selectcomponent colorelements true; selectcomponent hbonds false; selectcomponent surface false; selectcomponent center false;&quot; type=&quot;submit&quot; script=&quot;script:nativescript:plugin:1:exit; script all-off.spt; script dna-horizontal.spt;&quot; alt=&quot;&quot; name=&quot;reset&quot; uid=&quot;reset&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td width=&quot;4%&quot; align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; name=&quot;RadioGroup0&quot; script=&quot;script:nativescript:plugin:1:script all-off.spt; cpk;&quot; uid=&quot;cpk&quot; checked=&quot;checked&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td width=&quot;18%&quot;&gt;
+          spacefill atoms
+        &lt;/td&gt;
+        &lt;td width=&quot;4%&quot; align=&quot;right&quot;&gt;
+          &lt;input value=&quot;checkbox&quot; script_selected=&quot;script:nativescript:plugin:1:select all; hbonds 0.2;&quot; type=&quot;checkbox&quot; name=&quot;checkbox-h&quot; script_deselected=&quot;script:nativescript:plugin:1:select all; hbonds off;&quot; uid=&quot;hbonds&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td width=&quot;15%&quot;&gt;
+          H-bonds
+        &lt;/td&gt;
+        &lt;td width=&quot;4%&quot; align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; name=&quot;RadioGroup1&quot; script=&quot;script:nativescript:plugin:1:set echo off;  
+			select all; color cpk; 
+			set echo KeyEcho 0% 100%; font echo 14 sans bold; color echo white; echo Color key:; 
+			set echo Carbonecho 25% 100%; color echo gray; font echo 14 sans bold; echo C; 
+			set echo HydrogenEcho 30% 100%; font echo 14 sans bold; color echo white; echo H; 
+			set echo oxyEcho 35% 100%; color echo [xff3233]; font echo 14 sans bold; echo O; 
+			set echo nitroEcho 40% 100%; color echo [xc0baff]; font echo 14 sans bold; echo N; 
+			set echo phosEcho 45% 100%; color echo [xfdc33e]; font echo 14 sans bold; echo P;&quot; uid=&quot;colorelements&quot; checked=&quot;checked&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td width=&quot;22%&quot;&gt;
+          elements
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &amp;#160; &lt;b&gt;Center of molecule:&lt;/b&gt;&amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; name=&quot;RadioGroup0&quot; script=&quot;script:nativescript:plugin:1:script all-off.spt; wireframe 0.22&quot; uid=&quot;sticks&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          sticks
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;checkbox&quot; script_selected=&quot;script:nativescript:plugin:1:exit; select all; labels off; display displayed or :I; refresh;&quot; type=&quot;checkbox&quot; name=&quot;checkbox-s1&quot; script_deselected=&quot;script:nativescript:plugin:1:exit; select all; labels off; display displayed and not :I; refresh;&quot; uid=&quot;strand1&quot; checked=&quot;checked&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          strand 1
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; name=&quot;RadioGroup1&quot; script=&quot;script:nativescript:plugin:1:set echo off; select :I; color purple; select :j; color gold; select all&quot; uid=&quot;colorstrands&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          chains
+        &lt;/td&gt;
+        &lt;td width=&quot;4%&quot; valign=&quot;top&quot; rowspan=&quot;2&quot; align=&quot;right&quot;&gt;
+          &lt;input value=&quot;checkbox&quot; script_selected=&quot;script:nativescript:plugin:1:set picking center&quot; type=&quot;checkbox&quot; name=&quot;checkbox&quot; script_deselected=&quot;script:jmol:1:set picking ident&quot; uid=&quot;center&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td width=&quot;29%&quot; valign=&quot;top&quot; rowspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          Click on any atom to bring it to the center. (Then un-check when 
+          done.)
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; name=&quot;RadioGroup0&quot; script=&quot;script:nativescript:plugin:1:script all-off.spt; wireframe 0.22; cpk 0.45&quot; uid=&quot;ballstick&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          ball &amp;amp; stick
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;checkbox&quot; script_selected=&quot;script:nativescript:plugin:1:exit; select all; labels off; display displayed or :J; refresh;&quot; type=&quot;checkbox&quot; name=&quot;checkbox-s2&quot; script_deselected=&quot;script:nativescript:plugin:1:exit; select all; labels off; display displayed and not :J; refresh;&quot; uid=&quot;strand2&quot; checked=&quot;checked&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          strand 2
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; name=&quot;RadioGroup1&quot; script=&quot;script:nativescript:plugin:1:set echo off; select [A]; color blue; select [T]; color yellow; select [G]; color green;  select [C]; color red; select all; set echo KeyEcho 0% 100%; font echo 14 sans bold; color echo white; echo Color key:; set echo Aecho 20% 92%; color echo blue; font echo 22 sans bold; echo A; set echo Cecho 25% 100%; color echo red; font echo 22 sans bold; echo C; set echo Decho 30% 92%; color echo green; font echo 22 sans bold; echo G; set echo Techo 35% 92%; color echo yellow; font echo 22 sans bold; echo T;&quot; uid=&quot;colorbases&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          nucleotides (ACGT)
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; name=&quot;RadioGroup0&quot; script=&quot;script:nativescript:plugin:1:script all-off.spt; cartoon on; select bases and all; wireframe 0.2; select all&quot; uid=&quot;ladder&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          ladder
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;!-- &lt;input script_selected=&quot;script:nativescript:plugin:1:exit; set echo off; isosurface on;&quot; name=&quot;checkbox-s22&quot; script_deselected=&quot;script:nativescript:plugin:1:exit; isosurface off;&quot; uid=&quot;surface&quot; value=&quot;checkbox&quot; type=&quot;checkbox&quot;&gt; --&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;!-- surface --&gt;
+          
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;3&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-333334</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+</paragraph>
+</section>
+</document>

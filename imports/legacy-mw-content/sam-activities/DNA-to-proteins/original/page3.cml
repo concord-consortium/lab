@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>From DNA to Proteins: Translation</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+
+ 
+ 
+&#10064; See an animation of the translation process.
+
+
+ 
+
+ 
+   
+(Note: The sources of the mRNA nucleotides and the amino acids are not shown, 
+but they are normally found floating around inside of the cell.)
+
+         
+or 
+   
+ 
+ 
+   
+ 
+
+
+
+</text>
+<section start="0" end="248">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot; size=&quot;5&quot;&gt;From 
+    DNA to Proteins:&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot; size=&quot;5&quot;&gt; 
+    Translation&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;60&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;59&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page9.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img width=&quot;25&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page10.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>90</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;atomMainIdea.png&quot; height=&quot;58&quot; width=&quot;98&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Transcription 
+          is the first step in the process of making proteins, so what is the 
+          second step? &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="11">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>120.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;In &lt;a href=&quot;script:page:0:message eukaryotes.html&quot;&gt;eukaryotes&lt;/a&gt;, 
+    the DNA is inside a nucleus, so that is where the mRNA is made. When the 
+    mRNA leaves the nucleus, it docks with a large molecular machine called a 
+    ribosome (made from several other large biomolecules). The ribosome 
+    detects the sequence of nucleotides of the mRNA, and uses that information 
+    to link together a sequence of amino acids. The linked chain of amino 
+    acids is the primary structure of a protein. &amp;#160;This process of synthesizing 
+    a protein is called &lt;b&gt;translation&lt;/b&gt;. &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<icon>singleCellRNAEuk.gif</icon></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="60">
+<Alignment>1</Alignment>
+<content start="13" end="15">
+</content>
+
+<content start="15" end="60">
+<size>14</size><bold>true</bold><href>eukTranslation.swf</href></content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<Alignment>1</Alignment>
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<Alignment>1</Alignment>
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="64">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="62" end="63">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;atomsBullet.png&quot; height=&quot;23&quot; width=&quot;33&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#5c7b67&quot; size=&quot;5&quot;&gt;Modeling 
+          transcription and translation&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img src=&quot;rule.png&quot; height=&quot;6&quot; width=&quot;18&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="67">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="65" end="66">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>215.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link href=&quot;bioStyles.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;4&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      Use the model below to control both steps in the pathway from DNA to 
+      protein: First, transcription, pairing of RNA nucleotides with a DNA 
+      template strand to make an mRNA, and Second, translation, using the mRNA 
+      sequence information to link amino acids together to make a protein.&lt;br&gt;&lt;b&gt;What 
+      to do: &lt;/b&gt;&lt;br&gt;
+    &lt;/p&gt;
+    &lt;ol&gt;
+      &lt;li&gt;
+        Run the model by clicking the &lt;b&gt;Transcribe&lt;/b&gt; button.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Then use the &lt;b&gt;Translate&lt;/b&gt; button to see amino acids being linked 
+        together into a protein.
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;b&gt;Reset&lt;/b&gt; the model and repeat the processes, but this time, &lt;b&gt;use 
+        the Translate step-by-step button&lt;/b&gt;, watching carefully to see how 
+        translation proceeds. Note that the codon being translated is the one 
+        in the center of the ribosome (green box).
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="71">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="67" end="68">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>125.0</width>
+<height>310.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;img src=&quot;nucleotideKeyExtended.gif&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="68" end="69">
+</content>
+
+<content start="69" end="70">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page3$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+<dna>ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG</dna><dna_dt1>200</dna_dt1><dna_dt2>1000</dna_dt2><dna_context>false</dna_context></component></content>
+
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="150">
+<Alignment>1</Alignment>
+<content start="71" end="72">
+</content>
+
+<content start="72" end="76">
+<bold>true</bold></content>
+
+<content start="76" end="150">
+</content>
+
+</paragraph>
+<paragraph start="150" end="215">
+<Alignment>1</Alignment>
+<content start="150" end="215">
+</content>
+
+</paragraph>
+<paragraph start="215" end="216">
+<Alignment>1</Alignment>
+<content start="215" end="216">
+</content>
+
+</paragraph>
+<paragraph start="216" end="226">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="216" end="217">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Transcribe</title>
+<tooltip>Transcribe </tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Transcribe DNA to mRNA</action>
+</component></content>
+
+<content start="217" end="218">
+</content>
+
+<content start="218" end="219">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Translate </title>
+<tooltip>Translate mRNA to protein</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Translate mRNA to protein (without removing existing setup)</action>
+</component></content>
+
+<content start="219" end="220">
+</content>
+
+<content start="220" end="221">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop the model</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Stop DNA transcription or translation</action>
+</component></content>
+
+<content start="221" end="222">
+</content>
+
+<content start="222" end="223">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset the model</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Reset protein synthesis simulation</action>
+</component></content>
+
+<content start="223" end="226">
+</content>
+
+</paragraph>
+<paragraph start="226" end="230">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="226" end="230">
+</content>
+
+</paragraph>
+<paragraph start="230" end="234">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="230" end="231">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Transcribe step by step</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Transcribe step by step</action>
+</component></content>
+
+<content start="231" end="232">
+</content>
+
+<content start="232" end="233">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Translate step by step</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Translate step by step</action>
+</component></content>
+
+<content start="233" end="234">
+</content>
+
+</paragraph>
+<paragraph start="234" end="236">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="234" end="235">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>40.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;center&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;What&apos;s &lt;a href=&quot;script:page:0:message tRNA.html&quot;&gt;missing&lt;/a&gt; 
+      in the model?&lt;/font&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="235" end="236">
+</content>
+
+</paragraph>
+<paragraph start="236" end="238">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="236" end="237">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>750</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Click the 
+    &amp;quot;Translate step by step&amp;quot; buttton and describe each step as the RNA is 
+    translated.&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="237" end="238">
+</content>
+
+</paragraph>
+<paragraph start="238" end="242">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="238" end="239">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>372.0</width>
+<height>160.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;In a real 
+    cell, many proteins are made from a single mRNA. To make a second protein, 
+    press the &lt;b&gt;Stop the model &lt;/b&gt;button, and drag the protein out of the 
+    way. Then, click the &lt;b&gt;Translate&lt;/b&gt; button again. When it is done, you 
+    can &lt;b&gt;Stop the model&lt;/b&gt;, move the second protein, and compare the 
+    proteins.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="239" end="240">
+</content>
+
+<content start="240" end="241">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>372</width>
+<height>160</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Compare the 
+    sequence and shape of both proteins that are formed.&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="241" end="242">
+</content>
+
+</paragraph>
+<paragraph start="242" end="244">
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="242" end="243">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;60&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;59&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page9.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img width=&quot;25&quot; border=&quot;0&quot; height=&quot;26&quot; src=&quot;page10.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="243" end="244">
+</content>
+
+</paragraph>
+<paragraph start="244" end="245">
+<Alignment>1</Alignment>
+<content start="244" end="245">
+</content>
+
+</paragraph>
+<paragraph start="245" end="246">
+<Alignment>1</Alignment>
+<content start="245" end="246">
+</content>
+
+</paragraph>
+<paragraph start="246" end="247">
+<content start="246" end="247">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="247" end="248">
+</paragraph>
+</section>
+</document>
