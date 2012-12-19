@@ -780,23 +780,6 @@ define(function (require, exports, module) {
           return convertKEtoT(twoKE / 2, N);
         },
 
-        // Scales the velocity vector of particle i by `factor`.
-        scaleParticleVelocity = function(i, factor) {
-          vx[i] *= factor;
-          vy[i] *= factor;
-
-          // scale momentum too
-          px[i] *= factor;
-          py[i] *= factor;
-        },
-
-        // Scales the velocity vector of obstacle i by `factor`.
-        scaleObstacleVelocity = function(i, factor) {
-          obstacleVX[i] *= factor;
-          obstacleVY[i] *= factor;
-          // Obstacles don't store momentum, nothing else to update.
-        },
-
         // Adds the velocity vector (vx_t, vy_t) to the velocity vector of particle i
         addVelocity = function(i, vx_t, vy_t) {
           vx[i] += vx_t;
@@ -1655,9 +1638,48 @@ define(function (require, exports, module) {
           }
         },
 
+        // Sets total momentum of each molecule to zero.
+        // Useful for proteins engine.
+        zeroTotalMomentumOfMolecules = function() {
+          var moleculeAtoms, atomIdx, sumX, sumY, invMass,
+              i, j, len;
+
+          for (i = 0; i < N; i++) {
+            visited[i] = 0;
+          }
+
+          for (i = 0; i < N; i++) {
+            // Process each particular atom only *once*.
+            if (visited[i] === 1) continue;
+
+            moleculeAtoms = engine.getMoleculeAtoms(i);
+            if (moleculeAtoms.length === 0) continue;
+            moleculeAtoms.push(i);
+
+            sumX = sumY = invMass = 0;
+            for (j = 0, len = moleculeAtoms.length; j < len; j++) {
+              atomIdx = moleculeAtoms[j];
+              // Mark that atom was part of processed molecule to avoid
+              // calculating its molecule again.
+              visited[atomIdx] = 1;
+              sumX += vx[atomIdx] * mass[atomIdx];
+              sumY += vy[atomIdx] * mass[atomIdx];
+              invMass += mass[atomIdx];
+            }
+            invMass = 1.0 / invMass;
+            for (j = 0, len = moleculeAtoms.length; j < len; j++) {
+              atomIdx = moleculeAtoms[j];
+              vx[atomIdx] -= sumX * invMass;
+              vy[atomIdx] -= sumY * invMass;
+              // Update momentum.
+              px[atomIdx] = vx[atomIdx] * mass[atomIdx];
+              py[atomIdx] = vy[atomIdx] * mass[atomIdx];
+            }
+          }
+        },
+
         adjustTemperature = function(target, forceAdjustment) {
-          var rescalingFactor,
-              i;
+          var rescalingFactor, i;
 
           if (target == null) target = T_target;
 
@@ -1669,14 +1691,21 @@ define(function (require, exports, module) {
 
           if (forceAdjustment || useThermostat || temperatureChangeInProgress && T > 0) {
             rescalingFactor = Math.sqrt(target / T);
+
             // Scale particles velocity.
             for (i = 0; i < N; i++) {
-              scaleParticleVelocity(i, rescalingFactor);
+              vx[i] *= rescalingFactor;
+              vy[i] *= rescalingFactor;
+              px[i] *= rescalingFactor;
+              py[i] *= rescalingFactor;
             }
+
             // Scale obstacles velocity.
             for (i = 0; i < N_obstacles; i++) {
-              scaleObstacleVelocity(i, rescalingFactor);
+              obstacleVX[i] *= rescalingFactor;
+              obstacleVY[i] *= rescalingFactor;
             }
+
             T = target;
           }
         },
@@ -2615,6 +2644,14 @@ define(function (require, exports, module) {
 
           // Adjust temperature, e.g. when heat bath is enabled.
           adjustTemperature();
+
+          // If solvent is different from vacuum (water or oil), ensure
+          // that the total momentum of each molecule is equal to zero.
+          // This prevents amino acids chains from drifting towards one
+          // boundary of the model.
+          if (solventForceFactor !== 0) {
+            zeroTotalMomentumOfMolecules();
+          }
 
         } // end of integration loop
 
