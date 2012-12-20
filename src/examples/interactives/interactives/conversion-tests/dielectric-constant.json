@@ -2,7 +2,18 @@
   "title": "Dielectric Constant",
   "publicationStatus": "public",
   "subtitle": "",
-  "about": "",
+  "about": [
+    "An interactive presenting the dielectric effect and its influence on Coulomb forces. The graph plots two variables:",
+    "- distance between particles (in nanometers),",
+    "- <b>effective</b> value of the dielectric constant (*).",
+    "What does <b>effective</b> mean in the context of dielectric constant?",
+    "Next Gen MW uses a special algorithm for calculation of the dielectric effect. When particles are close enough to each other, it assumes that the screening effect of the solvent (oil or water) should be diminished. That's why you can observe that the effective dielectric constant is significantly reduced when particles are closer than 1.2nm to each other.",
+    "The effective dielectric constant for Coulomb interaction of two particles is calculated using following equation:",
+    "<center><b>effectiveDC = 1 + (DC - 1)/(1 + exp(-12 * R + 7))</b></center>",
+    "where <b>DC</b> is an initial dielectric constant for solvent (e.g. 10 for water) and <b>R</b> is the distance between particles.",
+    "You can disable this algorithm and leave the value of the dielectric constant untouched (so, <b>effectiveDC = DC</b>) using the <b>Realistic Dielectric Effect</b> checkbox.",
+    "*<i>[ Note that the effectiveDielectric output property defined in the interactive JSON does <b>not</b> ask the model about the effective value, as it's unavailable in Scripting API and hidden deeply in the engine internals. Instead, it recalculates effective dielectric constant using the same algorithm like the engine. ]</i>"
+  ],
   "models": [
     {
       "id": "dielectric-constant$0",
