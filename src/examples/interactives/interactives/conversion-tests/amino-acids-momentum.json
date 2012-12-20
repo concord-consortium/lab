@@ -58,6 +58,12 @@
       "property": "solventForceFactor"
     },
     {
+      "type": "checkbox",
+      "id": "realistic-dielectric-effect",
+      "text": "Realistic Dielectric Effect",
+      "property": "realisticDielectricEffect"
+    },
+    {
       "type": "pulldown",
       "id": "select-color-scheme",
       "options": [
