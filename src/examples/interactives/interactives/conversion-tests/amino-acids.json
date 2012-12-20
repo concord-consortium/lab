@@ -1,8 +1,15 @@
 {
   "title": "Amino Acids",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "A basic test of the proteins engine.",
+  "about": [
+    "Using this interactive you can:<ul>",
+    "<li>change type of amino acids (right click on the amino acid to open a special context menu),</li>",
+    "<li>watch their behavior in vacuum, oil and water,</li>",
+    "<li>modify strength of the force produced by the solvent,</li>",
+    "<li>switch on or off <i>realistic dielectric effect</i>,</li>",
+    "<li>test various coloring schemes and label types.</li></ul>"
+  ],
   "models": [
     {
       "id": "amino-acids$0",
@@ -62,6 +69,12 @@
       ],
       "displayValue": "return format('1.2f')(value)",
       "property": "solventForceFactor"
+    },
+    {
+      "type": "checkbox",
+      "id": "realistic-dielectric-effect",
+      "text": "Realistic Dielectric Effect",
+      "property": "realisticDielectricEffect"
     },
     {
       "type": "pulldown",
