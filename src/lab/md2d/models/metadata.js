@@ -36,6 +36,9 @@ define(function() {
       dielectricConstant: {
         defaultValue: 1
       },
+      realisticDielectricEffect: {
+        defaultValue: true
+      },
       solventForceFactor: {
         defaultValue: 1
       },

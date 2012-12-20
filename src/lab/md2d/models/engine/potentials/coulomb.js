@@ -38,45 +38,64 @@ define(function (require, exports, module) {
              NANOMETERS_PER_METER *
              MW_FORCE_UNITS_PER_NEWTON,
 
-
   // Exports
 
-  /** Input units:
-       r: nanometers,
-       q1, q2: elementary charges
-       dC: unitless, dielectric constant.
+  /** Input:
+       r: distance in nanometers,
+       q1, q2: elementary charges,
+       dC: dielectric constant, unitless,
+       rDE: realistic dielectric effect switch, boolean.
 
       Output units: eV
   */
-  potential = exports.potential = function(r, q1, q2, dC) {
+  potential = exports.potential = function(r, q1, q2, dC, rDE) {
+    if (rDE && dC > 1 && r < 1.2) {
+      // "Realistic Dielectric Effect" mode:
+      // Diminish dielectric constant value using distance between particles.
+      // Function based on: http://en.wikipedia.org/wiki/Generalized_logistic_curve
+      // See plot for dC = 80: http://goo.gl/7zU6a
+      // For optimization purposes it returns asymptotic value when r > 1.2.
+      dC = 1 + (dC - 1)/(1 + Math.exp(-12 * r + 7));
+    }
     return k_ePotential * ((q1 * q2) / r) / dC;
   },
 
 
-  /** Input units:
-      r_sq: nanometers^2
-      q1, q2: elementary charges
-      dC: unitless, dielectric constant.
+  /** Input:
+       rSq: squared distance in nanometers^2,
+       q1, q2: elementary charges,
+       dC: dielectric constant, unitless,
+       rDE: realistic dielectric effect switch, boolean.
 
       Output units: "MW Force Units" (Dalton * nm / fs^2)
   */
-  forceFromSquaredDistance = exports.forceFromSquaredDistance = function(r_sq, q1, q2, dC) {
-    return -k_eForce * ((q1 * q2) / r_sq) / dC;
+  forceFromSquaredDistance = exports.forceFromSquaredDistance = function(rSq, q1, q2, dC, rDE) {
+    var r = Math.sqrt(rSq);
+    if (rDE && dC > 1 && r < 1.2) {
+      // "Realistic Dielectric Effect" mode:
+      // Diminish dielectric constant value using distance between particles.
+      // Function based on: http://en.wikipedia.org/wiki/Generalized_logistic_curve
+      // See plot for dC = 80: http://goo.gl/7zU6a
+      // For optimization purposes it returns asymptotic value when r > 1.2.
+      dC = 1 + (dC - 1)/(1 + Math.exp(-12 * r + 7));
+    }
+    return -k_eForce * ((q1 * q2) / rSq) / dC;
   },
 
 
-  forceOverDistanceFromSquaredDistance = exports.forceOverDistanceFromSquaredDistance = function(r_sq, q1, q2, dC) {
-    return forceFromSquaredDistance(r_sq, q1, q2, dC) / Math.sqrt(r_sq);
+  forceOverDistanceFromSquaredDistance = exports.forceOverDistanceFromSquaredDistance = function(rSq, q1, q2, dC, rDE) {
+    return forceFromSquaredDistance(rSq, q1, q2, dC, rDE) / Math.sqrt(rSq);
   },
 
-  /** Input units:
-       r: nanometers,
-       q1, q2: elementary charges
-       dC: unitless, dielectric constant.
+  /** Input:
+       r: distance in nanometers,
+       q1, q2: elementary charges,
+       dC: dielectric constant, unitless,
+       rDE: realistic dielectric effect switch, boolean.
 
       Output units: "MW Force Units" (Dalton * nm / fs^2)
   */
-  force = exports.force = function(r, q1, q2, dC) {
-    return forceFromSquaredDistance(r*r, q1, q2, dC);
+  force = exports.force = function(r, q1, q2, dC, rDE) {
+    return forceFromSquaredDistance(r*r, q1, q2, dC, rDE);
   };
 });

@@ -143,6 +143,13 @@ define(function(require) {
             }
           },
 
+          set_realisticDielectricEffect: function (rdc) {
+            this.realisticDielectricEffect = rdc;
+            if (engine) {
+              engine.setRealisticDielectricEffect(rdc);
+            }
+          },
+
           set_VDWLinesCutoff: function(cutoff) {
             var ratio;
             this.VDWLinesCutoff = cutoff;
@@ -734,6 +741,7 @@ define(function(require) {
       engine.setGravitationalField(model.get('gravitationalField'));
       engine.setTargetTemperature(model.get('targetTemperature'));
       engine.setDielectricConstant(model.get('dielectricConstant'));
+      engine.setRealisticDielectricEffect(model.get('realisticDielectricEffect'));
       engine.setSolventForceType(model.get('solventForceType'));
       engine.setSolventForceFactor(model.get('solventForceFactor'));
 

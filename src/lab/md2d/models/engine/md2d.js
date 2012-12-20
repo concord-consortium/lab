@@ -97,6 +97,11 @@ define(function (require, exports, module) {
         // E.g. a dielectric of 80 means a Coulomb force 1/80th as strong.
         dielectricConst = 1,
 
+        // Whether dielectric effect should be realistic or simplified. Realistic
+        // version takes into account distance between charged particles and reduces
+        // dielectric constant when particles are closer to each other.
+        realisticDielectricEffect = true,
+
         // Parameter that reflects the watery extent of the solvent, when an effective
         // hydrophobic/hydrophilic interaction is used. A negative value represents oil environment
         // (usually -1). A positive one represents water environment (usually 1). A zero value means vacuum.
@@ -1186,7 +1191,8 @@ define(function (require, exports, module) {
               dy = y[atom2Idx] - y[atom1Idx];
               rSq = dx*dx + dy*dy;
 
-              fOverR = coulomb.forceOverDistanceFromSquaredDistance(rSq, charge1, charge[atom2Idx], dielectricConst);
+              fOverR = coulomb.forceOverDistanceFromSquaredDistance(rSq, charge1, charge[atom2Idx],
+                dielectricConst, realisticDielectricEffect);
 
               fx = fOverR * dx;
               fy = fOverR * dy;
@@ -1809,6 +1815,10 @@ define(function (require, exports, module) {
 
       setDielectricConstant: function(dc) {
         dielectricConst = dc;
+      },
+
+      setRealisticDielectricEffect: function (r) {
+        realisticDielectricEffect = r;
       },
 
       setSolventForceType: function(sft) {
@@ -2804,7 +2814,7 @@ define(function (require, exports, module) {
               PE -=ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
             }
             if (useCoulombInteraction && hasChargedAtoms) {
-              PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j], dielectricConst);
+              PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j], dielectricConst, realisticDielectricEffect);
             }
           }
         }
@@ -2833,7 +2843,7 @@ define(function (require, exports, module) {
             PE += ljCalculator[el1][el2].potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction && charge[i1] && charge[i2]) {
-            PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2], dielectricConst);
+            PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2], dielectricConst, realisticDielectricEffect);
           }
 
           // Also save the updated position of the two bonded atoms
@@ -2959,9 +2969,10 @@ define(function (require, exports, module) {
 
             if (useCoulombInteraction && hasChargedAtoms && testCharge) {
               r = Math.sqrt(r_sq);
-              PE += -coulomb.potential(r, testCharge, charge[i], dielectricConst);
+              PE += -coulomb.potential(r, testCharge, charge[i], dielectricConst, realisticDielectricEffect);
               if (calculateGradient) {
-                f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testCharge, charge[i], dielectricConst);
+                f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testCharge, charge[i],
+                  dielectricConst, realisticDielectricEffect);
               }
             }
 
