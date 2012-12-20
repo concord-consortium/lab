@@ -9,6 +9,7 @@
   "viewRefreshInterval": 10,
   "timeStep": 1,
   "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
   "solventForceType": 0,
   "solventForceFactor": 1,
   "viewOptions": {
