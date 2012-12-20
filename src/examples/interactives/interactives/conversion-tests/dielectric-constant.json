@@ -10,7 +10,26 @@
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "modelTimeLabel": true
-      }
+      },
+      "onLoad": "setSolvent('oil');"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "particlesDistance",
+      "value": [
+        "return getAtomProperties(1).x - getAtomProperties(0).x;"
+      ]
+    },
+    {
+      "name": "effectiveDielectric",
+      "value": [
+        "var dC = get('dielectricConstant');",
+        "var rDE = get('realisticDielectricEffect');",
+        "var r = get('particlesDistance');",
+        "if (rDE && r < 1.2) return 1 + (dC - 1)/(1 + Math.exp(-12 * r + 7));",
+        "else return dC;"
+      ]
     }
   ],
   "components": [
@@ -35,6 +54,12 @@
       "property": "dielectricConstant"
     },
     {
+      "type": "checkbox",
+      "id": "realistic-dielectric-effect",
+      "text": "Realistic Dielectric Effect",
+      "property": "realisticDielectricEffect"
+    },
+    {
       "type": "pulldown",
       "id": "select-solvent",
       "options": [
@@ -45,18 +70,37 @@
         },
         {
           "text": "vacuum",
-          "action": "setSolvent('vacuum');"
+          "action": "reset(); setSolvent('vacuum');"
         },
         {
           "text": "oil",
-          "action": "setSolvent('oil');"
+          "action": "reset(); setSolvent('oil');"
         },
         {
           "text": "water",
-          "action": "setSolvent('water');"
+          "action": "reset(); setSolvent('water');"
         }
+      ]
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Effective Dielectric Constant vs Distance Between Particles",
+      "xlabel": "time [ps]",
+      "ylabel": "RED: distance [nm], GREEN: effective dielectric const [unitless]",
+      "xmin": 0,
+      "xmax": 20,
+      "ymin": 0,
+      "ymax": 11,
+      "properties": [
+        "particlesDistance",
+        "effectiveDielectric"
       ]
     }
   ],
-  "layout": {}
+  "layout": {
+    "rightwide": [
+      "propertiesGraph"
+    ]
+  }
 }

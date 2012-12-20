@@ -319,7 +319,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1355745035000</long> 
+     <long>1355745040000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -328,11 +328,11 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>10511</long> 
+    <long>10543</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/home/piotr/Concord/lab/imports/legacy-mw-content/conversion-and-physics-examples</string> 
+    <string>/imports/legacy-mw-content/conversion-and-physics-examples</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -384,10 +384,10 @@
    <double>1.0</double> 
   </void> 
   <void property="rx"> 
-   <double>109.0</double> 
+   <double>100.0</double> 
   </void> 
   <void property="ry"> 
-   <double>119.0</double> 
+   <double>120.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -398,7 +398,7 @@
    <double>-1.0</double> 
   </void> 
   <void property="rx"> 
-   <double>216.0</double> 
+   <double>250.0</double> 
   </void> 
   <void property="ry"> 
    <double>120.0</double> 
