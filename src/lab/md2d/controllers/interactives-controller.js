@@ -99,62 +99,28 @@ define(function (require) {
     }
 
     function createComponent(component) {
-      var compController;
       switch (component.type) {
         case 'button':
-          compController = new ButtonController(component, scriptingAPI);
-          return {
-            elem:     compController.getViewContainer(),
-            callback: compController.modelLoadedCallback
-          };
+          return new ButtonController(component, scriptingAPI);
         case 'checkbox':
-          compController = new CheckboxController(component, scriptingAPI);
-          return {
-            elem:     compController.getViewContainer(),
-            callback: compController.modelLoadedCallback
-          };
+          return new CheckboxController(component, scriptingAPI);
         case 'pulldown':
-          compController = new PulldownController(component, scriptingAPI, controller);
-          return {
-            elem:     compController.getViewContainer(),
-            callback: compController.modelLoadedCallback
-          };
+          return new PulldownController(component, scriptingAPI, controller);
         case 'radio':
-          compController = new RadioController(component, scriptingAPI, controller);
-          return {
-            elem:     compController.getViewContainer(),
-            callback: compController.modelLoadedCallback
-          };
+          return new RadioController(component, scriptingAPI, controller);
         case 'thermometer':
           thermometer = new ThermometerController(component);
-          return {
-            elem:     thermometer.getViewContainer(),
-            callback: thermometer.modelLoadedCallback
-          };
+          return thermometer;
         case 'barGraph':
           barGraphController = new BarGraphController(component);
-          return {
-            elem:     barGraphController.getViewContainer(),
-            callback: barGraphController.modelLoadedCallback
-          };
+          return barGraphController;
         case 'graph':
           graph = new GraphController(component);
-          return {
-            elem:     graph.getViewContainer(),
-            callback: graph.modelLoadedCallback
-          };
+          return graph;
         case 'slider':
-          compController = new SliderController(component, scriptingAPI);
-          return {
-            elem:     compController.getViewContainer(),
-            callback: compController.modelLoadedCallback
-          };
+          return new SliderController(component, scriptingAPI);
         case 'numericOutput':
-          compController = new NumericOutputController(component, scriptingAPI);
-          return {
-            elem:     compController.getViewContainer(),
-            callback: compController.modelLoadedCallback
-          };
+          return new NumericOutputController(component, scriptingAPI);
       }
     }
 
@@ -303,8 +269,8 @@ define(function (require) {
       for (i = 0, ii=componentJsons.length; i<ii; i++) {
         component = createComponent(componentJsons[i]);
         // Register component callback if it is available.
-        if (component.callback) {
-          componentCallbacks.push(component.callback);
+        if (component.modelLoadedCallback) {
+          componentCallbacks.push(component.modelLoadedCallback);
         }
         components[componentJsons[i].id] = component;
       }
@@ -338,7 +304,7 @@ define(function (require) {
                 for (j = 0; j < items.length; j++) {
                   componentId = items[j];
                   if (components[componentId]) {
-                    $row.append(components[componentId].elem);
+                    $row.append(components[componentId].getViewContainer());
                     delete components[componentId];
                   }
                 }
@@ -357,9 +323,9 @@ define(function (require) {
       for (componentId in components) {
         if (components.hasOwnProperty(componentId)) {
           if ($('#interactive-container #'+componentId).length > 0) {
-            $('#interactive-container #'+componentId).append(components[componentId].elem);
+            $('#interactive-container #'+componentId).append(components[componentId].getViewContainer());
           } else {
-            $row.append(components[componentId].elem);
+            $row.append(components[componentId].getViewContainer());
           }
         }
       }
