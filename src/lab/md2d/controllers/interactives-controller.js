@@ -7,6 +7,7 @@ define(function (require) {
       GraphController         = require('md2d/controllers/graph-controller'),
       DgExportController      = require('md2d/controllers/dg-export-controller'),
       ScriptingAPI            = require('md2d/controllers/scripting-api'),
+      SliderController        = require('md2d/controllers/slider-controller'),
       RealTimeGraph           = require('grapher/core/real-time-graph'),
       Thermometer             = require('cs!common/components/thermometer'),
       layout                  = require('common/layout/layout'),
@@ -96,6 +97,7 @@ define(function (require) {
     }
 
     function createComponent(component) {
+      var compController;
       switch (component.type) {
         case 'button':
           return createButton(component);
@@ -123,7 +125,11 @@ define(function (require) {
             callback: graph.modelLoadedCallback
           };
         case 'slider':
-          return createSlider(component);
+          compController = new SliderController(component, scriptingAPI);
+          return {
+            elem:     compController.getViewContainer(),
+            callback: compController.modelLoadedCallback
+          };
         case 'numericOutput':
           return createNumericOutput(component);
       }
@@ -294,125 +300,6 @@ define(function (require) {
       }
 
       return { elem: $div };
-    }
-
-    function createSlider(component) {
-      var min = component.min,
-          max = component.max,
-          steps = component.steps,
-          action = component.action,
-          propertyName = component.property,
-          initialValue = component.initialValue,
-          title = component.title || "",
-          labels = component.labels || [],
-          displayValue = component.displayValue,
-          i,
-          $elem,
-          $title,
-          label,
-          $label,
-          $slider,
-          $sliderHandle,
-          $container;
-
-      if (min == null) min = 0;
-      if (max == null) max = 10;
-      if (steps == null) steps = 10;
-
-      $title = $('<p class="title">' + title + '</p>');
-      // we pick up the SVG slider component CSS if we use the generic class name 'slider'
-      $container = $('<div class="container">');
-      $slider = $('<div class="html-slider">');
-      $container.append($slider);
-
-      $slider.slider({
-        min: min,
-        max: max,
-        step: (max - min) / steps
-      });
-
-      $sliderHandle = $slider.find(".ui-slider-handle");
-
-      $elem = $('<div class="interactive-slider">')
-                .append($title)
-                .append($container);
-
-      for (i = 0; i < labels.length; i++) {
-        label = labels[i];
-        $label = $('<p class="label">' + label.label + '</p>');
-        $label.css('left', (label.value-min) / (max-min) * 100 + '%');
-        $container.append($label);
-      }
-
-      if (displayValue) {
-        displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
-      }
-
-      if (action) {
-        // The 'action' property is a source of a function which assumes we pass it a parameter
-        // called 'value'.
-        action = scriptingAPI.makeFunctionInScriptContext('value', action);
-        $slider.bind('slide', function(event, ui) {
-          action(ui.value);
-          if (displayValue) {
-            $sliderHandle.text(displayValue(ui.value));
-          }
-        });
-      }
-
-      if (propertyName) {
-        $slider.bind('slide', function(event, ui) {
-          // just ignore slide events that occur before the model is loaded
-          var obj = {};
-          obj[propertyName] = ui.value;
-          if (model) model.set(obj);
-          if (displayValue) {
-            $sliderHandle.text(displayValue(ui.value));
-          }
-        });
-
-        modelLoadedCallbacks.push(function() {
-          model.addPropertiesListener([propertyName], function() {
-            var value = model.get(propertyName);
-            $slider.slider('value', value);
-            if (displayValue) {
-              $sliderHandle.text(displayValue(value));
-            }
-          });
-        });
-      }
-
-      if (initialValue != null) {
-        // Make sure to call the action with the startup value of slider. (The script action may
-        // manipulate the model, so we have to make sure it runs after the model loads, by pushing
-        // it onto 'modelLoadedCallbacks'.)
-        if (action) {
-          modelLoadedCallbacks.push(function() {
-            $slider.slider('value', initialValue);
-            action(initialValue);
-            if (displayValue) {
-              $sliderHandle.text(displayValue(initialValue));
-            }
-          });
-        }
-
-        if (propertyName) {
-          modelLoadedCallbacks.push(function() {
-            var obj = {};
-            obj.propertyName = initialValue;
-            model.set(obj);
-          });
-        }
-      } else if (propertyName) {
-        modelLoadedCallbacks.push(function() {
-          var value = model.get(propertyName);
-          $slider.slider('value', value);
-          if (displayValue) {
-            $sliderHandle.text(displayValue(value));
-          }
-        });
-      }
-      return { elem: $elem };
     }
 
     function createNumericOutput(component) {
