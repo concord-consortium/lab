@@ -13,8 +13,8 @@ define(function (require) {
       SliderController        = require('md2d/controllers/slider-controller'),
       PulldownController      = require('md2d/controllers/pulldown-controller'),
       NumericOutputController = require('md2d/controllers/numeric-output-controller'),
+      ThermometerController   = require('md2d/controllers/thermometer-controller'),
       RealTimeGraph           = require('grapher/core/real-time-graph'),
-      Thermometer             = require('cs!common/components/thermometer'),
       layout                  = require('common/layout/layout'),
       setupInteractiveLayout  = require('common/layout/interactive-layout'),
       ParentMessageAPI        = require('md2d/controllers/parent-message-api');
@@ -129,8 +129,11 @@ define(function (require) {
             callback: compController.modelLoadedCallback
           };
         case 'thermometer':
-          thermometer = createThermometer(component);
-          return thermometer;
+          thermometer = new ThermometerController(component);
+          return {
+            elem:     thermometer.getViewContainer(),
+            callback: thermometer.modelLoadedCallback
+          };
         case 'barGraph':
           barGraphController = new BarGraphController(component);
           return {
@@ -169,75 +172,6 @@ define(function (require) {
         return str;
       }
       return str.join('\n');
-    }
-
-    /**
-      Returns an 'interactive thermometer' object, that wraps a base Thermometer with a label for use
-      in Interactives.
-
-      properties are:
-
-       elem:      DOM element containing the Thermometer div and the label div
-       component: base Thermometer object, with no label
-       callback:  standard interactive component callback, called as soon as the display is ready
-       update:    method to ask thermometer to update its display
-    */
-    function createThermometer(component) {
-      var $thermometer = $('<div>').attr('id', component.id),
-
-          reading,
-          units = "K",
-          offset = 0,
-          scale = 1,
-          digits = 0,
-
-          labelIsReading = !!component.labelIsReading,
-          labelText = labelIsReading ? "" : "Thermometer",
-          $label = $('<p class="label">').text(labelText).width('6em'),
-          $elem = $('<div class="interactive-thermometer">')
-                  .append($thermometer)
-                  .append($label),
-
-          thermometerComponent = new Thermometer($thermometer, null, component.min, component.max),
-          self;
-
-      if (reading = component.reading) {
-        if (reading.units != null)  units = reading.units;
-        if (reading.offset != null) offset = reading.offset;
-        if (reading.scale != null)  scale = reading.scale;
-        if (reading.digits != null) digits = reading.digits;
-      }
-
-      function updateLabel(temperature) {
-        temperature = scale*temperature + offset;
-        $label.text(temperature.toFixed(digits) + " " + units);
-      }
-      // TODO: update to observe actual system temperature once output properties are observable
-      queuePropertiesListener(['targetTemperature'], function() { self.update(); });
-
-      return self = {
-        elem:      $elem,
-        component: thermometerComponent,
-
-        callback: function() {
-          thermometerComponent.resize();
-          self.update();
-        },
-
-        update: function() {
-          var t = model.get('targetTemperature');
-          thermometerComponent.add_value(t);
-          if (labelIsReading) updateLabel(t);
-        }
-      };
-    }
-
-    function queuePropertiesListener(properties, func) {
-      if (typeof model !== 'undefined') {
-        model.addPropertiesListener(properties, func);
-      } else {
-        propertiesListeners.push([properties, func]);
-      }
     }
 
     function createEnergyGraph(component) {
@@ -398,7 +332,7 @@ define(function (require) {
       parentMessageAPI = new ParentMessageAPI(model);
 
       layout.addView('moleculeContainers', modelController.moleculeContainer);
-      if (thermometer) layout.addView('thermometers', thermometer.component);
+      if (thermometer) layout.addView('thermometers', thermometer.getView());
       if (energyGraph) layout.addView('energyGraphs', energyGraph);
       // TODO: energyGraphs should be changed to lineGraphs?
       if (graph) layout.addView('energyGraphs', graph.getView());
