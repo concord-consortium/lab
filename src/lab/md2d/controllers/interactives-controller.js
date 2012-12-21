@@ -9,8 +9,10 @@ define(function (require) {
       ScriptingAPI            = require('md2d/controllers/scripting-api'),
       ButtonController        = require('md2d/controllers/button-controller'),
       CheckboxController      = require('md2d/controllers/checkbox-controller'),
+      RadioController         = require('md2d/controllers/radio-controller'),
       SliderController        = require('md2d/controllers/slider-controller'),
       PulldownController      = require('md2d/controllers/pulldown-controller'),
+      NumericOutputController = require('md2d/controllers/numeric-output-controller'),
       RealTimeGraph           = require('grapher/core/real-time-graph'),
       Thermometer             = require('cs!common/components/thermometer'),
       layout                  = require('common/layout/layout'),
@@ -121,7 +123,11 @@ define(function (require) {
             callback: compController.modelLoadedCallback
           };
         case 'radio':
-          return createRadio(component);
+          compController = new RadioController(component, scriptingAPI, controller);
+          return {
+            elem:     compController.getViewContainer(),
+            callback: compController.modelLoadedCallback
+          };
         case 'thermometer':
           thermometer = createThermometer(component);
           return thermometer;
@@ -146,7 +152,11 @@ define(function (require) {
             callback: compController.modelLoadedCallback
           };
         case 'numericOutput':
-          return createNumericOutput(component);
+          compController = new NumericOutputController(component, scriptingAPI);
+          return {
+            elem:     compController.getViewContainer(),
+            callback: compController.modelLoadedCallback
+          };
       }
     }
 
@@ -159,99 +169,6 @@ define(function (require) {
         return str;
       }
       return str.join('\n');
-    }
-
-    function createRadio(component) {
-      var $div, $option, $span,
-          options = component.options || [],
-          option,
-          id = component.id,
-          i, ii;
-
-      $div = $('<div>').attr('id', id);
-      $div.addClass("component");
-
-      for (i=0, ii=options.length; i<ii; i++) {
-        option = options[i];
-        $option = $('<input>')
-          .attr('type', "radio")
-          .attr('name', id);
-        if (option.disabled) {
-          $option.attr("disabled", option.disabled);
-        }
-        if (option.selected) {
-          $option.attr("checked", option.selected);
-        }
-        $span = $('<span>')
-          .append($option)
-          .append(option.text);
-        $div.append($span).append("<br/>");
-
-        $option.change((function(option) {
-          return function() {
-            var scriptStr;
-            if (option.action){
-              scriptStr = getStringFromArray(option.action);
-              scriptingAPI.makeFunctionInScriptContext(scriptStr)();
-            } else if (option.loadModel){
-              model.stop();
-              loadModel(option.loadModel);
-            }
-          };
-        })(option));
-      }
-
-      return { elem: $div };
-    }
-
-    function createNumericOutput(component) {
-      var propertyName = component.property,
-          label = component.label,
-          units = component.units,
-          displayValue = component.displayValue,
-          $numericOutput,
-          $label,
-          $number,
-          $units,
-          value,
-          propertyDescription;
-
-
-      $label  = $('<span class="label"></span>');
-      $number = $('<span class="value"></span>');
-      $units  = $('<span class="units"></span>');
-      if (label) { $label.html(label); }
-      if (units) { $units.html(units); }
-      $numericOutput = $('<div class="numeric-output">').attr('id', component.id)
-          .append($label)
-          .append($number)
-          .append($units);
-
-      if (displayValue) {
-        displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
-      }
-
-      function renderValue() {
-        var value = model.get(propertyName);
-        if (displayValue) {
-          $number.text(displayValue(value));
-        } else {
-          $number.text(value);
-        }
-      }
-
-      if (propertyName) {
-        modelLoadedCallbacks.push(function() {
-          propertyDescription = model.getPropertyDescription(propertyName);
-          if (propertyDescription) {
-            if (!label) { $label.html(propertyDescription.label); }
-            if (!units) { $units.html(propertyDescription.units); }
-          }
-          renderValue();
-          model.addPropertiesListener([propertyName], renderValue);
-        });
-      }
-      return { elem: $numericOutput };
     }
 
     /**
