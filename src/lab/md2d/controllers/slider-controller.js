@@ -22,8 +22,24 @@ define(function () {
         $sliderHandle,
         $container,
         // Public API object.
-        controller;
+        controller,
 
+        // Updates slider using model property. Used in modelLoadedCallback.
+        // Make sure that this function is only called when:
+        // a) model is loaded,
+        // b) slider is bound to some property.
+        updateSlider = function  () {
+          var value = model.get(propertyName);
+          $slider.slider('value', value);
+          if (displayValue) {
+            $sliderHandle.text(displayValue(value));
+          }
+        };
+
+    //
+    // Initialize.
+    //
+    // Setup view.
     if (min === undefined) min = 0;
     if (max === undefined) max = 10;
     if (steps === undefined) steps = 10;
@@ -53,10 +69,7 @@ define(function () {
       $container.append($label);
     }
 
-    if (displayValue) {
-      displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
-    }
-
+    // Bind action or/and property, process other options.
     if (action) {
       // The 'action' property is a source of a function which assumes we pass it a parameter
       // called 'value'.
@@ -69,30 +82,30 @@ define(function () {
       });
     }
 
+    if (propertyName) {
+      $slider.bind('slide', function(event, ui) {
+        // Just ignore slide events that occur before the model is loaded.
+        var obj = {};
+        obj[propertyName] = ui.value;
+        if (model) model.set(obj);
+        if (displayValue) {
+          $sliderHandle.text(displayValue(ui.value));
+        }
+      });
+    }
+
+    if (displayValue) {
+      displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
+    }
+
     // Public API.
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
-        var obj, value;
+        var obj;
 
         if (propertyName) {
-          $slider.bind('slide', function(event, ui) {
-            // just ignore slide events that occur before the model is loaded
-            var obj = {};
-            obj[propertyName] = ui.value;
-            if (model) model.set(obj);
-            if (displayValue) {
-              $sliderHandle.text(displayValue(ui.value));
-            }
-          });
-
-          model.addPropertiesListener([propertyName], function() {
-            var value = model.get(propertyName);
-            $slider.slider('value', value);
-            if (displayValue) {
-              $sliderHandle.text(displayValue(value));
-            }
-          });
+          model.addPropertiesListener([propertyName], updateSlider);
         }
 
         if (initialValue !== undefined && initialValue !== null) {
@@ -107,16 +120,12 @@ define(function () {
           }
 
           if (propertyName) {
-              obj = {};
-              obj.propertyName = initialValue;
-              model.set(obj);
+            obj = {};
+            obj.propertyName = initialValue;
+            model.set(obj);
           }
         } else if (propertyName) {
-            value = model.get(propertyName);
-            $slider.slider('value', value);
-            if (displayValue) {
-              $sliderHandle.text(displayValue(value));
-            }
+          updateSlider();
         }
       },
 
