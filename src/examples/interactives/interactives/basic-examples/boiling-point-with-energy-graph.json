@@ -48,22 +48,24 @@
       "property": "targetTemperature"
     },
     {
-      "type": "energyGraph",
-      "id": "ke-chart",
-      "dimensions": {
-        "width": 500,
-        "height": 296
-      },
-      "options": {
-        "ymin": -15,
-        "ymax": 15,
-        "xmax": 30
-      }
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy of the System (KE:red, PE:green, TE:blue)",
+      "xlabel": "Model Time (ps)",
+      "ylabel": "eV",
+      "ymin": -15,
+      "ymax": 15,
+      "xmax": 30,
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
     }
   ],
   "layout": {
     "rightwide": [
-      "ke-chart"
+      "propertiesGraph"
     ],
     "bottom": [
       "heat",

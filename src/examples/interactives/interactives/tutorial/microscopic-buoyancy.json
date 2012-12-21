@@ -22,21 +22,23 @@
       "onClick": "if (value) { set({ 'gravitationalField' : 8e-8 }); }"
     },
     {
-      "type": "energyGraph",
-      "id": "ke-chart",
-      "dimensions": {
-        "width": 500,
-        "height": 296
-      },
-      "options": {
-        "ymin": -1000,
-        "ymax": 5000
-      }
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy of the System (KE:red, PE:green, TE:blue)",
+      "xlabel": "Model Time (ps)",
+      "ylabel": "eV",
+      "ymin": -1000,
+      "ymax": 5000,
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
     }
   ],
   "layout": {
     "rightwide": [
-      "ke-chart"
+      "propertiesGraph"
     ],
     "bottom": [
       "gfield"

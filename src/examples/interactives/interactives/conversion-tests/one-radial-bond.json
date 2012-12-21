@@ -78,24 +78,24 @@
       "action": "var props = getAtomProperties(0); props.vx += 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx += 0.00002; setAtomProperties(1, props);"
     },
     {
-      "type": "energyGraph",
-      "id": "ke-chart",
-      "dimensions": {
-        "width": 600,
-        "height": 500
-      },
-      "options": {
-        "xmax": 40,
-        "ymin": -1,
-        "ymax": 1,
-        "xFormatter": "3.2s",
-        "yFormatter": "3.2s"
-      }
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy of the System (KE:red, PE:green, TE:blue)",
+      "xlabel": "Model Time (ps)",
+      "ylabel": "eV",
+      "xmax": 40,
+      "ymin": -1,
+      "ymax": 1,
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
     }
   ],
   "layout": {
-    "right": [
-      "ke-chart"
+    "rightwide": [
+      "propertiesGraph"
     ],
     "bottom": [
       "subtract-velocity",
