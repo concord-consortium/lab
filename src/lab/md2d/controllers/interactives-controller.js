@@ -14,7 +14,6 @@ define(function (require) {
       PulldownController      = require('md2d/controllers/pulldown-controller'),
       NumericOutputController = require('md2d/controllers/numeric-output-controller'),
       ThermometerController   = require('md2d/controllers/thermometer-controller'),
-      RealTimeGraph           = require('grapher/core/real-time-graph'),
       layout                  = require('common/layout/layout'),
       setupInteractiveLayout  = require('common/layout/interactive-layout'),
       ParentMessageAPI        = require('md2d/controllers/parent-message-api');
@@ -33,8 +32,6 @@ define(function (require) {
         componentCallbacks = [],
         onLoadScripts = [],
         thermometer,
-        energyGraph,
-        energyData = [[],[],[]],
         // A generic line graph of some set of properties
         graph,
         // Bar graph controller.
@@ -140,8 +137,6 @@ define(function (require) {
             elem:     barGraphController.getViewContainer(),
             callback: barGraphController.modelLoadedCallback
           };
-        case 'energyGraph':
-          return createEnergyGraph(component);
         case 'graph':
           graph = new GraphController(component);
           return {
@@ -174,143 +169,6 @@ define(function (require) {
       return str.join('\n');
     }
 
-    function createEnergyGraph(component) {
-      var elem = $('<div>').attr('id', component.id);
-      return  {
-        elem: elem,
-        callback: function() {
-
-          var thisComponent = component,
-              $container = $('#' + thisComponent.id),
-              options = {
-                title:     "Energy of the System (KE:red, PE:green, TE:blue)",
-                xlabel:    "Model Time (ps)",
-                xmin:      0,
-                xmax:     20,
-                sample:    modelSampleSizeInPs(),
-                ylabel:    "eV",
-                ymin:      -5.0,
-                ymax:      5.0
-              };
-
-          resetEnergyData();
-
-          model.addPropertiesListener(['viewRefreshInterval'], function() {
-            options.sample = modelSampleSizeInPs();
-            energyGraph.reset('#' + thisComponent.id, options);
-          });
-
-          // Create energyGraph only if it hasn't been drawn before:
-          if (!energyGraph) {
-            $.extend(options, thisComponent.options || []);
-            newEnergyGraph(thisComponent.id, options);
-          } else {
-            options.sample = modelSampleSizeInPs();
-            $.extend(options, thisComponent.options || []);
-            energyGraph.reset('#' + thisComponent.id, options, $container[0]);
-          }
-
-          if (thisComponent.dimensions) {
-            energyGraph.resize(thisComponent.dimensions.width, component.dimensions.height);
-          }
-
-          // This method is called whenever a model loads (i.e., a new model object is created.)
-          // Always request event notifications from the new model object.
-
-          model.on('tick.energyGraph', updateEnergyGraph);
-
-          model.on('play.energyGraph', function() {
-            invalidateFollowingEnergyData();
-            energyGraph.show_canvas();
-          });
-
-          model.on('invalidation.energyGraph', invalidateFollowingEnergyData);
-
-          model.on('reset.energyGraph', function() {
-            options.sample = modelSampleSizeInPs();
-            resetEnergyData();
-            energyGraph.reset('#' + thisComponent.id, options);
-            energyGraph.new_data(energyData);
-          });
-
-          model.on('stepForward.energyGraph', function() {
-            if (model.isNewStep()) {
-              updateEnergyGraph();
-            } else {
-              energyGraph.updateOrRescale(model.stepCounter());
-              energyGraph.showMarker(model.stepCounter());
-            }
-          });
-
-          model.on('stepBack.energyGraph', function() {
-            energyGraph.updateOrRescale(model.stepCounter());
-            energyGraph.showMarker(model.stepCounter());
-          });
-
-          model.on('seek.energyGraph', function() {
-            var modelsteps = model.stepCounter();
-            if (modelsteps > 0) {
-              resetEnergyData(modelsteps);
-            } else {
-              resetEnergyData();
-            }
-            energyGraph.new_data(energyData);
-          });
-
-        }
-      };
-    }
-
-    function modelSampleSizeInPs() {
-      return model.get("viewRefreshInterval") * model.get("timeStep")/1000;
-    }
-
-    function newEnergyGraph(id, options) {
-      options = options || {};
-      options.dataset = energyData;
-      energyGraph = new RealTimeGraph('#' + id, options);
-    }
-
-    function invalidateFollowingEnergyData() {
-      if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
-        resetEnergyData(model.stepCounter());
-        energyGraph.new_data(energyData);
-      }
-    }
-
-    function updateEnergyGraph() {
-      energyGraph.add_points(updateEnergyData());
-    }
-
-    // Add another sample of model KE, PE, and TE to the arrays in energyData
-    function updateEnergyData() {
-      var ke = model.get('kineticEnergy'),
-          pe = model.get('potentialEnergy'),
-          te = ke + pe;
-      energyData[0].push(ke);
-      energyData[1].push(pe);
-      energyData[2].push(te);
-      return [ke, pe, te];
-    }
-
-    // Reset the energyData arrays to a specific length by passing in an index value,
-    // or empty the energyData arrays an initialize the first sample.
-    function resetEnergyData(index) {
-      var modelsteps = model.stepCounter(),
-          i,
-          len;
-
-      if (index) {
-        for (i = 0, len = energyData.length; i < len; i++) {
-          energyData[i].length = modelsteps;
-        }
-        return index;
-      } else {
-        energyData = [[0],[0],[0]];
-        return 0;
-      }
-    }
-
     /**
       Call this after the model loads, to process any queued resize and update events
       that depend on the model's properties, then draw the screen.
@@ -333,7 +191,6 @@ define(function (require) {
 
       layout.addView('moleculeContainers', modelController.moleculeContainer);
       if (thermometer) layout.addView('thermometers', thermometer.getView());
-      if (energyGraph) layout.addView('energyGraphs', energyGraph);
       // TODO: energyGraphs should be changed to lineGraphs?
       if (graph) layout.addView('energyGraphs', graph.getView());
       if (barGraphController) layout.addView('barGraphs', barGraphController);
