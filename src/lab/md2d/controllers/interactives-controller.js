@@ -16,7 +16,35 @@ define(function (require) {
       ThermometerController   = require('md2d/controllers/thermometer-controller'),
       layout                  = require('common/layout/layout'),
       setupInteractiveLayout  = require('common/layout/interactive-layout'),
-      ParentMessageAPI        = require('md2d/controllers/parent-message-api');
+      ParentMessageAPI        = require('md2d/controllers/parent-message-api'),
+
+      // Set of available components.
+      // - Key defines 'type', which is used in the interactive JSON.
+      // - Value is a constructor function of the given component.
+      // Each constructor should assume that it will be called with
+      // following arguments:
+      // 1. component definition (unmodified object from the interactive JSON),
+      // 2. scripting API object,
+      // 3. public API of the InteractiveController.
+      // Of course, some of them can be passed unnecessarily, but
+      // the InteractiveController follows this convention.
+      //
+      // The instantiated component should provide following interface:
+      // # getViewContainer()    - function returning jQuery object containing
+      //                           DOM elements of the component.
+      // # modelCallbackLoaded() - optional function taking no arguments, a callback
+      //                           which should be called when the model is loaded.
+      ComponentConstructor = {
+        'button':        ButtonController,
+        'checkbox':      CheckboxController,
+        'pulldown':      PulldownController,
+        'radio':         RadioController,
+        'thermometer':   ThermometerController,
+        'barGraph':      BarGraphController,
+        'graph':         GraphController,
+        'slider':        SliderController,
+        'numericOutput': NumericOutputController
+      };
 
   return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
 
@@ -31,19 +59,20 @@ define(function (require) {
         playerConfig,
         componentCallbacks = [],
         onLoadScripts = [],
-        thermometer,
-        // A generic line graph of some set of properties
-        graph,
-        // Bar graph controller.
-        barGraphController,
-        // Handles exporting data to DataGames, if 'exports' are specified
-        dgExportController,
 
-        // doesn't currently have any public methods, but probably will.
-        parentMessageAPI,
+        // Hash of instantiated components.
+        // Key   - component type.
+        // Value - array of component instances.
+        componentInstances = {},
 
         // API for scripts defined in the interactive JSON file.
         scriptingAPI,
+
+        // Handles exporting data to DataGames, if 'exports' are specified.
+        dgExportController,
+
+        // Doesn't currently have any public methods, but probably will.
+        parentMessageAPI,
 
         setupScreenCalledTwice = false;
 
@@ -99,29 +128,24 @@ define(function (require) {
     }
 
     function createComponent(component) {
-      switch (component.type) {
-        case 'button':
-          return new ButtonController(component, scriptingAPI);
-        case 'checkbox':
-          return new CheckboxController(component, scriptingAPI);
-        case 'pulldown':
-          return new PulldownController(component, scriptingAPI, controller);
-        case 'radio':
-          return new RadioController(component, scriptingAPI, controller);
-        case 'thermometer':
-          thermometer = new ThermometerController(component);
-          return thermometer;
-        case 'barGraph':
-          barGraphController = new BarGraphController(component);
-          return barGraphController;
-        case 'graph':
-          graph = new GraphController(component);
-          return graph;
-        case 'slider':
-          return new SliderController(component, scriptingAPI);
-        case 'numericOutput':
-          return new NumericOutputController(component, scriptingAPI);
+          // Get type of the requested component from JSON definition.
+      var type = component.type,
+          // Use an appropriate constructor function and create a new instance of the given type.
+          // Note that we use constant set of parameters for every type:
+          // 1. component definition (exact object from interactive JSON),
+          // 2. scripting API object,
+          // 3. public API of the InteractiveController.
+          comp = new ComponentConstructor[type](component, scriptingAPI, controller);
+
+      // Save the new instance.
+      if (componentInstances[type] === undefined) {
+        // Create array for instances.
+        componentInstances[type] = [];
       }
+      componentInstances[type].push(comp);
+
+      // And return it.
+      return comp;
     }
 
     /**
@@ -156,10 +180,16 @@ define(function (require) {
       parentMessageAPI = new ParentMessageAPI(model);
 
       layout.addView('moleculeContainers', modelController.moleculeContainer);
-      if (thermometer) layout.addView('thermometers', thermometer.getView());
-      // TODO: energyGraphs should be changed to lineGraphs?
-      if (graph) layout.addView('energyGraphs', graph.getView());
-      if (barGraphController) layout.addView('barGraphs', barGraphController);
+
+      // Note that in the code below we assume that there is only ONE instance of each component.
+      // This is not very generic, but the only supported scenario by the current layout system.
+      if (componentInstances.thermometer)
+        layout.addView('thermometers', componentInstances.thermometer[0].getView());
+      if (componentInstances.graph)
+        // TODO: energyGraphs should be changed to lineGraphs?
+        layout.addView('energyGraphs', componentInstances.graph[0].getView());
+      if (componentInstances.barGraph)
+        layout.addView('barGraphs', componentInstances.barGraph[0]);
 
       $(window).unbind('resize');
 
