@@ -7,6 +7,7 @@ define(function (require) {
       GraphController         = require('md2d/controllers/graph-controller'),
       DgExportController      = require('md2d/controllers/dg-export-controller'),
       ScriptingAPI            = require('md2d/controllers/scripting-api'),
+      ButtonController        = require('md2d/controllers/button-controller'),
       SliderController        = require('md2d/controllers/slider-controller'),
       PulldownController      = require('md2d/controllers/pulldown-controller'),
       RealTimeGraph           = require('grapher/core/real-time-graph'),
@@ -101,7 +102,11 @@ define(function (require) {
       var compController;
       switch (component.type) {
         case 'button':
-          return createButton(component);
+          compController = new ButtonController(component, scriptingAPI);
+          return {
+            elem:     compController.getViewContainer(),
+            callback: compController.modelLoadedCallback
+          };
         case 'checkbox':
           return createCheckbox(component);
         case 'pulldown':
@@ -149,19 +154,6 @@ define(function (require) {
         return str;
       }
       return str.join('\n');
-    }
-
-    function createButton(component) {
-      var $button, scriptStr;
-
-      $button = $('<button>').attr('id', component.id).html(component.text);
-      $button.addClass("component");
-
-      scriptStr = getStringFromArray(component.action);
-
-      $button.click(scriptingAPI.makeFunctionInScriptContext(scriptStr));
-
-      return { elem: $button };
     }
 
     function createCheckbox(component) {
