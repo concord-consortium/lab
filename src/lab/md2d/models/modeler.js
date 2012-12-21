@@ -1876,6 +1876,13 @@ define(function(require) {
       return modelOutputState.PE;
     });
 
+    model.defineOutput('totalEnergy', {
+      label: "Total Energy",
+      units: "eV"
+    }, function() {
+      return modelOutputState.KE + modelOutputState.PE;
+    });
+
     model.defineOutput('temperature', {
       label: "Temperature",
       units: "K"
