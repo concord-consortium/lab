@@ -8,6 +8,7 @@ define(function (require) {
       DgExportController      = require('md2d/controllers/dg-export-controller'),
       ScriptingAPI            = require('md2d/controllers/scripting-api'),
       SliderController        = require('md2d/controllers/slider-controller'),
+      PulldownController      = require('md2d/controllers/pulldown-controller'),
       RealTimeGraph           = require('grapher/core/real-time-graph'),
       Thermometer             = require('cs!common/components/thermometer'),
       layout                  = require('common/layout/layout'),
@@ -104,7 +105,11 @@ define(function (require) {
         case 'checkbox':
           return createCheckbox(component);
         case 'pulldown':
-          return createPulldown(component);
+          compController = new PulldownController(component, scriptingAPI, controller);
+          return {
+            elem:     compController.getViewContainer(),
+            callback: compController.modelLoadedCallback
+          };
         case 'radio':
           return createRadio(component);
         case 'thermometer':
@@ -219,44 +224,6 @@ define(function (require) {
 
       // Return label tag, as it contains checkbox anyway.
       return { elem: $label };
-    }
-
-    function createPulldown(component) {
-      var $pulldown, $option,
-          options = component.options || [],
-          option,
-          i, ii;
-
-      $pulldown = $('<select>').attr('id', component.id);
-      $pulldown.addClass("component");
-
-      for (i=0, ii=options.length; i<ii; i++) {
-        option = options[i];
-        $option = $('<option>').html(option.text);
-        if (option.disabled) {
-          $option.attr("disabled", option.disabled);
-        }
-        if (option.selected) {
-          $option.attr("selected", option.selected);
-        }
-        $pulldown.append($option);
-      }
-
-      $pulldown.change(function() {
-        var index = $(this).prop('selectedIndex'),
-            action = component.options[index].action,
-            scriptStr;
-
-        if (action){
-          scriptStr = getStringFromArray(action);
-          scriptingAPI.makeFunctionInScriptContext(scriptStr)();
-        } else if (component.options[index].loadModel){
-          model.stop();
-          loadModel(component.options[index].loadModel);
-        }
-      });
-
-      return { elem: $pulldown };
     }
 
     function createRadio(component) {
