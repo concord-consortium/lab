@@ -102,7 +102,72 @@
           "action": "set({aminoAcidColorScheme: 'lego'});"
         }
       ]
+    },
+    {
+      "type": "button",
+      "id": "phobic-button",
+      "text": "All Hydrophobic",
+      "action": [
+        "var opt = {supressRepaint: true};",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+          "setAtomProperties(i, {element: 14}, false, false, opt);",
+        "}",
+        "repaint();"
+        ]
+    },
+    {
+      "type": "button",
+      "id": "philic-button",
+      "text": "All Hydrophilic",
+      "action": [
+        "var opt = {supressRepaint: true};",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+          "setAtomProperties(i, {element: 6}, false, false, opt);",
+        "}",
+        "repaint();"
+        ]
+    },
+    {
+      "type": "button",
+      "id": "mostly-phobic-button",
+      "text": "Mostly Hydrophobic",
+      "action": [
+        "var opt = {supressRepaint: true};",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+          "setAtomProperties(i, {element: (Math.random() > 0.2 ? 14 : 6) }, false, false, opt);",
+        "}",
+        "repaint();"
+        ]
+    },
+    {
+      "type": "button",
+      "id": "mostly-philic-button",
+      "text": "Mostly Hydrophilic",
+      "action": [
+        "var opt = {supressRepaint: true};",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+          "setAtomProperties(i, {element: (Math.random() < 0.2 ? 14 : 6)}, false, false, opt);",
+        "}",
+        "repaint();"
+        ]
+    },
+    {
+      "type": "button",
+      "id": "random-button",
+      "text": "Random Mix",
+      "action": [
+        "var opt = {supressRepaint: true};",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+          "setAtomProperties(i, {element: (Math.floor(Math.random() * 20) + 5)}, false, false, opt);",
+        "}",
+        "repaint();"
+        ]
     }
   ],
-  "layout": {}
+  "layout": {
+    "bottom": [
+      ["show-labels", "select-solvent", "select-color-scheme"],
+      ["realistic-dielectric-effect", "solvent-force-factor-slider"]
+    ]
+  }
 }
