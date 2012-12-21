@@ -692,6 +692,10 @@ define(function (require) {
 
       for (i = 0, ii=componentJsons.length; i<ii; i++) {
         component = createComponent(componentJsons[i]);
+        // Register component callback if it is available.
+        if (component.callback) {
+          componentCallbacks.push(component.callback);
+        }
         components[componentJsons[i].id] = component;
       }
 
@@ -725,9 +729,6 @@ define(function (require) {
                   componentId = items[j];
                   if (components[componentId]) {
                     $row.append(components[componentId].elem);
-                    if (components[componentId].callback) {
-                      componentCallbacks.push(components[componentId].callback);
-                    }
                     delete components[componentId];
                   }
                 }
