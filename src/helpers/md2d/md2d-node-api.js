@@ -19,12 +19,14 @@ requirejs.config({
 
 requirejs([
   'md2d/models/modeler',
+  'common/validator',
   'md2d/models/metadata',
-  'common/validator'
-], function (Modeler, metadata, validator) {
+  'cs!md2d/models/solvent'
+], function (Modeler, validator, metadata, Solvent) {
   // Export API for Node.js scripts.
   exports.Modeler   = Modeler;
   // Used by MML -> JSON conversion script.
-  exports.metadata  = metadata;
   exports.validator = validator;
+  exports.metadata  = metadata;
+  exports.Solvent   = Solvent;
 });

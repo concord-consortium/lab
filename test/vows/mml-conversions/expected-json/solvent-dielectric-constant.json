@@ -13,7 +13,7 @@
   "viscosity": 1,
   "viewRefreshInterval": 50,
   "viewOptions": {
-    "backgroundColor": "rgba(134,187,246,255)",
+    "backgroundColor": "#a5d9da",
     "showClock": true,
     "keShading": false,
     "chargeShading": true,

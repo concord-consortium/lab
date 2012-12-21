@@ -12,7 +12,7 @@ define (require) ->
     water:
       forceType: 1
       dielectricConstant: 80
-      color: "#cee7e4"
+      color: "#a5d9da"
 
   ###
   Simple class representing a solvent.

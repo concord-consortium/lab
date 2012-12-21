@@ -250,6 +250,11 @@ parseMML = (mmlString) ->
     bgColors = (cheerio(n).text() for n in $mml "[property=background] > .java-awt-Color > int")
     # If array of RGBA values is found, use it. Otherwise, left 'backgroundColor' undefined, so default value will be used.
     backgroundColor = "rgba(#{bgColors[0]},#{bgColors[1]},#{bgColors[2]},#{bgColors[3]})" if bgColors.length == 4
+    # A tiny "hack" - replace background color of water or oil used in Classic MW to one used in Next Gen MW.
+    if backgroundColor == "rgba(134,187,246,255)"
+      backgroundColor = new md2dAPI.Solvent("water").color
+    if backgroundColor == "rgba(240, 244, 57, 255"
+      backgroundColor = new md2dAPI.Solvent("oil").color
 
     ###
       Find the solvent force type.
