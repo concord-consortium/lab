@@ -8,6 +8,7 @@ define(function (require) {
       DgExportController      = require('md2d/controllers/dg-export-controller'),
       ScriptingAPI            = require('md2d/controllers/scripting-api'),
       ButtonController        = require('md2d/controllers/button-controller'),
+      CheckboxController      = require('md2d/controllers/checkbox-controller'),
       SliderController        = require('md2d/controllers/slider-controller'),
       PulldownController      = require('md2d/controllers/pulldown-controller'),
       RealTimeGraph           = require('grapher/core/real-time-graph'),
@@ -108,7 +109,11 @@ define(function (require) {
             callback: compController.modelLoadedCallback
           };
         case 'checkbox':
-          return createCheckbox(component);
+          compController = new CheckboxController(component, scriptingAPI);
+          return {
+            elem:     compController.getViewContainer(),
+            callback: compController.modelLoadedCallback
+          };
         case 'pulldown':
           compController = new PulldownController(component, scriptingAPI, controller);
           return {
@@ -154,68 +159,6 @@ define(function (require) {
         return str;
       }
       return str.join('\n');
-    }
-
-    function createCheckbox(component) {
-      var propertyName  = component.property,
-          onClickScript = component.onClick,
-          $checkbox,
-          $label;
-
-      $checkbox = $('<input type="checkbox">').attr('id', component.id);
-      $label = $('<label>').append(component.text).append($checkbox);
-      // Append class to label, as it's the most outer container in this case.
-      $label.addClass("component");
-
-      // Process onClick script if it is defined.
-      if (onClickScript) {
-        onClickScript = getStringFromArray(onClickScript);
-        // Create a function which assumes we pass it a parameter called 'value'.
-        onClickScript = scriptingAPI.makeFunctionInScriptContext('value', onClickScript);
-      }
-
-      // Connect checkbox with model's property if its name is defined.
-      if (propertyName !== undefined) {
-        modelLoadedCallbacks.push(function () {
-          var updateCheckbox = function () {
-            var value = model.get(propertyName);
-            if (value) {
-              $checkbox.attr('checked', true);
-            } else {
-              $checkbox.attr('checked', false);
-            }
-          };
-          // Register listener for 'propertyName'.
-          model.addPropertiesListener([propertyName], updateCheckbox);
-          // Perform initial checkbox setup.
-          updateCheckbox();
-        });
-      }
-
-      // Register handler for click event.
-      $checkbox.click(function () {
-        var value = false,
-            propObj;
-        // $(this) will contain a reference to the checkbox.
-        if ($(this).is(':checked')) {
-          value = true;
-        }
-        // Change property value if checkbox is connected
-        // with model's property.
-        if (propertyName !== undefined) {
-          propObj = {};
-          propObj[propertyName] = value;
-          model.set(propObj);
-        }
-        // Finally, if checkbox has onClick script attached,
-        // call it in script context with checkbox status passed.
-        if (onClickScript !== undefined) {
-          onClickScript(value);
-        }
-      });
-
-      // Return label tag, as it contains checkbox anyway.
-      return { elem: $label };
     }
 
     function createRadio(component) {
