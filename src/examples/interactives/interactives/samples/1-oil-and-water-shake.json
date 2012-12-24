@@ -1,12 +1,8 @@
 {
   "title": "Oil and Water",
   "publicationStatus": "sample",
-  "subtitle": "A very simple simulation with polar water on the left and non-polar oil on the right.",
-  "about": [
-    "It is well known that \"oil and water don't mix\", but why is that the case?",
-    "The model to the left shows polar water and non-polar oil in a container together. Press \"run\" to see how they interact.",
-    "Salad dressing is typically made from oil and vinegar (primarily water). Use the button below to \"shake up the dressing\" and watch what happens to the oil and water as you let it \"settle\"."
-  ],
+  "subtitle": "Explore how polar and non-polar substances interact.",
+  "about": "It is well known that \"oil and water don’t mix.\" But why? Run the model of polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water mixture,\" then run it again and watch what happens to the molecules over time.",
   "models": [
     {
       "id": "page3$1",
