@@ -14,6 +14,10 @@
   :name: "Science of Atoms and Molecules: Phase Change"
   :category: Curriculum
 
+- :path: sam/DNA-to-proteins
+  :name: "Science of Atoms and Molecules: DNA-to-proteins"
+  :category: Curriculum
+
 - :path: inquiry-space/pendulum
   :name: "Inquiry Space: Pendulums"
   :category: Curriculum

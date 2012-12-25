@@ -1,0 +1,59 @@
+{
+  "title": "Modeling Transcription",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page2$0",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page2/page2$0.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "separate",
+      "text": "Separate the strands of DNA",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "transcribeA",
+      "text": "A",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "transcribeC",
+      "text": "C",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "transcribeG",
+      "text": "G",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "transcribeU",
+      "text": "U",
+      "action": ""
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["separate", "reset"],
+      ["transcribeA", "transcribeU", "transcribeG", "transcribeC"]
+    ]
+  }
+}

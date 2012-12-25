@@ -1,0 +1,59 @@
+{
+  "title": "Modeling Translation",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page3$0",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "transcribe",
+      "text": "Transcribe",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset the model",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "translate",
+      "text": "Translate",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop the model",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "transcribe-step",
+      "text": "Transcribe step by step",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "translate-step",
+      "text": "Translate step by step",
+      "action": ""
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["transcribe", "translate", "stop", "reset"],
+      ["transcribe-step", "translate-step"]
+    ]
+  }
+}
