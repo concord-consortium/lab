@@ -1,8 +1,13 @@
 {
-  "title": "Why did the Can Collapse?",
+  "title": "Pressure Equilibrium",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
+  "about": [
+    "There are gases on both sides of a moveable barrier (piston), which stays in the same place (more or less) when you run the model because the gas pressure on the piston is in equilibrium.",
+    "Add purple gas molecules and watch what happens to the piston. Reset the model. Now add yellow gas molecules. What happens to the piston?",
+    "Try heating or cooling the gas molecules. Explain the change in equilibrium with each change. Which has a greater effect on equilibrium -- changing the number of gas molecules or changing the temperature? Why?",
+    "Extension: Have you ever seen a soda can collapse? Watch this (<a href='http://www.youtube.com/watch?v=gFDS3bwAU-s' target='_blank'>http://www.youtube.com/watch?v=gFDS3bwAU-s</a>). Can you explain the collapsing can in terms of pressure equilibrium?"
+  ],
   "models": [
     {
       "id": "page7$0",
@@ -42,7 +47,7 @@
     {
       "type": "button",
       "id": "add-inside",
-      "text": "Add Molecule Inside",
+      "text": "Add Yellow Molecule",
       "action": [
         "var elemNum = 3;",
         "var maxX = getObstacleProperties(0).x - getElementProperties(elemNum).sigma;",
@@ -52,7 +57,7 @@
     {
       "type": "button",
       "id": "add-outside",
-      "text": "Add Molecule Outside",
+      "text": "Add Purple Molecule",
       "action": [
         "var elemNum = 1;",
         "var minX = getObstacleProperties(0).x + getObstacleProperties(0).width + getElementProperties(elemNum).sigma;",
@@ -62,7 +67,7 @@
     {
       "type": "button",
       "id": "remove-inside",
-      "text": "Remove Inside Molecule",
+      "text": "Remove Yellow Molecule",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  if (getAtomProperties(i).x < getObstacleProperties(0).x) {",
@@ -75,7 +80,7 @@
     {
       "type": "button",
       "id": "remove-outside",
-      "text": "Remove Outside Molecule",
+      "text": "Remove Purple Molecule",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  if (getAtomProperties(i).x > (getObstacleProperties(0).x + getObstacleProperties(0).width)) {",
@@ -88,7 +93,7 @@
     {
       "type": "button",
       "id": "heat-inside",
-      "text": "Heat Inside",
+      "text": "Heat Yellow Gas",
       "action": [
         "if (get('temperature') < 10000) {",
         "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -107,7 +112,7 @@
     {
       "type": "button",
       "id": "heat-outside",
-      "text": "Heat Outside",
+      "text": "Heat Purple Gas",
       "action": [
         "if (get('temperature') < 10000) {",
         "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -126,7 +131,7 @@
     {
       "type": "button",
       "id": "cool-inside",
-      "text": "Cool Inside",
+      "text": "Cool Yellow Gas",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  var atom = getAtomProperties(i);",
@@ -140,7 +145,7 @@
     {
       "type": "button",
       "id": "cool-outside",
-      "text": "Cool Outside",
+      "text": "Cool Purple Gas",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  var atom = getAtomProperties(i);",
