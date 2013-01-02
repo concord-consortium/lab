@@ -110,6 +110,11 @@ define(function (require, exports, module) {
         // Parameter that influences strength of force applied to amino acids by water of oil (solvent).
         solventForceFactor = 1,
 
+        // Additional force applied to amino acids that depends on distance from the center of mass. It affects
+        // only AAs which are pulled into the center of mass (to stabilize shape of the protein).
+        additionalSolventForceMult = 25,
+        additionalSolventForceThreshold = 3,
+
         // Whether any atoms actually have charges
         hasChargedAtoms = false,
 
@@ -1453,6 +1458,18 @@ define(function (require, exports, module) {
                 r = Math.sqrt(dx * dx + dy * dy);
 
                 temp = hydrophobicity[atomIdx] * solventFactor;
+
+                // AAs being pulled into the center of mass should feel an additional force factor that depends
+                // on distance from the center of mass, ranging between 1 and 25, with 1 being furthest away from the CoM
+                // and 25 being the max when at the CoM or within a certain radius of the CoM. In some ways this
+                // is closer to nature as the core of a protein is less exposed to solvent and thus even more stable.
+                if (temp > 0 && r < additionalSolventForceThreshold) {
+                  // Force towards the center of mass, distance from the CoM less than a given threshold.
+                  // Multiply force by an additional factor defined by the linear function of 'r' defined by two points:
+                  // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
+                  temp *= (1 - additionalSolventForceMult) * r / additionalSolventForceThreshold + additionalSolventForceMult;
+                }
+
                 fx = temp * dx / r;
                 fy = temp * dy / r;
                 ax[atomIdx] -= fx;
@@ -1827,6 +1844,14 @@ define(function (require, exports, module) {
 
       setSolventForceFactor: function(sff) {
         solventForceFactor = sff;
+      },
+
+      setAdditionalSolventForceMult: function(asfm) {
+        additionalSolventForceMult = asfm;
+      },
+
+      setAdditionalSolventForceThreshold: function(asft) {
+        additionalSolventForceThreshold = asft;
       },
 
       // Our timekeeping is really a convenience for users of this lib, so let them reset time at will

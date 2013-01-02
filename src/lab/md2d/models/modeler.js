@@ -136,6 +136,20 @@ define(function(require) {
             }
           },
 
+          set_additionalSolventForceMult: function(s) {
+            this.additionalSolventForceMult = s;
+            if (engine) {
+              engine.setAdditionalSolventForceMult(s);
+            }
+          },
+
+          set_additionalSolventForceThreshold: function(s) {
+            this.additionalSolventForceThreshold = s;
+            if (engine) {
+              engine.setAdditionalSolventForceThreshold(s);
+            }
+          },
+
           set_dielectricConstant: function(dc) {
             this.dielectricConstant = dc;
             if (engine) {
@@ -744,6 +758,8 @@ define(function(require) {
       engine.setRealisticDielectricEffect(model.get('realisticDielectricEffect'));
       engine.setSolventForceType(model.get('solventForceType'));
       engine.setSolventForceFactor(model.get('solventForceFactor'));
+      engine.setAdditionalSolventForceMult(model.get('additionalSolventForceMult'));
+      engine.setAdditionalSolventForceThreshold(model.get('additionalSolventForceThreshold'));
 
       window.state = modelOutputState = {};
 
