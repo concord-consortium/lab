@@ -48,6 +48,19 @@ define(function() {
         // -1 - oil.
         defaultValue: 0
       },
+      // Additional force applied to amino acids that depends on distance from the center of mass. It affects
+      // only AAs which are pulled into the center of mass (to stabilize shape of the protein).
+      // 'additionalSolventForceMult'      - maximum multiplier applied to solvent force when AA is in the center of mass.
+      // 'additionalSolventForceThreshold' - maximum distance from the center of mass which triggers this increase of the force.
+      // The additional force is described by the linear function of the AA distance from the center of mass
+      // that passes through two points:
+      // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
+      additionalSolventForceMult: {
+        defaultValue: 25
+      },
+      additionalSolventForceThreshold: {
+        defaultValue: 1
+      },
       viscosity: {
         defaultValue: 1
       },
