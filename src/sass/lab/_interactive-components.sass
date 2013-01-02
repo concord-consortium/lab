@@ -1,0 +1,97 @@
+@import 'sass/bourbon/bourbon'
+
+.numeric-output
+  display: inline-block
+  padding: 0.4em
+  margin-top: 0.5em
+  margin-right: 2em
+  vertical-align: text-top
+  span.label
+    display: inline-block
+    padding-left: 0.5em
+    padding-right: 0.5em
+  span.value
+    display: inline-block
+    padding: 0.0em 0.2em 0.0em 0.5em
+    min-width: 3em
+    text-align: right
+    font-weigth: bold
+    border-bottom-style: dotted
+    border-color: Grey
+    border-width: 1px
+  span.units
+    display: inline-block
+    padding-left: 0.2em
+    padding-right: 0.5em
+    font-style: italic
+
+.interactive-slider
+  display: inline-block
+  padding-top: 0.3em
+  margin-left: 0.5em
+  .title
+    display: inline-block
+    font-size: 1em
+    margin: 0 0 0.5em 2em
+    vertical-align: top
+  .container
+    // make this a positioned element so the .label can be positioned absolute
+    position: relative
+    // bottom margin has to account for size of labels, which are taken out of flow
+    // left and right margins have to account for
+    margin: 0 2em 1.2em 2em
+    // This will be the width of the slider div itself
+    width: 12em
+    .html-slider
+      width: 100%
+    .label
+      position: absolute
+      top: 0.2em
+      // "width: 2x; margin-left: -x; left: y%" places the center of the .label at exactly y%
+      // of the width of the parent
+      width: 6em
+      margin-left: -3em
+      // Now, make the text itself centered in the .label element
+      text-align: center
+      // And finally, make the position labels a bit smaller than the title and other text
+      font-size: 0.9em
+
+.interactive-thermometer
+  .label
+    margin: 0.5em auto 0.5em auto
+    text-align: center
+    font-size: 1em
+  .thermometer
+    display: block
+    width: 2.0em
+    height: 20em
+    margin: auto
+    padding-top: 0.2em
+    padding-bottom: 0.1em
+    border: 2px solid #f4b626
+    position: relative
+    border-radius: 1.5em 1.5em 0.2em 0.2em
+    div
+      display: block
+      position: relative
+      margin: 0px
+      padding: 0px
+    .thermometer_fill
+      position: absolute
+      width: 70%
+      left: 15%
+      bottom: 0
+      background: #e16a3e
+      border-radius: 0.75em 0.75em 0em 0em
+
+.properties-graph
+  display: inline-block
+  vertical-align: bottom
+  position: relative
+  width: 41em
+  height: 21.5em
+  background: $component-background-color
+  border-radius: 0.5em
+  @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
+  margin: 0em 1em
+  padding: 0em 0em
