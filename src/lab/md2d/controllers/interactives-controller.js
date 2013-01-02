@@ -32,7 +32,7 @@ define(function (require) {
       // The instantiated component should provide following interface:
       // # getViewContainer()    - function returning jQuery object containing
       //                           DOM elements of the component.
-      // # modelCallbackLoaded() - optional function taking no arguments, a callback
+      // # modelLoadedCallback() - optional function taking no arguments, a callback
       //                           which should be called when the model is loaded.
       ComponentConstructor = {
         'button':        ButtonController,
