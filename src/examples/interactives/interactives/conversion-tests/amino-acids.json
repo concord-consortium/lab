@@ -71,6 +71,46 @@
       "property": "solventForceFactor"
     },
     {
+      "type": "slider",
+      "id": "add-solvent-force-mult-slider",
+      "title": "Additional Solvent Force Multiplier",
+      "min": 0,
+      "max": 50,
+      "steps": 100,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 50,
+          "label": "50"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "additionalSolventForceMult"
+    },
+    {
+      "type": "slider",
+      "id": "add-solvent-force-threshold-slider",
+      "title": "Additional Solvent Force Threshold (distance)",
+      "min": 0,
+      "max": 10,
+      "steps": 100,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 10,
+          "label": "10"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "additionalSolventForceThreshold"
+    },
+    {
       "type": "checkbox",
       "id": "realistic-dielectric-effect",
       "text": "Realistic Dielectric Effect",
@@ -167,7 +207,8 @@
   "layout": {
     "bottom": [
       ["show-labels", "select-solvent", "select-color-scheme"],
-      ["realistic-dielectric-effect", "solvent-force-factor-slider"]
+      ["realistic-dielectric-effect", "solvent-force-factor-slider"],
+      ["add-solvent-force-mult-slider", "add-solvent-force-threshold-slider"]
     ]
   }
 }
