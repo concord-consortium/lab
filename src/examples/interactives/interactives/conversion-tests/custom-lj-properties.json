@@ -1,0 +1,17 @@
+{
+  "title": "Custom Lennard-Jones Properties",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "static-non-coulomb-test$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/custom-lj-properties$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+  ]
+}
