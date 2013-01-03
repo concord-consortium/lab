@@ -39,7 +39,7 @@ requirejs([
         assert.equal(model.get_num_atoms(), 50);
         // FIXME: custom error strings
         // expected [ 100, 100 ],
-  	    // got      [ 1, 1 ] (deepEqual) // molecules-test.js:46
+        // got      [ 1, 1 ] (deepEqual) // molecules-test.js:46
         assert.deepEqual(model.size(), [10, 10]);
       },
       "creates 50 molecules without setting model size or initializing forces": function(model) {
@@ -75,12 +75,12 @@ requirejs([
         model.createNewAtoms(100);
         (atoms = []).length = model.get_num_atoms();
         assert.equal(atoms.length, 100);
-        var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
+        total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
         assert.equal(total_charge, 0);
       },
       "creates a model with json and then gets values in json, modifies the model with new json, and confirms that settable properties change and immutable causes an error": function(model) {
         var mol_number = 5;
-        initialization_options = {
+        var initialization_options = {
           lennardJonesForces: true,
           coulombForces: true,
           mol_number: mol_number,
@@ -100,7 +100,7 @@ requirejs([
         mol_number = 10;
         new_options = {
           lennardJonesForces: false,
-          coulombForces: false,
+          coulombForces: false
         };
         model.set(new_options);
         model.createNewAtoms(mol_number);
@@ -285,4 +285,5 @@ requirejs([
   });
 
   suite.export(module);
+
 });
