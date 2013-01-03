@@ -761,6 +761,10 @@ define(function(require) {
       engine.setAdditionalSolventForceMult(model.get('additionalSolventForceMult'));
       engine.setAdditionalSolventForceThreshold(model.get('additionalSolventForceThreshold'));
 
+      // Register invalidating change hooks.
+      // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
+      engine.pairwiseLJProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
+
       window.state = modelOutputState = {};
 
       // Copy reference to basic properties.
@@ -1514,6 +1518,10 @@ define(function(require) {
 
     model.get_restraints = function() {
       return restraints;
+    };
+
+    model.getPairwiseLJProperties = function() {
+      return engine.pairwiseLJProperties;
     };
 
     model.get_vdw_pairs = function() {
