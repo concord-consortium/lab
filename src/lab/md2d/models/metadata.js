@@ -4,6 +4,10 @@ define(function() {
 
   return {
     mainProperties: {
+      type: {
+        defaultValue: "md2d",
+        immutable: true
+      },
       width: {
         defaultValue: 10,
         immutable: true

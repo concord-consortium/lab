@@ -1,4 +1,5 @@
 {
+  "type": "md2d",
   "lennardJonesForces": true,
   "coulombForces": true,
   "temperatureControl": false,
