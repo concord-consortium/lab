@@ -2,21 +2,24 @@
 
 define(function (require) {
   // Dependencies.
-  var ModelController         = require('md2d/controllers/model-controller'),
-      BarGraphController      = require('md2d/controllers/bar-graph-controller'),
-      GraphController         = require('md2d/controllers/graph-controller'),
-      DgExportController      = require('md2d/controllers/dg-export-controller'),
-      ScriptingAPI            = require('md2d/controllers/scripting-api'),
-      ButtonController        = require('md2d/controllers/button-controller'),
-      CheckboxController      = require('md2d/controllers/checkbox-controller'),
-      RadioController         = require('md2d/controllers/radio-controller'),
-      SliderController        = require('md2d/controllers/slider-controller'),
-      PulldownController      = require('md2d/controllers/pulldown-controller'),
-      NumericOutputController = require('md2d/controllers/numeric-output-controller'),
-      ThermometerController   = require('md2d/controllers/thermometer-controller'),
+  var BarGraphController      = require('interactive/controllers/bar-graph-controller'),
+      GraphController         = require('interactive/controllers/graph-controller'),
+      DgExportController      = require('interactive/controllers/dg-export-controller'),
+      ScriptingAPI            = require('interactive/controllers/scripting-api'),
+      ButtonController        = require('interactive/controllers/button-controller'),
+      CheckboxController      = require('interactive/controllers/checkbox-controller'),
+      RadioController         = require('interactive/controllers/radio-controller'),
+      SliderController        = require('interactive/controllers/slider-controller'),
+      PulldownController      = require('interactive/controllers/pulldown-controller'),
+      NumericOutputController = require('interactive/controllers/numeric-output-controller'),
+      ParentMessageAPI        = require('interactive/controllers/parent-message-api'),
+      ThermometerController   = require('interactive/controllers/thermometer-controller'),
+
       layout                  = require('common/layout/layout'),
       setupInteractiveLayout  = require('common/layout/interactive-layout'),
-      ParentMessageAPI        = require('md2d/controllers/parent-message-api'),
+
+      MD2DModelController     = require('md2d/controllers/model-controller'),
+      MD2DScriptingAPI        = require('md2d/controllers/scripting-api'),
 
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
@@ -68,6 +71,9 @@ define(function (require) {
         // API for scripts defined in the interactive JSON file.
         scriptingAPI,
 
+        // additional model-specific scripting api
+        modelScriptingAPI,
+
         // Handles exporting data to DataGames, if 'exports' are specified.
         dgExportController,
 
@@ -91,7 +97,8 @@ define(function (require) {
       @param: modelUrl
     */
     function loadModel(modelId) {
-      var model = getModel(modelId);
+      var modelScriptingAPI,
+          model = getModel(modelId);
 
       controller.currentModel = model;
 
@@ -115,10 +122,23 @@ define(function (require) {
         // Deal with the servers that return the json as text/plain
         modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
 
+        // set default model type to "md2d"
+        modelConfig.type = modelConfig.type || "md2d";
+
         if (modelController) {
           modelController.reload(modelConfig, playerConfig);
         } else {
-          modelController = new ModelController('#molecule-container', modelConfig, playerConfig);
+          switch(modelConfig.type) {
+            case "md2d":
+            modelController = new MD2DModelController('#model-container', modelConfig, playerConfig);
+            // Extending universal Interactive scriptingAPI with model-specific scripting API
+            scriptingAPI.extend(MD2DScriptingAPI);
+            scriptingAPI.exposeScriptingAPI();
+            break;
+            case "a-different-model-type":
+            break;
+          }
+
           modelLoaded();
           // also be sure to get notified when the underlying model changes
           modelController.on('modelReset', modelLoaded);
@@ -259,7 +279,7 @@ define(function (require) {
       $interactiveContainer = $(viewSelector);
       if ($interactiveContainer.children().length === 0) {
         $top = $('<div class="interactive-top" id="top"/>');
-        $top.append('<div class="interactive-top" id="molecule-container"/>');
+        $top.append('<div class="interactive-top" id="model-container"/>');
         if (interactive.layout && interactive.layout.right !== undefined) {
           $right = $('<div class="interactive-top" id="right"/>');
           $top.append($right);
@@ -284,7 +304,7 @@ define(function (require) {
       }
 
       // set up the list of possible models
-      if (interactive.models != null && interactive.models.length > 0) {
+      if (interactive.models !== null && interactive.models.length > 0) {
         models = interactive.models;
         for (i=0, ii=models.length; i<ii; i++) {
           model = models[i];
@@ -463,8 +483,9 @@ define(function (require) {
     //
     // Initialization.
     //
+
     // Create scripting API.
-    scriptingAPI = new ScriptingAPI(controller);
+    scriptingAPI = new ScriptingAPI(controller, modelScriptingAPI);
     // Expose API to global namespace (prototyping / testing using the browser console).
     scriptingAPI.exposeScriptingAPI();
 

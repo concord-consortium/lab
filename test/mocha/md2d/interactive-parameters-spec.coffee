@@ -21,7 +21,7 @@ parameter2 =
   }
 
 describe "Lab interactives: custom model parameters", ->
-  requirejs ['md2d/controllers/interactives-controller'], (interactivesController) ->
+  requirejs ['interactive/controllers/interactives-controller'], (interactivesController) ->
 
     describe "interactives controller", ->
       controller = null

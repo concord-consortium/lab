@@ -2,7 +2,7 @@
 
 // TODO: just temporary solution, refactor it.
 define(function (require) {
-  var interactivesController  = require('md2d/controllers/interactives-controller'),
+  var interactivesController  = require('interactive/controllers/interactives-controller'),
       compareModelsController = require('md2d/controllers/compare-models-controller'),
       layout                  = require('common/layout/layout'),
       benchmark               = require('common/benchmark/benchmark'),
