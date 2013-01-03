@@ -241,6 +241,17 @@ define(function (require) {
           scriptingAPI.repaint();
         },
 
+        /**
+          Sets custom pairwise LJ properties (epsilon or sigma), which will
+          be used instead of the mean values of appropriate element properties.
+          i, j - IDs of the elements which should have custom pairwise LJ properties.
+          props - object containing sigma, epsilon or both.
+          e.g. setPairwiseLJProperties(0, 1, {epsilon: -0.2})
+        */
+        setPairwiseLJProperties: function setPairwiseLJProperties(i, j, props) {
+          model.getPairwiseLJProperties().set(i, j, props);
+        },
+
         getElementProperties: function getElementProperties(i) {
           return model.getElementProperties(i);
         },
