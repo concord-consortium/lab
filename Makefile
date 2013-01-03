@@ -67,7 +67,7 @@ all: \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	server/public/index.css
 
-.PHONY: check-rub
+.PHONY: check-ruby
 check-ruby:
 	ruby script/check-ruby.rb
 
