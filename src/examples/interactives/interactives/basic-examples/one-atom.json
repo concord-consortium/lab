@@ -6,7 +6,8 @@
   "models": [
     {
       "id": "one-atom",
-      "url": "models/one-atom.json",
+      "type": "md2d",
+      "url": "models/md2d/one-atom.json",
       "viewOptions": {
         "controlButtons": "play_reset",
         "enableAtomTooltips": true
