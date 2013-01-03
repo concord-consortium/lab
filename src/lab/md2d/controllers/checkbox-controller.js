@@ -25,7 +25,7 @@ define(function () {
     $checkbox = $('<input type="checkbox">').attr('id', component.id);
     $label = $('<label>').append(component.text).append($checkbox);
     // Append class to label, as it's the most outer container in this case.
-    $label.addClass("component");
+    $label.addClass("interactive-checkbox");
 
     // Process onClick script if it is defined.
     if (onClickScript) {
