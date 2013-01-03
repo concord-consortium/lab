@@ -492,6 +492,11 @@ test-src: test/layout.html \
 	@$(VOWS)
 	@$(MOCHA)
 
+# run vows test WITHOUT trying to build Lab JS first. Run 'make; make test-mocha' to build & test.
+.PHONY: test-vows
+test-vows:
+	@$(VOWS)
+
 # run mocha test WITHOUT trying to build Lab JS first. Run 'make; make test-mocha' to build & test.
 .PHONY: test-mocha
 test-mocha:

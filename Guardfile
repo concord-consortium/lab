@@ -71,8 +71,12 @@ guard 'shell' do
     command("make")
   end
 
-  watch(/^test\/.+\.js$/) do
-    system("make test-src")
+  watch(/^test\/vows\/.+\.js$/) do
+    system("make test-vows")
+  end
+
+  watch(/^test\/mocha\/.+\.js$/) do
+    system("make test-mocha")
   end
 
   watch(/(^src\/examples\/[^.].+)$/) do |match|
