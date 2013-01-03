@@ -1983,6 +1983,7 @@ define(function(require) {
     }, model, defaultMaxTickHistory);
 
     newStep = true;
+    updateAllOutputProperties();
 
     return model;
   };

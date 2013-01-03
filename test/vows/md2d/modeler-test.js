@@ -30,6 +30,26 @@ requirejs([
       };
 
   suite.addBatch({
+    "Empty model": {
+      topic: function() {
+        model = Model({
+          mol_number: 0,
+          lennardJonesForces: true,
+          coulombForces: true,
+          viewRefreshInterval: 100
+        });
+        return model;
+      },
+      "should have empty results array": function(model) {
+        assert.equal(model.get_results().length, 0);
+      },
+      "has time = 0": function(model) {
+        assert.equal(model.get("time"), 0);
+      }
+    }
+  });
+
+  suite.addBatch({
     "model initialization": {
       topic: function() {
         model = Model(initialization_options);

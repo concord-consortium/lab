@@ -1514,6 +1514,8 @@ define(function (require, exports, module) {
         updateParticlesAccelerations = function () {
           var i, inverseMass;
 
+          if (N === 0) return;
+
           // Zero out a(t) for accumulation of forces into a(t + dt).
           for (i = 0; i < N; i++) {
             ax[i] = ay[i] = 0;
@@ -1758,7 +1760,7 @@ define(function (require, exports, module) {
 
         // ### Pressure calculation ###
 
-        // Zere values of pressure probes. It should be called
+        // Zero values of pressure probes. It should be called
         // at the beginning of the integration step.
         zeroPressureValues = function () {
           var i;
@@ -2651,10 +2653,6 @@ define(function (require, exports, module) {
       // 4. Calculate: v(t + dt) = v(t + 0.5 * dt) + 0.5 * a(t + dt) * dt
       integrate: function(duration, _dt) {
         var steps, iloop, tStart = time;
-
-        if (N === 0) {
-          throw new Error("md2d: integrate called before atoms created.");
-        }
 
         // How much time to integrate over, in fs.
         if (duration === undefined)  duration = 100;
