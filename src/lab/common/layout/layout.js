@@ -268,7 +268,7 @@ define(function (require) {
           viewSizes = {},
           containerWidth = $(window).width(),
           containerHeight = $(window).height(),
-          mcWidth = $('#molecule-container').width(),
+          mcWidth = $('#model-container').width(),
           modelHeight;
 
       modelDimensions = viewLists.moleculeContainers[0].scale();
@@ -314,7 +314,7 @@ define(function (require) {
       // Probably a way to do this with CSS ...
       viewLists.moleculeContainers[0].resize(modelWidth, modelHeight);
 
-      modelHeight = $("#molecule-container").height();
+      modelHeight = $("#model-container").height();
       $("#rightwide").height(modelHeight);
 
       if (viewLists.barGraphs) {
@@ -402,7 +402,7 @@ define(function (require) {
       // Probably a way to do this with CSS ...
       viewLists.moleculeContainers[0].resize(modelWidth, modelHeight);
 
-      modelHeight = $("#molecule-container").height();
+      modelHeight = $("#model-container").height();
       $("#rightwide").height(modelHeight);
 
       if (viewLists.barGraphs) {

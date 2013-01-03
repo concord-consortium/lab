@@ -72,7 +72,7 @@ var ROOT = "/examples",
   $.when(optsLoaded, windowLoaded).done(function(results) {
     // update modelConfig with opts, if any
     $.extend(modelConfig, opts);
-    controller = controllers.compareModelsController('#molecule-container', '#applet-container', 'model-select', modelConfig, playerConfig);
+    controller = controllers.compareModelsController('#model-container', '#applet-container', 'model-select', modelConfig, playerConfig);
 
     $('#save-button').attr("disabled", "disabled").click(function() {
       var props     = model.serialize(true),
