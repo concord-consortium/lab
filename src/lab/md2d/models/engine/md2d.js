@@ -3,18 +3,19 @@
 
 define(function (require, exports, module) {
 
-  var arrays              = require('arrays'),
-      arrayTypes          = require('common/array-types'),
-      console             = require('common/console'),
-      constants           = require('./constants/index'),
-      unit                = constants.unit,
-      aminoacidsHelper    = require('cs!md2d/models/aminoacids-helper'),
-      math                = require('./math/index'),
-      coulomb             = require('./potentials/index').coulomb,
-      lennardJones        = require('./potentials/index').lennardJones,
-      CloneRestoreWrapper = require('./clone-restore-wrapper'),
-      CellList            = require('./cell-list'),
-      NeighborList        = require('./neighbor-list'),
+  var arrays               = require('arrays'),
+      arrayTypes           = require('common/array-types'),
+      console              = require('common/console'),
+      constants            = require('./constants/index'),
+      unit                 = constants.unit,
+      aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
+      math                 = require('./math/index'),
+      coulomb              = require('./potentials/index').coulomb,
+      lennardJones         = require('./potentials/index').lennardJones,
+      PairwiseLJProperties = require('cs!./pairwise-lj-properties'),
+      CloneRestoreWrapper  = require('./clone-restore-wrapper'),
+      CellList             = require('./cell-list'),
+      NeighborList         = require('./neighbor-list'),
 
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
       ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
@@ -193,6 +194,10 @@ define(function (require, exports, module) {
         elementUsed = [],
 
         // ####################################################################
+        //                      Custom Pairwise LJ Properties
+        pairwiseLJProperties,
+
+        // ####################################################################
         //                      Radial Bond Properties
 
         // Individual property arrays for the "radial" bonds, indexed by bond number
@@ -353,11 +358,6 @@ define(function (require, exports, module) {
         // instantaneous system temperature, in Kelvin
         T,
 
-        // The following are the pairwise values for elements i and j, indexed
-        // like [i][j]
-        epsilon = [],
-        sigma = [],
-
         // cutoff for force calculations, as a factor of sigma
         cutoff = 2,
         cutoffDistance_LJ_sq = [],
@@ -381,6 +381,9 @@ define(function (require, exports, module) {
           createSpringForcesArray(0);
           createObstaclesArray(0);
 
+          // Custom pairwise properties.
+          pairwiseLJProperties = new PairwiseLJProperties(engine);
+
           radialBondMatrix = [];
           //  Initialize radialBondResults[] array consisting of hashes of radial bond
           //  index numbers and transposed radial bond properties.
@@ -397,15 +400,25 @@ define(function (require, exports, module) {
         // Initialize epsilon, sigma, cutoffDistance_LJ_sq, cutoffNeighborListSquared, and ljCalculator
         // array elements for element pair i and j
         setPairwiseLJProperties = function(i, j) {
-          var epsilon_i = elementEpsilon[i],
-              epsilon_j = elementEpsilon[j],
-              sigma_i   = elementSigma[i],
-              sigma_j   = elementSigma[j],
+          var epsilon_i   = elementEpsilon[i],
+              epsilon_j   = elementEpsilon[j],
+              sigma_i     = elementSigma[i],
+              sigma_j     = elementSigma[j],
+              customProps = pairwiseLJProperties.get(i, j),
               e,
               s;
 
-          e = epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
-          s = sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
+          if (customProps && customProps.epsilon !== undefined) {
+            e = customProps.epsilon;
+          } else {
+            e = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
+          }
+
+          if (customProps && customProps.sigma !== undefined) {
+            s = customProps.sigma;
+          } else {
+            s = lennardJones.pairwiseSigma(sigma_i, sigma_j);
+          }
 
           // Cutoff for Lennard-Jones interactions.
           cutoffDistance_LJ_sq[i][j] = cutoffDistance_LJ_sq[j][i] = (cutoff * s) * (cutoff * s);
@@ -423,18 +436,19 @@ define(function (require, exports, module) {
         // be recalculated.
         computeMaxCutoff = function() {
           var maxCutoff = 0,
-              sigmaI,
-              sigmaJ,
+              customProps,
               sigma,
               i, j;
 
           for (i = 0; i < N_elements; i++) {
             for (j = 0; j <= i; j++) {
               if (elementUsed[i] && elementUsed[j]) {
-                sigmaI = elementSigma[i];
-                sigmaJ = elementSigma[j];
-                sigma = lennardJones.pairwiseSigma(sigmaI, sigmaJ);
-
+                customProps = pairwiseLJProperties.get(i, j);
+                if (customProps && customProps.sigma !== undefined) {
+                  sigma = customProps.sigma;
+                } else {
+                  sigma = lennardJones.pairwiseSigma(elementSigma[i], elementSigma[j]);
+                }
                 // Use cutoffList, as cell lists are used to calculate neighbor lists.
                 if (cutoffList * sigma > maxCutoff) {
                   maxCutoff = cutoffList * sigma;
@@ -452,17 +466,19 @@ define(function (require, exports, module) {
         // recalculation).
         computeNeighborListMaxDisplacement = function() {
           var maxDisplacement = Infinity,
-              sigmaI,
-              sigmaJ,
+              customProps,
               sigma,
               i, j;
 
           for (i = 0; i < N_elements; i++) {
             for (j = 0; j <= i; j++) {
               if (elementUsed[i] && elementUsed[j]) {
-                sigmaI = elementSigma[i];
-                sigmaJ = elementSigma[j];
-                sigma = lennardJones.pairwiseSigma(sigmaI, sigmaJ);
+                customProps = pairwiseLJProperties.get(i, j);
+                if (customProps && customProps.sigma !== undefined) {
+                  sigma = customProps.sigma;
+                } else {
+                  sigma = lennardJones.pairwiseSigma(elementSigma[i], elementSigma[j]);
+                }
 
                 if ((cutoffList - cutoff) * sigma < maxDisplacement) {
                   maxDisplacement = (cutoffList - cutoff) * sigma;
@@ -2016,6 +2032,9 @@ define(function (require, exports, module) {
         }
       },
 
+      // Make private function public.
+      setPairwiseLJProperties: setPairwiseLJProperties,
+
       setObstacleProperties: function (i, props) {
         var key;
 
@@ -2175,14 +2194,12 @@ define(function (require, exports, module) {
         elementSigma[N_elements]   = props.sigma;
         elementRadius[N_elements]  = lennardJones.radius(props.sigma);
 
-        epsilon[N_elements]                   = [];
-        sigma[N_elements]                     = [];
         ljCalculator[N_elements]              = [];
         cutoffDistance_LJ_sq[N_elements]      = [];
         cutoffNeighborListSquared[N_elements] = [];
 
         for (i = 0; i <= N_elements; i++) {
-          setPairwiseLJProperties(N_elements,i);
+          setPairwiseLJProperties(N_elements, i);
         }
 
         N_elements++;
@@ -3184,7 +3201,10 @@ define(function (require, exports, module) {
     // Initialization
     initialize();
 
-    // Return Public API.
+    // Export initialized objects to Public API.
+    engine.pairwiseLJProperties = pairwiseLJProperties;
+
+    // Finally, return Public API.
     return engine;
   };
 });
