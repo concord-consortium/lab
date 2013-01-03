@@ -193,6 +193,19 @@ define(function() {
       }
     },
 
+    pairwiseLJProperties: {
+      element1: {
+        required: true
+      },
+      element2: {
+        required: true
+      },
+      sigma: {
+      },
+      epsilon: {
+      }
+    },
+
     obstacle: {
       // Required properties:
       width: {
