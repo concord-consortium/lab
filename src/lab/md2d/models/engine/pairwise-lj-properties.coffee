@@ -55,3 +55,6 @@ define (require) ->
         delete props.element1
         delete props.element2
         @set el1, el2, props
+
+      # Avoid an unwanted comprehension.
+      undefined

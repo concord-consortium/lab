@@ -1957,6 +1957,10 @@ define(function(require) {
     if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
     if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
     if (initialProperties.obstacles)    model.createObstacles(initialProperties.obstacles);
+    // Basically, this #deserialize method is more or less similar to other #create... methods used
+    // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
+    if (initialProperties.pairwiseLJProperties)
+      engine.pairwiseLJProperties.deserialize(initialProperties.pairwiseLJProperties);
 
     // Initialize tick history.
     tickHistory = new TickHistory({
