@@ -11,7 +11,7 @@ describe "MD2D filters", ->
     describe "RunningAverageFilter", ->
       runningAvg = null
 
-      describe "[basic tests of RunningAverageFilter]", ->
+      describe "[basic tests of the class]", ->
         beforeEach ->
           runningAvg = new RunningAverageFilter 2
           runningAvg.setMaxBufferLength 4
@@ -139,7 +139,7 @@ describe "MD2D filters", ->
             (-> runningAvg.setCurrentStep -2).should.throw()
 
 
-      describe "[tests in modeler environment]", ->
+      describe "[tests in the MD2D modeler context]", ->
         model = null
 
         describe "when filter is attached to output property", ->
