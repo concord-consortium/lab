@@ -491,9 +491,10 @@ parseMML = (mmlString) ->
 
     # This set defines whether mean values are used for pair (so lbMixing is true) or custom (lbMixing is false).
     lbMixingProps = $mml ".org-concord-mw2d-models-Affinity [property=lbMixing]>[method=put]"
+
     # Custom values for sigma and epsilon.
-    epsilonProps = $mml ".org-concord-mw2d-models-Affinity [property=epsilon]>[method=put]"
-    sigmaProps = $mml ".org-concord-mw2d-models-Affinity [property=sigma]>[method=put]"
+    epsilonProps = $mml ".org-concord-mw2d-models-Affinity [property=epsilon]"
+    sigmaProps = $mml ".org-concord-mw2d-models-Affinity [property=sigma]"
 
     # Iterate over lbMixing properties first.
     for prop in lbMixingProps
@@ -503,13 +504,13 @@ parseMML = (mmlString) ->
         # Use custom values of LJ properties.
         # First, get pair of elements.
         $pair = getNode $prop.find "object"
-        pairID = $pair.attr("id") || $pair.attr("idref")
+        pairID = $pair.attr("id")
         element1 = parseInt getNode($pair.find("[property=element1]>object")).find("[property=ID]>int").text()
         element2 = parseInt getNode($pair.find("[property=element2]>object")).find("[property=ID]>int").text()
 
         # Then find sigma and epsilon values.
-        epsilon = epsilonProps.find("object [idref=#{pairID}], object [id=#{pairID}]").next().text()
-        sigma = sigmaProps.find("object [idref=#{pairID}], object [id=#{pairID}]").next().text()
+        epsilon = epsilonProps.find("object [id=#{pairID}]").next().text()
+        sigma = sigmaProps.find("object [idref=#{pairID}]").next().text()
 
         # Scale sigma to nm.
         [sigma] = toNextgenLengths sigma
