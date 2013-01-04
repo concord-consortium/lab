@@ -6,20 +6,19 @@ ignore %r{(bin|node_modules)}
 FIRESASS = false
 
 require "./script/setup.rb"
-
-system("make")
-puts <<HEREDOC
-
-ready ...
-
-HEREDOC
+require './src/sass/bourbon/lib/bourbon.rb'
 
 def command(cmd)
   puts cmd
   system(cmd)
 end
 
-require './src/sass/bourbon/lib/bourbon.rb'
+command("make")
+puts <<HEREDOC
+
+ready ...
+
+HEREDOC
 
 guard 'sass', :input => 'src/examples', :output => 'server/public/examples', :all_on_start => false, :load_paths => ['src']
 guard 'sass', :input => 'src/doc',      :output => 'server/public/doc',      :all_on_start => false, :load_paths => ['src']
@@ -42,9 +41,29 @@ guard 'shell' do
     command("make src")
   end
 
-  watch(/(^src\/lab\/.+)|(^src\/helpers\/.+)|(^src\/modules\/.+)/) do |match|
+  watch(/(^src\/lab\/.+)|(^src\/modules\/.+)/) do |match|
     file = match[0]
     unless file =~ /(lab.config.js)|(lab.version.js)/
+      puts "***" + file
+      puts "re-generating javascript libraries and css resources for these libraries ..."
+      command("make src")
+      command("make test-src")
+    end
+  end
+
+  watch(/(^src\/helpers\/.+)/) do |match|
+    file = match[0]
+    case match[0]
+    when /\/md2d\/mml-parser/
+      if system("./node_modules/.bin/vows --isolate test/vows/mml-conversions/conversion-test.js")
+        puts "*** mml conversion tests passed, mml conversions started ..."
+        command("make convert-mml")
+      else
+        puts "*** error running mml conversion tests, mml conversions not started."
+      end
+    when /\/md2d\/(mw-batch-converter.+)|(post-batch-processor.+)/
+      command("make convert-mml")
+    else
       puts "***" + file
       puts "re-generating javascript libraries and css resources for these libraries ..."
       command("make src")
@@ -71,12 +90,16 @@ guard 'shell' do
     command("make")
   end
 
-  watch(/^test\/vows\/.+\.js$/) do
-    system("make test-vows")
+  watch(/(^test\/vows\/.+\.js)$/) do |match|
+    command("./node_modules/.bin/vows --isolate --no-color #{match[0]}")
   end
 
-  watch(/^test\/mocha\/.+\.js$/) do
-    system("make test-mocha")
+  watch(/^test\/vows\/mml-conversions\/(input-mml|expected-json)\/.+/) do
+    command("./node_modules/.bin/vows --no-color test/vows/mml-conversions/conversion-test.js")
+  end
+
+  watch(/(^test\/mocha\/.+)/) do |match|
+    command("./node_modules/.bin/mocha #{match[0]}")
   end
 
   watch(/(^src\/examples\/[^.].+)$/) do |match|
