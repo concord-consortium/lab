@@ -485,32 +485,48 @@ parseMML = (mmlString) ->
       elemTypes[elementValidatedData.id] = elementValidatedData
 
     ###
-      Find all the epsilon forces between elements. Add the properties to the elementTypes
-      array so that we get:
-      [
-        {
-          name: name,
-          mass: num,
-          sigma: num,
-          epsilon: [
-            num0,
-            num1,
-            num2...
-          ]
-        },
-        { ...
-      ]
-      where num0 is the epsilon between this first element and the second, num1 is the epsilon between
-      this first element and the third, etc.
+      Find all custom pairwise LJ properties (sigma and epsilon).
     ###
-    #epsilonPairs = $mml(".org-concord-mw2d-models-Affinity [property=epsilon]>[method=put]")
-    #for pair in epsilonPairs
-    #  $pair = getNode($(pair))
-    #  elem1 = parseInt getNode($pair.find("[property=element1]>object")).find("[property=ID]>int").text() || 0
-    #  elem2 = parseInt getNode($pair.find("[property=element2]>object")).find("[property=ID]>int").text() || 0
-    #  value = $pair.find(">double").text()
-    #  elemTypes[elem1].epsilon[elem2] = value
-    #  elemTypes[elem2].epsilon[elem1] = value   # set mirror value for e from elem2 to elem1
+    pairwiseLJProperties = []
+
+    # This set defines whether mean values are used for pair (so lbMixing is true) or custom (lbMixing is false).
+    lbMixingProps = $mml ".org-concord-mw2d-models-Affinity [property=lbMixing]>[method=put]"
+    # Custom values for sigma and epsilon.
+    epsilonProps = $mml ".org-concord-mw2d-models-Affinity [property=epsilon]>[method=put]"
+    sigmaProps = $mml ".org-concord-mw2d-models-Affinity [property=sigma]>[method=put]"
+
+    # Iterate over lbMixing properties first.
+    for prop in lbMixingProps
+      $prop = getNode cheerio prop
+      # Continue only when custom properties should be used.
+      if $prop.find("boolean").text() == "false"
+        # Use custom values of LJ properties.
+        # First, get pair of elements.
+        $pair = getNode $prop.find "object"
+        pairID = $pair.attr("id") || $pair.attr("idref")
+        element1 = parseInt getNode($pair.find("[property=element1]>object")).find("[property=ID]>int").text() || 0
+        element2 = parseInt getNode($pair.find("[property=element2]>object")).find("[property=ID]>int").text() || 0
+
+        # Then find sigma and epsilon values.
+        epsilon = epsilonProps.find("object [idref=#{pairID}], object [id=#{pairID}]").next().text()
+        sigma = sigmaProps.find("object [idref=#{pairID}], object [id=#{pairID}]").next().text()
+
+        # Scale sigma to nm.
+        [sigma] = toNextgenLengths sigma
+        # Epsilon's sign appears to be flipped between MW and Lab.
+        epsilon = -epsilon
+
+        ljProps = { element1, element2, sigma, epsilon }
+
+        # Unit conversion performed on undefined values can convert them to NaN.
+        # Revert back all NaNs to undefined, as we do not expect any NaN
+        # as property. Undefined values will be replaced by default values by validator.
+        removeNaNProperties ljProps
+
+        # Validate all properties and provides default values for undefined values.
+        ljProps = validator.validateCompleteness metadata.pairwiseLJProperties, ljProps
+
+        pairwiseLJProperties.push ljProps
 
     ###
       Find all atoms. We end up with:
@@ -744,6 +760,7 @@ parseMML = (mmlString) ->
 
     json.viewOptions = modelViewProperties
     json.elements = elemTypes
+    json.pairwiseLJProperties = pairwiseLJProperties
     json.atoms =
       x : x
       y : y
