@@ -504,8 +504,8 @@ parseMML = (mmlString) ->
         # First, get pair of elements.
         $pair = getNode $prop.find "object"
         pairID = $pair.attr("id") || $pair.attr("idref")
-        element1 = parseInt getNode($pair.find("[property=element1]>object")).find("[property=ID]>int").text() || 0
-        element2 = parseInt getNode($pair.find("[property=element2]>object")).find("[property=ID]>int").text() || 0
+        element1 = parseInt getNode($pair.find("[property=element1]>object")).find("[property=ID]>int").text()
+        element2 = parseInt getNode($pair.find("[property=element2]>object")).find("[property=ID]>int").text()
 
         # Then find sigma and epsilon values.
         epsilon = epsilonProps.find("object [idref=#{pairID}], object [id=#{pairID}]").next().text()

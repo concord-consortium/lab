@@ -199,10 +199,10 @@ define(function() {
 
     pairwiseLJProperties: {
       element1: {
-        required: true
+        defaultValue: 0
       },
       element2: {
-        required: true
+        defaultValue: 0
       },
       sigma: {
       },
