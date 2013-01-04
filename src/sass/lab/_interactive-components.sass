@@ -8,16 +8,12 @@ select.component
 button.component
   display: inline-block
   padding: 0.4em
-  margin-right: 2em
-  vertical-align: text-top
   padding: 0.4em
   font-size: 0.9em
 
 .interactive-checkbox
-  margin: 0.5em 0.25em 0 0.25em
-  padding: 0.4em
+  margin: 0 2em 1em 0
   font-size: 1.1em
-  vertical-align: text-top
 
   input[type="checkbox"]
     -webkit-transform: scale(1,1)
@@ -29,13 +25,9 @@ button.component
 
 .numeric-output
   display: inline-block
-  padding: 0.4em
-  margin-top: 0.5em
   margin-right: 2em
-  vertical-align: text-top
   span.label
     display: inline-block
-    padding-left: 0.5em
     padding-right: 0.5em
   span.value
     display: inline-block
@@ -54,8 +46,8 @@ button.component
 
 .interactive-slider
   display: inline-block
-  padding-top: 0.3em
-  margin-left: 0.5em
+  vertical-align: middle
+  margin: 0 2em 0.5em 0.25em
   // Style jQuery UI classes.
   .ui-slider .ui-slider-handle
     font-size: 0.8em
@@ -68,14 +60,14 @@ button.component
   .title
     display: inline-block
     font-size: 1em
-    margin: 0 0 0.5em 2em
+    margin: 0 0 0.5em 0
     vertical-align: top
   .container
     // make this a positioned element so the .label can be positioned absolute
     position: relative
     // bottom margin has to account for size of labels, which are taken out of flow
     // left and right margins have to account for
-    margin: 0 2em 1.2em 2em
+    margin: 0 2em 1.2em 0
     // This will be the width of the slider div itself
     width: 12em
     .html-slider
