@@ -12,6 +12,60 @@
       }
     }
   ],
+  "parameters": [
+    {
+      "name": "pairwiseSigma",
+      "label": "sigma",
+      "onChange": "setPairwiseLJProperties(2, 3, { sigma: value });",
+      "initialValue": 0.3
+    },
+    {
+      "name": "pairwiseEpsilon",
+      "label": "epsilon",
+      "onChange": "setPairwiseLJProperties(2, 3, { epsilon: value });",
+      "initialValue": -0.2
+    }
+  ],
   "components": [
+    {
+      "type": "slider",
+      "id": "sigma-slider",
+      "min": 0.01,
+      "max": 0.5,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": 0.01,
+          "label": "0.01"
+        },
+        {
+          "value": 0.5,
+          "label": "0.5"
+        }
+      ],
+      "steps": 50,
+      "title": "Pairwise Sigma",
+      "property": "pairwiseSigma"
+    },
+    {
+      "type": "slider",
+      "id": "epsilon-slider",
+      "min": -0.50,
+      "max": -0.01,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": -0.5,
+          "label": "-0.50"
+        },
+        {
+          "value": -0.01,
+          "label": "-0.01"
+        }
+      ],
+      "steps": 50,
+      "title": "Pairwise Epsilon",
+      "property": "pairwiseEpsilon"
+    }
   ]
 }
