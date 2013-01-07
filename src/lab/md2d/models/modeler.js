@@ -20,8 +20,8 @@ define(function(require) {
   return function Model(initialProperties) {
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
-                               "seek", "addAtom", "removeAtom", "removeRadialBond", "removeAngularBond",
-                               "invalidation"),
+                               "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
+                               "removeAngularBond", "invalidation"),
         VDWLinesCutoffMap = {
           "short": 1.33,
           "medium": 1.67,
@@ -1151,7 +1151,7 @@ define(function(require) {
       invalidatingChangePreHook();
       engine.addRadialBond(props);
       invalidatingChangePostHook();
-      // TODO: emit events when function is exposed in Scripting API!
+      dispatch.addRadialBond();
     },
 
     model.removeRadialBond = function(idx) {

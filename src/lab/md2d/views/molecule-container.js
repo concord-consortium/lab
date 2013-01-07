@@ -327,6 +327,7 @@ define(function (require) {
 
       model.on('addAtom', setup_drawables);
       model.on('removeAtom', setup_drawables);
+      model.on('addRadialBond', setup_drawables);
       model.on('removeRadialBond', setup_drawables);
 
       // Register additional controls, context menus etc.
