@@ -48,8 +48,7 @@ define (require) ->
   Returns polar amino acids (array of their element IDs).
   ###
   getPolarAminoAcids: () ->
-    results = []
-    for aminoacid, i in aminoacidsProps
-      results.push i + @firstElementID if aminoacid.charge != 0
-
-    results
+    # Get element IDs representing Asparagine, Glutamine, Serine, Threonine.
+    # See categorization charge for AAs with polar sidechain here:
+    # http://upload.wikimedia.org/wikipedia/commons/a/a9/Amino_Acids.svg
+    @abbrToElement abbr for abbr in ["Asn", "Gln", "Ser", "Thr"]

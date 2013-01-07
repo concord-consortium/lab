@@ -28,7 +28,7 @@
       "label": "epsilon",
       "onChange": [
         "var i, j, len;",
-        "var polarAAs = [6, 8, 11, 13, 16];",
+        "var polarAAs = [7, 10, 20, 21];",
         "for (i = 0, len = polarAAs.length; i < len; i++) {",
         "  for (j = i + 1; j < len; j++) {",
         "    setPairwiseLJProperties(polarAAs[i], polarAAs[j], { epsilon: value });",
