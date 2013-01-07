@@ -509,8 +509,8 @@ parseMML = (mmlString) ->
         element2 = parseInt getNode($pair.find("[property=element2]>object")).find("[property=ID]>int").text()
 
         # Then find sigma and epsilon values.
-        epsilon = epsilonProps.find("object [id=#{pairID}]").next().text()
-        sigma = sigmaProps.find("object [idref=#{pairID}]").next().text()
+        epsilon = epsilonProps.find("object[idref=#{pairID}], object[id=#{pairID}]").next().text()
+        sigma = sigmaProps.find("object[idref=#{pairID}], object[id=#{pairID}]").next().text()
 
         # Scale sigma to nm.
         [sigma] = toNextgenLengths sigma
