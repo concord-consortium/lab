@@ -36,3 +36,13 @@ define (require) ->
   ###
   isAminoAcid: (elementID) ->
     elementID >= @firstElementID && elementID <= @lastElementID
+
+  ###
+  Gets polar amino acids (array of their element IDs).
+  ###
+  getPolarAminoAcids: () ->
+    results = []
+    for aminoacid, i in aminoacidsProps
+      results.push i + @firstElementID if aminoacid.charge != 0
+
+    results

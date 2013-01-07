@@ -596,7 +596,9 @@ define(function(require) {
     function createAminoAcids() {
       var sigmaIn01Angstroms,
           sigmaInNm,
-          i, len;
+          polarAAs,
+          element1, element2,
+          i, j, len;
 
       // Note that amino acids ALWAYS have IDs from
       // AMINO_ELEMENT_FIRST_IDX (= 5) to AMINO_ELEMENT_LAST_IDX (= 24).
@@ -626,6 +628,18 @@ define(function(require) {
           // Classic MW uses epsilon 0.1 for all amino acids, which is default one.
           // See: org.concord.mw2d.models.AtomicModel.resetElements()
         });
+      }
+
+      // Set custom pairwise LJ properties for polar amino acids.
+      // They should attract stronger to better mimic nature.
+      polarAAs = aminoacidsHelper.getPolarAminoAcids();
+      for (i = 0, len = polarAAs.length; i < len; i++) {
+        element1 = polarAAs[i];
+        for (j = i + 1; j < len; j++) {
+          element2 = polarAAs[j];
+          // Set custom epsilon == -0.5, which is 5 times stronger that default one (-0.1).
+          engine.pairwiseLJProperties.set(element1, element2, {epsilon: -0.5});
+        }
       }
     }
 
