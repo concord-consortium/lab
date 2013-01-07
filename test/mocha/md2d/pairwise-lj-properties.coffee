@@ -104,6 +104,28 @@ describe "PairwiseLJProperties", ->
             ljPropsCollection.get(1, 2).should.eql sigma: 1, epsilon: 2
             ljPropsCollection.get(2, 3).should.eql sigma: 2, epsilon: 3
 
+          it "should provide Clone-Restore interface", ->
+            # Validate an initial state.
+            ljPropsCollection.get(0, 1).should.eql sigma: 10, epsilon: 11
+            ljPropsCollection.get(1, 2).should.eql sigma: 1, epsilon: 2
+            ljPropsCollection.get(2, 3).should.eql sigma: 2, epsilon: 3
+            # Save a state.
+            state = ljPropsCollection.clone()
+            # Remove properties.
+            ljPropsCollection.remove 0, 1
+            ljPropsCollection.remove 1, 2
+            ljPropsCollection.remove 2, 3
+            # Validate a current state.
+            should.not.exist(ljPropsCollection.get(0, 1))
+            should.not.exist(ljPropsCollection.get(1, 2))
+            should.not.exist(ljPropsCollection.get(2, 3))
+            # Restore the saved state.
+            ljPropsCollection.restore state
+            # Validate the initial state again.
+            ljPropsCollection.get(0, 1).should.eql sigma: 10, epsilon: 11
+            ljPropsCollection.get(1, 2).should.eql sigma: 1, epsilon: 2
+            ljPropsCollection.get(2, 3).should.eql sigma: 2, epsilon: 3
+
 
     describe "[tests in the MD2D modeler context]", ->
 
