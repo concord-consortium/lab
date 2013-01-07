@@ -5,10 +5,12 @@
   "about": [
     "Using this interactive you can:<ul>",
     "<li>change type of amino acids (right click on the amino acid to open a special context menu),</li>",
+    "<li>test various coloring schemes and label types.</li></ul>",
     "<li>watch their behavior in vacuum, oil and water,</li>",
     "<li>modify strength of the force produced by the solvent,</li>",
     "<li>switch on or off <i>realistic dielectric effect</i>,</li>",
-    "<li>test various coloring schemes and label types.</li></ul>"
+    "<li>experiment with advanced proteins engine settings like additional solvent force or polar amino acids attraction.</li>"
+
   ],
   "models": [
     {
@@ -242,8 +244,8 @@
   ],
   "layout": {
     "bottom": [
-      ["show-labels", "select-solvent", "select-color-scheme"],
-      ["realistic-dielectric-effect", "solvent-force-factor-slider"],
+      ["show-labels", "select-color-scheme"],
+      ["select-solvent", "solvent-force-factor-slider", "realistic-dielectric-effect"],
       ["add-solvent-force-mult-slider", "add-solvent-force-threshold-slider"],
       ["epsilon-slider"]
     ]
