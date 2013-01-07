@@ -49,10 +49,14 @@ define(function (require) {
         model_time_formatter = d3.format("5.0f"),
         time_prefix = "",
         time_suffix = " (fs)",
+
+        // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
-        VDWLines_container,
-        image_container_below,
-        image_container_top,
+        radialBondsContainer,
+        VDWLinesContainer,
+        imageContainerBelow,
+        imageContainerTop,
+
         gradientNameForElement,
         // Set of gradients used for Kinetic Energy Shading.
         gradientNameForKELevel = [],
@@ -393,6 +397,14 @@ define(function (require) {
             .on("mousedown", mousedown);
         }
 
+        // Create and arrange "layers" of the final image (g elements).
+        // Note that order of their creation is significant.
+        radialBondsContainer = vis.append("g").attr("class", "radial-bonds-container");
+        imageContainerBelow = vis.append("g").attr("class", "image-container-below");
+        VDWLinesContainer = vis.append("g").attr("class", "vdw-lines-container");
+        mainContainer = vis.append("g").attr("class", "main-container");
+        imageContainerTop = vis.append("g").attr("class", "image-container-top");
+
         setupKeyboardHandler();
 
         redraw();
@@ -554,13 +566,6 @@ define(function (require) {
             KELevel,
             i;
 
-        image_container_below = vis.append("g");
-        image_container_below.attr("class", "image_container_below");
-        VDWLines_container = vis.append("g");
-        VDWLines_container.attr("class", "VDWLines_container");
-
-        mainContainer = vis.append("g").attr("class", "main-container");
-
         // Charge gradients.
         create_radial_gradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
         create_radial_gradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
@@ -586,8 +591,6 @@ define(function (require) {
 
         // Gradients for editable elements.
         gradientNameForElement = ["url(#green-grad)", "url(#purple-grad)", "url(#aqua-grad)", "url(#orange-grad)"];
-        image_container_top = vis.append("g");
-        image_container_top.attr("class", "image_container_top");
       }
 
       function create_radial_gradient(id, lightColor, medColor, darkColor, mainContainer) {
@@ -1068,8 +1071,8 @@ define(function (require) {
             container,
             i;
 
-        image_container_top.selectAll("image").remove();
-        image_container_below.selectAll("image").remove();
+        imageContainerTop.selectAll("image").remove();
+        imageContainerBelow.selectAll("image").remove();
 
         if (!imageProp) return;
 
@@ -1078,8 +1081,8 @@ define(function (require) {
           img[i].src = getImagePath(imageProp[i]);
           img[i].onload = (function(i) {
             return function() {
-              image_container_top.selectAll("image.image_attach"+i).remove();
-              image_container_below.selectAll("image.image_attach"+i).remove();
+              imageContainerTop.selectAll("image.image_attach"+i).remove();
+              imageContainerBelow.selectAll("image.image_attach"+i).remove();
 
               imgHost = results[imageProp[i].imageHostIndex];
               imgHostType = imageProp[i].imageHostType;
@@ -1093,7 +1096,7 @@ define(function (require) {
 
 
 
-              container = imglayer === 1 ? image_container_top : image_container_below;
+              container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
               container.append("image")
                 .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
                 .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } })
@@ -1302,11 +1305,11 @@ define(function (require) {
       }
 
       function setupVdwPairs() {
-        VDWLines_container.selectAll("line.attractionforce").remove();
+        VDWLinesContainer.selectAll("line.attractionforce").remove();
         updateVdwPairsArray();
         drawVdwLines = model.get("showVDWLines");
         if (drawVdwLines) {
-          vdwLines = VDWLines_container.selectAll("line.attractionforce").data(vdwPairs);
+          vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
           vdwLinesEnter();
         }
       }
@@ -1355,7 +1358,7 @@ define(function (require) {
         // Get new set of pairs from model.
         updateVdwPairsArray();
 
-        vdwLines = VDWLines_container.selectAll("line.attractionforce").data(vdwPairs);
+        vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
         vdwLinesEnter();
       }
 
@@ -1603,7 +1606,7 @@ define(function (require) {
           imglayer =  imageProp[i].imageLayer;
           img_width  = imageSizes[i][0] * scaling_factor;
           img_height = imageSizes[i][1] * scaling_factor;
-          container = imglayer === 1 ? image_container_top : image_container_below;
+          container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
           container.selectAll("image.image_attach"+i)
             .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
             .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } });
