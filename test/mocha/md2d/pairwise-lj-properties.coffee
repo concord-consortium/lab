@@ -66,15 +66,17 @@ describe "PairwiseLJProperties", ->
             engine.setPairwiseLJProperties.callCount.should.eql 1
             engine.setPairwiseLJProperties.withArgs(0, 1).calledOnce.should.be.true
 
-            ljPropsCollection.set 4, 5, {sigma: 6, epsilon: 7}
+            ljPropsCollection.set 5, 4, {sigma: 6, epsilon: 7}
             changeHooks.pre.callCount.should.eql 2
             changeHooks.post.callCount.should.eql 2
             engine.setPairwiseLJProperties.callCount.should.eql 2
-            engine.setPairwiseLJProperties.withArgs(4, 5).calledOnce.should.be.true
+            engine.setPairwiseLJProperties.withArgs(5, 4).calledOnce.should.be.true
 
           it "should allow to get existing LJ properties", ->
             ljPropsCollection.get(0, 1).should.eql sigma: 2, epsilon: 3
+            ljPropsCollection.get(1, 0).should.eql sigma: 2, epsilon: 3
             ljPropsCollection.get(4, 5).should.eql sigma: 6, epsilon: 7
+            ljPropsCollection.get(5, 4).should.eql sigma: 6, epsilon: 7
 
           it "should allow to modify existing custom LJ properties and call appropriate hooks and engine methods", ->
             ljPropsCollection.set 0, 1, {sigma: 10, epsilon: 11}
@@ -125,6 +127,10 @@ describe "PairwiseLJProperties", ->
             ljPropsCollection.get(0, 1).should.eql sigma: 10, epsilon: 11
             ljPropsCollection.get(1, 2).should.eql sigma: 1, epsilon: 2
             ljPropsCollection.get(2, 3).should.eql sigma: 2, epsilon: 3
+            # Validate whether engine properties are updated.
+            engine.setPairwiseLJProperties.withArgs(0, 1).calledOnce.should.be.true
+            engine.setPairwiseLJProperties.withArgs(1, 2).calledOnce.should.be.true
+            engine.setPairwiseLJProperties.withArgs(2, 3).calledOnce.should.be.true
 
 
     describe "[tests in the MD2D modeler context]", ->
@@ -145,4 +151,3 @@ describe "PairwiseLJProperties", ->
           ljPropsCollection = model.getPairwiseLJProperties()
           ljPropsCollection.get(0, 1).should.eql sigma: 2, epsilon: 3
           ljPropsCollection.get(2, 3).should.eql sigma: 4, epsilon: 5
-

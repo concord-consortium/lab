@@ -57,7 +57,7 @@ define (require) ->
         @set el1, el2, props
 
       # Avoid an unwanted comprehension.
-      undefined
+      return
 
     ###
     Clone-Restore Interface.
@@ -69,3 +69,11 @@ define (require) ->
     restore: (state) ->
       # Just overwrite @_data variable.
       @_data = state
+
+      # Enforce update of engine properties.
+      for own key1, innerObj of @_data
+        for own key2 of innerObj
+          @_engine.setPairwiseLJProperties key1, key2 if key1 < key2
+
+      # Avoid an unwanted comprehension.
+      return
