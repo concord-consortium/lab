@@ -19,6 +19,13 @@ define (require) ->
   lastElementID: FIST_ELEMENT_ID + aminoacidsProps.length - 1
 
   ###
+  Element ID of the cysteine amino acid.
+  Note that it should be stored in this class (instead of hard-coded in the engine),
+  as it can be changed in the future.
+  ###
+  cysteineElement: 9
+
+  ###
   Converts @abbreviation of amino acid to element ID.
   ###
   abbrToElement: (abbreviation) ->
@@ -38,7 +45,7 @@ define (require) ->
     elementID >= @firstElementID && elementID <= @lastElementID
 
   ###
-  Gets polar amino acids (array of their element IDs).
+  Returns polar amino acids (array of their element IDs).
   ###
   getPolarAminoAcids: () ->
     results = []

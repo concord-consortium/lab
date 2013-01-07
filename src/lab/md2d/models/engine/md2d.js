@@ -116,12 +116,6 @@ define(function (require, exports, module) {
         additionalSolventForceMult = 25,
         additionalSolventForceThreshold = 3,
 
-        // Whether any atoms actually have charges
-        hasChargedAtoms = false,
-
-        // List of atoms with charge (optimization)
-        chargedAtomsList = [],
-
         // Whether to simulate Lennard Jones forces between particles.
         useLennardJonesInteraction = true,
 
@@ -369,6 +363,17 @@ define(function (require, exports, module) {
         // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
         // potential between elements i and j
         ljCalculator = [],
+
+        // Optimization related variables:
+        // Whether any atoms actually have charges
+        hasChargedAtoms = false,
+
+        // List of atoms with charge.
+        chargedAtomsList = [],
+
+        // List of particles representing cysteine amino acid, which can possibly create disulphide bonds.
+        // So, each cysteine in this list is NOT already connected to other cysteine.
+        freeCysteinesList = [],
 
         // Initializes basic data structures.
         initialize = function () {
@@ -1509,6 +1514,33 @@ define(function (require, exports, module) {
         // #               Integration main helper functions.                 #
         // ####################################################################
 
+        // For now, calculate only structures used by proteins engine.
+        // TODO: move there calculation of various optimization structures like chargedAtomLists.
+        calculateOptimizationStructures = function () {
+          var cysteineEl = aminoacidsHelper.cysteineElement,
+              idx, i;
+
+          // Reset optimization data structure.
+          freeCysteinesList.length = 0;
+
+          for (i = 0; i < N; i++) {
+            if (element[i] === cysteineEl) {
+              // At the beginning, assume that each cysteine is "free" (ready to create disulfide bond).
+              freeCysteinesList.push(i);
+            }
+          }
+
+          for (i = 0; i < N_radialBonds; i++) {
+            if (element[radialBondAtom1Index[i]] === cysteineEl && element[radialBondAtom2Index[i]] === cysteineEl) {
+              // Two cysteines are already bonded, so remove them from freeCysteinsList.
+              idx = freeCysteinesList.indexOf(radialBondAtom1Index[i]);
+              if (idx !== -1) arrays.remove(freeCysteinesList, idx);
+              idx = freeCysteinesList.indexOf(radialBondAtom2Index[i]);
+              if (idx !== -1) arrays.remove(freeCysteinesList, idx);
+            }
+          }
+        },
+
         // Accumulate acceleration into a(t + dt) from all possible interactions, fields
         // and forces connected with atoms.
         updateParticlesAccelerations = function () {
@@ -1755,6 +1787,48 @@ define(function (require, exports, module) {
             }
 
             T = target;
+          }
+        },
+
+        // Two cysteine AAs can form a covalent bond between their sulphur atoms. We could model this such that
+        // when two Cys AAs come close enough a covalent bond is formed (only one between a pair of cysteines).
+        createDisulfideBonds = function () {
+          var cys1Idx, cys2Idx, xDiff, yDiff, rSq, i, j, len;
+
+          for (i = 0, len = freeCysteinesList.length; i < len; i++) {
+            cys1Idx = freeCysteinesList[i];
+            for (j = i + 1; j < len; j++) {
+              cys2Idx = freeCysteinesList[j];
+
+              xDiff = x[cys1Idx] - x[cys2Idx];
+              yDiff = y[cys1Idx] - y[cys2Idx];
+              rSq = xDiff * xDiff + yDiff * yDiff;
+
+              // Check whether cysteines are close enough to each other.
+              // As both are in the freeCysteinesList, they are not connected.
+              if (rSq < 0.07) {
+                // Connect cysteines.
+                engine.addRadialBond({
+                  atom1: cys1Idx,
+                  atom2: cys2Idx,
+                  length: Math.sqrt(rSq),
+                  // Default strength of bonds between amino acids.
+                  strength: 10000,
+                  // A special style for disulfide bonds.
+                  style: 109
+                });
+
+                // Remove both cysteines from freeCysteinesList.
+                arrays.remove(freeCysteinesList, i);
+                arrays.remove(freeCysteinesList, j);
+
+                // Update len, cys1Idx, j as freeCysteinesList has changed.
+                // Not very pretty, but probably the fastest way.
+                len = freeCysteinesList.length;
+                cys1Idx = freeCysteinesList[i];
+                j = i + 1;
+              }
+            }
           }
         },
 
@@ -2663,6 +2737,13 @@ define(function (require, exports, module) {
         dt = _dt;        // dt is a closure variable that helpers need access to
         dt_sq = dt * dt; // the squared time step is also needed by some helpers.
 
+        // Prepare optimization structures to ensure that they are valid during integration.
+        // Note that when user adds or removes various objects (like atoms, bonds), such structures
+        // can become invalid. That's why we update them each time before integration.
+        // It's also safer and easier to do recalculate each structure than to modify it while
+        // engine state is changed by user.
+        calculateOptimizationStructures();
+
         // Calculate accelerations a(t), where t = 0.
         // Later this is not necessary, as a(t + dt) from
         // previous step is used as a(t) in the current step.
@@ -2721,6 +2802,10 @@ define(function (require, exports, module) {
         // time which passed and converts raw data from pressure probes to value
         // in Bars.
         calculateFinalPressureValues(duration);
+
+        // After each integration loop try to create new disulfide bonds between cysteines.
+        // It's enough to do it outside the inner integration loop (performance).
+        createDisulfideBonds();
       },
 
       // Minimize energy using steepest descend method.
