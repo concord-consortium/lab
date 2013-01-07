@@ -311,9 +311,12 @@ define(function(require) {
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
-      var t,
-          timeStep = model.get('timeStep'),
-          sampleTime;
+      var timeStep = model.get('timeStep'),
+          // Save number of radial bonds in engine before integration,
+          // as integration can create new disulfide bonds. This is the
+          // only type of objects which can be created by the engine autmatically.
+          prevNumOfRadialBonds = engine.getNumberOfRadialBonds(),
+          t, sampleTime;
 
       if (!stopped) {
         t = Date.now();
@@ -344,6 +347,10 @@ define(function(require) {
 
       if (!dontDispatchTickEvent) {
         dispatch.tick();
+      }
+
+      if (prevNumOfRadialBonds < engine.getNumberOfRadialBonds()) {
+        dispatch.addRadialBond();
       }
 
       return stopped;
