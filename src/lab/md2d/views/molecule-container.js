@@ -313,8 +313,8 @@ define(function (require) {
 
       model.on('addAtom', setup_drawables);
       model.on('removeAtom', setup_drawables);
-      model.on('addRadialBond', setup_drawables);
-      model.on('removeRadialBond', setup_drawables);
+      model.on('addRadialBond', setup_radial_bonds);
+      model.on('removeRadialBond', setup_radial_bonds);
 
       // Register additional controls, context menus etc.
       // Note that special selector for class is used. Typical class selectors
@@ -1293,13 +1293,13 @@ define(function (require) {
       }
 
       function setup_radial_bonds() {
-        mainContainer.selectAll("path.radialbond1").remove();
-        mainContainer.selectAll("path.radialbond2").remove();
+        radialBondsContainer.selectAll("path.radialbond1").remove();
+        radialBondsContainer.selectAll("path.radialbond2").remove();
         radialBonds = model.get_radial_bonds();
         radialBondResults = model.get_radial_bond_results();
         if (radialBondResults) {
-          radialBond1 = mainContainer.selectAll("path.radialbond1").data(radialBondResults);
-          radialBond2 = mainContainer.selectAll("path.radialbond2").data(radialBondResults);
+          radialBond1 = radialBondsContainer.selectAll("path.radialbond1").data(radialBondResults);
+          radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(radialBondResults);
           radialBondEnter();
         }
       }
