@@ -1,0 +1,11 @@
+// Styles for various elements managed by molecule-container,
+// which doesn't have to be styled dynamically and CSS rules are enough.
+.molecules-view-svg-container
+  // Radial bonds.
+  .radialbond1, .radialbond2
+    // Various radial bond styles:
+    // Default radial bonds have color calculated dynamically using JavaScipt.
+    &.disulphideBond
+      // Disulphide radial bonds have overwritten stroke color to yellow.
+      // !important to overwrite value set by JavaScript code.
+      stroke: #ffe95a !important

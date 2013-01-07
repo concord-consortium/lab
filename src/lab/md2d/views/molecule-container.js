@@ -16,14 +16,15 @@ define(function (require) {
       validator             = require('common/validator'),
 
       RADIAL_BOND_STYLES = {
-        RADIAL_BOND_STANDARD_STICK_STYLE : 101,
-        RADIAL_BOND_LONG_SPRING_STYLE    : 102,
-        RADIAL_BOND_SOLID_LINE_STYLE     : 103,
-        RADIAL_BOND_GHOST_STYLE          : 104,
-        RADIAL_BOND_UNICOLOR_STICK_STYLE : 105,
-        RADIAL_BOND_SHORT_SPRING_STYLE   : 106,
-        RADIAL_BOND_DOUBLE_BOND_STYLE    : 107,
-        RADIAL_BOND_TRIPLE_BOND_STYLE    : 108
+        STANDARD_STICK  : 101,
+        LONG_SPRING     : 102,
+        BOND_SOLID_LINE : 103,
+        GHOST           : 104,
+        UNICOLOR_STICK  : 105,
+        SHORT_SPRING    : 106,
+        DOUBLE_BOND     : 107,
+        TRIPLE_BOND     : 108,
+        DISULPHIDE_BOND : 109
       };
 
   return function moleculeContainer(e, viewOptions, model) {
@@ -103,15 +104,6 @@ define(function (require) {
 
         options,
 
-        RADIAL_BOND_STANDARD_STICK_STYLE,
-        RADIAL_BOND_LONG_SPRING_STYLE,
-        RADIAL_BOND_SOLID_LINE_STYLE,
-        RADIAL_BOND_GHOST_STYLE,
-        RADIAL_BOND_UNICOLOR_STICK_STYLE,
-        RADIAL_BOND_SHORT_SPRING_STYLE,
-        RADIAL_BOND_DOUBLE_BOND_STYLE,
-        RADIAL_BOND_TRIPLE_BOND_STYLE,
-
         VELOCITY_STR = "velocity",
         FORCE_STR    = "force";
 
@@ -157,16 +149,6 @@ define(function (require) {
       forceVectorLength = options.forceVectors.length;
 
       atomTraceColor = options.atomTraceColor;
-
-      RADIAL_BOND_STANDARD_STICK_STYLE = 101;
-      RADIAL_BOND_LONG_SPRING_STYLE    = 102;
-      RADIAL_BOND_SOLID_LINE_STYLE     = 103;
-      RADIAL_BOND_GHOST_STYLE          = 104;
-      RADIAL_BOND_UNICOLOR_STICK_STYLE = 105;
-      RADIAL_BOND_SHORT_SPRING_STYLE   = 106;
-      RADIAL_BOND_DOUBLE_BOND_STYLE    = 107;
-      RADIAL_BOND_TRIPLE_BOND_STYLE    = 108;
-
     }
 
     function scale(w, h) {
@@ -951,7 +933,10 @@ define(function (require) {
         radialBond1.enter().append("path")
             .attr("d", function (d) {
               return findPoints(d,1);})
-            .attr("class", "radialbond1")
+            .classed("radialbond1", true)
+            .classed("disulphideBond", function (d) {
+              return d.style === RADIAL_BOND_STYLES.DISULPHIDE_BOND;
+            })
             .style("stroke-width", function (d) {
               if (isSpringBond(d)) {
                 return Math.log(d.strength)/4+0.5 * scaling_factor;
@@ -965,7 +950,10 @@ define(function (require) {
         radialBond2.enter().append("path")
             .attr("d", function (d) {
               return findPoints(d,2); })
-            .attr("class", "radialbond2")
+            .classed("radialbond2", true)
+            .classed("disulphideBond", function (d) {
+              return d.style === RADIAL_BOND_STYLES.DISULPHIDE_BOND;
+            })
             .style("stroke-width", function (d) {
               if (isSpringBond(d)) {
                 return Math.log(d.strength)/4+0.5 * scaling_factor;
