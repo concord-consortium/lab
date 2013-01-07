@@ -49,7 +49,7 @@ define(function (require) {
         model_time_formatter = d3.format("5.0f"),
         time_prefix = "",
         time_suffix = " (fs)",
-        gradient_container,
+        mainContainer,
         VDWLines_container,
         image_container_below,
         image_container_top,
@@ -417,13 +417,6 @@ define(function (require) {
           .attr("width", size.width)
           .attr("height", size.height);
 
-        vis.select("svg.container")
-          .attr("top", 0)
-          .attr("left", 0)
-          .attr("width", size.width)
-          .attr("height", size.height)
-          .attr("viewBox", "0 0 "+size.width+" "+size.height);
-
         if (options.title) {
           vis.select("text.title")
               .attr("x", size.width/2)
@@ -566,34 +559,28 @@ define(function (require) {
         VDWLines_container = vis.append("g");
         VDWLines_container.attr("class", "VDWLines_container");
 
-        gradient_container = vis.append("svg")
-            .attr("class", "container")
-            .attr("top", 0)
-            .attr("left", 0)
-            .attr("width", size.width)
-            .attr("height", size.height)
-            .attr("viewBox", "0 0 "+size.width+" "+size.height);
+        mainContainer = vis.append("g").attr("class", "main-container");
 
         // Charge gradients.
-        create_radial_gradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", gradient_container);
-        create_radial_gradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", gradient_container);
-        create_radial_gradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", gradient_container);
+        create_radial_gradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
+        create_radial_gradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
+        create_radial_gradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
 
         // "Marked" atom gradient.
-        create_radial_gradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", gradient_container);
+        create_radial_gradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
 
         // Editable element gradients.
-        create_radial_gradient("green-grad", "#dfffef", "#75a643", "#2a7216", gradient_container);
-        create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", gradient_container);
-        create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", gradient_container);
-        create_radial_gradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", gradient_container);
+        create_radial_gradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
+        create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", mainContainer);
+        create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", mainContainer);
+        create_radial_gradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
 
         // Kinetic Energy Shading gradients
         for (i = 0; i < KE_SHADING_STEPS; i++) {
           gradientName = "ke-shading-" + i;
           KELevel = i / KE_SHADING_STEPS;
           create_radial_gradient(gradientName, "#FFFFFF", medColorScale(KELevel),
-            darkColorScale(KELevel), gradient_container);
+            darkColorScale(KELevel), mainContainer);
           gradientNameForKELevel[i] = "url(#" + gradientName + ")";
         }
 
@@ -603,8 +590,8 @@ define(function (require) {
         image_container_top.attr("class", "image_container_top");
       }
 
-      function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
-        var gradient = gradient_container.append("defs")
+      function create_radial_gradient(id, lightColor, medColor, darkColor, mainContainer) {
+        var gradient = mainContainer.append("defs")
             .append("radialGradient")
             .attr("id", id)
             .attr("cx", "50%")
@@ -631,7 +618,7 @@ define(function (require) {
       }
 
       function createVectorArrowHeads(color, name) {
-        var arrowHead = gradient_container.append("defs")
+        var arrowHead = mainContainer.append("defs")
           .append("marker")
           .attr("id", "Triangle-"+name)
           .attr("viewBox", "0 0 10 10")
@@ -1126,7 +1113,7 @@ define(function (require) {
         size = model.size();
 
         // Curiously, selector "foreignObject.textBox" doesn't return the foreignObjects
-        htmlObjects = gradient_container.selectAll(".textBox").data(textBoxes);
+        htmlObjects = mainContainer.selectAll(".textBox").data(textBoxes);
 
         htmlObjects.enter().append("foreignObject")
           .attr("class", "textBox")
@@ -1201,14 +1188,14 @@ define(function (require) {
         chargeShadingMode = model.get("chargeShading");
         keShadingMode = model.get("keShading");
 
-        gradient_container.selectAll("circle").remove();
-        gradient_container.selectAll("g.label").remove();
+        mainContainer.selectAll("circle").remove();
+        mainContainer.selectAll("g.label").remove();
 
-        particle = gradient_container.selectAll("circle").data(results);
+        particle = mainContainer.selectAll("circle").data(results);
 
         particleEnter();
 
-        label = gradient_container.selectAll("g.label")
+        label = mainContainer.selectAll("g.label")
             .data(results);
 
         labelEnter = label.enter().append("g")
@@ -1294,22 +1281,22 @@ define(function (require) {
 
       function setup_obstacles() {
         obstacles = model.get_obstacles();
-        gradient_container.selectAll("g.obstacle").remove();
+        mainContainer.selectAll("g.obstacle").remove();
         if (obstacles) {
           mock_obstacles_array.length = obstacles.x.length;
-          obstacle = gradient_container.selectAll("g.obstacle").data(mock_obstacles_array);
+          obstacle = mainContainer.selectAll("g.obstacle").data(mock_obstacles_array);
           obstacleEnter();
         }
       }
 
       function setup_radial_bonds() {
-        gradient_container.selectAll("path.radialbond1").remove();
-        gradient_container.selectAll("path.radialbond2").remove();
+        mainContainer.selectAll("path.radialbond1").remove();
+        mainContainer.selectAll("path.radialbond2").remove();
         radialBonds = model.get_radial_bonds();
         radialBondResults = model.get_radial_bond_results();
         if (radialBondResults) {
-          radialBond1 = gradient_container.selectAll("path.radialbond1").data(radialBondResults);
-          radialBond2 = gradient_container.selectAll("path.radialbond2").data(radialBondResults);
+          radialBond1 = mainContainer.selectAll("path.radialbond1").data(radialBondResults);
+          radialBond2 = mainContainer.selectAll("path.radialbond2").data(radialBondResults);
           radialBondEnter();
         }
       }
@@ -1337,29 +1324,29 @@ define(function (require) {
       }
 
       function setup_vectors() {
-        gradient_container.selectAll("path.vector-"+VELOCITY_STR).remove();
-        gradient_container.selectAll("path.vector-"+FORCE_STR).remove();
+        mainContainer.selectAll("path.vector-"+VELOCITY_STR).remove();
+        mainContainer.selectAll("path.vector-"+FORCE_STR).remove();
 
         drawVelocityVectors = model.get("showVelocityVectors");
         drawForceVectors    = model.get("showForceVectors");
         if (drawVelocityVectors) {
-          velVector = gradient_container.selectAll("path.vector-"+VELOCITY_STR).data(results);
+          velVector = mainContainer.selectAll("path.vector-"+VELOCITY_STR).data(results);
           vectorEnter(velVector, get_vel_vector_path, get_vel_vector_width, velocityVectorColor, VELOCITY_STR);
         }
         if (drawForceVectors) {
-          forceVector = gradient_container.selectAll("path.vector-"+FORCE_STR).data(results);
+          forceVector = mainContainer.selectAll("path.vector-"+FORCE_STR).data(results);
           vectorEnter(forceVector, get_force_vector_path, get_force_vector_width, forceVectorColor, FORCE_STR);
         }
       }
 
       function setup_atomTrace() {
-        gradient_container.selectAll("path.atomTrace").remove();
+        mainContainer.selectAll("path.atomTrace").remove();
         atomTracePath = "";
 
         drawAtomTrace = model.get("showAtomTrace");
         atomTraceId = model.get("atomTraceId");
         if (drawAtomTrace) {
-          atomTrace = gradient_container.selectAll("path.atomTrace").data([results[atomTraceId]]);
+          atomTrace = mainContainer.selectAll("path.atomTrace").data([results[atomTraceId]]);
           atomTraceEnter();
         }
       }
