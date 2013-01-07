@@ -58,3 +58,14 @@ define (require) ->
 
       # Avoid an unwanted comprehension.
       undefined
+
+    ###
+    Clone-Restore Interface.
+    ###
+    clone: ->
+      # Use jQuery extend and return a copy.
+      $.extend true, {}, @_data
+
+    restore: (state) ->
+      # Just overwrite @_data variable.
+      @_data = state
