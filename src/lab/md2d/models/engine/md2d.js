@@ -3182,6 +3182,8 @@ define(function (require, exports, module) {
           new CloneRestoreWrapper(angularBonds),
           new CloneRestoreWrapper(restraints),
           new CloneRestoreWrapper(springForces),
+          // PairwiseLJProperties class implements Clone-Restore Interface.
+          pairwiseLJProperties,
           // Save time value.
           // Create one-line wrapper to provide required interface.
           {
