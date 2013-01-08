@@ -1,74 +1,124 @@
 /*globals define: false, d3: false */
 /*jshint loopfunc: true*/
-// ------------------------------------------------------------
-//
-// Simple benchmark runner and results generator
-//
-//   see: https://gist.github.com/1364172
-//
-// ------------------------------------------------------------
-//
-// Runs benchmarks and generates the results in a table.
-//
-// Setup benchmarks to run in an array of objects with two properties:
-//
-//   name: a title for the table column of results
-//   run: a function that is called to run the benchmark and call back with a value.
-//        It should accept a single argument, the callback to be called when the
-//        benchmark completes. It should pass the benchmark value to the callback.
-//
-// Start the benchmarks by passing the table element where the results are to
-// be placed and an array of benchmarks to run.
-//
-// Example:
-//
-//   var benchmarks_table = document.getElementById("benchmarks-table");
-//
-//   var benchmarks_to_run = [
-//     {
-//       name: "molecules",
-//       run: function(done) {
-//         done(mol_number);
-//       }
-//     },
-//     {
-//       name: "100 Steps (steps/s)",
-//       run: function(done) {
-//         modelStop();
-//         var start = +Date.now();
-//         var i = -1;
-//         while (i++ < 100) {
-//           model.tick();
-//         }
-//         elapsed = Date.now() - start;
-//         done(d3.format("5.1f")(100/elapsed*1000));
-//       }
-//     },
-//   ];
-//
-//   benchmark.run(benchmarks_table, benchmarks_to_run)
-//
-// The first four columns in the generated table consist of:
-//
-//   browser, version, cpu/os, date
-//
-// These columns are followed by a column for each benchmark passed in.
-//
-// Subsequent calls to: benchmark.run(benchmarks_table, benchmarks_to_run) will
-// add additional rows to the table.
-//
-// Here are some css styles for the table:
-//
-//   table {
-//     font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
-//     border-collapse: collapse; }
-//   th {
-//     padding: 0 1em;
-//     text-align: left; }
-//   td {
-//     border-top: 1px solid #cccccc;
-//     padding: 0 1em; }
-//
+
+/*
+  ------------------------------------------------------------
+
+  Simple benchmark runner and results generator
+
+    see: https://gist.github.com/1364172
+
+  ------------------------------------------------------------
+
+  Runs benchmarks and generates the results in a table.
+
+  Setup benchmarks to run in an array of objects with two properties:
+
+    name: a title for the table column of results
+    numeric: boolean, used to decide what columns should be used to calculate averages
+    formatter: (optional) a function that takes a number and returns a formmatted string, example: d3.format("5.1f")
+    run: a function that is called to run the benchmark and call back with a value.
+         It should accept a single argument, the callback to be called when the
+         benchmark completes. It should pass the benchmark value to the callback.
+
+  Start the benchmarks by passing the table element where the results are to
+  be placed and an array of benchmarks to run.
+
+  Example:
+
+    var benchmarks_table = document.getElementById("benchmarks-table");
+
+    var benchmarks_to_run = [
+      {
+        name: "molecules",
+        run: function(done) {
+          done(mol_number);
+        }
+      },
+      {
+        name: "100 Steps (steps/s)",
+        run: function(done) {
+          modelStop();
+          var start = +Date.now();
+          var i = -1;
+          while (i++ < 100) {
+            model.tick();
+          }
+          elapsed = Date.now() - start;
+          done(d3.format("5.1f")(100/elapsed*1000));
+        }
+      },
+    ];
+
+    benchmark.run(benchmarks_table, benchmarks_to_run)
+
+  You can optionally pass two additional arguments to the run method: start_callback, end_callback
+
+    function run(benchmarks_table, benchmarks_to_run, start_callback, end_callback)
+
+  These arguments are used when the last benchmark test is run using the browsers scheduling and re-painting mechanisms.
+
+  For example this test runs a model un the browser and calculates actual frames per second combining the
+  model, view, and browser scheduling and repaint operations.
+
+    {
+      name: "fps",
+      numeric: true,
+      formatter: d3.format("5.1f"),
+      run: function(done) {
+        // warmup
+        model.start();
+        setTimeout(function() {
+          model.stop();
+          var start = model.get('time');
+          setTimeout(function() {
+            // actual fps calculation
+            model.start();
+            setTimeout(function() {
+              model.stop();
+              var elapsedModelTime = model.get('time') - start;
+              done( elapsedModelTime / (model.get('viewRefreshInterval') * model.get('timeStep')) / 2 );
+            }, 2000);
+          }, 100);
+        }, 1000);
+      }
+    }
+
+  Here's an example calling the benchmark.run method and passing in start_callback, end_callback functions:
+
+    benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun, function() {
+      $runBenchmarksButton.attr('disabled', true);
+    }, function() {
+      $runBenchmarksButton.attr('disabled', false);
+    });
+
+  The "Run Benchmarks" button is disabled until the browser finishes running thelast queued test.
+
+  The first five columns in the generated table consist of:
+
+    browser, version, cpu/os, date, and commit
+
+  These columns are followed by a column for each benchmark passed in.
+
+  Subsequent calls to: benchmark.run(benchmarks_table, benchmarks_to_run) will
+  add additional rows to the table.
+
+  A special second row is created in the table which displays averages of all tests
+  that generate numeric results.
+
+  Here are some css styles for the table:
+
+    table {
+      font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
+      border-collapse: collapse; }
+    th {
+      padding: 0 1em;
+      text-align: left; }
+    td {
+      border-top: 1px solid #cccccc;
+      padding: 0 1em; }
+
+*/
 
 define(function (require) {
 
