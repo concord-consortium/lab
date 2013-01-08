@@ -1225,27 +1225,27 @@ define(function (require) {
           if (options.atom_mubers) {
             selection.append("text")
               .text(d.idx)
-              .style("font-size", 1.6 * textShrinkFactor * x(d.radius));
+              .style("font-size", x(1.6 * textShrinkFactor * d.radius) + "px");
           }
           else if (useThreeLetterCode && d.label) {
             // Add shadow - a white stroke, which increases readability.
             selection.append("text")
               .text(d.label)
               .attr("class", "shadow")
-              .style("font-size", 1.0 * x(d.radius));
+              .style("font-size", x(d.radius) + "px");
             selection.append("text")
               .text(d.label)
-              .style("font-size", 1.0 * x(d.radius));
+              .style("font-size", x(d.radius) + "px");
           }
           else if (!useThreeLetterCode && d.symbol) {
             // Add shadow - a white stroke, which increases readability.
             selection.append("text")
               .text(d.symbol)
               .attr("class", "shadow")
-              .style("font-size", 1.4 * x(d.radius));
+              .style("font-size", x(1.4 * d.radius) + "px");
             selection.append("text")
               .text(d.symbol)
-              .style("font-size", 1.4 * x(d.radius));
+              .style("font-size", x(1.4 * d.radius) + "px");
           }
           else if (showChargeSymbols) {
             if (d.charge > 0){
@@ -1257,7 +1257,7 @@ define(function (require) {
             }
             selection.append("text")
               .text(txtValue)
-              .style("font-size", 1.6 * x(d.radius));
+              .style("font-size", x(1.6 * d.radius) + "px");
           }
           // Set common attributes for labels (+ shadows).
           txtSelection = selection.selectAll("text");
