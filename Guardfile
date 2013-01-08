@@ -13,7 +13,10 @@ def command(cmd)
   system(cmd)
 end
 
+ENV['LAB_DEVELOPMENT'] = "true"
+
 command("make")
+
 puts <<HEREDOC
 
 ready ...

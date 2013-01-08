@@ -7,7 +7,8 @@ MARKDOWN_COMPILER = bin/kramdown
 # Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
 # the test's title, not its pathname. So we need to find everything in test/vows first.
 VOWS = find test/vows -name *.js -print | xargs ./node_modules/.bin/vows --isolate
-MOCHA = bash -O extglob -c 'ls test/mocha/md2d/+(*-outputs*|interactive-parameters-spec*)' | xargs -n 1 ./node_modules/.bin/mocha; bash -O extglob -c 'ls test/mocha/md2d/!(*-outputs*|interactive-parameters-spec*)' | xargs node_modules/.bin/mocha
+MOCHA = bash -O extglob -c 'ls test/mocha/md2d/!(*-outputs*|interactive-parameters-spec*)' | xargs node_modules/.bin/mocha
+MOCHA_SLOW_TESTS = bash -O extglob -c 'ls test/mocha/md2d/+(*-outputs*|interactive-parameters-spec*)' | xargs -n 1 ./node_modules/.bin/mocha
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
@@ -56,16 +57,8 @@ all: \
 	src/vendor/d3 \
 	node_modules \
 	bin \
-	server/public \
-	$(MARKDOWN_EXAMPLE_FILES) \
-	$(LAB_JS_FILES) \
-	$(LAB_JS_FILES:.js=.min.js) \
-	$(HAML_FILES) \
-	$(SASS_EXAMPLE_FILES) \
-	$(SASS_DOC_FILES) \
-	$(SCSS_EXAMPLE_FILES) \
-	$(COFFEESCRIPT_EXAMPLE_FILES) \
-	server/public/index.css
+	server/public
+	$(MAKE) src
 
 .PHONY: check-ruby
 check-ruby:
@@ -91,6 +84,7 @@ src: \
 	$(SASS_DOC_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
+	server/public/index.css \
 	server/public/lab-amd
 	$(INTERACTIVES_JSON)
 
@@ -489,6 +483,7 @@ test: test/layout.html \
 	$(JS_FILES:.js=.min.js)
 	@$(VOWS)
 	@$(MOCHA)
+	@$(MOCHA_SLOW_TESTS)
 
 .PHONY: test-src
 test-src: test/layout.html \
@@ -513,8 +508,11 @@ debug-mocha:
 
 %.min.js: %.js Makefile
 	@rm -f $@
+ifndef LAB_DEVELOPMENT
 	$(JS_COMPILER) < $< > $@
 	@chmod ug+w $@
+else
+endif
 
 test/%.html: test/%.html.haml
 	haml $< $@
