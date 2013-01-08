@@ -1026,7 +1026,7 @@ define(function (require) {
       }
 
       function isSpringBond(d){
-        return d.style === RADIAL_BOND_STYLES.RADIAL_BOND_SHORT_SPRING_STYLE;
+        return d.style === RADIAL_BOND_STYLES.SHORT_SPRING;
       }
 
       function vdwLinesEnter() {
