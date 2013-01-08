@@ -461,7 +461,9 @@ define(function (require, exports, module) {
               }
             }
           }
-          return maxCutoff;
+          // If maxCutoff === 0, return size of the model
+          // as a default cutoff distance for empty model.
+          return maxCutoff || Math.max(size[0], size[1]);
         },
 
         // Returns a minimal difference between "real" cutoff
@@ -2106,10 +2108,18 @@ define(function (require, exports, module) {
         for (j = 0; j < N_elements; j++) {
           setPairwiseLJProperties(i, j);
         }
+        // Reinitialize optimization structures, as sigma can be changed.
+        initializeCellList();
+        initializeNeighborList();
       },
 
-      // Make private function public.
-      setPairwiseLJProperties: setPairwiseLJProperties,
+      setPairwiseLJProperties: function (i, j) {
+        // Call private (closure) version of this funcion.
+        setPairwiseLJProperties(i, j);
+        // Reinitialize optimization structures, as sigma can be changed.
+        initializeCellList();
+        initializeNeighborList();
+      },
 
       setObstacleProperties: function (i, props) {
         var key;
@@ -2277,6 +2287,10 @@ define(function (require, exports, module) {
         for (i = 0; i <= N_elements; i++) {
           setPairwiseLJProperties(N_elements, i);
         }
+        // Note that we don't have to reinitialize optimization
+        // structures (cell lists and neighbor list). They are
+        // based only on the properties of *used* elements, so
+        // adding a new atom should trigger reinitialization instead.
 
         N_elements++;
       },
