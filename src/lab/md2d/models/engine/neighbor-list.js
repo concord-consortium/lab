@@ -44,6 +44,7 @@ define(function (require) {
       reinitialize: function (newAtomsNum, newMaxDisplacement) {
         atomsNum = newAtomsNum;
         maxDisplacement = newMaxDisplacement;
+        forceUpdate = true;
 
         if (atomsNum > maxAtomsNum) {
           init();
