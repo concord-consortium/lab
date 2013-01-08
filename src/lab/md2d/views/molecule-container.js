@@ -36,7 +36,6 @@ define(function (require) {
         cy = elem.property("clientHeight"),
         width, height,
         scale_factor,
-        scaling_factor,
         vis1, vis, plot,
         playback_component, time_label,
         padding, size, modelSize,
@@ -212,7 +211,6 @@ define(function (require) {
         "height": modelSizeArray[1]
       };
 
-      scaling_factor = (size.width / (modelSize.width * 100));
       offset_top  = node.offsetTop + padding.top;
       offset_left = node.offsetLeft + padding.left;
 
@@ -831,7 +829,7 @@ define(function (require) {
             "d": getAtomTracePath
           })
           .style({
-            "stroke-width": scaling_factor,
+            "stroke-width": x(0.01),
             "stroke": atomTraceColor,
             "fill": "none",
             "stroke-dasharray": "6, 6"
@@ -936,7 +934,7 @@ define(function (require) {
             })
             .style("stroke-width", function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength)/4+0.5 * scaling_factor;
+                return Math.log(d.strength) / 4 + x(0.005);
               } else {
                 return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
@@ -953,7 +951,7 @@ define(function (require) {
             })
             .style("stroke-width", function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength)/4+0.5 * scaling_factor;
+                return Math.log(d.strength) / 4 + x(0.005);
               } else {
                 return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
@@ -990,7 +988,7 @@ define(function (require) {
         dy = y2 - y1;
 
         strength = d.strength;
-        length = Math.sqrt(dx*dx + dy*dy)/scaling_factor;
+        length = Math.sqrt(dx*dx + dy*dy) / x(0.01);
 
         numTurns = Math.floor(d.length * 24);
         springDiameter = length / numTurns;
@@ -1055,8 +1053,8 @@ define(function (require) {
             "y2": function(d) { return y(results[d[1]].y); }
           })
           .style({
-            "stroke-width": 2 * scaling_factor,
-            "stroke-dasharray":  3 * scaling_factor + " " + 2 * scaling_factor
+            "stroke-width": x(0.02),
+            "stroke-dasharray": x(0.03) + " " + x(0.02)
           });
 
         // remove old lines
@@ -1098,8 +1096,8 @@ define(function (require) {
               imgY = imageProp[i].imageY;
               // cache the image width and height
               imageSizes[i] = [img[i].width, img[i].height];
-              img_width = imageSizes[i][0] * scaling_factor;
-              img_height = imageSizes[i][1] * scaling_factor;
+              img_width = x(0.01 * imageSizes[i][0]);
+              img_height = x(0.01 * imageSizes[i][1]);
 
 
 
@@ -1611,8 +1609,8 @@ define(function (require) {
           imgX =  imageProp[i].imageX;
           imgY =  imageProp[i].imageY;
           imglayer =  imageProp[i].imageLayer;
-          img_width  = imageSizes[i][0] * scaling_factor;
-          img_height = imageSizes[i][1] * scaling_factor;
+          img_width  = x(0.01 * imageSizes[i][0]);
+          img_height = x(0.01 * imageSizes[i][1]);
           container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
           container.selectAll("image.image_attach"+i)
             .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
