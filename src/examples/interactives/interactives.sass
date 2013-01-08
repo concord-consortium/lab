@@ -126,10 +126,19 @@ $max-width: 100%
   background: #ddd
 
 .extras-item-controls
+  display: block
   margin-left: 1em
   font-size: 90%
 
+.extras-item-description
+  display: inline-block
+  margin-left: 1em
+  font-size: 90%
+  vertical-align: top
+  width: 70%
+
 button.extras-item-controls
+  display: inline-block
   font-size: 100%
   margin: 0em 1em
 
@@ -170,6 +179,14 @@ button.extras-item-controls
     border-top: 1px solid #CCC
     text-align: left
     padding: 0.3em 0.5em
+  tr.average
+    background: #dfd
+    td
+      font-style: italic
+  tr.sample
+    background: #f8f8f8
+    td
+      font-style: normal
 
 #model-benchmark-results
   a.opens-in-new-window

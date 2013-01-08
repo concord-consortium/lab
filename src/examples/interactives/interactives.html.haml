@@ -113,8 +113,10 @@
           #benchmarks-content.extras-item-content
             .extras-item-controls
               %button#run-benchmarks-button.extras-item-controls Run Benchmarks
-              Collect performance data by running 100 steps: first just the graphics, then
-              just the model, and finally the model and graphics together.
+              .extras-item-description
+                Collect performance data by running 100 steps: first just the graphics, then
+                just the model, and finally the model and graphics together.
+                First row contains averaged values from all runs.
             .model-benchmark-results
               %table#model-benchmark-results.model-benchmark-results
 

@@ -219,6 +219,7 @@ define(function (require) {
   function run(benchmarks_table, benchmarks_to_run, start_callback, end_callback) {
     var i = 0,
         browser_info,
+        averaged_row,
         results_row,
         formatter,
         col_number = 0,
@@ -250,12 +251,49 @@ define(function (require) {
       return tr;
     }
 
-    function add_result(name, content) {
-      var cell = results_row.getElementsByTagName("td")[col_numbers[name]];
+    function add_result(name, content, row) {
+      var cell;
+      row = row || results_row;
+      cell = row.getElementsByTagName("td")[col_numbers[name]];
       if (typeof content === "string" && content.slice(0,1) === "<") {
         cell.innerHTML = content;
       } else {
         cell.textContent = content;
+      }
+    }
+
+    function update_averages() {
+      var i, j,
+          b,
+          row,
+          num_rows = rows.length,
+          cell,
+          cell_index,
+          average_elements = average_row.getElementsByTagName("td"),
+          total,
+          average,
+          samples;
+
+      for (i = 0; i < benchmarks_to_run.length; i++) {
+        b = benchmarks_to_run[i];
+        cell_index = col_numbers[b.name];
+        if (b.numeric === false) {
+          row = rows[2];
+          cell = row.getElementsByTagName("td")[cell_index];
+          average_elements[cell_index].innerHTML = cell.innerHTML;
+        } else {
+          total = 0;
+          for (j = 2; j < num_rows; j++) {
+            row = rows[j];
+            cell = row.getElementsByTagName("td")[cell_index];
+            total += (+cell.textContent);
+          }
+          average = total/(num_rows-2);
+          if (b.formatter) {
+            average = b.formatter(average);
+          }
+          average_elements[cell_index].textContent = average;
+        }
       }
     }
 
@@ -270,6 +308,8 @@ define(function (require) {
       for (i = 0; i < benchmarks_to_run.length; i++) {
         add_column(benchmarks_to_run[i].name);
       }
+      average_row = add_row(col_number);
+      average_row.className = 'average';
     } else {
       title_row = rows[0];
       title_cells = title_row.getElementsByTagName("th");
@@ -279,6 +319,7 @@ define(function (require) {
     }
 
     results_row = add_row(col_number);
+    results_row.className = 'sample';
 
     browser_info = what_browser();
     formatter = d3.time.format("%Y-%m-%d %H:%M");
@@ -288,15 +329,30 @@ define(function (require) {
     add_result("cpu/os", browser_info.oscpu);
     add_result("date", formatter(new Date()));
 
+    add_result("browser", browser_info.browser, average_row);
+    add_result("version", browser_info.version, average_row);
+    add_result("cpu/os", browser_info.oscpu, average_row);
+    add_result("date", formatter(new Date()), average_row);
+
     benchmarks_completed = 0;
     if (start_callback) start_callback();
     for (i = 0; i < benchmarks_to_run.length; i++) {
       (function(b) {
         b.run(function(result) {
-         add_result(b.name, result);
-         if (end_callback && ++benchmarks_completed === benchmarks_to_run.length) end_callback();
+          if (b.formatter) {
+            add_result(b.name, b.formatter(result));
+          } else {
+            add_result(b.name, result);
+          }
+         if (end_callback && ++benchmarks_completed === benchmarks_to_run.length) {
+           end_callback();
+           update_averages();
+         }
         });
       }(benchmarks_to_run[i]));
+      if (end_callback === undefined) {
+        update_averages();
+      }
     }
   }
 

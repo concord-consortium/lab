@@ -514,6 +514,7 @@ var ROOT = "/examples",
     benchmarksToRun = [
       {
         name: "commit",
+        numeric: false,
         run: function(done) {
           var link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
           if (Lab.version.repo.dirty) {
@@ -524,18 +525,23 @@ var ROOT = "/examples",
       },
       {
         name: "molecules",
+        numeric: true,
         run: function(done) {
           done(model.get_num_atoms());
         }
       },
       {
         name: "temperature",
+        numeric: true,
+        formatter: d3.format("5.1f"),
         run: function(done) {
-          done(d3.format("5.1f")(model.get("temperature")));
+          done(model.get("temperature"));
         }
       },
       {
         name: "just graphics (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
         run: function(done) {
           var elapsed, start, i;
 
@@ -546,11 +552,13 @@ var ROOT = "/examples",
             controller.modelController.moleculeContainer.update_drawable_positions();
           }
           elapsed = Date.now() - start;
-          done(d3.format("5.1f")(100/elapsed*1000));
+          done(100/elapsed*1000);
         }
       },
       {
         name: "model (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
         run: function(done) {
           var elapsed, start, i;
 
@@ -562,11 +570,13 @@ var ROOT = "/examples",
             model.tick(1, { dontDispatchTickEvent: true });
           }
           elapsed = Date.now() - start;
-          done(d3.format("5.1f")(100/elapsed*1000));
+          done(100/elapsed*1000);
         }
       },
       {
         name: "model+graphics (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
         run: function(done) {
           var start, elapsed, i;
 
@@ -577,11 +587,13 @@ var ROOT = "/examples",
             model.tick();
           }
           elapsed = Date.now() - start;
-          done(d3.format("5.1f")(100/elapsed*1000));
+          done(100/elapsed*1000);
         }
       },
       {
         name: "fps",
+        numeric: true,
+        formatter: d3.format("5.2f"),
         run: function(done) {
           // warmup
           model.start();
@@ -602,6 +614,7 @@ var ROOT = "/examples",
       },
       {
         name: "interactive",
+        numeric: false,
         run: function(done) {
           done(window.location.pathname + window.location.hash);
         }
