@@ -89,10 +89,6 @@ define(function (require) {
         // with view options defined in the basic model description.
         viewOptions = meldOptions(modelConfig.viewOptions || {}, viewOptions);
 
-        // Setup size of the container for view.
-        viewOptions.xmax = modelConfig.width;
-        viewOptions.ymax = modelConfig.height;
-
         // Move images and textBoxes the from model config to view options.
         viewOptions.images    = modelConfig.images;
         viewOptions.textBoxes = modelConfig.textBoxes;

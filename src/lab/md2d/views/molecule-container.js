@@ -39,7 +39,7 @@ define(function (require) {
         scaling_factor,
         vis1, vis, plot,
         playback_component, time_label,
-        padding, size,
+        padding, size, modelSize,
         mw, mh, tx, ty, stroke,
         x, downscalex, downx,
         y, downscaley, downy, y_flip,
@@ -156,8 +156,8 @@ define(function (require) {
     }
 
     function scale(w, h) {
-      var modelSize = model.size(),
-          aspectRatio = modelSize[0] / modelSize[1];
+      var modelSizeArray = model.size(),
+          aspectRatio = modelSizeArray[0] / modelSizeArray[1];
       scale_factor = layout.screen_factor;
       padding = {
          "top":    options.title  ? 40 * layout.screen_factor : 20,
@@ -201,11 +201,18 @@ define(function (require) {
         node.style.width = cx +"px";
       }
 
+      // Container size in px.
       size = {
         "width":  width,
         "height": height
       };
-      scaling_factor = (size.width/(modelSize[0]*100));
+      // Model size in nm.
+      modelSize = {
+        "width":  modelSizeArray[0],
+        "height": modelSizeArray[1]
+      };
+
+      scaling_factor = (size.width / (modelSize.width * 100));
       offset_top  = node.offsetTop + padding.top;
       offset_left = node.offsetLeft + padding.left;
 
@@ -229,7 +236,7 @@ define(function (require) {
 
       // x-scale
       x = d3.scale.linear()
-          .domain([options.xmin, options.xmax])
+          .domain([0, modelSize.width])
           .range([0, mw]);
 
       // drag x-axis logic
@@ -238,12 +245,12 @@ define(function (require) {
 
       // y-scale (inverted domain)
       y = d3.scale.linear()
-          .domain([options.ymax, options.ymin])
+          .domain([modelSize.height, 0])
           .range([0, mh]);
 
       // y-scale for defining heights without inverting the domain
       y_flip = d3.scale.linear()
-          .domain([options.ymin, options.ymax])
+          .domain([0, modelSize.height])
           .nice()
           .range([0, mh])
           .nice();
@@ -1628,10 +1635,10 @@ define(function (require) {
         (x, y), returns an (x, y) constrained to keep the bounding box within the molecule container.
       */
       function dragBoundingBox(x, y, bbox) {
-        if (bbox.left + x < options.xmin)   x = options.xmin - bbox.left;
-        if (bbox.right + x > options.xmax)  x = options.xmax - bbox.right;
-        if (bbox.bottom + y < options.ymin) y = options.ymin - bbox.bottom;
-        if (bbox.top + y > options.ymax)    y = options.ymax - bbox.top;
+        if (bbox.left + x < 0)                x = 0 - bbox.left;
+        if (bbox.right + x > modelSize.width) x = modelSize.width - bbox.right;
+        if (bbox.bottom + y < 0)              y = 0 - bbox.bottom;
+        if (bbox.top + y > modelSize.height)  y = modelSize.height - bbox.top;
 
         return { x: x, y: y };
       }
@@ -1647,7 +1654,7 @@ define(function (require) {
         boundaries
       */
       function dragPoint(x, y) {
-        return { x: clip(x, options.xmin, options.xmax), y: clip(y, options.ymin, options.ymax) };
+        return { x: clip(x, 0, modelSize.width), y: clip(y, 0, modelSize.height) };
       }
 
       function node_drag(d, i) {

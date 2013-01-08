@@ -39,18 +39,6 @@ define(function() {
     atomTraceColor: {
       defaultValue: "#6913c5"
     },
-    xmin: {
-      defaultValue: 0
-    },
-    xmax: {
-      defaultValue: 10
-    },
-    ymin: {
-      defaultValue: 0
-    },
-    ymax: {
-      defaultValue: 10
-    },
     interactiveUrl: {
       defaultValue: ''
     },
