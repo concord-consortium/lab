@@ -855,10 +855,18 @@ define(function(require) {
       left in whatever grid the engine's initialization leaves them in.
     */
     model.createAtoms = function(config) {
+          // Options for addAtom method.
       var options = {
-            supressCheck: true
+            // Do not check the position of atom, assume that it's valid.
+            supressCheck: true,
+            // Deserialization process, invalidating change hooks will be called manually.
+            deserialization: true
           },
           i, num, prop, atomProps;
+
+      // Call the hook manually, as addAtom won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePreHook();
 
       if (typeof config === 'number') {
         num = config;
@@ -899,6 +907,10 @@ define(function(require) {
           engine.relaxToTemperature();
       }
 
+      // Call the hook manually, as addAtom won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePostHook();
+
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
 
@@ -907,8 +919,17 @@ define(function(require) {
     };
 
     model.createRadialBonds = function(_radialBonds) {
-      var num = _radialBonds.strength.length,
+          // Options for addRadialBond method.
+      var options = {
+            // Deserialization process, invalidating change hooks will be called manually.
+            deserialization: true
+          },
+          num = _radialBonds.strength.length,
           i, prop, radialBondProps;
+
+      // Call the hook manually, as addRadialBond won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePreHook();
 
       // _radialBonds is hash of arrays (as specified in JSON model).
       // So, for each index, create object containing properties of
@@ -921,15 +942,28 @@ define(function(require) {
             radialBondProps[prop] = _radialBonds[prop][i];
           }
         }
-        model.addRadialBond(radialBondProps);
+        model.addRadialBond(radialBondProps, options);
       }
+
+      // Call the hook manually, as addRadialBond won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePostHook();
 
       return model;
     };
 
     model.createAngularBonds = function(_angularBonds) {
-      var num = _angularBonds.strength.length,
+          // Options for addAngularBond method.
+      var options = {
+            // Deserialization process, invalidating change hooks will be called manually.
+            deserialization: true
+          },
+          num = _angularBonds.strength.length,
           i, prop, angularBondProps;
+
+      // Call the hook manually, as addAngularBond won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePreHook();
 
       // _angularBonds is hash of arrays (as specified in JSON model).
       // So, for each index, create object containing properties of
@@ -942,8 +976,12 @@ define(function(require) {
             angularBondProps[prop] = _angularBonds[prop][i];
           }
         }
-        model.addAngularBond(angularBondProps);
+        model.addAngularBond(angularBondProps, options);
       }
+
+      // Call the hook manually, as addRadialBond won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePostHook();
 
       return model;
     };
@@ -1077,9 +1115,13 @@ define(function(require) {
         return false;
       }
 
-      invalidatingChangePreHook();
+      // When atoms are being deserialized, the deserializing function
+      // should handle change hooks due to performance reasons.
+      if (!options.deserialization)
+        invalidatingChangePreHook();
       engine.addAtom(props);
-      invalidatingChangePostHook();
+      if (!options.deserialization)
+        invalidatingChangePostHook();
 
       if (!options.supressEvent) {
         dispatch.addAtom();
@@ -1151,13 +1193,20 @@ define(function(require) {
       invalidatingChangePostHook();
     };
 
-    model.addRadialBond = function(props) {
+    model.addRadialBond = function(props, options) {
       // Validate properties, use default values if there is such need.
       props = validator.validateCompleteness(metadata.radialBond, props);
+
+      // During deserialization change hooks are managed manually.
+      if (!options || !options.deserialization)
+        invalidatingChangePreHook();
+
       // Finally, add radial bond.
-      invalidatingChangePreHook();
       engine.addRadialBond(props);
-      invalidatingChangePostHook();
+
+      if (!options || !options.deserialization)
+        invalidatingChangePostHook();
+
       dispatch.addRadialBond();
     },
 
@@ -1168,13 +1217,19 @@ define(function(require) {
       dispatch.removeRadialBond();
     };
 
-    model.addAngularBond = function(props) {
+    model.addAngularBond = function(props, options) {
       // Validate properties, use default values if there is such need.
       props = validator.validateCompleteness(metadata.angularBond, props);
+
+      // During deserialization change hooks are managed manually.
+      if (!options || !options.deserialization)
+        invalidatingChangePreHook();
+
       // Finally, add angular bond.
-      invalidatingChangePreHook();
       engine.addAngularBond(props);
-      invalidatingChangePostHook();
+
+      if (!options || !options.deserialization)
+        invalidatingChangePostHook();
     };
 
     model.removeAngularBond = function(idx) {
