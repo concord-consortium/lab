@@ -874,9 +874,9 @@ define(function (require) {
               obsWidth = get_obstacle_width(i),
               obsFx = obstacles.externalFx[i],
               obsFy = obstacles.externalFy[i],
-              // Use fixed length of force vectors.
-              vecLen = 0.06 * scale_factor,
-              space = 0.06 * scale_factor,
+              // Use fixed length of force vectors (in nm).
+              vecLen = 0.06,
+              space = 0.06,
               step, coords;
 
           // Set arrows indicating horizontal force.
@@ -917,7 +917,7 @@ define(function (require) {
               "marker-end": "url(#Triangle-"+ FORCE_STR +")"
             })
             .style({
-              "stroke-width": forceVectorWidth * scale_factor,
+              "stroke-width": x(0.01 * forceVectorWidth),
               "stroke": forceVectorColor,
               "fill": "none"
             });
@@ -1544,11 +1544,11 @@ define(function (require) {
       }
 
       function get_vel_vector_width(d) {
-        return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? velocityVectorWidth*scale_factor : 0;
+        return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? x(0.01 * velocityVectorWidth) : 0;
       }
 
       function get_force_vector_width(d) {
-        return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? forceVectorWidth*scale_factor : 0;
+        return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? x(0.01 * forceVectorWidth) : 0;
       }
 
       function update_vectors(vector, pathFunc, widthFunc) {
