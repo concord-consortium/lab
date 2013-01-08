@@ -524,7 +524,7 @@ var ROOT = "/examples",
         }
       },
       {
-        name: "molecules",
+        name: "atoms",
         numeric: true,
         run: function(done) {
           done(model.get_num_atoms());
@@ -593,7 +593,7 @@ var ROOT = "/examples",
       {
         name: "fps",
         numeric: true,
-        formatter: d3.format("5.2f"),
+        formatter: d3.format("5.1f"),
         run: function(done) {
           // warmup
           model.start();
