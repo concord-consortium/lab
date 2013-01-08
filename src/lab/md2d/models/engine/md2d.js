@@ -1974,11 +1974,29 @@ define(function (require, exports, module) {
       },
 
       setAtomProperties: function (i, props) {
-        var key, idx, rest, amino;
+        var cysteineEl = aminoacidsHelper.cysteineElement,
+            key, idx, rest, amino, j;
 
         if (props.element !== undefined) {
           if (props.element < 0 || props.element >= N_elements) {
             throw new Error("md2d: Unknown element " + props.element + ", an atom can't be created.");
+          }
+
+          // Special case when cysteine AA is morphed into other AA type,
+          // which can't create disulphide bonds. Remove a connected
+          // disulphide bond if it exists.
+          if (element[i] === cysteineEl && props.element !== cysteineEl) {
+            for (j = 0; j < N_radialBonds; j++) {
+              if ((radialBondAtom1Index[j] === i || radialBondAtom2Index[j] === i) &&
+                   radialBondStyle[j] === 109) {
+                // TODO: for now, disulphide bonds are determined by... the style value.
+                // It's rather confusing, so try to implement better approach.
+                // Remove the radial bond representing disulphide bond.
+                engine.removeRadialBond(j);
+                // One cysteine can create only one disulphide bond so there is no need to continue the loop.
+                break;
+              }
+            }
           }
 
           // Mark element as used by some atom (used by performance optimizations).
