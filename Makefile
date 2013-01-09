@@ -475,30 +475,45 @@ test: test/layout.html \
 	server/public \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
-	@$(VOWS)
+	@echo 'Running regular Mocha tests ...'
 	@$(MOCHA)
+	@echo 'Running slow Mocha tests ...'
 	@$(MOCHA_SLOW_TESTS)
+	@echo 'Vows tests ...'
+	@$(VOWS)
 
 .PHONY: test-src
 test-src: test/layout.html \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
-	@$(VOWS)
+	@echo 'Running regular Mocha tests (skipping slow Mocha tests)...'
 	@$(MOCHA)
+	@echo 'Running Vows tests ...'
+	@$(VOWS)
 
 # run vows test WITHOUT trying to build Lab JS first. Run 'make; make test-mocha' to build & test.
 .PHONY: test-vows
 test-vows:
+	@echo 'Running Vows tests ...'
 	@$(VOWS)
 
 # run mocha test WITHOUT trying to build Lab JS first. Run 'make; make test-mocha' to build & test.
 .PHONY: test-mocha
 test-mocha:
+	@echo 'Running regular Mocha tests ...'
 	@$(MOCHA)
+	@echo 'Running slow Mocha tests ...'
+	@$(MOCHA_SLOW_TESTS)
 
 .PHONY: debug-mocha
 debug-mocha:
+	@echo 'Running regular Mocha tests in debug mode (skipping slow Mocha tests)...'
 	@$(MOCHA) --debug-brk
+
+.PHONY: debug-mocha-slow
+debug-mocha-slow:
+	@echo 'Running slow Mocha tests in debug mode ...'
+	@$(MOCHA_SLOW_TESTS) --debug-brk
 
 %.min.js: %.js
 	@rm -f $@
