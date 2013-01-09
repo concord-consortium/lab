@@ -446,7 +446,9 @@ server/public/lab/lab.js: \
 src/lab/lab.version.js: script/generate-js-version.rb
 	./script/generate-js-version.rb
 
-src/lab/lab.config.js: script/generate-js-config.rb
+src/lab/lab.config.js: \
+	script/generate-js-config.rb \
+	config/config.yml
 	./script/generate-js-config.rb
 
 server/public/lab/lab.energy2d.js: \
