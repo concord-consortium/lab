@@ -15,7 +15,7 @@ define(function (require) {
       MoleculeContainer = require('md2d/views/molecule-container'),
       ModelPlayer       = require('cs!common/components/model_player');
 
-  return function modelController(moleculeViewId, modelConfig, viewConfig) {
+  return function modelController(moleculeViewId, modelConfig, interactiveViewConfig, interactiveModelConfig) {
     var controller = {},
 
         // event dispatcher
@@ -49,7 +49,7 @@ define(function (require) {
             if (model.reset) {
               model.reset();
             }
-            reload(modelConfig, viewConfig);
+            reload(modelConfig, interactiveViewConfig);
           },
 
           is_stopped: function() {
@@ -84,8 +84,8 @@ define(function (require) {
 
         // 1. Process view options.
         // Do not modify initial configuration.
-        viewOptions = $.extend(true, {}, viewConfig);
-        // Merge view options defined in interactive (viewConfig)
+        viewOptions = $.extend(true, {}, interactiveViewConfig);
+        // Merge view options defined in interactive (interactiveViewConfig)
         // with view options defined in the basic model description.
         viewOptions = meldOptions(modelConfig.viewOptions || {}, viewOptions);
 
@@ -95,7 +95,10 @@ define(function (require) {
 
         // 1. Process model options.
         // Do not modify initial configuration.
-        modelOptions = $.extend(true, {}, modelConfig);
+        modelOptions = $.extend(true, {}, interactiveModelConfig);
+        // Merge model options defined in interactive (interactiveModelConfig)
+        // with the basic model description.
+        modelOptions = meldOptions(modelConfig || {}, modelOptions);
         // This is not necessary (images and textBoxes properties would be
         // discarded by the properties validator), however clearly shows
         // that images and text boxes should be specified in viewOptions.
@@ -169,12 +172,13 @@ define(function (require) {
       }
 
       /**
-        Note: newModelConfig, newViewConfig are optional. Calling this without
+        Note: newModelConfig, newinteractiveViewConfig are optional. Calling this without
         arguments will simply reload the current model.
       */
-      function reload(newModelConfig, newViewConfig) {
+      function reload(newModelConfig, newInteractiveViewConfig, newInteractiveModelConfig) {
         modelConfig = newModelConfig || modelConfig;
-        viewConfig = newViewConfig || viewConfig;
+        interactiveViewConfig = newInteractiveViewConfig || interactiveViewConfig;
+        interactiveModelConfig = newInteractiveModelConfig || interactiveModelConfig;
         setupModel();
         resetModelPlayer();
         dispatch.modelReset();

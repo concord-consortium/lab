@@ -59,7 +59,6 @@ define(function (require) {
         models = [],
         modelsHash = {},
         propertiesListeners = [],
-        playerConfig,
         componentCallbacks = [],
         onLoadScripts = [],
 
@@ -91,33 +90,39 @@ define(function (require) {
     }
 
     /**
-      Load the model from the url specified in the 'model' key. 'modelLoaded' is called
-      after the model loads.
+      Load the model from the model definitions hash.
+      'modelLoaded' is called after the model loads.
 
-      @param: modelUrl
+      @param: modelId.
     */
     function loadModel(modelId) {
-      var modelScriptingAPI,
-          model = getModel(modelId);
+      var modelDefinition = getModel(modelId),
+          interactiveViewOptions,
+          interactiveModelOptions;
 
-      controller.currentModel = model;
+      controller.currentModel = modelDefinition;
 
-      if (model.viewOptions) {
-        // make a deep copy of model.viewOptions, so we can freely mutate playerConfig
+      if (modelDefinition.viewOptions) {
+        // Make a deep copy of modelDefinition.viewOptions, so we can freely mutate interactiveViewOptions
         // without the results being serialized or displayed in the interactives editor.
-        playerConfig = $.extend(true, {}, model.viewOptions);
+        interactiveViewOptions = $.extend(true, {}, modelDefinition.viewOptions);
       } else {
-        playerConfig = { controlButtons: 'play' };
+        interactiveViewOptions = { controlButtons: 'play' };
       }
-      playerConfig.fit_to_parent = !layoutStyle;
-      playerConfig.interactiveUrl = model.url;
+      interactiveViewOptions.fit_to_parent = !layoutStyle;
+      interactiveViewOptions.interactiveUrl = modelDefinition.url;
 
       onLoadScripts = [];
-      if (model.onLoad) {
-        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(model.onLoad) ) );
+      if (modelDefinition.onLoad) {
+        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(modelDefinition.onLoad) ) );
       }
 
-      $.get(ACTUAL_ROOT + model.url).done(function(modelConfig) {
+      if (modelDefinition.modelOptions) {
+        // Make a deep copy of modelDefinition.modelOptions.
+        interactiveModelOptions = $.extend(true, {}, modelDefinition.modelOptions);
+      }
+
+      $.get(ACTUAL_ROOT + modelDefinition.url).done(function(modelConfig) {
 
         // Deal with the servers that return the json as text/plain
         modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
@@ -126,11 +131,11 @@ define(function (require) {
         modelConfig.type = modelConfig.type || "md2d";
 
         if (modelController) {
-          modelController.reload(modelConfig, playerConfig);
+          modelController.reload(modelConfig, interactiveViewOptions, interactiveModelOptions);
         } else {
           switch(modelConfig.type) {
             case "md2d":
-            modelController = new MD2DModelController('#model-container', modelConfig, playerConfig);
+            modelController = new MD2DModelController('#model-container', modelConfig, interactiveViewOptions, interactiveModelOptions);
             // Extending universal Interactive scriptingAPI with model-specific scripting API
             scriptingAPI.extend(MD2DScriptingAPI);
             scriptingAPI.exposeScriptingAPI();
