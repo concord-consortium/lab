@@ -493,7 +493,7 @@ test-mocha:
 debug-mocha:
 	@$(MOCHA) --debug-brk
 
-%.min.js: %.js Makefile
+%.min.js: %.js
 	@rm -f $@
 ifndef LAB_DEVELOPMENT
 	$(JS_COMPILER) < $< > $@
@@ -504,11 +504,37 @@ endif
 test/%.html: test/%.html.haml
 	haml $< $@
 
+server/public/%.html: src/%.html.haml
+	haml -r ./script/setup.rb $< $@
+
+server/public/index.css:
+	$(SASS_COMPILER) src/index.sass server/public/index.css
+
+server/public/examples/%.css: %.sass
+	$(SASS_COMPILER) $< $@
+
+server/public/doc/%.css: %.sass
+	$(SASS_COMPILER) $< $@
+
+server/public/lab/%.css: %.sass
+	$(SASS_COMPILER) $< $@
+
+lab/%.css: %.sass
+	$(SASS_COMPILER) $< $@
+
+server/public/%.css: %.scss
+	$(SASS_COMPILER) $< $@
+
+server/public/%.js: %.coffee
+	@rm -f $@
+	$(COFFEESCRIPT_COMPILER) --compile --print $< > $@
+
+server/public/%.html: %.md
+	@rm -f $@
+	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
+
 h:
 	@echo $(HAML_FILES)
-
-server/public/%.html: src/%.html.haml Makefile
-	haml -r ./script/setup.rb $< $@
 
 se:
 	@echo $(SASS_EXAMPLE_FILES)
@@ -522,37 +548,17 @@ sd:
 sl:
 	@echo $(SASS_LIBRARY_FILES)
 
-server/public/index.css:
-	$(SASS_COMPILER) src/index.sass server/public/index.css
-
-server/public/examples/%.css: %.sass Makefile
-	$(SASS_COMPILER) $< $@
-
-server/public/doc/%.css: %.sass Makefile
-	$(SASS_COMPILER) $< $@
-
-server/public/lab/%.css: %.sass Makefile
-	$(SASS_COMPILER) $< $@
-
-lab/%.css: %.sass Makefile
-	$(SASS_COMPILER) $< $@
-
-server/public/%.css: %.scss Makefile
-	$(SASS_COMPILER) $< $@
-
 c:
 	@echo $(COFFEESCRIPT_EXAMPLE_FILES)
 
-server/public/%.js: %.coffee Makefile
-	@rm -f $@
-	$(COFFEESCRIPT_COMPILER) --compile --print $< > $@
+cm:
+	@echo $(COMMON_SRC_FILES)
 
 m:
 	@echo $(MARKDOWN_EXAMPLE_FILES)
 
-md2d:
+md2:
 	@echo $(MD2D_SRC_FILES)
 
-server/public/%.html: %.md Makefile
-	@rm -f $@
-	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
+gr:
+	@echo $(GRAPHER_SRC_FILES)
