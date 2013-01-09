@@ -126,6 +126,9 @@ define(function (require) {
 
         Math: Math,
 
+        // prevent us from overwriting window.undefined
+        undefined: undefined,
+
         // rudimentary debugging functionality
         alert: alert,
 
