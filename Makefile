@@ -438,12 +438,10 @@ server/public/lab/lab.js: \
 	src/lab/lab.config.js
 	$(R_OPTIMIZER) -o src/lab/lab.build.js
 
-.PHONY: src/lab/lab.version.js
-src/lab/lab.version.js:
+src/lab/lab.version.js: script/generate-js-version.rb
 	./script/generate-js-version.rb
 
-.PHONY: src/lab/lab.config.js
-src/lab/lab.config.js:
+src/lab/lab.config.js: script/generate-js-config.rb
 	./script/generate-js-config.rb
 
 server/public/lab/lab.energy2d.js: \
