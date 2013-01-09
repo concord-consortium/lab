@@ -29,7 +29,7 @@
     "showForceVectors": true,
     "velocityVectors": {
       "length": 2,
-      "width": 2,
+      "width": 0.02,
       "color": "rgb(100,200,300)"
     },
     "forceVectors": {

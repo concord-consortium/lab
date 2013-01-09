@@ -917,7 +917,7 @@ define(function (require) {
               "marker-end": "url(#Triangle-"+ FORCE_STR +")"
             })
             .style({
-              "stroke-width": x(0.01 * forceVectorWidth),
+              "stroke-width": x(forceVectorWidth),
               "stroke": forceVectorColor,
               "fill": "none"
             });
@@ -1544,11 +1544,11 @@ define(function (require) {
       }
 
       function get_vel_vector_width(d) {
-        return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? x(0.01 * velocityVectorWidth) : 0;
+        return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? x(velocityVectorWidth) : 0;
       }
 
       function get_force_vector_width(d) {
-        return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? x(0.01 * forceVectorWidth) : 0;
+        return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? x(forceVectorWidth) : 0;
       }
 
       function update_vectors(vector, pathFunc, widthFunc) {

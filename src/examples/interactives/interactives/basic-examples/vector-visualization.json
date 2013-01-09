@@ -25,7 +25,7 @@
         "controlButtons": "play_reset",
         "velocityVectors": {
           "color": "#00A",
-          "width": 1.5,
+          "width": 0.015,
           "length": 3
         }
       },

@@ -322,6 +322,7 @@ parseMML = (mmlString) ->
       velocityVectorWidth   = getFloatProperty velocityVectorProps, "width", "float"
       velocityVectorLength  = getIntProperty velocityVectorProps, "length", "int"
       velocityVectorLength /= 100
+      [velocityVectorWidth] = toNextgenLengths velocityVectorWidth
       velocityColorDef  = velocityVectorProps.find ".java-awt-Color>int"
       if velocityColorDef and velocityColorDef.length > 0
         velocityVectorColor    = "rgb("
@@ -339,6 +340,7 @@ parseMML = (mmlString) ->
       forceVectorWidth   = getFloatProperty forceVectorProps, "width", "float"
       forceVectorLength  = getIntProperty forceVectorProps, "length", "int"
       forceVectorLength /= 1000
+      [forceVectorWidth] = toNextgenLengths forceVectorWidth
       forceColorDef  = forceVectorProps.find ".java-awt-Color>int"
       if forceColorDef and forceColorDef.length > 0
         forceVectorColor    = "rgb("

@@ -45,14 +45,14 @@ define(function() {
     velocityVectors: {
       defaultValue: {
         color: "#000",
-        width: 1.1,
+        width: 0.01,
         length: 2
       }
     },
     forceVectors: {
       defaultValue: {
         color: "#169C30",
-        width: 1.1,
+        width: 0.01,
         length: 2
       }
     },
