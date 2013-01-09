@@ -142,7 +142,7 @@ define(function (require) {
 
     }());
 
-    return {
+    return controller = {
       /**
         Freeze Scripting API
         Make the scripting API immutable once defined
@@ -174,7 +174,7 @@ define(function (require) {
               argVals.push(args[prop]);
             }
           }
-          return this.makeFunctionInScriptContext.apply(null, argNames.concat(source)).apply(null, argVals);
+          return controller.makeFunctionInScriptContext.apply(null, argNames.concat(source)).apply(null, argVals);
         };
       },
 
