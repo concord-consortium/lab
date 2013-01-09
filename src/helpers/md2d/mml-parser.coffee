@@ -235,6 +235,24 @@ parseMML = (mmlString) ->
     height = getIntProperty viewProps, "height", "double"
 
     ###
+      Find the view-port size. Do it at the beginning, as view-port dimensions
+      are used during conversion of other objects.
+    ###
+    viewPort = viewProps.find("[property=viewSize] .java-awt-Dimension int")
+    if (viewPort)
+      viewPortWidth  = parseInt viewPort[0].children[0].data
+      viewPortHeight = parseInt viewPort[1].children[0].data
+      viewPortX = parseInt viewProps.find("[property=x] double").text() || 0
+      viewPortY = parseInt viewProps.find("[property=y] double").text() || 0
+    else
+      viewPortWidth  = width
+      viewPortHeight = height
+      viewPortX = viewPortY = 0
+
+    # scale from MML units to Lab's units
+    [height, width] = toNextgenLengths height, width
+
+    ###
       Find the force interaction booleans
     ###
     coulombForces = getBooleanProperty $mml.root(), "interCoulomb", "boolean"
@@ -393,6 +411,7 @@ parseMML = (mmlString) ->
         imageLayer = parseInt $image.find("[property=layer] int").text()
         imageX = parseFloat $image.find("[property=x] double").text()
         imageY = parseFloat $image.find("[property=y] double").text()
+        [imageX, imageY] = toNextgenCoordinates imageX, imageY
         images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageX: imageX, imageY: imageY }
 
     ###
@@ -418,23 +437,6 @@ parseMML = (mmlString) ->
       textBoxes = (parseTextBoxNode(node) for node in $textBoxNodes)
     else
       textBoxes = []
-
-    ###
-      Find the view-port size
-    ###
-    viewPort = viewProps.find("[property=viewSize] .java-awt-Dimension int")
-    if (viewPort)
-      viewPortWidth  = parseInt viewPort[0].children[0].data
-      viewPortHeight = parseInt viewPort[1].children[0].data
-      viewPortX = parseInt viewProps.find("[property=x] double").text() || 0
-      viewPortY = parseInt viewProps.find("[property=y] double").text() || 0
-    else
-      viewPortWidth  = width
-      viewPortHeight = height
-      viewPortX = viewPortY = 0
-
-    # scale from MML units to Lab's units
-    [height, width] = toNextgenLengths height, width
 
     ###
       Find obstacles

@@ -1092,14 +1092,16 @@ define(function (require) {
               imgHost = results[imageProp[i].imageHostIndex];
               imgHostType = imageProp[i].imageHostType;
               imglayer = imageProp[i].imageLayer;
-              imgX = imageProp[i].imageX;
-              imgY = imageProp[i].imageY;
-              // cache the image width and height
-              imageSizes[i] = [img[i].width, img[i].height];
-              img_width = x(0.01 * imageSizes[i][0]);
-              img_height = x(0.01 * imageSizes[i][1]);
-
-
+              imgX = x(imageProp[i].imageX);
+              imgY = y(imageProp[i].imageY);
+              // Cache the image width and height.
+              // In Classic MW model size is defined in 0.1A.
+              // Model unit (0.1A) - pixel ratio is always 1. The same applies
+              // to images. We can assume that their pixel dimensions are
+              // in 0.1A also. So convert them to nm (* 0.01).
+              imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
+              img_width = x(imageSizes[i][0]);
+              img_height = x(imageSizes[i][1]);
 
               container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
               container.append("image")
@@ -1609,8 +1611,8 @@ define(function (require) {
           imgX =  imageProp[i].imageX;
           imgY =  imageProp[i].imageY;
           imglayer =  imageProp[i].imageLayer;
-          img_width  = x(0.01 * imageSizes[i][0]);
-          img_height = x(0.01 * imageSizes[i][1]);
+          img_width  = x(imageSizes[i][0]);
+          img_height = x(imageSizes[i][1]);
           container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
           container.selectAll("image.image_attach"+i)
             .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
