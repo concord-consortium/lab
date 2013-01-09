@@ -1608,10 +1608,10 @@ define(function (require) {
         for(i = 0; i < numImages; i++) {
           imgHost =  results[imageProp[i].imageHostIndex];
           imgHostType =  imageProp[i].imageHostType;
-          imgX =  imageProp[i].imageX;
-          imgY =  imageProp[i].imageY;
-          imglayer =  imageProp[i].imageLayer;
-          img_width  = x(imageSizes[i][0]);
+          imgX = x(imageProp[i].imageX);
+          imgY = y(imageProp[i].imageY);
+          imglayer = imageProp[i].imageLayer;
+          img_width = x(imageSizes[i][0]);
           img_height = x(imageSizes[i][1]);
           container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
           container.selectAll("image.image_attach"+i)
