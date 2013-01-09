@@ -39,15 +39,21 @@ define(function (require) {
         vis1, vis, plot,
         playback_component, time_label,
         padding, size, modelSize,
-        mw, mh, tx, ty, stroke,
-        x, downscalex, downx,
-        y, downscaley, downy, y_flip,
+        tx, ty, stroke,
         dragged,
         drag_origin,
         pc_xpos, pc_ypos,
         model_time_formatter = d3.format("5.0f"),
         time_prefix = "",
         time_suffix = " (fs)",
+
+        // Basic scaling function, it transforms "nm" to "pixels".
+        // Use it for dimensions of objects rendered inside molecule container.
+        nm2px,
+        // Inverted scaling function transforming "nm" to "pixels".
+        // Use it for Y coordinates, as model coordinate system has (0, 0) point
+        // in lower left corner, but SVG has (0, 0) point in upper left corner.
+        nm2pxInv,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
@@ -116,8 +122,8 @@ define(function (require) {
       scale(cx, cy);
     }
 
-    tx = function(d) { return "translate(" + x(d) + ",0)"; };
-    ty = function(d) { return "translate(0," + y(d) + ")"; };
+    tx = function(d) { return "translate(" + nm2px(d) + ",0)"; };
+    ty = function(d) { return "translate(0," + nm2pxInv(d) + ")"; };
     stroke = function(d) { return d ? "#ccc" : "#666"; };
 
     function processOptions(newViewOptions, newModel) {
@@ -229,33 +235,17 @@ define(function (require) {
       }
 
       pc_ypos = cy - 42 * scale_factor;
-      mw = size.width;
-      mh = size.height;
 
-      // x-scale
-      x = d3.scale.linear()
+      // Basic nm2px scaling function.
+      nm2px = d3.scale.linear()
           .domain([0, modelSize.width])
-          .range([0, mw]);
+          .range([0, size.width]);
 
-      // drag x-axis logic
-      downscalex = x.copy();
-      downx = Math.NaN;
-
-      // y-scale (inverted domain)
-      y = d3.scale.linear()
+      // Inverted nm2px scaling function (for y-coordinates, inverted domain).
+      nm2pxInv = d3.scale.linear()
           .domain([modelSize.height, 0])
-          .range([0, mh]);
+          .range([0, size.height]);
 
-      // y-scale for defining heights without inverting the domain
-      y_flip = d3.scale.linear()
-          .domain([0, modelSize.height])
-          .nice()
-          .range([0, mh])
-          .nice();
-
-      // drag x-axis logic
-      downscaley = y.copy();
-      downy = Math.NaN;
       dragged = null;
       return [cx, cy, width, height];
     }
@@ -486,17 +476,17 @@ define(function (require) {
       }
 
       function redraw() {
-        if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-            d3.event.transform(x, y);
+        if (d3.event && d3.event.transform) {
+            d3.event.transform(nm2px, nm2pxInv);
         }
 
-        var fx = x.tickFormat(10),
-            fy = y.tickFormat(10);
+        var fx = nm2px.tickFormat(10),
+            fy = nm2pxInv.tickFormat(10);
 
         if (options.xunits) {
           // Regenerate x-ticks…
           var gx = vis.selectAll("g.x")
-              .data(x.ticks(10), String)
+              .data(nm2px.ticks(10), String)
               .attr("transform", tx);
 
           gx.select("text")
@@ -525,7 +515,7 @@ define(function (require) {
         if (options.xunits) {
           // Regenerate y-ticks…
           var gy = vis.selectAll("g.y")
-              .data(y.ticks(10), String)
+              .data(nm2pxInv.ticks(10), String)
               .attr("transform", ty);
 
           gy.select("text")
@@ -778,8 +768,8 @@ define(function (require) {
       }
 
       function updateMoleculeRadius() {
-        vis.selectAll("circle").data(results).attr("r",  function(d) { return x(d.radius); });
-        // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
+        vis.selectAll("circle").data(results).attr("r",  function(d) { return nm2px(d.radius); });
+        // vis.selectAll("text").attr("font-size", nm2px(molRadius * 1.3) );
       }
 
       /**
@@ -790,9 +780,9 @@ define(function (require) {
         particle.enter().append("circle")
             .attr({
               "class": function (d) { return d.isAminoAcid() ? "draggable amino-acid" : "draggable"; },
-              "r":  function(d) { return x(d.radius); },
-              "cx": function(d) { return x(d.x); },
-              "cy": function(d) { return y(d.y); }
+              "r":  function(d) { return nm2px(d.radius); },
+              "cx": function(d) { return nm2px(d.x); },
+              "cy": function(d) { return nm2pxInv(d.y); }
             })
             .style({
               "fill-opacity": function(d) { return d.visible; },
@@ -829,7 +819,7 @@ define(function (require) {
             "d": getAtomTracePath
           })
           .style({
-            "stroke-width": x(0.01),
+            "stroke-width": nm2px(0.01),
             "stroke": atomTraceColor,
             "fill": "none",
             "stroke-dasharray": "6, 6"
@@ -843,7 +833,7 @@ define(function (require) {
           .attr("class", "obstacle")
           .attr("transform",
             function (d, i) {
-              return "translate(" + x(get_obstacle_x(i)) + " " + y(get_obstacle_y(i) + get_obstacle_height(i)) + ")";
+              return "translate(" + nm2px(get_obstacle_x(i)) + " " + nm2pxInv(get_obstacle_y(i) + get_obstacle_height(i)) + ")";
             }
           );
         obstacleGroup.append("rect")
@@ -851,8 +841,8 @@ define(function (require) {
             "class": "obstacle-shape",
             "x": 0,
             "y": 0,
-            "width": function(d, i) {return x(get_obstacle_width(i)); },
-            "height": function(d, i) {return y_flip(get_obstacle_height(i)); }
+            "width": function(d, i) {return nm2px(get_obstacle_width(i)); },
+            "height": function(d, i) {return nm2px(get_obstacle_height(i)); }
           })
           .style({
             "fill": function(d, i) { return get_obstacle_visible(i) ? get_obstacle_color(i) : "rgba(128,128,128, 0)"; },
@@ -889,9 +879,9 @@ define(function (require) {
                 "class": "obstacle-force-hor",
                 "d": function (d) {
                   if (obsFx < 0)
-                    return "M " + x(obsWidth + vecLen + space) + "," + y_flip(d) + " L " + x(obsWidth + space) + "," + y_flip(d);
+                    return "M " + nm2px(obsWidth + vecLen + space) + "," + nm2px(d) + " L " + nm2px(obsWidth + space) + "," + nm2px(d);
                   else
-                    return "M " + x(-vecLen - space) + "," + y_flip(d) + " L " + x(-space) + "," + y_flip(d);
+                    return "M " + nm2px(-vecLen - space) + "," + nm2px(d) + " L " + nm2px(-space) + "," + nm2px(d);
                 }
               });
           }
@@ -905,9 +895,9 @@ define(function (require) {
                 "class": "obstacle-force-vert",
                 "d": function (d) {
                   if (obsFy < 0)
-                    return "M " + x(d) + "," + y_flip(-vecLen - space) + " L " + x(d) + "," + y_flip(-space);
+                    return "M " + nm2px(d) + "," + nm2px(-vecLen - space) + " L " + nm2px(d) + "," + nm2px(-space);
                   else
-                    return "M " + x(d) + "," + y_flip(obsHeight + vecLen + space) + " L " + x(d) + "," + y_flip(obsHeight + space);
+                    return "M " + nm2px(d) + "," + nm2px(obsHeight + vecLen + space) + " L " + nm2px(d) + "," + nm2px(obsHeight + space);
                 }
               });
           }
@@ -917,7 +907,7 @@ define(function (require) {
               "marker-end": "url(#Triangle-"+ FORCE_STR +")"
             })
             .style({
-              "stroke-width": x(forceVectorWidth),
+              "stroke-width": nm2px(forceVectorWidth),
               "stroke": forceVectorColor,
               "fill": "none"
             });
@@ -934,9 +924,9 @@ define(function (require) {
             })
             .style("stroke-width", function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + x(0.005);
+                return Math.log(d.strength) / 4 + nm2px(0.005);
               } else {
-                return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
+                return nm2px(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
             })
             .style("stroke", getBondAtom1Color)
@@ -951,9 +941,9 @@ define(function (require) {
             })
             .style("stroke-width", function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + x(0.005);
+                return Math.log(d.strength) / 4 + nm2px(0.005);
               } else {
-                return x(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
+                return nm2px(Math.min(results[d.atom1].radius, results[d.atom2].radius)) * 0.75;
               }
             })
             .style("stroke", getBondAtom2Color)
@@ -980,15 +970,15 @@ define(function (require) {
             cosThetaSpikes,
             sinThetaSpikes;
 
-        x1 = x(d.x1);
-        y1 = y(d.y1);
-        x2 = x(d.x2);
-        y2 = y(d.y2);
+        x1 = nm2px(d.x1);
+        y1 = nm2pxInv(d.y1);
+        x2 = nm2px(d.x2);
+        y2 = nm2pxInv(d.y2);
         dx = x2 - x1;
         dy = y2 - y1;
 
         strength = d.strength;
-        length = Math.sqrt(dx*dx + dy*dy) / x(0.01);
+        length = Math.sqrt(dx*dx + dy*dy) / nm2px(0.01);
 
         numTurns = Math.floor(d.length * 24);
         springDiameter = length / numTurns;
@@ -1000,10 +990,10 @@ define(function (require) {
         cosThetaSpikes = costheta * numTurns;
         sinThetaSpikes = sintheta * numTurns;
 
-        radius_x1 = x(results[d.atom1].radius) * costheta;
-        radius_x2 = x(results[d.atom2].radius) * costheta;
-        radius_y1 = x(results[d.atom1].radius) * sintheta;
-        radius_y2 = x(results[d.atom2].radius) * sintheta;
+        radius_x1 = nm2px(results[d.atom1].radius) * costheta;
+        radius_x2 = nm2px(results[d.atom2].radius) * costheta;
+        radius_y1 = nm2px(results[d.atom1].radius) * sintheta;
+        radius_y2 = nm2px(results[d.atom2].radius) * sintheta;
         radiusFactorX = radius_x1 - radius_x2;
         radiusFactorY = radius_y1 - radius_y2;
 
@@ -1037,24 +1027,24 @@ define(function (require) {
       function vdwLinesEnter() {
         // update existing lines
         vdwLines.attr({
-          "x1": function(d) { return x(results[d[0]].x); },
-          "y1": function(d) { return y(results[d[0]].y); },
-          "x2": function(d) { return x(results[d[1]].x); },
-          "y2": function(d) { return y(results[d[1]].y); }
+          "x1": function(d) { return nm2px(results[d[0]].x); },
+          "y1": function(d) { return nm2pxInv(results[d[0]].y); },
+          "x2": function(d) { return nm2px(results[d[1]].x); },
+          "y2": function(d) { return nm2pxInv(results[d[1]].y); }
         });
 
         // append new lines
         vdwLines.enter().append('line')
           .attr({
             "class": "attractionforce",
-            "x1": function(d) { return x(results[d[0]].x); },
-            "y1": function(d) { return y(results[d[0]].y); },
-            "x2": function(d) { return x(results[d[1]].x); },
-            "y2": function(d) { return y(results[d[1]].y); }
+            "x1": function(d) { return nm2px(results[d[0]].x); },
+            "y1": function(d) { return nm2pxInv(results[d[0]].y); },
+            "x2": function(d) { return nm2px(results[d[1]].x); },
+            "y2": function(d) { return nm2pxInv(results[d[1]].y); }
           })
           .style({
-            "stroke-width": x(0.02),
-            "stroke-dasharray": x(0.03) + " " + x(0.02)
+            "stroke-width": nm2px(0.02),
+            "stroke-dasharray": nm2px(0.03) + " " + nm2px(0.02)
           });
 
         // remove old lines
@@ -1092,21 +1082,21 @@ define(function (require) {
               imgHost = results[imageProp[i].imageHostIndex];
               imgHostType = imageProp[i].imageHostType;
               imglayer = imageProp[i].imageLayer;
-              imgX = x(imageProp[i].imageX);
-              imgY = y(imageProp[i].imageY);
+              imgX = nm2px(imageProp[i].imageX);
+              imgY = nm2pxInv(imageProp[i].imageY);
               // Cache the image width and height.
               // In Classic MW model size is defined in 0.1A.
               // Model unit (0.1A) - pixel ratio is always 1. The same applies
               // to images. We can assume that their pixel dimensions are
               // in 0.1A also. So convert them to nm (* 0.01).
               imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
-              img_width = x(imageSizes[i][0]);
-              img_height = x(imageSizes[i][1]);
+              img_width = nm2px(imageSizes[i][0]);
+              img_height = nm2px(imageSizes[i][1]);
 
               container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
               container.append("image")
-                .attr("x", function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
-                .attr("y", function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } })
+                .attr("x", function() { if (imgHostType === "") { return imgX; } else { return nm2px(imgHost.x) - img_width / 2; } })
+                .attr("y", function() { if (imgHostType === "") { return imgY; } else { return nm2pxInv(imgHost.y) - img_height / 2; } })
                 .attr("class", "image_attach"+i+" draggable")
                 .attr("xlink:href", img[i].src)
                 .attr("width", img_width)
@@ -1133,8 +1123,8 @@ define(function (require) {
 
         // For the time being, make all text boxes cover the screen
         htmlObjects.attr({
-          width:  x(size[0]),
-          height: y(-size[1])
+          width:  nm2px(size[0]),
+          height: nm2pxInv(-size[1])
         }).each(function(d) {
           d3.select(this).select("body")
             .attr("class", "textBoxBody")
@@ -1211,7 +1201,7 @@ define(function (require) {
         labelEnter = label.enter().append("g")
             .attr("class", "label")
             .attr("transform", function(d) {
-              return "translate(" + x(d.x) + "," + y(d.y) + ")";
+              return "translate(" + nm2px(d.x) + "," + nm2pxInv(d.y) + ")";
             });
 
         labelEnter.each(function (d) {
@@ -1225,27 +1215,27 @@ define(function (require) {
           if (options.atom_mubers) {
             selection.append("text")
               .text(d.idx)
-              .style("font-size", x(1.6 * textShrinkFactor * d.radius) + "px");
+              .style("font-size", nm2px(1.6 * textShrinkFactor * d.radius) + "px");
           }
           else if (useThreeLetterCode && d.label) {
             // Add shadow - a white stroke, which increases readability.
             selection.append("text")
               .text(d.label)
               .attr("class", "shadow")
-              .style("font-size", x(d.radius) + "px");
+              .style("font-size", nm2px(d.radius) + "px");
             selection.append("text")
               .text(d.label)
-              .style("font-size", x(d.radius) + "px");
+              .style("font-size", nm2px(d.radius) + "px");
           }
           else if (!useThreeLetterCode && d.symbol) {
             // Add shadow - a white stroke, which increases readability.
             selection.append("text")
               .text(d.symbol)
               .attr("class", "shadow")
-              .style("font-size", x(1.4 * d.radius) + "px");
+              .style("font-size", nm2px(1.4 * d.radius) + "px");
             selection.append("text")
               .text(d.symbol)
-              .style("font-size", x(1.4 * d.radius) + "px");
+              .style("font-size", nm2px(1.4 * d.radius) + "px");
           }
           else if (showChargeSymbols) {
             if (d.charge > 0){
@@ -1257,7 +1247,7 @@ define(function (require) {
             }
             selection.append("text")
               .text(txtValue)
-              .style("font-size", x(1.6 * d.radius) + "px");
+              .style("font-size", nm2px(1.6 * d.radius) + "px");
           }
           // Set common attributes for labels (+ shadows).
           txtSelection = selection.selectAll("text");
@@ -1283,7 +1273,7 @@ define(function (require) {
           selection.select("text.shadow")
             .style({
               "stroke": "#fff",
-              "stroke-width": 0.15 * x(d.radius),
+              "stroke-width": 0.15 * nm2px(d.radius),
               "stroke-opacity": 0.7
             });
         });
@@ -1444,8 +1434,8 @@ define(function (require) {
               .style("opacity", 1.0)
               .style("display", "inline")
               .style("background", "rgba(100%, 100%, 100%, 0.7)")
-              .style("left", x(results[i].x) + offset_left + 60 + "px")
-              .style("top",  y(results[i].y) + offset_top - 30 + "px")
+              .style("left", nm2px(results[i].x) + offset_left + 60 + "px")
+              .style("top",  nm2pxInv(results[i].y) + offset_top - 30 + "px")
               .style("zIndex", 100)
               .transition().duration(250);
 
@@ -1470,7 +1460,7 @@ define(function (require) {
         console.time('view update');
         if (obstacles) {
           obstacle.attr("transform", function (d, i) {
-            return "translate(" + x(get_obstacle_x(i)) + " " + y(get_obstacle_y(i) + get_obstacle_height(i)) + ")";
+            return "translate(" + nm2px(get_obstacle_x(i)) + " " + nm2pxInv(get_obstacle_y(i) + get_obstacle_height(i)) + ")";
           });
         }
 
@@ -1510,8 +1500,8 @@ define(function (require) {
         }
 
         particle.attr({
-          "cx": function(d) { return x(d.x); },
-          "cy": function(d) { return y(d.y); }
+          "cx": function(d) { return nm2px(d.x); },
+          "cy": function(d) { return nm2pxInv(d.y); }
         });
 
         if (keShadingMode) {
@@ -1520,7 +1510,7 @@ define(function (require) {
         }
 
         label.attr("transform", function (d) {
-          return "translate(" + x(d.x) + "," + y(d.y) + ")";
+          return "translate(" + nm2px(d.x) + "," + nm2pxInv(d.y) + ")";
         });
 
         if (atom_tooltip_on === 0 || atom_tooltip_on > 0) {
@@ -1529,28 +1519,28 @@ define(function (require) {
       }
 
       function get_vel_vector_path(d) {
-        var x_pos = x(d.x),
-            y_pos = y(d.y),
+        var x_pos = nm2px(d.x),
+            y_pos = nm2pxInv(d.y),
             path = "M "+x_pos+","+y_pos,
             scale = velocityVectorLength * 100;
-        return path + " L "+(x_pos + x(d.vx*scale))+","+(y_pos - y_flip(d.vy*scale));
+        return path + " L "+(x_pos + nm2px(d.vx*scale))+","+(y_pos - nm2px(d.vy*scale));
       }
 
       function get_force_vector_path(d) {
-        var x_pos = x(d.x),
-            y_pos = y(d.y),
+        var x_pos = nm2px(d.x),
+            y_pos = nm2pxInv(d.y),
             mass  = d.mass,
             scale = forceVectorLength * 100,
             path  = "M "+x_pos+","+y_pos;
-        return path + " L "+(x_pos + x(d.ax*mass*scale))+","+(y_pos - y_flip(d.ay*mass*scale));
+        return path + " L "+(x_pos + nm2px(d.ax*mass*scale))+","+(y_pos - nm2px(d.ay*mass*scale));
       }
 
       function get_vel_vector_width(d) {
-        return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? x(velocityVectorWidth) : 0;
+        return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? nm2px(velocityVectorWidth) : 0;
       }
 
       function get_force_vector_width(d) {
-        return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? x(forceVectorWidth) : 0;
+        return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? nm2px(forceVectorWidth) : 0;
       }
 
       function update_vectors(vector, pathFunc, widthFunc) {
@@ -1565,8 +1555,8 @@ define(function (require) {
       function getAtomTracePath(d) {
         // until we implement buffered array model output properties,
         // we just keep the path history in the path string
-        var dx = Math.floor(x(d.x) * 100) / 100,
-            dy = Math.floor(y(d.y) * 100) / 100,
+        var dx = Math.floor(nm2px(d.x) * 100) / 100,
+            dy = Math.floor(nm2pxInv(d.y) * 100) / 100,
             lIndex, sIndex;
         if (!atomTracePath) {
           atomTracePath = "M"+dx+","+dy+"L";
@@ -1608,15 +1598,15 @@ define(function (require) {
         for(i = 0; i < numImages; i++) {
           imgHost =  results[imageProp[i].imageHostIndex];
           imgHostType =  imageProp[i].imageHostType;
-          imgX = x(imageProp[i].imageX);
-          imgY = y(imageProp[i].imageY);
+          imgX = nm2px(imageProp[i].imageX);
+          imgY = nm2pxInv(imageProp[i].imageY);
           imglayer = imageProp[i].imageLayer;
-          img_width = x(imageSizes[i][0]);
-          img_height = x(imageSizes[i][1]);
+          img_width = nm2px(imageSizes[i][0]);
+          img_height = nm2px(imageSizes[i][1]);
           container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
           container.selectAll("image.image_attach"+i)
-            .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return (x(imgHost.x)-img_width/2); } })
-            .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return (y(imgHost.y)-img_height/2); } });
+            .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return nm2px(imgHost.x) - img_width / 2; } })
+            .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return nm2pxInv(imgHost.y) - img_height / 2; } });
         }
       }
 
@@ -1658,8 +1648,8 @@ define(function (require) {
       }
 
       function node_drag(d, i) {
-        var dragX = x.invert(d3.event.x),
-            dragY = y.invert(d3.event.y),
+        var dragX = nm2px.invert(d3.event.x),
+            dragY = nm2pxInv.invert(d3.event.y),
             drag;
 
         if (model.is_stopped()) {
