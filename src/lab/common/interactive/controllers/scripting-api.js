@@ -142,20 +142,20 @@ define(function (require) {
 
     }());
 
-    return controller = {
+    var controller = {
       /**
         Freeze Scripting API
         Make the scripting API immutable once defined
       */
       freeze: function () {
-        Object.freeze(scriptingAPI)
+        Object.freeze(scriptingAPI);
       },
 
       /**
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        jQuery.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI))
+        jQuery.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
       },
 
       /**
@@ -265,5 +265,6 @@ define(function (require) {
         };
       }
     };
+    return controller;
   };
 });
