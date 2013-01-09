@@ -13,7 +13,7 @@ EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
 R_OPTIMIZER = ./node_modules/.bin/r.js
-INTERACTIVES_JSON = ruby src/helpers/examples/interactives/process-interactives.rb
+GENERATE_INTERACTIVE_INDEX = ruby src/helpers/examples/interactives/process-interactives.rb
 
 LAB_SRC_FILES := $(shell find src/lab -type f \! '(' -name '.*' ')' -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f \! '(' -name '.*' ')' -print)
@@ -27,6 +27,9 @@ GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
 LAB_GLSL_FILES := $(shell find src/lab -name '*.glsl' -print)
 
 # targets
+
+INTERACTIVE_FILES := $(shell find src/examples/interactives/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/server\/public\/\1/' )
+vpath %.json src
 
 HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/server\/public\/\1/' )
 vpath %.haml src
@@ -75,6 +78,7 @@ public:
 	bash -O extglob -c 'rm -rf server/public/!(.git|jnlp|vendor)'
 	$(MAKE) all
 
+.PHONY: src
 src: \
 	$(MARKDOWN_EXAMPLE_FILES) \
 	$(LAB_JS_FILES) \
@@ -84,9 +88,10 @@ src: \
 	$(SASS_DOC_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
+	$(INTERACTIVE_FILES) \
+	server/public/examples/interactives/interactives.json \
 	server/public/index.css \
 	server/public/lab-amd
-	$(INTERACTIVES_JSON)
 
 jnlp-all: clean-jnlp \
 	server/public/jnlp
@@ -533,6 +538,12 @@ server/public/%.html: %.md
 	@rm -f $@
 	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
 
+server/public/examples/interactives/interactives/%.json: src/examples/interactives/interactives/%.json
+	@cp $< $@
+
+server/public/examples/interactives/interactives.json: $(INTERACTIVE_FILES)
+	$(GENERATE_INTERACTIVE_INDEX)
+
 h:
 	@echo $(HAML_FILES)
 
@@ -562,3 +573,6 @@ md2:
 
 gr:
 	@echo $(GRAPHER_SRC_FILES)
+
+int:
+	@echo $(INTERACTIVE_FILES)
