@@ -26,7 +26,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   # actual tests
   describe "GraphController", ->
-    requirejs ['interactive/controllers/graph-controller', 'md2d/models/modeler'], (GraphController, Model) ->
+    requirejs ['common/interactive/controllers/graph-controller', 'md2d/models/modeler'], (GraphController, Model) ->
 
       it "should exist", ->
         should.exist GraphController

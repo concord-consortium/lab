@@ -21,7 +21,7 @@ parameter2 =
   }
 
 describe "Lab interactives: custom model parameters", ->
-  requirejs ['interactive/controllers/interactives-controller'], (interactivesController) ->
+  requirejs ['common/interactive/controllers/interactives-controller'], (interactivesController) ->
 
     describe "interactives controller", ->
       controller = null

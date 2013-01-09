@@ -21,7 +21,7 @@ output2 =
   }
 
 describe "Lab interactives: filtered output properties", ->
-  requirejs ['interactive/controllers/interactives-controller'], (interactivesController) ->
+  requirejs ['common/interactive/controllers/interactives-controller'], (interactivesController) ->
 
     describe "interactives controller", ->
       controller = null
