@@ -1149,6 +1149,13 @@ define(function (require) {
       }
     }
 
+
+    // ------------------------------------------------------------
+    //
+    // Handle keyboard shortcuts for model operation
+    //
+    // ------------------------------------------------------------
+
     function setupKeyboardHandler() {
       if (!options.enableKeyboardHandlers) return;
       $(node).keydown(function(event) {
@@ -1156,7 +1163,9 @@ define(function (require) {
         switch(keycode) {
           case 13:                 // return
           event.preventDefault();
-          model_player.play();
+          if (!model_player.isPlaying()) {
+            model_player.play();
+          }
           break;
 
           case 32:                 // space
@@ -1461,50 +1470,6 @@ define(function (require) {
         // This assumption will have to change if we can have more than one.
         model.liveDragEnd();
       }
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function handleKeyboardForView(evt) {
-      evt = (evt) ? evt : ((window.event) ? event : null);
-      if (evt) {
-        switch (evt.keyCode) {
-          case 32:                // spacebar
-            if (model.is_stopped()) {
-              playbackComponent.action('play');
-            } else {
-              playbackComponent.action('stop');
-            }
-            evt.preventDefault();
-          break;
-          case 13:                // return
-            playbackComponent.action('play');
-            evt.preventDefault();
-          break;
-          // case 37:                // left-arrow
-          //   if (!model.is_stopped()) {
-          //     playbackComponent.action('stop');
-          //   }
-          //   modelStepBack();
-          //   evt.preventDefault();
-          // break;
-          // case 39:                // right-arrow
-          //   if (!model.is_stopped()) {
-          //     playbackComponent.action('stop');
-          //   }
-          //   modelStepForward();
-          //   evt.preventDefault();
-          // break;
-        }
-      }
-    }
-
-    function registerKeyboardHandlers() {
-      node.onkeydown = handleKeyboardForView;
     }
 
     function init() {
