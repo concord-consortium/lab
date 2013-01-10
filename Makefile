@@ -6,9 +6,9 @@ COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 MARKDOWN_COMPILER = bin/kramdown
 # Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
 # the test's title, not its pathname. So we need to find everything in test/vows first.
-VOWS = find test/vows -name *.js -print | xargs ./node_modules/.bin/vows --isolate
-MOCHA = bash -O extglob -c 'ls test/mocha/md2d/!(*-outputs*|interactive-parameters-spec*)' | xargs node_modules/.bin/mocha
-MOCHA_SLOW_TESTS = bash -O extglob -c 'ls test/mocha/md2d/+(*-outputs*|interactive-parameters-spec*)' | xargs -n 1 ./node_modules/.bin/mocha
+VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs ./node_modules/.bin/vows --isolate --dot-matrix
+MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' ! -path '*slow*' | xargs node_modules/.bin/mocha --reporter dot
+MOCHA_SLOW_TESTS = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' -path '*slow*' | xargs -n 1 ./node_modules/.bin/mocha --reporter dot
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 BROWSERIFY = ./node_modules/.bin/browserify
