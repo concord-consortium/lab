@@ -200,7 +200,7 @@ define(function (require, exports, module) {
         radialBondAtom2Index,
         radialBondLength,
         radialBondStrength,
-        radialBondStyle,
+        radialBondType,
 
         // An object that contains references to the above radial-bond-property arrays.
         // Left undefined if there are no radial bonds.
@@ -593,7 +593,7 @@ define(function (require, exports, module) {
             radialBondAtom2Index  = radialBonds.atom2;
             radialBondLength      = radialBonds.length;
             radialBondStrength    = radialBonds.strength;
-            radialBondStyle       = radialBonds.style;
+            radialBondType        = radialBonds.type;
           },
 
           restraints: function() {
@@ -708,7 +708,7 @@ define(function (require, exports, module) {
           radialBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16);
           radialBonds.length   = arrays.create(num, 0, arrayTypes.float);
           radialBonds.strength = arrays.create(num, 0, arrayTypes.float);
-          radialBonds.style    = arrays.create(num, 0, arrayTypes.uint8);
+          radialBonds.type     = arrays.create(num, 0, arrayTypes.uint8);
 
           assignShortcutReferences.radialBonds();
         },
@@ -1823,8 +1823,8 @@ define(function (require, exports, module) {
                   length: Math.sqrt(rSq),
                   // Default strength of bonds between amino acids.
                   strength: 10000,
-                  // A special style for disulfide bonds.
-                  style: 109
+                  // Disulfide bond type.
+                  type: 109
                 });
 
                 // Remove both cysteines from freeCysteinesList.
@@ -1995,9 +1995,7 @@ define(function (require, exports, module) {
           if (element[i] === cysteineEl && props.element !== cysteineEl) {
             for (j = 0; j < N_radialBonds; j++) {
               if ((radialBondAtom1Index[j] === i || radialBondAtom2Index[j] === i) &&
-                   radialBondStyle[j] === 109) {
-                // TODO: for now, disulphide bonds are determined by... the style value.
-                // It's rather confusing, so try to implement better approach.
+                   radialBondType[j] === 109) {
                 // Remove the radial bond representing disulphide bond.
                 engine.removeRadialBond(j);
                 // One cysteine can create only one disulphide bond so there is no need to continue the loop.

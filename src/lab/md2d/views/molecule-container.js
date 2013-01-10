@@ -15,7 +15,7 @@ define(function (require) {
       optionsMetadata       = require('md2d/views/meta-view-options'),
       validator             = require('common/validator'),
 
-      RADIAL_BOND_STYLES = {
+      RADIAL_BOND_TYPES = {
         STANDARD_STICK  : 101,
         LONG_SPRING     : 102,
         BOND_SOLID_LINE : 103,
@@ -920,7 +920,7 @@ define(function (require) {
               return findPoints(d,1);})
             .classed("radialbond1", true)
             .classed("disulphideBond", function (d) {
-              return d.style === RADIAL_BOND_STYLES.DISULPHIDE_BOND;
+              return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
             })
             .style("stroke-width", function (d) {
               if (isSpringBond(d)) {
@@ -937,7 +937,7 @@ define(function (require) {
               return findPoints(d,2); })
             .classed("radialbond2", true)
             .classed("disulphideBond", function (d) {
-              return d.style === RADIAL_BOND_STYLES.DISULPHIDE_BOND;
+              return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
             })
             .style("stroke-width", function (d) {
               if (isSpringBond(d)) {
@@ -1021,7 +1021,7 @@ define(function (require) {
       }
 
       function isSpringBond(d){
-        return d.style === RADIAL_BOND_STYLES.SHORT_SPRING;
+        return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
       }
 
       function vdwLinesEnter() {

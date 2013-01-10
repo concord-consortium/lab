@@ -18,18 +18,6 @@ CLASSIC_TO_NEXTGEN_GRAVITATION_RATIO = 0.01 * GF_CONVERSION_CONSTANT
 # converts a 'friction' value from Classic to units of amu/fs
 CLASSIC_TO_NEXTGEN_FRICTION_RATIO = 120 * GF_CONVERSION_CONSTANT
 
-# JAVA MW RadialBond style codes
-RADIAL_BOND_STANDARD_STICK_STYLE = 101
-RADIAL_BOND_LONG_SPRING_STYLE = 102
-RADIAL_BOND_SOLID_LINE_STYLE = 103
-RADIAL_BOND_GHOST_STYLE = 104
-RADIAL_BOND_UNICOLOR_STICK_STYLE = 105
-RADIAL_BOND_SHORT_SPRING_STYLE = 106
-RADIAL_BOND_DOUBLE_BOND_STYLE = 107
-RADIAL_BOND_TRIPLE_BOND_STYLE = 108
-
-RadialBondStyleDefault = RADIAL_BOND_STANDARD_STICK_STYLE
-
 VDWLinesRatioMap =
   1.33: "short"
   1.67: "medium"
@@ -643,7 +631,9 @@ parseMML = (mmlString) ->
       atom2    = getIntProperty $node, 'atom2'
       length   = getFloatProperty $node, 'bondLength'
       strength = getFloatProperty $node, 'bondStrength'
-      style    = getIntProperty $node, 'style', 'byte'
+      # In Next Gen MW we change style to type. This is the more generic approach,
+      # as type can define both visual and physical properties of the radial bond.
+      type     = getIntProperty $node, 'style', 'byte'
 
       # convert from MML units to Lab units.
 
@@ -653,7 +643,7 @@ parseMML = (mmlString) ->
       # MML reports bondLength in units of 0.01 nm. Convert to nm.
       length *= 0.01
 
-      radialBondRawData = { atom1, atom2, length, strength, style }
+      radialBondRawData = { atom1, atom2, length, strength, type }
 
       # Unit conversion performed on undefined values can convert them to NaN.
       # Revert back all NaNs to undefined, as we do not expect any NaN
@@ -780,7 +770,7 @@ parseMML = (mmlString) ->
       draggable: draggable
 
     if radialBonds.length > 0
-      json.radialBonds = unroll radialBonds, 'atom1', 'atom2', 'length', 'strength',  'style'
+      json.radialBonds = unroll radialBonds, 'atom1', 'atom2', 'length', 'strength',  'type'
 
     if angularBonds.length > 0
       json.angularBonds = unroll angularBonds, 'atom1', 'atom2', 'atom3', 'angle', 'strength'

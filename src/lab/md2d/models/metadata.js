@@ -306,7 +306,7 @@ define(function() {
       strength: {
         required: true
       },
-      style: {
+      type: {
         defaultValue: 101
       }
     },
