@@ -785,6 +785,7 @@ define(function(require) {
       // Register invalidating change hooks.
       // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
       engine.pairwiseLJProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
+      engine.dnaProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
 
       window.state = modelOutputState = {};
 
@@ -1600,6 +1601,10 @@ define(function(require) {
       return engine.pairwiseLJProperties;
     };
 
+    model.getDNAProperties = function() {
+      return engine.dnaProperties;
+    };
+
     model.get_vdw_pairs = function() {
       return engine.getVdwPairsArray();
     };
@@ -2037,6 +2042,8 @@ define(function(require) {
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
     if (initialProperties.pairwiseLJProperties)
       engine.pairwiseLJProperties.deserialize(initialProperties.pairwiseLJProperties);
+    if (initialProperties.dnaProperties)
+      engine.dnaProperties.deserialize(initialProperties.dnaProperties);
 
     // Initialize tick history.
     tickHistory = new TickHistory({
