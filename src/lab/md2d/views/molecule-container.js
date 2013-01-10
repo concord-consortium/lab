@@ -928,9 +928,9 @@ define(function (require) {
         timeLabel = vis.append("text")
           .attr("class", "modelTimeLabel")
           .text(modelTimeLabel())
-          .attr("x", 10)
-          .attr("y", size.height - 35)
-          .attr("dy","2.4em")
+          // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
+          .attr("x", nm2px(0) + 5)
+          .attr("y", nm2pxInv(0) - 5)
           .style("text-anchor","start");
       }
     }
