@@ -342,6 +342,21 @@ define(function() {
       y0: {
         defaultValue: 0
       }
+    },
+
+    dnaProperties: {
+      sequence: {
+        defaultValue: ""
+      },
+      x: {
+        defaultValue: 0
+      },
+      y: {
+        defaultValue: 0
+      },
+      height: {
+        defaultValue: 0.12
+      }
     }
   };
 });
