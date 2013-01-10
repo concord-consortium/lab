@@ -76,7 +76,7 @@ define(function (require) {
       // ------------------------------------------------------------
 
       function modelListener(e) {
-        moleculeContainer.update_drawable_positions();
+        moleculeContainer.updateDrawablePositions();
       }
 
       // ------------------------------------------------------------
@@ -203,7 +203,7 @@ define(function (require) {
         moleculeContainer = new MoleculeContainer(moleculeViewId, getModelInterface());
 
         moleculeContainer.updateMoleculeRadius();
-        moleculeContainer.setup_drawables();
+        moleculeContainer.setupDrawables();
 
         // ------------------------------------------------------------
         //

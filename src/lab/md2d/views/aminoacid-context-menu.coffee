@@ -69,7 +69,7 @@ define (require) ->
         model.setAtomProperties props.idx, element: elemId
         # Redraw view.
         # TODO: model should dispatch appropriate event, which should trigger repaint automatically.
-        view.setup_drawables()
+        view.setupDrawables()
 
       # Note that this function is almost the same as the default implementation
       # in jQuery.contextMenu. However, there is a small fix. Very often the height of menu was

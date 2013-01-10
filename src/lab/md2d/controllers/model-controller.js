@@ -65,7 +65,7 @@ define(function (require) {
       //
       // ------------------------------------------------------------
       function tickHandler() {
-        moleculeContainer.update_drawable_positions();
+        moleculeContainer.updateDrawablePositions();
       }
 
 
@@ -145,18 +145,18 @@ define(function (require) {
         model_player.forward = function() {
           model.stepForward();
           if (!model.isNewStep()) {
-            moleculeContainer.update_drawable_positions();
+            moleculeContainer.updateDrawablePositions();
           }
         },
         model_player.back = function() {
           model.stepBack();
-          moleculeContainer.update_drawable_positions();
+          moleculeContainer.updateDrawablePositions();
         },
 
         moleculeContainer = new MoleculeContainer(moleculeViewId, viewOptions, model);
 
         moleculeContainer.updateMoleculeRadius();
-        moleculeContainer.setup_drawables();
+        moleculeContainer.setupDrawables();
       }
 
       function resetModelPlayer() {
@@ -168,7 +168,7 @@ define(function (require) {
         // ------------------------------------------------------------
         moleculeContainer.reset(viewOptions, model);
         moleculeContainer.updateMoleculeRadius();
-        moleculeContainer.setup_drawables();
+        moleculeContainer.setupDrawables();
       }
 
       /**
@@ -185,7 +185,7 @@ define(function (require) {
       }
 
       function repaint() {
-        moleculeContainer.setup_drawables();
+        moleculeContainer.setupDrawables();
       }
 
       // ------------------------------------------------------------
