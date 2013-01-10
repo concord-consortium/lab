@@ -56,16 +56,16 @@ LAB_JS_FILES = \
 	server/public/lab/lab.js
 
 all: \
-	check-ruby \
+	check-ruby-and-node \
 	src/vendor/d3 \
 	node_modules \
 	bin \
 	server/public
 	$(MAKE) src
 
-.PHONY: check-ruby
-check-ruby:
-	ruby script/check-ruby.rb
+.PHONY: check-ruby-and-node
+check-ruby-and-node:
+	ruby script/check-ruby-and-node.rb
 
 .PHONY: everything
 everything:
