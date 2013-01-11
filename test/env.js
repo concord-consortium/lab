@@ -14,11 +14,12 @@ screen = window.screen;
 // browser environments.
 Sizzle = require('sizzle');
 
-// Set up any vendored libraries that are ormally included via script tag in the modules under test:
-require("../server/public/vendor/jquery/jquery.js");
+// Set up any vendored libraries that are normally included via script tag in the modules under test:
 require("../server/public/vendor/d3/d3.v2.min.js");
+require("../server/public/vendor/jquery/jquery.js");
 $ = jQuery = window.jQuery;
-// Setup jQuery plugins.
+// Setup libraries which depend on jQuery.
+require("../server/public/vendor/jquery-ui/jquery-ui.js");
 require("../server/public/vendor/jquery-context-menu/jquery.contextMenu.js");
 
 // Additional environment features for testing.
