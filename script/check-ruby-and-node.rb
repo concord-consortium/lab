@@ -12,7 +12,11 @@ end
 
 begin
   node_version = `node --version`.strip
-  unless node_version >= minimum_node_version
+  # Convert version strings to array of integers.
+  node_version_arr = node_version.split('.').map { |e| e.to_i }
+  minimum_node_version_arr = minimum_node_version.split('.').map { |e| e.to_i }
+  # Compare version numbers one by one using array comparison operator.
+  unless (node_version_arr <=> minimum_node_version_arr) >= 0
     puts "*** building Lab project requires installation of Node version  #{minimum_node_version}"
     puts "*** You have Node #{node_version} ..."
     exit 1
