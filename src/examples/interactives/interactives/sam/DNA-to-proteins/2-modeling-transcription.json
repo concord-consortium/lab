@@ -20,6 +20,12 @@
   "components": [
     {
       "type": "button",
+      "id": "edit-dna",
+      "text": "Edit DNA",
+      "action": "openDNADialog();"
+    },
+    {
+      "type": "button",
       "id": "separate",
       "text": "Separate the strands of DNA",
       "action": ""
@@ -28,7 +34,7 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": ""
+      "action": "reset();"
     },
     {
       "type": "button",
@@ -57,6 +63,7 @@
   ],
   "layout": {
     "bottom": [
+      ["edit-dna"],
       ["separate", "reset"],
       ["transcribeA", "transcribeU", "transcribeG", "transcribeC"]
     ]
