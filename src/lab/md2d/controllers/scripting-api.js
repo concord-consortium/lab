@@ -1,6 +1,8 @@
-/*global d3 $ define model alert */
+/*global define model */
 
 define(function (require) {
+
+  var DNAEditDialog = require('md2d/views/dna-edit-dialog');
 
   /**
     Define the model-specific MD2D scripting API used by 'action' scripts on interactive elements.
@@ -15,6 +17,8 @@ define(function (require) {
   */
 
   return function MD2DScriptingAPI (api) {
+
+    var dnaEditDialog = new DNAEditDialog();
 
     return {
       /* Returns number of atoms in the system. */
@@ -249,6 +253,29 @@ define(function (require) {
 
       getAngularBondProperties: function getAngularBondProperties(i) {
         return model.getAngularBondProperties(i);
+      },
+
+      /**
+        Sets properties of the DNA using human-readable hash.
+        e.g. setDNAProperties({ sequence: "ATCG" })
+      */
+      setDNAProperties: function setDNAProperties(props) {
+        model.getDNAProperties().set(props);
+      },
+
+      /**
+        Returns properties of the DNA as a human-readable hash.
+        e.g. getDNAProperties() --> {sequence: "ATCG", complementarySequence: "TAGC", x: 0.01, y: 0.01, height: 0.12}
+      */
+      getDNAProperties: function getDNAProperties() {
+        return model.getDNAProperties().get();
+      },
+
+      /**
+        Opens DNA properties dialog, which allows to set DNA sequence.
+      */
+      openDNADialog: function showDNADialog() {
+        dnaEditDialog.open();
       },
 
       /**
