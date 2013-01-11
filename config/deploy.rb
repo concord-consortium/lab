@@ -5,7 +5,6 @@ set :stages, CONFIG[:deploy][:targets].collect { |target| target[:name] }
 set :default_stage, "lab-dev"
 require 'capistrano/ext/multistage'
 
-# role :server, "lab2.dev.concord.org"
 set  :user, "deploy"
 
 set :rvm_type, :system
@@ -39,9 +38,7 @@ namespace :deploy do
     run "cd /var/www/app/server; cp config/couchdb.sample.yml config/couchdb.yml"
     run "cd /var/www/app; cp config/config_sample.yml config/config.yml"
     run "cd /var/www/app; make clean; make"
-    run "cd /var/www/app; make clean-jnlp"
-    run "cd /var/www/app; make server/public/jnlp"
-    run "cd /var/www/app; script/build-and-deploy-jars.rb --maven-update"
+    update_jnlps
   end
 
   desc "update server"
@@ -58,12 +55,16 @@ namespace :deploy do
     run "cd /var/www/app; make clean; make"
   end
 
-  desc "update public/jnlp dir on server"
+  desc "clean and rebuild jars in public/jnlp dir on server"
   task :update_jnlps do
-    update
-    run "cd /var/www/app; make clean-jnlp"
-    run "cd /var/www/app; make server/public/jnlp"
-    run "cd /var/www/app; script/build-and-deploy-jars.rb"
+    run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
+    run "cd /var/www/app; make jnlp-all"
+  end
+
+  desc "clean and update server and recreate jar resources"
+  task :clean_and_update_all do
+    clean_and_update
+    update_jnlps
   end
 
   desc "display last commit on deployed server"
