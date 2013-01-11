@@ -1535,6 +1535,7 @@ define(function (require) {
         }
 
         vis = vis1.append("g")
+            .attr("class", "molecule-container-vis")
             .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         plot = vis.append("rect")
