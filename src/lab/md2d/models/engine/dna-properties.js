@@ -35,11 +35,28 @@ define(function (require) {
           data.complementarySequence = compSeq.toUpperCase();
         },
 
+        dnaValidation = function (props) {
+          if (props.sequence) {
+            // Allow user to use both lower and upper case.
+            props.sequence = props.sequence.toUpperCase();
+
+            if (props.sequence.search(/[^AGTC]/) !== -1) {
+              // Character other than A, G, T or C is found.
+              throw new Error("DNA code on sense strand can be defined using only A, G, T or C characters.");
+            }
+          }
+          return props;
+        },
+
         create = function (props) {
           changePreHook();
 
           // Note that validator always returns a copy of the input object, so we can use it safely.
-          data = validator.validateCompleteness(metadata.dnaProperties, props);
+          props = validator.validateCompleteness(metadata.dnaProperties, props);
+          props = dnaValidation(props);
+
+          // Note that validator always returns a copy of the input object, so we can use it safely.
+          data = props;
           calculateComplementarySequence();
 
           changePostHook();
@@ -53,6 +70,8 @@ define(function (require) {
 
           // Validate and update properties.
           props = validator.validate(metadata.dnaProperties, props);
+          props = dnaValidation(props);
+
           for (key in props) {
             if (props.hasOwnProperty(key)) {
               data[key] = props[key];
