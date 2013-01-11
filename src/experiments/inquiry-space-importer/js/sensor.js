@@ -124,8 +124,19 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
   // Before appending the applet, set this value with the path to an object that will receive applet callbacks.
   listenerPath: '',
 
-  // path to otml file configuring the type of sensor
-  otmlPath: '',
+  // Before appending the applet, set this to the sensor type
+  // supported values are:
+  //   "temperature"
+  //   "light"
+  //   "force 5n"
+  //   "force 50n"
+  //   "co2"
+  //   "o2"
+  //   "ph"
+  //   "distance"
+  sensorType: '',
+
+  deviceType: 'golink',
 
   appletId:     'goio-applet',
   classNames:   'applet sensor-applet',
@@ -158,11 +169,16 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
 
   testAppletReady: function() {
     try {
-      this.appletInstance.initSensorInterface( this.listenerPath );
+      this.initializeSensor();
     } catch(e) {
       return false;
     }
     return true;
+  },
+
+  initializeSensor: function() {
+    var req = this.appletInstance.getSensorRequest(this.sensorType);
+    this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
   },
 
   // In some browsers, calling an applet method from within a callback triggered by

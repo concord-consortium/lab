@@ -11,10 +11,10 @@ describe "GoIOApplet class", ->
   it "should be a subclass of SensorApplet", ->
     expect( goio.constructor.__super__ ).toBe ISImporter.SensorApplet.prototype
 
-  describe "when listenerPath and otmlPath properties are set appropriately", ->
+  describe "when listenerPath and sensorType properties are set appropriately", ->
     beforeEach ->
       goio.listenerPath = '(dummy listener path)'
-      goio.otmlPath = '(dummy otml path)'
+      goio.sensorType = '(dummy sensor type)'
 
     describe "getHTML method", ->
       it "should construct the appropriate applet tag", ->
@@ -39,22 +39,26 @@ describe "GoIOApplet class", ->
 
       beforeEach ->
         goio.appletInstance =
+          getSensorRequest: ->
           initSensorInterface: ->
+        spyOn(goio.appletInstance, 'getSensorRequest').andReturn '(new SensorRequest)'
         spyOn goio.appletInstance, 'initSensorInterface'
+
+      it "should pass the sensorType to the getSensorRequest method of the applet instance", ->
+        goio.testAppletReady()
+        expect( goio.appletInstance.getSensorRequest ).toHaveBeenCalledWith '(dummy sensor type)'
 
       it "should pass the listenerPath to the initSensorInterface method of the applet instance", ->
         goio.testAppletReady()
-        expect( goio.appletInstance.initSensorInterface ).toHaveBeenCalledWith '(dummy listener path)'
+        expect( goio.appletInstance.initSensorInterface ).toHaveBeenCalledWith '(dummy listener path)', 'golink', ['(new SensorRequest)']
 
-      describe "if initSensorInterface does not throw an error", ->
-
+      describe "if getSensorRequest does not throw an error", ->
         it "should return true", ->
           expect( goio.testAppletReady() ).toBe true
 
-      describe "if initSensorInterface throws an error", ->
-
+      describe "if getSensorRequest throws an error", ->
         beforeEach ->
-          goio.appletInstance.initSensorInterface.andThrow new Error()
+          goio.appletInstance.getSensorRequest.andThrow new Error()
 
         it "should return false", ->
           expect( goio.testAppletReady() ).toBe false

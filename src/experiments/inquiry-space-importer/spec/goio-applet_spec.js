@@ -13,10 +13,10 @@
     it("should be a subclass of SensorApplet", function() {
       return expect(goio.constructor.__super__).toBe(ISImporter.SensorApplet.prototype);
     });
-    describe("when listenerPath and otmlPath properties are set appropriately", function() {
+    describe("when listenerPath and sensorType properties are set appropriately", function() {
       beforeEach(function() {
         goio.listenerPath = '(dummy listener path)';
-        return goio.otmlPath = '(dummy otml path)';
+        return goio.sensorType = '(dummy sensor type)';
       });
       describe("getHTML method", function() {
         return it("should construct the appropriate applet tag", function() {
@@ -26,22 +26,28 @@
       return describe("testAppletReady method", function() {
         beforeEach(function() {
           goio.appletInstance = {
+            getSensorRequest: function() {},
             initSensorInterface: function() {}
           };
+          spyOn(goio.appletInstance, 'getSensorRequest').andReturn('(new SensorRequest)');
           return spyOn(goio.appletInstance, 'initSensorInterface');
+        });
+        it("should pass the sensorType to the getSensorRequest method of the applet instance", function() {
+          goio.testAppletReady();
+          return expect(goio.appletInstance.getSensorRequest).toHaveBeenCalledWith('(dummy sensor type)');
         });
         it("should pass the listenerPath to the initSensorInterface method of the applet instance", function() {
           goio.testAppletReady();
-          return expect(goio.appletInstance.initSensorInterface).toHaveBeenCalledWith('(dummy listener path)');
+          return expect(goio.appletInstance.initSensorInterface).toHaveBeenCalledWith('(dummy listener path)', 'golink', ['(new SensorRequest)']);
         });
-        describe("if initSensorInterface does not throw an error", function() {
+        describe("if getSensorRequest does not throw an error", function() {
           return it("should return true", function() {
             return expect(goio.testAppletReady()).toBe(true);
           });
         });
-        return describe("if initSensorInterface throws an error", function() {
+        return describe("if getSensorRequest throws an error", function() {
           beforeEach(function() {
-            return goio.appletInstance.initSensorInterface.andThrow(new Error());
+            return goio.appletInstance.getSensorRequest.andThrow(new Error());
           });
           return it("should return false", function() {
             return expect(goio.testAppletReady()).toBe(false);
