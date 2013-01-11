@@ -9,6 +9,11 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page2/page2$0.json",
       "viewOptions": {
         "controlButtons": ""
+      },
+      "modelOptions": {
+        "dnaProperties": {
+          "sequence": "ATGTTGACTCTAACTCGCATCCGCACTGTG"
+        }
       }
     }
   ],
