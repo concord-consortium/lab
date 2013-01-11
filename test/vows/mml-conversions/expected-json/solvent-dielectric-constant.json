@@ -10,9 +10,9 @@
   "dielectricConstant": 80,
   "realisticDielectricEffect": true,
   "solventForceType": 1,
-  "solventForceFactor": 1,
-  "additionalSolventForceMult": 25,
-  "additionalSolventForceThreshold": 1,
+  "solventForceFactor": 1.25,
+  "additionalSolventForceMult": 15,
+  "additionalSolventForceThreshold": 10,
   "viscosity": 1,
   "viewRefreshInterval": 50,
   "viewOptions": {
