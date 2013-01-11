@@ -11,8 +11,9 @@ define(function (require) {
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
       amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
-      layout                = require('common/layout/layout'),
+      DNARenderer           = require('md2d/views/dna-renderer'),
       optionsMetadata       = require('md2d/views/meta-view-options'),
+      layout                = require('common/layout/layout'),
       validator             = require('common/validator'),
 
       RADIAL_BOND_TYPES = {
@@ -55,6 +56,11 @@ define(function (require) {
         // Use it for Y coordinates, as model coordinate system has (0, 0) point
         // in lower left corner, but SVG has (0, 0) point in upper left corner.
         nm2pxInv,
+
+        // Renderers.
+        // TODO: for now only DNA is rendered in a separate class, try to create
+        // new renderers in separate files for clarity and easier testing.
+        dnaRenderer,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
@@ -942,6 +948,7 @@ define(function (require) {
       setupColorsOfParticles();
       setupRadialBonds();
       setupParticles();
+      dnaRenderer.setup();
       setupVectors();
       setupAtomTrace();
       setupClock();
@@ -1661,6 +1668,9 @@ define(function (require) {
         default:
           playbackComponent = null;
       }
+
+      // Initialize renderers.
+      dnaRenderer = new DNARenderer(mainContainer, api, model);
     }
 
     api = {
@@ -1686,6 +1696,17 @@ define(function (require) {
         init();
         api.setupDrawables();
         api.updateMoleculeRadius();
+      },
+      nm2px: function(val) {
+        // Note that we shouldn't just do:
+        // api.nm2px = nm2px;
+        // as nm2px local variable can be reinitialized
+        // many times due container rescaling process.
+        return nm2px(val);
+      },
+      nm2pxInv: function(val) {
+        // See comments for nm2px.
+        return nm2pxInv(val);
       }
     };
 

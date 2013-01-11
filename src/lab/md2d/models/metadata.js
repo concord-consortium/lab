@@ -349,10 +349,10 @@ define(function() {
         defaultValue: ""
       },
       x: {
-        defaultValue: 0
+        defaultValue: 0.01
       },
       y: {
-        defaultValue: 0
+        defaultValue: 0.01
       },
       height: {
         defaultValue: 0.12
