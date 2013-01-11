@@ -1,4 +1,4 @@
-/*global define */
+/*global d3, define */
 
 define(function (require) {
 
@@ -11,6 +11,8 @@ define(function (require) {
         changePreHook,
         changePostHook,
         data,
+
+        dispatch = d3.dispatch("change"),
 
         calculateComplementarySequence = function () {
           var seq = data.sequence,
@@ -53,6 +55,7 @@ define(function (require) {
         calculateComplementarySequence();
 
         changePostHook();
+        dispatch.change();
       },
 
       // Sets (updates) DNA properties.
@@ -71,6 +74,7 @@ define(function (require) {
         calculateComplementarySequence();
 
         changePostHook();
+        dispatch.change();
       },
 
       // Returns DNA properties.
@@ -88,6 +92,11 @@ define(function (require) {
         calculateComplementarySequence();
 
         changePostHook();
+        dispatch.change();
+      },
+
+      on: function(type, listener) {
+        dispatch.on(type, listener);
       }
     };
 

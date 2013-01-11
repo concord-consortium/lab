@@ -12,14 +12,17 @@ describe "DNAProperties", ->
       changeHooks =
         pre: ->
         post: ->
+        changeListener: ->
 
       beforeEach ->
         sinon.spy changeHooks, "pre"
         sinon.spy changeHooks, "post"
+        sinon.spy changeHooks, "changeListener"
 
       afterEach ->
         changeHooks.pre.restore()
         changeHooks.post.restore()
+        changeHooks.changeListener.restore()
 
       describe "DNAProperties constructor", ->
         it "should exist", ->
@@ -35,11 +38,12 @@ describe "DNAProperties", ->
         before ->
           dnaProperties = new DNAProperties
 
-        it "should have a registerChangeHooks, add, set, get", ->
+        it "should have a registerChangeHooks, add, set, get, on methods", ->
           dnaProperties.should.have.property "registerChangeHooks"
           dnaProperties.should.have.property "add"
           dnaProperties.should.have.property "set"
           dnaProperties.should.have.property "get"
+          dnaProperties.should.have.property "on"
 
         it "should return undefined when DNA properties are not specified", ->
           should.not.exist dnaProperties.get()
@@ -52,11 +56,13 @@ describe "DNAProperties", ->
 
           beforeEach ->
             dnaProperties.registerChangeHooks changeHooks.pre, changeHooks.post
+            dnaProperties.on "change", changeHooks.changeListener
 
           it "should allow to add DNA properties and call appropriate hooks", ->
             dnaProperties.add {sequence: "ATGC", x: 1, y: 2, height: 3}
             changeHooks.pre.callCount.should.eql 1
             changeHooks.post.callCount.should.eql 1
+            changeHooks.changeListener.callCount.should.eql 1
 
           it "should throw when add is called more than once", ->
             # Only one DNA sequence is allowed.
@@ -69,6 +75,7 @@ describe "DNAProperties", ->
             dnaProperties.set {sequence: "TTGA", x: 0, y: 1}
             changeHooks.pre.callCount.should.eql 1
             changeHooks.post.callCount.should.eql 1
+            changeHooks.changeListener.callCount.should.eql 1
 
             dnaProperties.get().should.eql {sequence: "TTGA", complementarySequence: "AACT", x: 0, y: 1, height: 3}
 
@@ -78,6 +85,7 @@ describe "DNAProperties", ->
             dnaProperties.deserialize data
             changeHooks.pre.callCount.should.eql 1
             changeHooks.post.callCount.should.eql 1
+            changeHooks.changeListener.callCount.should.eql 1
 
             dnaProperties.get().should.eql {sequence: "CGTA", complementarySequence: "GCAT", x: 5, y: 6, height: 7}
 
