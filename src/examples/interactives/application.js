@@ -549,7 +549,7 @@ var ROOT = "/examples",
           start = +Date.now();
           i = -1;
           while (i++ < 100) {
-            controller.modelController.moleculeContainer.update_drawable_positions();
+            controller.modelController.moleculeContainer.updateDrawablePositions();
           }
           elapsed = Date.now() - start;
           done(100/elapsed*1000);
