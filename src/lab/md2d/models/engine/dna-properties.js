@@ -10,7 +10,28 @@ define(function (require) {
     var api,
         changePreHook,
         changePostHook,
-        data;
+        data,
+
+        calculateComplementarySequence = function () {
+          var seq = data.sequence,
+              compSeq;
+
+          // A-T (A-U)
+          // G-C
+          // T-A (U-A)
+          // C-G
+
+          // Use lower case during conversion to
+          // avoid situation when you change A->T,
+          // and later T->A again.
+          compSeq = seq
+            .replace(/A/g, "t")
+            .replace(/G/g, "c")
+            .replace(/T/g, "a")
+            .replace(/C/g, "g");
+
+          data.complementarySequence = compSeq.toUpperCase();
+        };
 
     // Public API.
     api = {
@@ -29,6 +50,7 @@ define(function (require) {
 
         // Note that validator always returns a copy of the input object, so we can use it safely.
         data = validator.validateCompleteness(metadata.dnaProperties, props);
+        calculateComplementarySequence();
 
         changePostHook();
       },
@@ -46,6 +68,7 @@ define(function (require) {
             data[key] = props[key];
           }
         }
+        calculateComplementarySequence();
 
         changePostHook();
       },
@@ -62,6 +85,7 @@ define(function (require) {
 
         // Note that validator always returns a copy of the input object, so we can use it safely.
         data = validator.validateCompleteness(metadata.dnaProperties, props);
+        calculateComplementarySequence();
 
         changePostHook();
       }

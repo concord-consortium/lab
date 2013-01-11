@@ -63,14 +63,14 @@ describe "DNAProperties", ->
             (-> dnaProperties.add {sequence: "ATGC"}).should.throw()
 
           it "should allow to get existing DNA properties", ->
-            dnaProperties.get().should.eql {sequence: "ATGC", x: 1, y: 2, height: 3}
+            dnaProperties.get().should.eql {sequence: "ATGC", complementarySequence: "TACG", x: 1, y: 2, height: 3}
 
           it "should allow to modify existing DNA properties and call appropriate hooks", ->
-            dnaProperties.set {x: 0, y: 1}
+            dnaProperties.set {sequence: "TTGA", x: 0, y: 1}
             changeHooks.pre.callCount.should.eql 1
             changeHooks.post.callCount.should.eql 1
 
-            dnaProperties.get().should.eql {sequence: "ATGC", x: 0, y: 1, height: 3}
+            dnaProperties.get().should.eql {sequence: "TTGA", complementarySequence: "AACT", x: 0, y: 1, height: 3}
 
           it "should allow to deserialize DNA properties (replacing existing properties)", ->
             data = {sequence: "CGTA", x: 5, y: 6, height: 7}
@@ -79,7 +79,7 @@ describe "DNAProperties", ->
             changeHooks.pre.callCount.should.eql 1
             changeHooks.post.callCount.should.eql 1
 
-            dnaProperties.get().should.eql {sequence: "CGTA", x: 5, y: 6, height: 7}
+            dnaProperties.get().should.eql {sequence: "CGTA", complementarySequence: "GCAT", x: 5, y: 6, height: 7}
 
           it "should provide Clone-Restore interface"
             # TODO
@@ -97,4 +97,4 @@ describe "DNAProperties", ->
             dnaProperties: {sequence: "ATGC", x: 1, y: 2, height: 3}
 
           dnaProperties = model.getDNAProperties()
-          dnaProperties.get().should.eql {sequence: "ATGC", x: 1, y: 2, height: 3}
+          dnaProperties.get().should.eql {sequence: "ATGC", complementarySequence: "TACG", x: 1, y: 2, height: 3}
