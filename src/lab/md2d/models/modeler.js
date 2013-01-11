@@ -644,8 +644,8 @@ define(function(require) {
         element1 = polarAAs[i];
         for (j = i + 1; j < len; j++) {
           element2 = polarAAs[j];
-          // Set custom epsilon == -0.5, which is 5 times stronger that default one (-0.1).
-          engine.pairwiseLJProperties.set(element1, element2, {epsilon: -0.5});
+          // Set custom pairwise LJ epsilon to -2.0 (default one for AA is -0.1).
+          engine.pairwiseLJProperties.set(element1, element2, {epsilon: -2.0});
         }
       }
     }

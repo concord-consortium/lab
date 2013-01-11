@@ -44,7 +44,7 @@ define(function() {
         defaultValue: true
       },
       solventForceFactor: {
-        defaultValue: 1
+        defaultValue: 1.25
       },
       solventForceType: {
         //  0 - vacuum.
@@ -60,10 +60,10 @@ define(function() {
       // that passes through two points:
       // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
       additionalSolventForceMult: {
-        defaultValue: 25
+        defaultValue: 15
       },
       additionalSolventForceThreshold: {
-        defaultValue: 1
+        defaultValue: 10
       },
       viscosity: {
         defaultValue: 1
