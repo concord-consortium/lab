@@ -11,6 +11,8 @@ define(function (require) {
           // Save shortcuts.
           nm2px = parentView.nm2px;
           nm2pxInv = parentView.nm2pxInv;
+          // Redraw DNA on every DNA properties change.
+          model.getDNAProperties().on("change", api.setup);
         },
 
         renderText = function(container, txt, fontSize, dy) {
