@@ -17,24 +17,23 @@ define(function (require) {
           // Text shadow.
           container.append("text")
             .text(txt)
-            .attr("dy", dy)
+            .attr({
+              "class": "shadow",
+              "dy": dy
+            })
             .style({
-                "stroke": "#fff",
                 "stroke-width": nm2px(0.01),
-                "stroke-opacity": 0.7,
-                "font-family": "monospace",
                 "font-size": fontSize
             });
 
           // Final text.
           container.append("text")
             .text(txt)
-            .attr("dy", dy)
-            .style({
-              "opacity": 0.7,
-              "font-family": "monospace",
-              "font-size": fontSize
-            });
+            .attr({
+              "class": "front",
+              "dy": dy
+            })
+            .style("font-size", fontSize);
         };
 
     api = {
