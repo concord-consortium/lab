@@ -40,7 +40,6 @@ describe "DNAProperties", ->
 
         it "should have a registerChangeHooks, add, set, get, on methods", ->
           dnaProperties.should.have.property "registerChangeHooks"
-          dnaProperties.should.have.property "add"
           dnaProperties.should.have.property "set"
           dnaProperties.should.have.property "get"
           dnaProperties.should.have.property "on"
@@ -50,7 +49,7 @@ describe "DNAProperties", ->
 
         describe "without registered change hooks", ->
           it "should throw when the add method is called", ->
-            (-> dnaProperties.add {sequence: "ATGC"}).should.throw()
+            (-> dnaProperties.set {sequence: "ATGC"}).should.throw()
 
         describe "with registered change hooks", ->
 
@@ -58,15 +57,11 @@ describe "DNAProperties", ->
             dnaProperties.registerChangeHooks changeHooks.pre, changeHooks.post
             dnaProperties.on "change", changeHooks.changeListener
 
-          it "should allow to add DNA properties and call appropriate hooks", ->
-            dnaProperties.add {sequence: "ATGC", x: 1, y: 2, height: 3}
+          it "should allow to set DNA properties and call appropriate hooks", ->
+            dnaProperties.set {sequence: "ATGC", x: 1, y: 2, height: 3}
             changeHooks.pre.callCount.should.eql 1
             changeHooks.post.callCount.should.eql 1
             changeHooks.changeListener.callCount.should.eql 1
-
-          it "should throw when add is called more than once", ->
-            # Only one DNA sequence is allowed.
-            (-> dnaProperties.add {sequence: "ATGC"}).should.throw()
 
           it "should allow to get existing DNA properties", ->
             dnaProperties.get().should.eql {sequence: "ATGC", complementarySequence: "TACG", x: 1, y: 2, height: 3}

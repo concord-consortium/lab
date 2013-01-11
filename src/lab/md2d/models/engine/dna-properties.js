@@ -33,6 +33,35 @@ define(function (require) {
             .replace(/C/g, "g");
 
           data.complementarySequence = compSeq.toUpperCase();
+        },
+
+        create = function (props) {
+          changePreHook();
+
+          // Note that validator always returns a copy of the input object, so we can use it safely.
+          data = validator.validateCompleteness(metadata.dnaProperties, props);
+          calculateComplementarySequence();
+
+          changePostHook();
+          dispatch.change();
+        },
+
+        update = function (props) {
+          var key;
+
+          changePreHook();
+
+          // Validate and update properties.
+          props = validator.validate(metadata.dnaProperties, props);
+          for (key in props) {
+            if (props.hasOwnProperty(key)) {
+              data[key] = props[key];
+            }
+          }
+          calculateComplementarySequence();
+
+          changePostHook();
+          dispatch.change();
         };
 
     // Public API.
@@ -42,39 +71,15 @@ define(function (require) {
         changePostHook = newChangePostHook;
       },
 
-      // Adds DNA properties.
-      add: function (props) {
-        if (data !== undefined) {
-          throw new Error("DNAProperties: Only one DNA sequence is allowed.");
-        }
-
-        changePreHook();
-
-        // Note that validator always returns a copy of the input object, so we can use it safely.
-        data = validator.validateCompleteness(metadata.dnaProperties, props);
-        calculateComplementarySequence();
-
-        changePostHook();
-        dispatch.change();
-      },
-
       // Sets (updates) DNA properties.
       set: function (props) {
-        var key;
-
-        changePreHook();
-
-        // Validate and update properties.
-        props = validator.validate(metadata.dnaProperties, props);
-        for (key in props) {
-          if (props.hasOwnProperty(key)) {
-            data[key] = props[key];
-          }
+        if (data === undefined) {
+          // Use other method of validation, ensure that the data hash is complete.
+          create(props);
+        } else {
+          // Just update existing DNA properties.
+          update(props);
         }
-        calculateComplementarySequence();
-
-        changePostHook();
-        dispatch.change();
       },
 
       // Returns DNA properties.
@@ -83,16 +88,8 @@ define(function (require) {
       },
 
       // Deserializes DNA properties.
-      // Similar to add method, but it just replaces existing DNA sequence if it is present.
       deserialize: function (props) {
-        changePreHook();
-
-        // Note that validator always returns a copy of the input object, so we can use it safely.
-        data = validator.validateCompleteness(metadata.dnaProperties, props);
-        calculateComplementarySequence();
-
-        changePostHook();
-        dispatch.change();
+        create(props);
       },
 
       on: function(type, listener) {
