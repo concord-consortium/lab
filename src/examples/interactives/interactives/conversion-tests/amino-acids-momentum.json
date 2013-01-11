@@ -15,7 +15,29 @@
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "modelTimeLabel": true
+      },
+      "modelOptions": {
+        "solventForceFactor": 1.25,
+        "additionalSolventForceMult" : 4,
+        "additionalSolventForceThreshold": 10,
+        "polarAAEpislon": -2
       }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "polarAAEpislon",
+      "label": "epsilon",
+      "onChange": [
+        "var i, j, len;",
+        "var polarAAs = [7, 10, 20, 21];",
+        "for (i = 0, len = polarAAs.length; i < len; i++) {",
+        "  for (j = i + 1; j < len; j++) {",
+        "    setPairwiseLJProperties(polarAAs[i], polarAAs[j], { epsilon: value });",
+        "  }",
+        "}"
+      ],
+      "initialValue": -2.0
     }
   ],
   "components": [
@@ -61,6 +83,92 @@
       ],
       "displayValue": "return format('1.2f')(value)",
       "property": "solventForceFactor"
+    },
+    {
+      "type": "slider",
+      "id": "solvent-force-factor-slider",
+      "title": "Solvent Force Factor",
+      "min": 0,
+      "max": 100,
+      "steps": 400,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 100,
+          "label": "100"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "solventForceFactor"
+    },
+    {
+      "type": "slider",
+      "id": "add-solvent-force-mult-slider",
+      "title": "Additional Solvent Force Multiplier",
+      "min": 0,
+      "max": 50,
+      "steps": 100,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 50,
+          "label": "50"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "additionalSolventForceMult"
+    },
+    {
+      "type": "slider",
+      "id": "add-solvent-force-threshold-slider",
+      "title": "Additional Solvent Force Threshold (distance)",
+      "min": 0,
+      "max": 10,
+      "steps": 100,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 10,
+          "label": "10"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "additionalSolventForceThreshold"
+    },
+    {
+      "type": "slider",
+      "id": "epsilon-slider",
+      "min": -3.0,
+      "max": -0.1,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": -3.0,
+          "label": "-3.0"
+        },
+        {
+          "value": -0.1,
+          "label": "-0.1"
+        }
+      ],
+      "steps": 290,
+      "title": "Pairwise Epsilon of Polar Amino Acids",
+      "property": "polarAAEpislon"
+    },
+    {
+      "type": "checkbox",
+      "id": "realistic-dielectric-effect",
+      "text": "Realistic Dielectric Effect",
+      "property": "realisticDielectricEffect"
     },
     {
       "type": "checkbox",
