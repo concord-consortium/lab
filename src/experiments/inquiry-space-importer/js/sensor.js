@@ -130,17 +130,13 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
   appletId:     'goio-applet',
   classNames:   'applet sensor-applet',
 
-  jarUrls:     ['org/concord/sensor-native/sensor-native.jar',
-                'org/concord/otrunk/otrunk.jar',
-                'org/concord/framework/framework.jar',
-                'org/concord/frameworkview/frameworkview.jar',
-                'jug/jug/jug.jar',
-                'jdom/jdom/jdom.jar',
+  jarUrls:     ['com/sun/jna/jna.jar',
                 'org/concord/sensor/sensor.jar',
-                'org/concord/data/data.jar',
+                'org/concord/sensor/goio-jna/goio-jna.jar',
+                'org/concord/sensor/sensor-vernier/sensor-vernier.jar',
                 'org/concord/sensor/sensor-applets/sensor-applets.jar'],
 
-  code:         'org.concord.sensor.applet.OTSensorApplet',
+  code:         'org.concord.sensor.applet.SensorApplet',
   codebase:     '/jnlp',
 
   getHTML: function() {
@@ -155,9 +151,7 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
        'height="1px" ',
        'MAYSCRIPT="true" ',
      '>',
-        '<param name="resource" value="',      this.otmlPath,     '" />',
-        '<param name="listenerPath" value="',  this.listenerPath, '" />',
-        '<param name="name" value="',          this.appletId,     '" />',
+        '<param name="MAYSCRIPT" value="true" />',
       '</applet>'
     ].join('');
   },
