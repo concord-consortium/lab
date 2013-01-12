@@ -10,19 +10,19 @@
      font-family: "Open Sans";
      font-style: normal;
      font-weight: normal;
-     src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Regular-webfont.ttf") format("truetype"); }
+     src: url("/vendor/fonts/open-sans/OpenSans-Regular.ttf") format("truetype"); }
 
    @font-face {
      font-family: "Open Sans";
      font-style: normal;
      font-weight: bold;
-     src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Bold-webfont.ttf") format("truetype"); }
+     src: url("/vendor/fonts/open-sans/OpenSans-Bold.ttf") format("truetype"); }
 
    @font-face {
      font-family: "Open Sans";
      font-style: italic;
      font-weight: normal;
-     src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Italic-webfont.ttf") format("truetype"); }
+     src: url("/vendor/fonts/open-sans/OpenSans-Italic.ttf") format("truetype"); }
   ]]>
 </style>
 <text transform="matrix(1 0 0 1 0 10.3623)" fill="#B30000" style="font-family: 'Open Sans'; font-weight: bold; font-style: normal; font-size: 14">Pressure Gauge</text>
