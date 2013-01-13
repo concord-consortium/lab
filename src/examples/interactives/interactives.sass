@@ -1,35 +1,57 @@
 $directory: "../.."
 
 $max-width: 100%
+
+$header-background-color1: rgba(58, 135, 139, 1.0)
+$header-background-color2: rgba(140, 187, 184, 1.0)
+$header-font-color: #eee
+
 @import 'sass/bourbon/bourbon'
 @import url('molecules-view.css')
 @import 'sass/neat/neat'
 @import 'sass/lab/lab'
 
 #header
-  @include linear-gradient(#3a878b, #8cbbb8, $fallback: #3a878b)
-  color: #eee
+  @include linear-gradient($header-background-color1, $header-background-color2, $fallback: $header-background-color1)
+  color: $header-font-color
   padding: .5em 1em
   position: relative
-  font-size: 1em
-  font-weight: bold
+  font-size: 95%
+  font-weight: 600
   h1
     margin-right: 11em
+    margin-top: 0.4em
+    margin-bottom: 0.4em
     a
       color: #fff
       text-decoration: none
+  .row
+    position: relative
+    margin: 0.3em 0em 0.3em 0em
+    z-index: 100
+  span.title
+    margin-left: 1em
+    font-weight: 600
+    font-style: italic
+    font-size: 100%
+    color: darken($header-font-color, 5%)
+    &:first-child
+      margin-left: 0em
   a.opens-in-new-window
     color: #fff
     font-size: 100%
-    padding-left: 1em
+    margin: 0.2em 0.1em 0.2em 0.2em
+    padding: 0.1em 0.4em 0.2em 0.4em
     text-decoration: none
+    border-radius: 0.4em
+    background-color: transparentize(darken($header-background-color2, 20%), 0.4)
   a.opens-in-new-window.na
     color: #DDD
     &:hover
       cursor: default
-
   a#logo
     display: block
+    position: relative
     height: 3.25em
     margin: -1.625em 0 0
     position: absolute
@@ -45,6 +67,11 @@ $max-width: 100%
     color: #eee
     font-size: 90%
     font-weight: normal
+    label
+      margin: 0.2em 0.2em 0.2em 0.2em
+      padding: 0.1em 0.1em 0.2em 0.4em
+      border-radius: 0.4em
+      background-color: darken($header-background-color2, 15%)
 
 #interactive-header
   width: 95%
