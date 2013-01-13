@@ -46,12 +46,12 @@ $header-font-color: #eee
     border-radius: 0.4em
     background-color: transparentize(darken($header-background-color2, 20%), 0.4)
     &:hover
-      font-weight: bolder
+      background-color: transparentize(darken($header-background-color2, 30%), 0.4)
   a.opens-in-new-window.na
     color: #DDD
     &:hover
       cursor: default
-      font-weight: inherit
+      background-color: transparentize(darken($header-background-color2, 20%), 0.4)
   a#logo
     display: block
     position: relative
@@ -75,6 +75,8 @@ $header-font-color: #eee
       padding: 0.1em 0.1em 0.2em 0.4em
       border-radius: 0.4em
       background-color: darken($header-background-color2, 15%)
+      &:hover
+        background-color: darken($header-background-color2, 25%)
 
 #interactive-header
   width: 95%
