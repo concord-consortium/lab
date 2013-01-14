@@ -26,6 +26,12 @@
     },
     {
       "type": "button",
+      "id": "transcribe",
+      "text": "Transcribe",
+      "action": "transcribeDNA();"
+    },
+    {
+      "type": "button",
       "id": "separate",
       "text": "Separate the strands of DNA",
       "action": ""
@@ -65,7 +71,7 @@
     "bottom": [
       ["edit-dna"],
       ["separate", "reset"],
-      ["transcribeA", "transcribeU", "transcribeG", "transcribeC"]
+      ["transcribe", "transcribeA", "transcribeU", "transcribeG", "transcribeC"]
     ]
   }
 }
