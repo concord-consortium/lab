@@ -902,27 +902,26 @@ define(function (require) {
 
       size = model.size();
 
-      // Curiously, selector "foreignObject.textBox" doesn't return the foreignObjects
       htmlObjects = mainContainer.selectAll(".textBox").data(textBoxes);
 
-      htmlObjects.enter().append("foreignObject")
-        .attr("class", "textBox")
-        .append("xhtml:body");
+      htmlObjects.enter().append("text")
+        .attr({
+          "class": "textBox",
+          "x": function(d) { return nm2px(d.x) },
+          "y": function(d) { return nm2pxInv(d.y) },
+          "width":  nm2px(size[0]),
+          "height": nm2pxInv(-size[1]),
+          "xml:space": "preserve",
+          "font-family": "'Open Sans', sans-serif",
+          "font-size": 14
+        })
+        .append("tspan")
+        .attr({
+          "dy": "0"
+        })
+        .text(function(d) { return d.text });
 
       htmlObjects.exit().remove();
-
-      // For the time being, make all text boxes cover the screen
-      htmlObjects.attr({
-        width:  nm2px(size[0]),
-        height: nm2pxInv(-size[1])
-      }).each(function(d) {
-        d3.select(this).select("body")
-          .attr("class", "textBoxBody")
-          .html(d.text);
-          // layout.js (used by embeddables) sets font-size of all 'body' elements.
-          // The line below can be removed when layout is fiexed.
-          // .style("font-size", "inherit");
-      });
     }
 
     function setupClock() {
