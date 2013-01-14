@@ -75,7 +75,7 @@ define(function (require) {
           for(p in base) {
             if (overlay[p] === undefined) {
               overlay[p] = base[p];
-            } else if (typeof overlay[p] === "object") {
+            } else if (typeof overlay[p] === "object" && !(overlay[p] instanceof Array)) {
               overlay[p] = meldOptions(base[p], overlay[p]);
             }
           }
