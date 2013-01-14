@@ -28,7 +28,7 @@
     :branch: master
   - :name: lab2-dev
     :url: lab2.dev.concord.org
-    :branch: master
+    :branch: inquiry-space
   - :name: lab3-dev
     :url: lab3.dev.concord.org
     :branch: master
