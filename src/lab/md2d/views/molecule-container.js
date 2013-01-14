@@ -14,6 +14,7 @@ define(function (require) {
       GeneticRenderer       = require('md2d/views/genetic-renderer'),
       optionsMetadata       = require('md2d/views/meta-view-options'),
       layout                = require('common/layout/layout'),
+      wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
       validator             = require('common/validator'),
 
       RADIAL_BOND_TYPES = {
@@ -908,19 +909,30 @@ define(function (require) {
       htmlObjects.enter().append("text")
         .attr({
           "class": "textBox",
-          "x": function(d) { return nm2px(d.x) },
+          "x-data": function(d) { return nm2px(d.x) },
           "y": function(d) { return nm2pxInv(d.y) },
+          "width-data": function(d) { return d.width },
           "width":  nm2px(size[0]),
           "height": nm2pxInv(-size[1]),
           "xml:space": "preserve",
           "font-family": "'Open Sans', sans-serif",
-          "font-size": 14
-        })
-        .append("tspan")
-        .attr({
-          "dy": "0"
-        })
-        .text(function(d) { return d.text });
+          "font-size": 14,
+          "text-data": function(d) { return d.text; }
+        });
+
+      // wrap text
+      $(".textBox").each( function() {
+        text  = this.getAttributeNS(null, "text-data");
+        x     = this.getAttributeNS(null, "x-data");
+        width = this.getAttributeNS(null, "width-data") || -1;
+
+        // clear element first
+        while (this.firstChild) {
+          this.removeChild(this.firstChild);
+        }
+
+        wrapSVGText(text, this, width, x, 18);
+      });
 
       htmlObjects.exit().remove();
     }
