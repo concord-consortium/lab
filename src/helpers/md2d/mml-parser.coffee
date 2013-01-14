@@ -411,11 +411,10 @@ parseMML = (mmlString) ->
     parseTextBoxNode = (textBoxNode) ->
       $textBoxNode = getNode cheerio textBoxNode
       text = wrapTextBoxText $textBoxNode.find("[property=text] string").text()
-      $x = $textBoxNode.find("[property=x] double")
-      $y = $textBoxNode.find("[property=y] double")
+      $x = parseFloat $textBoxNode.find("[property=x] double").text()
+      $y = parseFloat $textBoxNode.find("[property=y] double").text()
 
-      [x] = toNextgenLengths toNumber $x, defaultValue: 0
-      [y] = toNextgenLengths toNumber $y, defaultValue: 0
+      [x, y] = toNextgenCoordinates $x, $y
 
       { text, x, y }
 
