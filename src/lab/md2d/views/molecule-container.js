@@ -966,6 +966,10 @@ define(function (require) {
 
     function setupColorsOfParticles() {
       var i, len;
+
+      chargeShadingMode = model.get("chargeShading");
+      keShadingMode = model.get("keShading");
+
       gradientNameForParticle.length = results.length;
       for (i = 0, len = results.length; i < len; i++)
         gradientNameForParticle[i] = getParticleGradient(results[i]);
@@ -975,9 +979,6 @@ define(function (require) {
       var textShrinkFactor = results.length <= 100 ? 1 : 0.9,
           showChargeSymbols = model.get("showChargeSymbols"),
           useThreeLetterCode = model.get("useThreeLetterCode");
-
-      chargeShadingMode = model.get("chargeShading");
-      keShadingMode = model.get("keShading");
 
       mainContainer.selectAll("circle").remove();
       mainContainer.selectAll("g.label").remove();
