@@ -68,6 +68,7 @@ define(function (require) {
         VDWLinesContainer,
         imageContainerBelow,
         imageContainerTop,
+        textContainerTop,
 
         gradientNameForElement,
         // Set of gradients used for Kinetic Energy Shading.
@@ -902,7 +903,7 @@ define(function (require) {
 
       size = model.size();
 
-      htmlObjects = mainContainer.selectAll(".textBox").data(textBoxes);
+      htmlObjects = textContainerTop.selectAll(".textBox").data(textBoxes);
 
       htmlObjects.enter().append("text")
         .attr({
@@ -1594,6 +1595,7 @@ define(function (require) {
         VDWLinesContainer = vis.append("g").attr("class", "vdw-lines-container");
         mainContainer = vis.append("g").attr("class", "main-container");
         imageContainerTop = vis.append("g").attr("class", "image-container-top");
+        textContainerTop = vis.append("g").attr("class", "text-container-top");
 
         setupKeyboardHandler();
 
