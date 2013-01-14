@@ -4,6 +4,15 @@
 // meta-properties are supported.
 define(function() {
 
+  // Create a new object, that prototypically inherits from the Error constructor.
+  // It provides a direct information which property of the input caused an error.
+  function ValidationError(prop, message) {
+      this.prop = prop;
+      this.message = message;
+  }
+  ValidationError.prototype = new Error();
+  ValidationError.prototype.constructor = ValidationError;
+
   var fill = function (input, defaultObj) {
     var result = {},
         prop;
@@ -45,10 +54,10 @@ define(function() {
           if (propMetadata !== undefined) {
             // Check if this is readOnly property.
             if (propMetadata.readOnly === true) {
-              throw new Error("Properties set tries to overwrite read-only property " + prop);
+              throw new ValidationError(prop, "Properties set tries to overwrite read-only property " + prop);
             }
             if (!ignoreImmutable && propMetadata.immutable === true) {
-              throw new Error("Properties set tries to overwrite immutable property " + prop);
+              throw new ValidationError(prop, "Properties set tries to overwrite immutable property " + prop);
             }
             result[prop] = input[prop];
           }
@@ -77,7 +86,7 @@ define(function() {
           if (input[prop] === undefined || input[prop] === null) {
             // Value is not declared in the input data.
             if (propMetadata.required === true) {
-              throw new Error("Properties set is missing required property " + prop);
+              throw new ValidationError(prop, "Properties set is missing required property " + prop);
             } else if (typeof propMetadata.defaultValue === "object") {
               // If default value is an object, copy it.
               // result[prop] = propMetadata.defaultValue;
@@ -100,6 +109,9 @@ define(function() {
       // However, ignore immutable check, as these properties are supposed
       // to create a new object.
       return this.validate(metadata, result, true);
-    }
+    },
+
+    // Expose ValidationError. It can be useful for the custom validation routines.
+    ValidationError: ValidationError
   };
 });
