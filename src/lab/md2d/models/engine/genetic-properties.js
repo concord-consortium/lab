@@ -156,7 +156,7 @@ define(function (require) {
         // Use lower case during conversion to
         // avoid situation when you change G->C,
         // and later C->G again.
-        var mRNA = data.DNA
+        var mRNA = data.DNAComplement
           .replace(/A/g, "u")
           .replace(/G/g, "c")
           .replace(/T/g, "a")

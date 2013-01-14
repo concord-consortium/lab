@@ -80,7 +80,7 @@ describe "GeneticProperties", ->
             changeHooks.post.callCount.should.eql 1
             changeHooks.changeListener.callCount.should.eql 1
 
-            geneticProperties.get().should.eql {DNA: "ATGCT", DNAComplement: "TACGA", mRNA: "UACGA", x: 0, y: 1, height: 3}
+            geneticProperties.get().should.eql {DNA: "ATGCT", DNAComplement: "TACGA", mRNA: "AUGCU", x: 0, y: 1, height: 3}
 
           it "should allow to deserialize genetic properties (replacing existing properties)", ->
             data = {DNA: "CGTA", x: 5, y: 6, height: 7}
