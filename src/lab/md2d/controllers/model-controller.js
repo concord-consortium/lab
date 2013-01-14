@@ -85,13 +85,14 @@ define(function (require) {
         // 1. Process view options.
         // Do not modify initial configuration.
         viewOptions = $.extend(true, {}, interactiveViewConfig);
+
+        // Move images and textBoxes the from model config to view options.
+        modelConfig.viewOptions.images    = modelConfig.images;
+        modelConfig.viewOptions.textBoxes = modelConfig.textBoxes;
+
         // Merge view options defined in interactive (interactiveViewConfig)
         // with view options defined in the basic model description.
         viewOptions = meldOptions(modelConfig.viewOptions || {}, viewOptions);
-
-        // Move images and textBoxes the from model config to view options.
-        viewOptions.images    = modelConfig.images;
-        viewOptions.textBoxes = modelConfig.textBoxes;
 
         // 1. Process model options.
         // Do not modify initial configuration.

@@ -904,6 +904,8 @@ define(function (require) {
 
       size = model.size();
 
+      textContainerTop.selectAll(".textBox").remove();
+
       htmlObjects = textContainerTop.selectAll(".textBox").data(textBoxes);
 
       htmlObjects.enter().append("text")
