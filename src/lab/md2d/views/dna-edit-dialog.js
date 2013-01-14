@@ -35,7 +35,7 @@ define(function () {
           });
 
           // Dynamic validation on input.
-          $submitButton = $(".dna-edit-dialog button");
+          $submitButton = $(".dna-edit-dialog button:contains('Apply')");
           $dnaTextInput.on("input", function () {
             var props = {
                   sequence: $dnaTextInput.val()
@@ -43,10 +43,10 @@ define(function () {
                 status;
             status = model.getDNAProperties().validate(props);
             if (status.valid === false) {
-              $submitButton.attr("disabled", "disabled");
+              $submitButton.button("disable");
               $errorMsg.text(status.errors["sequence"]);
             } else {
-              $submitButton.removeAttr("disabled");
+              $submitButton.button("enable");
               $errorMsg.text("");
             }
           });
