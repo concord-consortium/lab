@@ -344,8 +344,8 @@ define(function() {
       }
     },
 
-    dnaProperties: {
-      sequence: {
+    geneticProperties: {
+      DNA: {
         defaultValue: ""
       },
       x: {

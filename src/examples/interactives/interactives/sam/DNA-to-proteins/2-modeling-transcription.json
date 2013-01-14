@@ -11,8 +11,8 @@
         "controlButtons": ""
       },
       "modelOptions": {
-        "dnaProperties": {
-          "sequence": "ATGTTGACTCTAACTCGCATCCGCACTGTG"
+        "geneticProperties": {
+          "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTG"
         }
       }
     }

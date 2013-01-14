@@ -11,7 +11,7 @@ define(function (require) {
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
       amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
-      DNARenderer           = require('md2d/views/dna-renderer'),
+      GeneticRenderer       = require('md2d/views/genetic-renderer'),
       optionsMetadata       = require('md2d/views/meta-view-options'),
       layout                = require('common/layout/layout'),
       validator             = require('common/validator'),
@@ -60,7 +60,7 @@ define(function (require) {
         // Renderers.
         // TODO: for now only DNA is rendered in a separate class, try to create
         // new renderers in separate files for clarity and easier testing.
-        dnaRenderer,
+        geneticRenderer,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
@@ -948,7 +948,7 @@ define(function (require) {
       setupColorsOfParticles();
       setupRadialBonds();
       setupParticles();
-      dnaRenderer.setup();
+      geneticRenderer.setup();
       setupVectors();
       setupAtomTrace();
       setupClock();
@@ -1672,7 +1672,7 @@ define(function (require) {
       }
 
       // Initialize renderers.
-      dnaRenderer = new DNARenderer(mainContainer, api, model);
+      geneticRenderer = new GeneticRenderer(mainContainer, api, model);
     }
 
     api = {

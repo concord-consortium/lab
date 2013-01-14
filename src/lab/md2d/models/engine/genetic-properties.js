@@ -8,7 +8,7 @@ define(function (require) {
       ValidationError = validator.ValidationError;
 
 
-  return function DNAProperties() {
+  return function GeneticProperties() {
     var api,
         changePreHook,
         changePostHook,
@@ -17,7 +17,7 @@ define(function (require) {
         dispatch = d3.dispatch("change"),
 
         calculateComplementarySequence = function () {
-          var seq = data.sequence,
+          var seq = data.DNA,
               compSeq;
 
           // A-T (A-U)
@@ -34,17 +34,17 @@ define(function (require) {
             .replace(/T/g, "a")
             .replace(/C/g, "g");
 
-          data.complementarySequence = compSeq.toUpperCase();
+          data.DNAComplement = compSeq.toUpperCase();
         },
 
         customValidate = function (props) {
-          if (props.sequence) {
+          if (props.DNA) {
             // Allow user to use both lower and upper case.
-            props.sequence = props.sequence.toUpperCase();
+            props.DNA = props.DNA.toUpperCase();
 
-            if (props.sequence.search(/[^AGTC]/) !== -1) {
+            if (props.DNA.search(/[^AGTC]/) !== -1) {
               // Character other than A, G, T or C is found.
-              throw new ValidationError("sequence", "DNA code on sense strand can be defined using only A, G, T or C characters.");
+              throw new ValidationError("DNA", "DNA code on sense strand can be defined using only A, G, T or C characters.");
             }
           }
           return props;
@@ -54,7 +54,7 @@ define(function (require) {
           changePreHook();
 
           // Note that validator always returns a copy of the input object, so we can use it safely.
-          props = validator.validateCompleteness(metadata.dnaProperties, props);
+          props = validator.validateCompleteness(metadata.geneticProperties, props);
           props = customValidate(props);
 
           // Note that validator always returns a copy of the input object, so we can use it safely.
@@ -71,7 +71,7 @@ define(function (require) {
           changePreHook();
 
           // Validate and update properties.
-          props = validator.validate(metadata.dnaProperties, props);
+          props = validator.validate(metadata.geneticProperties, props);
           props = customValidate(props);
 
           for (key in props) {
@@ -92,23 +92,23 @@ define(function (require) {
         changePostHook = newChangePostHook;
       },
 
-      // Sets (updates) DNA properties.
+      // Sets (updates) genetic properties.
       set: function (props) {
         if (data === undefined) {
           // Use other method of validation, ensure that the data hash is complete.
           create(props);
         } else {
-          // Just update existing DNA properties.
+          // Just update existing genetic properties.
           update(props);
         }
       },
 
-      // Returns DNA properties.
+      // Returns genetic properties.
       get: function () {
         return data;
       },
 
-      // Deserializes DNA properties.
+      // Deserializes genetic properties.
       deserialize: function (props) {
         create(props);
       },
@@ -123,7 +123,7 @@ define(function (require) {
       // e.g. {
       //   valid: false,
       //   errors: {
-      //     sequence: "DNA code on sense strand can be defined using only A, G, T or C characters."
+      //     DNA: "DNA code on sense strand can be defined using only A, G, T or C characters."
       //   }
       // }
       validate: function (props) {
@@ -132,7 +132,7 @@ define(function (require) {
         };
         try {
           // Validation based on metamodel definition.
-          props = validator.validate(metadata.dnaProperties, props);
+          props = validator.validate(metadata.geneticProperties, props);
           // Custom validation.
           customValidate(props);
         } catch (e) {

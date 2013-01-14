@@ -1,8 +1,8 @@
-/*global $ define: false, d3: false */
+/*global define: false */
 
 define(function (require) {
 
-  return function DNARenderer(container, parentView, model) {
+  return function GeneticRenderer(container, parentView, model) {
     var api,
         nm2px,
         nm2pxInv,
@@ -11,8 +11,8 @@ define(function (require) {
           // Save shortcuts.
           nm2px = parentView.nm2px;
           nm2pxInv = parentView.nm2pxInv;
-          // Redraw DNA on every DNA properties change.
-          model.getDNAProperties().on("change", api.setup);
+          // Redraw DNA / mRNA on every genetic properties change.
+          model.getGeneticProperties().on("change", api.setup);
         },
 
         renderText = function(container, txt, fontSize, dy) {
@@ -40,10 +40,10 @@ define(function (require) {
 
     api = {
       setup: function () {
-        var dna = model.getDNAProperties().get(),
+        var props = model.getGeneticProperties().get(),
             dnaGElement, fontSize;
 
-        if (dna === undefined) {
+        if (props === undefined) {
           return;
         }
 
@@ -52,16 +52,16 @@ define(function (require) {
         dnaGElement = container.append("g").attr({
           "class": "dna",
           // (0nm, 0nm) + small, constant offset in px.
-          "transform": "translate(" + nm2px(dna.x) + "," + nm2pxInv(dna.y) + ")"
+          "transform": "translate(" + nm2px(props.x) + "," + nm2pxInv(props.y) + ")"
         });
 
-        fontSize = nm2px(dna.height) + "px";
+        fontSize = nm2px(props.height) + "px";
 
-        // Basic sequence.
+        // DNA code on sense strand.
         // [ fontSize is a string already (with "px" suffix), so simple -fontSize will result in NaN. ]
-        renderText(dnaGElement, dna.sequence, fontSize, "-" + fontSize);
+        renderText(dnaGElement, props.DNA, fontSize, "-" + fontSize);
         // Complementary sequence.
-        renderText(dnaGElement, dna.complementarySequence, fontSize, 0);
+        renderText(dnaGElement, props.DNAComplement, fontSize, 0);
       }
     };
 

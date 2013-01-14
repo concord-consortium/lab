@@ -256,23 +256,23 @@ define(function (require) {
       },
 
       /**
-        Sets properties of the DNA using human-readable hash.
-        e.g. setDNAProperties({ sequence: "ATCG" })
+        Sets genetic properties using human-readable hash.
+        e.g. setGeneticProperties({ DNA: "ATCG" })
       */
-      setDNAProperties: function setDNAProperties(props) {
-        model.getDNAProperties().set(props);
+      setGeneticProperties: function setGeneticProperties(props) {
+        model.getGeneticProperties().set(props);
       },
 
       /**
-        Returns properties of the DNA as a human-readable hash.
-        e.g. getDNAProperties() --> {sequence: "ATCG", complementarySequence: "TAGC", x: 0.01, y: 0.01, height: 0.12}
+        Returns genetic properties as a human-readable hash.
+        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
       */
-      getDNAProperties: function getDNAProperties() {
-        return model.getDNAProperties().get();
+      getGeneticProperties: function getGeneticProperties() {
+        return model.getGeneticProperties().get();
       },
 
       /**
-        Opens DNA properties dialog, which allows to set DNA sequence.
+        Opens DNA properties dialog, which allows to set DNA code.
       */
       openDNADialog: function showDNADialog() {
         dnaEditDialog.open();
