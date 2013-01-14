@@ -356,6 +356,12 @@ define(function() {
       },
       height: {
         defaultValue: 0.12
+      },
+      DNAComplement: {
+        readOnly: true
+      },
+      mRNA: {
+        readOnly: true
       }
     }
   };
