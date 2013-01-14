@@ -148,7 +148,20 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
                 'org/concord/sensor/sensor-applets/sensor-applets.jar'],
 
   code:         'org.concord.sensor.applet.SensorApplet',
-  codebase:     '/jnlp',
+
+  getCodebase: function(pathname) {
+    var IMPORTER_SUFFIX = "experiments/inquiry-space-importer/",
+        IMPORTER_RE = new RegExp("/(.*/)?" + IMPORTER_SUFFIX),
+        match = pathname && pathname.match(IMPORTER_RE),
+        prefix;
+
+    if (!match) {
+      return "/jnlp";
+    }
+
+    prefix = match[1] || '';
+    return '/' + prefix + 'jnlp';
+  },
 
   getHTML: function() {
     return [
@@ -157,7 +170,7 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
        'class="',    this.classNames,         '" ',
        'archive="',  this.jarUrls.join(', '), '" ',
        'code="',     this.code,               '" ',
-       'codebase="', this.codebase,            '" ',
+       'codebase="', this.getCodebase(),      '" ',
        'width="1px" ',
        'height="1px" ',
        'MAYSCRIPT="true" ',

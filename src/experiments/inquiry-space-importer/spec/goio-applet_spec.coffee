@@ -11,6 +11,22 @@ describe "GoIOApplet class", ->
   it "should be a subclass of SensorApplet", ->
     expect( goio.constructor.__super__ ).toBe ISImporter.SensorApplet.prototype
 
+  describe "getCodebase method", ->
+    describe "given no pathname", ->
+      it "should return \"/jnlp\"", ->
+        pathname = null
+        expect( goio.getCodebase(pathname) ).toEqual "/jnlp"
+
+    describe "given a pathname with no prefix: \"/experiments/inquiry-space-importer/\"", ->
+      it "should return \"/jnlp\"", ->
+        pathname = null
+        expect( goio.getCodebase(pathname) ).toEqual "/jnlp"
+
+    describe "given a pathname with a prefix: \"/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/\"", ->
+      it "should return the prefix (\"/DataGames/Games/concord/lab.dev/\")  plus \"/jnlp\"", ->
+        pathname = "/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/"
+        expect( goio.getCodebase(pathname) ).toEqual "/DataGames/Games/concord/lab.dev/jnlp"
+
   describe "when listenerPath and sensorType properties are set appropriately", ->
     beforeEach ->
       goio.listenerPath = '(dummy listener path)'

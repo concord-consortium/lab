@@ -13,6 +13,29 @@
     it("should be a subclass of SensorApplet", function() {
       return expect(goio.constructor.__super__).toBe(ISImporter.SensorApplet.prototype);
     });
+    describe("getCodebase method", function() {
+      describe("given no pathname", function() {
+        return it("should return \"/jnlp\"", function() {
+          var pathname;
+          pathname = null;
+          return expect(goio.getCodebase(pathname)).toEqual("/jnlp");
+        });
+      });
+      describe("given a pathname with no prefix: \"/experiments/inquiry-space-importer/\"", function() {
+        return it("should return \"/jnlp\"", function() {
+          var pathname;
+          pathname = null;
+          return expect(goio.getCodebase(pathname)).toEqual("/jnlp");
+        });
+      });
+      return describe("given a pathname with a prefix: \"/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/\"", function() {
+        return it("should return the prefix (\"/DataGames/Games/concord/lab.dev/\")  plus \"/jnlp\"", function() {
+          var pathname;
+          pathname = "/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/";
+          return expect(goio.getCodebase(pathname)).toEqual("/DataGames/Games/concord/lab.dev/jnlp");
+        });
+      });
+    });
     describe("when listenerPath and sensorType properties are set appropriately", function() {
       beforeEach(function() {
         goio.listenerPath = '(dummy listener path)';
