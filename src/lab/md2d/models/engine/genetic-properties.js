@@ -76,7 +76,15 @@ define(function (require) {
               data[key] = props[key];
             }
           }
-          calculateComplementarySequence();
+
+          if (props.DNA) {
+            // New DNA code specified, update related properties.
+            // 1. DNA complementary sequence.
+            calculateComplementarySequence();
+            // 2. mRNA is no longer valid. Do not recalculate it automatically
+            //    (transribeDNA method should be used).
+            delete data.mRNA;
+          }
 
           changePostHook();
           dispatch.change();

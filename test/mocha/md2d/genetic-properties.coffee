@@ -38,11 +38,12 @@ describe "GeneticProperties", ->
         before ->
           geneticProperties = new GeneticProperties
 
-        it "should have a registerChangeHooks, add, set, get, on methods", ->
+        it "should have a registerChangeHooks, add, set, get, on, transcribeDNA methods", ->
           geneticProperties.should.have.property "registerChangeHooks"
           geneticProperties.should.have.property "set"
           geneticProperties.should.have.property "get"
           geneticProperties.should.have.property "on"
+          geneticProperties.should.have.property "transcribeDNA"
 
         it "should return undefined when genetic properties are not specified", ->
           should.not.exist geneticProperties.get()
@@ -66,13 +67,6 @@ describe "GeneticProperties", ->
           it "should allow to get existing genetic properties", ->
             geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", x: 1, y: 2, height: 3}
 
-          it "should allow to modify existing genetic properties and call appropriate hooks", ->
-            geneticProperties.set {DNA: "ATGCT", x: 0, y: 1}
-            changeHooks.pre.callCount.should.eql 1
-            changeHooks.post.callCount.should.eql 1
-            changeHooks.changeListener.callCount.should.eql 1
-
-            geneticProperties.get().should.eql {DNA: "ATGCT", DNAComplement: "TACGA", x: 0, y: 1, height: 3}
 
           it "should allow to transcribe mRNA from DNA and call appropriate hooks", ->
             geneticProperties.transcribeDNA()
@@ -80,7 +74,16 @@ describe "GeneticProperties", ->
             changeHooks.post.callCount.should.eql 1
             changeHooks.changeListener.callCount.should.eql 1
 
-            geneticProperties.get().should.eql {DNA: "ATGCT", DNAComplement: "TACGA", mRNA: "AUGCU", x: 0, y: 1, height: 3}
+            geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", mRNA: "AUGC", x: 1, y: 2, height: 3}
+
+          it "should allow to modify existing genetic properties and call appropriate hooks", ->
+            geneticProperties.set {DNA: "ATGCT", x: 0, y: 1}
+            changeHooks.pre.callCount.should.eql 1
+            changeHooks.post.callCount.should.eql 1
+            changeHooks.changeListener.callCount.should.eql 1
+
+            # Note that as DNA was changed, DNAComplement was recalculated and mRNA was deleted.
+            geneticProperties.get().should.eql {DNA: "ATGCT", DNAComplement: "TACGA", x: 0, y: 1, height: 3}
 
           it "should allow to deserialize genetic properties (replacing existing properties)", ->
             data = {DNA: "CGTA", x: 5, y: 6, height: 7}
