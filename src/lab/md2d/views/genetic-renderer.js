@@ -16,6 +16,9 @@ define(function (require) {
         },
 
         renderText = function(container, txt, fontSize, dy) {
+          // Necessary for example in Firefox.
+          fontSize += "px";
+
           // Text shadow.
           container.append("text")
             .text(txt)
@@ -55,13 +58,16 @@ define(function (require) {
           "transform": "translate(" + nm2px(props.x) + "," + nm2pxInv(props.y) + ")"
         });
 
-        fontSize = nm2px(props.height) + "px";
+        fontSize = nm2px(props.height);
 
         // DNA code on sense strand.
-        // [ fontSize is a string already (with "px" suffix), so simple -fontSize will result in NaN. ]
-        renderText(dnaGElement, props.DNA, fontSize, "-" + fontSize);
-        // Complementary sequence.
+        renderText(dnaGElement, props.DNA, fontSize, -fontSize);
+        // DNA complementary sequence.
         renderText(dnaGElement, props.DNAComplement, fontSize, 0);
+        // mRNA (if available).
+        if (props.mRNA !== undefined) {
+          renderText(dnaGElement, props.mRNA, fontSize, -2.5 * fontSize);
+        }
       }
     };
 
