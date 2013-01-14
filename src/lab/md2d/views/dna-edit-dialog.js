@@ -7,42 +7,47 @@ define(function () {
         $dialogDiv,
         $dnaTextInput,
         $errorMsg,
+        $submitButton,
 
         init = function() {
+          // Basic dialog elements.
           $dialogDiv = $('<div></div>');
-          $dialogDiv.append('<label for="dna-sequence-input">DNA sequence:</label>');
           $dnaTextInput = $('<input type="text" id="dna-sequence-input" size="45"></input>');
           $dnaTextInput.appendTo($dialogDiv);
           $errorMsg = $('<p class="error"></p>');
           $errorMsg.appendTo($dialogDiv);
 
+          // jQuery UI Dialog.
           $dialogDiv.dialog({
             dialogClass: "dna-edit-dialog",
-            title: "DNA Properties",
+            title: "DNA Code on Sense Strand",
             autoOpen: false,
             width: "30em",
             modal: true,
             buttons: {
               "Apply": function () {
-                var newSequence = $dnaTextInput.val(),
-                    correct = true;
-
-                try {
-                  model.getDNAProperties().set({
-                    sequence: newSequence
-                  });
-                } catch (e) {
-                  correct = false;
-                  $errorMsg.text(e.message);
-                }
-
-                if (correct) {
-                  $(this).dialog("close");
-                }
-              },
-              "Cancel": function() {
+                model.getDNAProperties().set({
+                  sequence: $dnaTextInput.val()
+                });
                 $(this).dialog("close");
               }
+            }
+          });
+
+          // Dynamic validation on input.
+          $submitButton = $(".dna-edit-dialog button");
+          $dnaTextInput.on("input", function () {
+            var props = {
+                  sequence: $dnaTextInput.val()
+                },
+                status;
+            status = model.getDNAProperties().validate(props);
+            if (status.valid === false) {
+              $submitButton.attr("disabled", "disabled");
+              $errorMsg.text(status.errors["sequence"]);
+            } else {
+              $submitButton.removeAttr("disabled");
+              $errorMsg.text("");
             }
           });
         };
@@ -51,6 +56,7 @@ define(function () {
       open: function () {
         // Clear previous errors.
         $errorMsg.text("");
+        $submitButton.removeAttr("disabled");
         // Set current value of DNA code.
         $dnaTextInput.val(model.getDNAProperties().get().sequence);
         $dialogDiv.dialog("open");
