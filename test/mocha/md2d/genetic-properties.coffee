@@ -67,12 +67,20 @@ describe "GeneticProperties", ->
             geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", x: 1, y: 2, height: 3}
 
           it "should allow to modify existing genetic properties and call appropriate hooks", ->
-            geneticProperties.set {DNA: "TTGA", x: 0, y: 1}
+            geneticProperties.set {DNA: "ATGCT", x: 0, y: 1}
             changeHooks.pre.callCount.should.eql 1
             changeHooks.post.callCount.should.eql 1
             changeHooks.changeListener.callCount.should.eql 1
 
-            geneticProperties.get().should.eql {DNA: "TTGA", DNAComplement: "AACT", x: 0, y: 1, height: 3}
+            geneticProperties.get().should.eql {DNA: "ATGCT", DNAComplement: "TACGA", x: 0, y: 1, height: 3}
+
+          it "should allow to transcribe mRNA from DNA and call appropriate hooks", ->
+            geneticProperties.transcribeDNA()
+            changeHooks.pre.callCount.should.eql 1
+            changeHooks.post.callCount.should.eql 1
+            changeHooks.changeListener.callCount.should.eql 1
+
+            geneticProperties.get().should.eql {DNA: "ATGCT", DNAComplement: "TACGA", mRNA: "UACGA", x: 0, y: 1, height: 3}
 
           it "should allow to deserialize genetic properties (replacing existing properties)", ->
             data = {DNA: "CGTA", x: 5, y: 6, height: 7}
@@ -83,6 +91,8 @@ describe "GeneticProperties", ->
             changeHooks.changeListener.callCount.should.eql 1
 
             geneticProperties.get().should.eql {DNA: "CGTA", DNAComplement: "GCAT", x: 5, y: 6, height: 7}
+
+
 
           it "should provide Clone-Restore interface"
             # TODO

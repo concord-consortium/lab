@@ -17,9 +17,6 @@ define(function (require) {
         dispatch = d3.dispatch("change"),
 
         calculateComplementarySequence = function () {
-          var seq = data.DNA,
-              compSeq;
-
           // A-T (A-U)
           // G-C
           // T-A (U-A)
@@ -28,7 +25,7 @@ define(function (require) {
           // Use lower case during conversion to
           // avoid situation when you change A->T,
           // and later T->A again.
-          compSeq = seq
+          var compSeq = data.DNA
             .replace(/A/g, "t")
             .replace(/G/g, "c")
             .replace(/T/g, "a")
@@ -145,6 +142,30 @@ define(function (require) {
 
       on: function(type, listener) {
         dispatch.on(type, listener);
+      },
+
+      // Transcribe mRNA from DNA.
+      // Result is saved in the mRNA property.
+      transcribeDNA: function() {
+        changePreHook();
+        // A-U
+        // G-C
+        // T-A
+        // C-G
+
+        // Use lower case during conversion to
+        // avoid situation when you change G->C,
+        // and later C->G again.
+        var mRNA = data.DNA
+          .replace(/A/g, "u")
+          .replace(/G/g, "c")
+          .replace(/T/g, "a")
+          .replace(/C/g, "g");
+
+        data.mRNA = mRNA.toUpperCase();
+
+        changePostHook();
+        dispatch.change();
       }
     };
 
