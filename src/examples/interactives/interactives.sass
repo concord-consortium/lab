@@ -28,7 +28,7 @@ $header-font-color: #eee
   .row
     position: relative
     display: inline-block
-    margin: 0.3em 0em 0.3em 0em
+    margin: 0.3em 0em 0.6em 0em
   span.title
     margin-left: 1em
     font-weight: 600
@@ -81,6 +81,29 @@ $header-font-color: #eee
 #interactive-header
   width: 95%
   margin: 1.0em 1.0em 0em 1.5em
+  #interactive-forward-back
+    float: right
+    margin-right: 0.5em
+    span.title
+      margin-left: 1em
+      font-weight: 600
+      font-style: italic
+      font-size: 100%
+      &:first-child
+        margin-left: 0em
+    .arrow
+      cursor: pointer
+      display: inline-block
+      margin: 0.2em 0.2em 0.2em 0.2em
+      padding: 0.1em 0.3em 0.2em 0.4em
+      border-radius: 0.4em
+      background-color: lighten($header-background-color2, 20%)
+      &:hover
+        background-color: lighten($header-background-color2, 10%)
+    .disabled
+      background-color: lighten($header-background-color2, 30%)
+      &:hover
+        background-color: lighten($header-background-color2, 30%)
   #interactive-title
     font-size: 110%
     font-weight: 600

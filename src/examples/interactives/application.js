@@ -63,6 +63,9 @@ var ROOT = "/examples",
       $modelDatatableResults = $("#model-datatable-results"),
       $modelDatatableStats = $("#model-datatable-stats"),
 
+      $previousInteractive = $("#previous-interactive"),
+      $nextInteractive = $("#next-interactive"),
+
       applicationCallbacks,
       editor,
       controller,
@@ -346,6 +349,7 @@ var ROOT = "/examples",
     } else {
       $selectInteractive.val(interactiveUrl);
     }
+    setupNextPreviousInteractive();
   }
 
   function setupEmbeddableAuthorPage() {
@@ -404,7 +408,10 @@ var ROOT = "/examples",
     var java_mw_href,
         java_mw_link = $("#java-mw-link"),
         origin;
+
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
+
+    setupNextPreviousInteractive();
 
     // construct link to embeddable version of Interactive
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
@@ -447,6 +454,49 @@ var ROOT = "/examples",
     setupBenchmarks();
     setupEnergyGraph();
     setupAtomDataTable();
+  }
+
+  // Setup and enable next and previous Interactive buttons
+  function setupNextPreviousInteractive() {
+    var $options = $selectInteractive.find("option:enabled"),
+        $selection = $options.filter(":selected"),
+        index = $options.index($options.filter(":selected"));
+
+    if (index === 0) {
+      $previousInteractive.addClass("disabled");
+    }
+
+    if (index+1 >= $options.length) {
+      $nextInteractive.addClass("disabled");
+    }
+
+    $previousInteractive.click(function() {
+      var $selectInteractive = $("#select-interactive"),
+          $options = $selectInteractive.find("option:enabled"),
+          $selection = $options.filter(":selected"),
+          index = $options.index($options.filter(":selected"));
+      if (index > 0) {
+        $selection.removeAttr('selected');
+        $($options[index-1]).attr('selected', 'selected');
+        selectInteractiveHandler();
+      } else {
+        $previousInteractive.addClass("disabled");
+      }
+    });
+
+    $nextInteractive.click(function() {
+      var $selectInteractive = $("#select-interactive"),
+          $options = $selectInteractive.find("option:enabled"),
+          $selection = $options.filter(":selected"),
+          index = $options.index($options.filter(":selected"));
+      if (index < $options.length) {
+        $selection.removeAttr('selected');
+        $($options[index+1]).attr('selected', 'selected');
+        selectInteractiveHandler();
+      } else {
+        this.addClass("disabled");
+      }
+    });
   }
 
   //
