@@ -279,6 +279,16 @@ define(function (require) {
       },
 
       /**
+        Triggers transcription of mRNA from DNA.
+        Result should be rendered. It is also stored in genetic properties.
+
+        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
+      */
+      transcribeDNA: function transcribeDNA() {
+        model.getGeneticProperties().transcribeDNA();
+      },
+
+      /**
         Sets solvent. You can use three predefined solvents: "water", "oil" or "vacuum".
         This is only a convenience method. The same effect can be achieved by manual setting
         of 'solventForceFactor', 'dielectricConstant' and 'backgroundColor' properties.
