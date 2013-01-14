@@ -349,7 +349,7 @@ var ROOT = "/examples",
     } else {
       $selectInteractive.val(interactiveUrl);
     }
-    setupNextPreviousInteractive();
+    updateNextPreviousInteractiveStatus();
   }
 
   function setupEmbeddableAuthorPage() {
@@ -458,23 +458,14 @@ var ROOT = "/examples",
 
   // Setup and enable next and previous Interactive buttons
   function setupNextPreviousInteractive() {
-    var $options = $selectInteractive.find("option:enabled"),
-        $selection = $options.filter(":selected"),
-        index = $options.index($options.filter(":selected"));
-
-    if (index === 0) {
-      $previousInteractive.addClass("disabled");
-    }
-
-    if (index+1 >= $options.length) {
-      $nextInteractive.addClass("disabled");
-    }
-
+    updateNextPreviousInteractiveStatus();
     $previousInteractive.click(function() {
       var $selectInteractive = $("#select-interactive"),
           $options = $selectInteractive.find("option:enabled"),
           $selection = $options.filter(":selected"),
           index = $options.index($options.filter(":selected"));
+      // reset index if current Interactive not in select list
+      if (index === -1) index = 1;
       if (index > 0) {
         $selection.removeAttr('selected');
         $($options[index-1]).attr('selected', 'selected');
@@ -497,6 +488,20 @@ var ROOT = "/examples",
         this.addClass("disabled");
       }
     });
+  }
+
+  function updateNextPreviousInteractiveStatus() {
+    var $options = $selectInteractive.find("option:enabled"),
+        $selection = $options.filter(":selected"),
+        index = $options.index($options.filter(":selected"));
+
+    if (index === 0) {
+      $previousInteractive.addClass("disabled");
+    }
+
+    if (index+1 >= $options.length) {
+      $nextInteractive.addClass("disabled");
+    }
   }
 
   //
