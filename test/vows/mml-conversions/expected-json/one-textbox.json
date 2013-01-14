@@ -78,5 +78,12 @@
     "friction": [],
     "element": [],
     "pinned": []
-  }
+  },
+  "textBoxes": [
+    {
+      "text": "<p>You will pull apart pairs of polar and</p>\n<p>non-polar molecules to see the different</p>\n<p>strengths of attraction.</p>\n<p></p>\n<p></p>\n<p>Choose a pair of molecules</p>\n<p>from the menu below.</p>",
+      "x": 0.24,
+      "y": 0.27
+    }
+  ]
 }

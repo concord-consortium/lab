@@ -182,5 +182,12 @@
       "imageX": 0.8415186000032427,
       "imageY": 0.9134199679757344
     }
+  ],
+  "textBoxes": [
+    {
+      "text": "<p>Non-polar and polar molecules:</p>\n<p>Induced Dipole Attraction</p>",
+      "x": 0.58,
+      "y": 0.12
+    }
   ]
 }
