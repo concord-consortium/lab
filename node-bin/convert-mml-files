@@ -2,9 +2,11 @@
 
 var converter = require('../src/helpers/md2d/mw-batch-converter'),
     sys = require('sys'),
-    nConverted;
+    nConverted,
+    argv = require('optimist').boolean('a').argv;
 
-sys.print("converting MML files...");
+
+sys.print("converting " + (argv.a ? "all " : "") + "MML files...");
 // Convert outdated mml files only
-nConverted = converter.convertMMLFolder(true, true);
+nConverted = converter.convertMMLFolder(!argv.a, true);
 sys.print("converted " + nConverted + " MML files.\n");

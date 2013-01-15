@@ -256,6 +256,12 @@ convert-mml:
 	./node-bin/create-mml-html-index
 	./src/helpers/md2d/post-batch-processor.rb
 
+.PHONY: convert-all-mml
+convert-all-mml:
+	./node-bin/convert-mml-files -a
+	./node-bin/create-mml-html-index
+	./src/helpers/md2d/post-batch-processor.rb
+
 server/public/resources:
 	cp -R ./src/resources ./server/public/
 

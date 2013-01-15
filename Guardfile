@@ -60,7 +60,7 @@ guard 'shell' do
     when /\/md2d\/mml-parser/
       if system("./node_modules/.bin/vows --isolate test/vows/mml-conversions/conversion-test.js")
         puts "*** mml conversion tests passed, mml conversions started ..."
-        command("make convert-mml")
+        command("make convert-all-mml")
       else
         puts "*** error running mml conversion tests, mml conversions not started."
       end
