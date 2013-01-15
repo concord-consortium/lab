@@ -304,8 +304,16 @@ define(function (require) {
 
         e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
       */
-      transcribeDNA: function transcribeDNA() {
+      transcribe: function transcribeDNA() {
         model.getGeneticProperties().transcribeDNA();
+      },
+
+      /**
+        Triggers translation of mRNA to protein.
+      */
+      translate: function translate() {
+        var aaSequence = model.getGeneticProperties().translate();
+        model.generateProtein(aaSequence);
       },
 
       /**
@@ -316,7 +324,7 @@ define(function (require) {
         area of the model), protein will be truncated and warning shown.
       */
       generateRandomProtein: function (expectedLength) {
-        var realLength = model.generateProtein(expectedLength);
+        var realLength = model.generateProtein(undefined, expectedLength);
 
         if (realLength !== expectedLength) {
           throw new Error("Generated protein was truncated due to limited area of the model. Only" +
