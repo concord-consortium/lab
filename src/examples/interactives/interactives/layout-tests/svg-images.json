@@ -12,8 +12,7 @@
       "id": "png",
       "url": "/imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
       "viewOptions": {
-        "controlButtons": "",
-        "enableKeyboardHandlers": false
+        "controlButtons": ""
       }
     },
     {
@@ -21,7 +20,6 @@
       "url": "/imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
       "viewOptions": {
         "controlButtons": "",
-        "enableKeyboardHandlers": false,
         "imageMapping": {
           "instructionBox.png": "instructionBox.svg"
         }
@@ -32,7 +30,6 @@
       "url": "/imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
       "viewOptions": {
         "controlButtons": "",
-        "enableKeyboardHandlers": false,
         "imageMapping": {
           "instructionBox.png": "instructionBox2.svg"
         }
@@ -43,7 +40,6 @@
       "url": "/imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
       "viewOptions": {
         "controlButtons": "",
-        "enableKeyboardHandlers": false,
         "imageMapping": {
           "instructionBox.png": "instructionBox3.svg"
         }

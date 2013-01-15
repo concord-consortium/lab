@@ -35,8 +35,7 @@
       "id": "page3$1",
       "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "enableKeyboardHandlers": false
+        "controlButtons": "play_reset"
       },
       "onLoad": "set({showVelocityVectors: true})"
     }

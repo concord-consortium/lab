@@ -12,7 +12,6 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page1/page1$0.json",
       "viewOptions": {
         "controlButtons": "",
-        "enableKeyboardHandlers": false,
         "imageMapping": {
           "instructionBox.png": "instructionBox2.svg"
         }
