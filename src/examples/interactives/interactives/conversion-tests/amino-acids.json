@@ -236,6 +236,12 @@
         "}",
         "repaint();"
         ]
+    },
+    {
+      "type": "button",
+      "id": "random-protein-button",
+      "text": "Generate Random Protein",
+      "action": "generateRandomProtein(80);"
     }
   ],
   "layout": {
@@ -243,7 +249,8 @@
       ["show-labels", "select-color-scheme"],
       ["select-solvent", "solvent-force-factor-slider", "realistic-dielectric-effect"],
       ["add-solvent-force-mult-slider", "add-solvent-force-threshold-slider"],
-      ["epsilon-slider"]
+      ["epsilon-slider"],
+      ["random-protein-button"]
     ]
   }
 }
