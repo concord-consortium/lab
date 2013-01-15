@@ -2,8 +2,9 @@
 
 define(function (require) {
 
-  var validator = require('common/validator'),
-      metadata  = require('md2d/models/metadata'),
+  var validator        = require('common/validator'),
+      metadata         = require('md2d/models/metadata'),
+      aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
 
       ValidationError = validator.ValidationError;
 
@@ -152,7 +153,7 @@ define(function (require) {
         dispatch.on(type, listener);
       },
 
-      // Transcribe mRNA from DNA.
+      // Transcribes mRNA from DNA.
       // Result is saved in the mRNA property.
       transcribeDNA: function() {
         changePreHook();
@@ -174,6 +175,28 @@ define(function (require) {
 
         changePostHook();
         dispatch.change();
+      },
+
+      // Translates mRNA into amino acids chain.
+      translate: function() {
+        var result = [],
+            mRNA, abbr, i, len;
+
+        // Make sure that mRNA is available.
+        if (data.mRNA === undefined) {
+          api.transcribeDNA();
+        }
+        mRNA = data.mRNA;
+
+        for (i = 0, len = mRNA.length; i + 3 <= len; i += 3) {
+          abbr = aminoacidsHelper.codonToAbbr(mRNA.substr(i, 3));
+          if (abbr === "STOP" || abbr === undefined) {
+            return result;
+          }
+          result.push(abbr);
+        }
+
+        return result;
       }
     };
 
