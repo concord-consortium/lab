@@ -5,8 +5,7 @@
   "about": [
     "There are gases on both sides of a moveable barrier (piston), which stays in the same place (more or less) when you run the model because the gas pressure on the piston is in equilibrium.",
     "Add purple gas molecules and watch what happens to the piston. Reset the model. Now add yellow gas molecules. What happens to the piston?",
-    "Try heating or cooling the gas molecules. Explain the change in equilibrium with each change. Which has a greater effect on equilibrium -- changing the number of gas molecules or changing the temperature? Why?",
-    "Extension: Have you ever seen a soda can collapse? Watch this (<a href='http://www.youtube.com/watch?v=gFDS3bwAU-s' target='_blank'>http://www.youtube.com/watch?v=gFDS3bwAU-s</a>). Can you explain the collapsing can in terms of pressure equilibrium?"
+    "Try heating or cooling the gas molecules. Explain the change in equilibrium with each change. Which has a greater effect on equilibrium -- changing the number of gas molecules or changing the temperature? Why?"
   ],
   "models": [
     {
