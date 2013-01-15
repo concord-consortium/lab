@@ -1,0 +1,11 @@
+
+myExtraFileExcludes = ""
+myExtraFolderExcludes = "target,tmp,log"
+
+excludeInFileChooser  = "{$excludeInFileChooser,$myExtraFileExcludes}" 
+excludeInFolderSearch = "{$excludeInFolderSearch,$myExtraFolderExcludes}" 
+excludeInBrowser      = "{$excludeInBrowser,$myExtraFileExcludes,$myExtraFolderExcludes}" 
+
+# filetype-specific customizations
+[ Makefile ]
+softTabs         = false
