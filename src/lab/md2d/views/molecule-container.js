@@ -1604,8 +1604,8 @@ define(function (require) {
 
         // Create and arrange "layers" of the final image (g elements).
         // Note that order of their creation is significant.
-        radialBondsContainer = vis.append("g").attr("class", "radial-bonds-container");
         imageContainerBelow = vis.append("g").attr("class", "image-container-below");
+        radialBondsContainer = vis.append("g").attr("class", "radial-bonds-container");
         VDWLinesContainer = vis.append("g").attr("class", "vdw-lines-container");
         mainContainer = vis.append("g").attr("class", "main-container");
         imageContainerTop = vis.append("g").attr("class", "image-container-top");
