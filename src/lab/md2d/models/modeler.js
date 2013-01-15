@@ -1650,6 +1650,30 @@ define(function(require) {
       return model;
     };
 
+    /**
+      Generates a random protein. It returns a real number of created amino acids.
+
+      'expectedLength' parameter controls the maximum (and expected) number of amino
+      acids of the resulting protein. When expected length is too big (due to limited
+      area of the model), protein will be truncated and its real length returned.
+    */
+    model.generateProtein = function (expectedLength) {
+      var generatedAACount;
+
+      invalidatingChangePreHook();
+
+      generatedAACount = engine.generateProtein(expectedLength);
+      // Enforce modeler to recalculate results array.
+      // TODO: it's a workaround, investigate the problem.
+      results.length = 0;
+
+      invalidatingChangePostHook();
+
+      dispatch.addAtom();
+
+      return generatedAACount;
+    };
+
     model.start = function() {
       return model.resume();
     };

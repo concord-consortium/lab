@@ -309,6 +309,22 @@ define(function (require) {
       },
 
       /**
+        Generates a random protein.
+
+        'expectedLength' parameter controls the maximum (and expected) number of amino
+        acids of the resulting protein. When expected length is too big (due to limited
+        area of the model), protein will be truncated and warning shown.
+      */
+      generateRandomProtein: function (expectedLength) {
+        var realLength = model.generateProtein(expectedLength);
+
+        if (realLength !== expectedLength) {
+          throw new Error("Generated protein was truncated due to limited area of the model. Only" +
+            realLength + " amino acids were generated.");
+        }
+      },
+
+      /**
         Sets solvent. You can use three predefined solvents: "water", "oil" or "vacuum".
         This is only a convenience method. The same effect can be achieved by manual setting
         of 'solventForceFactor', 'dielectricConstant' and 'backgroundColor' properties.
