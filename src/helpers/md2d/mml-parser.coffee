@@ -413,10 +413,11 @@ parseMML = (mmlString) ->
       text = wrapTextBoxText $textBoxNode.find("[property=text] string").text()
       $x = parseFloat $textBoxNode.find("[property=x] double").text()
       $y = parseFloat $textBoxNode.find("[property=y] double").text()
+      layer = parseInt($textBoxNode.find("[property=layer] int").text()) || 1
 
       [x, y] = toNextgenCoordinates $x, $y
 
-      { text, x, y }
+      { text, x, y, layer }
 
     $textBoxesArray = $mml "[property=textBoxes] array"
     if $textBoxesArray.length > 0

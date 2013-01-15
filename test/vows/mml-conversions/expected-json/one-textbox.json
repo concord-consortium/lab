@@ -83,7 +83,8 @@
     {
       "text": "You will pull apart pairs of polar and non-polar molecules to see the different strengths of attraction.   Choose a pair of molecules from the menu below.",
       "x": 0.24,
-      "y": 1.73
+      "y": 1.73,
+      "layer": 1
     }
   ]
 }

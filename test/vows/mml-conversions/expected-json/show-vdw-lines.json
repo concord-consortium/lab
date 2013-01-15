@@ -264,7 +264,8 @@
     {
       "text": "Drag the molecules close to each other, and look for intermolecular attractions.",
       "x": 0.53,
-      "y": 2.02
+      "y": 2.02,
+      "layer": 1
     }
   ]
 }

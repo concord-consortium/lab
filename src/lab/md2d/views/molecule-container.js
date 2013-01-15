@@ -69,6 +69,7 @@ define(function (require) {
         VDWLinesContainer,
         imageContainerBelow,
         imageContainerTop,
+        textContainerBelow,
         textContainerTop,
 
         gradientNameForElement,
@@ -900,27 +901,41 @@ define(function (require) {
     }
 
     function drawTextBoxes() {
-      var htmlObjects, size;
+      var htmlObjects, size, container;
 
       size = model.size();
 
-      textContainerTop.selectAll(".textBox").remove();
+      layers = [textContainerTop, textContainerBelow];
 
-      htmlObjects = textContainerTop.selectAll(".textBox").data(textBoxes);
+      // Append to either top or bottom layer depending on item's layer #.
+      appendTextBoxes = function (layerNum) {
+        var layer = layers[layerNum - 1];
 
-      htmlObjects.enter().append("text")
-        .attr({
-          "class": "textBox",
-          "x-data": function(d) { return nm2px(d.x) },
-          "y": function(d) { return nm2pxInv(d.y) },
-          "width-data": function(d) { return d.width },
-          "width":  nm2px(size[0]),
-          "height": nm2pxInv(-size[1]),
-          "xml:space": "preserve",
-          "font-family": "'Open Sans', sans-serif",
-          "font-size": nm2px(0.12),
-          "text-data": function(d) { return d.text; }
-        });
+        layer.selectAll(".textBox").remove();
+
+        text = layer.selectAll(".textBox")
+                    .data(textBoxes.filter(function (d) { return d.layer == layerNum}));
+
+        text.enter()
+          .append("text")
+          .attr({
+            "class": "textBox",
+            "x-data": function(d) { return nm2px(d.x) },
+            "y": function(d) { return nm2pxInv(d.y) },
+            "width-data": function(d) { return d.width },
+            "width":  nm2px(size[0]),
+            "height": nm2pxInv(-size[1]),
+            "xml:space": "preserve",
+            "font-family": "'Open Sans', sans-serif",
+            "font-size": nm2px(0.12),
+            "text-data": function(d) { return d.text; }
+          });
+
+        text.exit().remove();
+      }
+
+      appendTextBoxes(1);
+      appendTextBoxes(2);
 
       // wrap text
       $(".textBox").each( function() {
@@ -935,8 +950,6 @@ define(function (require) {
 
         wrapSVGText(text, this, width, x, 18);
       });
-
-      htmlObjects.exit().remove();
     }
 
     function setupClock() {
@@ -1605,6 +1618,7 @@ define(function (require) {
         // Create and arrange "layers" of the final image (g elements).
         // Note that order of their creation is significant.
         imageContainerBelow = vis.append("g").attr("class", "image-container-below");
+        textContainerBelow = vis.append("g").attr("class", "text-container-below");
         radialBondsContainer = vis.append("g").attr("class", "radial-bonds-container");
         VDWLinesContainer = vis.append("g").attr("class", "vdw-lines-container");
         mainContainer = vis.append("g").attr("class", "main-container");
