@@ -82,20 +82,6 @@ define(function (require) {
           return overlay;
         };
 
-        // Move images and textBoxes the from model config to view options.
-        // TODO: move images and textBoxes to viewOptions during MML->JSON conversion.
-        if (modelConfig.viewOptions === undefined) {
-          modelConfig.viewOptions = {};
-        }
-        modelConfig.viewOptions.images    = modelConfig.images;
-        modelConfig.viewOptions.textBoxes = modelConfig.textBoxes;
-
-        // This is not necessary (images and textBoxes properties would be
-        // discarded by the properties validator), however clearly shows
-        // that images and text boxes should be specified in viewOptions.
-        delete modelConfig.images;
-        delete modelConfig.textBoxes;
-
         // 1. Process view options.
         // Do not modify initial configuration.
         viewOptions = $.extend(true, {}, interactiveViewConfig);

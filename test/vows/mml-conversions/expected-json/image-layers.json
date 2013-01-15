@@ -27,7 +27,41 @@
     "showClock": true,
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "showAtomTrace": false
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "above-bottom.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 0.12,
+        "imageY": 2.55
+      },
+      {
+        "imageUri": "above-top.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 1.73,
+        "imageY": 2.76
+      },
+      {
+        "imageUri": "beneath-bottom.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0.18,
+        "imageY": 1.28
+      },
+      {
+        "imageUri": "beneath-top.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 1.88,
+        "imageY": 1.42
+      }
+    ]
   },
   "elements": [
     {
@@ -159,40 +193,6 @@
       2
     ]
   },
-    "images": [
-      {
-        "imageUri": "above-bottom.png",
-        "imageHostIndex": 0,
-        "imageHostType": "",
-        "imageLayer": 1,
-        "imageX": 0.12,
-        "imageY": 2.55
-      },
-      {
-        "imageUri": "above-top.png",
-        "imageHostIndex": 0,
-        "imageHostType": "",
-        "imageLayer": 1,
-        "imageX": 1.73,
-        "imageY": 2.76
-      },
-      {
-        "imageUri": "beneath-bottom.png",
-        "imageHostIndex": 0,
-        "imageHostType": "",
-        "imageLayer": 2,
-        "imageX": 0.18,
-        "imageY": 1.28
-      },
-      {
-        "imageUri": "beneath-top.png",
-        "imageHostIndex": 0,
-        "imageHostType": "",
-        "imageLayer": 2,
-        "imageX": 1.88,
-        "imageY": 1.42
-      }
-    ],
   "obstacles": {
     "x": [
       2.05

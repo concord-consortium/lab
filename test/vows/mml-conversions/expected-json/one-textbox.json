@@ -27,7 +27,14 @@
     "showClock": false,
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "showAtomTrace": false
+    "showAtomTrace": false,
+    "textBoxes": [
+      {
+        "text": "You will pull apart pairs of polar and non-polar molecules to see the different strengths of attraction.   Choose a pair of molecules from the menu below.",
+        "x": 0.24,
+        "y": 1.73
+      }
+    ]
   },
   "elements": [
     {
@@ -78,12 +85,5 @@
     "friction": [],
     "element": [],
     "pinned": []
-  },
-  "textBoxes": [
-    {
-      "text": "You will pull apart pairs of polar and non-polar molecules to see the different strengths of attraction.   Choose a pair of molecules from the menu below.",
-      "x": 0.24,
-      "y": 1.73
-    }
-  ]
+  }
 }
