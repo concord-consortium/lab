@@ -188,7 +188,8 @@
       "text": "Non-polar and polar molecules: Induced Dipole Attraction",
       "x": 0.58,
       "y": 1.88,
-      "layer": 1
+      "layer": 1,
+      "frame": "rounded rectangle"
     }
   ]
 }

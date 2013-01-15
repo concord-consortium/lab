@@ -414,10 +414,17 @@ parseMML = (mmlString) ->
       $x = parseFloat $textBoxNode.find("[property=x] double").text()
       $y = parseFloat $textBoxNode.find("[property=y] double").text()
       layer = parseInt($textBoxNode.find("[property=layer] int").text()) || 1
+      borderType = parseInt($textBoxNode.find("[property=borderType] int").text()) || 0
+      frame = switch borderType
+        when 0 then ""
+        when 1 then "rectangle"
+        when 2 then "rounded rectangle"
 
       [x, y] = toNextgenCoordinates $x, $y
 
-      { text, x, y, layer }
+      textBox = { text, x, y, layer }
+      textBox.frame = frame if frame
+      textBox
 
     $textBoxesArray = $mml "[property=textBoxes] array"
     if $textBoxesArray.length > 0
