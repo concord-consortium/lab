@@ -1166,6 +1166,10 @@ define(function (require) {
     }
 
     function mousedown() {
+      setFocus();
+    }
+
+    function setFocus() {
       if (options.enableKeyboardHandlers) {
         node.focus();
       }
@@ -1696,6 +1700,7 @@ define(function (require) {
       setupDrawables: setupDrawables,
       updateMoleculeRadius: updateMoleculeRadius,
       updateDrawablePositions: updateDrawablePositions,
+      setFocus: setFocus,
       scale: scale,
       // Create public methods.
       resize: function(w, h) {

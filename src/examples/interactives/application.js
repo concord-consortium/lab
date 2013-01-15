@@ -447,6 +447,10 @@ var ROOT = "/examples",
       return encodeURI(dgUrl);
     });
 
+    // set keyboard focus on MD2D view
+    // FIXME: generalize when multiple model types implemented
+    controller.modelController.moleculeContainer.setFocus();
+
     //
     // Extras
     //
@@ -480,7 +484,7 @@ var ROOT = "/examples",
           $options = $selectInteractive.find("option:enabled"),
           $selection = $options.filter(":selected"),
           index = $options.index($options.filter(":selected"));
-      if (index < $options.length) {
+      if (index+1 < $options.length) {
         $selection.removeAttr('selected');
         $($options[index+1]).attr('selected', 'selected');
         selectInteractiveHandler();
