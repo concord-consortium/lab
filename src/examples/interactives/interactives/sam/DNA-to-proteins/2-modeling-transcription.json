@@ -29,7 +29,7 @@
       "type": "button",
       "id": "transcribe",
       "text": "Transcribe",
-      "action": "transcribeDNA();"
+      "action": "transcribe();"
     },
     {
       "type": "button",
