@@ -2678,6 +2678,99 @@ define(function (require, exports, module) {
         adjustTemperature(temperature, true);
       },
 
+      /**
+        Generates a random protein. It returns a real number of created amino acids.
+
+        'expectedLength' parameter controls the maximum (and expected) number of amino
+        acids of the resulting protein. When expected length is too big (due to limited
+        area of the model), protein will be truncated and its real length returned.
+      */
+      generateProtein: function (expectedLength) {
+        var width = size[0],
+            height = size[1],
+            xStep = 0,
+            yStep = 0,
+            aaCount = aminoacidsHelper.lastElementID - aminoacidsHelper.firstElementID + 1,
+            i, xPos, yPos, bondLen,
+
+            // This function controls how X coordinate is updated,
+            // using current Y coordinate as input.
+            turnHeight = 0.6,
+            xStepFunc = function(y) {
+              if (y > height - turnHeight || y < turnHeight) {
+                // Close to the boundary increase X step.
+                return 0.1;
+              }
+              return 0.02 - Math.random() * 0.04;
+            },
+
+            // This function controls how Y coordinate is updated,
+            // using current Y coordinate and previous result as input.
+            changeHeight = 0.3,
+            yStepFunc = function(y, prev) {
+              if (prev === 0) {
+                // When previously 0 was returned,
+                // now it's time to switch direction of Y step.
+                if (y > 0.5 * size[1]) {
+                  return -0.1;
+                }
+                return 0.1;
+              }
+              if (yPos > height - changeHeight || yPos < changeHeight) {
+                // Close to the boundary return 0 to make smoother turn.
+                return 0;
+              }
+              // In a typical situation, just return previous value.
+              return prev;
+            },
+
+            getRandomAA = function() {
+              return Math.floor(aaCount * Math.random()) + aminoacidsHelper.firstElementID;
+            };
+
+
+        // First, make sure that model is empty.
+        while(N > 0) {
+          engine.removeAtom(N - 1);
+        }
+
+        // Start from the lower-left corner, add first Amino Acid.
+        xPos = 0.1;
+        yPos = 0.1;
+        engine.addAtom({x: xPos, y: yPos, element: getRandomAA(), visible: true});
+        engine.minimizeEnergy();
+
+        // Add remaining amino acids.
+        for (i = 1; i < expectedLength; i++) {
+          xPos = x[N - 1];
+          yPos = y[N - 1];
+
+          // Update step.
+          xStep = xStepFunc(yPos);
+          yStep = yStepFunc(yPos, yStep);
+
+          // Update coordinates of new AA.
+          xPos += xStep;
+          yPos += yStep;
+
+          if (xPos > width - 0.1) {
+            // No space left for new AA. Stop here, return
+            // real number of created AAs.
+            return i;
+          }
+
+          engine.addAtom({x: xPos, y: yPos, element: getRandomAA(), visible: true});
+          // Length of bond is based on the radii of AAs.
+          bondLen = (radius[N - 1] + radius[N - 2]) * 1.25;
+          // 10000 is a typical strength for bonds between AAs.
+          engine.addRadialBond({atom1: N - 1, atom2: N - 2, length: bondLen, strength: 10000});
+
+          engine.minimizeEnergy();
+        }
+        // Return number of created AA.
+        return i;
+      },
+
       getVdwPairsArray: function() {
         var i,
             j,
