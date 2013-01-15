@@ -82,30 +82,33 @@ define(function (require) {
           return overlay;
         };
 
-        // 1. Process view options.
-        // Do not modify initial configuration.
-        viewOptions = $.extend(true, {}, interactiveViewConfig);
-
         // Move images and textBoxes the from model config to view options.
+        // TODO: move images and textBoxes to viewOptions during MML->JSON conversion.
+        if (modelConfig.viewOptions === undefined) {
+          modelConfig.viewOptions = {};
+        }
         modelConfig.viewOptions.images    = modelConfig.images;
         modelConfig.viewOptions.textBoxes = modelConfig.textBoxes;
 
+        // This is not necessary (images and textBoxes properties would be
+        // discarded by the properties validator), however clearly shows
+        // that images and text boxes should be specified in viewOptions.
+        delete modelConfig.images;
+        delete modelConfig.textBoxes;
+
+        // 1. Process view options.
+        // Do not modify initial configuration.
+        viewOptions = $.extend(true, {}, interactiveViewConfig);
         // Merge view options defined in interactive (interactiveViewConfig)
         // with view options defined in the basic model description.
         viewOptions = meldOptions(modelConfig.viewOptions || {}, viewOptions);
 
-        // 1. Process model options.
+        // 2. Process model options.
         // Do not modify initial configuration.
         modelOptions = $.extend(true, {}, interactiveModelConfig);
         // Merge model options defined in interactive (interactiveModelConfig)
         // with the basic model description.
         modelOptions = meldOptions(modelConfig || {}, modelOptions);
-        // This is not necessary (images and textBoxes properties would be
-        // discarded by the properties validator), however clearly shows
-        // that images and text boxes should be specified in viewOptions.
-        // TODO: move images and textBoxes definition to viewOptions!
-        delete modelOptions.images;
-        delete modelOptions.textBoxes;
 
         // Update view options in the basic model description after merge.
         // Note that many unnecessary options can be passed to Model constructor
