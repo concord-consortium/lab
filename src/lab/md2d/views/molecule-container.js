@@ -918,7 +918,7 @@ define(function (require) {
           "height": nm2pxInv(-size[1]),
           "xml:space": "preserve",
           "font-family": "'Open Sans', sans-serif",
-          "font-size": 14,
+          "font-size": nm2px(0.12),
           "text-data": function(d) { return d.text; }
         });
 
