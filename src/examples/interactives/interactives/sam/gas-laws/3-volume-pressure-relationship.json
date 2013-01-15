@@ -73,7 +73,7 @@
       "type": "button",
       "id": "decrease-volume",
       "text": "Volume &#8595;",
-      "action": "set({ volume: get('volume') * (1/1.1) });"
+      "action": "if (get('volume') > 0.5) { set({ volume: get('volume') * (1/1.1) }) };"
     },
     {
       "type": "numericOutput",
