@@ -21,6 +21,7 @@ define (require) ->
     curLineLength      = 0
     computedTextLength = 0
     numLines           = 1
+    widestWidth        = 0
 
     maxWidth = Infinity if maxWidth is -1
 
@@ -33,6 +34,7 @@ define (require) ->
           # remove the last word added and place it on the next line
           lastWord = tempText.slice tempText.length - words[i-1].length - 1
           tspanNode.firstChild.nodeValue = tempText.slice 0, (tempText.length - words[i-1].length - 1)
+          widestWidth = Math.max tspanNode.getComputedTextLength(), widestWidth
           numLines++
 
         tspanNode = document.createElementNS svgUrl, "tspan"
@@ -70,4 +72,6 @@ define (require) ->
         svgTextNode.appendChild tspanNode
         numLines++
 
-    return numLines
+    if widestWidth is 0 then widestWidth = svgTextNode.childNodes[0].getComputedTextLength()
+
+    return {lines: numLines, width: widestWidth}
