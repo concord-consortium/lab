@@ -2679,19 +2679,23 @@ define(function (require, exports, module) {
       },
 
       /**
-        Generates a random protein. It returns a real number of created amino acids.
+        Generates a protein. It returns a real number of created amino acids.
+
+        'aaSequence' parameter defines expected sequence of amino acids. Pass undefined
+        and provide 'expectedLength' if you want to generate a random protein.
 
         'expectedLength' parameter controls the maximum (and expected) number of amino
-        acids of the resulting protein. When expected length is too big (due to limited
-        area of the model), protein will be truncated and its real length returned.
+        acids of the resulting protein. Provide this parameter only when 'aaSequence'
+        is undefined. When expected length is too big (due to limited area of the model),
+        the protein will be truncated and its real length returned.
       */
-      generateProtein: function (expectedLength) {
+      generateProtein: function (aaSequence, expectedLength) {
         var width = size[0],
             height = size[1],
             xStep = 0,
             yStep = 0,
             aaCount = aminoacidsHelper.lastElementID - aminoacidsHelper.firstElementID + 1,
-            i, xPos, yPos, bondLen,
+            i, xPos, yPos, el, bondLen,
 
             // This function controls how X coordinate is updated,
             // using current Y coordinate as input.
@@ -2728,6 +2732,10 @@ define(function (require, exports, module) {
               return Math.floor(aaCount * Math.random()) + aminoacidsHelper.firstElementID;
             };
 
+        // Process arguments.
+        if (aaSequence !== undefined) {
+          expectedLength = aaSequence.length;
+        }
 
         // First, make sure that model is empty.
         while(N > 0) {
@@ -2737,7 +2745,8 @@ define(function (require, exports, module) {
         // Start from the lower-left corner, add first Amino Acid.
         xPos = 0.1;
         yPos = 0.1;
-        engine.addAtom({x: xPos, y: yPos, element: getRandomAA(), visible: true});
+        el = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[0]) : getRandomAA();
+        engine.addAtom({x: xPos, y: yPos, element: el, visible: true});
         engine.minimizeEnergy();
 
         // Add remaining amino acids.
@@ -2759,7 +2768,8 @@ define(function (require, exports, module) {
             return i;
           }
 
-          engine.addAtom({x: xPos, y: yPos, element: getRandomAA(), visible: true});
+          el = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[i]) : getRandomAA();
+          engine.addAtom({x: xPos, y: yPos, element: el, visible: true});
           // Length of bond is based on the radii of AAs.
           bondLen = (radius[N - 1] + radius[N - 2]) * 1.25;
           // 10000 is a typical strength for bonds between AAs.
@@ -2767,6 +2777,15 @@ define(function (require, exports, module) {
 
           engine.minimizeEnergy();
         }
+
+        // Center protein (X coords only).
+        // Use last X coordinate to calculate available space on the right.
+        xStep = (width - xPos) / 2;
+        // Shift all AAs.
+        for (i = 0; i < N; i++) {
+          x[i] += xStep;
+        }
+
         // Return number of created AA.
         return i;
       },

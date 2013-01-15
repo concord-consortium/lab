@@ -1651,18 +1651,22 @@ define(function(require) {
     };
 
     /**
-      Generates a random protein. It returns a real number of created amino acids.
+      Generates a protein. It returns a real number of created amino acids.
+
+      'aaSequence' parameter defines expected sequence of amino acids. Pass undefined
+      and provide 'expectedLength' if you want to generate a random protein.
 
       'expectedLength' parameter controls the maximum (and expected) number of amino
-      acids of the resulting protein. When expected length is too big (due to limited
-      area of the model), protein will be truncated and its real length returned.
+      acids of the resulting protein. Provide this parameter only when 'aaSequence'
+      is undefined. When expected length is too big (due to limited area of the model),
+      the protein will be truncated and its real length returned.
     */
-    model.generateProtein = function (expectedLength) {
+    model.generateProtein = function (aaSequence, expectedLength) {
       var generatedAACount;
 
       invalidatingChangePreHook();
 
-      generatedAACount = engine.generateProtein(expectedLength);
+      generatedAACount = engine.generateProtein(aaSequence, expectedLength);
       // Enforce modeler to recalculate results array.
       // TODO: it's a workaround, investigate the problem.
       results.length = 0;
