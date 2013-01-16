@@ -65,6 +65,9 @@ define(function() {
       additionalSolventForceThreshold: {
         defaultValue: 10
       },
+      polarAAEpsilon: {
+        defaultValue: -2
+      },
       viscosity: {
         defaultValue: 1
       },

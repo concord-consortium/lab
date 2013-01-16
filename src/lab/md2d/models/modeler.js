@@ -194,6 +194,27 @@ define(function(require) {
             if (engine) {
               engine.setViscosity(v);
             }
+          },
+
+          set_polarAAEpsilon: function (e) {
+            var polarAAs, element1, element2,
+                i, j, len;
+
+            this.polarAAEpsilon = e;
+
+            if (engine) {
+              // Set custom pairwise LJ properties for polar amino acids.
+              // They should attract stronger to better mimic nature.
+              polarAAs = aminoacidsHelper.getPolarAminoAcids();
+              for (i = 0, len = polarAAs.length; i < len; i++) {
+                element1 = polarAAs[i];
+                for (j = i + 1; j < len; j++) {
+                  element2 = polarAAs[j];
+                  // Set custom pairwise LJ epsilon (default one for AA is -0.1).
+                  engine.pairwiseLJProperties.set(element1, element2, {epsilon: e});
+                }
+              }
+            }
           }
         },
 
@@ -603,9 +624,7 @@ define(function(require) {
     function createAminoAcids() {
       var sigmaIn01Angstroms,
           sigmaInNm,
-          polarAAs,
-          element1, element2,
-          i, j, len;
+          i, len;
 
       // Note that amino acids ALWAYS have IDs from
       // AMINO_ELEMENT_FIRST_IDX (= 5) to AMINO_ELEMENT_LAST_IDX (= 24).
@@ -635,18 +654,6 @@ define(function(require) {
           // Classic MW uses epsilon 0.1 for all amino acids, which is default one.
           // See: org.concord.mw2d.models.AtomicModel.resetElements()
         });
-      }
-
-      // Set custom pairwise LJ properties for polar amino acids.
-      // They should attract stronger to better mimic nature.
-      polarAAs = aminoacidsHelper.getPolarAminoAcids();
-      for (i = 0, len = polarAAs.length; i < len; i++) {
-        element1 = polarAAs[i];
-        for (j = i + 1; j < len; j++) {
-          element2 = polarAAs[j];
-          // Set custom pairwise LJ epsilon to -2.0 (default one for AA is -0.1).
-          engine.pairwiseLJProperties.set(element1, element2, {epsilon: -2.0});
-        }
       }
     }
 
@@ -2026,6 +2033,12 @@ define(function(require) {
     model.createElements(editableElements);
     // Create elements which specify amino acids also.
     createAminoAcids();
+
+    // Trigger setter of polarAAEpsilon again when engine is initialized and
+    // amino acids crated.
+    // TODO: initialize engine before set_properties calls, so properties
+    // will be injected to engine automatically.
+    model.set({polarAAEpsilon: model.get('polarAAEpsilon')});
 
     if (initialProperties.atoms) {
       model.createAtoms(initialProperties.atoms);

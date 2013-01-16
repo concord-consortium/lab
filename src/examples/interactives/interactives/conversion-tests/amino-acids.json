@@ -22,22 +22,6 @@
       }
     }
   ],
-  "parameters": [
-    {
-      "name": "polarAAEpislon",
-      "label": "epsilon",
-      "onChange": [
-        "var i, j, len;",
-        "var polarAAs = [7, 10, 20, 21];",
-        "for (i = 0, len = polarAAs.length; i < len; i++) {",
-        "  for (j = i + 1; j < len; j++) {",
-        "    setPairwiseLJProperties(polarAAs[i], polarAAs[j], { epsilon: value });",
-        "  }",
-        "}"
-      ],
-      "initialValue": -2.0
-    }
-  ],
   "components": [
     {
       "type": "checkbox",
@@ -146,7 +130,7 @@
       ],
       "steps": 290,
       "title": "Pairwise Epsilon of Polar Amino Acids",
-      "property": "polarAAEpislon"
+      "property": "polarAAEpsilon"
     },
     {
       "type": "checkbox",
