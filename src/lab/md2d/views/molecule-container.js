@@ -925,7 +925,10 @@ define(function (require) {
           .append("rect")
           .attr({
             "class": function(d, i) { return "textBoxFrame text-"+i; },
-            "style": "opacity:1.0;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1",
+            "style": function(d) {
+              var backgroundColor = d.backgroundColor || "white";
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1";
+            },
             "width": 0,
             "height": 0,
             "rx": function(d) { return d.frame == "rounded rectangle" ? 8  : 0; },
@@ -945,6 +948,7 @@ define(function (require) {
             "xml:space": "preserve",
             "font-family": "'Open Sans', sans-serif",
             "font-size": nm2px(0.12),
+            "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; }
           });
         selection.exit().remove();
