@@ -13,6 +13,7 @@
   "solventForceType": 0,
   "additionalSolventForceMult": 4,
   "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
   "viscosity": 1,
   "viewRefreshInterval": 50,
   "viewOptions": {

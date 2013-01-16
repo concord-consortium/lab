@@ -15,6 +15,7 @@
   "solventForceFactor": 1.25,
   "additionalSolventForceMult": 4,
   "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
   "viewOptions": {
     "backgroundColor": "#eeeeee",
     "keShading": true,
