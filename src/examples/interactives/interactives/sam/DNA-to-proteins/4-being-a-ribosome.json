@@ -10,7 +10,13 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false
-      }
+      },
+      "modelOptions": {
+        "geneticProperties": {
+          "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTGTAG"
+        }
+      },
+      "onLoad": "transcribe();"
     }
   ],
   "layout": {
