@@ -63,7 +63,6 @@ define(function() {
         // This is the return handshake from the embedding window.
         if (messageData.type === 'hello') {
           parentOrigin = messageData.origin;
-          console.log("Lab: set parentOrigin to " + parentOrigin);
         }
       }
 
