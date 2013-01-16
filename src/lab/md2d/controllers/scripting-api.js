@@ -26,6 +26,26 @@ define(function (require) {
         return model.get_num_atoms();
       },
 
+      /* Returns number of obstacles in the system. */
+      getNumberOfObstacles: function getNumberOfObstacles() {
+        return model.getNumberOfObstacles();
+      },
+
+      /* Returns number of elements in the system. */
+      getNumberOfElements: function getNumberOfElements() {
+        return model.getNumberOfElements();
+      },
+
+      /* Returns number of radial bonds in the system. */
+      getNumberOfRadialBonds: function getNumberOfRadialBonds() {
+        return model.getNumberOfRadialBonds();
+      },
+
+      /* Returns number of angular bonds in the system. */
+      getNumberOfAngularBonds: function getNumberOfAngularBonds() {
+        return model.getNumberOfAngularBonds();
+      },
+
       addAtom: function addAtom(props, options) {
         if (options && options.supressRepaint) {
           // Translate supressRepaint option to
