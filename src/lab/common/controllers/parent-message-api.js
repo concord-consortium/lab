@@ -15,7 +15,7 @@ define(function(require) {
       });
     }
 
-    // on message 'get' propertyName: return a 'propertyValue' message
+    // on message 'setFocus' call view.setFocus
     parentMessageController.addListener('setFocus', function(message) {
       if (view && view.setFocus) {
         view.setFocus();
