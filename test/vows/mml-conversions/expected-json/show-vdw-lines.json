@@ -34,7 +34,8 @@
         "x": 0.53,
         "y": 2.02,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(232,231,231)"
       }
     ]
   },
