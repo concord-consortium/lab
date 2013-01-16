@@ -60,7 +60,7 @@ define(function() {
       // that passes through two points:
       // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
       additionalSolventForceMult: {
-        defaultValue: 15
+        defaultValue: 4
       },
       additionalSolventForceThreshold: {
         defaultValue: 10

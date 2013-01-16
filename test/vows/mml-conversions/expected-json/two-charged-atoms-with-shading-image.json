@@ -13,7 +13,7 @@
   "realisticDielectricEffect": true,
   "solventForceType": 0,
   "solventForceFactor": 1.25,
-  "additionalSolventForceMult": 15,
+  "additionalSolventForceMult": 4,
   "additionalSolventForceThreshold": 10,
   "viewOptions": {
     "backgroundColor": "rgba(225,239,222,255)",
