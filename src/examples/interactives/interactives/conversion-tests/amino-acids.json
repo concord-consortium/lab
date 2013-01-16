@@ -19,12 +19,6 @@
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "modelTimeLabel": true
-      },
-      "modelOptions": {
-        "solventForceFactor": 1.25,
-        "additionalSolventForceMult" : 4,
-        "additionalSolventForceThreshold": 10,
-        "polarAAEpislon": -2
       }
     }
   ],
