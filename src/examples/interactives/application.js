@@ -482,21 +482,21 @@ var ROOT = "/examples",
 
       // send this message to Interactive in iframe
       // controller.modelController.moleculeContainer.setFocus();
-      var sizeAttributes = 'width="925px" height="575px"',
+      var childIFrameObj = {},
+          sizeAttributes = 'width="925px" height="575px"',
           $iframeInteractive,
           $iframe = $('<iframe id="iframe-interactive"' + sizeAttributes + 
             ' frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
 
       $("#viz").append($iframe);
-
+      setupIframeListenerFor($iframe[0]);
     }
   }
 
-  function fjdhfjdh() {
-    var iframe = document.getElementById('model'),
-        iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
-        post = LabExercise.post = function(message) {
-          var iframe = document.getElementById('model');
+  function setupIframeListenerFor(iframe) {
+    var iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
+        selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
+        post = function(message) {
           try {
             iframe.contentWindow.postMessage(message, iframeOrigin);
           } catch (e) {
@@ -506,12 +506,8 @@ var ROOT = "/examples",
             }
           };
 
-    LabExercise.properties = {};
-
-    function receiveMessage(message) {
-      var messageData,
-      iframe = document.getElementById('model'),
-      volumeToDisplay;
+    var handleIframePostMessage = function (message) {
+      var messageData;
 
       if (message.source === iframe.contentWindow && message.origin === iframeOrigin) {
         messageData = message.data;
@@ -522,43 +518,23 @@ var ROOT = "/examples",
           // Handshake with the model
           post({
             type: 'hello',
-            origin: window.location.href.match(/(.*?\/\/.*?)\//)[1]
+            origin: selfOrigin
           });
-
+          // tell the model to focus
           post({
-            type: 'observe',
-            propertyName: 'volume'
+            type: 'setFocus',
+            origin: selfOrigin
           });
-
-          post({
-            type: 'observe',
-            propertyName: 'pressureProbeFiltered'
-          });
-
-          // Data about the initial settings may be in the DOM! (showGuess works by
-          // constructing div.problems for each guess up front, then simply appending
-          // the appropriate div.problem to the DOM when the user navigates the
-          // timeline to that guess)
-          volumeToDisplay = $('#iframe-container').attr('data-volume');
-          if (volumeToDisplay !== null) {
-            post({
-              type: 'set',
-              propertyName: 'volume',
-              propertyValue: parseFloat(volumeToDisplay)
-            });
-          }
-
-          post({
-            type: 'play'
-          });
-        } else if (messageData.type === 'propertyValue') {
-          LabExercise.properties[messageData.name] = messageData.value;
-        }
+        } 
       }
-    }
-
-    window.addEventListener('message', receiveMessage, false);
+    };
+    window.addEventListener('message', handleIframePostMessage, false);
   }
+
+  
+
+
+
 
 
 
