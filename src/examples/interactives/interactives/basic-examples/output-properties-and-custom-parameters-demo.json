@@ -148,26 +148,6 @@
       "property": "ballMass"
     },
     {
-      "type": "slider",
-      "id": "current-angle-slider",
-      "min": -45,
-      "max": 45,
-      "displayValue": "return format('f')(value)",
-      "labels": [
-        {
-          "value": -45,
-          "label": "-45&deg;"
-        },
-        {
-          "value": 45,
-          "label": "45&deg;"
-        }
-      ],
-      "steps": 90,
-      "title": "Current Angle",
-      "property": "currentAngle"
-    },
-    {
       "type": "numericOutput",
       "id": "kinetic-energy1",
       "property": "kineticEnergy",
