@@ -61,7 +61,6 @@ guard 'shell' do
       if system("./node_modules/.bin/vows --isolate test/vows/mml-conversions/conversion-test.js")
         puts "*** mml conversion tests passed, mml conversions started ..."
         command("make convert-all-mml")
-        command("./node_modules/.bin/vows --no-color test/vows/mml-conversions/conversion-test.js")
       else
         puts "*** error running mml conversion tests, mml conversions not started."
       end
