@@ -129,14 +129,12 @@
       ]
     },
     {
-      "type": "slider",
-      "id": "volume-slider",
-      "min": 0,
-      "max": 8,
-      "displayValue": "return format('1.2f')(value)",
-      "steps": 80,
-      "title": "Volume of Gas",
-      "property": "volume"
+      "type": "numericOutput",
+      "id": "current-volume",
+      "label": "Volume of Gas",
+      "units": " ",
+      "property": "volume",
+      "displayValue": "return format('1.2f')(value)"
     }
   ]
 }
