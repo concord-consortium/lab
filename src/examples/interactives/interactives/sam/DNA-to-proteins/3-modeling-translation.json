@@ -8,7 +8,8 @@
       "id": "page3$0",
       "url": "/imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
       }
     }
   ],

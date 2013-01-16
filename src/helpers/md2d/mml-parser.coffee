@@ -757,6 +757,12 @@ parseMML = (mmlString) ->
       showVelocityVectors : showVelocityVectors
       showForceVectors    : showForceVectors
 
+    if imageProps.length > 0
+      modelViewProperties.images = images
+
+    if textBoxes.length > 0
+      modelViewProperties.textBoxes = textBoxes
+
     # Validate all properties and provides default values for undefined values.
     modelViewProperties = validator.validateCompleteness metadata.modelViewProperties, modelViewProperties
 
@@ -785,15 +791,9 @@ parseMML = (mmlString) ->
     if restraints.length > 0
       json.restraints = unroll restraints, 'atomIndex', 'k', 'x0', 'y0'
 
-    if imageProps.length > 0
-      json.images = images
-
     if obstacles.length > 0
       json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction',
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
-
-    if textBoxes.length > 0
-      json.textBoxes = textBoxes
 
     # Additional view-only options (which are *not* managed by model).
     if velocityVectorLength or velocityVectorWidth or velocityVectorColor

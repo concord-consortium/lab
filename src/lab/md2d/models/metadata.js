@@ -112,6 +112,12 @@ define(function() {
       },
       atomTraceId: {
         defaultValue: 0
+      },
+      images: {
+
+      },
+      textBoxes: {
+
       }
     },
 
