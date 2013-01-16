@@ -68,13 +68,21 @@ describe "GeneticProperties", ->
             geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", x: 1, y: 2, height: 3}
 
 
-          it "should allow to transcribe mRNA from DNA and call appropriate hooks", ->
+          it "should transcribe mRNA from DNA and call appropriate hooks", ->
             geneticProperties.transcribeDNA()
             changeHooks.pre.callCount.should.eql 1
             changeHooks.post.callCount.should.eql 1
             changeHooks.changeListener.callCount.should.eql 1
 
             geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", mRNA: "AUGC", x: 1, y: 2, height: 3}
+
+          it "should translate mRNA to amino acids sequence correctly", ->
+            # This is pretty complex, so test a least some examples.
+            geneticProperties.set {DNA: "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG"}
+            geneticProperties.translate().should.eql ["Met", "Pro", "Gly", "Gly", "Glu", "Ser", "Leu", "Leu", "Ile", "Gly", "Leu"]
+            # Note that "TAG" sequence will result in "STOP" codon, so the result should be exactly the same.
+            geneticProperties.set {DNA: "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAGATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTA"}
+            geneticProperties.translate().should.eql ["Met", "Pro", "Gly", "Gly", "Glu", "Ser", "Leu", "Leu", "Ile", "Gly", "Leu"]
 
           it "should allow to modify existing genetic properties and call appropriate hooks", ->
             geneticProperties.set {DNA: "ATGCT", x: 0, y: 1}
