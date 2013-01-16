@@ -1,8 +1,10 @@
 {
   "title": "Bar Graph Example",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Marking an atom and graphing it's kinetic energy.",
+  "about": [
+             "There are 10 atoms in the model and the fifth one is both 'marked' and it's kinetic energy is graphed in the bar graph."
+           ],
   "models": [
     {
       "id": "simple-ke-shading$0",

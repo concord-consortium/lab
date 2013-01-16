@@ -1,7 +1,7 @@
 {
   "title": "Interactive View and Model Options",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Overriding model and view properties in the Interactive.",
   "about": [
     "This interactive presents how an author can overwrite model properties.",
     "Take a look at the interactive JSON and <b>models</b> hash. There are two nested objects:",

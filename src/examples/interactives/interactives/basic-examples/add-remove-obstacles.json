@@ -1,7 +1,7 @@
 {
   "title": "Add Remove Obstacles",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Creating and interacting with Obstacles using scripts.",
   "about": "",
   "models": [
     {
@@ -10,6 +10,16 @@
       "viewOptions": {
         "controlButtons": "play_reset"
       }
+    }
+  ],
+  "outputs": [
+    {
+      "name":  "numObstacles",
+      "label": "Number of Obstacles",
+      "units": "",
+      "value": [
+          "return getNumberOfObstacles();"
+      ]
     }
   ],
   "components": [
@@ -34,7 +44,7 @@
     {
       "type": "button",
       "id": "rm-obstacle-1",
-      "text": "Remove first obstacle",
+      "text": "Remove first obstacle in list",
       "action": "removeObstacle(0);"
     },
     {
@@ -42,6 +52,12 @@
       "id": "rm-obstacle-2",
       "text": "Remove first obstacle, silent: true",
       "action": "removeObstacle(0, {silent: true});"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-obstacles",
+      "property": "numObstacles",
+      "displayValue": "return format('f')(value)"
     }
   ]
 }

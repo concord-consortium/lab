@@ -1,7 +1,7 @@
 {
   "title": "Atom Tracing",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Tracing and marking atoms.",
   "about": "Atom Tracing example",
   "models": [
     {
@@ -39,10 +39,22 @@
     {
       "type": "slider",
       "id": "temperature-property-slider",
-      "title": "Temperature",
+      "title": "Set Temperature",
       "min": 200,
       "max": 2000,
-      "property": "targetTemperature"
+      "steps": 36,
+      "property": "targetTemperature",
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 200,
+          "label": "200"
+        },
+        {
+          "value": 2000,
+          "label": "2000"
+        }
+      ]
     }
   ]
 }

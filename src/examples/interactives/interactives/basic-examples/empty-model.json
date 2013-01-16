@@ -1,7 +1,7 @@
 {
   "title": "Empty Model",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "A model with no atoms can be both: loaded and run, and atoms can be added to it.",
   "about": "",
   "models": [
     {

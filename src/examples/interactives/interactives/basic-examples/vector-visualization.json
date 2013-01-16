@@ -1,7 +1,7 @@
 {
   "title": "Vector Visualization",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Velocity and force vectors can be added to atoms and the display properties can be customized.",
   "about": "",
   "models": [
     {
@@ -22,7 +22,7 @@
       "id": "simple-gas$0",
       "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
+        "controlButtons": "play_reset_step",
         "velocityVectors": {
           "color": "#00A",
           "width": 0.015,
@@ -35,7 +35,7 @@
       "id": "page3$1",
       "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": "play_reset_step"
       },
       "onLoad": "set({showVelocityVectors: true})"
     }

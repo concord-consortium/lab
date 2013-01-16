@@ -1,7 +1,7 @@
 {
   "title": "Simple KE Shading",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Kinetic Energy Shading can be turned on and off with scripts (and many other items also).",
   "about": "",
   "models": [
     {
@@ -22,13 +22,13 @@
     {
       "type": "checkbox",
       "id": "temperature-control",
-      "text": "Temperature Control (property link)",
+      "text": "Temperature Control (property)",
       "property": "temperatureControl"
     },
     {
       "type": "checkbox",
       "id": "temperature-control-action",
-      "text": "Temperature Control (onClick script defined)",
+      "text": "Temperature Control (onClick script)",
       "onClick": "set({temperatureControl: value})"
     },
     {
