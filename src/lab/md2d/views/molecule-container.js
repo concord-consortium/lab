@@ -69,6 +69,7 @@ define(function (require) {
         VDWLinesContainer,
         imageContainerBelow,
         imageContainerTop,
+        textContainerBelow,
         textContainerTop,
 
         gradientNameForElement,
@@ -900,43 +901,82 @@ define(function (require) {
     }
 
     function drawTextBoxes() {
-      var htmlObjects, size;
+      var size, layers, appendTextBoxes;
 
       size = model.size();
 
-      textContainerTop.selectAll(".textBox").remove();
+      layers = [textContainerTop, textContainerBelow];
 
-      htmlObjects = textContainerTop.selectAll(".textBox").data(textBoxes);
+      // Append to either top or bottom layer depending on item's layer #.
+      appendTextBoxes = function (layerNum) {
+        var layer = layers[layerNum - 1],
+            text, layerTextBoxes, selection;
 
-      htmlObjects.enter().append("text")
-        .attr({
-          "class": "textBox",
-          "x-data": function(d) { return nm2px(d.x) },
-          "y": function(d) { return nm2pxInv(d.y) },
-          "width-data": function(d) { return d.width },
-          "width":  nm2px(size[0]),
-          "height": nm2pxInv(-size[1]),
-          "xml:space": "preserve",
-          "font-family": "'Open Sans', sans-serif",
-          "font-size": nm2px(0.12),
-          "text-data": function(d) { return d.text; }
-        });
+        layer.selectAll("g.textBoxWrapper").remove();
+
+        layerTextBoxes = textBoxes.filter(function(t) { return t.layer == layerNum; });
+
+        selection = layer.selectAll("g.textBoxWrapper")
+          .data(layerTextBoxes);
+        text = selection.enter().append("svg:g")
+          .attr("class", "textBoxWrapper");
+
+        text.filter(function (d) { return d.frame; })
+          .append("rect")
+          .attr({
+            "class": function(d, i) { return "textBoxFrame text-"+i; },
+            "style": function(d) {
+              var backgroundColor = d.backgroundColor || "white";
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1";
+            },
+            "width": 0,
+            "height": 0,
+            "rx": function(d) { return d.frame == "rounded rectangle" ? 8  : 0; },
+            "ry": function(d) { return d.frame == "rounded rectangle" ? 10 : 0; },
+            "x": function(d) { return nm2px(d.x - 0.1); },
+            "y": function(d) { return nm2pxInv(d.y + 0.15); }
+          });
+
+        text.append("text")
+          .attr({
+            "class": "textBox",
+            "x-data": function(d) { return nm2px(d.x); },
+            "y": function(d) { return nm2pxInv(d.y); },
+            "width-data": function(d) { return nm2px(d.width); },
+            "width":  nm2px(size[0]),
+            "height": nm2px(size[1]),
+            "xml:space": "preserve",
+            "font-family": "'Open Sans', sans-serif",
+            "font-size": nm2px(0.12),
+            "fill": function(d) { return d.color || "black"; },
+            "text-data": function(d) { return d.text; }
+          });
+        selection.exit().remove();
+      };
+
+      appendTextBoxes(1);
+      appendTextBoxes(2);
 
       // wrap text
       $(".textBox").each( function() {
-        text  = this.getAttributeNS(null, "text-data");
-        x     = this.getAttributeNS(null, "x-data");
-        width = this.getAttributeNS(null, "width-data") || -1;
+        var text  = this.getAttributeNS(null, "text-data"),
+            x     = this.getAttributeNS(null, "x-data"),
+            width = this.getAttributeNS(null, "width-data") || -1,
+            dy    = nm2px(0.2),
+            result, frame;
 
-        // clear element first
-        while (this.firstChild) {
+        while (this.firstChild) {     // clear element first
           this.removeChild(this.firstChild);
         }
 
-        wrapSVGText(text, this, width, x, 18);
-      });
+        result = wrapSVGText(text, this, width, x, dy);
 
-      htmlObjects.exit().remove();
+        if (this.parentNode.childElementCount > 1) {
+          frame = this.parentNode.childNodes[0];
+          frame.setAttributeNS(null, "width", result.width + nm2px(0.2));
+          frame.setAttributeNS(null, "height", (result.lines * dy) + nm2px(0.01));
+        }
+      });
     }
 
     function setupClock() {
@@ -1609,6 +1649,7 @@ define(function (require) {
         // Create and arrange "layers" of the final image (g elements).
         // Note that order of their creation is significant.
         imageContainerBelow = vis.append("g").attr("class", "image-container-below");
+        textContainerBelow = vis.append("g").attr("class", "text-container-below");
         radialBondsContainer = vis.append("g").attr("class", "radial-bonds-container");
         VDWLinesContainer = vis.append("g").attr("class", "vdw-lines-container");
         mainContainer = vis.append("g").attr("class", "main-container");
