@@ -134,8 +134,20 @@ var ROOT = "/examples",
     windowLoaded.resolve();
   });
 
+  function onFullPage(){
+    return ($("#extras-bottom").length > 0);
+  }
+
+  function onFullIFramePage() {
+    return (!onFullPage() && ($selectInteractive.length > 0));
+  }
+
   $.when(interactiveDefinitionLoaded, windowLoaded).done(function() {
-    controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
+       
+
+    if(!onFullIFramePage()) {
+      controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
+    }
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
     embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
@@ -145,6 +157,9 @@ var ROOT = "/examples",
     setupCreditsPane();
     setupAboutPane();
     setupSharePane();
+    if(onFullIFramePage()) {
+      applicationCallbacks[0]();
+    }
   });
 
   $(window).bind('hashchange', function() {
@@ -422,8 +437,7 @@ var ROOT = "/examples",
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
     jsonModelPath = interactive.models[0].url;
-    $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
-
+ 
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
     mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml");
@@ -454,16 +468,99 @@ var ROOT = "/examples",
 
     // set keyboard focus on MD2D view
     // FIXME: generalize when multiple model types implemented
-    controller.modelController.moleculeContainer.setFocus();
-
+    // 
     //
     // Extras
-    //
-    setupCodeEditor();
-    setupBenchmarks();
-    setupEnergyGraph();
-    setupAtomDataTable();
+    if(onFullPage()) {
+      controller.modelController.moleculeContainer.setFocus();
+      $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath); 
+      setupCodeEditor();
+      setupBenchmarks();
+      setupEnergyGraph();
+      setupAtomDataTable();
+    } else {
+
+      // send this message to Interactive in iframe
+      // controller.modelController.moleculeContainer.setFocus();
+      var sizeAttributes = 'width="925px" height="575px"',
+          $iframeInteractive,
+          $iframe = $('<iframe id="iframe-interactive"' + sizeAttributes + 
+            ' frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+
+      $("#viz").append($iframe);
+
+    }
   }
+
+  function fjdhfjdh() {
+    var iframe = document.getElementById('model'),
+        iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
+        post = LabExercise.post = function(message) {
+          var iframe = document.getElementById('model');
+          try {
+            iframe.contentWindow.postMessage(message, iframeOrigin);
+          } catch (e) {
+              // Assume that failure means we can only post strings, not objects (IE9)
+              // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+              iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
+            }
+          };
+
+    LabExercise.properties = {};
+
+    function receiveMessage(message) {
+      var messageData,
+      iframe = document.getElementById('model'),
+      volumeToDisplay;
+
+      if (message.source === iframe.contentWindow && message.origin === iframeOrigin) {
+        messageData = message.data;
+        if (typeof messageData === 'string') {
+          messageData = JSON.parse(messageData);
+        }
+        if (messageData.type === 'hello') {
+          // Handshake with the model
+          post({
+            type: 'hello',
+            origin: window.location.href.match(/(.*?\/\/.*?)\//)[1]
+          });
+
+          post({
+            type: 'observe',
+            propertyName: 'volume'
+          });
+
+          post({
+            type: 'observe',
+            propertyName: 'pressureProbeFiltered'
+          });
+
+          // Data about the initial settings may be in the DOM! (showGuess works by
+          // constructing div.problems for each guess up front, then simply appending
+          // the appropriate div.problem to the DOM when the user navigates the
+          // timeline to that guess)
+          volumeToDisplay = $('#iframe-container').attr('data-volume');
+          if (volumeToDisplay !== null) {
+            post({
+              type: 'set',
+              propertyName: 'volume',
+              propertyValue: parseFloat(volumeToDisplay)
+            });
+          }
+
+          post({
+            type: 'play'
+          });
+        } else if (messageData.type === 'propertyValue') {
+          LabExercise.properties[messageData.name] = messageData.value;
+        }
+      }
+    }
+
+    window.addEventListener('message', receiveMessage, false);
+  }
+
+
 
   // Setup and enable next and previous Interactive buttons
   function setupNextPreviousInteractive() {
