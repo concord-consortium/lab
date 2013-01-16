@@ -134,8 +134,21 @@ var ROOT = "/examples",
     windowLoaded.resolve();
   });
 
+  function onFullPage(){
+    return ($selectInteractive.length > 0 && !$("#render-in-iframe").is(':checked'));
+  }
+
+  function onFullIFramePage() {
+    return ($selectInteractive.length > 0 && $("#render-in-iframe").is(':checked'));
+  }
+
   $.when(interactiveDefinitionLoaded, windowLoaded).done(function() {
-    controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
+
+    restoreOptionsFromCookie();
+
+    if(!onFullIFramePage()) {
+      controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
+    }
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
     embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
@@ -145,6 +158,9 @@ var ROOT = "/examples",
     setupCreditsPane();
     setupAboutPane();
     setupSharePane();
+    if(onFullIFramePage()) {
+      applicationCallbacks[0]();
+    }
   });
 
   $(window).bind('hashchange', function() {
@@ -309,7 +325,7 @@ var ROOT = "/examples",
           .attr('value', 'select')
           .text("Select an Interactive ...")
           .attr('disabled', true));
-    saveSelectFiltersToCookie();
+    saveOptionsToCookie();
     interactives = interactiveDescriptions.interactives;
     groups = _.filter(interactiveDescriptions.groups, function(group) {
       var curriculumFilter = $("#curriculum-filter").is(':checked'),
@@ -371,9 +387,13 @@ var ROOT = "/examples",
     $.get('interactives.json').done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
       interactiveDescriptions = results;
-      restoreSelectFiltersFromCookie();
+      restoreOptionsFromCookie();
       setupSelectList();
       $("#select-filters input").click(setupSelectList);
+      $("#render-controls input").click(function() {
+        saveOptionsToCookie();
+        location.reload();
+      });
       $interactiveTitle.text(interactive.title);
       if (interactive.publicationStatus === 'draft') {
         $interactiveTitle.append(" <i>(draft)</i>");
@@ -386,14 +406,14 @@ var ROOT = "/examples",
     });
   }
 
-  function restoreSelectFiltersFromCookie() {
-    var cookie = document.cookie.match(/lab-interactive-select-filter=(.*)(;|$)/),
+  function restoreOptionsFromCookie() {
+    var cookie = document.cookie.match(/lab-interactive-options=(.*)(;|$)/),
         str,
         settings;
     if (cookie) {
       str = cookie[1],
       settings = str.split('&').map(function (i) { return i.split('='); });
-      $("#select-filters input").each(function(i, el) {
+      $("#header input").each(function(i, el) {
         var match = _.find(settings, function(e) { return e[0] === el.id; }, this);
         if (match && el.id === match[0]) {
           el.checked = true;
@@ -404,8 +424,8 @@ var ROOT = "/examples",
     }
   }
 
-  function saveSelectFiltersToCookie() {
-    document.cookie = "lab-interactive-select-filter=" + $("#select-filters").serialize() + " ; max-age=" + 30*60*60*24;
+  function saveOptionsToCookie() {
+    document.cookie = "lab-interactive-options=" + $("#header input").serialize() + " ; max-age=" + 30*60*60*24;
   }
 
 
@@ -422,7 +442,6 @@ var ROOT = "/examples",
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
     jsonModelPath = interactive.models[0].url;
-    $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
 
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
@@ -452,18 +471,82 @@ var ROOT = "/examples",
       return encodeURI(dgUrl);
     });
 
-    // set keyboard focus on MD2D view
-    // FIXME: generalize when multiple model types implemented
-    controller.modelController.moleculeContainer.setFocus();
-
     //
     // Extras
     //
-    setupCodeEditor();
-    setupBenchmarks();
-    setupEnergyGraph();
-    setupAtomDataTable();
+    if(onFullPage()) {
+      // set keyboard focus on MD2D view
+      // FIXME: generalize when multiple model types implemented
+      controller.modelController.moleculeContainer.setFocus();
+      $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
+      setupCodeEditor();
+      setupBenchmarks();
+      setupEnergyGraph();
+      setupAtomDataTable();
+      $("#content-banner").show();
+      $("#extras-bottom").show();
+    } else {
+      $("#content-banner").hide();
+      $("#extras-bottom").hide();
+      $("#content").css("border", "none");
+      // send this message to Interactive in iframe
+      // controller.modelController.moleculeContainer.setFocus();
+      var childIFrameObj = {},
+          $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content"></div>'),
+          $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+
+      $iframeWrapper.append($iframe);
+      $("#viz").append($iframeWrapper);
+      setupIframeListenerFor($iframe[0]);
+      $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
+      // $(".view").bind('resize', update);
+    }
   }
+
+  function setupIframeListenerFor(iframe) {
+    var iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
+        selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
+        post = function(message) {
+          try {
+            iframe.contentWindow.postMessage(message, iframeOrigin);
+          } catch (e) {
+              // Assume that failure means we can only post strings, not objects (IE9)
+              // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+              iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
+            }
+          };
+
+    var handleIframePostMessage = function (message) {
+      var messageData;
+
+      if (message.source === iframe.contentWindow && message.origin === iframeOrigin) {
+        messageData = message.data;
+        if (typeof messageData === 'string') {
+          messageData = JSON.parse(messageData);
+        }
+        if (messageData.type === 'hello') {
+          // Handshake with the model
+          post({
+            type: 'hello',
+            origin: selfOrigin
+          });
+          // tell the model to focus
+          post({
+            type: 'setFocus',
+            origin: selfOrigin
+          });
+        } 
+      }
+    };
+    window.addEventListener('message', handleIframePostMessage, false);
+  }
+
+  
+
+
+
+
+
 
   // Setup and enable next and previous Interactive buttons
   function setupNextPreviousInteractive() {

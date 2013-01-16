@@ -202,7 +202,7 @@ define(function (require) {
       }
 
       // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model);
+      parentMessageAPI = new ParentMessageAPI(model, modelController.moleculeContainer);
 
       layout.addView('moleculeContainers', modelController.moleculeContainer);
 

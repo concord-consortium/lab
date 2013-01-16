@@ -34,16 +34,16 @@
         %a(href="") Next Generation MW Interactives
 
       .row
-        %span.title Select Interactive:
+        %span.title select Interactive:
         %select#select-interactive
-        %span.title Additional links:
+        %span.title additional links:
         %a#embeddable-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} Embeddable
         %a#java-mw-link{:href => "../../imports/legacy-mw-content/converted/", :class => "opens-in-new-window"} Java MW
         %a#datagames-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} DataGames
 
       .row
-        %form#select-filters
-          %span.title Categories:
+        %form#select-filters.controls
+          %span.title categories:
           %label{:for => 'curriculum-filter'}
             Curriculum
             %input#curriculum-filter{:type => :checkbox, :name => 'curriculum-filter', :checked => 'checked'}
@@ -57,13 +57,18 @@
             Benchmarks
             %input#benchmarks-filter{:type => :checkbox, :name => 'benchmarks-filter'}
 
-          %span.title Publication Status:
+          %span.title publication status:
           %label{:for => 'public'}
             Public
             %input#public{:type => :checkbox, :name => 'public', :checked => "checked"}
           %label{:for => 'draft'}
             Draft*
             %input#draft{:type => :checkbox, :name => 'draft'}
+        #render-controls.controls
+          %span.title render in:
+          %label{:for => 'render-in-iframe'}
+            iframe
+            %input#render-in-iframe{:type => :checkbox, :name => 'render-in-iframe', :checked => 'checked'}
 
     #interactive-header
       #interactive-forward-back
