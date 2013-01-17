@@ -542,12 +542,10 @@ var ROOT = "/examples",
 
 
     iframePhone.addListener = function(messageName,func) {
-      console.log("adding listener for " + messageName);
       iframePhone.handlers[messageName] = func;
     };
 
     iframePhone.removeListener = function(messageName) {
-      console.log("removing listener for " + messageName);
       iframePhone.handlers[messageName] = null;
     };
 
@@ -580,12 +578,10 @@ var ROOT = "/examples",
           messageData = JSON.parse(messageData);
         }
         if (iframePhone.handlers[messageData.type]){
-          console.log("handling type: " + messageData.type);
           iframePhone.handlers[messageData.type](messageData.values);
         }
         else {
           console.log("cant handle type: " + messageData.type);
-          debugger;
         }
       }
     };
