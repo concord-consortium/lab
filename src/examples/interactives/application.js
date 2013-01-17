@@ -471,14 +471,14 @@ var ROOT = "/examples",
       return encodeURI(dgUrl);
     });
 
-    // set keyboard focus on MD2D view
-    // FIXME: generalize when multiple model types implemented
-    // 
     //
     // Extras
+    //
     if(onFullPage()) {
+      // set keyboard focus on MD2D view
+      // FIXME: generalize when multiple model types implemented
       controller.modelController.moleculeContainer.setFocus();
-      $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath); 
+      $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
       setupCodeEditor();
       setupBenchmarks();
       setupEnergyGraph();
@@ -488,16 +488,18 @@ var ROOT = "/examples",
     } else {
       $("#content-banner").hide();
       $("#extras-bottom").hide();
+      $("#content").css("border", "none");
       // send this message to Interactive in iframe
       // controller.modelController.moleculeContainer.setFocus();
       var childIFrameObj = {},
-          sizeAttributes = 'width="925px" height="575px"',
-          $iframeInteractive,
-          $iframe = $('<iframe id="iframe-interactive"' + sizeAttributes + 
-            ' frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+          $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content"></div>'),
+          $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
 
-      $("#viz").append($iframe);
+      $iframeWrapper.append($iframe);
+      $("#viz").append($iframeWrapper);
       setupIframeListenerFor($iframe[0]);
+      $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
+      // $(".view").bind('resize', update);
     }
   }
 
