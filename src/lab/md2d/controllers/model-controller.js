@@ -13,7 +13,8 @@ define(function (require) {
   // Dependencies.
   var Model             = require('md2d/models/modeler'),
       MoleculeContainer = require('md2d/views/molecule-container'),
-      ModelPlayer       = require('cs!common/components/model_player');
+      ModelPlayer       = require('cs!common/components/model_player'),
+      Benchmarks        = require('md2d/benchmarks/benchmarks');
 
   return function modelController(moleculeViewId, modelConfig, interactiveViewConfig, interactiveModelConfig) {
     var controller = {},
@@ -24,6 +25,8 @@ define(function (require) {
         // Options after processing performed by processOptions().
         modelOptions,
         viewOptions,
+
+        benchmarks,
 
         moleculeContainer,
 
@@ -103,6 +106,15 @@ define(function (require) {
         // during options validation, so this is not a problem
         // (but significantly simplifies configuration).
         modelOptions.viewOptions = viewOptions;
+      }
+
+      // ------------------------------------------------------------
+      //
+      //   MD2D Benchmarks Setup
+      //
+
+      function setupBenchmarks() {
+        benchmarks = new Benchmarks(controller);
       }
 
       // ------------------------------------------------------------
@@ -195,6 +207,7 @@ define(function (require) {
         setupModel();
       }
 
+      setupBenchmarks();
       setupModelPlayer();
       dispatch.modelReset();
 
@@ -211,6 +224,7 @@ define(function (require) {
       controller.reload = reload;
       controller.repaint = repaint;
       controller.moleculeContainer = moleculeContainer;
+      controller.benchmarks = benchmarks;
 
       return controller;
   };
