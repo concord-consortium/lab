@@ -21,6 +21,7 @@ var ROOT = "/examples",
       interactiveDescriptions,
       interactives,
       groups,
+      iframePhone,
 
       $interactiveHeader = $("#interactive-header"),
       $interactiveTitle = $("#interactive-title"),
@@ -487,8 +488,11 @@ var ROOT = "/examples",
       $("#extras-bottom").show();
     } else {
       $("#content-banner").hide();
-      $("#extras-bottom").hide();
+      $("#model-energy-graph").hide();
+      $("#model-datatable").hide();
+      $("#benchmark").hide();
       $("#content").css("border", "none");
+      setupCodeEditor();
       // send this message to Interactive in iframe
       // controller.modelController.moleculeContainer.setFocus();
       var childIFrameObj = {},
@@ -497,7 +501,10 @@ var ROOT = "/examples",
 
       $iframeWrapper.append($iframe);
       $("#viz").append($iframeWrapper);
-      setupIframeListenerFor($iframe[0]);
+      iframePhone = setupIframeListenerFor($iframe[0]);
+
+
+
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
       // $(".view").bind('resize', update);
     }
@@ -506,7 +513,9 @@ var ROOT = "/examples",
   function setupIframeListenerFor(iframe) {
     var iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
         selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
+        iframePhone = {},
         post = function(message) {
+          message.origin = selfOrigin;
           try {
             iframe.contentWindow.postMessage(message, iframeOrigin);
           } catch (e) {
@@ -527,21 +536,21 @@ var ROOT = "/examples",
         if (messageData.type === 'hello') {
           // Handshake with the model
           post({
-            type: 'hello',
-            origin: selfOrigin
+            type: 'hello'
           });
           // tell the model to focus
           post({
-            type: 'setFocus',
-            origin: selfOrigin
+            type: 'setFocus'
           });
-        } 
+        }
       }
     };
     window.addEventListener('message', handleIframePostMessage, false);
+    iframePhone.post = post;
+    return iframePhone;
   }
 
-  
+
 
 
 
@@ -616,7 +625,11 @@ var ROOT = "/examples",
       buttonHandlersAdded = true;
       $updateInteractiveButton.on('click', function() {
         interactive = JSON.parse(editor.getValue());
-        controller.loadInteractive(interactive, '#interactive-container');
+        if(onFullPage()) {
+          controller.loadInteractive(interactive, '#interactive-container');
+        } else {
+          iframePhone.post({ type:'loadInteractive', data:interactive  });
+        }
       });
 
       $autoFormatSelectionButton.on('click', function() {
