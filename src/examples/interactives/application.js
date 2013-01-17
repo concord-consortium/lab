@@ -135,15 +135,16 @@ var ROOT = "/examples",
   });
 
   function onFullPage(){
-    return ($("#extras-bottom").length > 0);
+    return ($selectInteractive.length > 0 && !$("#render-in-iframe").is(':checked'));
   }
 
   function onFullIFramePage() {
-    return (!onFullPage() && ($selectInteractive.length > 0));
+    return ($selectInteractive.length > 0 && $("#render-in-iframe").is(':checked'));
   }
 
   $.when(interactiveDefinitionLoaded, windowLoaded).done(function() {
-       
+
+    restoreOptionsFromCookie();
 
     if(!onFullIFramePage()) {
       controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
@@ -324,7 +325,7 @@ var ROOT = "/examples",
           .attr('value', 'select')
           .text("Select an Interactive ...")
           .attr('disabled', true));
-    saveSelectFiltersToCookie();
+    saveOptionsToCookie();
     interactives = interactiveDescriptions.interactives;
     groups = _.filter(interactiveDescriptions.groups, function(group) {
       var curriculumFilter = $("#curriculum-filter").is(':checked'),
@@ -386,9 +387,13 @@ var ROOT = "/examples",
     $.get('interactives.json').done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
       interactiveDescriptions = results;
-      restoreSelectFiltersFromCookie();
+      restoreOptionsFromCookie();
       setupSelectList();
       $("#select-filters input").click(setupSelectList);
+      $("#render-controls input").click(function() {
+        saveOptionsToCookie();
+        location.reload();
+      });
       $interactiveTitle.text(interactive.title);
       if (interactive.publicationStatus === 'draft') {
         $interactiveTitle.append(" <i>(draft)</i>");
@@ -401,14 +406,14 @@ var ROOT = "/examples",
     });
   }
 
-  function restoreSelectFiltersFromCookie() {
-    var cookie = document.cookie.match(/lab-interactive-select-filter=(.*)(;|$)/),
+  function restoreOptionsFromCookie() {
+    var cookie = document.cookie.match(/lab-interactive-options=(.*)(;|$)/),
         str,
         settings;
     if (cookie) {
       str = cookie[1],
       settings = str.split('&').map(function (i) { return i.split('='); });
-      $("#select-filters input").each(function(i, el) {
+      $("#header input").each(function(i, el) {
         var match = _.find(settings, function(e) { return e[0] === el.id; }, this);
         if (match && el.id === match[0]) {
           el.checked = true;
@@ -419,8 +424,8 @@ var ROOT = "/examples",
     }
   }
 
-  function saveSelectFiltersToCookie() {
-    document.cookie = "lab-interactive-select-filter=" + $("#select-filters").serialize() + " ; max-age=" + 30*60*60*24;
+  function saveOptionsToCookie() {
+    document.cookie = "lab-interactive-options=" + $("#header input").serialize() + " ; max-age=" + 30*60*60*24;
   }
 
 
@@ -437,7 +442,7 @@ var ROOT = "/examples",
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
     jsonModelPath = interactive.models[0].url;
- 
+
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
     mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml");
@@ -478,8 +483,11 @@ var ROOT = "/examples",
       setupBenchmarks();
       setupEnergyGraph();
       setupAtomDataTable();
+      $("#content-banner").show();
+      $("#extras-bottom").show();
     } else {
-
+      $("#content-banner").hide();
+      $("#extras-bottom").hide();
       // send this message to Interactive in iframe
       // controller.modelController.moleculeContainer.setFocus();
       var childIFrameObj = {},
