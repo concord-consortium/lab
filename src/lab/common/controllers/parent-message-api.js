@@ -36,6 +36,17 @@ define(function(require) {
        }
      });
 
+    // Listen for events in the model, and notify using message.post
+    // TODO: add params to pass back up.
+    parentMessageController.addListener('listenForDispatchEvent', function(message) {
+      var eventName    = message.eventName;
+      model.on(eventName, function() {
+        parentMessageController.post({
+          type:eventName
+        });
+      });
+    });
+
     // on message 'get' propertyName: return a 'propertyValue' message
     parentMessageController.addListener('get', function(message) {
       sendPropertyValue(message.propertyName);
