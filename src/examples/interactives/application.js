@@ -492,13 +492,16 @@ var ROOT = "/examples",
       setupCodeEditor();
       setupModelCodeEditor();
       setupBenchmarks();
-      setupEnergyGraph();
+      // pass in the model
+      setupEnergyGraph(model);
+
       setupAtomDataTable();
       $("#content-banner").show();
       $("#extras-bottom").show();
     } else {
+      setupEnergyGraph();
       $("#content-banner").hide();
-      $("#model-energy-graph").hide();
+      // $("#model-energy-graph").hide();
       $("#model-datatable").hide();
       $("#benchmark").hide();
       $("#content").css("border", "none");
@@ -855,70 +858,134 @@ var ROOT = "/examples",
     ];
   }
 
+
   //
   // Energy Graph
-  //
-  function setupEnergyGraph() {
+  // Pass in a model object..
+  function setupEnergyGraph(_model) {
     if (!modelEnergyGraph) {
-      renderModelEnergyGraph();
+      // if (_model) {
+        renderModelEnergyGraph();
+      // }
+    }
+
+
+    function modelStepCounter() {
+      if (_model) {
+        return _model.stepCounter();
+      }
+    }
+
+    function modelIsNewStep() {
+      if (_model) {
+        return _model.isNewStep();
+      }
+    }
+
+    function getKineticEnergy() {
+      if (_model) {
+        return _model.get('kineticEnergy');
+      }
+    }
+
+    function getPotentialEnergy() {
+      if (_model) {
+        return _model.get('potentialEnergy');
+      }
+    }
+
+    function modelSampleSizeInPs() {
+      var viewRefreshInterval, timeStep;
+
+      if (_model) {
+        viewRefreshInterval = _model.get('viewRefreshInterval');
+        timeStep    = _model.get('timeStep');
+        return _model.get("viewRefreshInterval") * _model.get("timeStep")/1000;
+      }
+      else {
+        viewRefreshInterval = 60;
+        timeStep = 10;
+      }
+      return viewRefreshInterval * timeStep / 1000;
+    }
+
+
+
+    function addMessageHook(name,func) {
+      var privateName = name + '.modelEnergyGraph';
+      if(_model) {
+        _model.on(privateName, func); // for now
+      }
+      if(iframePhone) {
+        iframePhone.addDispatchListener(privateName,func);
+      }
+    }
+
+    function removeMessageHook(name) {
+      var privateName = name + '.modelEnergyGraph';
+      if(_model) {
+        _model.on(privateName); // for now
+      }
+      if(iframePhone) {
+        iframePhone.removeListener(privateName);
+      }
+    }
+
+    function addModelTickFunction(func) {
+
     }
 
     $showModelEnergyGraph.change(function() {
       var options;
       if (this.checked) {
-        model.on("tick.modelEnergyGraph", function() {
+        addMessageHook("tick", function() {
           updateModelEnergyGraph();
         });
 
-        model.on('play.modelEnergyGraph', function() {
-          if (modelEnergyGraph.number_of_points() && model.stepCounter() < modelEnergyGraph.number_of_points()) {
-            resetModelEnergyData(model.stepCounter());
+        addMessageHook('play', function() {
+          if (modelEnergyGraph.number_of_points() && modelStepCounter() < modelEnergyGraph.number_of_points()) {
+            resetModelEnergyData(modelStepCounter());
             modelEnergyGraph.new_data(modelEnergyData);
           }
           modelEnergyGraph.show_canvas();
         });
 
-        model.on('reset.modelEnergyGraph', function() {
+        addMessageHook('reset', function() {
           renderModelEnergyGraph();
         });
 
-        model.on('stepForward.modelEnergyGraph', function() {
-          if (model.isNewStep()) {
+        addMessageHook('stepForward', function() {
+          if (modelIsNewStep()) {
             updateModelEnergyGraph();
           } else {
-            modelEnergyGraph.updateOrRescale(model.stepCounter());
-            modelEnergyGraph.showMarker(model.stepCounter());
+            modelEnergyGraph.updateOrRescale(modelStepCounter());
+            modelEnergyGraph.showMarker(modelStepCounter());
           }
         });
 
-        model.on('stepBack.modelEnergyGraph', function() {
-          modelEnergyGraph.updateOrRescale(model.stepCounter());
-          modelEnergyGraph.showMarker(model.stepCounter());
+        addMessageHook('stepBack', function() {
+          modelEnergyGraph.updateOrRescale(modelStepCounter());
+          modelEnergyGraph.showMarker(modelStepCounter());
         });
 
-        model.on('seek.modelEnergyGraph', function() {
-        });
+        // addMessageHook('seek', function() {});
 
         $modelEnergyGraphContent.show(100);
 
       } else {
         // remove listeners
-        model.on("tick.modelEnergyGraph");
-        model.on('play.modelEnergyGraph');
-        model.on('reset.modelEnergyGraph');
-        model.on('seek.modelEnergyGraph');
-        model.on('stepForward.modelEnergyGraph');
-        model.on('stepBack.modelEnergyGraph');
+        removeMessageHook("tick");
+        removeMessageHook('play');
+        removeMessageHook('reset');
+        // removeMessageHook('seek');
+        removeMessageHook('stepForward');
+        removeMessageHook('stepBack');
         $modelEnergyGraphContent.hide(100);
       }
     }).change();
 
     function updateModelEnergyGraph() {
       modelEnergyGraph.add_points(updateModelEnergyData());
-    }
-
-    function modelSampleSizeInPs() {
-      return model.get("viewRefreshInterval") * model.get("timeStep")/1000;
     }
 
     function renderModelEnergyGraph() {
@@ -941,8 +1008,8 @@ var ROOT = "/examples",
 
     // Add another sample of model KE, PE, and TE to the arrays in resetModelEnergyData
     function updateModelEnergyData() {
-      var ke = model.get('kineticEnergy'),
-          pe = model.get('potentialEnergy'),
+      var ke = getKineticEnergy(),
+          pe = getPotentialEnergy(),
           te = ke + pe;
       modelEnergyData[0].push(ke);
       modelEnergyData[1].push(pe);
@@ -953,7 +1020,7 @@ var ROOT = "/examples",
     // Reset the resetModelEnergyData arrays to a specific length by passing in an index value,
     // or empty the resetModelEnergyData arrays an initialize the first sample.
     function resetModelEnergyData(index) {
-      var modelsteps = model.stepCounter(),
+      var modelsteps = modelStepCounter(),
           i,
           len;
 
