@@ -4,7 +4,7 @@ define(function(require) {
   var parentMessageController = require('common/parent-message-controller');
 
   // Defines the default postMessage API used to communicate with parent window (i.e., an embedder)
-  return function(model, view) {
+  return function(model, view, controller) {
     parentMessageController.removeAllListeners();
 
     function sendPropertyValue(propertyName) {
@@ -19,6 +19,13 @@ define(function(require) {
     parentMessageController.addListener('setFocus', function(message) {
       if (view && view.setFocus) {
         view.setFocus();
+      }
+    });
+
+   // on message 'loadInteractive' call controller.loadInteractive
+    parentMessageController.addListener('loadInteractive', function(message) {
+      if (controller && controller.loadInteractive) {
+        controller.loadInteractive(message.data);
       }
     });
 

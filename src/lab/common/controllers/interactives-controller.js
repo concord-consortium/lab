@@ -202,7 +202,7 @@ define(function (require) {
       }
 
       // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model, modelController.moleculeContainer);
+      parentMessageAPI = new ParentMessageAPI(model, modelController.moleculeContainer, controller);
 
       layout.addView('moleculeContainers', modelController.moleculeContainer);
 
@@ -281,7 +281,9 @@ define(function (require) {
 
       componentCallbacks = [];
       interactive = newInteractive;
-      $interactiveContainer = $(viewSelector);
+      if (viewSelector) {
+        $interactiveContainer = $(viewSelector);
+      }
       if ($interactiveContainer.children().length === 0) {
         $top = $('<div class="interactive-top" id="top"/>');
         $top.append('<div class="interactive-top" id="model-container"/>');
