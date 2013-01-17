@@ -1,7 +1,11 @@
-/*global Lab $ d3 CodeMirror controllers model modelList benchmark layout DEVELOPMENT: true */
+/*global Lab $ d3 CodeMirror controllers model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
+
+// Strawman setting for telling the interactive to be in "author mode",
+// allowing things like positioning textBoxes by hand.
+AUTHORING = false;
 
 var ROOT = "/examples",
     ROOT_REGEX = new RegExp(ROOT + "/.*$"),
@@ -111,6 +115,7 @@ var ROOT = "/examples",
       // rest of the elements on the non-iframe-embeddable version of the page
       // are present and should be setup.
       if ($selectInteractive.length) {
+        AUTHORING = true;
         applicationCallbacks = [setupFullPage];
       } else {
         if ($editor.length) {
