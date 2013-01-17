@@ -4,7 +4,7 @@ $max-width: 100%
 
 $header-background-color1: rgba(58, 135, 139, 1.0)
 $header-background-color2: rgba(140, 187, 184, 1.0)
-$header-font-color: #eee
+$header-font-color: #f8f8f8
 
 @import 'sass/bourbon/bourbon'
 @import url('molecules-view.css')
@@ -23,7 +23,7 @@ $header-font-color: #eee
     margin-top: 0.4em
     margin-bottom: 0.4em
     a
-      color: #fff
+      color: $header-font-color
       text-decoration: none
   .row
     position: relative
@@ -32,13 +32,12 @@ $header-font-color: #eee
   span.title
     margin-left: 1em
     font-weight: 600
-    font-style: italic
     font-size: 100%
     color: darken($header-font-color, 5%)
     &:first-child
       margin-left: 0em
   a.opens-in-new-window
-    color: #fff
+    color: $header-font-color
     font-size: 100%
     margin: 0.2em 0.1em 0.2em 0.2em
     padding: 0.1em 0.4em 0.2em 0.4em
@@ -77,6 +76,7 @@ $header-font-color: #eee
       margin: 0.2em 0.2em 0.2em 0.2em
       padding: 0.1em 0.1em 0.2em 0.4em
       border-radius: 0.4em
+      color: #fff
       background-color: darken($header-background-color2, 15%)
       &:hover
         background-color: darken($header-background-color2, 25%)
