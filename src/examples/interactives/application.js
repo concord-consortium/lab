@@ -31,6 +31,9 @@ var ROOT = "/examples",
       $autoFormatSelectionButton = $("#autoformat-selection-button"),
       $interactiveTextArea = $("#interactive-text-area"),
 
+      $updateModelButton = $("#update-model-button"),
+      $modelTextArea = $("#model-text-area"),
+
       $creditsLink = $("#credits-link"),
       $creditsPane = $("#credits-pane"),
       $creditsPaneClose = $('#credits-pane-close'),
@@ -647,7 +650,77 @@ var ROOT = "/examples",
     }
   }
 
+  //
+  // Interactive Code Editor
+  //
+  function setupModelCodeEditor() {
+      // $updateModelButton = $("#update-model-button"),
+      // $modelTextArea = $("#model-text-area"),
 
+    $.get(interactiveUrl).done(function(results) {
+      if (typeof results === 'string') results = JSON.parse(results);
+      interactive = results;
+
+      if (interactive.title) {
+        document.title = interactive.title;
+      }
+
+      // Use the presense of selectInteractive as a proxy indicating that the
+      // rest of the elements on the non-iframe-embeddable version of the page
+      // are present and should be setup.
+      if ($selectInteractive.length) {
+        applicationCallbacks = [setupFullPage];
+      } else {
+        if ($editor.length) {
+          viewType = 'interactive-author-iframe';
+          applicationCallbacks = [setupEmbeddableAuthorPage];
+        } else {
+          viewType = 'interactive-iframe';
+        }
+      }
+
+
+
+
+
+
+    $modelTextArea.text(JSON.stringify(interactive, null, indent));
+    foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+    if (!editor) {
+      editor = CodeMirror.fromTextArea($modelTextArea.get(0), {
+        mode: 'javascript',
+        indentUnit: indent,
+        lineNumbers: true,
+        lineWrapping: false,
+        onGutterClick: foldFunc
+      });
+    }
+
+    if (!buttonHandlersAdded) {
+      buttonHandlersAdded = true;
+      $updateInteractiveButton.on('click', function() {
+        interactive = JSON.parse(editor.getValue());
+        if(onFullPage()) {
+          controller.loadInteractive(interactive, '#interactive-container');
+        } else {
+          iframePhone.post({ type:'loadInteractive', data:interactive  });
+        }
+      });
+
+      $autoFormatSelectionButton.on('click', function() {
+        var range = getSelectedRange();
+        editor.autoFormatRange(range.from, range.to);
+      });
+
+      $showEditor.change(function() {
+        if (this.checked) {
+          $editorContent.show(100);
+        } else {
+          $editorContent.hide(100);
+        }
+      }).change();
+    }
+  }
   //
   // Benchmarks
   //
