@@ -53,6 +53,10 @@ var ROOT = "/examples",
       $showEditor = $("#show-editor"),
       $editorContent = $("#editor-content"),
 
+      $modelEditor = $("#model-editor"),
+      $showModelEditor = $("#show-model-editor"),
+      $modelEditorContent = $("#model-editor-content"),
+
       $benchmarksExtrasItem = $("benchmarks.extras-item"),
       $showBenchmarks = $("#show-benchmarks"),
       $benchmarksContent = $("#benchmarks-content"),
@@ -76,6 +80,7 @@ var ROOT = "/examples",
 
       applicationCallbacks,
       editor,
+      modelEditor,
       controller,
       indent = 2,
       foldFunc,
@@ -84,7 +89,8 @@ var ROOT = "/examples",
       hash,
       jsonModelPath, contentItems, mmlPath,
       viewType,
-      buttonHandlersAdded = false;
+      buttonHandlersAdded = false,
+      modelButtonHandlersAdded = false;
 
   if (!document.location.hash) {
     if ($selectInteractive.length > 0 && $selectInteractive.val()) {
@@ -484,6 +490,7 @@ var ROOT = "/examples",
       controller.modelController.moleculeContainer.setFocus();
       $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
       setupCodeEditor();
+      setupModelCodeEditor();
       setupBenchmarks();
       setupEnergyGraph();
       setupAtomDataTable();
@@ -496,6 +503,7 @@ var ROOT = "/examples",
       $("#benchmark").hide();
       $("#content").css("border", "none");
       setupCodeEditor();
+      setupModelCodeEditor();
       // send this message to Interactive in iframe
       // controller.modelController.moleculeContainer.setFocus();
       var childIFrameObj = {},
@@ -552,13 +560,6 @@ var ROOT = "/examples",
     iframePhone.post = post;
     return iframePhone;
   }
-
-
-
-
-
-
-
 
   // Setup and enable next and previous Interactive buttons
   function setupNextPreviousInteractive() {
@@ -654,73 +655,42 @@ var ROOT = "/examples",
   // Interactive Code Editor
   //
   function setupModelCodeEditor() {
-      // $updateModelButton = $("#update-model-button"),
-      // $modelTextArea = $("#model-text-area"),
-
-    $.get(interactiveUrl).done(function(results) {
+    $.get(ACTUAL_ROOT + interactive.models[0].url).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
-      interactive = results;
-
-      if (interactive.title) {
-        document.title = interactive.title;
+      md2dModel = results;
+      $modelTextArea.text(JSON.stringify(md2dModel, null, indent));
+      foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+      if (!modelEditor) {
+        modelEditor = CodeMirror.fromTextArea($modelTextArea.get(0), {
+          mode: 'javascript',
+          indentUnit: indent,
+          lineNumbers: true,
+          lineWrapping: false,
+          onGutterClick: foldFunc
+        });
       }
+      if (!modelButtonHandlersAdded) {
+        modelButtonHandlersAdded = true;
+        $updateModelButton.on('click', function() {
+          md2dModel = JSON.parse(modelEditor.getValue());
+          if(onFullPage()) {
+            controller.loadModel(interactive.models[0].id, md2dModel);
+          } else {
+            iframePhone.post({ type:'loadModel', data: { modelId: interactive.models[0].id, modelObject: md2dModel } });
+          }
+        });
 
-      // Use the presense of selectInteractive as a proxy indicating that the
-      // rest of the elements on the non-iframe-embeddable version of the page
-      // are present and should be setup.
-      if ($selectInteractive.length) {
-        applicationCallbacks = [setupFullPage];
-      } else {
-        if ($editor.length) {
-          viewType = 'interactive-author-iframe';
-          applicationCallbacks = [setupEmbeddableAuthorPage];
-        } else {
-          viewType = 'interactive-iframe';
-        }
+        $showModelEditor.change(function() {
+          if (this.checked) {
+            $modelEditorContent.show(100);
+          } else {
+            $modelEditorContent.hide(100);
+          }
+        }).change();
       }
-
-
-
-
-
-
-    $modelTextArea.text(JSON.stringify(interactive, null, indent));
-    foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
-    if (!editor) {
-      editor = CodeMirror.fromTextArea($modelTextArea.get(0), {
-        mode: 'javascript',
-        indentUnit: indent,
-        lineNumbers: true,
-        lineWrapping: false,
-        onGutterClick: foldFunc
-      });
-    }
-
-    if (!buttonHandlersAdded) {
-      buttonHandlersAdded = true;
-      $updateInteractiveButton.on('click', function() {
-        interactive = JSON.parse(editor.getValue());
-        if(onFullPage()) {
-          controller.loadInteractive(interactive, '#interactive-container');
-        } else {
-          iframePhone.post({ type:'loadInteractive', data:interactive  });
-        }
-      });
-
-      $autoFormatSelectionButton.on('click', function() {
-        var range = getSelectedRange();
-        editor.autoFormatRange(range.from, range.to);
-      });
-
-      $showEditor.change(function() {
-        if (this.checked) {
-          $editorContent.show(100);
-        } else {
-          $editorContent.hide(100);
-        }
-      }).change();
-    }
+    });
   }
+
   //
   // Benchmarks
   //
