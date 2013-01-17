@@ -97,8 +97,17 @@
             .extras-item-controls
               %button#update-interactive-button Update Interactive
               %button#autoformat-selection-button AutoFormat Selection
-              %a#json-model-link{:href => "", :class => "opens-in-new-window", :target => "_blank"} Model JSON
             %textarea#interactive-text-area
+
+        %li#model-editor.extras-item
+          .extras-item-banner
+            %input#show-model-editor{:type => "checkbox", :checked => false}
+            %label{:for => "show-model-editor"} Model Editor
+          #model-editor-content.extras-item-content
+            .extras-item-controls
+              %button#update-model-button Update Model
+              %a#json-model-link{:href => "", :class => "opens-in-new-window", :target => "_blank"} Model JSON
+            %textarea#model-text-area
 
         %li#model-energy-graph.extras-item
           .extras-item-banner
