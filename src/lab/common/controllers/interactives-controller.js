@@ -94,8 +94,9 @@ define(function (require) {
       'modelLoaded' is called after the model loads.
 
       @param: modelId.
+      @optionalParam modelObject
     */
-    function loadModel(modelId) {
+    function loadModel(modelId, modelConfig) {
       var modelDefinition = getModel(modelId),
           interactiveViewOptions,
           interactiveModelOptions;
@@ -122,14 +123,21 @@ define(function (require) {
         interactiveModelOptions = $.extend(true, {}, modelDefinition.modelOptions);
       }
 
-      $.get(ACTUAL_ROOT + modelDefinition.url).done(function(modelConfig) {
+      if (modelConfig) {
+        finishWithLoadedModel(modelConfig)
+      } else {
+        $.get(ACTUAL_ROOT + modelDefinition.url).done(function(modelConfig) {
 
-        // Deal with the servers that return the json as text/plain
-        modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
+          // Deal with the servers that return the json as text/plain
+          modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
 
+          finishWithLoadedModel(modelConfig);
+        });
+      }
+
+      function finishWithLoadedModel(modelConfig) {
         // set default model type to "md2d"
         modelConfig.type = modelConfig.type || "md2d";
-
         if (modelController) {
           modelController.reload(modelConfig, interactiveViewOptions, interactiveModelOptions);
         } else {
@@ -149,7 +157,7 @@ define(function (require) {
           modelController.on('modelReset', modelLoaded);
           controller.modelController = modelController;
         }
-      });
+      }
     }
 
     function createComponent(component) {
