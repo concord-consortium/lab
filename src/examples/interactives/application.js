@@ -542,20 +542,19 @@ var ROOT = "/examples",
 
 
     iframePhone.addListener = function(messageName,func) {
-      console.log("adding listener for " + messageName);
       iframePhone.handlers[messageName] = func;
     };
 
     iframePhone.removeListener = function(messageName) {
-      console.log("removing listener for " + messageName);
       iframePhone.handlers[messageName] = null;
     };
 
-    iframePhone.addDispatchListener = function(eventName,func) {
+    iframePhone.addDispatchListener = function(eventName,func,properties) {
       iframePhone.addListener(eventName,func);
       iframePhone.post({
         'type': 'listenForDispatchEvent',
-        'eventName': eventName
+        'eventName': eventName,
+        'properties': properties
       });
     };
 
@@ -579,12 +578,10 @@ var ROOT = "/examples",
           messageData = JSON.parse(messageData);
         }
         if (iframePhone.handlers[messageData.type]){
-          console.log("handling type: " + messageData.type);
-          iframePhone.handlers[messageData.type]();
+          iframePhone.handlers[messageData.type](messageData.values);
         }
         else {
           console.log("cant handle type: " + messageData.type);
-          debugger;
         }
       }
     };
@@ -911,13 +908,13 @@ var ROOT = "/examples",
 
 
 
-    function addMessageHook(name,func) {
+    function addMessageHook(name, func, props) {
       var privateName = name + '.modelEnergyGraph';
       if(_model) {
         _model.on(privateName, func); // for now
       }
       if(iframePhone) {
-        iframePhone.addDispatchListener(privateName,func);
+        iframePhone.addDispatchListener(privateName,func, props);
       }
     }
 
@@ -931,16 +928,12 @@ var ROOT = "/examples",
       }
     }
 
-    function addModelTickFunction(func) {
-
-    }
-
     $showModelEnergyGraph.change(function() {
       var options;
       if (this.checked) {
-        addMessageHook("tick", function() {
-          updateModelEnergyGraph();
-        });
+        addMessageHook("tick", function(props) {
+          updateModelEnergyGraph(props);
+        }, ['kineticEnergy','potentialEnergy']);
 
         addMessageHook('play', function() {
           if (modelEnergyGraph.number_of_points() && modelStepCounter() < modelEnergyGraph.number_of_points()) {
@@ -984,8 +977,8 @@ var ROOT = "/examples",
       }
     }).change();
 
-    function updateModelEnergyGraph() {
-      modelEnergyGraph.add_points(updateModelEnergyData());
+    function updateModelEnergyGraph(props) {
+      modelEnergyGraph.add_points(updateModelEnergyData(props));
     }
 
     function renderModelEnergyGraph() {
@@ -1007,9 +1000,10 @@ var ROOT = "/examples",
     }
 
     // Add another sample of model KE, PE, and TE to the arrays in resetModelEnergyData
-    function updateModelEnergyData() {
-      var ke = getKineticEnergy(),
-          pe = getPotentialEnergy(),
+    function updateModelEnergyData(props) {
+
+      var ke = props ? props.kineticEnergy   : getKineticEnergy(),
+          pe = props ? props.potentialEnergy : getPotentialEnergy(),
           te = ke + pe;
       modelEnergyData[0].push(ke);
       modelEnergyData[1].push(pe);
