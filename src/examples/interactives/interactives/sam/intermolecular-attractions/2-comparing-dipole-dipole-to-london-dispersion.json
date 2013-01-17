@@ -12,7 +12,23 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json",
       "viewOptions": {
         "controlButtons": "",
-        "enableKeyboardHandlers": false
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Explore the different attractive forces between polar and non-polar molecules by dragging the \"star\" image found in the following simulations.",
+            "x": 0.4,
+            "y": 1.57,
+            "width": 2.7,
+            "layer": 1
+          },
+          {
+            "text": "Choose a pair of molecules from the menu below.",
+            "x": 0.40,
+            "y": 0.3,
+            "width": 3,
+            "layer": 1
+          }
+        ]
       }
     },
     {

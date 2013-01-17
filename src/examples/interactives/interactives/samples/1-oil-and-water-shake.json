@@ -8,14 +8,34 @@
       "id": "page3$1",
       "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Separated Oil and Water",
+            "x": 1.08,
+            "y": 1.84,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(245,245,245)"
+          }
+        ]
       }
     },
     {
       "id": "oilAndWaterMix",
       "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Oil and Water Shaken Up and Mixed",
+            "x": 0.804,
+            "y": 1.84,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(245,245,245)"
+          }
+        ]
       }
     }
   ],

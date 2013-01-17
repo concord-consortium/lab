@@ -13,9 +13,17 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
-        "imageMapping": {
-          "instructionBox.png": "instructionBox2.svg"
-        }
+        "textBoxes": [
+          {
+            "text": "Drag the molecules close to each other and look for intermolecular attractions.",
+            "x": 0.7,
+            "y": 1.9,
+            "width": 2.31,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(245,245,245)"
+          }
+        ]
       }
     }
   ],
