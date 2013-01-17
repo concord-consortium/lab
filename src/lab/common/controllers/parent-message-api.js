@@ -29,6 +29,13 @@ define(function(require) {
       }
     });
 
+    // on message 'loadModel' call controller.loadModel
+     parentMessageController.addListener('loadModel', function(message) {
+       if (controller && controller.loadModel) {
+         controller.loadModel(message.data.modelId, message.data.modelObject);
+       }
+     });
+
     // on message 'get' propertyName: return a 'propertyValue' message
     parentMessageController.addListener('get', function(message) {
       sendPropertyValue(message.propertyName);
