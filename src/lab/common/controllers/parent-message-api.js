@@ -37,12 +37,26 @@ define(function(require) {
      });
 
     // Listen for events in the model, and notify using message.post
-    // TODO: add params to pass back up.
+    // uses D3 disaptch on model to trigger events
+    // pass in message.properties ([names]) to also send model properties
+    // in values object when triggering in parent Frame
     parentMessageController.addListener('listenForDispatchEvent', function(message) {
-      var eventName    = message.eventName;
+      var eventName    = message.eventName,
+          properties   = message.properties,
+          values       = {},
+          i            = 0,
+          propertyName = null;
+
       model.on(eventName, function() {
+        if (properties) {
+          for (i = 0 ; i < properties.length; i++) {
+            propertyName = properties[i];
+            values[propertyName] = model.get(propertyName);
+          }
+        }
         parentMessageController.post({
-          type:eventName
+          'type':   eventName,
+          'values': values
         });
       });
     });
