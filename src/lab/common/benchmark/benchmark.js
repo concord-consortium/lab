@@ -266,19 +266,19 @@ define(function (require) {
     }
   }
 
-  function run(benchmarks_table, benchmarks_to_run, start_callback, end_callback) {
+  function renderToTable(benchmarks_table, benchmarksThatWereRun, results) {
     var i = 0,
         browser_info,
         averaged_row,
         results_row,
+        result,
         formatter,
         col_number = 0,
         col_numbers = {},
         title_row,
         title_cells,
         len,
-        rows,
-        benchmarks_completed;
+        rows = benchmarks_table.getElementsByTagName("tr");
 
     benchmarks_table.style.display = "";
 
@@ -324,8 +324,8 @@ define(function (require) {
           average,
           samples;
 
-      for (i = 0; i < benchmarks_to_run.length; i++) {
-        b = benchmarks_to_run[i];
+      for (i = 0; i < benchmarksThatWereRun.length; i++) {
+        b = benchmarksThatWereRun[i];
         cell_index = col_numbers[b.name];
         if (b.numeric === false) {
           row = rows[2];
@@ -347,16 +347,14 @@ define(function (require) {
       }
     }
 
-    rows = benchmarks_table.getElementsByTagName("tr");
-
     if (rows.length === 0) {
       add_row();
       add_column("browser");
       add_column("version");
       add_column("cpu/os");
       add_column("date");
-      for (i = 0; i < benchmarks_to_run.length; i++) {
-        add_column(benchmarks_to_run[i].name);
+      for (i = 0; i < benchmarksThatWereRun.length; i++) {
+        add_column(benchmarksThatWereRun[i].name);
       }
       average_row = add_row(col_number);
       average_row.className = 'average';
@@ -371,18 +369,30 @@ define(function (require) {
     results_row = add_row(col_number);
     results_row.className = 'sample';
 
-    browser_info = what_browser();
-    formatter = d3.time.format("%Y-%m-%d %H:%M");
+    for (i = 0; i < 4; i++) {
+      result = results[i];
+      add_result(result[0], result[1]);
+      add_result(result[0], result[1], average_row);
+    }
 
-    add_result("browser", browser_info.browser);
-    add_result("version", browser_info.version);
-    add_result("cpu/os", browser_info.oscpu);
-    add_result("date", formatter(new Date()));
+    for(i = 4; i < results.length; i++) {
+      result = results[i];
+      add_result(result[0], result[1]);
+    }
+    update_averages();
+  }
 
-    add_result("browser", browser_info.browser, average_row);
-    add_result("version", browser_info.version, average_row);
-    add_result("cpu/os", browser_info.oscpu, average_row);
-    add_result("date", formatter(new Date()), average_row);
+  function bench(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
+    var i,
+        benchmarks_completed,
+        results = [],
+        browser_info = what_browser(),
+        formatter = d3.time.format("%Y-%m-%d %H:%M");
+
+    results.push([ "browser", browser_info.browser]);
+    results.push([ "version", browser_info.version]);
+    results.push([ "cpu/os", browser_info.oscpu]);
+    results.push([ "date", formatter(new Date())]);
 
     benchmarks_completed = 0;
     if (start_callback) start_callback();
@@ -390,20 +400,31 @@ define(function (require) {
       (function(b) {
         b.run(function(result) {
           if (b.formatter) {
-            add_result(b.name, b.formatter(result));
+            results.push([ b.name, b.formatter(result) ]);
           } else {
-            add_result(b.name, result);
+            results.push([ b.name, result ]);
           }
          if (end_callback && ++benchmarks_completed === benchmarks_to_run.length) {
            end_callback();
-           update_averages();
+           if (resultsCallback) {
+             resultsCallback(results);
+           }
          }
         });
       }(benchmarks_to_run[i]));
       if (end_callback === undefined) {
-        update_averages();
       }
     }
+    return results;
+  }
+
+  function run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
+    var results;
+    bench(benchmarks_to_run, function(results) {
+      renderToTable(benchmarks_table, benchmarks_to_run, results);
+      resultsCallback(results);
+    }, start_callback, end_callback);
+    return results;
   }
 
   // Return Public API.
@@ -412,8 +433,17 @@ define(function (require) {
     what_browser: function() {
       return what_browser();
     },
-    run: function(benchmarks_table, benchmarks_to_run, start_callback, end_callback) {
-      run(benchmarks_table, benchmarks_to_run, start_callback, end_callback);
+    // run benchmarks, add row to table, update averages row
+    run: function(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
+      run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback);
+    },
+    // run benchmarks, return results in object
+    bench: function(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
+      return bench(benchmarks_to_run, resultsCallback, start_callback, end_callback);
+    },
+    // run benchmarks, add row to table, update averages row
+    renderToTable: function(benchmarks_table, benchmarksThatWereRun, results) {
+      renderToTable(benchmarks_table, benchmarksThatWereRun, results);
     }
   };
 });
