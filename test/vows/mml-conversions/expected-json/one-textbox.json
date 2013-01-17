@@ -35,6 +35,8 @@
         "x": 0.24,
         "y": 1.73,
         "layer": 1,
+        "hostType": "RectangularObstacle",
+        "hostIndex": 0,
         "color": "rgb(153,0,0)",
         "backgroundColor": "rgb(255,100,100)"
       }

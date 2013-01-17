@@ -430,6 +430,9 @@
       <void property="layer">
        <int>1</int>
       </void>
+      <void property="hostType">
+       <string>class org.concord.mw2d.models.RectangularObstacle</string>
+      </void>
       <void property="text">
        <string>   You will pull apart pairs of polar and
 non-polar molecules to see the different

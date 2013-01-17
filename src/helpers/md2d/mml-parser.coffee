@@ -414,6 +414,11 @@ parseMML = (mmlString) ->
       $x = parseFloat $textBoxNode.find("[property=x] double").text()
       $y = parseFloat $textBoxNode.find("[property=y] double").text()
       layer = parseInt($textBoxNode.find("[property=layer] int").text()) || 1
+      textHostIndex = parseInt $textBoxNode.find("[property=hostIndex] int").text()
+      if (isNaN(textHostIndex))
+        textHostIndex = 0
+      textHostType = $textBoxNode.find("[property=hostType] string").text()
+      textHostType = textHostType.slice(textHostType.lastIndexOf(".")+1)
       borderType = parseInt($textBoxNode.find("[property=borderType] int").text()) || 0
       colorDef  = $textBoxNode.find "[property=foregroundColor]>.java-awt-Color>int"
       if colorDef and colorDef.length > 0
@@ -437,6 +442,9 @@ parseMML = (mmlString) ->
       textBox = { text, x, y, layer }
       textBox.frame = frame if frame
       textBox.color = fontColor if fontColor
+      if textHostType
+        textBox.hostType = textHostType
+        textBox.hostIndex = textHostIndex
       textBox.backgroundColor = backgroundTextColor if backgroundTextColor
       textBox
 
