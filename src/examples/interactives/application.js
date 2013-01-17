@@ -524,7 +524,7 @@ var ROOT = "/examples",
   function setupIframeListenerFor(iframe) {
     var iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
         selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
-        iframePhone = {},
+        iframePhone  = {},
         post = function(message) {
           message.origin = selfOrigin;
           try {
@@ -535,8 +535,39 @@ var ROOT = "/examples",
               iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
             }
           };
+    iframePhone.handlers = {};
 
-    var handleIframePostMessage = function (message) {
+
+    iframePhone.addListener = function(messageName,func) {
+      console.log("adding listener for " + messageName);
+      iframePhone.handlers[messageName] = func;
+    };
+
+    iframePhone.removeListener = function(messageName) {
+      console.log("removing listener for " + messageName);
+      iframePhone.handlers[messageName] = null;
+    };
+
+    iframePhone.addDispatchListener = function(eventName,func) {
+      iframePhone.addListener(eventName,func);
+      iframePhone.post({
+        'type': 'listenForDispatchEvent',
+        'eventName': eventName
+      });
+    };
+
+    // when we receive 'hello':
+    iframePhone.addListener('hello', function() {
+      post({
+        type: 'hello'
+      });
+      // tell the interactive to focus
+      post({
+        type: 'setFocus'
+      });
+    });
+
+    var receiveMessage = function (message) {
       var messageData;
 
       if (message.source === iframe.contentWindow && message.origin === iframeOrigin) {
@@ -544,19 +575,18 @@ var ROOT = "/examples",
         if (typeof messageData === 'string') {
           messageData = JSON.parse(messageData);
         }
-        if (messageData.type === 'hello') {
-          // Handshake with the model
-          post({
-            type: 'hello'
-          });
-          // tell the model to focus
-          post({
-            type: 'setFocus'
-          });
+        if (iframePhone.handlers[messageData.type]){
+          console.log("handling type: " + messageData.type);
+          iframePhone.handlers[messageData.type]();
+        }
+        else {
+          console.log("cant handle type: " + messageData.type);
+          debugger;
         }
       }
     };
-    window.addEventListener('message', handleIframePostMessage, false);
+
+    window.addEventListener('message', receiveMessage, false);
     iframePhone.post = post;
     return iframePhone;
   }
