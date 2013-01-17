@@ -45,6 +45,7 @@ define(function (require) {
         padding, size, modelSize,
         dragged,
         dragOrigin,
+        textDragOrigin,
         playbackXPos, playbackYPos,
         modelTimeFormatter = d3.format("5.0f"),
         timePrefix = "",
@@ -900,6 +901,36 @@ define(function (require) {
       }
     }
 
+    function updateTextBoxes() {
+      var layers = [textContainerTop, textContainerBelow],
+          updateText;
+
+      updateText = function (layerNum) {
+        var layer = layers[layerNum - 1];
+
+        layerTextBoxes = textBoxes.filter(function(t) { return t.layer == layerNum; });
+
+        layer.selectAll("g.textBoxWrapper rect")
+          .data(layerTextBoxes.filter( function(d) { return d.frame } ))
+          .attr({
+            "x": function(d) { return nm2px(d.x - 0.1); },
+            "y": function(d) { return nm2pxInv(d.y + 0.15); }
+          });
+
+        layer.selectAll("g.textBoxWrapper text")
+          .data(layerTextBoxes)
+          .attr({
+            "y": function(d) {
+              $(this).find("tspan").attr("x", nm2px(d.x));
+              return nm2pxInv(d.y);
+            }
+          });
+      }
+
+      updateText(1);
+      updateText(2);
+    }
+
     function drawTextBoxes() {
       var size, layers, appendTextBoxes;
 
@@ -939,7 +970,7 @@ define(function (require) {
 
         text.append("text")
           .attr({
-            "class": "textBox",
+            "class": function() { return "textBox" + (AUTHORING ? " draggable" : "") },
             "x-data": function(d) { return nm2px(d.x); },
             "y": function(d) { return nm2pxInv(d.y); },
             "width-data": function(d) { return nm2px(d.width); },
@@ -950,7 +981,16 @@ define(function (require) {
             "font-size": nm2px(0.12),
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; }
-          });
+          })
+          .call(d3.behavior.drag()
+            .on("drag", textDrag)
+            .on("dragend", function(d) {
+              // simple output to console for now, eventually should just get
+              // serialized back to interactive (or model?) JSON on author save
+              console.log('"x": '+d.x+",");
+              console.log('"y": '+d.y+",");
+            })
+          );
         selection.exit().remove();
       };
 
@@ -1520,6 +1560,21 @@ define(function (require) {
       else if ( d.draggable ) {
         drag = dragPoint(dragX, dragY);
         model.liveDrag(drag.x, drag.y);
+      }
+    }
+
+    function textDrag(d, i) {
+      var dragDx = nm2px.invert(d3.event.dx),
+          dragDy = nm2px.invert(d3.event.dy);
+
+      if (!AUTHORING) {
+      // for now we don't have user-draggable textBoxes
+        return;
+      }
+      else {
+        d.x = d.x + dragDx;
+        d.y = d.y - dragDy;
+        updateTextBoxes();
       }
     }
 
