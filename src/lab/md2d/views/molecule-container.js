@@ -1455,6 +1455,7 @@ define(function (require) {
       var numImages, img_height, img_width, imgHost, imgHostType, imglayer, imgX, imgY, container, i;
       numImages= imageProp.length;
       for(i = 0; i < numImages; i++) {
+        if (!imageSizes || !imageSizes[i]) continue;
         imgHost =  results[imageProp[i].imageHostIndex];
         imgHostType =  imageProp[i].imageHostType;
         imgX = nm2px(imageProp[i].imageX);
