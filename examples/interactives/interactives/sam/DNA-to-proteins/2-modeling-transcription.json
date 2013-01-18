@@ -1,0 +1,78 @@
+{
+  "title": "Modeling Transcription",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page2$0",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page2/page2$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      },
+      "modelOptions": {
+        "geneticProperties": {
+          "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTG"
+        }
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "edit-dna",
+      "text": "Edit DNA",
+      "action": "openDNADialog();"
+    },
+    {
+      "type": "button",
+      "id": "transcribe",
+      "text": "Transcribe",
+      "action": "transcribe();"
+    },
+    {
+      "type": "button",
+      "id": "separate",
+      "text": "Separate the strands of DNA",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "type": "button",
+      "id": "transcribeA",
+      "text": "A",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "transcribeC",
+      "text": "C",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "transcribeG",
+      "text": "G",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "transcribeU",
+      "text": "U",
+      "action": ""
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["edit-dna"],
+      ["separate", "reset"],
+      ["transcribe", "transcribeA", "transcribeU", "transcribeG", "transcribeC"]
+    ]
+  }
+}

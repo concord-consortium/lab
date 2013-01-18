@@ -1,13 +1,19 @@
 {
   "title": "Testing: Pulling Uncharged Atoms",
-  "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/pulling-uncharged-atoms$0.json",
-    "viewOptions": {
-      "controlButtons": ""
-    },
-    "onLoad": "start();"
-  },
+  "publicationStatus": "public",
+  "subtitle": "Atoms can dragged to new positions (this model is always running).",
+  "about": "These atoms are uncharged and have a van der Waals attraction. Pull one a short distance away and it will move back towards the other. However pull them far enough apart and they won't move back together.",
+  "models": [
+    {
+      "id": "pulling-uncharged-atoms$0",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/pulling-uncharged-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      },
+      "onLoad": "start();"
+    }
+  ],
   "components": [
     {
       "type": "button",

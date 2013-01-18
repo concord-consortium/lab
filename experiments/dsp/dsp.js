@@ -146,8 +146,8 @@ graphOptions = {
   }
 };
 
-graph1 = grapher.realTimeGraph('#chart1', graphOptions.sinWave);
-graph2 = grapher.realTimeGraph('#chart2', graphOptions.fft);
+graph1 = Lab.grapher.realTimeGraph('#chart1', graphOptions.sinWave);
+graph2 = Lab.grapher.realTimeGraph('#chart2', graphOptions.fft);
 
 selectData = document.getElementById('select-data');
 function selectDataHandler() {

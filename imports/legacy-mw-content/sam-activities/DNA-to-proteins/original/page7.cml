@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>From DNA to Proteins: Silent mutations</page_title>
+<referenced_files>codontable.html</referenced_files>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+
+  
+
+   
+   
+ 
+ 
+       
+ 
+
+
+
+</text>
+<section start="0" end="39">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font color=&quot;#FFFFFF&quot; size=&quot;5&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;From 
+    DNA to Proteins:&lt;/font&gt;&lt;/strong&gt;&lt;font color=&quot;#FFFFFF&quot; size=&quot;5&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt; 
+    Silent mutations&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table width=&quot;100%&quot; id=&quot;Table_01&quot; cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;page6.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;60&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;59&quot; src=&quot;next.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; src=&quot;page.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;46&quot; src=&quot;index.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;28&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page7Selected.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;25&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;img width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;98&quot; src=&quot;atomMainIdea.png&quot; height=&quot;58&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;On this 
+          page, you will make a &lt;strong&gt;silent mutation&lt;/strong&gt;. This is a 
+          change from one codon to another that codes for the &lt;b&gt;exact same&lt;/b&gt; 
+          amino acid. It has no effect on the amino acid sequence of the 
+          resulting protein.&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="12">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>372.0</width>
+<height>200.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; face=&quot;verdana&quot;&gt;
+    &lt;b&gt;There are 64 different 3-letter codons&lt;/b&gt; you can make using 
+    combinations of A,G,T, and U. All 64 possible codons are shown in the 
+    genetic code table. &lt;b&gt;But there are only 20 different amino acids.&lt;/b&gt; 
+    That means some amino acids must be coded for by more than one codon. 
+    Leucine (Leu) is one example in the protein above.&lt;br&gt;To see this, answer 
+    the question on the right, and then complete the challenge below.
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>4</row>
+<width>372</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;All of the 
+    following codons are used in the model below. Synthesize the protein, and 
+    then check off the ones that code for Leu. (Check ALL that apply.) &lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>CUC</choice>
+<choice>CUA</choice>
+<choice>CUU</choice>
+<choice>CCU</choice>
+<answer>0 1 2</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message correct-p7.html -choiceseparator- script:page:0:message incorrect-p7.html</script>
+</component></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="17">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page7$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<dna>AGATTTGGGCTCATGCTAGCTATAGTACTTTAG</dna><dna_dt1>50</dna_dt1><dna_dt2>500</dna_dt2><dna_context>false</dna_context></component></content>
+
+<content start="14" end="15">
+</content>
+
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>124.0</width>
+<height>330.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;center&gt;
+      &lt;img src=&quot;mut_legend.gif&quot;&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      
+
+      &lt;table width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;td&gt;
+            &lt;center&gt;
+              &lt;font&gt;&lt;a link_width=&quot;500&quot; href=&quot;geneticCodeTableStatic.cml&quot; link_left=&quot;500&quot; link_menubar=&quot;false&quot; link_toolbar=&quot;false&quot; link_height=&quot;450&quot; target=&quot;_blank&quot; link_statusbar=&quot;false&quot; link_top=&quot;100&quot;&gt;Genetic 
+              Code Table&lt;/a&gt;&lt;/font&gt;
+            &lt;/center&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="21">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Transcribe DNA to mRNA</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Transcribe DNA to mRNA</action>
+</component></content>
+
+<content start="18" end="19">
+</content>
+
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Translate mRNA to protein</title>
+<tooltip>Translate mRNA to protein (without removing existing protein)</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Translate mRNA to protein (without removing existing setup)</action>
+</component></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="23">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="21" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="25">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>130.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; face=&quot;verdana&quot;&gt;
+    &lt;b&gt;Challenge&lt;/b&gt;: &lt;b&gt;Make a silent mutation&lt;/b&gt;.
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        Make a single nucleotide mutation in the model above that does not 
+        change the sequence of the resulting protein. &lt;a href=&quot;script:page:0:message hint-p7.html&quot;&gt;Hint&lt;/a&gt;.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Then use the blanks below to specify: A. the original codon, B. what 
+        codon you changed it to, and C. the amino acid called for by both of 
+        those codons.
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-231326</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="33">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>190</width>
+<height>60</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link href=&quot;bioStyles.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    Enter the original codon:
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="26" end="27">
+</content>
+
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>190</width>
+<height>60</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link href=&quot;bioStyles.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    Enter the mutated codon:
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="28" end="31">
+</content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>344</width>
+<height>60</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link href=&quot;bioStyles.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    What amino acid is specified by both codons?
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="35">
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table width=&quot;100%&quot; id=&quot;Table_01&quot; cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;page6.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;60&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;59&quot; src=&quot;next.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; src=&quot;page.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;46&quot; src=&quot;index.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;28&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page7Selected.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;25&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;img width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<content start="37" end="38">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="38" end="39">
+</paragraph>
+</section>
+</document>

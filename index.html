@@ -6,9 +6,7 @@
     <script src='vendor/modernizr/modernizr.js' type='text/javascript'></script>
     <script src='vendor/d3/d3.v2.js' type='text/javascript'></script>
     <script src='vendor/jquery/jquery.min.js' type='text/javascript'></script>
-    <script src='http://use.typekit.com/hdw8ayt.js' type='text/javascript'></script>
     <script type='text/javascript'>
-      try{Typekit.load();}catch(e){}
       $(document).ready(function() { if (!Modernizr.svg) { $('body').prepend('<div class="warning">Sorry, but you\'ll need to upgrade your browser to use the models and visualizations. <a href="browser-upgrade.html">Learn more</a> &raquo;</div>'); } });
     </script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css' />
@@ -20,7 +18,7 @@
       <a href='http://www.concord.org/' id='logo'>
         <img src='resources/layout/cc-logo.png' />
       </a>
-      <h1>HTML5-based scientific models, visualizations, graphing, and probeware</h1>
+      <h1><a href='../../..'>Lab</a>: HTML5-based scientific models, visualizations, graphing, and probeware</h1>
     </div>
     <div id='under-header-links'>
       <a href='readme.html'>Read Me</a>
@@ -34,6 +32,8 @@
       <a href='https://www.pivotaltracker.com/projects/442903'>Pivotal Tracker Project</a>
       &nbsp;&nbsp;
       <a href='https://groups.google.com/group/lab-models'>Developer Mail List</a>
+      &nbsp;&nbsp;
+      <a href='https://travis-ci.org/concord-consortium/lab'>CIS (travis-ci)</a>
       &nbsp;&nbsp;
       <a href='experiments/navigator/index.html'>Browser Check</a>
     </div>
@@ -97,6 +97,9 @@
               <a href='examples/grapher/grapher.html'>Basic Grapher</a>
             </li>
             <li>
+              <a href='examples/grapher-bar-graph/bar-graph.html'>Bar Graph</a>
+            </li>
+            <li>
               <a href='experiments/dsp/dsp.html'>Digital Signal Processing Graphs</a>
             </li>
           </ul>
@@ -121,9 +124,15 @@
             </li>
           </ul>
         </div>
+      </div>
+      <div id='experiments-divider'></div>
+      <div class='column1'>
         <div class='item-list'>
           <h2>Experiments</h2>
           <ul>
+            <li>
+              <a href='experiments/html-layout/html-layout.html'>HTML Layout for Interactives</a>
+            </li>
             <li>
               <a href='experiments/netlogo-grapher/index.html'>NetLogo Applet displaying model output in Lab Grapher</a>
             </li>

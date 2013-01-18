@@ -3,8 +3,9 @@
 
 define(function (require, exports, module) {
   'use strict';
-  require('common/console');
+
   var
+    console         = require('common/console'),
     arrays          = require('arrays'),
     heatsolver      = require('energy2d/models/physics-solvers/heat-solver'),
     heatsolver_GPU  = require('energy2d/models/physics-solvers-gpu/heat-solver-gpu'),

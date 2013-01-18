@@ -1,16 +1,36 @@
 {
-  "temperature_control": true,
+  "type": "md2d",
   "width": 4,
   "height": 2.8,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": true,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": true,
+  "targetTemperature": 484.88686489376215,
   "gravitationalField": false,
-  "showClock": true,
-  "viewRefreshInterval": 50,
   "timeStep": 0.5,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": true,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": true,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false
+  },
   "elements": [
     {
       "id": 0,
@@ -41,6 +61,20 @@
       "mass": 600,
       "sigma": 0.3,
       "epsilon": -5
+    }
+  ],
+  "pairwiseLJProperties": [
+    {
+      "element1": 2,
+      "element2": 3,
+      "sigma": 0.1672999954223633,
+      "epsilon": -0.6000000238418579
+    },
+    {
+      "element1": 1,
+      "element2": 3,
+      "sigma": 0.1672999954223633,
+      "epsilon": -0.30000001192092896
     }
   ],
   "atoms": {
@@ -80,6 +114,5 @@
       1,
       0
     ]
-  },
-  "temperature": 484.88686489376215
+  }
 }

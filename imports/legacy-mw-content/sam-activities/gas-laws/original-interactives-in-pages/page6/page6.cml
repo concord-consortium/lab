@@ -29,7 +29,7 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot; face=&quot;verdana&quot;&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot; face=&quot;verdana&quot;&gt;
     You will run a series of trials, one right after another, each time 
     changing the number of molecules of gas and observing how the volume is 
     affected. The model initially contains 120 molecules. The piston is not in 
@@ -54,8 +54,8 @@
 
 </paragraph>
 <paragraph start="4" end="7">
-<SpaceBelow>8.0</SpaceBelow>
 <Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
 <content start="4" end="5">
 <component><class>org.concord.modeler.PageTextBox</class>
 <width>346.0</width>
@@ -64,7 +64,7 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot; face=&quot;Verdana&quot;&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot; face=&quot;Verdana&quot;&gt;
     &lt;strong&gt;Directions:&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;font size=&quot;3&quot;&gt;(1) Click Run. Observe 
     any changes in the volume of the chamber. Click Stop after letting the 
     model run for at least 30 seconds or until the piston just jiggles in the 
@@ -81,7 +81,7 @@
 
 <content start="5" end="6">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>page6$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<resource>page6$0.mml</resource><recorderless>true</recorderless>
 </component></content>
 
 <content start="6" end="7">
@@ -161,10 +161,7 @@ select atom 1-100;
 remove;</script>
 <action>Execute MW script</action></component></content>
 
-<content start="13" end="14">
-</content>
-
-<content start="14" end="15">
+<content start="13" end="15">
 </content>
 
 </paragraph>

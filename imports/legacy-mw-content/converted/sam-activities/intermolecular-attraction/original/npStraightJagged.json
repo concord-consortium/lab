@@ -1,16 +1,55 @@
 {
-  "temperature_control": false,
+  "type": "md2d",
   "width": 4,
   "height": 2.1,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": true,
-  "showVDWLines": true,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
   "gravitationalField": false,
-  "showClock": false,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "rgba(225,239,222,255)",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": true,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": true,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "starComp.png",
+        "imageHostIndex": 15,
+        "imageHostType": "Atom",
+        "imageLayer": 1,
+        "imageX": 1.42,
+        "imageY": 1.16
+      }
+    ],
+    "textBoxes": [
+      {
+        "text": "Large Straight and Bent Molecules",
+        "x": 0.79,
+        "y": 1.99,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(232,229,229)"
+      }
+    ]
+  },
   "elements": [
     {
       "id": 0,
@@ -41,6 +80,14 @@
       "mass": 600,
       "sigma": 0.3,
       "epsilon": -5
+    }
+  ],
+  "pairwiseLJProperties": [
+    {
+      "element1": 0,
+      "element2": 1,
+      "sigma": 0.2,
+      "epsilon": -0.02500000037252903
     }
   ],
   "atoms": {
@@ -226,7 +273,7 @@
     ]
   },
   "radialBonds": {
-    "atom1Index": [
+    "atom1": [
       0,
       2,
       4,
@@ -243,7 +290,7 @@
       15,
       15
     ],
-    "atom2Index": [
+    "atom2": [
       1,
       3,
       5,
@@ -260,7 +307,7 @@
       12,
       8
     ],
-    "bondLength": [
+    "length": [
       0.25,
       0.25,
       0.25,
@@ -277,7 +324,7 @@
       0.3242797244835457,
       0.342139560157612
     ],
-    "bondStrength": [
+    "strength": [
       2000,
       2000,
       2000,
@@ -294,7 +341,7 @@
       20,
       20
     ],
-    "bondStyle": [
+    "type": [
       101,
       101,
       101,
@@ -313,7 +360,7 @@
     ]
   },
   "angularBonds": {
-    "atom1Index": [
+    "atom1": [
       5,
       4,
       2,
@@ -326,7 +373,7 @@
       9,
       8
     ],
-    "atom2Index": [
+    "atom2": [
       0,
       1,
       5,
@@ -339,7 +386,7 @@
       7,
       6
     ],
-    "atom3Index": [
+    "atom3": [
       1,
       5,
       4,
@@ -352,7 +399,7 @@
       8,
       7
     ],
-    "bondAngle": [
+    "angle": [
       3.141592653589793,
       3.141592653589793,
       3.141592653589793,
@@ -365,7 +412,7 @@
       1.0471975511965976,
       3.141592653589793
     ],
-    "bondStrength": [
+    "strength": [
       50,
       50,
       50,
@@ -378,15 +425,5 @@
       50,
       50
     ]
-  },
-  "images": [
-    {
-      "imageUri": "starComp.png",
-      "imageHostIndex": 15,
-      "imageHostType": "Atom",
-      "imageLayer": 1,
-      "imageX": 142,
-      "imageY": 94
-    }
-  ]
+  }
 }

@@ -27,8 +27,8 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
-    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;The following 
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;The following 
     model shows molecules inside and outside a very tiny section of a balloon. 
     The rectangle in the middle represents the balloon&apos;s cross-section. The 
     arrows on the molecules represent their velocities.&lt;/font&gt;
@@ -59,23 +59,23 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot; face=&quot;Verdana&quot;&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot; face=&quot;Verdana&quot;&gt;
     Directions:
 
     &lt;ul&gt;
       &lt;li&gt;
-        &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Press the 
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Press the 
         &amp;quot;Run&amp;quot; button. &lt;/font&gt;
       &lt;/li&gt;
       &lt;li&gt;
-        &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Use the 
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Use the 
         &amp;quot;Add...&amp;quot; and &amp;quot;Remove...&amp;quot; buttons to change the number of atoms in the 
         balloon.&lt;/font&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
     &lt;strong&gt;Important:&lt;/strong&gt; After you add or remove atoms, run the model 
     for a minute so that it can have enough time to respond to your changes.&lt;br&gt;&lt;br&gt;&lt;hr&gt;&amp;#10014; 
-    &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:page:0:message &lt;t&gt;&lt;table width=300&gt;&lt;tr&gt;&lt;td&gt;&lt;font face=verdana&gt;The rectangle will continue to jiggle. This is  because there are very few atoms and they are running all the time. Anytime the collisions from the left side and the right side do not balance, the balloon skin (represented by the rectangle) will move. The more atoms we have, the less the jiggling there will be. When there are trillions of atoms, we will not see this effect at all.&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/t&gt;&quot;&gt;Note.&lt;/a&gt;&lt;/font&gt;
+    &lt;a href=&quot;script:page:0:message &lt;t&gt;&lt;table width=300&gt;&lt;tr&gt;&lt;td&gt;&lt;font face=verdana&gt;The rectangle will continue to jiggle. This is  because there are very few atoms and they are running all the time. Anytime the collisions from the left side and the right side do not balance, the balloon skin (represented by the rectangle) will move. The more atoms we have, the less the jiggling there will be. When there are trillions of atoms, we will not see this effect at all.&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/t&gt;&quot;&gt;&lt;font size=&quot;2&quot;&gt;Note.&lt;/font&gt;&lt;/a&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </title>
@@ -85,7 +85,7 @@
 
 <content start="5" end="6">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>page2$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<resource>page2$0.mml</resource><recorderless>true</recorderless>
 </component></content>
 
 <content start="6" end="7">

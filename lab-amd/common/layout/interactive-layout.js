@@ -30,9 +30,7 @@ define(function (require) {
         viewLists,
         viewSizes = {},
         viewType,
-        containerWidth = $('#content').width(),
-        containerHeight = $('#content').height(),
-        emsize;
+        containerWidth = $('#content').width();
 
     // grab 'viewLists' from legacy layout system
     viewLists = layout.views;
@@ -59,6 +57,11 @@ define(function (require) {
       viewSizes.energyGraphs = [containerWidth * 0.45, modelHeight];
     }
 
+    if (viewLists.barGraphs) {
+      // Keep width of the bar graph proportional to its height.
+      viewSizes.barGraphs = [35 + modelHeight * 0.22, modelHeight];
+    }
+
     for (viewType in viewLists) {
       if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
         i = -1;  while(++i < viewLists[viewType].length) {
@@ -81,7 +84,7 @@ define(function (require) {
     // FIXME this is a temporary hack ... put in layout code instead of memorializing it in the CSS,
     // which doesn't tend to get reviewed as closely.
 
-    // Push the molecule-container down so its top lines up with the energy graph's top exactly.
+    // Push the model-container down so its top lines up with the energy graph's top exactly.
     // After brief investigation, couldn't tell for sure why the energyGraph container was being pushed down ~5px by the browser...
     if (viewLists.energyGraphs) {
       $(viewLists.moleculeContainers[0].outerNode).css('top', 5);

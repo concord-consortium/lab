@@ -1,0 +1,46 @@
+define tempset selected
+
+select all
+
+color atoms opaque
+color bonds opaque
+color cartoon opaque
+color trace opaque
+color ribbon opaque
+
+# Bonds
+set bonds off
+wireframe off
+ssbonds off
+#hbonds off
+set bondmode and
+
+# Misc
+slab off
+#isosurface off
+
+# Atoms
+spacefill off
+dots off
+
+# Backbone
+ribbons off
+cartoons off
+strands off
+rockets off
+trace off
+backbone off
+
+# Text
+labels off
+#set echo off
+
+# Monitors
+monitors off
+
+# Halos
+
+selectionHalos off
+halos off
+
+select tempset

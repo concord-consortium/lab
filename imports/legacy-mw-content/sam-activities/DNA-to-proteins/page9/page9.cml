@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>From DNA to Proteins: Insertions and deletions</page_title>
+<referenced_files>codontable.html</referenced_files>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+   
+     
+
+ 
+
+ 
+
+
+</text>
+<section start="0" end="20">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="5">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page9$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<dna>AGATTTGGGCTCATGCTAGCTATAGTAGTATAA</dna><dna_dt1>50</dna_dt1><dna_dt2>500</dna_dt2><dna_context>false</dna_context></component></content>
+
+<content start="2" end="3">
+</content>
+
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>124.0</width>
+<height>330.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;center&gt;
+      &lt;img src=&quot;mut_legend.gif&quot;&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      
+
+      &lt;table width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;td&gt;
+            &lt;center&gt;
+              &lt;a link_width=&quot;500&quot; link_left=&quot;500&quot; link_menubar=&quot;false&quot; link_toolbar=&quot;false&quot; target=&quot;_blank&quot; link_height=&quot;450&quot; href=&quot;geneticCodeTableStatic.cml&quot; link_statusbar=&quot;false&quot; link_top=&quot;100&quot;&gt;&lt;font&gt;Genetic 
+              Code Table&lt;/font&gt;&lt;/a&gt;
+            &lt;/center&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="11">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Transcribe DNA to mRNA</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Transcribe DNA to mRNA</action>
+</component></content>
+
+<content start="6" end="7">
+</content>
+
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Translate mRNA to protein</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Translate mRNA to protein</action>
+</component></content>
+
+<content start="8" end="9">
+</content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<tooltip>Take a snapshot</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot without description</action>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="14">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>150.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; face=&quot;verdana&quot;&gt;
+    &lt;b&gt;Challenge: make an insertion that causes a frame-shift&lt;/b&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        Synthesize the unmutated protein, and take a snapshot.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Make an insertion mutation somewhere in the first half of the sequence.&lt;br&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        Synthesize your mutant protein.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Take a snapshot.
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-231326</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<Alignment>1</Alignment>
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="17">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>150.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; face=&quot;verdana&quot;&gt;
+    &lt;b&gt;Challenge: make a combination of insertions and/or deletions that do 
+    NOT cause a frame-shift&lt;/b&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        Press reset ( &lt;img src=&quot;reset.gif&quot;&gt; ).
+      &lt;/li&gt;
+      &lt;li&gt;
+        Make a combination of insertions or deletions, such that no 
+        frame-shift occurs. (&lt;a href=&quot;script:page:0:message hint1-p9.html&quot;&gt;Hint&lt;/a&gt;.)
+      &lt;/li&gt;
+      &lt;li&gt;
+        Synthesize your mutant protein.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Take a snapshot.
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-231326</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<content start="18" end="19">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="19" end="20">
+</paragraph>
+</section>
+</document>

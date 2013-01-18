@@ -1,16 +1,55 @@
 {
-  "temperature_control": false,
+  "type": "md2d",
   "width": 4,
   "height": 2.1,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": true,
-  "showVDWLines": true,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
   "gravitationalField": false,
-  "showClock": false,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "rgba(225,239,222,255)",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": true,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": true,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "star.png",
+        "imageHostIndex": 12,
+        "imageHostType": "Atom",
+        "imageLayer": 1,
+        "imageX": 1.12,
+        "imageY": 1.18
+      }
+    ],
+    "textBoxes": [
+      {
+        "text": "Medium Polar Molecule",
+        "x": 1.12,
+        "y": 1.99,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(232,229,229)"
+      }
+    ]
+  },
   "elements": [
     {
       "id": 0,
@@ -43,6 +82,7 @@
       "epsilon": -5
     }
   ],
+  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       0.63,
@@ -196,7 +236,7 @@
     ]
   },
   "radialBonds": {
-    "atom1Index": [
+    "atom1": [
       0,
       2,
       4,
@@ -212,7 +252,7 @@
       12,
       12
     ],
-    "atom2Index": [
+    "atom2": [
       1,
       3,
       5,
@@ -228,7 +268,7 @@
       6,
       11
     ],
-    "bondLength": [
+    "length": [
       0.25,
       0.25,
       0.25,
@@ -244,7 +284,7 @@
       0.7289446877574571,
       0.7370653821505885
     ],
-    "bondStrength": [
+    "strength": [
       2000,
       2000,
       2000,
@@ -260,7 +300,7 @@
       20,
       20
     ],
-    "bondStyle": [
+    "type": [
       101,
       101,
       101,
@@ -278,7 +318,7 @@
     ]
   },
   "angularBonds": {
-    "atom1Index": [
+    "atom1": [
       5,
       4,
       2,
@@ -288,7 +328,7 @@
       10,
       11
     ],
-    "atom2Index": [
+    "atom2": [
       0,
       1,
       5,
@@ -298,7 +338,7 @@
       8,
       9
     ],
-    "atom3Index": [
+    "atom3": [
       1,
       5,
       4,
@@ -308,7 +348,7 @@
       9,
       10
     ],
-    "bondAngle": [
+    "angle": [
       3.141592653589793,
       3.141592653589793,
       3.141592653589793,
@@ -318,7 +358,7 @@
       3.141592653589793,
       3.141592653589793
     ],
-    "bondStrength": [
+    "strength": [
       50,
       50,
       50,
@@ -328,15 +368,5 @@
       50,
       50
     ]
-  },
-  "images": [
-    {
-      "imageUri": "star.png",
-      "imageHostIndex": 12,
-      "imageHostType": "Atom",
-      "imageLayer": 1,
-      "imageX": 112,
-      "imageY": 92
-    }
-  ]
+  }
 }

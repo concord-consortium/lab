@@ -316,7 +316,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1350186759000</long> 
+     <long>1358439991000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -325,7 +325,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>11416</long> 
+    <long>12971</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -379,26 +379,6 @@
     </void> 
    </object> 
   </void> 
-  <void property="images"> 
-   <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="1"> 
-    <void index="0"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>instructionsFlat.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="x"> 
-       <double>32.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>27.0</double> 
-      </void> 
-     </object> 
-    </void> 
-   </array> 
-  </void> 
   <void property="monochromatic"> 
    <boolean>false</boolean> 
   </void> 
@@ -407,6 +387,81 @@
   </void> 
   <void property="showVDWLines"> 
    <boolean>true</boolean> 
+  </void> 
+  <void property="textBoxes"> 
+   <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="2"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
+      <void property="attachmentPosition"> 
+       <byte>11</byte> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>60</int> 
+        <int>64</int> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Arial-BoldMT</string> 
+        <int>1</int> 
+        <int>14</int> 
+       </object> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="text"> 
+       <string>   Explore the different attractive forces
+between polar and non-polar molecules
+by dragging the &quot;star&quot; image found in the
+                 following simulations.</string> 
+      </void> 
+      <void property="x"> 
+       <double>34.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>31.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="1"> 
+     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
+      <void property="attachmentPosition"> 
+       <byte>11</byte> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>60</int> 
+        <int>64</int> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Arial</string> 
+        <int>1</int> 
+        <int>14</int> 
+       </object> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>1</byte> 
+      </void> 
+      <void property="text"> 
+       <string>  Choose a pair of molecules from the
+                          menu below.</string> 
+      </void> 
+      <void property="x"> 
+       <double>46.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>123.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 

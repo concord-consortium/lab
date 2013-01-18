@@ -1,0 +1,60 @@
+{
+  "title": "Atom Tracing",
+  "publicationStatus": "public",
+  "subtitle": "Tracing and marking atoms.",
+  "about": "Atom Tracing example",
+  "models": [
+    {
+      "id": "model",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": "set({temperatureControl: true}); set({targetTemperature: 500});"
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "trace-atom",
+      "text": "Trace a random atom",
+      "action": "traceAtom(randomAtoms(1))"
+    },
+    {
+      "type": "button",
+      "id": "mark-trace-atom",
+      "text": "Mark and trace a random atom",
+      "action": [
+        "var atomId = randomAtoms(1);",
+        "markAtoms(atomId)",
+        "traceAtom(atomId)"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "untrace-atom",
+      "text": "Remove trace",
+      "action": "untraceAtom(); unmarkAllAtoms()"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-property-slider",
+      "title": "Set Temperature",
+      "min": 200,
+      "max": 2000,
+      "steps": 36,
+      "property": "targetTemperature",
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 200,
+          "label": "200"
+        },
+        {
+          "value": 2000,
+          "label": "2000"
+        }
+      ]
+    }
+  ]
+}

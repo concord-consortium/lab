@@ -1,13 +1,18 @@
 {
-  "title": "Testing: Obstacle Kinetic Energy calculation",
-  "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-ke$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset_step",
-      "modelTimeLabel": true
+  "title": "Obstacle Kinetic Energy calculation",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "obstacle-ke$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-ke$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "slider",
@@ -26,7 +31,7 @@
       ],
       "steps": 50,
       "title": "Temperature",
-      "property": "temperature"
+      "property": "targetTemperature"
     },
     {
       "type": "thermometer",

@@ -1,0 +1,55 @@
+{
+  "title": "Oil and Water",
+  "publicationStatus": "public",
+  "subtitle": "Explore how polar and non-polar substances interact.",
+  "about": "It is well known that \"oil and water don’t mix.\" But why? Run the model of polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water mixture,\" then run it again and watch what happens to the molecules over time.",
+  "models": [
+    {
+      "id": "page3$1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Separated Oil and Water",
+            "x": 1.08,
+            "y": 1.84,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(245,245,245)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "oilAndWaterMix",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Oil and Water Shaken Up and Mixed",
+            "x": 0.804,
+            "y": 1.84,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(245,245,245)"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "shake",
+      "text": "Shake up the oil and water mixture",
+      "action": "loadModel('oilAndWaterMix');"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "shake"
+    ]
+  }
+}

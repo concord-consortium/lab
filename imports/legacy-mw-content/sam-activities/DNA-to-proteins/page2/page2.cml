@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Transcribing DNA</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text> 	
+   
+     
+  
+</text>
+<section start="0" end="17">
+<paragraph start="0" end="3">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="1">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>200.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;b&gt;&lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;What to do:&lt;/font&gt;&lt;/b&gt;&lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt; 
+    &lt;/font&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Before the 
+        DNA can be transcribed, the strands have to separate from each other. 
+        Click the &lt;b&gt;Separate the strands of DNA&lt;/b&gt; button to begin. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Click on 
+        the button representing the correct &lt;a href=&quot;script:page:0:message complementary.html&quot;&gt;complementary&lt;/a&gt; 
+        RNA nucleotide. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Repeat 
+        until you&apos;ve transcribed the entire DNA strand.&lt;/font&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="1" end="3">
+<size>14</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="3" end="7">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>150.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Separate the strands of DNA</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>transcribe</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Reset protein synthesis simulation</action>
+</component></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="13">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>150.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageButton</class>
+<title>A</title>
+<tooltip>Put A</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>transcribe A</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageButton</class>
+<title>C</title>
+<tooltip>Put C</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>transcribe C</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageButton</class>
+<title>G</title>
+<tooltip>Put G</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>transcribe G</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageButton</class>
+<title>U</title>
+<tooltip>Add a U to the mRNA</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>transcribe U</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="16">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>150.0</width>
+<height>160.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;img src=&quot;nucleotideKey.gif&quot;&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-111112</bgcolor>
+</component></content>
+
+<content start="14" end="15">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page2$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+<dna>ATGTTGACTCTAACTCGCATCCGCACTGTG</dna><dna_dt1>20</dna_dt1><dna_dt2>1000</dna_dt2><dna_context>false</dna_context></component></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+</paragraph>
+</section>
+</document>

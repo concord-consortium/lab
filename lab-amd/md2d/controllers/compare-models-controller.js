@@ -1,4 +1,4 @@
-/*globals
+/*global
 
   define
   DEVELOPMENT
@@ -29,8 +29,10 @@ define(function (require) {
         elements            = modelConfig.elements,
         atoms               = modelConfig.atoms,
         mol_number          = modelConfig.mol_number,
-        temperature_control = modelConfig.temperature_control,
-        temperature         = modelConfig.temperature,
+        lennardJonesForces  = modelConfig.lennardJonesForces,
+        coulombForces       = modelConfig.coulombForces,
+        temperatureControl = modelConfig.temperatureControl,
+        targetTemperature   = modelConfig.targetTemperature,
         width               = modelConfig.width,
         height              = modelConfig.height,
         keShading           = modelConfig.keShading,
@@ -41,6 +43,7 @@ define(function (require) {
         timeStep            = modelConfig.timeStep,
         radialBonds         = modelConfig.radialBonds,
         angularBonds        = modelConfig.angularBonds,
+        restraints          = modelConfig.restraints,
         obstacles           = modelConfig.obstacles,
         viscosity           = modelConfig.viscosity,
         gravitationalField  = modelConfig.gravitationalField,
@@ -73,7 +76,7 @@ define(function (require) {
       // ------------------------------------------------------------
 
       function modelListener(e) {
-        moleculeContainer.update_drawable_positions();
+        moleculeContainer.updateDrawablePositions();
       }
 
       // ------------------------------------------------------------
@@ -92,18 +95,22 @@ define(function (require) {
         elements            = modelConfig.elements;
         atoms               = modelConfig.atoms;
         mol_number          = modelConfig.mol_number;
-        temperature_control = modelConfig.temperature_control;
-        temperature         = modelConfig.temperature;
+        lennardJonesForces  = modelConfig.lennardJonesForces;
+        coulombForces       = modelConfig.coulombForces;
+        temperatureControl  = modelConfig.temperatureControl;
+        targetTemperature   = modelConfig.targetTemperature;
         width               = modelConfig.width;
         height              = modelConfig.height;
         keShading           = modelConfig.keShading;
         chargeShading       = modelConfig.chargeShading;
         showVDWLines        = modelConfig.showVDWLines;
+        VDWLinesCutoff      = modelConfig.VDWLinesCutoff;
         showClock           = modelConfig.showClock;
         viewRefreshInterval = modelConfig.viewRefreshInterval;
         timeStep            = modelConfig.timeStep;
         radialBonds         = modelConfig.radialBonds;
         angularBonds        = modelConfig.angularBonds;
+        restraints          = modelConfig.restraints;
         obstacles           = modelConfig.obstacles;
         viscosity           = modelConfig.viscosity;
         gravitationalField  = modelConfig.gravitationalField;
@@ -119,36 +126,32 @@ define(function (require) {
 
       function createModel() {
         initializeLocalVariables();
-        model = Model({
-            elements            : elements,
-            temperature         : temperature,
-            temperature_control : temperature_control,
-            width               : width,
-            height              : height,
-            keShading           : keShading,
-            chargeShading       : chargeShading,
-            showVDWLines        : showVDWLines,
-            showClock           : showClock,
-            viewRefreshInterval : viewRefreshInterval,
-            timeStep            : timeStep,
-            viscosity           : viscosity,
-            gravitationalField  : gravitationalField,
-            images              : images
-          });
-
-        if (atoms) {
-          model.createNewAtoms(atoms);
-        } else if (mol_number) {
-          model.createNewAtoms(mol_number);
-          model.relax();
-        } else {
-          throw new Error("ModelController: tried to create a model without atoms or mol_number.");
-        }
-
-        if (radialBonds) model.createRadialBonds(radialBonds);
-        if (angularBonds) model.createAngularBonds(angularBonds);
-        if (showVDWLines) model.createVdwPairs(atoms);
-        if (obstacles) model.createObstacles(obstacles);
+        model = new Model({
+          elements            : elements,
+          targetTemperature   : targetTemperature,
+          lennardJonesForces  : lennardJonesForces,
+          coulombForces       : coulombForces,
+          temperatureControl  : temperatureControl,
+          width               : width,
+          height              : height,
+          keShading           : keShading,
+          chargeShading       : chargeShading,
+          showVDWLines        : showVDWLines,
+          VDWLinesCutoff      : VDWLinesCutoff,
+          showClock           : showClock,
+          viewRefreshInterval : viewRefreshInterval,
+          timeStep            : timeStep,
+          viscosity           : viscosity,
+          gravitationalField  : gravitationalField,
+          images              : images,
+          atoms               : atoms,
+          mol_number          : mol_number,
+          relax               : !!mol_number,
+          radialBonds         : radialBonds,
+          angularBonds        : angularBonds,
+          restraints          : restraints,
+          obstacles           : obstacles
+        });
       }
 
       /**
@@ -197,10 +200,10 @@ define(function (require) {
 
         model_player = new ModelPlayer(model, autostart);
 
-        moleculeContainer = MoleculeContainer(moleculeViewId, getModelInterface());
+        moleculeContainer = new MoleculeContainer(moleculeViewId, getModelInterface());
 
         moleculeContainer.updateMoleculeRadius();
-        moleculeContainer.setup_drawables();
+        moleculeContainer.setupDrawables();
 
         // ------------------------------------------------------------
         //
@@ -216,7 +219,7 @@ define(function (require) {
         } else {
           appletOptions = {};
         }
-        appletContainer = AppletContainer(appletContainerID, appletOptions);
+        appletContainer = new AppletContainer(appletContainerID, appletOptions);
 
         // ------------------------------------------------------------
         //
@@ -389,7 +392,7 @@ define(function (require) {
       function setupMWApplet() {
         if (currentCMLPath()) {
           appletOptions = { params: [["script", "page:0:import " + currentCMLPath()]] };
-          appletContainer = AppletContainer(appletContainerID, appletOptions);
+          appletContainer = new AppletContainer(appletContainerID, appletOptions);
           runMWScript("page:0:set frank false");
           layout.setView('appletContainers', [appletContainer]);
           layout.setupScreen();

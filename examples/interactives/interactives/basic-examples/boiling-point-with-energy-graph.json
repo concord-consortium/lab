@@ -1,13 +1,19 @@
 {
   "title": "Boiling Point with Energy Graph",
-  "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/boiling-point-with-clock$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset",
-      "modelTimeLabel": true
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "boiling-point-with-clock$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/boiling-point-with-clock$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      },
+      "onLoad": "set({ targetTemperature: 200 });"
     }
-  },
+  ],
   "components": [
     {
       "type": "button",
@@ -19,82 +25,52 @@
       "type": "button",
       "id": "heat",
       "text": "Heat",
-      "action": "adjustTemperature(1.1); limitHighTemperature(2000);"
+      "action": "adjustTemperature(1.1); limitHighTemperature(4000);"
     },
     {
-      "type": "pulldown",
-      "id": "pulldown-refresh",
-      "options": [
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 0,
+      "max": 4000,
+      "displayValue": "return format('1f')(value)",
+      "labels": [
         {
-          "text": "View Refresh Rate ...",
-          "disabled": true
+          "value": 0,
+          "label": "0 K"
         },
         {
-          "text": "10",
-          "action": "set({ 'viewRefreshInterval' : 10 });"
-        },
-        {
-          "text": "20",
-          "action": "set({ 'viewRefreshInterval' : 20 });"
-        },
-        {
-          "text": "50",
-          "selected": true,
-          "action": "set({ 'viewRefreshInterval' : 50 });"
-        },
-        {
-          "text": "100",
-          "action": "set({ 'viewRefreshInterval' : 100 });"
-        },
-        {
-          "text": "200",
-          "action": "set({ 'viewRefreshInterval' : 200 });"
-        },
-        {
-          "text": "500",
-          "action": "set({ 'viewRefreshInterval' : 500 });"
+          "value": 4000,
+          "label": "4000 K"
         }
-      ]
+      ],
+      "steps": 400,
+      "title": "Temperature",
+      "property": "targetTemperature"
     },
     {
-      "type": "pulldown",
-      "id": "pulldown-model-sample",
-      "options": [
-        {
-          "text": "Model Sample Rate (Hz) ...",
-          "disabled": true
-        },
-        {
-          "text": "10",
-          "action": "set({ 'modelSampleRate' : 10 });"
-        },
-        {
-          "text": "30",
-          "action": "set({ 'modelSampleRate' : 30 });"
-        },
-        {
-          "text": "60",
-          "selected": true,
-          "action": "set({ 'modelSampleRate' : 60 });"
-        }
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy of the System (KE:red, PE:green, TE:blue)",
+      "xlabel": "Model Time (ps)",
+      "ylabel": "eV",
+      "ymin": -15,
+      "ymax": 15,
+      "xmax": 30,
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
       ]
-    },
-    {
-      "type": "energyGraph",
-      "id": "ke-chart",
-      "dimensions": { "width": 500, "height": 296 },
-      "options": { "ymin": -30, "ymax": 30.0 }
     }
   ],
   "layout": {
     "rightwide": [
-      "ke-chart"
+      "propertiesGraph"
     ],
     "bottom": [
       "heat",
       "cool",
-      "pulldown-refresh",
-      "pulldown-model-sample"
+      "temperature-slider"
     ]
   }
 }

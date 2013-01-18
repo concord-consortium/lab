@@ -1,16 +1,140 @@
 {
-  "temperature_control": false,
+  "type": "md2d",
   "width": 4.88,
   "height": 2.38,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": false,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
   "gravitationalField": false,
-  "showClock": false,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "textBoxes": [
+      {
+        "text": "0",
+        "x": 1.38,
+        "y": 0.1,
+        "layer": 1
+      },
+      {
+        "text": "1",
+        "x": 1.51,
+        "y": 0.1,
+        "layer": 1
+      },
+      {
+        "text": "2",
+        "x": 1.63,
+        "y": 0.1,
+        "layer": 1
+      },
+      {
+        "text": "3",
+        "x": 1.75,
+        "y": 0.1,
+        "layer": 1
+      },
+      {
+        "text": "4",
+        "x": 1.87,
+        "y": 0.1,
+        "layer": 1
+      },
+      {
+        "text": "5",
+        "x": 2,
+        "y": 0.1,
+        "layer": 1
+      },
+      {
+        "text": "6",
+        "x": 2.13,
+        "y": 0.1,
+        "layer": 1
+      },
+      {
+        "text": "7",
+        "x": 2.25,
+        "y": 0.1,
+        "layer": 1
+      },
+      {
+        "text": "y",
+        "x": 2.46,
+        "y": 2.47,
+        "layer": 2
+      },
+      {
+        "text": "x",
+        "x": 3.23,
+        "y": 1.84,
+        "layer": 2
+      },
+      {
+        "text": "0",
+        "x": 2.34,
+        "y": 1.86,
+        "layer": 2
+      },
+      {
+        "text": "Flow chart",
+        "x": 2.87,
+        "y": 0.67,
+        "layer": 2,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(128,192,255)"
+      },
+      {
+        "text": "Flow chart",
+        "x": 3.74,
+        "y": 0.68,
+        "layer": 2,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(255,192,255)"
+      },
+      {
+        "text": "Flow chart",
+        "x": 2.86,
+        "y": 1.03,
+        "layer": 2,
+        "frame": "rectangle",
+        "backgroundColor": "rgb(255,192,128)"
+      },
+      {
+        "text": "Flow chart",
+        "x": 2.84,
+        "y": 1.43,
+        "layer": 2,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "A Cartesian coordinate system",
+        "x": 2.65,
+        "y": 2.32,
+        "layer": 2
+      }
+    ]
+  },
   "elements": [
     {
       "id": 0,
@@ -43,6 +167,7 @@
       "epsilon": -5
     }
   ],
+  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       2,

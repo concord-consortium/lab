@@ -1,16 +1,35 @@
 {
-  "temperature_control": false,
+  "type": "md2d",
   "width": 4,
   "height": 2.5,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": true,
-  "VDWLinesRatio": 1.67,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
   "gravitationalField": false,
-  "showClock": true,
-  "viewRefreshInterval": 50,
   "timeStep": 0.25,
+  "dielectricConstant": 11,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "rgba(0,0,0,255)",
+    "showClock": true,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": false,
+    "showVDWLines": true,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false
+  },
   "elements": [
     {
       "id": 0,
@@ -43,6 +62,7 @@
       "epsilon": -5
     }
   ],
+  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       0.8099563132102614,
@@ -1046,7 +1066,7 @@
     ]
   },
   "radialBonds": {
-    "atom1Index": [
+    "atom1": [
       2,
       0,
       5,
@@ -1130,7 +1150,7 @@
       122,
       120
     ],
-    "atom2Index": [
+    "atom2": [
       1,
       1,
       4,
@@ -1214,7 +1234,7 @@
       121,
       121
     ],
-    "bondLength": [
+    "length": [
       0.2,
       0.2,
       0.2,
@@ -1298,7 +1318,7 @@
       0.2,
       0.2
     ],
-    "bondStrength": [
+    "strength": [
       2000,
       2000,
       2000,
@@ -1382,7 +1402,7 @@
       2000,
       2000
     ],
-    "bondStyle": [
+    "type": [
       101,
       101,
       101,
@@ -1468,7 +1488,7 @@
     ]
   },
   "angularBonds": {
-    "atom1Index": [
+    "atom1": [
       2,
       5,
       8,
@@ -1511,7 +1531,7 @@
       119,
       122
     ],
-    "atom2Index": [
+    "atom2": [
       0,
       3,
       6,
@@ -1554,7 +1574,7 @@
       117,
       120
     ],
-    "atom3Index": [
+    "atom3": [
       1,
       4,
       7,
@@ -1597,7 +1617,7 @@
       118,
       121
     ],
-    "bondAngle": [
+    "angle": [
       1.8151424220741026,
       1.8151424220741026,
       1.8151424220741026,
@@ -1640,7 +1660,7 @@
       1.8151424220741026,
       1.8151424220741026
     ],
-    "bondStrength": [
+    "strength": [
       2,
       2,
       2,

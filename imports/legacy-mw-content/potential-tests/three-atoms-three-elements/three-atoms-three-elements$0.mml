@@ -393,7 +393,7 @@
    <double>0</double>
   </void>
   <void property="vy">
-   <double>0.001</double>
+   <double>0.01</double>
   </void>
  </object>
  <object class="org.concord.mw2d.models.Atom">
@@ -410,7 +410,7 @@
    <double>0</double>
   </void>
   <void property="vy">
-   <double>0.001</double>
+   <double>0.01</double>
   </void>
  </object>
  <object class="org.concord.mw2d.models.Atom">
@@ -427,7 +427,7 @@
    <double>0</double>
   </void>
   <void property="vy">
-   <double>0.001</double>
+   <double>0.01</double>
   </void>
  </object>
  <object class="org.concord.mw2d.models.MolecularModel$State"/>

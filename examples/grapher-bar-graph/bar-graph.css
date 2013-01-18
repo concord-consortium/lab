@@ -1,0 +1,24 @@
+#content {
+  margin-left: 2em;
+  padding-top: 2em; }
+
+.title {
+  font-size: 1.3em; }
+
+.cols {
+  float: left;
+  margin: 0 2em; }
+
+.opt {
+  font-weight: bold; }
+
+#bar-graph-view {
+  margin-top: 2em; }
+
+#help {
+  margin-top: 2em;
+  width: 600px; }
+
+.CodeMirror {
+  width: 600px;
+  border: 1px gray dashed; }

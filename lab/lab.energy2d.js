@@ -332,18 +332,83 @@ var requirejs, require, define;
 
 define("../vendor/almond/almond", function(){});
 
-define('common/console',['require'],function (require) {
-
-  // prevent a console.log from blowing things up if we are on a browser that
-  // does not support it ... like IE9
-  if (typeof console === 'undefined') {
-    window.console = {} ;
-    console.log = console.info = console.warn = console.error = function(){};
-  }
-
+// this file is generated during build process by: ./script/generate-js-config.rb
+define('lab.config',['require'],function (require) {
+  return {
+  "sharing": true,
+  "home": "http://lab.concord.org",
+  "homeInteractivePath": "/examples/interactives/interactive.html",
+  "homeEmbeddablePath": "/examples/interactives/embeddable.html",
+  "utmCampaign": null,
+  "logging": true,
+  "tracing": false
+};
 });
 
-/*globals window Uint8Array Uint8ClampedArray Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
+/*global define: false console: true */
+
+define('common/console',['require','lab.config'],function (require) {
+  // Dependencies.
+  var labConfig = require('lab.config'),
+
+      // Object to be returned.
+      publicAPI,
+      cons,
+      emptyFunction = function () {};
+
+  // Prevent a console.log from blowing things up if we are on a browser that
+  // does not support it ... like IE9.
+  if (typeof console === 'undefined') {
+    console = {};
+    if (window) window.console = console;
+  }
+  // Assign shortcut.
+  cons = console;
+  // Make sure that every method is defined.
+  if (cons.log === undefined)
+    cons.log = emptyFunction;
+  if (cons.info === undefined)
+    cons.info = emptyFunction;
+  if (cons.warn === undefined)
+    cons.warn = emptyFunction;
+  if (cons.error === undefined)
+    cons.error = emptyFunction;
+  if (cons.time === undefined)
+    cons.time = emptyFunction;
+  if (cons.timeEnd === undefined)
+    cons.timeEnd = emptyFunction;
+
+  publicAPI = {
+    log: function () {
+      if (labConfig.logging)
+        cons.log.apply(cons, arguments);
+    },
+    info: function () {
+      if (labConfig.logging)
+        cons.info.apply(cons, arguments);
+    },
+    warn: function () {
+      if (labConfig.logging)
+        cons.warn.apply(cons, arguments);
+    },
+    error: function () {
+      if (labConfig.logging)
+        cons.error.apply(cons, arguments);
+    },
+    time: function () {
+      if (labConfig.tracing)
+        cons.time.apply(cons, arguments);
+    },
+    timeEnd: function () {
+      if (labConfig.tracing)
+        cons.timeEnd.apply(cons, arguments);
+    }
+  };
+
+  return publicAPI;
+});
+
+/*global window Uint8Array Uint8ClampedArray Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
 /*jshint newcap: false */
 
 // Module can be used both in Node.js environment and in Web browser
@@ -351,15 +416,7 @@ define('common/console',['require'],function (require) {
 
 
 define('arrays/index',['require','exports','module'],function (require, exports, module) {
-  var arrays = {},
-
-      // Check for Safari. Typed arrays are faster almost everywhere
-      // ... except Safari.
-      notSafari = (function() {
-        var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-            match = navigator.userAgent.match(safarimatch);
-        return (match && match[3]) ? false: true;
-      }());
+  var arrays = {};
 
   arrays.version = '0.0.1';
 
@@ -438,9 +495,13 @@ define('arrays/index',['require','exports','module'],function (require, exports,
   };
 
   arrays.constructor_function = function(source) {
-    if (source.buffer && source.buffer.__proto__ && source.buffer.__proto__.constructor) {
+    if (source.buffer &&
+        source.buffer.__proto__ &&
+        source.buffer.__proto__.constructor &&
+        Object.prototype.toString.call(source) === "[object Array]") {
       return source.__proto__.constructor;
     }
+
     switch(source.constructor) {
       case Array: return Array;
       case Float32Array: return Float32Array;
@@ -588,15 +649,17 @@ define('arrays/index',['require','exports','module'],function (require, exports,
     therefore must pas a *new* object reference back to client code.
   */
   arrays.extend = function(array, newLength) {
-    var i,
-        len,
-        extendedArray,
-        Constructor;
+    var extendedArray,
+        Constructor,
+        i;
 
     Constructor = arrays.constructor_function(array);
 
     if (Constructor === Array) {
+      i = array.length;
       array.length = newLength;
+      // replicate behavior of typed-arrays by filling with 0
+      for(;i < newLength; i++) { array[i] = 0; }
       return array;
     }
 
@@ -609,6 +672,29 @@ define('arrays/index',['require','exports','module'],function (require, exports,
     return extendedArray;
   };
 
+  arrays.remove = function(array, idx) {
+    var constructor = arrays.constructor_function(array),
+        rest;
+
+    if (constructor !== Array) {
+      throw new Error("arrays.remove for typed arrays not implemented yet.");
+    }
+
+    rest = array.slice(idx + 1);
+    array.length = idx;
+    Array.prototype.push.apply(array, rest);
+
+    return array;
+  };
+
+  arrays.isArray = function (object) {
+    try {
+      arrays.constructor_function(object);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
 
   // publish everything to exports
   for (var key in arrays) {
@@ -825,10 +911,11 @@ define('energy2d/gpu/context',[],function () {
 /*jslint indent: 2, browser: true, newcap: true, es5: true */
 /*globals define: false, Float32Array: false, Uint16Array: false, console: false*/
 
-define('energy2d/gpu/shader',['require','energy2d/gpu/context'],function (require) {
+define('energy2d/gpu/shader',['require','common/console','energy2d/gpu/context'],function (require) {
   'use strict';
   var
     // Dependencies.
+    console = require('common/console'),
     context = require('energy2d/gpu/context'),
 
     // The internal `gl` variable holds the current WebGL context.
@@ -4169,8 +4256,9 @@ define('energy2d/models/part',['require','exports','module','energy2d/models/def
 
 define('energy2d/models/core-model',['require','exports','module','common/console','arrays','energy2d/models/physics-solvers/heat-solver','energy2d/models/physics-solvers-gpu/heat-solver-gpu','energy2d/models/physics-solvers/fluid-solver','energy2d/models/physics-solvers-gpu/fluid-solver-gpu','energy2d/models/physics-solvers/ray-solver','energy2d/models/part','energy2d/models/default-config','energy2d/gpu/gpgpu'],function (require, exports, module) {
   'use strict';
-  require('common/console');
+
   var
+    console         = require('common/console'),
     arrays          = require('arrays'),
     heatsolver      = require('energy2d/models/physics-solvers/heat-solver'),
     heatsolver_GPU  = require('energy2d/models/physics-solvers-gpu/heat-solver-gpu'),

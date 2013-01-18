@@ -11,10 +11,26 @@ describe "GoIOApplet class", ->
   it "should be a subclass of SensorApplet", ->
     expect( goio.constructor.__super__ ).toBe ISImporter.SensorApplet.prototype
 
-  describe "when listenerPath and otmlPath properties are set appropriately", ->
+  describe "getCodebase method", ->
+    describe "given no pathname", ->
+      it "should return \"/jnlp\"", ->
+        pathname = null
+        expect( goio.getCodebase(pathname) ).toEqual "/jnlp"
+
+    describe "given a pathname with no prefix: \"/experiments/inquiry-space-importer/\"", ->
+      it "should return \"/jnlp\"", ->
+        pathname = null
+        expect( goio.getCodebase(pathname) ).toEqual "/jnlp"
+
+    describe "given a pathname with a prefix: \"/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/\"", ->
+      it "should return the prefix (\"/DataGames/Games/concord/lab.dev/\")  plus \"/jnlp\"", ->
+        pathname = "/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/"
+        expect( goio.getCodebase(pathname) ).toEqual "/DataGames/Games/concord/lab.dev/jnlp"
+
+  describe "when listenerPath and sensorType properties are set appropriately", ->
     beforeEach ->
       goio.listenerPath = '(dummy listener path)'
-      goio.otmlPath = '(dummy otml path)'
+      goio.sensorType = '(dummy sensor type)'
 
     describe "getHTML method", ->
       it "should construct the appropriate applet tag", ->
@@ -22,45 +38,43 @@ describe "GoIOApplet class", ->
           '<applet ',
               'id="goio-applet" ',
               'class="applet sensor-applet" ',
-              'archive="org/concord/sensor-native/sensor-native.jar, ',
-                       'org/concord/otrunk/otrunk.jar, ',
-                       'org/concord/framework/framework.jar, ',
-                       'org/concord/frameworkview/frameworkview.jar, ',
-                       'jug/jug/jug.jar, ',
-                       'jdom/jdom/jdom.jar, ',
+              'archive="com/sun/jna/jna.jar, ',
                        'org/concord/sensor/sensor.jar, ',
-                       'org/concord/data/data.jar, ',
+                       'org/concord/sensor/goio-jna/goio-jna.jar, ',
+                       'org/concord/sensor/sensor-vernier/sensor-vernier.jar, ',
                        'org/concord/sensor/sensor-applets/sensor-applets.jar" ',
-              'code="org.concord.sensor.applet.OTSensorApplet" ',
+              'code="org.concord.sensor.applet.SensorApplet" ',
               'codebase="/jnlp" ',
               'width="1px" ',
               'height="1px" ',
               'MAYSCRIPT="true" >',
-            '<param name="resource" value="(dummy otml path)" />',
-            '<param name="listenerPath" value="(dummy listener path)" />',
-            '<param name="name" value="goio-applet" />',
+            '<param name="MAYSCRIPT" value="true" />',
           '</applet>'].join('')
 
     describe "testAppletReady method", ->
 
       beforeEach ->
         goio.appletInstance =
+          getSensorRequest: ->
           initSensorInterface: ->
+        spyOn(goio.appletInstance, 'getSensorRequest').andReturn '(new SensorRequest)'
         spyOn goio.appletInstance, 'initSensorInterface'
+
+      it "should pass the sensorType to the getSensorRequest method of the applet instance", ->
+        goio.testAppletReady()
+        expect( goio.appletInstance.getSensorRequest ).toHaveBeenCalledWith '(dummy sensor type)'
 
       it "should pass the listenerPath to the initSensorInterface method of the applet instance", ->
         goio.testAppletReady()
-        expect( goio.appletInstance.initSensorInterface ).toHaveBeenCalledWith '(dummy listener path)'
+        expect( goio.appletInstance.initSensorInterface ).toHaveBeenCalledWith '(dummy listener path)', 'golink', ['(new SensorRequest)']
 
-      describe "if initSensorInterface does not throw an error", ->
-
+      describe "if getSensorRequest does not throw an error", ->
         it "should return true", ->
           expect( goio.testAppletReady() ).toBe true
 
-      describe "if initSensorInterface throws an error", ->
-
+      describe "if getSensorRequest throws an error", ->
         beforeEach ->
-          goio.appletInstance.initSensorInterface.andThrow new Error()
+          goio.appletInstance.getSensorRequest.andThrow new Error()
 
         it "should return false", ->
           expect( goio.testAppletReady() ).toBe false

@@ -1,0 +1,46 @@
+{
+  "title": "Bar Graph Example",
+  "publicationStatus": "public",
+  "subtitle": "Marking an atom and graphing it's kinetic energy.",
+  "about": [
+             "There are 10 atoms in the model and the fifth one is both 'marked' and it's kinetic energy is graphed in the bar graph."
+           ],
+  "models": [
+    {
+      "id": "simple-ke-shading$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "markAtoms(4);"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "atom0Ke",
+      "units": "eV",
+      "label": "Kinetic Energy of Particle",
+      "value": [
+        "return atomsKe([4]);"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "options": {
+        "minValue": 0,
+        "maxValue": 1,
+        "barColor": "#F42",
+        "title": "Kinetic Energy of Particle (eV)"
+      },
+      "input1": "atom0Ke"
+    }
+  ],
+  "layout": {
+    "rightwide": [
+      "bar-graph"
+    ]
+  }
+}

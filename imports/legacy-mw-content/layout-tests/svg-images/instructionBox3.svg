@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  version="1.1"
+  x="0" y="0" width="300" height="60" viewBox="0 0 300 60">
+  <defs>
+    <!--
+      See:
+        http://stackoverflow.com/questions/6088409/svg-drop-shadow-using-css3
+        http://www.w3.org/Graphics/SVG/IG/resources/svgprimer.html#filters
+      Implemenation below is **not** using css3 filters
+    -->
+    <filter id="f1" x="0" y="0">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="1" dy="1" result="offsetblur"/> <!-- how much to offset -->
+      <feMerge>
+        <feMergeNode/> <!-- this contains the offset blurred image -->
+        <feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
+     </feMerge>
+    </filter>
+  </defs>
+  <g>
+    <rect style="opacity:1.0;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1"
+       width="272" height="48" x="7.5" y="6.5" rx="8" ry="10"
+       filter="url(#f1)" />
+    <text x="13" y="26" xml:space="preserve" font-family="'museo sans', sans-serif" font-size="14">
+      <tspan x="13.5" y="26">Drag the molecules close to each other</tspan>
+      <tspan x="13.5" y="44">and look for intermolecular attractions.</tspan>
+    </text>
+  </g>
+</svg>

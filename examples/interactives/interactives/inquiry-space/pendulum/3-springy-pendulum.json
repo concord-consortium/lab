@@ -1,0 +1,196 @@
+{
+  "title": "Pendulum and Spring",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "pendulum1$0",
+      "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "gridLines": true,
+        "velocityVectors": {
+          "length": 10
+        }
+      },
+      "onLoad": "setRadialBondProperties(0, { length: 0.75, style: 106 });"
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "gravity-slider",
+      "min": 0.1,
+      "max": 4,
+      "initialValue": 1,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0.1,
+          "label": "0.1"
+        },
+        {
+          "value": 4,
+          "label": "4.0"
+        }
+      ],
+      "steps": 39,
+      "title": "Starting Gravity",
+      "action": "set({ gravitationalField: value*8e-8 });"
+    },
+    {
+      "type": "slider",
+      "id": "angle-slider",
+      "min": -45,
+      "max": 45,
+      "initialValue": 45,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": -45,
+          "label": "-45&deg;"
+        },
+        {
+          "value": 45,
+          "label": "45&deg;"
+        }
+      ],
+      "steps": 90,
+      "title": "Starting Angle",
+      "action": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});"
+    },
+    {
+      "type": "slider",
+      "id": "length-slider",
+      "min": 0.0666,
+      "max": 2,
+      "initialValue": 1.333,
+      "displayValue": "return format('1.1f')(value*1.5)",
+      "labels": [
+        {
+          "value": 0.0666,
+          "label": "0.1"
+        },
+        {
+          "value": 2,
+          "label": "3.0"
+        }
+      ],
+      "steps": 29,
+      "title": "Starting length (m)",
+      "action": "var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});"
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider",
+      "min": 1,
+      "max": 50,
+      "initialValue": 15,
+      "displayValue": "return format('f')(value*10)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "10"
+        },
+        {
+          "value": 50,
+          "label": "500"
+        }
+      ],
+      "steps": 49,
+      "title": "Mass of the ball (grams)",
+      "action": "setElementProperties(3, { mass: value*120 });"
+    },
+    {
+      "type": "slider",
+      "id": "spring-constant-slider",
+      "min": 0.5,
+      "max": 45,
+      "initialValue": 8,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0.5,
+          "label": "0.5"
+        },
+        {
+          "value": 45,
+          "label": "45"
+        }
+      ],
+      "steps": 89,
+      "title": "Spring Constant (N/m)",
+      "action": "setRadialBondProperties(0, { strength: value });"
+    },
+    {
+      "type": "slider",
+      "id": "friction-slider",
+      "min": 0,
+      "max": 1,
+      "initialValue": 0,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 1,
+          "label": "Max"
+        }
+      ],
+      "steps": 25,
+      "title": "Friction",
+      "action": "setAtomProperties(1, { friction: value });"
+    },
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE Shading",
+      "property": "keShading"
+    },
+    {
+      "type": "checkbox",
+      "id": "velocity-vectors",
+      "text": "Velocity Vectors",
+      "property": "showVelocityVectors"
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy of the System (KE:red, PE:green, TE:blue)",
+      "xlabel": "Model Time (ps)",
+      "ylabel": "eV",
+      "ymin": -0.1,
+      "ymax": 2,
+      "xmax": 50,
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
+    }
+  ],
+  "layout": {
+    "rightwide": [
+      "propertiesGraph"
+    ],
+    "bottom": [
+      [
+        "gravity-slider",
+        "angle-slider",
+        "length-slider"
+      ],
+      [
+        "mass-slider",
+        "spring-constant-slider",
+        "friction-slider"
+      ],
+      [
+        "velocity-vectors",
+        "ke-shading"
+      ]
+    ]
+  }
+}

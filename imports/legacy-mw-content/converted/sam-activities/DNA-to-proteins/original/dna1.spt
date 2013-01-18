@@ -1,0 +1,8 @@
+#moveto /* time, axisAngle */ 0 { 333 941 58 86.26} /* zoom, translation */  100.0 0.0 0.0  /* center, rotationRadius */ {0.0020003319 0.001999855 -0.001999855} 27.312136 /* navigation center, translation, depth */ {0.0 0.0 0.0} 0.0020141602 0.009719849 50.0;
+
+background IMAGE "elementsCHONPjmol372x230.gif"
+
+moveto /* time, axisAngle */ 0.0 { -587 527 614 115.57} /* zoom, translation */  103.92 0.0 0.0  /* center, rotationRadius */ {44.003002 25.2955 21.498001} 25.420343 /* navigation center, translation, depth */ {0.0 0.0 0.0} 63.3786 104.75814 50.0;
+
+display :I
+

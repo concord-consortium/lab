@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws: The Volume-Pressure Relationship</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+
+
+  
+   o   
+
+
+</text>
+<section start="0" end="18">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="4">
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="7">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>energy-minimization$0.mml</resource><statusbar>false</statusbar><button>Select Object</button><button>What's This?</button><button>Draw Lines</button><button>Draw Rectangle</button><button>Draw Ellipse</button><button>Draw Triangle</button><button>Mark Object</button><button>Count Objects</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Toggle Average Position</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Add Diatomic Molecule</button><button>Add Triatomic Molecule</button><button>Add Benzene</button><button>Add Chain Molecule</button><button>Add Obstacle</button><button>Fill Area with Nt Atoms</button><button>Fill Area with Pl Atoms</button><button>Fill Area with Ws Atoms</button><button>Fill Area with Ck Atoms</button><button>Add Rectangular Molecular Surface</button><button>Add Rectangular Molecular Ribbon</button><button>Add Circular Molecular Surface</button><button>Add Circular Molecular Ribbon</button><button>Add Curved Molecular Surface</button><button>Add Curved Molecular Ribbon</button><button>Add Molecular Surface in Free-Form Shape</button><button>Add an Amino Acid to Polypeptide</button><button>Subtract an Amino Acid from Polypeptide</button><button>Add a Nucleotide to DNA</button><button>Subtract a Nucleotide from DNA</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Add Positive Charge</button><button>Add Negative Charge</button><button>Increase Restraint</button><button>Decrease Restraint</button><button>Increase Damping</button><button>Decrease Damping</button><button>Rotate Object</button><button>Duplicate Object</button><button>Delete Objects</button><button>Setup Boundary</button><button>Change Type</button><button>Change Velocity</button><button>Build Radial Bond</button><button>Create Radial Bond</button><button>Build Angular Bond</button></component></content>
+
+<content start="5" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="15">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="7" end="8">
+</content>
+
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Volume &#8593;</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>define %a 1;
+define %x %obstacle[0].x+%a;
+define %i 0;
+define %ratio %x/%obstacle[0].x;
+if(%x&lt;%width-%obstacle[0].width);
+  set obstacle[0].x %x;
+  set rectangle[0].width %x;
+  while(%i&lt;%number_of_atoms);
+    set atom[%i].rx %atom[%i].rx*%ratio;
+    set %i %i+1;
+  endwhile;
+endif;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Volume &#8595;</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>define %a 1;
+define %x %obstacle[0].x-%a;
+define %i 0;
+define %ratio %x/%obstacle[0].x;
+if(%x&gt;%obstacle[0].width+5);
+  set obstacle[0].x %x;
+  set rectangle[0].width %x;
+  while(%i&lt;%number_of_atoms);
+    set atom[%i].rx %atom[%i].rx*%ratio;
+    set %i %i+1;
+  endwhile;
+endif;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<content start="16" end="17">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="17" end="18">
+</paragraph>
+</section>
+</document>

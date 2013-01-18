@@ -27,7 +27,7 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot; face=&quot;verdana&quot;&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot; face=&quot;verdana&quot;&gt;
     The following is an incomplete model of the soda can. Currently it is 
     showing gas molecules inside and outside the soda can before it is plunged 
     in the ice water. The gray rectangle in the middle of the model represents 
@@ -61,8 +61,8 @@
 
 </paragraph>
 <paragraph start="4" end="7">
-<SpaceBelow>8.0</SpaceBelow>
 <Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
 <content start="4" end="5">
 <component><class>org.concord.modeler.PageTextBox</class>
 <width>346.0</width>
@@ -71,7 +71,7 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot; face=&quot;Verdana&quot;&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot; face=&quot;Verdana&quot;&gt;
     &lt;b&gt;Tools for modeling:&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;3&quot;&gt;&lt;img src=&quot;selectObject.gif&quot;&gt;: 
     Select a molecule.&lt;br&gt;&lt;img src=&quot;dropAtom2.gif&quot;&gt;: To add an orange 
     molecule, click the button above the model and then click again anywhere 
@@ -99,8 +99,8 @@
 
 </paragraph>
 <paragraph start="7" end="8">
-<SpaceBelow>8.0</SpaceBelow>
 <Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
 <content start="7" end="8">
 </content>
 

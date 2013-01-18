@@ -1,4 +1,4 @@
-/*global defineClass extendClass grapher d3 */
+/*global defineClass extendClass Lab d3 */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 (function() {
@@ -33,9 +33,8 @@ ISImporter.sensors = {
 
   distance: {
     applet: new ISImporter.GoIOApplet({
-      otmlPath: '/distance.otml',
-      codebase: '../../jnlp',
       listenerPath: 'ISImporter.sensors.distance.applet',
+      sensorType: 'distance',
       appletId: 'distance-sensor'
     }),
     title: "Distance",
@@ -46,9 +45,8 @@ ISImporter.sensors = {
 
   temperature: {
     applet: new ISImporter.GoIOApplet({
-      otmlPath: '/temperature.otml',
-      codebase: '../../jnlp',
       listenerPath: 'ISImporter.sensors.temperature.applet',
+      sensorType: 'temperature',
       appletId: 'temperature-sensor'
     }),
     title: "Temperature",
@@ -59,9 +57,8 @@ ISImporter.sensors = {
 
   light: {
     applet: new ISImporter.GoIOApplet({
-      otmlPath: '/light.otml',
-      codebase: '../../jnlp',
       listenerPath: 'ISImporter.sensors.light.applet',
+      sensorType: 'light',
       appletId: 'light-sensor'
     }),
     title: "Light Intensity",
@@ -119,7 +116,7 @@ ISImporter.GraphController = defineClass({
   },
 
   initGraph: function() {
-    this.graph = grapher.graph(this.element, {
+    this.graph = Lab.grapher.graph(this.element, {
       title       : this.title,
       xlabel      : this.xLabel,
       xmin        : 0,

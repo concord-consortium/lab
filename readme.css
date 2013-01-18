@@ -1,5 +1,5 @@
 body {
-  font-family: museo-sans, "Open Sans", Verdana, Geneva, sans-serif;
+  font-family: "Open Sans", Verdana, Geneva, sans-serif;
   font-size: 14px;
   padding: 5px 20px 5px 20px;
   background-image: url(resources/diagonal-lines.jpg);
@@ -21,7 +21,7 @@ body {
 
 h1 {
   color: white;
-  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-family: "Open Sans", georgia, times, "times new roman", serif;
   font-weight: bold;
   font-size: 1.5em;
   border-top: 3px solid #aaaaaa;
@@ -34,7 +34,7 @@ h1 {
 
 h2 {
   color: #5f5f5f;
-  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-family: "Open Sans", georgia, times, "times new roman", serif;
   font-weight: bold;
   font-size: 1.3em;
   border-top: 6px double #d0d0d0;
@@ -46,7 +46,7 @@ h2 {
     border-top: none; }
 
 h3 {
-  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-family: "Open Sans", georgia, times, "times new roman", serif;
   font-weight: normal;
   font-size: 1.165em;
   margin: 1.4em 1.0em 0.6em 0em;
@@ -54,14 +54,14 @@ h3 {
   border-top: 2px solid #e0e0e0; }
 
 h4 {
-  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-family: "Open Sans", georgia, times, "times new roman", serif;
   font-weight: normal;
   font-size: 1.125em;
   margin: 0.6em 2.0em 0.6em 0em;
   padding-top: 0.4em; }
 
 h5 {
-  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-family: "Open Sans", georgia, times, "times new roman", serif;
   font-weight: normal;
   font-size: 1.15em;
   margin: 0.6em 2.0em 0.6em 0em;

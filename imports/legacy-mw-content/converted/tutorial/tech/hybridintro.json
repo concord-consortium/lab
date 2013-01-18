@@ -1,16 +1,73 @@
 {
-  "temperature_control": false,
+  "type": "md2d",
   "width": 6,
   "height": 3,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": false,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
   "gravitationalField": false,
-  "showClock": false,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "textBoxes": [
+      {
+        "text": "DNA bases (Purines or pyrimidines)",
+        "x": null,
+        "y": 2.51,
+        "layer": 1
+      },
+      {
+        "text": "DNA bases (Purines or pyrimidines)",
+        "x": 0.94,
+        "y": 0.78,
+        "layer": 1
+      },
+      {
+        "text": "Hydrogen bonds",
+        "x": 0.31,
+        "y": 1.24,
+        "layer": 1
+      },
+      {
+        "text": "Ester links (Phosphodiester bonds)",
+        "x": 2.58,
+        "y": 1.14,
+        "layer": 1
+      },
+      {
+        "text": "Deoxyribose sugar + phosphodiester (DNA backbone)",
+        "x": 3.75,
+        "y": 2.42,
+        "layer": 1
+      },
+      {
+        "text": "Schematical illustration of the 2D DNA model",
+        "x": 1.39,
+        "y": 2.87,
+        "layer": 1
+      }
+    ]
+  },
   "elements": [
     {
       "id": 0,
@@ -43,6 +100,7 @@
       "epsilon": -0.25
     }
   ],
+  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       2.54,
@@ -414,7 +472,7 @@
     ]
   },
   "radialBonds": {
-    "atom1Index": [
+    "atom1": [
       0,
       2,
       2,
@@ -458,7 +516,7 @@
       41,
       41
     ],
-    "atom2Index": [
+    "atom2": [
       1,
       3,
       0,
@@ -502,7 +560,7 @@
       43,
       37
     ],
-    "bondLength": [
+    "length": [
       0.16,
       0.168,
       0.192,
@@ -546,7 +604,7 @@
       0.168,
       0.192
     ],
-    "bondStrength": [
+    "strength": [
       2000,
       2000,
       2000,
@@ -590,7 +648,7 @@
       2000,
       2000
     ],
-    "bondStyle": [
+    "type": [
       101,
       101,
       101,
@@ -636,7 +694,7 @@
     ]
   },
   "angularBonds": {
-    "atom1Index": [
+    "atom1": [
       2,
       3,
       4,
@@ -678,7 +736,7 @@
       41,
       43
     ],
-    "atom2Index": [
+    "atom2": [
       1,
       0,
       1,
@@ -720,7 +778,7 @@
       39,
       37
     ],
-    "atom3Index": [
+    "atom3": [
       0,
       2,
       0,
@@ -762,7 +820,7 @@
       37,
       41
     ],
-    "bondAngle": [
+    "angle": [
       1.5707963267948966,
       1.5707963267948966,
       1.5707963267948966,
@@ -804,7 +862,7 @@
       1.5707963267948966,
       1.5707963267948966
     ],
-    "bondStrength": [
+    "strength": [
       50,
       50,
       50,

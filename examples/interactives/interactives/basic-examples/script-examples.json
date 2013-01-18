@@ -1,46 +1,62 @@
 {
   "title": "Test Button, Slider, and Pulldown Examples",
-  "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page3$0-with-heatbath",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "id": "page3$1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "id": "oilAndWaterMix",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "button",
       "id": "abs-zero",
       "text": "Set to absolute zero",
-      "action": "set({temperature: 0.00001});"
+      "action": "set({targetTemperature: 0.00001});"
     },
     {
       "type": "button",
       "id": "add-heat",
       "text": "Add lots of heat",
       "action": [
-                "var curTemp = get('temperature'), newTemp = curTemp + 2500;",
-                "if (newTemp > 4000) {",
-                "  newTemp = 4000;",
-                "}",
-                "set({temperature: newTemp});"
-              ]
+        "var curTemp = get('temperature'), newTemp = curTemp + 2500;",
+        "if (newTemp > 4000) {",
+        "  newTemp = 4000;",
+        "}",
+        "set({targetTemperature: newTemp});"
+      ]
     },
-
     {
       "type": "button",
       "id": "log-model",
       "text": "Log value of model",
       "action": "console.log(model);"
     },
-
     {
       "type": "button",
       "id": "throw-error",
       "text": "Throw an error",
       "action": "x = 1;"
     },
-
     {
       "type": "pulldown",
       "id": "pulldown1",
@@ -55,23 +71,48 @@
         }
       ]
     },
-
     {
       "type": "pulldown",
       "id": "pulldown2",
       "options": [
-        {},
+        {
+          "text": "select  model ...",
+          "disabled": true
+        },
         {
           "text": "Load Oil and Water",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json"
+          "loadModel": "page3$1",
+          "selected": true
         },
         {
           "text": "Load Oil and Water Mixed",
-          "loadModel": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json"
+          "loadModel": "oilAndWaterMix"
         }
       ]
     },
-
+    {
+      "type": "radio",
+      "id": "radio",
+      "options": [
+        {
+          "text": "Oil and Water",
+          "loadModel": "page3$1",
+          "selected": true
+        },
+        {
+          "text": "Oil and Water Mixed",
+          "loadModel": "oilAndWaterMix"
+        },
+        {
+          "text": "Show alert dialog",
+          "action": "alert('Alert!')"
+        },
+        {
+          "text": "This option is disabled",
+          "disabled": true
+        }
+      ]
+    },
     {
       "type": "slider",
       "id": "temperature-property-slider",
@@ -93,9 +134,8 @@
           "label": "3000 K"
         }
       ],
-      "property": "temperature"
+      "property": "targetTemperature"
     },
-
     {
       "type": "slider",
       "id": "temperature-action-slider",
@@ -118,7 +158,25 @@
           "label": "3000 K"
         }
       ],
-      "action": "set({temperature: value});"
+      "action": "set({targetTemperature: value});"
     }
-  ]
+  ],
+  "layout": {
+    "bottom": [
+      [
+        "abs-zero",
+        "add-heat",
+        "log-model",
+        "throw-error"
+      ],
+      [
+        "pulldown1",
+        "pulldown2"
+      ],
+      [
+        "temperature-property-slider",
+        "temperature-action-slider"
+      ]
+    ]
+  }
 }

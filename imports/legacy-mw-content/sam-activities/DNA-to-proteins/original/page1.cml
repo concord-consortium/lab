@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>From DNA to Proteins: Introduction</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+
+ 
+
+      
+
+ 
+
+ 
+
+ 
+ 
+  
+      
+   
+ 
+
+</text>
+<section start="0" end="48">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font color=&quot;#FFFFFF&quot; size=&quot;5&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;From 
+    DNA to Proteins:&lt;/font&gt;&lt;/strong&gt;&lt;font color=&quot;#FFFFFF&quot; size=&quot;5&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt; 
+    Introduction&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table width=&quot;100%&quot; id=&quot;Table_01&quot; cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;60&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;59&quot; src=&quot;next.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; src=&quot;page.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;46&quot; src=&quot;index.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;28&quot; src=&quot;page1Selected.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;25&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;img width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;98&quot; src=&quot;atomMainIdea.png&quot; height=&quot;58&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;DNA is a 
+          long molecule found in the nucleus of every cell of all living 
+          organisms.&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon><foreground>255 0 0</foreground></content>
+
+<content start="7" end="8">
+<foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+<foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="9" end="11">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>100.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table cellspacing=&quot;0&quot; width=&quot;95%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;DNA is a very 
+          special molecule that stores the information needed to build a 
+          living thing. Whether that organism has brown hair, leaves, wings, 
+          or gills is a result of the DNA inside its cells.&lt;!--DNA, the 
+          hereditary material of life, has several functions: storing genetic 
+          information (&lt;a href=&quot;script:page:0:message &lt;t&gt;&lt;font face=verdana&gt;A trait is a characteristic or feature. Genetic traits &lt;br&gt;are passed on from one generation to the next. &lt;/t&gt;&quot;&gt;traits&lt;/a&gt;), 
+          passing traits to the next generation, and allowing traits to change 
+          between generations. --&gt;
+           Every living cell can translate information stored in the DNA into 
+          sequences of amino acids called proteins. This activity will focus 
+          on how information stored in DNA is read by the cell and used to 
+          build proteins that the cell needs. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="10" end="11">
+<foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="12" end="19">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>505.0</width>
+<height>305.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;img src=&quot;DNA2protein.jpg&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="13" end="17">
+</content>
+
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>232.0</width>
+<height>305.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table cellspacing=&quot;0&quot; width=&quot;95%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;br&gt;
+          &lt;br&gt;
+          &lt;b&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;The pathway 
+          from DNA to protein:&lt;/font&gt;&lt;/b&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;br&gt;DNA 
+          stores the information needed to make proteins. The information in a &lt;a href=&quot;script:page:0:message gene.html&quot;&gt;gene&lt;/a&gt; 
+          is transcribed to messenger RNA (mRNA), which exits the nucleus to 
+          the cytoplasm. Then the information from the mRNA is translated into 
+          a protein.&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="22">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;33&quot; src=&quot;atomsBullet.png&quot; height=&quot;23&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;strong&gt;&lt;font color=&quot;#5c7b67&quot; size=&quot;5&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;The 
+          Architecture of DNA&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;18&quot; src=&quot;rule.png&quot; height=&quot;6&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<Alignment>1</Alignment>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="25">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>90.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;DNA&apos;s shape is 
+    a helix made of two strands, each assembled from a sequence of 
+    nucleotides. &lt;a link_width=&quot;850&quot; href=&quot;biolink_nucleotides.cml&quot; link_left=&quot;100&quot; link_menubar=&quot;false&quot; link_toolbar=&quot;false&quot; target=&quot;_blank&quot; link_statusbar=&quot;false&quot; link_top=&quot;100&quot;&gt;(Biolink: 
+    DNA Nucleotides)&lt;/a&gt;. &lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;What 
+      to do: &lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Explore 
+      the structure and components of DNA. Use the buttons below the model to 
+      highlight different features of the DNA fragment.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="28">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageJContainer</class>
+<appletjar>JmolApplet.jar</appletjar>
+<appletjar>netscape.jar</appletjar>
+<appletclass>org.jmol.applet.MwPlugin</appletclass>
+<resource>page1$plugin$0.aps</resource><parameter>{name=&quot;load&quot; value=&quot;dna1.pdb&quot;}
+{name=&quot;nostatepersistence&quot; value=&quot;true&quot;}
+{name=&quot;script&quot; value=&quot;script dna-horizontal.spt; set echo myecho 0% 0%
+echo To rotate, click and drag. To zoom, hold down the SHIFT key while dragging.
+color echo [x999999]
+font echo 14 sans bold&quot;}
+</parameter>
+<width>700</width><height>350</height>
+<bgcolor>-b0a11</bgcolor>
+<border>Raised Etched</border><codebase>http://mw2.concord.org/public/plugin/</codebase><cachefile>dna-horizontal.spt, all-off.spt</cachefile></component></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="30">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>700.0</width>
+<height>160.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .pagetitle { margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; margin-right: 0px; margin-left: 0px; color: #FFFFFF }
+        body { font-family: Verdana, Arial, Helvetica, sans-serif }
+        .mainidea { margin-bottom: 0px; margin-top: 0px; font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif; margin-right: 0px; margin-left: 0px }
+        body.mainidea { margin-top: 5px }
+        p { font-size: 11px }
+        ul { list-style-image: file:/Users/freichsman/Documents/Projects/Concord/RITES/proposed%20activities/DNA%20structure/listBullet.png }
+        table p { margin-top: 11px; font-size: 11px }
+        li { font-size: 11px }
+        body.subhead { background-image: subHeadingBackground.png }
+        .question { margin-bottom: 0px; margin-top: 0px; font-size: 11px; font-weight: bold; font-family: Arial, Helvetica, sans-serif; margin-right: 0px; margin-left: 0px }
+        .firstp { margin-bottom: 0px; margin-top: 0px; font-size: 11px; margin-right: 0px; margin-left: 0px }
+        body.question { background-color: #e6e6e6; margin-bottom: 5px; margin-top: 5px; margin-left: 5px }
+        .subhead { margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; margin-right: 0px; margin-left: 0px; color: #5c7b67 }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;table width=&quot;100%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          &lt;b&gt;Show DNA as:&lt;/b&gt;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          &lt;b&gt;Show or hide: &lt;/b&gt;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          &lt;b&gt;Color by:&lt;/b&gt;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;input value=&quot;Reset Model&quot; selfscript=&quot;selectcomponent cpk true; selectcomponent strand1 true; selectcomponent strand2 true; selectcomponent colorelements true; selectcomponent hbonds false; selectcomponent surface false; selectcomponent center false;&quot; type=&quot;submit&quot; script=&quot;script:nativescript:plugin:1:exit; script all-off.spt; script dna-horizontal.spt;&quot; uid=&quot;reset&quot; alt=&quot;&quot; name=&quot;reset&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td width=&quot;4%&quot; align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:nativescript:plugin:1:script all-off.spt; cpk;&quot; uid=&quot;cpk&quot; checked=&quot;checked&quot; name=&quot;RadioGroup0&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td width=&quot;18%&quot;&gt;
+          spacefill atoms
+        &lt;/td&gt;
+        &lt;td width=&quot;4%&quot; align=&quot;right&quot;&gt;
+          &lt;input value=&quot;checkbox&quot; script_selected=&quot;script:nativescript:plugin:1:select all; hbonds 0.2;&quot; type=&quot;checkbox&quot; script_deselected=&quot;script:nativescript:plugin:1:select all; hbonds off;&quot; uid=&quot;hbonds&quot; name=&quot;checkbox-h&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td width=&quot;15%&quot;&gt;
+          H-bonds
+        &lt;/td&gt;
+        &lt;td width=&quot;4%&quot; align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:nativescript:plugin:1:set echo off;  
+			select all; color cpk; 
+			set echo KeyEcho 0% 100%; font echo 14 sans bold; color echo white; echo Color key:; 
+			set echo Carbonecho 25% 100%; color echo gray; font echo 14 sans bold; echo C; 
+			set echo HydrogenEcho 30% 100%; font echo 14 sans bold; color echo white; echo H; 
+			set echo oxyEcho 35% 100%; color echo [xff3233]; font echo 14 sans bold; echo O; 
+			set echo nitroEcho 40% 100%; color echo [xc0baff]; font echo 14 sans bold; echo N; 
+			set echo phosEcho 45% 100%; color echo [xfdc33e]; font echo 14 sans bold; echo P;&quot; uid=&quot;colorelements&quot; checked=&quot;checked&quot; name=&quot;RadioGroup1&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td width=&quot;22%&quot;&gt;
+          elements
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &amp;#160; &lt;b&gt;Center of molecule:&lt;/b&gt;&amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:nativescript:plugin:1:script all-off.spt; wireframe 0.22&quot; uid=&quot;sticks&quot; name=&quot;RadioGroup0&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          sticks
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;checkbox&quot; script_selected=&quot;script:nativescript:plugin:1:exit; select all; labels off; display displayed or :I; refresh;&quot; type=&quot;checkbox&quot; script_deselected=&quot;script:nativescript:plugin:1:exit; select all; labels off; display displayed and not :I; refresh;&quot; uid=&quot;strand1&quot; checked=&quot;checked&quot; name=&quot;checkbox-s1&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          strand 1
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:nativescript:plugin:1:set echo off; select :I; color purple; select :j; color gold; select all&quot; uid=&quot;colorstrands&quot; name=&quot;RadioGroup1&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          chains
+        &lt;/td&gt;
+        &lt;td width=&quot;4%&quot; valign=&quot;top&quot; rowspan=&quot;2&quot; align=&quot;right&quot;&gt;
+          &lt;input value=&quot;checkbox&quot; script_selected=&quot;script:nativescript:plugin:1:set picking center&quot; type=&quot;checkbox&quot; script_deselected=&quot;script:jmol:1:set picking ident&quot; uid=&quot;center&quot; name=&quot;checkbox&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td width=&quot;29%&quot; valign=&quot;top&quot; rowspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          Click on any atom to bring it to the center. (Then un-check when 
+          done.)
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:nativescript:plugin:1:script all-off.spt; wireframe 0.22; cpk 0.45&quot; uid=&quot;ballstick&quot; name=&quot;RadioGroup0&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          ball &amp;amp; stick
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;checkbox&quot; script_selected=&quot;script:nativescript:plugin:1:exit; select all; labels off; display displayed or :J; refresh;&quot; type=&quot;checkbox&quot; script_deselected=&quot;script:nativescript:plugin:1:exit; select all; labels off; display displayed and not :J; refresh;&quot; uid=&quot;strand2&quot; checked=&quot;checked&quot; name=&quot;checkbox-s2&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          strand 2
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:nativescript:plugin:1:set echo off; select [A]; color blue; select [T]; color yellow; select [G]; color green;  select [C]; color red; select all; set echo KeyEcho 0% 100%; font echo 14 sans bold; color echo white; echo Color key:; set echo Aecho 20% 92%; color echo blue; font echo 22 sans bold; echo A; set echo Cecho 25% 100%; color echo red; font echo 22 sans bold; echo C; set echo Decho 30% 92%; color echo green; font echo 22 sans bold; echo G; set echo Techo 35% 92%; color echo yellow; font echo 22 sans bold; echo T;&quot; uid=&quot;colorbases&quot; name=&quot;RadioGroup1&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          nucleotides (ACGT)
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:nativescript:plugin:1:script all-off.spt; cartoon on; select bases and all; wireframe 0.2; select all&quot; uid=&quot;ladder&quot; name=&quot;RadioGroup0&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          ladder
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;!-- &lt;input script_selected=&quot;script:nativescript:plugin:1:exit; set echo off; isosurface on;&quot; name=&quot;checkbox-s22&quot; script_deselected=&quot;script:nativescript:plugin:1:exit; isosurface off;&quot; uid=&quot;surface&quot; value=&quot;checkbox&quot; type=&quot;checkbox&quot;&gt; --&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;!-- surface --&gt;
+          
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;3&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-333334</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="33">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<opaque>false</opaque>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;10&quot; face=&quot;verdana&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="40">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="33" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="44">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="40" end="41">
+<component><class>org.concord.modeler.ImageQuestion</class><width>372</width><height>350</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; face=&quot;Arial&quot;&gt;
+    &lt;b&gt;Take a snapshot that you think best illustrates the bonds that hold the 
+    two strands of DNA together in a double helix. &lt;/b&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="41" end="42">
+</content>
+
+<content start="42" end="43">
+<component><class>org.concord.modeler.ImageQuestion</class><width>372</width><height>350</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; face=&quot;Arial&quot;&gt;
+    &lt;b&gt;A DNA nucleotide from one strand pairs with a specific nucleotide on 
+    the other strand. Take a snapshot showing which nucleotide pairs with 
+    cytosine (C). Use the annotation tools to indicate this nucleotide.&lt;/b&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="46">
+<SpaceAbove>5.0</SpaceAbove>
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="44" end="45">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table width=&quot;100%&quot; id=&quot;Table_01&quot; cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;60&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;59&quot; src=&quot;next.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; src=&quot;page.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;46&quot; src=&quot;index.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;28&quot; src=&quot;page1Selected.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;font&gt;&lt;img width=&quot;25&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;img width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+</paragraph>
+</section>
+</document>

@@ -1,16 +1,70 @@
 {
-  "temperature_control": true,
+  "type": "md2d",
   "width": 4,
   "height": 3,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": false,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": true,
+  "targetTemperature": 4952.2219931146,
   "gravitationalField": false,
-  "showClock": true,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": true,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "above-bottom.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 0.12,
+        "imageY": 2.55
+      },
+      {
+        "imageUri": "above-top.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 1.73,
+        "imageY": 2.76
+      },
+      {
+        "imageUri": "beneath-bottom.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0.18,
+        "imageY": 1.28
+      },
+      {
+        "imageUri": "beneath-top.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 1.88,
+        "imageY": 1.42
+      }
+    ]
+  },
   "elements": [
     {
       "id": 0,
@@ -43,6 +97,7 @@
       "epsilon": -5
     }
   ],
+  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       1.2669779155182745,
@@ -102,78 +157,44 @@
     ]
   },
   "radialBonds": {
-    "atom1Index": [
+    "atom1": [
       2,
       4
     ],
-    "atom2Index": [
+    "atom2": [
       3,
       3
     ],
-    "bondLength": [
+    "length": [
       0.2,
       0.2
     ],
-    "bondStrength": [
+    "strength": [
       2000,
       2000
     ],
-    "bondStyle": [
+    "type": [
       101,
       101
     ]
   },
   "angularBonds": {
-    "atom1Index": [
+    "atom1": [
       2
     ],
-    "atom2Index": [
+    "atom2": [
       4
     ],
-    "atom3Index": [
+    "atom3": [
       3
     ],
-    "bondAngle": [
+    "angle": [
       2.0943951023931953
     ],
-    "bondStrength": [
+    "strength": [
       2
     ]
   },
-  "images": [
-    {
-      "imageUri": "above-bottom.png",
-      "imageHostIndex": 0,
-      "imageHostType": "",
-      "imageLayer": 1,
-      "imageX": 12,
-      "imageY": 45
-    },
-    {
-      "imageUri": "above-top.png",
-      "imageHostIndex": 0,
-      "imageHostType": "",
-      "imageLayer": 1,
-      "imageX": 173,
-      "imageY": 24
-    },
-    {
-      "imageUri": "beneath-bottom.png",
-      "imageHostIndex": 0,
-      "imageHostType": "",
-      "imageLayer": 2,
-      "imageX": 18,
-      "imageY": 172
-    },
-    {
-      "imageUri": "beneath-top.png",
-      "imageHostIndex": 0,
-      "imageHostType": "",
-      "imageLayer": 2,
-      "imageX": 188,
-      "imageY": 158
-    }
-  ],
   "obstacles": {
     "x": [
       2.05
@@ -202,8 +223,20 @@
     "width": [
       0.23
     ],
-    "density": [
+    "mass": [
       "Infinity"
+    ],
+    "westProbe": [
+      false
+    ],
+    "northProbe": [
+      false
+    ],
+    "eastProbe": [
+      false
+    ],
+    "southProbe": [
+      false
     ],
     "color": [
       [
@@ -215,6 +248,5 @@
     "visible": [
       true
     ]
-  },
-  "temperature": 4952.2219931146
+  }
 }

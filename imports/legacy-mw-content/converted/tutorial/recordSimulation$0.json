@@ -1,16 +1,96 @@
 {
-  "temperature_control": false,
+  "type": "md2d",
   "width": 4.5,
   "height": 3,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": false,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
   "gravitationalField": false,
-  "showClock": false,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "textBoxes": [
+      {
+        "text": "Drag the knob with mouse, or press the slider and use the left and right arrow key, or roll the wheel of the mouse (if any) to play back the recorded simulation freely.",
+        "x": 0.08,
+        "y": 1.49,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(0,255,0)"
+      },
+      {
+        "text": "Reset",
+        "x": 0.86,
+        "y": 0.26,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(0,255,0)"
+      },
+      {
+        "text": "Rewind",
+        "x": 1.05,
+        "y": 0.52,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "Step back",
+        "x": 1.66,
+        "y": 0.58,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "Stop",
+        "x": 2.12,
+        "y": 0.49,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "Step forward",
+        "x": 2.6,
+        "y": 0.67,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "Run or play back",
+        "x": 2.63,
+        "y": 0.27,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "The VCR-like control panel of the simulation recorder is at the bottom of each simulator. If the recorder is turned off, the panel will be replaced by a simple panel with \"Run\", \"Stop\" and \"Reset\" buttons.",
+        "x": 0.7,
+        "y": 2.74,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(192,192,255)"
+      }
+    ]
+  },
   "elements": [
     {
       "id": 0,
@@ -41,6 +121,14 @@
       "mass": 600,
       "sigma": 0.3,
       "epsilon": -5
+    }
+  ],
+  "pairwiseLJProperties": [
+    {
+      "element1": 2,
+      "element2": 3,
+      "sigma": 0.1672999954223633,
+      "epsilon": -0.019999999552965164
     }
   ],
   "atoms": {

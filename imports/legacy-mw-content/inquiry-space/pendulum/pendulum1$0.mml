@@ -298,6 +298,9 @@
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AtomicModel$State"> 
+  <void property="LJBetweenBondPairs"> 
+   <boolean>false</boolean> 
+  </void> 
   <void property="RList"> 
    <float>1.75</float> 
   </void> 
@@ -329,6 +332,9 @@
     </object> 
    </void> 
   </void> 
+  <void property="interCoulomb"> 
+   <boolean>false</boolean> 
+  </void> 
   <void property="lightSource"> 
    <object class="org.concord.mw2d.models.LightSource"/> 
   </void> 
@@ -343,7 +349,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1349990546000</long> 
+     <long>1350161188000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -352,7 +358,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>13196</long> 
+    <long>12382</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 

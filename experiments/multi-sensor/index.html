@@ -1,0 +1,121 @@
+<html>
+  <head>
+    <title>Sensor Applet (Multiple) Test</title>
+    <script type="text/javascript">
+        var tempList;
+        var forceList;
+        var sensor;
+        var cache = [];
+        var jsListener = {
+          dataReceived: function(type,count,data) {
+            var tempData = [];
+            var forceData = [];
+            for (var i = 0; i < count; i++) {
+              tempData.push(data[2*i+1]);
+              forceData.push(data[2*i]);
+            }
+            cache.push({count: count, temp: tempData, force: forceData});
+            if (cache.length > 30) {
+              cache.shift();
+            }
+            this.writeUI();
+          },
+          writeUI: function() {
+            var tempHtmlSnip = "";
+            var forceHtmlSnip = "";
+            for (var i = 0; i < cache.length; i++) {
+              var data = cache[i];
+              for (var j = 0; j < data.count; j++) {
+                forceHtmlSnip += "<li>" + data.force[j] + "</li>";
+                tempHtmlSnip += "<li>" + data.temp[j] + "</li>";
+              }
+            }
+            tempList.innerHTML = tempHtmlSnip;
+            forceList.innerHTML = forceHtmlSnip;
+          },
+          sensorsReady: function() {
+              document.getElementById('controls').innerHTML = "<a href='javascript:startSensor();'>Start</a> "
+                                     + "<a href='javascript:stopSensor();'>Stop</a> "
+                                     + "<a href='javascript:clearData();'>Clear</a>";
+          }
+      };
+
+      function startSensor() {
+          console.log("Starting collecting");
+        sensor.startCollecting();
+      }
+
+      function stopSensor() {
+          console.log("Stopping collecting");
+        sensor.stopCollecting();
+      }
+
+      function clearData() {
+          console.log("Clearing data");
+        sensor.stopCollecting();
+        tempList.innerHTML = "";
+        forceList.innerHTML = "";
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Sensor Applet (Multiple) test</h1>
+    <p>This is a simple demo of the invisible sensor applet collecting from multiple sensors. It is set up to use a LabQuest device with an attached temperature sensor and Force (50N) sensor.</p>
+    <p>
+      <applet id="sensor" code="org.concord.sensor.applet.SensorApplet" width="1" height="1"
+        archive="
+/jnlp/com/sun/jna/jna.jar,
+/jnlp/org/concord/sensor/sensor.jar,
+/jnlp/org/concord/sensor/sensor-vernier/sensor-vernier.jar,
+/jnlp/org/concord/sensor/sensor-applets/sensor-applets.jar,
+/jnlp/org/concord/sensor/labquest-jna/labquest-jna.jar
+" MAYSCRIPT="true">
+  <param name="MAYSCRIPT" value="true"/>
+        Your browser is completely ignoring the applet tag!
+      </applet>
+    </p>
+    <div id="controls">
+      Applet not ready yet...
+    </div>
+    <table>
+      <tr>
+        <th>Force</th>
+        <th>Temp</th>
+      </tr>
+      <tr>
+        <td width="150">
+          <ul id='forceList'></ul>
+        </td>
+        <td width="150">
+          <ul id='tempList'></ul>
+        </td>
+      </tr>
+    </table>
+    <script type="text/javascript">
+        tempList = document.getElementById('tempList');
+        forceList = document.getElementById('forceList');
+        sensor = document.getElementById('sensor');
+
+        var timerId;
+        var isReady = function() {
+          try {
+              if (sensor && sensor.getSensorRequest('manual')) {
+                  console.log("init complete");
+                  window.clearInterval(timerId);
+
+                  var req1 = sensor.getSensorRequest('temperature');
+                  var req2 = sensor.getSensorRequest('force 50n');
+
+                  sensor.initSensorInterface('jsListener', 'labquest', [req2, req1])
+              }
+          } catch (e) {
+            // not ready yet... try again later
+          }
+
+          console.log("checked if ready");
+        };
+
+        timerId = window.setInterval(isReady, 250);
+    </script>
+  </body>
+</html>

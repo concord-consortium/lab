@@ -1,30 +1,35 @@
 {
   "title": "Testing: Layout Example",
-  "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
-    "viewOptions": {
-      "controlButtons": ""
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "testingForces$0",
+      "url": "/imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "button",
       "id": "abs-zero",
       "text": "Set to absolute zero",
-      "action": "set({temperature: 0.00001});"
+      "action": "set({targetTemperature: 0.00001});"
     },
     {
       "type": "button",
       "id": "add-heat",
       "text": "Add lots of heat",
       "action": [
-                "var curTemp = get('temperature'), newTemp = curTemp + 2500;",
-                "if (newTemp > 4000) {",
-                "  newTemp = 4000;",
-                "}",
-                "set({temperature: newTemp});"
-              ]
+        "var curTemp = get('temperature'), newTemp = curTemp + 2500;",
+        "if (newTemp > 4000) {",
+        "  newTemp = 4000;",
+        "}",
+        "set({targetTemperature: newTemp});"
+      ]
     },
     {
       "type": "button",

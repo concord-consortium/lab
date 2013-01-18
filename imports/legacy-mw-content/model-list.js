@@ -313,6 +313,12 @@ modelList = [
     ]
   },
   {
+    "section": "sam-activities/DNA-to-proteins",
+    "content": [
+
+    ]
+  },
+  {
     "section": "sam-activities/gas-laws",
     "content": [
       {
@@ -464,32 +470,39 @@ modelList = [
         "name": "page4-1",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/page4.cml",
+        "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.mml",
+        "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json"
+      },
+      {
+        "name": "page4-2",
+        "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
+        "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/page4.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/leastPolarPull.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/leastPolarPull.json"
       },
       {
-        "name": "page4-2",
+        "name": "page4-3",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/page4.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/medPolarPull.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/medPolarPull.json"
       },
       {
-        "name": "page4-3",
+        "name": "page4-4",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/page4.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/mostPolarPull.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/mostPolarPull.json"
       },
       {
-        "name": "page4-4",
+        "name": "page4-5",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/page4.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/page4$0.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/page4$0.json"
       },
       {
-        "name": "page4-5",
+        "name": "page4-6",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/page4.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/page4Title.mml",
@@ -499,46 +512,53 @@ modelList = [
         "name": "page5-1",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5.cml",
+        "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.mml",
+        "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.json"
+      },
+      {
+        "name": "page5-2",
+        "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
+        "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npCurvedRound.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npCurvedRound.json"
       },
       {
-        "name": "page5-2",
+        "name": "page5-3",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npLargeStraight.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npLargeStraight.json"
       },
       {
-        "name": "page5-3",
+        "name": "page5-4",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json"
       },
       {
-        "name": "page5-4",
+        "name": "page5-5",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightJagged.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightJagged.json"
       },
       {
-        "name": "page5-5",
+        "name": "page5-6",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightRound.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightRound.json"
       },
       {
-        "name": "page5-6",
+        "name": "page5-7",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5$0.mml",
         "json": "converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5$0.json"
       },
       {
-        "name": "page5-7",
+        "name": "page5-8",
         "path": "sam-activities/intermolecular-attraction/original-interactives-in-pages/",
         "cml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5.cml",
         "mml": "sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5Title.mml",
@@ -2409,11 +2429,39 @@ modelList = [
     "section": "new-examples-for-nextgen",
     "content": [
       {
+        "name": "multiatomic-gas",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/multiatomic-gas.cml",
+        "mml": "new-examples-for-nextgen/multiatomic-gas$0.mml",
+        "json": "converted/new-examples-for-nextgen/multiatomic-gas$0.json"
+      },
+      {
+        "name": "pendulum1",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/pendulum1.cml",
+        "mml": "new-examples-for-nextgen/pendulum1$0.mml",
+        "json": "converted/new-examples-for-nextgen/pendulum1$0.json"
+      },
+      {
+        "name": "plasticforcesimple",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/plasticforcesimple.cml",
+        "mml": "new-examples-for-nextgen/plasticforcesimple$0.mml",
+        "json": "converted/new-examples-for-nextgen/plasticforcesimple$0.json"
+      },
+      {
         "name": "pulling-uncharged-atoms",
         "path": "new-examples-for-nextgen/",
         "cml": "new-examples-for-nextgen/pulling-uncharged-atoms.cml",
         "mml": "new-examples-for-nextgen/pulling-uncharged-atoms$0.mml",
         "json": "converted/new-examples-for-nextgen/pulling-uncharged-atoms$0.json"
+      },
+      {
+        "name": "remove-atoms",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/remove-atoms.cml",
+        "mml": "new-examples-for-nextgen/remove-atoms$0.mml",
+        "json": "converted/new-examples-for-nextgen/remove-atoms$0.json"
       },
       {
         "name": "simple-gas",
@@ -2520,6 +2568,18 @@ modelList = [
         "cml": "inquiry-space/pendulum/pendulum1.cml",
         "mml": "inquiry-space/pendulum/pendulum1$0.mml",
         "json": "converted/inquiry-space/pendulum/pendulum1$0.json"
+      }
+    ]
+  },
+  {
+    "section": "layout-tests",
+    "content": [
+      {
+        "name": "svg-images",
+        "path": "layout-tests/",
+        "cml": "layout-tests/svg-images/page1.cml",
+        "mml": "layout-tests/svg-images/page1$0.mml",
+        "json": "converted/layout-tests/svg-images/page1$0.json"
       }
     ]
   },
@@ -2703,6 +2763,41 @@ modelList = [
     "section": "conversion-and-physics-examples",
     "content": [
       {
+        "name": "100-atoms-1",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/100-atoms.cml",
+        "mml": "conversion-and-physics-examples/100-atoms$0.mml",
+        "json": "converted/conversion-and-physics-examples/100-atoms$0.json"
+      },
+      {
+        "name": "100-atoms-2",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/100-atoms.cml",
+        "mml": "conversion-and-physics-examples/100-atoms-charged.mml",
+        "json": "converted/conversion-and-physics-examples/100-atoms-charged.json"
+      },
+      {
+        "name": "amino-acids-momentum",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/amino-acids-momentum.cml",
+        "mml": "conversion-and-physics-examples/amino-acids-momentum$0.mml",
+        "json": "converted/conversion-and-physics-examples/amino-acids-momentum$0.json"
+      },
+      {
+        "name": "amino-acids-1",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/amino-acids.cml",
+        "mml": "conversion-and-physics-examples/amino-acids$0.mml",
+        "json": "converted/conversion-and-physics-examples/amino-acids$0.json"
+      },
+      {
+        "name": "amino-acids-2",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/amino-acids.cml",
+        "mml": "conversion-and-physics-examples/amino-acids-momentum$0.mml",
+        "json": "converted/conversion-and-physics-examples/amino-acids-momentum$0.json"
+      },
+      {
         "name": "angular-bonds",
         "path": "conversion-and-physics-examples/",
         "cml": "conversion-and-physics-examples/angular-bonds.cml",
@@ -2717,25 +2812,25 @@ modelList = [
         "json": "converted/conversion-and-physics-examples/boiling-point-with-clock$0.json"
       },
       {
-        "name": "force-lines-long",
+        "name": "custom-lj-properties",
         "path": "conversion-and-physics-examples/",
-        "cml": "conversion-and-physics-examples/force-lines-long.cml",
-        "mml": "conversion-and-physics-examples/force-lines-long$0.mml",
-        "json": "converted/conversion-and-physics-examples/force-lines-long$0.json"
+        "cml": "conversion-and-physics-examples/custom-lj-properties.cml",
+        "mml": "conversion-and-physics-examples/custom-lj-properties$0.mml",
+        "json": "converted/conversion-and-physics-examples/custom-lj-properties$0.json"
       },
       {
-        "name": "force-lines-medium",
+        "name": "dielectric-constant",
         "path": "conversion-and-physics-examples/",
-        "cml": "conversion-and-physics-examples/force-lines-medium.cml",
-        "mml": "conversion-and-physics-examples/force-lines-medium$0.mml",
-        "json": "converted/conversion-and-physics-examples/force-lines-medium$0.json"
+        "cml": "conversion-and-physics-examples/dielectric-constant.cml",
+        "mml": "conversion-and-physics-examples/dielectric-constant$0.mml",
+        "json": "converted/conversion-and-physics-examples/dielectric-constant$0.json"
       },
       {
-        "name": "force-lines-short",
+        "name": "energy-minimization",
         "path": "conversion-and-physics-examples/",
-        "cml": "conversion-and-physics-examples/force-lines-short.cml",
-        "mml": "conversion-and-physics-examples/force-lines-short$0.mml",
-        "json": "converted/conversion-and-physics-examples/force-lines-short$0.json"
+        "cml": "conversion-and-physics-examples/energy-minimization.cml",
+        "mml": "conversion-and-physics-examples/energy-minimization$0.mml",
+        "json": "converted/conversion-and-physics-examples/energy-minimization$0.json"
       },
       {
         "name": "gravitational-field-test",
@@ -2787,6 +2882,13 @@ modelList = [
         "json": "converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json"
       },
       {
+        "name": "point-restraint",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/point-restraint.cml",
+        "mml": "conversion-and-physics-examples/point-restraint$0.mml",
+        "json": "converted/conversion-and-physics-examples/point-restraint$0.json"
+      },
+      {
         "name": "pressure-probe",
         "path": "conversion-and-physics-examples/",
         "cml": "conversion-and-physics-examples/pressure-probe.cml",
@@ -2799,6 +2901,27 @@ modelList = [
         "cml": "conversion-and-physics-examples/simple-ke-shading.cml",
         "mml": "conversion-and-physics-examples/simple-ke-shading$0.mml",
         "json": "converted/conversion-and-physics-examples/simple-ke-shading$0.json"
+      },
+      {
+        "name": "vdw-force-lines-1",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/vdw-force-lines.cml",
+        "mml": "conversion-and-physics-examples/vdw-force-lines$0.mml",
+        "json": "converted/conversion-and-physics-examples/vdw-force-lines$0.json"
+      },
+      {
+        "name": "vdw-force-lines-2",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/vdw-force-lines.cml",
+        "mml": "conversion-and-physics-examples/vdw-force-lines-long.mml",
+        "json": "converted/conversion-and-physics-examples/vdw-force-lines-long.json"
+      },
+      {
+        "name": "vdw-force-lines-3",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/vdw-force-lines.cml",
+        "mml": "conversion-and-physics-examples/vdw-force-lines-medium.mml",
+        "json": "converted/conversion-and-physics-examples/vdw-force-lines-medium.json"
       },
       {
         "name": "visible-and-invisible",

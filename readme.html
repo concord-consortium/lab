@@ -7,10 +7,6 @@
     <meta content='text/xhtml; charset=utf-8' http-equiv='content-type'>
     <meta content='all' name='distribution'>
     <meta content='all' name='robots'>
-    <script src='http://use.typekit.com/hdw8ayt.js' type='text/javascript'></script>
-    <script type='text/javascript'>
-      try{Typekit.load();}catch(e){}
-    </script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css' />
     <link href="readme.css" media="screen" rel="stylesheet" type="text/css" />
   </head>
@@ -81,6 +77,7 @@ A live version of the readme is always available here:
           </li>
           <li><a href="#java-builddeploy-integration">Java build/deploy integration</a>            <ul>
               <li><a href="#java-projects-build-strategies">Java Projects Build Strategies</a></li>
+              <li><a href="#working-with-the-sensor-projects-source">Working with the Sensor projects source</a></li>
               <li><a href="#jnlpapp-rack-application-service">JnlpApp Rack Application Service</a></li>
             </ul>
           </li>
@@ -116,7 +113,15 @@ A live version of the readme is always available here:
       </li>
       <li><a href="#lab-modules-srclab">Lab Modules: <code>src/lab</code></a></li>
       <li><a href="#lab-modeling-engines-md2d-and-energy2d">Lab Modeling Engines: <code>md2d</code> and <code>energy2d</code></a>        <ul>
-          <li><a href="#d-molecular-dynamics-md2dhttpsgithubcomconcord-consortiumlabtreemastersrclabmd2d">2D Molecular Dynamics: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>md2d</code></a></a></li>
+          <li><a href="#d-molecular-dynamics-md2dhttpsgithubcomconcord-consortiumlabtreemastersrclabmd2d">2D Molecular Dynamics: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>md2d</code></a></a>            <ul>
+              <li><a href="#md2d-headless-mode">MD2D Headless Mode</a>                <ul>
+                  <li><a href="#node-binrun-md2dhttpsgithubcomconcord-consortiumlabblobmasternode-binrun-md2d"><a href="https://github.com/concord-consortium/lab/blob/master/node-bin/run-md2d"><code>node-bin/run-md2d</code></a></a></li>
+                  <li><a href="#writing-new-scripts">Writing new scripts</a></li>
+                </ul>
+              </li>
+              <li><a href="#md2d-simulation-stepping">MD2D simulation stepping</a></li>
+            </ul>
+          </li>
           <li><a href="#d-thermal-energy-energy2dhttpsgithubcomconcord-consortiumlabtreemastersrclabenergy2d">2D Thermal Energy: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>energy2d</code></a></a></li>
         </ul>
       </li>
@@ -237,9 +242,9 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 <h3 id="molecular-modeling-examples">Molecular Modeling Examples</h3>
 
 <ul>
-  <li><a href="/examples/interactives/interactives.html#interactives/basic-examples/simple-gas.json">A Simple Gas</a>, (<a href="/examples/interactives/embeddable.html#interactives/basic-examples/simple-gas.json">embeddable link</a>)</li>
-  <li><a href="/examples/interactives/interactives.html#interactives/basic-examples/oil-and-water-shake.json">Oil and Water</a>, (<a href="/examples/interactives/embeddable.html#interactives/basic-examples/oil-and-water-shake.json">embeddable link</a>)</li>
-  <li><a href="/examples/interactives/interactives.html#interactives/sam/intermolecular-attractions-page-3-2.json">Boiling Point and Solubility</a>, (<a href="/examples/interactives/embeddable.html#interactives/sam/intermolecular-attractions-page-3-2.json">embeddable link</a>)</li>
+  <li><a href="/examples/interactives/interactives.html#interactives/samples/1-oil-and-water-shake.json">Oil and Water</a>, (<a href="/examples/interactives/embeddable.html#interactives/samples/1-oil-and-water-shake.json">embeddable link</a>)</li>
+  <li><a href="/examples/interactives/interactives.html#interactives/samples/2-simple-gas.json">A Simple Gas</a>, (<a href="/examples/interactives/embeddable.html#interactives/samples/2-simple-gas.json">embeddable link</a>)</li>
+  <li><a href="/examples/interactives/interactives.html#interactives/samples/3-100-atoms.json">Explore 100 Atoms</a>, (<a href="/examples/interactives/embeddable.html#interactives/samples/3-100-atoms.json">embeddable link</a>)</li>
 </ul>
 
 <h3 id="energy2d-examples">Energy2D Examples</h3>
@@ -337,15 +342,15 @@ development dependencies.</p>
 <p><a href="http://npmjs.org/">npm</a>, the Node Package Manager has been included as part of <a href="http://nodejs.org/">nodejs</a>
 since version 0.8.7.</p>
 
-<p>Install the latest stable version of node (currently v0.6.18) with installers available here: <a href="http://nodejs.org/#download">http://nodejs.org/#download</a></p>
+<p>Install the latest stable version of node (currently v0.8.12) with installers available here: <a href="http://nodejs.org/#download">http://nodejs.org/#download</a></p>
 
 <p>Currently development is being done with these versions of node and npm:</p>
 
 <pre><code>$ node -v
-v0.8.7
+v0.8.12
 
 $ npm -v
-1.1.49
+1.1.63
 </code></pre>
 
 <h4 id="couchdb">CouchDB</h4>
@@ -795,19 +800,19 @@ the <code>master</code> branch of the git mirror here: <a href="https://github.c
   <li>
     <p><code>:maven</code></p>
 
-    <p>Concord’s OTrunk framework uses the <code>:maven</code> build strategy:</p>
+    <p>Concord’s sensor applet framework uses the <code>:maven</code> build strategy:</p>
 
-    <pre><code> 'otrunk' =&gt; { :repository =&gt; 'git://github.com/concord-consortium/otrunk.git',
-               :branch =&gt; 'trunk',
-               :path =&gt; 'org/concord/otrunk',
-               :build_type =&gt; :maven,
-               :build =&gt; MAVEN_STD_CLEAN_BUILD,
-               :has_applet_class =&gt; true,
-               :sign =&gt; true },
+    <pre><code> 'sensor-applets' =&gt; { :build_type =&gt; :maven,
+                       :build =&gt; MAVEN_STD_CLEAN_BUILD,
+                       :repository =&gt; 'git://github.com/concord-consortium/sensor-applets.git',
+                       :branch =&gt; 'master',
+                       :path =&gt; 'org/concord/sensor/sensor-applets',
+                       :has_applet_class =&gt; true,
+                       :sign =&gt; true },
 </code></pre>
 
-    <p>The <code>trunk</code> branch of the otrunk repo will be checked out into <code>./java/otrunk</code> and be built using Maven.
- Because the otrunk jar is used with the sensor-applet code (which uses a native library) it must also be signed.</p>
+    <p>The <code>master</code> branch of the sensor-applets repo will be checked out into <code>./java/sensor-applets</code> and be built using Maven.
+ Because the sensor-applets jar is used with native libraries, it must also be signed.</p>
 
     <p><strong>Deploying both signed and unsigned jars</strong></p>
 
@@ -859,13 +864,14 @@ the <code>master</code> branch of the git mirror here: <a href="https://github.c
   <li>
     <p><code>:download</code></p>
 
-    <p>JDom uses the <code>:download</code> build strategy:</p>
+    <p>goio-jna uses the <code>:download</code> build strategy:</p>
 
-    <p>‘jdom’           =&gt; { :build_type =&gt; :download,
-                       :url =&gt; ‘http://repo1.maven.org/maven2/jdom/jdom/1.0/jdom-1.0.jar’,
-                       :path =&gt; ‘jdom/jdom’,
-                       :version =&gt; ‘1.0’,
-                       :sign =&gt; true }</p>
+    <pre><code> 'goio-jna'       =&gt; { :build_type =&gt; :download,
+                       :url =&gt; 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/goio-jna/1.0-SNAPSHOT/goio-jna-1.0-20121109.222028-22.jar',
+                       :version =&gt; '1.0-20121109.222028-22',
+                       :path =&gt; 'org/concord/sensor/goio-jna',
+                       :sign =&gt; true }
+</code></pre>
   </li>
 </ol>
 
@@ -880,6 +886,61 @@ the <code>master</code> branch of the git mirror here: <a href="https://github.c
 
 <p>The Jar resources deployed to the <code>server/public/jnlp</code> directory include a timestamp in the deployed artifact so unless you specifically
 request an earlier version you will always get the latest version deployed.</p>
+
+<h5 id="working-with-the-sensor-projects-source">Working with the Sensor projects source</h5>
+
+<p>Most of the sensor related java jars are being downloaded as jars, not
+compiled from source. If you’re interested in building them from source:</p>
+
+<ol>
+  <li>
+    <p>Clone the <a href="https://github.com/concord-consortium/sensor-projects">concord-consortium/sensor-projects</a> repo:</p>
+
+    <pre><code> git clone https://github.com/concord-consortium/sensor-projects.git sensor-projects
+</code></pre>
+
+    <p>sensor-projects includes these resources:</p>
+
+    <pre><code> sensor-projects/
+   README
+   ftdi-serial-wrapper/
+   goio-jna/
+   labpro-usb-jna/
+   labquest-jna/
+   pasco-jna/
+   pom.xml/
+   sensor/
+   sensor-native/
+   sensor-pasco/
+   sensor-vernier/
+</code></pre>
+  </li>
+  <li>
+    <p>Link the individual project folder into <code>java/</code></p>
+
+    <pre><code> rm -rf java/goio-jna
+ ln -s /path/to/sensor-projects/goio-jna java/goio-jna
+</code></pre>
+  </li>
+  <li>
+    <p>Update <code>config/java-projects.rb</code> to use a <code>:maven</code> type build, but <em>without</em> <code>:repo</code> or <code>:branch</code> specified</p>
+
+    <pre><code> 'goio-jna'  =&gt; { :build_type =&gt; :maven,
+                  :build =&gt; MAVEN_STD_CLEAN_BUILD,
+                  :path =&gt; 'org/concord/sensor/goio-jna',
+                  :sign =&gt; true }
+</code></pre>
+  </li>
+  <li>
+    <p>Rebuild the project using <code>script/build-and-deploy-jars.rb</code></p>
+
+    <pre><code> script/build-and-deploy-jars.rb --maven-update goio-jna
+</code></pre>
+  </li>
+  <li>
+    <p>Repeat 2 - 4 for any other projects you’d like to build from source</p>
+  </li>
+</ol>
 
 <h5 id="jnlpapp-rack-application-service">JnlpApp Rack Application Service</h5>
 
@@ -934,7 +995,7 @@ and needs to be restarted. The Java console log for the applet may show requests
 HTTP/1.1 500 Internal Server Error
 </code></pre>
 
-<p>Restart the server and the request should now suceed:</p>
+<p>Restart the server and the request should now succeed:</p>
 
 <pre><code>$ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
 HTTP/1.1 200 OK
@@ -1244,27 +1305,133 @@ pattern and consist of following units:</p>
 <a href="https://github.com/concord-
 consortium/lab/tree/master/src/lab/md2d/models/engine"><code>src/lab/md2d/models/engine</code></a> directory, which is organized as a set of
 related RequireJS modules. These modules are compatible both with the Web browser environment and
-Node. When used in Node, <a href="https://github.com/jrburke/amdefine">amdefine</a> package must be available
-(it is listed as an dependency in the Lab <a href="https://github.com/concord-
-consortium/lab/blob/master/package.json"><code>packages.json</code></a> file). The entry point for external Node.js applications is
-the file <a href="https://github.com/concord-
-consortium/lab/blob/master/src/lab/md2d/models/engine/md2d.js"><code>src/lab/md2d/models/engine/md2d.js</code></a>.</p>
+Node.</p>
 
-<p>In addition, Node-based executables can be written and placed in
-<a href="https://github.com/concord-
-consortium/lab/tree/master/src/lab/md2d/models/engine"><code>src/lab/md2d/models/engine</code></a> or a subdirectory. These are expected to be
-useful for verifying and tuning the model by running the model headless and saving summary results
-into a file for offline analysis; see, e.g., <a href="https://github.com/rklancer/script-md">https://github.com/rklancer/script-md</a>.</p>
+<h5 id="md2d-headless-mode">MD2D Headless Mode</h5>
+
+<h6 id="node-binrun-md2dhttpsgithubcomconcord-consortiumlabblobmasternode-binrun-md2d"><a href="https://github.com/concord-consortium/lab/blob/master/node-bin/run-md2d"><code>node-bin/run-md2d</code></a></h6>
+
+<p>There is one working script for now:
+<a href="https://github.com/concord-consortium/lab/blob/master/node-bin/run-md2d"><code>node-bin/run-md2d</code></a></p>
+
+<p>It runs simulation for desired time and prints Time, Kinetic Energy, Total Energy every tick.</p>
+
+<p>Usage:</p>
+
+<pre><code>./node-bin/run-md2d -i [path] -o [path or stdout] -i [num]
+
+Options:
+  -i, --input   Model JSON file        [string]  [required]
+  -o, --output  Output file or stdout  [string]  [default: "stdout"]
+  -t, --time    Integration time       [default: 100]
+</code></pre>
+
+<p>Example results:</p>
+
+<pre><code>Model file: server/public/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json
+Output: stdout
+Integration time: 150
+time    KE      TE
+0       3.0988  3.1003
+50      3.1748  3.1011
+100     3.1748  3.0998
+150     3.1868  3.0986
+</code></pre>
+
+<h6 id="writing-new-scripts">Writing new scripts</h6>
+
+<p>In addition, new Node-based executables can be written. These are expected to be useful for verifying and tuning the model by running the model headless and saving summary results into a file for offline analysis.</p>
+
+<p>If you want to create your own script running simulation in headless mode, the most reasonable solution is to use <a href="https://github.com/concord-
+consortium/lab/blob/master/src/lab/md2d/models/modeler.js"><code>src/lab/md2d/models/modeler.js</code></a> as it provides high level API and
+allows to load model description using JSON file. To run simulation use the <code>tick()</code> method.</p>
+
+<p><a href="https://http://requirejs.org/">RequireJS</a> package must be correctly configured and used to load this module (see <a href="#javascript-dependency-management-and-build-process---requrejs">the section about
+RequireJS</a>). It also depends on <a href="http://jquery.com/">jQuery</a> and <a href="http://mbostock.github.com/d3/">d3.js</a> libraries.</p>
+
+<p>Fortunately, you do not have to think about this configuration each time. There is prepared the entry point for external Node.js applications:</p>
+
+<p><a href="https://github.com/concord-consortium/lab/blob/master/src/helpers/md2d/md2d-node-api.js"><code>src/helpers/md2d/md2d-node-api.js</code></a></p>
+
+<p>This module configures RequireJS loader, environment (D3, jQuery) and exports MD2D Node API using Node.js/CommonJS approach.</p>
+
+<p>Usage:</p>
+
+<pre><code>var md2dAPI = require("../src/helpers/md2d/md2d-node-api");
+// (...)
+// To create e.g. Modeler mentioned above:
+var model = md2dAPI.Modeler(properties);
+</code></pre>
+
+<p>If you need to use something what is not included in this API, you can:</p>
+
+<ul>
+  <li>Extend API defined in <a href="https://github.com/concord-consortium/lab/blob/master/src/helpers/md2d/md2d-node-api.js"><code>md2d-node-api.js</code></a>. It should easy to do it looking at the existing code.</li>
+  <li>Configure RequireJS yourself and use it to load module. Again, take a look at <a href="https://github.com/concord-consortium/lab/blob/master/src/helpers/md2d/md2d-node-api.js"><code>md2d-node-api.js</code></a> how to do it.</li>
+</ul>
+
+<p>There is a chance that existing RequireJS config won’t be sufficient (e.g. if you wan’t to use dynamic cs files loading).</p>
+
+<ul>
+  <li>
+    <p>The official, complete documentation:</p>
+
+    <p><a href="http://requirejs.org/docs/api.html#config">http://requirejs.org/docs/api.html#config</a></p>
+  </li>
+  <li>
+    <p>RequireJS config for tests, as they also use similar approach:</p>
+
+    <p><a href="https://github.com/concord-consortium/lab/blob/master/test/requirejs-config.js"><code>test/requirejs-config.js</code></a></p>
+  </li>
+</ul>
 
 <p>Hashbang scripts for starting these executables (i.e., files which start with the line
 <code>#!/usr/bin/env node</code> and which have the execute bit set) should be placed in the directory
-<a href="https://github.com/concord-consortium/lab/tree/master/node-bin"><code>node-bin</code></a>, and should execute by
-<code>require()</code>ing the appropriate module and calling its entry point method. Lab’s
+<a href="https://github.com/concord-consortium/lab/tree/master/node-bin"><code>node-bin</code></a>. Lab’s
 <a href="https://github.com/concord-consortium/lab/blob/master/package.json"><code>packages.json</code></a> file
 specifies <a href="https://github.com/concord-consortium/lab/tree/master/node-bin"><code>node-bin</code></a> as the
 location of the executable scripts which <code>npm</code> should make available whenever Lab is imported into
 another project as a Node module. (For developer convenience, <code>bin/</code> is being reserved for Ruby
 executables made available via Bundler.)</p>
+
+<h5 id="md2d-simulation-stepping">MD2D simulation stepping</h5>
+
+<p>Main parameters which define speed and accuracy of simulation in MD2D are:</p>
+
+<ul>
+  <li>timeStep,</li>
+  <li>viewRefreshInterval,</li>
+  <li>modelSampleRate.</li>
+</ul>
+
+<p>To explain them let’s start from the definition of the model “tick”. One “tick” consists of:</p>
+
+<ul>
+  <li>running simulation for <strong>viewRefreshInterval</strong> * <strong>timeStep</strong> femtoseconds,</li>
+  <li>update of the view.</li>
+</ul>
+
+<p>The “tick” is constantly repeated while simulation is running.</p>
+
+<p>So, when viewRefreshInterval = 50 and timeStep = 1fs, one “tick” causes that the engine performs calculations for 50fs.</p>
+
+<p><strong>timeStep</strong> defines a time value used during the one integration step in the engine internals. It affects accuracy of calculations.
+<strong>viewRefreshInterval</strong> in fact defines number of these integration steps during one “tick”. It is defined because it makes no sense to refresh view too often.</p>
+
+<p>Using pseudo-code we can say that tick is:</p>
+
+<pre><code>for (i = 0 to viewRefreshInterval) {
+   engine.advanceBy(timeStep)
+}
+view.update()
+</code></pre>
+
+<p>That’s why viewRefreshInterval = 50 and timeStep = 1fs is different from viewRefreshInterval = 25 and timeStep = 2fs.
+First one will be more accurate and two times slower (more or less) than second one, however both configurations will cause that one “tick” advance model by 50fs (25 * 2fs or 50 * 1fs).</p>
+
+<p><strong>modelSampleRate</strong> defines how often we should execute “tick”. Of course, in most cases we should call it as often as it’s possible and that’s the default behavior (with upper limit of 60 times per second to avoid running simple models too fast).</p>
+
+<p>You can test how these parameters work using <a href="http://lab.dev.concord.org/examples/interactives/interactives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json">this interactive</a>.</p>
 
 <h4 id="d-thermal-energy-energy2dhttpsgithubcomconcord-consortiumlabtreemastersrclabenergy2d">2D Thermal Energy: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>energy2d</code></a></h4>
 

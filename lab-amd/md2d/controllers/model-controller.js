@@ -2,6 +2,7 @@
 
   define
   DEVELOPMENT
+  $
   d3
   alert
   model: true
@@ -12,42 +13,20 @@ define(function (require) {
   // Dependencies.
   var Model             = require('md2d/models/modeler'),
       MoleculeContainer = require('md2d/views/molecule-container'),
-      ModelPlayer       = require('cs!common/components/model_player');
+      ModelPlayer       = require('cs!common/components/model_player'),
+      Benchmarks        = require('md2d/benchmarks/benchmarks');
 
-  return function modelController(moleculeViewId, modelConfig, playerConfig) {
+  return function modelController(moleculeViewId, modelConfig, interactiveViewConfig, interactiveModelConfig) {
     var controller = {},
 
         // event dispatcher
         dispatch = d3.dispatch('modelReset'),
 
-        // properties read from the playerConfig hash
-        controlButtons,
-        modelTimeLabel,
-        fit_to_parent,
-        enableAtomTooltips,
+        // Options after processing performed by processOptions().
+        modelOptions,
+        viewOptions,
 
-        // properties read from the modelConfig hash
-        elements,
-        atoms,
-        mol_number,
-        temperature_control,
-        temperature,
-        width,
-        height,
-        keShading,
-        chargeShading,
-        showVDWLines,
-        radialBonds,
-        angularBonds,
-        obstacles,
-        viscosity,
-        gravitationalField,
-        images,
-        textBoxes,
-        interactiveUrl,
-        showClock,
-        viewRefreshInterval,
-        timeStep,
+        benchmarks,
 
         moleculeContainer,
 
@@ -73,7 +52,7 @@ define(function (require) {
             if (model.reset) {
               model.reset();
             }
-            reload(modelConfig, playerConfig);
+            reload(modelConfig, interactiveViewConfig);
           },
 
           is_stopped: function() {
@@ -89,43 +68,53 @@ define(function (require) {
       //
       // ------------------------------------------------------------
       function tickHandler() {
-        moleculeContainer.update_drawable_positions();
+        moleculeContainer.updateDrawablePositions();
       }
 
 
+      function processOptions() {
+        var meldOptions = function(base, overlay) {
+          var p;
+          for(p in base) {
+            if (overlay[p] === undefined) {
+              overlay[p] = base[p];
+            } else if (typeof overlay[p] === "object" && !(overlay[p] instanceof Array)) {
+              overlay[p] = meldOptions(base[p], overlay[p]);
+            }
+          }
+          return overlay;
+        };
+
+        // 1. Process view options.
+        // Do not modify initial configuration.
+        viewOptions = $.extend(true, {}, interactiveViewConfig);
+        // Merge view options defined in interactive (interactiveViewConfig)
+        // with view options defined in the basic model description.
+        viewOptions = meldOptions(modelConfig.viewOptions || {}, viewOptions);
+
+        // 2. Process model options.
+        // Do not modify initial configuration.
+        modelOptions = $.extend(true, {}, interactiveModelConfig);
+        // Merge model options defined in interactive (interactiveModelConfig)
+        // with the basic model description.
+        modelOptions = meldOptions(modelConfig || {}, modelOptions);
+
+        // Update view options in the basic model description after merge.
+        // Note that many unnecessary options can be passed to Model constructor
+        // because of that (e.g. view-only options defined in the interactive).
+        // However, all options which are unknown for Model will be discarded
+        // during options validation, so this is not a problem
+        // (but significantly simplifies configuration).
+        modelOptions.viewOptions = viewOptions;
+      }
+
       // ------------------------------------------------------------
       //
-      // Initialize (or update) local variables based on playerConfig and modelConfig objects
+      //   MD2D Benchmarks Setup
       //
-      // ------------------------------------------------------------
 
-      function initializeLocalVariables() {
-        controlButtons      = playerConfig.controlButtons;
-        modelTimeLabel      = playerConfig.modelTimeLabel;
-        enableAtomTooltips  = playerConfig.enableAtomTooltips || false;
-        fit_to_parent       = playerConfig.fit_to_parent;
-        interactiveUrl      = playerConfig.interactiveUrl;
-
-        elements            = modelConfig.elements;
-        atoms               = modelConfig.atoms;
-        mol_number          = modelConfig.mol_number;
-        temperature_control = modelConfig.temperature_control;
-        temperature         = modelConfig.temperature;
-        width               = modelConfig.width;
-        height              = modelConfig.height;
-        keShading           = modelConfig.keShading;
-        chargeShading       = modelConfig.chargeShading;
-        showVDWLines        = modelConfig.showVDWLines;
-        showClock           = modelConfig.showClock;
-        viewRefreshInterval = modelConfig.viewRefreshInterval;
-        timeStep            = modelConfig.timeStep;
-        radialBonds         = modelConfig.radialBonds;
-        angularBonds        = modelConfig.angularBonds;
-        obstacles           = modelConfig.obstacles;
-        viscosity           = modelConfig.viscosity;
-        gravitationalField  = modelConfig.gravitationalField;
-        images              = modelConfig.images;
-        textBoxes           = modelConfig.textBoxes;
+      function setupBenchmarks() {
+        benchmarks = new Benchmarks(controller);
       }
 
       // ------------------------------------------------------------
@@ -133,73 +122,11 @@ define(function (require) {
       //   Molecular Model Setup
       //
 
-      function createModel() {
-        initializeLocalVariables();
-        model = Model({
-            elements            : elements,
-            temperature         : temperature,
-            temperature_control : temperature_control,
-            width               : width,
-            height              : height,
-            keShading           : keShading,
-            chargeShading       : chargeShading,
-            showVDWLines        : showVDWLines,
-            showClock           : showClock,
-            viewRefreshInterval : viewRefreshInterval,
-            timeStep            : timeStep,
-            viscosity           : viscosity,
-            gravitationalField  : gravitationalField,
-            images              : images
-          });
-
-        if (atoms) {
-          model.createNewAtoms(atoms);
-        } else if (mol_number) {
-          model.createNewAtoms(mol_number);
-          model.relax();
-        } else {
-          throw new Error("ModelController: tried to create a model without atoms or mol_number.");
-        }
-
-        if (radialBonds) model.createRadialBonds(radialBonds);
-        if (angularBonds) model.createAngularBonds(angularBonds);
-        if (showVDWLines) model.createVdwPairs(atoms);
-        if (obstacles) model.createObstacles(obstacles);
-      }
-
       function setupModel() {
-        createModel();
+        processOptions();
+        model = new Model(modelOptions);
         model.resetTime();
         model.on('tick', tickHandler);
-        model.on('addAtom', resetModelPlayer);
-      }
-
-      /**
-        Returns a customized interface to the model for use by the view
-      */
-      function getModelInterface() {
-        return {
-          model:                   model,
-          fit_to_parent:           fit_to_parent,
-          xmax:                    width,
-          ymax:                    height,
-          keShading:               keShading,
-          chargeShading:           chargeShading,
-          enableAtomTooltips:      enableAtomTooltips,
-          images:                  images,
-          interactiveUrl:          interactiveUrl,
-          textBoxes:               textBoxes,
-          get_results:             function() { return model.get_results(); },
-          get_radial_bond_results: function() { return model.get_radial_bond_results(); },
-          get_radial_bonds:        function() { return model.get_radial_bonds(); },
-          get_obstacles:           function() { return model.get_obstacles(); },
-          get_vdw_pairs:           function() { return model.get_vdw_pairs(); },
-          set_atom_properties:     function() { return model.setAtomProperties.apply(model, arguments);  },
-          is_stopped:              function() { return model.is_stopped(); },
-
-          controlButtons:      controlButtons,
-          modelTimeLabel:      modelTimeLabel
-        };
       }
 
       // ------------------------------------------------------------
@@ -217,14 +144,21 @@ define(function (require) {
         // ------------------------------------------------------------
 
         model_player = new ModelPlayer(modelProxy, false);
-        // disable its 'forward' and 'back' actions:
-        model_player.forward = function() {},
-        model_player.back = function() {},
+        model_player.forward = function() {
+          model.stepForward();
+          if (!model.isNewStep()) {
+            moleculeContainer.updateDrawablePositions();
+          }
+        },
+        model_player.back = function() {
+          model.stepBack();
+          moleculeContainer.updateDrawablePositions();
+        },
 
-        moleculeContainer = MoleculeContainer(moleculeViewId, getModelInterface());
+        moleculeContainer = new MoleculeContainer(moleculeViewId, viewOptions, model);
 
         moleculeContainer.updateMoleculeRadius();
-        moleculeContainer.setup_drawables();
+        moleculeContainer.setupDrawables();
       }
 
       function resetModelPlayer() {
@@ -234,26 +168,26 @@ define(function (require) {
         // reset player and container view for model
         //
         // ------------------------------------------------------------
-
-        moleculeContainer.reset(getModelInterface());
+        moleculeContainer.reset(viewOptions, model);
         moleculeContainer.updateMoleculeRadius();
-        moleculeContainer.setup_drawables();
+        moleculeContainer.setupDrawables();
       }
 
       /**
-        Note: newModelConfig, newPlayerConfig are optional. Calling this without
+        Note: newModelConfig, newinteractiveViewConfig are optional. Calling this without
         arguments will simply reload the current model.
       */
-      function reload(newModelConfig, newPlayerConfig) {
+      function reload(newModelConfig, newInteractiveViewConfig, newInteractiveModelConfig) {
         modelConfig = newModelConfig || modelConfig;
-        playerConfig = newPlayerConfig || playerConfig;
+        interactiveViewConfig = newInteractiveViewConfig || interactiveViewConfig;
+        interactiveModelConfig = newInteractiveModelConfig || interactiveModelConfig;
         setupModel();
         resetModelPlayer();
         dispatch.modelReset();
       }
 
       function repaint() {
-        moleculeContainer.setup_drawables();
+        moleculeContainer.setupDrawables();
       }
 
       // ------------------------------------------------------------
@@ -273,6 +207,7 @@ define(function (require) {
         setupModel();
       }
 
+      setupBenchmarks();
       setupModelPlayer();
       dispatch.modelReset();
 
@@ -289,6 +224,7 @@ define(function (require) {
       controller.reload = reload;
       controller.repaint = repaint;
       controller.moleculeContainer = moleculeContainer;
+      controller.benchmarks = benchmarks;
 
       return controller;
   };

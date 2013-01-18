@@ -1,78 +1,80 @@
 /*global define: false, d3: false, $: false */
-/*jslint onevar: true devel:true eqnull: true */
+/*jslint onevar: true devel:true eqnull: true boss: true */
 
 define(function(require) {
   // Dependencies.
-  require('common/console');
-  var arrays  = require('arrays'),
-      md2d    = require('md2d/models/engine/md2d'),
-
-      engine;
+  var arrays               = require('arrays'),
+      console              = require('common/console'),
+      md2d                 = require('md2d/models/engine/md2d'),
+      metadata             = require('md2d/models/metadata'),
+      TickHistory          = require('md2d/models/tick-history'),
+      RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+      Solvent              = require('cs!md2d/models/solvent'),
+      serialize            = require('common/serialize'),
+      validator            = require('common/validator'),
+      aminoacids           = require('md2d/models/aminoacids-props'),
+      aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
+      units                = require('md2d/models/engine/constants/units'),
+      _ = require('underscore');
 
   return function Model(initialProperties) {
     var model = {},
-        elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
-        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek", "addAtom"),
-        temperature_control,
-        keShading, chargeShading, showVDWLines,VDWLinesRatio,
-        showClock,
-        lennard_jones_forces, coulomb_forces,
-        gravitationalField = false,
-        viewRefreshInterval = 50,
-        timeStep = 1,
+        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
+                               "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
+                               "removeAngularBond", "invalidation", "textBoxesChanged"),
+        VDWLinesCutoffMap = {
+          "short": 1.33,
+          "medium": 1.67,
+          "long": 2.0
+        },
+        defaultMaxTickHistory = 1000,
         stopped = true,
-        tick_history_list = [],
-        tick_history_list_index = 0,
-        tick_counter = 0,
-        new_step = false,
-        pressure, pressures = [0],
-        modelSampleRate = 60,
+        restart = false,
+        newStep = false,
         lastSampleTime,
         sampleTimes = [],
 
-        // N.B. this is the thermostat (temperature control) setting
-        temperature,
-
-        // current model time, in fs
-        time,
-
-        // potential energy
-        pe,
-
-        // kinetic energy
-        ke,
-
         modelOutputState,
-        model_listener,
+        tickHistory,
 
-        width = initialProperties.width,
-        height = initialProperties.height,
+        // Molecular Dynamics engine.
+        engine,
 
-        //
-        // A two dimensional array consisting of arrays of atom property values
-        //
+        // An array of elements object.
+        editableElements,
+
+        // ######################### Main Data Structures #####################
+        // They are initialized at the end of this function. These data strucutres
+        // are mainly managed by the engine.
+
+        // A hash of arrays consisting of arrays of atom property values
         atoms,
 
-        //
+        // A hash of arrays consisting of arrays of element property values
+        elements,
+
+        // A hash of arrays consisting of arrays of obstacle property values
+        obstacles,
+
+        // A hash of arrays consisting of arrays of radial bond property values
+        radialBonds,
+
+        // A hash of arrays consisting of arrays of angular bond property values
+        angularBonds,
+
+        // A hash of arrays consisting of arrays of restraint property values
+        // (currently atom-only)
+        restraints,
+
+        // ####################################################################
+
         // A two dimensional array consisting of atom index numbers and atom
         // property values - in effect transposed from the atom property arrays.
-        //
         results,
 
         // A two dimensional array consisting of radial bond index numbers, radial bond
         // properties, and the postions of the two bonded atoms.
         radialBondResults,
-
-        // list of obstacles
-        obstacles,
-        // Radial Bonds
-        radialBonds,
-        // Angular Bonds
-        angularBonds,
-        // VDW Pairs
-        vdwPairs,
-
-        viscosity,
 
         // The index of the "spring force" used to implement dragging of atoms in a running model
         liveDragSpringForceIndex,
@@ -80,31 +82,9 @@ define(function(require) {
         // Cached value of the 'friction' property of the atom being dragged in a running model
         liveDragSavedFriction,
 
-        default_obstacle_properties = {
-          vx: 0,
-          vy: 0,
-          density: Infinity,
-          color: [128, 128, 128]
-        },
-
         listeners = {},
 
         properties = {
-          temperature           : 300,
-          modelSampleRate       : 60,
-          coulomb_forces        : true,
-          lennard_jones_forces  : true,
-          temperature_control   : true,
-          gravitationalField    : false,
-          keShading             : false,
-          chargeShading         : false,
-          showVDWLines          : false,
-          showClock             : true,
-          viewRefreshInterval   : 50,
-          timeStep              : 1,
-          VDWLinesRatio         : 1.99,
-          viscosity             : 0,
-
           /**
             These functions are optional setters that will be called *instead* of simply setting
             a value when 'model.set({property: value})' is called, and are currently needed if you
@@ -114,33 +94,83 @@ define(function(require) {
             done automatically
           */
 
-          set_temperature: function(t) {
-            this.temperature = t;
+          set_targetTemperature: function(t) {
+            this.targetTemperature = t;
             if (engine) {
               engine.setTargetTemperature(t);
             }
           },
 
-          set_temperature_control: function(tc) {
-            this.temperature_control = tc;
+          set_temperatureControl: function(tc) {
+            this.temperatureControl = tc;
             if (engine) {
               engine.useThermostat(tc);
             }
           },
 
-          set_coulomb_forces: function(cf) {
-            this.coulomb_forces = cf;
+          set_lennardJonesForces: function(lj) {
+            this.lennardJonesForces = lj;
+            if (engine) {
+              engine.useLennardJonesInteraction(lj);
+            }
+          },
+
+          set_coulombForces: function(cf) {
+            this.coulombForces = cf;
             if (engine) {
               engine.useCoulombInteraction(cf);
             }
           },
 
-          set_epsilon: function(e) {
-            console.log("set_epsilon: This method is temporarily deprecated");
+          set_solventForceType: function(s) {
+            this.solventForceType = s;
+            if (engine) {
+              engine.setSolventForceType(s);
+            }
           },
 
-          set_sigma: function(s) {
-            console.log("set_sigma: This method is temporarily deprecated");
+          set_solventForceFactor: function(s) {
+            this.solventForceFactor = s;
+            if (engine) {
+              engine.setSolventForceFactor(s);
+            }
+          },
+
+          set_additionalSolventForceMult: function(s) {
+            this.additionalSolventForceMult = s;
+            if (engine) {
+              engine.setAdditionalSolventForceMult(s);
+            }
+          },
+
+          set_additionalSolventForceThreshold: function(s) {
+            this.additionalSolventForceThreshold = s;
+            if (engine) {
+              engine.setAdditionalSolventForceThreshold(s);
+            }
+          },
+
+          set_dielectricConstant: function(dc) {
+            this.dielectricConstant = dc;
+            if (engine) {
+              engine.setDielectricConstant(dc);
+            }
+          },
+
+          set_realisticDielectricEffect: function (rdc) {
+            this.realisticDielectricEffect = rdc;
+            if (engine) {
+              engine.setRealisticDielectricEffect(rdc);
+            }
+          },
+
+          set_VDWLinesCutoff: function(cutoff) {
+            var ratio;
+            this.VDWLinesCutoff = cutoff;
+            ratio = VDWLinesCutoffMap[cutoff];
+            if (ratio && engine) {
+              engine.setVDWLinesRatio(ratio);
+            }
           },
 
           set_gravitationalField: function(gf) {
@@ -150,8 +180,9 @@ define(function(require) {
             }
           },
 
-          set_viewRefreshInterval: function(vri) {
-            this.viewRefreshInterval = vri;
+          set_modelSampleRate: function(rate) {
+            this.modelSampleRate = rate;
+            if (!stopped) model.restart();
           },
 
           set_timeStep: function(ts) {
@@ -163,125 +194,49 @@ define(function(require) {
             if (engine) {
               engine.setViscosity(v);
             }
+          },
+
+          set_polarAAEpsilon: function (e) {
+            var polarAAs, element1, element2,
+                i, j, len;
+
+            this.polarAAEpsilon = e;
+
+            if (engine) {
+              // Set custom pairwise LJ properties for polar amino acids.
+              // They should attract stronger to better mimic nature.
+              polarAAs = aminoacidsHelper.getPolarAminoAcids();
+              for (i = 0, len = polarAAs.length; i < len; i++) {
+                element1 = polarAAs[i];
+                for (j = i + 1; j < len; j++) {
+                  element2 = polarAAs[j];
+                  // Set custom pairwise LJ epsilon (default one for AA is -0.1).
+                  engine.pairwiseLJProperties.set(element1, element2, {epsilon: e});
+                }
+              }
+            }
           }
         },
 
-        // TODO: notSafari and hasTypedArrays belong in the arrays module
-        // Check for Safari. Typed arrays are faster almost everywhere
-        // ... except Safari.
-        notSafari = (function() {
-          var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-              match = navigator.userAgent.match(safarimatch);
-          return (match && match[3]) ? false: true;
-        }()),
+        // The list of all 'output' properties (which change once per tick).
+        outputNames = [],
 
-        hasTypedArrays = (function() {
-          try {
-            new Float32Array();
-          }
-          catch(e) {
-            return false;
-          }
-          return true;
-        }()),
+        // Information about the description and calculating function for 'output' properties.
+        outputsByName = {},
 
-        arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
+        // The subset of outputName list, containing list of outputs which are filtered
+        // by one of the built-in filters (like running average filter).
+        filteredOutputNames = [],
 
-    function setupIndices() {
-      var prop,
-          i,
-          offset;
-      //
-      // Indexes into the atoms array for the individual node property arrays
-      //
-      model.ATOM_PROPERTY_LIST = [];
+        // Function adding new sample for filtered outputs. Other properties of filtered output
+        // are stored in outputsByName object, as filtered output is just extension of normal output.
+        filteredOutputsByName = {},
 
-      // Copy ATOM property indices and names from md2d
-      offset = 0;
-      for (i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
-        prop = md2d.ATOM_PROPERTY_LIST[i];
-
-        model.ATOM_PROPERTY_LIST[i] = prop;
-      }
-
-      model.RADIAL_BOND_PROPERTY_LIST = [];
-
-      // Copy Radial Bond properties from md2d
-      for (i = 0; i < md2d.RADIAL_BOND_PROPERTY_LIST.length; i++) {
-        prop = md2d.RADIAL_BOND_PROPERTY_LIST[i];
-        model.RADIAL_BOND_PROPERTY_LIST[i] = prop;
-      }
-
-      model.ANGULAR_BOND_PROPERTY_LIST = [];
-
-      // Copy ANGULAR_BOND properties from md2d
-      for (i = 0; i < md2d.ANGULAR_BOND_PROPERTY_LIST.length; i++) {
-        prop = md2d.ANGULAR_BOND_PROPERTY_LIST[i];
-        model.ANGULAR_BOND_PROPERTY_LIST[i] = prop;
-      }
-
-      model.ELEMENT_PROPERTY_LIST = [];
-
-      // Copy ELEMENT properties from md2d
-      for (i = 0; i < md2d.ELEMENT_PROPERTY_LIST.length; i++) {
-        prop = md2d.ELEMENT_PROPERTY_LIST[i];
-        model.ELEMENT_PROPERTY_LIST[i] = prop;
-      }
-
-      model.NON_ENGINE_PROPERTY_LIST = [
-        "visible",
-        "marked",
-        "draggable"
-      ];
-
-      model.NON_ENGINE_DEFAULT_VALUES = {
-        visible: 1,
-        marked: 0,
-        draggable: 0
-      };
-
-      model.RADIAL_BOND_STYLES = {
-        RADIAL_BOND_STANDARD_STICK_STYLE: 101,
-        RADIAL_BOND_LONG_SPRING_STYLE:    102,
-        RADIAL_BOND_SOLID_LINE_STYLE:     103,
-        RADIAL_BOND_GHOST_STYLE:          104,
-        RADIAL_BOND_UNICOLOR_STICK_STYLE: 105,
-        RADIAL_BOND_SHORT_SPRING_STYLE:   106,
-        RADIAL_BOND_DOUBLE_BOND_STYLE:    107,
-        RADIAL_BOND_TRIPLE_BOND_STYLE:    108
-      };
-
-      // Add non-engine properties to the end of the list of property indices and names
-      offset = model.ATOM_PROPERTY_LIST.length;
-      for (i = 0; i < model.NON_ENGINE_PROPERTY_LIST.length; i++) {
-        prop = model.NON_ENGINE_PROPERTY_LIST[i];
-        model.ATOM_PROPERTY_LIST.push(prop);
-      }
-
-      // TODO. probably save everything *except* a list of "non-saveable properties"
-      model.SAVEABLE_PROPERTIES =  [
-        "x",
-        "y",
-        "vx",
-        "vy",
-        "charge",
-        "element",
-        "pinned",
-        "friction",
-        "visible",
-        "marked",
-        "draggable"
-      ];
-
-      // TODO: restrict access to some internal properties?
-      model.OBSTACLE_PROPERTY_LIST = md2d.OBSTACLE_PROPERTY_LIST;
-
-      model.VDW_INDICES = md2d.VDW_INDICES;
-
-    }
+        // The currently-defined parameters.
+        parametersByName = {};
 
     function notifyPropertyListeners(listeners) {
-      $.unique(listeners);
+      listeners = _.uniq(listeners);
       for (var i=0, ii=listeners.length; i<ii; i++){
         listeners[i]();
       }
@@ -310,124 +265,116 @@ define(function(require) {
       notifyPropertyListeners(waitingToBeNotified);
     }
 
+    /**
+      Restores a set of "input" properties, notifying their listeners of only those properties which
+      changed, and only after the whole set of properties has been updated.
+    */
+    function restoreProperties(savedProperties) {
+      var property,
+          changedProperties = [],
+          savedValue;
+
+      for (property in savedProperties) {
+        if (savedProperties.hasOwnProperty(property)) {
+          // skip read-only properties
+          if (outputsByName[property]) {
+            throw new Error("Attempt to restore output property \"" + property + "\".");
+          }
+          savedValue = savedProperties[property];
+          if (properties[property] !== savedValue) {
+            if (properties["set_"+property]) {
+              properties["set_"+property](savedValue);
+            } else {
+              properties[property] = savedValue;
+            }
+            changedProperties.push(property);
+          }
+        }
+      }
+      notifyPropertyListenersOfEvents(changedProperties);
+    }
+
+    /**
+      Restores a list of parameter values, notifying their listeners after the whole list is
+      updated, and without triggering setters. Sets parameters not in the passed-in list to
+      undefined.
+    */
+    function restoreParameters(savedParameters) {
+      var parameterName,
+          observersToNotify = [];
+
+      for (parameterName in savedParameters) {
+        if (savedParameters.hasOwnProperty(parameterName)) {
+          // restore the property value if it was different or not defined in the current time step
+          if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
+            properties[parameterName] = savedParameters[parameterName];
+            parametersByName[parameterName].isDefined = true;
+            observersToNotify.push(parameterName);
+          }
+        }
+      }
+
+      // remove parameter values that aren't defined at this point in history
+      for (parameterName in parametersByName) {
+        if (parametersByName.hasOwnProperty(parameterName) && !savedParameters.hasOwnProperty(parameterName)) {
+          parametersByName[parameterName].isDefined = false;
+          properties[parameterName] = undefined;
+        }
+      }
+
+      notifyPropertyListenersOfEvents(observersToNotify);
+    }
+
     function average_speed() {
       var i, s = 0, n = model.get_num_atoms();
       i = -1; while (++i < n) { s += engine.atoms.speed[i]; }
       return s/n;
     }
 
-
-
     function tick(elapsedTime, dontDispatchTickEvent) {
-      var t,
-          sampleTime,
-          doIntegration;
+      var timeStep = model.get('timeStep'),
+          // Save number of radial bonds in engine before integration,
+          // as integration can create new disulfide bonds. This is the
+          // only type of objects which can be created by the engine autmatically.
+          prevNumOfRadialBonds = engine.getNumberOfRadialBonds(),
+          t, sampleTime;
 
-      if (stopped) {
-        doIntegration = true;
-      } else {
+      if (!stopped) {
         t = Date.now();
         if (lastSampleTime) {
-          sampleTime  = t - lastSampleTime;
-          if (1000/sampleTime < modelSampleRate) {
-            doIntegration = true;
-            lastSampleTime = t;
-            sampleTimes.push(sampleTime);
-            sampleTimes.splice(0, sampleTimes.length - 128);
-          } else {
-            doIntegration = false;
-          }
+          sampleTime = t - lastSampleTime;
+          sampleTimes.push(sampleTime);
+          sampleTimes.splice(0, sampleTimes.length - 128);
         } else {
           lastSampleTime = t;
-          doIntegration = true;
         }
       }
 
-      if (doIntegration) {
-        // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
-        // However, in MD2D we prefer the more physical notion of integrating for a particular
-        // length of time.
-        engine.integrate(viewRefreshInterval * timeStep, timeStep);
-        readModelState();
+      // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
+      // However, in MD2D we prefer the more physical notion of integrating for a particular
+      // length of time.
+      console.time('integration');
+      engine.integrate(model.get('viewRefreshInterval') * timeStep, timeStep);
+      console.timeEnd('integration');
+      console.time('reading model state');
+      updateAllOutputProperties();
+      console.timeEnd('reading model state');
 
-        pressures.push(pressure);
-        pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
+      console.time('tick history push');
+      tickHistory.push();
+      console.timeEnd('tick history push');
 
-        tick_history_list_push();
+      newStep = true;
 
-        if (!dontDispatchTickEvent) {
-          dispatch.tick();
-        }
+      if (!dontDispatchTickEvent) {
+        dispatch.tick();
+      }
+
+      if (prevNumOfRadialBonds < engine.getNumberOfRadialBonds()) {
+        dispatch.addRadialBond();
       }
 
       return stopped;
-    }
-
-    function tick_history_list_is_empty() {
-      return tick_history_list_index === 0;
-    }
-
-    function tick_history_list_push() {
-      var prop,
-          newAtoms = {};
-
-      for (prop in atoms) {
-        if (atoms.hasOwnProperty(prop))
-          newAtoms[prop] = arrays.clone(atoms[prop]);
-      }
-      tick_history_list.length = tick_history_list_index;
-      tick_history_list_index++;
-      tick_counter++;
-      new_step = true;
-      tick_history_list.push({
-        atoms:    newAtoms,
-        pressure: modelOutputState.pressure,
-        pe:       modelOutputState.PE,
-        ke:       modelOutputState.KE,
-        time:     modelOutputState.time
-      });
-      if (tick_history_list_index > 1000) {
-        tick_history_list.splice(1,1);
-        tick_history_list_index = 1000;
-      }
-    }
-
-    function restoreFirstStateinTickHistory() {
-      tick_history_list_index = 0;
-      tick_counter = 0;
-      tick_history_list.length = 1;
-      tick_history_list_extract(tick_history_list_index);
-    }
-
-    function reset_tick_history_list() {
-      tick_history_list = [];
-      tick_history_list_index = 0;
-      tick_counter = 0;
-    }
-
-    function tick_history_list_reset_to_ptr() {
-      tick_history_list.length = tick_history_list_index + 1;
-    }
-
-    function tick_history_list_extract(index) {
-      var prop;
-      if (index < 0) {
-        throw new Error("modeler: request for tick_history_list[" + index + "]");
-      }
-      if (index >= tick_history_list.length) {
-        throw new Error("modeler: request for tick_history_list[" + index + "], tick_history_list.length=" + tick_history_list.length);
-      }
-      for (prop in atoms) {
-        if (atoms.hasOwnProperty(prop))
-          arrays.copy(tick_history_list[index].atoms[prop], atoms[prop]);
-      }
-      ke = tick_history_list[index].ke;
-      time = tick_history_list[index].time;
-      engine.setTime(time);
-    }
-
-    function container_pressure() {
-      return pressures.reduce(function(j,k) { return j+k; })/pressures.length;
     }
 
     function average_rate() {
@@ -437,15 +384,14 @@ define(function(require) {
       return (ave ? 1/ave*1000: 0);
     }
 
-    function set_temperature(t) {
-      temperature = t;
-      engine.setTargetTemperature(t);
-    }
-
     function set_properties(hash) {
       var property, propsChanged = [];
       for (property in hash) {
         if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
+          // skip read-only properties
+          if (outputsByName[property]) {
+            throw new Error("Attempt to set read-only output property \"" + property + "\".");
+          }
           // look for set method first, otherwise just set the property
           if (properties["set_"+property]) {
             properties["set_"+property](hash[property]);
@@ -461,31 +407,184 @@ define(function(require) {
     }
 
     /**
-      Use this method to refresh the results array and macrostate variables (KE, PE, temperature)
-      whenever an engine integration occurs or the model state is otherwise changed.
+      Call this method after moving to a different model time (e.g., after stepping the model
+      forward or back, seeking to a different time, or on model initialization) to update all output
+      properties and notify their listeners. This method is more efficient for that case than
+      updateOutputPropertiesAfterChange because it can assume that all output properties are
+      invalidated by the model step. It therefore does not need to calculate any output property
+      values; it allows them to be evaluated lazily instead. Property values are calculated when and
+      if listeners request them. This method also guarantees that all properties have their updated
+      value when they are requested by any listener.
+
+      Technically, this method first updates the 'results' array and macrostate variables, then
+      invalidates any  cached output-property values, and finally notifies all output-property
+      listeners.
+
+      Note that this method and updateOutputPropertiesAfterChange are the only methods which can
+      flush the cached value of an output property. Therefore, be sure to not to make changes
+      which would invalidate a cached value without also calling one of these two methods.
+    */
+    function updateAllOutputProperties() {
+      var i, j, l;
+
+      readModelState();
+
+      // invalidate all cached values before notifying any listeners
+      for (i = 0; i < outputNames.length; i++) {
+        outputsByName[outputNames[i]].hasCachedValue = false;
+      }
+
+      // Update all filtered outputs.
+      // Note that this have to be performed after invalidation of all outputs
+      // (as filtered output can filter another output), but before notifying
+      // listeners (as we want to provide current, valid value).
+      for (i = 0; i < filteredOutputNames.length; i++) {
+        filteredOutputsByName[filteredOutputNames[i]].addSample();
+      }
+
+      for (i = 0; i < outputNames.length; i++) {
+        if (l = listeners[outputNames[i]]) {
+          for (j = 0; j < l.length; j++) {
+            l[j]();
+          }
+        }
+      }
+    }
+
+    /**
+      ALWAYS CALL THIS FUNCTION before any change to model state outside a model step
+      (i.e., outside a tick, seek, stepForward, stepBack)
+
+      Note:  Changes to view-only property changes that cannot change model physics might reasonably
+      by considered non-invalidating changes that don't require calling this hook.
+    */
+    function invalidatingChangePreHook() {
+      storeOutputPropertiesBeforeChange();
+    }
+
+    /**
+      ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
+    */
+    function invalidatingChangePostHook() {
+      updateOutputPropertiesAfterChange();
+      if (tickHistory) tickHistory.invalidateFollowingState();
+      dispatch.invalidation();
+    }
+
+    /**
+      Call this method *before* changing any "universe" property or model property (including any
+      property of a model object such as the position of an atom) to save the output-property
+      values before the change. This is required to enabled updateOutputPropertiesAfterChange to be
+      able to detect property value changes.
+
+      After the change is made, call updateOutputPropertiesAfterChange to notify listeners.
+    */
+    function storeOutputPropertiesBeforeChange() {
+      var i, outputName, output, l;
+
+      for (i = 0; i < outputNames.length; i++) {
+        outputName = outputNames[i];
+        if ((l = listeners[outputName]) && l.length > 0) {
+          output = outputsByName[outputName];
+          // Can't save previous value in output.cachedValue because, before we check it, the
+          // cachedValue may be overwritten with an updated value as a side effect of the
+          // calculation of the updated value of some other property
+          output.previousValue = output.hasCachedValue ? output.cachedValue : output.calculate();
+        }
+      }
+    }
+
+    /**
+      Before changing any "universe" property or model property (including any
+      property of a model object such as the position of an atom), call the method
+      storeOutputPropertiesBeforeChange; after changing the property, call this method  to detect
+      changed output-property values and to notify listeners of the output properties which have
+      changed. (However, don't call either method after a model tick or step;
+      updateAllOutputProperties is more efficient for that case.)
+    */
+    function updateOutputPropertiesAfterChange() {
+      var i, j, output, outputName, l, listenersToNotify = [];
+
+      readModelState();
+
+      // Mark _all_ cached values invalid ... we're not going to be checking the values of the
+      // unobserved properties, so we have to assume their value changed.
+      for (i = 0; i < outputNames.length; i++) {
+        output = outputsByName[outputNames[i]];
+        output.hasCachedValue = false;
+      }
+
+      // Update all filtered outputs.
+      // Note that this have to be performed after invalidation of all outputs
+      // (as filtered output can filter another output).
+      for (i = 0; i < filteredOutputNames.length; i++) {
+        filteredOutputsByName[filteredOutputNames[i]].addSample();
+      }
+
+      // Keep a list of output properties that are being observed and which changed ... and
+      // cache the updated values while we're at it
+      for (i = 0; i < outputNames.length; i++) {
+        outputName = outputNames[i];
+        output = outputsByName[outputName];
+
+        if ((l = listeners[outputName]) && l.length > 0) {
+          // Though we invalidated all cached values above, nevertheless some outputs may have been
+          // computed & cached during a previous pass through this loop, as a side effect of the
+          // calculation of some other property. Therefore we can respect hasCachedValue here.
+          if (!output.hasCachedValue) {
+            output.cachedValue = output.calculate();
+            output.hasCachedValue = true;
+          }
+
+          if (output.cachedValue !== output.previousValue) {
+            for (j = 0; j < l.length; j++) {
+              listenersToNotify.push(l[j]);
+            }
+          }
+        }
+        // Now that we're done with it, allow previousValue to be GC'd. (Of course, since we're
+        // using an equality test to check for changes, it doesn't make sense to let outputs be
+        // objects or arrays, yet)
+        output.previousValue = null;
+      }
+
+      // Finally, now that all the changed properties have been cached, notify listeners
+      for (i = 0; i < listenersToNotify.length; i++) {
+        listenersToNotify[i]();
+      }
+    }
+
+    /**
+      This method is called to refresh the results array and macrostate variables (KE, PE,
+      temperature) whenever an engine integration occurs or the model state is otherwise changed.
+
+      Normally, you should call the methods updateOutputPropertiesAfterChange or
+      updateAllOutputProperties rather than calling this method. Calling this method directly does
+      not cause output-property listeners to be notified, and calling it prematurely will confuse
+      the detection of changed properties.
     */
     function readModelState() {
-      var i,
-          prop,
-          n;
+      var i, prop, n, amino;
 
       engine.computeOutputState(modelOutputState);
 
       extendResultsArray();
 
       // Transpose 'atoms' object into 'results' for easier consumption by view code
-      for (prop in atoms) {
-        if (atoms.hasOwnProperty(prop)) {
-          for (i = 0, n = model.get_num_atoms(); i < n; i++) {
+      for (i = 0, n = model.get_num_atoms(); i < n; i++) {
+        for (prop in atoms) {
+          if (atoms.hasOwnProperty(prop)) {
             results[i][prop] = atoms[prop][i];
           }
         }
-      }
 
-      pressure = modelOutputState.pressure;
-      pe       = modelOutputState.PE;
-      ke       = modelOutputState.KE;
-      time     = modelOutputState.time;
+        // Additional properties, used only by view.
+        if (aminoacidsHelper.isAminoAcid(atoms.element[i])) {
+          amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
+          results[i].symbol = amino.symbol;
+          results[i].label = amino.abbreviation;
+        }
+      }
     }
 
     /**
@@ -493,102 +592,70 @@ define(function(require) {
       for containing the atom properties.
     */
     function extendResultsArray() {
-      var i,
-          n;
+      var isAminoAcid = function () {
+            return aminoacidsHelper.isAminoAcid(this.element);
+          },
+          i, len;
+
+      // TODO: refactor whole approach to creation of objects from flat arrays.
+      // Think about more general way of detecting and representing amino acids.
+      // However it would be reasonable to perform such refactoring later, when all requirements
+      // related to proteins engine are clearer.
 
       if (!results) results = [];
 
-      for (i = results.length, n = model.get_num_atoms(); i < n; i++) {
+      for (i = results.length, len = model.get_num_atoms(); i < len; i++) {
         if (!results[i]) {
-          results[i] = {};
-          results[i].idx = i;
-        }
-      }
-    }
-
-    function setToDefaultValue(prop) {
-      for (var i = 0; i < model.get_num_atoms(); i++) {
-        atoms[prop][i] = model.NON_ENGINE_DEFAULT_VALUES[prop];
-      }
-    }
-
-    function setFromSerializedArray(prop, serializedArray) {
-      for (var i = 0; i < model.get_num_atoms(); i++) {
-        atoms[prop][i] = serializedArray[i];
-      }
-    }
-
-    function initializeNonEngineProperties(serializedAtomProps) {
-      var prop,
-          i;
-
-      for (i = 0; i < model.NON_ENGINE_PROPERTY_LIST.length; i++) {
-        prop = model.NON_ENGINE_PROPERTY_LIST[i];
-        atoms[prop] = arrays.create(model.get_num_atoms(), 0, arrayType);
-
-        if (serializedAtomProps[prop]) {
-          setFromSerializedArray(prop, serializedAtomProps[prop]);
-        }
-        else {
-          setToDefaultValue(prop);
+          results[i] = {
+            idx: i,
+            // Provide convenience function for view, do not force it to ask
+            // model / engine directly. In the future, atom objects should be
+            // represented by a separate class.
+            isAminoAcid: isAminoAcid
+          };
         }
       }
     }
 
     /**
-      Each entry in engine.atoms is a reference to a typed array. When the engine needs to create
-      a larger typed array, it must create a new object. Therefore, this function exists to copy
-      over any references to newly created typed arrays from engine.atoms to our atoms object.
+      Create set of amino acids elements. Use descriptions
+      provided in 'aminoacids' array.
     */
-    function copyEngineAtomReferences() {
-      var i, prop;
-      for (i = 0; i < md2d.ATOM_PROPERTY_LIST.length; i++) {
-        prop = md2d.ATOM_PROPERTY_LIST[i];
-        atoms[prop] = engine.atoms[prop];
-      }
-    }
+    function createAminoAcids() {
+      var sigmaIn01Angstroms,
+          sigmaInNm,
+          i, len;
 
-    function copyTypedArray(arr) {
-      var copy = [];
-      for (var i=0,ii=arr.length; i<ii; i++){
-        copy[i] = arr[i];
-      }
-      return copy;
-    }
+      // Note that amino acids ALWAYS have IDs from
+      // AMINO_ELEMENT_FIRST_IDX (= 5) to AMINO_ELEMENT_LAST_IDX (= 24).
+      // This is enforced by backward compatibility with Classic MW.
 
-
-    function serializeAtoms() {
-      var serializedData = {},
-          prop,
-          array,
-          i,
-          len;
-
-      for (i=0, len = model.SAVEABLE_PROPERTIES.length; i < len; i++) {
-        prop = model.SAVEABLE_PROPERTIES[i];
-        array = atoms[prop];
-        serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
+      // At the beginning, ensure that elements from 0 to 24 exists.
+      for (i = engine.getNumberOfElements(); i <= aminoacidsHelper.lastElementID; i++) {
+        model.addElement({
+          id: i
+        });
       }
 
-      return serializedData;
+      // Set amino acids properties using elements from 5 to 24.
+      for (i = 0, len = aminoacids.length; i < len; i++) {
+        // Note that sigma is calculated using Classic MW approach.
+        // See: org.concord.mw2d.models.AminoAcidAdapter
+        // Basic length unit in Classic MW is 0.1 Angstrom.
+        sigmaIn01Angstroms = 18 * Math.pow(aminoacids[i].volume / aminoacids[0].volume, 0.3333333333333);
+        sigmaInNm = units.convert(sigmaIn01Angstroms / 10, { from: units.unit.ANGSTROM, to: units.unit.NANOMETER });
+        // Use engine's method instead of modeler's method to avoid validation.
+        // Modeler's wrapper ensures that amino acid is immutable, so it won't allow
+        // to set properties of amino acid.
+        engine.setElementProperties(aminoacidsHelper.firstElementID + i, {
+          mass: aminoacids[i].molWeight,
+          sigma: sigmaInNm
+          // Don't provide epsilon, as default value should be used.
+          // Classic MW uses epsilon 0.1 for all amino acids, which is default one.
+          // See: org.concord.mw2d.models.AtomicModel.resetElements()
+        });
+      }
     }
-
-    // ------------------------------
-    // finish setting up the model
-    // ------------------------------
-
-    setupIndices();
-
-    // Friction parameter temporarily applied to the live-dragged atom.
-    model.LIVE_DRAG_FRICTION = 10;
-
-    // who is listening to model tick completions
-    model_listener = initialProperties.model_listener;
-
-    // set the rest of the regular properties
-    set_properties(initialProperties);
-
-
 
     // ------------------------------------------------------------
     //
@@ -598,26 +665,35 @@ define(function(require) {
 
     model.getStats = function() {
       return {
+        time        : model.get('time'),
         speed       : average_speed(),
-        ke          : ke,
-        temperature : temperature,
-        pressure    : container_pressure(),
-        current_step: tick_counter,
-        steps       : tick_history_list.length-1
+        ke          : model.get('kineticEnergy'),
+        temperature : model.get('temperature'),
+        current_step: tickHistory.get("counter"),
+        steps       : tickHistory.get("length")-1
       };
     };
 
     // A convenience for interactively getting energy averages
-    model.getStatsHistory = function() {
-      var i, len,
+    model.getStatsHistory = function(num) {
+      var i, len, start,
           tick,
+          ke, pe,
           ret = [];
 
+      len = tickHistory.get("length");
+      if (!arguments.length) {
+        start = 0;
+      } else {
+        start = Math.max(len-num, 0);
+      }
       ret.push("time (fs)\ttotal PE (eV)\ttotal KE (eV)\ttotal energy (eV)");
 
-      for (i = 0, len = tick_history_list.length; i < len; i++) {
-        tick = tick_history_list[i];
-        ret.push(tick.time + "\t" + tick.pe + "\t" + tick.ke + "\t" + (tick.pe+tick.ke));
+      for (i = start; i < len; i++) {
+        tick = tickHistory.returnTick(i);
+        pe = tick.output.PE;
+        ke = tick.output.KE;
+        ret.push(tick.output.time + "\t" + pe + "\t" + ke + "\t" + (pe+ke));
       }
       return ret.join('\n');
     };
@@ -626,67 +702,142 @@ define(function(require) {
       Current seek position
     */
     model.stepCounter = function() {
-      return tick_counter;
+      return tickHistory.get("counter");
+    };
+
+    /**
+      Current position of first value in tick history, normally this will be 0.
+      This will be greater than 0 if maximum size of tick history has been exceeded.
+    */
+    model.stepStartCounter = function() {
+      return tickHistory.get("startCounter");
     };
 
     /** Total number of ticks that have been run & are stored, regardless of seek
         position
     */
     model.steps = function() {
-      return tick_history_list.length - 1;
+      return tickHistory.get("length");
     };
 
     model.isNewStep = function() {
-      return new_step;
+      return newStep;
     };
 
     model.seek = function(location) {
       if (!arguments.length) { location = 0; }
       stopped = true;
-      new_step = false;
-      tick_history_list_index = location;
-      tick_counter = location;
-      tick_history_list_extract(tick_history_list_index);
+      newStep = false;
+      tickHistory.seekExtract(location);
+      updateAllOutputProperties();
       dispatch.seek();
-      if (model_listener) { model_listener(); }
-      return tick_counter;
+      return tickHistory.get("counter");
     };
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      var i = -1;
+      var i, index;
       stopped = true;
-      new_step = false;
-      while(++i < num) {
-        if (tick_history_list_index > 1) {
-          tick_history_list_index--;
-          tick_counter--;
-          tick_history_list_extract(tick_history_list_index-1);
-          if (model_listener) { model_listener(); }
+      newStep = false;
+      i=-1; while(++i < num) {
+        index = tickHistory.get("index");
+        if (index > 0) {
+          tickHistory.decrementExtract();
+          updateAllOutputProperties();
+          dispatch.stepBack();
         }
       }
-      return tick_counter;
+      return tickHistory.get("counter");
     };
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      var i = -1;
+      var i, index, size;
       stopped = true;
-      while(++i < num) {
-        if (tick_history_list_index < tick_history_list.length) {
-          tick_history_list_extract(tick_history_list_index);
-          tick_history_list_index++;
-          tick_counter++;
-          if (model_listener) { model_listener(); }
+      i=-1; while(++i < num) {
+        index = tickHistory.get("index");
+        size = tickHistory.get("length");
+        if (index < size-1) {
+          tickHistory.incrementExtract();
+          updateAllOutputProperties();
+          dispatch.stepForward();
         } else {
           tick();
         }
       }
-      return tick_counter;
+      return tickHistory.get("counter");
     };
 
     /**
-      Creates a new md2d model with a new set of atoms and leaves it in 'engine'
+      Creates a new md2d engine and leaves it in 'engine'.
+    */
+    model.initializeEngine = function () {
+      engine = md2d.createEngine();
+
+      engine.setSize([model.get('width'), model.get('height')]);
+      engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
+      engine.useCoulombInteraction(model.get('coulombForces'));
+      engine.useThermostat(model.get('temperatureControl'));
+      engine.setViscosity(model.get('viscosity'));
+      engine.setVDWLinesRatio(VDWLinesCutoffMap[model.get('VDWLinesCutoff')]);
+      engine.setGravitationalField(model.get('gravitationalField'));
+      engine.setTargetTemperature(model.get('targetTemperature'));
+      engine.setDielectricConstant(model.get('dielectricConstant'));
+      engine.setRealisticDielectricEffect(model.get('realisticDielectricEffect'));
+      engine.setSolventForceType(model.get('solventForceType'));
+      engine.setSolventForceFactor(model.get('solventForceFactor'));
+      engine.setAdditionalSolventForceMult(model.get('additionalSolventForceMult'));
+      engine.setAdditionalSolventForceThreshold(model.get('additionalSolventForceThreshold'));
+
+      // Register invalidating change hooks.
+      // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
+      engine.pairwiseLJProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
+      engine.geneticProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
+
+      window.state = modelOutputState = {};
+
+      // Copy reference to basic properties.
+      atoms = engine.atoms;
+      elements = engine.elements;
+      radialBonds = engine.radialBonds;
+      radialBondResults = engine.radialBondResults;
+      angularBonds = engine.angularBonds;
+      restraints = engine.restraints;
+      obstacles = engine.obstacles;
+    };
+
+    model.createElements = function(_elements) {
+      var elementsByID = {},
+          i, len;
+
+      for (i = 0, len = _elements.length; i < len; i++) {
+        elementsByID[_elements[i].id] = _elements[i];
+      }
+
+      // Ensure that approprieate number of editable elements exist.
+      // This is enforced by backward compatibility with Classic MW.
+      // Every element with index < aminoacidsHelper.firstElementID specifies some immutable amino acid.
+      for (i = engine.getNumberOfElements(); i < aminoacidsHelper.firstElementID; i++) {
+        if (elementsByID[i]) {
+          // Use element provided by model JSON.
+          model.addElement(elementsByID[i]);
+        } else {
+          // Add default, editable element.
+          model.addElement({
+            id: i
+          });
+        }
+      }
+
+      return model;
+    };
+
+    /**
+      Creates a new set of atoms, but new engine is created at the beginning.
+      TODO: this method makes no sense. Objects like obstacles, restraints etc.,
+      will be lost. It's confusing and used *only* in tests for now.
+      Think about API change. Probably the best option would be to just create new
+      modeler each time using constructor.
 
       @config: either the number of atoms (for a random setup) or
                a hash specifying the x,y,vx,vy properties of the atoms
@@ -695,7 +846,35 @@ define(function(require) {
       left in whatever grid the engine's initialization leaves them in.
     */
     model.createNewAtoms = function(config) {
-      var num;
+      model.initializeEngine();
+      model.createElements(editableElements);
+      model.createAtoms(config);
+
+      return model;
+    };
+
+    /**
+      Creates a new set of atoms.
+
+      @config: either the number of atoms (for a random setup) or
+               a hash specifying the x,y,vx,vy properties of the atoms
+      When random setup is used, the option 'relax' determines whether the model is requested to
+      relax to a steady-state temperature (and in effect gets thermalized). If false, the atoms are
+      left in whatever grid the engine's initialization leaves them in.
+    */
+    model.createAtoms = function(config) {
+          // Options for addAtom method.
+      var options = {
+            // Do not check the position of atom, assume that it's valid.
+            supressCheck: true,
+            // Deserialization process, invalidating change hooks will be called manually.
+            deserialization: true
+          },
+          i, num, prop, atomProps;
+
+      // Call the hook manually, as addAtom won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePreHook();
 
       if (typeof config === 'number') {
         num = config;
@@ -705,57 +884,40 @@ define(function(require) {
         num = config.x.length;
       }
 
-      // get a fresh model
-      engine = md2d.createEngine();
-      engine.setSize([width,height]);
-      engine.initializeElements(elements);
-      engine.createAtoms({
-        num: num
-      });
-
-      // Initialize properties
-      temperature_control = properties.temperature_control;
-      temperature         = properties.temperature;
-      modelSampleRate     = properties.modelSampleRate,
-      keShading           = properties.keShading,
-      chargeShading       = properties.chargeShading;
-      showVDWLines        = properties.showVDWLines;
-      VDWLinesRatio       = properties.VDWLinesRatio;
-      showClock           = properties.showClock;
-      viewRefreshInterval = properties.viewRefreshInterval;
-      timeStep            = properties.timeStep;
-      viscosity           = properties.viscosity;
-      gravitationalField  = properties.gravitationalField;
-
-      engine.useLennardJonesInteraction(properties.lennard_jones_forces);
-      engine.useCoulombInteraction(properties.coulomb_forces);
-      engine.useThermostat(temperature_control);
-      engine.setViscosity(viscosity);
-      engine.setGravitationalField(gravitationalField);
-
-      engine.setTargetTemperature(temperature);
-
+      // TODO: this branching based on x, y isn't very clear.
       if (config.x && config.y) {
-        engine.initializeAtomsFromProperties(config);
+        // config is hash of arrays (as specified in JSON model).
+        // So, for each index, create object containing properties of
+        // atom 'i'. Later, use these properties to add atom
+        // using basic addAtom method.
+        for (i = 0; i < num; i++) {
+          atomProps = {};
+          for (prop in config) {
+            if (config.hasOwnProperty(prop)) {
+              atomProps[prop] = config[prop][i];
+            }
+          }
+          model.addAtom(atomProps, options);
+        }
       } else {
-        engine.initializeAtomsRandomly({
-          temperature: temperature
+        for (i = 0; i < num; i++) {
+          // Provide only required values.
+          atomProps = {x: 0, y: 0};
+          model.addAtom(atomProps, options);
+        }
+        // This function rearrange all atoms randomly.
+        engine.setupAtomsRandomly({
+          temperature: model.get('targetTemperature'),
+          // Provide number of user-defined, editable elements.
+          userElements: editableElements.length
         });
-        if (config.relax) engine.relaxToTemperature();
+        if (config.relax)
+          engine.relaxToTemperature();
       }
 
-      atoms = {};
-      copyEngineAtomReferences(engine.atoms);
-      initializeNonEngineProperties(config);
-
-      window.state = modelOutputState = {};
-      readModelState();
-
-      // tick history stuff
-      reset_tick_history_list();
-      tick_history_list_push();
-      tick_counter = 0;
-      new_step = true;
+      // Call the hook manually, as addAtom won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePostHook();
 
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
@@ -765,61 +927,123 @@ define(function(require) {
     };
 
     model.createRadialBonds = function(_radialBonds) {
-      engine.initializeRadialBonds(_radialBonds);
-      radialBonds = engine.radialBonds;
-      radialBondResults = engine.radialBondResults;
-      readModelState();
+          // Options for addRadialBond method.
+      var options = {
+            // Deserialization process, invalidating change hooks will be called manually.
+            deserialization: true
+          },
+          num = _radialBonds.strength.length,
+          i, prop, radialBondProps;
+
+      // Call the hook manually, as addRadialBond won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePreHook();
+
+      // _radialBonds is hash of arrays (as specified in JSON model).
+      // So, for each index, create object containing properties of
+      // radial bond 'i'. Later, use these properties to add radial bond
+      // using basic addRadialBond method.
+      for (i = 0; i < num; i++) {
+        radialBondProps = {};
+        for (prop in _radialBonds) {
+          if (_radialBonds.hasOwnProperty(prop)) {
+            radialBondProps[prop] = _radialBonds[prop][i];
+          }
+        }
+        model.addRadialBond(radialBondProps, options);
+      }
+
+      // Call the hook manually, as addRadialBond won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePostHook();
+
       return model;
     };
 
     model.createAngularBonds = function(_angularBonds) {
-      engine.initializeAngularBonds(_angularBonds);
-      angularBonds = engine.angularBonds;
-      readModelState();
+          // Options for addAngularBond method.
+      var options = {
+            // Deserialization process, invalidating change hooks will be called manually.
+            deserialization: true
+          },
+          num = _angularBonds.strength.length,
+          i, prop, angularBondProps;
+
+      // Call the hook manually, as addAngularBond won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePreHook();
+
+      // _angularBonds is hash of arrays (as specified in JSON model).
+      // So, for each index, create object containing properties of
+      // angular bond 'i'. Later, use these properties to add angular bond
+      // using basic addAngularBond method.
+      for (i = 0; i < num; i++) {
+        angularBondProps = {};
+        for (prop in _angularBonds) {
+          if (_angularBonds.hasOwnProperty(prop)) {
+            angularBondProps[prop] = _angularBonds[prop][i];
+          }
+        }
+        model.addAngularBond(angularBondProps, options);
+      }
+
+      // Call the hook manually, as addRadialBond won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePostHook();
+
       return model;
     };
 
-    model.createVdwPairs = function(_atoms) {
-      engine.createVdwPairsArray(_atoms);
-      vdwPairs = engine.vdwPairs;
-      readModelState();
+    model.createRestraints = function(_restraints) {
+      var num = _restraints.atomIndex.length,
+          i, prop, restraintsProps;
+
+      // _restraints is hash of arrays (as specified in JSON model).
+      // So, for each index, create object containing properties of
+      // restraint 'i'. Later, use these properties to add restraint
+      // using basic addRestraint method.
+      for (i = 0; i < num; i++) {
+        restraintsProps = {};
+        for (prop in _restraints) {
+          if (_restraints.hasOwnProperty(prop)) {
+            restraintsProps[prop] = _restraints[prop][i];
+          }
+        }
+        model.addRestraint(restraintsProps);
+      }
+
       return model;
     };
 
     model.createObstacles = function(_obstacles) {
       var numObstacles = _obstacles.x.length,
-          i, prop;
+          i, prop, obstacleProps;
 
-      // ensure that every property either has a value or the default value
+      // _obstacles is hash of arrays (as specified in JSON model).
+      // So, for each index, create object containing properties of
+      // obstacle 'i'. Later, use these properties to add obstacle
+      // using basic addObstacle method.
       for (i = 0; i < numObstacles; i++) {
-        for (prop in default_obstacle_properties) {
-          if (!default_obstacle_properties.hasOwnProperty(prop)) continue;
-          if (!_obstacles[prop]) {
-            _obstacles[prop] = [];
-          }
-          if (typeof _obstacles[prop][i] === "undefined") {
-            _obstacles[prop][i] = default_obstacle_properties[prop];
+        obstacleProps = {};
+        for (prop in _obstacles) {
+          if (_obstacles.hasOwnProperty(prop)) {
+            obstacleProps[prop] = _obstacles[prop][i];
           }
         }
+        model.addObstacle(obstacleProps);
       }
 
-      engine.initializeObstacles(_obstacles);
-      obstacles = engine.obstacles;
       return model;
     };
 
     model.reset = function() {
       model.resetTime();
-      restoreFirstStateinTickHistory();
+      tickHistory.restoreInitialState();
       dispatch.reset();
     };
 
     model.resetTime = function() {
       engine.setTime(0);
-    };
-
-    model.getTime = function() {
-      return modelOutputState ? modelOutputState.time : undefined;
     };
 
     model.getTotalMass = function() {
@@ -834,11 +1058,11 @@ define(function(require) {
       Attempts to add an 0-velocity atom to a random location. Returns false if after 10 tries it
       can't find a location. (Intended to be exposed as a script API method.)
 
-      Optionally allows specifying the element (default is to randomly select from all elements) and
+      Optionally allows specifying the element (default is to randomly select from all editableElements) and
       charge (default is neutral).
     */
     model.addRandomAtom = function(el, charge) {
-      if (el == null) el = Math.floor( Math.random() * elements.length );
+      if (el == null) el = Math.floor( Math.random() * editableElements.length );
       if (charge == null) charge = 0;
 
       var size   = model.size(),
@@ -857,15 +1081,15 @@ define(function(require) {
         // findMinimimuPELocation will return false if minimization doesn't converge, in which case
         // try again from a different x, y
         loc = engine.findMinimumPELocation(el, x, y, 0, 0, charge);
-        if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge, 0, 0)) return true;
+        if (loc && model.addAtom({ element: el, x: loc[0], y: loc[1], charge: charge })) return true;
       } while (++numTries < maxTries);
 
       return false;
     },
 
     /**
-      Adds a new atom with element 'el', charge 'charge', and velocity '[vx, vy]' to the model
-      at position [x, y]. (Intended to be exposed as a script API method.)
+      Adds a new atom defined by properties.
+      Intended to be exposed as a script API method also.
 
       Adjusts (x,y) if needed so that the whole atom is within the walls of the container.
 
@@ -874,50 +1098,163 @@ define(function(require) {
       intrudes into the repulsive region of another atom.)
 
       Otherwise, returns true.
-    */
-    model.addAtom = function(el, x, y, vx, vy, charge, friction, pinned, visible, draggable) {
-      var size      = model.size(),
-          radius    = engine.getRadiusOfElement(el),
-          newLength,
-          i;
 
-      if (visible == null)   visible   = model.NON_ENGINE_DEFAULT_VALUES.visible;
-      if (draggable == null) draggable = model.NON_ENGINE_DEFAULT_VALUES.draggable;
+      silent = true disables this check.
+    */
+    model.addAtom = function(props, options) {
+      var size = model.size(),
+          radius;
+
+      options = options || {};
+
+      // Validate properties, provide default values.
+      props = validator.validateCompleteness(metadata.atom, props);
 
       // As a convenience to script authors, bump the atom within bounds
-      if (x < radius) x = radius;
-      if (x > size[0]-radius) x = size[0]-radius;
-      if (y < radius) y = radius;
-      if (y > size[1]-radius) y = size[1]-radius;
+      radius = engine.getRadiusOfElement(props.element);
+      if (props.x < radius) props.x = radius;
+      if (props.x > size[0] - radius) props.x = size[0] - radius;
+      if (props.y < radius) props.y = radius;
+      if (props.y > size[1] - radius) props.y = size[1] - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-      if (engine.canPlaceAtom(el, x, y)) {
-
-        i = engine.addAtom(el, x, y, vx, vy, charge, friction, pinned);
-        copyEngineAtomReferences();
-
-        // Extend the atoms arrays which the engine doesn't know about. This may seem duplicative,
-        // or something we could ask the engine to do on our behalf, but it may make more sense when
-        // you realize this is a temporary step until we modify the code further in order to maintain
-        // the 'visible', 'draggable' propeties *only* in what is now being called the 'results' array
-        newLength = atoms.element.length;
-
-        if (atoms.visible.length < newLength) {
-          atoms.visible   = arrays.extend(atoms.visible, newLength);
-          atoms.draggable = arrays.extend(atoms.draggable, newLength);
-        }
-
-        atoms.visible[i]   = visible;
-        atoms.draggable[i] = draggable;
-
-        readModelState();
-        dispatch.addAtom();
-
-        return true;
+      if (!options.supressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
+        // return false on failure
+        return false;
       }
-      // return false on failure
-      return false;
+
+      // When atoms are being deserialized, the deserializing function
+      // should handle change hooks due to performance reasons.
+      if (!options.deserialization)
+        invalidatingChangePreHook();
+      engine.addAtom(props);
+      if (!options.deserialization)
+        invalidatingChangePostHook();
+
+      if (!options.supressEvent) {
+        dispatch.addAtom();
+      }
+
+      return true;
     },
+
+    model.removeAtom = function(i, options) {
+      var prevRadBondsCount = engine.getNumberOfRadialBonds(),
+          prevAngBondsCount = engine.getNumberOfAngularBonds();
+
+      options = options || {};
+
+      invalidatingChangePreHook();
+      engine.removeAtom(i);
+      // Enforce modeler to recalculate results array.
+      results.length = 0;
+      invalidatingChangePostHook();
+
+      if (!options.supressEvent) {
+        // Notify listeners that atoms is removed.
+        dispatch.removeAtom();
+
+        // Removing of an atom can also cause removing of
+        // the connected radial bond. Detect it and notify listeners.
+        if (engine.getNumberOfRadialBonds() !== prevRadBondsCount) {
+          dispatch.removeRadialBond();
+        }
+        if (engine.getNumberOfAngularBonds() !== prevAngBondsCount) {
+          dispatch.removeAngularBond();
+        }
+      }
+    },
+
+    model.addElement = function(props) {
+      // Validate properties, use default values if there is such need.
+      props = validator.validateCompleteness(metadata.element, props);
+      // Finally, add radial bond.
+      engine.addElement(props);
+    };
+
+    model.addObstacle = function(props) {
+      var validatedProps;
+
+      if (props.color !== undefined && props.colorR === undefined) {
+        // Convert color definition.
+        // Both forms are supported:
+        //   color: [ 128, 128, 255 ]
+        // or
+        //   colorR: 128,
+        //   colorB: 128,
+        //   colorG: 255
+        props.colorR = props.color[0];
+        props.colorG = props.color[1];
+        props.colorB = props.color[2];
+      }
+      // Validate properties, use default values if there is such need.
+      validatedProps = validator.validateCompleteness(metadata.obstacle, props);
+      // Finally, add obstacle.
+      invalidatingChangePreHook();
+      engine.addObstacle(validatedProps);
+      invalidatingChangePostHook();
+    };
+
+    model.removeObstacle = function (idx) {
+      invalidatingChangePreHook();
+      engine.removeObstacle(idx);
+      invalidatingChangePostHook();
+    };
+
+    model.addRadialBond = function(props, options) {
+      // Validate properties, use default values if there is such need.
+      props = validator.validateCompleteness(metadata.radialBond, props);
+
+      // During deserialization change hooks are managed manually.
+      if (!options || !options.deserialization)
+        invalidatingChangePreHook();
+
+      // Finally, add radial bond.
+      engine.addRadialBond(props);
+
+      if (!options || !options.deserialization)
+        invalidatingChangePostHook();
+
+      dispatch.addRadialBond();
+    },
+
+    model.removeRadialBond = function(idx) {
+      invalidatingChangePreHook();
+      engine.removeRadialBond(idx);
+      invalidatingChangePreHook();
+      dispatch.removeRadialBond();
+    };
+
+    model.addAngularBond = function(props, options) {
+      // Validate properties, use default values if there is such need.
+      props = validator.validateCompleteness(metadata.angularBond, props);
+
+      // During deserialization change hooks are managed manually.
+      if (!options || !options.deserialization)
+        invalidatingChangePreHook();
+
+      // Finally, add angular bond.
+      engine.addAngularBond(props);
+
+      if (!options || !options.deserialization)
+        invalidatingChangePostHook();
+    };
+
+    model.removeAngularBond = function(idx) {
+      invalidatingChangePreHook();
+      engine.removeAngularBond(idx);
+      invalidatingChangePostHook();
+      dispatch.removeAngularBond();
+    };
+
+    model.addRestraint = function(props) {
+      // Validate properties, use default values if there is such need.
+      props = validator.validateCompleteness(metadata.restraint, props);
+      // Finally, add restraint.
+      invalidatingChangePreHook();
+      engine.addRestraint(props);
+      invalidatingChangePostHook();
+    };
 
     /** Return the bounding box of the molecule containing atom 'atomIndex', with atomic radii taken
         into account.
@@ -976,8 +1313,10 @@ define(function(require) {
       var moleculeAtoms,
           dx, dy,
           new_x, new_y,
-          j, jj,
-          key;
+          j, jj;
+
+      // Validate properties.
+      props = validator.validate(metadata.atom, props);
 
       if (moveMolecule) {
         moleculeAtoms = engine.getMoleculeAtoms(i);
@@ -1004,103 +1343,139 @@ define(function(require) {
         }
       }
 
-      // Actually set properties
-      for (key in props) {
-        if (props.hasOwnProperty(key)) {
-          atoms[key][i] = props[key];
-        }
-      }
-
-      readModelState();
+      invalidatingChangePreHook();
+      engine.setAtomProperties(i, props);
+      invalidatingChangePostHook();
       return true;
     };
 
     model.getAtomProperties = function(i) {
-      var p, propName,
-          props = {};
-      for (p = 0; p < model.ATOM_PROPERTY_LIST.length; p++) {
-        propName = model.ATOM_PROPERTY_LIST[p];
-        props[propName] = atoms[propName][i];
+      var atomMetaData = metadata.atom,
+          props = {},
+          propName;
+      for (propName in atomMetaData) {
+        if (atomMetaData.hasOwnProperty(propName)) {
+          props[propName] = atoms[propName][i];
+        }
       }
       return props;
     };
 
     model.setElementProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.element, props);
+      if (aminoacidsHelper.isAminoAcid(i)) {
+        throw new Error("Elements: elements with ID " + i + " cannot be edited, as they define amino acids.");
+      }
+      invalidatingChangePreHook();
       engine.setElementProperties(i, props);
-      readModelState();
+      invalidatingChangePostHook();
     };
 
     model.getElementProperties = function(i) {
-      var p,
+      var elementMetaData = metadata.element,
           props = {},
           propName;
-      for (p = 0; p < model.ELEMENT_PROPERTY_LIST.length; p++) {
-        propName = model.ELEMENT_PROPERTY_LIST[p];
-        props[propName] = engine.elements[propName][i];
+      for (propName in elementMetaData) {
+        // Treat ID separately, as ID is not stored by
+        // engine explicitly.
+        if (propName === 'id') {
+          props.id = i;
+        } else if (elementMetaData.hasOwnProperty(propName)) {
+          props[propName] = elements[propName][i];
+        }
       }
       return props;
     };
 
     model.setObstacleProperties = function(i, props) {
-      var key;
-      for (key in props) {
-        if (props.hasOwnProperty(key)) {
-          obstacles[key][i] = props[key];
-        }
-      }
-      readModelState();
+      // Validate properties.
+      props = validator.validate(metadata.obstacle, props);
+      invalidatingChangePreHook();
+      engine.setObstacleProperties(i, props);
+      invalidatingChangePostHook();
     };
 
     model.getObstacleProperties = function(i) {
-      var p, propName,
-          props = {};
-      for (p = 0; p < model.OBSTACLE_PROPERTY_LIST.length; p++) {
-        propName = model.OBSTACLE_PROPERTY_LIST[p];
-        props[propName] = obstacles[propName][i];
+      var obstacleMetaData = metadata.obstacle,
+          props = {},
+          propName;
+      for (propName in obstacleMetaData) {
+        if (obstacleMetaData.hasOwnProperty(propName)) {
+          props[propName] = obstacles[propName][i];
+        }
       }
       return props;
     };
 
     model.setRadialBondProperties = function(i, props) {
-      var key;
-      for (key in props) {
-        if (props.hasOwnProperty(key)) {
-          radialBonds[key][i] = props[key];
-        }
-      }
-      readModelState();
+      // Validate properties.
+      props = validator.validate(metadata.radialBond, props);
+      invalidatingChangePreHook();
+      engine.setRadialBondProperties(i, props);
+      invalidatingChangePostHook();
     };
 
     model.getRadialBondProperties = function(i) {
-      var p,
+      var radialBondMetaData = metadata.radialBond,
           props = {},
           propName;
-      for (p = 0; p < model.RADIAL_BOND_PROPERTY_LIST.length; p++) {
-        propName = model.RADIAL_BOND_PROPERTY_LIST[p];
-        props[propName] = radialBonds[propName][i];
+      for (propName in radialBondMetaData) {
+        if (radialBondMetaData.hasOwnProperty(propName)) {
+          props[propName] = radialBonds[propName][i];
+        }
+      }
+      return props;
+    };
+
+    model.setRestraintProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.restraint, props);
+      invalidatingChangePreHook();
+      engine.setRestraintProperties(i, props);
+      invalidatingChangePostHook();
+    };
+
+    model.getRestraintProperties = function(i) {
+      var restraintMetaData = metadata.restraint,
+          props = {},
+          propName;
+      for (propName in restraintMetaData) {
+        if (restraintMetaData.hasOwnProperty(propName)) {
+          props[propName] = restraints[propName][i];
+        }
       }
       return props;
     };
 
     model.setAngularBondProperties = function(i, props) {
-      var key;
-      for (key in props) {
-        if (props.hasOwnProperty(key)) {
-          angularBonds[key][i] = props[key];
-        }
-      }
-      readModelState();
+      // Validate properties.
+      props = validator.validate(metadata.angularBond, props);
+      invalidatingChangePreHook();
+      engine.setAngularBondProperties(i, props);
+      invalidatingChangePostHook();
     };
 
     model.getAngularBondProperties = function(i) {
-      var p,
+      var angularBondMetaData = metadata.angularBond,
           props = {},
           propName;
-      for (p = 0; p < model.ANGULAR_BOND_PROPERTY_LIST.length; p++) {
-        propName = model.ANGULAR_BOND_PROPERTY_LIST[p];
-        props[propName] = model.ANGULAR_BOND_PROPERTY_LIST[propName][i];
+      for (propName in angularBondMetaData) {
+        if (angularBondMetaData.hasOwnProperty(propName)) {
+          props[propName] = angularBonds[propName][i];
+        }
       }
       return props;
+    };
+
+    model.setSolvent = function (solventName) {
+      var solvent = new Solvent(solventName),
+          props = {
+            solventForceType: solvent.forceType,
+            dielectricConstant: solvent.dielectricConstant,
+            backgroundColor: solvent.color
+          };
+      model.set(props);
     };
 
     /** A "spring force" is used to pull atom `atomIndex` towards (x, y). We expect this to be used
@@ -1130,6 +1505,35 @@ define(function(require) {
     */
     model.removeSpringForce = function(springForceIndex) {
       engine.removeSpringForce(springForceIndex);
+    };
+
+    model.addTextBox = function(props) {
+      props = validator.validateCompleteness(metadata.textBox, props);
+      properties.textBoxes.push(props);
+      dispatch.textBoxesChanged();
+    };
+
+    model.removeTextBox = function(i) {
+      var text = properties.textBoxes;
+      if (i >=0 && i < text.length) {
+        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1))
+        dispatch.textBoxesChanged();
+      } else {
+        throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
+      }
+    };
+
+    model.setTextBoxProperties = function(i, props) {
+      var textBox = properties.textBoxes[i];
+      if (textBox) {
+        props = validator.validate(metadata.textBox, props);
+        for (prop in props) {
+          textBox[prop] = props[prop];
+        }
+        dispatch.textBoxesChanged();
+      } else {
+        throw new Error("Text box \"" + i + "\" does not exist, so it cannot have properties set.");
+      }
     };
 
     /**
@@ -1185,16 +1589,6 @@ define(function(require) {
       return stopped;
     };
 
-    model.set_lennard_jones_forces = function(lj) {
-     lennard_jones_forces = lj;
-     engine.useLennardJonesInteraction(lj);
-    };
-
-    model.set_coulomb_forces = function(cf) {
-     coulomb_forces = cf;
-     engine.useCoulombInteraction(cf);
-    };
-
     model.get_atoms = function() {
       return atoms;
     };
@@ -1215,13 +1609,40 @@ define(function(require) {
       return obstacles;
     };
 
+    model.getNumberOfElements = function () {
+      return engine.getNumberOfElements();
+    };
+
+    model.getNumberOfObstacles = function () {
+      return engine.getNumberOfObstacles();
+    };
+
+    model.getNumberOfRadialBonds = function () {
+      return engine.getNumberOfRadialBonds();
+    };
+
+    model.getNumberOfAngularBonds = function () {
+      return engine.getNumberOfAngularBonds();
+    };
+
     model.get_radial_bonds = function() {
       return radialBonds;
     };
 
+    model.get_restraints = function() {
+      return restraints;
+    };
+
+    model.getPairwiseLJProperties = function() {
+      return engine.pairwiseLJProperties;
+    };
+
+    model.getGeneticProperties = function() {
+      return engine.geneticProperties;
+    };
+
     model.get_vdw_pairs = function() {
-      if (vdwPairs) engine.updateVdwPairsArray();
-      return vdwPairs;
+      return engine.getVdwPairsArray();
     };
 
     model.on = function(type, listener) {
@@ -1251,25 +1672,109 @@ define(function(require) {
       return model;
     };
 
+    model.minimizeEnergy = function () {
+      invalidatingChangePreHook();
+      engine.minimizeEnergy();
+      invalidatingChangePostHook();
+      return model;
+    };
+
+    /**
+      Generates a protein. It returns a real number of created amino acids.
+
+      'aaSequence' parameter defines expected sequence of amino acids. Pass undefined
+      and provide 'expectedLength' if you want to generate a random protein.
+
+      'expectedLength' parameter controls the maximum (and expected) number of amino
+      acids of the resulting protein. Provide this parameter only when 'aaSequence'
+      is undefined. When expected length is too big (due to limited area of the model),
+      the protein will be truncated and its real length returned.
+    */
+    model.generateProtein = function (aaSequence, expectedLength) {
+      var generatedAACount;
+
+      invalidatingChangePreHook();
+
+      generatedAACount = engine.generateProtein(aaSequence, expectedLength);
+      // Enforce modeler to recalculate results array.
+      // TODO: it's a workaround, investigate the problem.
+      results.length = 0;
+
+      invalidatingChangePostHook();
+
+      dispatch.addAtom();
+
+      return generatedAACount;
+    };
+
     model.start = function() {
       return model.resume();
     };
 
-    model.resume = function() {
-      stopped = false;
+    /**
+      Restart the model (call model.resume()) after the next tick completes.
 
-      d3.timer(function timerTick(elapsedTime) {
+      This is useful for changing the modelSampleRate interactively.
+    */
+    model.restart = function() {
+      restart = true;
+    };
+
+    model.resume = function() {
+
+      console.time('gap between frames');
+      model.timer(function timerTick(elapsedTime) {
+        console.timeEnd('gap between frames');
         // Cancel the timer and refuse to to step the model, if the model is stopped.
         // This is necessary because there is no direct way to cancel a d3 timer.
         // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
         if (stopped) return true;
 
+        if (restart) {
+          setTimeout(model.resume, 0);
+          return true;
+        }
+
         tick(elapsedTime, false);
+
+        console.time('gap between frames');
         return false;
       });
 
-      dispatch.play();
+      restart = false;
+      if (stopped) {
+        stopped = false;
+        dispatch.play();
+      }
+
       return model;
+    };
+
+    /**
+      Repeatedly calls `f` at an interval defined by the modelSampleRate property, until f returns
+      true. (This is the same signature as d3.timer.)
+
+      If modelSampleRate === 'default', try to run at the "requestAnimationFrame rate"
+      (i.e., using d3.timer(), after running f, also request to run f at the next animation frame)
+
+      If modelSampleRate !== 'default', instead uses setInterval to schedule regular calls of f with
+      period (1000 / sampleRate) ms, corresponding to sampleRate calls/s
+    */
+    model.timer = function(f) {
+      var intervalID,
+          sampleRate = model.get("modelSampleRate");
+
+      if (sampleRate === 'default') {
+        // use requestAnimationFrame via d3.timer
+        d3.timer(f);
+      } else {
+        // set an interval to run the model more slowly.
+        intervalID = window.setInterval(function() {
+          if ( f() ) {
+            window.clearInterval(intervalID);
+          }
+        }, 1000/sampleRate);
+      }
     };
 
     model.stop = function() {
@@ -1278,16 +1783,8 @@ define(function(require) {
       return model;
     };
 
-    model.ke = function() {
-      return modelOutputState.KE;
-    };
-
     model.ave_ke = function() {
       return modelOutputState.KE / model.get_num_atoms();
-    };
-
-    model.pe = function() {
-      return modelOutputState.PE;
     };
 
     model.ave_pe = function() {
@@ -1298,16 +1795,6 @@ define(function(require) {
       return average_speed();
     };
 
-    model.pressure = function() {
-      return container_pressure();
-    };
-
-    model.temperature = function(x) {
-      if (!arguments.length) return temperature;
-      set_temperature(x);
-      return model;
-    };
-
     model.size = function(x) {
       if (!arguments.length) return engine.getSize();
       engine.setSize(x);
@@ -1315,50 +1802,345 @@ define(function(require) {
     };
 
     model.set = function(hash) {
+      // Perform validation in case of setting main properties or
+      // model view properties. Attempts to set immutable or read-only
+      // properties will be caught.
+      validator.validate(metadata.mainProperties, hash);
+      validator.validate(metadata.modelViewProperties, hash);
+
+      if (engine) invalidatingChangePreHook();
       set_properties(hash);
+      if (engine) invalidatingChangePostHook();
     };
 
     model.get = function(property) {
-      return properties[property];
+      var output;
+
+      if (properties.hasOwnProperty(property)) return properties[property];
+
+      if (output = outputsByName[property]) {
+        if (output.hasCachedValue) return output.cachedValue;
+        output.hasCachedValue = true;
+        output.cachedValue = output.calculate();
+        return output.cachedValue;
+      }
     };
 
     /**
-      Set the 'model_listener' function, which is called on tick events.
-    */
-    model.setModelListener = function(listener) {
-      model_listener = listener;
-      model.on('tick', model_listener);
-      return model;
-    };
+      Add a listener callback that will be notified when any of the properties in the passed-in
+      array of properties is changed. (The argument `properties` can also be a string, if only a
+      single name needs to be passed.) This is a simple way for views to update themselves in
+      response to property changes.
 
-    // Add a listener that will be notified any time any of the properties
-    // in the passed-in array of properties is changed.
-    // This is a simple way for views to update themselves in response to
-    // properties being set on the model object.
-    // Observer all properties with addPropertiesListener(["all"], callback);
+      Observe all properties with `addPropertiesListener('all', callback);`
+    */
     model.addPropertiesListener = function(properties, callback) {
-      var i, ii, prop;
-      for (i=0, ii=properties.length; i<ii; i++){
-        prop = properties[i];
-        if (!listeners[prop]) {
-          listeners[prop] = [];
-        }
+      var i;
+
+      function addListener(prop) {
+        if (!listeners[prop]) listeners[prop] = [];
         listeners[prop].push(callback);
+      }
+
+      if (typeof properties === 'string') {
+        addListener(properties);
+      } else {
+        for (i = 0; i < properties.length; i++) {
+          addListener(properties[i]);
+        }
       }
     };
 
+
+    /**
+      Add an "output" property to the model. Output properties are expected to change at every
+      model tick, and may also be changed indirectly, outside of a model tick, by a change to the
+      model parameters or to the configuration of atoms and other objects in the model.
+
+      `name` should be the name of the parameter. The property value will be accessed by
+      `model.get(<name>);`
+
+      `description` should be a hash of metadata about the property. Right now, these metadata are not
+      used. However, example metadata include the label and units name to be used when graphing
+      this property.
+
+      `calculate` should be a no-arg function which should calculate the property value.
+    */
+    model.defineOutput = function(name, description, calculate) {
+      outputNames.push(name);
+      outputsByName[name] = {
+        description: description,
+        calculate: calculate,
+        hasCachedValue: false,
+        // Used to keep track of whether this property changed as a side effect of some other change
+        // null here is just a placeholder
+        previousValue: null
+      };
+    };
+
+    /**
+      Add an "filtered output" property to the model. This is special kind of output property, which
+      is filtered by one of the built-in filters based on time (like running average). Note that filtered
+      outputs do not specify calculate function - instead, they specify property which should filtered.
+      It can be another output, model parameter or custom parameter.
+
+      Filtered output properties are extension of typical output properties. They share all features of
+      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
+      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
+      objects in the model.
+
+      `name` should be the name of the parameter. The property value will be accessed by
+      `model.get(<name>);`
+
+      `description` should be a hash of metadata about the property. Right now, these metadata are not
+      used. However, example metadata include the label and units name to be used when graphing
+      this property.
+
+      `property` should be name of the basic property which should be filtered.
+
+      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
+
+      `period` should be number defining length of time period used for calculating filtered value. It should
+      be specified in femtoseconds.
+
+    */
+    model.defineFilteredOutput = function(name, description, property, type, period) {
+      // Filter object.
+      var filter, initialValue;
+
+      if (type === "RunningAverage") {
+        filter = new RunningAverageFilter(period);
+      } else {
+        throw new Error("FilteredOutput: unknown filter type " + type + ".");
+      }
+
+      initialValue = model.get(property);
+      if (initialValue === undefined || isNaN(Number(initialValue))) {
+        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+      }
+
+      // Add initial sample.
+      filter.addSample(model.get('time'), initialValue);
+
+      filteredOutputNames.push(name);
+      // filteredOutputsByName stores properties which are unique for filtered output.
+      // Other properties like description or calculate function are stored in outputsByName hash.
+      filteredOutputsByName[name] = {
+        addSample: function () {
+          filter.addSample(model.get('time'), model.get(property));
+        }
+      };
+
+      // Create simple adapter implementing TickHistoryCompatible Interface
+      // and register it in tick history.
+      tickHistory.registerExternalObject({
+        push: function () {
+          // Push is empty, as we store samples during each tick anyway.
+        },
+        extract: function (idx) {
+          filter.setCurrentStep(idx);
+        },
+        invalidate: function (idx) {
+          filter.invalidate(idx);
+        },
+        setHistoryLength: function (length) {
+          filter.setMaxBufferLength(length);
+        }
+      });
+
+      // Extend description to contain information about filter.
+      description.property = property;
+      description.type = type;
+      description.period = period;
+
+      // Filtered output is still an output.
+      // Reuse existing, well tested logic for caching, observing etc.
+      model.defineOutput(name, description, function () {
+        return filter.calculate();
+      });
+    };
+
+    /**
+      Define a property of the model to be treated as a custom parameter. Custom parameters are
+      (generally, user-defined) read/write properties that trigger a setter action when set, and
+      whose values are automatically persisted in the tick history.
+
+      Because custom parameters are not intended to be interpreted by the engine, but instead simply
+      *represent* states of the model that are otherwise fully specified by the engine state and
+      other properties of the model, and because the setter function might not limit itself to a
+      purely functional mapping from parameter value to model properties, but might perform any
+      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
+      parameters are updated by the tick history.
+    */
+    model.defineParameter = function(name, description, setter) {
+      parametersByName[name] = {
+        description: description,
+        setter: setter,
+        isDefined: false
+      };
+
+      properties['set_'+name] = function(value) {
+        properties[name] = value;
+        parametersByName[name].isDefined = true;
+        // set a useful 'this' binding in the setter:
+        parametersByName[name].setter.call(model, value);
+      };
+    };
+
+    /**
+      Retrieve (a copy of) the hash describing property 'name', if one exists. This hash can store
+      an arbitrary set of key-value pairs, but is expected to have 'label' and 'units' properties
+      describing, respectively, the property's human-readable label and the short name of the units
+      in which the property is enumerated.
+
+      Right now, only output properties and custom parameters have a description hash.
+    */
+    model.getPropertyDescription = function(name) {
+      var property = outputsByName[name] || parametersByName[name];
+      if (property) {
+        return _.extend({}, property.description);
+      }
+    };
+
+    // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function(includeAtoms) {
       var propCopy = $.extend({}, properties);
       if (includeAtoms) {
-        propCopy.atoms = serializeAtoms();
+        propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
       }
-      if (elements) {
-        propCopy.elements = elements;
+      if (editableElements) {
+        propCopy.editableElements = editableElements;
       }
-      propCopy.width = width;
-      propCopy.height = height;
+      propCopy.width = model.get('width');
+      propCopy.height = model.get('height');
       return propCopy;
     };
+
+    // ------------------------------
+    // finish setting up the model
+    // ------------------------------
+
+    // Friction parameter temporarily applied to the live-dragged atom.
+    model.LIVE_DRAG_FRICTION = 10;
+
+    // Define some default output properties.
+    model.defineOutput('time', {
+      label: "Time",
+      units: "fs"
+    }, function() {
+      return modelOutputState.time;
+    });
+
+    model.defineOutput('kineticEnergy', {
+      label: "Kinetic Energy",
+      units: "eV"
+    }, function() {
+      return modelOutputState.KE;
+    });
+
+    model.defineOutput('potentialEnergy', {
+      label: "Potential Energy",
+      units: "eV"
+    }, function() {
+      return modelOutputState.PE;
+    });
+
+    model.defineOutput('totalEnergy', {
+      label: "Total Energy",
+      units: "eV"
+    }, function() {
+      return modelOutputState.KE + modelOutputState.PE;
+    });
+
+    model.defineOutput('temperature', {
+      label: "Temperature",
+      units: "K"
+    }, function() {
+      return modelOutputState.temperature;
+    });
+
+
+    // Set the regular, main properties.
+    // Note that validation process will return hash without all properties which are
+    // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
+    set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
+
+    // Set the model view options.
+    // These options are view-related, but are stored in model,
+    // as e.g. they should be saved in tick history.
+    set_properties(validator.validateCompleteness(metadata.modelViewProperties, initialProperties.viewOptions || {}));
+
+    // Setup engine object.
+    model.initializeEngine();
+
+    // Finally, if provided, set up the model objects (elements, atoms, bonds, obstacles and the rest).
+    // However if these are not provided, client code can create atoms, etc piecemeal.
+
+    // TODO: Elements are stored and treated different from other objects.
+    // This is enforced by current createNewAtoms() method which should be
+    // depreciated. When it's changed, change also editableElements handling.
+    if (initialProperties.elements) {
+      editableElements = initialProperties.elements;
+    } else {
+      // Make sure that some editable elements are provided.
+      // Provide array with one empty object. Default values will be used.
+      editableElements = [{}];
+    }
+    // Create editable elements.
+    model.createElements(editableElements);
+    // Create elements which specify amino acids also.
+    createAminoAcids();
+
+    // Trigger setter of polarAAEpsilon again when engine is initialized and
+    // amino acids crated.
+    // TODO: initialize engine before set_properties calls, so properties
+    // will be injected to engine automatically.
+    model.set({polarAAEpsilon: model.get('polarAAEpsilon')});
+
+    if (initialProperties.atoms) {
+      model.createAtoms(initialProperties.atoms);
+    } else if (initialProperties.mol_number) {
+      model.createAtoms(initialProperties.mol_number);
+      if (initialProperties.relax) model.relax();
+    }
+
+    if (initialProperties.radialBonds)  model.createRadialBonds(initialProperties.radialBonds);
+    if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
+    if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
+    if (initialProperties.obstacles)    model.createObstacles(initialProperties.obstacles);
+    // Basically, this #deserialize method is more or less similar to other #create... methods used
+    // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
+    if (initialProperties.pairwiseLJProperties)
+      engine.pairwiseLJProperties.deserialize(initialProperties.pairwiseLJProperties);
+    if (initialProperties.geneticProperties)
+      engine.geneticProperties.deserialize(initialProperties.geneticProperties);
+
+    // Initialize tick history.
+    tickHistory = new TickHistory({
+      input: [
+        "targetTemperature",
+        "lennardJonesForces",
+        "coulombForces",
+        "temperatureControl",
+        "keShading",
+        "chargeShading",
+        "showVDWLines",
+        "showVelocityVectors",
+        "showForceVectors",
+        "showClock",
+        "viewRefreshInterval",
+        "timeStep",
+        "viscosity",
+        "gravitationalField"
+      ],
+      restoreProperties: restoreProperties,
+      parameters: parametersByName,
+      restoreParameters: restoreParameters,
+      state: engine.getState()
+    }, model, defaultMaxTickHistory);
+
+    newStep = true;
+    updateAllOutputProperties();
 
     return model;
   };

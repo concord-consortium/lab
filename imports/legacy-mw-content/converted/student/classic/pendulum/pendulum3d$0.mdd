@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="gravitationalAcceleration"> 
+   <float>4.4E-4</float> 
+  </void> 
+  <void property="height"> 
+   <float>69.0</float> 
+  </void> 
+  <void property="length"> 
+   <float>89.0</float> 
+  </void> 
+  <void property="obstacles"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="color"> 
+       <int>-8355712</int> 
+      </void> 
+      <void property="lx"> 
+       <float>44.5</float> 
+      </void> 
+      <void property="ly"> 
+       <float>32.0</float> 
+      </void> 
+      <void property="lz"> 
+       <float>1.0288506</float> 
+      </void> 
+      <void property="rz"> 
+       <float>-33.47115</float> 
+      </void> 
+      <void property="translucent"> 
+       <boolean>true</boolean> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="color"> 
+       <int>-8355712</int> 
+      </void> 
+      <void property="lx"> 
+       <float>44.5</float> 
+      </void> 
+      <void property="ly"> 
+       <float>32.0</float> 
+      </void> 
+      <void property="lz"> 
+       <float>0.9345856</float> 
+      </void> 
+      <void property="rz"> 
+       <float>33.565414</float> 
+      </void> 
+      <void property="translucent"> 
+       <boolean>true</boolean> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="rotation"> 
+   <string>-978 -150 -145 77.2 31</string> 
+  </void> 
+  <void property="showClock"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>2.0</float> 
+  </void> 
+  <void property="trajectorySelection"> 
+   <string>1</string> 
+  </void> 
+  <void property="translucentSelection"> 
+   <string>0</string> 
+  </void> 
+  <void property="unmovableSelection"> 
+   <string>0</string> 
+  </void> 
+  <void property="velocitySelection"> 
+   <string>1</string> 
+  </void> 
+  <void property="width"> 
+   <float>64.0</float> 
+  </void> 
+ </object> 
+</java> 

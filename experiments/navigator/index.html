@@ -2,17 +2,20 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>What Browser?</title>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
+    <title>What Browser and OS?</title>
     <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
     <!-- benchmark is no longer build as a separate library, so include lab.js -->
     <script type="text/javascript" src="../../lab/lab.js"></script>
+    <link href='../../index.css' rel='stylesheet' type='text/css' />
     <style type="text/css">
-      body {
-        font: 11px sans-serif;
-        margin: 1.0em; }
+      #content {
+        font: 12px sans-serif;
+        margin: 0.5em 1.0em; }
       h1 {
         font-size: 1.2em;
-        font-weight: bold ; }
+        color: black;
+        font-weight: bold; }
       dl {
         margin-bottom: 2em; }
       dl dt {
@@ -39,6 +42,13 @@
     </style>
   </head>
   <body>
+    <div id='header'>
+      <a href='http://www.concord.org/' id='logo'>
+        <img src='../../resources/layout/cc-logo.png' />
+      </a>
+      <h1><a href='../..'>Lab</a>
+    </div>
+    <div id="content"></div>
     <script type="text/javascript">
       var browser_data = benchmark.what_browser();
       var browser_parts = [];
@@ -46,11 +56,11 @@
       for (var key in browser_data) { browser_parts.push([key, browser_data[key]]) };
       for (var key in navigator) { navigator_parts.push([key, navigator[key]]) };
       var data = [
-        ["What Browser?", browser_parts],
+        ["What Browser and OS?", browser_parts],
         ["Navigator Object Data", navigator_parts]
       ];
 
-      var collection = d3.select("body").selectAll("div")
+      var collection = d3.select("#content").selectAll("div")
           .data(data).enter().append("div")
             .attr("class", "collection")
 

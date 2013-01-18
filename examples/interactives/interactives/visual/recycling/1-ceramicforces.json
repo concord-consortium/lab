@@ -1,0 +1,51 @@
+{
+  "title": "Ceramic Forces",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "ceramicforcesimple$0",
+      "url": "/imports/legacy-mw-content/converted/visual/Recycling/ceramicforcesimple$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true,
+        "enableAtomTooltips": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "no-force",
+      "text": "No force",
+      "action": " set({ 'gravitationalField' : false });"
+    },
+    {
+      "type": "button",
+      "id": "small-force",
+      "text": "Small force",
+      "action": " set({ 'gravitationalField' : 8e-8 });"
+    },
+    {
+      "type": "button",
+      "id": "med-force",
+      "text": "Medium force",
+      "action": " set({ 'gravitationalField' : 1.2e-7 });"
+    },
+    {
+      "type": "button",
+      "id": "large-force",
+      "text": "Large force",
+      "action": " set({ 'gravitationalField' : 3.2e-7 });"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "no-force",
+      "small-force",
+      "med-force",
+      "large-force"
+    ]
+  }
+}

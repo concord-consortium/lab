@@ -1,4 +1,4 @@
-/*globals define: false, alert: false */
+/*global define: false, alert: false */
 // ------------------------------------------------------------
 //
 // Fullscreen API

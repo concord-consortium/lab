@@ -1,0 +1,86 @@
+{
+  "title": "Phase Changes",
+  "publicationStatus": "public",
+  "subtitle": "Explore how energy input causes matter to change states.",
+  "about": [
+    "Matter exists as solids, liquids and gases, and can change state between these.",
+    "The model shows a liquid material on the left (small atoms). The amount of heat energy is shown by kinetic energy (KE) shading, with deeper shades of red representing more energetic atoms. On the right side of the barrier is a solid material (large atoms).",
+    "Run the model. How much energy is able to penetrate the barrier? Remove the barrier. How quickly do the more energetic atoms melt the solid?"
+  ],
+  "models": [
+    {
+      "id": "page6$0",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page6/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Cold Solid",
+            "x": 4.28,
+            "y": 0.10,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(128,192,255)"
+          },
+          {
+            "text": "Hot Liquid",
+            "x": 0.13,
+            "y": 0.10,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(255, 190, 194)"
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "largeAtomKE",
+      "label": "Kinetic Energy of Large Atoms",
+      "units": "eV",
+      "value": [
+        "var largeKE = 0;",
+        "var numLarge = 0;",
+        "var elemNum = 3;",
+        "var mass = getElementProperties(elemNum).mass;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).element == elemNum) {",
+        "    largeKE += 0.5 * mass * Math.pow(getAtomProperties(i).speed,2);",
+        "    numLarge++;",
+        "  }",
+        "}",
+        "return (largeKE/numLarge)*100000;"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE Shading",
+      "property": "keShading"
+    },
+    {
+      "type": "button",
+      "id": "withdraw-barrier",
+      "text": "Withdraw the barrier",
+      "action": "if (getNumberOfObstacles() > 0) { removeObstacle(0) };"
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "options": {
+        "minValue": 0,
+        "maxValue": 5,
+        "title": "Avg. Kinetic Energy of Large Atoms"
+      },
+      "input1": "largeAtomKE"
+    }
+  ],
+  "layout": {
+    "rightwide": [
+      "bar-graph"
+    ]
+  }
+}

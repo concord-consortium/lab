@@ -1,4 +1,4 @@
-/*globals define: false, d3: false */
+/*global define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   Applet Container

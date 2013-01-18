@@ -16,8 +16,8 @@ var ROOT = "/examples",
 
   var modelConfig = {
         mol_number          : 50,
-        lennard_jones_forces: true,
-        coulomb_forces      : false,
+        lennardJonesForces  : true,
+        coulombForces       : false,
         width               : 10,
         height              : 10
       },
@@ -72,7 +72,7 @@ var ROOT = "/examples",
   $.when(optsLoaded, windowLoaded).done(function(results) {
     // update modelConfig with opts, if any
     $.extend(modelConfig, opts);
-    controller = controllers.compareModelsController('#molecule-container', '#applet-container', 'model-select', modelConfig, playerConfig);
+    controller = controllers.compareModelsController('#model-container', '#applet-container', 'model-select', modelConfig, playerConfig);
 
     $('#save-button').attr("disabled", "disabled").click(function() {
       var props     = model.serialize(true),

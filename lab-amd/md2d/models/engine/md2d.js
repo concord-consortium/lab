@@ -1,38 +1,22 @@
 /*global define: true */
 /*jslint eqnull: true, boss: true, loopfunc: true*/
 
-// Module can be used both in Node.js environment and in Web browser
-// using RequireJS. RequireJS Optimizer will strip out this if statement.
-if (typeof define !== 'function') {
-  var define = require('amdefine')(module);
-}
-
 define(function (require, exports, module) {
 
-  require('common/console');
-  var arrays       = require('arrays'),
-      constants    = require('./constants/index'),
-      unit         = constants.unit,
-      math         = require('./math/index'),
-      coulomb      = require('./potentials/index').coulomb,
-      lennardJones = require('./potentials/index').lennardJones,
-
-      // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
-      notSafari = (function() {
-        var safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-            match = navigator.userAgent.match(safarimatch);
-        return !match || !match[3];
-      }()),
-
-      float32 = (arrays.typed && notSafari) ? 'Float32Array' : 'regular',
-      uint16  = (arrays.typed && notSafari) ? 'Uint16Array'  : 'regular',
-      uint8   = (arrays.typed && notSafari) ? 'Uint8Array'   : 'regular',
-
-      // make at least 1 atom
-      N_MIN = 1,
-
-      // make no more than this many atoms:
-      N_MAX = 1000,
+  var arrays               = require('arrays'),
+      arrayTypes           = require('common/array-types'),
+      console              = require('common/console'),
+      constants            = require('./constants/index'),
+      unit                 = constants.unit,
+      aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
+      math                 = require('./math/index'),
+      coulomb              = require('./potentials/index').coulomb,
+      lennardJones         = require('./potentials/index').lennardJones,
+      PairwiseLJProperties = require('cs!./pairwise-lj-properties'),
+      GeneticProperties    = require('./genetic-properties'),
+      CloneRestoreWrapper  = require('./clone-restore-wrapper'),
+      CellList             = require('./cell-list'),
+      NeighborList         = require('./neighbor-list'),
 
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
       ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
@@ -42,20 +26,6 @@ define(function (require, exports, module) {
       ARGON_MASS_IN_KG = constants.convert(ARGON_MASS_IN_DALTON, { from: unit.DALTON, to: unit.KILOGRAM }),
 
       BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
-
-      DEFAULT_VALUES,
-
-      ATOM_PROPERTY_LIST,
-
-      ELEMENT_PROPERTY_LIST,
-
-      RADIAL_BOND_PROPERTY_LIST,
-
-      ANGULAR_BOND_PROPERTY_LIST,
-
-      VDW_INDICES,
-
-      RADIAL_BOND_STYLES,
 
       cross = function(a0, a1, b0, b1) {
         return a0*b1 - a1*b0;
@@ -73,7 +43,7 @@ define(function (require, exports, module) {
         Output units:
           T: K
       */
-      KE_to_T = function(totalKEinMWUnits, N) {
+      convertKEtoT = function(totalKEinMWUnits, N) {
         // In 2 dimensions, kT = (2/N_df) * KE
 
         var N_df = 2 * N,
@@ -91,7 +61,7 @@ define(function (require, exports, module) {
         Output units:
           KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
       */
-      T_to_KE = function(T, N) {
+      convertTtoKE = function(T, N) {
         var N_df = 2 * N,
             averageKEinJoules  = T * BOLTZMANN_CONSTANT_IN_JOULES,
             averageKEinMWUnits = constants.convert(averageKEinJoules, { from: unit.JOULE, to: unit.MW_ENERGY_UNIT }),
@@ -114,96 +84,6 @@ define(function (require, exports, module) {
         }
       };
 
-  // Atoms
-  exports.ATOM_PROPERTY_LIST = ATOM_PROPERTY_LIST = [
-    "radius",
-    "px",
-    "py",
-    "x",
-    "y",
-    "vx",
-    "vy",
-    "speed",
-    "ax",
-    "ay",
-    "charge",
-    "element",
-    "pinned",
-    "friction",
-    "mass"
-  ];
-
-  // Radial Bonds
-  exports.RADIAL_BOND_PROPERTY_LIST = RADIAL_BOND_PROPERTY_LIST = [
-    "atom1",
-    "atom2",
-    "length",
-    "strength",
-    "style"
-  ];
-
-  // Angular Bonds
-  exports.ANGULAR_BOND_PROPERTY_LIST = ANGULAR_BOND_PROPERTY_LIST = [
-    "atom1",
-    "atom2",
-    "atom3",
-    "angle",
-    "strength"
-  ];
-
-  exports.RADIAL_BOND_STYLES = RADIAL_BOND_STYLES = {
-    RADIAL_BOND_STANDARD_STICK_STYLE : 101,
-    RADIAL_BOND_LONG_SPRING_STYLE    : 102,
-    RADIAL_BOND_SOLID_LINE_STYLE     : 103,
-    RADIAL_BOND_GHOST_STYLE          : 104,
-    RADIAL_BOND_UNICOLOR_STICK_STYLE : 105,
-    RADIAL_BOND_SHORT_SPRING_STYLE   : 106,
-    RADIAL_BOND_DOUBLE_BOND_STYLE    : 107,
-    RADIAL_BOND_TRIPLE_BOND_STYLE    : 108
-  };
-
-  // Elements
-  exports.ELEMENT_PROPERTY_LIST = ELEMENT_PROPERTY_LIST = [
-    "mass",
-    "epsilon",
-    "sigma",
-    "radius"
-  ];
-
-  // Obstacles
-  exports.OBSTACLE_PROPERTY_LIST = [
-    "x",
-    "y",
-    "width",
-    "height",
-    "mass",
-    "vx",
-    "vy",
-    "externalFx",
-    "externalFy",
-    "friction",
-    "xPrev",
-    "yPrev",
-    "colorR",
-    "colorG",
-    "colorB",
-    "visible"
-  ];
-
-  // VDW pairs
-  exports.VDW_INDICES = VDW_INDICES = {
-    COUNT : 0,
-    ATOM1 : 1,
-    ATOM2 : 2
-  };
-
-  exports.DEFAULT_VALUES = DEFAULT_VALUES = {
-    charge            : 0,
-    friction          : 0,
-    pinned            : 0,
-    RADIAL_BOND_STYLE : RADIAL_BOND_STYLES.RADIAL_BOND_STANDARD_STICK_STYLE
-  };
-
   exports.createEngine = function() {
 
     var // the object to be returned
@@ -212,23 +92,39 @@ define(function (require, exports, module) {
         // Whether system dimensions have been set. This is only allowed to happen once.
         sizeHasBeenInitialized = false,
 
-        // Whether "atoms" (particles) have been created & initialized. This is only allowed to happen once.
-        atomsHaveBeenCreated = false,
-
-        // Whether "elements" (properties for groups of particles) have been created & initialized. This is only allowed to happen once.
-        elementsHaveBeenCreated = false,
-
         // Whether to simulate Coulomb forces between particles.
         useCoulombInteraction = false,
 
-        // Whether any atoms actually have charges
-        hasChargedAtoms = false,
+        // Dielectric constant, it influences Coulomb interaction.
+        // E.g. a dielectric of 80 means a Coulomb force 1/80th as strong.
+        dielectricConst = 1,
+
+        // Whether dielectric effect should be realistic or simplified. Realistic
+        // version takes into account distance between charged particles and reduces
+        // dielectric constant when particles are closer to each other.
+        realisticDielectricEffect = true,
+
+        // Parameter that reflects the watery extent of the solvent, when an effective
+        // hydrophobic/hydrophilic interaction is used. A negative value represents oil environment
+        // (usually -1). A positive one represents water environment (usually 1). A zero value means vacuum.
+        solventForceType = 0,
+
+        // Parameter that influences strength of force applied to amino acids by water of oil (solvent).
+        solventForceFactor = 1,
+
+        // Additional force applied to amino acids that depends on distance from the center of mass. It affects
+        // only AAs which are pulled into the center of mass (to stabilize shape of the protein).
+        additionalSolventForceMult = 25,
+        additionalSolventForceThreshold = 3,
 
         // Whether to simulate Lennard Jones forces between particles.
         useLennardJonesInteraction = true,
 
         // Whether to use the thermostat to maintain the system temperature near T_target.
         useThermostat = false,
+
+        // A value to use in calculating if two atoms are close enough for a VDW line to be displayed
+        vdwLinesRatio = 1.67,
 
         // If a numeric value include gravitational field in force calculations,
         // otherwise value should be false
@@ -258,20 +154,20 @@ define(function (require, exports, module) {
         // Square of integration time step, in fs^2.
         dt_sq,
 
-        // The number of atoms in the system.
-        N,
-
-        // Total mass of all particles in the system, in Dalton (atomic mass units).
-        totalMass,
-
         // ####################################################################
         //                      Atom Properties
 
         // Individual property arrays for the atoms, indexed by atom number
-        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass,
+        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass, hydrophobicity,
+        // Helper array, which may be used by various engine routines traversing atoms in untypical order.
+        // Make sure that you reset it before use. At the moment, it's used by updateAminoAcidForces() function.
+        visited,
 
         // An object that contains references to the above atom-property arrays
         atoms,
+
+        // The number of atoms in the system.
+        N = 0,
 
         // ####################################################################
         //                      Element Properties
@@ -288,6 +184,14 @@ define(function (require, exports, module) {
         // Number of actual elements (may be smaller than the length of the property arrays).
         N_elements = 0,
 
+        // Additional structure, keeping information if given element is represented by
+        // some atom in the model. Necessary for effective max cut-off distance calculation.
+        elementUsed = [],
+
+        // ####################################################################
+        //                      Custom Pairwise LJ Properties
+        pairwiseLJProperties,
+
         // ####################################################################
         //                      Radial Bond Properties
 
@@ -296,7 +200,7 @@ define(function (require, exports, module) {
         radialBondAtom2Index,
         radialBondLength,
         radialBondStrength,
-        radialBondStyle,
+        radialBondType,
 
         // An object that contains references to the above radial-bond-property arrays.
         // Left undefined if there are no radial bonds.
@@ -313,6 +217,22 @@ define(function (require, exports, module) {
 
         // Number of actual radial bonds (may be smaller than the length of the property arrays).
         N_radialBonds = 0,
+
+        // ####################################################################
+        //                      Restraint Properties
+
+        // Individual property arrays for the "restraint" bonds, indexed by bond number.
+        restraintAtomIndex,
+        restraintK,
+        restraintX0,
+        restraintY0,
+
+        // An object that contains references to the above restraint-property arrays.
+        // Left undefined if there are no restraints.
+        restraints,
+
+        // Number of actual restraint bonds (may be smaller than the length of the property arrays).
+        N_restraints = 0,
 
         // ####################################################################
         //                      Angular Bond Properties
@@ -345,12 +265,29 @@ define(function (require, exports, module) {
         obstacleExtFY,
         obstacleFriction,
         obstacleMass,
-        obstacleXPrev,
-        obstacleYPrev,
+        obstacleWestProbe,
+        obstacleNorthProbe,
+        obstacleEastProbe,
+        obstacleSouthProbe,
         obstacleColorR,
         obstacleColorG,
         obstacleColorB,
         obstacleVisible,
+
+        // Properties used only during internal calculations (e.g. shouldn't
+        // be returned during getObstacleProperties(i) call - TODO!).
+        obstacleXPrev,
+        obstacleYPrev,
+
+        // ### Pressure calculation ###
+        // Arrays containing sum of impulses 2mv/dt from atoms hitting the probe.
+        // These values are later stored in pressureBuffers object, interpolated
+        // (last average of last PRESSURE_BUFFERS_LEN values) and converted
+        // to value in Bar by getPressureFromProbe() function.
+        obstacleWProbeValue,
+        obstacleNProbeValue,
+        obstacleEProbeValue,
+        obstacleSProbeValue,
 
         // An object that contains references to the above obstacle-property arrays.
         // Left undefined if there are no obstacles.
@@ -360,8 +297,11 @@ define(function (require, exports, module) {
         N_obstacles = 0,
 
         // ####################################################################
+        geneticProperties,
+
+        // ####################################################################
         //                      Misc Properties
-        // Array of arrays containing VdW pairs
+        // Hash of arrays containing VdW pairs
         vdwPairs,
 
         // Number of VdW pairs
@@ -383,6 +323,17 @@ define(function (require, exports, module) {
         // The number of spring forces currently being applied in the model.
         N_springForces = 0,
 
+        // Cell list structure.
+        cellList,
+
+        // Neighbor (Verlet) list structure.
+        neighborList,
+
+        // Information whether neighbor list should be
+        // recalculated in the current integration step.
+        updateNeighborList,
+
+        //
         // The location of the center of mass, in nanometers.
         x_CM, y_CM,
 
@@ -405,18 +356,51 @@ define(function (require, exports, module) {
         // instantaneous system temperature, in Kelvin
         T,
 
-        // The following are the pairwise values for elements i and j, indexed
-        // like [i][j]
-        epsilon = [],
-        sigma = [],
-
         // cutoff for force calculations, as a factor of sigma
-        cutoff = 5.0,
+        cutoff = 2,
         cutoffDistance_LJ_sq = [],
+
+        // cutoff for neighbor list calculations, as a factor of sigma
+        cutoffList = 2.5,
+        cutoffNeighborListSquared = [],
 
         // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
         // potential between elements i and j
         ljCalculator = [],
+
+        // Optimization related variables:
+        // Whether any atoms actually have charges
+        hasChargedAtoms = false,
+
+        // List of atoms with charge.
+        chargedAtomsList = [],
+
+        // List of particles representing cysteine amino acid, which can possibly create disulphide bonds.
+        // So, each cysteine in this list is NOT already connected to other cysteine.
+        freeCysteinesList = [],
+
+        // Initializes basic data structures.
+        initialize = function () {
+          createElementsArray(0);
+          createAtomsArray(0);
+          createAngularBondsArray(0);
+          createRadialBondsArray(0);
+          createRestraintsArray(0);
+          createVdwPairsArray(0);
+          createSpringForcesArray(0);
+          createObstaclesArray(0);
+
+          // Custom pairwise properties.
+          pairwiseLJProperties = new PairwiseLJProperties(engine);
+
+          // Genetic properties (like DNA, mRNA etc.).
+          geneticProperties = new GeneticProperties();
+
+          radialBondMatrix = [];
+          //  Initialize radialBondResults[] array consisting of hashes of radial bond
+          //  index numbers and transposed radial bond properties.
+          radialBondResults = engine.radialBondResults = [];
+        },
 
         // Throws an informative error if a developer tries to use the setCoefficients method of an
         // in-use LJ calculator. (Hint: for an interactive LJ chart, create a new LJ calculator with
@@ -425,25 +409,134 @@ define(function (require, exports, module) {
           throw new Error("md2d: Don't change the epsilon or sigma parameters of the LJ calculator being used by MD2D. Use the setElementProperties method instead.");
         },
 
-        // Initialize epsilon, sigma, cutoffDistance_LJ_sq, and ljCalculator array elements for
-        // element pair i and j
+        // Initialize epsilon, sigma, cutoffDistance_LJ_sq, cutoffNeighborListSquared, and ljCalculator
+        // array elements for element pair i and j
         setPairwiseLJProperties = function(i, j) {
-          var epsilon_i = elementEpsilon[i],
-              epsilon_j = elementEpsilon[j],
-              sigma_i   = elementSigma[i],
-              sigma_j   = elementSigma[j],
+          var epsilon_i   = elementEpsilon[i],
+              epsilon_j   = elementEpsilon[j],
+              sigma_i     = elementSigma[i],
+              sigma_j     = elementSigma[j],
+              customProps = pairwiseLJProperties.get(i, j),
               e,
               s;
 
-          e = epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
-          s = sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
+          if (customProps && customProps.epsilon !== undefined) {
+            e = customProps.epsilon;
+          } else {
+            e = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
+          }
 
+          if (customProps && customProps.sigma !== undefined) {
+            s = customProps.sigma;
+          } else {
+            s = lennardJones.pairwiseSigma(sigma_i, sigma_j);
+          }
+
+          // Cutoff for Lennard-Jones interactions.
           cutoffDistance_LJ_sq[i][j] = cutoffDistance_LJ_sq[j][i] = (cutoff * s) * (cutoff * s);
+          // Cutoff for neighbor lists calculations.
+          cutoffNeighborListSquared[i][j] = cutoffNeighborListSquared[j][i] = (cutoffList * s) * (cutoffList * s);
 
           ljCalculator[i][j] = ljCalculator[j][i] = lennardJones.newLJCalculator({
             epsilon: e,
             sigma:   s
           }, ljCoefficientChangeError);
+        },
+
+        // Calculates maximal cut-off used in the current model. Functions checks all used
+        // elements at the moment. When new atom is added, maximum cut-off distance should
+        // be recalculated.
+        computeMaxCutoff = function() {
+          var maxCutoff = 0,
+              customProps,
+              sigma,
+              i, j;
+
+          for (i = 0; i < N_elements; i++) {
+            for (j = 0; j <= i; j++) {
+              if (elementUsed[i] && elementUsed[j]) {
+                customProps = pairwiseLJProperties.get(i, j);
+                if (customProps && customProps.sigma !== undefined) {
+                  sigma = customProps.sigma;
+                } else {
+                  sigma = lennardJones.pairwiseSigma(elementSigma[i], elementSigma[j]);
+                }
+                // Use cutoffList, as cell lists are used to calculate neighbor lists.
+                if (cutoffList * sigma > maxCutoff) {
+                  maxCutoff = cutoffList * sigma;
+                }
+              }
+            }
+          }
+          // If maxCutoff === 0, return size of the model
+          // as a default cutoff distance for empty model.
+          return maxCutoff || Math.max(size[0], size[1]);
+        },
+
+        // Returns a minimal difference between "real" cutoff
+        // and cutoff used in neighbor list. This can be considered
+        // as a minimal displacement of atom, which triggers neighbor
+        // list recalculation (or maximal allowed displacement to avoid
+        // recalculation).
+        computeNeighborListMaxDisplacement = function() {
+          var maxDisplacement = Infinity,
+              customProps,
+              sigma,
+              i, j;
+
+          for (i = 0; i < N_elements; i++) {
+            for (j = 0; j <= i; j++) {
+              if (elementUsed[i] && elementUsed[j]) {
+                customProps = pairwiseLJProperties.get(i, j);
+                if (customProps && customProps.sigma !== undefined) {
+                  sigma = customProps.sigma;
+                } else {
+                  sigma = lennardJones.pairwiseSigma(elementSigma[i], elementSigma[j]);
+                }
+
+                if ((cutoffList - cutoff) * sigma < maxDisplacement) {
+                  maxDisplacement = (cutoffList - cutoff) * sigma;
+                }
+              }
+            }
+          }
+          return maxDisplacement;
+        },
+
+        // Initializes special structure for short-range forces calculation
+        // optimization. Cell lists support neighbor list.
+        initializeCellList = function () {
+          if (cellList === undefined) {
+            cellList = new CellList(size[0], size[1], computeMaxCutoff());
+          } else {
+            cellList.reinitialize(computeMaxCutoff());
+          }
+        },
+
+        // Initializes special structure for short-range forces calculation
+        // optimization. Neighbor list cooperates with cell list.
+        initializeNeighborList = function () {
+          if (neighborList === undefined) {
+            neighborList = new NeighborList(N, computeNeighborListMaxDisplacement());
+          } else {
+            neighborList.reinitialize(N, computeNeighborListMaxDisplacement());
+          }
+        },
+
+        // Calculates radial bond matrix using existing radial bonds.
+        calculateRadialBondMatrix = function () {
+          var i, atom1, atom2;
+
+          radialBondMatrix = [];
+
+          for (i = 0; i < N_radialBonds; i++) {
+            atom1 = radialBondAtom1Index[i];
+            atom2 = radialBondAtom2Index[i];
+            radialBondMatrix[atom1] = radialBondMatrix[atom1] || [];
+            radialBondMatrix[atom1][atom2] = true;
+            radialBondMatrix[atom2] = radialBondMatrix[atom2] || [];
+            radialBondMatrix[atom2][atom1] = true;
+          }
         },
 
         /**
@@ -456,13 +549,15 @@ define(function (require, exports, module) {
           if (Array.isArray(arrayContainer)) {
             // Array of arrays.
             for (i = 0, len = arrayContainer.length; i < len; i++) {
-              arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+              if (arrays.isArray(arrayContainer[i]))
+                arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
             }
           } else {
             // Object with arrays defined as properties.
             for (i in arrayContainer) {
               if(arrayContainer.hasOwnProperty(i)) {
-                arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+                if (arrays.isArray(arrayContainer[i]))
+                  arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
               }
             }
           }
@@ -474,21 +569,23 @@ define(function (require, exports, module) {
         assignShortcutReferences = {
 
           atoms: function() {
-            radius   = atoms.radius;
-            px       = atoms.px;
-            py       = atoms.py;
-            x        = atoms.x;
-            y        = atoms.y;
-            vx       = atoms.vx;
-            vy       = atoms.vy;
-            speed    = atoms.speed;
-            ax       = atoms.ax;
-            ay       = atoms.ay;
-            charge   = atoms.charge;
-            friction = atoms.friction;
-            element  = atoms.element;
-            pinned   = atoms.pinned;
-            mass     = atoms.mass;
+            radius         = atoms.radius;
+            px             = atoms.px;
+            py             = atoms.py;
+            x              = atoms.x;
+            y              = atoms.y;
+            vx             = atoms.vx;
+            vy             = atoms.vy;
+            speed          = atoms.speed;
+            ax             = atoms.ax;
+            ay             = atoms.ay;
+            charge         = atoms.charge;
+            friction       = atoms.friction;
+            element        = atoms.element;
+            pinned         = atoms.pinned;
+            mass           = atoms.mass;
+            hydrophobicity = atoms.hydrophobicity;
+            visited        = atoms.visited;
           },
 
           radialBonds: function() {
@@ -496,7 +593,14 @@ define(function (require, exports, module) {
             radialBondAtom2Index  = radialBonds.atom2;
             radialBondLength      = radialBonds.length;
             radialBondStrength    = radialBonds.strength;
-            radialBondStyle       = radialBonds.style;
+            radialBondType        = radialBonds.type;
+          },
+
+          restraints: function() {
+            restraintAtomIndex  = restraints.atomIndex;
+            restraintK          = restraints.k;
+            restraintX0         = restraints.x0;
+            restraintY0         = restraints.y0;
           },
 
           angularBonds: function() {
@@ -515,22 +619,30 @@ define(function (require, exports, module) {
           },
 
           obstacles: function() {
-            obstacleX        = obstacles.x;
-            obstacleY        = obstacles.y;
-            obstacleWidth    = obstacles.width;
-            obstacleHeight   = obstacles.height;
-            obstacleMass     = obstacles.mass;
-            obstacleVX       = obstacles.vx;
-            obstacleVY       = obstacles.vy;
-            obstacleExtFX    = obstacles.externalFx;
-            obstacleExtFY    = obstacles.externalFy;
-            obstacleFriction = obstacles.friction;
-            obstacleXPrev    = obstacles.xPrev;
-            obstacleYPrev    = obstacles.yPrev;
-            obstacleColorR   = obstacles.colorR;
-            obstacleColorG   = obstacles.colorG;
-            obstacleColorB   = obstacles.colorB;
-            obstacleVisible  = obstacles.visible;
+            obstacleX           = obstacles.x;
+            obstacleY           = obstacles.y;
+            obstacleWidth       = obstacles.width;
+            obstacleHeight      = obstacles.height;
+            obstacleMass        = obstacles.mass;
+            obstacleVX          = obstacles.vx;
+            obstacleVY          = obstacles.vy;
+            obstacleExtFX       = obstacles.externalFx;
+            obstacleExtFY       = obstacles.externalFy;
+            obstacleFriction    = obstacles.friction;
+            obstacleWestProbe   = obstacles.westProbe;
+            obstacleNorthProbe  = obstacles.northProbe;
+            obstacleEastProbe   = obstacles.eastProbe;
+            obstacleSouthProbe  = obstacles.southProbe;
+            obstacleWProbeValue = obstacles.westProbeValue;
+            obstacleNProbeValue = obstacles.northProbeValue;
+            obstacleEProbeValue = obstacles.eastProbeValue;
+            obstacleSProbeValue = obstacles.southProbeValue;
+            obstacleXPrev       = obstacles.xPrev;
+            obstacleYPrev       = obstacles.yPrev;
+            obstacleColorR      = obstacles.colorR;
+            obstacleColorG      = obstacles.colorG;
+            obstacleColorB      = obstacles.colorB;
+            obstacleVisible     = obstacles.visible;
           },
 
           springForces: function() {
@@ -538,6 +650,11 @@ define(function (require, exports, module) {
             springForceX         = springForces[1];
             springForceY         = springForces[2];
             springForceStrength  = springForces[3];
+          },
+
+          vdwPairs: function () {
+            vdwPairAtom1Index = vdwPairs.atom1;
+            vdwPairAtom2Index = vdwPairs.atom2;
           }
 
         },
@@ -545,55 +662,96 @@ define(function (require, exports, module) {
         createElementsArray = function(num) {
           elements = engine.elements = {};
 
-          elements.mass    = arrays.create(num, 0, float32);
-          elements.epsilon = arrays.create(num, 0, float32);
-          elements.sigma   = arrays.create(num, 0, float32);
-          elements.radius  = arrays.create(num, 0, float32);
+          elements.mass    = arrays.create(num, 0, arrayTypes.float);
+          elements.epsilon = arrays.create(num, 0, arrayTypes.float);
+          elements.sigma   = arrays.create(num, 0, arrayTypes.float);
+          elements.radius  = arrays.create(num, 0, arrayTypes.float);
 
           assignShortcutReferences.elements();
         },
 
-        createRadialBondsArray = function(num) {
-          var i;
+        createAtomsArray = function(num) {
+          atoms  = engine.atoms  = {};
 
+          // TODO. DRY this up by letting the property list say what type each array is
+          atoms.radius         = arrays.create(num, 0, arrayTypes.float);
+          atoms.px             = arrays.create(num, 0, arrayTypes.float);
+          atoms.py             = arrays.create(num, 0, arrayTypes.float);
+          atoms.x              = arrays.create(num, 0, arrayTypes.float);
+          atoms.y              = arrays.create(num, 0, arrayTypes.float);
+          atoms.vx             = arrays.create(num, 0, arrayTypes.float);
+          atoms.vy             = arrays.create(num, 0, arrayTypes.float);
+          atoms.speed          = arrays.create(num, 0, arrayTypes.float);
+          atoms.ax             = arrays.create(num, 0, arrayTypes.float);
+          atoms.ay             = arrays.create(num, 0, arrayTypes.float);
+          atoms.charge         = arrays.create(num, 0, arrayTypes.float);
+          atoms.friction       = arrays.create(num, 0, arrayTypes.float);
+          atoms.element        = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.pinned         = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.mass           = arrays.create(num, 0, arrayTypes.float);
+          atoms.hydrophobicity = arrays.create(num, 0, arrayTypes.int8);
+          atoms.visited        = arrays.create(num, 0, arrayTypes.uint8);
+          // For the sake of clarity, manage all atoms properties in one
+          // place (engine). In the future, think about separation of engine
+          // properties and view-oriented properties like these:
+          atoms.marked         = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.visible        = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.draggable      = arrays.create(num, 0, arrayTypes.uint8);
+
+          assignShortcutReferences.atoms();
+        },
+
+        createRadialBondsArray = function(num) {
           radialBonds = engine.radialBonds = {};
 
-          radialBonds.atom1    = arrays.create(num, 0, uint16);
-          radialBonds.atom2    = arrays.create(num, 0, uint16);
-          radialBonds.length   = arrays.create(num, 0, float32);
-          radialBonds.strength = arrays.create(num, 0, float32);
-          radialBonds.style    = arrays.create(num, 0, uint8);
+          radialBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16);
+          radialBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16);
+          radialBonds.length   = arrays.create(num, 0, arrayTypes.float);
+          radialBonds.strength = arrays.create(num, 0, arrayTypes.float);
+          radialBonds.type     = arrays.create(num, 0, arrayTypes.uint8);
 
           assignShortcutReferences.radialBonds();
+        },
 
-          //  Initialize radialBondResults[] array consisting of hashes of radial bond
-          //  index numbers and transposed radial bond properties.
-          radialBondResults = engine.radialBondResults = [];
-          for (i = 0; i < num; i++) {
-            radialBondResults[i] = {};
-            radialBondResults[i].idx = i;
-          }
+        createRestraintsArray = function(num) {
+          restraints = engine.restraints = {};
+
+          restraints.atomIndex = arrays.create(num, 0, arrayTypes.uint16);
+          restraints.k         = arrays.create(num, 0, arrayTypes.float);
+          restraints.x0        = arrays.create(num, 0, arrayTypes.float);
+          restraints.y0        = arrays.create(num, 0, arrayTypes.float);
+
+          assignShortcutReferences.restraints();
         },
 
         createAngularBondsArray = function(num) {
           angularBonds = engine.angularBonds = {};
 
-          angularBonds.atom1    = arrays.create(num, 0, uint16);
-          angularBonds.atom2    = arrays.create(num, 0, uint16);
-          angularBonds.atom3    = arrays.create(num, 0, uint16);
-          angularBonds.angle    = arrays.create(num, 0, float32);
-          angularBonds.strength = arrays.create(num, 0, float32);
+          angularBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16);
+          angularBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16);
+          angularBonds.atom3    = arrays.create(num, 0, arrayTypes.uint16);
+          angularBonds.angle    = arrays.create(num, 0, arrayTypes.float);
+          angularBonds.strength = arrays.create(num, 0, arrayTypes.float);
 
           assignShortcutReferences.angularBonds();
+        },
+
+        createVdwPairsArray = function(num) {
+          vdwPairs = engine.vdwPairs = {};
+
+          vdwPairs.count = 0;
+          vdwPairs.atom1 = arrays.create(num, 0, arrayTypes.uint16);
+          vdwPairs.atom2 = arrays.create(num, 0, arrayTypes.uint16);
         },
 
         createSpringForcesArray = function(num) {
           springForces = engine.springForces = [];
 
-          springForces[0] = arrays.create(num, 0, uint16);
-          springForces[1] = arrays.create(num, 0, float32);
-          springForces[2] = arrays.create(num, 0, float32);
-          springForces[3] = arrays.create(num, 0, float32);
+          // TODO: not very descriptive. Use hash of arrays like elsewhere.
+          springForces[0] = arrays.create(num, 0, arrayTypes.uint16);
+          springForces[1] = arrays.create(num, 0, arrayTypes.float);
+          springForces[2] = arrays.create(num, 0, arrayTypes.float);
+          springForces[3] = arrays.create(num, 0, arrayTypes.float);
 
           assignShortcutReferences.springForces();
         },
@@ -601,28 +759,36 @@ define(function (require, exports, module) {
         createObstaclesArray = function(num) {
           obstacles = engine.obstacles = {};
 
-          obstacles.x          = arrays.create(num, 0, float32);
-          obstacles.y          = arrays.create(num, 0, float32);
-          obstacles.width      = arrays.create(num, 0, float32);
-          obstacles.height     = arrays.create(num, 0, float32);
-          obstacles.mass       = arrays.create(num, 0, float32);
-          obstacles.vx         = arrays.create(num, 0, float32);
-          obstacles.vy         = arrays.create(num, 0, float32);
-          obstacles.externalFx = arrays.create(num, 0, float32);
-          obstacles.externalFy = arrays.create(num, 0, float32);
-          obstacles.friction   = arrays.create(num, 0, float32);
-          obstacles.xPrev      = arrays.create(num, 0, float32);
-          obstacles.yPrev      = arrays.create(num, 0, float32);
-          obstacles.colorR     = arrays.create(num, 0, float32);
-          obstacles.colorG     = arrays.create(num, 0, float32);
-          obstacles.colorB     = arrays.create(num, 0, float32);
-          obstacles.visible    = arrays.create(num, 0, uint8);
+          obstacles.x           = arrays.create(num, 0, arrayTypes.float);
+          obstacles.y           = arrays.create(num, 0, arrayTypes.float);
+          obstacles.width       = arrays.create(num, 0, arrayTypes.float);
+          obstacles.height      = arrays.create(num, 0, arrayTypes.float);
+          obstacles.mass        = arrays.create(num, 0, arrayTypes.float);
+          obstacles.vx          = arrays.create(num, 0, arrayTypes.float);
+          obstacles.vy          = arrays.create(num, 0, arrayTypes.float);
+          obstacles.externalFx  = arrays.create(num, 0, arrayTypes.float);
+          obstacles.externalFy  = arrays.create(num, 0, arrayTypes.float);
+          obstacles.friction    = arrays.create(num, 0, arrayTypes.float);
+          obstacles.westProbe   = arrays.create(num, 0, arrayTypes.uint8);
+          obstacles.northProbe  = arrays.create(num, 0, arrayTypes.uint8);
+          obstacles.eastProbe   = arrays.create(num, 0, arrayTypes.uint8);
+          obstacles.southProbe  = arrays.create(num, 0, arrayTypes.uint8);
+          obstacles.westProbeValue = arrays.create(num, 0, arrayTypes.float);
+          obstacles.northProbeValue = arrays.create(num, 0, arrayTypes.float);
+          obstacles.eastProbeValue = arrays.create(num, 0, arrayTypes.float);
+          obstacles.southProbeValue = arrays.create(num, 0, arrayTypes.float);
+          obstacles.xPrev       = arrays.create(num, 0, arrayTypes.float);
+          obstacles.yPrev       = arrays.create(num, 0, arrayTypes.float);
+          obstacles.colorR      = arrays.create(num, 0, arrayTypes.float);
+          obstacles.colorG      = arrays.create(num, 0, arrayTypes.float);
+          obstacles.colorB      = arrays.create(num, 0, arrayTypes.float);
+          obstacles.visible     = arrays.create(num, 0, arrayTypes.uint8);
 
           assignShortcutReferences.obstacles();
         },
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
-        T_windowed,
+        getTWindowed,
 
         // Dynamically determine an appropriate window size for use when measuring a windowed average of the temperature.
         getWindowSize = function() {
@@ -634,7 +800,7 @@ define(function (require, exports, module) {
         // the temperature comes within `tempTolerance` of `T_target`.
         beginTransientTemperatureChange = function()  {
           temperatureChangeInProgress = true;
-          T_windowed = math.getWindowedAverager( getWindowSize() );
+          getTWindowed = math.getWindowedAverager( getWindowSize() );
         },
 
         // Calculates & returns instantaneous temperature of the system.
@@ -654,24 +820,7 @@ define(function (require, exports, module) {
             }
           }
 
-          return KE_to_T( twoKE/2, N );
-        },
-
-        // Scales the velocity vector of particle i by `factor`.
-        scaleParticleVelocity = function(i, factor) {
-          vx[i] *= factor;
-          vy[i] *= factor;
-
-          // scale momentum too
-          px[i] *= factor;
-          py[i] *= factor;
-        },
-
-        // Scales the velocity vector of obstacle i by `factor`.
-        scaleObstacleVelocity = function(i, factor) {
-          obstacleVX[i] *= factor;
-          obstacleVY[i] *= factor;
-          // Obstacles don't store momentum, nothing else to update.
+          return convertKEtoT(twoKE / 2, N);
         },
 
         // Adds the velocity vector (vx_t, vy_t) to the velocity vector of particle i
@@ -718,6 +867,7 @@ define(function (require, exports, module) {
               y_sum = 0,
               px_sum = 0,
               py_sum = 0,
+              totalMass = engine.getTotalMass(),
               i;
 
           for (i = 0; i < N; i++) {
@@ -762,42 +912,53 @@ define(function (require, exports, module) {
           computeSystemRotation();
         },
 
-        // Calculate x(t+dt, i) from v(t) and a(t)
-        updatePosition = function(i) {
-          x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
-          y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
-        },
+        // ####################################################################
+        // #              Functions handling different collisions.            #
+        // ####################################################################
 
-        updateObstaclePosition = function(i) {
-          var ax, ay, drag,
-              vx = obstacleVX[i],
-              vy = obstacleVY[i],
-              // External forces are defined per mass unit!
-              // So, they are accelerations in fact.
-              extFx = obstacleExtFX[i],
-              extFy = obstacleExtFY[i];
+        // Constrain obstacle i to the area between the walls by simulating perfectly elastic collisions with the walls.
+        bounceObstacleOffWalls = function(i) {
+          var leftwall   = 0,
+              bottomwall = 0,
+              width  = size[0],
+              height = size[1],
+              rightwall = width - obstacleWidth[i],
+              topwall   = height - obstacleHeight[i];
 
-          if (vx || vy || extFx || extFy) {
-            drag = viscosity * obstacleFriction[i];
-            ax = extFx - drag * vx;
-            ay = extFy - drag * vy;
+          // Bounce off vertical walls.
+          if (obstacleX[i] < leftwall) {
+            while (obstacleX[i] < leftwall - width) {
+              obstacleX[i] += width;
+            }
+            obstacleX[i]  = leftwall + (leftwall - obstacleX[i]);
+            obstacleVX[i] *= -1;
+          } else if (obstacleX[i] > rightwall) {
+            while (obstacleX[i] > rightwall + width) {
+              obstacleX[i] -= width;
+            }
+            obstacleX[i]  = rightwall - (obstacleX[i] - rightwall);
+            obstacleVX[i] *= -1;
+          }
 
-            obstacleXPrev[i] = obstacleX[i];
-            obstacleYPrev[i] = obstacleY[i];
-
-            // Update positions.
-            obstacleX[i] += vx * dt + 0.5 * ax * dt_sq;
-            obstacleY[i] += vy * dt + 0.5 * ay * dt_sq;
-
-            // Update velocities.
-            obstacleVX[i] += ax * dt;
-            obstacleVY[i] += ay * dt;
+          // Bounce off horizontal walls.
+          if (obstacleY[i] < bottomwall) {
+            while (obstacleY[i] < bottomwall - height) {
+              obstacleY[i] += height;
+            }
+            obstacleY[i]  = bottomwall + (bottomwall - obstacleY[i]);
+            obstacleVY[i] *= -1;
+          } else if (obstacleY[i] > topwall) {
+            while (obstacleY[i] > topwall + width) {
+              obstacleY[i] -= width;
+            }
+            obstacleY[i]  = topwall - (obstacleY[i] - topwall);
+            obstacleVY[i] *= -1;
           }
         },
 
         // Constrain particle i to the area between the walls by simulating perfectly elastic collisions with the walls.
         // Note this may change the linear and angular momentum.
-        bounceOffWalls = function(i) {
+        bounceParticleOffWalls = function(i) {
           var r = radius[i],
               leftwall = r,
               bottomwall = r,
@@ -832,8 +993,8 @@ define(function (require, exports, module) {
             vy[i] *= -1;
             py[i] *= -1;
           } else if (y[i] > topwall) {
-            while (y[i] > topwall + width) {
-              y[i] -= width;
+            while (y[i] > topwall + height) {
+              y[i] -= height;
             }
             y[i]  = topwall - (y[i] - topwall);
             vy[i] *= -1;
@@ -841,7 +1002,7 @@ define(function (require, exports, module) {
           }
         },
 
-        bounceOffObstacles = function(i, x_prev, y_prev) {
+        bounceParticleOffObstacles = function(i, x_prev, y_prev, updatePressure) {
           // fast path if no obstacles
           if (N_obstacles < 1) return;
 
@@ -866,7 +1027,7 @@ define(function (require, exports, module) {
               atom_mass,
               obs_mass,
               totalMass,
-              bounceDirection = 0; // if we bounce horz: 1, vert: -1
+              bounceDirection;
 
           r = radius[i];
           xi = x[i];
@@ -884,31 +1045,33 @@ define(function (require, exports, module) {
             y_top_prev = obstacleYPrev[j] + obstacleHeight[j] + r;
             y_bottom_prev = obstacleYPrev[j] - r;
 
-
+            // Reset bounceDirection, which indicates collision type.
+            bounceDirection = 0;
+            // Check all possibilities for a collision with the rectangular obstacle.
             if (xi > x_left && xi < x_right && yi > y_bottom && yi < y_top) {
               if (x_prev <= x_left_prev) {
                 x[i] = x_left - (xi - x_left);
-                bounceDirection = 1;
+                bounceDirection = 1; // West wall collision.
               } else if (x_prev >= x_right_prev) {
                 x[i] = x_right + (x_right - xi);
-                bounceDirection = 1;
-              } else if (y_prev <= y_top_prev) {
+                bounceDirection = 2; // East wall collision.
+              } else if (y_prev <= y_bottom_prev) {
                 y[i] = y_bottom - (yi - y_bottom);
-                bounceDirection = -1;
-              } else if (y_prev >= y_bottom_prev) {
+                bounceDirection = -1; // South wall collision.
+              } else if (y_prev >= y_top_prev) {
                 y[i] = y_top  + (y_top - yi);
-                bounceDirection = -1;
+                bounceDirection = -2; // North wall collision.
               }
             }
 
             obs_mass = obstacleMass[j];
 
-            if (bounceDirection) {
+            if (bounceDirection !== 0) {
               if (obs_mass !== Infinity) {
                 // if we have real mass, perform a perfectly-elastic collision
                 atom_mass = mass[i];
                 totalMass = obs_mass + atom_mass;
-                if (bounceDirection === 1) {
+                if (bounceDirection > 0) {
                   vxPrev = vx[i];
                   obs_vxPrev = obstacleVX[j];
 
@@ -923,79 +1086,156 @@ define(function (require, exports, module) {
                 }
               } else {
                 // if we have infinite mass, just reflect (like a wall)
-                if (bounceDirection === 1) {
+                if (bounceDirection > 0) {
                   vx[i] *= -1;
                 } else {
                   vy[i] *= -1;
+                }
+              }
+
+              if (updatePressure) {
+                // Update pressure probes if there are any.
+                if (obstacleWestProbe[j] && bounceDirection === 1) {
+                  // 1 is west wall collision.
+                  obstacleWProbeValue[j] += mass[i] * ((vxPrev ? vxPrev : -vx[i]) - vx[i]);
+                } else if (obstacleEastProbe[j] && bounceDirection === 2) {
+                  // 2 is west east collision.
+                  obstacleEProbeValue[j] += mass[i] * (vx[i] - (vxPrev ? vxPrev : -vx[i]));
+                } else if (obstacleSouthProbe[j] && bounceDirection === -1) {
+                  // -1 is south wall collision.
+                  obstacleSProbeValue[j] += mass[i] * ((vyPrev ? vyPrev : -vy[i]) - vy[i]);
+                } else if (obstacleNorthProbe[j] && bounceDirection === -2) {
+                  // -2 is north wall collision.
+                  obstacleNProbeValue[j] += mass[i] * (vy[i] - (vyPrev ? vyPrev : -vy[i]));
+                }
+              }
+
+            }
+          }
+        },
+
+        // ####################################################################
+        // #         Functions calculating forces and accelerations.          #
+        // ####################################################################
+
+        // Calculate distance and force (if distance < cut-off distance).
+        calculateLJInteraction = function(i, j) {
+          // Fast path.
+          if (radialBondMatrix && radialBondMatrix[i] && radialBondMatrix[i][j]) return;
+
+          var elI = element[i],
+              elJ = element[j],
+              dx  = x[j] - x[i],
+              dy  = y[j] - y[i],
+              rSq = dx * dx + dy * dy,
+              fOverR, fx, fy;
+
+          if (updateNeighborList && rSq < cutoffNeighborListSquared[elI][elJ]) {
+            neighborList.markNeighbors(i, j);
+          }
+
+          if (rSq < cutoffDistance_LJ_sq[elI][elJ]) {
+            fOverR = ljCalculator[elI][elJ].forceOverDistanceFromSquaredDistance(rSq);
+            fx = fOverR * dx;
+            fy = fOverR * dy;
+            ax[i] += fx;
+            ay[i] += fy;
+            ax[j] -= fx;
+            ay[j] -= fy;
+          }
+        },
+
+        updateShortRangeForces = function () {
+          // Fast path if Lennard Jones interaction is disabled.
+          if (!useLennardJonesInteraction) return;
+
+          if (updateNeighborList) {
+            console.time('cell lists');
+            shortRangeForcesCellList();
+            console.timeEnd('cell lists');
+          } else {
+            console.time('neighbor list');
+            shortRangeForcesNeighborList();
+            console.timeEnd('neighbor list');
+          }
+        },
+
+        shortRangeForcesCellList = function () {
+          var rows = cellList.getRowsNum(),
+              cols = cellList.getColsNum(),
+              i, j, temp, cellIdx, cell1, cell2,
+              a, b, atom1Idx, cell1Len, cell2Len,
+              n, nLen, cellNeighbors;
+
+          for (i = 0; i < rows; i++) {
+            temp = i * cols;
+            for (j = 0; j < cols; j++) {
+              cellIdx = temp + j;
+
+              cell1 = cellList.getCell(cellIdx);
+              cellNeighbors = cellList.getNeighboringCells(i, j);
+
+              for (a = 0, cell1Len = cell1.length; a < cell1Len; a++) {
+                atom1Idx = cell1[a];
+
+                // Interactions inside the cell.
+                for (b = 0; b < a; b++) {
+                  calculateLJInteraction(atom1Idx, cell1[b]);
+                }
+                // Interactions between neighboring cells.
+                for (n = 0, nLen = cellNeighbors.length; n < nLen; n++) {
+                  cell2 = cellNeighbors[n];
+                  for (b = 0, cell2Len = cell2.length; b < cell2Len; b++) {
+                    calculateLJInteraction(atom1Idx, cell2[b]);
+                  }
                 }
               }
             }
           }
         },
 
+        shortRangeForcesNeighborList = function () {
+          var nlist = neighborList.getList(),
+              atom1Idx, atom2Idx, i, len;
 
-        // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
-        // call once when a = a(t) and once when a = a(t+dt)
-        halfUpdateVelocity = function(i) {
-          var m = mass[i];
-          vx[i] += 0.5*ax[i]*dt;
-          px[i] = m * vx[i];
-          vy[i] += 0.5*ay[i]*dt;
-          py[i] = m * vy[i];
-        },
-
-        // Removes velocity and acceleration from atom i
-        pinAtom = function(i) {
-          vx[i] = vy[i] = ax[i] = ay[i] = 0;
-        },
-
-        // Accumulate forces into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between
-        // particles i and j where j < i. Note that data from the previous time step should be cleared
-        // from arrays ax and ay before calling this function.
-        updatePairwiseForces = function(i) {
-          var j, dx, dy, r_sq, f_over_r, fx, fy,
-              el_i = element[i],
-              el_j,
-              q_i = charge[i],
-              bondingPartners = radialBondMatrix && radialBondMatrix[i];
-
-          for (j = 0; j < i; j++) {
-            if (bondingPartners && bondingPartners[j]) continue;
-
-            el_j = element[j];
-
-            dx = x[j] - x[i];
-            dy = y[j] - y[i];
-            r_sq = dx*dx + dy*dy;
-
-            f_over_r = 0;
-
-            if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
-              f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq);
-            }
-
-            if (useCoulombInteraction && hasChargedAtoms) {
-              f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
-            }
-
-            if (f_over_r) {
-              fx = f_over_r * dx;
-              fy = f_over_r * dy;
-              ax[i] += fx;
-              ay[i] += fy;
-              ax[j] -= fx;
-              ay[j] -= fy;
+          for (atom1Idx = 0; atom1Idx < N; atom1Idx++) {
+            for (i = neighborList.getStartIdxFor(atom1Idx), len = neighborList.getEndIdxFor(atom1Idx); i < len; i++) {
+              atom2Idx = nlist[i];
+              calculateLJInteraction(atom1Idx, atom2Idx);
             }
           }
         },
 
-        updateGravitationalAccelerations = function() {
-          // fast path if there is no gravitationalField
-          if (!gravitationalField) return;
-          var i;
+        updateLongRangeForces = function() {
+          // Fast path if Coulomb interaction is disabled or there are no charged atoms.
+          if (!useCoulombInteraction || !hasChargedAtoms) return;
 
-          for (i = 0; i < N; i++) {
-            ay[i] -= gravitationalField;
+          var i, j, len, dx, dy, rSq, fOverR, fx, fy,
+              charge1, atom1Idx, atom2Idx,
+              bondingPartners;
+
+          for (i = 0, len = chargedAtomsList.length; i < len; i++) {
+            atom1Idx = chargedAtomsList[i];
+            charge1 = charge[atom1Idx];
+            bondingPartners = radialBondMatrix && radialBondMatrix[atom1Idx];
+            for (j = 0; j < i; j++) {
+              atom2Idx = chargedAtomsList[j];
+              if (bondingPartners && bondingPartners[atom2Idx]) continue;
+
+              dx = x[atom2Idx] - x[atom1Idx];
+              dy = y[atom2Idx] - y[atom1Idx];
+              rSq = dx*dx + dy*dy;
+
+              fOverR = coulomb.forceOverDistanceFromSquaredDistance(rSq, charge1, charge[atom2Idx],
+                dielectricConst, realisticDielectricEffect);
+
+              fx = fOverR * dx;
+              fy = fOverR * dy;
+              ax[atom1Idx] += fx;
+              ay[atom1Idx] += fy;
+              ax[atom2Idx] -= fx;
+              ay[atom2Idx] -= fy;
+            }
           }
         },
 
@@ -1017,28 +1257,18 @@ define(function (require, exports, module) {
           // fast path if no radial bonds have been defined
           if (N_radialBonds < 1) return;
 
-          var i,
-              len,
-              i1,
-              i2,
-              dx,
-              dy,
-              r_sq,
-              r,
-              k,
-              r0,
-              f_over_r,
-              fx,
-              fy;
+          var i, i1, i2, dx, dy,
+              rSq, r, k, r0,
+              fOverR, fx, fy;
 
-          for (i = 0, len = radialBondAtom1Index.length; i < len; i++) {
+          for (i = 0; i < N_radialBonds; i++) {
             i1 = radialBondAtom1Index[i];
             i2 = radialBondAtom2Index[i];
 
             dx = x[i2] - x[i1];
             dy = y[i2] - y[i1];
-            r_sq = dx*dx + dy*dy;
-            r = Math.sqrt(r_sq);
+            rSq = dx*dx + dy*dy;
+            r = Math.sqrt(rSq);
 
             // eV/nm^2
             k = radialBondStrength[i];
@@ -1047,10 +1277,10 @@ define(function (require, exports, module) {
             r0 = radialBondLength[i];
 
             // "natural" Next Gen MW force units / nm
-            f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+            fOverR = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
 
-            fx = f_over_r * dx;
-            fy = f_over_r * dy;
+            fx = fOverR * dx;
+            fy = fOverR * dy;
 
             ax[i1] += fx;
             ay[i1] += fy;
@@ -1063,14 +1293,13 @@ define(function (require, exports, module) {
           // Fast path if no angular bonds have been defined.
           if (N_angularBonds < 1) return;
 
-          var i, len,
-              i1, i2, i3,
+          var i, i1, i2, i3,
               dxij, dyij, dxkj, dykj, rijSquared, rkjSquared, rij, rkj,
               k, angle, theta, cosTheta, sinTheta,
               forceInXForI, forceInYForI, forceInXForK, forceInYForK,
               commonPrefactor, temp;
 
-          for (i = 0, len = angularBonds.atom1.length; i < len; i++) {
+          for (i = 0; i < N_angularBonds; i++) {
             i1 = angularBondAtom1Index[i];
             i2 = angularBondAtom2Index[i];
             i3 = angularBondAtom3Index[i];
@@ -1127,6 +1356,43 @@ define(function (require, exports, module) {
           }
         },
 
+        // FIXME: eliminate duplication with springForces
+        updateRestraintForces = function() {
+          // fast path if no restraints have been defined
+          if (N_restraints < 1) return;
+
+          var i,
+              dx, dy,
+              r, r_sq,
+              k,
+              f_over_r,
+              fx, fy,
+              a;
+
+          for (i = 0; i < N_restraints; i++) {
+            a = restraintAtomIndex[i];
+
+            dx = restraintX0[i] - x[a];
+            dy = restraintY0[i] - y[a];
+
+            if (dx === 0 && dy === 0) continue;   // force will be zero
+
+            r_sq = dx*dx + dy*dy;
+            r = Math.sqrt(r_sq);
+
+            // eV/nm^2
+            k = restraintK[i];
+
+            f_over_r = constants.convert(k*r, { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+            fx = f_over_r * dx;
+            fy = f_over_r * dy;
+
+            ax[a] += fx;
+            ay[a] += fy;
+          }
+        },
+
         updateSpringForces = function() {
           if (N_springForces < 1) return;
 
@@ -1162,34 +1428,477 @@ define(function (require, exports, module) {
           }
         },
 
+        // Returns center of mass of given atoms set (molecule).
+        getMoleculeCenterOfMass = function (molecule) {
+          var xcm = 0,
+              ycm = 0,
+              totalMass = 0,
+              atomIdx, atomMass, i, len;
+
+          for (i = 0, len = molecule.length; i < len; i++) {
+            atomIdx = molecule[i];
+            atomMass = mass[atomIdx];
+            xcm += x[atomIdx] * atomMass;
+            ycm += y[atomIdx] * atomMass;
+            totalMass += atomMass;
+          }
+          xcm /= totalMass;
+          ycm /= totalMass;
+          return {x: xcm, y: ycm};
+        },
+
+        updateAminoAcidForces = function () {
+          // Fast path if there is no solvent defined or it doesn't have impact on AAs.
+          if (solventForceType === 0 || solventForceFactor === 0) return;
+
+          var moleculeAtoms, atomIdx, cm, solventFactor,
+              dx, dy, r, fx, fy, temp, i, j, len;
+
+          // Reset helper array.
+          for (i = 0; i < N; i++) {
+            visited[i] = 0;
+          }
+
+          // Set multiplier of force produced by the solvent.
+          // Constants used in Classic MW: 5 * 0.00001 = 0.00005.
+          // Multiply it by 0.01 * 120 = 1.2 to convert from
+          // 0.1A * 120amu / fs^2 to nm * amu / fs^2.
+          // solventForceType is the same like in Classic MW (unitless).
+          // solventForceFactor is a new variable used only in Next Gen MW.
+          solventFactor = 0.00006 * solventForceType * solventForceFactor;
+
+          for (i = 0; i < N; i++) {
+            // Calculate forces only *once* for amino acid.
+            if (visited[i] === 1) continue;
+
+            moleculeAtoms = engine.getMoleculeAtoms(i);
+            moleculeAtoms.push(i);
+
+            cm = getMoleculeCenterOfMass(moleculeAtoms);
+
+            for (j = 0, len = moleculeAtoms.length; j < len; j++) {
+              atomIdx = moleculeAtoms[j];
+              // Mark that atom was part of processed molecule to avoid
+              // calculating its molecule again.
+              visited[atomIdx] = 1;
+
+              if (hydrophobicity[atomIdx] !== 0) {
+                dx = x[atomIdx] - cm.x;
+                dy = y[atomIdx] - cm.y;
+                r = Math.sqrt(dx * dx + dy * dy);
+
+                temp = hydrophobicity[atomIdx] * solventFactor;
+
+                // AAs being pulled into the center of mass should feel an additional force factor that depends
+                // on distance from the center of mass, ranging between 1 and 25, with 1 being furthest away from the CoM
+                // and 25 being the max when at the CoM or within a certain radius of the CoM. In some ways this
+                // is closer to nature as the core of a protein is less exposed to solvent and thus even more stable.
+                if (temp > 0 && r < additionalSolventForceThreshold) {
+                  // Force towards the center of mass, distance from the CoM less than a given threshold.
+                  // Multiply force by an additional factor defined by the linear function of 'r' defined by two points:
+                  // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
+                  temp *= (1 - additionalSolventForceMult) * r / additionalSolventForceThreshold + additionalSolventForceMult;
+                }
+
+                fx = temp * dx / r;
+                fy = temp * dy / r;
+                ax[atomIdx] -= fx;
+                ay[atomIdx] -= fy;
+              }
+            }
+          }
+        },
+
+        updateGravitationalAccelerations = function() {
+          // fast path if there is no gravitationalField
+          if (!gravitationalField) return;
+          var i;
+
+          for (i = 0; i < N; i++) {
+            ay[i] -= gravitationalField;
+          }
+        },
+
+        // ####################################################################
+        // #               Integration main helper functions.                 #
+        // ####################################################################
+
+        // For now, calculate only structures used by proteins engine.
+        // TODO: move there calculation of various optimization structures like chargedAtomLists.
+        calculateOptimizationStructures = function () {
+          var cysteineEl = aminoacidsHelper.cysteineElement,
+              idx, i;
+
+          // Reset optimization data structure.
+          freeCysteinesList.length = 0;
+
+          for (i = 0; i < N; i++) {
+            if (element[i] === cysteineEl) {
+              // At the beginning, assume that each cysteine is "free" (ready to create disulfide bond).
+              freeCysteinesList.push(i);
+            }
+          }
+
+          for (i = 0; i < N_radialBonds; i++) {
+            if (element[radialBondAtom1Index[i]] === cysteineEl && element[radialBondAtom2Index[i]] === cysteineEl) {
+              // Two cysteines are already bonded, so remove them from freeCysteinsList.
+              idx = freeCysteinesList.indexOf(radialBondAtom1Index[i]);
+              if (idx !== -1) arrays.remove(freeCysteinesList, idx);
+              idx = freeCysteinesList.indexOf(radialBondAtom2Index[i]);
+              if (idx !== -1) arrays.remove(freeCysteinesList, idx);
+            }
+          }
+        },
+
+        // Accumulate acceleration into a(t + dt) from all possible interactions, fields
+        // and forces connected with atoms.
+        updateParticlesAccelerations = function () {
+          var i, inverseMass;
+
+          if (N === 0) return;
+
+          // Zero out a(t) for accumulation of forces into a(t + dt).
+          for (i = 0; i < N; i++) {
+            ax[i] = ay[i] = 0;
+          }
+
+          // Check if the neighbor list should be recalculated.
+          updateNeighborList = neighborList.shouldUpdate(x, y);
+
+          if (updateNeighborList) {
+            // Clear both lists.
+            cellList.clear();
+            neighborList.clear();
+
+            for (i = 0; i < N; i++) {
+              // Add particle to appropriate cell.
+              cellList.addToCell(i, x[i], y[i]);
+              // And save its initial position
+              // ("initial" = position during neighbor list creation).
+              neighborList.saveAtomPosition(i, x[i], y[i]);
+            }
+          }
+
+          // ######################################
+          // ax and ay are FORCES below this point
+          // ######################################
+
+          // Accumulate forces into a(t + dt) for all pairwise interactions between
+          // particles:
+          // Short-range forces (Lennard-Jones interaction).
+          console.time('short-range forces');
+          updateShortRangeForces();
+          console.timeEnd('short-range forces');
+          // Long-range forces (Coulomb interaction).
+          console.time('long-range forces');
+          updateLongRangeForces();
+          console.timeEnd('long-range forces');
+
+          // Accumulate forces from radially bonded interactions into a(t + dt).
+          updateRadialBondForces();
+
+          // Accumulate forces from angularly bonded interactions into a(t + dt).
+          updateAngularBondForces();
+
+          // Accumulate forces from restraint forces into a(t + dt).
+          updateRestraintForces();
+
+          // Accumulate forces from spring forces into a(t + dt).
+          updateSpringForces();
+
+          // Accumulate drag forces into a(t + dt).
+          updateFrictionForces();
+
+          // Apply forces caused by the hydrophobicity.
+          // Affects only amino acids in the water or oil solvent.
+          updateAminoAcidForces();
+
+          // Convert ax, ay from forces to accelerations!
+          for (i = 0; i < N; i++) {
+            inverseMass = 1/mass[i];
+            ax[i] *= inverseMass;
+            ay[i] *= inverseMass;
+          }
+
+          // ############################################
+          // ax and ay are ACCELERATIONS below this point
+          // ############################################
+
+          // Accumulate optional gravitational accelerations into a(t + dt).
+          updateGravitationalAccelerations();
+        },
+
+        // Half of the update of v(t + dt) and p(t + dt) using a. During a single integration loop,
+        // call once when a = a(t) and once when a = a(t+dt).
+        halfUpdateVelocity = function() {
+          var i, m;
+          for (i = 0; i < N; i++) {
+            m = mass[i];
+            vx[i] += 0.5 * ax[i] * dt;
+            px[i] = m * vx[i];
+            vy[i] += 0.5 * ay[i] * dt;
+            py[i] = m * vy[i];
+          }
+        },
+
+        // Calculate r(t + dt, i) from v(t + 0.5 * dt).
+        updateParticlesPosition = function() {
+          var width100  = size[0] * 100,
+              height100 = size[1] * 100,
+              xPrev, yPrev, i;
+
+          for (i = 0; i < N; i++) {
+            xPrev = x[i];
+            yPrev = y[i];
+
+            x[i] += vx[i] * dt;
+            y[i] += vy[i] * dt;
+
+            // Simple check if model has diverged. Prevents web browser from crashing.
+            // isNaN tests not only x, y, but also vx, vy, ax, ay as test is done after
+            // updateParticlesPosition(). If a displacement during one step is larger than width * 100
+            // (or height * 100) it means that the velocity is far too big for the current time step.
+            if (isNaN(x[i]) || isNaN(y[i]) ||
+                Math.abs(x[i]) > width100 || Math.abs(y[i]) > height100) {
+              throw new Error("Model has diverged!");
+            }
+
+            // Bounce off walls.
+            bounceParticleOffWalls(i);
+            // Bounce off obstacles, update pressure probes.
+            bounceParticleOffObstacles(i, xPrev, yPrev, true);
+          }
+        },
+
+        // Removes velocity and acceleration from pinned atoms.
+        pinAtoms = function() {
+          var i;
+
+          for (i = 0; i < N; i++) {
+            if (pinned[i]) {
+              vx[i] = vy[i] = ax[i] = ay[i] = 0;
+            }
+          }
+        },
+
+        // Update speed using velocities.
+        updateParticlesSpeed = function() {
+          var i;
+
+          for (i = 0; i < N; i++) {
+            speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
+          }
+        },
+
+        // Calculate new obstacles position using simple integration method.
+        updateObstaclesPosition = function() {
+          var ax, ay, vx, vy,
+              drag, extFx, extFy, i;
+
+          for (i = 0; i < N_obstacles; i++) {
+            // Fast path when obstacle isn't movable.
+            if (obstacleMass[i] === Infinity) continue;
+
+            vx = obstacleVX[i],
+            vy = obstacleVY[i],
+            // External forces are defined per mass unit!
+            // So, they are accelerations in fact.
+            extFx = obstacleExtFX[i],
+            extFy = obstacleExtFY[i];
+
+            if (vx || vy || extFx || extFy || gravitationalField) {
+              drag = viscosity * obstacleFriction[i];
+              ax = extFx - drag * vx;
+              ay = extFy - drag * vy - gravitationalField;
+
+              obstacleXPrev[i] = obstacleX[i];
+              obstacleYPrev[i] = obstacleY[i];
+
+              // Update positions.
+              obstacleX[i] += vx * dt + 0.5 * ax * dt_sq;
+              obstacleY[i] += vy * dt + 0.5 * ay * dt_sq;
+
+              // Update velocities.
+              obstacleVX[i] += ax * dt;
+              obstacleVY[i] += ay * dt;
+
+              bounceObstacleOffWalls(i);
+            }
+          }
+        },
+
+        // Sets total momentum of each molecule to zero.
+        // Useful for proteins engine.
+        zeroTotalMomentumOfMolecules = function() {
+          var moleculeAtoms, atomIdx, sumX, sumY, invMass,
+              i, j, len;
+
+          for (i = 0; i < N; i++) {
+            visited[i] = 0;
+          }
+
+          for (i = 0; i < N; i++) {
+            // Process each particular atom only *once*.
+            if (visited[i] === 1) continue;
+
+            moleculeAtoms = engine.getMoleculeAtoms(i);
+            if (moleculeAtoms.length === 0) continue;
+            moleculeAtoms.push(i);
+
+            sumX = sumY = invMass = 0;
+            for (j = 0, len = moleculeAtoms.length; j < len; j++) {
+              atomIdx = moleculeAtoms[j];
+              // Mark that atom was part of processed molecule to avoid
+              // calculating its molecule again.
+              visited[atomIdx] = 1;
+              sumX += vx[atomIdx] * mass[atomIdx];
+              sumY += vy[atomIdx] * mass[atomIdx];
+              invMass += mass[atomIdx];
+            }
+            invMass = 1.0 / invMass;
+            for (j = 0, len = moleculeAtoms.length; j < len; j++) {
+              atomIdx = moleculeAtoms[j];
+              vx[atomIdx] -= sumX * invMass;
+              vy[atomIdx] -= sumY * invMass;
+              // Update momentum.
+              px[atomIdx] = vx[atomIdx] * mass[atomIdx];
+              py[atomIdx] = vy[atomIdx] * mass[atomIdx];
+            }
+          }
+        },
+
         adjustTemperature = function(target, forceAdjustment) {
-          var rescalingFactor,
-              i;
+          var rescalingFactor, i;
 
           if (target == null) target = T_target;
 
           T = computeTemperature();
 
-          if (temperatureChangeInProgress && Math.abs(T_windowed(T) - target) <= target * tempTolerance) {
+          if (temperatureChangeInProgress && Math.abs(getTWindowed(T) - target) <= target * tempTolerance) {
             temperatureChangeInProgress = false;
           }
 
           if (forceAdjustment || useThermostat || temperatureChangeInProgress && T > 0) {
             rescalingFactor = Math.sqrt(target / T);
+
             // Scale particles velocity.
             for (i = 0; i < N; i++) {
-              scaleParticleVelocity(i, rescalingFactor);
+              vx[i] *= rescalingFactor;
+              vy[i] *= rescalingFactor;
+              px[i] *= rescalingFactor;
+              py[i] *= rescalingFactor;
             }
+
             // Scale obstacles velocity.
             for (i = 0; i < N_obstacles; i++) {
-              scaleObstacleVelocity(i, rescalingFactor);
+              obstacleVX[i] *= rescalingFactor;
+              obstacleVY[i] *= rescalingFactor;
             }
+
             T = target;
+          }
+        },
+
+        // Two cysteine AAs can form a covalent bond between their sulphur atoms. We could model this such that
+        // when two Cys AAs come close enough a covalent bond is formed (only one between a pair of cysteines).
+        createDisulfideBonds = function () {
+          var cys1Idx, cys2Idx, xDiff, yDiff, rSq, i, j, len;
+
+          for (i = 0, len = freeCysteinesList.length; i < len; i++) {
+            cys1Idx = freeCysteinesList[i];
+            for (j = i + 1; j < len; j++) {
+              cys2Idx = freeCysteinesList[j];
+
+              xDiff = x[cys1Idx] - x[cys2Idx];
+              yDiff = y[cys1Idx] - y[cys2Idx];
+              rSq = xDiff * xDiff + yDiff * yDiff;
+
+              // Check whether cysteines are close enough to each other.
+              // As both are in the freeCysteinesList, they are not connected.
+              if (rSq < 0.07) {
+                // Connect cysteines.
+                engine.addRadialBond({
+                  atom1: cys1Idx,
+                  atom2: cys2Idx,
+                  length: Math.sqrt(rSq),
+                  // Default strength of bonds between amino acids.
+                  strength: 10000,
+                  // Disulfide bond type.
+                  type: 109
+                });
+
+                // Remove both cysteines from freeCysteinesList.
+                arrays.remove(freeCysteinesList, i);
+                arrays.remove(freeCysteinesList, j);
+
+                // Update len, cys1Idx, j as freeCysteinesList has changed.
+                // Not very pretty, but probably the fastest way.
+                len = freeCysteinesList.length;
+                cys1Idx = freeCysteinesList[i];
+                j = i + 1;
+              }
+            }
+          }
+        },
+
+        // ### Pressure calculation ###
+
+        // Zero values of pressure probes. It should be called
+        // at the beginning of the integration step.
+        zeroPressureValues = function () {
+          var i;
+          for (i = 0; i < N_obstacles; i++) {
+            if (obstacleNorthProbe[i]) {
+              obstacleNProbeValue[i] = 0;
+            }
+            if (obstacleSouthProbe[i]) {
+              obstacleSProbeValue[i] = 0;
+            }
+            if (obstacleEastProbe[i]) {
+              obstacleEProbeValue[i] = 0;
+            }
+            if (obstacleWestProbe[i]) {
+              obstacleWProbeValue[i] = 0;
+            }
+          }
+        },
+
+        // Update probes values so they contain final pressure value in Bar.
+        // It should be called at the end of the integration step.
+        calculateFinalPressureValues = function (duration) {
+          var mult, i;
+          // Classic MW converts impulses 2mv/dt to pressure in Bar using constant: 1666667.
+          // See: the header of org.concord.mw2d.models.RectangularObstacle.
+          // However, Classic MW also uses different units for mass and length:
+          // - 120amu instead of 1amu,
+          // - 0.1A instead of 1nm.
+          // We should convert mass, velocity and obstacle height to Next Gen units.
+          // Length units reduce themselves (velocity divided by height or width), only mass is left.
+          // So, divide classic MW constant 1666667 by 120 - the result is 13888.89.
+          // [ There is unit module available, however for reduction of computational cost,
+          // include conversion in the pressure constant, especially considering the fact that
+          // conversion from 120amu to amu is quite simple. ]
+          mult = 13888.89 / duration;
+          for (i = 0; i < N_obstacles; i++) {
+            if (obstacleNorthProbe[i]) {
+              obstacleNProbeValue[i] *= mult / obstacleWidth[i];
+            }
+            if (obstacleSouthProbe[i]) {
+              obstacleSProbeValue[i] *= mult / obstacleWidth[i];
+            }
+            if (obstacleEastProbe[i]) {
+              obstacleEProbeValue[i] *= mult / obstacleHeight[i];
+            }
+            if (obstacleWestProbe[i]) {
+              obstacleWProbeValue[i] *= mult / obstacleHeight[i];
+            }
           }
         };
 
+        // ####################################################################
+        // ####################################################################
 
-    return engine = {
+    engine = {
 
       useCoulombInteraction: function(v) {
         useCoulombInteraction = !!v;
@@ -1203,6 +1912,12 @@ define(function (require, exports, module) {
         useThermostat = !!v;
       },
 
+      setVDWLinesRatio: function(vdwlr) {
+        if (typeof vdwlr === "number" && vdwlr !== 0) {
+          vdwLinesRatio = vdwlr;
+        }
+      },
+
       setGravitationalField: function(gf) {
         if (typeof gf === "number" && gf !== 0) {
           gravitationalField = gf;
@@ -1214,6 +1929,30 @@ define(function (require, exports, module) {
       setTargetTemperature: function(v) {
         validateTemperature(v);
         T_target = v;
+      },
+
+      setDielectricConstant: function(dc) {
+        dielectricConst = dc;
+      },
+
+      setRealisticDielectricEffect: function (r) {
+        realisticDielectricEffect = r;
+      },
+
+      setSolventForceType: function(sft) {
+        solventForceType = sft;
+      },
+
+      setSolventForceFactor: function(sff) {
+        solventForceFactor = sff;
+      },
+
+      setAdditionalSolventForceMult: function(asfm) {
+        additionalSolventForceMult = asfm;
+      },
+
+      setAdditionalSolventForceThreshold: function(asft) {
+        additionalSolventForceThreshold = asft;
       },
 
       // Our timekeeping is really a convenience for users of this lib, so let them reset time at will
@@ -1230,6 +1969,7 @@ define(function (require, exports, module) {
         var width  = (v[0] && v[0] > 0) ? v[0] : 10,
             height = (v[1] && v[1] > 0) ? v[1] : 10;
         size = [width, height];
+        sizeHasBeenInitialized = true;
       },
 
       getSize: function() {
@@ -1238,6 +1978,127 @@ define(function (require, exports, module) {
 
       getLJCalculator: function() {
         return ljCalculator;
+      },
+
+      setAtomProperties: function (i, props) {
+        var cysteineEl = aminoacidsHelper.cysteineElement,
+            key, idx, rest, amino, j;
+
+        if (props.element !== undefined) {
+          if (props.element < 0 || props.element >= N_elements) {
+            throw new Error("md2d: Unknown element " + props.element + ", an atom can't be created.");
+          }
+
+          // Special case when cysteine AA is morphed into other AA type,
+          // which can't create disulphide bonds. Remove a connected
+          // disulphide bond if it exists.
+          if (element[i] === cysteineEl && props.element !== cysteineEl) {
+            for (j = 0; j < N_radialBonds; j++) {
+              if ((radialBondAtom1Index[j] === i || radialBondAtom2Index[j] === i) &&
+                   radialBondType[j] === 109) {
+                // Remove the radial bond representing disulphide bond.
+                engine.removeRadialBond(j);
+                // One cysteine can create only one disulphide bond so there is no need to continue the loop.
+                break;
+              }
+            }
+          }
+
+          // Mark element as used by some atom (used by performance optimizations).
+          elementUsed[props.element] = true;
+
+          // Update mass and radius when element is changed.
+          props.mass   = elementMass[props.element];
+          props.radius = elementRadius[props.element];
+
+          if (aminoacidsHelper.isAminoAcid(props.element)) {
+            amino = aminoacidsHelper.getAminoAcidByElement(props.element);
+            // Setup properties which are relevant to amino acids.
+            props.charge = amino.charge;
+            // Note that we overwrite value set explicitly in the hash.
+            // So, while setting element of atom, it's impossible to set also its charge.
+            props.hydrophobicity = amino.hydrophobicity;
+          }
+        }
+
+        // Update charged atoms list (performance optimization).
+        if (!charge[i] && props.charge) {
+          // !charge[i]   => shortcut for charge[i] === 0 || charge[i] === undefined (both cases can occur).
+          // props.charge => shortcut for props.charge !== undefined && props.charge !== 0.
+          // Save index of charged atom.
+          chargedAtomsList.push(i);
+        } else if (charge[i] && props.charge === 0) {
+          // charge[i] => shortcut for charge[i] !== undefined && charge[i] !== 0 (both cases can occur).
+          // Remove index from charged atoms list.
+          idx = chargedAtomsList.indexOf(i);
+          rest = chargedAtomsList.slice(idx + 1);
+          chargedAtomsList.length = idx;
+          Array.prototype.push.apply(chargedAtomsList, rest);
+        }
+        // Update optimization flag.
+        hasChargedAtoms = !!chargedAtomsList.length;
+
+        // Set all properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            atoms[key][i] = props[key];
+          }
+        }
+
+        // Update properties which depend on other properties.
+        px[i]    = vx[i] * mass[i];
+        py[i]    = vy[i] * mass[i];
+        speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
+      },
+
+      setRadialBondProperties: function(i, props) {
+        var key, atom1Idx, atom2Idx;
+
+        // Unset current radial bond matrix entry.
+        // Matrix will be updated when new properties are set.
+        atom1Idx = radialBondAtom1Index[i];
+        atom2Idx = radialBondAtom2Index[i];
+        if (radialBondMatrix[atom1Idx] && radialBondMatrix[atom1Idx][atom2Idx])
+          radialBondMatrix[atom1Idx][atom2Idx] = false;
+        if (radialBondMatrix[atom2Idx] && radialBondMatrix[atom2Idx][atom1Idx])
+          radialBondMatrix[atom2Idx][atom1Idx] = false;
+
+        // Set all properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            radialBonds[key][i]       = props[key];
+            // Update radial bond results also.
+            radialBondResults[i][key] = props[key];
+          }
+        }
+
+        // Update radial bond matrix.
+        atom1Idx = radialBondAtom1Index[i];
+        atom2Idx = radialBondAtom2Index[i];
+        if (!radialBondMatrix[atom1Idx]) radialBondMatrix[atom1Idx] = [];
+        radialBondMatrix[atom1Idx][atom2Idx] = true;
+        if (!radialBondMatrix[atom2Idx]) radialBondMatrix[atom2Idx] = [];
+        radialBondMatrix[atom2Idx][atom1Idx] = true;
+      },
+
+      setAngularBondProperties: function(i, props) {
+        var key;
+        // Set all properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            angularBonds[key][i] = props[key];
+          }
+        }
+      },
+
+      setRestraintProperties: function(i, props) {
+        var key;
+        // Set all properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            restraints[key][i] = props[key];
+          }
+        }
       },
 
       setElementProperties: function(i, properties) {
@@ -1270,70 +2131,44 @@ define(function (require, exports, module) {
         for (j = 0; j < N_elements; j++) {
           setPairwiseLJProperties(i, j);
         }
+        // Reinitialize optimization structures, as sigma can be changed.
+        initializeCellList();
+        initializeNeighborList();
       },
 
-      /**
-        Allocates 'atoms' array of arrays, sets number of atoms.
+      setPairwiseLJProperties: function (i, j) {
+        // Call private (closure) version of this funcion.
+        setPairwiseLJProperties(i, j);
+        // Reinitialize optimization structures, as sigma can be changed.
+        initializeCellList();
+        initializeNeighborList();
+      },
 
-        options:
-          num: the number of atoms to create
-      */
-      createAtoms: function(options) {
-        var num;
+      setObstacleProperties: function (i, props) {
+        var key;
 
-        if (!elementsHaveBeenCreated) {
-          throw new Error("md2d: createAtoms was called before setElements.");
+        if (!engine.canPlaceObstacle(props.x, props.y, props.width, props.height, i))
+          throw new Error("Obstacle can't be placed at " + props.x + ", " + props.y);
+
+        // If position is manually changed, update previous
+        // position also.
+        if (props.x !== undefined) {
+          props.xPrev = props.x;
+        }
+        if (props.y !== undefined) {
+          props.yPrev = props.y;
+        }
+        // Try to parse mass, as it may be string "Infinity".
+        if (typeof props.mass === 'string') {
+          props.mass = parseFloat(props.mass);
         }
 
-        if (atomsHaveBeenCreated) {
-          throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
+        // Set properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            obstacles[key][i] = props[key];
+          }
         }
-        atomsHaveBeenCreated = true;
-        sizeHasBeenInitialized = true;
-
-        if (typeof options === 'undefined') {
-          throw new Error("md2d: createAtoms was called without options specifying the atoms to create.");
-        }
-
-        //  number of atoms
-        num = options.num;
-
-        if (typeof num === 'undefined') {
-          throw new Error("md2d: createAtoms was called without the required 'num' option specifying the number of atoms to create.");
-        }
-        if (num !== Math.floor(num)) {
-          throw new Error("md2d: createAtoms was passed a non-integral 'num' option.");
-        }
-        if (num < N_MIN) {
-          throw new Error("md2d: create Atoms was passed an 'num' option equal to: " + num + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
-        }
-        if (num > N_MAX) {
-          throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
-        }
-
-        atoms  = engine.atoms  = {};
-
-        // TODO. DRY this up by letting the property list say what type each array is
-        atoms.radius   = arrays.create(num, 0, float32);
-        atoms.px       = arrays.create(num, 0, float32);
-        atoms.py       = arrays.create(num, 0, float32);
-        atoms.x        = arrays.create(num, 0, float32);
-        atoms.y        = arrays.create(num, 0, float32);
-        atoms.vx       = arrays.create(num, 0, float32);
-        atoms.vy       = arrays.create(num, 0, float32);
-        atoms.speed    = arrays.create(num, 0, float32);
-        atoms.ax       = arrays.create(num, 0, float32);
-        atoms.ay       = arrays.create(num, 0, float32);
-        atoms.charge   = arrays.create(num, 0, float32);
-        atoms.friction = arrays.create(num, 0, float32);
-        atoms.element  = arrays.create(num, 0, uint8);
-        atoms.pinned   = arrays.create(num, 0, uint8);
-        atoms.mass     = arrays.create(num, 0, float32);
-
-        assignShortcutReferences.atoms();
-
-        N = 0;
-        totalMass = 0;
       },
 
       /**
@@ -1344,43 +2179,112 @@ define(function (require, exports, module) {
 
         @returns the index of the new atom
       */
-      addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge, atom_friction, atom_pinned) {
-        var atom_mass;
-
+      addAtom: function(props) {
         if (N + 1 > atoms.x.length) {
           extendArrays(atoms, N + 10);
           assignShortcutReferences.atoms();
         }
 
-        // Allow these values to be optional, and use the default if not defined:
+        // Set acceleration of new atom to zero.
+        props.ax = props.ay = 0;
 
-        if (atom_charge == null)   atom_charge   = DEFAULT_VALUES.charge;
-        if (atom_friction == null) atom_friction = DEFAULT_VALUES.friction;
-        if (atom_pinned == null )  atom_pinned   = DEFAULT_VALUES.pinned;
+        // Increase number of atoms.
+        N++;
 
-        atom_mass = elementMass[atom_element];
+        // Set provided properties of new atom.
+        engine.setAtomProperties(N - 1, props);
 
-        element[N]   = atom_element;
-        radius[N]    = elementRadius[atom_element];
-        x[N]         = atom_x;
-        y[N]         = atom_y;
-        vx[N]        = atom_vx;
-        vy[N]        = atom_vy;
-        px[N]        = atom_vx * atom_mass;
-        py[N]        = atom_vy * atom_mass;
-        ax[N]        = 0;
-        ay[N]        = 0;
-        speed[N]     = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
-        charge[N]    = atom_charge;
-        friction[N]  = atom_friction;
-        pinned[N]    = atom_pinned;
-        mass[N]      = atom_mass;
+        // Initialize helper structures for optimizations.
+        initializeCellList();
+        initializeNeighborList();
+      },
 
-        if (atom_charge) hasChargedAtoms = true;
+      removeAtom: function(idx) {
+        var i, len, prop,
+            l, list, lists;
 
-        totalMass += atom_mass;
+        if (idx >= N) {
+          throw new Error("Atom " + idx + " doesn't exist, so it can't be removed.");
+        }
 
-        return N++;
+        // Start from removing all bonds connected to this atom.
+        // Note that we are removing only radial bonds. Angular bonds
+        // will be removed while removing radial bond, not atom!
+
+        // Use such "strange" form of loop, as while removing one bonds,
+        // other change their indexing. So, after removal of bond 5, we
+        // should check bond 5 again, as it would be another bond (previously
+        // indexed as 6).
+        i = 0;
+        while (i < N_radialBonds) {
+          if (radialBondAtom1Index[i] === idx || radialBondAtom2Index[i] === idx)
+            engine.removeRadialBond(i);
+          else
+            i++;
+        }
+
+        // Try to remove atom from charged atoms list.
+        i = chargedAtomsList.indexOf(idx);
+        if (i !== -1) {
+          arrays.remove(chargedAtomsList, i);
+        }
+
+
+        // Finally, remove atom.
+
+        // Shift atoms properties and zero last element.
+        // It can be optimized by just replacing the last
+        // atom with atom 'i', however this approach
+        // preserves more expectable atoms indexing.
+        for (i = idx; i < N; i++) {
+          for (prop in atoms) {
+            if (atoms.hasOwnProperty(prop)) {
+              if (i === N - 1)
+                atoms[prop][i] = 0;
+              else
+                atoms[prop][i] = atoms[prop][i + 1];
+            }
+          }
+        }
+
+        // Update number of atoms!
+        N--;
+
+        // Shift indices of atoms in various lists.
+        lists = [
+          chargedAtomsList,
+          radialBondAtom1Index, radialBondAtom2Index,
+          angularBondAtom1Index, angularBondAtom2Index, angularBondAtom3Index
+        ];
+
+        for (l = 0; l < lists.length; l++) {
+          list = lists[l];
+          for (i = 0, len = list.length; i < len; i++) {
+            if (list[i] > idx)
+              list[i]--;
+          }
+        }
+
+        // Also in radial bonds results...
+        // TODO: they should be recalculated while computing output state.
+        for (i = 0, len = radialBondResults.length; i < len; i++) {
+          if (radialBondResults[i].atom1 > idx)
+            radialBondResults[i].atom1--;
+          if (radialBondResults[i].atom2 > idx)
+            radialBondResults[i].atom2--;
+        }
+
+        // Recalculate radial bond matrix, as indices have changed.
+        calculateRadialBondMatrix();
+
+        // (Re)initialize helper structures for optimizations.
+        initializeCellList();
+        initializeNeighborList();
+
+        neighborList.invalidate();
+
+        // Update accelerations of atoms.
+        updateParticlesAccelerations();
       },
 
       /**
@@ -1391,7 +2295,7 @@ define(function (require, exports, module) {
 
         if (N_elements >= elementEpsilon.length) {
           extendArrays(elements, N_elements + 10);
-          assignShortcutReferences.N_elements();
+          assignShortcutReferences.elements();
         }
 
         elementMass[N_elements]    = props.mass;
@@ -1399,43 +2303,105 @@ define(function (require, exports, module) {
         elementSigma[N_elements]   = props.sigma;
         elementRadius[N_elements]  = lennardJones.radius(props.sigma);
 
-        epsilon[N_elements]              = [];
-        sigma[N_elements]                = [];
-        ljCalculator[N_elements]         = [];
-        cutoffDistance_LJ_sq[N_elements] = [];
+        ljCalculator[N_elements]              = [];
+        cutoffDistance_LJ_sq[N_elements]      = [];
+        cutoffNeighborListSquared[N_elements] = [];
 
         for (i = 0; i <= N_elements; i++) {
-          setPairwiseLJProperties(N_elements,i);
+          setPairwiseLJProperties(N_elements, i);
         }
+        // Note that we don't have to reinitialize optimization
+        // structures (cell lists and neighbor list). They are
+        // based only on the properties of *used* elements, so
+        // adding a new atom should trigger reinitialization instead.
 
-        elementsHaveBeenCreated = true;
         N_elements++;
       },
 
       /**
         The canonical method for adding a radial bond to the collection of radial bonds.
       */
-      addRadialBond: function(atom1Index, atom2Index, bondLength, bondStrength, bondStyle) {
-        if (bondStyle == null )  bondStyle = DEFAULT_VALUES.RADIAL_BOND_STYLE;
-
-        if (N_radialBonds >= radialBondAtom1Index.length) {
+      addRadialBond: function(props) {
+        if (N_radialBonds + 1 > radialBondAtom1Index.length) {
           extendArrays(radialBonds, N_radialBonds + 10);
           assignShortcutReferences.radialBonds();
         }
 
-        radialBondResults[N_radialBonds].atom1    = radialBondAtom1Index[N_radialBonds] = atom1Index;
-        radialBondResults[N_radialBonds].atom2    = radialBondAtom2Index[N_radialBonds] = atom2Index;
-        radialBondResults[N_radialBonds].lenght   = radialBondLength[N_radialBonds]     = bondLength;
-        radialBondResults[N_radialBonds].strength = radialBondStrength[N_radialBonds]   = bondStrength;
-        radialBondResults[N_radialBonds].style    = radialBondStyle[N_radialBonds]      = bondStyle;
-
-        if ( ! radialBondMatrix[atom1Index] ) radialBondMatrix[atom1Index] = [];
-        radialBondMatrix[atom1Index][atom2Index] = true;
-
-        if ( ! radialBondMatrix[atom2Index] ) radialBondMatrix[atom2Index] = [];
-        radialBondMatrix[atom2Index][atom1Index] = true;
-
         N_radialBonds++;
+
+        // Add results object.
+        radialBondResults[N_radialBonds - 1] = {idx: N_radialBonds - 1};
+        // Set new radial bond properties.
+        engine.setRadialBondProperties(N_radialBonds - 1, props);
+      },
+
+      removeRadialBond: function(idx) {
+        var i, prop, atom1, atom2;
+
+        if (idx >= N_radialBonds) {
+          throw new Error("Radial bond " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        // Start from removing angular bonds.
+        atom1 = radialBondAtom1Index[idx];
+        atom2 = radialBondAtom2Index[idx];
+
+        // Use such "strange" form of loop, as while removing one bonds,
+        // other change their indexing. So, after removal of bond 5, we
+        // should check bond 5 again, as it would be another bond (previously
+        // indexed as 6).
+        i = 0;
+        while (i < N_angularBonds) {
+          // Remove angular bond only when one of atoms is the CENTRAL atom of the given angular bond.
+          // It means that this radial bond creates given angular bond.
+          // Atom3Index is index of central atom in angular bonds.
+          if (angularBondAtom3Index[i] === atom1 || angularBondAtom3Index[i] === atom2)
+            engine.removeAngularBond(i);
+          else
+            i++;
+        }
+
+        // Shift radial bonds properties and zero last element.
+        // It can be optimized by just replacing the last
+        // radial bond with radial bond 'i', however this approach
+        // preserves more expectable indexing.
+        // TODO: create some general function for that, as it's duplicated
+        // in each removeObject method.
+        for (i = idx; i < N_radialBonds; i++) {
+          for (prop in radialBonds) {
+            if (radialBonds.hasOwnProperty(prop)) {
+              if (i === N_radialBonds - 1)
+                radialBonds[prop][i] = 0;
+              else
+                radialBonds[prop][i] = radialBonds[prop][i + 1];
+            }
+          }
+        }
+
+        N_radialBonds--;
+
+        arrays.remove(radialBondResults, idx);
+
+        // Recalculate radial bond matrix.
+        calculateRadialBondMatrix();
+      },
+
+      /**
+        The canonical method for adding an 'restraint' bond to the collection of restraints.
+
+        If there isn't enough room in the 'restraints' array, it (somewhat inefficiently)
+        extends the length of the typed arrays by ten to have room for more bonds.
+      */
+      addRestraint: function(props) {
+        if (N_restraints + 1 > restraints.atomIndex.length) {
+          extendArrays(restraints, N_restraints + 10);
+          assignShortcutReferences.restraints();
+        }
+
+        N_restraints++;
+
+        // Set new restraint properties.
+        engine.setRestraintProperties(N_restraints - 1, props);
       },
 
       /**
@@ -1444,19 +2410,43 @@ define(function (require, exports, module) {
         If there isn't enough room in the 'angularBonds' array, it (somewhat inefficiently)
         extends the length of the typed arrays by ten to have room for more bonds.
       */
-      addAngularBond: function(atom1Index, atom2Index, atom3Index, bondAngle, bondStrength) {
+      addAngularBond: function(props) {
         if (N_angularBonds + 1 > angularBonds.atom1.length) {
           extendArrays(angularBonds, N_angularBonds + 10);
           assignShortcutReferences.angularBonds();
         }
 
-        angularBondAtom1Index[N_angularBonds] = atom1Index;
-        angularBondAtom2Index[N_angularBonds] = atom2Index;
-        angularBondAtom3Index[N_angularBonds] = atom3Index;
-        angularBondAngle[N_angularBonds]      = bondAngle;
-        angularBondStrength[N_angularBonds]   = bondStrength;
-
         N_angularBonds++;
+
+        // Set new angular bond properties.
+        engine.setAngularBondProperties(N_angularBonds - 1, props);
+      },
+
+      removeAngularBond: function(idx) {
+        var i, prop;
+
+        if (idx >= N_angularBonds) {
+          throw new Error("Angular bond " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        // Shift angular bonds properties and zero last element.
+        // It can be optimized by just replacing the last
+        // angular bond with angular bond 'i', however this approach
+        // preserves more expectable indexing.
+        // TODO: create some general function for that, as it's duplicated
+        // in each removeObject method.
+        for (i = idx; i < N_angularBonds; i++) {
+          for (prop in angularBonds) {
+            if (angularBonds.hasOwnProperty(prop)) {
+              if (i === N_angularBonds - 1)
+                angularBonds[prop][i] = 0;
+              else
+                angularBonds[prop][i] = angularBonds[prop][i + 1];
+            }
+          }
+        }
+
+        N_angularBonds--;
       },
 
       /**
@@ -1465,11 +2455,8 @@ define(function (require, exports, module) {
         @returns the index of the new spring force.
       */
       addSpringForce: function(atomIndex, x, y, strength) {
-
-        if (!springForces) createSpringForcesArray(1);
-
         // conservatively just add one spring force
-        if (N_springForces > springForces[0].length) {
+        if (N_springForces + 1 > springForces[0].length) {
           extendArrays(springForces, N_springForces + 1);
           assignShortcutReferences.springForces();
         }
@@ -1496,42 +2483,48 @@ define(function (require, exports, module) {
         return springForceAtomIndex[i];
       },
 
-      addObstacle: function(x, y, vx, vy, externalFx, externalFy, friction, width, height, density, color, visible) {
-        var obstaclemass;
+      addObstacle: function(props) {
+        if (!engine.canPlaceObstacle(props.x, props.y, props.width, props.height))
+          throw new Error("Obstacle can't be placed at " + props.x + ", " + props.y + ".");
 
         if (N_obstacles + 1 > obstacles.x.length) {
+          // Extend arrays each time (as there are only
+          // a few obstacles in typical model).
           extendArrays(obstacles, N_obstacles + 1);
           assignShortcutReferences.obstacles();
         }
 
-        obstacleX[N_obstacles] = x;
-        obstacleY[N_obstacles] = y;
-        obstacleXPrev[N_obstacles] = x;
-        obstacleYPrev[N_obstacles] = y;
-
-        obstacleVX[N_obstacles] = vx;
-        obstacleVY[N_obstacles] = vy;
-
-        obstacleExtFX[N_obstacles] = externalFx;
-        obstacleExtFY[N_obstacles] = externalFy;
-
-        obstacleFriction[N_obstacles] = friction;
-
-        obstacleWidth[N_obstacles]  = width;
-        obstacleHeight[N_obstacles] = height;
-
-        density = parseFloat(density);      // may be string "Infinity"
-        obstaclemass = density * width * height;
-
-        obstacleMass[N_obstacles] = obstaclemass;
-
-        obstacleColorR[N_obstacles] = color[0];
-        obstacleColorG[N_obstacles] = color[1];
-        obstacleColorB[N_obstacles] = color[2];
-
-        obstacleVisible[N_obstacles] = visible;
-
         N_obstacles++;
+
+        // Set properties of new obstacle.
+        engine.setObstacleProperties(N_obstacles - 1, props);
+      },
+
+      removeObstacle: function(idx) {
+        var i, prop;
+
+        if (idx >= N_obstacles) {
+          throw new Error("Obstacle " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        N_obstacles--;
+
+        // Shift obstacles properties.
+        // It can be optimized by just replacing the last
+        // obstacle with obstacle 'i', however this approach
+        //  preserves more expectable obstacles indexing.
+        for (i = idx; i < N_obstacles; i++) {
+          for (prop in obstacles) {
+            if (obstacles.hasOwnProperty(prop)) {
+              obstacles[prop][i] = obstacles[prop][i + 1];
+            }
+          }
+        }
+
+        // FIXME: This shouldn't be necessary, however various modules
+        // (e.g. views) use obstacles.x.length as the real number of obstacles.
+        extendArrays(obstacles, N_obstacles);
+        assignShortcutReferences.obstacles();
       },
 
       atomInBounds: function(_x, _y, i) {
@@ -1584,56 +2577,70 @@ define(function (require, exports, module) {
         return PEAtLocation <= 0;
       },
 
-      // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
-      initializeAtomsFromProperties: function(props) {
-        var x, y, vx, vy, charge, element, friction, pinned,
-            i, ii;
+      /**
+        Checks to see if an obstacle could be placed at location x, y
+        without being on an atom, another obstacle or past a wall.
 
-        if (!(props.x && props.y)) {
-          throw new Error("md2d: initializeAtomsFromProperties must specify at minimum X and Y locations.");
+        idx parameter is optional. It should be defined and equal to id
+        of an existing obstacle when the existing obstacle should be checked.
+        It prevents an algorithm from comparing the obstacle with itself during
+        collisions detection.
+      */
+      canPlaceObstacle: function (obsX, obsY, obsWidth, obsHeight, idx) {
+        var obsXMax = obsX + obsWidth,
+            obsYMax = obsY + obsHeight,
+            testX, testY, testXMax, testYMax,
+            r, i;
+
+        // Check collision with walls.
+        if (obsX < 0 || obsXMax > size[0] || obsY < 0 || obsYMax > size[0]) {
+          return false;
         }
 
-        if (!(props.vx && props.vy)) {
-          // We may way to support authored locations with random velocities in the future
-          throw new Error("md2d: For now, velocities must be set when locations are set.");
+        // Check collision with atoms.
+        for (i = 0; i < N; i++) {
+          r = radius[i];
+          if (x[i] > (obsX - r) && x[i] < (obsXMax + r) &&
+              y[i] > (obsY - r) && y[i] < (obsYMax + r)) {
+            return false;
+          }
         }
 
-        for (i=0, ii=props.x.length; i<ii; i++){
-          element = props.element ? props.element[i] : 0;
-          x = props.x[i];
-          y = props.y[i];
-          vx = props.vx[i];
-          vy = props.vy[i];
-          charge = props.charge ? props.charge[i] : 0;
-          pinned = props.pinned ? props.pinned[i] : 0;
-          friction = props.friction ? props.friction[i] : 0;
-
-          engine.addAtom(element, x, y, vx, vy, charge, friction, pinned);
+        // Check collision with other obstacles.
+        for (i = 0; i < N_obstacles; i++) {
+          if (idx !== undefined && idx === i) {
+            // If we are checking existing obstacle,
+            // avoid comparing it with itself.
+            continue;
+          }
+          testX = obstacleX[i];
+          testY = obstacleY[i];
+          testXMax = testX + obstacleWidth[i];
+          testYMax = testY + obstacleHeight[i];
+          if ((obsXMax > testX && obsX < testXMax) &&
+              (obsYMax > testY && obsY < testYMax)) {
+            return false;
+          }
         }
 
-        // Publish the current state
-        T = computeTemperature();
+        return true;
       },
 
-      initializeAtomsRandomly: function(options) {
+      setupAtomsRandomly: function(options) {
 
         var // if a temperature is not explicitly requested, we just need any nonzero number
             temperature = options.temperature || 100,
 
-            // fill up the entire 'atoms' array if not otherwise requested
-            num = options.num || atoms.x.length,
-
-            nrows = Math.floor(Math.sqrt(num)),
-            ncols = Math.ceil(num/nrows),
+            nrows = Math.floor(Math.sqrt(N)),
+            ncols = Math.ceil(N/nrows),
 
             i, r, c, rowSpacing, colSpacing,
-            vMagnitude, vDirection,
-            x, y, vx, vy, charge, element;
+            vMagnitude, vDirection, props;
 
         validateTemperature(temperature);
 
-        colSpacing = size[0] / (1+ncols);
-        rowSpacing = size[1] / (1+nrows);
+        colSpacing = size[0] / (1 + ncols);
+        rowSpacing = size[1] / (1 + nrows);
 
         // Arrange molecules in a lattice. Not guaranteed to have CM exactly on center, and is an artificially low-energy
         // configuration. But it works OK for now.
@@ -1642,20 +2649,19 @@ define(function (require, exports, module) {
         for (r = 1; r <= nrows; r++) {
           for (c = 1; c <= ncols; c++) {
             i++;
-            if (i === num) break;
-
-            element    = Math.floor(Math.random() * elementEpsilon.length);     // random element
+            if (i === N) break;
             vMagnitude = math.normal(1, 1/4);
             vDirection = 2 * Math.random() * Math.PI;
 
-            x = c*colSpacing;
-            y = r*rowSpacing;
-            vx = vMagnitude * Math.cos(vDirection);
-            vy = vMagnitude * Math.sin(vDirection);
-
-            charge = 2*(i%2)-1;      // alternate negative and positive charges
-
-            engine.addAtom(element, x, y, vx, vy, charge, 0, 0, 1, 0);
+            props = {
+              element: Math.floor(Math.random() * options.userElements), // random element
+              x:       c * colSpacing,
+              y:       r * rowSpacing,
+              vx:      vMagnitude * Math.cos(vDirection),
+              vy:      vMagnitude * Math.sin(vDirection),
+              charge:  2 * (i % 2) - 1 // alternate negative and positive charges
+            };
+            engine.setAtomProperties(i, props);
           }
         }
 
@@ -1670,94 +2676,121 @@ define(function (require, exports, module) {
         // configuration.
         //
         adjustTemperature(temperature, true);
-
-        // Publish the current state
-        T = computeTemperature();
       },
 
-      initializeObstacles: function (props) {
-        var num = props.x.length,
-            i;
+      /**
+        Generates a protein. It returns a real number of created amino acids.
 
-        createObstaclesArray(num);
-        for (i = 0; i < num; i++) {
-          engine.addObstacle(
-            props.x[i],
-            props.y[i],
-            props.vx[i],
-            props.vy[i],
-            props.externalFx[i],
-            props.externalFy[i],
-            props.friction[i],
-            props.width[i],
-            props.height[i],
-            props.density[i],
-            props.color[i],
-            props.visible[i]
-          );
+        'aaSequence' parameter defines expected sequence of amino acids. Pass undefined
+        and provide 'expectedLength' if you want to generate a random protein.
+
+        'expectedLength' parameter controls the maximum (and expected) number of amino
+        acids of the resulting protein. Provide this parameter only when 'aaSequence'
+        is undefined. When expected length is too big (due to limited area of the model),
+        the protein will be truncated and its real length returned.
+      */
+      generateProtein: function (aaSequence, expectedLength) {
+        var width = size[0],
+            height = size[1],
+            xStep = 0,
+            yStep = 0,
+            aaCount = aminoacidsHelper.lastElementID - aminoacidsHelper.firstElementID + 1,
+            i, xPos, yPos, el, bondLen,
+
+            // This function controls how X coordinate is updated,
+            // using current Y coordinate as input.
+            turnHeight = 0.6,
+            xStepFunc = function(y) {
+              if (y > height - turnHeight || y < turnHeight) {
+                // Close to the boundary increase X step.
+                return 0.1;
+              }
+              return 0.02 - Math.random() * 0.04;
+            },
+
+            // This function controls how Y coordinate is updated,
+            // using current Y coordinate and previous result as input.
+            changeHeight = 0.3,
+            yStepFunc = function(y, prev) {
+              if (prev === 0) {
+                // When previously 0 was returned,
+                // now it's time to switch direction of Y step.
+                if (y > 0.5 * size[1]) {
+                  return -0.1;
+                }
+                return 0.1;
+              }
+              if (yPos > height - changeHeight || yPos < changeHeight) {
+                // Close to the boundary return 0 to make smoother turn.
+                return 0;
+              }
+              // In a typical situation, just return previous value.
+              return prev;
+            },
+
+            getRandomAA = function() {
+              return Math.floor(aaCount * Math.random()) + aminoacidsHelper.firstElementID;
+            };
+
+        // Process arguments.
+        if (aaSequence !== undefined) {
+          expectedLength = aaSequence.length;
         }
-      },
 
-      initializeElements: function(elems) {
-        var num = elems.length,
-            i;
-
-        createElementsArray(num);
-
-        for (i = 0; i < num; i++) {
-          engine.addElement(elems[i]);
+        // First, make sure that model is empty.
+        while(N > 0) {
+          engine.removeAtom(N - 1);
         }
-        elementsHaveBeenCreated = true;
-      },
 
-      initializeRadialBonds: function(props) {
-        var num = props.atom1Index.length,
-            i;
+        // Start from the lower-left corner, add first Amino Acid.
+        xPos = 0.1;
+        yPos = 0.1;
+        el = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[0]) : getRandomAA();
+        engine.addAtom({x: xPos, y: yPos, element: el, visible: true});
+        engine.minimizeEnergy();
 
-        radialBondMatrix = [];
-        createRadialBondsArray(num);
+        // Add remaining amino acids.
+        for (i = 1; i < expectedLength; i++) {
+          xPos = x[N - 1];
+          yPos = y[N - 1];
 
-        for (i = 0; i < num; i++) {
-          engine.addRadialBond(
-            props.atom1Index[i],
-            props.atom2Index[i],
-            props.bondLength[i],
-            props.bondStrength[i],
-            props.bondStyle[i]
-          );
+          // Update step.
+          xStep = xStepFunc(yPos);
+          yStep = yStepFunc(yPos, yStep);
+
+          // Update coordinates of new AA.
+          xPos += xStep;
+          yPos += yStep;
+
+          if (xPos > width - 0.1) {
+            // No space left for new AA. Stop here, return
+            // real number of created AAs.
+            return i;
+          }
+
+          el = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[i]) : getRandomAA();
+          engine.addAtom({x: xPos, y: yPos, element: el, visible: true});
+          // Length of bond is based on the radii of AAs.
+          bondLen = (radius[N - 1] + radius[N - 2]) * 1.25;
+          // 10000 is a typical strength for bonds between AAs.
+          engine.addRadialBond({atom1: N - 1, atom2: N - 2, length: bondLen, strength: 10000});
+
+          engine.minimizeEnergy();
         }
-      },
 
-      initializeAngularBonds: function(props) {
-        var num = props.atom1Index.length,
-            i;
-
-        createAngularBondsArray(num);
-
-        for (i = 0; i < num; i++) {
-          engine.addAngularBond(
-            props.atom1Index[i],
-            props.atom2Index[i],
-            props.atom3Index[i],
-            props.bondAngle[i],
-            props.bondStrength[i]
-          );
+        // Center protein (X coords only).
+        // Use last X coordinate to calculate available space on the right.
+        xStep = (width - xPos) / 2;
+        // Shift all AAs.
+        for (i = 0; i < N; i++) {
+          x[i] += xStep;
         }
+
+        // Return number of created AA.
+        return i;
       },
 
-      createVdwPairsArray: function() {
-        var maxNumPairs = N * (N-1) / 2;
-
-        vdwPairs = engine.vdwPairs = [];
-
-        vdwPairs[VDW_INDICES.COUNT] = N_vdwPairs;
-        vdwPairs[VDW_INDICES.ATOM1] = vdwPairAtom1Index = arrays.create(maxNumPairs, 0, uint16);
-        vdwPairs[VDW_INDICES.ATOM2] = vdwPairAtom2Index = arrays.create(maxNumPairs, 0, uint16);
-
-        engine.updateVdwPairsArray();
-      },
-
-      updateVdwPairsArray: function() {
+      getVdwPairsArray: function() {
         var i,
             j,
             dx,
@@ -1773,7 +2806,7 @@ define(function (require, exports, module) {
             index_j,
             sig,
             eps,
-            distanceCutoff_sq = 4; // vdwLinesRatio * vdwLinesRatio : 2*2 for long distance cutoff
+            distanceCutoff_sq = vdwLinesRatio * vdwLinesRatio;
 
         N_vdwPairs = 0;
 
@@ -1803,6 +2836,10 @@ define(function (require, exports, module) {
               eps = epsilon_i * epsilon_j;
 
               if (r_sq < sig * distanceCutoff_sq && eps > 0) {
+                if (N_vdwPairs + 1 > vdwPairs.atom1.length) {
+                  extendArrays(vdwPairs, (N_vdwPairs + 1) * 2);
+                  assignShortcutReferences.vdwPairs();
+                }
                 vdwPairAtom1Index[N_vdwPairs] = i;
                 vdwPairAtom2Index[N_vdwPairs] = j;
                 N_vdwPairs++;
@@ -1811,7 +2848,8 @@ define(function (require, exports, module) {
           }
         }
 
-        vdwPairs[VDW_INDICES.COUNT] = N_vdwPairs;
+        vdwPairs.count = N_vdwPairs;
+        return vdwPairs;
       },
 
       relaxToTemperature: function(T) {
@@ -1829,111 +2867,153 @@ define(function (require, exports, module) {
         }
       },
 
+      // Velocity Verlet integration scheme.
+      // See: http://en.wikipedia.org/wiki/Verlet_integration#Velocity_Verlet
+      // The current implementation is:
+      // 1. Calculate: v(t + 0.5 * dt) = v(t) + 0.5 * a(t) * dt
+      // 2. Calculate: r(t + dt) = r(t) + v(t + 0.5 * dt) * dt
+      // 3. Derive a(t + dt) from the interaction potential using r(t + dt)
+      // 4. Calculate: v(t + dt) = v(t + 0.5 * dt) + 0.5 * a(t + dt) * dt
       integrate: function(duration, _dt) {
+        var steps, iloop, tStart = time;
 
-        var radius,
-            inverseMass;
+        // How much time to integrate over, in fs.
+        if (duration === undefined)  duration = 100;
 
-        if (!atomsHaveBeenCreated) {
-          throw new Error("md2d: integrate called before atoms created.");
+        // The length of an integration timestep, in fs.
+        if (_dt === undefined) _dt = 1;
+
+        dt = _dt;        // dt is a closure variable that helpers need access to
+        dt_sq = dt * dt; // the squared time step is also needed by some helpers.
+
+        // Prepare optimization structures to ensure that they are valid during integration.
+        // Note that when user adds or removes various objects (like atoms, bonds), such structures
+        // can become invalid. That's why we update them each time before integration.
+        // It's also safer and easier to do recalculate each structure than to modify it while
+        // engine state is changed by user.
+        calculateOptimizationStructures();
+
+        // Calculate accelerations a(t), where t = 0.
+        // Later this is not necessary, as a(t + dt) from
+        // previous step is used as a(t) in the current step.
+        if (time === 0) {
+          updateParticlesAccelerations();
         }
 
-        // How much time to integrate over, in fs
-        if (duration == null)  duration = 100;
+        // Number of steps.
+        steps = Math.floor(duration / dt);
 
-        // The length of an integration timestep, in fs
-        if (_dt == null) _dt = 1;
+        // Zero values of pressure probes at the beginning of
+        // each integration step.
+        zeroPressureValues();
 
-        dt = _dt;       // dt is a closure variable that helpers need access to
-        dt_sq = dt*dt;  // the squared time step is also needed by some helpers
+        for (iloop = 1; iloop <= steps; iloop++) {
+          time = tStart + iloop * dt;
 
-        // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
-        // assuming just one radius as below
-        radius = elementRadius[0];
+          // Calculate v(t + 0.5 * dt) using v(t) and a(t).
+          halfUpdateVelocity();
 
-        var t_start = time,
-            n_steps = Math.floor(duration/dt),  // number of steps
-            iloop,
-            i,
-            x_prev,
-            y_prev;
+          // Update r(t + dt) using v(t + 0.5 * dt).
+          updateParticlesPosition();
 
-        for (iloop = 1; iloop <= n_steps; iloop++) {
-          time = t_start + iloop*dt;
+          // Accumulate accelerations into a(t + dt) from all possible interactions, fields
+          // and forces connected with atoms.
+          updateParticlesAccelerations();
 
-          for (i = 0; i < N; i++) {
-            x_prev = x[i];
-            y_prev = y[i];
+          // Clearing the acceleration here from pinned atoms will cause the acceleration
+          // to be zero for both halfUpdateVelocity methods and updateParticlesPosition, freezing the atom.
+          pinAtoms();
 
-            // Update r(t+dt) using v(t) and a(t)
-            updatePosition(i);
-            bounceOffWalls(i);
-            bounceOffObstacles(i, x_prev, y_prev);
+          // Calculate v(t + dt) using v(t + 0.5 * dt) and a(t + dt).
+          halfUpdateVelocity();
 
-            // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
-            halfUpdateVelocity(i);
+          // Now that we have velocity v(t + dt), update speed.
+          updateParticlesSpeed();
 
-            // Zero out a(t, i) for accumulation of forces into a(t+dt, i)
-            ax[i] = ay[i] = 0;
+          // Move obstacles using very simple integration.
+          updateObstaclesPosition();
 
-            // Accumulate _forces_ for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i)
-            // won't be usable until this loop completes; it won't have contributions from a(t+dt, k)
-            // for k > i
-            updatePairwiseForces(i);
-          }
-
-          //
-          // ax and ay are FORCES below this point
-          //
-
-          // Move obstacles
-          for (i = 0; i < N_obstacles; i++) {
-            updateObstaclePosition(i);
-          }
-
-          // Accumulate forces from radially bonded interactions into a(t+dt)
-          updateRadialBondForces();
-
-          // Accumulate forces from angularly bonded interactions into a(t+dt)
-          updateAngularBondForces();
-
-          // Accumulate forces from spring forces into a(t+dt)
-          updateSpringForces();
-
-          // Accumulate drag forces into a(t+dt)
-          updateFrictionForces();
-
-          // Convert ax, ay from forces to accelerations
-          for (i = 0; i < N; i++) {
-            inverseMass = 1/mass[i];
-            ax[i] *= inverseMass;
-            ay[i] *= inverseMass;
-          }
-
-          //
-          // ax and ay are ACCELERATIONS below this point
-          //
-
-          // Accumulate optional gravitational accelerations into a(t+dt)
-          updateGravitationalAccelerations();
-
-          for (i = 0; i < N; i++) {
-            // Clearing the acceleration here from pinned atoms will cause the acceleration
-            // to be zero for both halfUpdateVelocity methods and updatePosition, freezing the atom
-            if (pinned[i]) pinAtom(i);
-
-            // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
-            halfUpdateVelocity(i);
-
-            // Now that we have velocity, update speed
-            speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
-          }
-
+          // Adjust temperature, e.g. when heat bath is enabled.
           adjustTemperature();
+
+          // If solvent is different from vacuum (water or oil), ensure
+          // that the total momentum of each molecule is equal to zero.
+          // This prevents amino acids chains from drifting towards one
+          // boundary of the model.
+          if (solventForceType !== 0) {
+            zeroTotalMomentumOfMolecules();
+          }
+
         } // end of integration loop
+
+        // Collisions between particles and obstacles are collected during
+        // updateParticlesPosition() execution. This function takes into account
+        // time which passed and converts raw data from pressure probes to value
+        // in Bars.
+        calculateFinalPressureValues(duration);
+
+        // After each integration loop try to create new disulfide bonds between cysteines.
+        // It's enough to do it outside the inner integration loop (performance).
+        createDisulfideBonds();
       },
 
+      // Minimize energy using steepest descend method.
+      minimizeEnergy: function () {
+            // Maximal length of displacement during one step of minimization.
+        var stepLength   = 1e-3,
+            // Maximal acceleration allowed.
+            accThreshold = 1e-4,
+            // Maximal number of iterations allowed.
+            iterLimit    = 3000,
+            maxAcc, delta, xPrev, yPrev, i, iter;
+
+        // Calculate accelerations.
+        updateParticlesAccelerations();
+        // Get maximum value.
+        maxAcc = 0;
+        for (i = 0; i < N; i++) {
+          if (maxAcc < Math.abs(ax[i]))
+            maxAcc = Math.abs(ax[i]);
+          if (maxAcc < Math.abs(ay[i]))
+            maxAcc = Math.abs(ay[i]);
+        }
+
+        iter = 0;
+        while (maxAcc > accThreshold && iter < iterLimit) {
+          iter++;
+
+          delta = stepLength / maxAcc;
+          for (i = 0; i < N; i++) {
+            xPrev = x[i];
+            yPrev = y[i];
+            x[i] += ax[i] * delta;
+            y[i] += ay[i] * delta;
+
+            // Keep atoms in bounds.
+            bounceParticleOffWalls(i);
+            // Bounce off obstacles, but DO NOT update pressure probes.
+            bounceParticleOffObstacles(i, xPrev, yPrev, false);
+          }
+
+          // Calculate accelerations.
+          updateParticlesAccelerations();
+          // Get maximum value.
+          maxAcc = 0;
+          for (i = 0; i < N; i++) {
+            if (maxAcc < Math.abs(ax[i]))
+              maxAcc = Math.abs(ax[i]);
+            if (maxAcc < Math.abs(ay[i]))
+              maxAcc = Math.abs(ay[i]);
+          }
+        }
+      },
+
+      // Total mass of all particles in the system, in Dalton (atomic mass units).
       getTotalMass: function() {
+        var totalMass = 0, i;
+        for (i = 0; i < N; i++) {
+          totalMass += mass[i];
+        }
         return totalMass;
       },
 
@@ -1943,6 +3023,22 @@ define(function (require, exports, module) {
 
       getNumberOfAtoms: function() {
         return N;
+      },
+
+      getNumberOfElements: function() {
+        return N_elements;
+      },
+
+      getNumberOfObstacles: function() {
+        return N_obstacles;
+      },
+
+      getNumberOfRadialBonds: function() {
+        return N_radialBonds;
+      },
+
+      getNumberOfAngularBonds: function() {
+        return N_angularBonds;
       },
 
       /**
@@ -1960,8 +3056,10 @@ define(function (require, exports, module) {
             r_sq, rij, rkj,
             k, dr, angleDiff,
             gravPEInMWUnits,
-            KEinMWUnits,       // total kinetic energy, in MW units
-            PE;                // potential energy, in eV
+            // Total kinetic energy, in MW units.
+            KEinMWUnits,
+            // Potential energy, in eV.
+            PE;
 
         // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
         // integration loop!
@@ -1990,7 +3088,7 @@ define(function (require, exports, module) {
               PE -=ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
             }
             if (useCoulombInteraction && hasChargedAtoms) {
-              PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
+              PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j], dielectricConst, realisticDielectricEffect);
             }
           }
         }
@@ -2019,7 +3117,7 @@ define(function (require, exports, module) {
             PE += ljCalculator[el1][el2].potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction && charge[i1] && charge[i2]) {
-            PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2]);
+            PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2], dielectricConst, realisticDielectricEffect);
           }
 
           // Also save the updated position of the two bonded atoms
@@ -2058,24 +3156,51 @@ define(function (require, exports, module) {
           PE += 0.5 * angularBondStrength[i] * angleDiff * angleDiff;
         }
 
-        // Obstacles.
+        // update PE for 'restraint' bonds
+        for (i = 0; i < N_restraints; i++) {
+          i1 = restraintAtomIndex[i];
+          el1 = element[i1];
+
+          dx = restraintX0[i] - x[i1];
+          dy = restraintY0[i] - y[i1];
+          r_sq = dx*dx + dy*dy;
+
+          // eV/nm^2
+          k = restraintK[i];
+
+          // nm
+          dr = Math.sqrt(r_sq);
+
+          PE += 0.5*k*dr*dr;
+       }
+
+        // Process all obstacles.
         for (i = 0; i < N_obstacles; i++) {
+
           if (obstacleMass[i] !== Infinity) {
+            // Gravitational potential energy.
+            if (gravitationalField) {
+              gravPEInMWUnits = obstacleMass[i] * gravitationalField * obstacleY[i];
+              PE += constants.convert(gravPEInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+            }
+            // Kinetic energy.
             KEinMWUnits += 0.5 * obstacleMass[i] *
                 (obstacleVX[i] * obstacleVX[i] + obstacleVY[i] * obstacleVY[i]);
           }
         }
 
+        // Update temperature.
+        T = convertKEtoT(KEinMWUnits, N);
+
         // State to be read by the rest of the system:
-        state.time     = time;
-        state.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
-        state.PE       = PE;
-        state.KE       = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
-        state.temperature = T;
-        state.pCM      = [px_CM, py_CM];
-        state.CM       = [x_CM, y_CM];
-        state.vCM      = [vx_CM, vy_CM];
-        state.omega_CM = omega_CM;
+        state.time           = time;
+        state.PE             = PE;
+        state.KE             = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+        state.temperature    = T;
+        state.pCM            = [px_CM, py_CM]; // TODO: GC optimization? New array created each time.
+        state.CM             = [x_CM, y_CM];
+        state.vCM            = [vx_CM, vy_CM];
+        state.omega_CM       = omega_CM;
       },
 
 
@@ -2118,9 +3243,10 @@ define(function (require, exports, module) {
 
             if (useCoulombInteraction && hasChargedAtoms && testCharge) {
               r = Math.sqrt(r_sq);
-              PE += -coulomb.potential(r, testCharge, charge[i]);
+              PE += -coulomb.potential(r, testCharge, charge[i], dielectricConst, realisticDielectricEffect);
               if (calculateGradient) {
-                f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testCharge, charge[i]);
+                f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testCharge, charge[i],
+                  dielectricConst, realisticDielectricEffect);
               }
             }
 
@@ -2231,7 +3357,7 @@ define(function (require, exports, module) {
         var bondedAtoms = [],
             j, jj;
         if (radialBonds) {
-          for (j = 0, jj = radialBondAtom1Index.length; j < jj; j++) {
+          for (j = 0, jj = N_radialBonds; j < jj; j++) {
             // console.log("looking at bond from "+radialBonds)
             if (radialBondAtom1Index[j] === i) {
               bondedAtoms.push(radialBondAtom2Index[j]);
@@ -2252,9 +3378,70 @@ define(function (require, exports, module) {
         return constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
       },
 
+      getAtomNeighbors: function(idx) {
+        var res = [],
+            list = neighborList.getList(),
+            i, len;
+
+        for (i = neighborList.getStartIdxFor(idx), len = neighborList.getEndIdxFor(idx); i < len; i++) {
+          res.push(list[i]);
+        }
+        return res;
+      },
+
+      getNeighborList: function () {
+        return neighborList;
+      },
+
       setViscosity: function(v) {
         viscosity = v;
+      },
+
+      // ######################################################################
+      //                State definition of the engine
+
+      // Return array of objects defining state of the engine.
+      // Each object in this list should implement following interface:
+      // * .clone()        - returning complete state of that object.
+      // * .restore(state) - restoring state of the object, using 'state'
+      //                     as input (returned by clone()).
+      getState: function() {
+        return [
+          // Use wrapper providing clone-restore interface to save the hashes-of-arrays
+          // that represent model state.
+          new CloneRestoreWrapper(elements),
+          new CloneRestoreWrapper(atoms),
+          new CloneRestoreWrapper(obstacles),
+          new CloneRestoreWrapper(radialBonds),
+          new CloneRestoreWrapper(angularBonds),
+          new CloneRestoreWrapper(restraints),
+          new CloneRestoreWrapper(springForces),
+          // PairwiseLJProperties class implements Clone-Restore Interface.
+          pairwiseLJProperties,
+          // Save time value.
+          // Create one-line wrapper to provide required interface.
+          {
+            clone: function () {
+              return time;
+            },
+            restore: function(state) {
+              engine.setTime(state);
+            }
+          }
+        ];
       }
     };
+
+    // Initialization
+    initialize();
+
+    // Export initialized objects to Public API.
+    // To ensure that client code always has access to these public properties,
+    // they should be initialized  only once during the engine lifetime (in the initialize method).
+    engine.pairwiseLJProperties = pairwiseLJProperties;
+    engine.geneticProperties = geneticProperties;
+
+    // Finally, return Public API.
+    return engine;
   };
 });

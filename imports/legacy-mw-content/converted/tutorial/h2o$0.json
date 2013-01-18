@@ -1,16 +1,88 @@
 {
-  "temperature_control": true,
+  "type": "md2d",
   "width": 4,
   "height": 2.5,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": false,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": true,
+  "targetTemperature": 300,
   "gravitationalField": false,
-  "showClock": true,
-  "viewRefreshInterval": 50,
   "timeStep": 0.20000000298023224,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": true,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "textBoxes": [
+      {
+        "text": "A H free radical to initiate the chain reactions",
+        "x": 1.51,
+        "y": 1.54,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(255,192,128)"
+      },
+      {
+        "text": "Button for adding H",
+        "x": 1.03,
+        "y": 2.27,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "Button for adding O",
+        "x": 1.74,
+        "y": 2.29,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "Button for copying objects",
+        "x": 0.03,
+        "y": 2.26,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "Run button",
+        "x": 2.29,
+        "y": 0.3,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "Stop button",
+        "x": 1.45,
+        "y": 0.3,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "Reset button",
+        "x": 0.58,
+        "y": 0.29,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      }
+    ]
+  },
   "elements": [
     {
       "id": 0,
@@ -43,6 +115,7 @@
       "epsilon": -5
     }
   ],
+  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       2.4359976328517816,
@@ -550,7 +623,7 @@
     ]
   },
   "radialBonds": {
-    "atom1Index": [
+    "atom1": [
       0,
       10,
       14,
@@ -582,7 +655,7 @@
       56,
       58
     ],
-    "atom2Index": [
+    "atom2": [
       1,
       11,
       15,
@@ -614,7 +687,7 @@
       57,
       59
     ],
-    "bondLength": [
+    "length": [
       0.18000000715255737,
       0.12000000476837158,
       0.12000000476837158,
@@ -646,7 +719,7 @@
       0.12000000476837158,
       0.12000000476837158
     ],
-    "bondStrength": [
+    "strength": [
       399.9999910593033,
       199.99999552965164,
       199.99999552965164,
@@ -678,7 +751,7 @@
       199.99999552965164,
       199.99999552965164
     ],
-    "bondStyle": [
+    "type": [
       101,
       101,
       101,
@@ -712,21 +785,20 @@
     ]
   },
   "angularBonds": {
-    "atom1Index": [
+    "atom1": [
       38
     ],
-    "atom2Index": [
+    "atom2": [
       53
     ],
-    "atom3Index": [
+    "atom3": [
       0
     ],
-    "bondAngle": [
+    "angle": [
       1.9106121063232422
     ],
-    "bondStrength": [
+    "strength": [
       50
     ]
-  },
-  "temperature": 300
+  }
 }

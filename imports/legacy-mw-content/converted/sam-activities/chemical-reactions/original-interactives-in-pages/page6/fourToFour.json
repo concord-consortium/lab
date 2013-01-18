@@ -1,16 +1,36 @@
 {
-  "temperature_control": true,
+  "type": "md2d",
   "width": 2.45,
   "height": 2.8,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": false,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": true,
+  "targetTemperature": 4930,
   "gravitationalField": false,
-  "showClock": false,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false
+  },
   "elements": [
     {
       "id": 0,
@@ -43,6 +63,7 @@
       "epsilon": -5
     }
   ],
+  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       0.5492928775477565,
@@ -190,7 +211,7 @@
     ]
   },
   "radialBonds": {
-    "atom1Index": [
+    "atom1": [
       0,
       2,
       4,
@@ -200,7 +221,7 @@
       12,
       14
     ],
-    "atom2Index": [
+    "atom2": [
       1,
       3,
       5,
@@ -210,7 +231,7 @@
       13,
       15
     ],
-    "bondLength": [
+    "length": [
       0.1680000066757202,
       0.1680000066757202,
       0.1680000066757202,
@@ -220,7 +241,7 @@
       0.1680000066757202,
       0.1680000066757202
     ],
-    "bondStrength": [
+    "strength": [
       2000,
       2000,
       2000,
@@ -230,7 +251,7 @@
       2000,
       2000
     ],
-    "bondStyle": [
+    "type": [
       101,
       101,
       101,
@@ -240,6 +261,5 @@
       101,
       101
     ]
-  },
-  "temperature": 4930
+  }
 }

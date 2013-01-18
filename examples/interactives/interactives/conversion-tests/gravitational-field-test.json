@@ -1,12 +1,17 @@
 {
-  "title": "Testing Gravitational Field",
-  "about": "Interactive example",
-  "model": {
-    "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/gravitational-field-test$0.json",
-    "viewOptions": {
-      "controlButtons": "play_reset"
+  "title": "Gravitational Fields",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "gravitational-field-test$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/gravitational-field-test$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
     }
-  },
+  ],
   "components": [
     {
       "type": "pulldown",

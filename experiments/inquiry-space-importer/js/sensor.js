@@ -124,24 +124,44 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
   // Before appending the applet, set this value with the path to an object that will receive applet callbacks.
   listenerPath: '',
 
-  // path to otml file configuring the type of sensor
-  otmlPath: '',
+  // Before appending the applet, set this to the sensor type
+  // supported values are:
+  //   "temperature"
+  //   "light"
+  //   "force 5n"
+  //   "force 50n"
+  //   "co2"
+  //   "o2"
+  //   "ph"
+  //   "distance"
+  sensorType: '',
+
+  deviceType: 'golink',
 
   appletId:     'goio-applet',
   classNames:   'applet sensor-applet',
 
-  jarUrls:     ['org/concord/sensor-native/sensor-native.jar',
-                'org/concord/otrunk/otrunk.jar',
-                'org/concord/framework/framework.jar',
-                'org/concord/frameworkview/frameworkview.jar',
-                'jug/jug/jug.jar',
-                'jdom/jdom/jdom.jar',
+  jarUrls:     ['com/sun/jna/jna.jar',
                 'org/concord/sensor/sensor.jar',
-                'org/concord/data/data.jar',
+                'org/concord/sensor/goio-jna/goio-jna.jar',
+                'org/concord/sensor/sensor-vernier/sensor-vernier.jar',
                 'org/concord/sensor/sensor-applets/sensor-applets.jar'],
 
-  code:         'org.concord.sensor.applet.OTSensorApplet',
-  codebase:     '/jnlp',
+  code:         'org.concord.sensor.applet.SensorApplet',
+
+  getCodebase: function(pathname) {
+    var IMPORTER_SUFFIX = "experiments/inquiry-space-importer/",
+        IMPORTER_RE = new RegExp("/(.*/)?" + IMPORTER_SUFFIX),
+        match = pathname && pathname.match(IMPORTER_RE),
+        prefix;
+
+    if (!match) {
+      return "/jnlp";
+    }
+
+    prefix = match[1] || '';
+    return '/' + prefix + 'jnlp';
+  },
 
   getHTML: function() {
     return [
@@ -150,25 +170,28 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
        'class="',    this.classNames,         '" ',
        'archive="',  this.jarUrls.join(', '), '" ',
        'code="',     this.code,               '" ',
-       'codebase="', this.codebase,            '" ',
+       'codebase="', this.getCodebase(document.location.pathname), '" ',
        'width="1px" ',
        'height="1px" ',
        'MAYSCRIPT="true" ',
      '>',
-        '<param name="resource" value="',      this.otmlPath,     '" />',
-        '<param name="listenerPath" value="',  this.listenerPath, '" />',
-        '<param name="name" value="',          this.appletId,     '" />',
+        '<param name="MAYSCRIPT" value="true" />',
       '</applet>'
     ].join('');
   },
 
   testAppletReady: function() {
     try {
-      this.appletInstance.initSensorInterface( this.listenerPath );
+      this.initializeSensor();
     } catch(e) {
       return false;
     }
     return true;
+  },
+
+  initializeSensor: function() {
+    var req = this.appletInstance.getSensorRequest(this.sensorType);
+    this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
   },
 
   // In some browsers, calling an applet method from within a callback triggered by

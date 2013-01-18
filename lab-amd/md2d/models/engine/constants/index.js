@@ -1,4 +1,4 @@
-/*globals define: true */
+/*global define: true */
 /*jslint loopfunc: true */
 
 /** A list of physical constants. To access any given constant, require() this module

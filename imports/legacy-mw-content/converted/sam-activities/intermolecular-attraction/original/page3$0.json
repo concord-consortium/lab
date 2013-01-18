@@ -1,16 +1,35 @@
 {
-  "temperature_control": false,
+  "type": "md2d",
   "width": 4,
   "height": 2.1,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": true,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
   "gravitationalField": false,
-  "showClock": false,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "rgba(225,239,222,255)",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": true,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false
+  },
   "elements": [
     {
       "id": 0,
@@ -43,6 +62,7 @@
       "epsilon": -5
     }
   ],
+  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       2.8525669853980578,
@@ -414,7 +434,7 @@
     ]
   },
   "radialBonds": {
-    "atom1Index": [
+    "atom1": [
       0,
       2,
       4,
@@ -438,7 +458,7 @@
       40,
       42
     ],
-    "atom2Index": [
+    "atom2": [
       1,
       3,
       5,
@@ -462,7 +482,7 @@
       41,
       43
     ],
-    "bondLength": [
+    "length": [
       0.25,
       0.25,
       0.25,
@@ -486,7 +506,7 @@
       0.25,
       0.25
     ],
-    "bondStrength": [
+    "strength": [
       2000,
       2000,
       2000,
@@ -510,7 +530,7 @@
       2000,
       2000
     ],
-    "bondStyle": [
+    "type": [
       101,
       101,
       101,

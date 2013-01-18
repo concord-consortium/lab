@@ -1,16 +1,139 @@
 {
-  "temperature_control": false,
+  "type": "md2d",
   "width": 5,
   "height": 2.5,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": false,
-  "VDWLinesRatio": 2,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
   "gravitationalField": false,
-  "showClock": false,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": false,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "AtomModel.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 3.97,
+        "imageY": 2.09
+      }
+    ],
+    "textBoxes": [
+      {
+        "text": "A text box",
+        "x": 0.77,
+        "y": 0.45,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(255,192,0)"
+      },
+      {
+        "text": "An image",
+        "x": 3.64,
+        "y": 2.41,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(255,255,0)"
+      },
+      {
+        "text": "A line",
+        "x": 2.91,
+        "y": 1.95,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "An interacting object of arbitrary shape",
+        "x": 1.82,
+        "y": 1.64,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "An obstacle",
+        "x": 2.98,
+        "y": 1.1,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "An atom",
+        "x": 1.76,
+        "y": 0.84,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "hostType": "Atom",
+        "hostIndex": 5
+      },
+      {
+        "text": "A molecule",
+        "x": 3.43,
+        "y": 0.36,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "hostType": "Atom",
+        "hostIndex": 8
+      },
+      {
+        "text": "A radial bond",
+        "x": 0.6,
+        "y": 1.07,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "An angular bond",
+        "x": 0.57,
+        "y": 1.94,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "A restrained atom",
+        "x": 2.06,
+        "y": 0.36,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "hostType": "Atom",
+        "hostIndex": 3
+      },
+      {
+        "text": "A rectangle",
+        "x": 1.14,
+        "y": 2.16,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      },
+      {
+        "text": "An ellipse",
+        "x": 2.74,
+        "y": 2.41,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      }
+    ]
+  },
   "elements": [
     {
       "id": 0,
@@ -43,6 +166,7 @@
       "epsilon": -5
     }
   ],
+  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       3.644752378026955,
@@ -334,7 +458,7 @@
     ]
   },
   "radialBonds": {
-    "atom1Index": [
+    "atom1": [
       6,
       7,
       9,
@@ -362,7 +486,7 @@
       31,
       33
     ],
-    "atom2Index": [
+    "atom2": [
       8,
       8,
       10,
@@ -390,7 +514,7 @@
       32,
       32
     ],
-    "bondLength": [
+    "length": [
       0.2,
       0.2,
       0.14317821063276354,
@@ -418,7 +542,7 @@
       0.2,
       0.2
     ],
-    "bondStrength": [
+    "strength": [
       10000,
       10000,
       5000,
@@ -446,7 +570,7 @@
       10000,
       10000
     ],
-    "bondStyle": [
+    "type": [
       101,
       101,
       101,
@@ -476,7 +600,7 @@
     ]
   },
   "angularBonds": {
-    "atom1Index": [
+    "atom1": [
       6,
       9,
       10,
@@ -502,7 +626,7 @@
       30,
       31
     ],
-    "atom2Index": [
+    "atom2": [
       7,
       11,
       12,
@@ -528,7 +652,7 @@
       10,
       33
     ],
-    "atom3Index": [
+    "atom3": [
       8,
       10,
       11,
@@ -554,7 +678,7 @@
       9,
       32
     ],
-    "bondAngle": [
+    "angle": [
       2.0943951023931953,
       2.920278211242002,
       2.7886022657628824,
@@ -580,7 +704,7 @@
       2.69940865317115,
       2.0943951023931953
     ],
-    "bondStrength": [
+    "strength": [
       200,
       200,
       200,
@@ -607,16 +731,20 @@
       200
     ]
   },
-  "images": [
-    {
-      "imageUri": "AtomModel.gif",
-      "imageHostIndex": 0,
-      "imageHostType": "",
-      "imageLayer": 1,
-      "imageX": 397,
-      "imageY": 41
-    }
-  ],
+  "restraints": {
+    "atomIndex": [
+      3
+    ],
+    "k": [
+      2000
+    ],
+    "x0": [
+      2.86
+    ],
+    "y0": [
+      0.7
+    ]
+  },
   "obstacles": {
     "x": [
       2.78
@@ -645,8 +773,20 @@
     "width": [
       0.98
     ],
-    "density": [
-      120000
+    "mass": [
+      39984
+    ],
+    "westProbe": [
+      false
+    ],
+    "northProbe": [
+      false
+    ],
+    "eastProbe": [
+      false
+    ],
+    "southProbe": [
+      false
     ],
     "color": [
       [

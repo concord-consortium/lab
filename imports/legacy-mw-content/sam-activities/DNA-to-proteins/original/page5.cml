@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>From DNA to Proteins: How mutations work</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+
+ 
+    
+
+ 
+
+
+</text>
+<section start="0" end="22">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font size=&quot;5&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot;&gt;From 
+    DNA to Proteins:&lt;/font&gt;&lt;/strong&gt;&lt;font size=&quot;5&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot;&gt; 
+    How mutations work&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;a href=&quot;page4.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page5Selected.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot; marginheight=&quot;5&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;atomMainIdea.png&quot; height=&quot;58&quot; width=&quot;98&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;b&gt;What is a mutation?&lt;/b&gt; A mutation is a change in the DNA 
+          sequence. Germline mutations, which can affect reproductive cells, 
+          can be passed on to offspring. Somatic mutations, which affect other 
+          cells, cannot be passed on.
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="11">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>330.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;table&gt;
+      &lt;tr valign=&quot;top&quot;&gt;
+        &lt;td&gt;
+          &lt;b&gt;What causes mutations?&lt;/b&gt;
+
+          &lt;p&gt;
+            DNA can be damaged by radiation or certain chemicals. Errors in 
+            the DNA replication process can also cause mutations.
+          &lt;/p&gt;
+          &lt;br&gt;
+          &lt;b&gt;What are the different types of mutations?&lt;/b&gt;
+
+          &lt;ul&gt;
+            &lt;li&gt;
+              When one nucleotide is replaced with another, it is called a &lt;b&gt;substitution&lt;/b&gt; 
+              mutation.&lt;br&gt;For example, changing ATCG to AT&lt;font color=&quot;red&quot;&gt;A&lt;/font&gt;G.
+            &lt;/li&gt;
+            &lt;br&gt;
+            
+
+            &lt;li&gt;
+              When a nucleotide is added into the sequence, it is called an &lt;b&gt;insertion&lt;/b&gt; 
+              mutation.&lt;br&gt;For example, changing ATCG to AT&lt;font color=&quot;red&quot;&gt;G&lt;/font&gt;CG.
+            &lt;/li&gt;
+            &lt;br&gt;
+            
+
+            &lt;li&gt;
+              When a nucleotide is lost from the DNA sequence, it is called a &lt;b&gt;deletion&lt;/b&gt; 
+              mutation.&lt;br&gt;For example, changing ATCG to ACG.
+            &lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;mutations_intro.gif&quot; height=&quot;274&quot; width=&quot;224&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="16">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>3</row>
+<width>366</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;arial&quot; marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;Make a prediction: which mutation types do you think will most 
+    likely cause the biggest changes in the translated protein? (Check ALL 
+    that apply.)&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>substitution</choice>
+<choice>insertion</choice>
+<choice>deletion</choice>
+<answer>1 2</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator- </script>
+</component></content>
+
+<content start="12" end="14">
+</content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>372</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;b&gt;&lt;strong&gt;&lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;Explain the 
+    reasoning behind your prediction. (In the rest of this activity, you will 
+    learn how to test this prediction.)&lt;/font&gt;&lt;/strong&gt;&lt;/b&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<Alignment>1</Alignment>
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="19">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;a href=&quot;page4.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page5Selected.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<content start="20" end="21">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="21" end="22">
+</paragraph>
+</section>
+</document>

@@ -1,16 +1,52 @@
 {
-  "temperature_control": false,
+  "type": "md2d",
   "width": 3.6,
   "height": 2.5,
-  "viscosity": 1,
-  "keShading": false,
-  "chargeShading": false,
-  "showVDWLines": true,
-  "VDWLinesRatio": 1.67,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
   "gravitationalField": false,
-  "showClock": true,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": true,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": true,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "textBoxes": [
+      {
+        "text": "Internal gauge",
+        "x": 0.63,
+        "y": 1.77,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(0,255,0)"
+      },
+      {
+        "text": "External gauge",
+        "x": 1.84,
+        "y": 1.76,
+        "layer": 1,
+        "frame": "rounded rectangle"
+      }
+    ]
+  },
   "elements": [
     {
       "id": 0,
@@ -43,6 +79,7 @@
       "epsilon": -5
     }
   ],
+  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       1.6083879553998583,
@@ -150,13 +187,45 @@
       0.15,
       0.01
     ],
-    "density": [
+    "mass": [
       "Infinity",
       "Infinity",
       "Infinity",
       "Infinity",
       "Infinity",
       "Infinity"
+    ],
+    "westProbe": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      false
+    ],
+    "northProbe": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "eastProbe": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    "southProbe": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
     ],
     "color": [
       [
@@ -185,9 +254,9 @@
         255
       ],
       [
-        128,
-        128,
-        128
+        255,
+        255,
+        255
       ]
     ],
     "visible": [

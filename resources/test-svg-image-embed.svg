@@ -1,0 +1,66 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 400" preserveAspectRatio="xMinYMin meet">
+  <style type="text/css" >
+    <![CDATA[
+     @font-face {
+       font-family: "Open Sans";
+       font-style: normal;
+       font-weight: normal;
+       src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Regular-webfont.eot"), url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Regular-webfont.ttf") format("truetype"); }
+
+     @font-face {
+       font-family: "Open Sans";
+       font-style: normal;
+       font-weight: bold;
+       src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Bold-webfont.eot"), url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Bold-webfont.ttf") format("truetype"); }
+
+     @font-face {
+       font-family: "Open Sans";
+       font-style: italic;
+       font-weight: normal;
+       src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Italic-webfont.eot"), url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Italic-webfont.ttf") format("truetype"); }
+    ]]>
+  </style>
+  <g class="molecule-container-vis" transform="translate(25,20)">
+    <rect class="plot" width="450" height="350" style="fill: #eeeeee;"/>
+    <g transform="translate(40,210)">
+      <text fill="#B30000" style="font-family: 'Open Sans'; font-weight: bold; font-style: normal; font-size: 14px">Text using Open Sans font  embedded as a text element</text>
+    </g>
+    <g class="main-container">
+      <circle class="draggable" r="6.2500000931322575" cx="370.99170684814453" cy="114.24520611763002" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="362.81290650367737" cy="61.186492443084724" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="227.59582102298737" cy="299.900789745152" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="174.1224080324173" cy="20.32500505447388" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="22.69001491367817" cy="219.10151094198227" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="359.0585887432099" cy="255.12998923659325" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="399.7359871864319" cy="164.45076465606692" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="146.55034244060516" cy="294.1722497344017" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="342.90194511413574" cy="128.56227159500122" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="43.70224475860596" cy="128.90151143074036" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="197.8203505277634" cy="161.30080819129947" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="156.3175618648529" cy="18.419772386550903" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="201.94010436534882" cy="142.0755684375763" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="281.5331220626831" cy="135.97890734672546" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="205.37695288658142" cy="278.54591608047485" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="252.40388512611392" cy="71.9723105430603" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="56.26348778605461" cy="114.11350965499878" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="359.7654402256012" cy="299.6970070526004" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="234.74019765853885" cy="86.95036172866821" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="33.31107273697853" cy="242.81546473503113" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="110.11116951704025" cy="99.73618388175966" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="179.40914630889893" cy="259.4018653035164" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="53.614791482687004" cy="49.70526695251465" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="88.49442005157472" cy="166.23985767364502" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="161.7274731397629" cy="169.6213930845261" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="289.64489698410034" cy="46.63291573524475" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="52.59722098708153" cy="294.69539411365986" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="176.58312618732452" cy="177.9974400997162" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="334.19546484947205" cy="73.19724559783936" style="fill-opacity: 1;"/>
+      <circle class="draggable" r="6.2500000931322575" cx="297.26362228393555" cy="84.41892266273499" style="fill-opacity: 1;"/>
+    </g>
+    <g class="image-container-top">
+      <image x="251.25" y="12.50000000000001" xlink:href="pressureGauge.svg" width="168.75000000000003" height="41.25" pointer-events="none"/>
+    </g>
+    <text class="modelTimeLabel" x="5" y="307.5" style="text-anchor: start;">    0 (fs)</text>
+  </g>
+</svg>

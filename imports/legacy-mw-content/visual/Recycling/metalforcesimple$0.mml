@@ -343,7 +343,7 @@
       <boolean>false</boolean> 
      </void> 
      <void property="width"> 
-      <double>10.0</double> 
+      <double>4.0</double> 
      </void> 
      <void property="x"> 
       <double>5.0</double> 
@@ -362,20 +362,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1327106606000</long> 
+     <long>1354769152000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/stephen/Desktop/visual-mw-models/Interactives/Recycling/metalforcesimple$0.mml</string> 
+    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/visual/Recycling/metalforcesimple$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>87481</long> 
+    <long>87192</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/stephen/Desktop/visual-mw-models/Recycling</string> 
+    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/visual/Recycling</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
