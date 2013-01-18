@@ -193,7 +193,7 @@ ISImporter.appController = new ISImporter.Object({
   selecting: false,
 
   // could split interface controller from generic app container--but not yet.
-  $sensorTypeSelector: null,
+  $sensorSelector: null,
   $startButton: null,
   $stopButton: null,
   $resetButton: null,
@@ -212,20 +212,18 @@ ISImporter.appController = new ISImporter.Object({
 
   initInterface: function() {
     var self = this,
-        sensor,
         key;
 
-    this.$sensorTypeSelector = $('#sensor-type-selector');
+    this.$sensorSelector = $('#sensor-selector');
 
     for (key in ISImporter.sensors) {
       if (ISImporter.sensors.hasOwnProperty(key)) {
-        sensor = ISImporter.sensors[key];
-        this.addSensorTypeSelection(key, sensor.menuGroup, sensor.menuText);
+        this.addSensorSelection(key);
       }
     }
 
-    this.$sensorTypeSelector.on('change', function() {
-      self.sensorTypeChanged();
+    this.$sensorSelector.on('change', function() {
+      self.sensorChanged();
     });
 
     // Set up button handlers. Surely this boilerplate can be eliminated.
@@ -292,20 +290,21 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   // initialization
-  addSensorTypeSelection: function(sensorKey, menuGroup, menuText) {
-    var $el;
+  addSensorSelection: function(sensorKey) {
+    var sensor = ISImporter.sensors[sensorKey],
+        $el;
 
-    if (menuGroup.name == null) {
-      $el = this.$sensorTypeSelector;
+    if (sensor.menuGroup.name == null) {
+      $el = this.$sensorSelector;
     } else {
-      $el = this.$sensorTypeSelector.find('optgroup[label="' + menuGroup.name + '"]');
+      $el = this.$sensorSelector.find('optgroup[label="' + sensor.menuGroup.name + '"]');
       if ($el.length < 1) {
-        $el = $('<optgroup label="' + menuGroup.name + '"></optgroup>');
-        $el.appendTo( this.$sensorTypeSelector );
+        $el = $('<optgroup label="' + sensor.menuGroup.name + '"></optgroup>');
+        $el.appendTo( this.$sensorSelector );
       }
     }
 
-    $el.append('<option value="' + sensorKey + '">' + menuText + '</option>');
+    $el.append('<option value="' + sensorKey + '">' + sensor.menuText + '</option>');
   },
 
   setupGraph: function(title, yLabel, yMax, dataset) {},
@@ -336,14 +335,13 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   // events
-  sensorTypeChanged: function() {
-    var val        = this.getSensorTypeSelection(),
-        sensorInfo = ISImporter.sensors[val],
+  sensorChanged: function() {
+    var val        = this.getSensorSelection(),
         self       = this;
 
-    this.sensorType = val;
+    this.sensor = ISImporter.sensors[val];
 
-    if (this.currentApplet === sensorInfo.applet) {
+    if (this.currentApplet === this.sensor.applet) {
       return;
     }
 
@@ -354,7 +352,7 @@ ISImporter.appController = new ISImporter.Object({
       this.currentApplet.remove();
     }
 
-    this.currentApplet = sensorInfo.applet;
+    this.currentApplet = this.sensor.applet;
     this.currentAppletReady = false;
     this.currentApplet.on('sensorReady', function() {
       self.sensorAppletReady();
@@ -363,11 +361,11 @@ ISImporter.appController = new ISImporter.Object({
     this.dataset = new ISImporter.Dataset();
     this.dataset.setXIncrement(0.1);
 
-    this.setupRealtimeDisplay(sensorInfo.units);
+    this.setupRealtimeDisplay(this.sensor.units);
 
     ISImporter.graphController.setDataset( this.dataset );
-    ISImporter.graphController.setYMax( sensorInfo.yMax );
-    ISImporter.graphController.setTitle( sensorInfo.title + " Graph");
+    ISImporter.graphController.setYMax( this.sensor.yMax );
+    ISImporter.graphController.setTitle( this.sensor.title + " Graph");
 
     this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.append();
@@ -437,7 +435,7 @@ ISImporter.appController = new ISImporter.Object({
       }
     }
 
-    ISImporter.DGExporter.exportData(this.sensorType, data, metadata);
+    ISImporter.DGExporter.exportData(this.sensor.applet.sensorType, data, metadata);
 
     this.selecting = false;
 
@@ -466,8 +464,8 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   // accessors
-  getSensorTypeSelection: function() {
-    return this.$sensorTypeSelector.val();
+  getSensorSelection: function() {
+    return this.$sensorSelector.val();
   },
 
   getMetadataItemCount: function() {

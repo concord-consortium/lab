@@ -178,7 +178,7 @@ header h1 {
   display: inline-block;
 }
 
-#sensor-type-selector {
+#sensor-selector {
   position: absolute;
   top: 0.4em;
   left: 3.5em;
