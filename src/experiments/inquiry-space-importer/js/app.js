@@ -48,6 +48,7 @@ ISImporter.sensors = {
     title: "Distance",
     maxReading: 3,
     readingUnits: "m",
+    samplesPerSecond: 10,
     maxSeconds: 20
   },
 
@@ -62,6 +63,7 @@ ISImporter.sensors = {
     title: "Temperature",
     readingUnits: "°C",
     maxReading: 40,
+    samplesPerSecond: 10,
     maxSeconds: 20
   },
 
@@ -76,6 +78,7 @@ ISImporter.sensors = {
     title: "Light Intensity",
     readingUnits: "lux",
     maxReading: 2000,
+    samplesPerSecond: 10,
     maxSeconds: 20
     maxSeconds: 20
   },
@@ -91,6 +94,7 @@ ISImporter.sensors = {
     title: "Light Intensity",
     readingUnits: "lux",
     maxReading: 2000,
+    samplesPerSecond: 10,
     maxSeconds: 20
   }
 
@@ -385,7 +389,7 @@ ISImporter.appController = new ISImporter.Object({
     });
 
     this.dataset = new ISImporter.Dataset();
-    this.dataset.setXIncrement(0.1);
+    this.dataset.setXIncrement( 1 / (this.sensor.samplesPerSecond || 10) );
 
     this.setupRealtimeDisplay(this.sensor.readingUnits);
 
