@@ -829,51 +829,57 @@ var ROOT = "/examples",
       }
     }
 
+    function addEventListeners() {
+      addMessageHook("tick", function(props) {
+        updateModelEnergyGraph(props);
+      }, ['kineticEnergy','potentialEnergy']);
+
+      addMessageHook('play', function() {
+        if (modelEnergyGraph.number_of_points() && modelStepCounter() < modelEnergyGraph.number_of_points()) {
+          resetModelEnergyData(modelStepCounter());
+          modelEnergyGraph.new_data(modelEnergyData);
+        }
+        modelEnergyGraph.show_canvas();
+      });
+
+      addMessageHook('reset', function() {
+        renderModelEnergyGraph();
+      });
+
+      addMessageHook('stepForward', function() {
+        if (modelIsNewStep()) {
+          updateModelEnergyGraph();
+        } else {
+          modelEnergyGraph.updateOrRescale(modelStepCounter());
+          modelEnergyGraph.showMarker(modelStepCounter());
+        }
+      });
+
+      addMessageHook('stepBack', function() {
+        modelEnergyGraph.updateOrRescale(modelStepCounter());
+        modelEnergyGraph.showMarker(modelStepCounter());
+      });
+      // addMessageHook('seek', function() {});
+    }
+
+    function removeListeners() {
+      // remove listeners
+      removeMessageHook("tick");
+      removeMessageHook('play');
+      removeMessageHook('reset');
+      // removeMessageHook('seek');
+      removeMessageHook('stepForward');
+      removeMessageHook('stepBack');
+    }
+
     $showModelEnergyGraph.change(function() {
       var options;
       if (this.checked) {
-        addMessageHook("tick", function(props) {
-          updateModelEnergyGraph(props);
-        }, ['kineticEnergy','potentialEnergy']);
-
-        addMessageHook('play', function() {
-          if (modelEnergyGraph.number_of_points() && modelStepCounter() < modelEnergyGraph.number_of_points()) {
-            resetModelEnergyData(modelStepCounter());
-            modelEnergyGraph.new_data(modelEnergyData);
-          }
-          modelEnergyGraph.show_canvas();
-        });
-
-        addMessageHook('reset', function() {
-          renderModelEnergyGraph();
-        });
-
-        addMessageHook('stepForward', function() {
-          if (modelIsNewStep()) {
-            updateModelEnergyGraph();
-          } else {
-            modelEnergyGraph.updateOrRescale(modelStepCounter());
-            modelEnergyGraph.showMarker(modelStepCounter());
-          }
-        });
-
-        addMessageHook('stepBack', function() {
-          modelEnergyGraph.updateOrRescale(modelStepCounter());
-          modelEnergyGraph.showMarker(modelStepCounter());
-        });
-
-        // addMessageHook('seek', function() {});
-
+        addEventListeners();
         $modelEnergyGraphContent.show(100);
 
       } else {
-        // remove listeners
-        removeMessageHook("tick");
-        removeMessageHook('play');
-        removeMessageHook('reset');
-        // removeMessageHook('seek');
-        removeMessageHook('stepForward');
-        removeMessageHook('stepBack');
+        removeListeners();
         $modelEnergyGraphContent.hide(100);
       }
     }).change();
