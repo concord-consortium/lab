@@ -29,7 +29,7 @@
         });
       });
       return describe("given a pathname with a prefix: \"/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/\"", function() {
-        return it("should return the prefix (\"/DataGames/Games/concord/lab.dev/\")  plus \"/jnlp\"", function() {
+        return it("should return the prefix (\"/DataGames/Games/concord/lab.dev\")  plus \"/jnlp\"", function() {
           var pathname;
           pathname = "/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/";
           return expect(goio.getCodebase(pathname)).toEqual("/DataGames/Games/concord/lab.dev/jnlp");

@@ -23,7 +23,7 @@ describe "GoIOApplet class", ->
         expect( goio.getCodebase(pathname) ).toEqual "/jnlp"
 
     describe "given a pathname with a prefix: \"/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/\"", ->
-      it "should return the prefix (\"/DataGames/Games/concord/lab.dev/\")  plus \"/jnlp\"", ->
+      it "should return the prefix (\"/DataGames/Games/concord/lab.dev\")  plus \"/jnlp\"", ->
         pathname = "/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/"
         expect( goio.getCodebase(pathname) ).toEqual "/DataGames/Games/concord/lab.dev/jnlp"
 
