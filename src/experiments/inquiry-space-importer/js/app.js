@@ -29,43 +29,232 @@ function isNumeric(val) {
 // Hmm.
 ISImporter.Object = defineClass();
 
+var MENU_GROUPS = {
+  NONE: { name: null },
+  GO_LINK: { name: "GoLink" },
+  LAB_QUEST: { name: "LabQuest" }
+};
+
 ISImporter.sensors = {
 
-  distance: {
+  goMotion: {
     applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.distance.applet',
+      listenerPath: 'ISImporter.sensors.goMotion.applet',
       sensorType: 'distance',
       appletId: 'distance-sensor'
     }),
+    menuGroup: MENU_GROUPS.NONE,
+    menuText: "GoMotion",
     title: "Distance",
-    yMax: 3,
-    units: "m",
-    xMax: 20
+    maxReading: 3,
+    readingUnits: "m",
+    samplesPerSecond: 10,
+    maxSeconds: 20
   },
 
-  temperature: {
+  goLinkTemperature: {
     applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.temperature.applet',
+      listenerPath: 'ISImporter.sensors.goLinkTemperature.applet',
       sensorType: 'temperature',
       appletId: 'temperature-sensor'
     }),
+    menuGroup: MENU_GROUPS.GO_LINK,
+    menuText: "Temperature",
     title: "Temperature",
-    yMax: 100,
-    units: "°C",
-    xMax: 60
+    readingUnits: "°C",
+    maxReading: 40,
+    samplesPerSecond: 10,
+    maxSeconds: 20
   },
 
-  light: {
+  goLinkLight: {
     applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.light.applet',
+      listenerPath: 'ISImporter.sensors.goLinkLight.applet',
       sensorType: 'light',
       appletId: 'light-sensor'
     }),
+    menuGroup:  MENU_GROUPS.GO_LINK,
+    menuText: "Light",
     title: "Light Intensity",
-    yMax: 2000,
-    units: "lux",
-    xMax: 60
+    readingUnits: "lux",
+    maxReading: 2000,
+    samplesPerSecond: 10,
+    maxSeconds: 20
+  },
+
+  goLinkForce50N: {
+    applet: new ISImporter.GoIOApplet({
+      listenerPath: 'ISImporter.sensors.goLinkForce50N.applet',
+      sensorType: 'force 50n',
+      appletId: 'force-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.GO_LINK,
+    menuText: "Force (50N)",
+    title: "Force",
+    readingUnits: "N",
+    minReading: -50,
+    maxReading: 50,
+    samplesPerSecond: 100,
+    maxSeconds: 10
+  },
+
+  goLinkPH: {
+    applet: new ISImporter.GoIOApplet({
+      listenerPath: 'ISImporter.sensors.goLinkPH.applet',
+      sensorType: 'ph',
+      appletId: 'ph-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.GO_LINK,
+    menuText: "pH",
+    title: "pH",
+    readingUnits: "pH units",
+    minReading: 0,
+    maxReading: 14,
+    samplesPerSecond: 10,
+    maxSeconds: 60
+  },
+
+  goLinkCO2: {
+    applet: new ISImporter.GoIOApplet({
+      listenerPath: 'ISImporter.sensors.goLinkCO2.applet',
+      sensorType: 'co2',
+      appletId: 'co2-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.GO_LINK,
+    menuText: "CO₂",
+    title: "CO₂ Concentration",
+    readingUnits: "ppm",
+    minReading: 0,
+    maxReading: 5000,
+    samplesPerSecond: 1,
+    maxSeconds: 60
+  },
+
+  goLinkO2: {
+    applet: new ISImporter.GoIOApplet({
+      listenerPath: 'ISImporter.sensors.goLinkO2.applet',
+      sensorType: 'o2',
+      appletId: 'o2-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.GO_LINK,
+    menuText: "O₂",
+    title: "O₂ Concentration",
+    readingUnits: "%",
+    minReading: 0,
+    maxReading: 100,
+    samplesPerSecond: 1,
+    maxSeconds: 60
+  },
+
+  labQuestMotion: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestMotion.applet',
+      sensorType: 'distance',
+      appletId: 'light-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "Motion",
+    title: "Distance",
+    maxReading: 3,
+    readingUnits: "m",
+    samplesPerSecond: 10,
+    maxSeconds: 20
+  },
+
+  labQuestTemperature: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestTemperature.applet',
+      sensorType: 'temperature',
+      appletId: 'temperature-sensor'
+    }),
+    menuGroup: MENU_GROUPS.LAB_QUEST,
+    menuText: "Temperature",
+    title: "Temperature",
+    readingUnits: "°C",
+    maxReading: 40,
+    samplesPerSecond: 10,
+    maxSeconds: 20
+  },
+
+  labQuestLight: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestLight.applet',
+      sensorType: 'light',
+      appletId: 'light-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "Light",
+    title: "Light Intensity",
+    readingUnits: "lux",
+    maxReading: 2000,
+    samplesPerSecond: 10,
+    maxSeconds: 20
+  },
+
+  labQuestForce50N: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestForce50N.applet',
+      sensorType: 'force 50n',
+      appletId: 'force-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "Force (50N)",
+    title: "Force",
+    readingUnits: "N",
+    minReading: -50,
+    maxReading: 50,
+    samplesPerSecond: 100,
+    maxSeconds: 10
+  },
+
+  labQuestPH: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestPH.applet',
+      sensorType: 'ph',
+      appletId: 'ph-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "pH",
+    title: "pH",
+    readingUnits: "pH units",
+    minReading: 0,
+    maxReading: 14,
+    samplesPerSecond: 10,
+    maxSeconds: 60
+  },
+
+  labQuestCO2: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestCO2.applet',
+      sensorType: 'co2',
+      appletId: 'co2-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "CO₂",
+    title: "CO₂ Concentration",
+    readingUnits: "ppm",
+    minReading: 0,
+    maxReading: 5000,
+    samplesPerSecond: 1,
+    maxSeconds: 60
+  },
+
+  labQuestO2: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestO2.applet',
+      sensorType: 'o2',
+      appletId: 'o2-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "O₂",
+    title: "O₂ Concentration",
+    readingUnits: "%",
+    minReading: 0,
+    maxReading: 100,
+    samplesPerSecond: 1,
+    maxSeconds: 60
   }
+
 };
 
 
@@ -84,9 +273,19 @@ ISImporter.GraphController = defineClass({
     this.graph.title(title);
   },
 
+  setXMax: function(xMax) {
+    this.xMax = xMax;
+    this.graph.xmax(xMax);
+  },
+
   setYMax: function(yMax) {
     this.yMax = yMax;
     this.graph.ymax(yMax);
+  },
+
+  setYMin: function(yMin) {
+    this.yMin = yMin;
+    this.graph.ymin(yMin);
   },
 
   setYLabel: function() {},
@@ -181,7 +380,7 @@ ISImporter.appController = new ISImporter.Object({
   selecting: false,
 
   // could split interface controller from generic app container--but not yet.
-  $sensorTypeSelector: null,
+  $sensorSelector: null,
   $startButton: null,
   $stopButton: null,
   $resetButton: null,
@@ -202,16 +401,16 @@ ISImporter.appController = new ISImporter.Object({
     var self = this,
         key;
 
-    this.$sensorTypeSelector = $('#sensor-type-selector');
+    this.$sensorSelector = $('#sensor-selector');
 
     for (key in ISImporter.sensors) {
       if (ISImporter.sensors.hasOwnProperty(key)) {
-        this.addSensorTypeSelection(key, key);
+        this.addSensorSelection(key);
       }
     }
 
-    this.$sensorTypeSelector.on('change', function() {
-      self.sensorTypeChanged();
+    this.$sensorSelector.on('change', function() {
+      self.sensorChanged();
     });
 
     // Set up button handlers. Surely this boilerplate can be eliminated.
@@ -278,8 +477,21 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   // initialization
-  addSensorTypeSelection: function(value, text) {
-    this.$sensorTypeSelector.append('<option value="' + value + '">' + text + '</option>');
+  addSensorSelection: function(sensorKey) {
+    var sensor = ISImporter.sensors[sensorKey],
+        $el;
+
+    if (sensor.menuGroup.name == null) {
+      $el = this.$sensorSelector;
+    } else {
+      $el = this.$sensorSelector.find('optgroup[label="' + sensor.menuGroup.name + '"]');
+      if ($el.length < 1) {
+        $el = $('<optgroup label="' + sensor.menuGroup.name + '"></optgroup>');
+        $el.appendTo( this.$sensorSelector );
+      }
+    }
+
+    $el.append('<option value="' + sensorKey + '">' + sensor.menuText + '</option>');
   },
 
   setupGraph: function(title, yLabel, yMax, dataset) {},
@@ -310,14 +522,13 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   // events
-  sensorTypeChanged: function() {
-    var val        = this.getSensorTypeSelection(),
-        sensorInfo = ISImporter.sensors[val],
+  sensorChanged: function() {
+    var val        = this.getSensorSelection(),
         self       = this;
 
-    this.sensorType = val;
+    this.sensor = ISImporter.sensors[val];
 
-    if (this.currentApplet === sensorInfo.applet) {
+    if (this.currentApplet === this.sensor.applet) {
       return;
     }
 
@@ -328,20 +539,22 @@ ISImporter.appController = new ISImporter.Object({
       this.currentApplet.remove();
     }
 
-    this.currentApplet = sensorInfo.applet;
+    this.currentApplet = this.sensor.applet;
     this.currentAppletReady = false;
     this.currentApplet.on('sensorReady', function() {
       self.sensorAppletReady();
     });
 
     this.dataset = new ISImporter.Dataset();
-    this.dataset.setXIncrement(0.1);
+    this.dataset.setXIncrement( 1 / (this.sensor.samplesPerSecond || 10) );
 
-    this.setupRealtimeDisplay(sensorInfo.units);
+    this.setupRealtimeDisplay(this.sensor.readingUnits);
 
     ISImporter.graphController.setDataset( this.dataset );
-    ISImporter.graphController.setYMax( sensorInfo.yMax );
-    ISImporter.graphController.setTitle( sensorInfo.title + " Graph");
+    ISImporter.graphController.setXMax( this.sensor.maxSeconds );
+    ISImporter.graphController.setYMin( this.sensor.minReading || 0 );
+    ISImporter.graphController.setYMax( this.sensor.maxReading );
+    ISImporter.graphController.setTitle( this.sensor.title + " Graph");
 
     this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.append();
@@ -411,7 +624,7 @@ ISImporter.appController = new ISImporter.Object({
       }
     }
 
-    ISImporter.DGExporter.exportData(this.sensorType, data, metadata);
+    ISImporter.DGExporter.exportData(this.sensor.applet.sensorType, data, metadata);
 
     this.selecting = false;
 
@@ -440,8 +653,8 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   // accessors
-  getSensorTypeSelection: function() {
-    return this.$sensorTypeSelector.val();
+  getSensorSelection: function() {
+    return this.$sensorSelector.val();
   },
 
   getMetadataItemCount: function() {
