@@ -1609,7 +1609,7 @@ define(function (require) {
       var dragDx = nm2px.invert(d3.event.dx),
           dragDy = nm2px.invert(d3.event.dy);
 
-      if (!AUTHORING) {
+      if (!(AUTHORING && model.is_stopped())) {
       // for now we don't have user-draggable textBoxes
         return;
       }
