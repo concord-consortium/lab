@@ -119,7 +119,7 @@ ISImporter.SensorApplet = defineClass({
 
 mixin( ISImporter.SensorApplet.prototype, ISImporter.EventEmitter );
 
-ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
+ISImporter.VernierSensorApplet = extendClass(ISImporter.SensorApplet, {
 
   // Before appending the applet, set this value with the path to an object that will receive applet callbacks.
   listenerPath: '',
@@ -136,16 +136,20 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
   //   "distance"
   sensorType: '',
 
-  deviceType: 'golink',
+  // supported values are:
+  //  "labquest"
+  //  "golink"
+  deviceType: '',
 
-  appletId:     'goio-applet',
+  appletId:     'sensor-applet',
   classNames:   'applet sensor-applet',
 
   jarUrls:     ['com/sun/jna/jna.jar',
                 'org/concord/sensor/sensor.jar',
-                'org/concord/sensor/goio-jna/goio-jna.jar',
                 'org/concord/sensor/sensor-vernier/sensor-vernier.jar',
                 'org/concord/sensor/sensor-applets/sensor-applets.jar'],
+
+  deviceSpecificJarUrls: [],
 
   code:         'org.concord.sensor.applet.SensorApplet',
 
@@ -164,12 +168,14 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
   },
 
   getHTML: function() {
+    var allJarUrls = this.jarUrls.concat(this.deviceSpecificJarUrls);
+
     return [
      '<applet ',
-       'id="',       this.appletId,           '" ',
-       'class="',    this.classNames,         '" ',
-       'archive="',  this.jarUrls.join(', '), '" ',
-       'code="',     this.code,               '" ',
+       'id="',       this.appletId,         '" ',
+       'class="',    this.classNames,       '" ',
+       'archive="',  allJarUrls.join(', '), '" ',
+       'code="',     this.code,             '" ',
        'codebase="', this.getCodebase(document.location.pathname), '" ',
        'width="1px" ',
        'height="1px" ',
@@ -242,4 +248,10 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
   dataStreamEvent: function() {
   }
 
+});
+
+
+ISImporter.GoIOApplet = extendClass(ISImporter.VernierSensorApplet, {
+  deviceType:            'golink',
+  deviceSpecificJarUrls: ['org/concord/sensor/goio-jna/goio-jna.jar']
 });
