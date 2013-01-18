@@ -11,9 +11,9 @@
         "controlButtons": "play_reset",
         "textBoxes": [
           {
-            "text": "No frame, on top",
-            "x": 0.2,
-            "y": 1.7,
+            "text": "No frame, on Atom",
+            "hostType": "Atom",
+            "hostIndex": 2,
             "layer": 1
           },
           {
