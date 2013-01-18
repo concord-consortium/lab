@@ -667,8 +667,8 @@ var ROOT = "/examples",
       });
 
       $autoFormatSelectionButton.on('click', function() {
-        var range = getSelectedRange();
-        editor.autoFormatRange(range.from, range.to);
+        // getSelectedRange is no longer in code-mirror?
+        editor.autoFormatRange(editor.getCursor(true), editor.getCursor(false));
       });
 
       $showEditor.change(function() {
