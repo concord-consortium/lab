@@ -1,4 +1,4 @@
-/*global Lab $ d3 CodeMirror controllers model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
+/*global Lab _ $ d3 CodeMirror controllers model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
