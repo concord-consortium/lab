@@ -69,7 +69,7 @@
         },
         {
           "text": "charge and hydrophobicity",
-          "action": "set({aminoAcidColorScheme: 'lego'});"
+          "action": "set({aminoAcidColorScheme: 'chargeAndHydro'});"
         }
       ]
     },

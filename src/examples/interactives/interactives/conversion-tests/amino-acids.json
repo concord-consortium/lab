@@ -160,8 +160,8 @@
           "action": "set({aminoAcidColorScheme: 'hydrophobicity'});"
         },
         {
-          "text": "lego",
-          "action": "set({aminoAcidColorScheme: 'lego'});"
+          "text": "charge and hydrophobicity",
+          "action": "set({aminoAcidColorScheme: 'chargeAndHydro'});"
         }
       ]
     },

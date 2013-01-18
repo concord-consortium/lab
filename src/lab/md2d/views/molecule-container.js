@@ -462,7 +462,7 @@ define(function (require) {
           case "charge":
             if (d.charge === 0) return "url(#neutral-grad)";
             return d.charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
-          case "lego":
+          case "chargeAndHydro":
             if (d.charge < -0.000001)
               return "url(#neg-grad)";
             if (d.charge > 0.000001)
