@@ -37,37 +37,37 @@ var MENU_GROUPS = {
 
 ISImporter.sensors = {
 
-  distance: {
+  goMotion: {
     applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.distance.applet',
+      listenerPath: 'ISImporter.sensors.goMotion.applet',
       sensorType: 'distance',
       appletId: 'distance-sensor'
     }),
     menuGroup: MENU_GROUPS.NONE,
     menuText: "GoMotion",
     title: "Distance",
-    yMax: 3,
     units: "m",
+    yMax: 3,
     xMax: 20
   },
 
-  temperature: {
+  goLinkTemperature: {
     applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.temperature.applet',
+      listenerPath: 'ISImporter.sensors.goLinkTemperature.applet',
       sensorType: 'temperature',
       appletId: 'temperature-sensor'
     }),
     menuGroup: MENU_GROUPS.GO_LINK,
     menuText: "Temperature",
     title: "Temperature",
-    yMax: 100,
     units: "°C",
+    yMax: 100,
     xMax: 60
   },
 
-  light: {
+  goLinkLight: {
     applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.light.applet',
+      listenerPath: 'ISImporter.sensors.goLinkLight.applet',
       sensorType: 'light',
       appletId: 'light-sensor'
     }),
@@ -77,7 +77,22 @@ ISImporter.sensors = {
     yMax: 2000,
     units: "lux",
     xMax: 60
+  },
+
+  labQuestLight: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestLight.applet',
+      sensorType: 'light',
+      appletId: 'light-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "Light",
+    title: "Light Intensity",
+    yMax: 2000,
+    units: "lux",
+    xMax: 60
   }
+
 };
 
 
