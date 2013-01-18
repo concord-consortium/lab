@@ -47,7 +47,7 @@
       "type": "button",
       "id": "withdraw-barrier",
       "text": "Withdraw the barrier",
-      "action": "removeObstacle(0);"
+      "action": "if (getNumberOfObstacles() > 0) { removeObstacle(0) };"
     },
     {
       "type": "barGraph",
