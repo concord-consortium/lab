@@ -372,6 +372,27 @@ define(function() {
       mRNA: {
         readOnly: true
       }
+    },
+
+    textBox: {
+      text: {
+        defaultValue: ""
+      },
+      x: {
+        defaultValue: 0
+      },
+      y: {
+        defaultValue: 0
+      },
+      layer: {
+        defaultValue: 1
+      },
+      frame: {},
+      color: {},
+      backgroundColor: {},
+      hostType: {},
+      hostIndex: {},
+      textAlign: {}
     }
   };
 });

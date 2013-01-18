@@ -21,7 +21,7 @@ define(function(require) {
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
-                               "removeAngularBond", "invalidation"),
+                               "removeAngularBond", "invalidation", "textBoxesChanged"),
         VDWLinesCutoffMap = {
           "short": 1.33,
           "medium": 1.67,
@@ -1505,6 +1505,35 @@ define(function(require) {
     */
     model.removeSpringForce = function(springForceIndex) {
       engine.removeSpringForce(springForceIndex);
+    };
+
+    model.addTextBox = function(props) {
+      props = validator.validateCompleteness(metadata.textBox, props);
+      properties.textBoxes.push(props);
+      dispatch.textBoxesChanged();
+    };
+
+    model.removeTextBox = function(i) {
+      var text = properties.textBoxes;
+      if (i >=0 && i < text.length) {
+        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1))
+        dispatch.textBoxesChanged();
+      } else {
+        throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
+      }
+    };
+
+    model.setTextBoxProperties = function(i, props) {
+      var textBox = properties.textBoxes[i];
+      if (textBox) {
+        props = validator.validate(metadata.textBox, props);
+        for (prop in props) {
+          textBox[prop] = props[prop];
+        }
+        dispatch.textBoxesChanged();
+      } else {
+        throw new Error("Text box \"" + i + "\" does not exist, so it cannot have properties set.");
+      }
     };
 
     /**

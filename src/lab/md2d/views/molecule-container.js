@@ -143,7 +143,6 @@ define(function (require) {
       // For convenience replace undefined collections with
       // empty collections (like arrays or hashes).
       imageProp = options.images || [];
-      textBoxes = options.textBoxes || [];
       options.imageMapping = options.imageMapping || {};
 
       if (options.interactiveUrl) {
@@ -953,6 +952,8 @@ define(function (require) {
     function drawTextBoxes() {
       var size, layers, appendTextBoxes;
 
+      textBoxes = model.get('textBoxes');
+
       size = model.size();
 
       layers = [textContainerTop, textContainerBelow];
@@ -1660,6 +1661,7 @@ define(function (require) {
       model.on('removeAtom', setupDrawables);
       model.on('addRadialBond', setupRadialBonds);
       model.on('removeRadialBond', setupRadialBonds);
+      model.on('textBoxesChanged', drawTextBoxes);
 
       // Register additional controls, context menus etc.
       // Note that special selector for class is used. Typical class selectors
