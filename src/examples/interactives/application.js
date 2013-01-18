@@ -572,16 +572,17 @@ var ROOT = "/examples",
         iframePhone  = {},
         post = function(message) {
           message.origin = selfOrigin;
-          try {
+          // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+          //     https://github.com/Modernizr/Modernizr/issues/388
+          //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+          if (Lab.structuredClone.supported()) {
             iframe.contentWindow.postMessage(message, iframeOrigin);
-          } catch (e) {
-              // Assume that failure means we can only post strings, not objects (IE9)
-              // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
-              iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
-            }
-          };
-    iframePhone.handlers = {};
+          } else {
+            iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
+          }
+        };
 
+    iframePhone.handlers = {};
 
     iframePhone.addListener = function(messageName,func) {
       iframePhone.handlers[messageName] = func;
