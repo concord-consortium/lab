@@ -690,7 +690,7 @@ var ROOT = "/examples",
   function setupModelCodeEditor() {
     $.get(ACTUAL_ROOT + interactive.models[0].url).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
-      md2dModel = results;
+      var md2dModel = results;
       $modelTextArea.text(JSON.stringify(md2dModel, null, indent));
       foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
       if (!modelEditor) {
