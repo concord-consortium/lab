@@ -903,7 +903,14 @@ var ROOT = "/examples",
       $.extend(options, interactive.models[0].energyGraphOptions || []);
       resetModelEnergyData();
       options.dataset = modelEnergyData;
-      modelEnergyGraph = Lab.grapher.realTimeGraph('#model-energy-graph-chart', options);
+      removeListeners();
+      if (modelEnergyGraph) {
+        modelEnergyGraph.reset('#model-energy-graph-chart', options);
+      }
+      else {
+        modelEnergyGraph = Lab.grapher.realTimeGraph('#model-energy-graph-chart', options);
+      }
+      addEventListeners();
     }
 
     // Add another sample of model KE, PE, and TE to the arrays in resetModelEnergyData
