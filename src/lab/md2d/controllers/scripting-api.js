@@ -360,6 +360,18 @@ define(function (require) {
       minimizeEnergy: function minimizeEnergy() {
         model.minimizeEnergy();
         api.repaint();
+      },
+
+      addTextBox: function(props) {
+        model.addTextBox(props);
+      },
+
+      removeTextBox: function(i) {
+        model.removeTextBox(i);
+      },
+
+      setTextBoxProperties: function(i, props) {
+        model.setTextBoxProperties(i, props);
       }
 
     };
