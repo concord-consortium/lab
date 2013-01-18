@@ -368,7 +368,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1354198042000</long> 
+     <long>1354199011000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -377,7 +377,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>44270</long> 
+    <long>29687</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -601,9 +601,9 @@ endif;</string>
        <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
         <void property="color"> 
          <object class="java.awt.Color"> 
-          <int>0</int> 
-          <int>255</int> 
-          <int>0</int> 
+          <int>250</int> 
+          <int>250</int> 
+          <int>250</int> 
           <int>255</int> 
          </object> 
         </void> 

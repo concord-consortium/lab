@@ -126,8 +126,8 @@
 
 </paragraph>
 <paragraph start="10" end="18">
-<SpaceAbove>4.0</SpaceAbove>
 <Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
 <content start="10" end="11">
 <component><class>org.concord.modeler.PageTextBox</class>
 <width>250.0</width>
@@ -138,8 +138,8 @@
   &lt;/head&gt;
   &lt;body face=&quot;Verdana&quot;&gt;
     &lt;p&gt;
-      &lt;b&gt;&lt;font size=&quot;2&quot;&gt;Note:&lt;/font&gt;&lt;/b&gt;&lt;font size=&quot;2&quot;&gt; The temperature of the 
-      gas in the model on the right is kept constant.&lt;/font&gt;
+      &lt;font size=&quot;2&quot;&gt;&lt;b&gt;Note:&lt;/b&gt; The temperature of the gas in the model on 
+      the right is kept constant.&lt;/font&gt;
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;
@@ -233,8 +233,8 @@ endif;</script>
 
 </paragraph>
 <paragraph start="18" end="19">
-<SpaceAbove>4.0</SpaceAbove>
 <Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
 <content start="18" end="19">
 </content>
 

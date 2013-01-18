@@ -9,9 +9,16 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page5/page5$0.json",
       "viewOptions": {
         "controlButtons": "play_reset",
-        "imageMapping": {
-          "pressureGauge.png" : "pressureGauge.svg"
-        }
+        "textBoxes": [
+          {
+            "text": "Pressure Gauge >>",
+            "x": 2.3,
+            "y": 2.27,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
       }
     }
   ],

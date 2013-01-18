@@ -13,7 +13,19 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page7/page7$0.json",
       "viewOptions": {
         "controlButtons": "play_reset",
-        "showVelocityVectors": true
+        "showVelocityVectors": true,
+        "textBoxes": [
+          {
+            "text": "Piston wall",
+            "x": 1.7465425109863282,
+            "y": 1.43,
+            "width": 0.5,
+            "textAlign": "center",
+            "layer": 1,
+            "hostType": "RectangularObstacle",
+            "hostIndex": 0
+          }
+        ]
       }
     }
   ],

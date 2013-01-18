@@ -368,7 +368,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1354343513000</long> 
+     <long>1358541178000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -377,7 +377,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>39631</long> 
+    <long>39670</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -436,85 +436,8 @@
    <boolean>false</boolean> 
   </void> 
   <void property="textBoxes"> 
-   <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="3"> 
+   <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="1"> 
     <void index="0"> 
-     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="borderType"> 
-       <int>2</int> 
-      </void> 
-      <void property="draggable"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="fillMode"> 
-       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
-        <void property="color"> 
-         <object class="java.awt.Color"> 
-          <int>255</int> 
-          <int>255</int> 
-          <int>128</int> 
-          <int>255</int> 
-         </object> 
-        </void> 
-       </object> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="shadowType"> 
-       <int>2</int> 
-      </void> 
-      <void property="text"> 
-       <string>Inside soda can</string> 
-      </void> 
-      <void property="x"> 
-       <double>7.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>220.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="1"> 
-     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="borderType"> 
-       <int>2</int> 
-      </void> 
-      <void property="draggable"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="fillMode"> 
-       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
-        <void property="color"> 
-         <object class="java.awt.Color"> 
-          <int>128</int> 
-          <int>255</int> 
-          <int>255</int> 
-          <int>255</int> 
-         </object> 
-        </void> 
-       </object> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>1</byte> 
-      </void> 
-      <void property="shadowType"> 
-       <int>2</int> 
-      </void> 
-      <void property="text"> 
-       <string>Outside soda can</string> 
-      </void> 
-      <void property="x"> 
-       <double>276.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>220.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="2"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
       <void property="attachmentPosition"> 
        <byte>11</byte> 
@@ -535,17 +458,15 @@
       <void property="layer"> 
        <int>1</int> 
       </void> 
-      <void property="layerPosition"> 
-       <byte>2</byte> 
-      </void> 
       <void property="text"> 
-       <string>Can wall</string> 
+       <string>Piston
+ wall</string> 
       </void> 
       <void property="x"> 
-       <double>167.6542510986328</double> 
+       <double>174.6542510986328</double> 
       </void> 
       <void property="y"> 
-       <double>114.0</double> 
+       <double>107.0</double> 
       </void> 
      </object> 
     </void> 
