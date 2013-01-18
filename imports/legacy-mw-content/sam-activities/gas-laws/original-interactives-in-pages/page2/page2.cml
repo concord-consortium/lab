@@ -93,8 +93,8 @@
 
 </paragraph>
 <paragraph start="7" end="13">
-<SpaceAbove>4.0</SpaceAbove>
 <Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
 <content start="7" end="8">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Remove an atom from the balloon</title>

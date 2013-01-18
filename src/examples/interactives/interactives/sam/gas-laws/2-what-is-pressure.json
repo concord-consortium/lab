@@ -12,12 +12,46 @@
       "id": "page2$0",
       "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page2/page2$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Inside balloon",
+            "x": 0.275,
+            "y": 2.33,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          },
+          {
+            "text": "Outside balloon",
+            "x": 3.86,
+            "y": 2.33,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          },
+          {
+            "text": "Balloon skin",
+            "x": 2.1593974304199217,
+            "y": 1.43,
+            "layer": 1,
+            "hostType": "RectangularObstacle",
+            "hostIndex": 0
+          },
+          {
+            "text": "Atoms inside: 40",
+            "x": 0.15,
+            "y": 0.125,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(160,206,219)"
+          }
+        ]
       },
       "onLoad": [
         "setTextBoxProperties(2, {width: 0.3, textAlign: 'center'});",
         "onPropertyChange('atomInside', function(n) {",
-        "  setTextBoxProperties(3, {text: n}) ",
+        "  setTextBoxProperties(3, {text: 'Atoms inside: ' + n}) ",
         "});"
       ]
     }
@@ -82,17 +116,11 @@
         "  }",
         "}"
       ]
-    },
-    {
-      "type": "numericOutput",
-      "id": "current-atom-num",
-      "property": "atomInside",
-      "displayValue": "return format('f')(value)"
     }
   ],
   "layout": {
     "bottom": [
-      ["add-atom", "remove-atom"]
+      ["add-atom", "remove-atom", "show-velocity"]
     ]
   }
 }

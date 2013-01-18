@@ -378,7 +378,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1354197435000</long> 
+     <long>1358536201000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -518,9 +518,9 @@ show selectionhalo on;</string>
        <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
         <void property="color"> 
          <object class="java.awt.Color"> 
-          <int>192</int> 
-          <int>255</int> 
-          <int>192</int> 
+          <int>250</int> 
+          <int>250</int> 
+          <int>250</int> 
           <int>255</int> 
          </object> 
         </void> 
@@ -555,9 +555,9 @@ show selectionhalo on;</string>
        <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
         <void property="color"> 
          <object class="java.awt.Color"> 
-          <int>192</int> 
-          <int>192</int> 
-          <int>255</int> 
+          <int>250</int> 
+          <int>250</int> 
+          <int>250</int> 
           <int>255</int> 
          </object> 
         </void> 
@@ -576,7 +576,7 @@ show selectionhalo on;</string>
        <string>Outside balloon</string> 
       </void> 
       <void property="x"> 
-       <double>276.0</double> 
+       <double>286.0</double> 
       </void> 
       <void property="y"> 
        <double>7.0</double> 
@@ -631,9 +631,9 @@ show selectionhalo on;</string>
        <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
         <void property="color"> 
          <object class="java.awt.Color"> 
-          <int>128</int> 
-          <int>192</int> 
-          <int>255</int> 
+          <int>160</int> 
+          <int>206</int> 
+          <int>219</int> 
           <int>255</int> 
          </object> 
         </void> 
@@ -649,7 +649,7 @@ show selectionhalo on;</string>
        <int>2</int> 
       </void> 
       <void property="text"> 
-       <string>Counter</string> 
+       <string>Atoms inside: 40</string> 
       </void> 
       <void property="x"> 
        <double>6.0</double> 
