@@ -33,7 +33,8 @@
             "layer": 1,
             "hostType": "RectangularObstacle",
             "hostIndex": 0,
-            "width": 0.3
+            "width": 0.3,
+            "textAlign": "center"
           }
         ]
       }

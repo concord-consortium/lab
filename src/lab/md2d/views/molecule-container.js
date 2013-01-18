@@ -1000,6 +1000,11 @@ define(function (require) {
             "font-size": nm2px(0.12),
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
+            "text-anchor": function(d) {
+              var align = d.textAlign || "left";
+              if (align === "center") align = "middle";
+              return align;
+            },
             "has-host": function(d) { return !!d.hostType }
           })
           .call(d3.behavior.drag()
@@ -1024,6 +1029,7 @@ define(function (require) {
             width = this.getAttributeNS(null, "width-data") || -1,
             dy    = nm2px(0.16),
             hasHost = this.getAttributeNS(null, "has-host"),
+            textAlign = this.getAttributeNS(null, "text-anchor"),
             result, frame, dx, dy;
 
         while (this.firstChild) {     // clear element first
@@ -1039,6 +1045,10 @@ define(function (require) {
         }
 
         // center all hosted labels simply by tweaking the g.transform
+        if (textAlign === "middle") {
+          dx = result.width / 2;
+          $(this).attr("transform", "translate("+dx+",0)");
+        }
         if (hasHost === "true") {
           dx = -result.width / 2;
           dy = (result.lines-1) * dy / -2 + 4.5;

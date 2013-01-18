@@ -35,6 +35,8 @@ define (require) ->
             # remove the last word added and place it on the next line
             lastWord = tempText.slice tempText.length - words[i-1].length - 1
             tspanNode.firstChild.nodeValue = tempText.slice 0, (tempText.length - words[i-1].length - 1)
+          else if tempText.length is words[i-1].length+1
+            tspanNode.firstChild.nodeValue =  tempText.slice 0, (tempText.length - 1)
           widestWidth = Math.max tspanNode.getComputedTextLength(), widestWidth
           numLines++
 
@@ -60,7 +62,7 @@ define (require) ->
       computedTextLength = tspanNode.getComputedTextLength()
 
       # awkward, have to do this one last time for the last word
-      if i is words.length - 1 and computedTextLength > maxWidth
+      if i and i is words.length - 1 and computedTextLength > maxWidth
         tempText = tspanNode.firstChild.nodeValue
         tspanNode.firstChild.nodeValue = tempText.slice 0, (tempText.length - words[i].length - 1)
 
