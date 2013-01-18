@@ -29,11 +29,12 @@ define (require) ->
       curLineLength += word.length + 1
 
       if computedTextLength > maxWidth or i is 0    # create new tspan
-        if computedTextLength > maxWidth
+        if i > 0
           tempText = tspanNode.firstChild.nodeValue
-          # remove the last word added and place it on the next line
-          lastWord = tempText.slice tempText.length - words[i-1].length - 1
-          tspanNode.firstChild.nodeValue = tempText.slice 0, (tempText.length - words[i-1].length - 1)
+          if tempText.length > words[i-1].length+1
+            # remove the last word added and place it on the next line
+            lastWord = tempText.slice tempText.length - words[i-1].length - 1
+            tspanNode.firstChild.nodeValue = tempText.slice 0, (tempText.length - words[i-1].length - 1)
           widestWidth = Math.max tspanNode.getComputedTextLength(), widestWidth
           numLines++
 

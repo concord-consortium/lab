@@ -901,6 +901,25 @@ define(function (require) {
       }
     }
 
+    function getTextBoxCoords(d, i) {
+      var x, y, frameX, frameY;
+      if (d.hostType) {
+        if (d.hostType === "Atom") {
+          x = results[d.hostIndex].x;
+          y = results[d.hostIndex].y;
+        } else {
+          x = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
+          y = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
+        }
+      } else {
+        x = d.x;
+        y = d.y;
+      }
+      frameX = x - 0.1;
+      frameY = y + 0.15;
+      return [nm2px(x), nm2pxInv(y), nm2px(frameX), nm2pxInv(frameY)];
+    }
+
     function updateTextBoxes() {
       var layers = [textContainerTop, textContainerBelow],
           updateText;
@@ -913,16 +932,16 @@ define(function (require) {
         layer.selectAll("g.textBoxWrapper rect")
           .data(layerTextBoxes.filter( function(d) { return d.frame } ))
           .attr({
-            "x": function(d) { return nm2px(d.x - 0.1); },
-            "y": function(d) { return nm2pxInv(d.y + 0.15); }
+            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
+            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
           });
 
         layer.selectAll("g.textBoxWrapper text")
           .data(layerTextBoxes)
           .attr({
-            "y": function(d) {
-              $(this).find("tspan").attr("x", nm2px(d.x));
-              return nm2pxInv(d.y);
+            "y": function(d,i) {
+              $(this).find("tspan").attr("x", getTextBoxCoords(d,i)[0]);
+              return getTextBoxCoords(d,i)[1];;
             }
           });
       }
@@ -962,17 +981,17 @@ define(function (require) {
             },
             "width": 0,
             "height": 0,
-            "rx": function(d) { return d.frame == "rounded rectangle" ? 8  : 0; },
-            "ry": function(d) { return d.frame == "rounded rectangle" ? 10 : 0; },
-            "x": function(d) { return nm2px(d.x - 0.1); },
-            "y": function(d) { return nm2pxInv(d.y + 0.15); }
+            "rx": function(d)  { return d.frame == "rounded rectangle" ? 8  : 0; },
+            "ry": function(d)  { return d.frame == "rounded rectangle" ? 10 : 0; },
+            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
+            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
           });
 
         text.append("text")
           .attr({
             "class": function() { return "textBox" + (AUTHORING ? " draggable" : "") },
-            "x-data": function(d) { return nm2px(d.x); },
-            "y": function(d) { return nm2pxInv(d.y); },
+            "x-data": function(d,i) { return getTextBoxCoords(d,i)[0]; },
+            "y": function(d,i)      { return getTextBoxCoords(d,i)[1]; },
             "width-data": function(d) { return nm2px(d.width); },
             "width":  nm2px(size[0]),
             "height": nm2px(size[1]),
@@ -980,7 +999,8 @@ define(function (require) {
             "font-family": "'Open Sans', sans-serif",
             "font-size": nm2px(0.12),
             "fill": function(d) { return d.color || "black"; },
-            "text-data": function(d) { return d.text; }
+            "text-data": function(d) { return d.text; },
+            "has-host": function(d) { return !!d.hostType }
           })
           .call(d3.behavior.drag()
             .on("drag", textDrag)
@@ -1002,8 +1022,9 @@ define(function (require) {
         var text  = this.getAttributeNS(null, "text-data"),
             x     = this.getAttributeNS(null, "x-data"),
             width = this.getAttributeNS(null, "width-data") || -1,
-            dy    = nm2px(0.2),
-            result, frame;
+            dy    = nm2px(0.16),
+            hasHost = this.getAttributeNS(null, "has-host"),
+            result, frame, dx, dy;
 
         while (this.firstChild) {     // clear element first
           this.removeChild(this.firstChild);
@@ -1014,7 +1035,14 @@ define(function (require) {
         if (this.parentNode.childElementCount > 1) {
           frame = this.parentNode.childNodes[0];
           frame.setAttributeNS(null, "width", result.width + nm2px(0.2));
-          frame.setAttributeNS(null, "height", (result.lines * dy) + nm2px(0.01));
+          frame.setAttributeNS(null, "height", (result.lines * dy) + nm2px(0.06));
+        }
+
+        // center all hosted labels simply by tweaking the g.transform
+        if (hasHost === "true") {
+          dx = -result.width / 2;
+          dy = (result.lines-1) * dy / -2 + 4.5;
+          $(this.parentNode).attr("transform", "translate("+dx+","+dy+")");
         }
       });
     }
@@ -1386,6 +1414,9 @@ define(function (require) {
       }
       if(imageProp && imageProp.length !== 0) {
         updateImageAttachment();
+      }
+      if (textBoxes && textBoxes.length > 0) {
+        updateTextBoxes();
       }
       console.timeEnd('view update');
     }
