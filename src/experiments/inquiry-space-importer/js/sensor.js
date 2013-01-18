@@ -255,3 +255,10 @@ ISImporter.GoIOApplet = extendClass(ISImporter.VernierSensorApplet, {
   deviceType:            'golink',
   deviceSpecificJarUrls: ['org/concord/sensor/goio-jna/goio-jna.jar']
 });
+
+
+ISImporter.LabQuestApplet = extendClass(ISImporter.VernierSensorApplet, {
+  deviceType:            'labquest',
+  deviceSpecificJarUrls: ['org/concord/sensor/labquest-jna/labquest-jna.jar']
+});
+
