@@ -279,17 +279,15 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 The seven characters at the end of the archive filename are the first seven characters of the git
 commit SHA.</p>
 
-<p>Open the file index.html in this folder in your browser to get an offline version of the Lab
-project.</p>
+<p>To access the content on your local you will need to serve the files from a web server running on your
+local computer. Once there open the file index.html in the expanded archive.</p>
 
-<p>Features that require integration of the back-end web application such as saving changes
-in models and interactives and use of Java applets do not work directly from a downloaded distribution.</p>
+<p>For example Chrome generates this error when I try and load the sample Oil and Water Interactive directly
+from my filesystem:</p>
 
-<p><strong>NOTE:</strong> the downloaded distribution of examples may <em>not</em> work properly
-in Chrome due to a long-standing bug in Chrome:
-<a href="http://code.google.com/p/chromium/issues/detail?id=49001">Issue 49001: Regression: cssRules null when stylesheets loaded from local disk</a>.
-The problem only occurs when loading the web pages directly from your filesystem. If instead you
-use a local web server on your computer to serve the downloaded distribution Chrome works properly.</p>
+<pre><code>XMLHttpRequest cannot load file:///Users/stephen/Downloads/concord-consortium-lab-9771ec6/examples/interactives/interactives/samples/1-oil-and-water-shake.json.
+Origin null is not allowed by Access-Control-Allow-Origin.
+</code></pre>
 
 <h2 id="setup-development">Setup Development</h2>
 
