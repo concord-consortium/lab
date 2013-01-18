@@ -75,17 +75,14 @@ Download and expand one of these archives to create a folder named `concord-cons
 The seven characters at the end of the archive filename are the first seven characters of the git
 commit SHA.
 
-Open the file index.html in this folder in your browser to get an offline version of the Lab
-project.
+To access the content on your local you will need to serve the files from a web server running on your
+local computer. Once there open the file index.html in the expanded archive.
 
-Features that require integration of the back-end web application such as saving changes
-in models and interactives and use of Java applets do not work directly from a downloaded distribution.
+For example Chrome generates this error when I try and load the sample Oil and Water Interactive directly
+from my filesystem:
 
-**NOTE:** the downloaded distribution of examples may *not* work properly
-in Chrome due to a long-standing bug in Chrome:
-[Issue 49001: Regression: cssRules null when stylesheets loaded from local disk](http://code.google.com/p/chromium/issues/detail?id=49001).
-The problem only occurs when loading the web pages directly from your filesystem. If instead you
-use a local web server on your computer to serve the downloaded distribution Chrome works properly.
+    XMLHttpRequest cannot load file:///Users/stephen/Downloads/concord-consortium-lab-9771ec6/examples/interactives/interactives/samples/1-oil-and-water-shake.json.
+    Origin null is not allowed by Access-Control-Allow-Origin.
 
 ## Setup Development
 
