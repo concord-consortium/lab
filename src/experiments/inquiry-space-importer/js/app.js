@@ -46,9 +46,9 @@ ISImporter.sensors = {
     menuGroup: MENU_GROUPS.NONE,
     menuText: "GoMotion",
     title: "Distance",
-    units: "m",
-    yMax: 3,
-    xMax: 20
+    maxReading: 3,
+    readingUnits: "m",
+    maxSeconds: 20
   },
 
   goLinkTemperature: {
@@ -60,9 +60,9 @@ ISImporter.sensors = {
     menuGroup: MENU_GROUPS.GO_LINK,
     menuText: "Temperature",
     title: "Temperature",
-    units: "°C",
-    yMax: 100,
-    xMax: 60
+    readingUnits: "°C",
+    maxReading: 40,
+    maxSeconds: 20
   },
 
   goLinkLight: {
@@ -74,9 +74,10 @@ ISImporter.sensors = {
     menuGroup:  MENU_GROUPS.GO_LINK,
     menuText: "Light",
     title: "Light Intensity",
-    yMax: 2000,
-    units: "lux",
-    xMax: 60
+    readingUnits: "lux",
+    maxReading: 2000,
+    maxSeconds: 20
+    maxSeconds: 20
   },
 
   labQuestLight: {
@@ -88,9 +89,9 @@ ISImporter.sensors = {
     menuGroup:  MENU_GROUPS.LAB_QUEST,
     menuText: "Light",
     title: "Light Intensity",
-    yMax: 2000,
-    units: "lux",
-    xMax: 60
+    readingUnits: "lux",
+    maxReading: 2000,
+    maxSeconds: 20
   }
 
 };
@@ -111,9 +112,19 @@ ISImporter.GraphController = defineClass({
     this.graph.title(title);
   },
 
+  setXMax: function(xMax) {
+    this.xMax = xMax;
+    this.graph.xmax(xMax);
+  },
+
   setYMax: function(yMax) {
     this.yMax = yMax;
     this.graph.ymax(yMax);
+  },
+
+  setYMin: function(yMin) {
+    this.yMin = yMin;
+    this.graph.ymin(yMin);
   },
 
   setYLabel: function() {},
@@ -376,10 +387,12 @@ ISImporter.appController = new ISImporter.Object({
     this.dataset = new ISImporter.Dataset();
     this.dataset.setXIncrement(0.1);
 
-    this.setupRealtimeDisplay(this.sensor.units);
+    this.setupRealtimeDisplay(this.sensor.readingUnits);
 
     ISImporter.graphController.setDataset( this.dataset );
-    ISImporter.graphController.setYMax( this.sensor.yMax );
+    ISImporter.graphController.setXMax( this.sensor.maxSeconds );
+    ISImporter.graphController.setYMin( this.sensor.minReading || 0 );
+    ISImporter.graphController.setYMax( this.sensor.maxReading );
     ISImporter.graphController.setTitle( this.sensor.title + " Graph");
 
     this.currentApplet.on('data', this.appletDataListener);
