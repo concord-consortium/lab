@@ -305,27 +305,24 @@
   <void property="lightSource"> 
    <object class="org.concord.mw2d.models.LightSource"/> 
   </void> 
-  <void property="numberOfParticles"> 
-   <int>1</int> 
-  </void> 
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
-    <string>page5$0.mml</string> 
+    <string>page5Title.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1350838174000</long> 
+     <long>1337368949000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5$0.mml</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/page5Title.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>11258</long> 
+    <long>11452</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -379,26 +376,6 @@
     </void> 
    </object> 
   </void> 
-  <void property="images"> 
-   <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="1"> 
-    <void index="0"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>instructionsFlat.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="x"> 
-       <double>61.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>32.0</double> 
-      </void> 
-     </object> 
-    </void> 
-   </array> 
-  </void> 
   <void property="monochromatic"> 
    <boolean>false</boolean> 
   </void> 
@@ -408,27 +385,81 @@
   <void property="showVDWLines"> 
    <boolean>true</boolean> 
   </void> 
- </object> 
- <object class="org.concord.mw2d.models.Atom"> 
-  <void property="chargeColor"> 
-   <object class="java.awt.Color"> 
-    <int>0</int> 
-    <int>0</int> 
-    <int>255</int> 
-    <int>255</int> 
-   </object> 
-  </void> 
-  <void property="movable"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="rx"> 
-   <double>379.0</double> 
-  </void> 
-  <void property="ry"> 
-   <double>102.0</double> 
-  </void> 
-  <void property="visible"> 
-   <boolean>false</boolean> 
+  <void property="textBoxes"> 
+   <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="2"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
+      <void property="attachmentPosition"> 
+       <byte>11</byte> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>60</int> 
+        <int>64</int> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Arial-BoldMT</string> 
+        <int>1</int> 
+        <int>16</int> 
+       </object> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="text"> 
+       <string>  Explore the different attractive forces
+between molecules of varying size and
+ shape. Look for how the area of close
+      contact between the molecules
+            influences their attraction.</string> 
+      </void> 
+      <void property="x"> 
+       <double>35.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>21.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="1"> 
+     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
+      <void property="attachmentPosition"> 
+       <byte>11</byte> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>59</int> 
+        <int>64</int> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Arial</string> 
+        <int>1</int> 
+        <int>16</int> 
+       </object> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>1</byte> 
+      </void> 
+      <void property="text"> 
+       <string>Choose a pair of molecules from the
+                      menu below.</string> 
+      </void> 
+      <void property="x"> 
+       <double>46.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>152.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.MolecularModel$State"/> 

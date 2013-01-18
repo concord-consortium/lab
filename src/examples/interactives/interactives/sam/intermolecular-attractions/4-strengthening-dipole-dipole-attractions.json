@@ -9,7 +9,22 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json",
       "viewOptions": {
         "controlButtons": "",
-        "enableKeyboardHandlers": false
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Explore the different attractive forces between molecules of varying polarity.",
+            "x": 0.83,
+            "y": 1.68,
+            "width": 2.5,
+            "layer": 1
+          },
+          {
+            "text": "Choose a pair of molecule from the menu below.",
+            "x": 0.59,
+            "y": 0.29,
+            "layer": 1
+          }
+        ]
       }
     },
     {
@@ -17,7 +32,17 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/leastPolarPull.json",
       "viewOptions": {
         "controlButtons": "",
-        "enableKeyboardHandlers": false
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Least Polar Molecule",
+            "x": 1.48,
+            "y": 1.87,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(232,229,229)"
+          }
+        ]
       }
     },
     {
@@ -25,7 +50,17 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/medPolarPull.json",
       "viewOptions": {
         "controlButtons": "",
-        "enableKeyboardHandlers": false
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Medium Polar Molecule",
+            "x": 1.45,
+            "y": 1.87,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(232,229,229)"
+          }
+        ]
       }
     },
     {
@@ -33,7 +68,17 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/mostPolarPull.json",
       "viewOptions": {
         "controlButtons": "",
-        "enableKeyboardHandlers": false
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Most Polar Molecule",
+            "x": 1.48,
+            "y": 1.87,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(232,229,229)"
+          }
+        ]
       }
     }
   ],
