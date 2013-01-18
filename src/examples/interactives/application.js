@@ -480,7 +480,10 @@ var ROOT = "/examples",
           dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
       return encodeURI(dgUrl);
     });
+    setupExtras();
+  }
 
+  function setupExtras() {
     //
     // Extras
     //
