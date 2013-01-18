@@ -737,16 +737,21 @@ var ROOT = "/examples",
     }).change();
 
     $runBenchmarksButton.on('click', function() {
-      var modelController
+      var modelController,
+          benchmarksTable = document.getElementById("model-benchmark-results");
+
       if(onFullPage()) {
         modelController = controller.getModelController();
         benchmark.run(modelController.benchmarks,
-          document.getElementById("model-benchmark-results"),
+          benchmarksTable,
           function(results) { console.log(results); },
           function() { $runBenchmarksButton.attr('disabled', true); },
           function() { $runBenchmarksButton.attr('disabled', false); });
       } else {
         iframePhone.post({ type:'runBenchmarks' });
+        iframePhone.addListener('returnBenchmarks', function(message) {
+          benchmark.renderToTable(benchmarksTable, message.benchmarks, message.results);
+        });
       }
     });
   }

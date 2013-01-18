@@ -41,8 +41,12 @@ define(function(require) {
         var modelController;
         if (controller && controller.getModelController) {
           modelController = controller.getModelController()
-          benchmark.run(modelController.benchmarks, function(results) {
+          benchmark.bench(modelController.benchmarks, function(results) {
             console.log(results);
+            parentMessageController.post({
+              'type':   'returnBenchmarks',
+              'values': { 'results': results, 'benchmarks': modelController.benchmarks }
+            }, function() {}, function() {});
           });
         }
       });

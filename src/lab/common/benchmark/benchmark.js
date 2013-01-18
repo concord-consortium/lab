@@ -404,8 +404,10 @@ define(function (require) {
           } else {
             results.push([ b.name, result ]);
           }
-         if (end_callback && ++benchmarks_completed === benchmarks_to_run.length) {
-           end_callback();
+         if (++benchmarks_completed === benchmarks_to_run.length) {
+           if (end_callback) {
+             end_callback();
+           }
            if (resultsCallback) {
              resultsCallback(results);
            }
