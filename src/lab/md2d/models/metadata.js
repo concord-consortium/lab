@@ -387,6 +387,7 @@ define(function() {
       layer: {
         defaultValue: 1
       },
+      width: {},
       frame: {},
       color: {},
       backgroundColor: {},
