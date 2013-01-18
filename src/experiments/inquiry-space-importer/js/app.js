@@ -80,6 +80,99 @@ ISImporter.sensors = {
     maxReading: 2000,
     samplesPerSecond: 10,
     maxSeconds: 20
+  },
+
+  goLinkForce50N: {
+    applet: new ISImporter.GoIOApplet({
+      listenerPath: 'ISImporter.sensors.goLinkForce50N.applet',
+      sensorType: 'force 50n',
+      appletId: 'force-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.GO_LINK,
+    menuText: "Force (50N)",
+    title: "Force",
+    readingUnits: "N",
+    minReading: -50,
+    maxReading: 50,
+    samplesPerSecond: 100,
+    maxSeconds: 10
+  },
+
+  goLinkPH: {
+    applet: new ISImporter.GoIOApplet({
+      listenerPath: 'ISImporter.sensors.goLinkPH.applet',
+      sensorType: 'ph',
+      appletId: 'ph-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.GO_LINK,
+    menuText: "pH",
+    title: "pH",
+    readingUnits: "pH units",
+    minReading: 0,
+    maxReading: 14,
+    samplesPerSecond: 10,
+    maxSeconds: 60
+  },
+
+  goLinkCO2: {
+    applet: new ISImporter.GoIOApplet({
+      listenerPath: 'ISImporter.sensors.goLinkCO2.applet',
+      sensorType: 'co2',
+      appletId: 'co2-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.GO_LINK,
+    menuText: "CO₂",
+    title: "CO₂ Concentration",
+    readingUnits: "ppm",
+    minReading: 0,
+    maxReading: 5000,
+    samplesPerSecond: 1,
+    maxSeconds: 60
+  },
+
+  goLinkO2: {
+    applet: new ISImporter.GoIOApplet({
+      listenerPath: 'ISImporter.sensors.goLinkO2.applet',
+      sensorType: 'o2',
+      appletId: 'o2-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.GO_LINK,
+    menuText: "O₂",
+    title: "O₂ Concentration",
+    readingUnits: "%",
+    minReading: 0,
+    maxReading: 100,
+    samplesPerSecond: 1,
+    maxSeconds: 60
+  },
+
+  labQuestMotion: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestMotion.applet',
+      sensorType: 'distance',
+      appletId: 'light-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "Motion",
+    title: "Distance",
+    maxReading: 3,
+    readingUnits: "m",
+    samplesPerSecond: 10,
+    maxSeconds: 20
+  },
+
+  labQuestTemperature: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestTemperature.applet',
+      sensorType: 'temperature',
+      appletId: 'temperature-sensor'
+    }),
+    menuGroup: MENU_GROUPS.LAB_QUEST,
+    menuText: "Temperature",
+    title: "Temperature",
+    readingUnits: "°C",
+    maxReading: 40,
+    samplesPerSecond: 10,
     maxSeconds: 20
   },
 
@@ -96,6 +189,70 @@ ISImporter.sensors = {
     maxReading: 2000,
     samplesPerSecond: 10,
     maxSeconds: 20
+  },
+
+  labQuestForce50N: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestForce50N.applet',
+      sensorType: 'force 50n',
+      appletId: 'force-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "Force (50N)",
+    title: "Force",
+    readingUnits: "N",
+    minReading: -50,
+    maxReading: 50,
+    samplesPerSecond: 100,
+    maxSeconds: 10
+  },
+
+  labQuestPH: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestPH.applet',
+      sensorType: 'ph',
+      appletId: 'ph-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "pH",
+    title: "pH",
+    readingUnits: "pH units",
+    minReading: 0,
+    maxReading: 14,
+    samplesPerSecond: 10,
+    maxSeconds: 60
+  },
+
+  labQuestCO2: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestCO2.applet',
+      sensorType: 'co2',
+      appletId: 'co2-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "CO₂",
+    title: "CO₂ Concentration",
+    readingUnits: "ppm",
+    minReading: 0,
+    maxReading: 5000,
+    samplesPerSecond: 1,
+    maxSeconds: 60
+  },
+
+  labQuestO2: {
+    applet: new ISImporter.LabQuestApplet({
+      listenerPath: 'ISImporter.sensors.labQuestO2.applet',
+      sensorType: 'o2',
+      appletId: 'o2-sensor'
+    }),
+    menuGroup:  MENU_GROUPS.LAB_QUEST,
+    menuText: "O₂",
+    title: "O₂ Concentration",
+    readingUnits: "%",
+    minReading: 0,
+    maxReading: 100,
+    samplesPerSecond: 1,
+    maxSeconds: 60
   }
 
 };
