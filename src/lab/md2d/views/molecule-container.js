@@ -113,7 +113,7 @@ define(function (require) {
         forceVector,
         imageProp,
         imageSizes = [],
-        textBoxes,
+        textBoxes = [],
         interactiveUrl,
         imagePath,
         drawAtomTrace,
@@ -952,7 +952,7 @@ define(function (require) {
     function drawTextBoxes() {
       var size, layers, appendTextBoxes;
 
-      textBoxes = model.get('textBoxes');
+      textBoxes = model.get('textBoxes') || [];
 
       size = model.size();
 
