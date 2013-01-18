@@ -322,7 +322,13 @@ define(function (require) {
           average_elements = average_row.getElementsByTagName("td"),
           total,
           average,
-          samples;
+          samples,
+          genericDecimalFormatter = d3.format("5.1f"),
+          genericIntegerFormatter = d3.format("f");
+
+      function isInteger(i) {
+        return Math.floor(i) == i;
+      }
 
       for (i = 0; i < benchmarksThatWereRun.length; i++) {
         b = benchmarksThatWereRun[i];
@@ -341,6 +347,12 @@ define(function (require) {
           average = total/(num_rows-2);
           if (b.formatter) {
             average = b.formatter(average);
+          } else {
+            if (isInteger(average)) {
+              average = genericIntegerFormatter(total/(num_rows-2));
+            } else {
+              average = genericDecimalFormatter(total/(num_rows-2));
+            }
           }
           average_elements[cell_index].textContent = average;
         }
