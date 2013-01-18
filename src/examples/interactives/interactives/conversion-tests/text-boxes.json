@@ -44,12 +44,13 @@
             "frame": "rectangle"
           },
           {
-            "text": "Rounded frame, very long text that wraps and wraps",
+            "text": "Rounded frame with very long, centered text that wraps and wraps",
             "x": 1.9,
             "y": 1,
             "layer": 1,
-            "width": 0.8,
-            "frame": "rounded rectangle"
+            "width": 0.9,
+            "frame": "rounded rectangle",
+            "textAlign": "center"
           }
         ]
       }
