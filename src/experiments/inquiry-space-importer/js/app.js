@@ -29,6 +29,12 @@ function isNumeric(val) {
 // Hmm.
 ISImporter.Object = defineClass();
 
+var MENU_GROUPS = {
+  NONE: { name: null },
+  GO_LINK: { name: "GoLink" },
+  LAB_QUEST: { name: "LabQuest" }
+};
+
 ISImporter.sensors = {
 
   distance: {
@@ -37,6 +43,8 @@ ISImporter.sensors = {
       sensorType: 'distance',
       appletId: 'distance-sensor'
     }),
+    menuGroup: MENU_GROUPS.NONE,
+    menuText: "GoMotion",
     title: "Distance",
     yMax: 3,
     units: "m",
@@ -49,6 +57,8 @@ ISImporter.sensors = {
       sensorType: 'temperature',
       appletId: 'temperature-sensor'
     }),
+    menuGroup: MENU_GROUPS.GO_LINK,
+    menuText: "Temperature",
     title: "Temperature",
     yMax: 100,
     units: "°C",
@@ -61,6 +71,8 @@ ISImporter.sensors = {
       sensorType: 'light',
       appletId: 'light-sensor'
     }),
+    menuGroup:  MENU_GROUPS.GO_LINK,
+    menuText: "Light",
     title: "Light Intensity",
     yMax: 2000,
     units: "lux",
@@ -200,13 +212,15 @@ ISImporter.appController = new ISImporter.Object({
 
   initInterface: function() {
     var self = this,
+        sensor,
         key;
 
     this.$sensorTypeSelector = $('#sensor-type-selector');
 
     for (key in ISImporter.sensors) {
       if (ISImporter.sensors.hasOwnProperty(key)) {
-        this.addSensorTypeSelection(key, key);
+        sensor = ISImporter.sensors[key];
+        this.addSensorTypeSelection(key, sensor.menuGroup, sensor.menuText);
       }
     }
 
@@ -278,8 +292,20 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   // initialization
-  addSensorTypeSelection: function(value, text) {
-    this.$sensorTypeSelector.append('<option value="' + value + '">' + text + '</option>');
+  addSensorTypeSelection: function(sensorKey, menuGroup, menuText) {
+    var $el;
+
+    if (menuGroup.name == null) {
+      $el = this.$sensorTypeSelector;
+    } else {
+      $el = this.$sensorTypeSelector.find('optgroup[label="' + menuGroup.name + '"]');
+      if ($el.length < 1) {
+        $el = $('<optgroup label="' + menuGroup.name + '"></optgroup>');
+        $el.appendTo( this.$sensorTypeSelector );
+      }
+    }
+
+    $el.append('<option value="' + sensorKey + '">' + menuText + '</option>');
   },
 
   setupGraph: function(title, yLabel, yMax, dataset) {},
