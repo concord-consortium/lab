@@ -12,32 +12,14 @@
       "id": "page2$0",
       "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page2/page2$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "textBoxes": [
-          {
-            "text": "Inside balloon",
-            "x": 0.58,
-            "y": 2.43,
-            "layer": 1,
-            "frame": "rounded rectangle"
-          },
-          {
-            "text": "Outside balloon",
-            "x": 3.26,
-            "y": 2.43,
-            "layer": 1,
-            "frame": "rounded rectangle"
-          },
-          {
-            "text": "Balloon skin",
-            "layer": 1,
-            "hostType": "RectangularObstacle",
-            "hostIndex": 0,
-            "width": 0.3,
-            "textAlign": "center"
-          }
-        ]
-      }
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "setTextBoxProperties(2, {width: 0.3, textAlign: 'center'});",
+        "onPropertyChange('atomInside', function(n) {",
+        "  setTextBoxProperties(3, {text: n}) ",
+        "});"
+      ]
     }
   ],
   "outputs": [
