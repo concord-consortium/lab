@@ -80,7 +80,7 @@
       "type": "button",
       "id": "increase-volume",
       "text": "Volume &#8593;",
-      "action": "set({ volume: get('volume') * 1.1 });"
+      "action": "if (get('volume') < 6.0) { set({ volume: get('volume') * 1.1 }) };"
     },
     {
       "type": "button",
