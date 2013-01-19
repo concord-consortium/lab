@@ -1774,6 +1774,24 @@ define(function (require, exports, module) {
 
           T = computeTemperature();
 
+          if (T === 0) {
+            // Special case when T is 0.
+            for (i = 0; i < N; i++) {
+              if (pinned[i] === false) {
+                // Add some random velocity to unpinned atoms.
+                vx[i] = Math.random() * 0.02 - 0.01;
+                vy[i] = Math.random() * 0.02 - 0.01;
+              }
+            }
+            // Update temperature.
+            T = computeTemperature();
+
+            if (T === 0) {
+              // This means that all atoms are pinned. Nothing to do.
+              return;
+            }
+          }
+
           if (temperatureChangeInProgress && Math.abs(getTWindowed(T) - target) <= target * tempTolerance) {
             temperatureChangeInProgress = false;
           }
