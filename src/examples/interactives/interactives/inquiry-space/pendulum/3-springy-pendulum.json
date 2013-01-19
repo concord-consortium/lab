@@ -14,7 +14,7 @@
           "length": 10
         }
       },
-      "onLoad": "setRadialBondProperties(0, { length: 0.75, style: 106 });"
+      "onLoad": "setRadialBondProperties(0, { length: 0.75, type: 106 });"
     }
   ],
   "components": [
