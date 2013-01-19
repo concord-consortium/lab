@@ -28,10 +28,11 @@ var ROOT = "/examples",
       $selectInteractive = $("#select-interactive"),
 
       $updateInteractiveButton = $("#update-interactive-button"),
-      $autoFormatSelectionButton = $("#autoformat-selection-button"),
+      $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
 
       $updateModelButton = $("#update-model-button"),
+      $autoFormatModelJsonButton = $("#autoformat-model-json-button"),
       $modelTextArea = $("#model-text-area"),
 
       $creditsLink = $("#credits-link"),
@@ -669,8 +670,7 @@ var ROOT = "/examples",
         }
       });
 
-      $autoFormatSelectionButton.on('click', function() {
-        // getSelectedRange is no longer in code-mirror?
+      $autoFormatInteractiveJsonButton.on('click', function() {
         editor.autoFormatRange(editor.getCursor(true), editor.getCursor(false));
       });
 
@@ -685,7 +685,7 @@ var ROOT = "/examples",
   }
 
   //
-  // Interactive Code Editor
+  // Model Code Editor
   //
   function setupModelCodeEditor() {
     $.get(ACTUAL_ROOT + interactive.models[0].url).done(function(results) {
@@ -711,6 +711,10 @@ var ROOT = "/examples",
           } else {
             iframePhone.post({ type:'loadModel', data: { modelId: interactive.models[0].id, modelObject: md2dModel } });
           }
+        });
+
+        $autoFormatModelJsonButton.on('click', function() {
+          modelEditor.autoFormatRange(modelEditor.getCursor(true), modelEditor.getCursor(false));
         });
 
         $showModelEditor.change(function() {
