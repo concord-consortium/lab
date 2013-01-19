@@ -650,7 +650,7 @@ var ROOT = "/examples",
     foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     if (!editor) {
       editor = CodeMirror.fromTextArea($interactiveTextArea.get(0), {
-        mode: 'javascript',
+        mode: { name: "javascript", json: true },
         indentUnit: indent,
         lineNumbers: true,
         lineWrapping: false,
@@ -695,7 +695,7 @@ var ROOT = "/examples",
       foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
       if (!modelEditor) {
         modelEditor = CodeMirror.fromTextArea($modelTextArea.get(0), {
-          mode: 'javascript',
+          mode: { name: "javascript", json: true },
           indentUnit: indent,
           lineNumbers: true,
           lineWrapping: false,
