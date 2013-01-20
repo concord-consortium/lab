@@ -25,7 +25,12 @@ var ROOT = "/examples",
 
       $interactiveHeader = $("#interactive-header"),
       $interactiveTitle = $("#interactive-title"),
+
+      $interactiveControls = $("#interactive-controls"),
+
       $selectInteractive = $("#select-interactive"),
+
+      $selectIframeSize = $("#select-iframe-size"),
 
       $updateInteractiveButton = $("#update-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
@@ -129,6 +134,7 @@ var ROOT = "/examples",
         AUTHORING = true;
         applicationCallbacks = [setupFullPage];
       } else {
+        // else we are being embedded ...
         if ($editor.length) {
           viewType = 'interactive-author-iframe';
           applicationCallbacks = [setupEmbeddableAuthorPage];
@@ -313,6 +319,29 @@ var ROOT = "/examples",
 
   $selectInteractive.change(selectInteractiveHandler);
 
+  function selectIframeSizeHandler() {
+    var $iframeWrapper = $("#iframe-wrapper"),
+        selection = $selectIframeSize.val();
+    switch(selection) {
+      case "small":
+      $iframeWrapper.width('350px').height('260px');
+      break;
+      case "medium":
+      $iframeWrapper.width('600px').height('400px');
+      break;
+      case "smalll":
+      $iframeWrapper.width('925px').height('575px');
+      break;
+    }
+    saveOptionsToCookie();
+  }
+
+  $selectIframeSize.change(selectIframeSizeHandler);
+
+  $interactiveControls.change(function() {
+    saveOptionsToCookie();
+  });
+
   // used to extract values from nested object: modelList
   function getObjects(obj, key, val) {
     var objects = [],
@@ -424,7 +453,7 @@ var ROOT = "/examples",
     if (cookie) {
       str = cookie[1],
       settings = str.split('&').map(function (i) { return i.split('='); });
-      $("#header input").each(function(i, el) {
+      $("#interactive-controls input").each(function(i, el) {
         var match = _.find(settings, function(e) { return e[0] === el.id; }, this);
         if (match && el.id === match[0]) {
           el.checked = true;
@@ -432,11 +461,19 @@ var ROOT = "/examples",
           el.checked = false;
         }
       });
+      $("#interactive-controls select").each(function(i, el) {
+        var match = _.find(settings, function(e) {
+          return e[0] === el.name;
+        }, this);
+        if (match) {
+          $(el).val(match[1]);
+        }
+      });
     }
   }
 
   function saveOptionsToCookie() {
-    document.cookie = "lab-interactive-options=" + $("#header input").serialize() + " ; max-age=" + 30*60*60*24;
+    document.cookie = "lab-interactive-options=" + $("#interactive-controls").serialize() + " ; max-age=" + 30*60*60*24;
   }
 
 
@@ -493,6 +530,7 @@ var ROOT = "/examples",
       // FIXME: generalize when multiple model types implemented
       controller.modelController.moleculeContainer.setFocus();
       $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
+      // $selectIframeSize.attr('disabled', 'disabled');
       setupCodeEditor();
       setupModelCodeEditor();
       setupBenchmarks();
@@ -514,15 +552,19 @@ var ROOT = "/examples",
       // send this message to Interactive in iframe
       // controller.modelController.moleculeContainer.setFocus();
       var childIFrameObj = {},
-          $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content"></div>'),
-          $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+          $iframeWrapper,
+          $iframe;
+          
+      $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectIframeSize.val() + '"></div>'),
+      $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+
+      $("#viz").append($iframeWrapper);
+      selectIframeSizeHandler();
+      $selectIframeSize.removeAttr('disabled');
 
       $iframeWrapper.append($iframe);
-      $("#viz").append($iframeWrapper);
       iframePhone = setupIframeListenerFor($iframe[0]);
-
-
-
+      
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
       // $(".view").bind('resize', update);
     }
