@@ -59,7 +59,7 @@ define(function (require) {
 
   layout.setBodyEmsize = function(scale) {
     var emsize,
-        $componentsWithText = $("#interactive-container  p,label,button").filter(":visible"),
+        $componentsWithText = $("#interactive-container  p,label,button,select,option").filter(":visible"),
         $headerContent = $("#content-banner div"),
         $popupPanes = $("#credits-pane, #share-pane, #about-pane").find("div,textarea,label,select"),
         minFontSize;
