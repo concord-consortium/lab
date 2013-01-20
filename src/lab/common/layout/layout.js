@@ -59,25 +59,40 @@ define(function (require) {
 
   layout.setBodyEmsize = function(scale) {
     var emsize,
-        $buttons = $('button.component'),
-        minButtonFontSize;
+        $componentsWithText = $("#interactive-container  p,label,button").filter(":visible"),
+        $headerContent = $("#content-banner div"),
+        minFontSize;
     if (!layout.display) {
       layout.display = layout.getDisplayProperties();
     }
-    emsize = Math.max(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
-    if (scale) {
-      emsize *= scale;
-    }
+    emsize = Math.max(layout.display.screenFactorWidth * 1.2, layout.display.screenFactorHeight * 1.2);
+    if (scale) { emsize *= scale; }
     $('body').css('font-size', emsize + 'em');
-    if (emsize <= 0.5) {
-      minButtonFontSize = 1.4 * 0.5/emsize;
-      $buttons.css('font-size', minButtonFontSize + 'em');
-      // $buttons.css('height', minButtonFontSize 'em');
-    } else {
-      $buttons.css('font-size', '');
-      // $buttons.css('height', '');
-    }
+    applyMinFontSizeFilter(emsize, $componentsWithText, "9px");
+    applyMinFontSizeFilter(emsize, $headerContent, "10px");
+    layout.emsize = emsize;
   };
+
+  function applyMinFontSizeFilter(emsize, $elements, minSize) {
+    if (emsize <= 0.5) {
+      $elements.css("font-size", minSize);
+    } else {
+      $elements.each(function() {
+        var style,
+            index;
+        if (!style) {
+          style = $(this).attr('style');
+        }
+        if (style) {
+          index = style.indexOf('font-size');
+          if (index !== -1) {
+            style = style.replace(/font-size: .*;/g, '');
+            $(this).attr('style', style);
+          }
+        }
+      });
+    }
+  }
 
   layout.getVizProperties = function(obj) {
     var $viz = $('#viz');
