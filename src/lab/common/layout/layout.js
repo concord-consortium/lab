@@ -61,6 +61,7 @@ define(function (require) {
     var emsize,
         $componentsWithText = $("#interactive-container  p,label,button").filter(":visible"),
         $headerContent = $("#content-banner div"),
+        $popupPanes = $("#credits-pane, #share-pane, #about-pane").find("div,textarea,label,select"),
         minFontSize;
     if (!layout.display) {
       layout.display = layout.getDisplayProperties();
@@ -70,6 +71,7 @@ define(function (require) {
     $('body').css('font-size', emsize + 'em');
     applyMinFontSizeFilter(emsize, $componentsWithText, "9px");
     applyMinFontSizeFilter(emsize, $headerContent, "10px");
+    applyMinFontSizeFilter(emsize, $popupPanes, "9px");
     layout.emsize = emsize;
   };
 
