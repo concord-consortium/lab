@@ -338,10 +338,6 @@ var ROOT = "/examples",
 
   $selectIframeSize.change(selectIframeSizeHandler);
 
-  $interactiveControls.change(function() {
-    saveOptionsToCookie();
-  });
-
   // used to extract values from nested object: modelList
   function getObjects(obj, key, val) {
     var objects = [],
