@@ -1,10 +1,11 @@
 {
   "title": "Protein Folding",
   "publicationStatus": "public",
-  "subtitle": "Exploring simple protein folding.",
+  "subtitle": "Explore simple protein folding.",
   "about": [
-    "Explore how the properties of amino acids in a protein interact with their environment to cause protiens to fold in a particular way.",
-    "After generating a protien using the buttons below the model you can modify individual amino acids by right-clicking on th one you would like to modify and selecting a new amino acid to replace it with."
+    "Discover how the properties of amino acids in a protein interact with their environment to cause proteins to fold in a particular way.",
+    "Generate different proteins, select the solvent type, and change the color scheme for amino acids using the buttons below the model.",
+    "Change specific amino acids in a protein by right-clicking on them."
   ],
   "models": [
     {
