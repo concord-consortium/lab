@@ -83,6 +83,7 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
     [MIT](http://www.opensource.org/licenses/MIT) and [GPL v3.0](http://opensource.org/licenses/GPL-3.0).
 23. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
 24. [underscore](https://github.com/documentcloud/underscore): [MIT](http://www.opensource.org/licenses/MIT)
+25. [postMessage structured clone detection](https://gist.github.com/4583494): [MIT](http://www.opensource.org/licenses/MIT)
 
 The Sass mixins in the directories: `src/sass/bourbon` and `src/sass/neat` are used to produce some
 of the CSS used in the Lab project and are distributed under the MIT license.
