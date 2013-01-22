@@ -73,9 +73,7 @@ var ROOT = "/experiments",
         applet.ready = false;
         applet.checked_more_than_once = false;
         var self = this;
-        window.setTimeout (function() {
-          appletReady();
-        }, 250);
+        window.setTimeout(appletReady, 250);
       }
       ISNetLogo.DGExporter.init(interactive.model.viewOptions.dimensions);
       interactiveDefinitionLoaded.resolve();
@@ -84,6 +82,9 @@ var ROOT = "/experiments",
 
   function appletReady() {
     var globalsStr;
+
+    applet.ready = false;
+
     try {
       nl_obj_panel     = applet.panel();                                           // org.nlogo.lite.Applet object
       nl_obj_workspace = nl_obj_panel.workspace();                                 // org.nlogo.lite.LiteWorkspace
@@ -93,11 +94,19 @@ var ROOT = "/experiments",
       nl_obj_globals   = nl_obj_program.globals();
       globalsStr = nl_obj_globals.toString();
       nlGlobals = globalsStr.substr(1, globalsStr.length-2).split(",").map(function(e) { return stripWhiteSpace(e); });
-      applet.ready = true;
-      window.setInterval(buttonStatusCallback, 250);
+      if (nlGlobals.length > 1) {
+        applet.ready = true;
+      }
     } catch (e) {
-      applet.checked_more_than_once = window.setTimeout(function() { appletReady(); }, 250);
+      // applet is not ready
     }
+
+    if (applet.ready) {
+      window.setInterval(buttonStatusCallback, 250);
+    } else {
+      applet.checked_more_than_once = window.setTimeout(appletReady, 250);
+    }
+
     return applet.ready;
   }
 

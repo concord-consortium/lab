@@ -18,14 +18,14 @@ define(function (require) {
     height: 800
   };
 
-  layout.regular_display = false;
+  layout.regularDisplay = false;
 
-  layout.not_rendered = true;
+  layout.notRendered = true;
   layout.fontsize = false;
+  layout.emsize = 1;
   layout.cancelFullScreen = false;
-  layout.screen_factor = 1;
-  layout.checkbox_factor = 1.1;
-  layout.checkbox_scale = 1.1;
+  layout.checkboxFactor = 1.1;
+  layout.checkboxScale = 1.1;
   layout.fullScreenRender = false;
 
   layout.canonical.width  = 1280;
@@ -51,33 +51,50 @@ define(function (require) {
         width: layout.getPageWidth(),
         height: layout.getPageHeight()
     };
-    obj.screen_factor_width  = obj.window.width / layout.canonical.width;
-    obj.screen_factor_height = obj.window.height / layout.canonical.height;
-    obj.emsize = Math.max(obj.screen_factor_width * 1.1, obj.screen_factor_height);
+    obj.screenFactorWidth  = obj.window.width / layout.canonical.width;
+    obj.screenFactorHeight = obj.window.height / layout.canonical.height;
+    obj.emsize = Math.max(obj.screenFactorWidth * 1.1, obj.screenFactorHeight);
     return obj;
   };
 
   layout.setBodyEmsize = function(scale) {
     var emsize,
-        $buttons = $('button.component'),
-        minButtonFontSize;
+        $componentsWithText = $("#interactive-container  p,label,button,select,option").filter(":visible"),
+        $headerContent = $("#content-banner div"),
+        $popupPanes = $("#credits-pane, #share-pane, #about-pane").find("div,textarea,label,select"),
+        minFontSize;
     if (!layout.display) {
       layout.display = layout.getDisplayProperties();
     }
-    emsize = Math.max(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
-    if (scale) {
-      emsize *= scale;
-    }
+    emsize = Math.max(layout.display.screenFactorWidth * 1.2, layout.display.screenFactorHeight * 1.2);
+    if (scale) { emsize *= scale; }
     $('body').css('font-size', emsize + 'em');
-    if (emsize <= 0.5) {
-      minButtonFontSize = 1.4 * 0.5/emsize;
-      $buttons.css('font-size', minButtonFontSize + 'em');
-      // $buttons.css('height', minButtonFontSize 'em');
-    } else {
-      $buttons.css('font-size', '');
-      // $buttons.css('height', '');
-    }
+    applyMinFontSizeFilter(emsize, $componentsWithText, "9px");
+    applyMinFontSizeFilter(emsize, $headerContent, "10px");
+    applyMinFontSizeFilter(emsize, $popupPanes, "9px");
+    layout.emsize = emsize;
   };
+
+  function applyMinFontSizeFilter(emsize, $elements, minSize) {
+    if (emsize <= 0.5) {
+      $elements.css("font-size", minSize);
+    } else {
+      $elements.each(function() {
+        var style,
+            index;
+        if (!style) {
+          style = $(this).attr('style');
+        }
+        if (style) {
+          index = style.indexOf('font-size');
+          if (index !== -1) {
+            style = style.replace(/font-size: .*;/g, '');
+            $(this).attr('style', style);
+          }
+        }
+      });
+    }
+  }
 
   layout.getVizProperties = function(obj) {
     var $viz = $('#viz');
@@ -87,9 +104,9 @@ define(function (require) {
     }
     obj.width = $viz.width();
     obj.height = $viz.height();
-    obj.screen_factor_width  = obj.width / layout.canonical.width;
-    obj.screen_factor_height = obj.height / layout.canonical.height;
-    obj.emsize = Math.min(obj.screen_factor_width * 1.1, obj.screen_factor_height);
+    obj.screenFactorWidth  = obj.width / layout.canonical.width;
+    obj.screenFactorHeight = obj.height / layout.canonical.height;
+    obj.emsize = Math.min(obj.screenFactorWidth * 1.1, obj.screenFactorHeight);
     return obj;
   };
 
@@ -100,7 +117,7 @@ define(function (require) {
     if (!layout.vis) {
       layout.vis = layout.getVizProperties();
     }
-    emsize = Math.min(layout.viz.screen_factor_width * 1.2, layout.viz.screen_factor_height * 1.2);
+    emsize = Math.min(layout.viz.screenFactorWidth * 1.2, layout.viz.screenFactorHeight * 1.2);
     $viz.css('font-size', emsize + 'em');
   };
 
@@ -139,52 +156,29 @@ define(function (require) {
                      document.mozFullScreen;
 
     if (event && event.forceRender) {
-      layout.not_rendered = true;
+      layout.notRendered = true;
     }
 
     layout.display = layout.getDisplayProperties();
     layout.viz = layout.getVizProperties();
 
-    if (!layout.regular_display) {
-      layout.regular_display = layout.getDisplayProperties();
+    if (!layout.regularDisplay) {
+      layout.regularDisplay = layout.getDisplayProperties();
     }
 
 
     if(fullscreen || layout.fullScreenRender  || layout.screenEqualsPage()) {
       layout.fullScreenRender = true;
-      layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
-      layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
-      layout.screen_factor = layout.screen_factor_height;
-      layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
-      $('body').css('font-size', layout.screen_factor + "em");
-      layout.not_rendered = true;
+      layout.screenFactorWidth  = layout.display.page.width / layout.canonical.width;
+      layout.screenFactorHeight = layout.display.page.height / layout.canonical.height;
+      layout.checkboxFactor = Math.max(0.8, layout.checkboxScale * layout.emsize);
+      $('body').css('font-size', layout.emsize + "em");
+      layout.notRendered = true;
       switch (layout.selection) {
 
-        // fluid layout
-        case "simple-screen":
-        if (layout.not_rendered) {
-          setupSimpleFullScreenMoleculeContainer();
-        }
-        break;
-
-        // only fluid on page load (and when resizing on trnasition to and from full-screen)
-        case "simple-static-screen":
-        if (layout.not_rendered) {
-          setupSimpleFullScreenMoleculeContainer();
-        }
-        break;
-
-        // fluid layout
-        case "compare-screen":
-        emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
-        $('body').css('font-size', emsize + "em");
-        compareScreen();
-        layout.not_rendered = false;
-        break;
-
-        // only fluid on page load (and when resizing on trnasition to and from full-screen)
+        // only fluid on page load (and when resizing on transition to and from full-screen)
         default:
-        if (layout.not_rendered) {
+        if (layout.notRendered) {
           setupFullScreen();
         }
         break;
@@ -193,45 +187,17 @@ define(function (require) {
       if (layout.cancelFullScreen || layout.fullScreenRender) {
         layout.cancelFullScreen = false;
         layout.fullScreenRender = false;
-        layout.not_rendered = true;
-        layout.regular_display = layout.previous_display;
+        layout.notRendered = true;
+        layout.regularDisplay = layout.previous_display;
       } else {
-        layout.regular_display = layout.getDisplayProperties();
+        layout.regularDisplay = layout.getDisplayProperties();
       }
-      layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
-      layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
-      layout.screen_factor = layout.screen_factor_height;
-      layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
+      layout.screenFactorWidth  = layout.display.page.width / layout.canonical.width;
+      layout.screenFactorHeight = layout.display.page.height / layout.canonical.height;
+      layout.checkboxFactor = Math.max(0.8, layout.checkboxScale * layout.emsize);
       switch (layout.selection) {
 
-
-        // only fluid on page load (and when resizing on trnasition to and from full-screen)
-        case "full-static-screen":
-        if (layout.not_rendered) {
-          emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
-          $('body').css('font-size', emsize + 'em');
-          regularScreen();
-          layout.not_rendered = false;
-        }
-        break;
-
-        // fluid layout
-        case "compare-screen":
-        emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
-        $('body').css('font-size', emsize + 'em');
-        compareScreen();
-        break;
-
-        // only fluid on page load (and when resizing on transition to and from full-screen)
-        case "interactive":
-        if (layout.not_rendered) {
-          layout.setVizEmsize();
-          setupInteractiveScreen();
-          layout.not_rendered = false;
-        }
-        break;
-
-        // like simple-iframe, but all component position definitions are set from properties
+        // all component position definitions are set from properties
         case "interactive-iframe":
         layout.setBodyEmsize();
         setupInteractiveIFrameScreen();
@@ -248,7 +214,7 @@ define(function (require) {
         setupRegularScreen();
         break;
       }
-      layout.regular_display = layout.getDisplayProperties();
+      layout.regularDisplay = layout.getDisplayProperties();
     }
 
     //
@@ -266,10 +232,10 @@ define(function (require) {
           modelHeightFactor = 0.85,
           bottomFactor = 0.0015,
           viewSizes = {},
+          viewType,
           containerWidth = $(window).width(),
           containerHeight = $(window).height(),
-          mcWidth = $('#model-container').width(),
-          modelHeight;
+          mcWidth = $('#model-container').width();
 
       modelDimensions = viewLists.moleculeContainers[0].scale();
       modelAspectRatio = modelDimensions[2] / modelDimensions[3];
@@ -282,7 +248,7 @@ define(function (require) {
       modelHeightFactor -= modelHeightPaddingFactor;
 
       if (viewLists.thermometers) {
-        modelWidthFactor -= 0.05;
+        modelWidthFactor -= 0.10;
       }
 
       if (viewLists.energyGraphs) {
@@ -290,8 +256,8 @@ define(function (require) {
       }
 
       // account for proportionally larger buttons when embeddable size gets very small
-      if (emsize <= 0.5) {
-        bottomFactor *= 0.5/emsize;
+      if (layout.emsize <= 0.5) {
+        bottomFactor *= 0.5/layout.emsize;
       }
 
       viewLists.bottomItems = $('#bottom').children().length;
@@ -323,7 +289,7 @@ define(function (require) {
       }
 
       for (viewType in viewLists) {
-        if (viewType === "moleculeContainers") continue
+        if (viewType === "moleculeContainers") continue;
         if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
           i = -1;  while(++i < viewLists[viewType].length) {
             if (viewSizes[viewType]) {
@@ -351,9 +317,9 @@ define(function (require) {
           modelHeightFactor = 0.85,
           bottomFactor = 0.0015,
           viewSizes = {},
+          viewType,
           containerWidth = $("#content").width(),
-          containerHeight = $("#content").height(),
-          modelHeight;
+          containerHeight = $("#content").height();
 
       modelDimensions = viewLists.moleculeContainers[0].scale();
       modelAspectRatio = modelDimensions[2] / modelDimensions[3];
@@ -378,8 +344,8 @@ define(function (require) {
       }
 
       // account for proportionally larger buttons when embeddable size gets very small
-      if (emsize <= 0.5) {
-        bottomFactor *= 0.5/emsize;
+      if (layout.emsize <= 0.5) {
+        bottomFactor *= 0.5/layout.emsize;
       }
 
       viewLists.bottomItems = $('#bottom').children().length;
@@ -411,7 +377,7 @@ define(function (require) {
       }
 
       for (viewType in viewLists) {
-        if (viewType === "moleculeContainers") continue
+        if (viewType === "moleculeContainers") continue;
         if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
           i = -1;  while(++i < viewLists[viewType].length) {
             if (viewSizes[viewType]) {
@@ -484,29 +450,6 @@ define(function (require) {
         viewLists.energyCharts[i].resize(rightHalfWidth, rightHeight);
       }
     }
-
-    //
-    // Simple Full Screen Layout
-    //
-    function setupSimpleFullScreenMoleculeContainer() {
-      var i, width, height, mcsize,
-          rightHeight, rightHalfWidth, rightQuarterWidth,
-          widthToPageRatio, modelAspectRatio,
-          pageWidth = layout.display.page.width,
-          pageHeight = layout.display.page.height;
-
-      mcsize = viewLists.moleculeContainers[0].scale();
-      modelAspectRatio = mcsize[0] / mcsize[1];
-      widthToPageRatio = mcsize[0] / pageWidth;
-      width = pageWidth * 0.60;
-      height = width * 1/modelAspectRatio;
-      if (height > pageHeight * 0.60) {
-        height = pageHeight * 0.60;
-        width = height * modelAspectRatio;
-      }
-      viewLists.moleculeContainers[0].resize(width, height);
-    }
-
   };
 
   layout.getPageHeight = function() {

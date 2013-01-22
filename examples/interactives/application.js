@@ -1,4 +1,4 @@
-/*global Lab $ d3 CodeMirror controllers model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
+/*global Lab _ $ d3 CodeMirror controllers model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -25,13 +25,19 @@ var ROOT = "/examples",
 
       $interactiveHeader = $("#interactive-header"),
       $interactiveTitle = $("#interactive-title"),
+
+      $interactiveControls = $("#interactive-controls"),
+
       $selectInteractive = $("#select-interactive"),
 
+      $selectIframeSize = $("#select-iframe-size"),
+
       $updateInteractiveButton = $("#update-interactive-button"),
-      $autoFormatSelectionButton = $("#autoformat-selection-button"),
+      $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
 
       $updateModelButton = $("#update-model-button"),
+      $autoFormatModelJsonButton = $("#autoformat-model-json-button"),
       $modelTextArea = $("#model-text-area"),
 
       $creditsLink = $("#credits-link"),
@@ -128,6 +134,7 @@ var ROOT = "/examples",
         AUTHORING = true;
         applicationCallbacks = [setupFullPage];
       } else {
+        // else we are being embedded ...
         if ($editor.length) {
           viewType = 'interactive-author-iframe';
           applicationCallbacks = [setupEmbeddableAuthorPage];
@@ -312,6 +319,25 @@ var ROOT = "/examples",
 
   $selectInteractive.change(selectInteractiveHandler);
 
+  function selectIframeSizeHandler() {
+    var $iframeWrapper = $("#iframe-wrapper"),
+        selection = $selectIframeSize.val();
+    switch(selection) {
+      case "small":
+      $iframeWrapper.width('350px').height('260px');
+      break;
+      case "medium":
+      $iframeWrapper.width('600px').height('400px');
+      break;
+      case "large":
+      $iframeWrapper.width('925px').height('575px');
+      break;
+    }
+    saveOptionsToCookie();
+  }
+
+  $selectIframeSize.change(selectIframeSizeHandler);
+
   // used to extract values from nested object: modelList
   function getObjects(obj, key, val) {
     var objects = [],
@@ -421,9 +447,9 @@ var ROOT = "/examples",
         str,
         settings;
     if (cookie) {
-      str = cookie[1],
+      str = cookie[1].split(";")[0];
       settings = str.split('&').map(function (i) { return i.split('='); });
-      $("#header input").each(function(i, el) {
+      $("#interactive-controls input").each(function(i, el) {
         var match = _.find(settings, function(e) { return e[0] === el.id; }, this);
         if (match && el.id === match[0]) {
           el.checked = true;
@@ -431,11 +457,19 @@ var ROOT = "/examples",
           el.checked = false;
         }
       });
+      $("#interactive-controls select").each(function(i, el) {
+        var match = _.find(settings, function(e) {
+          return e[0] === el.name;
+        }, this);
+        if (match) {
+          $(el).val(match[1]);
+        }
+      });
     }
   }
 
   function saveOptionsToCookie() {
-    document.cookie = "lab-interactive-options=" + $("#header input").serialize() + " ; max-age=" + 30*60*60*24;
+    document.cookie = "lab-interactive-options=" + $("#interactive-controls").serialize() + " ; max-age=" + 30*60*60*24;
   }
 
 
@@ -480,7 +514,10 @@ var ROOT = "/examples",
           dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
       return encodeURI(dgUrl);
     });
+    setupExtras();
+  }
 
+  function setupExtras() {
     //
     // Extras
     //
@@ -489,6 +526,7 @@ var ROOT = "/examples",
       // FIXME: generalize when multiple model types implemented
       controller.modelController.moleculeContainer.setFocus();
       $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
+      // $selectIframeSize.attr('disabled', 'disabled');
       setupCodeEditor();
       setupModelCodeEditor();
       setupBenchmarks();
@@ -510,14 +548,18 @@ var ROOT = "/examples",
       // send this message to Interactive in iframe
       // controller.modelController.moleculeContainer.setFocus();
       var childIFrameObj = {},
-          $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content"></div>'),
-          $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+          $iframeWrapper,
+          $iframe;
+
+      $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectIframeSize.val() + '"></div>'),
+      $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+
+      $("#viz").append($iframeWrapper);
+      selectIframeSizeHandler();
+      $selectIframeSize.removeAttr('disabled');
 
       $iframeWrapper.append($iframe);
-      $("#viz").append($iframeWrapper);
       iframePhone = setupIframeListenerFor($iframe[0]);
-
-
 
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
       // $(".view").bind('resize', update);
@@ -530,16 +572,17 @@ var ROOT = "/examples",
         iframePhone  = {},
         post = function(message) {
           message.origin = selfOrigin;
-          try {
+          // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+          //     https://github.com/Modernizr/Modernizr/issues/388
+          //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+          if (Lab.structuredClone.supported()) {
             iframe.contentWindow.postMessage(message, iframeOrigin);
-          } catch (e) {
-              // Assume that failure means we can only post strings, not objects (IE9)
-              // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
-              iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
-            }
-          };
-    iframePhone.handlers = {};
+          } else {
+            iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
+          }
+        };
 
+    iframePhone.handlers = {};
 
     iframePhone.addListener = function(messageName,func) {
       iframePhone.handlers[messageName] = func;
@@ -647,7 +690,7 @@ var ROOT = "/examples",
     foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     if (!editor) {
       editor = CodeMirror.fromTextArea($interactiveTextArea.get(0), {
-        mode: 'javascript',
+        mode: { name: "javascript", json: true },
         indentUnit: indent,
         lineNumbers: true,
         lineWrapping: false,
@@ -666,9 +709,8 @@ var ROOT = "/examples",
         }
       });
 
-      $autoFormatSelectionButton.on('click', function() {
-        var range = getSelectedRange();
-        editor.autoFormatRange(range.from, range.to);
+      $autoFormatInteractiveJsonButton.on('click', function() {
+        editor.autoFormatRange(editor.getCursor(true), editor.getCursor(false));
       });
 
       $showEditor.change(function() {
@@ -682,17 +724,17 @@ var ROOT = "/examples",
   }
 
   //
-  // Interactive Code Editor
+  // Model Code Editor
   //
   function setupModelCodeEditor() {
     $.get(ACTUAL_ROOT + interactive.models[0].url).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
-      md2dModel = results;
+      var md2dModel = results;
       $modelTextArea.text(JSON.stringify(md2dModel, null, indent));
       foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
       if (!modelEditor) {
         modelEditor = CodeMirror.fromTextArea($modelTextArea.get(0), {
-          mode: 'javascript',
+          mode: { name: "javascript", json: true },
           indentUnit: indent,
           lineNumbers: true,
           lineWrapping: false,
@@ -708,6 +750,10 @@ var ROOT = "/examples",
           } else {
             iframePhone.post({ type:'loadModel', data: { modelId: interactive.models[0].id, modelObject: md2dModel } });
           }
+        });
+
+        $autoFormatModelJsonButton.on('click', function() {
+          modelEditor.autoFormatRange(modelEditor.getCursor(true), modelEditor.getCursor(false));
         });
 
         $showModelEditor.change(function() {
@@ -829,51 +875,57 @@ var ROOT = "/examples",
       }
     }
 
+    function addEventListeners() {
+      addMessageHook("tick", function(props) {
+        updateModelEnergyGraph(props);
+      }, ['kineticEnergy','potentialEnergy']);
+
+      addMessageHook('play', function() {
+        if (modelEnergyGraph.number_of_points() && modelStepCounter() < modelEnergyGraph.number_of_points()) {
+          resetModelEnergyData(modelStepCounter());
+          modelEnergyGraph.new_data(modelEnergyData);
+        }
+        modelEnergyGraph.show_canvas();
+      });
+
+      addMessageHook('reset', function() {
+        renderModelEnergyGraph();
+      });
+
+      addMessageHook('stepForward', function() {
+        if (modelIsNewStep()) {
+          updateModelEnergyGraph();
+        } else {
+          modelEnergyGraph.updateOrRescale(modelStepCounter());
+          modelEnergyGraph.showMarker(modelStepCounter());
+        }
+      });
+
+      addMessageHook('stepBack', function() {
+        modelEnergyGraph.updateOrRescale(modelStepCounter());
+        modelEnergyGraph.showMarker(modelStepCounter());
+      });
+      // addMessageHook('seek', function() {});
+    }
+
+    function removeListeners() {
+      // remove listeners
+      removeMessageHook("tick");
+      removeMessageHook('play');
+      removeMessageHook('reset');
+      // removeMessageHook('seek');
+      removeMessageHook('stepForward');
+      removeMessageHook('stepBack');
+    }
+
     $showModelEnergyGraph.change(function() {
       var options;
       if (this.checked) {
-        addMessageHook("tick", function(props) {
-          updateModelEnergyGraph(props);
-        }, ['kineticEnergy','potentialEnergy']);
-
-        addMessageHook('play', function() {
-          if (modelEnergyGraph.number_of_points() && modelStepCounter() < modelEnergyGraph.number_of_points()) {
-            resetModelEnergyData(modelStepCounter());
-            modelEnergyGraph.new_data(modelEnergyData);
-          }
-          modelEnergyGraph.show_canvas();
-        });
-
-        addMessageHook('reset', function() {
-          renderModelEnergyGraph();
-        });
-
-        addMessageHook('stepForward', function() {
-          if (modelIsNewStep()) {
-            updateModelEnergyGraph();
-          } else {
-            modelEnergyGraph.updateOrRescale(modelStepCounter());
-            modelEnergyGraph.showMarker(modelStepCounter());
-          }
-        });
-
-        addMessageHook('stepBack', function() {
-          modelEnergyGraph.updateOrRescale(modelStepCounter());
-          modelEnergyGraph.showMarker(modelStepCounter());
-        });
-
-        // addMessageHook('seek', function() {});
-
+        addEventListeners();
         $modelEnergyGraphContent.show(100);
 
       } else {
-        // remove listeners
-        removeMessageHook("tick");
-        removeMessageHook('play');
-        removeMessageHook('reset');
-        // removeMessageHook('seek');
-        removeMessageHook('stepForward');
-        removeMessageHook('stepBack');
+        removeListeners();
         $modelEnergyGraphContent.hide(100);
       }
     }).change();
@@ -897,7 +949,14 @@ var ROOT = "/examples",
       $.extend(options, interactive.models[0].energyGraphOptions || []);
       resetModelEnergyData();
       options.dataset = modelEnergyData;
-      modelEnergyGraph = Lab.grapher.realTimeGraph('#model-energy-graph-chart', options);
+      removeListeners();
+      if (modelEnergyGraph) {
+        modelEnergyGraph.reset('#model-energy-graph-chart', options);
+      }
+      else {
+        modelEnergyGraph = Lab.grapher.realTimeGraph('#model-energy-graph-chart', options);
+      }
+      addEventListeners();
     }
 
     // Add another sample of model KE, PE, and TE to the arrays in resetModelEnergyData

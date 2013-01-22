@@ -227,7 +227,8 @@ define(function (require) {
       $(window).unbind('resize');
 
       if (layoutStyle) {
-        // for compatibility with current implementation "embedded" interactive style
+        // currently a layout style is specified when rendering the "embedded" Interactive
+        // or when the "render in iframe" option is chosen in the Interactive Browser
         layout.selection = layoutStyle;
         layout.setupScreen();
 
@@ -244,7 +245,7 @@ define(function (require) {
 
         $(window).on('resize', layout.setupScreen);
       } else {
-        // preferred path...
+        // Render path used in Interactive Browser when the "render in iframe" option is not chosen
         setupInteractiveLayout();
         $(window).on('resize', setupInteractiveLayout);
       }

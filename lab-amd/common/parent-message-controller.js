@@ -8,11 +8,12 @@ define(function() {
       controller;
 
   function postToTarget(message, target) {
-    try {
+    // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+    //     https://github.com/Modernizr/Modernizr/issues/388
+    //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+    if (Lab.structuredClone.supported()) {
       window.parent.postMessage(message, target);
-    } catch (e) {
-      // Assume that failure means we can only post strings, not objects (IE9)
-      // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+    } else {
       window.parent.postMessage(JSON.stringify(message), target);
     }
   }

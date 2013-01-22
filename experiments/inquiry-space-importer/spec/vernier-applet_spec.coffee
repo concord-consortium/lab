@@ -1,48 +1,54 @@
-describe "GoIOApplet class", ->
+describe "VernierSensorApplet class", ->
 
-  goio = null
+  applet = null
 
   beforeEach ->
-    goio = new ISImporter.GoIOApplet()
+    applet = new ISImporter.VernierSensorApplet()
 
   it "should exist", ->
-    expect( goio ).toBeDefined()
+    expect( applet ).toBeDefined()
 
   it "should be a subclass of SensorApplet", ->
-    expect( goio.constructor.__super__ ).toBe ISImporter.SensorApplet.prototype
+    expect( applet.constructor.__super__ ).toBe ISImporter.SensorApplet.prototype
 
   describe "getCodebase method", ->
     describe "given no pathname", ->
       it "should return \"/jnlp\"", ->
         pathname = null
-        expect( goio.getCodebase(pathname) ).toEqual "/jnlp"
+        expect( applet.getCodebase(pathname) ).toEqual "/jnlp"
 
     describe "given a pathname with no prefix: \"/experiments/inquiry-space-importer/\"", ->
       it "should return \"/jnlp\"", ->
         pathname = null
-        expect( goio.getCodebase(pathname) ).toEqual "/jnlp"
+        expect( applet.getCodebase(pathname) ).toEqual "/jnlp"
 
     describe "given a pathname with a prefix: \"/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/\"", ->
-      it "should return the prefix (\"/DataGames/Games/concord/lab.dev/\")  plus \"/jnlp\"", ->
+      it "should return the prefix (\"/DataGames/Games/concord/lab.dev\")  plus \"/jnlp\"", ->
         pathname = "/DataGames/Games/concord/lab.dev/experiments/inquiry-space-importer/"
-        expect( goio.getCodebase(pathname) ).toEqual "/DataGames/Games/concord/lab.dev/jnlp"
+        expect( applet.getCodebase(pathname) ).toEqual "/DataGames/Games/concord/lab.dev/jnlp"
 
-  describe "when listenerPath and sensorType properties are set appropriately", ->
+  describe "when instance properties are set appropriately", ->
     beforeEach ->
-      goio.listenerPath = '(dummy listener path)'
-      goio.sensorType = '(dummy sensor type)'
+      applet.listenerPath = '(dummy listener path)'
+      applet.sensorType = '(dummy sensor type)'
+      applet.deviceType = '(dummy device type)'
+      applet.deviceSpecificJarUrls = [
+        'dummy-device-specific-jar1.jar',
+        'dummy-device-specific-jar2.jar'
+      ]
 
     describe "getHTML method", ->
       it "should construct the appropriate applet tag", ->
-        expect( goio.getHTML() ).toBe [
+        expect( applet.getHTML() ).toBe [
           '<applet ',
-              'id="goio-applet" ',
+              'id="sensor-applet" ',
               'class="applet sensor-applet" ',
               'archive="com/sun/jna/jna.jar, ',
                        'org/concord/sensor/sensor.jar, ',
-                       'org/concord/sensor/goio-jna/goio-jna.jar, ',
                        'org/concord/sensor/sensor-vernier/sensor-vernier.jar, ',
-                       'org/concord/sensor/sensor-applets/sensor-applets.jar" ',
+                       'org/concord/sensor/sensor-applets/sensor-applets.jar, ',
+                       'dummy-device-specific-jar1.jar, ',
+                       'dummy-device-specific-jar2.jar" ',
               'code="org.concord.sensor.applet.SensorApplet" ',
               'codebase="/jnlp" ',
               'width="1px" ',
@@ -54,37 +60,37 @@ describe "GoIOApplet class", ->
     describe "testAppletReady method", ->
 
       beforeEach ->
-        goio.appletInstance =
+        applet.appletInstance =
           getSensorRequest: ->
           initSensorInterface: ->
-        spyOn(goio.appletInstance, 'getSensorRequest').andReturn '(new SensorRequest)'
-        spyOn goio.appletInstance, 'initSensorInterface'
+        spyOn(applet.appletInstance, 'getSensorRequest').andReturn '(new SensorRequest)'
+        spyOn applet.appletInstance, 'initSensorInterface'
 
       it "should pass the sensorType to the getSensorRequest method of the applet instance", ->
-        goio.testAppletReady()
-        expect( goio.appletInstance.getSensorRequest ).toHaveBeenCalledWith '(dummy sensor type)'
+        applet.testAppletReady()
+        expect( applet.appletInstance.getSensorRequest ).toHaveBeenCalledWith '(dummy sensor type)'
 
       it "should pass the listenerPath to the initSensorInterface method of the applet instance", ->
-        goio.testAppletReady()
-        expect( goio.appletInstance.initSensorInterface ).toHaveBeenCalledWith '(dummy listener path)', 'golink', ['(new SensorRequest)']
+        applet.testAppletReady()
+        expect( applet.appletInstance.initSensorInterface ).toHaveBeenCalledWith '(dummy listener path)', '(dummy device type)', ['(new SensorRequest)']
 
       describe "if getSensorRequest does not throw an error", ->
         it "should return true", ->
-          expect( goio.testAppletReady() ).toBe true
+          expect( applet.testAppletReady() ).toBe true
 
       describe "if getSensorRequest throws an error", ->
         beforeEach ->
-          goio.appletInstance.getSensorRequest.andThrow new Error()
+          applet.appletInstance.getSensorRequest.andThrow new Error()
 
         it "should return false", ->
-          expect( goio.testAppletReady() ).toBe false
+          expect( applet.testAppletReady() ).toBe false
 
   describe "sensorsReady applet callback", ->
 
     it "should call sensorIsReady parent method", ->
-      spyOn goio, 'sensorIsReady'
-      goio.sensorsReady()
-      expect( goio.sensorIsReady ).toHaveBeenCalled()
+      spyOn applet, 'sensorIsReady'
+      applet.sensorsReady()
+      expect( applet.sensorIsReady ).toHaveBeenCalled()
 
     describe "return value of getIsInAppletCallback method", ->
 
@@ -93,18 +99,18 @@ describe "GoIOApplet class", ->
         returnValueDuring = null
         beforeEach ->
           returnValueDuring = null
-          spyOn( goio, 'sensorIsReady' ).andCallFake ->
-            returnValueDuring = goio.getIsInAppletCallback()
+          spyOn( applet, 'sensorIsReady' ).andCallFake ->
+            returnValueDuring = applet.getIsInAppletCallback()
 
         it "should be true", ->
-          goio.sensorsReady()
+          applet.sensorsReady()
           expect( returnValueDuring ).toBe true
 
     describe "after sensorsReady returns", ->
 
       it "should be false", ->
-        goio.sensorsReady()
-        expect( goio.getIsInAppletCallback() ).toBe false
+        applet.sensorsReady()
+        expect( applet.getIsInAppletCallback() ).toBe false
 
   describe "The dataReceived applet callback", ->
 
@@ -112,29 +118,29 @@ describe "GoIOApplet class", ->
 
     beforeEach ->
       dataCb = jasmine.createSpy 'dataCb'
-      goio.on 'data', dataCb
+      applet.on 'data', dataCb
 
     it "should emit the 'data' event", ->
-      goio.dataReceived null, 1, [1.0]
+      applet.dataReceived null, 1, [1.0]
       expect( dataCb ).toHaveBeenCalled()
 
     describe "the data callback", ->
 
       it "should be called while getIsInAppletCallback() returns true", ->
           wasIn = null
-          dataCb.andCallFake -> wasIn = goio.getIsInAppletCallback()
+          dataCb.andCallFake -> wasIn = applet.getIsInAppletCallback()
 
-          goio.dataReceived null, 1, [1.0]
+          applet.dataReceived null, 1, [1.0]
           expect( wasIn ).toBe true
 
       describe "when dataReceived is sent an array with a single datum", ->
         it "should be called with the datum received from the applet callback", ->
-          goio.dataReceived null, 1, [1.0]
+          applet.dataReceived null, 1, [1.0]
           expect( dataCb ).toHaveBeenCalledWith 1.0
 
       describe "when dataReceived is sent an array with more than one datum", ->
         it "should be called once with each datum", ->
-          goio.dataReceived null, 2, [1.0, 2.0]
+          applet.dataReceived null, 2, [1.0, 2.0]
           expect( dataCb.callCount ).toBe 2
           expect( dataCb.argsForCall[0] ).toEqual [1.0]
           expect( dataCb.argsForCall[1] ).toEqual [2.0]
@@ -142,77 +148,77 @@ describe "GoIOApplet class", ->
     describe "after dataReceived returns", ->
 
       beforeEach ->
-        goio.dataReceived()
+        applet.dataReceived()
 
       describe "getIsInAppletCallback method", ->
         it "should return false", ->
-          expect( goio.getIsInAppletCallback() ).toBe false
+          expect( applet.getIsInAppletCallback() ).toBe false
 
   describe "The dataStreamEvent applet callback", ->
 
     it "should exist and be callable", ->
-      expect( typeof goio.dataStreamEvent ).toBe 'function'
+      expect( typeof applet.dataStreamEvent ).toBe 'function'
 
     it "should not throw an error", ->
-      expect( goio.dataStreamEvent ).not.toThrow()
+      expect( applet.dataStreamEvent ).not.toThrow()
 
   describe "_stopSensor method", ->
 
     beforeEach ->
-      goio.appletInstance =
+      applet.appletInstance =
         stopCollecting: ->
-      spyOn goio.appletInstance, 'stopCollecting'
+      spyOn applet.appletInstance, 'stopCollecting'
 
     describe "when called from outside an applet callback", ->
       it "should call the applet stopCollecting method", ->
-        goio._stopSensor();
-        expect( goio.appletInstance.stopCollecting ).toHaveBeenCalled()
+        applet._stopSensor();
+        expect( applet.appletInstance.stopCollecting ).toHaveBeenCalled()
 
     describe "when called from within an applet callback", ->
 
       beforeEach ->
-        goio.startAppletCallback()
-        runs -> goio._stopSensor()
+        applet.startAppletCallback()
+        runs -> applet._stopSensor()
 
       describe "immediately", ->
         it "should not have called the applet stopCollecting method", ->
-          runs -> expect( goio.appletInstance.stopCollecting ).not.toHaveBeenCalled()
+          runs -> expect( applet.appletInstance.stopCollecting ).not.toHaveBeenCalled()
 
       describe "after waiting", ->
         beforeEach ->
           waits 100
 
         it "should have called the applet stopCollecting method", ->
-          runs -> expect( goio.appletInstance.stopCollecting ).toHaveBeenCalled()
+          runs -> expect( applet.appletInstance.stopCollecting ).toHaveBeenCalled()
 
   describe "_startSensor method", ->
 
     beforeEach ->
-      goio.appletInstance =
+      applet.appletInstance =
         startCollecting: ->
-      spyOn goio.appletInstance, 'startCollecting'
+      spyOn applet.appletInstance, 'startCollecting'
 
     describe "when called from outside an applet callback", ->
       it "should call the applet startCollecting method", ->
-        goio._startSensor();
-        expect( goio.appletInstance.startCollecting ).toHaveBeenCalled()
+        applet._startSensor();
+        expect( applet.appletInstance.startCollecting ).toHaveBeenCalled()
 
     describe "when called from within an applet callback", ->
 
       beforeEach ->
-        goio.startAppletCallback()
-        runs -> goio._startSensor()
+        applet.startAppletCallback()
+        runs -> applet._startSensor()
 
       describe "immediately", ->
         it "should not have called the applet startCollecting method", ->
-          runs -> expect( goio.appletInstance.startCollecting ).not.toHaveBeenCalled()
+          runs -> expect( applet.appletInstance.startCollecting ).not.toHaveBeenCalled()
 
       describe "after waiting", ->
         beforeEach ->
           waits 100
 
         it "should have called the applet stopCollecting method", ->
-          runs -> expect( goio.appletInstance.startCollecting ).toHaveBeenCalled()
+          runs -> expect( applet.appletInstance.startCollecting ).toHaveBeenCalled()
 
 
 ###

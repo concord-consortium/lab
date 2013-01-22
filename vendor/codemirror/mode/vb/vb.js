@@ -12,8 +12,8 @@ CodeMirror.defineMode("vb", function(conf, parserConf) {
     var tripleDelimiters = new RegExp("^((//=)|(>>=)|(<<=)|(\\*\\*=))");
     var identifiers = new RegExp("^[_A-Za-z][_A-Za-z0-9]*");
 
-    var openingKeywords = ['class','module', 'sub','enum','select','while','if','function',  'get','set','property'];
-    var middleKeywords = ['else','elseif','case'];
+    var openingKeywords = ['class','module', 'sub','enum','select','while','if','function',  'get','set','property', 'try'];
+    var middleKeywords = ['else','elseif','case', 'catch'];
     var endKeywords = ['next','loop'];
    
     var wordOperators = wordRegexp(['and', 'or', 'not', 'xor', 'in']);
@@ -37,11 +37,11 @@ CodeMirror.defineMode("vb", function(conf, parserConf) {
    
 
 
-    function indent(stream, state) {
+    function indent(_stream, state) {
       state.currentIndent++;
     }
     
-    function dedent(stream, state) {
+    function dedent(_stream, state) {
       state.currentIndent--;
     }
     // tokenizers
@@ -218,7 +218,7 @@ CodeMirror.defineMode("vb", function(conf, parserConf) {
 
     var external = {
         electricChars:"dDpPtTfFeE ",
-        startState: function(basecolumn) {
+        startState: function() {
             return {
               tokenize: tokenBase,
               lastToken: null,

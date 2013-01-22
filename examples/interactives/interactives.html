@@ -42,41 +42,49 @@
         <a class='opens-in-new-window' href='embeddable.html' id='datagames-link' target='_blank'>DataGames</a>
       </div>
       <div class='row'>
-        <form class='controls' id='select-filters'>
-          <span class='title'>categories:</span>
-          <label for='curriculum-filter'>
-            Curriculum
-            <input checked='checked' id='curriculum-filter' name='curriculum-filter' type='checkbox' />
-          </label>
-          <label for='examples-filter'>
-            Examples
-            <input id='examples-filter' name='examples-filter' type='checkbox' />
-          </label>
-          <label for='tests-filter'>
-            Tests
-            <input id='tests-filter' name='tests-filter' type='checkbox' />
-          </label>
-          <label for='benchmarks-filter'>
-            Benchmarks
-            <input id='benchmarks-filter' name='benchmarks-filter' type='checkbox' />
-          </label>
-          <span class='title'>publication status:</span>
-          <label for='public'>
-            Public
-            <input checked='checked' id='public' name='public' type='checkbox' />
-          </label>
-          <label for='draft'>
-            Draft*
-            <input id='draft' name='draft' type='checkbox' />
-          </label>
+        <form id='interactive-controls'>
+          <div class='controls' id='select-filters'>
+            <span class='title'>categories:</span>
+            <label for='curriculum-filter'>
+              Curriculum
+              <input checked='checked' id='curriculum-filter' name='curriculum-filter' type='checkbox' />
+            </label>
+            <label for='examples-filter'>
+              Examples
+              <input id='examples-filter' name='examples-filter' type='checkbox' />
+            </label>
+            <label for='tests-filter'>
+              Tests
+              <input id='tests-filter' name='tests-filter' type='checkbox' />
+            </label>
+            <label for='benchmarks-filter'>
+              Benchmarks
+              <input id='benchmarks-filter' name='benchmarks-filter' type='checkbox' />
+            </label>
+            <span class='title'>publication status:</span>
+            <label for='public'>
+              Public
+              <input checked='checked' id='public' name='public' type='checkbox' />
+            </label>
+            <label for='draft'>
+              Draft*
+              <input id='draft' name='draft' type='checkbox' />
+            </label>
+          </div>
+          <div class='controls' id='render-controls'>
+            <span class='title'>render in:</span>
+            <label for='render-in-iframe'>
+              iframe
+              <input checked='checked' id='render-in-iframe' name='render-in-iframe' type='checkbox' />
+            </label>
+            <span class='title'>size:</span>
+            <select id='select-iframe-size' name='size'>
+              <option value='small'>small</option>
+              <option value='medium'>medium</option>
+              <option selected='selected' value='large'>large</option>
+            </select>
+          </div>
         </form>
-        <div class='controls' id='render-controls'>
-          <span class='title'>render in:</span>
-          <label for='render-in-iframe'>
-            iframe
-            <input checked='checked' id='render-in-iframe' name='render-in-iframe' type='checkbox' />
-          </label>
-        </div>
       </div>
     </div>
     <div id='interactive-header'>
@@ -113,7 +121,7 @@
           <div class='extras-item-content' id='editor-content'>
             <div class='extras-item-controls'>
               <button id='update-interactive-button'>Update Interactive</button>
-              <button id='autoformat-selection-button'>AutoFormat Selection</button>
+              <button id='autoformat-interactive-json-button'>AutoFormat Selection</button>
             </div>
             <textarea id='interactive-text-area'></textarea>
           </div>
@@ -126,6 +134,7 @@
           <div class='extras-item-content' id='model-editor-content'>
             <div class='extras-item-controls'>
               <button id='update-model-button'>Update Model</button>
+              <button id='autoformat-model-json-button'>AutoFormat Selection</button>
               <a class='opens-in-new-window' href='' id='json-model-link' target='_blank'>Model JSON</a>
             </div>
             <textarea id='model-text-area'></textarea>
@@ -176,21 +185,21 @@
         </li>
       </ul>
     </div>
-    <div id='credits-pane'>
-      <div id='credits-pane-banner'>
-        <span id='credits-pane-title'>About</span>
-        <div id='credits-pane-close'>X</div>
-      </div>
-      <div id='credits-content'></div>
-    </div>
-    <div id='about-pane'>
-      <div id='about-pane-banner'>
-        <span id='about-pane-title'>About</span>
-        <div id='about-pane-close'>X</div>
-      </div>
-      <div id='about-content'></div>
-    </div>
   </body>
+  <div id='credits-pane'>
+    <div id='credits-pane-banner'>
+      <span id='credits-pane-title'>About</span>
+      <div id='credits-pane-close'>X</div>
+    </div>
+    <div id='credits-content'></div>
+  </div>
+  <div id='about-pane'>
+    <div id='about-pane-banner'>
+      <span id='about-pane-title'>About</span>
+      <div id='about-pane-close'>X</div>
+    </div>
+    <div id='about-content'></div>
+  </div>
   <div id='share-pane'>
     <div id='share-pane-banner'>
       <span id='share-pane-title'>Share</span>

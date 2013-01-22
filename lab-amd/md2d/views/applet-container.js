@@ -15,7 +15,7 @@ define(function (require) {
         applet, appletString,
         appletWidth, appletHeight, appletAspectRatio,
         width, height,
-        scale_factor,
+        emsize,
         padding, size,
         mw, mh, tx, ty, stroke,
         default_options = {
@@ -61,11 +61,7 @@ define(function (require) {
       }
       node.style.width = cx +"px";
       node.style.height = cy +"px";
-      scale_factor = layout.screen_factor;
-      if (layout.screen_factor_width && layout.screen_factor_height) {
-        scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
-      }
-      scale_factor = cx/600;
+      emsize = layout.getVizProperties().emsize;
       padding = {
          "top":    5,
          "right":  5,

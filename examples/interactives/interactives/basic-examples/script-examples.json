@@ -1,7 +1,7 @@
 {
   "title": "Test Button, Slider, and Pulldown Examples",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Examples of defining and using different Interactive components.",
   "about": "",
   "models": [
     {
@@ -95,9 +95,13 @@
       "id": "radio",
       "options": [
         {
-          "text": "Oil and Water",
-          "loadModel": "page3$1",
+          "text": "Boiling Point",
+          "loadModel": "page3$0-with-heatbath",
           "selected": true
+        },
+        {
+          "text": "Oil and Water",
+          "loadModel": "page3$1"
         },
         {
           "text": "Oil and Water Mixed",

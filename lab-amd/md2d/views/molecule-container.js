@@ -39,7 +39,7 @@ define(function (require) {
         cx = elem.property("clientWidth"),
         cy = elem.property("clientHeight"),
         width, height,
-        scaleFactor,
+        emsize,
         vis1, vis, plot,
         playbackComponent, timeLabel,
         padding, size, modelSize,
@@ -163,22 +163,23 @@ define(function (require) {
     function scale(w, h) {
       var modelSizeArray = model.size(),
           aspectRatio = modelSizeArray[0] / modelSizeArray[1];
-      scaleFactor = layout.screen_factor;
+
+      emsize = layout.getVizProperties().emsize;
       padding = {
-         "top":    options.title  ? 40 * layout.screen_factor : 20,
+         "top":    options.title  ? 40 * emsize : 20,
          "right":                   25,
          "bottom": 10,
-         "left":   options.ylabel ? 60  * layout.screen_factor : 25
+         "left":   options.ylabel ? 60  * emsize : 25
       };
 
       if (options.xlabel) {
-        padding.bottom += (35  * scaleFactor);
+        padding.bottom += (35  * emsize);
       }
 
       if (options.controlButtons) {
-        padding.bottom += (40  * scaleFactor);
+        padding.bottom += (40  * emsize);
       } else {
-        padding.bottom += (15  * scaleFactor);
+        padding.bottom += (15  * emsize);
       }
 
       if (options.fit_to_parent) {
@@ -222,19 +223,19 @@ define(function (require) {
 
       switch (options.controlButtons) {
         case "play":
-          playbackXPos = padding.left + (size.width - (75 * scaleFactor))/2;
+          playbackXPos = padding.left + (size.width - (75 * emsize))/2;
           break;
         case "play_reset":
-          playbackXPos = padding.left + (size.width - (140 * scaleFactor))/2;
+          playbackXPos = padding.left + (size.width - (140 * emsize))/2;
           break;
         case "play_reset_step":
-          playbackXPos = padding.left + (size.width - (230 * scaleFactor))/2;
+          playbackXPos = padding.left + (size.width - (230 * emsize))/2;
           break;
         default:
-          playbackXPos = padding.left + (size.width - (230 * scaleFactor))/2;
+          playbackXPos = padding.left + (size.width - (230 * emsize))/2;
       }
 
-      playbackYPos = cy - 42 * scaleFactor;
+      playbackYPos = cy - 42 * emsize;
 
       // Basic nm2px scaling function.
       nm2px = d3.scale.linear()
@@ -1068,8 +1069,8 @@ define(function (require) {
           .attr("class", "modelTimeLabel")
           .text(modelTimeLabel())
           // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
-          .attr("x", nm2px(0) + 5)
-          .attr("y", nm2pxInv(0) - 5)
+          .attr("x", nm2px(0) + 5 * emsize)
+          .attr("y", nm2pxInv(0) + 20 * emsize)
           .style("text-anchor","start");
       }
     }
@@ -1806,7 +1807,7 @@ define(function (require) {
         vis.selectAll("g.y").remove();
 
         if (options.playback_controller) {
-          playbackComponent.position(playbackXPos, playbackYPos, scaleFactor);
+          playbackComponent.position(playbackXPos, playbackYPos, emsize);
         }
         createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
         createVectorArrowHeads(forceVectorColor, FORCE_STR);
@@ -1818,13 +1819,13 @@ define(function (require) {
 
       switch (options.controlButtons) {
         case "play":
-          playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, scaleFactor);
+          playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
           break;
         case "play_reset":
-          playbackComponent = new PlayResetComponentSVG(vis1, model_player, playbackXPos, playbackYPos, scaleFactor);
+          playbackComponent = new PlayResetComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
           break;
         case "play_reset_step":
-          playbackComponent = new PlaybackComponentSVG(vis1, model_player, playbackXPos, playbackYPos, scaleFactor);
+          playbackComponent = new PlaybackComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
           break;
         default:
           playbackComponent = null;

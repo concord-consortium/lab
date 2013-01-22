@@ -338,14 +338,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "d775672a72b6119142a7c45e63290ed540b1bb66",
-        "short_sha":      "d775672a",
-        "url":            "https://github.com/concord-consortium/lab/commit/d775672a",
-        "author":        "Stephen Bannasch",
-        "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-01-18 17:08:12 -0500",
-        "short_message": "download distribution needs to be run from web server",
-        "message":       "download distribution needs to be run from web server"
+        "sha":           "e41e5c8a307ff6eb7914f6a4fcec02dd835a64b9",
+        "short_sha":      "e41e5c8a",
+        "url":            "https://github.com/concord-consortium/lab/commit/e41e5c8a",
+        "author":        "Dan Damelin",
+        "email":         "ddamelin@concord.org",
+        "date":          "2013-01-22 14:54:30 -0500",
+        "short_message": "Changed background color of solid, liquid, and gas phase change models to gray",
+        "message":       "Changed background color of solid, liquid, and gas phase change models to gray"
       },
       "dirty": false
     }
@@ -363,6 +363,55 @@ define('lab.config',['require'],function (require) {
   "logging": true,
   "tracing": false
 };
+});
+
+/*global define: false console: true */
+
+define('common/structured-clone',['require'],function (require) {
+  var featureSupported = false,
+      publicAPI = {};
+
+  function isStructuredCloneSupported() {
+    var result = 0;
+
+    if (!!window.postMessage) {
+      try {
+        // Safari 5.1 will sometimes throw an exception and sometimes won't, lolwut?
+        // When it doesn't we capture the message event and check the
+        // internal [[Class]] property of the message being passed through.
+        // Safari will pass through DOM nodes as Null iOS safari on the other hand
+        // passes it through as DOMWindow, gotcha.
+        window.onmessage = function(e){
+          var type = Object.prototype.toString.call(e.data);
+          result = (type.indexOf("Null") != -1 || type.indexOf("DOMWindow") != -1) ? 1 : 0;
+          featureSupported = {
+            'structuredClones': result
+          };
+        };
+        // Spec states you can't transmit DOM nodes and it will throw an error
+        // postMessage implimentations that support cloned data will throw.
+        window.postMessage(document.createElement("a"),"*");
+      } catch(e) {
+        // BBOS6 throws but doesn't pass through the correct exception
+        // so check error message
+        result = (e.DATA_CLONE_ERR || e.message == "Cannot post cyclic structures.") ? 1 : 0;
+        featureSupported = {
+          'structuredClones': result
+        };
+      }
+    }
+  }
+
+  isStructuredCloneSupported();
+
+  function supported() {
+    return featureSupported && featureSupported.structuredClones > 0;
+  }
+
+  publicAPI.supported = supported;
+
+  return publicAPI;
+
 });
 
 //     Underscore.js 1.4.2
@@ -5772,11 +5821,12 @@ define('common/parent-message-controller',[],function() {
       controller;
 
   function postToTarget(message, target) {
-    try {
+    // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+    //     https://github.com/Modernizr/Modernizr/issues/388
+    //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+    if (Lab.structuredClone.supported()) {
       window.parent.postMessage(message, target);
-    } catch (e) {
-      // Assume that failure means we can only post strings, not objects (IE9)
-      // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+    } else {
       window.parent.postMessage(JSON.stringify(message), target);
     }
   }
@@ -6277,14 +6327,14 @@ define('common/layout/layout',['require'],function (require) {
     height: 800
   };
 
-  layout.regular_display = false;
+  layout.regularDisplay = false;
 
-  layout.not_rendered = true;
+  layout.notRendered = true;
   layout.fontsize = false;
+  layout.emsize = 1;
   layout.cancelFullScreen = false;
-  layout.screen_factor = 1;
-  layout.checkbox_factor = 1.1;
-  layout.checkbox_scale = 1.1;
+  layout.checkboxFactor = 1.1;
+  layout.checkboxScale = 1.1;
   layout.fullScreenRender = false;
 
   layout.canonical.width  = 1280;
@@ -6310,33 +6360,50 @@ define('common/layout/layout',['require'],function (require) {
         width: layout.getPageWidth(),
         height: layout.getPageHeight()
     };
-    obj.screen_factor_width  = obj.window.width / layout.canonical.width;
-    obj.screen_factor_height = obj.window.height / layout.canonical.height;
-    obj.emsize = Math.max(obj.screen_factor_width * 1.1, obj.screen_factor_height);
+    obj.screenFactorWidth  = obj.window.width / layout.canonical.width;
+    obj.screenFactorHeight = obj.window.height / layout.canonical.height;
+    obj.emsize = Math.max(obj.screenFactorWidth * 1.1, obj.screenFactorHeight);
     return obj;
   };
 
   layout.setBodyEmsize = function(scale) {
     var emsize,
-        $buttons = $('button.component'),
-        minButtonFontSize;
+        $componentsWithText = $("#interactive-container  p,label,button,select,option").filter(":visible"),
+        $headerContent = $("#content-banner div"),
+        $popupPanes = $("#credits-pane, #share-pane, #about-pane").find("div,textarea,label,select"),
+        minFontSize;
     if (!layout.display) {
       layout.display = layout.getDisplayProperties();
     }
-    emsize = Math.max(layout.display.screen_factor_width * 1.2, layout.display.screen_factor_height * 1.2);
-    if (scale) {
-      emsize *= scale;
-    }
+    emsize = Math.max(layout.display.screenFactorWidth * 1.2, layout.display.screenFactorHeight * 1.2);
+    if (scale) { emsize *= scale; }
     $('body').css('font-size', emsize + 'em');
-    if (emsize <= 0.5) {
-      minButtonFontSize = 1.4 * 0.5/emsize;
-      $buttons.css('font-size', minButtonFontSize + 'em');
-      // $buttons.css('height', minButtonFontSize 'em');
-    } else {
-      $buttons.css('font-size', '');
-      // $buttons.css('height', '');
-    }
+    applyMinFontSizeFilter(emsize, $componentsWithText, "9px");
+    applyMinFontSizeFilter(emsize, $headerContent, "10px");
+    applyMinFontSizeFilter(emsize, $popupPanes, "9px");
+    layout.emsize = emsize;
   };
+
+  function applyMinFontSizeFilter(emsize, $elements, minSize) {
+    if (emsize <= 0.5) {
+      $elements.css("font-size", minSize);
+    } else {
+      $elements.each(function() {
+        var style,
+            index;
+        if (!style) {
+          style = $(this).attr('style');
+        }
+        if (style) {
+          index = style.indexOf('font-size');
+          if (index !== -1) {
+            style = style.replace(/font-size: .*;/g, '');
+            $(this).attr('style', style);
+          }
+        }
+      });
+    }
+  }
 
   layout.getVizProperties = function(obj) {
     var $viz = $('#viz');
@@ -6346,9 +6413,9 @@ define('common/layout/layout',['require'],function (require) {
     }
     obj.width = $viz.width();
     obj.height = $viz.height();
-    obj.screen_factor_width  = obj.width / layout.canonical.width;
-    obj.screen_factor_height = obj.height / layout.canonical.height;
-    obj.emsize = Math.min(obj.screen_factor_width * 1.1, obj.screen_factor_height);
+    obj.screenFactorWidth  = obj.width / layout.canonical.width;
+    obj.screenFactorHeight = obj.height / layout.canonical.height;
+    obj.emsize = Math.min(obj.screenFactorWidth * 1.1, obj.screenFactorHeight);
     return obj;
   };
 
@@ -6359,7 +6426,7 @@ define('common/layout/layout',['require'],function (require) {
     if (!layout.vis) {
       layout.vis = layout.getVizProperties();
     }
-    emsize = Math.min(layout.viz.screen_factor_width * 1.2, layout.viz.screen_factor_height * 1.2);
+    emsize = Math.min(layout.viz.screenFactorWidth * 1.2, layout.viz.screenFactorHeight * 1.2);
     $viz.css('font-size', emsize + 'em');
   };
 
@@ -6398,52 +6465,29 @@ define('common/layout/layout',['require'],function (require) {
                      document.mozFullScreen;
 
     if (event && event.forceRender) {
-      layout.not_rendered = true;
+      layout.notRendered = true;
     }
 
     layout.display = layout.getDisplayProperties();
     layout.viz = layout.getVizProperties();
 
-    if (!layout.regular_display) {
-      layout.regular_display = layout.getDisplayProperties();
+    if (!layout.regularDisplay) {
+      layout.regularDisplay = layout.getDisplayProperties();
     }
 
 
     if(fullscreen || layout.fullScreenRender  || layout.screenEqualsPage()) {
       layout.fullScreenRender = true;
-      layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
-      layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
-      layout.screen_factor = layout.screen_factor_height;
-      layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
-      $('body').css('font-size', layout.screen_factor + "em");
-      layout.not_rendered = true;
+      layout.screenFactorWidth  = layout.display.page.width / layout.canonical.width;
+      layout.screenFactorHeight = layout.display.page.height / layout.canonical.height;
+      layout.checkboxFactor = Math.max(0.8, layout.checkboxScale * layout.emsize);
+      $('body').css('font-size', layout.emsize + "em");
+      layout.notRendered = true;
       switch (layout.selection) {
 
-        // fluid layout
-        case "simple-screen":
-        if (layout.not_rendered) {
-          setupSimpleFullScreenMoleculeContainer();
-        }
-        break;
-
-        // only fluid on page load (and when resizing on trnasition to and from full-screen)
-        case "simple-static-screen":
-        if (layout.not_rendered) {
-          setupSimpleFullScreenMoleculeContainer();
-        }
-        break;
-
-        // fluid layout
-        case "compare-screen":
-        emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
-        $('body').css('font-size', emsize + "em");
-        compareScreen();
-        layout.not_rendered = false;
-        break;
-
-        // only fluid on page load (and when resizing on trnasition to and from full-screen)
+        // only fluid on page load (and when resizing on transition to and from full-screen)
         default:
-        if (layout.not_rendered) {
+        if (layout.notRendered) {
           setupFullScreen();
         }
         break;
@@ -6452,45 +6496,17 @@ define('common/layout/layout',['require'],function (require) {
       if (layout.cancelFullScreen || layout.fullScreenRender) {
         layout.cancelFullScreen = false;
         layout.fullScreenRender = false;
-        layout.not_rendered = true;
-        layout.regular_display = layout.previous_display;
+        layout.notRendered = true;
+        layout.regularDisplay = layout.previous_display;
       } else {
-        layout.regular_display = layout.getDisplayProperties();
+        layout.regularDisplay = layout.getDisplayProperties();
       }
-      layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
-      layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
-      layout.screen_factor = layout.screen_factor_height;
-      layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
+      layout.screenFactorWidth  = layout.display.page.width / layout.canonical.width;
+      layout.screenFactorHeight = layout.display.page.height / layout.canonical.height;
+      layout.checkboxFactor = Math.max(0.8, layout.checkboxScale * layout.emsize);
       switch (layout.selection) {
 
-
-        // only fluid on page load (and when resizing on trnasition to and from full-screen)
-        case "full-static-screen":
-        if (layout.not_rendered) {
-          emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
-          $('body').css('font-size', emsize + 'em');
-          regularScreen();
-          layout.not_rendered = false;
-        }
-        break;
-
-        // fluid layout
-        case "compare-screen":
-        emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
-        $('body').css('font-size', emsize + 'em');
-        compareScreen();
-        break;
-
-        // only fluid on page load (and when resizing on transition to and from full-screen)
-        case "interactive":
-        if (layout.not_rendered) {
-          layout.setVizEmsize();
-          setupInteractiveScreen();
-          layout.not_rendered = false;
-        }
-        break;
-
-        // like simple-iframe, but all component position definitions are set from properties
+        // all component position definitions are set from properties
         case "interactive-iframe":
         layout.setBodyEmsize();
         setupInteractiveIFrameScreen();
@@ -6507,7 +6523,7 @@ define('common/layout/layout',['require'],function (require) {
         setupRegularScreen();
         break;
       }
-      layout.regular_display = layout.getDisplayProperties();
+      layout.regularDisplay = layout.getDisplayProperties();
     }
 
     //
@@ -6525,10 +6541,10 @@ define('common/layout/layout',['require'],function (require) {
           modelHeightFactor = 0.85,
           bottomFactor = 0.0015,
           viewSizes = {},
+          viewType,
           containerWidth = $(window).width(),
           containerHeight = $(window).height(),
-          mcWidth = $('#model-container').width(),
-          modelHeight;
+          mcWidth = $('#model-container').width();
 
       modelDimensions = viewLists.moleculeContainers[0].scale();
       modelAspectRatio = modelDimensions[2] / modelDimensions[3];
@@ -6541,7 +6557,7 @@ define('common/layout/layout',['require'],function (require) {
       modelHeightFactor -= modelHeightPaddingFactor;
 
       if (viewLists.thermometers) {
-        modelWidthFactor -= 0.05;
+        modelWidthFactor -= 0.10;
       }
 
       if (viewLists.energyGraphs) {
@@ -6549,8 +6565,8 @@ define('common/layout/layout',['require'],function (require) {
       }
 
       // account for proportionally larger buttons when embeddable size gets very small
-      if (emsize <= 0.5) {
-        bottomFactor *= 0.5/emsize;
+      if (layout.emsize <= 0.5) {
+        bottomFactor *= 0.5/layout.emsize;
       }
 
       viewLists.bottomItems = $('#bottom').children().length;
@@ -6582,7 +6598,7 @@ define('common/layout/layout',['require'],function (require) {
       }
 
       for (viewType in viewLists) {
-        if (viewType === "moleculeContainers") continue
+        if (viewType === "moleculeContainers") continue;
         if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
           i = -1;  while(++i < viewLists[viewType].length) {
             if (viewSizes[viewType]) {
@@ -6610,9 +6626,9 @@ define('common/layout/layout',['require'],function (require) {
           modelHeightFactor = 0.85,
           bottomFactor = 0.0015,
           viewSizes = {},
+          viewType,
           containerWidth = $("#content").width(),
-          containerHeight = $("#content").height(),
-          modelHeight;
+          containerHeight = $("#content").height();
 
       modelDimensions = viewLists.moleculeContainers[0].scale();
       modelAspectRatio = modelDimensions[2] / modelDimensions[3];
@@ -6637,8 +6653,8 @@ define('common/layout/layout',['require'],function (require) {
       }
 
       // account for proportionally larger buttons when embeddable size gets very small
-      if (emsize <= 0.5) {
-        bottomFactor *= 0.5/emsize;
+      if (layout.emsize <= 0.5) {
+        bottomFactor *= 0.5/layout.emsize;
       }
 
       viewLists.bottomItems = $('#bottom').children().length;
@@ -6670,7 +6686,7 @@ define('common/layout/layout',['require'],function (require) {
       }
 
       for (viewType in viewLists) {
-        if (viewType === "moleculeContainers") continue
+        if (viewType === "moleculeContainers") continue;
         if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
           i = -1;  while(++i < viewLists[viewType].length) {
             if (viewSizes[viewType]) {
@@ -6743,29 +6759,6 @@ define('common/layout/layout',['require'],function (require) {
         viewLists.energyCharts[i].resize(rightHalfWidth, rightHeight);
       }
     }
-
-    //
-    // Simple Full Screen Layout
-    //
-    function setupSimpleFullScreenMoleculeContainer() {
-      var i, width, height, mcsize,
-          rightHeight, rightHalfWidth, rightQuarterWidth,
-          widthToPageRatio, modelAspectRatio,
-          pageWidth = layout.display.page.width,
-          pageHeight = layout.display.page.height;
-
-      mcsize = viewLists.moleculeContainers[0].scale();
-      modelAspectRatio = mcsize[0] / mcsize[1];
-      widthToPageRatio = mcsize[0] / pageWidth;
-      width = pageWidth * 0.60;
-      height = width * 1/modelAspectRatio;
-      if (height > pageHeight * 0.60) {
-        height = pageHeight * 0.60;
-        width = height * modelAspectRatio;
-      }
-      viewLists.moleculeContainers[0].resize(width, height);
-    }
-
   };
 
   layout.getPageHeight = function() {
@@ -11278,6 +11271,24 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           if (target == null) target = T_target;
 
           T = computeTemperature();
+
+          if (T === 0) {
+            // Special case when T is 0.
+            for (i = 0; i < N; i++) {
+              if (pinned[i] === false) {
+                // Add some random velocity to unpinned atoms.
+                vx[i] = Math.random() * 0.02 - 0.01;
+                vy[i] = Math.random() * 0.02 - 0.01;
+              }
+            }
+            // Update temperature.
+            T = computeTemperature();
+
+            if (T === 0) {
+              // This means that all atoms are pinned. Nothing to do.
+              return;
+            }
+          }
 
           if (temperatureChangeInProgress && Math.abs(getTWindowed(T) - target) <= target * tempTolerance) {
             temperatureChangeInProgress = false;
@@ -16478,7 +16489,7 @@ define('md2d/views/molecule-container',['require','common/console','cs!common/co
         cx = elem.property("clientWidth"),
         cy = elem.property("clientHeight"),
         width, height,
-        scaleFactor,
+        emsize,
         vis1, vis, plot,
         playbackComponent, timeLabel,
         padding, size, modelSize,
@@ -16602,22 +16613,23 @@ define('md2d/views/molecule-container',['require','common/console','cs!common/co
     function scale(w, h) {
       var modelSizeArray = model.size(),
           aspectRatio = modelSizeArray[0] / modelSizeArray[1];
-      scaleFactor = layout.screen_factor;
+
+      emsize = layout.getVizProperties().emsize;
       padding = {
-         "top":    options.title  ? 40 * layout.screen_factor : 20,
+         "top":    options.title  ? 40 * emsize : 20,
          "right":                   25,
          "bottom": 10,
-         "left":   options.ylabel ? 60  * layout.screen_factor : 25
+         "left":   options.ylabel ? 60  * emsize : 25
       };
 
       if (options.xlabel) {
-        padding.bottom += (35  * scaleFactor);
+        padding.bottom += (35  * emsize);
       }
 
       if (options.controlButtons) {
-        padding.bottom += (40  * scaleFactor);
+        padding.bottom += (40  * emsize);
       } else {
-        padding.bottom += (15  * scaleFactor);
+        padding.bottom += (15  * emsize);
       }
 
       if (options.fit_to_parent) {
@@ -16661,19 +16673,19 @@ define('md2d/views/molecule-container',['require','common/console','cs!common/co
 
       switch (options.controlButtons) {
         case "play":
-          playbackXPos = padding.left + (size.width - (75 * scaleFactor))/2;
+          playbackXPos = padding.left + (size.width - (75 * emsize))/2;
           break;
         case "play_reset":
-          playbackXPos = padding.left + (size.width - (140 * scaleFactor))/2;
+          playbackXPos = padding.left + (size.width - (140 * emsize))/2;
           break;
         case "play_reset_step":
-          playbackXPos = padding.left + (size.width - (230 * scaleFactor))/2;
+          playbackXPos = padding.left + (size.width - (230 * emsize))/2;
           break;
         default:
-          playbackXPos = padding.left + (size.width - (230 * scaleFactor))/2;
+          playbackXPos = padding.left + (size.width - (230 * emsize))/2;
       }
 
-      playbackYPos = cy - 42 * scaleFactor;
+      playbackYPos = cy - 42 * emsize;
 
       // Basic nm2px scaling function.
       nm2px = d3.scale.linear()
@@ -17507,8 +17519,8 @@ define('md2d/views/molecule-container',['require','common/console','cs!common/co
           .attr("class", "modelTimeLabel")
           .text(modelTimeLabel())
           // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
-          .attr("x", nm2px(0) + 5)
-          .attr("y", nm2pxInv(0) - 5)
+          .attr("x", nm2px(0) + 5 * emsize)
+          .attr("y", nm2pxInv(0) + 20 * emsize)
           .style("text-anchor","start");
       }
     }
@@ -18245,7 +18257,7 @@ define('md2d/views/molecule-container',['require','common/console','cs!common/co
         vis.selectAll("g.y").remove();
 
         if (options.playback_controller) {
-          playbackComponent.position(playbackXPos, playbackYPos, scaleFactor);
+          playbackComponent.position(playbackXPos, playbackYPos, emsize);
         }
         createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
         createVectorArrowHeads(forceVectorColor, FORCE_STR);
@@ -18257,13 +18269,13 @@ define('md2d/views/molecule-container',['require','common/console','cs!common/co
 
       switch (options.controlButtons) {
         case "play":
-          playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, scaleFactor);
+          playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
           break;
         case "play_reset":
-          playbackComponent = new PlayResetComponentSVG(vis1, model_player, playbackXPos, playbackYPos, scaleFactor);
+          playbackComponent = new PlayResetComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
           break;
         case "play_reset_step":
-          playbackComponent = new PlaybackComponentSVG(vis1, model_player, playbackXPos, playbackYPos, scaleFactor);
+          playbackComponent = new PlaybackComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
           break;
         default:
           playbackComponent = null;
@@ -19406,7 +19418,8 @@ define('common/controllers/interactives-controller',['require','common/controlle
       $(window).unbind('resize');
 
       if (layoutStyle) {
-        // for compatibility with current implementation "embedded" interactive style
+        // currently a layout style is specified when rendering the "embedded" Interactive
+        // or when the "render in iframe" option is chosen in the Interactive Browser
         layout.selection = layoutStyle;
         layout.setupScreen();
 
@@ -19423,7 +19436,7 @@ define('common/controllers/interactives-controller',['require','common/controlle
 
         $(window).on('resize', layout.setupScreen);
       } else {
-        // preferred path...
+        // Render path used in Interactive Browser when the "render in iframe" option is not chosen
         setupInteractiveLayout();
         $(window).on('resize', setupInteractiveLayout);
       }
@@ -19707,7 +19720,7 @@ define('md2d/views/applet-container',['require','common/layout/layout'],function
         applet, appletString,
         appletWidth, appletHeight, appletAspectRatio,
         width, height,
-        scale_factor,
+        emsize,
         padding, size,
         mw, mh, tx, ty, stroke,
         default_options = {
@@ -19753,11 +19766,7 @@ define('md2d/views/applet-container',['require','common/layout/layout'],function
       }
       node.style.width = cx +"px";
       node.style.height = cy +"px";
-      scale_factor = layout.screen_factor;
-      if (layout.screen_factor_width && layout.screen_factor_height) {
-        scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
-      }
-      scale_factor = cx/600;
+      emsize = layout.getVizProperties().emsize;
       padding = {
          "top":    5,
          "right":  5,
@@ -22141,20 +22150,22 @@ define('grapher/public-api',['require','grapher/core/graph','grapher/core/real-t
 
 /*global define: false */
 
-define('public-api',['require','lab.version','lab.config','md2d/public-api','grapher/public-api'],function (require) {
+define('public-api',['require','lab.version','lab.config','common/structured-clone','md2d/public-api','grapher/public-api'],function (require) {
   var version = require('lab.version'),
-      config  = require('lab.config');
+      config  = require('lab.config'),
+      structuredClone = require('common/structured-clone');
 
   // Require public-api modules
   // defining other global variables.
   require('md2d/public-api');
   require('grapher/public-api');
-  // ###
 
+  // ###
   // Create or get 'Lab' global object (namespace).
   window.Lab = window.Lab || {};
   // Export config and version modules.
   window.Lab.version = version;
   window.Lab.config = config;
+  window.Lab.structuredClone = structuredClone;
 });
 require(['public-api'], undefined, undefined, true); }());

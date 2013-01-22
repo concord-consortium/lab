@@ -296,6 +296,81 @@ button.component {
   margin: 0em 1em;
   padding: 0em 0em; }
 
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+#viz.top {
+  width: 100%;
+  padding: 0.5em 1em; }
+  #viz.top #iframe-wrapper {
+    width: 925px;
+    height: 575px;
+    border: 2px #dddddd solid; }
+    #viz.top #iframe-wrapper iframe {
+      width: 100%;
+      height: 100%; }
+
+.interactive-top {
+  position: relative; }
+
+#interactive-container {
+  zoom: 1;
+  max-width: 75.99879em;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  margin: inherit 0em inherit 0em; }
+  #interactive-container:before, #interactive-container:after {
+    content: "";
+    display: table; }
+  #interactive-container:after {
+    clear: both; }
+
+#bottom.interactive-bottom {
+  zoom: 1;
+  display: block;
+  display: inline-block;
+  vertical-align: baseline;
+  zoom: 1;
+  *display: inline;
+  *vertical-align: auto;
+  margin-right: 2.35765%;
+  width: 100%;
+  padding-top: 1em; }
+  #bottom.interactive-bottom:before, #bottom.interactive-bottom:after {
+    content: "";
+    display: table; }
+  #bottom.interactive-bottom:after {
+    clear: both; }
+  #bottom.interactive-bottom:last-child {
+    margin-right: 0; }
+  #bottom.interactive-bottom .interactive-bottom-row {
+    margin-bottom: 0.5em; }
+
+#right {
+  display: inline-block; }
+  #right .interactive-right-row {
+    margin-left: 0.5em; }
+  #right .label {
+    margin: 0.5em auto 0.5em auto;
+    text-align: center;
+    font-size: 1.4em; }
+
+#rightwide {
+  display: inline-block;
+  height: 100%;
+  vertical-align: top; }
+  #rightwide .interactive-rightwide-row {
+    margin-left: 0.5em;
+    height: 100%; }
+  #rightwide .label {
+    margin: 0.5em auto 0.5em auto;
+    text-align: center;
+    font-size: 1.4em; }
+
 .aminoacids-menu {
   min-width: 9em;
   font-size: 0.9em;
