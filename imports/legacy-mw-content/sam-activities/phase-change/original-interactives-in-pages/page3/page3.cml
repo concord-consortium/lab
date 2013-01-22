@@ -26,7 +26,7 @@
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body face=&quot;Verdana&quot; marginheight=&quot;4&quot; marginwidth=&quot;8&quot;&gt;
+  &lt;body marginwidth=&quot;8&quot; marginheight=&quot;4&quot; face=&quot;Verdana&quot;&gt;
     Here are models of two liquids. One liquid is made of atoms only. The 
     other is made of triatomic molecules. Run the models and watch them 
     carefully.

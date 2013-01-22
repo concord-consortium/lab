@@ -322,7 +322,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1349211573000</long> 
+     <long>1358883816000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -331,7 +331,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>46252</long> 
+    <long>46305</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -351,9 +351,9 @@
   </void> 
   <void property="background"> 
    <object id="Color0" class="java.awt.Color"> 
-    <int>0</int> 
-    <int>0</int> 
-    <int>0</int> 
+    <int>238</int> 
+    <int>238</int> 
+    <int>238</int> 
     <int>255</int> 
    </object> 
   </void> 
