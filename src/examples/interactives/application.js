@@ -329,7 +329,7 @@ var ROOT = "/examples",
       case "medium":
       $iframeWrapper.width('600px').height('400px');
       break;
-      case "smalll":
+      case "large":
       $iframeWrapper.width('925px').height('575px');
       break;
     }
@@ -550,7 +550,7 @@ var ROOT = "/examples",
       var childIFrameObj = {},
           $iframeWrapper,
           $iframe;
-          
+
       $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectIframeSize.val() + '"></div>'),
       $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
 
@@ -560,7 +560,7 @@ var ROOT = "/examples",
 
       $iframeWrapper.append($iframe);
       iframePhone = setupIframeListenerFor($iframe[0]);
-      
+
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
       // $(".view").bind('resize', update);
     }
