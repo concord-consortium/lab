@@ -316,6 +316,14 @@ define(function (require) {
         model.generateProtein(aaSequence);
       },
 
+      translateStepByStep: function translateStepByStep() {
+        model.translateStepByStep();
+      },
+
+      animateTranslation: function animateTranslation() {
+        model.animateTranslation();
+      },
+
       /**
         Generates a random protein.
 

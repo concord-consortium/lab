@@ -33,20 +33,20 @@
     },
     {
       "type": "button",
-      "id": "transcribe-step",
-      "text": "Transcribe step by step",
-      "action": ""
+      "id": "animate-translation",
+      "text": "Animate translation",
+      "action": "animateTranslation();"
     },
     {
       "type": "button",
       "id": "translate-step",
       "text": "Translate step by step",
-      "action": ""
+      "action": "translateStepByStep();"
     }
   ],
   "layout": {
     "bottom": [
-      ["transcribe", "translate"],
+      ["transcribe", "translate", "animate-translation"],
       ["transcribe-step", "translate-step"]
     ]
   }
