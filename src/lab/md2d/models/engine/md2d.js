@@ -1449,7 +1449,7 @@ define(function (require, exports, module) {
 
         updateAminoAcidForces = function () {
           // Fast path if there is no solvent defined or it doesn't have impact on AAs.
-          if (solventForceType === 0 || solventForceFactor === 0) return;
+          if (solventForceType === 0 || solventForceFactor === 0 || N < 2) return;
 
           var moleculeAtoms, atomIdx, cm, solventFactor,
               dx, dy, r, fx, fy, temp, i, j, len;
@@ -1751,18 +1751,22 @@ define(function (require, exports, module) {
               // Mark that atom was part of processed molecule to avoid
               // calculating its molecule again.
               visited[atomIdx] = 1;
-              sumX += vx[atomIdx] * mass[atomIdx];
-              sumY += vy[atomIdx] * mass[atomIdx];
-              invMass += mass[atomIdx];
+              if (!pinned[atomIdx]) {
+                sumX += vx[atomIdx] * mass[atomIdx];
+                sumY += vy[atomIdx] * mass[atomIdx];
+                invMass += mass[atomIdx];
+              }
             }
             invMass = 1.0 / invMass;
             for (j = 0, len = moleculeAtoms.length; j < len; j++) {
               atomIdx = moleculeAtoms[j];
-              vx[atomIdx] -= sumX * invMass;
-              vy[atomIdx] -= sumY * invMass;
-              // Update momentum.
-              px[atomIdx] = vx[atomIdx] * mass[atomIdx];
-              py[atomIdx] = vy[atomIdx] * mass[atomIdx];
+              if (!pinned[atomIdx]) {
+                vx[atomIdx] -= sumX * invMass;
+                vy[atomIdx] -= sumY * invMass;
+                // Update momentum.
+                px[atomIdx] = vx[atomIdx] * mass[atomIdx];
+                py[atomIdx] = vy[atomIdx] * mass[atomIdx];
+              }
             }
           }
         },
@@ -2808,6 +2812,55 @@ define(function (require, exports, module) {
         return i;
       },
 
+      extendProtein: function (xPos, yPos, aaAbbr) {
+        var aaCount = aminoacidsHelper.lastElementID - aminoacidsHelper.firstElementID + 1,
+            cx = size[0] / 2,
+            cy = size[1] / 2,
+            el, bondLen, i,
+
+            getRandomAA = function() {
+              return Math.floor(aaCount * Math.random()) + aminoacidsHelper.firstElementID;
+            },
+
+            xcm, ycm,
+            getCenterOfMass = function () {
+              var totalMass = 0,
+                  atomMass, i;
+              xcm = ycm = 0;
+              for (i = 0; i < N; i++) {
+                atomMass = mass[i];
+                xcm += x[i] * atomMass;
+                ycm += y[i] * atomMass;
+                totalMass += atomMass;
+              }
+              xcm /= totalMass;
+              ycm /= totalMass;
+            };
+
+        xPos = xPos || cx / 10;
+        yPos = yPos || cy / 2;
+
+        if (N === 0) {
+          el = aaAbbr ? aminoacidsHelper.abbrToElement(aaAbbr) : getRandomAA();
+          engine.addAtom({x: xPos, y: yPos, element: el, pinned: true, visible: true});
+          engine.minimizeEnergy();
+        } else {
+          getCenterOfMass();
+          for (i = 0; i < N; i++) {
+            pinned[i] = false;
+            x[i] += (cx - xcm) / 5 + Math.random() * 0.04 - 0.02;
+            y[i] += (cy - ycm) / 5 + Math.random() * 0.04 - 0.02;
+          }
+          el = aaAbbr ? aminoacidsHelper.abbrToElement(aaAbbr) : getRandomAA();
+          engine.addAtom({x: xPos, y: yPos, element: el, pinned: true, visible: true});
+          // Length of bond is based on the radii of AAs.
+          bondLen = (radius[N - 1] + radius[N - 2]) * 1.25;
+          // 10000 is a typical strength for bonds between AAs.
+          engine.addRadialBond({atom1: N - 1, atom2: N - 2, length: bondLen, strength: 10000});
+          engine.minimizeEnergy();
+        }
+      },
+
       getVdwPairsArray: function() {
         var i,
             j,
@@ -2987,6 +3040,7 @@ define(function (require, exports, module) {
 
         // Calculate accelerations.
         updateParticlesAccelerations();
+        pinAtoms();
         // Get maximum value.
         maxAcc = 0;
         for (i = 0; i < N; i++) {
@@ -3015,6 +3069,7 @@ define(function (require, exports, module) {
 
           // Calculate accelerations.
           updateParticlesAccelerations();
+          pinAtoms();
           // Get maximum value.
           maxAcc = 0;
           for (i = 0; i < N; i++) {

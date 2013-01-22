@@ -14,6 +14,7 @@ define(function (require) {
         changePreHook,
         changePostHook,
         data,
+        remainingAAs,
 
         dispatch = d3.dispatch("change"),
 
@@ -197,6 +198,25 @@ define(function (require) {
         }
 
         return result;
+      },
+
+      translateStepByStep: function() {
+        var aaSequence;
+
+        changePreHook();
+
+        aaSequence = api.translate();
+
+        if (data.translationMarker === undefined) {
+          data.translationMarker = 0;
+        } else {
+          data.translationMarker += 1;
+        }
+
+        changePostHook();
+        dispatch.change();
+
+        return aaSequence[data.translationMarker];
       }
     };
 
