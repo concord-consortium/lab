@@ -25,7 +25,53 @@ function getDimensions(components) {
   return {maxX: maxX, minX: minX, minY: minY, maxY: maxY};
 }
 
-var interactiveEditor;
+var interactiveEditor,
+    cellWidth,
+    cellHeight,
+    modelComponent;
+
+function update() {
+  var authorMode = !! $("#author-mode").attr("checked");
+
+  if (authorMode) {
+    updateAuthorView();
+  } else {
+    setupLayout();
+  }
+}
+
+function updateAuthorView() {
+  //console.log(modelComponent.xPx + ", "+modelComponent.yPx)
+  var container = $("#interactive-container"),
+      contWidth = container.width(),
+      contHeight = container.height(),
+      x = 0,
+      y = 0;
+
+  $("<svg>")
+  .attr({
+    xmlns: "http://www.w3.org/2000/svg",
+    version: "1.1",
+    class: "grid-lines"
+  })
+  .css({
+    top: 0,
+    left: 0,
+    width: contWidth,
+    height: contHeight,
+    position: "absolute"
+  })
+  .appendTo(container);
+
+  while (x < contWidth) {
+    $("<line x1='"+x+"' x2='"+x+"' y1='"+0+"' y2='"+contHeight+"'>")
+    .attr("style", "stroke:rgb(255,0,0);stroke-width:2")
+    .appendTo("svg");
+
+    x += cellWidth;
+  }
+
+}
 
 function setupLayout() {
   var components = JSON.parse(interactiveEditor.getValue()),
@@ -43,15 +89,12 @@ function setupLayout() {
       intWidth,
       intHeight,
 
-      cellWidth,
-      cellHeight,
-
       dimensions,
 
       compX, compY,
       compWidth, compHeight,
 
-      i, modelComponent,
+      i,
 
       comp;
 
@@ -100,16 +143,16 @@ function setupLayout() {
     "left": 0,
     "width": intWidth,
     "height": intHeight,
-    "background": "gray"
+    "background": "#DDD"
   }).appendTo("#interactive-container");
 
   for (i = 0; i < components.length; i++) {
     comp = components[i];
 
-    compWidth = comp.width * cellWidth;
-    compHeight = comp.height * cellHeight;
-    compX = (comp.x - dimensions.minX) * cellWidth;
-    compY = (intHeight - (comp.y - dimensions.minY) * cellHeight) - compHeight;
+    comp.widthPx = comp.width * cellWidth;
+    comp.heightPx = comp.height * cellHeight;
+    comp.xPx = (comp.x - dimensions.minX) * cellWidth;
+    comp.yPx = (intHeight - (comp.y - dimensions.minY) * cellHeight) - comp.heightPx;
 
     console.log(i + "x :" + compX);
     console.log(i + "y :" + compY);
@@ -119,10 +162,10 @@ function setupLayout() {
       "class": "component"
     })
     .css({
-      "left": compX,
-      "top": compY,
-      "width": compWidth,
-      "height": compHeight,
+      "left": comp.xPx,
+      "top": comp.yPx,
+      "width": comp.widthPx,
+      "height": comp.heightPx,
       "background": comp.color
     }).appendTo("#interactive-container");
   }
@@ -140,9 +183,10 @@ var INDENT = 2,
   });
 
   $("#wrapper").resizable();
-  $("#wrapper").bind("resize", setupLayout);
 
-  $("#update-layout").on("click", setupLayout);
+  $("#wrapper").bind("resize", update);
+  $("#update-layout").on("click", update);
+
   setupLayout();
 
 });
