@@ -28,7 +28,8 @@ function getDimensions(components) {
 var interactiveEditor,
     cellWidth,
     cellHeight,
-    modelComponent;
+    modelComponent,
+    gridLines = document.getElementById("grid-lines");
 
 function update() {
   var authorMode = !! $("#author-mode").attr("checked");
@@ -41,34 +42,39 @@ function update() {
 }
 
 function updateAuthorView() {
-  //console.log(modelComponent.xPx + ", "+modelComponent.yPx)
   var container = $("#interactive-container"),
       contWidth = container.width(),
       contHeight = container.height(),
       x = 0,
-      y = 0;
+      y = 0,
+      svgUrl = "http://www.w3.org/2000/svg",
+      createLine;
 
-  $("<svg>")
-  .attr({
-    xmlns: "http://www.w3.org/2000/svg",
-    version: "1.1",
-    class: "grid-lines"
-  })
+  $(gridLines).empty()
   .css({
-    top: 0,
-    left: 0,
     width: contWidth,
-    height: contHeight,
-    position: "absolute"
+    height: contHeight
   })
-  .appendTo(container);
+
+  addLine = function(x1, y1, x2, y2) {
+    var line = document.createElementNS(svgUrl, "line");
+    line.setAttributeNS(null, "x1", x1);
+    line.setAttributeNS(null, "y1", y1);
+    line.setAttributeNS(null, "x2", x2);
+    line.setAttributeNS(null, "y2", y2);
+    line.setAttributeNS(null, "style", "stroke:rgb(150,150,150);stroke-width:1");
+
+    gridLines.appendChild(line);
+  }
 
   while (x < contWidth) {
-    $("<line x1='"+x+"' x2='"+x+"' y1='"+0+"' y2='"+contHeight+"'>")
-    .attr("style", "stroke:rgb(255,0,0);stroke-width:2")
-    .appendTo("svg");
-
+    addLine(x, 0, x, contHeight);
     x += cellWidth;
+  }
+
+  while (y < contHeight) {
+    addLine(0, y, contWidth, y);
+    y += cellHeight;
   }
 
 }
@@ -99,6 +105,7 @@ function setupLayout() {
       comp;
 
   $("#interactive-container").empty();
+  $(gridLines).empty()
 
   dimensions = getDimensions(components);
   colsNum = dimensions.maxX - dimensions.minX;
@@ -127,14 +134,8 @@ function setupLayout() {
     intWidth = intHeight / intAspectRatio;
   }
 
-  console.log("interactive height: " + intHeight);
-  console.log("interactive width: " + intWidth);
-
   cellWidth = intWidth / colsNum;
   cellHeight = intHeight / rowsNum;
-
-  console.log("cell height: " + cellHeight);
-  console.log("cell width: " + cellWidth);
 
 
   $("<div></div>").css({
@@ -153,9 +154,6 @@ function setupLayout() {
     comp.heightPx = comp.height * cellHeight;
     comp.xPx = (comp.x - dimensions.minX) * cellWidth;
     comp.yPx = (intHeight - (comp.y - dimensions.minY) * cellHeight) - comp.heightPx;
-
-    console.log(i + "x :" + compX);
-    console.log(i + "y :" + compY);
 
     $("<div></div>")
     .attr({
@@ -186,6 +184,7 @@ var INDENT = 2,
 
   $("#wrapper").bind("resize", update);
   $("#update-layout").on("click", update);
+  $("#author-mode").on("click", update);
 
   setupLayout();
 
