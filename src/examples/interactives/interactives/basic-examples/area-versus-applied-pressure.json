@@ -1,0 +1,72 @@
+{
+  "title": "Area versus Applied Pressure",
+  "publicationStatus": "public",
+  "subtitle": "Demo showing how the area (two-dimensional \"volume\") of a gas changes with changes in the force applied by a piston",
+  "about": "",
+  "models": [
+    {
+      "id": "main-model",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/area-versus-applied-pressure$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "area",
+      "units": "nm²",
+      "label": "Area",
+      "value": "return getObstacleProperties(0).x * get('height');"
+    },
+    {
+      "name": "pressureTimesArea",
+      "units": "femtoNewton * nm",
+      "label": "Pressure Times Area",
+      "value": "return get('pressure') * get('area');"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "pressure",
+      "label": "Pressure",
+      "units": "femtoNewton / nm",
+      "onChange": "setObstacleProperties(0, { externalFx: -6.02e-4 * value / (getObstacleProperties(0).mass * get('height')) });",
+      "initialValue": 1.5
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "force-slider",
+      "min": 0.75,
+      "max": 3,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": 0.75,
+          "label": "0.75"
+        },
+        {
+          "value": 3,
+          "label": "3.00"
+        }
+      ],
+      "steps": 9,
+      "title": "Pressure (femtoNewton / nm)",
+      "property": "pressure"
+    },
+    {
+      "type": "numericOutput",
+      "id": "area-display",
+      "property": "area",
+      "displayValue": "return format('1.1f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "pressure-times-area-display",
+      "property": "pressureTimesArea",
+      "displayValue": "return format('1.1f')(value)"
+    }
+  ]
+}
