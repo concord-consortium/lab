@@ -447,7 +447,7 @@ var ROOT = "/examples",
         str,
         settings;
     if (cookie) {
-      str = cookie[1],
+      str = cookie[1].split(";")[0];
       settings = str.split('&').map(function (i) { return i.split('='); });
       $("#interactive-controls input").each(function(i, el) {
         var match = _.find(settings, function(e) { return e[0] === el.id; }, this);
