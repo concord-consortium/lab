@@ -1,30 +1,5 @@
 /*global Lab $ CodeMirror */
 
-function getDimensions(components) {
-  var minX = Infinity,
-      maxX = -Infinity,
-      minY = Infinity,
-      maxY = -Infinity,
-      i, len;
-
-  for(i = 0, len = components.length; i < len; i++) {
-    if (components[i].x < minX) {
-      minX = components[i].x;
-    }
-    if (components[i].x + components[i].width > maxX) {
-      maxX = components[i].x + components[i].width;
-    }
-    if (components[i].y < minY) {
-      minY = components[i].y;
-    }
-    if (components[i].y + components[i].height > maxY) {
-      maxY = components[i].y + components[i].height;
-    }
-  }
-
-  return {maxX: maxX, minX: minX, minY: minY, maxY: maxY};
-}
-
 var interactiveEditor,
     cellWidth,
     cellHeight,
@@ -32,14 +7,58 @@ var interactiveEditor,
     components,
     intHeight, intWidth,
     scale = 1,
+    authorMode = false,
     gridLines = document.getElementById("grid-lines");
+
+function getDimensions(components) {
+  var minX = Infinity,
+      maxX = -Infinity,
+      minY = Infinity,
+      maxY = -Infinity,
+      model = modelComponent,
+      i, len, comp;
+
+  for(i = 0, len = components.length; i < len; i++) {
+    comp = components[i];
+
+    if (comp.aspectRatio) {
+      if (comp.width) {
+        comp.height = model.height * (comp.width/model.width) * (comp.aspectRatio/model.aspectRatio);
+      } else if (comp.height) {
+        comp.width = model.width * (model.aspectRatio/comp.aspectRatio) * (comp.height/model.height);
+      }
+    }
+
+    if (comp.x < minX) {
+      minX = comp.x;
+    }
+    if (comp.x + comp.width > maxX) {
+      maxX = comp.x + comp.width;
+    }
+    if (comp.y < minY) {
+      minY = comp.y;
+    }
+    if (comp.y + comp.height > maxY) {
+      maxY = comp.y + comp.height;
+    }
+  }
+
+  if (authorMode) {
+    minX = Math.floor(minX);
+    maxX = Math.ceil(maxX);
+    minY = Math.floor(minY);
+    maxY = Math.ceil(maxY);
+  }
+
+  return {maxX: maxX, minX: minX, minY: minY, maxY: maxY};
+}
 
 function update() {
   components = JSON.parse(interactiveEditor.getValue());
 
-  calculateComponentGrid();
+  authorMode = !! $("#author-mode").attr("checked");
 
-  var authorMode = !! $("#author-mode").attr("checked");
+  calculateComponentGrid();
 
   if (intWidth) {
     intWidth = intWidth * scale;
@@ -58,16 +77,16 @@ function update() {
 }
 
 function calculateComponentGrid() {
-  dimensions = getDimensions(components);
-  dimensions.colsNum = dimensions.maxX - dimensions.minX;
-  dimensions.rowsNum = dimensions.maxY - dimensions.minY;
-
   // Find model.
   for (i = 0; i < components.length; i++) {
     if (components[i].model) {
       modelComponent = components[i];
     }
   }
+
+  dimensions = getDimensions(components);
+  dimensions.colsNum = dimensions.maxX - dimensions.minX;
+  dimensions.rowsNum = dimensions.maxY - dimensions.minY;
 }
 
 function addGridLines() {
