@@ -2030,6 +2030,29 @@ define(function(require) {
       if (engine.getNumberOfAngularBonds()) {
         propCopy.angularBonds = serialize(metadata.angularBond, angularBonds, engine.getNumberOfAngularBonds());
       }
+      if (engine.getNumberOfObstacles()) {
+        propCopy.obstacles = serialize(metadata.obstacle, obstacles, engine.getNumberOfObstacles());
+
+        propCopy.obstacles.color = [];
+        // Convert color from internal representation to one expected for serialization.
+        for (i = 0, len = propCopy.obstacles.colorR.length; i < len; i++) {
+          propCopy.obstacles.color.push([
+            propCopy.obstacles.colorR[i],
+            propCopy.obstacles.colorG[i],
+            propCopy.obstacles.colorB[i]
+          ]);
+
+          // Silly, but allows to pass current serialization tests.
+          // FIXME: try to create more flexible tests for serialization.
+          propCopy.obstacles.westProbe[i] = Boolean(propCopy.obstacles.westProbe[i]);
+          propCopy.obstacles.northProbe[i] = Boolean(propCopy.obstacles.northProbe[i]);
+          propCopy.obstacles.eastProbe[i] = Boolean(propCopy.obstacles.eastProbe[i]);
+          propCopy.obstacles.southProbe[i] = Boolean(propCopy.obstacles.southProbe[i]);
+        }
+        delete propCopy.obstacles.colorR;
+        delete propCopy.obstacles.colorG;
+        delete propCopy.obstacles.colorB;
+      }
 
       // FIXME: for now Amino Acid elements are *not* editable and should not be serialized
       // -- only copy first five elements

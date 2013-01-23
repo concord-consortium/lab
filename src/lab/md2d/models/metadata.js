@@ -258,7 +258,8 @@ define(function() {
       },
       // Final value of pressure in Bars.
       westProbeValue: {
-        readOnly: true
+        readOnly: true,
+        serialize: false
       },
       // Pressure probe, north side.
       northProbe: {
@@ -266,7 +267,8 @@ define(function() {
       },
       // Final value of pressure in Bars.
       northProbeValue: {
-        readOnly: true
+        readOnly: true,
+        serialize: false
       },
       // Pressure probe, east side.
       eastProbe: {
@@ -274,7 +276,8 @@ define(function() {
       },
       // Final value of pressure in Bars.
       eastProbeValue: {
-        readOnly: true
+        readOnly: true,
+        serialize: false
       },
       // Pressure probe, south side.
       southProbe: {
@@ -282,7 +285,8 @@ define(function() {
       },
       // Final value of pressure in Bars.
       southProbeValue: {
-        readOnly: true
+        readOnly: true,
+        serialize: false
       },
       // View options.
       colorR: {
