@@ -30,38 +30,30 @@
     "showForceVectors": false,
     "showAtomTrace": false
   },
-  "elements": [
-    {
-      "id": 0,
-      "mass": 20,
-      "sigma": 0.268799991607666,
-      "epsilon": -0.017899999395012856
-    },
-    {
-      "id": 1,
-      "mass": 40,
-      "sigma": 0.14,
-      "epsilon": -0.1
-    },
-    {
-      "id": 2,
-      "mass": 60,
-      "sigma": 0.21,
-      "epsilon": -0.1
-    },
-    {
-      "id": 3,
-      "mass": 80,
-      "sigma": 0.28,
-      "epsilon": -0.1
-    },
-    {
-      "id": 4,
-      "mass": 600,
-      "sigma": 0.3,
-      "epsilon": -5
-    }
-  ],
+  "elements": {
+
+    "mass": [
+      20,
+      40,
+      60,
+      80,
+      600
+    ],
+    "sigma": [
+      0.268799991607666,
+      0.14,
+      0.21,
+      0.28,
+      0.3
+    ],
+    "epsilon": [
+      -0.017899999395012856,
+      -0.1,
+      -0.1,
+      -0.1,
+      -5
+    ]
+  },
   "pairwiseLJProperties": [],
   "atoms": {
     "x": [

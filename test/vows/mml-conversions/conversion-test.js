@@ -29,7 +29,9 @@ suite.addBatch({
 
         expectedModelJson = fs.readFileSync(testDir + "expected-json/" + modelName + ".json").toString();
         expectedModel = JSON.parse(expectedModelJson);
-        assert.deepEqual(convertedModel, expectedModel, "\n*** the expected conversion "+modelName+"\n"+ JSON.stringify(expectedModel, null, 2)+"\n\n*** does not match actual conversion: \n" + JSON.stringify(convertedModel, null, 2));
+        assert.deepEqual(convertedModel, expectedModel,
+            "\n===> the expected conversion "+modelName+"\n" +JSON.stringify(expectedModel, null, 2) +"\n\n===> does not match actual conversion: \n" + JSON.stringify(convertedModel, null, 2)+"\n" +
+            "\n===> the expected conversion does not match actual conversion for: " + modelName + "\n\n");
       }
     }
   }

@@ -42,38 +42,30 @@
       }
     ]
   },
-  "elements": [
-    {
-      "id": 0,
-      "mass": 120,
-      "sigma": 0.2,
-      "epsilon": -0.1
-    },
-    {
-      "id": 1,
-      "mass": 240,
-      "sigma": 0.2,
-      "epsilon": -0.1
-    },
-    {
-      "id": 2,
-      "mass": 360,
-      "sigma": 0.2,
-      "epsilon": -0.1
-    },
-    {
-      "id": 3,
-      "mass": 480,
-      "sigma": 0.2,
-      "epsilon": -0.1
-    },
-    {
-      "id": 4,
-      "mass": 600,
-      "sigma": 0.3,
-      "epsilon": -5
-    }
-  ],
+  "elements": {
+
+    "mass": [
+      120,
+      240,
+      360,
+      480,
+      600
+    ],
+    "sigma": [
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -5
+    ]
+  },
   "pairwiseLJProperties": [
     {
       "element1": 0,

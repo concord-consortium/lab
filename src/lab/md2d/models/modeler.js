@@ -807,27 +807,35 @@ define(function(require) {
     };
 
     model.createElements = function(_elements) {
-      var elementsByID = {},
-          i, len;
+      // Options for addElement method.
+      var options = {
+        // Deserialization process, invalidating change hooks will be called manually.
+        deserialization: true
+      },
+      num = _elements.mass.length,
+      i, prop, elementProps;
 
-      for (i = 0, len = _elements.length; i < len; i++) {
-        elementsByID[_elements[i].id] = _elements[i];
-      }
+      // Call the hook manually, as addElement won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePreHook();
 
-      // Ensure that approprieate number of editable elements exist.
-      // This is enforced by backward compatibility with Classic MW.
-      // Every element with index < aminoacidsHelper.firstElementID specifies some immutable amino acid.
-      for (i = engine.getNumberOfElements(); i < aminoacidsHelper.firstElementID; i++) {
-        if (elementsByID[i]) {
-          // Use element provided by model JSON.
-          model.addElement(elementsByID[i]);
-        } else {
-          // Add default, editable element.
-          model.addElement({
-            id: i
-          });
+      // _elements is hash of arrays (as specified in JSON model).
+      // So, for each index, create object containing properties of
+      // element 'i'. Later, use these properties to add element
+      // using basic addElement method.
+      for (i = 0; i < num; i++) {
+        elementProps = {};
+        for (prop in _elements) {
+          if (_elements.hasOwnProperty(prop)) {
+            elementProps[prop] = _elements[prop][i];
+          }
         }
+        model.addElement(elementProps, options);
       }
+
+      // Call the hook manually, as addRadialBond won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePostHook();
 
       return model;
     };
@@ -1377,11 +1385,7 @@ define(function(require) {
           props = {},
           propName;
       for (propName in elementMetaData) {
-        // Treat ID separately, as ID is not stored by
-        // engine explicitly.
-        if (propName === 'id') {
-          props.id = i;
-        } else if (elementMetaData.hasOwnProperty(propName)) {
+        if (elementMetaData.hasOwnProperty(propName)) {
           props[propName] = elements[propName][i];
         }
       }
@@ -2008,9 +2012,12 @@ define(function(require) {
       if (includeAtoms) {
         propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
       }
-      if (editableElements) {
-        propCopy.editableElements = editableElements;
-      }
+
+      // FIXME: for now Amino Acid elements are *not* editable ond should not be serialized
+      // -- only copy first five elements
+
+      propCopy.elements = serialize(metadata.element, elements, 5);
+
       propCopy.width = model.get('width');
       propCopy.height = model.get('height');
       return propCopy;
@@ -2084,7 +2091,7 @@ define(function(require) {
     } else {
       // Make sure that some editable elements are provided.
       // Provide array with one empty object. Default values will be used.
-      editableElements = [{}];
+      editableElements = validator.validateCompleteness(metadata.element, {});
     }
     // Create editable elements.
     model.createElements(editableElements);

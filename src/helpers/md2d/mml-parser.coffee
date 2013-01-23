@@ -462,28 +462,42 @@ parseMML = (mmlString) ->
 
     ###
       Find all elements. Results in:
-      [
-        {
-          name: name,
-          mass: num,
-          sigma: num
-          epsilon: []
-        },
-        { ...
-      ]
+      "elements": {
+        "mass": [
+          20,
+          40,
+          60,
+          80,
+          600
+        ],
+        "sigma": [
+          0.07,
+          0.14,
+          0.21,
+          0.28,
+          0.3
+        ],
+        "epsilon": [
+          -0.1,
+          -0.1,
+          -0.1,
+          -0.1,
+          -5
+        ]
+      }
       Elements are sometimes referred to in MML files by the order they are defined in,
       instead of by name, so we put these in an array instead of a hash so we can get both
     ###
-    typesArr = $mml(".org-concord-mw2d-models-Element")
-    elemTypes = []
 
-    for type in typesArr
-      name  = type.attribs.id
-      $type = cheerio(type)
-      id    = getIntProperty $type, 'ID', 'int'
-      mass  = getFloatProperty $type, 'mass', 'double'
-      sigma =  getFloatProperty $type, 'sigma', 'double'
-      epsilon = getFloatProperty $type, 'epsilon', 'double'
+    elements = []
+
+    elementNodes = $mml(".org-concord-mw2d-models-Element")
+    for node in elementNodes
+      $node = getNode(cheerio(node))
+      # id    = getIntProperty $node, 'ID', 'int'
+      mass  = getFloatProperty $node, 'mass', 'double'
+      sigma =  getFloatProperty $node, 'sigma', 'double'
+      epsilon = getFloatProperty $node, 'epsilon', 'double'
 
       # scale sigma to nm
       [sigma] = toNextgenLengths sigma
@@ -493,7 +507,8 @@ parseMML = (mmlString) ->
       # scale to NextGen units
       mass *= 120         #convert to mass in Daltons
 
-      elementRawData = { id, mass, sigma, epsilon }
+      # elementRawData = { id, mass, sigma, epsilon }
+      elementRawData = { mass, sigma, epsilon }
 
       # Unit conversion performed on undefined values can convert them to NaN.
       # Revert back all NaNs to undefined, as we do not expect any NaN
@@ -503,7 +518,7 @@ parseMML = (mmlString) ->
       # Validate all properties and provides default values for undefined values.
       elementValidatedData = validator.validateCompleteness metadata.element, elementRawData
 
-      elemTypes[elementValidatedData.id] = elementValidatedData
+      elements.push elementValidatedData
 
     ###
       Find all custom pairwise LJ properties (sigma and epsilon).
@@ -789,8 +804,10 @@ parseMML = (mmlString) ->
     modelViewProperties = validator.validateCompleteness metadata.modelViewProperties, modelViewProperties
 
     json.viewOptions = modelViewProperties
-    json.elements = elemTypes
     json.pairwiseLJProperties = pairwiseLJProperties
+
+    json.elements = unroll elements, 'mass', 'sigma', 'epsilon'
+
     json.atoms =
       x : x
       y : y

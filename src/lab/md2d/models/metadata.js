@@ -188,10 +188,6 @@ define(function() {
     },
 
     element: {
-      id: {
-        defaultValue: 0,
-        immutable: true
-      },
       mass: {
         defaultValue: 120
       },
@@ -202,7 +198,8 @@ define(function() {
         defaultValue: -0.1
       },
       radius: {
-        readOnly: true
+        readOnly: true,
+        serialize: false
       }
     },
 
