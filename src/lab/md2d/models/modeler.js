@@ -2024,13 +2024,20 @@ define(function(require) {
       propCopy.viewOptions = viewOptions;
 
       propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
+      if (engine.getNumberOfRadialBonds()) {
+        propCopy.radialBonds = serialize(metadata.radialBond, radialBonds, engine.getNumberOfRadialBonds());
+      }
+      if (engine.getNumberOfAngularBonds()) {
+        propCopy.angularBonds = serialize(metadata.angularBond, angularBonds, engine.getNumberOfAngularBonds());
+      }
+
       // FIXME: for now Amino Acid elements are *not* editable and should not be serialized
       // -- only copy first five elements
       propCopy.elements = serialize(metadata.element, elements, 5);
 
       // The same situation for Custom LJ Properties. Do not serialize properties for amino acids.
       propCopy.pairwiseLJProperties = [];
-      for (i = 0, len = propCopy.pairwiseLJProperties.length; i < len; i++) {
+      for (i = 0, len = ljProps.length; i < len; i++) {
         if (ljProps[i].element1 <= 5 && ljProps[i].element2 <= 5) {
           propCopy.pairwiseLJProperties.push(ljProps[i]);
         }

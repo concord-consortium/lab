@@ -56,16 +56,16 @@
   },
   "pairwiseLJProperties": [
     {
-      "element1": 2,
-      "element2": 3,
-      "sigma": 0.3,
-      "epsilon": -0.20000000298023224
-    },
-    {
       "element1": 0,
       "element2": 1,
       "sigma": 0.38754093170166015,
       "epsilon": -0.3464285731315613
+    },
+    {
+      "element1": 2,
+      "element2": 3,
+      "sigma": 0.3,
+      "epsilon": -0.20000000298023224
     }
   ],
   "atoms": {
