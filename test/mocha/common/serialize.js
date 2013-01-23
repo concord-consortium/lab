@@ -60,5 +60,33 @@ requirejs([
       // Whole array should be copied, not only reference!
       result.a.should.not.equal(input.a);
     });
+    it('should handle regular and typed arrays', function () {
+      // The input is correct.
+      var i,
+          a = [0, 0, 0, 0],
+          b = new Float32Array(4),
+          input = {
+            a: a,
+            b: b
+          };
+
+      for(i = 0; i < b.length; i++) {
+        b[i] = i;
+      }
+      // a = [0, 0, 0, 0]
+      // b = [0, 1, 2, 3]
+
+      result = serialize(metaData, input);
+
+      result.should.be.a('object');
+      result.should.have.property('a');
+      result.should.have.property('b');
+      result.should.not.have.property('c');
+
+      result.a.should.eql([0, 0, 0, 0]);
+      // equal is strict equality.
+      // Whole array should be copied, not only reference!
+      result.a.should.not.equal(input.a);
+    });
   });
 });

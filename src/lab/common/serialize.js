@@ -10,7 +10,7 @@ define(function(require) {
       if (metaData.hasOwnProperty(propName)) {
         if (propertiesHash[propName] !== undefined && metaData[propName].serialize !== false) {
           array = propertiesHash[propName];
-          result[propName] = count !== undefined ? arrays.extend(array, count) : arrays.clone(array);
+          result[propName] = count !== undefined ? arrays.copy(arrays.extend(array, count), []) : arrays.copy(array, []);
         }
       }
     }
