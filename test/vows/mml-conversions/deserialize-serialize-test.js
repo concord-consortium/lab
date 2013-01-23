@@ -32,7 +32,7 @@ requirejs([
           modelName = /\/?([^\/]*)\.json/.exec(modelJsonFile)[1];
 
           originalModel = JSON.parse(originalModelJson);
-          model = new Model(originalModelJson);
+          model = new Model(originalModel);
           serializedModel = model.serialize(true);
           assert.deepEqual(originalModel, serializedModel,
               "\n===> the serialized object "+modelName+"\n" +JSON.stringify(originalModel, null, 2) +"\n\n===> the original object used to create the MD2D model: \n" + JSON.stringify(serializedModel, null, 2) + "\n" +
