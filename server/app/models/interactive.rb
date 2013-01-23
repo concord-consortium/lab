@@ -4,8 +4,8 @@ class Interactive < CouchRest::Model::Base
   property :title,              String
   property :publicationStatus,  String
 
-  property :models,             [String]
-  property :components,         [Hash]
+  property :models,             [Object]
+  property :components,         [Object]
 
   timestamps!
 
