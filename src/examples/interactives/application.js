@@ -37,6 +37,7 @@ var ROOT = "/examples",
       $interactiveTextArea = $("#interactive-text-area"),
 
       $updateModelButton = $("#update-model-button"),
+      $updateJsonFromModelButton = $("#update-json-from-model-button"),
       $autoFormatModelJsonButton = $("#autoformat-model-json-button"),
       $modelTextArea = $("#model-text-area"),
 
@@ -754,6 +755,17 @@ var ROOT = "/examples",
 
         $autoFormatModelJsonButton.on('click', function() {
           modelEditor.autoFormatRange(modelEditor.getCursor(true), modelEditor.getCursor(false));
+        });
+
+        $updateJsonFromModelButton.on('click', function() {
+          var modelState;
+          if(onFullPage()) {
+            modelState = controller.getModelController().state(true);
+          } else {
+            // iframePhone.post({ type:'loadInteractive', data:interactive  });
+            modelState = {};
+          }
+          modelEditor.setValue(JSON.stringify(modelState, null, indent));
         });
 
         $showModelEditor.change(function() {

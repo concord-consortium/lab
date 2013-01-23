@@ -190,6 +190,10 @@ define(function (require) {
         moleculeContainer.setupDrawables();
       }
 
+      function state(includeAtoms) {
+        return model.serialize(includeAtoms);
+      }
+
       // ------------------------------------------------------------
       //
       // Initial setup of this modelController:
@@ -224,6 +228,7 @@ define(function (require) {
       controller.reload = reload;
       controller.repaint = repaint;
       controller.moleculeContainer = moleculeContainer;
+      controller.state = state;
       controller.benchmarks = benchmarks;
 
       return controller;
