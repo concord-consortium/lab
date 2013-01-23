@@ -21,7 +21,7 @@
     },
     {
       "name": "pressureTimesArea",
-      "units": "femtoNewton * nm",
+      "units": "picoNewton * nm",
       "label": "Pressure Times Area",
       "value": "return get('pressure') * get('area');"
     }
@@ -30,30 +30,34 @@
     {
       "name": "pressure",
       "label": "Pressure",
-      "units": "femtoNewton / nm",
-      "onChange": "setObstacleProperties(0, { externalFx: -6.02e-4 * value / (getObstacleProperties(0).mass * get('height')) });",
-      "initialValue": 1.5
+      "units": "picoNewton / nm",
+      "onChange": ["var MW_FORCE_UNITS_PER_PICONEWTON = 6.02e-7,",
+                   "    height = getObstacleProperties(0).height,",
+                   "    mass   = getObstacleProperties(0).mass,",
+                   "    ax     = value * height * MW_FORCE_UNITS_PER_PICONEWTON / mass;",
+                   "setObstacleProperties(0, { externalFx: -ax });"],
+      "initialValue": 60
     }
   ],
   "components": [
     {
       "type": "slider",
       "id": "force-slider",
-      "min": 0.75,
-      "max": 3,
-      "displayValue": "return format('1.2f')(value)",
+      "min": 15,
+      "max": 120,
+      "displayValue": "return format('1f')(value)",
       "labels": [
         {
-          "value": 0.75,
-          "label": "0.75"
+          "value": 15,
+          "label": "15"
         },
         {
-          "value": 3,
-          "label": "3.00"
+          "value": 120,
+          "label": "120"
         }
       ],
-      "steps": 9,
-      "title": "Pressure (femtoNewton / nm)",
+      "steps": 7,
+      "title": "Pressure (picoNewton / nm)",
       "property": "pressure"
     },
     {
@@ -66,7 +70,7 @@
       "type": "numericOutput",
       "id": "pressure-times-area-display",
       "property": "pressureTimesArea",
-      "displayValue": "return format('1.1f')(value)"
+      "displayValue": "return format('1f')(value)"
     }
   ]
 }
