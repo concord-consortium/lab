@@ -2837,8 +2837,8 @@ define(function (require, exports, module) {
               ycm /= totalMass;
             };
 
-        xPos = xPos || cx / 10;
-        yPos = yPos || cy / 2;
+        xPos = xPos !== undefined ? xPos : cx / 10;
+        yPos = yPos !== undefined ? yPos : cy / 2;
 
         if (N === 0) {
           el = aaAbbr ? aminoacidsHelper.abbrToElement(aaAbbr) : getRandomAA();

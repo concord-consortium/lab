@@ -59,13 +59,13 @@ describe "GeneticProperties", ->
             geneticProperties.on "change", changeHooks.changeListener
 
           it "should allow to set genetic properties and call appropriate hooks", ->
-            geneticProperties.set {DNA: "ATGC", x: 1, y: 2, height: 3}
+            geneticProperties.set {DNA: "ATGC", x: 1, y: 2, height: 3, width: 3}
             changeHooks.pre.callCount.should.eql 1
             changeHooks.post.callCount.should.eql 1
             changeHooks.changeListener.callCount.should.eql 1
 
           it "should allow to get existing genetic properties", ->
-            geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", x: 1, y: 2, height: 3}
+            geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", x: 1, y: 2, height: 3, width: 3}
 
 
           it "should transcribe mRNA from DNA and call appropriate hooks", ->
@@ -74,7 +74,7 @@ describe "GeneticProperties", ->
             changeHooks.post.callCount.should.eql 1
             changeHooks.changeListener.callCount.should.eql 1
 
-            geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", mRNA: "AUGC", x: 1, y: 2, height: 3}
+            geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", mRNA: "AUGC", x: 1, y: 2, height: 3, width: 3}
 
           it "should translate mRNA to amino acids sequence correctly", ->
             # This is pretty complex, so test a least some examples.
@@ -91,17 +91,17 @@ describe "GeneticProperties", ->
             changeHooks.changeListener.callCount.should.eql 1
 
             # Note that as DNA was changed, DNAComplement was recalculated and mRNA was deleted.
-            geneticProperties.get().should.eql {DNA: "ATGCT", DNAComplement: "TACGA", x: 0, y: 1, height: 3}
+            geneticProperties.get().should.eql {DNA: "ATGCT", DNAComplement: "TACGA", x: 0, y: 1, height: 3, width: 3}
 
           it "should allow to deserialize genetic properties (replacing existing properties)", ->
-            data = {DNA: "CGTA", x: 5, y: 6, height: 7}
+            data = {DNA: "CGTA", x: 5, y: 6, height: 7, width: 8}
 
             geneticProperties.deserialize data
             changeHooks.pre.callCount.should.eql 1
             changeHooks.post.callCount.should.eql 1
             changeHooks.changeListener.callCount.should.eql 1
 
-            geneticProperties.get().should.eql {DNA: "CGTA", DNAComplement: "GCAT", x: 5, y: 6, height: 7}
+            geneticProperties.get().should.eql {DNA: "CGTA", DNAComplement: "GCAT", x: 5, y: 6, height: 7, width: 8}
 
 
 
@@ -118,7 +118,7 @@ describe "GeneticProperties", ->
 
         it "should be filled with initial properties if they are defined in model JSON", ->
           model = new Model
-            geneticProperties: {DNA: "ATGC", x: 1, y: 2, height: 3}
+            geneticProperties: {DNA: "ATGC", x: 1, y: 2, height: 3, width: 4}
 
           geneticProperties = model.getGeneticProperties()
-          geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", x: 1, y: 2, height: 3}
+          geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", x: 1, y: 2, height: 3, width: 4}

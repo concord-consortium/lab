@@ -201,22 +201,24 @@ define(function (require) {
       },
 
       translateStepByStep: function() {
-        var aaSequence;
+        var aaSequence, aaAbbr;
 
         changePreHook();
 
         aaSequence = api.translate();
-
         if (data.translationMarker === undefined) {
           data.translationMarker = 0;
         } else {
           data.translationMarker += 1;
         }
-
+        aaAbbr = aaSequence[data.translationMarker];
+        if (aaAbbr === undefined) {
+          data.translationMarker = "end";
+        }
         changePostHook();
         dispatch.change();
 
-        return aaSequence[data.translationMarker];
+        return aaAbbr;
       }
     };
 

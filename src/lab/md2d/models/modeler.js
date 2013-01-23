@@ -1728,10 +1728,24 @@ define(function(require) {
     */
     model.translateStepByStep = function () {
       var abbr = engine.geneticProperties.translateStepByStep(),
+          markerPos = engine.geneticProperties.get().translationMarker,
+          symbolHeight = engine.geneticProperties.get().height,
+          symbolWidth = engine.geneticProperties.get().width,
+          xPos = symbolWidth * markerPos * 3 + 1.5 * symbolWidth,
+          yPos = symbolHeight * 5,
+          width = model.get("width"),
+          height = model.get("height"),
           lastAA;
 
+      while (xPos > width) {
+        xPos -= symbolWidth * 3;
+      }
+      while (yPos > height) {
+        yPos -= symbolHeight;
+      }
+
       if (abbr !== undefined) {
-        model.extendProtein(undefined, undefined, abbr);
+        model.extendProtein(xPos, yPos, abbr);
       } else {
         lastAA = model.get_num_atoms() - 1;
         model.setAtomProperties(lastAA, {pinned: false});
