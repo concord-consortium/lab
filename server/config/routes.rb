@@ -8,6 +8,7 @@ App::Application.routes.draw do
   }
 
   resources :md2d_models
+  resources :interactives
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

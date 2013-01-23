@@ -1,11 +1,16 @@
 class Interactive < CouchRest::Model::Base
-  attr_accessor :casted_by
+  # attr_accessor :casted_by
 
-  property :name,                 String
+  property :title,              String
+  property :publicationStatus,  String
 
-  property :model,                String
-  property :components,           Hash
+  property :models,             [String]
+  property :components,         [Hash]
 
   timestamps!
+
+  design do
+    view :by_title
+  end
 
 end
