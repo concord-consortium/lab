@@ -2007,19 +2007,52 @@ define(function(require) {
     };
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
-    model.serialize = function(includeAtoms) {
-      var propCopy = $.extend({}, properties);
-      if (includeAtoms) {
-        propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
-      }
+    model.serialize = function() {
+      var propCopy = serialize(metadata.mainProperties, properties),
+          viewOptions = serialize(metadata.modelViewProperties, properties),
+          ljProps = engine.pairwiseLJProperties.serialize(),
+          i, len,
 
-      // FIXME: for now Amino Acid elements are *not* editable ond should not be serialized
+          removeAtomsArrayIfDefault = function(name, defaultVal) {
+            if (propCopy.atoms[name].every(function(i) {
+              return i === defaultVal;
+            })) {
+              delete propCopy.atoms[name];
+            }
+          };
+
+      propCopy.viewOptions = viewOptions;
+
+      propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
+      // FIXME: for now Amino Acid elements are *not* editable and should not be serialized
       // -- only copy first five elements
-
       propCopy.elements = serialize(metadata.element, elements, 5);
 
-      propCopy.width = model.get('width');
-      propCopy.height = model.get('height');
+      // The same situation for Custom LJ Properties. Do not serialize properties for amino acids.
+      propCopy.pairwiseLJProperties = [];
+      for (i = 0, len = propCopy.pairwiseLJProperties.length; i < len; i++) {
+        if (ljProps[i].element1 <= 5 && ljProps[i].element2 <= 5) {
+          propCopy.pairwiseLJProperties.push(ljProps[i]);
+        }
+      }
+
+      // Do the weird post processing of the JSON, which is also done by MML parser.
+      // Remove targetTemperature when heat-bath is disabled.
+      if (propCopy.temperatureControl === false) {
+        delete propCopy.targetTemperature;
+      }
+      // Remove atomTraceId when atom tracing is disabled.
+      if (propCopy.viewOptions.showAtomTrace === false) {
+        delete propCopy.viewOptions.atomTraceId;
+      }
+      if (propCopy.modelSampleRate === "default") {
+        delete propCopy.modelSampleRate;
+      }
+
+      removeAtomsArrayIfDefault("marked", metadata.atom.marked.defaultValue);
+      removeAtomsArrayIfDefault("visible", metadata.atom.visible.defaultValue);
+      removeAtomsArrayIfDefault("draggable", metadata.atom.draggable.defaultValue);
+
       return propCopy;
     };
 
