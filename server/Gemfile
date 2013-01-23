@@ -26,8 +26,9 @@ end
 
 gem 'jquery-rails'
 
-gem "couchrest",        :git => "git://github.com/concord-consortium/couchrest.git", :branch => "works-with-rails3.2"
-gem "couchrest_model",  '~> 1.1'
+# gem "couchrest",        :git => "git://github.com/concord-consortium/couchrest.git", :branch => "works-with-rails3.2"
+gem "couchrest_model", "~> 2.0.0.beta2"
+
 
 group :development do
   gem "debugger"
