@@ -2053,6 +2053,9 @@ define(function(require) {
         delete propCopy.obstacles.colorG;
         delete propCopy.obstacles.colorB;
       }
+      if (engine.getNumberOfRestraints() > 0) {
+        propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
+      }
 
       // FIXME: for now Amino Acid elements are *not* editable and should not be serialized
       // -- only copy first five elements
