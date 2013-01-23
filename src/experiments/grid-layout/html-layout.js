@@ -29,19 +29,40 @@ var interactiveEditor,
     cellWidth,
     cellHeight,
     modelComponent,
+    components,
+    intHeight, intWidth,
     gridLines = document.getElementById("grid-lines");
 
 function update() {
+  components = JSON.parse(interactiveEditor.getValue());
+
+  calculateComponentGrid();
+
   var authorMode = !! $("#author-mode").attr("checked");
 
   if (authorMode) {
-    updateAuthorView();
+    addGridLines();
   } else {
     setupLayout();
   }
+
+  renderComponents();
 }
 
-function updateAuthorView() {
+function calculateComponentGrid() {
+  dimensions = getDimensions(components);
+  dimensions.colsNum = dimensions.maxX - dimensions.minX;
+  dimensions.rowsNum = dimensions.maxY - dimensions.minY;
+
+  // Find model.
+  for (i = 0; i < components.length; i++) {
+    if (components[i].model) {
+      modelComponent = components[i];
+    }
+  }
+}
+
+function addGridLines() {
   var container = $("#interactive-container"),
       contWidth = container.width(),
       contHeight = container.height(),
@@ -80,22 +101,12 @@ function updateAuthorView() {
 }
 
 function setupLayout() {
-  var components = JSON.parse(interactiveEditor.getValue()),
-
-      colsNum,
-      rowsNum,
-
-      cellAspectRatio,
+  var cellAspectRatio,
       intAspectRatio,
       containerAspectRatio,
 
       containerWidth,
       containerHeight,
-
-      intWidth,
-      intHeight,
-
-      dimensions,
 
       compX, compY,
       compWidth, compHeight,
@@ -104,22 +115,10 @@ function setupLayout() {
 
       comp;
 
-  $("#interactive-container").empty();
   $(gridLines).empty()
 
-  dimensions = getDimensions(components);
-  colsNum = dimensions.maxX - dimensions.minX;
-  rowsNum = dimensions.maxY - dimensions.minY;
-
-  // Find model.
-  for (i = 0; i < components.length; i++) {
-    if (components[i].model) {
-      modelComponent = components[i];
-    }
-  }
-
   cellAspectRatio = modelComponent.width / modelComponent.height * modelComponent.aspectRatio;
-  intAspectRatio = rowsNum / colsNum * cellAspectRatio;
+  intAspectRatio = dimensions.rowsNum / dimensions.colsNum * cellAspectRatio;
 
   containerWidth = $("#interactive-container").width();
   containerHeight = $("#interactive-container").height();
@@ -134,9 +133,12 @@ function setupLayout() {
     intWidth = intHeight / intAspectRatio;
   }
 
-  cellWidth = intWidth / colsNum;
-  cellHeight = intHeight / rowsNum;
+  cellWidth = intWidth / dimensions.colsNum;
+  cellHeight = intHeight / dimensions.rowsNum;
+}
 
+function renderComponents() {
+  $("#interactive-container").empty();
 
   $("<div></div>").css({
     "position": "absolute",
@@ -186,6 +188,6 @@ var INDENT = 2,
   $("#update-layout").on("click", update);
   $("#author-mode").on("click", update);
 
-  setupLayout();
+  update();
 
 });
