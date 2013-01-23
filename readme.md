@@ -1564,6 +1564,32 @@ Enter **ctrl-D** to exit the debugger.
 [node-inspector](https://github.com/dannycoates/node-inspector)
 [npm package for node-inspector](http://search.npmjs.org/#/node-inspector)
 
+#### Using node-inspector while debugging
+
+[node-inspector](https://npmjs.org/package/node-inspector) supports using the webkit inspector in Chrome to support
+interactive debugging in node. This can be particualrly help when debugging tests.
+
+Example:
+
+Add a debugger statement to your test:
+
+    originalModelJson = fs.readFileSync(testDir + "expected-json/" + modelJsonFile).toString();
+    modelName = /\/?([^\/]*)\.json/.exec(modelJsonFile)[1];
+    debugger;
+    originalModel = JSON.parse(originalModelJson);
+    model = new Model(originalModel);
+
+Start a debugging session:
+
+    $ node --debug-brk ./node_modules/vows/bin/vows --no-color test/vows/mml-conversions/deserialize-serialize-test.js
+    debugger listening on port 5858
+
+Start node-inspector:
+
+    $ ./node_modules/.bin/node-inspector &
+    info  - socket.io started
+    visit http://0.0.0.0:8080/debug?port=5858 to start debugging
+
 ## Physical constants and units
 
 The core of the molecular dynamics engine performs computations using dimensioned quantities; we do
