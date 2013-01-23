@@ -31,6 +31,7 @@ var interactiveEditor,
     modelComponent,
     components,
     intHeight, intWidth,
+    scale = 1,
     gridLines = document.getElementById("grid-lines");
 
 function update() {
@@ -39,6 +40,13 @@ function update() {
   calculateComponentGrid();
 
   var authorMode = !! $("#author-mode").attr("checked");
+
+  if (intWidth) {
+    intWidth = intWidth * scale;
+    intHeight = intHeight * scale;
+    cellWidth = intWidth / dimensions.colsNum;
+    cellHeight = intHeight / dimensions.rowsNum;
+  }
 
   if (authorMode) {
     addGridLines();
@@ -66,10 +74,8 @@ function addGridLines() {
   var container = $("#interactive-container"),
       contWidth = container.width(),
       contHeight = container.height(),
-      x = 0,
-      y = 0,
       svgUrl = "http://www.w3.org/2000/svg",
-      createLine;
+      createLine, x, y, i, draggingElement, startX, startY;
 
   $(gridLines).empty()
   .css({
@@ -77,25 +83,59 @@ function addGridLines() {
     height: contHeight
   })
 
-  addLine = function(x1, y1, x2, y2) {
-    var line = document.createElementNS(svgUrl, "line");
-    line.setAttributeNS(null, "x1", x1);
-    line.setAttributeNS(null, "y1", y1);
-    line.setAttributeNS(null, "x2", x2);
-    line.setAttributeNS(null, "y2", y2);
-    line.setAttributeNS(null, "style", "stroke:rgb(150,150,150);stroke-width:1");
+  addLine = function(x1, y1, x2, y2, isAxis) {
+    var line = $(document.createElementNS(svgUrl, "line")),
+        thickness = isAxis ? 1.5 : 1,
+        color = isAxis ? "#333" : "#969696"
+    line.attr({
+      x1: x1,
+      y1: y1,
+      x2: x2,
+      y2: y2
+    }).css({
+      "stroke": color,
+      "stroke-width": thickness,
+      "cursor": "ew-resize"
+    });
 
-    gridLines.appendChild(line);
+    line.appendTo($(gridLines));
+
+    return line;
   }
 
-  while (x < contWidth) {
-    addLine(x, 0, x, contHeight);
-    x += cellWidth;
+  mouseDown = function(evt) {
+    draggingElement = evt.target;
+    startX = evt.offsetX;
+    gridLines.addEventListener("mousemove", mouseMove, true)
+    gridLines.addEventListener("mouseup", mouseUp, true)
   }
 
-  while (y < contHeight) {
-    addLine(0, y, contWidth, y);
-    y += cellHeight;
+  mouseMove = function(evt) {
+    if (!draggingElement) return;
+
+    var x = evt.offsetX;
+    scale = x / startX;
+    startX = x;
+    update();
+  }
+
+  mouseUp = function() {
+    // this doesn't seem to work....
+    gridLines.removeEventListener("mousemove", mouseMove, true)
+    gridLines.removeEventListener("mouseup", mouseUp, true)
+    // so use hack
+    draggingElement = null;
+  }
+
+  for (i = 0, x = 0; x < contWidth; i++) {
+    x = i * cellWidth;
+    line = addLine(x, 0, x, contHeight, i == -dimensions.minX);
+    line.bind("mousedown", mouseDown);
+  }
+
+  for (i = 0, y = 0; y < contHeight; i++) {
+    y = i * cellHeight
+    addLine(0, y, contWidth, y, i == dimensions.maxY);
   }
 
 }
@@ -132,6 +172,9 @@ function setupLayout() {
     intHeight = containerHeight;
     intWidth = intHeight / intAspectRatio;
   }
+
+  intWidth = intWidth * scale;
+  intHeight = intHeight * scale;
 
   cellWidth = intWidth / dimensions.colsNum;
   cellHeight = intHeight / dimensions.rowsNum;
