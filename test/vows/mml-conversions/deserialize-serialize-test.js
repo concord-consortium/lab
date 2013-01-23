@@ -35,7 +35,7 @@ requirejs([
           model = new Model(originalModel);
           serializedModel = model.serialize(true);
           assert.deepEqual(originalModel, serializedModel,
-              "\n===> the serialized object "+modelName+"\n" +JSON.stringify(originalModel, null, 2) +"\n\n===> the original object used to create the MD2D model: \n" + JSON.stringify(serializedModel, null, 2) + "\n" +
+              "\n===> the serialized object "+modelName+"\n" +JSON.stringify(serializedModel, null, 2) +"\n\n===> the original object used to create the MD2D model: \n" + JSON.stringify(originalModel, null, 2) + "\n" +
               "\n===> The serialized object does not match the original object used to create the MD2D model: " + modelName +
               "\n     " + testDir + "expected-json/" + modelJsonFile + "\n\n");
         }
