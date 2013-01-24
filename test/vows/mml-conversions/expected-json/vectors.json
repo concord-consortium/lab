@@ -28,18 +28,31 @@
     "showClock": true,
     "showVelocityVectors": true,
     "showForceVectors": true,
+    "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
+    "textBoxes": [],
+    "fitToParent": false,
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
     "velocityVectors": {
       "length": 2,
       "width": 0.02,
       "color": "rgb(100,200,300)"
     },
     "forceVectors": {
-      "color": "rgb(0,0,255)"
-    },
-    "showAtomTrace": false,
-    "images": [],
-    "imageMapping": {},
-    "textBoxes": []
+      "color": "rgb(0,0,255)",
+      "width": 0.01,
+      "length": 2
+    }
   },
   "elements": {
 

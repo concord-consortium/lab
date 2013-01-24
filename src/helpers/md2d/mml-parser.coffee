@@ -90,7 +90,10 @@ parseMML = (mmlString) ->
     # as property. Undefined values will be replaced by default values by validator.
     removeNaNProperties = (props) ->
       for own prop of props
-        delete props[prop] if isNaN props[prop]
+        if typeof props[prop] == 'number' && isNaN props[prop]
+          delete props[prop]
+        else if typeof props[prop] == 'object'
+          removeNaNProperties props[prop]
 
     ### Convert a cheerio node whose text is a number, to an actual number ###
     toNumber = ($node, {defaultValue}) ->
@@ -795,7 +798,18 @@ parseMML = (mmlString) ->
       showForceVectors    : showForceVectors
       images              : images
       textBoxes           : textBoxes
+      velocityVectors     :
+        length: velocityVectorLength
+        width: velocityVectorWidth
+        color: velocityVectorColor
+      forceVectors        :
+        length: forceVectorLength
+        width: forceVectorWidth
+        color: forceVectorColor
 
+    # Unit conversion performed on undefined values can convert them to NaN.
+    # Revert back all NaNs to undefined, as they will be replaced by default values.
+    removeNaNProperties modelViewProperties
     # Validate all properties and provides default values for undefined values.
     modelViewProperties = validator.validateCompleteness metadata.modelViewProperties, modelViewProperties
 
@@ -830,19 +844,6 @@ parseMML = (mmlString) ->
     if obstacles.length > 0
       json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction',
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
-
-    # Additional view-only options (which are *not* managed by model).
-    if velocityVectorLength or velocityVectorWidth or velocityVectorColor
-      json.viewOptions.velocityVectors = vOpts = {}
-      vOpts.length = velocityVectorLength if velocityVectorLength
-      vOpts.width  = velocityVectorWidth  if velocityVectorWidth
-      vOpts.color  = velocityVectorColor  if velocityVectorColor
-
-    if forceVectorLength or forceVectorWidth or forceVectorColor
-      json.viewOptions.forceVectors = vOpts = {}
-      vOpts.length = forceVectorLength if forceVectorLength
-      vOpts.width  = forceVectorWidth  if forceVectorWidth
-      vOpts.color  = forceVectorColor  if forceVectorColor
 
     # Remove some properties from the final serialized model.
     removeArrayIfDefault = (name, array, defaultVal) ->
