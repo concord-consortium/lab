@@ -16,7 +16,7 @@ define(function (require) {
       ModelPlayer       = require('cs!common/components/model_player'),
       Benchmarks        = require('md2d/benchmarks/benchmarks');
 
-  return function modelController(moleculeViewId, modelConfig, interactiveViewConfig, interactiveModelConfig) {
+  return function modelController(moleculeViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig) {
     var controller = {},
 
         // event dispatcher
@@ -52,7 +52,7 @@ define(function (require) {
             if (model.reset) {
               model.reset();
             }
-            reload(modelConfig, interactiveViewConfig);
+            reload(modelUrl, modelConfig);
           },
 
           is_stopped: function() {
@@ -155,7 +155,7 @@ define(function (require) {
           moleculeContainer.updateDrawablePositions();
         },
 
-        moleculeContainer = new MoleculeContainer(moleculeViewId, viewOptions, model);
+        moleculeContainer = new MoleculeContainer(moleculeViewId, modelUrl, model);
 
         moleculeContainer.updateMoleculeRadius();
         moleculeContainer.setupDrawables();
@@ -168,7 +168,7 @@ define(function (require) {
         // reset player and container view for model
         //
         // ------------------------------------------------------------
-        moleculeContainer.reset(viewOptions, model);
+        moleculeContainer.reset(modelUrl, model);
         moleculeContainer.updateMoleculeRadius();
         moleculeContainer.setupDrawables();
       }
@@ -177,7 +177,8 @@ define(function (require) {
         Note: newModelConfig, newinteractiveViewConfig are optional. Calling this without
         arguments will simply reload the current model.
       */
-      function reload(newModelConfig, newInteractiveViewConfig, newInteractiveModelConfig) {
+      function reload(newModelUrl, newModelConfig, newInteractiveViewConfig, newInteractiveModelConfig) {
+        modelUrl = newModelUrl || modelUrl;
         modelConfig = newModelConfig || modelConfig;
         interactiveViewConfig = newInteractiveViewConfig || interactiveViewConfig;
         interactiveModelConfig = newInteractiveModelConfig || interactiveModelConfig;

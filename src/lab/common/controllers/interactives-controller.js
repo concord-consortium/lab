@@ -111,7 +111,6 @@ define(function (require) {
         interactiveViewOptions = { controlButtons: 'play' };
       }
       interactiveViewOptions.fitToParent = !layoutStyle;
-      interactiveViewOptions.interactiveUrl = modelDefinition.url;
 
       onLoadScripts = [];
       if (modelDefinition.onLoad) {
@@ -124,26 +123,26 @@ define(function (require) {
       }
 
       if (modelConfig) {
-        finishWithLoadedModel(modelConfig)
+        finishWithLoadedModel(modelDefinition.url, modelConfig);
       } else {
         $.get(ACTUAL_ROOT + modelDefinition.url).done(function(modelConfig) {
 
           // Deal with the servers that return the json as text/plain
           modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
 
-          finishWithLoadedModel(modelConfig);
+          finishWithLoadedModel(modelDefinition.url, modelConfig);
         });
       }
 
-      function finishWithLoadedModel(modelConfig) {
+      function finishWithLoadedModel(modelUrl, modelConfig) {
         // set default model type to "md2d"
         modelConfig.type = modelConfig.type || "md2d";
         if (modelController) {
-          modelController.reload(modelConfig, interactiveViewOptions, interactiveModelOptions);
+          modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
         } else {
           switch(modelConfig.type) {
             case "md2d":
-            modelController = new MD2DModelController('#model-container', modelConfig, interactiveViewOptions, interactiveModelOptions);
+            modelController = new MD2DModelController('#model-container', modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
             // Extending universal Interactive scriptingAPI with model-specific scripting API
             scriptingAPI.extend(MD2DScriptingAPI);
             scriptingAPI.exposeScriptingAPI();

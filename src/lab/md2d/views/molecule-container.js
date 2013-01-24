@@ -12,10 +12,8 @@ define(function (require) {
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
       amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
       GeneticRenderer       = require('md2d/views/genetic-renderer'),
-      optionsMetadata       = require('md2d/views/meta-view-options'),
       layout                = require('common/layout/layout'),
       wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
-      validator             = require('common/validator'),
 
       RADIAL_BOND_TYPES = {
         STANDARD_STICK  : 101,
@@ -29,7 +27,7 @@ define(function (require) {
         DISULPHIDE_BOND : 109
       };
 
-  return function MoleculeContainer(e, viewOptions, model) {
+  return function MoleculeContainer(e, modelUrl, model) {
         // Public API object to be returned.
     var api = {},
         elem = d3.select(e),
@@ -115,7 +113,6 @@ define(function (require) {
         imageMapping,
         imageSizes = [],
         textBoxes,
-        interactiveUrl,
         imagePath,
         drawAtomTrace,
         atomTraceId,
@@ -123,13 +120,11 @@ define(function (require) {
         atomTrace,
         atomTracePath,
 
-        options,
-
         VELOCITY_STR = "velocity",
         FORCE_STR    = "force";
 
-    function processOptions(newViewOptions, newModel) {
-      viewOptions = newViewOptions || viewOptions;
+    function processOptions(newModelUrl, newModel) {
+      modelUrl = newModelUrl || modelUrl;
       model = newModel || model;
 
       // The model function get_results() returns a 2 dimensional array
@@ -138,16 +133,13 @@ define(function (require) {
       // the latest results will be in this array when the view is executing
       results = model.get_results();
 
-      // Process typical view options.
-      options = validator.validateCompleteness(optionsMetadata, viewOptions);
-
       imageProp = model.get("images");
       imageMapping = model.get("imageMapping");
 
-      if (options.interactiveUrl) {
-        interactiveUrl = options.interactiveUrl;
-        imagePath = ACTUAL_ROOT + interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
+      if (modelUrl) {
+        imagePath = ACTUAL_ROOT + modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
       }
+
       velocityVectorColor = model.get("velocityVectors").color;
       velocityVectorWidth  = model.get("velocityVectors").width;
       velocityVectorLength = model.get("velocityVectors").length;
@@ -1788,9 +1780,6 @@ define(function (require) {
         vis.selectAll("g.x").remove();
         vis.selectAll("g.y").remove();
 
-        if (options.playback_controller) {
-          playbackComponent.position(playbackXPos, playbackYPos, emsize);
-        }
         createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
         createVectorArrowHeads(forceVectorColor, FORCE_STR);
         redraw();
@@ -1836,8 +1825,8 @@ define(function (require) {
         init();
         api.setupDrawables();
       },
-      reset: function(newViewOptions, newModel) {
-        api.processOptions(newViewOptions, newModel);
+      reset: function(newModelUrl, newModel) {
+        api.processOptions(newModelUrl, newModel);
         init();
         api.setupDrawables();
         api.updateMoleculeRadius();
