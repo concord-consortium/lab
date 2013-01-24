@@ -760,7 +760,7 @@ var ROOT = "/examples",
         $updateJsonFromModelButton.on('click', function() {
           var modelState;
           if(onFullPage()) {
-            modelState = controller.getModelController().state(true);
+            modelState = controller.getModelController().state();
           } else {
             // iframePhone.post({ type:'loadInteractive', data:interactive  });
             modelState = {};

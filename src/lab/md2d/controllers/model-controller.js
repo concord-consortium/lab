@@ -190,8 +190,8 @@ define(function (require) {
         moleculeContainer.setupDrawables();
       }
 
-      function state(includeAtoms) {
-        return model.serialize(includeAtoms);
+      function state() {
+        return model.serialize();
       }
 
       // ------------------------------------------------------------
