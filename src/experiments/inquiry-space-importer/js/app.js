@@ -567,9 +567,7 @@ ISImporter.appController = new ISImporter.Object({
   metadataLabelChanged: function(fieldNum) {},
   metadataValueChanged: function(fieldNum) {},
   frequencyChanged: function() {},
-  selectionChanged: function() {
-
-  },
+  selectionChanged: function() {},
 
   sensorAppletReady: function() {
     if (this.currentAppletReady) return;
