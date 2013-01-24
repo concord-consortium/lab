@@ -164,6 +164,33 @@ requirejs([
           });
         });
 
+        describe('and it is an array', function () {
+
+          beforeEach(function (){
+            metadata.optionalProp = {
+              defaultValue: [1, 2, 3]
+            };
+          });
+
+          it('validation should use it if the input property is undefined', function () {
+            var input = {
+                  requiredProp: 1
+                },
+                result = validator.validateCompleteness(metadata, input);
+
+            result.requiredProp.should.equal(1);
+            // Default value should be used.
+            result.optionalProp.should.eql(metadata.optionalProp.defaultValue);
+            // But new array should be created, copying reference is not enough!
+            result.optionalProp.should.not.equal(metadata.optionalProp.defaultValue);
+          });
+
+          // Note that arrays are treated more or less like basic types. We are not
+          // extending arrays, filling them with missing values etc. Array specified
+          // as a default value will be used in case when property is undefined.
+          // No nested merging like for objects.
+        });
+
         describe('and it is an object', function () {
 
           beforeEach(function (){

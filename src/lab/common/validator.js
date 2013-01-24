@@ -2,18 +2,12 @@
 
 // For now, only defaultValue, readOnly and immutable
 // meta-properties are supported.
-define(function() {
+define(function(require) {
 
-  // Create a new object, that prototypically inherits from the Error constructor.
-  // It provides a direct information which property of the input caused an error.
-  function ValidationError(prop, message) {
-      this.prop = prop;
-      this.message = message;
-  }
-  ValidationError.prototype = new Error();
-  ValidationError.prototype.constructor = ValidationError;
+  var arrays = require('arrays');
 
-  var fill = function (input, defaultObj) {
+
+  function fill(input, defaultObj) {
     var result = {},
         prop;
 
@@ -28,7 +22,16 @@ define(function() {
     }
 
     return result;
-  };
+  }
+
+  // Create a new object, that prototypically inherits from the Error constructor.
+  // It provides a direct information which property of the input caused an error.
+  function ValidationError(prop, message) {
+      this.prop = prop;
+      this.message = message;
+  }
+  ValidationError.prototype = new Error();
+  ValidationError.prototype.constructor = ValidationError;
 
   return {
 
@@ -87,11 +90,13 @@ define(function() {
             // Value is not declared in the input data.
             if (propMetadata.required === true) {
               throw new ValidationError(prop, "Properties set is missing required property " + prop);
+            } else if (arrays.isArray(propMetadata.defaultValue)) {
+              // Copy an array defined as a default value.
+              // Do not use instance defined in metadata.
+              result[prop] = arrays.copy(propMetadata.defaultValue, []);
             } else if (typeof propMetadata.defaultValue === "object") {
-              // If default value is an object, copy it.
-              // result[prop] = propMetadata.defaultValue;
-              // is not enough, as we don't want to share object
-              // from metadata.
+              // Copy an object defined as a default value.
+              // Do not use instance defined in metadata.
               result[prop] = fill({}, propMetadata.defaultValue);
             } else if (propMetadata.defaultValue !== undefined) {
               // If it's basic type, just set value.
