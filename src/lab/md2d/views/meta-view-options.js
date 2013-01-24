@@ -3,22 +3,10 @@
 define(function() {
 
   return {
-    xlabel: {
-      defaultValue: false
-    },
-    ylabel: {
-      defaultValue: false
-    },
     controlButtons: {
       defaultValue: "play"
     },
     grid_lines: {
-      defaultValue: false
-    },
-    xunits: {
-      defaultValue: false
-    },
-    yunits: {
       defaultValue: false
     },
     atom_mubers: {

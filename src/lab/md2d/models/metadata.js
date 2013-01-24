@@ -127,6 +127,18 @@ define(function() {
       },
       fitToParent: {
         defaultValue: false
+      },
+      xlabel: {
+        defaultValue: false
+      },
+      ylabel: {
+        defaultValue: false
+      },
+      xunits: {
+        defaultValue: false
+      },
+      yunits: {
+        defaultValue: false
       }
     },
 

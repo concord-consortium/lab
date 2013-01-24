@@ -168,10 +168,10 @@ define(function (require) {
          "top":    20,
          "right":  25,
          "bottom": 10,
-         "left":   options.ylabel ? 60  * emsize : 25
+         "left":   model.get("ylabel") ? 60  * emsize : 25
       };
 
-      if (options.xlabel) {
+      if (model.get("xlabel")) {
         padding.bottom += (35  * emsize);
       }
 
@@ -276,7 +276,7 @@ define(function (require) {
           d3.event.transform(nm2px, nm2pxInv);
       }
 
-      if (options.xunits) {
+      if (model.get("xunits")) {
         // Regenerate x-ticks…
         var gx = vis.selectAll("g.x")
             .data(nm2px.ticks(10), String)
@@ -305,7 +305,7 @@ define(function (require) {
         gx.exit().remove();
       }
 
-      if (options.xunits) {
+      if (model.get("yunits")) {
         // Regenerate y-ticks…
         var gy = vis.selectAll("g.y")
             .data(nm2pxInv.ticks(10), String)
@@ -1702,10 +1702,10 @@ define(function (require) {
           .attr("height", size.height);
 
         // Add the x-axis label
-        if (options.xlabel) {
+        if (model.get("xlabel")) {
           vis.append("text")
               .attr("class", "xlabel")
-              .text(options.xlabel)
+              .text(model.get("xlabel"))
               .attr("x", size.width/2)
               .attr("y", size.height)
               .attr("dy","2.4em")
@@ -1713,11 +1713,11 @@ define(function (require) {
         }
 
         // add y-axis label
-        if (options.ylabel) {
+        if (model.get("ylabel")) {
           vis.append("g")
               .append("text")
                   .attr("class", "ylabel")
-                  .text(options.ylabel)
+                  .text(model.get("ylabel"))
                   .style("text-anchor","middle")
                   .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
         }
@@ -1769,13 +1769,13 @@ define(function (require) {
           .attr("width", size.width)
           .attr("height", size.height);
 
-        if (options.xlabel) {
+        if (model.get("xlabel")) {
           vis.select("text.xlabel")
               .attr("x", size.width/2)
               .attr("y", size.height);
         }
 
-        if (options.ylabel) {
+        if (model.get("ylabel")) {
           vis.select("text.ylabel")
               .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
         }
