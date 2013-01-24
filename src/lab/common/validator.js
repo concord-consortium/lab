@@ -102,7 +102,8 @@ define(function(require) {
               // If it's basic type, just set value.
               result[prop] = propMetadata.defaultValue;
             }
-          } else if (typeof input[prop] === "object" && typeof propMetadata.defaultValue === "object") {
+          } else if (!arrays.isArray(input[prop]) && typeof input[prop] === "object" && typeof propMetadata.defaultValue === "object") {
+            // Note that typeof [] is also "object" - that is the reason of the isArray() check.
             result[prop] = fill(input[prop], propMetadata.defaultValue);
           } else {
             result[prop] = input[prop];

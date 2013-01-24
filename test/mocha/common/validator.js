@@ -185,6 +185,18 @@ requirejs([
             result.optionalProp.should.not.equal(metadata.optionalProp.defaultValue);
           });
 
+          it('validation should not use it if the input property is already defined', function () {
+            var input = {
+                  requiredProp: 1,
+                  optionalProp: [1, 2]
+                },
+                result = validator.validateCompleteness(metadata, input);
+
+            result.requiredProp.should.equal(1);
+            // Default value -1 should be used.
+            result.optionalProp.should.eql([1, 2]);
+          });
+
           // Note that arrays are treated more or less like basic types. We are not
           // extending arrays, filling them with missing values etc. Array specified
           // as a default value will be used in case when property is undefined.
