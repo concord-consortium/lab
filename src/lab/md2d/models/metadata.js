@@ -124,6 +124,9 @@ define(function() {
       },
       textBoxes: {
         defaultValue: []
+      },
+      fitToParent: {
+        defaultValue: false
       }
     },
 

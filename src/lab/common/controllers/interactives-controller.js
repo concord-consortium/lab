@@ -110,7 +110,7 @@ define(function (require) {
       } else {
         interactiveViewOptions = { controlButtons: 'play' };
       }
-      interactiveViewOptions.fit_to_parent = !layoutStyle;
+      interactiveViewOptions.fitToParent = !layoutStyle;
       interactiveViewOptions.interactiveUrl = modelDefinition.url;
 
       onLoadScripts = [];

@@ -3,12 +3,6 @@
 define(function() {
 
   return {
-    fit_to_parent: {
-      defaultValue: false
-    },
-    title: {
-      defaultValue: false
-    },
     xlabel: {
       defaultValue: false
     },

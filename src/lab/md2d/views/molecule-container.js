@@ -165,8 +165,8 @@ define(function (require) {
 
       emsize = layout.getVizProperties().emsize;
       padding = {
-         "top":    options.title  ? 40 * emsize : 20,
-         "right":                   25,
+         "top":    20,
+         "right":  25,
          "bottom": 10,
          "left":   options.ylabel ? 60  * emsize : 25
       };
@@ -181,7 +181,7 @@ define(function (require) {
         padding.bottom += (15  * emsize);
       }
 
-      if (options.fit_to_parent) {
+      if (model.get("fitToParent")) {
 
         // In 'fit-to-parent' mode, we allow the viewBox parameter to fit the svg
         // node into the containing element and allow the containing element to be
@@ -1671,7 +1671,7 @@ define(function (require) {
       // create container, or update properties if it already exists
       if (vis === undefined) {
 
-        if (options.fit_to_parent) {
+        if (model.get("fitToParent")) {
           outerElement = d3.select(e);
           elem = outerElement
             .append('div').attr('class', 'positioning-container')
@@ -1700,16 +1700,6 @@ define(function (require) {
           .attr("class", "plot")
           .attr("width", size.width)
           .attr("height", size.height);
-
-        // add Chart Title
-        if (options.title) {
-          vis.append("text")
-              .attr("class", "title")
-              .text(options.title)
-              .attr("x", size.width/2)
-              .attr("dy","-1em")
-              .style("text-anchor","middle");
-        }
 
         // Add the x-axis label
         if (options.xlabel) {
@@ -1765,7 +1755,7 @@ define(function (require) {
 
       } else {
 
-        if (!options.fit_to_parent) {
+        if (!model.get("fitToParent")) {
           d3.select(node).select("svg")
               .attr("width", cx)
               .attr("height", cy);
@@ -1778,12 +1768,6 @@ define(function (require) {
         vis.select("rect.plot")
           .attr("width", size.width)
           .attr("height", size.height);
-
-        if (options.title) {
-          vis.select("text.title")
-              .attr("x", size.width/2)
-              .attr("dy","-1em");
-        }
 
         if (options.xlabel) {
           vis.select("text.xlabel")
@@ -1844,7 +1828,7 @@ define(function (require) {
       scale: scale,
       // Create public methods.
       resize: function(w, h) {
-        if (options.fit_to_parent) {
+        if (model.get("fitToParent")) {
           outerElement.style('width', w+'px');
         } else {
           api.scale(w, h);
