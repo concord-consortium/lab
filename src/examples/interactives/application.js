@@ -784,10 +784,11 @@ var ROOT = "/examples",
   function autoFormatEditorContent(ed) {
     var cursorStart = ed.getCursor("start"),
         cursorEnd = ed.getCursor("end"),
-        viewPort = ed.getViewport()
-    ed.autoFormatRange({ ch:0, line: 0 }, { ch:0, line: 9999 });
+        lastLine = ed.lineCount(),
+        viewPort = ed.getViewport();
+    ed.autoFormatRange({ ch:0, line: 0 }, { ch:0, line: lastLine });
     ed.setSelection(cursorStart, cursorEnd);
-    ed.scrollIntoView({ line: viewPort.from, ch:0 });
+    ed.scrollIntoView({ ch:0, line: viewPort.from });
   }
 
   //
