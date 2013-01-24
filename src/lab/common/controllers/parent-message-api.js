@@ -30,17 +30,27 @@ define(function(require) {
     });
 
     // on message 'loadModel' call controller.loadModel
-     parentMessageController.addListener('loadModel', function(message) {
-       if (controller && controller.loadModel) {
-         controller.loadModel(message.data.modelId, message.data.modelObject);
-       }
-     });
+    parentMessageController.addListener('loadModel', function(message) {
+      if (controller && controller.loadModel) {
+        controller.loadModel(message.data.modelId, message.data.modelObject);
+      }
+    });
+
+    // on message 'state' call controller.state
+    parentMessageController.addListener('getModelState', function(message) {
+      if (controller && controller.getModelController) {
+        parentMessageController.post({
+          type:  'modelState',
+          values: controller.getModelController().state()
+        });
+      }
+    });
 
      // on message 'loadModel' call controller.loadModel
       parentMessageController.addListener('runBenchmarks', function() {
         var modelController;
         if (controller && controller.getModelController) {
-          modelController = controller.getModelController()
+          modelController = controller.getModelController();
           benchmark.bench(modelController.benchmarks, function(results) {
             console.log(results);
             parentMessageController.post({

@@ -761,11 +761,13 @@ var ROOT = "/examples",
           var modelState;
           if(onFullPage()) {
             modelState = controller.getModelController().state();
+            modelEditor.setValue(JSON.stringify(modelState, null, indent));
           } else {
-            // iframePhone.post({ type:'loadInteractive', data:interactive  });
-            modelState = {};
+            iframePhone.post({ type:'getModelState' });
+            iframePhone.addListener('modelState', function(message) {
+              modelEditor.setValue(JSON.stringify(message, null, indent));
+            });
           }
-          modelEditor.setValue(JSON.stringify(modelState, null, indent));
         });
 
         $showModelEditor.change(function() {
