@@ -1817,7 +1817,7 @@ define(function(require) {
       // model view properties. Attempts to set immutable or read-only
       // properties will be caught.
       validator.validate(metadata.mainProperties, hash);
-      validator.validate(metadata.modelViewProperties, hash);
+      validator.validate(metadata.viewOptions, hash);
 
       if (engine) invalidatingChangePreHook();
       set_properties(hash);
@@ -2016,7 +2016,7 @@ define(function(require) {
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function() {
       var propCopy = serialize(metadata.mainProperties, properties),
-          viewOptions = serialize(metadata.modelViewProperties, properties),
+          viewOptions = serialize(metadata.viewOptions, properties),
           ljProps = engine.pairwiseLJProperties.serialize(),
           i, len,
 
@@ -2146,9 +2146,7 @@ define(function(require) {
     set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
 
     // Set the model view options.
-    // These options are view-related, but are stored in model,
-    // as e.g. they should be saved in tick history.
-    set_properties(validator.validateCompleteness(metadata.modelViewProperties, initialProperties.viewOptions || {}));
+    set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
 
     // Setup engine object.
     model.initializeEngine();

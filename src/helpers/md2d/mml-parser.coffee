@@ -786,7 +786,7 @@ parseMML = (mmlString) ->
 
     # Properties which are managed by model, but they define view.
     # Model handles them, as they are e.g. stored in the history.
-    modelViewProperties =
+    viewOptions =
       backgroundColor     : backgroundColor
       keShading           : keShading
       chargeShading       : chargeShading
@@ -809,11 +809,11 @@ parseMML = (mmlString) ->
 
     # Unit conversion performed on undefined values can convert them to NaN.
     # Revert back all NaNs to undefined, as they will be replaced by default values.
-    removeNaNProperties modelViewProperties
+    removeNaNProperties viewOptions
     # Validate all properties and provides default values for undefined values.
-    modelViewProperties = validator.validateCompleteness metadata.modelViewProperties, modelViewProperties
+    viewOptions = validator.validateCompleteness metadata.viewOptions, viewOptions
 
-    json.viewOptions = modelViewProperties
+    json.viewOptions = viewOptions
 
     json.pairwiseLJProperties = pairwiseLJProperties
 

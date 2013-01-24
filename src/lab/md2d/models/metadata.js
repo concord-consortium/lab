@@ -76,7 +76,7 @@ define(function() {
       }
     },
 
-    modelViewProperties: {
+    viewOptions: {
       backgroundColor: {
         defaultValue: "#eeeeee"
       },
