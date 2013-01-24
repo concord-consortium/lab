@@ -148,13 +148,13 @@ define(function (require) {
         interactiveUrl = options.interactiveUrl;
         imagePath = ACTUAL_ROOT + interactiveUrl.slice(0,interactiveUrl.lastIndexOf("/")+1);
       }
-      velocityVectorColor = options.velocityVectors.color;
-      velocityVectorWidth  = options.velocityVectors.width;
-      velocityVectorLength = options.velocityVectors.length;
+      velocityVectorColor = model.get("velocityVectors").color;
+      velocityVectorWidth  = model.get("velocityVectors").width;
+      velocityVectorLength = model.get("velocityVectors").length;
 
-      forceVectorColor = options.forceVectors.color;
-      forceVectorWidth  = options.forceVectors.width;
-      forceVectorLength = options.forceVectors.length;
+      forceVectorColor = model.get("forceVectors").color;
+      forceVectorWidth  = model.get("forceVectors").width;
+      forceVectorLength = model.get("forceVectors").length;
 
       atomTraceColor = model.get("atomTraceColor");
     }
