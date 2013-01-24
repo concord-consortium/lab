@@ -6,8 +6,12 @@ var interactiveEditor,
     modelComponent,
     components,
     intHeight, intWidth,
+    rescaling = false,
     scale = 1,
+    offset = [0,0],
     authorMode = false,
+    panDragStart = {x: 0, y: 0},
+    panDragEnd   = {x: 0, y: 0},
     gridLines = document.getElementById("grid-lines");
 
 function getDimensions(components) {
@@ -60,7 +64,7 @@ function update() {
 
   calculateComponentGrid();
 
-  if (intWidth) {
+  if (rescaling) {
     intWidth = intWidth * scale;
     intHeight = intHeight * scale;
     cellWidth = intWidth / dimensions.colsNum;
@@ -105,7 +109,7 @@ function addGridLines() {
   addLine = function(x1, y1, x2, y2, isAxis) {
     var line = $(document.createElementNS(svgUrl, "line")),
         thickness = isAxis ? 1.5 : 1,
-        color = isAxis ? "#333" : "#969696"
+        color = isAxis ? "#333" : "#969696";
     line.attr({
       x1: x1,
       y1: y1,
@@ -114,7 +118,8 @@ function addGridLines() {
     }).css({
       "stroke": color,
       "stroke-width": thickness,
-      "cursor": "ew-resize"
+      "cursor": "ew-resize",
+      "pointer-events": "all"
     });
 
     line.appendTo($(gridLines));
@@ -123,10 +128,12 @@ function addGridLines() {
   }
 
   mouseDown = function(evt) {
+    rescaling = true;
     draggingElement = evt.target;
     startX = evt.offsetX;
-    gridLines.addEventListener("mousemove", mouseMove, true)
-    gridLines.addEventListener("mouseup", mouseUp, true)
+    $(gridLines).css("pointer-events", "all");
+    gridLines.addEventListener("mousemove", mouseMove, true);
+    gridLines.addEventListener("mouseup", mouseUp, true);
   }
 
   mouseMove = function(evt) {
@@ -140,21 +147,24 @@ function addGridLines() {
 
   mouseUp = function() {
     // this doesn't seem to work....
-    gridLines.removeEventListener("mousemove", mouseMove, true)
-    gridLines.removeEventListener("mouseup", mouseUp, true)
+    gridLines.removeEventListener("mousemove", mouseMove, true);
+    gridLines.removeEventListener("mouseup", mouseUp, true);
     // so use hack
     draggingElement = null;
+
+    $(gridLines).css("pointer-events", "none");
+    rescaling = false;
   }
 
   for (i = 0, x = 0; x < contWidth; i++) {
-    x = i * cellWidth;
-    line = addLine(x, 0, x, contHeight, i == -dimensions.minX);
+    x = i * cellWidth + (offset[0] % cellWidth);
+    line = addLine(x, 0, x, contHeight, i == -dimensions.minX + Math.floor(offset[0] / cellWidth));
     line.bind("mousedown", mouseDown);
   }
 
   for (i = 0, y = 0; y < contHeight; i++) {
-    y = i * cellHeight
-    addLine(0, y, contWidth, y, i == dimensions.maxY);
+    y = i * cellHeight + (offset[1] % cellHeight);
+    addLine(0, y, contWidth, y, i == dimensions.maxY + Math.floor(offset[1] / cellHeight));
   }
 
 }
@@ -175,6 +185,11 @@ function setupLayout() {
       comp;
 
   $(gridLines).empty()
+
+  if (!authorMode) {
+    offset[0] = panDragEnd.x = 0;
+    offset[1] = panDragEnd.y = 0;
+  }
 
   cellAspectRatio = modelComponent.width / modelComponent.height * modelComponent.aspectRatio;
   intAspectRatio = dimensions.rowsNum / dimensions.colsNum * cellAspectRatio;
@@ -199,17 +214,45 @@ function setupLayout() {
   cellHeight = intHeight / dimensions.rowsNum;
 }
 
+function panBackground(evt) {
+  offset[0] = evt.pageX - panDragStart.x + panDragEnd.x;
+  offset[1] = evt.pageY - panDragStart.y + panDragEnd.y;
+  update();
+}
+
 function renderComponents() {
   $("#interactive-container").empty();
 
-  $("<div></div>").css({
+  var background = $("<div id='background'>").css({
     "position": "absolute",
-    "top": 0,
     "left": 0,
+    "top":  0,
+    "width": "100%",
+    "height": "100%",
+  }).appendTo("#interactive-container");
+
+  var intBackground = $("<div id='int-background'>").css({
+    "position": "absolute",
+    "left": 0 + (authorMode ? offset[0] : 0),
+    "top":  0 + (authorMode ? offset[1] : 0),
     "width": intWidth,
     "height": intHeight,
-    "background": "#DDD"
-  }).appendTo("#interactive-container");
+    "background": "#DDD",
+  }).appendTo(background);
+
+  if (authorMode) {
+    background.unbind();
+    background.bind('mousedown', function(evt) {
+      panDragStart.x = evt.pageX;
+      panDragStart.y = evt.pageY;
+      $("#interactive-container").bind('mousemove', panBackground);
+      $("#interactive-container").bind('mouseup', function() {
+        panDragEnd.x = offset[0];
+        panDragEnd.y = offset[1];
+        $("#interactive-container").unbind('mousemove', panBackground);
+      });
+    });
+  }
 
   for (i = 0; i < components.length; i++) {
     comp = components[i];
@@ -219,13 +262,13 @@ function renderComponents() {
     comp.xPx = (comp.x - dimensions.minX) * cellWidth;
     comp.yPx = (intHeight - (comp.y - dimensions.minY) * cellHeight) - comp.heightPx;
 
-    $("<div></div>")
+    $("<div>")
     .attr({
       "class": "component"
     })
     .css({
-      "left": comp.xPx,
-      "top": comp.yPx,
+      "left": comp.xPx + (authorMode ? offset[0] : 0),
+      "top":  comp.yPx + (authorMode ? offset[1] : 0),
       "width": comp.widthPx,
       "height": comp.heightPx,
       "background": comp.color
