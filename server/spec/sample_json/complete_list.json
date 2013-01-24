@@ -1,0 +1,916 @@
+{
+  "interactives": [
+    {
+      "title": "Add Atoms",
+      "path": "interactives/basic-examples/add-atoms.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Using a script to add atoms with a specific size, velocity and starting position.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Add Random Atom",
+      "path": "interactives/basic-examples/add-random-atoms.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Using a script to add atoms with a random size and position.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Add Remove Obstacles",
+      "path": "interactives/basic-examples/add-remove-obstacles.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Creating and interacting with Obstacles using scripts.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Atom Tracing",
+      "path": "interactives/basic-examples/atom-tracing.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Tracing and marking atoms.",
+      "about": "Atom Tracing example",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Bar Graph Example",
+      "path": "interactives/basic-examples/bar-graph.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Marking an atom and graphing it's kinetic energy.",
+      "about": [
+        "There are 10 atoms in the model and the fifth one is both 'marked' and it's kinetic energy is graphed in the bar graph."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Boiling Point with Energy Graph",
+      "path": "interactives/basic-examples/boiling-point-with-energy-graph.json",
+      "groupKey": "basic-examples",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Empty Model",
+      "path": "interactives/basic-examples/empty-model.json",
+      "groupKey": "basic-examples",
+      "subtitle": "A model with no atoms can be both: loaded and run, and atoms can be added to it.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Interactive View and Model Options",
+      "path": "interactives/basic-examples/interactive-model-and-view-options.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Overriding model and view properties in the Interactive.",
+      "about": [
+        "This interactive presents how an author can overwrite model properties.",
+        "Take a look at the interactive JSON and <b>models</b> hash. There are two nested objects:",
+        "<ul><li>viewOptions</li><li>modelOptions</li></ul>",
+        "Compare values of <i>showVelocityVectors</i> and <i>timeStep</i> with the model JSON.",
+        "You will notice that values defined in these sections take precedence over values in model JSON. Modify properties in these objects and click <b>Update Interactive</b> button to see changes."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Testing: Layout Example",
+      "path": "interactives/basic-examples/layout-example-html.json",
+      "groupKey": "basic-examples",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Testing: Layout Example",
+      "path": "interactives/basic-examples/layout-example.json",
+      "groupKey": "basic-examples",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "onPropertyChange Demo",
+      "path": "interactives/basic-examples/on-property-change.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Using an onPropertyChange() script to respond to changes in a model property.",
+      "about": [
+        "Changes in the model property: temperatureControl are monitored with an onPropertyChange() script."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Testing: Only One Atom",
+      "path": "interactives/basic-examples/one-atom.json",
+      "groupKey": "basic-examples",
+      "subtitle": "The MD2D model works with just a single atom also.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Pendulum with Output Properties",
+      "path": "interactives/basic-examples/output-properties-and-custom-parameters-demo.json",
+      "groupKey": "basic-examples",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Testing: Pulling Uncharged Atoms",
+      "path": "interactives/basic-examples/pulling-uncharged-atoms.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Atoms can dragged to new positions, try pulling the green one. This model starts running when loaded.",
+      "about": "These atoms are uncharged and have a van der Waals attraction. Pull one a short distance away and it will move back towards the other. However pull them far enough apart and they won't move back together.",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Remove Atoms and Bonds",
+      "path": "interactives/basic-examples/remove-atoms.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Both atoms and bonds can be removed with scripts.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "View Refresh Rate and Model Sample Rate Examples",
+      "path": "interactives/basic-examples/sample-rate-and-refresh-rate.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Experiment with parameters which define stepping of the simulation.",
+      "about": [
+        "Try to change timeStep, viewRefreshInterval or modelSampleRate and observe changes in the speed of simulation execution.",
+        "See <a href=\"/readme.html#md2d-simulation-stepping\">readme</a> for more details."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Test Button, Slider, and Pulldown Examples",
+      "path": "interactives/basic-examples/script-examples.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Examples of defining and using different Interactive components.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Simple KE Shading",
+      "path": "interactives/basic-examples/simple-ke-shading.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Kinetic Energy Shading can be turned on and off with scripts (and many other items also).",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Vector Visualization",
+      "path": "interactives/basic-examples/vector-visualization.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Velocity and force vectors can be added to atoms and the display properties can be customized.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Simple Gas",
+      "path": "interactives/benchmarks/1-simple-gas.json",
+      "groupKey": "benchmarks",
+      "subtitle": "19 uncharged and unbonded atoms.",
+      "about": "",
+      "publicationStatus": "sample"
+    },
+    {
+      "title": "Oil and Water",
+      "path": "interactives/benchmarks/2-oil-and-water-shake.json",
+      "groupKey": "benchmarks",
+      "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
+      "about": "",
+      "publicationStatus": "sample"
+    },
+    {
+      "title": "Temperature-Volume Relationship",
+      "path": "interactives/benchmarks/3-temperature-volume-relationship.json",
+      "groupKey": "benchmarks",
+      "subtitle": "57 uncharged and unbonded atoms interacting with an obstacle.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Hydrogen Bonds",
+      "path": "interactives/benchmarks/4-hydrogen-bonds.json",
+      "groupKey": "benchmarks",
+      "subtitle": "17 molecules created from 51 atoms using 34 radial and 17 angular bonds and displaying VDW lines",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "100 Charged Atoms, run 10s",
+      "path": "interactives/benchmarks/5-100-atoms-run10s.json",
+      "groupKey": "benchmarks",
+      "subtitle": "100 charged unbonded atoms: benchmarking long-range pairwise (Coulomb) calculations. Run on page load for 10s.",
+      "about": [
+        "This model has 100 charged atoms, this means that the modeling engine spends proportionally more time calculating pairwise forces for the long-range Coulomb forces than in some of the other models.",
+        "Since there are no bonds and no display of VDW lines the view is less computationaly intensive than other benchmarks."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "100 Charged Atoms",
+      "path": "interactives/benchmarks/5-100-atoms.json",
+      "groupKey": "benchmarks",
+      "subtitle": "100 charged unbonded atoms: benchmarking long-range pairwise (Coulomb) calculations.",
+      "about": [
+        "This model has 100 charged atoms, this means that the modeling engine spends proportionally more time calculating pairwise forces for the long-range Coulomb forces than in some of the other models.",
+        "Since there are no bonds and no display of VDW lines the view is less computationaly intensive than other benchmarks."
+      ],
+      "publicationStatus": "sample"
+    },
+    {
+      "title": "Phase Changes Caused by Energy Input",
+      "path": "interactives/benchmarks/6-phase-change.json",
+      "groupKey": "benchmarks",
+      "subtitle": "196 uncharged and unbonded atoms with about 400 VDW lines rendered.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Plastic Forces",
+      "path": "interactives/benchmarks/7-plasticforces.json",
+      "groupKey": "benchmarks",
+      "subtitle": "252 uncharged atoms with bonds",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Amino Acids Momentum Test",
+      "path": "interactives/conversion-tests/amino-acids-momentum.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": [
+        "A simple test checking whether the total momentum of each molecule (amino acids chain) is always equal to zero.",
+        "Amino acids in water or oil are pushed toward the molecule center of mass or in the opposite direction (it depends on the hydrophobicity of the amino acids). In most cases the sum of these forces would be different from zero and would cause a confusing movement of the molecule. They would drift and collide with boundaries.",
+        "To avoid this effect, Next Gen MW modifies velocities of each particle to ensure that the total momentum of the whole molecule is <b>always</b> equal to zero.",
+        "That's why you can observe that each molecule holds its initial position."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Amino Acids",
+      "path": "interactives/conversion-tests/amino-acids.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "A basic test of the proteins engine.",
+      "about": [
+        "Using this interactive you can:<ul>",
+        "<li>change type of amino acids (right click on the amino acid to open a special context menu),</li>",
+        "<li>test various coloring schemes and label types.</li></ul>",
+        "<li>watch their behavior in vacuum, oil and water,</li>",
+        "<li>modify strength of the force produced by the solvent,</li>",
+        "<li>switch on or off <i>realistic dielectric effect</i>,</li>",
+        "<li>experiment with advanced proteins engine settings like additional solvent force or polar amino acids attraction.</li>"
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Angular Bonds",
+      "path": "interactives/conversion-tests/angular-bonds.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Boiling Point Non-Polar Only",
+      "path": "interactives/conversion-tests/boiling-point-non-polar-only.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Boiling Point Polar Only",
+      "path": "interactives/conversion-tests/boiling-point-polar-only.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Coulomb Forces",
+      "path": "interactives/conversion-tests/coulomb-testing-forces.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Custom Lennard-Jones Properties",
+      "path": "interactives/conversion-tests/custom-lj-properties.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Dielectric Constant",
+      "path": "interactives/conversion-tests/dielectric-constant.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": [
+        "An interactive presenting the dielectric effect and its influence on Coulomb forces. The graph plots two variables:",
+        "- distance between particles (in nanometers),",
+        "- <b>effective</b> value of the dielectric constant (*).",
+        "What does <b>effective</b> mean in the context of dielectric constant?",
+        "Next Gen MW uses a special algorithm for calculation of the dielectric effect. When particles are close enough to each other, it assumes that the screening effect of the solvent (oil or water) should be diminished. That's why you can observe that the effective dielectric constant is significantly reduced when particles are closer than 1.2nm to each other.",
+        "The effective dielectric constant for Coulomb interaction of two particles is calculated using following equation:",
+        "<center><b>effectiveDC = 1 + (DC - 1)/(1 + exp(-12 * R + 7))</b></center>",
+        "where <b>DC</b> is an initial dielectric constant for solvent (e.g. 10 for water) and <b>R</b> is the distance between particles.",
+        "You can disable this algorithm and leave the value of the dielectric constant untouched (so, <b>effectiveDC = DC</b>) using the <b>Realistic Dielectric Effect</b> checkbox.",
+        "*<i>[ Note that the effectiveDielectric output property defined in the interactive JSON does <b>not</b> ask the model about the effective value, as it's unavailable in Scripting API and hidden deeply in the engine internals. Instead, it recalculates effective dielectric constant using the same algorithm like the engine. ]</i>"
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Energy Minimization",
+      "path": "interactives/conversion-tests/energy-minimization.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Friction 2",
+      "path": "interactives/conversion-tests/friction-2.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Friction",
+      "path": "interactives/conversion-tests/friction.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Gravitational Fields",
+      "path": "interactives/conversion-tests/gravitational-field-test.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Image Layers",
+      "path": "interactives/conversion-tests/image-layers.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Mark Atoms",
+      "path": "interactives/conversion-tests/mark-atom.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Multiple Attached Images",
+      "path": "interactives/conversion-tests/multiple-attached-images.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Multiple Attached Images on Multiple Atoms",
+      "path": "interactives/conversion-tests/multiple-images-on-multiple-atoms.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Non-Coulomb Forces",
+      "path": "interactives/conversion-tests/non-coulomb-testing-forces.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Obstacle External Force",
+      "path": "interactives/conversion-tests/obstacle-force.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "External force test: the obstacle should reach an atom after ~5 000 fs when default setup is used.",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Obstacle Friction",
+      "path": "interactives/conversion-tests/obstacle-friction.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Obstacle Kinetic Energy calculation",
+      "path": "interactives/conversion-tests/obstacle-ke.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "One Radial Bond, Different Elements",
+      "path": "interactives/conversion-tests/one-radial-bond-different-elements.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "One Radial Bond",
+      "path": "interactives/conversion-tests/one-radial-bond.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Point Restraints",
+      "path": "interactives/conversion-tests/point-restraint.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "Atoms can be bound to a point with a spring-like bond.",
+      "about": "Using point restraints",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Pressure Probe",
+      "path": "interactives/conversion-tests/pressure-probe.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Single Image on an Atom",
+      "path": "interactives/conversion-tests/single-image-on-atom.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Text Boxes",
+      "path": "interactives/conversion-tests/text-boxes.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "Examples of different styles and positioning of text boxes.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Select one of Two Models using Pulldown Menu",
+      "path": "interactives/conversion-tests/two-model-pulldown.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "VDW Force Lines",
+      "path": "interactives/conversion-tests/vdw-force-lines.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Visible and Invisible Atoms",
+      "path": "interactives/conversion-tests/visible-and-invisible.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "Invisible atoms also participate in the molecular dynamics model.",
+      "about": [
+        "This model defines 8 atoms. There are four larger yellow atoms initially defined as invisible closer to the center. These are surrounded by four smaller purple atoms further away from the center.",
+        "After starting the model the smaller purple atoms will start showing visible interactions with the invisible atoms at 7900 fs.",
+        "You can enable or disable visibility of the larger yellow atoms using the pull-down menu selection"
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Pendulum",
+      "path": "interactives/inquiry-space/pendulum/1-pendulum.json",
+      "groupKey": "inquiry-space/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Spring and Mass",
+      "path": "interactives/inquiry-space/pendulum/2-spring.json",
+      "groupKey": "inquiry-space/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Pendulum and Spring",
+      "path": "interactives/inquiry-space/pendulum/3-springy-pendulum.json",
+      "groupKey": "inquiry-space/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Replacing Bitmap Images with SVG",
+      "path": "interactives/layout-tests/svg-images.json",
+      "groupKey": "layout-tests",
+      "subtitle": "Experiments replacing bitmap images with SVG documents to preserve quality when scaled up.",
+      "about": [
+        "This Interactive displays an image with a suggestion for how to start using the Interactive.",
+        "Current possible images including the SVG replacements for the png image:",
+        "<ol><li><a href='../../imports/legacy-mw-content/converted/layout-tests/svg-images/instructionBox.png' class='opens-in-new-window' target='_blank'>instructionBox.png</a> <i>(3.5K)</i><br>This is a 253x58 pixel png image. Will appear pixelated when scaled to larger sizes.</li><li><a href='../../imports/legacy-mw-content/converted/layout-tests/svg-images/instructionBox.svg' class='opens-in-new-window' target='_blank'>instructionBox.svg</a> <i>(33K)</i><br>Created with Adobe Illustrator this SVG image uses an embedded base64 image for the drop-shadow effect. Additionally explicit paths are used to draw the text instead of using SVG text objects, this makes the text rendering independent of whether a specific font is installed on the users computer.</li><li><a href='../../imports/legacy-mw-content/converted//layout-tests/svg-images/instructionBox2.svg' class='opens-in-new-window' target='_blank'>instructionBox2.svg</a> <i>(2.8K)</i><br>Created using the open-source Inkscape application this SVG image uses SVG text elements and does not have a drop shadow.</li><li><a href='../../imports/legacy-mw-content/converted//layout-tests/svg-images/instructionBox3.svg' class='opens-in-new-window' target='_blank'>instructionBox3.svg</a> <i>(1.2K)</i><br>Created by hand, this SVG image uses SVG text elements and the SVG feGaussianBlur filter to create the drop-shadow effect.</li></ol>"
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Modeling Transcription",
+      "path": "interactives/sam/DNA-to-proteins/2-modeling-transcription.json",
+      "groupKey": "sam/DNA-to-proteins",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Modeling Translation",
+      "path": "interactives/sam/DNA-to-proteins/3-modeling-translation.json",
+      "groupKey": "sam/DNA-to-proteins",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Being a Ribosome",
+      "path": "interactives/sam/DNA-to-proteins/4-being-a-ribosome.json",
+      "groupKey": "sam/DNA-to-proteins",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Mutations",
+      "path": "interactives/sam/DNA-to-proteins/6-mutations.json",
+      "groupKey": "sam/DNA-to-proteins",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "What is Pressure?",
+      "path": "interactives/sam/gas-laws/2-what-is-pressure.json",
+      "groupKey": "sam/gas-laws",
+      "subtitle": "Explore how gas exerts pressure on the sides of a container.",
+      "about": [
+        "Gases have no definite shape or volume. When they are constrained to a container, we can measure the pressure they exert on the container walls.",
+        "The model shows the inside (yellow atoms) and outside (pink atoms) of a balloon. The green barrier represents the wall of the balloon.",
+        "Add atoms to the balloon (the number of atoms in the balloon is shown on the slider). What happens to the balloon wall when atoms are added?"
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "The Volume-Pressure Relationship",
+      "path": "interactives/sam/gas-laws/3-volume-pressure-relationship.json",
+      "groupKey": "sam/gas-laws",
+      "subtitle": "Explore how the volume of a gas affects pressure.",
+      "about": [
+        "Gases can be compressed into smaller volumes. How does compressing a gas affect its pressure?",
+        "Run the model, then change the volume of the containers and observe the change in pressure. The moving wall converts the effect of molecular collisions into pressure and acts as a pressure gauge. What happens to the pressure when the volume changes?"
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "The Temperature-Volume Relationship",
+      "path": "interactives/sam/gas-laws/4-temperature-volume-relationship.json",
+      "groupKey": "sam/gas-laws",
+      "subtitle": "Investigate the relationship between temperature and the volume of a gas.",
+      "about": "This model contains gas molecules on the left side and a barrier that moves when the volume of gas expands or contracts, keeping the pressure constant. Run the model and change the temperature. Why does the barrier move when the temperature changes?",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "The Temperature-Pressure Relationship",
+      "path": "interactives/sam/gas-laws/5-temperature-pressure-relationship.json",
+      "groupKey": "sam/gas-laws",
+      "subtitle": "Consider how temperature affects the pressure exerted by a gas.",
+      "about": "Run the model and change the temperature. What happens to the pressure when the temperature changes?",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "The Number-Volume Relationship",
+      "path": "interactives/sam/gas-laws/6-number-volume-relationship.json",
+      "groupKey": "sam/gas-laws",
+      "subtitle": "Explore how the volume of a gas is related to the number of gas molecules.",
+      "about": "The model contains gas molecules under constant pressure. The barrier moves when the volume of gas expands or contracts. Run the model and select different numbers of molecules from the drop-down menu. What is the relationship between the number of molecules and the volume of a gas?",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Pressure Equilibrium",
+      "path": "interactives/sam/gas-laws/7-why-did-the-can-collapse.json",
+      "groupKey": "sam/gas-laws",
+      "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
+      "about": [
+        "There are gases on both sides of a moveable barrier (piston), which stays in the same place (more or less) when you run the model because the gas pressure on the piston is in equilibrium.",
+        "Add purple gas molecules and watch what happens to the piston. Reset the model. Now add yellow gas molecules. What happens to the piston?",
+        "Try heating or cooling the gas molecules. Explain the change in equilibrium with each change. Which has a greater effect on equilibrium -- changing the number of gas molecules or changing the temperature? Why?"
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Seeing Intermolecular Attractions",
+      "path": "interactives/sam/intermolecular-attractions/1-introduction.json",
+      "groupKey": "sam/intermolecular-attractions",
+      "subtitle": "A very simple interactive with polar molecules on the left and non-polar molecules on the right.",
+      "about": [
+        "All matter is attracted to all other matter. How does this work?",
+        "This interactive shows polar molecules (with charges) and non-polar molecules in a container with each other. Drag molecules around to see how they are attracted to each other. Dotted lines indicate intermolecular attractions."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Comparing Dipole-Dipole to London Dispersion",
+      "path": "interactives/sam/intermolecular-attractions/2-comparing-dipole-dipole-to-london-dispersion.json",
+      "groupKey": "sam/intermolecular-attractions",
+      "subtitle": "Explore the difference in attractive forces between polar and non-polar molecules.",
+      "about": [
+        "Explore the different strengths of dipole-dipole (polar) and London dispersion (non-polar) attractions. These intermolecular attractions are shown by dotted lines between the pairs of molecules.",
+        "Choose a pair of molecules from the drop-down menu and \"pull\" on the star to separate the molecules. Which type of intermolecular attraction is strongest?"
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Oil and Water",
+      "path": "interactives/sam/intermolecular-attractions/3-1-oil-and-water.json",
+      "groupKey": "sam/intermolecular-attractions",
+      "subtitle": "Explore how polar and non-polar substances interact.",
+      "about": "It is well known that \"oil and water don’t mix.\" But why? Run the model of polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water mixture,\" then run it again and watch what happens to the molecules over time.",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Boiling Point",
+      "path": "interactives/sam/intermolecular-attractions/3-2-boiling-point-and-solubility.json",
+      "groupKey": "sam/intermolecular-attractions",
+      "subtitle": "Explore what boiling looks like at the molecular level with both polar and non-polar substances.",
+      "about": "Non-polar molecules (gray) evaporate or boil more quickly than polar molecules (blue and red). Attractions between molecules are shown with dotted lines. Run the model, then heat the liquids. What does boiling look like at the molecular level?",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Polarity and Attractive Strength",
+      "path": "interactives/sam/intermolecular-attractions/4-strengthening-dipole-dipole-attractions.json",
+      "groupKey": "sam/intermolecular-attractions",
+      "subtitle": "Explore the different attractive forces between molecules of varying polarity.",
+      "about": "Attractions between polar molecules vary. Choose a pair of molecules from the drop-down menu and \"pull\" on the star to separate the molecules. Why does polarity have an effect on the strength of attraction between molecules?",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Factors Affecting London Dispersion Attractions",
+      "path": "interactives/sam/intermolecular-attractions/5-strengthening-london-dispersion-attraction.json",
+      "groupKey": "sam/intermolecular-attractions",
+      "subtitle": "Explore how differences in molecular size and shape affect the strength of London Dispersion attractions.",
+      "about": "Some non-polar molecules have stronger attractions than others. Choose a pair of molecules from the drop-down menu and \"pull\" on the star to separate the molecules. Why do size and shape affect the strength of attraction between two non-polar molecules?",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Hydrogen Bonds: A Special Type of Attraction",
+      "path": "interactives/sam/intermolecular-attractions/6-hydrogen-bonds-a-special-type-of-attraction.json",
+      "groupKey": "sam/intermolecular-attractions",
+      "subtitle": "Explore how polar molecules interact via hydrogen bonds.",
+      "about": [
+        "Explore hydrogen bonds forming between polar molecules, such as water. Hydrogen bonds are shown with dotted lines.",
+        "Show partial charges and run the model. Where do hydrogen bonds form? Try changing the temperature of the model. How does the pattern of hydrogen bonding explain the lattice that makes up ice crystals?"
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Your Immune System",
+      "path": "interactives/sam/intermolecular-attractions/8-your-immune-system.json",
+      "groupKey": "sam/intermolecular-attractions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Molecular View of a Gas",
+      "path": "interactives/sam/phase-change/2-two-types-of-gases.json",
+      "groupKey": "sam/phase-change",
+      "subtitle": "Explore how molecules in a gas move relative to each other.",
+      "about": "Molecules are in constant motion. \"Mark two atoms,\" then run the model to see how the molecules move relative to each other. How do the distances between gas molecules change over time?",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Molecular View of a Liquid",
+      "path": "interactives/sam/phase-change/3-liquids.json",
+      "groupKey": "sam/phase-change",
+      "subtitle": "Explore how molecules in a liquid move.",
+      "about": "Molecules are in constant motion. \"Mark two atoms,\" then run the model to see how the molecules in a liquid move relative to each other. How does the movement of molecules explain why liquids take the shape of their containers?",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Molecular View of a Solid",
+      "path": "interactives/sam/phase-change/4-solids.json",
+      "groupKey": "sam/phase-change",
+      "subtitle": "What does a solid look like at the molecular level?",
+      "about": "Molecules are in constant motion—even those in a solid! \"Mark two atoms,\" then run the model to see how the molecules in a solid move relative to each other. How would you describe the movement and arrangement of molecules in a solid?",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Intermolecular Attractions and States of Matter",
+      "path": "interactives/sam/phase-change/5-interatomic-interactions-and-states.json",
+      "groupKey": "sam/phase-change",
+      "subtitle": "Explore how states of matter are related to the strength of intermolecular attractions.",
+      "about": "There are three states of matter—solid, liquid and gas. Run the model and change the strength of attractions between the molecules. How does changing the force of attraction between molecules affect the state of that material?",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Phase Changes",
+      "path": "interactives/sam/phase-change/6-phase-changes-caused-by-energy-input.json",
+      "groupKey": "sam/phase-change",
+      "subtitle": "Explore how energy input causes matter to change states.",
+      "about": [
+        "Matter exists as solids, liquids and gases, and can change state between these.",
+        "The model shows a liquid material on the left (small atoms). The amount of heat energy is shown by kinetic energy (KE) shading, with deeper shades of red representing more energetic atoms. On the right side of the barrier is a solid material (large atoms).",
+        "Run the model. How much energy is able to penetrate the barrier? Remove the barrier. How quickly do the more energetic atoms melt the solid?"
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Latent Heat",
+      "path": "interactives/sam/phase-change/7-latent-heat.json",
+      "groupKey": "sam/phase-change",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Oil and Water",
+      "path": "interactives/samples/1-oil-and-water-shake.json",
+      "groupKey": "samples",
+      "subtitle": "Explore how polar and non-polar substances interact.",
+      "about": "It is well known that \"oil and water don’t mix.\" But why? Run the model of polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water mixture,\" then run it again and watch what happens to the molecules over time.",
+      "publicationStatus": "sample"
+    },
+    {
+      "title": "Simple Gas",
+      "path": "interactives/samples/2-simple-gas.json",
+      "groupKey": "samples",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "sample"
+    },
+    {
+      "title": "Charged and Neutral Atoms",
+      "path": "interactives/samples/3-100-atoms.json",
+      "groupKey": "samples",
+      "subtitle": "Explore Coulomb and Intermolecular Attractions",
+      "about": [
+        "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions) and van der Waals forces (an additional attractive force between all atoms).",
+        "What kinds of patterns tend to form with charged and neutral atoms? How does changing the van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
+      ],
+      "publicationStatus": "sample"
+    },
+    {
+      "title": "Charged and Neutral Atoms (conceptual version)",
+      "path": "interactives/samples/4-100-atoms-conceptual.json",
+      "groupKey": "samples",
+      "subtitle": "Explore Coulomb and Intermolecular Attractions",
+      "about": [
+        "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions) and van der Waals forces (an additional attractive force between all atoms).",
+        "What kinds of patterns tend to form with charged and neutral atoms? How does changing the van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
+      ],
+      "publicationStatus": "sample"
+    },
+    {
+      "title": "Protein Folding",
+      "path": "interactives/samples/5-amino-acids.json",
+      "groupKey": "samples",
+      "subtitle": "Explore simple protein folding.",
+      "about": [
+        "Discover how the properties of amino acids in a protein interact with their environment to cause proteins to fold in a particular way.",
+        "Generate different proteins, select the solvent type, and change the color scheme for amino acids using the buttons below the model.",
+        "Change specific amino acids in a protein by right-clicking on them."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Pendulum 1",
+      "path": "interactives/student/classic/pendulum/1-pendulum1.json",
+      "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Microbuoyancy measured by gauges",
+      "path": "interactives/tutorial/microscopic-buoyancy.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Ceramic Forces",
+      "path": "interactives/visual/recycling/1-ceramicforces.json",
+      "groupKey": "visual/recycling",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Metal Forces",
+      "path": "interactives/visual/recycling/2-metalforces.json",
+      "groupKey": "visual/recycling",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Plastic Forces",
+      "path": "interactives/visual/recycling/3-plasticforces.json",
+      "groupKey": "visual/recycling",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Tire Forces",
+      "path": "interactives/visual/recycling/4-tireforces.json",
+      "groupKey": "visual/recycling",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    }
+  ],
+  "groups": [
+    {
+      "path": "samples",
+      "name": "Samples",
+      "category": "Samples"
+    },
+    {
+      "path": "sam/intermolecular-attractions",
+      "name": "Science of Atoms and Molecules: Intermolecular Attractions",
+      "category": "Curriculum"
+    },
+    {
+      "path": "sam/gas-laws",
+      "name": "Science of Atoms and Molecules: Gas Laws",
+      "category": "Curriculum"
+    },
+    {
+      "path": "sam/phase-change",
+      "name": "Science of Atoms and Molecules: Phase Change",
+      "category": "Curriculum"
+    },
+    {
+      "path": "sam/DNA-to-proteins",
+      "name": "Science of Atoms and Molecules: DNA-to-proteins",
+      "category": "Curriculum"
+    },
+    {
+      "path": "inquiry-space/pendulum",
+      "name": "Inquiry Space: Pendulums",
+      "category": "Curriculum"
+    },
+    {
+      "path": "visual/recycling",
+      "name": "VISUAL: Recycling",
+      "category": "Curriculum"
+    },
+    {
+      "path": "basic-examples",
+      "name": "Basic Interactive Examples",
+      "category": "Examples"
+    },
+    {
+      "path": "conversion-tests",
+      "name": "Physics Conversion Tests",
+      "category": "Tests"
+    },
+    {
+      "path": "layout-tests",
+      "name": "Layout Tests",
+      "category": "Tests"
+    },
+    {
+      "path": "student/classic/pendulum",
+      "name": "Classic Java MW Examples",
+      "category": "Examples"
+    },
+    {
+      "path": "tutorial",
+      "name": "Classic Java MW Tutorial",
+      "category": "Examples"
+    },
+    {
+      "path": "benchmarks",
+      "name": "Performance Benchmarks",
+      "category": "Benchmarks"
+    }
+  ]
+}
