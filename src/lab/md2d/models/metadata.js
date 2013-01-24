@@ -139,6 +139,15 @@ define(function() {
       },
       yunits: {
         defaultValue: false
+      },
+      controlButtons: {
+        defaultValue: "play"
+      },
+      gridLines: {
+        defaultValue: false
+      },
+      atomNumbers: {
+        defaultValue: false
       }
     },
 

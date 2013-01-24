@@ -175,7 +175,7 @@ define(function (require) {
         padding.bottom += (35  * emsize);
       }
 
-      if (options.controlButtons) {
+      if (model.get("controlButtons")) {
         padding.bottom += (40  * emsize);
       } else {
         padding.bottom += (15  * emsize);
@@ -220,7 +220,7 @@ define(function (require) {
       offsetTop  = node.offsetTop + padding.top;
       offsetLeft = node.offsetLeft + padding.left;
 
-      switch (options.controlButtons) {
+      switch (model.get("controlButtons")) {
         case "play":
           playbackXPos = padding.left + (size.width - (75 * emsize))/2;
           break;
@@ -289,7 +289,7 @@ define(function (require) {
             .attr("class", "x")
             .attr("transform", tx);
 
-        if (options.grid_lines) {
+        if (model.get("gridLines")) {
           gxe.append("svg:line")
               .attr("stroke", stroke)
               .attr("y1", 0)
@@ -319,7 +319,7 @@ define(function (require) {
             .attr("transform", ty)
             .attr("background-fill", "#FFEEB6");
 
-        if (options.grid_lines) {
+        if (model.get("gridLines")) {
           gye.append("svg:line")
               .attr("stroke", stroke)
               .attr("x1", 0)
@@ -1109,8 +1109,7 @@ define(function (require) {
     }
 
     function setupParticles() {
-      var textShrinkFactor = results.length <= 100 ? 1 : 0.9,
-          showChargeSymbols = model.get("showChargeSymbols"),
+      var showChargeSymbols = model.get("showChargeSymbols"),
           useThreeLetterCode = model.get("useThreeLetterCode");
 
       mainContainer.selectAll("circle").remove();
@@ -1133,14 +1132,14 @@ define(function (require) {
         var selection = d3.select(this),
             txtValue, txtSelection;
         // Append appropriate label. For now:
-        // If atom_mumbers (TODO: fix typo) option is enabled, use indices.
+        // If 'atomNumbers' option is enabled, use indices.
         // If not and there is available 'label'/'symbol' property, use one of them
         // (check 'useThreeLetterCode' option to decide which one).
         // If not and 'showChargeSymbols' option is enabled, use charge symbols.
-        if (options.atom_mubers) {
+        if (model.get("atomNumbers")) {
           selection.append("text")
             .text(d.idx)
-            .style("font-size", nm2px(1.6 * textShrinkFactor * d.radius) + "px");
+            .style("font-size", nm2px(1.4 * d.radius) + "px");
         }
         else if (useThreeLetterCode && d.label) {
           // Add shadow - a white stroke, which increases readability.
@@ -1800,7 +1799,7 @@ define(function (require) {
       // Process options that always have to be recreated when container is reloaded
       d3.select('.model-controller').remove();
 
-      switch (options.controlButtons) {
+      switch (model.get("controlButtons")) {
         case "play":
           playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
           break;

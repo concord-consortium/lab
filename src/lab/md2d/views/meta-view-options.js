@@ -3,15 +3,6 @@
 define(function() {
 
   return {
-    controlButtons: {
-      defaultValue: "play"
-    },
-    grid_lines: {
-      defaultValue: false
-    },
-    atom_mubers: {
-      defaultValue: false
-    },
     enableAtomTooltips: {
       defaultValue: false
     },
