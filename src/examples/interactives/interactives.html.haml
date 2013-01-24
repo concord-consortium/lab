@@ -102,7 +102,7 @@
           #editor-content.extras-item-content
             .extras-item-controls
               %button#update-interactive-button Update Interactive
-              %button#autoformat-interactive-json-button AutoFormat Selection
+              %button.right#autoformat-interactive-json-button AutoFormat
             %textarea#interactive-text-area
 
         %li#model-editor.extras-item
@@ -112,9 +112,9 @@
           #model-editor-content.extras-item-content
             .extras-item-controls
               %button#update-model-button Update Model
-              %button#autoformat-model-json-button AutoFormat Selection
               %button#update-json-from-model-button Update JSON from Model
               %a#json-model-link{:href => "", :class => "opens-in-new-window", :target => "_blank"} Model JSON
+              %button.right#autoformat-model-json-button AutoFormat
             %textarea#model-text-area
 
         %li#model-energy-graph.extras-item

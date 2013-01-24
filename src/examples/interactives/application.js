@@ -711,7 +711,7 @@ var ROOT = "/examples",
       });
 
       $autoFormatInteractiveJsonButton.on('click', function() {
-        editor.autoFormatRange(editor.getCursor(true), editor.getCursor(false));
+        autoFormatEditorContent(editor);
       });
 
       $showEditor.change(function() {
@@ -754,7 +754,7 @@ var ROOT = "/examples",
         });
 
         $autoFormatModelJsonButton.on('click', function() {
-          modelEditor.autoFormatRange(modelEditor.getCursor(true), modelEditor.getCursor(false));
+          autoFormatEditorContent(modelEditor);
         });
 
         $updateJsonFromModelButton.on('click', function() {
@@ -779,6 +779,15 @@ var ROOT = "/examples",
         }).change();
       }
     });
+  }
+
+  function autoFormatEditorContent(ed) {
+    var cursorStart = ed.getCursor("start"),
+        cursorEnd = ed.getCursor("end"),
+        viewPort = ed.getViewport()
+    ed.autoFormatRange({ ch:0, line: 0 }, { ch:0, line: 9999 });
+    ed.setSelection(cursorStart, cursorEnd);
+    ed.scrollIntoView({ line: viewPort.from, ch:0 });
   }
 
   //
