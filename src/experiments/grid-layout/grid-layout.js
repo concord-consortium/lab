@@ -10,8 +10,9 @@ var interactiveEditor,
     scale = 1,
     offset = [0,0],
     authorMode = false,
-    panDragStart = {x: 0, y: 0},
+    panDragStart = {},
     panDragEnd   = {x: 0, y: 0},
+    componentDragStart = {},
     gridLines = document.getElementById("grid-lines");
 
 function getDimensions(components) {
@@ -57,8 +58,10 @@ function getDimensions(components) {
   return {maxX: maxX, minX: minX, minY: minY, maxY: maxY};
 }
 
-function update() {
-  components = JSON.parse(interactiveEditor.getValue());
+function update(skipReadingComponents) {
+  if (!skipReadingComponents) {
+      components = JSON.parse(interactiveEditor.getValue());
+  }
 
   authorMode = !! $("#author-mode").attr("checked");
 
@@ -220,10 +223,33 @@ function panBackground(evt) {
   update();
 }
 
+function snap(n) {
+  n = Math.round(n*10)/10;
+  if (Math.abs(n - Math.round(n)) < 0.2) {
+    return Math.round(n);
+  }
+  return n;
+}
+
+function moveComponent(comp, evt) {
+  var x = evt.pageX - componentDragStart.x,
+      y = evt.pageY - componentDragStart.y;
+  comp.x += x / intWidth * dimensions.colsNum;
+  comp.y -= y / intHeight * dimensions.rowsNum;
+
+  componentDragStart.x = evt.pageX;
+  componentDragStart.y = evt.pageY;
+  update(true);
+}
+
 function renderComponents() {
+  var background, component,
+      widthPx, heightPx,
+      xPx, yPx;
+
   $("#interactive-container").empty();
 
-  var background = $("<div id='background'>").css({
+  background = $("<div id='background'>").css({
     "position": "absolute",
     "left": 0,
     "top":  0,
@@ -231,7 +257,7 @@ function renderComponents() {
     "height": "100%",
   }).appendTo("#interactive-container");
 
-  var intBackground = $("<div id='int-background'>").css({
+  $("<div id='int-background'>").css({
     "position": "absolute",
     "left": 0 + (authorMode ? offset[0] : 0),
     "top":  0 + (authorMode ? offset[1] : 0),
@@ -241,7 +267,6 @@ function renderComponents() {
   }).appendTo(background);
 
   if (authorMode) {
-    background.unbind();
     background.bind('mousedown', function(evt) {
       panDragStart.x = evt.pageX;
       panDragStart.y = evt.pageY;
@@ -249,7 +274,7 @@ function renderComponents() {
       $("#interactive-container").bind('mouseup', function() {
         panDragEnd.x = offset[0];
         panDragEnd.y = offset[1];
-        $("#interactive-container").unbind('mousemove', panBackground);
+        $("#interactive-container").unbind('mousemove');
       });
     });
   }
@@ -257,22 +282,42 @@ function renderComponents() {
   for (i = 0; i < components.length; i++) {
     comp = components[i];
 
-    comp.widthPx = comp.width * cellWidth;
-    comp.heightPx = comp.height * cellHeight;
-    comp.xPx = (comp.x - dimensions.minX) * cellWidth;
-    comp.yPx = (intHeight - (comp.y - dimensions.minY) * cellHeight) - comp.heightPx;
+    widthPx  = comp.width * cellWidth;
+    heightPx = comp.height * cellHeight;
+    xPx      = (comp.x - dimensions.minX) * cellWidth;
+    yPx      = (intHeight - (comp.y - dimensions.minY) * cellHeight) - heightPx;
 
-    $("<div>")
+    component = $("<div>")
     .attr({
       "class": "component"
     })
     .css({
-      "left": comp.xPx + (authorMode ? offset[0] : 0),
-      "top":  comp.yPx + (authorMode ? offset[1] : 0),
-      "width": comp.widthPx,
-      "height": comp.heightPx,
+      "left": xPx + (authorMode ? offset[0] : 0),
+      "top":  yPx + (authorMode ? offset[1] : 0),
+      "width":  widthPx,
+      "height": heightPx,
       "background": comp.color
     }).appendTo("#interactive-container");
+
+    if (authorMode) {
+      (function (component, comp) {
+        component.bind('mousedown', function(evt) {
+          componentDragStart.x = evt.pageX;
+          componentDragStart.y = evt.pageY;
+          $("#interactive-container").bind('mousemove', function(evt) {
+            moveComponent(comp, evt);
+          });
+          $("#interactive-container").bind('mouseup', function() {
+            comp.x = snap(comp.x);
+            comp.y = snap(comp.y);
+            interactiveEditor.setValue(JSON.stringify(components, null, " "));
+            $("#interactive-container").unbind('mousemove');
+            $("#interactive-container").unbind('mouseup');
+            update();
+          });
+        });
+      })(component, comp);
+    }
   }
 }
 
