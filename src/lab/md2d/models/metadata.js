@@ -117,13 +117,13 @@ define(function() {
         defaultValue: 0
       },
       images: {
-
+        defaultValue: []
       },
       imageMapping: {
-
+        defaultValue: {}
       },
       textBoxes: {
-
+        defaultValue: []
       }
     },
 

@@ -114,7 +114,7 @@ define(function (require) {
         imageProp,
         imageMapping,
         imageSizes = [],
-        textBoxes = [],
+        textBoxes,
         interactiveUrl,
         imagePath,
         drawAtomTrace,
@@ -141,10 +141,8 @@ define(function (require) {
       // Process typical view options.
       options = validator.validateCompleteness(optionsMetadata, viewOptions);
 
-      // For convenience replace undefined collections with
-      // empty collections (like arrays or hashes).
-      imageProp = model.get("images") || [];
-      imageMapping = model.get("imageMapping") || {};
+      imageProp = model.get("images");
+      imageMapping = model.get("imageMapping");
 
       if (options.interactiveUrl) {
         interactiveUrl = options.interactiveUrl;
@@ -954,7 +952,7 @@ define(function (require) {
     function drawTextBoxes() {
       var size, layers, appendTextBoxes;
 
-      textBoxes = model.get('textBoxes') || [];
+      textBoxes = model.get('textBoxes');
 
       size = model.size();
 
