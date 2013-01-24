@@ -90,6 +90,7 @@ ISImporter.sensors = {
     }),
     menuGroup:  MENU_GROUPS.GO_LINK,
     menuText: "Force (50N)",
+    tareable: true,
     title: "Force",
     readingUnits: "N",
     minReading: -50,
@@ -199,6 +200,7 @@ ISImporter.sensors = {
     }),
     menuGroup:  MENU_GROUPS.LAB_QUEST,
     menuText: "Force (50N)",
+    tareable: true,
     title: "Force",
     readingUnits: "N",
     minReading: -50,
@@ -380,6 +382,7 @@ ISImporter.appController = new ISImporter.Object({
   selecting: false,
 
   // could split interface controller from generic app container--but not yet.
+  $tareButton: null,
   $sensorSelector: null,
   $startButton: null,
   $stopButton: null,
@@ -390,7 +393,14 @@ ISImporter.appController = new ISImporter.Object({
   init: function() {
     var self = this;
     this.appletDataListener = function(y) {
+      if (self.sensor.tareable && self.sensor.tareValue != null) {
+        y -= self.sensor.tareValue;
+      }
       self.dataset.add(y);
+    };
+
+    this.tareListener = function(y) {
+      self.sensor.tareValue = y;
     };
 
     this.initInterface();
@@ -414,6 +424,12 @@ ISImporter.appController = new ISImporter.Object({
     });
 
     // Set up button handlers. Surely this boilerplate can be eliminated.
+    this.$tareButton = $('#tare-button');
+    this.$tareButton.on('click', function() {
+      if ($(this).hasClass('disabled')) return false;
+      self.tare();
+    });
+
     this.$startButton = $('#start-button');
     this.$startButton.on('click', function() {
       if ($(this).hasClass('disabled')) return false;
@@ -458,6 +474,8 @@ ISImporter.appController = new ISImporter.Object({
     this.disable(this.$startButton);
     this.disable(this.$stopButton);
     this.disable(this.$resetButton);
+    this.disable(this.$exportButton);
+    this.disable(this.$selectButton);
   },
 
   enable: function($button) {
@@ -533,9 +551,10 @@ ISImporter.appController = new ISImporter.Object({
     }
 
     if (this.started) this.stop();
+    if (this.taring) this.cancelTare();
 
     if (this.currentApplet) {
-      this.currentApplet.removeListener('data', this.appletDataListener);
+      this.currentApplet.removeListeners('data');
       this.currentApplet.remove();
     }
 
@@ -556,11 +575,18 @@ ISImporter.appController = new ISImporter.Object({
     ISImporter.graphController.setYMax( this.sensor.maxReading );
     ISImporter.graphController.setTitle( this.sensor.title + " Graph");
 
-    this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.append();
 
     // we'll skip explicit state management... for now.
     this.disableControlButtons();
+
+    if (this.sensor.tareable) {
+      this.disable(this.$tareButton);
+      this.show(this.$tareButton);
+    } else {
+      this.hide(this.$tareButton);
+    }
+
     ISImporter.graphController.removeNotification();
   },
 
@@ -573,12 +599,15 @@ ISImporter.appController = new ISImporter.Object({
     if (this.currentAppletReady) return;
     this.currentAppletReady = true;
     this.enable(this.$startButton);
+    if (this.sensor.tareable) this.enable(this.$tareButton);
   },
 
   start: function() {
     this.started = true;
+    this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.start();
     this.disable(this.$startButton);
+    this.disable(this.$tareButton);
     this.enable(this.$stopButton);
   },
 
@@ -586,6 +615,7 @@ ISImporter.appController = new ISImporter.Object({
     this.started = false;
     if (this.currentApplet) this.currentApplet.stop();
     this.disable(this.$stopButton);
+    this.enable(this.$tareButton);
     this.enable(this.$resetButton);
 
     if (this.dataset.getLength() > 0) {
@@ -595,13 +625,61 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   reset: function() {
+    if (this.taring) return;
     this.dataset.setDataPoints();   // perhaps this should be a 'clear' convenience method
     this.dataset.select(null);
     this.dataset.setNextX(0);
     this.enable(this.$startButton);
+    this.enable(this.$tareButton);
     this.disable(this.$resetButton);
     this.disable(this.$selectButton);
     this.disable(this.$exportButton);
+  },
+
+  tare: function() {
+    var self = this;
+
+    if (this.started) return false;
+
+    this.taring = true;
+    this.disable(this.$tareButton);
+
+    this.disable(this.$startButton);
+    this.disable(this.$resetButton);
+
+    this.$realtimeDisplayValue.text('0.0');
+    this.$realtimeDisplayUnits.show();
+
+    this.currentApplet.removeListener('data', this.appletDataListener);
+    this.currentApplet.on('data', this.tareListener);
+    this.currentApplet.start();
+    this.tareTimeout = window.setTimeout(function() { self.tareDone(); }, 2000);
+  },
+
+  cancelTare: function() {
+    window.cancelTimeout(this.tareTimeout);
+    this.taring = false;
+    if (this.sensor.tareable) this.enable(this.$tareButton);
+  },
+
+  tareDone: function() {
+    if (!this.taring) return false;
+
+    this.taring = false;
+    this.tareTimeout = null;
+
+    this.currentApplet.stop();
+    this.currentApplet.removeListener('data', this.tareListener);
+    this.enable(this.$startButton);
+    if (this.sensor.tareable) this.enable(this.$tareButton);
+
+    // we've got your state management fail right here:
+    if (!this.started && this.dataset.getLength() > 0) {
+      this.enable(this.$resetButton);
+    }
+
+    this.$realtimeDisplayValue.text('');
+    this.$realtimeDisplayUnits.hide();
   },
 
   exportData: function() {
