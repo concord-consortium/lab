@@ -3,15 +3,6 @@
 define(function() {
 
   return {
-    enableAtomTooltips: {
-      defaultValue: false
-    },
-    enableKeyboardHandlers: {
-      defaultValue: true
-    },
-    atomTraceColor: {
-      defaultValue: "#6913c5"
-    },
     interactiveUrl: {
       defaultValue: ''
     },

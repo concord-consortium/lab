@@ -148,6 +148,15 @@ define(function() {
       },
       atomNumbers: {
         defaultValue: false
+      },
+      enableAtomTooltips: {
+        defaultValue: false
+      },
+      enableKeyboardHandlers: {
+        defaultValue: true
+      },
+      atomTraceColor: {
+        defaultValue: "#6913c5"
       }
     },
 

@@ -156,7 +156,7 @@ define(function (require) {
       forceVectorWidth  = options.forceVectors.width;
       forceVectorLength = options.forceVectors.length;
 
-      atomTraceColor = options.atomTraceColor;
+      atomTraceColor = model.get("atomTraceColor");
     }
 
     function scale(w, h) {
@@ -1288,7 +1288,7 @@ define(function (require) {
     }
 
     function setFocus() {
-      if (options.enableKeyboardHandlers) {
+      if (model.get("enableKeyboardHandlers")) {
         node.focus();
       }
     }
@@ -1301,7 +1301,7 @@ define(function (require) {
     // ------------------------------------------------------------
 
     function setupKeyboardHandler() {
-      if (!options.enableKeyboardHandlers) return;
+      if (!model.get("enableKeyboardHandlers")) return;
       $(node).keydown(function(event) {
         var keycode = event.keycode || event.which;
         switch(keycode) {
@@ -1343,14 +1343,14 @@ define(function (require) {
     }
 
     function moleculeMouseOver(d, i) {
-      if (options.enableAtomTooltips) {
+      if (model.get("enableAtomTooltips")) {
         renderAtomTooltip(i);
       }
     }
 
     function moleculeMouseDown(d, i) {
       node.focus();
-      if (options.enableAtomTooltips) {
+      if (model.get("enableAtomTooltips")) {
         if (atomTooltipOn !== false) {
           moleculeDiv.style("opacity", 1e-6);
           moleculeDiv.style("display", "none");
@@ -1728,7 +1728,7 @@ define(function (require) {
 
         moleculeDivPre = moleculeDiv.append("pre");
 
-        if (options.enableKeyboardHandlers) {
+        if (model.get("enableKeyboardHandlers")) {
           d3.select(node)
             .attr("tabindex", 0)
             .on("mousedown", mousedown);
