@@ -112,6 +112,7 @@ define(function (require) {
         velVector,
         forceVector,
         imageProp,
+        imageMapping,
         imageSizes = [],
         textBoxes = [],
         interactiveUrl,
@@ -142,8 +143,8 @@ define(function (require) {
 
       // For convenience replace undefined collections with
       // empty collections (like arrays or hashes).
-      imageProp = options.images || [];
-      options.imageMapping = options.imageMapping || {};
+      imageProp = model.get("images") || [];
+      imageMapping = model.get("imageMapping") || {};
 
       if (options.interactiveUrl) {
         interactiveUrl = options.interactiveUrl;
@@ -846,7 +847,7 @@ define(function (require) {
     }
 
     function getImagePath(imgProp) {
-      return imagePath + (options.imageMapping[imgProp.imageUri] || imgProp.imageUri);
+      return imagePath + (imageMapping[imgProp.imageUri] || imgProp.imageUri);
     }
 
     function drawImageAttachment() {

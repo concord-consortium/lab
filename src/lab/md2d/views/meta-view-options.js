@@ -56,8 +56,6 @@ define(function() {
         length: 2
       }
     },
-    textBoxes: {},
-    images: {},
-    imageMapping: {}
+    textBoxes: {}
   };
 });

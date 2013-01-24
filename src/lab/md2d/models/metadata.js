@@ -119,6 +119,9 @@ define(function() {
       images: {
 
       },
+      imageMapping: {
+
+      },
       textBoxes: {
 
       }
