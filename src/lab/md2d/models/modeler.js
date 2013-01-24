@@ -812,18 +812,24 @@ define(function(require) {
         // Deserialization process, invalidating change hooks will be called manually.
         deserialization: true
       },
-      num = _elements.mass.length,
-      i, prop, elementProps;
+      i, num, prop, elementProps;
 
       // Call the hook manually, as addElement won't do it due to
       // deserialization option set to true.
       invalidatingChangePreHook();
 
+      if (_elements === undefined) {
+        // Special case when elements are not defined.
+        // Empty object will be filled with default values.
+        model.addElement({id: 0}, options);
+        return;
+      }
+
       // _elements is hash of arrays (as specified in JSON model).
       // So, for each index, create object containing properties of
       // element 'i'. Later, use these properties to add element
       // using basic addElement method.
-      for (i = 0; i < num; i++) {
+      for (i = 0, num = _elements.mass.length; i < num; i++) {
         elementProps = {};
         for (prop in _elements) {
           if (_elements.hasOwnProperty(prop)) {
@@ -917,7 +923,8 @@ define(function(require) {
         engine.setupAtomsRandomly({
           temperature: model.get('targetTemperature'),
           // Provide number of user-defined, editable elements.
-          userElements: editableElements.length
+          // There is at least one default element, even if no elements are specified in JSON.
+          userElements: editableElements === undefined ? 1 : editableElements.mass.length
         });
         if (config.relax)
           engine.relaxToTemperature();
@@ -1070,7 +1077,7 @@ define(function(require) {
       charge (default is neutral).
     */
     model.addRandomAtom = function(el, charge) {
-      if (el == null) el = Math.floor( Math.random() * editableElements.length );
+      if (el == null) el = Math.floor( Math.random() * elements.mass.length );
       if (charge == null) charge = 0;
 
       var size   = model.size(),
@@ -2152,13 +2159,7 @@ define(function(require) {
     // TODO: Elements are stored and treated different from other objects.
     // This is enforced by current createNewAtoms() method which should be
     // depreciated. When it's changed, change also editableElements handling.
-    if (initialProperties.elements) {
-      editableElements = initialProperties.elements;
-    } else {
-      // Make sure that some editable elements are provided.
-      // Provide array with one empty object. Default values will be used.
-      editableElements = validator.validateCompleteness(metadata.element, {});
-    }
+    editableElements = initialProperties.elements;
     // Create editable elements.
     model.createElements(editableElements);
     // Create elements which specify amino acids also.

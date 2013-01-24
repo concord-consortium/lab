@@ -169,9 +169,12 @@ requirejs([
       "creates a model with elements, checks the total mass": function(model) {
         // 5 atoms of mass 1
         new_initialization_options = {
-          elements: [
-            {id: 0, mass: 1, epsilon: -0.1, sigma: 0.07}
-          ],
+          elements: {
+            id: [0],
+            mass: [1],
+            epsilon: [-0.1],
+            sigma: [0.07]
+          },
           mol_number: 5
         };
         model = Model(new_initialization_options).createNewAtoms(new_initialization_options.mol_number);
@@ -179,9 +182,12 @@ requirejs([
 
         // 5 atoms of mass 2
         new_initialization_options = {
-          elements: [
-            {id: 0, mass: 2, epsilon: -0.1, sigma: 0.07}
-          ],
+          elements: {
+            id: [0],
+            mass: [2],
+            epsilon: [-0.1],
+            sigma: [0.07]
+          },
           mol_number: 5
         };
         model = Model(new_initialization_options).createNewAtoms(new_initialization_options.mol_number);
@@ -190,10 +196,12 @@ requirejs([
 
         // 100 atoms randomly created either with mass 1 or 2
         new_initialization_options = {
-          elements: [
-            {id: 0, mass: 1, epsilon: -0.1, sigma: 0.07},
-            {id: 1, mass: 2, epsilon: -0.1, sigma: 0.07}
-          ],
+          elements: {
+            id: [0, 1],
+            mass: [1, 2],
+            epsilon: [-0.1, -0.1],
+            sigma: [0.07, 0.07]
+          },
           mol_number: 100
         };
         model = Model(new_initialization_options).createNewAtoms(new_initialization_options.mol_number);
@@ -201,12 +209,14 @@ requirejs([
         assert(model.getTotalMass() > 100, "Total mass should be greater than 100. Actual: "+model.getTotalMass());
         assert(model.getTotalMass() < 200, "Total mass should be less than 200. Actual: "+model.getTotalMass());
 
-        // three atoms created, two with mass 1 and one with mass 2
+        // three atoms created, two with mass 1 and one with mass 20
         new_initialization_options = {
-          elements: [
-            {id: 0, mass: 1, epsilon: -0.1, sigma: 0.07},
-            {id: 1, mass: 20, epsilon: -0.1, sigma: 0.07}
-          ],
+          elements: {
+            id: [0, 1],
+            mass: [1, 20],
+            epsilon: [-0.1, -0.1],
+            sigma: [0.07, 0.07]
+          },
           atoms: {
             x: [0,0,0],
             y: [0,0,0],
