@@ -29,6 +29,9 @@
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
+    "textBoxes": [],
     "images": [
       {
         "imageUri": "above-bottom.png",

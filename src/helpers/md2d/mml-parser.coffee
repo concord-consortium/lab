@@ -793,17 +793,14 @@ parseMML = (mmlString) ->
       showClock           : showClock
       showVelocityVectors : showVelocityVectors
       showForceVectors    : showForceVectors
-
-    if imageProps.length > 0
-      modelViewProperties.images = images
-
-    if textBoxes.length > 0
-      modelViewProperties.textBoxes = textBoxes
+      images              : images
+      textBoxes           : textBoxes
 
     # Validate all properties and provides default values for undefined values.
     modelViewProperties = validator.validateCompleteness metadata.modelViewProperties, modelViewProperties
 
     json.viewOptions = modelViewProperties
+
     json.pairwiseLJProperties = pairwiseLJProperties
 
     json.elements = unroll elements, 'mass', 'sigma', 'epsilon'

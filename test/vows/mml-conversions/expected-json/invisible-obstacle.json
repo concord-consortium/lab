@@ -28,7 +28,10 @@
     "showClock": false,
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "showAtomTrace": false
+    "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
+    "textBoxes": []
   },
   "elements": {
 

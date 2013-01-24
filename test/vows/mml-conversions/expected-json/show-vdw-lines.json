@@ -29,6 +29,9 @@
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
+    "textBoxes": [],
     "textBoxes": [
       {
         "text": "Drag the molecules close to each other, and look for intermolecular attractions.",

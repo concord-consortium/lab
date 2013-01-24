@@ -29,6 +29,9 @@
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
+    "textBoxes": [],
     "textBoxes": [
       {
         "text": "You will pull apart pairs of polar and non-polar molecules to see the different strengths of attraction.   Choose a pair of molecules from the menu below.",
