@@ -118,5 +118,11 @@ ISImporter.DGExporter = {
       values: parentCollectionValues,
       caseID: dgCase.caseID
     });
+
+    // Step 7. Create Table.
+    this.doCommand('createComponent', {
+      type: 'DG.TableView',
+      log: false
+    });
   }
 };
