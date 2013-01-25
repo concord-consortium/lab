@@ -4,11 +4,24 @@ define(function(require) {
 
   var arrays = require('arrays'),
 
-      infinityToString = function (array) {
+      infinityToString = function (obj) {
         var i, len;
-        for (i = 0, len = array.length; i < len; i++) {
-          if (array[i] === Infinity) {
-            array[i] = Infinity.toString();
+        if (arrays.isArray(obj)) {
+          for (i = 0, len = obj.length; i < len; i++) {
+            if (obj[i] === Infinity || obj[i] === -Infinity) {
+              obj[i] = obj[i].toString();
+            }
+          }
+        } else {
+          for (i in obj) {
+            if (obj.hasOwnProperty(i)) {
+              if (obj[i] === Infinity || obj[i] === -Infinity) {
+                obj[i] = obj[i].toString();
+              }
+              if (typeof obj[i] === 'object' || arrays.isArray(obj[i])) {
+                infinityToString(obj[i]);
+              }
+            }
           }
         }
       };
@@ -21,11 +34,9 @@ define(function(require) {
           prop = propertiesHash[propName];
           if (arrays.isArray(prop)) {
             result[propName] = count !== undefined ? arrays.copy(arrays.extend(prop, count), []) : arrays.copy(prop, []);
-            // JSON doesn't allow Infinity values so convert them to strings.
-            infinityToString(result[propName]);
           }
           else if (typeof prop === 'object') {
-            result[propName] = $(true, {}, prop);
+            result[propName] = $.extend(true, {}, prop);
           }
           else {
             result[propName] = prop;
@@ -33,6 +44,8 @@ define(function(require) {
         }
       }
     }
+    // JSON doesn't allow Infinity values so convert them to strings.
+    infinityToString(result);
     return result;
   };
 
