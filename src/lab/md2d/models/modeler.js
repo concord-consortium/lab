@@ -2015,10 +2015,8 @@ define(function(require) {
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function() {
-      var propCopy = serialize(metadata.mainProperties, properties),
-          viewOptions = serialize(metadata.viewOptions, properties),
-          ljProps = engine.pairwiseLJProperties.serialize(),
-          i, len,
+      var propCopy = {},
+          ljProps, i, len,
 
           removeAtomsArrayIfDefault = function(name, defaultVal) {
             if (propCopy.atoms[name].every(function(i) {
@@ -2028,9 +2026,10 @@ define(function(require) {
             }
           };
 
-      propCopy.viewOptions = viewOptions;
-
+      propCopy = serialize(metadata.mainProperties, properties);
+      propCopy.viewOptions = serialize(metadata.viewOptions, properties);
       propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
+
       if (engine.getNumberOfRadialBonds()) {
         propCopy.radialBonds = serialize(metadata.radialBond, radialBonds, engine.getNumberOfRadialBonds());
       }
@@ -2070,6 +2069,7 @@ define(function(require) {
 
       // The same situation for Custom LJ Properties. Do not serialize properties for amino acids.
       propCopy.pairwiseLJProperties = [];
+      ljProps = engine.pairwiseLJProperties.serialize();
       for (i = 0, len = ljProps.length; i < len; i++) {
         if (ljProps[i].element1 <= 5 && ljProps[i].element2 <= 5) {
           propCopy.pairwiseLJProperties.push(ljProps[i]);
