@@ -400,7 +400,12 @@ ISImporter.appController = new ISImporter.Object({
     };
 
     this.tareListener = function(y) {
-      self.sensor.tareValue = y;
+      if (self.sensor.tareable && self.sensor.tareValue != null) {
+        y -= self.sensor.tareValue;
+      }
+      self.lastTareValue = y;
+      self.$realtimeDisplayValue.text(ISImporter.fixed(y, 1));
+      self.$realtimeDisplayUnits.show();
     };
 
     this.initInterface();
@@ -551,7 +556,11 @@ ISImporter.appController = new ISImporter.Object({
     }
 
     if (this.started) this.stop();
-    if (this.taring) this.cancelTare();
+    if (this.taring) this.tareValueSelected();
+    if (this.inTareDisplay) {
+      window.clearTimeout(this.displayTimeout);
+      this.endTareDisplay();
+    }
 
     if (this.currentApplet) {
       this.currentApplet.removeListeners('data');
@@ -603,6 +612,11 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   start: function() {
+    if (this.inTareDisplay) {
+      window.clearTimeout(this.displayTimeout);
+      this.endTareDisplay();
+    }
+
     this.started = true;
     this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.start();
@@ -637,45 +651,62 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   tare: function() {
+    if (this.taring) {
+      this.tareValueSelected();
+    } else {
+      this.beginTaring();
+    }
+  },
+
+  beginTaring: function() {
     var self = this;
 
     if (this.started) return false;
 
     this.taring = true;
-    this.disable(this.$tareButton);
+    this.enable(this.$tareButton);
+    this.$tareButton.text("OK");
 
     this.disable(this.$startButton);
     this.disable(this.$resetButton);
 
-    this.$realtimeDisplayValue.text('0.0');
-    this.$realtimeDisplayUnits.show();
-
     this.currentApplet.removeListener('data', this.appletDataListener);
     this.currentApplet.on('data', this.tareListener);
     this.currentApplet.start();
-    this.tareTimeout = window.setTimeout(function() { self.tareDone(); }, 2000);
   },
 
-  cancelTare: function() {
-    window.cancelTimeout(this.tareTimeout);
-    this.taring = false;
-    if (this.sensor.tareable) this.enable(this.$tareButton);
-  },
-
-  tareDone: function() {
+  tareValueSelected: function() {
     if (!this.taring) return false;
 
+    var self = this;
     this.taring = false;
-    this.tareTimeout = null;
 
-    this.currentApplet.stop();
+    this.disable(this.$tareButton);
+
+    this.sensor.tareValue = this.lastTareValue;
+
+    this.inTareDisplay = true;
+    this.displayTimeout = window.setTimeout(function() {
+      self.endTareDisplay();
+    }, 1000);
+  },
+
+  endTareDisplay: function() {
     this.currentApplet.removeListener('data', this.tareListener);
-    this.enable(this.$startButton);
-    if (this.sensor.tareable) this.enable(this.$tareButton);
+    this.currentApplet.stop();
+
+    this.inTareDisplay = false;
 
     // we've got your state management fail right here:
-    if (!this.started && this.dataset.getLength() > 0) {
+    if (this.dataset.getLength() > 0) {
       this.enable(this.$resetButton);
+    } else {
+      this.enable(this.$startButton);
+    }
+
+    this.$tareButton.text("Zero...");
+    if (this.sensor.tareable) {
+      this.enable(this.$tareButton);
     }
 
     this.$realtimeDisplayValue.text('');
