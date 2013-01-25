@@ -1682,7 +1682,7 @@ to update-RunSeries [ a-max ]
   if run-number > 1 [set temp ",\n"]  ; subsequent runs need to be delimited with a comma.
 
   set temp (word temp "    {\n")
-  set temp (word temp "      \"TimeSeriesData\": " DataSeries ",\n")
+  set temp (word temp "      \"timeSeriesData\": " DataSeries ",\n")
   set temp (word temp "      \"computationalInputs\": [" Distance-to-steering-wheel ", " car-speed ", " airbag-size ",\n")
   set temp (word temp "        " time-to-fill-bag ", " deflate-time " ],\n")
   set temp (word temp "      \"computationalOutputs\": [ " a-max ", \"" dummy-status "\" ],\n")
@@ -1729,6 +1729,13 @@ to make-ModelDescription
   set temp (word temp "    \"studentInputs\": [\n")
   set temp (word temp "      { \"label\": \"Goal\", \"units\": \"categorical\" }\n")
   set temp (word temp "    ]\n")
+
+  set temp (word temp "    \"modelInformation\": {\n")
+  set temp (word temp "      \"name\": \"airbags\",\n")
+  set temp (word temp "      \"fileName\": \"airbags.v15i.nlogo\",\n")
+  set temp (word temp "      \"version\": \"v15i\"\n")
+  set temp (word temp "    }\n")
+
   set temp (word temp "  }")
 
   set ModelDescription temp
