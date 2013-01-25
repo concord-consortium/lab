@@ -408,6 +408,23 @@ define(function() {
       DNA: {
         defaultValue: ""
       },
+      DNAComplement: {
+        readOnly: true,
+        serialize: false
+      },
+      mRNA: {
+        // Immutable directly via set method.
+        // Use provided API to generate mRNA.
+        immutable: true
+      },
+      translationStep: {
+        // When this property is undefined, it means that the translation
+        // hasn't been yet started. Note that when translation is finished,
+        // translationStep will be equal to "end".
+        // Immutable directly via set method.
+        // Use provided API to translate step by step.
+        immutable: true
+      },
       x: {
         defaultValue: 0.01
       },
@@ -419,12 +436,6 @@ define(function() {
       },
       width: {
         defaultValue: 0.08
-      },
-      DNAComplement: {
-        readOnly: true
-      },
-      mRNA: {
-        readOnly: true
       }
     },
 

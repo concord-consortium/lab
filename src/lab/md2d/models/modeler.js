@@ -1739,7 +1739,7 @@ define(function(require) {
     */
     model.translateStepByStep = function () {
       var abbr = engine.geneticProperties.translateStepByStep(),
-          markerPos = engine.geneticProperties.get().translationMarker,
+          markerPos = engine.geneticProperties.get().translationStep,
           symbolHeight = engine.geneticProperties.get().height,
           symbolWidth = engine.geneticProperties.get().width,
           xPos = symbolWidth * markerPos * 3 + 1.5 * symbolWidth,
@@ -2132,6 +2132,10 @@ define(function(require) {
       }
       if (engine.getNumberOfRestraints() > 0) {
         propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
+      }
+
+      if (engine.geneticProperties.get() !== undefined) {
+        propCopy.geneticProperties = engine.geneticProperties.serialize();
       }
 
       // FIXME: for now Amino Acid elements are *not* editable and should not be serialized

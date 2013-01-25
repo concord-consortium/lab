@@ -3,6 +3,7 @@
 define(function (require) {
 
   var validator        = require('common/validator'),
+      serialize        = require('common/serialize'),
       metadata         = require('md2d/models/metadata'),
       aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
 
@@ -120,6 +121,10 @@ define(function (require) {
         create(props);
       },
 
+      serialize: function () {
+        return data ? serialize(metadata.geneticProperties, data) : undefined;
+      },
+
       // Convenient method for validation. It doesn't throw an exception,
       // instead a special object with validation status is returned. It can
       // be especially useful for UI classes to avoid try-catch sequences with
@@ -206,14 +211,14 @@ define(function (require) {
         changePreHook();
 
         aaSequence = api.translate();
-        if (data.translationMarker === undefined) {
-          data.translationMarker = 0;
+        if (data.translationStep === undefined) {
+          data.translationStep = 0;
         } else {
-          data.translationMarker += 1;
+          data.translationStep += 1;
         }
-        aaAbbr = aaSequence[data.translationMarker];
+        aaAbbr = aaSequence[data.translationStep];
         if (aaAbbr === undefined) {
-          data.translationMarker = "end";
+          data.translationStep = "end";
         }
         changePostHook();
         dispatch.change();

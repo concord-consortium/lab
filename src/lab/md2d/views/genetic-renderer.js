@@ -91,7 +91,7 @@ define(function (require) {
         renderText(dnaGElement, props.DNAComplement, fontSize, dx, 0);
         // mRNA (if available).
         if (props.mRNA !== undefined) {
-          renderText(dnaGElement, props.mRNA, fontSize, dx, -2.5 * fontSize, props.translationMarker);
+          renderText(dnaGElement, props.mRNA, fontSize, dx, -2.5 * fontSize, props.translationStep);
         }
       }
     };
