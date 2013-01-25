@@ -87,6 +87,8 @@ define(function (require) {
             // 2. mRNA is no longer valid. Do not recalculate it automatically
             //    (transribeDNA method should be used).
             delete data.mRNA;
+            // 3. Any translation in progress should be reseted.
+            delete data.translationStep;
           }
 
           changePostHook();
@@ -121,6 +123,7 @@ define(function (require) {
         create(props);
       },
 
+      // Serializes genetic properties.
       serialize: function () {
         return data ? serialize(metadata.geneticProperties, data) : undefined;
       },

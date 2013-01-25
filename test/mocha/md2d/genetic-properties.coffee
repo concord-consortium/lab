@@ -67,7 +67,6 @@ describe "GeneticProperties", ->
           it "should allow to get existing genetic properties", ->
             geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", x: 1, y: 2, height: 3, width: 3}
 
-
           it "should transcribe mRNA from DNA and call appropriate hooks", ->
             geneticProperties.transcribeDNA()
             changeHooks.pre.callCount.should.eql 1
@@ -83,6 +82,39 @@ describe "GeneticProperties", ->
             # Note that "TAG" sequence will result in "STOP" codon, so the result should be exactly the same.
             geneticProperties.set {DNA: "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAGATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTA"}
             geneticProperties.translate().should.eql ["Met", "Pro", "Gly", "Gly", "Glu", "Ser", "Leu", "Leu", "Ile", "Gly", "Leu"]
+
+          it "should translate mRNA to amino acids sequence step by step", ->
+            geneticProperties.set {DNA: "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG"}
+            geneticProperties.get().should.not.have.property 'translationStep'
+            geneticProperties.translateStepByStep().should.eql "Met"
+            geneticProperties.get().translationStep.should.eql 0
+            geneticProperties.translateStepByStep().should.eql "Pro"
+            geneticProperties.get().translationStep.should.eql 1
+            geneticProperties.translateStepByStep().should.eql "Gly"
+            geneticProperties.get().translationStep.should.eql 2
+            geneticProperties.translateStepByStep().should.eql "Gly"
+            geneticProperties.get().translationStep.should.eql 3
+            geneticProperties.translateStepByStep().should.eql "Glu"
+            geneticProperties.get().translationStep.should.eql 4
+            geneticProperties.translateStepByStep().should.eql "Ser"
+            geneticProperties.get().translationStep.should.eql 5
+            geneticProperties.translateStepByStep().should.eql "Leu"
+            geneticProperties.get().translationStep.should.eql 6
+            geneticProperties.translateStepByStep().should.eql "Leu"
+            geneticProperties.get().translationStep.should.eql 7
+            geneticProperties.translateStepByStep().should.eql "Ile"
+            geneticProperties.get().translationStep.should.eql 8
+            geneticProperties.translateStepByStep().should.eql "Gly"
+            geneticProperties.get().translationStep.should.eql 9
+            geneticProperties.translateStepByStep().should.eql "Leu"
+            geneticProperties.get().translationStep.should.eql 10
+            # Final step should return 'undefined' and translationStep should be equal to "end".
+            should.strictEqual geneticProperties.translateStepByStep(), undefined
+            geneticProperties.get().translationStep.should.eql "end"
+            # Setting a new DNA code should reset translation, so translationStep
+            # should be undefined.
+            geneticProperties.set {DNA: "ATG"}
+            geneticProperties.get().should.not.have.property 'translationStep'
 
           it "should allow to modify existing genetic properties and call appropriate hooks", ->
             geneticProperties.set {DNA: "ATGCT", x: 0, y: 1}
@@ -103,7 +135,13 @@ describe "GeneticProperties", ->
 
             geneticProperties.get().should.eql {DNA: "CGTA", DNAComplement: "GCAT", x: 5, y: 6, height: 7, width: 8}
 
-
+          it "should allow to serialize genetic properties", ->
+            # Note that we do not want DNAComplement in serialized form, it's redundant.
+            geneticProperties.serialize().should.eql {DNA: "CGTA", x: 5, y: 6, height: 7, width: 8}
+            geneticProperties.transcribeDNA()
+            geneticProperties.serialize().should.eql {DNA: "CGTA", mRNA: "CGUA", x: 5, y: 6, height: 7, width: 8}
+            geneticProperties.translateStepByStep()
+            geneticProperties.serialize().should.eql {DNA: "CGTA", mRNA: "CGUA", translationStep: 0, x: 5, y: 6, height: 7, width: 8}
 
           it "should provide Clone-Restore interface"
             # TODO
