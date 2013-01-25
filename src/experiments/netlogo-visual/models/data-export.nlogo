@@ -178,7 +178,11 @@ end
 ;;;;;;;;;;; Data export functions: Testing ;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; After running one or more model runs show JSON data available for export:
+;;; After running one or more model runs first update the global variable ModelData:
+;;;
+;;;   make-ModelData
+;;;
+;;; Now show ModelData which contains the JSON data available for export:
 ;;;
 ;;;   show ModelData
 ;;;
