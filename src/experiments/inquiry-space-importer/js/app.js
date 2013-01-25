@@ -83,14 +83,14 @@ ISImporter.sensors = {
     maxSeconds: 20
   },
 
-  goLinkForce50N: {
+  goLinkForce: {
     applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.goLinkForce50N.applet',
+      listenerPath: 'ISImporter.sensors.goLinkForce.applet',
       sensorType: 'force 50n',
       appletId: 'force-sensor'
     }),
     menuGroup:  MENU_GROUPS.GO_LINK,
-    menuText: "Force (50N)",
+    menuText: "Force",
     tareable: true,
     title: "Force",
     readingUnits: "N",
@@ -193,14 +193,14 @@ ISImporter.sensors = {
     maxSeconds: 20
   },
 
-  labQuestForce50N: {
+  labQuestForce: {
     applet: new ISImporter.LabQuestApplet({
-      listenerPath: 'ISImporter.sensors.labQuestForce50N.applet',
+      listenerPath: 'ISImporter.sensors.labQuestForce.applet',
       sensorType: 'force 50n',
       appletId: 'force-sensor'
     }),
     menuGroup:  MENU_GROUPS.LAB_QUEST,
-    menuText: "Force (50N)",
+    menuText: "Force",
     tareable: true,
     title: "Force",
     readingUnits: "N",
