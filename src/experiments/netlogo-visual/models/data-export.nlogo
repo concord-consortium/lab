@@ -2,6 +2,14 @@
 ;;;;;;;;;;; Data export functions ;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; after running experiments show JSON for of data available for export
+
+show ModelData
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;; Data export functions ;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;; put in globals
 
   ModelData
@@ -10,14 +18,36 @@
   DataSeries
   data-ready?
 
-;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;; Data export functions ;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;
+;; put in model initialization method
+
+init-RunSeries
+
+;;; put at beginning of main model loop
+
+init-DataSeries
+
+;;; put in inner model loop after times series data are generated:
+;;; time, data1, data2, ...
+
+update-DataSeries t x-dum v-dum
+
+;;; put at exit (or exits) of model loop
+;;; arguments include any local variables that are computational outputs
+
+update-RunSeries a-max
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;; Data export functions ;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;; put at end
-;;;
 
 to init-RunSeries
-  set RunSeries "[\n  ]"        ; 
+  set RunSeries "[\n  ]"
 end
 
 to init-DataSeries
