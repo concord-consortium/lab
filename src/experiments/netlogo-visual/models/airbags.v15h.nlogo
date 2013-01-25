@@ -1681,11 +1681,13 @@ to make-ModelDescription
   let temp ""
 
   set temp (word temp "{\n")
+
   set temp (word temp "    \"timeSeriesData\": [\n")
   set temp (word temp "      { \"label\": \"Time\", \"units\": \"s\", \"min\": 0, \"max\": " max-x " },\n")
   set temp (word temp "      { \"label\": \"Position\", \"units\": \"m\", \"min\": 0, \"max\": " max-y " },\n")
   set temp (word temp "      { \"label\": \"Velocity\", \"units\": \"m/s\", \"min\": -10, \"max\": " 10 " }\n")
   set temp (word temp "    ],\n")
+
   set temp (word temp "    \"computationalInputs\": [\n")
   set temp (word temp "      { \"label\": \"Distance to steering wheel\",\"units\": \"m\", \"min\": 0.1, \"max\":0.5 },\n")
   set temp (word temp "      { \"label\": \"Car speed\",\"units\": \"m/s\", \"min\": 0, \"max\":40 },\n")
@@ -1693,13 +1695,22 @@ to make-ModelDescription
   set temp (word temp "      { \"label\": \"Time to fill bag\",\"units\": \"s\", \"min\": 0.01, \"max\":0.05 },\n")
   set temp (word temp "      { \"label\": \"Deflate time\", \"hidden\": true, \"units\": \"s\", \"min\": 0, \"max\":10 }\n")
   set temp (word temp "    ],\n")
+
   set temp (word temp "    \"computationalOutputs\": [\n")
   set temp (word temp "      { \"label\": \"Maximum acceleration\", \"units\": \"g\", \"min\": 0, \"max\": 200 },\n")
   set temp (word temp "      { \"label\": \"Dummy Survival\", \"units\": \"categorical\", \"values\": [\"Yes\",\"No\",\"Maybe\"]  }\n")
   set temp (word temp "    ],\n")
+
   set temp (word temp "    \"studentInputs\": [\n")
   set temp (word temp "      { \"label\": \"Goal\", \"units\": \"categorical\" }\n")
-  set temp (word temp "    ]\n")
+  set temp (word temp "    ],\n")
+
+  set temp (word temp "    \"modelInformation\": {\n")
+  set temp (word temp "      \"name\": \"airbags\",\n")
+  set temp (word temp "      \"fileName\": \"airbags.v15h.nlogo\",\n")
+  set temp (word temp "      \"version\": \"v15h\"\n")
+  set temp (word temp "    }\n")
+
   set temp (word temp "  }")
 
   set ModelDescription temp
@@ -2150,7 +2161,7 @@ CHOOSER
 What-is-your-question?
 What-is-your-question?
 "" "Just exploring" "What is the safe range of driver distances?" "What is the safe range of collision speeds?" "What range of driver distance and collision speeds represent the 'danger zone'?" "What makes more difference for the driver’s safety: driver height or collision speed?" "What airbag deployment distance best keeps short drivers safe?" "What airbag deployment distance best keeps tall drivers safe?" "What airbag deployment time best keeps drivers safe in high speed collisions?" "What airbag deployment time best keeps drivers safe in low speed collisions?"
-2
+3
 
 SLIDER
 1440
