@@ -899,6 +899,7 @@ to run-airbag ; computes and draws the position or velocity graphs of the airbag
   if what-is-your-question? = "" [
     ask messages with [ number = 0 ][st]   ; ask user to pick a question
     stop ]     ; go no farther until the user asks a question
+  set the-question what-is-your-question?
   if always-erase? [
     ask dots [ht]     ; remove all prior graphs (Kills the lines between them, too)
     ask MAs [ht]

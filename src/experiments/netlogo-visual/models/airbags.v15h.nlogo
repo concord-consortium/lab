@@ -870,6 +870,7 @@ to run-airbag ; computes and draws the position or velocity graphs of the airbag
   if what-is-your-question? = "" [
     ask messages with [ number = 0 ][st]   ; ask user to pick a question
     stop ]     ; go no farther until the user asks a question
+  set the-question what-is-your-question?
   if always-erase? [
     ask dots [ht]     ; remove all prior graphs (Kills the lines between them, too)
     ask MAs [ht]
@@ -2161,7 +2162,7 @@ CHOOSER
 What-is-your-question?
 What-is-your-question?
 "" "Just exploring" "What is the safe range of driver distances?" "What is the safe range of collision speeds?" "What range of driver distance and collision speeds represent the 'danger zone'?" "What makes more difference for the driver’s safety: driver height or collision speed?" "What airbag deployment distance best keeps short drivers safe?" "What airbag deployment distance best keeps tall drivers safe?" "What airbag deployment time best keeps drivers safe in high speed collisions?" "What airbag deployment time best keeps drivers safe in low speed collisions?"
-3
+0
 
 SLIDER
 1440
