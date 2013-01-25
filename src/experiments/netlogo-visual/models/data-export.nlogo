@@ -58,7 +58,7 @@ to update-RunSeries [ a-max ]
   if run-number > 1 [set temp ",\n"]  ; subsequent runs need to be delimited with a comma.
 
   set temp (word temp "    {\n")
-  set temp (word temp "      \"TimeSeriesData\": " DataSeries ",\n")
+  set temp (word temp "      \"timeSeriesData\": " DataSeries ",\n")
   set temp (word temp "      \"computationalInputs\": [" Distance-to-steering-wheel ", " car-speed ", " airbag-size ",\n")
   set temp (word temp "        " time-to-fill-bag ", " const ", " max-time-to-stop ", " deflate-time " ],\n")
   set temp (word temp "      \"computationalOutputs\": [ " a-max ", \"" dummy-status "\" ],\n")
@@ -203,12 +203,12 @@ end
 ;;;       timeSeriesData: Array[3]
 ;;;     runs: Array[2]
 ;;;       0: Object
-;;;         TimeSeriesData: Array[36]
+;;;         timeSeriesData: Array[36]
 ;;;         computationalInputs: Array[5]
 ;;;         computationalOutputs: Array[2]
 ;;;         studentInputs: Array[1]
 ;;;       1: Object
-;;;         TimeSeriesData: Array[34]
+;;;         timeSeriesData: Array[34]
 ;;;         computationalInputs: Array[5]
 ;;;         computationalOutputs: Array[2]
 ;;;         studentInputs: Array[1]

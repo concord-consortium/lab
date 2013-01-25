@@ -1653,7 +1653,7 @@ to update-RunSeries [ a-max ]
   if run-number > 1 [set temp ",\n"]  ; subsequent runs need to be delimited with a comma.
 
   set temp (word temp "    {\n")
-  set temp (word temp "      \"TimeSeriesData\": " DataSeries ",\n")
+  set temp (word temp "      \"timeSeriesData\": " DataSeries ",\n")
   set temp (word temp "      \"computationalInputs\": [" Distance-to-steering-wheel ", " car-speed ", " airbag-size ",\n")
   set temp (word temp "        " time-to-fill-bag ", " deflate-time " ],\n")
   set temp (word temp "      \"computationalOutputs\": [ " a-max ", \"" dummy-status "\" ],\n")
