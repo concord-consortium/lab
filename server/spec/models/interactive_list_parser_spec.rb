@@ -1,47 +1,56 @@
 require 'spec_helper'
 
 describe InteractiveListParser do
-  let(:json_filename) {"complete_list.json"       }
+  let(:json_filename) {"complete_list.json"            }
+  let(:json_uri)      { sample_file_path json_filename }
   let(:sample_json)   { read_sample_file json_filename }
 
-  context "establising that the spec helper works" do
-    subject { read_sample_file json_filename}
-    it "should be a String" do
-      subject.should be_a_kind_of String
+  
+  describe "#initialize" do
+    subject { InteractiveListParser.new }
+    context "initial default context" do
+      its(:interactives) { should have(0).items } 
+      its(:groups)       { should have(0).items }
+
+      its(:group_parser)       { should be GroupParser       }
+      its(:interactive_parser) { should be InteractiveParser }
     end
   end
 
-  describe "#initialize" do
-    subject { InteractiveListParser.new(sample_json) }
+  describe "#parse" do
+    subject { InteractiveListParser.new(json_uri).parse }
     context "a simple list with valid interactive definitions in it" do
-      its(:interactives) { should have_at_least(90).items } # as of Jan 2013 ~95 interactives
+      # as of Jan 2013 ~95 interactives
+      its(:interactives) { should have_at_least(90).items } 
     end
 
     context "a list which is missing interactives" do
       it "should throw an exception" do
-        expect { InteractiveListParser.new("{}") }.to raise_error(InteractiveListParseError)
+        expect { InteractiveListParser.new(nil,"{}").parse }
+        .to raise_error(ParsingError)
       end
     end
   end
 
-  describe "self#parse_from_uri(uri)" do
-    let(:uri) { "http://a.fake.server.com/foo.json" }
-    context "the happy path: a valid json file lives at uri" do
-      subject {InteractiveListParser.parse_from_uri(uri)}
-      before :each do
-        stub_endpoint_with_file(uri,json_filename)
-      end
-      its(:interactives) { should have_at_least(90).items }
+  describe "#save_collections" do
+    subject { InteractiveListParser.new }
+    before :each do
+      @mock = mock()
+      @groups       = [@mock,@mock,@mock,@mock]
+      @interactives = [@mock,@mock,@mock]
+    end
+    
+    it "should call save on each group" do
+      @mock.should_receive(:save).exactly(4).times
+      subject.stub!(:groups).and_return(@groups)
+      subject.save_collections
+    end
+    it "should call save on each interactive" do
+      @mock.should_receive(:save).exactly(3).times
+      subject.stub!(:interactives).and_return(@interactives)
+      subject.save_collections
     end
 
-    context "the sad path: no json file lives there" do
-      before :each do
-        stub_request(:any, uri).to_return(:status => 404)
-      end
-      it "should throw an exception" do
-        expect { InteractiveListParser.parse_from_uri(uri)}.to raise_error(InteractiveListParseError)
-      end
-    end
   end
 
 end
