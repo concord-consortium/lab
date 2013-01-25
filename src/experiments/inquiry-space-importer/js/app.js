@@ -730,7 +730,7 @@ ISImporter.appController = new ISImporter.Object({
       }
     }
 
-    ISImporter.DGExporter.exportData(this.sensor.applet.sensorType, data, metadata);
+    ISImporter.DGExporter.exportData(this.sensor.title, data, metadata);
 
     this.selecting = false;
 
