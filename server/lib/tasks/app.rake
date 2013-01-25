@@ -38,5 +38,11 @@ namespace :app do
       puts db_output.info.to_yaml
     end
 
+    desc "import interactives from public/examples/interactives.json"
+    task :built_interactives => :environment do
+      # TODO: Delete them safely first.
+      parser = InteractiveListParser.new(File.join(Rails.root,"public","examples","interactives","interactives.json"))
+      parser.parse.save_collections
+    end
   end
 end
