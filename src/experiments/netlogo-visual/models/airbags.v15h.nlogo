@@ -944,7 +944,9 @@ to run-airbag ; computes and draws the position or velocity graphs of the airbag
 
     
     update-DataSeries t x-dum v-dum
-    if x-dum < 0 [show-results 5000 stop ]  ; crash into the steering wheel
+    if x-dum < 0 [show-results 5000 
+      update-RunSeries a-max 
+      stop ]  ; crash into the steering wheel
     update-dummy t x-dum v-dum d-color   ; place the dummy and add a dot to the graph
     update-bag t x-bag v-bag d-color   ; place the bag and add a dot to the graph (the bag is white--its graph is d-color)
 
@@ -1818,7 +1820,7 @@ Car-speed
 Car-speed
 0
 40
-16
+25
 2
 1
 m/s
@@ -1833,7 +1835,7 @@ Time-to-stop-going-40
 Time-to-stop-going-40
 .02
 .1
-0.025
+0.035
 .005
 1
 sec
@@ -1859,7 +1861,7 @@ OUTPUT
 302
 1235
 597
-6
+5
 
 BUTTON
 774
@@ -1887,7 +1889,7 @@ Airbag-size
 Airbag-size
 0.2
 .5
-0.3
+0.4
 .05
 1
 m
@@ -1902,7 +1904,7 @@ Time-to-fill-bag
 Time-to-fill-bag
 .01
 .05
-0.015
+0.03
 .005
 1
 sec
@@ -2071,7 +2073,7 @@ INPUTBOX
 1077
 275
 Enter-a-run-number
-5
+0
 1
 0
 Number
@@ -2148,7 +2150,7 @@ CHOOSER
 What-is-your-question?
 What-is-your-question?
 "" "Just exploring" "What is the safe range of driver distances?" "What is the safe range of collision speeds?" "What range of driver distance and collision speeds represent the 'danger zone'?" "What makes more difference for the driver’s safety: driver height or collision speed?" "What airbag deployment distance best keeps short drivers safe?" "What airbag deployment distance best keeps tall drivers safe?" "What airbag deployment time best keeps drivers safe in high speed collisions?" "What airbag deployment time best keeps drivers safe in low speed collisions?"
-0
+2
 
 SLIDER
 1440
