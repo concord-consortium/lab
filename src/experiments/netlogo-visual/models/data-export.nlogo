@@ -177,11 +177,10 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;; Data export functions: Testing ;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;;
 ;;; After running one or more model runs show JSON data available for export:
 ;;;
 ;;;   show ModelData
-;;;
 ;;;
 ;;; After making changes test to see if the JSON data represent a valid JavaScript object.
 ;;;
@@ -192,7 +191,8 @@ end
 ;;;
 ;;; If this fails look at the error message and fix the NetLogo DataExport methods.
 ;;; If this succeeds inspect the newly created data object.
-;;; HGere's one example of what it might look like:
+;;;
+;;; Here's an example expanded in the browsers JavaScript console:
 ;;;
 ;;;   Object {description: Object, runs: Array[2]}
 ;;;     description: Object
