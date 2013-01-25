@@ -1,4 +1,5 @@
 /*global defineClass extendClass Lab d3 */
+/*jshint eqnull:true */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 (function() {
@@ -393,17 +394,15 @@ ISImporter.appController = new ISImporter.Object({
   init: function() {
     var self = this;
     this.appletDataListener = function(y) {
-      if (self.sensor.tareable && self.sensor.tareValue != null) {
-        y -= self.sensor.tareValue;
+      if (self.sensor.tareable) {
+        y -= (self.sensor.tareValue || 0);
       }
       self.dataset.add(y);
     };
 
     this.tareListener = function(y) {
-      if (self.sensor.tareable && self.sensor.tareValue != null) {
-        y -= self.sensor.tareValue;
-      }
       self.lastTareValue = y;
+      y -= (self.sensor.tareValue || 0);
       self.$realtimeDisplayValue.text(ISImporter.fixed(y, 1));
       self.$realtimeDisplayUnits.show();
     };
