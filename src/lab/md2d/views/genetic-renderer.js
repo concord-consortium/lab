@@ -15,15 +15,31 @@ define(function (require) {
           model.getGeneticProperties().on("change", api.setup);
         },
 
-        renderText = function(container, txt, fontSize, dy) {
+        renderText = function(container, txt, fontSize, dx, dy, markerPos) {
+          var x = 0,
+              xAttr = "",
+              textElement,
+              i, len;
+
           // Necessary for example in Firefox.
           fontSize += "px";
+
+          for (i = 0, len = txt.length; i < len; i++) {
+            xAttr += x + "px ";
+            x += dx;
+          }
+
+          if (markerPos === undefined || markerPos === "end") {
+            markerPos = txt.length / 3;
+          }
+          markerPos *= 3;
 
           // Text shadow.
           container.append("text")
             .text(txt)
             .attr({
               "class": "shadow",
+              "x": xAttr,
               "dy": dy
             })
             .style({
@@ -32,19 +48,27 @@ define(function (require) {
             });
 
           // Final text.
-          container.append("text")
-            .text(txt)
+          textElement = container.append("text")
             .attr({
               "class": "front",
+              "x": xAttr,
               "dy": dy
             })
             .style("font-size", fontSize);
+
+          textElement.append("tspan")
+            .text(txt.substring(0, markerPos));
+          textElement.append("tspan")
+            .attr("class", "marked-mrna")
+            .text(txt.substring(markerPos, markerPos + 3));
+          textElement.append("tspan")
+            .text(txt.substring(markerPos + 3));
         };
 
     api = {
       setup: function () {
         var props = model.getGeneticProperties().get(),
-            dnaGElement, fontSize;
+            dnaGElement, fontSize, dx;
 
         if (props === undefined) {
           return;
@@ -59,14 +83,15 @@ define(function (require) {
         });
 
         fontSize = nm2px(props.height);
+        dx = nm2px(props.width);
 
         // DNA code on sense strand.
-        renderText(dnaGElement, props.DNA, fontSize, -fontSize);
+        renderText(dnaGElement, props.DNA, fontSize, dx, -fontSize);
         // DNA complementary sequence.
-        renderText(dnaGElement, props.DNAComplement, fontSize, 0);
+        renderText(dnaGElement, props.DNAComplement, fontSize, dx, 0);
         // mRNA (if available).
         if (props.mRNA !== undefined) {
-          renderText(dnaGElement, props.mRNA, fontSize, -2.5 * fontSize);
+          renderText(dnaGElement, props.mRNA, fontSize, dx, -2.5 * fontSize, props.translationMarker);
         }
       }
     };

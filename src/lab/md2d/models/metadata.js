@@ -417,6 +417,9 @@ define(function() {
       height: {
         defaultValue: 0.12
       },
+      width: {
+        defaultValue: 0.08
+      },
       DNAComplement: {
         readOnly: true
       },
