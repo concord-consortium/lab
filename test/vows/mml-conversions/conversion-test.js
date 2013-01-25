@@ -8,7 +8,7 @@ var mmlParser = require('../../../src/helpers/md2d/mml-parser'),
 
 suite.addBatch({
   "MML to JSON Conversion": {
-    topic: './test/vows/mml-conversions/',
+    topic: './test/fixtures/mml-conversions/',
 
     "converted mml files match expected output": function(testDir) {
       var mmlFiles = fs.readdirSync(testDir + "input-mml/"),
