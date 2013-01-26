@@ -64,6 +64,7 @@ define(function (require) {
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
+        gridContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
@@ -160,11 +161,23 @@ define(function (require) {
          "top":    20,
          "right":  25,
          "bottom": 10,
-         "left":   model.get("ylabel") ? 60  * emsize : 25
+         "left":   25
       };
 
       if (model.get("xlabel")) {
         padding.bottom += (35  * emsize);
+      }
+
+      if (model.get("xunits")) {
+        padding.bottom += (20  * emsize);
+      }
+
+      if (model.get("ylabel")) {
+        padding.bottom += (20  * emsize);
+      }
+
+      if (model.get("yunits")) {
+        padding.left += (20  * emsize);
       }
 
       if (model.get("controlButtons")) {
@@ -261,76 +274,85 @@ define(function (require) {
       var tx = function(d) { return "translate(" + nm2px(d) + ",0)"; },
           ty = function(d) { return "translate(0," + nm2pxInv(d) + ")"; },
           stroke = function(d) { return d ? "#ccc" : "#666"; },
-          fx = nm2px.tickFormat(10),
-          fy = nm2pxInv.tickFormat(10);
+          fx = nm2px.tickFormat(5),
+          fy = nm2pxInv.tickFormat(5);
 
       if (d3.event && d3.event.transform) {
           d3.event.transform(nm2px, nm2pxInv);
       }
 
+      // Regenerate x-ticks…
+      var gx = gridContainer.selectAll("g.x")
+          .data(nm2px.ticks(5), String)
+          .attr("transform", tx)
+          .classed("axes", true);
+
+      gx.select("text").text(fx);
+
+      var gxe = gx.enter().insert("g", "a")
+          .attr("class", "x")
+          .attr("transform", tx);
+
+      if (model.get("gridLines")) {
+        gxe.append("line")
+            .attr("stroke", stroke)
+            .attr("y1", 0)
+            .attr("y2", size.height);
+      } else {
+        gxe.selectAll("line").remove();
+      }
+
       if (model.get("xunits")) {
-        // Regenerate x-ticks…
-        var gx = vis.selectAll("g.x")
-            .data(nm2px.ticks(10), String)
-            .attr("transform", tx);
-
-        gx.select("text")
-            .text(fx);
-
-        var gxe = gx.enter().insert("svg:g", "a")
-            .attr("class", "x")
-            .attr("transform", tx);
-
-        if (model.get("gridLines")) {
-          gxe.append("svg:line")
-              .attr("stroke", stroke)
-              .attr("y1", 0)
-              .attr("y2", size.height);
-        }
-
-        gxe.append("svg:text")
+        gxe.append("text")
             .attr("y", size.height)
-            .attr("dy", "1em")
+            .attr("dy", "1.25em")
             .attr("text-anchor", "middle")
             .text(fx);
+      } else {
+        gxe.select("text").remove();
+      }
 
-        gx.exit().remove();
+      gx.exit().remove();
+
+      // Regenerate y-ticks…
+      var gy = gridContainer.selectAll("g.y")
+          .data(nm2pxInv.ticks(5), String)
+          .attr("transform", ty)
+          .classed("axes", true);
+
+      gy.select("text")
+          .text(fy);
+
+      var gye = gy.enter().insert("g", "a")
+          .attr("class", "y")
+          .attr("transform", ty)
+          .attr("background-fill", "#FFEEB6");
+
+      if (model.get("gridLines")) {
+        gye.append("line")
+            .attr("stroke", stroke)
+            .attr("x1", 0)
+            .attr("x2", size.width);
+      } else {
+        gye.selectAll("line").remove();
       }
 
       if (model.get("yunits")) {
-        // Regenerate y-ticks…
-        var gy = vis.selectAll("g.y")
-            .data(nm2pxInv.ticks(10), String)
-            .attr("transform", ty);
-
-        gy.select("text")
-            .text(fy);
-
-        var gye = gy.enter().insert("svg:g", "a")
-            .attr("class", "y")
-            .attr("transform", ty)
-            .attr("background-fill", "#FFEEB6");
-
-        if (model.get("gridLines")) {
-          gye.append("svg:line")
-              .attr("stroke", stroke)
-              .attr("x1", 0)
-              .attr("x2", size.width);
-        }
-
-        gye.append("svg:text")
-            .attr("x", -3)
-            .attr("dy", ".35em")
+        gye.append("text")
+            .attr("x", "-0.5em")
+            .attr("dy", "0.30em")
             .attr("text-anchor", "end")
             .text(fy);
-
-        // update model time display
-        if (showClock) {
-          timeLabel.text(modelTimeLabel());
-        }
-
-        gy.exit().remove();
+      } else {
+        gye.select("text").remove();
       }
+
+      // update model time display
+      if (showClock) {
+        timeLabel.text(modelTimeLabel());
+      }
+
+      gy.exit().remove();
     }
 
     function createGradients() {
@@ -1051,6 +1073,8 @@ define(function (require) {
     }
 
     function setupClock() {
+      var xunitOffset;
+      xunitOffset = model.get("xunits") ? 30 : 0;
       // add model time display
       vis.selectAll('.modelTimeLabel').remove();
       // Update clock status.
@@ -1061,7 +1085,7 @@ define(function (require) {
           .text(modelTimeLabel())
           // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
           .attr("x", nm2px(0) + 5 * emsize)
-          .attr("y", nm2pxInv(0) + 20 * emsize)
+          .attr("y", nm2pxInv(0) + 30 * emsize + xunitOffset * emsize)
           .style("text-anchor","start");
       }
     }
@@ -1628,17 +1652,10 @@ define(function (require) {
     }
 
     function init() {
-      // if (node.clientWidth && node.clientHeight) {
-      //   cx = node.clientWidth;
-      //   cy = node.clientHeight;
-      //   size.width  = cx - padding.left - padding.right;
-      //   size.height = cy - padding.top  - padding.bottom;
-      // }
-
-      scale();
 
       // Subscribe for model events.
       model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
+
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([
         "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
@@ -1647,6 +1664,13 @@ define(function (require) {
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
         "showClock", "backgroundColor"],
           setupDrawables);
+
+      model.addPropertiesListener(["gridLines", "xunits", "yunits"],
+        function() {
+          render();
+          setupDrawables();
+        }
+      );
 
       model.on('addAtom', setupDrawables);
       model.on('removeAtom', setupDrawables);
@@ -1659,6 +1683,31 @@ define(function (require) {
       // (e.g. '.amino-acid') cause problems when interacting with SVG nodes.
       amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
 
+      render();
+
+      // Process options that always have to be recreated when container is reloaded
+      d3.select('.model-controller').remove();
+
+      switch (model.get("controlButtons")) {
+        case "play":
+          playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          break;
+        case "play_reset":
+          playbackComponent = new PlayResetComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          break;
+        case "play_reset_step":
+          playbackComponent = new PlaybackComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          break;
+        default:
+          playbackComponent = null;
+      }
+
+      // Initialize renderers.
+      geneticRenderer = new GeneticRenderer(mainContainer, api, model);
+    }
+
+    function render() {
+      scale();
       // create container, or update properties if it already exists
       if (vis === undefined) {
 
@@ -1710,7 +1759,7 @@ define(function (require) {
                   .attr("class", "ylabel")
                   .text(model.get("ylabel"))
                   .style("text-anchor","middle")
-                  .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+                  .attr("transform","translate(" + -35 + " " + size.height/2 +") rotate(-90)");
         }
 
         // Tooltip.
@@ -1728,6 +1777,7 @@ define(function (require) {
 
         // Create and arrange "layers" of the final image (g elements).
         // Note that order of their creation is significant.
+        gridContainer = vis.append("g").attr("class", "grid-container");
         imageContainerBelow = vis.append("g").attr("class", "image-container-below");
         textContainerBelow = vis.append("g").attr("class", "text-container-below");
         radialBondsContainer = vis.append("g").attr("class", "radial-bonds-container");
@@ -1752,9 +1802,9 @@ define(function (require) {
               .attr("height", cy);
         }
 
-        vis.select("svg")
-            .attr("width", cx)
-            .attr("height", cy);
+        vis.attr("width", cx)
+           .attr("height", cy)
+           .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         vis.select("rect.plot")
           .attr("width", size.width)
@@ -1768,13 +1818,11 @@ define(function (require) {
 
         if (model.get("ylabel")) {
           vis.select("text.ylabel")
-              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + -35 + " " + size.height/2+") rotate(-90)");
         }
 
         if (showClock) {
-          timeLabel.text(modelTimeLabel())
-              .attr("x", 10)
-              .attr("y", size.height - 35);
+          setupClock();
         }
 
         vis.selectAll("g.x").remove();
@@ -1784,26 +1832,6 @@ define(function (require) {
         createVectorArrowHeads(forceVectorColor, FORCE_STR);
         redraw();
       }
-
-      // Process options that always have to be recreated when container is reloaded
-      d3.select('.model-controller').remove();
-
-      switch (model.get("controlButtons")) {
-        case "play":
-          playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        case "play_reset":
-          playbackComponent = new PlayResetComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        case "play_reset_step":
-          playbackComponent = new PlaybackComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        default:
-          playbackComponent = null;
-      }
-
-      // Initialize renderers.
-      geneticRenderer = new GeneticRenderer(mainContainer, api, model);
     }
 
     api = {
@@ -1812,9 +1840,9 @@ define(function (require) {
       setupDrawables: setupDrawables,
       updateMoleculeRadius: updateMoleculeRadius,
       updateDrawablePositions: updateDrawablePositions,
-      setFocus: setFocus,
       scale: scale,
-      // Create public methods.
+      setFocus: setFocus,
+      redraw: redraw,
       resize: function(w, h) {
         if (model.get("fitToParent")) {
           outerElement.style('width', w+'px');

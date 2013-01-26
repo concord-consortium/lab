@@ -10,7 +10,10 @@
       "url": "models/md2d/one-atom.json",
       "viewOptions": {
         "controlButtons": "play_reset",
-        "enableAtomTooltips": true
+        "enableAtomTooltips": true,
+        "gridLines": false,
+        "xunits": false,
+        "yunits": false
       }
     }
   ],
@@ -31,6 +34,30 @@
         "atom.vy += (Math.random()*2-1)*1e-4;",
         "setAtomProperties(0, { vx: atom.vx, vy: atom.vy });"
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show-gridlines",
+      "text": "Show Grid Lines",
+      "property": "gridLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-xunits",
+      "text": "Show X units",
+      "property": "xunits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-yunits",
+      "text": "Show Y units",
+      "property": "yunits"
     }
-  ]
+  ],
+  "layout": {
+    "bottom": [
+      ["current-obstacles", "kick-atom"],
+      ["show-gridlines", "show-xunits", "show-yunits"]
+    ]
+  }
 }
