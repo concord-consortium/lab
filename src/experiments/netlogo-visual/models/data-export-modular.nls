@@ -1,0 +1,444 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;; Data export functions to add to model ;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Structure definitions for setup-data-export method:
+;;;
+;;; *** computational-inputs
+;;; If the computational input is used in model but hidden from student
+;;; the visible property will end up being set to false
+;;;
+;;;   label, units, min, max, visible
+;;;
+;;;   label: string
+;;;   units: string
+;;;   min: number
+;;;   max: number
+;;;   visible: boolean
+;;;
+;;; If the computational input is categorical instead of numerical:
+;;; set value of "units" to "categorical" and if possible include a "values"
+;;; property with a value consisting of an array of possible categories
+;;;
+;;;   alternate form when value of units is "categorical"
+;;;   label units [categorical-type1 categorical-type2 ...]  visible
+;;;
+;;; *** computational-outputs
+;;;
+;;;   label, units, min, max, visible
+;;;
+;;;   label: string
+;;;   units: string
+;;;   min: number
+;;;   max: number
+;;;   visible: boolean
+;;;
+;;; *** student-inputs
+;;;   label, unit-type
+;;;
+;;;   label: string
+;;;   unit-type: string
+;;;
+;;; Edit student-inputs section to include Inquiry inputs to the experiment
+;;; These are student inputs that do not affect the computational results
+;;; for the model such as student prediction of cateorization of their inquiry.
+;;;
+;;; *** model-information
+;;; Edit the modeInformation section to include version information about the
+;;; actual model or Interactive used.
+;;;   name, filename, version
+;;;
+;;; *** time-series-data (an array of lists)
+;;;   label, units, min, max
+;;;
+;;; Later Edit argument list for update-data-series method to append time series data
+;;; passed as arguemnts to global variable data-export-data-series
+;;;
+;;; ****** Add these methods to end of model.
+;;; ****** Customize lists of ouputs and inputs to log appropriate data
+;;;
+;;; to setup-data-export
+;;;   let computational-inputs [
+;;;     [ "Distance to steering wheel" "m" 0.1 0.5 true ]
+;;;     [ "Car speed" "m/s" 0 40 true ]
+;;;     [ "Airbag size" "m" 0 0.5 true ]
+;;;     [ "Time to fill bag" "s" 0.01 0.05 true ]
+;;;     [ "Deflate time" "s" 0 10 true ] ]
+;;;   let computational-outputs [
+;;;     [ "Maximum acceleration" "g" 0 200 true ]
+;;;     [ "Dummy Survival" "categorical" [ "Yes" "No" "Maybe"] true ] ]
+;;;   let student-inputs [
+;;;     [ "Goal" "categorical" ] ]
+;;;   let model-information [ "airbags" "airbags.v15i-include-modular.nlogo" "v15i-include-modular" ]
+;;;   let time-series-data [
+;;;     [ "Time" "s" 0 0.1 ]
+;;;     [ "Position" "m" 0 0.6 ]
+;;;     [ "Velocity" "m/s" -10 10 ]
+;;;   ]
+;;;   let setup (list computational-inputs computational-outputs student-inputs model-information time-series-data)
+;;;   data-export-initialize setup
+;;; end
+;;;
+;;; to update-run-series [ a-max ]
+;;;   let computational-inputs  ( list distance-to-steering-wheel car-speed airbag-size time-to-fill-bag deflate-time )
+;;;   let computational-outputs ( list a-max dummy-status )
+;;;   let student-inputs        ( list the-question )
+;;;   let run-series-data ( list computational-inputs computational-outputs student-inputs )
+;;;   data-export-update-run-series run-series-data
+;;; end
+;;;
+;;; to update-data-series [ t x-dum v-dum ]
+;;;   data-export-update-data-series t x-dum v-dum
+;;; end
+;;;
+;;; ****** end of data-export methods
+;;;
+;;; Now add these calls to finish integrating the data-export functions:
+;;;
+;;; Put at beginning of Model:
+;;;
+;;;   __includes [ "data-export-modular.nls" ]
+;;;
+;;; Put at beginning of main model loop
+;;;
+;;;   setup-data-export
+;;;
+;;; Put in inner model loop after times series data are generated:
+;;; argument example: time, data1, data2, ...
+;;;
+;;;   update-data-series [ t x-dum v-dum ]
+;;;
+;;; Put at exit (or exits) of model loop
+;;; arguments include any local variables that are computational outputs
+;;;
+;;;    update-run-series [ a-max ]
+;;;
+;;; More Description ...
+;;;
+
+globals [
+  data-export-model-data
+  data-export-model-description
+  data-export-run-series
+  data-export-data-series
+  data-export-data-ready?
+
+  data-export-computational-inputs
+  data-export-computational-inputs-keys
+
+  data-export-computational-outputs
+  data-export-computational-outputs-keys
+  data-export-computational-outputs-categorical-keys
+
+  data-export-student-inputs
+  data-export-student-inputs-keys
+
+  data-export-model-information
+  data-export-model-information-keys
+
+  data-export-times-series-data
+  data-export-times-series-keys
+
+  data-export-data-series-labels
+
+  data-export-run-number
+  data-export-data-series-trip
+]
+
+to data-export-initialize [ setup ]
+  data-export-init-run-series
+  data-export-init-data-series
+
+  set data-export-computational-inputs                   item 0 setup
+  set data-export-computational-inputs-keys              [ "label" "units" "min" "max" ]
+
+  set data-export-computational-outputs                  item 1 setup
+  set data-export-computational-outputs-keys             [ "label" "units" "min" "max" ]
+  set data-export-computational-outputs-categorical-keys [ "label" "units" "values" ]
+
+  set data-export-student-inputs                         item 2 setup
+  set data-export-student-inputs-keys                    [ "label" "units"]
+
+  set data-export-model-information                      item 3 setup
+  set data-export-model-information-keys                 [ "name" "fileName" "version"]
+
+  set data-export-times-series-data                      item 4 setup
+  set data-export-times-series-keys                      [ "label" "units" "min" "max" ]
+
+  set data-export-data-series-labels   map [ first ? ] data-export-times-series-data
+  data-export-make-model-data
+end
+
+to data-export-init-run-series
+  set data-export-run-series "[\n  ]"
+  set data-export-run-number 1
+end
+
+to data-export-init-data-series
+  set data-export-data-series "[]"        ; this will contain timeseries dummy in json format
+  set data-export-data-series-trip ""
+end
+
+to data-export-update-data-series [ new-data-series ]
+  set data-export-data-series butlast data-export-data-series                                  ; strip off the final square bracket
+  set data-export-data-series ( word data-export-data-series data-export-data-series-trip "[" reduce [ ( word ?1 ", " ?2 ) ] new-data-series "]]")
+  set data-export-data-series-trip ","                                                         ; subsequent sets of data have a preceding comma
+end
+
+;;;
+;;; data-export-make-model-description
+;;; Call this to generate the JSON data export
+;;;
+
+to data-export-make-model-description
+  set data-export-data-ready? false
+  let temp ""
+  set temp (word temp "{\n")
+    set temp (word temp data-export-section 4 "timeSeriesData" data-export-times-series-keys [ ] data-export-times-series-data ",\n" )
+  set temp (word temp data-export-section 4 "computationalInputs" data-export-computational-inputs-keys [ ] data-export-computational-inputs ",\n" )
+  set temp (word temp data-export-section 4 "computationalOutputs" data-export-computational-outputs-keys data-export-computational-outputs-categorical-keys data-export-computational-outputs ",\n" )
+  set temp (word temp data-export-section 4 "studentInputs" data-export-student-inputs-keys [ ] data-export-student-inputs ",\n" )
+  set temp (word temp data-export-section 4 "modelInformation" data-export-model-information-keys [ ] data-export-model-information "\n" )
+  set temp (word temp "  }")
+  set data-export-model-description temp
+  set data-export-data-ready? true
+end
+
+to data-export-make-model-data
+  data-export-make-model-description
+  set data-export-data-ready? false
+  let temp ""
+  set temp (word temp "{\n")
+  set temp (word temp "  \"description\": " data-export-model-description ",\n")
+  set temp (word temp "  \"runs\": " data-export-run-series "\n")
+  set temp (word temp "}\n")
+  set data-export-model-data temp
+  set data-export-data-ready? true
+end
+
+to data-export-update-run-series [ run-series-data ]
+  let postamble "\n  ]"
+  let temp "\n"
+  if data-export-run-number > 1 [set temp ",\n"]  ; subsequent runs need to be delimited with a comma.
+  set temp (word temp "    {\n")
+  set temp (word temp "      \"timeSeriesData\": " data-export-data-series ",\n")
+  set temp (word temp (data-export-run-series-item 6 "computationalInputs"  (item 0 run-series-data) ","))
+  set temp (word temp (data-export-run-series-item 6 "computationalOutputs" (item 1 run-series-data) ","))
+  set temp (word temp (data-export-run-series-item 6 "studentInputs"        (item 2 run-series-data) ""))
+  set temp (word temp "    }")
+  let len-rs length data-export-run-series
+  let len-pa length postamble
+  set data-export-run-series substring data-export-run-series 0 (len-rs - len-pa)
+  set data-export-run-series (word data-export-run-series temp "\n  ]")  ; add in the new data-export-data-series and append a final sqare bracket
+  set data-export-run-number data-export-run-number + 1
+end
+
+to-report data-export-run-series-item [indent label-name items comma]
+  let q "\""
+  report (word (data-export-indent-string indent) q label-name q ": [" (reduce [ ( word ?1 ", " ?2 ) ] map data-export-jsonify-item items) "]" comma "\n")
+end
+
+to-report data-export-section [ indent name keys categorical-keys dataset epilog]
+  let indent1 data-export-indent-string indent
+  let indent2 data-export-indent-string (indent + 2)
+  let jsonstr ""
+  let key-pairs [ ]
+  set jsonstr data-export-json-line jsonstr indent ( list name ) ": [\n"
+  foreach but-last dataset [
+    ifelse (item 1 ?) = "categorical" and not empty? categorical-keys
+    [ set key-pairs data-export-create-keypairs categorical-keys ? ]
+    [ set key-pairs data-export-create-keypairs keys ? ]
+    set jsonstr ( word jsonstr indent2 data-export-json-object key-pairs ",\n") ]
+  let last-data last dataset
+  ifelse (item 1 last-data) = "categorical" and not empty? categorical-keys
+  [ set key-pairs data-export-create-keypairs categorical-keys last-data ]
+  [ set key-pairs data-export-create-keypairs keys last-data ]
+  set jsonstr ( word jsonstr indent2 data-export-json-object key-pairs "\n")
+  set jsonstr ( word jsonstr indent1 "]" epilog)
+  report jsonstr
+end
+
+to-report data-export-json-line [ existing indent items suffix]
+  let str ( word existing data-export-indent-string indent )
+  set str ( word str reduce [ ( word ?1 ", " ?2 ) ] ( map data-export-jsonify-item items ) )
+  set str ( word str suffix )
+  report str
+end
+
+;;;
+;;; General JSON Utilities
+;;;
+;;; *** data-export-json-object ***
+;;;
+;;; Converts lists to JSON objects in string form
+;;;
+;;; Examples:
+;;;
+;;;   data-export-json-object [ "size" 24 ]
+;;;   => "{ \"size\":\"size\":24 }"
+;;;
+;;;   data-export-json-object [ [ "size" 24 ] [ "length" 18 ] ]
+;;;   => "{ \"size\":24, \"length\":18 }"
+;;;
+;;;   data-export-json-object [ "description" [ "size" 24 ] ]
+;;;   => "{ \"description\":{ \"size\":\"size\":24 }"
+;;;
+;;;   *** "{ \"description\":[[size 24], [length 18], [color red]] }"
+;;;
+;;;   data-export-json-object [ "ages" [ 24 32 18 44 ] ]
+;;;   => "{ \"ages\":[24, 32, 18, 44] }""
+;;;
+;;;   data-export-json-object [ "values" [ "yes" "no" "maybe" ] ]
+;;;   => "{ \"values\":[\"yes\", \"no\", \"maybe\"] }""
+;;;
+;;;   data-export-json-object [["label" "Dummy Survival"] ["units" "categorical"] ["values" ["Yes" "No" "Maybe"]]]
+;;;   => "{ \"label\":\"Dummy Survival\", \"units\":\"categorical\", \"values\":[\"Yes\", \"No\", \"Maybe\"] }"
+;;;
+;;; WARNING: the array conversion is not robust, it sub-lists with three or more entries are arrays.
+;;;
+;;; Problem Examples:
+;;;
+;;;   data-export-json-object [ "ages" [ 24 32 ] ]
+;;;   => "{ \"ages\":{ 24:\"24\":32 } }"
+;;;
+;;;   data-export-json-object [ "description" [ [ "size" 24 ] [ "length" 18 ] [ "color" "red" ] ] ]
+;;;   => "{ \"description\":[[size 24], [length 18], [color red]] }"
+;;;
+
+to-report data-export-json-object [ key-value-pairs ]
+  let str "{ "
+  let q "\""
+  let c ", "
+  ifelse is-list? item 0 key-value-pairs
+  [ foreach butlast key-value-pairs [
+      set str ( word str ( data-export-jsonify-item item 0 ? ) ":" )
+      ifelse is-list? item 1 ?
+      [ ifelse (length item 1 ?) > 1
+        [ set str ( word str ( data-export-json-array item 1 ? ) ) ]
+        [ set str ( word str ( data-export-json-object item 1 ? ) ) ] ]
+      [ set str ( word str data-export-jsonify-item item 1 ? c ) ] ]
+    let last-key-value last key-value-pairs
+    set str ( word str ( data-export-jsonify-item item 0 last-key-value ) ":" )
+    ifelse (is-list? item 1 last-key-value and length item 1 last-key-value > 2)
+    [ report ( word str ( data-export-json-array item 1 last-key-value ) " }" ) ]
+    [ report ( word str ( data-export-jsonify-item item 1 last-key-value ) " }" ) ] ]
+  ;; first item is not a list
+  [ set str ( word str data-export-jsonify-item item 0 key-value-pairs ":" )
+    ifelse is-list? item 1 key-value-pairs
+    [ ifelse (length item 1 key-value-pairs) > 2
+      [ report ( word str ( data-export-json-array item 1 key-value-pairs )  " }" ) ]
+      [ report ( word str ( data-export-json-object item 1 key-value-pairs ) " }" ) ] ]
+    [ report ( word str q item 0 key-value-pairs q ":" data-export-jsonify-item item 1 key-value-pairs " }" ) ] ]
+end
+
+;;;
+;;; *** data-export-json-array ***
+;;;
+;;; Converts flat lists to JSON arrays in string form.
+;;;
+;;; Example:
+;;;
+;;;   data-export-json-array [ 3.14 2.7 "no" "maybe" 10 ]
+;;;   => "[3.14, 2.7, \"no\", \"maybe\", 10]"
+;;;
+
+to-report data-export-json-array [ items ]
+  let str "["
+  set str ( word str reduce [ ( word ?1 ", " ?2 ) ] ( map data-export-jsonify-item items ) )
+  set str ( word str "]" )
+  report str
+end
+
+;;;
+;;; *** data-export-create-keypairs ***
+;;;
+;;; Combines two lists into one consisting of data pairs from each list.
+;;;
+;;; Examples:
+;;;
+;;;   data-export-create-keypairs [ 1 2 3 4 ] [ "a" "b" "c" "d" ]
+;;;   =>  [[1 "a"] [2 "b"] [3 "c"] [4 "d"]]
+;;;
+;;;   data-export-create-keypairs [ "a" "b" "c" "d"] [ 1 2 3 4 ]
+;;;   => [["a" 1] ["b" 2] ["c" 3] ["d" 4]]
+;;;
+
+to-report data-export-create-keypairs [ props vals ]
+  let kv []
+  let indices n-values length props [?]
+  foreach indices
+  [ set kv lput ( list ( item ? props ) ( item ? vals ) ) kv ]
+  report kv
+end
+
+;;;
+;;; *** data-export-indent-string ***
+;;;
+;;; Returns string of spaces [num] characters long.
+;;;
+
+to-report data-export-indent-string [num]
+  report reduce word (n-values num [" "])
+end
+
+;;;
+;;; *** data-export-jsonify-item ***
+;;;
+;;; Wraps quote characters around strings and returns them
+;;; Other values are returned unchanged.
+;;;
+
+to-report data-export-jsonify-item [ val ]
+  ifelse is-string? val
+  [ report ( word "\"" val "\"" ) ]
+  [ report val ]
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;; Testing for Generation of Valid JSON ;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; After getting the integration working it's imporyant to check to see if the
+;;; generated JSON is valid.
+;;;
+;;; After running the model call the method data-export-make-model-data:
+;;;
+;;;   data-export-make-model-data
+;;;
+;;; This will update the global variable: data-export-model-data
+;;;
+;;; Now show data-export-model-data which contains the JSON data available for export:
+;;;
+;;;   show data-export-model-data
+;;;
+;;; After making changes test to see if the JSON data represent a valid JavaScript object.
+;;;
+;;; 1. Copy the string generated by running "show data-export-model-data" in the NetLogo observer.
+;;; 2. Open a JavaScript console in a browser and execute the following code:
+;;;
+;;;   data = JSON.parse(<pasted-JSON-datastring-from-clipboard>)
+;;;
+;;; If this fails look at the error message and fix the NetLogo DataExport methods.
+;;; If this succeeds inspect the newly created data object.
+;;;
+;;; Here's an example expanded in the browsers JavaScript console:
+;;;
+;;;   Object {description: Object, runs: Array[2]}
+;;;     description: Object
+;;;       computationalInputs: Array[5]
+;;;       computationalOutputs: Array[2]
+;;;       modelInformation: Object
+;;;       studentInputs: Array[1]
+;;;       timeSeriesData: Array[3]
+;;;     runs: Array[2]
+;;;       0: Object
+;;;         timeSeriesData: Array[36]
+;;;         computationalInputs: Array[5]
+;;;         computationalOutputs: Array[2]
+;;;         studentInputs: Array[1]
+;;;       1: Object
+;;;         timeSeriesData: Array[34]
+;;;         computationalInputs: Array[5]
+;;;         computationalOutputs: Array[2]
+;;;         studentInputs: Array[1]
+;;;

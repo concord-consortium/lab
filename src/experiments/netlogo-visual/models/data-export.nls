@@ -2,43 +2,37 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;; Data export functions ;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; put in model initialization method
+;;;
+;;;   init-RunSeries
+;;;
+;;; put at beginning of main model loop
+;;;
+;;;   init-DataSeries
+;;;
+;;; put in inner model loop after times series data are generated:
+;;; argument example: time, data1, data2, ...
+;;;
+;;;   update-DataSeries t x-dum v-dum
+;;;
+;;; put at exit (or exits) of model loop
+;;; arguments include any local variables that are computational outputs
+;;;
+;;;    update-RunSeries a-max
+;;;
 
-;;; put in globals
-
+globals [
   ModelData
   ModelDescription
   RunSeries
   DataSeries
   data-ready?
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;; Data export functions ;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; put in model initialization method
-
-init-RunSeries
-
-;;; put at beginning of main model loop
-
-init-DataSeries
-
-;;; put in inner model loop after times series data are generated:
-;;; time, data1, data2, ...
-
-update-DataSeries t x-dum v-dum
-
-;;; put at exit (or exits) of model loop
-;;; arguments include any local variables that are computational outputs
-
-update-RunSeries a-max
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;; Data export functions ;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; put at end
-
+]
+to init-data-export
+  init-RunSeries
+  init-DataSeries
+end
 to init-RunSeries
   set RunSeries "[\n  ]"
 end
@@ -60,7 +54,7 @@ to update-RunSeries [ a-max ]
   set temp (word temp "    {\n")
   set temp (word temp "      \"timeSeriesData\": " DataSeries ",\n")
   set temp (word temp "      \"computationalInputs\": [" Distance-to-steering-wheel ", " car-speed ", " airbag-size ",\n")
-  set temp (word temp "        " time-to-fill-bag ", " const ", " max-time-to-stop ", " deflate-time " ],\n")
+  set temp (word temp "        " time-to-fill-bag ", " deflate-time " ],\n")
   set temp (word temp "      \"computationalOutputs\": [ " a-max ", \"" dummy-status "\" ],\n")
   set temp (word temp "      \"studentInputs\": [ \"" the-question "\" ]\n")
   set temp (word temp "    }")
@@ -112,8 +106,6 @@ to make-ModelDescription
   set temp (word temp "      { \"label\": \"Car speed\",\"units\": \"m/s\", \"min\": 0, \"max\":40 },\n")
   set temp (word temp "      { \"label\": \"Airbag size\",\"units\": \"m\", \"min\": 0, \"max\":0.5 },\n")
   set temp (word temp "      { \"label\": \"Time to fill bag\",\"units\": \"s\", \"min\": 0.01, \"max\":0.05 },\n")
-  set temp (word temp "      { \"label\": \"const (airbag-stiffness)\", \"hidden\": true, \"units\": \"m/s^2\", \"min\": 0, \"max\":6000 },\n")
-  set temp (word temp "      { \"label\": \"Maximum time to stop\", \"hidden\": true, \"units\": \"s\", \"min\": 0.02, \"max\": 0.1 },\n")
   set temp (word temp "      { \"label\": \"Deflate time\", \"hidden\": true, \"units\": \"s\", \"min\": 0, \"max\":10 }\n")
   set temp (word temp "    ],\n")
 
