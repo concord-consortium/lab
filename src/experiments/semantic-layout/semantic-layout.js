@@ -1,4 +1,4 @@
-/*global Lab $ CodeMirror */
+/*global $ CodeMirror */
 
 var interactiveEditor,
     componentEditor,
@@ -11,7 +11,7 @@ var interactiveEditor,
     minTop;
 
 function update() {
-  var redraws = 12;
+  var redraws = 12, id, $container;
 
   $interactiveContainer = $("#interactive-container");
   $interactiveContainer.empty();
@@ -54,7 +54,7 @@ function update() {
 
 function createContainers() {
   var colors = ["blue", "red", "green", "purple", "gold"],
-      container, id, i, ii;
+      container, id, prop, i, ii;
 
   $containers = {};
 
@@ -123,7 +123,7 @@ function createComponent(comp) {
   switch (comp.type) {
     case "button":
       $component = $("<button id='"+comp.id+"'>")
-        .html(comp.text)
+        .html(comp.text);
   }
 
   return $component;
@@ -131,7 +131,7 @@ function createComponent(comp) {
 
 function positionContainers() {
   var container, $container,
-      left, top, right, bottom;
+      left, top, right, bottom, i, ii;
 
   for (i = 0, ii = containers.length; i<ii; i++) {
     container = containers[i];
@@ -180,7 +180,7 @@ function parseDimension(dim) {
   }
 
   // find all strings of the form x.y
-  vars = dim.match(/[a-zA-Z\-]+\.[a-zA-Z]+/g)
+  vars = dim.match(/[a-zA-Z\-]+\.[a-zA-Z]+/g);
 
   // replace all x.y's with the actual dimension
   for (i=0, ii=vars.length; i<ii; i++) {
@@ -197,7 +197,7 @@ function parseDimension(dim) {
 
 // parses a container's dimension, such as "model.height"
 function getDimension(dim) {
-  var id, $container, position, attr;
+  var id, $container, attr;
 
   id = dim.split(".")[0];
   $container = $containers[id];
@@ -228,7 +228,7 @@ function getDimensionOfContainer($container, dim) {
 // shrinks the model to fit in the interactive, given the sizes
 // of the other containers around it.
 function resizeModelContainer() {
-  var maxX = maxY = -Infinity,
+  var maxX, maxY = maxX = -Infinity,
       id, $container,
       right, bottom,
       $modelContainer,
