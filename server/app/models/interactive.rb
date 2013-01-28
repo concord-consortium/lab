@@ -8,6 +8,10 @@ class Interactive < CouchRest::Model::Base
   property :path,                String
   property :about,               String
 
+  # track imorted (from buld process)
+  property :from_import,         TrueClass, :default => true
+  property :layout,              Object
+  
   # collections
   property :models,             [Object]
   property :components,         [Object]
@@ -16,6 +20,11 @@ class Interactive < CouchRest::Model::Base
 
   design do
     view :by_title
+    view :by_id
   end
 
+
+  def self.delete_example_imports
+    self.all.select { |a| a.from_import? each {|i| i.destroy } }
+  end
 end
