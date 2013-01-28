@@ -26,7 +26,14 @@ define(function () {
 
     $pulldown.change(function() {
       var index = $(this).prop('selectedIndex'),
-          action = component.options[index].action;
+          action = component.options[index].action,
+          i, len;
+
+      // Update component definition.
+      for (i = 0, len = options.length; i < len; i++) {
+        delete options[i].selected;
+      }
+      options[index].selected = true;
 
       if (action){
         scriptingAPI.makeFunctionInScriptContext(action)();
@@ -46,6 +53,13 @@ define(function () {
       // Returns view container.
       getViewContainer: function () {
         return $pulldown;
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        // Return compoment definition. It's always valid,
+        // as selected option is updated during 'change' callback.
+        return $.extend(true, {}, component);
       }
     };
     // Return Public API object.

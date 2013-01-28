@@ -59,6 +59,14 @@ define(function () {
       // Returns view container. Label tag, as it contains checkbox anyway.
       getViewContainer: function () {
         return $numericOutput;
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        // Return the initial component definition.
+        // Numeric output component doesn't have any state, which can be changed.
+        // It's value is defined by underlying model.
+        return $.extend(true, {}, component);
       }
     };
     // Return Public API object.
