@@ -65,7 +65,10 @@ define(function (require) {
         // Hash of instantiated components.
         // Key   - component type.
         // Value - array of component instances.
-        componentInstances = {},
+        componentByType = {},
+
+        // Simple list of instantiated components.
+        componentList = [],
 
         // API for scripts defined in the interactive JSON file.
         scriptingAPI,
@@ -170,11 +173,12 @@ define(function (require) {
           comp = new ComponentConstructor[type](component, scriptingAPI, controller);
 
       // Save the new instance.
-      if (componentInstances[type] === undefined) {
+      if (componentByType[type] === undefined) {
         // Create array for instances.
-        componentInstances[type] = [];
+        componentByType[type] = [];
       }
-      componentInstances[type].push(comp);
+      componentByType[type].push(comp);
+      componentList.push(comp);
 
       // And return it.
       return comp;
@@ -220,13 +224,13 @@ define(function (require) {
 
       // Note that in the code below we assume that there is only ONE instance of each component.
       // This is not very generic, but the only supported scenario by the current layout system.
-      if (componentInstances.thermometer)
-        layout.addView('thermometers', componentInstances.thermometer[0].getView());
-      if (componentInstances.graph)
+      if (componentByType.thermometer)
+        layout.addView('thermometers', componentByType.thermometer[0].getView());
+      if (componentByType.graph)
         // TODO: energyGraphs should be changed to lineGraphs?
-        layout.addView('energyGraphs', componentInstances.graph[0].getView());
-      if (componentInstances.barGraph)
-        layout.addView('barGraphs', componentInstances.barGraph[0]);
+        layout.addView('energyGraphs', componentByType.graph[0].getView());
+      if (componentByType.barGraph)
+        layout.addView('barGraphs', componentByType.barGraph[0]);
 
       $(window).unbind('resize');
 
@@ -494,6 +498,22 @@ define(function (require) {
       },
       pushOnLoadScript: function (callback) {
         onLoadScripts.push(callback);
+      },
+      /**
+        Serializes interactive, returns object ready to be stringified.
+        e.g. JSON.stringify(interactiveController.serialize());
+      */
+      serialize: function () {
+        var result = {},
+            i, len;
+
+        result.components = [];
+        for (i = 0, len = componentList.length; i < len; i++) {
+          if (componentList[i].serialize) {
+            result.components.push(componentList[i].serialize());
+          }
+        }
+        return result;
       },
       // Make these private variables and functions available
       loadInteractive: loadInteractive,
