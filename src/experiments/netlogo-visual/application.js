@@ -17,6 +17,7 @@ var ROOT = "/experiments",
       showData = document.getElementById('show-data'),
       exportedData = document.getElementById('exported-data'),
 
+      $exportedData = $("exported-data"),
       editor,
       controller,
       indent = 2,
@@ -171,6 +172,9 @@ var ROOT = "/experiments",
       modelData = nl_read_global("DATA-EXPORT-MODEL-DATA");
       if (exportedData) {
         exportedData.textContent = modelData;
+        if (editor) {
+          editor.setValue(modelData);
+        }
       } else {
         console.log(modelData);
       }
@@ -205,8 +209,35 @@ var ROOT = "/experiments",
       dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
       return encodeURI(dgUrl);
     });
-
+    setupCodeEditor();
     selectInteractive.onchange = selectInteractiveHandler;
+  }
+
+  //
+  // Interactive Code Editor
+  //
+  function setupCodeEditor() {
+    $exportedData.text("");
+    foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+    if (!editor) {
+      editor = CodeMirror.fromTextArea(exportedData, {
+        mode: { name: "javascript", json: true },
+        indentUnit: indent,
+        lineNumbers: true,
+        lineWrapping: false
+      });
+    }
+    editor.on("gutterClick", foldFunc);
+  }
+
+  function autoFormatEditorContent(ed) {
+    var cursorStart = ed.getCursor("start"),
+        cursorEnd = ed.getCursor("end"),
+        lastLine = ed.lineCount(),
+        viewPort = ed.getViewport();
+    ed.autoFormatRange({ ch:0, line: 0 }, { ch:0, line: lastLine });
+    ed.setSelection(cursorStart, cursorEnd);
+    ed.scrollIntoView({ ch:0, line: viewPort.from });
   }
 
   // startButtonStatusCallback();

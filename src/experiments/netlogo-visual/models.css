@@ -51,9 +51,11 @@
   padding: 0.5em 1em;
   height: 40em; }
 
-.CodeMirror-scroll {
-  height: 43em;
-  overflow: auto; }
+.CodeMirror {
+  background: #efefef;
+  margin: 0.7em 0.5em;
+  height: 45em; }
+
 
 .interactive-top {
   position: relative; }
