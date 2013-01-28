@@ -15,6 +15,7 @@ class Interactive < CouchRest::Model::Base
   # collections
   property :models,             [Object]
   property :components,         [Object]
+  collection_of :md_2d_models
 
   timestamps!
 
