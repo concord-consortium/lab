@@ -401,10 +401,8 @@ ISImporter.appController = new ISImporter.Object({
     };
 
     this.tareListener = function(y) {
-      self.lastTareValue = y;
-      y -= (self.sensor.tareValue || 0);
-      self.$realtimeDisplayValue.text(ISImporter.fixed(y, 1));
-      self.$realtimeDisplayUnits.show();
+      self.sensor.tareValue = y;
+      self.endTare();
     };
 
     this.initInterface();
@@ -555,11 +553,7 @@ ISImporter.appController = new ISImporter.Object({
     }
 
     if (this.started) this.stop();
-    if (this.taring) this.tareValueSelected();
-    if (this.inTareDisplay) {
-      window.clearTimeout(this.displayTimeout);
-      this.endTareDisplay();
-    }
+    if (this.taring) this.endTare();
 
     if (this.currentApplet) {
       this.currentApplet.removeListeners('data');
@@ -611,11 +605,6 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   start: function() {
-    if (this.inTareDisplay) {
-      window.clearTimeout(this.displayTimeout);
-      this.endTareDisplay();
-    }
-
     this.started = true;
     this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.start();
@@ -650,51 +639,31 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   tare: function() {
-    if (this.taring) {
-      this.tareValueSelected();
-    } else {
-      this.beginTaring();
-    }
-  },
-
-  beginTaring: function() {
     var self = this;
 
     if (this.started) return false;
 
     this.taring = true;
-    this.enable(this.$tareButton);
-    this.$tareButton.text("OK");
-
+    this.$tareButton.text("Zeroing...");
+    this.disable(this.$tareButton);
     this.disable(this.$startButton);
     this.disable(this.$resetButton);
 
     this.currentApplet.removeListener('data', this.appletDataListener);
     this.currentApplet.on('data', this.tareListener);
-    this.currentApplet.start();
+
+    // Make sure UI updates before applet start locks it up...
+    // TODO: should this happen in SensorApplet (js) class itself?
+    window.setTimeout(function() {
+      self.currentApplet.start();
+    }, 10);
   },
 
-  tareValueSelected: function() {
-    if (!this.taring) return false;
-
-    var self = this;
-    this.taring = false;
-
-    this.disable(this.$tareButton);
-
-    this.sensor.tareValue = this.lastTareValue;
-
-    this.inTareDisplay = true;
-    this.displayTimeout = window.setTimeout(function() {
-      self.endTareDisplay();
-    }, 1000);
-  },
-
-  endTareDisplay: function() {
+  endTare: function() {
     this.currentApplet.removeListener('data', this.tareListener);
     this.currentApplet.stop();
 
-    this.inTareDisplay = false;
+    this.taring = false;
 
     // we've got your state management fail right here:
     if (this.dataset.getLength() > 0) {
@@ -703,13 +672,10 @@ ISImporter.appController = new ISImporter.Object({
       this.enable(this.$startButton);
     }
 
-    this.$tareButton.text("Zero...");
+    this.$tareButton.text("Zero");
     if (this.sensor.tareable) {
       this.enable(this.$tareButton);
     }
-
-    this.$realtimeDisplayValue.text('');
-    this.$realtimeDisplayUnits.hide();
   },
 
   exportData: function() {
