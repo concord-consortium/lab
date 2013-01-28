@@ -43,29 +43,12 @@
         <p>Edit components and
         <button id='update-layout'>update layout</button>.
 
+        <div>
+            Load example: <select id="examples"></select>
+        </div>
+
         <h2>Interactive Layout</h2>
         <textarea id='interactive-textarea'>
-[
-  {
-    "id": "top",
-    "bottom": "model.top",
-    "components": ["button1"]
-  },
-  {
-    "id": "wide-right",
-    "left": "model.right",
-    "height": "model.height",
-    "padding-left": "1em",
-    "components": ["button2", "button3"]
-  },
-  {
-    "id": "bottom",
-    "top": "model.bottom",
-    "width": "model.width + wide-right.width",
-    "padding-top": "1em",
-    "components": ["button4"]
-  }
-]
         </textarea>
         <h2>Components Options</h2>
         <textarea id='components-textarea'>
@@ -98,6 +81,7 @@
         </textarea>
       </div>
     </div>
+    <script src='layout-examples.js' type='text/javascript'></script>
     <script src='semantic-layout.js' type='text/javascript'></script>
 
   </body>

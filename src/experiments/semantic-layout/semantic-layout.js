@@ -291,7 +291,8 @@ function getObject(arr, id) {
 $(function () {
 var INDENT = 2,
     $interactiveTextarea = $("#interactive-textarea"),
-    $componentTextarea = $("#components-textarea");
+    $componentTextarea = $("#components-textarea"),
+    $examples, option, firstExample;
 
   interactiveEditor = CodeMirror.fromTextArea($interactiveTextarea[0], {
     mode: 'javascript',
@@ -311,6 +312,27 @@ var INDENT = 2,
 
   $("#wrapper").bind("resize", update);
   $("#update-layout").on("click", update);
+
+  $examples = $("#examples");
+
+  // layouts comes from layout-examples.js
+  for (example in layouts) {
+    option = $("<option value='"+example+"'>")
+      .text(example)
+      .appendTo($examples);
+
+    $examples.bind("change", function(evt) {
+      var example = layouts[this.value];
+      interactiveEditor.setValue(JSON.stringify(example, null, " "))
+      update();
+    });
+
+    if (!firstExample) {
+      firstExample = layouts[example];
+    }
+  }
+
+  interactiveEditor.setValue(JSON.stringify(firstExample, null, " "))
 
   update();
 
