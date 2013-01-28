@@ -87,7 +87,8 @@ function createContainers() {
 }
 
 function placeComponentsInContainers() {
-  var component, container, componentIds, i, ii, j, jj;
+  var component, container, divContents, items, $row,
+      i, ii, j, jj, k, kk;
 
   $components = {};
 
@@ -98,11 +99,20 @@ function placeComponentsInContainers() {
 
   for (i = 0, ii = containers.length; i<ii; i++) {
     container = containers[i];
-    componentIds = container.components;
-    if (!componentIds) continue;
+    divContents = container.components;
+    if (!divContents) continue;
 
-    for (j = 0, jj = componentIds.length; j<jj; j++) {
-      $containers[container.id].append($components[componentIds[j]]);
+    if (Object.prototype.toString.call(divContents[0]) !== "[object Array]") {
+      divContents = [divContents];
+    }
+
+    for (j = 0, jj = divContents.length; j < jj; j++) {
+      items = divContents[j];
+      $row = $('<div class="interactive-' + container.id + '-row"/>');
+      $containers[container.id].append($row);
+      for (k = 0, kk = items.length; k < kk; k++) {
+        $row.append($components[items[k]]);
+      }
     }
   }
 }
