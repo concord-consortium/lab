@@ -21,6 +21,13 @@ define(function () {
       // Returns view container.
       getViewContainer: function () {
         return $button;
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        // Return the initial component definition.
+        // Button doesn't have any state, which can be changed.
+        return component;
       }
     };
     // Return Public API object.
