@@ -14,7 +14,7 @@ define(function (require, exports, module) {
       lennardJones         = require('./potentials/index').lennardJones,
       PairwiseLJProperties = require('cs!./pairwise-lj-properties'),
       GeneticProperties    = require('./genetic-properties'),
-      CloneRestoreWrapper  = require('./clone-restore-wrapper'),
+      CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper'),
       CellList             = require('./cell-list'),
       NeighborList         = require('./neighbor-list'),
 
