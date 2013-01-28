@@ -1,0 +1,50 @@
+#interactive-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#wrapper {
+  width: 540px;
+  height: 370px;
+  border: 1px dotted;
+  overflow: hidden;
+}
+
+.container {
+  position: absolute;
+}
+
+select, button {
+  font-size: 0.9em;
+}
+h2 {
+  margin-top: 1em;
+}
+#content {
+  margin-left: 2em;
+}
+.title {
+  font-size: 1.3em;
+}
+.cols {
+  float: left;
+  margin: 0 2em;
+}
+.hidden {
+  display: none;
+}
+.view {
+  width: 650px;
+  height: 350px;
+  margin: 0 2em;
+  border: 1px dashed #aaa;
+}
+.help {
+  margin-top: 2em;
+  width: 700px;
+}
+.CodeMirror {
+  width: 700px;
+  border: 1px gray dashed;
+}
