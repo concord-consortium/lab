@@ -1,5 +1,5 @@
 class Md2dModel < CouchRest::Model::Base
-  attr_accessor :casted_by
+  # attr_accessor :casted_by
 
   property :name,                 String
 
@@ -11,9 +11,14 @@ class Md2dModel < CouchRest::Model::Base
   property :lennard_jones_forces, TrueClass
   property :temperature_control,  TrueClass
 
-  property :atoms,                Hash
-  property :elements,             Array
+  property :atoms,                Object
+  property :elements,             [Object]
 
   timestamps!
+
+  design do
+    view :by_name
+    view :by_id
+  end
 
 end
