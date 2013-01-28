@@ -121,3 +121,7 @@
 - :path: benchmarks
   :name: "Performance Benchmarks"
   :category: Benchmarks
+
+- :path: solar-system
+  :name: "Solar System Interactives"
+  :category: Tests

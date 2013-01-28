@@ -8,6 +8,7 @@ define(function (require) {
   // Require public-api modules
   // defining other global variables.
   require('md2d/public-api');
+  require('solar-system/public-api');
   require('grapher/public-api');
   require('import-export/public-api');
 
