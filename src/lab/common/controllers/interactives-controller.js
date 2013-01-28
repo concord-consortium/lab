@@ -504,15 +504,29 @@ define(function (require) {
         e.g. JSON.stringify(interactiveController.serialize());
       */
       serialize: function () {
-        var result = {},
-            i, len;
+        var result, i, len;
 
+        // Copy basic properties from the initial definition, as they are immutable.
+        result = {
+          title: interactive.title,
+          publicationStatus: interactive.publicationStatus,
+          subtitle: interactive.subtitle,
+          about: interactive.about,
+          // Copy array, not only reference.
+          models: $.extend(true, [], interactive.models)
+        };
+
+        // Serialize components.
         result.components = [];
         for (i = 0, len = componentList.length; i < len; i++) {
           if (componentList[i].serialize) {
             result.components.push(componentList[i].serialize());
           }
         }
+
+        // Copy layout from the initial definition, as it is immutable.
+        result.layout = $.extend(true, {}, interactive.layout);
+
         return result;
       },
       // Make these private variables and functions available
