@@ -616,9 +616,13 @@ ISImporter.appController = new ISImporter.Object({
   stop: function() {
     this.started = false;
     if (this.currentApplet) this.currentApplet.stop();
+
     this.disable(this.$stopButton);
     this.enable(this.$tareButton);
     this.enable(this.$resetButton);
+
+    this.$realtimeDisplayValue.text('');
+    this.$realtimeDisplayUnits.hide();
 
     if (this.dataset.getLength() > 0) {
       this.enable(this.$exportButton);
