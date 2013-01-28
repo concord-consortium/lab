@@ -1716,7 +1716,7 @@ to setup-data-export
     [ "Velocity" "m/s" -10 10 ]
   ]
   let setup (list computational-inputs computational-outputs student-inputs model-information time-series-data)
-  data-export-initialize setup
+  data-export:initialize setup
 end
 
 ;;;
@@ -1730,7 +1730,7 @@ to update-run-series [ a-max ]
   let computational-outputs ( list a-max dummy-status )
   let student-inputs        ( list the-question )
   let run-series-data ( list computational-inputs computational-outputs student-inputs )
-  data-export-update-run-series run-series-data
+  data-export:update-run-series run-series-data
 end
 
 ;;;
@@ -1740,7 +1740,7 @@ end
 ;;;
 
 to update-data-series [ data-series ]
-  data-export-update-data-series data-series
+  data-export:update-data-series data-series
 end
 
 ;;;

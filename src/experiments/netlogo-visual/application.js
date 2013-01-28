@@ -104,7 +104,7 @@ var ROOT = "/experiments",
   function buttonStatusCallback() {
     var export_button = exportData,
         show_button = showData,
-        dgready = "DATA-EXPORT-DATA-READY?",
+        dgready = "DATA-EXPORT:DATA-READY?",
         observer = nl_obj_observer,
         globals = nlGlobals,
         enable = false;
@@ -150,15 +150,15 @@ var ROOT = "/experiments",
   }
 
   function dgDataReady() {
-    return nl_read_global("DATA-EXPORT-DATA-READY?");
+    return nl_read_global("DATA-EXPORT:DATA-READY?");
   }
 
   function getExportedData() {
-    return nl_read_global("DATA-EXPORT-MODEL-DATA");
+    return nl_read_global("DATA-EXPORT:MODEL-DATA");
   }
 
   function exportDataHandler() {
-    nl_cmd_execute("data-export-make-model-data");
+    nl_cmd_execute("data-export:make-model-data");
     clearDataReady = window.setInterval(exportDataReadyCallback, 250);
   }
 
@@ -169,7 +169,7 @@ var ROOT = "/experiments",
         dgExportDone = dgDataReady();
     if (dgExportDone) {
       clearInterval(clearDataReady);
-      modelData = nl_read_global("DATA-EXPORT-MODEL-DATA");
+      modelData = nl_read_global("DATA-EXPORT:MODEL-DATA");
       if (exportedData) {
         exportedData.textContent = modelData;
         if (editor) {
