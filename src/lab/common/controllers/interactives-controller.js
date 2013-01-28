@@ -32,6 +32,8 @@ define(function (require) {
       templates               = require('common/layout/templates'),
 
       MD2DModelController     = require('md2d/controllers/controller'),
+      PTAModelController      = require('pta/controllers/controller'),
+
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
       // - Value is a constructor function of the given component.
@@ -245,6 +247,9 @@ define(function (require) {
         switch(modelType) {
           case "md2d":
           modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
+          break;
+          case "pta":
+          modelController = new PTAModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
           break;
         }
         // Extending universal Interactive scriptingAPI with model-specific scripting API

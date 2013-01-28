@@ -1,0 +1,108 @@
+{
+  "title": "Testing: Fire",
+  "publicationStatus": "draft",
+  "subtitle": "Second test of the PTA model-type.",
+  "about": "",
+  "models": [
+    {
+      "id": "fire",
+      "type": "pta",
+      "url": "models/pta/fire.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name":  "numTurtles",
+      "label": "Turtles",
+      "units": "",
+      "value": [
+          "return getNumberOfTurtles();"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "add-random-turtle",
+      "text": "Add random turtle",
+      "action": "addRandomTurtle()"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-turtles",
+      "property": "numTurtles",
+      "displayValue": "return format('f')(value)"
+    },
+    {
+      "type": "text",
+      "id": "wrapping-label",
+      "text": "Model wrapping",
+      "style": "header"
+    },
+    {
+      "type": "checkbox",
+      "id": "horizontal-wrapping",
+      "text": "Horizontal",
+      "property": "horizontalWrapping"
+    },
+    {
+      "type": "checkbox",
+      "id": "vertical-wrapping",
+      "text": "Vertical",
+      "property": "verticalWrapping"
+    },
+    {
+      "type": "text",
+      "id": "axes-label",
+      "text": "Axes",
+      "style": "header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-gridlines",
+      "text": "Grid Lines",
+      "property": "gridLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-xunits",
+      "text": "X units",
+      "property": "xunits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-yunits",
+      "text": "Y units",
+      "property": "yunits"
+    }
+  ],
+  "layout": {
+    "right": [
+      ["add-random-turtle" ],
+      [ "current-turtles" ],
+      [ "wrapping-label" ],
+      [ "horizontal-wrapping" ],
+      [ "vertical-wrapping" ],
+      [ "axes-label" ],
+      [ "show-gridlines" ],
+      [ "show-xunits" ],
+      [ "show-yunits" ]
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "2em",
+      "left": "model.right",
+      "align": "left"
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom"
+    }
+  ]
+}

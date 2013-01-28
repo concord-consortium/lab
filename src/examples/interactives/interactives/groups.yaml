@@ -121,3 +121,7 @@
 - :path: benchmarks
   :name: "Performance Benchmarks"
   :category: Benchmarks
+
+- :path: pta
+  :name: "PTA Interactives"
+  :category: Tests
