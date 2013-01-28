@@ -46,6 +46,12 @@ define(function(require) {
     }
     // JSON doesn't allow Infinity values so convert them to strings.
     infinityToString(result);
+    // TODO: to make serialization faster, replace arrays.copy(prop, [])
+    // with arrays.clone(prop) to use typed arrays whenever they are available.
+    // Also, do not call "infinityToString" function. This can be useful when
+    // we decide to use serialization in tick history manager.
+    // Then we can provide toString() function which will use regular arrays,
+    // replace each Infinity value with string and finally call JSON.stringify().
     return result;
   };
 
