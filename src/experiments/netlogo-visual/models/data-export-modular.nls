@@ -122,25 +122,18 @@ globals [
   data-export-run-series
   data-export-data-series
   data-export-data-ready?
-
   data-export-computational-inputs
   data-export-computational-inputs-keys
-
   data-export-computational-outputs
   data-export-computational-outputs-keys
   data-export-computational-outputs-categorical-keys
-
   data-export-student-inputs
   data-export-student-inputs-keys
-
   data-export-model-information
   data-export-model-information-keys
-
   data-export-times-series-data
   data-export-times-series-keys
-
   data-export-data-series-labels
-
   data-export-run-number
   data-export-data-series-trip
 ]
@@ -194,7 +187,7 @@ to data-export-make-model-description
   set data-export-data-ready? false
   let temp ""
   set temp (word temp "{\n")
-    set temp (word temp data-export-section 4 "timeSeriesData" data-export-times-series-keys [ ] data-export-times-series-data ",\n" )
+  set temp (word temp data-export-section 4 "timeSeriesData" data-export-times-series-keys [ ] data-export-times-series-data ",\n" )
   set temp (word temp data-export-section 4 "computationalInputs" data-export-computational-inputs-keys [ ] data-export-computational-inputs ",\n" )
   set temp (word temp data-export-section 4 "computationalOutputs" data-export-computational-outputs-keys data-export-computational-outputs-categorical-keys data-export-computational-outputs ",\n" )
   set temp (word temp data-export-section 4 "studentInputs" data-export-student-inputs-keys [ ] data-export-student-inputs ",\n" )
@@ -309,26 +302,60 @@ to-report data-export-json-object [ key-value-pairs ]
   let str "{ "
   let q "\""
   let c ", "
-  ifelse is-list? item 0 key-value-pairs
+  let last-key-value []
+  let node item 0 key-value-pairs
+  ifelse is-list? node
   [ foreach butlast key-value-pairs [
       set str ( word str ( data-export-jsonify-item item 0 ? ) ":" )
       ifelse is-list? item 1 ?
-      [ ifelse (length item 1 ?) > 1
+      [ ifelse (length item 1 ?) > 2
         [ set str ( word str ( data-export-json-array item 1 ? ) ) ]
         [ set str ( word str ( data-export-json-object item 1 ? ) ) ] ]
       [ set str ( word str data-export-jsonify-item item 1 ? c ) ] ]
-    let last-key-value last key-value-pairs
+    set last-key-value last key-value-pairs
     set str ( word str ( data-export-jsonify-item item 0 last-key-value ) ":" )
-    ifelse (is-list? item 1 last-key-value and length item 1 last-key-value > 2)
-    [ report ( word str ( data-export-json-array item 1 last-key-value ) " }" ) ]
-    [ report ( word str ( data-export-jsonify-item item 1 last-key-value ) " }" ) ] ]
+    ifelse is-list? item 1 last-key-value
+    [ ifelse length item 1 last-key-value > 2
+      [ report ( word str ( data-export-json-array item 1 last-key-value ) " }" ) ]
+      [ report ( word str ( data-export-json-object item 1 last-key-value ) " }" ) ] ]
+    [ report ( word str data-export-jsonify-item last last-key-value " }" ) ] ]
   ;; first item is not a list
   [ set str ( word str data-export-jsonify-item item 0 key-value-pairs ":" )
     ifelse is-list? item 1 key-value-pairs
     [ ifelse (length item 1 key-value-pairs) > 2
       [ report ( word str ( data-export-json-array item 1 key-value-pairs )  " }" ) ]
       [ report ( word str ( data-export-json-object item 1 key-value-pairs ) " }" ) ] ]
-    [ report ( word str q item 0 key-value-pairs q ":" data-export-jsonify-item item 1 key-value-pairs " }" ) ] ]
+    [ report ( word str data-export-jsonify-item item 1 key-value-pairs " }" ) ] ]
+end
+
+to test-data-export-json-object
+  let tests [
+    [ [ "size" 24 ]                        "{ \"size\":24 }" ]
+    [ [ "size" 24 ] [ "length" 18 ]        "{ \"size\":24, \"length\":18 }" ]
+    [ [ "description" [ "size" 24 ] ]      "{ \"description\":{ \"size\":24 } }" ]
+    [ [ "ages" [ 24 32 18 44 ] ]           "{ \"ages\":[24, 32, 18, 44] }" ]
+    [ [ "values" [ "yes" "no" "maybe" ] ]  "{ \"values\":[\"yes\", \"no\", \"maybe\"] }" ]
+    [ [ "label" "Dummy Survival"] ["units" "categorical"] ["values" ["Yes" "No" "Maybe" ] ]
+                                           "{ \"label\":\"Dummy Survival\", \"units\":\"categorical\", \"values\":[\"Yes\", \"No\", \"Maybe\"] }" ] ]
+
+   type "\n\n\ndata-export-json-object tests ...\n"
+   foreach tests [
+     let input butlast ?
+     let expected last ?
+     let result data-export-json-object input
+     let pass expected = result
+     ifelse pass
+     [ type "\n       pass:" ]
+     [ type "\n****** fail:" ]
+     write input
+     if not pass
+     [ type   "\n   expected:"
+       write expected ]
+     type   "\n     actual:"
+     write result
+     type "\n"
+   ]
+   type "\n"
 end
 
 ;;;
