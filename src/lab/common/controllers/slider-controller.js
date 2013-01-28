@@ -132,6 +132,27 @@ define(function () {
       // Returns view container (div).
       getViewContainer: function () {
         return $elem;
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        var result = $.extend(true, {}, component);
+
+        if (propertyName) {
+          // Two way binding between slider and model property.
+          // Initial value was used to set model property once,
+          // we do not need to do this again. Value of the slider
+          // will be defined by the model.
+          delete result.initialValue;
+        }
+        else {
+          // No property binding. Just action script.
+          // Update "initialValue" to represent current
+          // value of the slider.
+          result.initialValue = $slider.slider('value');
+        }
+
+        return result;
       }
     };
     // Return Public API object.
