@@ -33,6 +33,7 @@ var ROOT = "/examples",
       $selectIframeSize = $("#select-iframe-size"),
 
       $updateInteractiveButton = $("#update-interactive-button"),
+      $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
 
@@ -712,6 +713,16 @@ var ROOT = "/examples",
 
       $autoFormatInteractiveJsonButton.on('click', function() {
         autoFormatEditorContent(editor);
+      });
+
+      $updateJsonFromInteractiveButton.on('click', function() {
+        var interactiveState;
+        if(onFullPage()) {
+          interactiveState = controller.serialize();
+          editor.setValue(JSON.stringify(interactiveState, null, indent));
+        } else {
+          // Not implemented yet.
+        }
       });
 
       $showEditor.change(function() {
