@@ -5,6 +5,7 @@ define(function () {
   return function CheckboxController(component, scriptingAPI) {
     var propertyName  = component.property,
         onClickScript = component.onClick,
+        initialValue  = component.initialValue,
         $checkbox,
         $label,
         controller,
@@ -66,11 +67,28 @@ define(function () {
           // Perform initial checkbox setup.
           updateCheckbox();
         }
+        else if (initialValue !== undefined) {
+          $checkbox.attr('checked', initialValue);
+        }
       },
 
       // Returns view container. Label tag, as it contains checkbox anyway.
       getViewContainer: function () {
         return $label;
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        var result = $.extend(true, {}, component);
+
+        if (propertyName === undefined) {
+          // No property binding. Just action script.
+          // Update "initialValue" to represent current
+          // value of the slider.
+          result.initialValue = $checkbox.is(':checked') ? true : false;
+        }
+
+        return result;
       }
     };
     // Return Public API object.
