@@ -52,12 +52,35 @@ class Parser
   def parse_collection(data_label, collection, parser)
     hashes     = self.data_hash[data_label]
     if hashes
+      bar = make_progressbar(data_label,hashes)
       hashes.each do |hash_data| 
         collection << parser.new(self.uri_helper,hash_data).parse
+        bar.increment
       end
     else
       raise ParsingError.new("can't find data item in data #{data_label}")
     end
     collection
   end
+
+  private 
+  def verbose?
+    true unless (ENV['RAILS_ENV'] == 'test')
+  end
+
+  def make_progressbar(label,collection)
+    if verbose?
+      return ProgressBar.create(
+        :title       => "creating #{collection.size} #{label}", 
+        :starting_at => 0, 
+        :total       => collection.size)
+    else
+      silent_result = Object.new
+      def silent_result.increment; nil; end
+      return silent_result
+    end
+  end
+
+
+
 end

@@ -147,6 +147,7 @@ GEM
       rspec-core (~> 2.12.0)
       rspec-expectations (~> 2.12.0)
       rspec-mocks (~> 2.12.0)
+    ruby-progressbar (1.0.2)
     sass (3.2.5)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
@@ -193,6 +194,7 @@ DEPENDENCIES
   rb-fsevent
   rb-inotify
   rspec-rails
+  ruby-progressbar (~> 1.0.2)
   sass (~> 3.2.1)
   sass-rails (~> 3.2.3)
   thin (~> 1.3)
