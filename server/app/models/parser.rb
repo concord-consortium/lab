@@ -65,7 +65,7 @@ class Parser
 
   private 
   def verbose?
-    true unless (ENV['RAILS_ENV'] == 'test')
+    true unless (Rails.env == 'test')
   end
 
   def make_progressbar(label,collection)
