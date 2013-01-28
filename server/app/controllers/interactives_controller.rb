@@ -15,9 +15,16 @@ class InteractivesController < ApplicationController
   def create
     @interactive = Interactive.new(params[:interactive])
     if @interactive.save
-      render :json => @interactive, :status => :created, :location => @interactive
+      render({
+        :json     => @interactive, 
+        :status   => :created, 
+        :location => interactive_path(@interactive)
+      })
     else
-      render :json => @interactive.errors, :status => :unprocessable_entity
+      render({
+        :json => @interactive.errors, 
+        :status => :unprocessable_entity
+      })
     end
   end
 
