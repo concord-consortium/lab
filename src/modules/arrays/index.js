@@ -95,16 +95,16 @@ define(function (require, exports, module) {
     }
 
     switch(source.constructor) {
-      case Array: return Array;
-      case Float32Array: return Float32Array;
-      case Uint8Array: return Uint8Array;
-      case Float64Array: return Float64Array;
-      case Int32Array: return Int32Array;
-      case Int16Array: return Int16Array;
-      case Int8Array: return Int8Array;
-      case Uint32Array: return Uint32Array;
-      case Uint16Array: return Uint16Array;
-      case Uint8ClampedArray: return Uint8ClampedArray;
+      case window.Array:             return Array;
+      case window.Float32Array:      return Float32Array;
+      case window.Uint8Array:        return Uint8Array;
+      case window.Float64Array:      return Float64Array;
+      case window.Int32Array:        return Int32Array;
+      case window.Int16Array:        return Int16Array;
+      case window.Int8Array:         return Int8Array;
+      case window.Uint32Array:       return Uint32Array;
+      case window.Uint16Array:       return Uint16Array;
+      case window.Uint8ClampedArray: return Uint8ClampedArray;
       default:
         throw new Error(
             "arrays.constructor_function: must be an Array or Typed Array: " + "  source: " + source);
@@ -284,16 +284,16 @@ define(function (require, exports, module) {
       return false;
     }
     switch(object.constructor) {
-      case Array:
-      case Float32Array:
-      case Float64Array:
-      case Uint8Array:
-      case Uint16Array:
-      case Uint32Array:
-      case Uint8ClampedArray:
-      case Int8Array:
-      case Int16Array:
-      case Int32Array:
+      case window.Array:
+      case window.Float32Array:
+      case window.Float64Array:
+      case window.Uint8Array:
+      case window.Uint16Array:
+      case window.Uint32Array:
+      case window.Uint8ClampedArray:
+      case window.Int8Array:
+      case window.Int16Array:
+      case window.Int32Array:
         return true;
       default:
         return false;
