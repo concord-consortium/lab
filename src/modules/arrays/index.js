@@ -280,11 +280,23 @@ define(function (require, exports, module) {
   };
 
   arrays.isArray = function (object) {
-    try {
-      arrays.constructor_function(object);
-      return true;
-    } catch (e) {
+    if (object === undefined || object === null) {
       return false;
+    }
+    switch(object.constructor) {
+      case Array:
+      case Float32Array:
+      case Float64Array:
+      case Uint8Array:
+      case Uint16Array:
+      case Uint32Array:
+      case Uint8ClampedArray:
+      case Int8Array:
+      case Int16Array:
+      case Int32Array:
+        return true;
+      default:
+        return false;
     }
   };
 
