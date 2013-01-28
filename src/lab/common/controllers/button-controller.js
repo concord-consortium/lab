@@ -27,7 +27,7 @@ define(function () {
       serialize: function () {
         // Return the initial component definition.
         // Button doesn't have any state, which can be changed.
-        return component;
+        return $.extend(true, {}, component);
       }
     };
     // Return Public API object.

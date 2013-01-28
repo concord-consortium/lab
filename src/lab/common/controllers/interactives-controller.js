@@ -33,9 +33,9 @@ define(function (require) {
       // the InteractiveController follows this convention.
       //
       // The instantiated component should provide following interface:
-      // # serialize()           - function returning a JSON object, which represents current
-      //                           state of the component. When component doesn't change its
-      //                           state, it should just return the initial component definition.
+      // # serialize()           - function returning a JSON object, which represents current state
+      //                           of the component. When component doesn't change its state,
+      //                           it should just return a copy (!) of the initial component definition.
       // # getViewContainer()    - function returning a jQuery object containing
       //                           DOM elements of the component.
       // # modelLoadedCallback() - optional function taking no arguments, a callback
