@@ -525,7 +525,7 @@ var ROOT = "/examples",
     if(onFullPage()) {
       // set keyboard focus on MD2D view
       // FIXME: generalize when multiple model types implemented
-      controller.modelController.moleculeContainer.setFocus();
+      controller.modelController.modelContainer.setFocus();
       $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
       // $selectIframeSize.attr('disabled', 'disabled');
       setupCodeEditor();

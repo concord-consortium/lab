@@ -7,7 +7,7 @@ define(function(require) {
       console              = require('common/console'),
       md2d                 = require('md2d/models/engine/md2d'),
       metadata             = require('md2d/models/metadata'),
-      TickHistory          = require('md2d/models/tick-history'),
+      TickHistory          = require('common/models/tick-history'),
       RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
       Solvent              = require('cs!md2d/models/solvent'),
       serialize            = require('common/serialize'),

@@ -27,7 +27,7 @@ define(function (require) {
         DISULPHIDE_BOND : 109
       };
 
-  return function MoleculeContainer(e, modelUrl, model) {
+  return function ModelContainer(e, modelUrl, model) {
         // Public API object to be returned.
     var api = {},
         elem = d3.select(e),
@@ -482,7 +482,7 @@ define(function (require) {
               return "url(#pos-grad)";
             return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
           default:
-            throw new Error("MoleculeContainer: unknown amino acid color scheme.");
+            throw new Error("ModelContainer: unknown amino acid color scheme.");
         }
     }
 

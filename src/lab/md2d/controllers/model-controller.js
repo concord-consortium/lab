@@ -12,7 +12,7 @@
 define(function (require) {
   // Dependencies.
   var Model             = require('md2d/models/modeler'),
-      MoleculeContainer = require('md2d/views/molecule-container'),
+      ModelContainer    = require('md2d/views/molecule-container'),
       ModelPlayer       = require('cs!common/components/model_player'),
       Benchmarks        = require('md2d/benchmarks/benchmarks');
 
@@ -28,7 +28,7 @@ define(function (require) {
 
         benchmarks,
 
-        moleculeContainer,
+        modelContainer,
 
         // We pass this object to the "ModelPlayer" to intercept messages for the model
         // instead of allowing the ModelPlayer to talk to the model directly.
@@ -68,7 +68,7 @@ define(function (require) {
       //
       // ------------------------------------------------------------
       function tickHandler() {
-        moleculeContainer.updateDrawablePositions();
+        modelContainer.updateDrawablePositions();
       }
 
 
@@ -110,7 +110,7 @@ define(function (require) {
 
       // ------------------------------------------------------------
       //
-      //   MD2D Benchmarks Setup
+      //   Benchmarks Setup
       //
 
       function setupBenchmarks() {
@@ -119,7 +119,7 @@ define(function (require) {
 
       // ------------------------------------------------------------
       //
-      //   Molecular Model Setup
+      //   Model Setup
       //
 
       function setupModel() {
@@ -147,18 +147,18 @@ define(function (require) {
         model_player.forward = function() {
           model.stepForward();
           if (!model.isNewStep()) {
-            moleculeContainer.updateDrawablePositions();
+            modelContainer.updateDrawablePositions();
           }
         },
         model_player.back = function() {
           model.stepBack();
-          moleculeContainer.updateDrawablePositions();
+          modelContainer.updateDrawablePositions();
         },
 
-        moleculeContainer = new MoleculeContainer(moleculeViewId, modelUrl, model);
+        modelContainer = new ModelContainer(moleculeViewId, modelUrl, model);
 
-        moleculeContainer.updateMoleculeRadius();
-        moleculeContainer.setupDrawables();
+        modelContainer.updateMoleculeRadius();
+        modelContainer.setupDrawables();
       }
 
       function resetModelPlayer() {
@@ -168,9 +168,9 @@ define(function (require) {
         // reset player and container view for model
         //
         // ------------------------------------------------------------
-        moleculeContainer.reset(modelUrl, model);
-        moleculeContainer.updateMoleculeRadius();
-        moleculeContainer.setupDrawables();
+        modelContainer.reset(modelUrl, model);
+        modelContainer.updateMoleculeRadius();
+        modelContainer.setupDrawables();
       }
 
       /**
@@ -188,7 +188,7 @@ define(function (require) {
       }
 
       function repaint() {
-        moleculeContainer.setupDrawables();
+        modelContainer.setupDrawables();
       }
 
       function state() {
@@ -228,9 +228,10 @@ define(function (require) {
 
       controller.reload = reload;
       controller.repaint = repaint;
-      controller.moleculeContainer = moleculeContainer;
+      controller.modelContainer = modelContainer;
       controller.state = state;
       controller.benchmarks = benchmarks;
+      controller.type = "md2d";
 
       return controller;
   };

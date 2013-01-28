@@ -42,7 +42,7 @@ define(function (require) {
           start = +Date.now();
           i = -1;
           while (i++ < 100) {
-            controller.moleculeContainer.updateDrawablePositions();
+            controller.modelContainers.updateDrawablePositions();
           }
           elapsed = Date.now() - start;
           done(100/elapsed*1000);

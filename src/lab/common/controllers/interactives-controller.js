@@ -196,7 +196,8 @@ define(function (require) {
       that depend on the model's properties, then draw the screen.
     */
     function modelLoaded() {
-      var i, listener;
+      var i, listener,
+          modelType = controller.getModelController().type;
 
       setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
@@ -209,9 +210,13 @@ define(function (require) {
       }
 
       // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model, modelController.moleculeContainer, controller);
+      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
 
-      layout.addView('moleculeContainers', modelController.moleculeContainer);
+      switch(modelType) {
+        case "md2d":
+        layout.addView('modelContainers', modelController.modelContainer);
+        break;
+      }
 
       // Note that in the code below we assume that there is only ONE instance of each component.
       // This is not very generic, but the only supported scenario by the current layout system.
