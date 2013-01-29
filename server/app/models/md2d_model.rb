@@ -1,8 +1,8 @@
-class Md2dModel < CouchRest::Model::Base
+class Md2dModel < BaseDataObject
   # attr_accessor :casted_by
 
   property :name,                 String
-
+  property :url,                  String
   property :temperature,          Float
   property :coulomb_forces,       Float
   property :epsilon,              Float
@@ -20,5 +20,7 @@ class Md2dModel < CouchRest::Model::Base
     view :by_name
     view :by_id
   end
+
+  alternate_id :url
 
 end
