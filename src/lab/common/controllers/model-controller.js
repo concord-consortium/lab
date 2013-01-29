@@ -12,12 +12,9 @@
 define(function (require) {
   // Dependencies.
   var arrays            = require('arrays'),
-      Model             = require('md2d/models/modeler'),
-      ModelContainer    = require('md2d/views/molecule-container'),
-      ModelPlayer       = require('cs!common/components/model_player'),
-      Benchmarks        = require('md2d/benchmarks/benchmarks');
+      ModelPlayer       = require('cs!common/components/model_player');
 
-  return function modelController(moleculeViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig) {
+  return function modelController(modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, Model, ModelContainer, Benchmarks) {
     var controller = {},
 
         // event dispatcher
@@ -165,9 +162,7 @@ define(function (require) {
           modelContainer.updateDrawablePositions();
         },
 
-        modelContainer = new ModelContainer(moleculeViewId, modelUrl, model);
-
-        modelContainer.updateMoleculeRadius();
+        modelContainer = new ModelContainer(modelViewId, modelUrl, model);
         modelContainer.setupDrawables();
       }
 
@@ -241,7 +236,7 @@ define(function (require) {
       controller.modelContainer = modelContainer;
       controller.state = state;
       controller.benchmarks = benchmarks;
-      controller.type = "md2d";
+      controller.type = Model.type;
 
       return controller;
   };

@@ -18,6 +18,10 @@ define(function(require) {
       _ = require('underscore');
 
   return function Model(initialProperties) {
+
+    // all models created with this constructor will be of type: "md2d"
+    this.constructor.type = "md2d";
+
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",

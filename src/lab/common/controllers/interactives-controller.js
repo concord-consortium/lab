@@ -18,7 +18,7 @@ define(function (require) {
       layout                  = require('common/layout/layout'),
       setupInteractiveLayout  = require('common/layout/interactive-layout'),
 
-      MD2DModelController     = require('md2d/controllers/model-controller'),
+      MD2DModelController     = require('md2d/controllers/controller'),
       MD2DScriptingAPI        = require('md2d/controllers/scripting-api'),
 
       // Set of available components.
