@@ -2,7 +2,8 @@
 
 define(function (require) {
   // Dependencies.
-  var BarGraphController      = require('common/controllers/bar-graph-controller'),
+  var arrays                  = require('arrays'),
+      BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
       DgExportController      = require('common/controllers/dg-export-controller'),
       ScriptingAPI            = require('common/controllers/scripting-api'),
@@ -70,6 +71,9 @@ define(function (require) {
 
         // Simple list of instantiated components.
         componentList = [],
+
+        // List of custom parameters which are used by the interactive.
+        customParameters = [],
 
         // API for scripts defined in the interactive JSON file.
         scriptingAPI,
@@ -463,15 +467,15 @@ define(function (require) {
     function setupCustomParameters(modelParameters, interactiveParameters) {
       if (!modelParameters && !interactiveParameters) return;
 
-      var i,
-          parameter,
-          // append modelParameters second so they're processed later (and override entries of the
-          // same name in interactiveParameters)
-          parameters = (interactiveParameters || []).concat(modelParameters || []),
-          initialValues = {};
+      var initialValues = {},
+          i, parameter;
 
-      for (i = 0; i < parameters.length; i++) {
-        parameter = parameters[i];
+      // append modelParameters second so they're processed later (and override entries of the
+      // same name in interactiveParameters)
+      customParameters = (interactiveParameters || []).concat(modelParameters || []);
+
+      for (i = 0; i < customParameters.length; i++) {
+        parameter = customParameters[i];
         model.defineParameter(parameter.name, {
           label: parameter.label,
           units: parameter.units
@@ -503,16 +507,39 @@ define(function (require) {
         e.g. JSON.stringify(interactiveController.serialize());
       */
       serialize: function () {
-        var result, i, len;
+        var result, i, len, param, val;
+
+        // This is the tricky part.
+        // Basically, parameters can be defined in two places - in model definition object or just as a top-level
+        // property of the interactive definition. 'customParameters' list contains references to all parameters
+        // currently used by the interactive, no matter where they were specified. So, it's enough to process
+        // and update only these parameters. Because of that, later we can easily serialize interactive definition
+        // with updated values and avoid deciding whether this parameter is defined in 'models' section
+        // or top-level 'parameters' section. It will be updated anyway.
+        if (model !== undefined && model.get !== undefined) {
+          for (i = 0, len = customParameters.length; i < len; i++) {
+            param = customParameters[i];
+            val = model.get(param.name);
+            if (val !== undefined) {
+              customParameters[i].initialValue = val;
+            }
+          }
+        }
 
         // Copy basic properties from the initial definition, as they are immutable.
         result = {
           title: interactive.title,
           publicationStatus: interactive.publicationStatus,
           subtitle: interactive.subtitle,
-          about: interactive.about,
-          // Copy array, not only reference.
-          models: $.extend(true, [], interactive.models)
+          about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
+          // Node that models section can also contain custom parameters definition. However, their initial values
+          // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
+          models: $.extend(true, [], interactive.models),
+          // All used parameters are already updated, they contain currently used values.
+          parameters: $.extend(true, [], interactive.parameters),
+          // Outputs are directly bound to the model, we can copy their initial definitions.
+          outputs: $.extend(true, [], interactive.outputs),
+          filteredOutputs: $.extend(true, [], interactive.filteredOutputs)
         };
 
         // Serialize components.
