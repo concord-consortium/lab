@@ -11,7 +11,8 @@
 /*jslint onevar: true*/
 define(function (require) {
   // Dependencies.
-  var Model             = require('md2d/models/modeler'),
+  var arrays            = require('arrays'),
+      Model             = require('md2d/models/modeler'),
       ModelContainer    = require('md2d/views/molecule-container'),
       ModelPlayer       = require('cs!common/components/model_player'),
       Benchmarks        = require('md2d/benchmarks/benchmarks');
@@ -77,7 +78,16 @@ define(function (require) {
           var p;
           for(p in base) {
             if (overlay[p] === undefined) {
-              overlay[p] = base[p];
+              if (arrays.isArray(base[p])) {
+                // Array.
+                overlay[p] = $.extend(true, [], base[p]);
+              } else if (typeof base[p] === "object") {
+                // Object.
+                overlay[p] = $.extend(true, {}, base[p]);
+              } else {
+                // Basic type.
+                overlay[p] = base[p];
+              }
             } else if (typeof overlay[p] === "object" && !(overlay[p] instanceof Array)) {
               overlay[p] = meldOptions(base[p], overlay[p]);
             }
