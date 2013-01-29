@@ -97,6 +97,7 @@ ISImporter.sensors = {
     minReading: -50,
     maxReading: 50,
     samplesPerSecond: 100,
+    downsampleRate: 10,
     maxSeconds: 10
   },
 
@@ -207,6 +208,7 @@ ISImporter.sensors = {
     minReading: -50,
     maxReading: 50,
     samplesPerSecond: 100,
+    downsampleRate: 10,
     maxSeconds: 10
   },
 
@@ -397,7 +399,8 @@ ISImporter.appController = new ISImporter.Object({
       if (self.sensor.tareable) {
         y -= (self.sensor.tareValue || 0);
       }
-      self.dataset.add(y);
+      console.log(y);
+      self.rawDataset.add(y);
     };
 
     this.tareListener = function(y) {
@@ -566,8 +569,25 @@ ISImporter.appController = new ISImporter.Object({
       self.sensorAppletReady();
     });
 
+    this.rawDataset = new ISImporter.Dataset();
+    this.rawDataset.setXIncrement( 1 / (this.sensor.samplesPerSecond || 10));
+
     this.dataset = new ISImporter.Dataset();
-    this.dataset.setXIncrement( 1 / (this.sensor.samplesPerSecond || 10) );
+
+    // Filter the raw dataset
+    this.rawDataset.on('data', (function() {
+      var count = 0,
+          downsampleRate  = self.sensor.downsampleRate || 1,
+          filteredDataset = self.dataset;
+
+      return function(d) {
+        if (count++ % downsampleRate === 0) {
+          filteredDataset.add(d[1]);
+        }
+      };
+    }()));
+
+    this.dataset.setXIncrement( this.rawDataset.getXIncrement() * (this.sensor.downsampleRate || 1) );
 
     this.setupRealtimeDisplay(this.sensor.readingUnits);
 
