@@ -574,9 +574,8 @@ define(function (require) {
         }
     }
 
-    function updateMoleculeRadius() {
+    function updateParticleRadius() {
       vis.selectAll("circle").data(results).attr("r",  function(d) { return nm2px(d.radius); });
-      // vis.selectAll("text").attr("font-size", nm2px(molRadius * 1.3) );
     }
 
     /**
@@ -1132,6 +1131,7 @@ define(function (require) {
       mainContainer.selectAll("g.label").remove();
 
       particle = mainContainer.selectAll("circle").data(results);
+      updateParticleRadius();
 
       particleEnter();
 
@@ -1704,6 +1704,7 @@ define(function (require) {
 
       // Initialize renderers.
       geneticRenderer = new GeneticRenderer(mainContainer, api, model);
+      setupDrawables();
     }
 
     function render() {
@@ -1835,38 +1836,36 @@ define(function (require) {
     }
 
     api = {
-      // Expose private methods.
-      processOptions: processOptions,
-      setupDrawables: setupDrawables,
-      updateMoleculeRadius: updateMoleculeRadius,
-      updateDrawablePositions: updateDrawablePositions,
+      update: updateDrawablePositions,
       scale: scale,
       setFocus: setFocus,
-      redraw: redraw,
       resize: function(w, h) {
         if (model.get("fitToParent")) {
           outerElement.style('width', w+'px');
         } else {
-          api.scale(w, h);
+          scale(w, h);
         }
-        api.processOptions();
+        processOptions();
         init();
-        api.setupDrawables();
+        setupDrawables();
+      },
+      repaint: function() {
+        setupDrawables();
       },
       reset: function(newModelUrl, newModel) {
-        api.processOptions(newModelUrl, newModel);
+        processOptions(newModelUrl, newModel);
         init();
-        api.setupDrawables();
-        api.updateMoleculeRadius();
+        setupDrawables();
+        updateParticleRadius();
       },
-      nm2px: function(val) {
+      model2px: function(val) {
         // Note that we shouldn't just do:
         // api.nm2px = nm2px;
         // as nm2px local variable can be reinitialized
         // many times due container rescaling process.
         return nm2px(val);
       },
-      nm2pxInv: function(val) {
+      model2pxInv: function(val) {
         // See comments for nm2px.
         return nm2pxInv(val);
       }

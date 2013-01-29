@@ -67,7 +67,7 @@ define(function (require) {
       //
       // ------------------------------------------------------------
       function tickHandler() {
-        modelContainer.updateDrawablePositions();
+        modelContainer.update();
       }
 
 
@@ -155,16 +155,15 @@ define(function (require) {
         model_player.forward = function() {
           model.stepForward();
           if (!model.isNewStep()) {
-            modelContainer.updateDrawablePositions();
+            modelContainer.update();
           }
         },
         model_player.back = function() {
           model.stepBack();
-          modelContainer.updateDrawablePositions();
+          modelContainer.update();
         },
 
         modelContainer = new ModelContainer(modelViewId, modelUrl, model);
-        modelContainer.setupDrawables();
       }
 
       function resetModelPlayer() {
@@ -175,8 +174,6 @@ define(function (require) {
         //
         // ------------------------------------------------------------
         modelContainer.reset(modelUrl, model);
-        modelContainer.updateMoleculeRadius();
-        modelContainer.setupDrawables();
       }
 
       /**
@@ -194,7 +191,7 @@ define(function (require) {
       }
 
       function repaint() {
-        modelContainer.setupDrawables();
+        modelContainer.repaint();
       }
 
       function state() {
