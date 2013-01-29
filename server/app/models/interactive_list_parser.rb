@@ -20,9 +20,5 @@ class InteractiveListParser < Parser
     return self
   end
 
-  def save_collections
-    self.groups.each       { |g| g.save}
-    self.interactives.each { |i| i.save}
-    return self
-  end
+
 end

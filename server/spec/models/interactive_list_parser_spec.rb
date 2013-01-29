@@ -38,25 +38,4 @@ describe InteractiveListParser do
     end
   end
 
-  describe "#save_collections" do
-    subject { InteractiveListParser.new }
-    before :each do
-      @mock = mock()
-      @groups       = [@mock,@mock,@mock,@mock]
-      @interactives = [@mock,@mock,@mock]
-    end
-    
-    it "should call save on each group" do
-      @mock.should_receive(:save).exactly(4).times
-      subject.stub!(:groups).and_return(@groups)
-      subject.save_collections
-    end
-    it "should call save on each interactive" do
-      @mock.should_receive(:save).exactly(3).times
-      subject.stub!(:interactives).and_return(@interactives)
-      subject.save_collections
-    end
-
-  end
-
 end

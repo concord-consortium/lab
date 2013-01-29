@@ -42,7 +42,7 @@ namespace :app do
     task :built_interactives => :environment do
       # TODO: Delete them safely first.
       parser = InteractiveListParser.new(File.join(Rails.root,"public","examples","interactives","interactives.json"))
-      parser.parse.save_collections
+      parser.parse
     end
   end
 end
