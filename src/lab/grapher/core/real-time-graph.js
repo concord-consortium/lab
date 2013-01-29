@@ -1058,6 +1058,14 @@ define(function (require) {
       return graph;
     };
 
+    graph.getXDomain = function () {
+      return xScale.domain();
+    };
+
+    graph.getYDomain = function () {
+      return yScale.domain();
+    };
+
     graph.reset = function(id, options, message) {
       if (arguments.length) {
         graph.initialize(id, options, message);
