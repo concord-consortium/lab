@@ -5,18 +5,6 @@ class ViewModel::InteractivePresenter
     self.interactive = _interactive
   end
 
-  def meta_data
-    {
-      'title'             => (self.interactive.send :title),
-      'subtitle'          => (self.interactive.send :subtitle),
-      'publicationStatus' => (self.interactive.send :publicationStatus),
-      'about'             => (self.interactive.send :about),
-      'group_key'         => (self.interactive.send :group_key),
-      'path'              => (self.interactive.send :path),
-      'layout'            => (self.interactive.send :layout)
-    }
-  end
-
 
   def json_listing
     return {
