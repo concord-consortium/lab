@@ -19,8 +19,6 @@ define(function (require) {
       setupInteractiveLayout  = require('common/layout/interactive-layout'),
 
       MD2DModelController     = require('md2d/controllers/controller'),
-      MD2DScriptingAPI        = require('md2d/controllers/scripting-api'),
-
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
       // - Value is a constructor function of the given component.
@@ -141,26 +139,27 @@ define(function (require) {
       }
 
       function finishWithLoadedModel(modelUrl, modelConfig) {
-        // set default model type to "md2d"
-        modelConfig.type = modelConfig.type || "md2d";
         if (modelController) {
           modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
         } else {
-          switch(modelConfig.type) {
-            case "md2d":
-            modelController = new MD2DModelController('#model-container', modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
-            // Extending universal Interactive scriptingAPI with model-specific scripting API
-            scriptingAPI.extend(MD2DScriptingAPI);
-            scriptingAPI.exposeScriptingAPI();
-            break;
-            case "a-different-model-type":
-            break;
-          }
-
-          modelLoaded();
+          createModelController(modelConfig.type, modelUrl, modelConfig);
+          modelLoaded(modelConfig);
           // also be sure to get notified when the underlying model changes
           modelController.on('modelReset', modelLoaded);
           controller.modelController = modelController;
+        }
+      }
+
+      function createModelController(type, modelUrl, modelConfig) {
+        switch(type) {
+          case "md2d":
+          modelController = new MD2DModelController('#model-container', modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
+          break;
+        }
+        // Extending universal Interactive scriptingAPI with model-specific scripting API
+        if (modelController.ScriptingAPI) {
+          scriptingAPI.extend(modelController.ScriptingAPI);
+          scriptingAPI.exposeScriptingAPI();
         }
       }
     }
@@ -219,11 +218,8 @@ define(function (require) {
       // setup messaging with embedding parent window
       parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
 
-      switch(modelType) {
-        case "md2d":
-        layout.addView('modelContainers', modelController.modelContainer);
-        break;
-      }
+      // provide layout with the model view container
+      layout.addView('modelContainers', modelController.modelContainer);
 
       // Note that in the code below we assume that there is only ONE instance of each component.
       // This is not very generic, but the only supported scenario by the current layout system.

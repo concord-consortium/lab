@@ -14,7 +14,8 @@ define(function (require) {
   var arrays            = require('arrays'),
       ModelPlayer       = require('cs!common/components/model_player');
 
-  return function modelController(modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, Model, ModelContainer, Benchmarks) {
+  return function modelController(modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
+                                  Model, ModelContainer, ScripingAPI, Benchmarks) {
     var controller = {},
 
         // event dispatcher
@@ -237,6 +238,7 @@ define(function (require) {
       controller.state = state;
       controller.benchmarks = benchmarks;
       controller.type = Model.type;
+      controller.ScriptingAPI = ScripingAPI;
 
       return controller;
   };
