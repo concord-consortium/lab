@@ -75,6 +75,14 @@ define(function (require) {
 
       getView: function () {
         return thermometerComponent;
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        // Return the initial component definition.
+        // Displayed value is always defined by the model,
+        // so it shouldn't be serialized.
+        return component;
       }
     };
     // Return Public API object.
