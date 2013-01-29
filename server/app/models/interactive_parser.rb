@@ -11,9 +11,9 @@ class InteractiveParser < Parser
       self.uri_helper.set_relative_path(data_hash['path'])
       self.update_from_uri!
     end
-     md_2d_models  = []
-     self.parse_collection('models', md_2d_models, self.md_2d_parser)
-    return Interactive.new(self.data_hash)
+      md_2d_models  = []
+      self.parse_collection('models', md_2d_models, self.md_2d_parser)
+    return Interactive.create_or_update(self.data_hash)
   end
 
 end

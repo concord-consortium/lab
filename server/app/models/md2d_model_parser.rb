@@ -8,10 +8,8 @@ class Md2dModelParser < Parser
     update_db
   end
 
-  def update_db
-    id = self.data_hash['id']
-    found = Md2dModel.find(id) || Md2dModel.create(self.data_hash)
-    found.update(self.data_hash)
+  def update_db 
+    Md2dModel.create_or_update(self.data_hash)
   end
 
   def adapt_url(url)

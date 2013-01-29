@@ -1,5 +1,7 @@
 class GroupParser < Parser
+
   def parse
-    return Group.new(self.data_hash)
+    return Group.create_or_update(self.data_hash)
   end
+
 end
