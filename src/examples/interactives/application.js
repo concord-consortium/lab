@@ -721,7 +721,10 @@ var ROOT = "/examples",
           interactiveState = controller.serialize();
           editor.setValue(JSON.stringify(interactiveState, null, indent));
         } else {
-          // Not implemented yet.
+          iframePhone.post({ type:'getInteractiveState' });
+          iframePhone.addListener('interactiveState', function(message) {
+            editor.setValue(JSON.stringify(message, null, indent));
+          });
         }
       });
 

@@ -36,12 +36,22 @@ define(function(require) {
       }
     });
 
-    // on message 'state' call controller.state
+    // on message 'getModelState' call and return controller.getModelController().state()
     parentMessageController.addListener('getModelState', function(message) {
       if (controller && controller.getModelController) {
         parentMessageController.post({
           type:  'modelState',
           values: controller.getModelController().state()
+        });
+      }
+    });
+
+    // on message 'getInteractiveState' call and return controller.serialize() result
+    parentMessageController.addListener('getInteractiveState', function(message) {
+      if (controller && controller.getModelController) {
+        parentMessageController.post({
+          type:  'interactiveState',
+          values: controller.serialize()
         });
       }
     });
