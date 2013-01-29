@@ -4,13 +4,13 @@ define(function (require) {
 
   return function GeneticRenderer(container, parentView, model) {
     var api,
-        nm2px,
-        nm2pxInv,
+        model2px,
+        model2pxInv,
 
         init = function() {
           // Save shortcuts.
-          nm2px = parentView.nm2px;
-          nm2pxInv = parentView.nm2pxInv;
+          model2px = parentView.model2px;
+          model2pxInv = parentView.model2pxInv;
           // Redraw DNA / mRNA on every genetic properties change.
           model.getGeneticProperties().on("change", api.setup);
         },
@@ -43,7 +43,7 @@ define(function (require) {
               "dy": dy
             })
             .style({
-                "stroke-width": nm2px(0.01),
+                "stroke-width": model2px(0.01),
                 "font-size": fontSize
             });
 
@@ -79,11 +79,11 @@ define(function (require) {
         dnaGElement = container.append("g").attr({
           "class": "dna",
           // (0nm, 0nm) + small, constant offset in px.
-          "transform": "translate(" + nm2px(props.x) + "," + nm2pxInv(props.y) + ")"
+          "transform": "translate(" + model2px(props.x) + "," + model2pxInv(props.y) + ")"
         });
 
-        fontSize = nm2px(props.height);
-        dx = nm2px(props.width);
+        fontSize = model2px(props.height);
+        dx = model2px(props.width);
 
         // DNA code on sense strand.
         renderText(dnaGElement, props.DNA, fontSize, dx, -fontSize);
