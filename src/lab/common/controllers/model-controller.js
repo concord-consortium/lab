@@ -15,7 +15,7 @@ define(function (require) {
       ModelPlayer       = require('cs!common/components/model_player');
 
   return function modelController(modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
-                                  Model, ModelContainer, ScripingAPI, Benchmarks) {
+                                  Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller = {},
 
         // event dispatcher
@@ -235,7 +235,7 @@ define(function (require) {
       controller.state = state;
       controller.benchmarks = benchmarks;
       controller.type = Model.type;
-      controller.ScriptingAPI = ScripingAPI;
+      controller.ScriptingAPI = ScriptingAPI;
 
       return controller;
   };
