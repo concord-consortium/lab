@@ -434,8 +434,11 @@ define(function (require) {
         components[componentJsons[i].id] = component;
       }
 
-      // just use this one for the moment
-      containers = templates.simple;
+      containers = templates[interactive.template];
+
+      if (!containers) {
+        containers = templates.simple;
+      }
 
       // the authored definition of which components go in which container
       layout = interactive.layout;
