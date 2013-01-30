@@ -289,7 +289,7 @@ define(function (require) {
       }
 
       for (viewType in viewLists) {
-        if (viewType === "modelContainers") continue;
+        // if (viewType === "modelContainers") continue;
         if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
           i = -1;  while(++i < viewLists[viewType].length) {
             if (viewSizes[viewType]) {

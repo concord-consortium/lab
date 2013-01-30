@@ -1615,7 +1615,8 @@ define(function (require) {
         // For now (semantic-layout testing) assume all models are "fitToParent"
 
         // if (model.get("fitToParent")) {
-          outerElement.style('width', w+'px');
+          $(outerElement[0][0]).width(w+'px')
+          // outerElement.style('width', w+'px');
         // } else {
           // api.scale(w, h);
         // }
