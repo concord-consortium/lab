@@ -6,7 +6,7 @@ define(function (require) {
   // Dependencies.
   var ModelController   = require("common/controllers/model-controller"),
       Model             = require('md2d/models/modeler'),
-      ModelContainer    = require('md2d/views/molecule-container'),
+      ModelContainer    = require('md2d/views/view'),
       ScriptingAPI      = require('md2d/controllers/scripting-api'),
       Benchmarks        = require('md2d/benchmarks/benchmarks');
 

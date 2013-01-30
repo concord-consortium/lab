@@ -156,7 +156,9 @@ define(function (require) {
       }
 
       function createModelController(type, modelUrl, modelConfig) {
-        switch(type) {
+        // set default model type to "md2d"
+        var modelType = type || "md2d";
+        switch(modelType) {
           case "md2d":
           modelController = new MD2DModelController('#model-container', modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
           break;
