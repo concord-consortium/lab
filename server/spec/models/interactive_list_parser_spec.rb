@@ -1,25 +1,25 @@
 require 'spec_helper'
 
-describe InteractiveListParser do
+describe Parsers::InteractiveList do
   let(:json_filename) {"complete_list.json"            }
   let(:json_uri)      { sample_file_path json_filename }
   let(:sample_json)   { read_sample_file json_filename }
 
   
   describe "#initialize" do
-    subject { InteractiveListParser.new }
+    subject { Parsers::InteractiveList.new }
     context "initial default context" do
       its(:interactives) { should have(0).items } 
       its(:groups)       { should have(0).items }
 
-      its(:group_parser)       { should be GroupParser       }
-      its(:interactive_parser) { should be InteractiveParser }
+      its(:group_parser)       { should be Parsers::Group       }
+      its(:interactive_parser) { should be Parsers::Interactive }
     end
   end
 
   describe "#parse" do
     subject do 
-      parser = InteractiveListParser.new(json_uri)
+      parser = Parsers::InteractiveList.new(json_uri)
       interactive_parser_class = mock(:new => mock(:parse => nil))
       parser.interactive_parser = interactive_parser_class
       parser.parse
@@ -32,8 +32,8 @@ describe InteractiveListParser do
 
     context "a list which is missing interactives" do
       it "should throw an exception" do
-        expect { InteractiveListParser.new(nil,"{}").parse }
-        .to raise_error(ParsingError)
+        expect { Parsers::InteractiveList.new(nil,"{}").parse }
+        .to raise_error(Parsers::ParsingError)
       end
     end
   end

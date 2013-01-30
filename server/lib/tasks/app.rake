@@ -41,7 +41,7 @@ namespace :app do
     desc "import interactives from public/examples/interactives.json"
     task :built_interactives => :environment do
       # TODO: Delete them safely first.
-      parser = InteractiveListParser.new(File.join(Rails.root,"public","examples","interactives","interactives.json"))
+      parser = Parsers::InteractiveList.new(File.join(Rails.root,"public","examples","interactives","interactives.json"))
       parser.parse
     end
   end

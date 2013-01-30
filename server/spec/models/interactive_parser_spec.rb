@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe InteractiveParser do
+describe Parsers::Interactive do
   # let(:meta_data_file) {"one_atom_meta.json"}
   # let(:json_file)      {"one_atom.json"}
 
@@ -10,7 +10,7 @@ describe InteractiveParser do
   # describe "#parse(hash)" do
   #   describe "parsing the meta_data" do
   #     context "using a good definition file" do
-  #       subject { InteractiveParser.new(sample_root).parse(meta_data) }
+  #       subject { Interactive.new(sample_root).parse(meta_data) }
   #       it      { should_not be_nil }
   #       it      { should be_valid   }
   #     end
@@ -29,8 +29,8 @@ describe InteractiveParser do
     it "should have matching interactive hash" do
       interactive_path.should_not be_nil
       interactive_hash.should_not be_nil
-      interactive = InteractiveParser.new(interactive_path).parse()
-      presenter   = ViewModel::InteractivePresenter.new(interactive)
+      interactive = Parsers::Interactive.new(interactive_path).parse()
+      presenter   = Presenters::Interactive.new(interactive)
       interactive_hash['models'].each do |i|
         i['url'].sub!("models/md2d","http://localhost:3000/md2d_models")
       end
