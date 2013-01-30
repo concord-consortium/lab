@@ -353,6 +353,10 @@ define(function (require) {
 
       componentJsons = interactive.components || [];
 
+      // Clear component instances.
+      componentList = [];
+      componentByType = {};
+
       for (i = 0, ii=componentJsons.length; i<ii; i++) {
         component = createComponent(componentJsons[i]);
         // Register component callback if it is available.
