@@ -22,6 +22,8 @@ define(function (require) {
 
       layout                  = require('common/layout/layout'),
       setupInteractiveLayout  = require('common/layout/interactive-layout'),
+      SemanticLayout          = require('common/layout/semantic-layout'),
+      templates               = require('common/layout/templates'),
 
       MD2DModelController     = require('md2d/controllers/controller'),
       // Set of available components.
@@ -91,7 +93,9 @@ define(function (require) {
         // Doesn't currently have any public methods, but probably will.
         parentMessageAPI,
 
-        setupScreenCalledTwice = false;
+        setupScreenCalledTwice = false,
+
+        semanticLayout;
 
 
     function getModel(modelId) {
@@ -143,6 +147,7 @@ define(function (require) {
           modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
 
           finishWithLoadedModel(modelDefinition.url, modelConfig);
+          semanticLayout.positionContainers();
         });
       }
 
@@ -261,8 +266,10 @@ define(function (require) {
           layout.setupScreen();
           setupScreenCalledTwice = true;
         }
-
-        $(window).on('resize', layout.setupScreen);
+        $(window).on('resize', function() {
+          layout.setupScreen();
+          semanticLayout.positionContainers();
+        });
       } else {
         // Render path used in Interactive Browser when the "render in iframe" option is not chosen
         setupInteractiveLayout();
@@ -388,11 +395,10 @@ define(function (require) {
     */
     function loadInteractive(newInteractive, viewSelector) {
       var components = {},
-          componentJsons, component, componentId,
-          divContents, items, div,
-          $top, $right, $rightwide, $bottom, $row,
+          componentJsons, component,
+          containers,
           $exportButton,
-          i, j, len;
+          i, len;
 
       componentCallbacks = [];
 
@@ -401,31 +407,6 @@ define(function (require) {
 
       if (viewSelector) {
         $interactiveContainer = $(viewSelector);
-      }
-      if ($interactiveContainer.children().length === 0) {
-        $top = $('<div class="interactive-top" id="top"/>');
-        $top.append('<div class="interactive-top" id="model-container"/>');
-        if (interactive.layout && interactive.layout.right !== undefined) {
-          $right = $('<div class="interactive-top" id="right"/>');
-          $top.append($right);
-        }
-        if (interactive.layout && interactive.layout.rightwide) {
-          $rightwide = $('<div id="rightwide"/>');
-          $top.append($rightwide);
-        }
-        $interactiveContainer.append($top);
-        $interactiveContainer.append('<div class="interactive-bottom" id="bottom"/>');
-      } else {
-        $bottom = $("#bottom");
-        $right = $("#right");
-        $rightwide = $("#rightwide");
-        $bottom.html('');
-        if ($right) {
-          $right.empty();
-        }
-        if ($rightwide) {
-          $rightwide.empty();
-        }
       }
 
       // Set up the list of possible models.
@@ -453,52 +434,12 @@ define(function (require) {
         components[componentJsons[i].id] = component;
       }
 
-      // look at each div defined in layout, and add any components in that
-      // array to that div. Then rm the component from components so we can
-      // add the remainder to #bottom at the end
-      if (interactive.layout) {
-        for (div in interactive.layout) {
-          if (interactive.layout.hasOwnProperty(div)) {
-            divContents = interactive.layout[div];
-            if (typeof divContents === "string") {
-              // simply add the author-defined html in its entirety
-              $('#'+div).html(divContents);
-            } else {
-              if (Object.prototype.toString.call(divContents[0]) !== "[object Array]") {
-                divContents = [divContents];
-              }
-              for (i = 0; i < divContents.length; i++) {
-                items = divContents[i];
-                $row = $('<div class="interactive-' + div + '-row"/>');
-                $('#'+div).append($row);
-                for (j = 0; j < items.length; j++) {
-                  componentId = items[j];
-                  if (components[componentId]) {
-                    $row.append(components[componentId].getViewContainer());
-                    delete components[componentId];
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+      // just use this one for the moment
+      containers = templates.simple;
 
-      // add the remaining components -- first try to append them to dom elements that
-      // may have been defined by the author, and if that fails, add them to #bottom
-      if ($('#bottom.row').length === 0) {
-        $row = $('<div class="interactive-' + div + '-row"/>');
-        $('#bottom').append($row);
-      }
-      for (componentId in components) {
-        if (components.hasOwnProperty(componentId)) {
-          if ($('#interactive-container #'+componentId).length > 0) {
-            $('#interactive-container #'+componentId).append(components[componentId].getViewContainer());
-          } else {
-            $row.append(components[componentId].getViewContainer());
-          }
-        }
-      }
+      // the authored definition of which components go in which container
+      layout = interactive.layout;
+      semanticLayout = new SemanticLayout($interactiveContainer, containers, components, layout);
 
       // Setup exporter, if any...
       if (interactive.exports) {
@@ -515,6 +456,7 @@ define(function (require) {
         }
       }
 
+      semanticLayout.layoutInteractive();
     }
 
     /**
