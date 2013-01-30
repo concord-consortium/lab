@@ -7,13 +7,13 @@ module Presenters
     end
 
     def json_listing
-      g = self.group
-      { "_id" =>  g.id, 
-        "name" => g.name, 
-        "path" => g.path,
-        "category" => g.category,
-        "location" => json_path
-      }
+      HashProperties.new(self.group).hash_value do |p|
+        p.add('id')
+        p.add('name')
+        p.add('path')
+        p.add('category')
+        p.set('location',self.json_path)
+      end
     end
 
     def json_path

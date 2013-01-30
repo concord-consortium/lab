@@ -7,27 +7,24 @@ module Presenters
     end
 
     def json_listing
-      return {
-        'id'               => self.interactive.id,
-        'name'             => self.interactive.title,
-        'location'         => self.json_path,
-        'sample'           => self.sample_path
-      }
+      HashProperties.new(self.interactive).hash_value do |p|
+        p.add('id')
+        p.add('name','title')
+        p.set('location',self.json_path)
+        p.set('preview',self.preview_path)
+      end
     end
 
     def runtime_properties
-      props = {
-        'title'             => self.interactive.title,
-        'publicationStatus' => self.interactive.publicationStatus,
-        'subtitle'          => self.interactive.subtitle,
-        'about'             => self.interactive.about,
-        'models'            => self.model_summary,
-        'components'        => self.interactive.components,
-        'layout'            => self.interactive.layout
-      }
-      # hacky
-      props.delete('layout') if self.interactive.layout.nil?
-      props
+      HashProperties.new(self.interactive).hash_value do |p|
+        p.add('title')
+        p.add('publicationStatus')
+        p.add('subtitle')
+        p.add('about')
+        p.add('components')        
+        p.add('layout')
+        p.set('models',self.model_summary)
+      end
     end
 
     def model_summary
@@ -40,7 +37,7 @@ module Presenters
       url_helper.interactive_url(self.interactive, :host => self.hostname, :format => :json)
     end
 
-    def sample_path
+    def preview_path
       path = url_helper.interactive_path(self.interactive) 
       "http://#{self.hostname}/examples/interactives/interactives.html##{path}.json" 
     end

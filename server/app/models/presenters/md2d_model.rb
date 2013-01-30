@@ -7,35 +7,43 @@ module Presenters
     end
 
     def json_listing
-      return {
-        'id'               => self.md_2d_model.id,
-        'name'             => self.md_2d_model.name,
-        'location'         => self.json_path
-      }
+      HashProperties.new(self.md_2d_model).hash_value do |p|
+        p.add('id')
+        p.add('name')
+        p.set('type',"md2d")
+        p.set('location', self.json_path)
+      end
     end
 
     def runtime_properties
-      {
-        'name'                 => self.md_2d_model.name,
-        'temperature'          => self.md_2d_model.temperature,
-        'coulomb_forces'       => self.md_2d_model.coulomb_forces,
-        'epsilon'              => self.md_2d_model.epsilon,
-        'sigma'                => self.md_2d_model.sigma,
-        'lennard_jones_forces' => self.md_2d_model.lennard_jones_forces,
-        'temperature_control'  => self.md_2d_model.temperature_control,
-        'atoms'                => self.md_2d_model.atoms,
-        'elements'             => self.md_2d_model.elements,
-        'type'                 => "md2d"
-      }
+      HashProperties.new(self.md_2d_model).hash_value do |p|
+        p.add('name')
+        p.add('temperature')
+        p.add('coulomb_forces')
+        p.add('epsilon')
+        p.add('sigma')
+        p.add('name')
+        p.add('temperature')
+        p.add('coulomb_forces')
+        p.add('epsilon')
+        p.add('sigma')
+        p.add('lennard_jones_forces')
+        p.add('temperature_control')
+        p.add('atoms')
+        p.add('elements')
+        p.add('height')
+        p.add('width')
+        p.set('type','md2d')
+      end
     end
 
     def interactive_properties
-      {
-        "id"          =>  self.md_2d_model.id,
-        "type"        =>  "md2d", 
-        "url"         =>  self.json_path,
-        "viewOptions" =>  self.md_2d_model.viewOptions
-      }
+      HashProperties.new(self.md_2d_model).hash_value do |p|
+        p.add('id')
+        p.add('viewOptions')
+        p.set('type',"md2d")
+        p.set('url', self.json_path)
+      end
     end
 
 
