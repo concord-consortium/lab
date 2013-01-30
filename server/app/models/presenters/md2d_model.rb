@@ -9,7 +9,7 @@ module Presenters
     def json_listing
       return {
         'id'               => self.md_2d_model.id,
-        'name'             => self.md_2d_model.title,
+        'name'             => self.md_2d_model.name,
         'location'         => self.json_path
       }
     end

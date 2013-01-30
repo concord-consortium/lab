@@ -2,15 +2,13 @@ class InteractivesController < ApplicationController
 
   def index
     interactives = Interactive.all.collect do |i| 
-       Presenters::Interactive.new(i).json_listing
+       presenter(i).json_listing
     end
     render :json => interactives
   end
 
   def show
-    interactive  = Interactive.get(params[:id])
-    view_obj     = Presenters::Interactive.new(interactive)
-    render :json => view_obj.runtime_properties
+    render :json => presenter.runtime_properties
   end
 
   def create
@@ -27,6 +25,12 @@ class InteractivesController < ApplicationController
         :status => :unprocessable_entity
       })
     end
+  end
+
+  private 
+  def presenter(model=nil)
+    model ||= Interactive.get(params[:id])
+    Presenters::Interactive.new(model)
   end
 
 end

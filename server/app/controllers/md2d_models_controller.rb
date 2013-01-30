@@ -3,14 +3,12 @@ class Md2dModelsController < ApplicationController
   def index
     @md2d_models = Md2dModel.all
     render :json => @md2d_models.collect { |m|
-      { "_id" => m.id, "name" => m.name, "location" => md2d_models_path(m) }
+      presenter(m).json_listing
     }
   end
 
   def show
-    md2d_model   = Md2dModel.get(params[:id])
-    view_obj     = Presenters::Md2dModel.new(md2d_model)
-    render :json => view_obj.runtime_properties
+    render :json => presenter.runtime_properties
   end
 
   def create
@@ -20,6 +18,13 @@ class Md2dModelsController < ApplicationController
     else
       render :json => @md2d_model.errors, :status => :unprocessable_entity
     end
+  end
+
+  private 
+
+  def presenter(model=nil)
+    model ||= Md2dModel.get(params[:id])
+    Presenters::Md2dModel.new(model)
   end
 
 end

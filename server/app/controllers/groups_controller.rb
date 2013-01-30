@@ -1,20 +1,15 @@
 class GroupsController < ApplicationController
 
   def index
-    @groups = Group.all
-    render :json => @groups.collect { |g|
-      { "_id" =>  g.id, 
-        "name" => g.name, 
-        "path" => g.path,
-        "category" => g.category,
-        "location" => groups_path(g) }
+    render :json => Group.all.map { |g|
+      presenter(g).json_listing
     }
   end
 
   def show
-    @group = Group.get(params[:id])
-    render :json => @group
+    render :json => presenter.json_listing
   end
+
 
   def create
     @group = Group.new(params[:group])
@@ -24,5 +19,12 @@ class GroupsController < ApplicationController
       render :json => @group.errors, :status => :unprocessable_entity
     end
   end
+
+  private 
+  def presenter(model=nil)
+    model ||= Group.get(params[:id])
+    Presenters::Group.new(model)
+  end
+
 
 end
