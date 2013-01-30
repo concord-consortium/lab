@@ -7,6 +7,9 @@ define(function() {
       id: {
         required: true
       },
+      type: {
+        required: true
+      },
       action: {
         required: true
       },
@@ -19,6 +22,9 @@ define(function() {
       id: {
         required: true
       },
+      type: {
+        required: true
+      },
       text: {
         defaultValue: ""
       },
@@ -29,6 +35,12 @@ define(function() {
     },
 
     slider: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
       min: {
         required: true
       },
@@ -51,7 +63,25 @@ define(function() {
     },
 
     pulldown: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      options: {
+        defaultValue: []
+      }
+    },
 
+    pulldownOption: {
+      text: {
+        defaultValue: ""
+      },
+      disabled: {},
+      selected: {},
+      action: {},
+      loadModel: {}
     },
 
     radio: {
