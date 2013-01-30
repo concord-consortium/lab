@@ -34,7 +34,10 @@ gem "couchrest_model", "~> 2.0.0.beta2"
 group :development do
   gem "guard",       "~> 1.6.1"
   gem "guard-rspec", "~> 2.4.0"
-  gem "debugger"
+  gem "pry"
+  gem "pry-nav"
+  gem "pry-stack_explorer"
+  gem "awesome_print"
   # FS Notification libraries for guard (non-polling)
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
