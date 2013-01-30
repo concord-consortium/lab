@@ -1604,33 +1604,10 @@ define(function (require) {
     //
     api = {
       // Expose private methods.
-      processOptions: processOptions,
-      setupDrawables: setupDrawables,
-      updateMoleculeRadius: updateMoleculeRadius,
-      updateDrawablePositions: updateDrawablePositions,
-      scale: scale,
-      setFocus: setFocus,
-      redraw: redraw,
-      resize: function(w, h) {
-        // For now (semantic-layout testing) assume all models are "fitToParent"
-
-        // if (model.get("fitToParent")) {
-          $(outerElement[0][0]).width(w+'px')
-          // outerElement.style('width', w+'px');
-        // } else {
-          // api.scale(w, h);
-        // }
-        api.processOptions();
-        init();
-        api.setupDrawables();
-      },
-      reset: function(newModelUrl, newModel) {
-        api.processOptions(newModelUrl, newModel);
-        init();
-        api.setupDrawables();
-        api.updateMoleculeRadius();
-      },
-      nm2px: function(val) {
+      update: update,
+      repaint: repaint,
+      reset: reset,
+      model2px: function(val) {
         // Note that we shouldn't just do:
         // api.nm2px = nm2px;
         // as nm2px local variable can be reinitialized
