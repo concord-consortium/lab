@@ -17,9 +17,9 @@ module Parsers
     def update_data!(new_datas={})
       case new_datas
       when String 
-        return update_from_json!(new_datas)
+        update_from_json!(new_datas)
       when Hash 
-        return update_from_hash!(new_datas)
+        update_from_hash!(new_datas)
       end
       self.migrate!
       return self
