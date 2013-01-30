@@ -500,7 +500,8 @@ define(function (require) {
       setFocus: setFocus,
       resize: function(w, h) {
         if (model.get("fitToParent")) {
-          outerElement.style('width', w+'px');
+          $(outerElement[0][0]).width(w+'px')
+          // outerElement.style('width', w+'px');
         } else {
           scale(w, h);
         }
