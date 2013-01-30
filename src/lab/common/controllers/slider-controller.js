@@ -2,18 +2,14 @@
 
 define(function () {
 
+  var metadata  = require('common/controllers/components-metadata'),
+      validator = require('common/validator');
+
   return function SliderController(component, scriptingAPI) {
-    var min = component.min,
-        max = component.max,
-        steps = component.steps,
-        action = component.action,
-        propertyName = component.property,
-        initialValue = component.initialValue,
-        title = component.title || "",
-        labels = component.labels || [],
-        displayValue = component.displayValue,
-        i,
-        label,
+    var min, max, steps, propertyName,
+        action, initialValue,
+        title, labels, displayValue,
+        i, label,
         // View elements.
         $elem,
         $title,
@@ -39,6 +35,18 @@ define(function () {
     //
     // Initialize.
     //
+    // Validate component definition, use validated copy of the properties.
+    component = validator.validateCompleteness(metadata.slider, component);
+    min = component.min;
+    max = component.max;
+    steps = component.steps;
+    action = component.action;
+    propertyName = component.property;
+    initialValue = component.initialValue;
+    title = component.title;
+    labels = component.labels;
+    displayValue = component.displayValue;
+
     // Setup view.
     if (min === undefined) min = 0;
     if (max === undefined) max = 10;

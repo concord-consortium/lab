@@ -29,7 +29,25 @@ define(function() {
     },
 
     slider: {
-
+      min: {
+        required: true
+      },
+      max: {
+        required: true
+      },
+      steps: {
+        required: true
+      },
+      title: {
+        defaultValue: ""
+      },
+      labels: {
+        defaultValue: []
+      },
+      displayValue: {},
+      property: {},
+      action: {},
+      initialValue: {}
     },
 
     pulldown: {
