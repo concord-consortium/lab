@@ -102,11 +102,14 @@ define(function (require) {
         cy = height + padding.top + padding.bottom;
       }
       else if (!arguments.length) {
-        cy = elem.property("clientHeight");
-        height = cy - padding.top  - padding.bottom;
-        width = height * aspectRatio;
-        cx = width + padding.left  + padding.right;
-        node.style.width = cx +"px";
+        cx = elem.property("clientWidth");
+        width = cx - padding.left  - padding.right;
+        height = width / aspectRatio;
+        // cy = elem.property("clientHeight");
+        // height = cy - padding.top  - padding.bottom;
+        // width = height * aspectRatio;
+        cy = height + padding.top  + padding.bottom;
+        node.style.height = cy +"px";
       } else {
         width  = w;
         height = h;
