@@ -2,10 +2,13 @@
 
 define(function () {
 
+  var metadata  = require('common/controllers/components-metadata'),
+      validator = require('common/validator');
+
   return function CheckboxController(component, scriptingAPI) {
-    var propertyName  = component.property,
-        onClickScript = component.onClick,
-        initialValue  = component.initialValue,
+    var propertyName,
+        onClickScript,
+        initialValue,
         $checkbox,
         $label,
         controller,
@@ -22,6 +25,12 @@ define(function () {
             $checkbox.attr('checked', false);
           }
         };
+
+    // Validate component definition, use validated copy of the properties.
+    component = validator.validateCompleteness(metadata.checkbox, component);
+    propertyName  = component.property;
+    onClickScript = component.onClick;
+    initialValue  = component.initialValue;
 
     $checkbox = $('<input type="checkbox">').attr('id', component.id);
     $label = $('<label>').append(component.text).append($checkbox);
