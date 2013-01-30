@@ -85,7 +85,25 @@ define(function() {
     },
 
     radio: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      options: {
+        defaultValue: []
+      }
+    },
 
+    radioOption: {
+      text: {
+        defaultValue: ""
+      },
+      disabled: {},
+      selected: {},
+      action: {},
+      loadModel: {}
     },
 
     numericOutput: {

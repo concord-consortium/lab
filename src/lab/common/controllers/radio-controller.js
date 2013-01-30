@@ -2,21 +2,30 @@
 
 define(function () {
 
+  var metadata  = require('common/controllers/components-metadata'),
+      validator = require('common/validator');
+
   return function RadioController(component, scriptingAPI, interactivesController) {
     var $div, $option, $span,
-        options = component.options || [],
-        id = component.id,
         controller,
-        option, i, ii;
+        options, option, i, len;
 
-    $div = $('<div>').attr('id', id);
+    // Validate component definition, use validated copy of the properties.
+    component = validator.validateCompleteness(metadata.radio, component);
+    // Validate radio options too.
+    options = component.options;
+    for (i = 0, len = options.length; i < len; i++) {
+      options[i] = validator.validateCompleteness(metadata.radioOption, options[i]);
+    }
+
+    $div = $('<div>').attr('id', component.id);
     $div.addClass("component");
 
-    for (i=0, ii=options.length; i<ii; i++) {
+    for (i = 0, len = options.length; i < len; i++) {
       option = options[i];
       $option = $('<input>')
         .attr('type', "radio")
-        .attr('name', id);
+        .attr('name', component.id);
       if (option.disabled) {
         $option.attr("disabled", option.disabled);
       }
