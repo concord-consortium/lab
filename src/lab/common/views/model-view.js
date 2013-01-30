@@ -26,12 +26,11 @@ define(function (require) {
         cy = elem.property("clientHeight"),
         width, height,
         emsize,
+        imagePath,
         vis1, vis, plot,
         playbackComponent,
         padding, size, modelSize,
         dragged,
-        dragOrigin,
-        textDragOrigin,
         playbackXPos, playbackYPos,
         timePrefix = "",
         timeSuffix = " (fs)",
@@ -53,9 +52,6 @@ define(function (require) {
         imageContainerTop,
         textContainerBelow,
         textContainerTop,
-
-        // Array which defines a gradient assigned to a given particle.
-        gradientNameForParticle = [],
 
         offsetLeft, offsetTop,
         showClock;

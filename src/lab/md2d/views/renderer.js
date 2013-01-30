@@ -50,9 +50,7 @@ define(function (require) {
 
         emsize,
 
-        dragged,
         dragOrigin,
-        textDragOrigin,
 
         // Renderers specific for MD2D
         // TODO: for now only DNA is rendered in a separate class, try to create
@@ -109,6 +107,7 @@ define(function (require) {
         atomTraceColor,
         atomTrace,
         atomTracePath,
+        showClock,
 
         VELOCITY_STR = "velocity",
         FORCE_STR    = "force";
