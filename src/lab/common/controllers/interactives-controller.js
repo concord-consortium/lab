@@ -3,6 +3,7 @@
 define(function (require) {
   // Dependencies.
   var arrays                  = require('arrays'),
+      alert                   = require('common/alert'),
       BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
       DgExportController      = require('common/controllers/dg-export-controller'),
@@ -171,12 +172,19 @@ define(function (require) {
     function createComponent(component) {
           // Get type of the requested component from JSON definition.
       var type = component.type,
-          // Use an appropriate constructor function and create a new instance of the given type.
-          // Note that we use constant set of parameters for every type:
-          // 1. component definition (exact object from interactive JSON),
-          // 2. scripting API object,
-          // 3. public API of the InteractiveController.
-          comp = new ComponentConstructor[type](component, scriptingAPI, controller);
+          comp;
+
+      try {
+        // Use an appropriate constructor function and create a new instance of the given type.
+        // Note that we use constant set of parameters for every type:
+        // 1. component definition (exact object from interactive JSON),
+        // 2. scripting API object,
+        // 3. public API of the InteractiveController.
+        comp = new ComponentConstructor[type](component, scriptingAPI, controller);
+      } catch (e) {
+        alert("Incorrect " + type + " component definition:\n" + e.message);
+        throw new Error("Incorrect interactive definition");
+      }
 
       // Save the new instance.
       if (componentByType[type] === undefined) {
