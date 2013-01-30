@@ -886,7 +886,7 @@ define(function (require) {
     graph.elem = function(_) {
       if (!arguments.length) return elem;
       elem = d3.select(_);
-      elem.call(graph);
+      graph(elem);
       return graph;
     };
 
@@ -1130,7 +1130,7 @@ define(function (require) {
     };
 
     if (elem) {
-      elem.call(graph);
+      graph(elem);
     }
 
     return graph;
