@@ -10,6 +10,7 @@ define(function (require) {
   return function SemanticLayout($interactiveContainer, containers, $components, componentLocations) {
 
     var layout = {},
+        $modelContainer,
         $containers,
         minLeft, minTop;
 
@@ -35,7 +36,18 @@ define(function (require) {
     function layoutInteractive() {
       var redraws, id, $container;
 
-      $interactiveContainer.empty();
+      $modelContainer = $interactiveContainer.find("#model-container");
+      if ($modelContainer.length) {
+        removeNonModelContainers();
+      } else {
+        $modelContainer = $("<div id='model-container' class='container'>")
+        .css({
+          left: 0,
+          top: 0,
+          width: 50,
+          height: 50,
+        }).appendTo($interactiveContainer);
+      }
 
       createContainers();
       placeComponentsInContainers();
@@ -70,19 +82,22 @@ define(function (require) {
       }
     };
 
+    function removeNonModelContainers() {
+      var children = $interactiveContainer.children(),
+          i, ii;
+      for (i=0, ii=children.length; i<ii; i++) {
+        if (children[i] !== $modelContainer[0]) {
+          children[i].remove();
+        }
+      }
+    };
+
     function createContainers() {
       var colors = ["rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)"],
           container, id, prop, i, ii;
 
       $containers = {};
-
-      $containers.model = $("<div id='model-container' class='container'>");
-      $containers.model.css({
-        left: 0,
-        top: 0,
-        width: 50,
-        height: 50,
-      }).appendTo($interactiveContainer);
+      $containers.model = $modelContainer;
 
       for (i = 0, ii = containers.length; i<ii; i++) {
         container = containers[i];
@@ -198,7 +213,6 @@ define(function (require) {
       var maxX, maxY = maxX = -Infinity,
           id, $container,
           right, bottom,
-          $modelContainer,
           widthOfNonModelContainers,
           heightOfNonModelContainers,
           availableWidth, availableHeight,
@@ -217,8 +231,6 @@ define(function (require) {
           maxY = bottom;
         }
       }
-
-      $modelContainer = $containers.model;
 
       widthOfNonModelContainers  = maxX - $modelContainer.width();
       heightOfNonModelContainers = maxY - $modelContainer.height();
