@@ -2,14 +2,14 @@ class InteractivesController < ApplicationController
 
   def index
     interactives = Interactive.all.collect do |i| 
-       ViewModel::InteractivePresenter.new(i).json_listing
+       Presenters::Interactive.new(i).json_listing
     end
     render :json => interactives
   end
 
   def show
     interactive  = Interactive.get(params[:id])
-    view_obj     = ViewModel::InteractivePresenter.new(interactive)
+    view_obj     = Presenters::Interactive.new(interactive)
     render :json => view_obj.runtime_properties
   end
 
