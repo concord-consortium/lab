@@ -13,7 +13,8 @@ class Md2dModel < BaseDataObject
 
   property :atoms,                Object
   property :elements,             [Object]
-
+  property :viewOptions,          Object
+  
   timestamps!
 
   design do

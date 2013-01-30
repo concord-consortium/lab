@@ -8,8 +8,9 @@ class Md2dModelsController < ApplicationController
   end
 
   def show
-    @md2d_model = Md2dModel.get(params[:id])
-    render :json => @md2d_model
+    md2d_model = Md2dModel.get(params[:id])
+    view_obj     = ViewModel::Md2dModelPresenter.new(md2d_model)
+    render :json => view_obj.runtime_properties
   end
 
   def create

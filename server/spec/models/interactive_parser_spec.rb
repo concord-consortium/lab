@@ -16,4 +16,26 @@ describe InteractiveParser do
   #     end
   #   end
   # end
+
+
+  # TODO: this is a kind of integration test, move it
+  describe "parsing a known interactive" do
+    let(:interactive_file){ "interactives/basic-examples/one-atom.json" }
+    let(:interactive_path){ sample_file_path interactive_file }
+
+    let(:interactive_hash){ JSON.parse(read_sample_file interactive_file) }
+    let(:model_hash)      { JSON.parse(read_sample_file) }
+
+    it "should have matching interactive hash" do
+      interactive_path.should_not be_nil
+      interactive_hash.should_not be_nil
+      interactive = InteractiveParser.new(interactive_path).parse()
+      presenter   = ViewModel::InteractivePresenter.new(interactive)
+      interactive_hash['models'].each do |i|
+        i['url'].sub!("models/md2d","http://localhost:3000/md2d_models")
+      end
+      presenter.runtime_properties.should == interactive_hash
+    end
+  end
+
 end
