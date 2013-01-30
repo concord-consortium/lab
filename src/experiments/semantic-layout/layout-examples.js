@@ -9,14 +9,15 @@ layouts = {
 	    "id": "wide-right",
 	    "left": "model.right",
 	    "height": "model.height",
-	    "padding-left": "1em",
+	    "margin-left": "0.5em",
 	    "components": ["button2", "button3"]
 	  },
 	  {
 	    "id": "bottom",
 	    "top": "model.bottom",
-	    "width": "model.width + wide-right.width",
-	    "padding-top": "1em",
+	    "left": "model.left",
+	    "right": "wide-right.right",
+	    "margin-top": "0.5em",
 	    "components": ["button4"]
 	  }
 	],
@@ -30,15 +31,16 @@ layouts = {
 	    "id": "narrow-right",
 	    "left": "model.right",
 	    "height": "model.height",
-	    "padding-left": "1em",
+	    "margin-left": "0.5em",
 	    "width": "6em",
 	    "components": [["button2"], ["button3"]]
 	  },
 	  {
 	    "id": "bottom",
 	    "top": "model.bottom",
-	    "width": "model.width + narrow-right.width",
-	    "padding-top": "1em",
+	    "left": "model.left",
+	    "right": "narrow-right.right",
+	    "margin-top": "0.5em",
 	    "components": ["button4"]
 	  }
 	],
@@ -52,7 +54,7 @@ layouts = {
 	    "id": "right-top",
 	    "left": "model.right",
 	    "height": "model.height/2",
-	    "padding-left": "1em",
+	    "margin-left": "0.5em",
 	    "components": ["button2"]
 	  },
 		{
@@ -60,14 +62,15 @@ layouts = {
 	    "left": "model.right",
 	    "top": "model.top + model.height/2",
 	    "height": "model.height/2",
-	    "padding-left": "1em",
+	    "margin-left": "0.5em",
 	    "components": ["button3"]
 	  },
 	  {
 	    "id": "bottom",
 	    "top": "model.bottom",
-	    "width": "model.width + right-top.width",
-	    "padding-top": "1em",
+	    "left": "model.left",
+	    "right": "right-bottom.right",
+	    "margin-top": "0.5em",
 	    "components": ["button4"]
 	  }
 	],
@@ -76,22 +79,24 @@ layouts = {
 	    "id": "top",
 	    "bottom": "model.top",
 	    "height": "model.height/3",
-	    "width": "model.width + right.width",
-	    "padding-bottom": "1em",
+	    "left": "model.left",
+	    "right": "right.right",
+	    "margin-bottom": "0.5em",
 	    "components": ["button1"]
 	  },
 		{
 	    "id": "right",
 	    "left": "model.right",
 	    "height": "model.height",
-	    "padding-left": "1em",
+	    "margin-left": "0.5em",
 	    "components": ["button2"]
 	  },
 	  {
 	    "id": "bottom",
 	    "top": "model.bottom",
-	    "width": "model.width + right.width",
-	    "padding-top": "1em",
+	    "left": "model.left",
+	    "right": "right.right",
+	    "margin-top": "0.5em",
 	    "components": ["button4"]
 	  }
 	]

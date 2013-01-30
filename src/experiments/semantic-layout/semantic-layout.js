@@ -11,7 +11,7 @@ var interactiveEditor,
     minTop;
 
 function update() {
-  var redraws = 12, id, $container;
+  var redraws = 5, id, $container;
 
   $interactiveContainer = $("#interactive-container");
   $interactiveContainer.empty();
@@ -79,7 +79,7 @@ function createContainers() {
     // add any padding-* properties directly to the container's style
     for (prop in container) {
       if (!container.hasOwnProperty(prop)) continue;
-      if (/^padding-/.test(prop)) {
+      if (/^margin-/.test(prop)) {
         $containers[id].css(prop, container[prop]);
       }
     }
@@ -152,13 +152,21 @@ function positionContainers() {
     }
     if (container.right) {
       right = parseDimension(container.right);
-      left = right - $container.outerWidth();
-      $container.css("left", left);
+      if (container.left) {
+        $container.css("width", right-left);
+      } else {
+        left = right - $container.outerWidth(true);
+        $container.css("left", left);
+      }
     }
     if (container.bottom) {
       bottom = parseDimension(container.bottom);
-      top = bottom - $container.outerHeight();
-      $container.css("top", top);
+      if (container.top) {
+        $container.css("height", bottom-top);
+      } else {
+        top = bottom - $container.outerHeight(true);
+        $container.css("top", top);
+      }
     }
     $container.css("position", "absolute");
 
@@ -211,13 +219,13 @@ function getDimensionOfContainer($container, dim) {
 
   switch (dim) {
     case "top":
-      return position.top;
+      return position.top + parseInt($container.css("margin-top"), 10);
     case "bottom":
-      return position.top + $container.outerHeight();
+      return position.top + $container.outerHeight(true);
     case "left":
-      return position.left;
+      return position.left + parseInt($container.css("margin-left"), 10);
     case "right":
-      return position.left + $container.outerWidth();
+      return position.left + $container.outerWidth(true);
     case "height":
       return $container.outerHeight();
     case "width":
