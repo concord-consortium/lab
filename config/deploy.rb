@@ -48,10 +48,16 @@ namespace :deploy do
     run "cd /var/www/app; make public"
   end
 
+  desc "import generated model and interactive resources into webapp"
+  task :import_to_webapp do
+    run "cd /var/www/app/server; rake app:import:from_models_in_couchdb"
+  end
+
   desc "clean and update server"
   task :clean_and_update do
     run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
     run "cd /var/www/app; bundle install"
+    run "cd /var/www/app/server; bundle install"
     run "cd /var/www/app; make clean; make"
   end
 
