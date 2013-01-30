@@ -58,7 +58,7 @@ class Parser
         bar.increment
       end
     else
-      raise ParsingError.new("can't find data item in data #{data_label}")
+      raise ParsingError.new("can't find item in #{data_label}")
     end
     collection
   end
