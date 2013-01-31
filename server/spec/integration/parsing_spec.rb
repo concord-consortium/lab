@@ -22,7 +22,6 @@ describe "Round Trip parsing" do
       interactive = Parsers::Interactive.new(interactive_path).parse()
       interactive.md_2d_models.each do |m|
         presenter   = Presenters::Md2dModel.new(m)
-        binding.pry
         presenter.runtime_properties.should == model_hash
       end
     end

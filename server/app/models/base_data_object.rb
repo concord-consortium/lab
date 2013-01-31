@@ -7,6 +7,10 @@ class BaseDataObject < CouchRest::Model::Base
   property :from_import,         TrueClass, :default => true
 
 
+  def self.delete_everything
+    self.database.recreate!
+  end
+
   def self.delete_examples
     self.all.select{ |a| a.from_import?}.each {|i| i.destroy }
   end
