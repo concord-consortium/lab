@@ -12,7 +12,7 @@ define(function() {
       },
 
       publicationStatus: {
-        required: true
+        defaultValue: "public"
       },
 
       subtitle: {
@@ -66,11 +66,18 @@ define(function() {
       onLoad: {},
       // Optional hash of options overwriting model options.
       viewOptions: {},
-      modelOptions: {}
+      modelOptions: {},
+      // Parameters, outputs and filtered outputs can be also specified per model.
+      parameters: {},
+      outputs: {},
+      filteredOutputs: {}
     },
 
     parameter: {
       name: {
+        required: true
+      },
+      initialValue: {
         required: true
       },
       // Optional "onChange" script.
