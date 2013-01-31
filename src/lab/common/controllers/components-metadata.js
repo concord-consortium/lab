@@ -3,6 +3,74 @@
 define(function() {
 
   return {
+    /**
+      Interactive top-level properties:
+    */
+    interactive: {
+      title: {
+        required: true
+      },
+
+      publicationStatus: {
+        required: true
+      },
+
+      subtitle: {
+        defaultValue: ""
+      },
+
+      about: {
+        defaultValue: ""
+      },
+
+      models: {
+        // List of model definitions. Its definition is below ('modelEntry').
+        required: true
+      },
+
+      parameters: {
+        // List of custom parameters.
+        defaultValue: []
+      },
+
+      outputs: {
+        // List of outputs.
+        defaultValue: []
+      },
+
+      filteredOutputs: {
+        // List of filtered outputs.
+        defaultValue: []
+      },
+
+      components: {
+        // List of the interactive components. Their definitions are below ('button', 'checkbox' etc.).
+        defaultValue: []
+      },
+
+      layout: {
+        // Layout definition.
+      }
+    },
+
+    modelEntry: {
+      // Definition of model.
+      id: {
+        required: true
+      },
+      url: {
+        required: true
+      },
+      // Optional "onLoad" script.
+      onLoad: {},
+      // Optional hash of options overwriting model options.
+      viewOptions: {},
+      modelOptions: {}
+    },
+
+    /**
+      Interactive components:
+    */
     button: {
       id: {
         required: true

@@ -4,6 +4,8 @@ define(function (require) {
   // Dependencies.
   var arrays                  = require('arrays'),
       alert                   = require('common/alert'),
+      metadata                = require('common/controllers/components-metadata'),
+      validator               = require('common/validator'),
       BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
       DgExportController      = require('common/controllers/dg-export-controller'),
@@ -310,7 +312,10 @@ define(function (require) {
           i, j, ii;
 
       componentCallbacks = [];
-      interactive = newInteractive;
+
+      // Validate top level interactive properties.
+      interactive = validator.validateCompleteness(metadata.interactive, newInteractive);
+
       if (viewSelector) {
         $interactiveContainer = $(viewSelector);
       }
