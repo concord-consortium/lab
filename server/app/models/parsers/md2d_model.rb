@@ -19,8 +19,9 @@ module Parsers
         self.uri_helper.path = self.uri_helper.path.sub %r{^(.*/public/).*$} do |match|
           "#{$1}#{url}"  
         end
-      else 
-        self.uri_helper.set_relative_path(url)
+      # file-system relative urls from import job:
+      else
+        self.uri_helper.set_relative_path("../../#{url}")
       end
     end
     

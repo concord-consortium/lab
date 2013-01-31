@@ -7,6 +7,8 @@ class Md2dModel < BaseDataObject
   property :coulomb_forces,       Float
   property :epsilon,              Float
   property :sigma,                Float
+  property :height,               Float
+  property :width,                Float
 
   property :lennard_jones_forces, TrueClass
   property :temperature_control,  TrueClass
