@@ -2,11 +2,14 @@
 
 define(function () {
 
+  var metadata  = require('common/controllers/components-metadata'),
+      validator = require('common/validator');
+
   return function NumericOutputController(component, scriptingAPI) {
-    var propertyName = component.property,
-        label = component.label,
-        units = component.units,
-        displayValue = component.displayValue,
+    var propertyName,
+        label,
+        units,
+        displayValue,
         $numericOutput,
         $label,
         $number,
@@ -26,6 +29,13 @@ define(function () {
     //
     // Initialization.
     //
+    // Validate component definition, use validated copy of the properties.
+    component = validator.validateCompleteness(metadata.numericOutput, component);
+    propertyName = component.property;
+    label = component.label;
+    units = component.units;
+    displayValue = component.displayValue;
+
     // Setup view.
     $label  = $('<span class="label"></span>');
     $number = $('<span class="value"></span>');

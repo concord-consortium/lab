@@ -107,11 +107,40 @@ define(function() {
     },
 
     numericOutput: {
-
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      label: {
+        defaultValue: ""
+      },
+      units: {
+        defaultValue: ""
+      },
+      property: {},
+      displayValue: {}
     },
 
     thermometer: {
-
+      min: {
+        required: true
+      },
+      max: {
+        required: true
+      },
+      labelIsReading: {
+        defaultValue: false
+      },
+      reading: {
+        defaultValue: {
+          units: "K",
+          offset: 0,
+          scale: 1,
+          digits: 0
+        }
+      }
     },
 
     graph: {
