@@ -12,11 +12,11 @@ gem "sass",               "~> 3.2.5"
 gem 'bourbon',            "~> 3.0.1"
 gem 'neat',               "~> 1.1.0"
 
-gem "guard",              "~> 1.5.4"
+gem "guard",              "~> 1.6.2"
 gem "guard-haml",         "~> 0.4"
 gem "guard-sass",         "~> 1.0.1"
 gem "guard-shell",        "~> 0.5.1"
-gem "guard-livereload",   "~> 1.1.2"
+gem "guard-livereload",   "~> 1.1.3"
 gem 'guard-coffeescript', "~> 1.2.1"
 gem 'kramdown',           "~> 0.13.6"
 gem 'guard-markdown',     "~> 0.2.0"
@@ -36,8 +36,8 @@ def linux_only(require_as)
 end
 
 group :development do
-  gem 'rb-fsevent', :require => darwin_only('rb-fsevent')
-  gem 'rb-inotify', :require => linux_only('rb-inotify')
+  gem 'rb-fsevent', "~> 0.9.3", :require => darwin_only('rb-fsevent')
+  gem 'rb-inotify', "~> 0.9.0", :require => linux_only('rb-inotify')
 end
 
 # gem 'debugger'
