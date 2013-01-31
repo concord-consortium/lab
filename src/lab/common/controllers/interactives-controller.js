@@ -178,17 +178,12 @@ define(function (require) {
       var type = component.type,
           comp;
 
-      try {
-        // Use an appropriate constructor function and create a new instance of the given type.
-        // Note that we use constant set of parameters for every type:
-        // 1. component definition (exact object from interactive JSON),
-        // 2. scripting API object,
-        // 3. public API of the InteractiveController.
-        comp = new ComponentConstructor[type](component, scriptingAPI, controller);
-      } catch (e) {
-        alert("Incorrect " + type + " component definition:\n" + e.message);
-        throw new Error("Incorrect interactive definition");
-      }
+      // Use an appropriate constructor function and create a new instance of the given type.
+      // Note that we use constant set of parameters for every type:
+      // 1. component definition (exact object from interactive JSON),
+      // 2. scripting API object,
+      // 3. public API of the InteractiveController.
+      comp = new ComponentConstructor[type](component, scriptingAPI, controller);
 
       // Save the new instance.
       if (componentByType[type] === undefined) {
@@ -300,8 +295,7 @@ define(function (require) {
         jQuery selector that finds the element to put the interactive view into
     */
     function loadInteractive(newInteractive, viewSelector) {
-      var model,
-          componentJsons,
+      var componentJsons,
           components = {},
           component,
           divContents,
@@ -309,12 +303,22 @@ define(function (require) {
           div,
           componentId,
           $top, $right, $rightwide, $bottom,
-          i, j, ii;
+          i, j, ii,
+
+          // Just convenient way to end interactive loading and provide meaningful error.
+          interruptLoading = function () {
+            throw new Error("Incorrect interactive definition!");
+          };
 
       componentCallbacks = [];
 
       // Validate top level interactive properties.
-      interactive = validator.validateCompleteness(metadata.interactive, newInteractive);
+      try {
+        interactive = validator.validateCompleteness(metadata.interactive, newInteractive);
+      } catch (e) {
+        alert("Incorrect interactive definition:\n" + e.message);
+        interruptLoading();
+      }
 
       if (viewSelector) {
         $interactiveContainer = $(viewSelector);
@@ -345,30 +349,41 @@ define(function (require) {
         }
       }
 
-      // set up the list of possible models
-      if (interactive.models !== null && interactive.models.length > 0) {
-        models = interactive.models;
+      // Set up the list of possible models.
+      models = interactive.models;
+
+      try {
         for (i=0, ii=models.length; i<ii; i++) {
-          model = models[i];
-          model.id = model.id || "model"+i;
-          modelsHash[model.id] = model;
+          models[i] = validator.validateCompleteness(metadata.modelEntry, models[i]);
+          modelsHash[models[i].id] = models[i];
         }
-        loadModel(models[0].id);
+      } catch (e) {
+        alert("Incorrect model definition:\n" + e.message);
+        interruptLoading();
       }
 
+      // Load first model.
+      loadModel(models[0].id);
+
+      // Prepare interactive components.
       componentJsons = interactive.components || [];
 
       // Clear component instances.
       componentList = [];
       componentByType = {};
 
-      for (i = 0, ii=componentJsons.length; i<ii; i++) {
-        component = createComponent(componentJsons[i]);
-        // Register component callback if it is available.
-        if (component.modelLoadedCallback) {
-          componentCallbacks.push(component.modelLoadedCallback);
+      try {
+        for (i = 0, ii=componentJsons.length; i<ii; i++) {
+          component = createComponent(componentJsons[i]);
+          // Register component callback if it is available.
+          if (component.modelLoadedCallback) {
+            componentCallbacks.push(component.modelLoadedCallback);
+          }
+          components[componentJsons[i].id] = component;
         }
-        components[componentJsons[i].id] = component;
+      } catch (e) {
+        alert("Incorrect " + componentJsons[i].type + " component definition:\n" + e.message);
+        interruptLoading();
       }
 
       // Setup exporter, if any...
