@@ -6,6 +6,8 @@
 define(function (require) {
   var BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
       BarGraphView  = require('grapher/bar-graph/bar-graph-view'),
+      metadata      = require('common/controllers/components-metadata'),
+      validator     = require('common/validator'),
 
       // Note: We always explicitly copy properties from component spec to bar graph options hash,
       // in order to avoid tighly coupling an externally-exposed API (the component spec) to an
@@ -59,15 +61,24 @@ define(function (require) {
     var // Object with Public API.
         controller,
         // Model with options and current value.
-        barGraphModel = new BarGraphModel(filterOptions(component.options)),
+        barGraphModel,
         // Main view.
-        barGraphView  = new BarGraphView({model: barGraphModel, id: component.id}),
+        barGraphView,
         // First data channel.
-        input1 = component.input1,
+        input1,
 
         update = function () {
           barGraphModel.set({value: model.get(input1)});
         };
+
+    //
+    // Initialization.
+    //
+    // Validate component definition, use validated copy of the properties.
+    component = validator.validateCompleteness(metadata.barGraph, component);
+    barGraphModel = new BarGraphModel(filterOptions(component.options));
+    barGraphView  = new BarGraphView({model: barGraphModel, id: component.id});
+    input1 = component.input1;
 
     controller = {
       // This callback should be trigger when model is loaded.

@@ -183,7 +183,46 @@ define(function() {
     },
 
     barGraph: {
-
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      input1: {
+        // Data input.
+        required: true
+      },
+      options: {
+        defaultValue: {
+          // Min value displayed.
+          minValue:  0,
+          // Max value displayed.
+          maxValue:  10,
+          // Graph title.
+          title:     "",
+          // Color of the main bar.
+          barColor:  "green",
+          // Color of the area behind the bar.
+          fillColor: "white",
+          // Color of axis, labels, title.
+          textColor: "#555",
+          // Number of ticks displayed on the axis.
+          // This value is *only* a suggestion. The most clean
+          // and human-readable values are used.
+          ticks:          10,
+          // Number of subdivisions between major ticks.
+          tickSubdivide: 1,
+          // Enables or disables displaying of numerical labels.
+          displayLabels: true,
+          // Format of labels.
+          // See the specification of this format:
+          // https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
+          // or:
+          // http://docs.python.org/release/3.1.3/library/string.html#formatspec
+          labelFormat: "0.1f"
+        }
+      }
     }
   };
 });
