@@ -22,6 +22,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   getComponentSpec = ->
     id: 'graphContainerId'
+    type: 'graph'
     properties: ['potentialEnergy', 'kineticEnergy']
 
   # actual tests

@@ -178,7 +178,7 @@ define(function() {
         defaultValue: 0
       },
       ymax: {
-        defualtValue: 10
+        defaultValue: 10
       }
     },
 
