@@ -396,7 +396,7 @@ define(function (require) {
     function loadInteractive(newInteractive, viewSelector) {
       var components = {},
           componentJsons, component,
-          containers,
+          template,
           $exportButton,
           i, len;
 
@@ -434,15 +434,21 @@ define(function (require) {
         components[componentJsons[i].id] = component;
       }
 
-      containers = templates[interactive.template];
+      if (interactive.template) {
+        if (typeof interactive.template === "string") {
+          template = templates[interactive.template];
+        } else {
+          template = interactive.template;
+        }
+      }
 
-      if (!containers) {
-        containers = templates.simple;
+      if (!template) {
+        template = templates.simple;
       }
 
       // the authored definition of which components go in which container
       layout = interactive.layout;
-      semanticLayout = new SemanticLayout($interactiveContainer, containers, components, layout);
+      semanticLayout = new SemanticLayout($interactiveContainer, template, components, layout);
 
       // Setup exporter, if any...
       if (interactive.exports) {
