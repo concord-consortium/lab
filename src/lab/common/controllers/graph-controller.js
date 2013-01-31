@@ -3,15 +3,8 @@
 
 define(function (require) {
   var RealTimeGraph = require('grapher/core/real-time-graph'),
-      defaults = {
-        title:  "Graph",
-        xlabel: "Model Time (ps)",
-        xmin:   0,
-        xmax:   20,
-        ylabel: "",
-        ymin:   0,
-        ymax:   10
-      },
+      metadata  = require('common/controllers/components-metadata'),
+      validator = require('common/validator'),
 
       // Note: We always explicitly copy properties from component spec to grapher options hash,
       // in order to avoid tighly coupling an externally-exposed API (the component spec) to an
@@ -28,7 +21,7 @@ define(function (require) {
 
   return function graphController(component) {
     var // HTML element containing view
-        $container = $('<div>').attr('id', component.id).addClass('properties-graph'),
+        $container,
         grapher,
         controller,
         properties,
@@ -69,7 +62,7 @@ define(function (require) {
       for (cProp in grapherOptionForComponentSpecProperty) {
         if (grapherOptionForComponentSpecProperty.hasOwnProperty(cProp)) {
           gOption = grapherOptionForComponentSpecProperty[cProp];
-          options[gOption] = (component[cProp] != null) ? component[cProp] : defaults[cProp];
+          options[gOption] = component[cProp];
         }
       }
       return options;
@@ -161,8 +154,14 @@ define(function (require) {
       });
     }
 
+    //
+    // Initialization.
+    //
+    // Validate component definition, use validated copy of the properties.
+    component = validator.validateCompleteness(metadata.graph, component);
     // The list of properties we are being asked to graph.
     properties = component.properties.slice();
+    $container = $('<div>').attr('id', component.id).addClass('properties-graph');
 
     return controller = {
 
@@ -207,7 +206,7 @@ define(function (require) {
             // not grabbed directly from the view as now. Waiting for refactoring.
             xDomain = grapher.getXDomain(),
             yDomain = grapher.getYDomain(),
-            startX  = component.xmin !== undefined ? component.xmin : defaults.xmin;
+            startX  = component.xmin;
 
         result.ymin = yDomain[0];
         result.ymax = yDomain[1];

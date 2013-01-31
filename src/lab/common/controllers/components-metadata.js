@@ -124,6 +124,12 @@ define(function() {
     },
 
     thermometer: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
       min: {
         required: true
       },
@@ -144,7 +150,36 @@ define(function() {
     },
 
     graph: {
-
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      properties: {
+        defaultValue: []
+      },
+      title: {
+        defaultValue: "Graph"
+      },
+      xlabel: {
+        defaultValue: "Model Time (ps)"
+      },
+      xmin: {
+        defaultValue: 0
+      },
+      xmax: {
+        defaultValue: 20
+      },
+      ylabel: {
+        defaultValue: ""
+      },
+      ymin: {
+        defaultValue: 0
+      },
+      ymax: {
+        defualtValue: 10
+      }
     },
 
     barGraph: {
