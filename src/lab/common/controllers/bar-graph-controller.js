@@ -65,10 +65,10 @@ define(function (require) {
         // Main view.
         barGraphView,
         // First data channel.
-        input1,
+        property,
 
         update = function () {
-          barGraphModel.set({value: model.get(input1)});
+          barGraphModel.set({value: model.get(property)});
         };
 
     //
@@ -78,13 +78,13 @@ define(function (require) {
     component = validator.validateCompleteness(metadata.barGraph, component);
     barGraphModel = new BarGraphModel(filterOptions(component.options));
     barGraphView  = new BarGraphView({model: barGraphModel, id: component.id});
-    input1 = component.input1;
+    property = component.property;
 
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
-        if (input1) {
-          model.addPropertiesListener([input1], update);
+        if (property) {
+          model.addPropertiesListener([property], update);
         }
         // Initial render...
         barGraphView.render();

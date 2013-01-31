@@ -189,8 +189,7 @@ define(function() {
       type: {
         required: true
       },
-      input1: {
-        // Data input.
+      property: {
         required: true
       },
       options: {

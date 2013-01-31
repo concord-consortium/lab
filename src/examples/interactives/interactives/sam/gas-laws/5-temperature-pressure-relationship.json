@@ -70,7 +70,7 @@
         "maxValue": 0.8,
         "title": "Pressure (Bar)"
       },
-      "input1": "pressureProbeFiltered"
+      "property": "pressureProbeFiltered"
     }
   ],
   "layout": {
