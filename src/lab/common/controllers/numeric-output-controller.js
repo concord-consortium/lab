@@ -2,7 +2,7 @@
 
 define(function () {
 
-  var metadata  = require('common/controllers/components-metadata'),
+  var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
 
   return function NumericOutputController(component, scriptingAPI) {

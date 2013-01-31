@@ -3,7 +3,7 @@
 define(function (require) {
 
   var Thermometer = require('cs!common/components/thermometer'),
-      metadata  = require('common/controllers/components-metadata'),
+      metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
 
   /**

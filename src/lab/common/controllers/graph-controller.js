@@ -3,7 +3,7 @@
 
 define(function (require) {
   var RealTimeGraph = require('grapher/core/real-time-graph'),
-      metadata  = require('common/controllers/components-metadata'),
+      metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator'),
 
       // Note: We always explicitly copy properties from component spec to grapher options hash,

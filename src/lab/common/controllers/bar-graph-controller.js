@@ -6,7 +6,7 @@
 define(function (require) {
   var BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
       BarGraphView  = require('grapher/bar-graph/bar-graph-view'),
-      metadata      = require('common/controllers/components-metadata'),
+      metadata      = require('common/controllers/interactive-metadata'),
       validator     = require('common/validator'),
 
       // Note: We always explicitly copy properties from component spec to bar graph options hash,

@@ -4,7 +4,7 @@ define(function (require) {
   // Dependencies.
   var arrays                  = require('arrays'),
       alert                   = require('common/alert'),
-      metadata                = require('common/controllers/components-metadata'),
+      metadata                = require('common/controllers/interactive-metadata'),
       validator               = require('common/validator'),
       BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
