@@ -24,7 +24,7 @@ define(function() {
       },
 
       models: {
-        // List of model definitions. Its definition is below ('modelEntry').
+        // List of model definitions. Its definition is below ('model').
         required: true
       },
 
@@ -53,8 +53,9 @@ define(function() {
       }
     },
 
-    modelEntry: {
-      // Definition of model.
+    model: {
+      // Definition of a model. Note that it is *NOT* a physical model options hash.
+      // It includes a URL to physical model options.
       id: {
         required: true
       },
@@ -66,6 +67,50 @@ define(function() {
       // Optional hash of options overwriting model options.
       viewOptions: {},
       modelOptions: {}
+    },
+
+    parameter: {
+      name: {
+        required: true
+      },
+      // Optional "onChange" script.
+      onChange: {},
+      // Optional description.
+      label: {},
+      units: {}
+    },
+
+    output: {
+      name: {
+        required: true
+      },
+      value: {
+        required: true
+      },
+      // Optional description.
+      label: {},
+      units: {}
+    },
+
+    filteredOutput: {
+      name: {
+        required: true
+      },
+      property: {
+        required: true
+      },
+      type: {
+        // For now, only "RunningAverage" is supported.
+        required: true
+      },
+      period: {
+        // Smoothing time period in ps.
+        // e.g. 2500
+        required: true
+      },
+      // Optional description.
+      label: {},
+      units: {}
     },
 
     /**

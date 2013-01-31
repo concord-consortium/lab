@@ -295,15 +295,12 @@ define(function (require) {
         jQuery selector that finds the element to put the interactive view into
     */
     function loadInteractive(newInteractive, viewSelector) {
-      var componentJsons,
-          components = {},
-          component,
-          divContents,
-          $row, items,
-          div,
-          componentId,
-          $top, $right, $rightwide, $bottom,
-          i, j, ii,
+      var components = {},
+          componentJsons, component, componentId,
+          parameters, outputs, filteredOutputs,
+          divContents, items, div,
+          $top, $right, $rightwide, $bottom, $row,
+          i, j, len,
 
           // Just convenient way to end interactive loading and provide meaningful error.
           interruptLoading = function () {
@@ -351,14 +348,43 @@ define(function (require) {
 
       // Set up the list of possible models.
       models = interactive.models;
-
       try {
-        for (i=0, ii=models.length; i<ii; i++) {
-          models[i] = validator.validateCompleteness(metadata.modelEntry, models[i]);
+        for (i = 0, len = models.length; i < len; i++) {
+          models[i] = validator.validateCompleteness(metadata.model, models[i]);
           modelsHash[models[i].id] = models[i];
         }
       } catch (e) {
         alert("Incorrect model definition:\n" + e.message);
+        interruptLoading();
+      }
+
+      parameters = interactive.parameters;
+      try {
+        for (i = 0, len = parameters.length; i < len; i++) {
+          parameters[i] = validator.validateCompleteness(metadata.parameter, parameters[i]);
+        }
+      } catch (e) {
+        alert("Incorrect parameter definition:\n" + e.message);
+        interruptLoading();
+      }
+
+      outputs = interactive.outputs;
+      try {
+        for (i = 0, len = outputs.length; i < len; i++) {
+          outputs[i] = validator.validateCompleteness(metadata.output, outputs[i]);
+        }
+      } catch (e) {
+        alert("Incorrect output definition:\n" + e.message);
+        interruptLoading();
+      }
+
+      filteredOutputs = interactive.filteredOutputs;
+      try {
+        for (i = 0, len = filteredOutputs.length; i < len; i++) {
+          filteredOutputs[i] = validator.validateCompleteness(metadata.filteredOutput, filteredOutputs[i]);
+        }
+      } catch (e) {
+        alert("Incorrect filtered output definition:\n" + e.message);
         interruptLoading();
       }
 
@@ -373,7 +399,7 @@ define(function (require) {
       componentByType = {};
 
       try {
-        for (i = 0, ii=componentJsons.length; i<ii; i++) {
+        for (i = 0, len = componentJsons.length; i < len; i++) {
           component = createComponent(componentJsons[i]);
           // Register component callback if it is available.
           if (component.modelLoadedCallback) {
