@@ -10,6 +10,20 @@ define(function (require) {
     var cx = 600, cy = 300,
         node;
 
+    // FIXME The following two scenarios should result in the same code path being followed:
+    //
+    // (1)
+    //    var g = Graph(); g(d3.select("#graph"));
+    // (2)
+    //    var g = Graph("#graph");
+    //
+    // However, currently, if Graph() is invoked as in (2) then a different path is taken through
+    // scale(), and this appears to affect the path through subsequent code. The proof of this
+    // is that the grapher fails if we move the following if-statement to the end of Graph(),
+    // just before the invocation of graph(elem). Moving the if-statement and invoking
+    // Graph() via (2) should just be the rough equivalent of scenario (1), but apparently, it's not
+    // (or possibly scenario (1) doesn't work.)
+
     if (arguments.length) {
       elem = d3.select(elem);
       node = elem.node();
