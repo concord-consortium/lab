@@ -24,9 +24,12 @@ class BaseDataObject < CouchRest::Model::Base
   end
 
   def self.find_matching(hash_def)
-    return self.find(hash_def['id']) if hash_def['id']
+    found_by_id = self.find(hash_def['id'])
+    return found_by_id unless found_by_id.nil?
+
+    find_key    = hash_def[self.alternate_id_key.to_s]
     find_method = "find_by_#{self.alternate_id_key}".to_sym
-    find_key = hash_def[self.alternate_id_key.to_s]
+      
     if (find_key && self.respond_to?(find_method))
       return self.send(find_method,find_key)
     end
@@ -35,7 +38,7 @@ class BaseDataObject < CouchRest::Model::Base
 
   def self.create_or_update(hash_def)
     found = self.find_matching(hash_def) || self.create(hash_def)
-    found.update(hash_def)
+    found.update_attributes(hash_def)
     return found
   end
 
