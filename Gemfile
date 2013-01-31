@@ -8,8 +8,9 @@ gem "fog",                "~> 1.7.0"
 gem "librarian",          "~> 0.0.26"
 
 gem "haml",               "~> 3.1.7"
-gem "sass",               "~> 3.2.1"
-gem 'bourbon',            "~> 2.1.1"
+gem "sass",               "~> 3.2.5"
+gem 'bourbon',            "~> 3.0.1"
+gem 'neat',               "~> 1.1.0"
 
 gem "guard",              "~> 1.5.4"
 gem "guard-haml",         "~> 0.4"

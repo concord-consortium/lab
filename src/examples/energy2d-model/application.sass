@@ -1,27 +1,26 @@
 $directory: "../.."
 
 @import 'sass/bourbon/bourbon'
+@import 'sass/neat/neat'
 
 #content
   margin-left: 2em
 
-.top
-  @include box
-  margin-top: 0.5em
-
 .component_group
   display: block
 
+.top
+  margin-top: 0.5em
+  @include outer-container
+
 #interactive-description
-  display: inline-box
-  @include box-flex(1)
+  @include span-columns(3, table)
   position: relative
   margin: 0.5em 1.0em
   width: 25em
 
 #interactive-container
-  @include box
-  @include box-orient(vertical)
+  @include span-columns(7, table)
   position: relative
 
 .energy2d-scene-view

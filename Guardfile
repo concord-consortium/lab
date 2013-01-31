@@ -6,7 +6,6 @@ ignore %r{(bin|node_modules)}
 FIRESASS = false
 
 require "./script/setup.rb"
-require './src/sass/bourbon/lib/bourbon.rb'
 
 def command(cmd)
   puts cmd
