@@ -37,7 +37,7 @@ end
 
 group :development do
   gem 'rb-fsevent', "~> 0.9.3", :require => darwin_only('rb-fsevent')
-  gem 'rb-inotify', "~> 0.9.0", :require => linux_only('rb-inotify')
+  gem 'rb-inotify', "~> 0.8.8", :require => linux_only('rb-inotify')
 end
 
 # gem 'debugger'
