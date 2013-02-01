@@ -20,7 +20,7 @@ class Md2dModelsController < ApplicationController
     end
   end
 
-  private 
+  private
 
   def presenter(model=nil)
     model ||= Md2dModel.get(params[:id])

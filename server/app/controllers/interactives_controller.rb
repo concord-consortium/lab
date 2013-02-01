@@ -1,7 +1,7 @@
 class InteractivesController < ApplicationController
 
   def index
-    interactives = Interactive.all.collect do |i| 
+    interactives = Interactive.all.collect do |i|
        presenter(i).json_listing
     end
     render :json => interactives
@@ -15,19 +15,19 @@ class InteractivesController < ApplicationController
     @interactive = Interactive.new(params[:interactive])
     if @interactive.save
       render({
-        :json     => @interactive, 
-        :status   => :created, 
+        :json     => @interactive,
+        :status   => :created,
         :location => interactive_path(@interactive)
       })
     else
       render({
-        :json => @interactive.errors, 
+        :json => @interactive.errors,
         :status => :unprocessable_entity
       })
     end
   end
 
-  private 
+  private
   def presenter(model=nil)
     model ||= Interactive.get(params[:id])
     Presenters::Interactive.new(model)

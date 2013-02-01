@@ -9,7 +9,7 @@ class Interactive < BaseDataObject
   property :about,               String
 
   property :layout,              Object
-  
+
   # collections
   property :components,         [Object]
   collection_of :md_2d_models
@@ -23,5 +23,5 @@ class Interactive < BaseDataObject
   end
 
   alternate_id :path
-  
+
 end

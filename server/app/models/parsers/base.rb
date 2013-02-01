@@ -4,21 +4,21 @@ module Parsers
   class Base
     attr_accessor :data_hash
     attr_accessor :uri_helper
-    
+
     def initialize(uri=Dir.pwd,data={})
       self.data_hash = {}
       self.update_data!(data)
       self.uri_helper = UriHelper.from_def(uri)
     end
-   
+
      # TODO: transform hash-structure based on version info
     def migrate!; end
 
     def update_data!(new_datas={})
       case new_datas
-      when String 
+      when String
         update_from_json!(new_datas)
-      when Hash 
+      when Hash
         update_from_hash!(new_datas)
       end
       self.migrate!
@@ -49,12 +49,12 @@ module Parsers
     def parse
       return data_hash
     end
-    
+
     def parse_collection(data_label, collection, parser)
       hashes     = self.data_hash[data_label]
       if hashes
         bar = make_progressbar(data_label,hashes)
-        hashes.each do |hash_data| 
+        hashes.each do |hash_data|
           collection << parser.new(self.uri_helper,hash_data).parse
           bar.increment
         end
@@ -64,7 +64,7 @@ module Parsers
       collection
     end
 
-    private 
+    private
     def verbose?
       true unless (Rails.env == 'test')
     end
@@ -72,8 +72,8 @@ module Parsers
     def make_progressbar(label,collection)
       if verbose?
         return ProgressBar.create(
-          :title       => "creating #{collection.size} #{label}", 
-          :starting_at => 0, 
+          :title       => "creating #{collection.size} #{label}",
+          :starting_at => 0,
           :total       => collection.size)
       else
         silent_result = Object.new

@@ -20,7 +20,7 @@ class GroupsController < ApplicationController
     end
   end
 
-  private 
+  private
   def presenter(model=nil)
     model ||= Group.get(params[:id])
     Presenters::Group.new(model)

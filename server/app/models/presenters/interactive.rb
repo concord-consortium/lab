@@ -1,7 +1,7 @@
 module Presenters
   class Interactive < Base
     attr_accessor :interactive
-    
+
     def initialize(_interactive)
       self.interactive = _interactive
     end
@@ -21,14 +21,14 @@ module Presenters
         p.add('publicationStatus')
         p.add('subtitle')
         p.add('about')
-        p.add('components')        
+        p.add('components')
         p.add('layout')
         p.set('models',self.model_summary)
       end
     end
 
     def model_summary
-      self.interactive.md_2d_models.map do |m| 
+      self.interactive.md_2d_models.map do |m|
         Presenters::Md2dModel.new(m).interactive_properties
       end
     end
@@ -38,8 +38,8 @@ module Presenters
     end
 
     def preview_path
-      path = url_helper.interactive_path(self.interactive) 
-      "http://#{self.hostname}/examples/interactives/interactives.html##{path}.json" 
+      path = url_helper.interactive_path(self.interactive)
+      "http://#{self.hostname}/examples/interactives/interactives.html##{path}.json"
     end
   end
 end

@@ -6,7 +6,7 @@ module Parsers
       super(uri,data)
       self.md_2d_parser  = Parsers::Md2dModel
     end
-    
+
     def parse(meta_data_hash={})
       if (self.data_hash['path'])
         self.uri_helper.set_relative_path(data_hash['path'])

@@ -1,7 +1,7 @@
 module Presenters
   class Group < Base
     attr_accessor :group
-    
+
     def initialize(_group)
       self.group = _group
     end

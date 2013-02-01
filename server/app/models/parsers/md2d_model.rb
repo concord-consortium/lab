@@ -9,7 +9,7 @@ module Parsers
       update_db
     end
 
-    def update_db 
+    def update_db
       ::Md2dModel.create_or_update(self.data_hash)
     end
 
@@ -17,13 +17,13 @@ module Parsers
       # HACK: re-write paths with regex, mostly for parsing from FS :/
       if (url.match %r{^/})
         self.uri_helper.path = self.uri_helper.path.sub %r{^(.*/public/).*$} do |match|
-          "#{$1}#{url}"  
+          "#{$1}#{url}"
         end
       # file-system relative urls from import job:
       else
         self.uri_helper.set_relative_path("../../#{url}")
       end
     end
-    
+
   end
 end

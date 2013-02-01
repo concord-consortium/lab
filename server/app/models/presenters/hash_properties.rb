@@ -3,7 +3,7 @@ module Presenters
     attr_accessor :model
     attr_accessor :data_hash
 
-    def initialize(_model) 
+    def initialize(_model)
       self.data_hash = {}
       self.model = _model
     end

@@ -6,7 +6,7 @@ class Group < BaseDataObject
   property :category,   String
 
   alternate_id :path
-  
+
   timestamps!
 
   design do
