@@ -4,19 +4,35 @@ module Models
 
     property :name,                 String
     property :url,                  String
-    property :temperature,          Float
-    property :coulomb_forces,       Float
-    property :epsilon,              Float
-    property :sigma,                Float
-    property :height,               Float
-    property :width,                Float
 
-    property :lennard_jones_forces, TrueClass
-    property :temperature_control,  TrueClass
+    # these are all in the generated models
+    property :height,                           Float
+    property :width,                            Float
+    property :lennard_jones_forces,             TrueClass
+    property :coulomb_forces,                   TrueClass
+    property :temperature_control,              TrueClass
+    property :gravitationalField,               Float
+    property :timeStep,                         Float
+    property :dielectricConstant,               TrueClass
+    property :realisticDielectricEffect,        TrueClass
+    property :solventForceFactor,               Float
+    property :solventForceType,                 Float
+    property :additionalSolventForceThreshold,  Float
+    property :polarAAEpsilon,                   Float
+    property :viscosity,                        Float
+    property :viewRefreshInterval,              Float
 
-    property :atoms,                Object
-    property :elements,             Object
-    property :viewOptions,          Object
+    # these are all objects in the generated models
+    property :viewOptions,                      Object
+    property :pairwiseLJProperties,             Object
+    property :elements,                         Object
+    property :atoms,                            Object
+    property :obstacles,                        Object
+    property :radialBonds,                      Object
+    property :angularBonds,                     Object
+    property :restraints,                       Object
+    property :geneticProperties,                Object
+    property :textBoxes,                        Object
 
     timestamps!
 

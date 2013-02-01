@@ -19,22 +19,37 @@ module Presenters
       def runtime_properties
         HashProperties.new(self.md2d).hash_value do |p|
           p.add('name')
-          p.add('temperature')
-          p.add('coulomb_forces')
-          p.add('epsilon')
-          p.add('sigma')
-          p.add('name')
-          p.add('temperature')
-          p.add('coulomb_forces')
-          p.add('epsilon')
-          p.add('sigma')
-          p.add('lennard_jones_forces')
-          p.add('temperature_control')
-          p.add('atoms')
-          p.add('elements')
+
+          # these are all in the generated models
+          p.set('type','md2d')
           p.add('height')
           p.add('width')
-          p.set('type','md2d')
+          p.add('lennard_jones_forces')
+          p.add('coulomb_forces')
+          p.add('temperature_control')
+          p.add('gravitationalField')
+          p.add('timeStep')
+          p.add('dielectricConstant')
+          p.add('realisticDielectricEffect')
+          p.add('solventForceFactor')
+          p.add('solventForceType')
+          p.add('additionalSolventForceThreshold')
+          p.add('polarAAEpsilon')
+          p.add('viscosity')
+          p.add('viewRefreshInterval')
+
+          # these are all objects in the generated models
+          p.add('viewOptions')
+          p.add('pairwiseLJProperties')
+          p.add('elements')
+          p.add('atoms')
+          p.add('radialBonds')
+          p.add('angularBonds')
+          p.add('obstacles')
+          p.add('restraints')
+          p.add('geneticProperties')
+          p.add('textBoxes')
+
         end
       end
 
