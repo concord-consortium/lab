@@ -50,7 +50,8 @@ namespace :deploy do
 
   desc "import generated model and interactive resources into webapp"
   task :import_to_webapp do
-    run "cd /var/www/app/server; bundle exec rake app:import:built_interactives "
+    run "cd /var/www/app/server; bundle exec rake app:import:built_interactives"
+    run "touch /var/www/app/server/tmp/restart.txt"
   end
 
   desc "clean and update server"
