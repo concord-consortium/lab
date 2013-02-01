@@ -1,4 +1,4 @@
-/*global Lab _ $ d3 CodeMirror controllers model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
+/*global Lab _ $ d3 CodeMirror controllers alert model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -703,7 +703,12 @@ var ROOT = "/examples",
     if (!buttonHandlersAdded) {
       buttonHandlersAdded = true;
       $updateInteractiveButton.on('click', function() {
-        interactive = JSON.parse(editor.getValue());
+        try {
+          interactive = JSON.parse(editor.getValue());
+        } catch (e) {
+          alert("Interactive JSON syntax error: " + e.message);
+          throw new Error("Interactive JSON syntax error: " + e.message);
+        }
         if(onFullPage()) {
           controller.loadInteractive(interactive, '#interactive-container');
         } else {
@@ -759,7 +764,12 @@ var ROOT = "/examples",
       if (!modelButtonHandlersAdded) {
         modelButtonHandlersAdded = true;
         $updateModelButton.on('click', function() {
-          md2dModel = JSON.parse(modelEditor.getValue());
+          try {
+            md2dModel = JSON.parse(modelEditor.getValue());
+          } catch (e) {
+            alert("Model JSON syntax error: " + e.message);
+            throw new Error("Model JSON syntax error: " + e.message);
+          }
           if(onFullPage()) {
             controller.loadModel(interactive.models[0].id, md2dModel);
           } else {
