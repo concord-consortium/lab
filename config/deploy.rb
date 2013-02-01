@@ -49,7 +49,7 @@ namespace :deploy do
   end
 
   desc "import generated model and interactive resources into webapp"
-  task :import_to_webapp do
+  task :built_interactives do
     run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
     run "cd /var/www/app; make"
     run "cd /var/www/app/server; bundle exec rake app:import:built_interactives"
