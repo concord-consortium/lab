@@ -1,0 +1,8 @@
+# Edit this file to set hostnames for development and
+# production environments and save as settings.yml.
+
+development:
+  :hostname: localhost:3000
+
+production:
+  :hostname: lab.concord.org

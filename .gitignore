@@ -21,3 +21,4 @@ npm-debug.log
 **/couchdb.stdout
 /config/deploy
 src/experiments/inquiry-space-importer/reference/Importer.js
+server/config/settings.yml
