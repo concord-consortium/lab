@@ -3,7 +3,7 @@ module Presenters
     attr_accessor :interactive
 
     def hostname
-      "localhost:3000"
+      Rails.application.routes.default_url_options[:host]
     end
 
     def url_helper
