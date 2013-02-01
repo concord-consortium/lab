@@ -7,7 +7,11 @@ App::Application.routes.draw do
     "#{host}:5984/_utils/"
   }
 
-  resources :md2d_models
+  namespace :models do
+    resources :md2ds
+  end
+
+  # resources :md2d_models
   resources :interactives
   resources :groups
 

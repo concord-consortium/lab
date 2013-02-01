@@ -1,10 +1,10 @@
 module Parsers
   class Interactive < Base
-    attr_accessor :md_2d_parser
+    attr_accessor :md2d_parser
 
     def initialize(uri=Dir.pwd, data={})
       super(uri,data)
-      self.md_2d_parser  = Parsers::Md2dModel
+      self.md2d_parser  = Parsers::Models::Md2d
     end
 
     def parse(meta_data_hash={})
@@ -17,9 +17,9 @@ module Parsers
     end
 
     def add_models
-      md_2d_models  = []
-      self.parse_collection('models', md_2d_models, self.md_2d_parser)
-      self.data_hash['md_2d_model_ids'] = md_2d_models.map { |m| m.id }
+      md2ds  = []
+      self.parse_collection('models', md2ds, self.md2d_parser)
+      self.data_hash['md2d_ids'] = md2ds.map { |m| m.id }
     end
 
   end

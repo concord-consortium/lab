@@ -41,6 +41,9 @@ namespace :app do
     desc "import interactives from public/examples/interactives.json"
     task :built_interactives => :environment do
       # TODO: Delete them safely first.
+      # db_output = CouchRest.database("http://127.0.0.1:5984/lab_development")
+      # db_output.recreate!
+      # this worked ... but I'm not sure it's correct .. seb
       parser = Parsers::InteractiveList.new(File.join(Rails.root,"public","examples","interactives","interactives.json"))
       parser.parse
     end

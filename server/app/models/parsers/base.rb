@@ -1,4 +1,3 @@
-
 module Parsers
   class ParsingError < StandardError; end
   class Base

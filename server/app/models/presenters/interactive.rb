@@ -28,8 +28,8 @@ module Presenters
     end
 
     def model_summary
-      self.interactive.md_2d_models.map do |m|
-        Presenters::Md2dModel.new(m).interactive_properties
+      self.interactive.md2ds.map do |m|
+        Presenters::Models::Md2d.new(m).interactive_properties
       end
     end
 

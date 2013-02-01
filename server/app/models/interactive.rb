@@ -12,7 +12,7 @@ class Interactive < BaseDataObject
 
   # collections
   property :components,         [Object]
-  collection_of :md_2d_models
+  collection_of :md2ds, :class_name => "Models::Md2d"
 
   timestamps!
 
