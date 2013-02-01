@@ -52,7 +52,7 @@ namespace :deploy do
   task :built_interactives do
     run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
     run "cd /var/www/app; make"
-    run "cd /var/www/app/server; bundle exec rake app:import:built_interactives"
+    run "cd /var/www/app/server; RAILS_ENV=production bundle exec rake app:import:built_interactives"
     run "touch /var/www/app/server/tmp/restart.txt"
   end
 
