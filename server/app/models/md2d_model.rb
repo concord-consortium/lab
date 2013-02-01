@@ -14,9 +14,9 @@ class Md2dModel < BaseDataObject
   property :temperature_control,  TrueClass
 
   property :atoms,                Object
-  property :elements,             [Object]
+  property :elements,             Object
   property :viewOptions,          Object
-  
+
   timestamps!
 
   design do
