@@ -11,9 +11,19 @@ module Parsers
       if (self.data_hash['path'])
         self.uri_helper.set_relative_path(data_hash['path'])
       end
+      self.generate_couch_doc_id(self.data_hash['path'])
       self.update_from_uri!
       self.add_models
-      interactive = ::Interactive.create_or_update(self.data_hash)
+      ::Interactive.create_or_update(self.data_hash)
+    end
+
+
+    def generate_couch_doc_id(url)
+      return if url.blank?
+      return unless self.data_hash['id'].blank?
+      # no slashes alowed, no $ and dont start with _
+      url = url.gsub("/","_").gsub('$','_').gsub(/^_/,"")
+      self.data_hash['id'] = url.gsub(".json","")
     end
 
     def add_models
