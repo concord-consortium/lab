@@ -6,31 +6,31 @@ define(function (require) {
   var dgExporter = require('common/dg-exporter');
 
   return function dgExportController(spec) {
-    var parameters = spec.parameters.slice(),
-        outputs    = ['timeInPs'].concat(spec.outputs.slice()),
-        outputValues,
+    var perRun  = spec.perRun.slice(),
+        perTick = ['timeInPs'].concat(spec.perTick.slice()),
+        perTickValues,
         controller;
 
     function getDataPoint() {
       var ret = [], i, len;
 
-      for (i = 0, len = outputs.length; i < len; i++) {
-        ret.push(model.get(outputs[i]));
+      for (i = 0, len = perTick.length; i < len; i++) {
+        ret.push(model.get(perTick[i]));
       }
       return ret;
     }
 
     function resetData() {
-      outputValues = [getDataPoint()];
+      perTickValues = [getDataPoint()];
     }
 
     function appendDataPoint() {
-      outputValues.push(getDataPoint());
+      perTickValues.push(getDataPoint());
     }
 
     function removeDataAfterStepPointer() {
       // Account for initial data, which corresponds to stepCounter == 0
-      outputValues.length = model.stepCounter() + 1;
+      perTickValues.length = model.stepCounter() + 1;
     }
 
     function registerModelListeners() {
@@ -69,26 +69,32 @@ define(function (require) {
           return model.get('time')/1000;
         });
 
+        // put per-run parameters before per-run outputs
+        function is(type) {
+          return function(p) { return model.getPropertyType(p) === type; };
+        }
+        perRun = perRun.filter(is('parameter')).concat(perRun.filter(is('output')));
+
         resetData();
         registerModelListeners();
       },
 
       exportData: function() {
-        var parameterLabels = [],
-            parameterValues = [],
-            outputLabels = [],
+        var perRunPropertyLabels = [],
+            perRunPropertyValues = [],
+            perTickLabels = [],
             i;
 
-        for (i = 0; i < parameters.length; i++) {
-          parameterLabels[i] = getLabelForProperty(parameters[i]);
-          parameterValues[i] = model.get(parameters[i]);
+        for (i = 0; i < perRun.length; i++) {
+          perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
+          perRunPropertyValues[i] = model.get(perRun[i]);
         }
 
-        for (i = 0; i < outputs.length; i++) {
-          outputLabels[i] = getLabelForProperty(outputs[i]);
+        for (i = 0; i < perTick.length; i++) {
+          perTickLabels[i] = getLabelForProperty(perTick[i]);
         }
 
-        dgExporter.exportData(parameterLabels, parameterValues, outputLabels, outputValues);
+        dgExporter.exportData(perRunPropertyLabels, perRunPropertyValues, perTickLabels, perTickValues);
       }
     };
   };

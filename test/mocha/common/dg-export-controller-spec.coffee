@@ -3,8 +3,8 @@ helpers.setupBrowserEnvironment()
 
 exportsSpec =
   {
-    "outputs": ["dummyOutput1", "dummyOutput2"]
-    "parameters": ["dummyParameter1", "dummyParameter2"]
+    "perRun": ["perRunParam", "perRunOutput"]
+    "perTick": ["perTickOutput", "perTickParam"]
   }
 
 helpers.withIsolatedRequireJS (requirejs) ->
@@ -28,29 +28,29 @@ helpers.withIsolatedRequireJS (requirejs) ->
           timeStep: 1000
           viewRefreshInterval: 1
 
-        model.defineOutput 'dummyOutput1', {
-          label: "dummy output 1"
+        model.defineOutput 'perRunOutput', {
+          label: "per-run output"
           units: "units 1"
         }, -> 1 + model.get 'time'
 
-        model.defineOutput 'dummyOutput2', {
-          label: "dummy output 2"
+        model.defineOutput 'perTickOutput', {
+          label: "per-tick output"
           units: "units 2"
         }, -> 2 + model.get 'time'
 
-        model.defineParameter 'dummyParameter1', {
-          label: "dummy parameter 1",
+        model.defineParameter 'perRunParam', {
+          label: "per-run parameter",
           units: "units 3"
         }, -> null
 
-        model.defineParameter 'dummyParameter2', {
-          label: "dummy parameter 2",
+        model.defineParameter 'perTickParam', {
+          label: "per-tick parameter",
           units: "units 4"
         }, -> null
 
         model.set
-          dummyParameter1: 10
-          dummyParameter2: 20
+          perRunParam: 10
+          perTickParam: 20
 
         dgExporter.exportData.reset()
         dgExportController = new DgExportController exportsSpec
@@ -67,20 +67,41 @@ helpers.withIsolatedRequireJS (requirejs) ->
           dgExporter.exportData.callCount.should.equal 1
 
         describe "the first argument", ->
-          it "should be a list of the exported parameters' names and units", ->
-            call.args[0].should.eql ["dummy parameter 1 (units 3)", "dummy parameter 2 (units 4)"]
+          it "should be a list of the per-run parameters followed by the per-run outputs, including labels and units", ->
+            call.args[0].should.eql ["per-run parameter (units 3)", "per-run output (units 1)"]
 
         describe "the second argument", ->
-          it "should be a list of exported parameters' values", ->
-            call.args[1].should.eql [10, 20]
+          it "should be a list of per-run parameters and outputs' values", ->
+            call.args[1].should.eql [10, 1]
 
         describe "the third argument", ->
-          it "should be a list containing \"Time (ps)\", followed by the exported outputs' names and units", ->
-            call.args[2].should.eql ["Time (ps)", "dummy output 1 (units 1)", "dummy output 2 (units 2)"]
+          it "should be a list containing \"Time (ps)\", followed by per-tick parameters and outputs, including labels and units", ->
+            call.args[2].should.eql ["Time (ps)", "per-tick output (units 2)", "per-tick parameter (units 4)"]
 
         describe "the fourth argument", ->
-          it "should be a list of lists containing the model time, plus the output's values", ->
-            call.args[3].should.eql [[0, 1, 2]]
+          it "should be a list of lists containing the model time, plus the per-tick values", ->
+            call.args[3].should.eql [[0, 2, 20]]
+
+      describe "regardless of the ordering in the 'perRun' section of the 'exports' spec", ->
+        call = null
+        beforeEach ->
+          exportsSpecReversed =
+            {
+              "perRun": ["perRunOutput", "perRunParam"]
+              "perTick": ["perTickParam", "perTickOutput"]
+            }
+          dgExportController = new DgExportController exportsSpecReversed
+          dgExportController.modelLoadedCallback()
+          dgExportController.exportData()
+
+          call = dgExporter.exportData.getCall 0
+
+        it "should export per-run parameters before per-run outputs", ->
+          call.args[0].should.eql ["per-run parameter (units 3)", "per-run output (units 1)"]
+
+        it "should continue to export per-tick parameters and outputs in the order listed in the 'perTick' section", ->
+          call.args[2].should.eql ["Time (ps)", "per-tick parameter (units 4)", "per-tick output (units 2)"]
+          call.args[3].should.eql [[0, 20, 2]]
 
       describe "effect of stepping model forward/back/etc", ->
 
