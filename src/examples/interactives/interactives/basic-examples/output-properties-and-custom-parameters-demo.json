@@ -194,12 +194,6 @@
       "property": "keShading"
     },
     {
-      "type": "button",
-      "id": "export",
-      "text": "Export to DataGames",
-      "action": "exportData();"
-    },
-    {
       "type": "graph",
       "id": "propertiesGraph",
       "title": "Energy vs. starting gravity and starting length",
@@ -229,8 +223,7 @@
         "kinetic-energy1",
         "current-angle-slider",
         "current-angle-output1",
-        "current-angle-output2",
-        "export"
+        "current-angle-output2"
       ]
     ]
   }
