@@ -4,6 +4,7 @@ module Models
 
     property :name,                 String
     property :url,                  String
+    property :local_ref_id,         String
 
     # these are all in the generated models
     property :height,                           Float

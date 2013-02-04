@@ -55,7 +55,7 @@ module Presenters
 
       def interactive_properties
         HashProperties.new(self.md2d).hash_value do |p|
-          p.add('id')
+          p.add('id', 'local_ref_id')
           p.add('viewOptions')
           p.set('type',"md2d")
           p.set('url', self.json_path)
