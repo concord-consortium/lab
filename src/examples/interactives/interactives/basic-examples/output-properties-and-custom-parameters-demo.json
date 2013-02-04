@@ -63,8 +63,8 @@
     }
   ],
   "exports": {
-    "parameters": ["startingGravity", "startingLength", "startingAngle", "ballMass", "ballFriction"],
-    "outputs": ["currentAngle", "kineticEnergy"]
+    "perRun": ["startingGravity", "startingLength", "startingAngle", "ballMass", "ballFriction"],
+    "perTick": ["currentAngle", "kineticEnergy"]
   },
   "components": [
     {
