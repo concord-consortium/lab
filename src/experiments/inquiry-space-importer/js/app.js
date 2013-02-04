@@ -65,6 +65,7 @@ ISImporter.sensors = {
     readingUnits: "°C",
     maxReading: 40,
     samplesPerSecond: 10,
+    downsampleRate: 10,
     maxSeconds: 20
   },
 
@@ -114,6 +115,7 @@ ISImporter.sensors = {
     minReading: 0,
     maxReading: 14,
     samplesPerSecond: 10,
+    downsampleRate: 10,
     maxSeconds: 60
   },
 
@@ -176,6 +178,7 @@ ISImporter.sensors = {
     readingUnits: "°C",
     maxReading: 40,
     samplesPerSecond: 10,
+    downsampleRate: 10,
     maxSeconds: 20
   },
 
@@ -225,6 +228,7 @@ ISImporter.sensors = {
     minReading: 0,
     maxReading: 14,
     samplesPerSecond: 10,
+    downsampleRate: 10,
     maxSeconds: 60
   },
 
