@@ -298,6 +298,7 @@ define(function (require) {
       var components = {},
           componentJsons, component, componentId,
           parameters, outputs, filteredOutputs,
+          exports,
           divContents, items, div,
           $top, $right, $rightwide, $bottom, $row,
           i, j, len,
@@ -414,7 +415,8 @@ define(function (require) {
 
       // Setup exporter, if any...
       if (interactive.exports) {
-        dgExportController = new DgExportController(interactive.exports);
+        exports = validator.validateCompleteness(metadata.exports, interactive.exports);
+        dgExportController = new DgExportController(exports);
         // componentCallbacks is just a list of callbacks to make when model loads; it should
         // perhaps be renamed.
         componentCallbacks.push(dgExportController.modelLoadedCallback);

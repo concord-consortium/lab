@@ -6,7 +6,7 @@ define(function (require) {
   var dgExporter = require('common/dg-exporter');
 
   return function dgExportController(spec) {
-    var perRun  = spec.perRun.slice(),
+    var perRun  = (spec.perRun || []).slice(),
         perTick = ['timeInPs'].concat(spec.perTick.slice()),
         perTickValues,
         controller;

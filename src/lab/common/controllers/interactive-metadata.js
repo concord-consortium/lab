@@ -43,6 +43,10 @@ define(function() {
         defaultValue: []
       },
 
+      exports: {
+        required: false
+      },
+
       components: {
         // List of the interactive components. Their definitions are below ('button', 'checkbox' etc.).
         defaultValue: []
@@ -118,6 +122,16 @@ define(function() {
       // Optional description.
       label: {},
       units: {}
+    },
+
+    exports: {
+      perRun: {
+        required: false,
+        defaultValue: []
+      },
+      perTick: {
+        required: true
+      }
     },
 
     /**
