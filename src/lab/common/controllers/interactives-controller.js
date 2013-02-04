@@ -301,6 +301,7 @@ define(function (require) {
           exports,
           divContents, items, div,
           $top, $right, $rightwide, $bottom, $row,
+          $exportButton,
           i, j, len,
 
           // Just convenient way to end interactive loading and provide meaningful error.
@@ -413,15 +414,6 @@ define(function (require) {
         interruptLoading();
       }
 
-      // Setup exporter, if any...
-      if (interactive.exports) {
-        exports = validator.validateCompleteness(metadata.exports, interactive.exports);
-        dgExportController = new DgExportController(exports);
-        // componentCallbacks is just a list of callbacks to make when model loads; it should
-        // perhaps be renamed.
-        componentCallbacks.push(dgExportController.modelLoadedCallback);
-      }
-
       // look at each div defined in layout, and add any components in that
       // array to that div. Then rm the component from components so we can
       // add the remainder to #bottom at the end
@@ -466,6 +458,22 @@ define(function (require) {
           } else {
             $row.append(components[componentId].getViewContainer());
           }
+        }
+      }
+
+      // Setup exporter, if any...
+      if (interactive.exports) {
+        exports = validator.validateCompleteness(metadata.exports, interactive.exports);
+        dgExportController = new DgExportController(exports);
+        componentCallbacks.push(dgExportController.modelLoadedCallback);
+
+        if (DgExportController.isExportAvailable()) {
+          $exportButton = $("<button>")
+                            .attr('id', 'export-data')
+                            .addClass('component')
+                            .html("Analyze Data")
+                            .on('click', function() { dgExportController.exportData(); })
+                            .appendTo($('#bottom'));
         }
       }
 

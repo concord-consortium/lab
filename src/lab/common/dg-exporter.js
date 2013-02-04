@@ -21,8 +21,17 @@ define(function(require) {
       }
     },
 
+    isDgGameControllerDefined: function() {
+      return !!(window.parent && window.parent.DG && window.parent.DG.currGameController);
+    },
+
+    // Synonym...
+    isExportAvailable: function() {
+      return this.isDgGameControllerDefined();
+    },
+
     getDGGameController: function() {
-      if (!(window.parent) || (!window.parent.DG)) {
+      if (!this.isDgGameControllerDefined()) {
         return this.mockDGController;
       }
       return window.parent.DG.currGameController;

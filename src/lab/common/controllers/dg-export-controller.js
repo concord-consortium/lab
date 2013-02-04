@@ -5,7 +5,7 @@ define(function (require) {
 
   var dgExporter = require('common/dg-exporter');
 
-  return function dgExportController(spec) {
+  var DgExportController = function dgExportController(spec) {
     var perRun  = (spec.perRun || []).slice(),
         perTick = ['timeInPs'].concat(spec.perTick.slice()),
         perTickValues,
@@ -60,6 +60,7 @@ define(function (require) {
     }
 
     return controller = {
+
       modelLoadedCallback: function() {
         // Show time in picoseconds by default b/c ps are the time unit used by the standard graph.
         model.defineOutput('timeInPs', {
@@ -98,4 +99,12 @@ define(function (require) {
       }
     };
   };
+
+  // "Class method" (want to be able to call this before instantiating)
+  // Do we have a sink
+  DgExportController.isExportAvailable = function() {
+    return dgExporter.isExportAvailable();
+  };
+
+  return DgExportController;
 });
