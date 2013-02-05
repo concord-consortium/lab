@@ -14,12 +14,12 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   requirejs.define 'common/dg-exporter', [], -> dgExporter
 
-  requirejs ['md2d/models/modeler', 'common/controllers/dg-export-controller'], (Model, DgExportController) ->
+  requirejs ['md2d/models/modeler', 'common/controllers/export-controller'], (Model, ExportController) ->
 
-    describe "DataGames export controller", ->
-      dgExportController = null
+    describe "Export controller", ->
+      exportController = null
       beforeEach ->
-        # TODO pass model as first parameter to DgExportController ... not yet
+        # TODO pass model as first parameter to ExportController ... not yet
         # b/c we're focused on writing tests for existing implementation.
         global.model = new Model {}
 
@@ -53,14 +53,14 @@ helpers.withIsolatedRequireJS (requirejs) ->
           perTickParam: 20
 
         dgExporter.exportData.reset()
-        dgExportController = new DgExportController exportsSpec
-        dgExportController.modelLoadedCallback()
+        exportController = new ExportController exportsSpec
+        exportController.modelLoadedCallback()
 
 
       describe "when exportData is called", ->
         call = null
         beforeEach ->
-          dgExportController.exportData()
+          exportController.exportData()
           call = dgExporter.exportData.getCall 0
 
         it "should call dgExporter.exportData()", ->
@@ -90,9 +90,9 @@ helpers.withIsolatedRequireJS (requirejs) ->
               "perRun": ["perRunOutput", "perRunParam"]
               "perTick": ["perTickParam", "perTickOutput"]
             }
-          dgExportController = new DgExportController exportsSpecReversed
-          dgExportController.modelLoadedCallback()
-          dgExportController.exportData()
+          exportController = new ExportController exportsSpecReversed
+          exportController.modelLoadedCallback()
+          exportController.exportData()
 
           call = dgExporter.exportData.getCall 0
 
@@ -106,7 +106,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
       describe "effect of stepping model forward/back/etc", ->
 
         exportedTimePoints = ->
-          dgExportController.exportData()
+          exportController.exportData()
           call = dgExporter.exportData.getCall 0
           args = call.args[3]
           args.map (dataPoint) -> dataPoint[0]

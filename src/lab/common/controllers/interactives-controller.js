@@ -8,7 +8,7 @@ define(function (require) {
       validator               = require('common/validator'),
       BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
-      DgExportController      = require('common/controllers/dg-export-controller'),
+      ExportController        = require('common/controllers/export-controller'),
       ScriptingAPI            = require('common/controllers/scripting-api'),
       ButtonController        = require('common/controllers/button-controller'),
       CheckboxController      = require('common/controllers/checkbox-controller'),
@@ -85,7 +85,7 @@ define(function (require) {
         modelScriptingAPI,
 
         // Handles exporting data to DataGames, if 'exports' are specified.
-        dgExportController,
+        exportController,
 
         // Doesn't currently have any public methods, but probably will.
         parentMessageAPI,
@@ -464,15 +464,15 @@ define(function (require) {
       // Setup exporter, if any...
       if (interactive.exports) {
         exports = validator.validateCompleteness(metadata.exports, interactive.exports);
-        dgExportController = new DgExportController(exports);
-        componentCallbacks.push(dgExportController.modelLoadedCallback);
+        exportController = new ExportController(exports);
+        componentCallbacks.push(exportController.modelLoadedCallback);
 
-        if (DgExportController.isExportAvailable()) {
+        if (ExportController.isExportAvailable()) {
           $exportButton = $("<button>")
                             .attr('id', 'export-data')
                             .addClass('component')
                             .html("Analyze Data")
-                            .on('click', function() { dgExportController.exportData(); })
+                            .on('click', function() { exportController.exportData(); })
                             .appendTo($('#bottom'));
         }
       }
@@ -564,7 +564,7 @@ define(function (require) {
     //
     controller = {
       getDGExportController: function () {
-        return dgExportController;
+        return exportController;
       },
       getModelController: function () {
         return modelController;

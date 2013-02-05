@@ -5,7 +5,7 @@ define(function (require) {
 
   var dgExporter = require('common/dg-exporter');
 
-  var DgExportController = function dgExportController(spec) {
+  var ExportController = function exportController(spec) {
     var perRun  = (spec.perRun || []).slice(),
         perTick = ['timeInPs'].concat(spec.perTick.slice()),
         perTickValues,
@@ -34,11 +34,11 @@ define(function (require) {
     }
 
     function registerModelListeners() {
-      // Namespace listeners to '.dgExportController' so we can eventually remove them all at once
-      model.on('tick.dgExportController', appendDataPoint);
-      model.on('reset.dgExportController', resetData);
-      model.on('play.dgExportController', removeDataAfterStepPointer);
-      model.on('invalidation.dgExportController', removeDataAfterStepPointer);
+      // Namespace listeners to '.exportController' so we can eventually remove them all at once
+      model.on('tick.exportController', appendDataPoint);
+      model.on('reset.exportController', resetData);
+      model.on('play.exportController', removeDataAfterStepPointer);
+      model.on('invalidation.exportController', removeDataAfterStepPointer);
     }
 
     function getLabelForProperty(property) {
@@ -102,9 +102,9 @@ define(function (require) {
 
   // "Class method" (want to be able to call this before instantiating)
   // Do we have a sink
-  DgExportController.isExportAvailable = function() {
+  ExportController.isExportAvailable = function() {
     return dgExporter.isExportAvailable();
   };
 
-  return DgExportController;
+  return ExportController;
 });
