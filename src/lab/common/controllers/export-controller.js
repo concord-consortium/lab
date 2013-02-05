@@ -96,6 +96,7 @@ define(function (require) {
         }
 
         dgExporter.exportData(perRunPropertyLabels, perRunPropertyValues, perTickLabels, perTickValues);
+        dgExporter.openTable();
       }
     };
   };

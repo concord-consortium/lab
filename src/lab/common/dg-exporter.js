@@ -157,6 +157,17 @@ define(function(require) {
         values: parentCollectionValues,
         caseID: parentCase.caseID
       });
+    },
+
+    /**
+      Call this to cause DataGames to open the 'case table" containing the all the data exported by
+      exportData() so far.
+    */
+    openTable: function() {
+      this.doCommand('createComponent', {
+        type: 'DG.TableView',
+        log: false
+      });
     }
   };
 });
