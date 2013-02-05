@@ -49,6 +49,10 @@ module Parsers
       return data_hash
     end
 
+    def parse_entity(hash_data, parser)
+      parser.new(self.uri_helper,hash_data).parse
+    end
+
     def parse_collection(data_label, collection, parser)
       hashes     = self.data_hash[data_label]
       if hashes

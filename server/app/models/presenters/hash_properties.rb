@@ -13,10 +13,22 @@ module Presenters
       return self.data_hash
     end
 
+    def all()
+      self.model.properties.each do |p|
+        self.set(p,self.model.send(p.name.to_sym))
+      end
+    end
+
     def add(key,propname=nil)
       propname ||= key
       prop = self.model.send propname
       self.set(key,prop)
+    end
+
+    def merge(props)
+      props.each_pair do |k,v|
+        self.set(k,v)
+      end
     end
 
     def set(key,value)

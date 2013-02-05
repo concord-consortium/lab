@@ -16,7 +16,8 @@ class Interactive < BaseDataObject
   property :parameters,         [Object]
 
   # collections
-  collection_of :md2ds, :class_name => "Models::Md2d"
+  # collection_of :md2ds, :class_name => "Models::Md2d"
+  collection_of :interactive_models
   belongs_to    :group
 
   timestamps!

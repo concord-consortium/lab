@@ -59,7 +59,7 @@ class BaseDataObject < CouchRest::Model::Base
 
   def self.create_or_update(hash_def)
     # uncomment to identify missing couchDB fields
-    # find_extra_keys(hash_def)
+    find_extra_keys(hash_def)
     found = self.find_matching(hash_def) || self.create(hash_def)
     found.update_attributes(hash_def)
     return found
