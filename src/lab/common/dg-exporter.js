@@ -7,11 +7,11 @@ define(function(require) {
 
   return {
     gameName: 'Next Gen MW',
-    parentCollectionName: 'Parameters',
-    childCollectionName: 'Time Series',
+    parentCollectionName: 'Summary of Run',
+    childCollectionName: 'Time Series of Run',
 
-    nMetadataLabels: 0,
-    metadataLabelPositions: {},
+    perRunColumnLabelCount: 0,
+    perRunColumnLabelPositions: {},
 
     mockDGController: {
       doCommand: function(obj) {
@@ -46,13 +46,39 @@ define(function(require) {
       });
     },
 
-    exportData: function(parameterLabels, parameters, timeSeriesLabels, timeSeries) {
+
+    /**
+      Exports the summary data about a run and timeseries data from the run to DataGames as 2
+      linked tables.
+
+      perRunLabels: list of column labels for the "left" table which contains a summary of the run
+        (this can contain parameters that define the run, as well as )
+
+      perRunData: list containing 1 row of data to be added to the left table
+
+      timeSeriesLabels: list of column labels for the "right" table which contains a set of time
+        points that will be linked to the single row which is added to the "left", run-summary table
+
+      timeSeriesData: a list of lists, each of which contains 1 row of data to be added to the
+        right table.
+
+      This method automatically adds, as the first column of the run-summary table, a column
+      labeled "Number of Time Points", which contains the number of time points in the timeseries
+      that is associated with the run.
+
+      Note: Call this method once per run, or row of data to be added to the left table.
+      This method "does the right thing" if per-run column labels are added, removed, and/or
+      reordered between calls to the method. However, currently, it does not handle the removal
+      of time series labels (except from the end of the list) and it does not handle reordering of
+      time series labels.
+    */
+    exportData: function(perRunLabels, perRunData, timeSeriesLabels, timeSeriesData) {
       var label,
           value,
           position,
-          metadataLabels = [],
-          metadataValues = [],
-          dataLabels = [],
+          perRunColumnLabels = [],
+          perRunColumnValues = [],
+          timeSeriesColumnLabels = [],
           parentCase,
           parentCollectionValues,
           i;
@@ -63,25 +89,23 @@ define(function(require) {
       // same position in the array every time the DG collection is 'created' (or reopened as the
       // case may be.)
 
-      // TODO: This was useful for the free-form InquirySpace Importer; is it useful for data from
-      // Next Gen MW models?
-      for (i = 0; i < parameters.length; i++) {
-        label = parameterLabels[i];
-        value = parameters[i];
+      for (i = 0; i < perRunData.length; i++) {
+        label = perRunLabels[i];
+        value = perRunData[i];
 
-        if ( this.metadataLabelPositions[label] == null ) {
-          this.metadataLabelPositions[label] = this.nMetadataLabels++;
+        if ( this.perRunColumnLabelPositions[label] == null ) {
+          this.perRunColumnLabelPositions[label] = this.perRunColumnLabelCount++;
         }
-        position = this.metadataLabelPositions[label];
+        position = this.perRunColumnLabelPositions[label];
 
-        metadataLabels[position] = { name: label };
-        metadataValues[position] = value;
+        perRunColumnLabels[position] = { name: label };
+        perRunColumnValues[position] = value;
       }
 
       // Extract list of data column labels into form needed for export (needs to be an array of
       // name: label objects)
       for (i = 0; i < timeSeriesLabels.length; i++) {
-        dataLabels.push({ name: timeSeriesLabels[i] });
+        timeSeriesColumnLabels.push({ name: timeSeriesLabels[i] });
       }
 
       // Export.
@@ -91,14 +115,14 @@ define(function(require) {
         name: this.gameName
       });
 
-      // Step 2. Create a parent table. Each row will have the value of each of the parameters,
+      // Step 2. Create a parent table. Each row will have the value of each of the perRunData,
       // plus the number of time series points that are being exported for combination of
       // parameter values.
       // (It seems to be ok to call this multiple times with the same collection name, e.g., for
       // multiple exports during a single DG session.)
       this.doCommand('createCollection', {
         name: this.parentCollectionName,
-        attrs: [{name: 'Number of Readings'}].concat(metadataLabels),
+        attrs: [{name: 'Number of Time Points'}].concat(perRunColumnLabels),
         childAttrName: 'contents'
       });
 
@@ -107,12 +131,12 @@ define(function(require) {
       // (Again, it seems to be ok to call this for the same table multiple times per DG session)
       this.doCommand('createCollection', {
         name: this.childCollectionName,
-        attrs: dataLabels
+        attrs: timeSeriesColumnLabels
       });
 
       // Step 4. Open a row in the parent table. This will contain the individual time series
       // readings as children.
-      parentCollectionValues = [timeSeries.length].concat(metadataValues);
+      parentCollectionValues = [timeSeriesData.length].concat(perRunColumnValues);
       parentCase = this.doCommand('openCase', {
         collection: this.parentCollectionName,
         values: parentCollectionValues
@@ -122,7 +146,7 @@ define(function(require) {
       // do this inline, so we don't need to call openCase, closeCase for each row.
       this.doCommand('createCases', {
         collection: this.childCollectionName,
-        values: timeSeries,
+        values: timeSeriesData,
         parent: parentCase.caseID,
         log: false
       });
