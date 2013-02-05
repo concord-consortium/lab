@@ -1,6 +1,7 @@
 module Models
   class Md2d < BaseDataObject
     # attr_accessor :casted_by
+    # see: ./server/public/lab-amd/md2d/models/metadata.js  for details
 
     property :name,                 String
     property :url,                  String
@@ -9,9 +10,9 @@ module Models
     # these are all in the generated models
     property :height,                           Float
     property :width,                            Float
-    property :lennard_jones_forces,             TrueClass
-    property :coulomb_forces,                   TrueClass
-    property :temperature_control,              TrueClass
+    property :lennardJonesForces,             TrueClass
+    property :coulombForces,                   TrueClass
+    property :temperatureControl,              TrueClass
     property :gravitationalField,               Float
     property :timeStep,                         Float
     property :dielectricConstant,               TrueClass
@@ -19,9 +20,11 @@ module Models
     property :solventForceFactor,               Float
     property :solventForceType,                 Float
     property :additionalSolventForceThreshold,  Float
+    property :additionalSolventForceMult,       Float
     property :polarAAEpsilon,                   Float
     property :viscosity,                        Float
     property :viewRefreshInterval,              Float
+    property :targetTemperature,                Float
 
     # these are all objects in the generated models
     property :viewOptions,                      Object
@@ -34,6 +37,11 @@ module Models
     property :restraints,                       Object
     property :geneticProperties,                Object
     property :textBoxes,                        Object
+
+    # these are being defined in some models, but are probably
+    # deprication worthy?
+    property :onLoad,                           Object # 25 found in importing
+    property :modelOptions,                     Object #  5 found by importing
 
     timestamps!
 
