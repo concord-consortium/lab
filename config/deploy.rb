@@ -22,12 +22,19 @@ task :ls_server do
   run "ls -als"
 end
 
+def server_config_settings_yml
+  # TODO: This wont work all the time....
+  server = find_servers_for_task(current_task).first
+  puts server.host
+  {
+    "production" => {
+      :hostname => ENV['LAB_HOST'] || server.host || "lab.dev.concord.org"
+    }
+  }.to_yaml
+end
+
 namespace :deploy do
 
-  desc "restart rails app"
-  task :restart do
-    run "touch /var/www/app/server/tmp/restart.txt"
-  end
 
   desc "setup server"
   task :setup do
@@ -48,13 +55,6 @@ namespace :deploy do
     run "cd /var/www/app; make public"
   end
 
-  desc "import generated model and interactive resources into webapp"
-  task :built_interactives do
-    run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
-    run "cd /var/www/app; make"
-    run "cd /var/www/app/server; RAILS_ENV=production bundle exec rake app:import:built_interactives"
-    run "touch /var/www/app/server/tmp/restart.txt"
-  end
 
   desc "clean and update server"
   task :clean_and_update do
@@ -81,4 +81,30 @@ namespace :deploy do
     run "cd /var/www/app; git log -1"
   end
 
+  namespace :webapp do
+    desc "update the rails server"
+    task :update_rails_server do
+      run "cd /var/www/app/server; git fetch; git reset --hard #{branch}"
+      run "cd /var/www/app/server; bundle install"
+    end
+
+    desc "generate settings.yml for the rails server"
+    task :make_server_settings do
+      put server_config_settings_yml, "/var/www/app/server/config/settings.yml"
+      run "cd /var/www/app/server; cp config/couchdb.sample.yml config/couchdb.yml"
+      run "touch /var/www/app/server/tmp/restart.txt"
+    end
+
+    desc "import generated model and interactive resources into the rails server"
+    task :import_interactives do
+      run "cd /var/www/app/server; RAILS_ENV=production bundle exec rake app:import:built_interactives"
+      run "touch /var/www/app/server/tmp/restart.txt"
+    end
+
+    desc "restart the rails app"
+    task :restart do
+      run "touch /var/www/app/server/tmp/restart.txt"
+    end
+  end
 end
+
