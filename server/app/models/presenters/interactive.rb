@@ -23,6 +23,9 @@ module Presenters
         p.add('about')
         p.add('components')
         p.add('layout')
+        p.add('outputs')
+        p.add('filteredOutputs')
+        p.add('parameters')
         p.set('models',self.model_summary)
       end
     end

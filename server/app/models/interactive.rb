@@ -1,6 +1,8 @@
 class Interactive < BaseDataObject
   # attr_accessor :casted_by
 
+  # see ./server/public/lab-amd/common/controllers/interactive-metadata.js
+
   property :title,               String
   property :subtitle,            String
   property :publicationStatus,   String
@@ -9,9 +11,12 @@ class Interactive < BaseDataObject
   property :about,               String
 
   property :layout,              Object
+  property :components,         [Object]
+  property :outputs,            [Object]
+  property :filteredOutputs,    [Object]
+  property :parameters,         [Object]
 
   # collections
-  property :components,         [Object]
   collection_of :md2ds, :class_name => "Models::Md2d"
 
   timestamps!
