@@ -43,6 +43,9 @@ namespace :app do
       BaseDataObject.delete_everything
       parser = Parsers::InteractiveList.new(File.join(Rails.root,"public","examples","interactives","interactives.json"))
       parser.parse
+      Interactive.report_extra_keys
+      Models::Md2d.report_extra_keys
+      Group.report_extra_keys
     end
   end
 end

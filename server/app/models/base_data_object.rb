@@ -36,7 +36,30 @@ class BaseDataObject < CouchRest::Model::Base
     return nil
   end
 
+  def self.note_extra_key(key)
+    @missing_keys ||= {}
+    hash = "#{self.name} : #{key}"
+    @missing_keys[hash] ||= 0
+    @missing_keys[hash] = @missing_keys[hash] + 1
+  end
+
+  def self.report_extra_keys
+    (@missing_keys || {}).keys.each do |key|
+      puts "#{key} #{@missing_keys[key]}"
+    end
+  end
+
+  def self.find_extra_keys(hash_def)
+    hash_def.keys.each do |key|
+      unless self.properties.map {|p| p.name}.include? key
+        self.note_extra_key(key)
+      end
+    end
+  end
+
   def self.create_or_update(hash_def)
+    # uncomment to identify missing couchDB fields
+    # find_extra_keys(hash_def)
     found = self.find_matching(hash_def) || self.create(hash_def)
     found.update_attributes(hash_def)
     return found
