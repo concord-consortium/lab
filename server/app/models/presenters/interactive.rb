@@ -15,6 +15,17 @@ module Presenters
       end
     end
 
+    def group_listing
+      HashProperties.new(self.interactive).hash_value do |p|
+        p.add('title')
+        p.add('path')
+        p.set('groupKey',self.interactive.group_id)
+        p.add('subtitle')
+        p.add('about')
+        p.add('publicationStatus')
+      end
+    end
+
     def runtime_properties
       HashProperties.new(self.interactive).hash_value do |p|
         p.add('title')

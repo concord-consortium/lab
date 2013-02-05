@@ -11,6 +11,13 @@ class InteractivesController < ApplicationController
     render :json => presenter.runtime_properties
   end
 
+  def group_list
+    interactives = Interactive.all.collect do |i|
+       presenter(i).group_listing
+    end
+    render :json => interactives
+  end
+
   def create
     @interactive = Interactive.new(params[:interactive])
     if @interactive.save

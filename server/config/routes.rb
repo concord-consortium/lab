@@ -15,6 +15,9 @@ App::Application.routes.draw do
   resources :interactives
   resources :groups
 
+  #TODO: this is only temporary! Please forgive!
+  match "/interactive_listing.json" => "interactives#group_list"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
