@@ -6,7 +6,6 @@ class Interactive < BaseDataObject
   property :title,               String
   property :subtitle,            String
   property :publicationStatus,   String
-  property :group_key,           String
   property :path,                String
   property :about,               String
 
@@ -18,6 +17,7 @@ class Interactive < BaseDataObject
 
   # collections
   collection_of :md2ds, :class_name => "Models::Md2d"
+  belongs_to    :group
 
   timestamps!
 

@@ -14,6 +14,7 @@ module Parsers
       self.generate_couch_doc_id(self.data_hash['path'])
       self.update_from_uri!
       self.add_models
+      self.set_group
       ::Interactive.create_or_update(self.data_hash)
     end
 
@@ -26,6 +27,9 @@ module Parsers
       self.data_hash['id'] = url.gsub(".json","")
     end
 
+    def set_group
+      self.data_hash['group_id'] = self.data_hash.delete('groupKey')
+    end
     def add_models
       md2ds  = []
       self.parse_collection('models', md2ds, self.md2d_parser)
