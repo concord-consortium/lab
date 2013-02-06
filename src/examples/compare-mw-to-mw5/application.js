@@ -8,10 +8,6 @@
 
 var controller;
 
-var ROOT = "/examples",
-    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
-    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
-
 (function() {
 
   var modelConfig = {
@@ -39,10 +35,10 @@ var ROOT = "/examples",
       timer;
 
   function actualRootPath(url) {
-    if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
+    if (typeof Lab.config.actualRoot === "undefined" || url.charAt(0) !== "/") {
       return url;
     } else {
-      return ACTUAL_ROOT + url;
+      return Lab.config.actualRoot + url;
     }
   }
 

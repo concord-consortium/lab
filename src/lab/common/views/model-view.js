@@ -1,4 +1,4 @@
-/*global $ alert ACTUAL_ROOT model_player define: false, d3: false */
+/*global $ alert model_player define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   PTA View Container
@@ -60,7 +60,7 @@ define(function (require) {
       modelUrl = newModelUrl || modelUrl;
       model = newModel || model;
       if (modelUrl) {
-        imagePath = ACTUAL_ROOT + modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
+        imagePath = Lab.config.actualRoot + modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
       }
     }
 

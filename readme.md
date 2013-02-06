@@ -84,6 +84,29 @@ from my filesystem:
     XMLHttpRequest cannot load file:///Users/stephen/Downloads/concord-consortium-lab-9771ec6/examples/interactives/interactives/samples/1-oil-and-water-shake.json.
     Origin null is not allowed by Access-Control-Allow-Origin.
 
+If you deploy this folder of content at any directory level other than the root folder of
+your web server you will need to look for and edit this section in the `lab/lab.js` file and
+change the value for `actualRoot` to specify the path to the root of the Lab resources:
+
+    // this file is generated during build process by: ./script/generate-js-config.rb
+    define('lab.config',['require'],function (require) {
+      return {
+      "sharing": true,
+      "home": "http://lab.concord.org",
+      "homeInteractivePath": "/examples/interactives/interactive.html",
+      "homeEmbeddablePath": "/examples/interactives/embeddable.html",
+      "utmCampaign": null,
+      "actualRoot": "",
+      "logging": true,
+      "tracing": false
+    };
+    });
+
+For example if you deploy the Lab resource on your server in the directory `/external/resources` you
+should set actualRoot to "/external/resources":
+
+    "actualRoot": "/external/resources",
+
 ## Setup Development
 
 Lab uses a number of RubyGems and node modules to manage development. Lab's test framework
@@ -1689,9 +1712,8 @@ is used to store the static pages and client-side code built by the Makefile at 
 In addition the content of the `gh-pages` branch is used to create the
 [downloadable archive distributions of Lab](#distribution-of-project-and-examples)
 
-The contents of the
-gh-pages branch are automatically made available in a standard web-page form (as opposed to the standard Github
-page for showing a repository) at this url:
+The contents of the gh-pages branch are automatically made available in a standard
+web-page form (as opposed to the standard Github page for showing a repository) at this url:
 
   [concord-consortium.github.com/lab](http://concord-consortium.github.com/lab/)
 

@@ -1,4 +1,4 @@
-/*global $ alert ACTUAL_ROOT model_player define: false, d3: false */
+/*global $ alert model_player define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
@@ -1400,7 +1400,7 @@ define(function (require) {
       imageProp = model.get("images");
       imageMapping = model.get("imageMapping");
       if (model.url) {
-        imagePath = ACTUAL_ROOT + model.url.slice(0, model.url.lastIndexOf("/") + 1);
+        imagePath = Lab.config.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
       }
 
       velocityVectorColor = model.get("velocityVectors").color;

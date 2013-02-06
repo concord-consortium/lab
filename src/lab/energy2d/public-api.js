@@ -5,6 +5,7 @@
 define(function (require) {
   'use strict';
   var
+    config  = require('../lab.config'),
     InteractiveController = require('energy2d/controllers/interactive'),
     // Object to be returned.
     public_api;
@@ -18,11 +19,15 @@ define(function (require) {
     // ==========================================================================
   };
 
+  // ###
   // Finally, export API to global namespace.
-  // Create / get global 'lab' object.
-  window.lab = window.lab || {};
+  // Create or get 'Lab' global object (namespace).
+  window.Lab = window.Lab || {};
+  // Export config modules.
+  window.Lab.config = config;
+
   // Export this API under 'lab.energy2d' name.
-  window.lab.energy2d = public_api;
+  window.Lab.energy2d = public_api;
 
   // Also return public_api as module.
   return public_api;

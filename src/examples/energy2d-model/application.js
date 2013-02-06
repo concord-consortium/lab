@@ -6,11 +6,6 @@
 //
 // ------------------------------------------------------------
 
-var
-  ROOT = "/examples",
-  ROOT_REGEX = new RegExp(ROOT + "/.*$"),
-  ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
-
 (function () {
   'use strict';
 
@@ -44,7 +39,7 @@ var
       if (typeof results === "string") { results = JSON.parse(results); }
       interactive_options = results;
 
-      controller = lab.energy2d.InteractiveController(
+      controller = Lab.energy2d.InteractiveController(
         interactive_options,
         '#interactive-container',
         '#interactive-description'
@@ -95,7 +90,7 @@ var
       'interactives-index.js',
 
       // Energy2D Public API.
-      // It exposes public API to lab.energy2d global object.
+      // It exposes public API to Lab.energy2d global object.
       // Note that particular classes can be loaded directly, e.g.:
       // 'controller/interactive'
       // but to keep consistency with optimized built, use 

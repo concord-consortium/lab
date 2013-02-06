@@ -7,10 +7,6 @@ DEVELOPMENT = true;
 // allowing things like positioning textBoxes by hand.
 AUTHORING = false;
 
-var ROOT = "/examples",
-    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
-    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
-
 (function() {
 
   var interactiveDefinitionLoaded = $.Deferred(),
@@ -416,7 +412,7 @@ var ROOT = "/examples",
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
 
     jsonModelPath = interactive.models[0].url;
-    $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
+    $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
 
     setupCodeEditor();
   }
@@ -495,7 +491,7 @@ var ROOT = "/examples",
     contentItems = getObjects(modelList, "mml", mmlPath);
     if (contentItems.length > 0) {
       java_mw_href = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
-                      origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
+                      origin + Lab.config.actualRoot + "/imports/legacy-mw-content/" + contentItems[0].cml;
       java_mw_link.attr("href", java_mw_href);
     } else {
       java_mw_link.removeAttr("href");
@@ -527,7 +523,7 @@ var ROOT = "/examples",
       // set keyboard focus on MD2D view
       // FIXME: generalize when multiple model types implemented
       controller.modelController.modelContainer.setFocus();
-      $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
+      $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
       // $selectIframeSize.attr('disabled', 'disabled');
       setupCodeEditor();
       setupModelCodeEditor();
@@ -747,7 +743,7 @@ var ROOT = "/examples",
   // Model Code Editor
   //
   function setupModelCodeEditor() {
-    $.get(ACTUAL_ROOT + interactive.models[0].url).done(function(results) {
+    $.get(Lab.config.actualRoot + interactive.models[0].url).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
       var md2dModel = results;
       $modelTextArea.text(JSON.stringify(md2dModel, null, indent));

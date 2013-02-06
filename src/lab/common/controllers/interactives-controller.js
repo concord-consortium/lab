@@ -1,4 +1,4 @@
-/*global define model $ ACTUAL_ROOT */
+/*global define model $ */
 
 define(function (require) {
   // Dependencies.
@@ -136,7 +136,7 @@ define(function (require) {
       if (modelConfig) {
         finishWithLoadedModel(modelDefinition.url, modelConfig);
       } else {
-        $.get(ACTUAL_ROOT + modelDefinition.url).done(function(modelConfig) {
+        $.get(Lab.config.actualRoot + modelDefinition.url).done(function(modelConfig) {
 
           // Deal with the servers that return the json as text/plain
           modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;

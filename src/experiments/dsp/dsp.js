@@ -1,8 +1,4 @@
 
-var ROOT = "/experiments",
-    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
-    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, ''),
-
 stopStreaming = false;
 
 var i,

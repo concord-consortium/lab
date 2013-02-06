@@ -3,6 +3,8 @@
 define(function (require) {
   'use strict';
   var
+    version = require('../lab.version'),
+    config  = require('../lab.config'),
     graph         = require('grapher/core/graph'),
     realTimeGraph = require('grapher/core/real-time-graph'),
     BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
@@ -28,6 +30,9 @@ define(function (require) {
   // Finally, export API to global namespace.
   // Create or get 'Lab' global object (namespace).
   window.Lab = window.Lab || {};
+  // Export config modules.
+  window.Lab.config = config;
+
   // Export this API under 'grapher' name.
   window.Lab.grapher = publicAPI;
 
