@@ -10,9 +10,9 @@ module Models
     # these are all in the generated models
     property :height,                           Float
     property :width,                            Float
-    property :lennardJonesForces,             TrueClass
-    property :coulombForces,                   TrueClass
-    property :temperatureControl,              TrueClass
+    property :lennardJonesForces,               TrueClass
+    property :coulombForces,                    TrueClass
+    property :temperatureControl,               TrueClass
     property :gravitationalField,               Float
     property :timeStep,                         Float
     property :dielectricConstant,               TrueClass
