@@ -573,24 +573,8 @@ ISImporter.appController = new ISImporter.Object({
       self.sensorAppletReady();
     });
 
-    this.rawDataset = new ISImporter.Dataset();
-    this.rawDataset.setXIncrement( 1 / (this.sensor.samplesPerSecond || 10));
-
     this.dataset = new ISImporter.Dataset();
-
-    // Filter the raw dataset
-    this.rawDataset.on('data', (function() {
-      var count = 0,
-          downsampleRate  = self.sensor.downsampleRate || 1,
-          filteredDataset = self.dataset;
-
-      return function(d) {
-        if (count++ % downsampleRate === 0) {
-          filteredDataset.add(d[1]);
-        }
-      };
-    }()));
-
+    this.rawDataset = this.getNewRawDataset();
     this.dataset.setXIncrement( this.rawDataset.getXIncrement() * (this.sensor.downsampleRate || 1) );
 
     this.setupRealtimeDisplay(this.sensor.readingUnits);
@@ -614,6 +598,28 @@ ISImporter.appController = new ISImporter.Object({
     }
 
     ISImporter.graphController.removeNotification();
+  },
+
+  // useful because it creates a new counter for filtering data
+  getNewRawDataset: function() {
+    var rawDataset = new ISImporter.Dataset(),
+        self = this;
+
+    rawDataset.setXIncrement( 1 / (this.sensor.samplesPerSecond || 10));
+
+    // Filter the raw dataset
+    rawDataset.on('data', (function() {
+      var count = 0,
+          downsampleRate  = self.sensor.downsampleRate || 1,
+          filteredDataset = self.dataset;
+
+      return function(d) {
+        if (count++ % downsampleRate === 0) {
+          filteredDataset.add(d[1]);
+        }
+      };
+    }()));
+    return rawDataset;
   },
 
   metadataLabelChanged: function(fieldNum) {},
@@ -656,6 +662,8 @@ ISImporter.appController = new ISImporter.Object({
 
   reset: function() {
     if (this.taring) return;
+    this.currentApplet.removeListener('data', this.appletDataListener);
+    this.rawDataset = this.getNewRawDataset();
     this.dataset.setDataPoints();   // perhaps this should be a 'clear' convenience method
     this.dataset.select(null);
     this.dataset.setNextX(0);
