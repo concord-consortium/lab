@@ -7,7 +7,7 @@ class InteractivesController < ApplicationController
     interactives = Interactive.all.collect do |i|
        presenter(i).json_listing
     end
-    render :text => {
+    render :json => {
       'interactives'  => interactives,
       'groups'        => groups
     }
