@@ -569,35 +569,46 @@ server/public/examples/interactives/interactives/%.json: src/examples/interactiv
 server/public/examples/interactives/interactives.json: $(INTERACTIVE_FILES)
 	$(GENERATE_INTERACTIVE_INDEX)
 
+.PHONY: h
 h:
 	@echo $(HAML_FILES)
 
+.PHONY: se
 se:
 	@echo $(SASS_EXAMPLE_FILES)
 
+.PHONY: sce
 sce:
 	@echo $(SCSS_EXAMPLE_FILES)
 
+.PHONY: sd
 sd:
 	@echo $(SASS_DOC_FILES)
 
+.PHONY: s1
 sl:
 	@echo $(SASS_LIBRARY_FILES)
 
+.PHONY: c
 c:
 	@echo $(COFFEESCRIPT_EXAMPLE_FILES)
 
+.PHONY: cm
 cm:
 	@echo $(COMMON_SRC_FILES)
 
+.PHONY: m
 m:
 	@echo $(MARKDOWN_EXAMPLE_FILES)
 
+.PHONY: md2
 md2:
 	@echo $(MD2D_SRC_FILES)
 
+.PHONY: gr
 gr:
 	@echo $(GRAPHER_SRC_FILES)
 
+.PHONY: int
 int:
 	@echo $(INTERACTIVE_FILES)
