@@ -1,10 +1,16 @@
 class InteractivesController < ApplicationController
 
   def index
+    groups = Group.all.collect do |g|
+       Presenters::Group.new(g).json_listing
+    end
     interactives = Interactive.all.collect do |i|
        presenter(i).json_listing
     end
-    render :json => interactives
+    render :text => {
+      'interactives'  => interactives,
+      'groups'        => groups
+    }
   end
 
   def show

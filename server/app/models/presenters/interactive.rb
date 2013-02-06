@@ -9,7 +9,12 @@ module Presenters
     def json_listing
       HashProperties.new(self.interactive).hash_value do |p|
         p.add('id')
-        p.add('name','title')
+        p.add('title')
+        p.add('path')
+        p.set('groupKey',self.interactive.group_id)
+        p.add('subtitle')
+        p.add('about')
+        p.add('publicationStatus')
         p.set('location',self.json_path)
         p.set('preview',self.preview_path)
       end
