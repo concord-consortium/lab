@@ -1039,7 +1039,7 @@ define(function (require) {
       var domain = xScale.domain(),
           xextent = domain[1] - domain[0],
           shift = xextent * 0.8,
-          ds;
+          ds,
           i;
       if (newdata instanceof Array && newdata.length > 0) {
         if (newdata[0] instanceof Array) {
