@@ -26,6 +26,8 @@ COMMON_SRC_FILES += src/lab/lab.config.js  # so, cannot be listed using shell fi
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
 LAB_GLSL_FILES := $(shell find src/lab -name '*.glsl' -print)
 
+COUCHDB_RUNNING := $(findstring couch,$(shell curl http://localhost:5984 2> /dev/null))
+
 # targets
 
 INTERACTIVE_FILES := $(shell find src/examples/interactives/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/server\/public\/\1/' )
@@ -612,3 +614,16 @@ gr:
 .PHONY: int
 int:
 	@echo $(INTERACTIVE_FILES)
+
+.PHONY: cdb
+cdb:
+	@echo $(COUCHDB_RUNNING)
+
+.PHONY: cdb-status
+cdb-status:
+ifeq ($(COUCHDB_RUNNING),couch)
+	@echo "couchdb running"
+else
+	@echo "couchdb not running"
+endif
+
