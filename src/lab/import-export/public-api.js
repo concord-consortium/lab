@@ -11,7 +11,8 @@ define(function (require) {
     // Functions and modules which should belong to this API:
 
     // Data Games exporter
-    dgExporter: require('import-export/dg-exporter')
+    dgExporter:      require('import-export/dg-exporter'),
+    netlogoImporter: require('import-export/netlogo-importer')
     // ==========================================================================
   };
 });
