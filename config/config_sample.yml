@@ -6,6 +6,7 @@
   :home: http://lab.concord.org
   :homeInteractivePath: /examples/interactives/interactive.html
   :homeEmbeddablePath: /examples/interactives/embeddable.html
+  :actualRoot: ""
   :utmCampaign:
 :google_analytics:
   :account_id:
