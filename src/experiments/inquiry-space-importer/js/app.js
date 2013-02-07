@@ -403,7 +403,6 @@ ISImporter.appController = new ISImporter.Object({
       if (self.sensor.tareable) {
         y -= (self.sensor.tareValue || 0);
       }
-      console.log(y);
       self.rawDataset.add(y);
     };
 
