@@ -3,7 +3,7 @@
 
 define(function (require) {
 
-  var dgExporter = require('common/dg-exporter');
+  var dgExporter = require('import-export/dg-exporter');
 
   var ExportController = function exportController(spec) {
     var perRun  = (spec.perRun || []).slice(),

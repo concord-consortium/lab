@@ -13,7 +13,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
     exportData: sinon.spy()
     openTable:  sinon.spy()
 
-  requirejs.define 'common/dg-exporter', [], -> dgExporter
+  requirejs.define 'import-export/dg-exporter', [], -> dgExporter
 
   requirejs ['md2d/models/modeler', 'common/controllers/export-controller'], (Model, ExportController) ->
 
