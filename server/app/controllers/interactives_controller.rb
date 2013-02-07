@@ -1,7 +1,7 @@
 class InteractivesController < ApplicationController
 
   def index
-    groups = Group.all.collect do |g|
+    groups = Group.correct_order.collect do |g|
        Presenters::Group.new(g).json_listing
     end
     interactives = Interactive.all.collect do |i|

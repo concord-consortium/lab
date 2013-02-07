@@ -93,28 +93,43 @@ AUTHORING = false;
       hash,
       jsonModelPath, contentItems, mmlPath,
       viewType,
+      interactivesPromise,
       buttonHandlersAdded = false,
       modelButtonHandlersAdded = false;
+  
+  function isEmbeddablePage() {
+    return ($selectInteractive.length === 0);
+  }
+
+  if (!isEmbeddablePage()) {
+    interactivesPromise = $.get('interactives.json');
+
+    interactivesPromise.done(function(results) {
+      if (typeof results === 'string') {
+        results = JSON.parse(results);
+      }
+       interactiveDescriptions = results;
+    });
+
+    // TODO: some of the Deferred, ajax call have no error handlers?
+    interactivesPromise.fail(function(){
+      // TODO: need a better way to display errors
+      console.log("Failed to retrieve interactives.json");
+      alert("Failed to retrieve interactives.json");
+    });
+  }
 
   if (!document.location.hash) {
     if ($selectInteractive.length > 0 && $selectInteractive.val()) {
       selectInteractiveHandler();
     } else {
-      document.location.hash = '#interactives/samples/1-oil-and-water-shake.json';
+      interactivesPromise.done(function(){
+          document.location.hash = interactiveDescriptions.interactives[0].path;
+      });
     }
   }
 
-  function getHash() {
-    var match,
-        h = document.location.hash;
-    if (h) {
-      match = h.match(/(.*?\.json)/);
-      h = match[1];
-    }
-    return h;
-  }
-
-  if (hash = getHash()) {
+  if (hash = document.location.hash) {
     interactiveUrl = hash.substr(1, hash.length);
 
     $.get(interactiveUrl).done(function(results) {
@@ -179,7 +194,7 @@ AUTHORING = false;
   });
 
   $(window).bind('hashchange', function() {
-    if (getHash() !== hash) {
+    if (document.location.hash !== hash) {
       location.reload();
     }
   });
@@ -418,9 +433,8 @@ AUTHORING = false;
   }
 
   function setupFullPage() {
-    $.get('interactives.json').done(function(results) {
-      if (typeof results === 'string') results = JSON.parse(results);
-      interactiveDescriptions = results;
+    interactivesPromise.done(function(results) {
+
       restoreOptionsFromCookie();
       setupSelectList();
       $("#select-filters input").click(setupSelectList);

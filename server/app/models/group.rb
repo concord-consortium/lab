@@ -14,4 +14,8 @@ class Group < BaseDataObject
     view :by_path
   end
 
+  # preserve the order of the groups from the file they were imported from.
+  def self.correct_order
+    self.all.sort_by(&:created_at)
+  end
 end

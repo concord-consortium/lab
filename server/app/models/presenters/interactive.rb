@@ -58,7 +58,7 @@ module Presenters
 
     def preview_path
       path = url_helper.interactive_path(self.interactive)
-      "http://#{self.hostname}/examples/interactives/interactives.html##{path}.json"
+      "http://#{self.hostname}/interactives.html##{path}.json"
     end
   end
 end
