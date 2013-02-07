@@ -208,7 +208,19 @@ server/public: \
 	server/public/doc \
 	server/public/experiments \
 	server/public/imports \
-	server/public/jnlp
+	server/public/jnlp \
+	create_public_symlinks
+
+create_public_symlinks:
+	cd server/public; \
+	ln -s -f examples/interactives/embeddable-author.html embeddable-author.html; \
+	ln -s -f examples/interactives/embeddable.html embeddable.html; \
+	ln -s -f examples/interactives/interactives.html interactives.html; \
+	ln -s -f examples/interactives/embeddable-author.css embeddable-author.css; \
+	ln -s -f examples/interactives/embeddable.css embeddable.css; \
+	ln -s -f examples/interactives/molecules-view.css molecules-view.css; \
+	ln -s -f examples/interactives/interactives.css interactives.css; \
+	ln -s -f examples/interactives/application.js application.js;
 
 server/public/examples:
 	mkdir -p server/public/examples
