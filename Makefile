@@ -17,6 +17,7 @@ GENERATE_INTERACTIVE_INDEX = ruby src/helpers/examples/interactives/process-inte
 
 LAB_SRC_FILES := $(shell find src/lab -type f ! -name '.*' -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f ! -name '.*' -print)
+IMPORT_EXPORT_SRC_FILES := $(shell find src/lab/import-export -type f ! -name '.*' -print)
 ENERGY2D_SRC_FILES := $(shell find src/lab/energy2d -type f ! -name '.*' -print)
 MD2D_SRC_FILES := $(shell find src/lab/md2d -type f ! -name '.*' -print)
 COMMON_SRC_FILES := $(shell find src/lab/common -type f ! -name '.*' -print)
@@ -55,6 +56,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.md2d.js \
+	server/public/lab/lab.import-export.js \
 	server/public/lab/lab.js
 
 all: \
@@ -468,6 +470,11 @@ server/public/lab/lab.grapher.js: \
 	$(GRAPHER_SRC_FILES) \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/grapher/grapher.build.js
+
+server/public/lab/lab.import-export.js: \
+	$(IMPORT_EXPORT_SRC_FILES) \
+	$(COMMON_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/import-export/import-export.build.js
 
 server/public/lab/lab.md2d.js: \
 	$(MD2D_SRC_FILES) \
