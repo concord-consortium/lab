@@ -446,11 +446,7 @@ src/vendor/jquery-ui:
 server/public/lab:
 	mkdir -p server/public/lab
 
-server/public/lab/lab.js: \
-	server/public/lab/lab.grapher.js \
-	server/public/lab/lab.md2d.js \
-	src/lab/lab.version.js \
-	src/lab/lab.config.js
+server/public/lab/lab.js: $(LAB_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/lab.build.js
 
 src/lab/lab.version.js: script/generate-js-version.rb
@@ -625,6 +621,10 @@ int:
 .PHONY: cdb
 cdb:
 	@echo $(COUCHDB_RUNNING)
+
+.PHONY: sources
+sources:
+	@echo $(LAB_SRC_FILES)
 
 .PHONY: cdb-status
 cdb-status:
