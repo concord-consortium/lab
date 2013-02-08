@@ -8,10 +8,12 @@ var interactiveEditor,
     components,
     $components,
     minLeft,
-    minTop;
+    minTop,
+    modelWidth = 50,
+    modelHeight = 50;
 
 function update() {
-  var redraws = 5, id, $container;
+  var redraws = 7, id, $container;
 
   $interactiveContainer = $("#interactive-container");
   $interactiveContainer.empty();
@@ -43,13 +45,15 @@ function update() {
     $container.css("top", $container.position().top-minTop);
   }
 
-  redraws = 2;
+  redraws = 7;
 
   // and then resize after the shift in origin
   while (redraws--) {
     positionContainers();
     resizeModelContainer();
   }
+
+  positionContainers();
 }
 
 function createContainers() {
@@ -62,8 +66,8 @@ function createContainers() {
   $containers.model.css({
     left: 0,
     top: 0,
-    width: 50,
-    height: 50 * getObject(components, "model")["aspect-ratio"],
+    width: modelWidth,
+    height: modelWidth * getObject(components, "model")["aspect-ratio"],
     background: "orange"
   }).appendTo($interactiveContainer);
 
@@ -114,6 +118,8 @@ function placeComponentsInContainers() {
         $row.append($components[items[k]]);
       }
     }
+    $containers[container.id].css("min-width", $containers[container.id].outerWidth());
+    $containers[container.id].css("min-height", $containers[container.id].outerHeight());
   }
 }
 
@@ -236,15 +242,13 @@ function getDimensionOfContainer($container, dim) {
 // shrinks the model to fit in the interactive, given the sizes
 // of the other containers around it.
 function resizeModelContainer() {
-  var maxX, maxY = maxX = -Infinity,
+  var maxY = -Infinity,
+      maxX = -Infinity,
       id, $container,
       right, bottom,
       $modelContainer,
-      widthOfNonModelContainers,
-      heightOfNonModelContainers,
-      availableWidth, availableHeight,
-      modelAspectRatio, containerAspectRatio,
-      width, height;
+      availableWidth, availableHeight, ratio, xDiff, yDiff,
+      modelAspectRatio, containerAspectRatio;
 
   for (id in $containers) {
     if (!$containers.hasOwnProperty(id)) continue;
@@ -261,27 +265,39 @@ function resizeModelContainer() {
 
   $modelContainer = $containers.model;
 
-  widthOfNonModelContainers  = maxX - $modelContainer.width();
-  heightOfNonModelContainers = maxY - $modelContainer.height();
-
-  availableWidth  = $interactiveContainer.width() - widthOfNonModelContainers;
-  availableHeight = $interactiveContainer.height() - heightOfNonModelContainers;
+  availableWidth  = $interactiveContainer.width();
+  availableHeight = $interactiveContainer.height();
 
   containerAspectRatio = availableHeight / availableWidth;
 
   modelAspectRatio = getObject(components, "model")["aspect-ratio"];
 
-  if (containerAspectRatio >= modelAspectRatio) {
-    width = availableWidth;
-    height = modelAspectRatio * width;
-  } else {
-    height = availableHeight;
-    width = height / modelAspectRatio;
+  xDiff = maxX - availableWidth;
+  yDiff = maxY - availableHeight;
+  if (maxX > availableWidth && xDiff > yDiff) {
+    ratio = (1 - 0.3 * (maxX - availableWidth) / availableWidth);
+    modelWidth = $modelContainer.width() * ratio;
+    modelHeight = modelAspectRatio * modelWidth;
+  }
+  else if (maxY > availableHeight) {
+    ratio = (1 - 0.3 * (maxY - availableHeight) / availableHeight);
+    modelHeight = $modelContainer.height() * ratio;
+    modelWidth = modelHeight / modelAspectRatio;
+  }
+  else if (maxX < availableHeight) {
+    ratio = (1 + 0.3 * (availableWidth - maxX) / availableWidth);
+    modelWidth = $modelContainer.width() * ratio;
+    modelHeight = modelAspectRatio * modelWidth;
+  }
+  else if (maxY < availableHeight) {
+    ratio = (1 + 0.3 * (availableHeight - maxY) / availableHeight);
+    modelHeight = $modelContainer.height() * ratio;
+    modelWidth = modelHeight / modelAspectRatio;
   }
 
   $modelContainer.css({
-    width: width,
-    height: height
+    width: modelWidth,
+    height: modelHeight
   });
 }
 
