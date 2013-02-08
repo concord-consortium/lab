@@ -87,7 +87,11 @@ define(function(require) {
           } else if (!arrays.isArray(input[prop]) && typeof input[prop] === "object" && typeof propMetadata.defaultValue === "object") {
             // Note that typeof [] is also "object" - that is the reason of the isArray() check.
             result[prop] = $.extend(true, {}, propMetadata.defaultValue, input[prop]);
+          } else if (arrays.isArray(input[prop])) {
+            // Deep copy of an array.
+            result[prop] = $.extend(true, [], input[prop]);
           } else {
+            // Basic type like number, so '=' is enough.
             result[prop] = input[prop];
           }
         }

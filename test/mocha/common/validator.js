@@ -123,6 +123,28 @@ requirejs([
         }).should.throwError();
       });
 
+      it('should return a deep copy of an input object', function() {
+        var input = {
+              requiredProp: {
+                a: 1
+              },
+              optionalProp: [
+                {b: 2},
+                {c: 3}
+              ]
+            },
+            result = validator.validateCompleteness(metadata, input);
+
+        // Of course objects should be indentical.
+        result.should.eql(input);
+        // However, object returned by validator should be a deep copy of input.
+        // So, strict equality should fail.
+        result.should.not.equal(input);
+        // The same applies to objects in arrays.
+        result.optionalProp[0].should.not.equal(input.optionalProp[0]);
+        result.optionalProp[1].should.not.equal(input.optionalProp[1]);
+      });
+
       describe('when a default value is available', function () {
         describe('and it is basic type like number', function () {
           it('validation should use it if the input property is undefined', function () {
