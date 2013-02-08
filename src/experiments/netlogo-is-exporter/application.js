@@ -204,7 +204,7 @@ var ROOT = "/experiments",
             );
             nRunsExported++;
           }
-          Lab.importExport.dgExporter.openTable();
+          if (nRunsExported > 0) Lab.importExport.dgExporter.openTable();
         }
       }
     }
