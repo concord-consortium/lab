@@ -3,15 +3,20 @@ module Parsers
     attr_accessor :models_parser
 
     def initialize(uri=Dir.pwd, data={})
+      data['staticExamplePath'] = ''
       super(uri,data)
       self.models_parser  = Parsers::InteractiveModel
     end
 
     def parse(meta_data_hash={})
+      # TODO: ... why is this needed ... w/o add_models fails when passed collection instead of interactive
       if (self.data_hash['path'])
         self.uri_helper.set_relative_path(data_hash['path'])
       end
+      self.data_hash['staticExamplePath'] = self.data_hash['path']
       self.generate_couch_doc_id(self.data_hash['path'])
+      self.data_hash['path'] = "/interactives/" + self.data_hash['id']
+
       self.update_from_uri!
       self.add_models
       self.set_group

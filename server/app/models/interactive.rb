@@ -6,6 +6,7 @@ class Interactive < BaseDataObject
   property :title,               String
   property :subtitle,            String
   property :publicationStatus,   String
+  property :staticExamplePath,   String
   property :path,                String
   property :about,               String
 
