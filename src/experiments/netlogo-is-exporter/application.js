@@ -111,25 +111,13 @@ var ROOT = "/experiments",
   }
 
   function buttonStatusCallback() {
-    var export_button = exportData,
-        show_button = showData,
-        dgready = "DG-DATA-READY?",
-        observer = nl_obj_observer,
-        globals = nlGlobals,
-        enable = false;
+    var enable = dgDataReady();
 
-    try {
-      enable = observer.getVariable(globals.indexOf(dgready));
-      if (enable) {
-        export_button.disabled = false;
-        show_button.disabled = false;
-      } else {
-        export_button.disabled = true;
-        show_button.disabled = true;
-      }
-    } catch (e) {
+    if (enable === null || !exportData) {
       // Do nothing--we'll try again in the next timer interval.
+      return;
     }
+    exportData.disabled = !enable;
   }
 
   $(window).load(function() {
@@ -155,27 +143,37 @@ var ROOT = "/experiments",
   }
 
   function nl_read_global(global) {
+    if (nlGlobals.indexOf(global) < 0) return null;
     return nl_obj_observer.getVariable(nlGlobals.indexOf(global));
   }
 
   function dgDataReady() {
-    return nl_read_global("DG-DATA-READY?");
+    var ready = nl_read_global("DG-DATA-READY?");
+
+    if (ready !== null) return ready;
+    return nl_read_global("DATA-EXPORT:DATA-READY?");
   }
 
   function getExportedData() {
-    return nl_read_global("DG-OUTPUT");
+    return nl_read_global("DG-OUTPUT") || nl_read_global("DATA-EXPORT:MODEL-DATA");
   }
 
   function exportDataHandler() {
-    nl_cmd_execute("export-data");
+    try {
+      nl_cmd_execute("export-data");
+    } catch (e) {
+      nl_cmd_execute("data-export:make-model-data");
+    }
     clearDataReady = window.setInterval(exportDataReadyCallback, 250);
   }
 
   function exportDataReadyCallback() {
     var dgExportDone = nl_read_global("DG-EXPORTED?");
+
+    if (dgExportDone === null) dgExportDone = nl_read_global("DATA-EXPORT:DATA-READY?");
     if (dgExportDone) {
       clearInterval(clearDataReady);
-      data = nl_read_global("DG-OUTPUT");
+      data = getExportedData();
       if (exportedData) {
         exportedData.textContent = data;
       } else {
