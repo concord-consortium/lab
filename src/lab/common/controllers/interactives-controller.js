@@ -76,7 +76,7 @@ define(function (require) {
         componentList = [],
 
         // List of custom parameters which are used by the interactive.
-        customParameters = [],
+        customParametersByName = [],
 
         // API for scripts defined in the interactive JSON file.
         scriptingAPI,
@@ -575,6 +575,7 @@ define(function (require) {
       if (!modelParameters && !interactiveParameters) return;
 
       var initialValues = {},
+          customParameters,
           i, parameter;
 
       // append modelParameters second so they're processed later (and override entries of the
@@ -591,6 +592,11 @@ define(function (require) {
         if (parameter.initialValue !== undefined) {
           initialValues[parameter.name] = parameter.initialValue;
         }
+        // Save reference to the definition which is finally used.
+        // Note that if parameter is defined both in interactive top-level scope
+        // and models section, one from model sections will be defined in this hash.
+        // It's necessary to update correctly values of parameters during serialization.
+        customParametersByName[parameter.name] = parameter;
       }
 
       model.set(initialValues);
@@ -624,11 +630,13 @@ define(function (require) {
         // with updated values and avoid deciding whether this parameter is defined in 'models' section
         // or top-level 'parameters' section. It will be updated anyway.
         if (model !== undefined && model.get !== undefined) {
-          for (i = 0, len = customParameters.length; i < len; i++) {
-            param = customParameters[i];
-            val = model.get(param.name);
-            if (val !== undefined) {
-              customParameters[i].initialValue = val;
+          for (param in customParametersByName) {
+            if (customParametersByName.hasOwnProperty(param)) {
+              param = customParametersByName[param];
+              val = model.get(param.name);
+              if (val !== undefined) {
+                param.initialValue = val;
+              }
             }
           }
         }
