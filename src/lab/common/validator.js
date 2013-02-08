@@ -1,28 +1,10 @@
-/*global define: false */
+/*global define: false, $: false */
 
 // For now, only defaultValue, readOnly and immutable
 // meta-properties are supported.
 define(function(require) {
 
   var arrays = require('arrays');
-
-
-  function fill(input, defaultObj) {
-    var result = {},
-        prop;
-
-    for (prop in defaultObj) {
-      if (defaultObj.hasOwnProperty(prop)) {
-        if (input[prop] === undefined || input[prop] === null) {
-          result[prop] = defaultObj[prop];
-        } else {
-          result[prop] = input[prop];
-        }
-      }
-    }
-
-    return result;
-  }
 
   // Create a new object, that prototypically inherits from the Error constructor.
   // It provides a direct information which property of the input caused an error.
@@ -97,14 +79,14 @@ define(function(require) {
             } else if (typeof propMetadata.defaultValue === "object") {
               // Copy an object defined as a default value.
               // Do not use instance defined in metadata.
-              result[prop] = fill({}, propMetadata.defaultValue);
+              result[prop] = $.extend(true, {}, propMetadata.defaultValue);
             } else if (propMetadata.defaultValue !== undefined) {
               // If it's basic type, just set value.
               result[prop] = propMetadata.defaultValue;
             }
           } else if (!arrays.isArray(input[prop]) && typeof input[prop] === "object" && typeof propMetadata.defaultValue === "object") {
             // Note that typeof [] is also "object" - that is the reason of the isArray() check.
-            result[prop] = fill(input[prop], propMetadata.defaultValue);
+            result[prop] = $.extend(true, {}, propMetadata.defaultValue, input[prop]);
           } else {
             result[prop] = input[prop];
           }

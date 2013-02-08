@@ -1,5 +1,8 @@
 /*global describe it beforeEach */
 
+var helpers = require('../../helpers');
+helpers.setupBrowserEnvironment();
+
 requirejs([
   'common/validator'
 ], function (validator) {
@@ -280,26 +283,6 @@ requirejs([
                   requiredProp: 1,
                   optionalProp: {
                     b: 15
-                  }
-                },
-                result = validator.validateCompleteness(metadata, input);
-
-            result.requiredProp.should.equal(1);
-            // Default value should be used.
-            result.optionalProp.should.eql({ a: 1, b: 15, c: 3 });
-            // And value should be different from defaultValue object.
-            result.optionalProp.should.not.eql(metadata.optionalProp.defaultValue);
-            // This property is not required, but it also doesn't define default value.
-            result.should.not.have.property('readOnlyProp');
-          });
-
-          it('validation should use it if the input property is an object with nulls', function () {
-            var input = {
-                  requiredProp: 1,
-                  optionalProp: {
-                    a: null,
-                    b: 15,
-                    c: null
                   }
                 },
                 result = validator.validateCompleteness(metadata, input);
