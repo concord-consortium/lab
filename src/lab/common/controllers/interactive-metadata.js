@@ -54,6 +54,7 @@ define(function() {
 
       layout: {
         // Layout definition.
+        defaultValue: {}
       }
     },
 

@@ -283,6 +283,97 @@ define(function (require) {
     }
 
     /**
+      Validates interactive definition.
+
+      Displays meaningful info in case of any errors. Also an exception is being thrown.
+
+      @param interactive
+        hash representing the interactive specification
+    */
+    function validateInteractive(interactive) {
+      var i, len, models, parameters, outputs, filteredOutputs, components, errMsg;
+
+      // Validate top level interactive properties.
+      try {
+        interactive = validator.validateCompleteness(metadata.interactive, interactive);
+      } catch (e) {
+        errMsg = "Incorrect interactive definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      // Set up the list of possible models.
+      models = interactive.models;
+      try {
+        for (i = 0, len = models.length; i < len; i++) {
+          models[i] = validator.validateCompleteness(metadata.model, models[i]);
+          modelsHash[models[i].id] = models[i];
+        }
+      } catch (e) {
+        errMsg = "Incorrect model definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      parameters = interactive.parameters;
+      try {
+        for (i = 0, len = parameters.length; i < len; i++) {
+          parameters[i] = validator.validateCompleteness(metadata.parameter, parameters[i]);
+        }
+      } catch (e) {
+        errMsg = "Incorrect parameter definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      outputs = interactive.outputs;
+      try {
+        for (i = 0, len = outputs.length; i < len; i++) {
+          outputs[i] = validator.validateCompleteness(metadata.output, outputs[i]);
+        }
+      } catch (e) {
+        errMsg = "Incorrect output definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      filteredOutputs = interactive.filteredOutputs;
+      try {
+        for (i = 0, len = filteredOutputs.length; i < len; i++) {
+          filteredOutputs[i] = validator.validateCompleteness(metadata.filteredOutput, filteredOutputs[i]);
+        }
+      } catch (e) {
+        errMsg = "Incorrect filtered output definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      components = interactive.components;
+      try {
+        for (i = 0, len = components.length; i < len; i++) {
+          components[i] = validator.validateCompleteness(metadata[components[i].type], components[i]);
+        }
+      } catch (e) {
+        errMsg = "Incorrect " + components[i].type + " component definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      // Validate exporter, if any...
+      if (interactive.exports) {
+        try {
+          interactive.exports = validator.validateCompleteness(metadata.exports, interactive.exports);
+        } catch (e) {
+          errMsg = "Incorrect exports definition:\n" + e.message;
+          alert(errMsg);
+          throw new Error(errMsg);
+        }
+      }
+
+      return interactive;
+    }
+
+    /**
       The main method called when this controller is created.
 
       Populates the element pointed to by viewSelector with divs to contain the
@@ -297,27 +388,15 @@ define(function (require) {
     function loadInteractive(newInteractive, viewSelector) {
       var components = {},
           componentJsons, component, componentId,
-          parameters, outputs, filteredOutputs,
-          exports,
           divContents, items, div,
           $top, $right, $rightwide, $bottom, $row,
           $exportButton,
-          i, j, len,
-
-          // Just convenient way to end interactive loading and provide meaningful error.
-          interruptLoading = function () {
-            throw new Error("Incorrect interactive definition!");
-          };
+          i, j, len;
 
       componentCallbacks = [];
 
-      // Validate top level interactive properties.
-      try {
-        interactive = validator.validateCompleteness(metadata.interactive, newInteractive);
-      } catch (e) {
-        alert("Incorrect interactive definition:\n" + e.message);
-        interruptLoading();
-      }
+      // Validate interactive.
+      interactive = validateInteractive(newInteractive);
 
       if (viewSelector) {
         $interactiveContainer = $(viewSelector);
@@ -350,44 +429,8 @@ define(function (require) {
 
       // Set up the list of possible models.
       models = interactive.models;
-      try {
-        for (i = 0, len = models.length; i < len; i++) {
-          models[i] = validator.validateCompleteness(metadata.model, models[i]);
-          modelsHash[models[i].id] = models[i];
-        }
-      } catch (e) {
-        alert("Incorrect model definition:\n" + e.message);
-        interruptLoading();
-      }
-
-      parameters = interactive.parameters;
-      try {
-        for (i = 0, len = parameters.length; i < len; i++) {
-          parameters[i] = validator.validateCompleteness(metadata.parameter, parameters[i]);
-        }
-      } catch (e) {
-        alert("Incorrect parameter definition:\n" + e.message);
-        interruptLoading();
-      }
-
-      outputs = interactive.outputs;
-      try {
-        for (i = 0, len = outputs.length; i < len; i++) {
-          outputs[i] = validator.validateCompleteness(metadata.output, outputs[i]);
-        }
-      } catch (e) {
-        alert("Incorrect output definition:\n" + e.message);
-        interruptLoading();
-      }
-
-      filteredOutputs = interactive.filteredOutputs;
-      try {
-        for (i = 0, len = filteredOutputs.length; i < len; i++) {
-          filteredOutputs[i] = validator.validateCompleteness(metadata.filteredOutput, filteredOutputs[i]);
-        }
-      } catch (e) {
-        alert("Incorrect filtered output definition:\n" + e.message);
-        interruptLoading();
+      for (i = 0, len = models.length; i < len; i++) {
+        modelsHash[models[i].id] = models[i];
       }
 
       // Load first model.
@@ -400,18 +443,13 @@ define(function (require) {
       componentList = [];
       componentByType = {};
 
-      try {
-        for (i = 0, len = componentJsons.length; i < len; i++) {
-          component = createComponent(componentJsons[i]);
-          // Register component callback if it is available.
-          if (component.modelLoadedCallback) {
-            componentCallbacks.push(component.modelLoadedCallback);
-          }
-          components[componentJsons[i].id] = component;
+      for (i = 0, len = componentJsons.length; i < len; i++) {
+        component = createComponent(componentJsons[i]);
+        // Register component callback if it is available.
+        if (component.modelLoadedCallback) {
+          componentCallbacks.push(component.modelLoadedCallback);
         }
-      } catch (e) {
-        alert("Incorrect " + componentJsons[i].type + " component definition:\n" + e.message);
-        interruptLoading();
+        components[componentJsons[i].id] = component;
       }
 
       // look at each div defined in layout, and add any components in that
@@ -463,8 +501,7 @@ define(function (require) {
 
       // Setup exporter, if any...
       if (interactive.exports) {
-        exports = validator.validateCompleteness(metadata.exports, interactive.exports);
-        exportController = new ExportController(exports);
+        exportController = new ExportController(interactive.exports);
         componentCallbacks.push(exportController.modelLoadedCallback);
 
         if (ExportController.isExportAvailable()) {
@@ -627,6 +664,7 @@ define(function (require) {
       },
       // Make these private variables and functions available
       loadInteractive: loadInteractive,
+      validateInteractive: validateInteractive,
       loadModel: loadModel
     };
 
