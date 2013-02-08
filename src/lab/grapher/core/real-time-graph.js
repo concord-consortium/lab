@@ -145,7 +145,6 @@ define(function (require) {
 
       if (opts || !options) {
         options = setupOptions(opts);
-        newOptions = undefined;
       }
 
       if (svg !== undefined) {
