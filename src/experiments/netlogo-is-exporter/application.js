@@ -1,4 +1,4 @@
-/*globals $ CodeMirror controllers model alert DEVELOPMENT: true */
+/*globals $ CodeMirror Lab controllers model alert DEVELOPMENT: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -30,7 +30,8 @@ var ROOT = "/experiments",
       nl_obj_panel, nl_obj_workspace, nl_obj_world,
       nl_obj_program, nl_obj_observer, nl_obj_globals,
       nlGlobals,
-      clearDataReady;
+      clearDataReady,
+      nRunsExported = 0;
 
   if (!document.location.hash) {
     if (selectInteractive) {
@@ -168,17 +169,41 @@ var ROOT = "/experiments",
   }
 
   function exportDataReadyCallback() {
-    var dgExportDone = nl_read_global("DG-EXPORTED?");
+    var dgExportDone = nl_read_global("DG-EXPORTED?"),
+        nRuns,
+        n,
+        run,
+        data;
 
     if (dgExportDone === null) dgExportDone = nl_read_global("DATA-EXPORT:DATA-READY?");
     if (dgExportDone) {
       clearInterval(clearDataReady);
       data = getExportedData();
+
       if (exportedData) {
         exportedData.textContent = data;
       } else {
         console.log(data);
-        ISNetLogo.DGExporter.exportData(JSON.parse(data));
+        data = JSON.parse(data);
+
+        if (data.collection_name) {
+          // data appears to be in format required by ISNetLogo.DGExporter
+          ISNetLogo.DGExporter.exportData(data);
+        } else if (data.description) {
+          // data appears to be in format of the NetLogo data exporter module (readable by
+          // Lab.importExport.netlogoImporter)
+          nRuns = Lab.importExport.netlogoImporter.numberOfRuns(data);
+
+          for (n = nRunsExported; n < nRuns; n++) {
+            run = Lab.importExport.netlogoImporter.importRun(data, n);
+            Lab.importExport.dgExporter.exportData(
+              run.perRunLabels,
+              run.perRunValues,
+              run.perTickLabels,
+              run.perTickValues
+            );
+          }
+        }
       }
     }
   }
