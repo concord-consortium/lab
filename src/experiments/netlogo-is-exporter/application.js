@@ -202,6 +202,7 @@ var ROOT = "/experiments",
               run.perTickLabels,
               run.perTickValues
             );
+            nRunsExported++;
           }
           Lab.importExport.dgExporter.openTable();
         }
