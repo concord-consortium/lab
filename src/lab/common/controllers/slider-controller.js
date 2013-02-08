@@ -55,7 +55,7 @@ define(function () {
     $title = $('<p class="title">' + title + '</p>');
     // we pick up the SVG slider component CSS if we use the generic class name 'slider'
     $container = $('<div class="container">');
-    $slider = $('<div class="html-slider">');
+    $slider = $('<div class="html-slider">').attr('id', component.id);
     $container.append($slider);
 
     $slider.slider({
