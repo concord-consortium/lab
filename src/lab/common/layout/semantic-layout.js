@@ -12,7 +12,14 @@ define(function (require) {
     var layout = {},
         $modelContainer,
         $containers,
-        minLeft, minTop;
+
+        minLeft = Infinity,
+        minTop = Infinity,
+        maxX = -Infinity,
+        maxY = -Infinity,
+        modelWidth = 100,
+        modelTop = 0,
+        modelLeft = 0;
 
     function getDimensionOfContainer($container, dim) {
       var position = $container.position();
@@ -31,56 +38,22 @@ define(function (require) {
         case "width":
           return $container.outerWidth();
       }
-    };
+    }
 
     function layoutInteractive() {
-      var redraws, id, $container;
-
-      $modelContainer = $interactiveContainer.find("#model-container");
-      if ($modelContainer.length) {
-        removeNonModelContainers();
-      } else {
-        $modelContainer = $("<div id='model-container' class='container'>")
-        .css({
-          left: 0,
-          top: 0,
-          width: 50,
-          height: 50,
-        }).appendTo($interactiveContainer);
-      }
+      var redraws;
 
       createContainers();
       placeComponentsInContainers();
+      positionContainers();
 
-      minLeft = 0;
-      minTop = 0;
+      redraws = 0;
 
-      redraws = 5;
-
-      // position containers and re-size several times,
-      // until the positioning settles out
-      while (redraws--) {
+      while (redraws < 25 && !resizeModelContainer()) {
         positionContainers();
-        resizeModelContainer();
+        redraws++;
       }
-
-      // shift everything over if we have components to
-      // the left of or above the model
-      for (id in $containers) {
-        if (!$containers.hasOwnProperty(id)) continue;
-        $container = $containers[id];
-        $container.css("left", $container.position().left-minLeft);
-        $container.css("top", $container.position().top-minTop);
-      }
-
-      redraws = 2;
-
-      // and then resize after the shift in origin
-      while (redraws--) {
-        positionContainers();
-        resizeModelContainer();
-      }
-    };
+    }
 
     function removeNonModelContainers() {
       var children = $interactiveContainer.children(),
@@ -90,13 +63,27 @@ define(function (require) {
           children[i].remove();
         }
       }
-    };
+    }
 
     function createContainers() {
       var colors = ["rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)"],
           container, id, prop, i, ii;
 
       $containers = {};
+
+      $modelContainer = $interactiveContainer.find("#model-container");
+      if ($modelContainer.length) {
+        removeNonModelContainers();
+      } else {
+        $modelContainer = $("<div id='model-container' class='container'>")
+        .css({
+          left: modelLeft,
+          top: modelTop,
+          width: modelWidth,
+          height: modelWidth
+        }).appendTo($interactiveContainer);
+      }
+
       $containers.model = $modelContainer;
 
       for (i = 0, ii = containers.length; i<ii; i++) {
@@ -116,12 +103,14 @@ define(function (require) {
           }
         }
       }
-    };
+    }
 
     function placeComponentsInContainers() {
-      var component, container, divContents, items, $row,
-          lastContainer, $rows,
+      var id, container, divContents, items, $row,
+          lastContainer, $rows, $comps,
           i, ii, j, jj, k, kk;
+
+      $comps = $.extend(true, {}, $components);
 
       for (i = 0, ii = containers.length; i<ii; i++) {
         container = containers[i];
@@ -139,33 +128,48 @@ define(function (require) {
           $row = $('<div class="interactive-' + container.id + '-row"/>');
           $containers[container.id].append($row);
           for (k = 0, kk = items.length; k < kk; k++) {
-            $row.append($components[items[k]].getViewContainer());
-            delete $components[items[k]];
+            $row.append($comps[items[k]].getViewContainer());
+            delete $comps[items[k]];
           }
         }
       }
 
       // add any remaining components to "bottom" or last container
       lastContainer = getObject(containers, "bottom") || containers[containers.length-1];
-      for (id in $components) {
-        if (!$components.hasOwnProperty(id)) continue;
+      for (id in $comps) {
+        if (!$comps.hasOwnProperty(id)) continue;
         $rows = $containers[lastContainer.id].children();
         $row = $rows.last();
         if (!$row.length) {
           $row = $('<div class="interactive-' + container.id + '-row"/>');
           $containers[container.id].append($row);
         }
-        $row.append($components[id].getViewContainer());
+        $row.append($comps[id].getViewContainer());
       }
-    };
+    }
 
     function positionContainers() {
       var container, $container,
           left, top, right, bottom, i, ii;
 
+      $modelContainer.css({
+        width: modelWidth,
+        height: modelWidth,
+        left: modelLeft,
+        top: modelTop
+      });
+
       for (i = 0, ii = containers.length; i<ii; i++) {
         container = containers[i];
         $container = $containers[container.id];
+
+        if (!container.left && !container.right) {
+          container.left = "model.left";
+        }
+        if (!container.top && !container.bottom) {
+          container.top = "model.top";
+        }
+
         if (!container.top && !container.bottom) {
           container.top = "model.top";
         }
@@ -197,27 +201,32 @@ define(function (require) {
           $container.css("top", top);
         }
         $container.css("position", "absolute");
-
-        if (left < minLeft) {
-          minLeft = left;
-        }
-        if (top < minTop) {
-          minTop = top;
-        }
       }
-    };
+    }
 
     // shrinks the model to fit in the interactive, given the sizes
     // of the other containers around it.
     function resizeModelContainer() {
-      var maxX, maxY = maxX = -Infinity,
-          id, $container,
-          right, bottom,
-          widthOfNonModelContainers,
-          heightOfNonModelContainers,
-          availableWidth, availableHeight,
-          modelAspectRatio, containerAspectRatio,
-          width, height;
+      var speed = 1,
+      id, $container,
+      right, bottom, top, left,
+      availableWidth, availableHeight, ratio;
+
+      if (isNaN(modelWidth) || modelWidth === 0) {
+        modelWidth = 1;
+      }
+      if (isNaN(modelLeft)) {
+        modelLeft = 0;
+      }
+      if (isNaN(modelTop)) {
+        modelTop = 0;
+      }
+
+      // Calc maxX and maxY.
+      maxY = -Infinity;
+      maxX = -Infinity;
+      minLeft = Infinity;
+      minTop = Infinity;
 
       for (id in $containers) {
         if (!$containers.hasOwnProperty(id)) continue;
@@ -230,33 +239,40 @@ define(function (require) {
         if (bottom > maxY) {
           maxY = bottom;
         }
+        left = getDimensionOfContainer($container, "left");
+        if (left < minLeft) {
+          minLeft = left;
+        }
+        top = getDimensionOfContainer($container, "top");
+        if (top < minTop) {
+          minTop = top;
+        }
       }
 
-      widthOfNonModelContainers  = maxX - $modelContainer.width();
-      heightOfNonModelContainers = maxY - $modelContainer.height();
+      availableWidth  = $interactiveContainer.width();
+      availableHeight = $interactiveContainer.height();
 
-      availableWidth  = $interactiveContainer.width() - widthOfNonModelContainers;
-      availableHeight = $interactiveContainer.height() - heightOfNonModelContainers;
-
-      containerAspectRatio = availableHeight / availableWidth;
-
-      modelAspectRatio = $modelContainer.height() / $modelContainer.width();
-      console.log(modelAspectRatio);
-
-      if (containerAspectRatio >= modelAspectRatio) {
-        width = availableWidth;
-        height = modelAspectRatio * width;
-      } else {
-        height = availableHeight;
-        width = height / modelAspectRatio;
+      if ((maxX <= availableWidth && maxY <= availableHeight) &&
+          (availableWidth - maxX < 1 || availableHeight - maxY < 1) &&
+          (minLeft < 1 && minTop < 1)) {
+        // Perfect solution found!
+        return true;
       }
 
-      $modelContainer.css({
-        width: width,
-        height: height
-      });
-    };
+      if (maxX > availableWidth || maxY > availableHeight) {
+        ratio = Math.min(1 - speed * (maxX - availableWidth) / availableWidth, 1 - speed * (maxY - availableHeight) / availableHeight);
+      }
+      if (maxX < availableWidth && maxY < availableHeight) {
+        ratio = Math.min(1 + speed * (availableWidth - maxX) / availableWidth, 1 + speed * (availableHeight - maxY) / availableHeight);
+      }
+      if (ratio !== undefined) {
+        modelWidth = modelWidth * ratio;
+      }
+      modelLeft -= minLeft;
+      modelTop -= minTop;
 
+      return false;
+    }
 
     // parses arithmetic such as "model.height/2"
     function parseDimension(dim) {
@@ -280,7 +296,7 @@ define(function (require) {
       } else {
         return 0;
       }
-    };
+    }
 
     // parses a container's dimension, such as "model.height"
     function getDimension(dim) {
@@ -291,7 +307,7 @@ define(function (require) {
       attr = dim.split(".")[1];
 
       return getDimensionOfContainer($container, attr);
-    };
+    }
 
     function getObject(arr, id) {
       for (var i = 0, ii = arr.length; i<ii; i++) {
@@ -299,7 +315,7 @@ define(function (require) {
           return arr[i];
         }
       }
-    };
+    }
 
     layout.layoutInteractive = layoutInteractive;
     layout.positionContainers = positionContainers;
