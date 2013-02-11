@@ -9,9 +9,11 @@ var interactiveEditor,
     $components,
     minLeft = Infinity,
     minTop = Infinity,
-    modelWidth = 50,
+    maxX = -Infinity,
+    maxY = -Infinity,
+    modelWidth = 100,
     modelTop = 0,
-    modelLeft = 1;
+    modelLeft = 0;
 
 function update() {
   var redraws;
@@ -24,15 +26,24 @@ function update() {
 
   createContainers();
   placeComponentsInContainers();
-
-  redraws = 7;
-
-  while (redraws--) {
-    positionContainers();
-    adjustVariables();
-  }
-
   positionContainers();
+
+  redraws = 0;
+
+  while (redraws < 25 && !adjustVariables()) {
+    positionContainers();
+    redraws++;
+  }
+}
+
+function resetVariables() {
+    minLeft = Infinity;
+    minTop = Infinity;
+    maxX = -Infinity;
+    maxY = -Infinity;
+    modelWidth = 50;
+    modelTop = 0;
+    modelLeft = 0;
 }
 
 function createContainers() {
@@ -155,7 +166,7 @@ function positionContainers() {
       if (container.left) {
         $container.css("width", right-left);
       } else {
-        left = right - $container.outerWidth(true);
+        left = right - $container.outerWidth();
         $container.css("left", left);
       }
     }
@@ -164,18 +175,11 @@ function positionContainers() {
       if (container.top) {
         $container.css("height", bottom-top);
       } else {
-        top = bottom - $container.outerHeight(true);
+        top = bottom - $container.outerHeight();
         $container.css("top", top);
       }
     }
     $container.css("position", "absolute");
-
-    if (left < minLeft) {
-      minLeft = left;
-    }
-    if (top < minTop) {
-      minTop = top;
-    }
   }
 }
 
@@ -236,15 +240,29 @@ function getDimensionOfContainer($container, dim) {
 // shrinks the model to fit in the interactive, given the sizes
 // of the other containers around it.
 function adjustVariables() {
-  var maxY = -Infinity,
-      maxX = -Infinity,
+  var speed = 1,
       id, $container,
-      right, bottom,
+      right, bottom, top, left,
       $modelContainer,
       availableWidth, availableHeight, ratio,
       modelAspectRatio;
 
+  if (isNaN(modelWidth) || modelWidth === 0) {
+    modelWidth = 1;
+  }
+  if (isNaN(modelLeft)) {
+    modelLeft = 0;
+  }
+  if (isNaN(modelTop)) {
+    modelTop = 0;
+  }
+
   // Calc maxX and maxY.
+  maxY = -Infinity;
+  maxX = -Infinity;
+  minLeft = Infinity;
+  minTop = Infinity;
+
   for (id in $containers) {
     if (!$containers.hasOwnProperty(id)) continue;
     $container = $containers[id];
@@ -256,28 +274,42 @@ function adjustVariables() {
     if (bottom > maxY) {
       maxY = bottom;
     }
+    left = getDimensionOfContainer($container, "left");
+    if (left < minLeft) {
+      minLeft = left;
+    }
+    top = getDimensionOfContainer($container, "top");
+    if (top < minTop) {
+      minTop = top;
+    }
   }
-
-  $modelContainer = $containers.model;
 
   availableWidth  = $interactiveContainer.width();
   availableHeight = $interactiveContainer.height();
 
+  if ((maxX <= availableWidth && maxY <= availableHeight) &&
+      (availableWidth - maxX < 1 || availableHeight - maxY < 1) &&
+      (minLeft < 1 && minTop < 1)) {
+    // Perfect solution found!
+    return true;
+  }
+
+  $modelContainer = $containers.model;
   modelAspectRatio = getObject(components, "model")["aspect-ratio"];
 
   if (maxX > availableWidth || maxY > availableHeight) {
-    ratio = Math.min(1 - 0.2 * (maxX - availableWidth) / availableWidth, 1 - 0.2 * (maxY - availableHeight) / availableHeight);
-    modelWidth = $modelContainer.width() * ratio;
+    ratio = Math.min(1 - speed * (maxX - availableWidth) / availableWidth, 1 - speed * (maxY - availableHeight) / availableHeight);
   }
   if (maxX < availableWidth && maxY < availableHeight) {
-    ratio = Math.min(1 + 0.2 * (availableWidth - maxX) / availableWidth, 1 + 0.2 * (availableHeight - maxY) / availableHeight);
-    modelWidth = $modelContainer.width() * ratio;
+    ratio = Math.min(1 + speed * (availableWidth - maxX) / availableWidth, 1 + speed * (availableHeight - maxY) / availableHeight);
   }
-
+  if (ratio !== undefined) {
+    modelWidth = modelWidth * ratio;
+  }
   modelLeft -= minLeft;
   modelTop -= minTop;
-  minTop = Infinity;
-  minLeft = Infinity;
+
+  return false;
 }
 
 // finds the object with the given id, given an array of
@@ -326,7 +358,8 @@ var INDENT = 2,
 
     $examples.bind("change", function(evt) {
       var example = layouts[this.value];
-      interactiveEditor.setValue(JSON.stringify(example, null, " "))
+      interactiveEditor.setValue(JSON.stringify(example, null, " "));
+      resetVariables();
       update();
     });
 
@@ -335,7 +368,7 @@ var INDENT = 2,
     }
   }
 
-  interactiveEditor.setValue(JSON.stringify(firstExample, null, " "))
+  interactiveEditor.setValue(JSON.stringify(firstExample, null, " "));
 
   update();
 
