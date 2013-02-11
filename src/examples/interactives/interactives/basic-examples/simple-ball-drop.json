@@ -1,0 +1,76 @@
+{
+  "title": "Simple Ball Drop",
+  "publicationStatus": "public",
+  "subtitle": "Simple analog of a macroscopic ball dropped in a gravitational field",
+  "about": "",
+  "models": [
+    {
+      "id": "main-model",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-ball-drop$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ballHeight",
+      "units": "m",
+      "label": "Ball Height",
+      "value": "return getAtomProperties(0).y;"
+    },
+    {
+      "name": "macroTime",
+      "units": "s",
+      "label": "Time",
+      "value": "return get('time') * 1e-4"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "gravity",
+      "label": "Gravitational acceleration",
+      "units": "(m/s²)",
+      "onChange": "set({ gravitationalField: value * 1e-8});",
+      "initialValue": 9.8
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "gravity-slider",
+      "min": 1,
+      "max": 20,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1.0"
+        },
+        {
+          "value": 9.8,
+          "label": "9.8"
+        },
+        {
+          "value": 20,
+          "label": "20.0"
+        }
+      ],
+      "steps": 19,
+      "title": "Gravitational acceleration (m/s²)",
+      "property": "gravity"
+    },
+    {
+      "type": "numericOutput",
+      "id": "time-display",
+      "property": "macroTime",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "ball-height-display",
+      "property": "ballHeight",
+      "displayValue": "return format('1.2f')(value)"
+    }
+  ]
+}
