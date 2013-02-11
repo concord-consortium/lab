@@ -76,6 +76,13 @@ layouts = {
 	],
 	"big-top": [
 		{
+	    "id": "right",
+	    "left": "model.right",
+	    "height": "model.height",
+	    "padding-left": "0.5em",
+	    "components": ["button2"]
+	  },
+	  {
 	    "id": "top",
 	    "bottom": "model.top",
 	    "height": "model.height/3",
@@ -84,13 +91,6 @@ layouts = {
 	    "padding-bottom": "0.5em",
 	    "components": ["button1"]
 	  },
-		{
-	    "id": "right",
-	    "left": "model.right",
-	    "height": "model.height",
-	    "padding-left": "0.5em",
-	    "components": ["button2"]
-	  },
 	  {
 	    "id": "bottom",
 	    "top": "model.bottom",
@@ -98,6 +98,37 @@ layouts = {
 	    "right": "right.right",
 	    "padding-top": "0.5em",
 	    "components": ["button4"]
+	  }
+	],
+	"model-right": [
+	  {
+		  "id": "wide-left",
+		  "right": "model.left",
+		  "width": "model.width",
+		  "height": "model.height",
+		  "components": [
+		    "button2",
+		    "button3"
+		  ]
+	  },
+	  {
+		  "id": "bottom",
+		  "top": "model.bottom",
+		  "right": "model.right",
+		  "left": "wide-left.left",
+		  "margin-top": "0.5em",
+		  "components": [
+		    "button4"
+	  	]
+	  },
+	  {
+		  "id": "bottom2",
+		  "top": "bottom.bottom",
+		  "right": "model.right",
+		  "left": "wide-left.left",
+		  "components": [
+		    "button1"
+		  ]
 	  }
 	]
 }
