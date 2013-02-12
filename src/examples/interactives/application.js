@@ -124,7 +124,13 @@ AUTHORING = false;
       selectInteractiveHandler();
     } else {
       interactivesPromise.done(function(){
-          document.location.hash = interactiveDescriptions.interactives[0].path;
+        // set the default interactive, from the first interactive in 
+        // the first group returned from the server
+        var firstGroupPath = interactiveDescriptions.groups[0].path;
+        var firstInteractive = _.find(interactiveDescriptions.interactives, function(interactive){ 
+          return interactive.groupKey == firstGroupPath;
+        });
+        document.location.hash = firstInteractive.path;
       });
     }
   }
