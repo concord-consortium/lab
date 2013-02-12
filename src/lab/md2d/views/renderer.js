@@ -1,4 +1,4 @@
-/*global $ alert model_player define: false, d3: false */
+/*global $ alert define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
@@ -6,7 +6,8 @@
 // ------------------------------------------------------------
 define(function (require) {
   // Dependencies.
-  var console               = require('common/console'),
+  var labConfig             = require('lab.config'),
+      console               = require('common/console'),
       layout                = require('common/layout/layout'),
       amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
       GeneticRenderer       = require('md2d/views/genetic-renderer'),
@@ -1422,7 +1423,7 @@ define(function (require) {
       imageProp = model.get("images");
       imageMapping = model.get("imageMapping");
       if (model.url) {
-        imagePath = Lab.config.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
+        imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
       }
 
       velocityVectorColor = model.get("velocityVectors").color;

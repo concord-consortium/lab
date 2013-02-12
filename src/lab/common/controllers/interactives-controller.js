@@ -2,7 +2,8 @@
 
 define(function (require) {
   // Dependencies.
-  var arrays                  = require('arrays'),
+  var labConfig               = require('lab.config'),
+      arrays                  = require('arrays'),
       alert                   = require('common/alert'),
       metadata                = require('common/controllers/interactive-metadata'),
       validator               = require('common/validator'),
@@ -136,7 +137,7 @@ define(function (require) {
       if (modelConfig) {
         finishWithLoadedModel(modelDefinition.url, modelConfig);
       } else {
-        $.get(Lab.config.actualRoot + modelDefinition.url).done(function(modelConfig) {
+        $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
 
           // Deal with the servers that return the json as text/plain
           modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;

@@ -1,4 +1,4 @@
-/*global $ alert model_player define: false, d3: false */
+/*global $ model_player define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   PTA View Container
@@ -6,7 +6,7 @@
 // ------------------------------------------------------------
 define(function (require) {
   // Dependencies.
-  var console               = require('common/console'),
+  var labConfig             = require('lab.config'),
       PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
@@ -60,7 +60,7 @@ define(function (require) {
       modelUrl = newModelUrl || modelUrl;
       model = newModel || model;
       if (modelUrl) {
-        imagePath = Lab.config.actualRoot + modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
+        imagePath = labConfig.actualRoot + modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
       }
     }
 
