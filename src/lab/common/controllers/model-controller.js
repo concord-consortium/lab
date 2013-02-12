@@ -157,11 +157,11 @@ define(function (require) {
           if (!model.isNewStep()) {
             modelContainer.update();
           }
-        },
+        };
         model_player.back = function() {
           model.stepBack();
           modelContainer.update();
-        },
+        };
 
         modelContainer = new ModelContainer(modelViewId, modelUrl, model);
       }
@@ -192,6 +192,14 @@ define(function (require) {
 
       function repaint() {
         modelContainer.repaint();
+      }
+
+      function resize() {
+        modelContainer.resize();
+      }
+
+      function getHeightForWidth(width) {
+        return modelContainer.getHeightForWidth(width);
       }
 
       function state() {
@@ -231,6 +239,8 @@ define(function (require) {
 
       controller.reload = reload;
       controller.repaint = repaint;
+      controller.resize = resize;
+      controller.getHeightForWidth = getHeightForWidth;
       controller.modelContainer = modelContainer;
       controller.state = state;
       controller.benchmarks = benchmarks;
