@@ -350,26 +350,31 @@ define(function (require) {
     // placement in drawSymbolImages() function.
     function createSymbolImages() {
       var xMargin = "1%";
-      // Heat bath key image.
-      mainContainer.append("image")
-          .attr({
-            "id": "heat-bath",
-            "x": xMargin,
-            "width": "3%",
-            "height": "3%",
-            "preserveAspectRatio": "xMinYMin",
-            "xlink:href": "../../resources/heatbath.gif"
-          });
-      // Kinetic Energy Shading gradient image.
-      mainContainer.append("image")
-          .attr({
-            "id": "ke-gradient",
-            "x": xMargin,
-            "width": "12%",
-            "height": "12%",
-            "preserveAspectRatio": "xMinYMin",
-            "xlink:href": "../../resources/ke-gradient.png"
-          });
+      // only add these images if they don't already exist
+      if ($("#heat-bath").length === 0) {
+        // Heat bath key image.
+        mainContainer.append("image")
+            .attr({
+              "id": "heat-bath",
+              "x": xMargin,
+              "width": "3%",
+              "height": "3%",
+              "preserveAspectRatio": "xMinYMin",
+              "xlink:href": "../../resources/heatbath.gif"
+            });
+      }
+      if ($("#ke-gradient").length === 0) {
+        // Kinetic Energy Shading gradient image.
+        mainContainer.append("image")
+            .attr({
+              "id": "ke-gradient",
+              "x": xMargin,
+              "width": "12%",
+              "height": "12%",
+              "preserveAspectRatio": "xMinYMin",
+              "xlink:href": "../../resources/ke-gradient.png"
+            });
+      }
     }
 
     // Draw key images in the upper left corner.
