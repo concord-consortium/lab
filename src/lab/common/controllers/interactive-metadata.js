@@ -55,6 +55,11 @@ define(function() {
       layout: {
         // Layout definition.
         defaultValue: {}
+      },
+
+      template: {
+        // Layout template definition.
+        defaultValue: "simple"
       }
     },
 
