@@ -150,6 +150,9 @@ define(function (require) {
         if (modelController) {
           modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
         } else {
+          // Create container for model.
+          // TODO: cleanup it, probably there is a better place to create this div.
+          $interactiveContainer.append('<div id="model-container" class="container">');
           createModelController(modelConfig.type, modelUrl, modelConfig);
           modelLoaded(modelConfig);
           // also be sure to get notified when the underlying model changes
@@ -232,13 +235,16 @@ define(function (require) {
           template = interactive.template;
         }
       }
-      if (!template) {
-        template = templates.simple;
-      }
+
       // the authored definition of which components go in which container
       layout = interactive.layout;
 
+      // TODO: this should be moved out of modelLoaded (?)
+      $interactiveContainer.children().not("#model-container").each(function () {
+        $(this).detach();
+      });
       semanticLayout = new SemanticLayout($interactiveContainer, template, layout, componentByID, modelController);
+
       semanticLayout.layoutInteractive();
       $(window).unbind('resize');
       $(window).on('resize', function() {
@@ -390,9 +396,6 @@ define(function (require) {
 
       // Prepare interactive components.
       componentJsons = interactive.components || [];
-
-      // Create container for model.
-      $interactiveContainer.append('<div id="model-container" class="container">');
 
       // Clear component instances.
       componentList = [];
