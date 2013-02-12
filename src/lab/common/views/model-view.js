@@ -10,7 +10,6 @@ define(function (require) {
       PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
-      layout                = require('common/layout/layout'),
       gradients             = require('common/views/gradients');
 
   return function ModelView(e, modelUrl, model, Renderer) {
@@ -64,12 +63,14 @@ define(function (require) {
       }
     }
 
-    function scale(w, h) {
+    function scale() {
       var modelWidth = model.get('width'),
           modelHeight = model.get('height'),
           aspectRatio = modelWidth / modelHeight;
 
-      emsize = layout.getVizProperties().emsize;
+      // TODO: temporary workaround.
+      emsize = 1;
+
       padding = {
          "top":    20,
          "right":  25,
@@ -91,33 +92,14 @@ define(function (require) {
         padding.bottom += (15  * emsize);
       }
 
-      if (model.get("fitToParent")) {
-
-        // In 'fit-to-parent' mode, we allow the viewBox parameter to fit the svg
-        // node into the containing element and allow the containing element to be
-        // sized by CSS (or Javascript)
-        cx = 500;
-        width = cx - padding.left - padding.right;
-        height = width / aspectRatio;
-        cy = height + padding.top + padding.bottom;
-      }
-      else if (!arguments.length) {
-        cx = elem.property("clientWidth");
-        width = cx - padding.left  - padding.right;
-        height = width / aspectRatio;
-        // cy = elem.property("clientHeight");
-        // height = cy - padding.top  - padding.bottom;
-        // width = height * aspectRatio;
-        cy = height + padding.top  + padding.bottom;
-        node.style.height = cy +"px";
-      } else {
-        width  = w;
-        height = h;
-        cx = width + padding.left  + padding.right;
-        cy = height + padding.top  + padding.bottom;
-        node.style.height = cy +"px";
-        node.style.width = cx +"px";
-      }
+      cx = elem.property("clientWidth");
+      width = cx - padding.left  - padding.right;
+      height = width / aspectRatio;
+      // cy = elem.property("clientHeight");
+      // height = cy - padding.top  - padding.bottom;
+      // width = height * aspectRatio;
+      cy = height + padding.top  + padding.bottom;
+      node.style.height = cy +"px";
 
       // Container size in px.
       size = {
@@ -498,15 +480,20 @@ define(function (require) {
       outerNode: null,
       scale: scale,
       setFocus: setFocus,
-      resize: function(w, h) {
-        if (model.get("fitToParent")) {
-          $(outerElement[0][0]).width(w+'px')
-          // outerElement.style('width', w+'px');
-        } else {
-          scale(w, h);
-        }
+      resize: function() {
+        scale();
         processOptions();
         init();
+      },
+      getHeightForWidth: function (width) {
+        var modelWidth = model.get('width'),
+            modelHeight = model.get('height'),
+            aspectRatio = modelWidth / modelHeight,
+            height;
+
+        width = width - padding.left - padding.right;
+        height = width / aspectRatio;
+        return height + padding.top  + padding.bottom;
       },
       repaint: function() {
         repaint();
