@@ -7,7 +7,9 @@
 
 define(function (require) {
 
-  return function SemanticLayout($interactiveContainer, containers, $components, componentLocations) {
+  var minModelWidth = 200;
+
+  return function SemanticLayout($interactiveContainer, containers, componentLocations, components, modelController) {
 
     var layout = {},
         $modelContainer,
@@ -17,7 +19,7 @@ define(function (require) {
         minTop = Infinity,
         maxX = -Infinity,
         maxY = -Infinity,
-        modelWidth = 100,
+        modelWidth = minModelWidth,
         modelTop = 0,
         modelLeft = 0;
 
@@ -41,27 +43,32 @@ define(function (require) {
     }
 
     function layoutInteractive() {
-      var redraws;
+      var redraws = 0;
 
-      createContainers();
-      placeComponentsInContainers();
+      setMinDimensions();
       positionContainers();
-
-      redraws = 0;
 
       while (redraws < 25 && !resizeModelContainer()) {
         positionContainers();
         redraws++;
       }
+
+      modelController.resize();
+      // TODO: resize also other components!
     }
 
-    function removeNonModelContainers() {
-      var children = $interactiveContainer.children(),
-          i, ii;
-      for (i=0, ii=children.length; i<ii; i++) {
-        if (children[i] !== $modelContainer[0]) {
-          children[i].remove();
-        }
+    function setMinDimensions() {
+      var id, $container;
+
+      for (id in $containers) {
+        if (!$containers.hasOwnProperty(id) || id === "model") continue;
+        $container = $containers[id];
+        $container.css("width", "");
+        $container.css("height", "");
+        $container.css("min-width", "");
+        $container.css("min-height", "");
+        $container.css("min-width", $container.outerWidth(true));
+        $container.css("min-height", $container.outerHeight(true));
       }
     }
 
@@ -72,18 +79,6 @@ define(function (require) {
       $containers = {};
 
       $modelContainer = $interactiveContainer.find("#model-container");
-      if ($modelContainer.length) {
-        removeNonModelContainers();
-      } else {
-        $modelContainer = $("<div id='model-container' class='container'>")
-        .css({
-          left: modelLeft,
-          top: modelTop,
-          width: modelWidth,
-          height: modelWidth
-        }).appendTo($interactiveContainer);
-      }
-
       $containers.model = $modelContainer;
 
       for (i = 0, ii = containers.length; i<ii; i++) {
@@ -107,10 +102,10 @@ define(function (require) {
 
     function placeComponentsInContainers() {
       var id, container, divContents, items, $row,
-          lastContainer, $rows, $comps,
+          lastContainer, $rows, comps,
           i, ii, j, jj, k, kk;
 
-      $comps = $.extend(true, {}, $components);
+      comps = $.extend(true, {}, components);
 
       for (i = 0, ii = containers.length; i<ii; i++) {
         container = containers[i];
@@ -128,23 +123,23 @@ define(function (require) {
           $row = $('<div class="interactive-' + container.id + '-row"/>');
           $containers[container.id].append($row);
           for (k = 0, kk = items.length; k < kk; k++) {
-            $row.append($comps[items[k]].getViewContainer());
-            delete $comps[items[k]];
+            $row.append(comps[items[k]].getViewContainer());
+            delete comps[items[k]];
           }
         }
       }
 
       // add any remaining components to "bottom" or last container
       lastContainer = getObject(containers, "bottom") || containers[containers.length-1];
-      for (id in $comps) {
-        if (!$comps.hasOwnProperty(id)) continue;
+      for (id in comps) {
+        if (!comps.hasOwnProperty(id)) continue;
         $rows = $containers[lastContainer.id].children();
         $row = $rows.last();
         if (!$row.length) {
           $row = $('<div class="interactive-' + container.id + '-row"/>');
           $containers[container.id].append($row);
         }
-        $row.append($comps[id].getViewContainer());
+        $row.append(comps[id].getViewContainer());
       }
     }
 
@@ -154,7 +149,7 @@ define(function (require) {
 
       $modelContainer.css({
         width: modelWidth,
-        height: modelWidth,
+        height: modelController.getHeightForWidth(modelWidth),
         left: modelLeft,
         top: modelTop
       });
@@ -212,8 +207,8 @@ define(function (require) {
       right, bottom, top, left,
       availableWidth, availableHeight, ratio;
 
-      if (isNaN(modelWidth) || modelWidth === 0) {
-        modelWidth = 1;
+      if (isNaN(modelWidth) || modelWidth < minModelWidth) {
+        modelWidth = minModelWidth;
       }
       if (isNaN(modelLeft)) {
         modelLeft = 0;
@@ -268,6 +263,11 @@ define(function (require) {
       if (ratio !== undefined) {
         modelWidth = modelWidth * ratio;
       }
+
+      if (modelWidth < minModelWidth) {
+        modelWidth = minModelWidth;
+      }
+
       modelLeft -= minLeft;
       modelTop -= minTop;
 
@@ -320,6 +320,10 @@ define(function (require) {
     layout.layoutInteractive = layoutInteractive;
     layout.positionContainers = positionContainers;
     layout.resizeModelContainer = resizeModelContainer;
+
+    // Initialize.
+    createContainers();
+    placeComponentsInContainers();
 
     return layout;
   };
