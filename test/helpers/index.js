@@ -7,7 +7,6 @@ var fs = require('fs');
 exports.setupBrowserEnvironment = function() {
   require('../env');
   global.alert = function() {};
-  global.ACTUAL_ROOT = '';
 };
 
 /**
