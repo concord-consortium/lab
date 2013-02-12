@@ -492,26 +492,51 @@ parseMML = (mmlString) ->
       instead of by name, so we put these in an array instead of a hash so we can get both
     ###
 
+    # Default element colors from Java MW converted into
+    # signed Integer form used by custom elementColors
+    #
+    # >> "f2f2f2".to_i(16) - 2**24
+    # => -855310
+    # >> "75a643".to_i(16) - 2**24
+    # => -9066941
+    # >> "7543a6".to_i(16) - 2**24
+    # => -9092186
+    # >> "D941E0".to_i(16) - 2**24
+    # => -2539040
+
+    elementColors = [-855310, -9066941, -9092186, -2539040]
+
+    elementColorNodes = $mml("[property=elementColors] > void")
+    for node in elementColorNodes
+      $node = getNode(cheerio(node))
+      index = $node.attr("index")
+      color = +$node.text()
+      elementColors[index] = color
+
     elements = []
 
     elementNodes = $mml(".org-concord-mw2d-models-Element")
+    colorIndex = 0
     for node in elementNodes
       $node = getNode(cheerio(node))
-      # id    = getIntProperty $node, 'ID', 'int'
       mass  = getFloatProperty $node, 'mass', 'double'
       sigma =  getFloatProperty $node, 'sigma', 'double'
       epsilon = getFloatProperty $node, 'epsilon', 'double'
 
       # scale sigma to nm
       [sigma] = toNextgenLengths sigma
+
       # epsilon's sign appears to be flipped between MW and Lab
       epsilon = -epsilon
 
       # scale to NextGen units
       mass *= 120         #convert to mass in Daltons
 
-      # elementRawData = { id, mass, sigma, epsilon }
-      elementRawData = { mass, sigma, epsilon }
+      # elementColor
+      color = elementColors[colorIndex] 
+      colorIndex++
+
+      elementRawData = { mass, sigma, epsilon, color }
 
       # Unit conversion performed on undefined values can convert them to NaN.
       # Revert back all NaNs to undefined, as we do not expect any NaN
@@ -817,7 +842,7 @@ parseMML = (mmlString) ->
 
     json.pairwiseLJProperties = pairwiseLJProperties
 
-    json.elements = unroll elements, 'mass', 'sigma', 'epsilon'
+    json.elements = unroll elements, 'mass', 'sigma', 'epsilon', 'color'
 
     json.atoms =
       x : x

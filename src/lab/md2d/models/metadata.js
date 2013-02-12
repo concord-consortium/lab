@@ -250,6 +250,9 @@ define(function() {
       radius: {
         readOnly: true,
         serialize: false
+      },
+      color: {
+        defaultValue: -855310
       }
     },
 

@@ -177,6 +177,7 @@ define(function (require, exports, module) {
         elementEpsilon,
         elementSigma,
         elementRadius,
+        elementColor,
 
         // An object that contains references to the above element-property arrays
         elements,
@@ -616,6 +617,7 @@ define(function (require, exports, module) {
             elementEpsilon = elements.epsilon;
             elementSigma   = elements.sigma;
             elementRadius  = elements.radius;
+            elementColor   = elements.color;
           },
 
           obstacles: function() {
@@ -666,6 +668,7 @@ define(function (require, exports, module) {
           elements.epsilon = arrays.create(num, 0, arrayTypes.float);
           elements.sigma   = arrays.create(num, 0, arrayTypes.float);
           elements.radius  = arrays.create(num, 0, arrayTypes.float);
+          elements.color   = arrays.create(num, 0, arrayTypes.Int32Array);
 
           assignShortcutReferences.elements();
         },
@@ -2150,6 +2153,10 @@ define(function (require, exports, module) {
 
         if (properties.epsilon != null) elementEpsilon[i] = properties.epsilon;
 
+        if (properties.color != null) {
+          elementColor[i] = properties.color;
+        }
+
         for (j = 0; j < N_elements; j++) {
           setPairwiseLJProperties(i, j);
         }
@@ -2324,6 +2331,7 @@ define(function (require, exports, module) {
         elementEpsilon[N_elements] = props.epsilon;
         elementSigma[N_elements]   = props.sigma;
         elementRadius[N_elements]  = lennardJones.radius(props.sigma);
+        elementColor[N_elements]   = props.color;
 
         ljCalculator[N_elements]              = [];
         cutoffDistance_LJ_sq[N_elements]      = [];

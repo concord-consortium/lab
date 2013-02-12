@@ -1,23 +1,24 @@
 {
   "type": "md2d",
+  "width": 4,
+  "height": 2.5,
   "lennardJonesForces": true,
   "coulombForces": true,
   "temperatureControl": false,
-  "width": 3.88,
-  "height": 1.98,
-  "viscosity": 1,
   "gravitationalField": false,
-  "viewRefreshInterval": 50,
   "timeStep": 1,
   "dielectricConstant": 1,
   "realisticDielectricEffect": true,
-  "solventForceType": 0,
   "solventForceFactor": 1.25,
+  "solventForceType": 0,
   "additionalSolventForceMult": 4,
   "additionalSolventForceThreshold": 10,
   "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "viewRefreshInterval": 50,
   "viewOptions": {
     "backgroundColor": "#eeeeee",
+    "showClock": true,
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -25,7 +26,6 @@
     "showChargeSymbols": true,
     "showVDWLines": false,
     "VDWLinesCutoff": "medium",
-    "showClock": true,
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showAtomTrace": false,
@@ -54,6 +54,7 @@
       "length": 2
     }
   },
+  "pairwiseLJProperties": [],
   "elements": {
     "mass": [
       20,
@@ -63,70 +64,113 @@
       600
     ],
     "sigma": [
-      0.07,
+      0.26875446319580076,
       0.14,
       0.21,
       0.28,
       0.3
     ],
     "epsilon": [
-      -0.1,
+      -0.01785714365541935,
       -0.1,
       -0.1,
       -0.1,
       -5
     ],
     "color": [
-      -855310, 
-      -9066941, 
-      -9092186, 
-      -2539040, 
+      -26620,
+      -16391169,
+      -64474,
+      -2304,
       -855310
     ]
   },
-  "pairwiseLJProperties": [],
   "atoms": {
-    "x": [],
-    "y": [],
-    "vx": [],
-    "vy": [],
-    "charge": [],
-    "friction": [],
-    "element": [],
-    "pinned": []
-  },
-  "obstacles": {
     "x": [
-      0.4,
-      1.19,
-      1.98,
-      2.87
+      0.2945063658025744,
+      0.7299801257176624,
+      0.4388322700354014,
+      1.1,
+      1.12,
+      1.51,
+      1.22,
+      1.66,
+      2.04,
+      2.01,
+      2.47,
+      2.37,
+      2.36,
+      3.03,
+      2.7,
+      3.5
     ],
     "y": [
-      0.8,
-      0.77,
-      0.67,
-      0.59
+      1.8044624788170256,
+      1.4358448416536356,
+      0.9955355877882874,
+      0.42,
+      1.91,
+      1.8,
+      1.37,
+      0.98,
+      1.78,
+      1.14,
+      1.22,
+      0.75,
+      2.16,
+      2.08,
+      1.75,
+      1.09
     ],
     "vx": [
+      -0.0006907315777099916,
+      0.00012286129077253142,
+      0.0023731131968944994,
+      0.00027268127308844616,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
       0,
       0,
       0,
       0
     ],
     "vy": [
+      -0.0009201730277321494,
+      0.0011360423396582738,
+      0.001111448539748007,
+      -0.0006005970581497491,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
       0,
       0,
       0,
       0
     ],
-    "externalFx": [
+    "charge": [
       0,
       0,
       0,
-      0
-    ],
-    "externalFy": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
       0,
       0,
       0,
@@ -136,77 +180,55 @@
       0,
       0,
       0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
       0
     ],
-    "height": [
-      0.77,
-      0.79,
-      0.85,
-      0.91
+    "element": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3
     ],
-    "width": [
-      0.44,
-      0.45,
-      0.42,
-      0.44
-    ],
-    "mass": [
-      "Infinity",
-      "Infinity",
-      "Infinity",
-      "Infinity"
-    ],
-    "westProbe": [
-      true,
-      false,
-      false,
-      false
-    ],
-    "northProbe": [
-      false,
-      true,
-      false,
-      false
-    ],
-    "eastProbe": [
-      false,
-      false,
-      true,
-      false
-    ],
-    "southProbe": [
-      false,
-      false,
-      false,
-      true
-    ],
-    "color": [
-      [
-        128,
-        128,
-        128
-      ],
-      [
-        128,
-        128,
-        128
-      ],
-      [
-        128,
-        128,
-        128
-      ],
-      [
-        128,
-        128,
-        128
-      ]
-    ],
-    "visible": [
-      true,
-      true,
-      true,
-      true
+    "pinned": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ]
   }
 }

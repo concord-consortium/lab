@@ -34,7 +34,7 @@ define(function (require) {
         // This array is not garbage-collected so the view can be assured that
         // the latest modelResults will be in this array when the view is executing
         modelResults,
-
+        modelElements,
         modelWidth,
         modelHeight,
         aspectRatio,
@@ -208,6 +208,26 @@ define(function (require) {
       gy.exit().remove();
     }
 
+    // Pass in the signed 24-bit Integer used for Java MW elementColors
+    // See: https://github.com/mbostock/d3/wiki/Colors
+    function createElementColorGradient(id, signedInt, mainContainer) {
+      var colorstr = (signedInt + Math.pow(2, 24)).toString(16),
+          color,
+          medColor,
+          lightColor,
+          darkColor,
+          i;
+
+      for (i = colorstr.length; i < 6; i++) {
+        colorstr = String(0) + colorstr;
+      }
+      color      = d3.rgb("#" + colorstr);
+      medColor   = color.toString();
+      lightColor = color.brighter(1).toString();
+      darkColor  = color.darker(1).toString();
+      return gradients.createRadialGradient(id, lightColor, medColor, darkColor, mainContainer);
+    }
+
     function createAdditionalGradients() {
           // Scale used for Kinetic Energy Shading gradients.
       var medColorScale = d3.scale.linear()
@@ -231,8 +251,10 @@ define(function (require) {
         gradientNameForKELevel[i] = gradientUrl;
       }
 
-      // Gradients for editable elements.
-      gradientNameForElement = ["url(#green-grad)", "url(#purple-grad)", "url(#aqua-grad)", "url(#orange-grad)"];
+      for (i= 0; i < 4; i++) {
+        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
+      }
+      gradientNameForElement = ["url(#elem0-grad)", "url(#elem1-grad)", "url(#elem2-grad)", "url(#elem3-grad)"];
     }
 
     function createVectorArrowHeads(color, name) {
@@ -766,7 +788,7 @@ define(function (require) {
           .attr({
             "y": function(d,i) {
               $(this).find("tspan").attr("x", getTextBoxCoords(d,i)[0]);
-              return getTextBoxCoords(d,i)[1]
+              return getTextBoxCoords(d,i)[1];
             }
           });
       };
@@ -816,7 +838,7 @@ define(function (require) {
 
         text.append("text")
           .attr({
-            "class": function() { return "textBox" + (AUTHORING ? " draggable" : "") },
+            "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
             "x-data": function(d,i) { return getTextBoxCoords(d,i)[0]; },
             "y": function(d,i)      { return getTextBoxCoords(d,i)[1]; },
             "width-data": function(d) { return model2px(d.width); },
@@ -832,7 +854,7 @@ define(function (require) {
               if (align === "center") align = "middle";
               return align;
             },
-            "has-host": function(d) { return !!d.hostType }
+            "has-host": function(d) { return !!d.hostType; }
           })
           .call(d3.behavior.drag()
             .on("drag", textDrag)
@@ -1446,10 +1468,11 @@ define(function (require) {
       textContainerBelow   = containers.textContainerBelow,
       textContainerTop     = containers.textContainerTop,
 
-      modelResults = model.get_results();
-      modelWidth   = model.get('width');
-      modelHeight  = model.get('height');
-      aspectRatio  = modelWidth / modelHeight;
+      modelResults  = model.get_results();
+      modelElements = model.get_elements();
+      modelWidth    = model.get('width');
+      modelHeight   = model.get('height');
+      aspectRatio   = modelWidth / modelHeight;
 
       setupTooTips();
       setupRendererOptions();

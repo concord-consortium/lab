@@ -26,6 +26,7 @@ define(function (require) {
   // If you need to use new type, declare it here.
   return {
     float:  useTyped ? 'Float32Array' : 'regular',
+    int32:  useTyped ? 'Int32Array'   : 'regular',
     int16:  useTyped ? 'Int16Array'   : 'regular',
     int8:   useTyped ? 'Int8Array'    : 'regular',
     uint16: useTyped ? 'Uint16Array'  : 'regular',

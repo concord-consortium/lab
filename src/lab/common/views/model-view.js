@@ -263,6 +263,7 @@ define(function (require) {
 
       // Colored gradients, used for MD2D Editable element
       gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
+      gradients.createRadialGradient("blue-grad", "#dfefff", "#7543a6", "#2a1672", mainContainer);
       gradients.createRadialGradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", mainContainer);
       gradients.createRadialGradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", mainContainer);
       gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);

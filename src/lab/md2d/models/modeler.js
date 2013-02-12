@@ -1609,6 +1609,10 @@ define(function(require) {
       return atoms;
     };
 
+    model.get_elements = function() {
+      return elements;
+    };
+
     model.get_results = function() {
       return results;
     };
