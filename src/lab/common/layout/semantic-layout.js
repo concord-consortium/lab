@@ -151,7 +151,8 @@ define(function (require) {
         width: modelWidth,
         height: modelController.getHeightForWidth(modelWidth),
         left: modelLeft,
-        top: modelTop
+        top: modelTop,
+        position: "absolute"
       });
 
       for (i = 0, ii = containers.length; i<ii; i++) {
