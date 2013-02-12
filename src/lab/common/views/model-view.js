@@ -323,35 +323,23 @@ define(function (require) {
       // create container, or update properties if it already exists
       if (vis === undefined) {
 
-        if (model.get("fitToParent")) {
-          outerElement = d3.select(e);
-          elem = outerElement
-            .append('div').attr('class', 'positioning-container')
-            .append('div').attr('class', 'particles-view-aspect-container')
-              .attr('style', 'padding-top: ' + Math.round(cy/cx * 100) + '%')
-            .append('div').attr('class', 'particles-view-svg-container');
-
-          node = elem.node();
-
-          vis1 = d3.select(node).append("svg")
-            .attr('viewBox', '0 0 ' + cx + ' ' + cy)
-            .attr('preserveAspectRatio', 'xMinYMin meet');
-
-        } else {
-          outerElement = elem;
-          vis1 = d3.select(node).append("svg")
-            .attr("width", cx)
-            .attr("height", cy);
-        }
+        outerElement = elem;
+        vis1 = d3.select(node).append("svg")
+          .attr({
+            width: cx,
+            height: cy
+          })
+          .style({
+            width: cx,
+            height: cy
+          });
 
         vis = vis1.append("g")
             .attr("class", "particle-container-vis")
             .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         plot = vis.append("rect")
-          .attr("class", "plot")
-          .attr("width", size.width)
-          .attr("height", size.height);
+            .attr("class", "plot");
 
         if (model.get("enableKeyboardHandlers")) {
           d3.select(node)
@@ -385,29 +373,29 @@ define(function (require) {
 
         setupKeyboardHandler();
         createGradients();
-        redraw();
-
       } else {
-
-        if (!model.get("fitToParent")) {
-          d3.select(node).select("svg")
-              .attr("width", cx)
-              .attr("height", cy);
-        }
-
-        vis.attr("width", cx)
-           .attr("height", cy)
-           .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
-
-        vis.select("rect.plot")
-          .attr("width", size.width)
-          .attr("height", size.height);
-
+        // TODO: ?? what g, why is it here?
         vis.selectAll("g.x").remove();
         vis.selectAll("g.y").remove();
-
-        redraw();
       }
+
+      vis1
+        .attr({
+          width: cx,
+          height: cy
+        })
+        .style({
+          width: cx,
+          height: cy
+        });
+
+      vis.select("rect.plot")
+        .attr({
+          width: size.width,
+          height: size.height
+        });
+
+      redraw();
     }
 
     function setupPlaybackControls() {
