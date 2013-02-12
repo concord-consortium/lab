@@ -58,7 +58,7 @@ define(function (require) {
     labelText = labelIsReading ? "" : "Thermometer";
 
     $thermometer = $('<div>').attr('id', component.id);
-    $label = $('<p class="label">').text(labelText).width('6em');
+    $label = $('<p class="label">').text(labelText);
     $elem = $('<div class="interactive-thermometer">')
                 .append($thermometer)
                 .append($label);
