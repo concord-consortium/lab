@@ -20,8 +20,6 @@ define(function (require) {
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
 
-      layout                  = require('common/layout/layout'),
-      setupInteractiveLayout  = require('common/layout/interactive-layout'),
       SemanticLayout          = require('common/layout/semantic-layout'),
       templates               = require('common/layout/templates'),
 
@@ -71,9 +69,9 @@ define(function (require) {
         onLoadScripts = [],
 
         // Hash of instantiated components.
-        // Key   - component type.
+        // Key   - component ID.
         // Value - array of component instances.
-        componentByType = {},
+        componentByID = {},
 
         // Simple list of instantiated components.
         componentList = [],
@@ -92,8 +90,6 @@ define(function (require) {
 
         // Doesn't currently have any public methods, but probably will.
         parentMessageAPI,
-
-        setupScreenCalledTwice = false,
 
         semanticLayout;
 
@@ -147,7 +143,6 @@ define(function (require) {
           modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
 
           finishWithLoadedModel(modelDefinition.url, modelConfig);
-          semanticLayout.positionContainers();
         });
       }
 
@@ -180,8 +175,9 @@ define(function (require) {
     }
 
     function createComponent(component) {
-          // Get type of the requested component from JSON definition.
+          // Get type and ID of the requested component from JSON definition.
       var type = component.type,
+          id = component.id,
           comp;
 
       // Use an appropriate constructor function and create a new instance of the given type.
@@ -192,15 +188,13 @@ define(function (require) {
       comp = new ComponentConstructor[type](component, scriptingAPI, controller);
 
       // Save the new instance.
-      if (componentByType[type] === undefined) {
-        // Create array for instances.
-        componentByType[type] = [];
-      }
-      componentByType[type].push(comp);
+      componentByID[id] = comp;
       componentList.push(comp);
 
-      // And return it.
-      return comp;
+      // Register component callback if it is available.
+      if (comp.modelLoadedCallback) {
+        componentCallbacks.push(comp.modelLoadedCallback);
+      }
     }
 
     /**
@@ -219,8 +213,7 @@ define(function (require) {
       that depend on the model's properties, then draw the screen.
     */
     function modelLoaded() {
-      var i, listener,
-          modelType = controller.getModelController().type;
+      var i, listener, template, layout;
 
       setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
@@ -232,49 +225,28 @@ define(function (require) {
         componentCallbacks[i]();
       }
 
+      if (interactive.template) {
+        if (typeof interactive.template === "string") {
+          template = templates[interactive.template];
+        } else {
+          template = interactive.template;
+        }
+      }
+      if (!template) {
+        template = templates.simple;
+      }
+      // the authored definition of which components go in which container
+      layout = interactive.layout;
+
+      semanticLayout = new SemanticLayout($interactiveContainer, template, layout, componentByID, modelController);
+      semanticLayout.layoutInteractive();
+      $(window).unbind('resize');
+      $(window).on('resize', function() {
+        semanticLayout.layoutInteractive();
+      });
+
       // setup messaging with embedding parent window
       parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
-
-      // provide layout with the model view container
-      layout.addView('modelContainers', modelController.modelContainer);
-
-      // Note that in the code below we assume that there is only ONE instance of each component.
-      // This is not very generic, but the only supported scenario by the current layout system.
-      if (componentByType.thermometer)
-        layout.addView('thermometers', componentByType.thermometer[0].getView());
-      if (componentByType.graph)
-        // TODO: energyGraphs should be changed to lineGraphs?
-        layout.addView('energyGraphs', componentByType.graph[0].getView());
-      if (componentByType.barGraph)
-        layout.addView('barGraphs', componentByType.barGraph[0]);
-
-      $(window).unbind('resize');
-
-      if (layoutStyle) {
-        // currently a layout style is specified when rendering the "embedded" Interactive
-        // or when the "render in iframe" option is chosen in the Interactive Browser
-        layout.selection = layoutStyle;
-        layout.setupScreen();
-
-        // layout.setupScreen modifies the size of the molecule view's containing element based on
-        // its current size. The first two times it is called, it sets the container to two different
-        // sizes. After that, further calls do not change the size of the container. (For some reason,
-        // when the screen resizes, only one call to setupScreen is required.)
-        //
-        // The following is therefore a dirty hack to pretend layout.setupScreen behaves more nicely.
-        if (!setupScreenCalledTwice) {
-          layout.setupScreen();
-          setupScreenCalledTwice = true;
-        }
-        $(window).on('resize', function() {
-          layout.setupScreen();
-          semanticLayout.positionContainers();
-        });
-      } else {
-        // Render path used in Interactive Browser when the "render in iframe" option is not chosen
-        setupInteractiveLayout();
-        $(window).on('resize', setupInteractiveLayout);
-      }
 
       for(i = 0; i < propertiesListeners.length; i++) {
         listener = propertiesListeners[i];
@@ -394,9 +366,7 @@ define(function (require) {
         jQuery selector that finds the element to put the interactive view into
     */
     function loadInteractive(newInteractive, viewSelector) {
-      var components = {},
-          componentJsons, component,
-          template,
+      var componentJsons,
           $exportButton,
           i, len;
 
@@ -421,34 +391,16 @@ define(function (require) {
       // Prepare interactive components.
       componentJsons = interactive.components || [];
 
+      // Create container for model.
+      $interactiveContainer.append('<div id="model-container" class="container">');
+
       // Clear component instances.
       componentList = [];
-      componentByType = {};
+      componentByID = {};
 
       for (i = 0, len = componentJsons.length; i < len; i++) {
-        component = createComponent(componentJsons[i]);
-        // Register component callback if it is available.
-        if (component.modelLoadedCallback) {
-          componentCallbacks.push(component.modelLoadedCallback);
-        }
-        components[componentJsons[i].id] = component;
+        createComponent(componentJsons[i]);
       }
-
-      if (interactive.template) {
-        if (typeof interactive.template === "string") {
-          template = templates[interactive.template];
-        } else {
-          template = interactive.template;
-        }
-      }
-
-      if (!template) {
-        template = templates.simple;
-      }
-
-      // the authored definition of which components go in which container
-      layout = interactive.layout;
-      semanticLayout = new SemanticLayout($interactiveContainer, template, components, layout);
 
       // Setup exporter, if any...
       if (interactive.exports) {
@@ -464,8 +416,6 @@ define(function (require) {
                             .appendTo($('#bottom'));
         }
       }
-
-      semanticLayout.layoutInteractive();
     }
 
     /**
