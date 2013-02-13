@@ -9,7 +9,17 @@ define(function (require) {
 
   var labConfig = require('lab.config'),
 
+      // Minimum width of the model.
       minModelWidth = 200,
+      // Min / max size of body font-size, it's adjusted using interactive-container dimensions.
+      minFontSize = 0.7, // em
+      maxFontSize = 1.4, // em
+      // Basic font size.
+      basicFontSize = 1, // em
+      // Dimensions of the interactive which ensure that font size will be equal to "basicFontSize".
+      basicInteractiveWidth = 1000,
+      basicInteractiveHeight = 600,
+
       containerColors = [
         "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
         "rgba(0,255,255,0.1)", "rgba(255,255,128,0.1)", "rgba(128,255,0,0.1)", "rgba(255,128,0,0.1)"
@@ -51,6 +61,9 @@ define(function (require) {
     function layoutInteractive() {
       var redraws = 0, id;
 
+      // 0. Set font size of the interactive-container based on its size.
+      setFontSize();
+
       // 1. Calculate dimensions of containers which don't specify explicitly define it.
       //    It's necessary to do it each time, as when size of the container is changed,
       //    also size of the components can be changed (e.g. due to new font size).
@@ -74,6 +87,16 @@ define(function (require) {
 
       // 4. Set / remove colors of containers depending on the value of Lab.config.authoring
       setupBackground();
+    }
+
+    function setFontSize() {
+      var xRatio = $interactiveContainer.width() / basicInteractiveWidth,
+          yRatio = $interactiveContainer.height() / basicInteractiveHeight,
+          ratio = basicFontSize * Math.min(xRatio, yRatio);
+
+      ratio = Math.max(ratio, minFontSize);
+      ratio = Math.min(ratio, maxFontSize);
+      $("body").css("font-size", ratio + "em");
     }
 
     // Calculate width for containers which doesn't explicitly specify its width.
