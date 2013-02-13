@@ -10,6 +10,7 @@ CONFIG[:jsconfig] = {} if CONFIG[:jsconfig] == nil
 CONFIG[:jsconfig][:sharing] = true  if CONFIG[:jsconfig][:sharing] == nil
 CONFIG[:jsconfig][:logging] = true  if CONFIG[:jsconfig][:logging] == nil
 CONFIG[:jsconfig][:tracing] = false if CONFIG[:jsconfig][:tracing] == nil
+CONFIG[:jsconfig][:authoring] = false if CONFIG[:jsconfig][:authoring] == nil
 CONFIG[:jsconfig][:actualRoot] = "" if CONFIG[:jsconfig][:actualRoot] == nil
 
 jsconfig = <<HEREDOC
