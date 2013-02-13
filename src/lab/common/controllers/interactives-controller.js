@@ -572,6 +572,11 @@ define(function (require) {
 
         // Copy layout from the initial definition, as it is immutable.
         result.layout = $.extend(true, {}, interactive.layout);
+        if (typeof interactive.template === "string") {
+          result.template = interactive.template;
+        } else {
+          result.template = $.extend(true, {}, interactive.template);
+        }
 
         return result;
       },
