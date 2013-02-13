@@ -23,7 +23,7 @@ define(function (require) {
         minTop = Infinity,
         maxX = -Infinity,
         maxY = -Infinity,
-        modelWidth = 500,
+        modelWidth = 1000,
         modelTop = 0,
         modelLeft = 0;
 
@@ -56,7 +56,7 @@ define(function (require) {
 
 
       // 2. Calculate optimal layout.
-      modelWidth = 500;
+      modelWidth = 1000;
       positionContainers();
       while (redraws < 25 && !resizeModelContainer()) {
         positionContainers();
@@ -237,7 +237,7 @@ define(function (require) {
     // shrinks the model to fit in the interactive, given the sizes
     // of the other containers around it.
     function resizeModelContainer() {
-      var speed = 1,
+      var speed = 0.3,
       id, $container,
       right, bottom, top, left,
       availableWidth, availableHeight, ratio;
@@ -342,7 +342,11 @@ define(function (require) {
       var id, $container, attr;
 
       id = dim.split(".")[0];
-      $container = $containers[id];
+      if (id === "interactive") {
+        $container = $interactiveContainer;
+      } else {
+        $container = $containers[id];
+      }
       attr = dim.split(".")[1];
 
       return getDimensionOfContainer($container, attr);

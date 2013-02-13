@@ -15,7 +15,7 @@ define(function () {
       {
         "id": "bottom",
         "top": "model.bottom",
-        "width": "model.width + right.width",
+        "width": "interactive.width",
         "padding-bottom": "1em"
       }
     ],
@@ -35,7 +35,7 @@ define(function () {
       {
         "id": "bottom",
         "top": "model.bottom",
-        "width": "model.width + right.width",
+        "width": "interactive.width",
         "padding-bottom": "1em"
       }
     ],
@@ -55,7 +55,7 @@ define(function () {
       {
         "id": "bottom",
         "top": "model.bottom",
-        "width": "model.width + right.width",
+        "width": "interactive.width",
         "padding-bottom": "1em"
       }
     ],
@@ -80,7 +80,7 @@ define(function () {
       {
         "id": "bottom",
         "top": "model.bottom",
-        "width": "model.width + right-top.width",
+        "width": "interactive.width",
         "padding-top": "1em"
       }
     ],
@@ -101,7 +101,7 @@ define(function () {
       {
         "id": "bottom",
         "top": "model.bottom",
-        "width": "model.width + right.width",
+        "width": "interactive.width",
         "padding-top": "1em"
       }
     ]
