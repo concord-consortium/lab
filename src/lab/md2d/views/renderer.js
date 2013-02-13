@@ -75,7 +75,7 @@ define(function (require) {
         timeLabel,
         modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
-        timeSuffix = " (ns)",
+        timeSuffix = " (ps)",
 
         radialBonds,
         radialBondResults,
