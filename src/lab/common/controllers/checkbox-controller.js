@@ -11,6 +11,7 @@ define(function () {
         initialValue,
         $checkbox,
         $label,
+        $element,
         controller,
 
         // Updates checkbox using model property. Used in modelLoadedCallback.
@@ -34,8 +35,9 @@ define(function () {
 
     $checkbox = $('<input type="checkbox">').attr('id', component.id);
     $label = $('<label>').append(component.text).append($checkbox);
-    // Append class to label, as it's the most outer container in this case.
-    $label.addClass("interactive-checkbox");
+    $element = $('<div>').append($label);
+    // Append class to the most outer container.
+    $element.addClass("interactive-checkbox");
 
     // Process onClick script if it is defined.
     if (onClickScript) {
@@ -83,7 +85,7 @@ define(function () {
 
       // Returns view container. Label tag, as it contains checkbox anyway.
       getViewContainer: function () {
-        return $label;
+        return $element;
       },
 
       // Returns serialized component definition.
