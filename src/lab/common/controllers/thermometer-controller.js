@@ -60,8 +60,11 @@ define(function (require) {
     $thermometer = $('<div>').attr('id', component.id);
     $label = $('<p class="label">').text(labelText);
     $elem = $('<div class="interactive-thermometer">')
-                .append($thermometer)
-                .append($label);
+      .append($thermometer)
+      .append($label);
+    $elem.css({
+      height: "100%"
+    });
     thermometerComponent = new Thermometer($thermometer, null, component.min, component.max);
 
     // Public API.
@@ -83,6 +86,10 @@ define(function (require) {
 
       getView: function () {
         return thermometerComponent;
+      },
+
+      resize: function () {
+        $thermometer.height($elem.height() - $label.height());
       },
 
       // Returns serialized component definition.
