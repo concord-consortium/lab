@@ -106,7 +106,7 @@
 ;;; Put in inner model loop after times series data are generated:
 ;;; argument example: time, data1, data2, ...
 ;;;
-;;;   update-data-series [ t x-dum v-dum ]
+;;;   update-data-series ( list t x-dum v-dum )
 ;;;
 ;;; Put at exit (or exits) of model loop
 ;;; arguments include any local variables that are computational outputs
