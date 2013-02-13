@@ -31,7 +31,7 @@ var ROOT = "/experiments",
       nl_obj_program, nl_obj_observer, nl_obj_globals,
       nlGlobals,
       clearDataReady,
-      nRunsExported = 0;
+      exportedTimeStamps = {};
 
   if (!document.location.hash) {
     if (selectInteractive) {
@@ -170,9 +170,7 @@ var ROOT = "/experiments",
 
   function exportDataReadyCallback() {
     var dgExportDone = nl_read_global("DG-EXPORTED?"),
-        nRuns,
-        n,
-        run,
+        nRunsExported = 0,
         data;
 
     if (dgExportDone === null) dgExportDone = nl_read_global("DATA-EXPORT:DATA-READY?");
@@ -192,10 +190,15 @@ var ROOT = "/experiments",
         } else if (data.description) {
           // data appears to be in format of the NetLogo data exporter module (readable by
           // Lab.importExport.netlogoImporter)
-          nRuns = Lab.importExport.netlogoImporter.numberOfRuns(data);
 
-          for (n = nRunsExported; n < nRuns; n++) {
-            run = Lab.importExport.netlogoImporter.importRun(data, n);
+          Lab.importExport.netlogoImporter.timeStamps(data).forEach(function(ts) {
+            if (exportedTimeStamps[ts]) {
+              return;
+            }
+
+            var n   = Lab.importExport.netlogoImporter.runHavingTimeStamp(data, ts),
+                run = Lab.importExport.netlogoImporter.importRun(data, n);
+
             Lab.importExport.dgExporter.exportData(
               run.perRunLabels,
               run.perRunValues,
@@ -203,7 +206,9 @@ var ROOT = "/experiments",
               run.perTickValues
             );
             nRunsExported++;
-          }
+            exportedTimeStamps[ts] = true;
+          });
+
           if (nRunsExported > 0) Lab.importExport.dgExporter.openTable();
         }
       }
