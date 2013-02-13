@@ -23,7 +23,7 @@ define(function (require) {
         minTop = Infinity,
         maxX = -Infinity,
         maxY = -Infinity,
-        modelWidth = minModelWidth,
+        modelWidth = 500,
         modelTop = 0,
         modelLeft = 0;
 
@@ -54,7 +54,9 @@ define(function (require) {
       //    also size of the components can be changed (e.g. due to new font size).
       setMinDimensions();
 
+
       // 2. Calculate optimal layout.
+      modelWidth = 500;
       positionContainers();
       while (redraws < 25 && !resizeModelContainer()) {
         positionContainers();
