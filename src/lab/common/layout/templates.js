@@ -29,13 +29,14 @@ define(function () {
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em",
-        "width": "6em"
+        "width": "model.width / 4",
+        "min-width": "6em"
       },
       {
         "id": "bottom",
         "top": "model.bottom",
         "width": "model.width + right.width",
-        "padding-top": "1em"
+        "padding-bottom": "1em"
       }
     ],
     "split-right": [
