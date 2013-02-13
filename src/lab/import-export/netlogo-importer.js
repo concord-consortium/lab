@@ -34,6 +34,26 @@ define(function(require) {
     numberOfRuns: function(data) {
       if (typeof data === 'string') data = JSON.parse(data);
       return data.runs.length;
+    },
+
+    timeStamps: function(data) {
+      if (typeof data === 'string') data = JSON.parse(data);
+      return _.pluck(data.runs, 'timeStamp');
+    },
+
+    runHavingTimeStamp: function(data, timeStamp) {
+      if (typeof data === 'string') data = JSON.parse(data);
+
+      // Would be nice to have a generator expression/lazy-list equivalent, so we could use 'pluck'
+      // and 'indexOf' without having to iterate over all runs before filtering the first one.
+
+      for (var i = 0; i < data.runs.length; i++) {
+        if (data.runs[i].timeStamp === timeStamp) {
+          return i;
+        }
+      }
+      return null;
+
     }
 
   };
