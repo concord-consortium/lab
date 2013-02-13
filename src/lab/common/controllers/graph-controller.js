@@ -172,7 +172,7 @@ define(function (require) {
         if (grapher) {
           resetGrapher();
         } else {
-          grapher = new RealTimeGraph('#' + component.id, getOptions());
+          grapher = new RealTimeGraph($container[0], getOptions());
         }
         resetData();
         registerModelListeners();
@@ -190,6 +190,15 @@ define(function (require) {
       */
       getViewContainer: function() {
         return $container;
+      },
+
+      resize: function () {
+        // For now only "fit to parent" behavior is supported.
+        $container.width("100%");
+        $container.height("100%");
+        if (grapher) {
+          grapher.resize();
+        }
       },
 
       /**

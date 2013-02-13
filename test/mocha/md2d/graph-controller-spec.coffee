@@ -82,9 +82,10 @@ helpers.withIsolatedRequireJS (requirejs) ->
             controller.modelLoadedCallback()
             mock.RealTimeGraph.callCount.should.equal 1
 
-          it "should pass the component-id selector string to the RealTimeGraph constructor", ->
+          it "should pass the DIV DOM element to the RealTimeGraph constructor", ->
             controller.modelLoadedCallback()
-            mock.RealTimeGraph.getCall(0).args[0].should.eql '#' + getComponentSpec().id
+            mock.RealTimeGraph.getCall(0).args[0].tagName.should.eql "DIV"
+            mock.RealTimeGraph.getCall(0).args[0].id.should.eql getComponentSpec().id
 
           it "should create a RealTimeGraph instance which is returned by #getView", ->
             should.not.exist controller.getView()
