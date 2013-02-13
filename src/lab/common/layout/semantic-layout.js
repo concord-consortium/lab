@@ -7,7 +7,9 @@
 
 define(function (require) {
 
-  var minModelWidth = 200,
+  var labConfig = require('lab.config'),
+
+      minModelWidth = 200,
       containerColors = [
         "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
         "rgba(0,255,255,0.1)", "rgba(255,255,128,0.1)", "rgba(128,255,0,0.1)", "rgba(255,128,0,0.1)"
@@ -54,7 +56,6 @@ define(function (require) {
       //    also size of the components can be changed (e.g. due to new font size).
       setMinDimensions();
 
-
       // 2. Calculate optimal layout.
       modelWidth = 1000;
       positionContainers();
@@ -70,6 +71,9 @@ define(function (require) {
           components[id].resize();
         }
       }
+
+      // 4. Set / remove colors of containers depending on the value of Lab.config.authoring
+      setupBackground();
     }
 
     // Calculate width for containers which doesn't explicitly specify its width.
@@ -101,6 +105,15 @@ define(function (require) {
       }
     }
 
+    function setupBackground() {
+      var id, i, len;
+
+      for (i = 0, len = containers.length; i < len; i++) {
+        id = containers[i].id;
+        $containers[id].css("background", labConfig.authoring ? containerColors[i % containerColors.length] : "");
+      }
+    }
+
     function createContainers() {
       var container, id, prop, i, ii;
 
@@ -112,12 +125,8 @@ define(function (require) {
       for (i = 0, ii = containers.length; i<ii; i++) {
         container = containers[i];
         id = container.id;
-        $containers[id] = $("<div id='"+id+"'>");
-        $containers[id].css({
-          display: "inline-block",
-          background: containerColors[i % containerColors.length]
-        }).appendTo($interactiveContainer);
-
+        $containers[id] = $("<div id='"+id+"'>").appendTo($interactiveContainer);
+        $containers[id].css("display", "inline-block");
         // add any padding-* properties directly to the container's style
         for (prop in container) {
           if (!container.hasOwnProperty(prop)) continue;
