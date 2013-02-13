@@ -18,7 +18,7 @@
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
-      "onLoad": "set({ showClock: true})"
+      "onLoad": "set({ showClock: true, timeStep: 1, viewRefreshInterval: 50, modelSampleRate: 'default' })"
     }
   ],
   "components": [
