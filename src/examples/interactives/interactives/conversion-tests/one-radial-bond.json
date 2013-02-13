@@ -102,5 +102,6 @@
       "pulldown1",
       "add-velocity"
     ]
-  }
+  },
+  "template": "wide-right"
 }

@@ -72,5 +72,6 @@
       "cool",
       "temperature-slider"
     ]
-  }
+  },
+  "template": "wide-right"
 }

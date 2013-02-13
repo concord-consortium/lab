@@ -39,6 +39,26 @@ define(function () {
         "padding-bottom": "1em"
       }
     ],
+    "wide-right": [
+      {
+        "id": "top",
+        "bottom": "model.top"
+      },
+      {
+        "id": "right",
+        "left": "model.right",
+        "height": "model.height",
+        "padding-left": "1em",
+        "width": "model.width",
+        "min-width": "6em"
+      },
+      {
+        "id": "bottom",
+        "top": "model.bottom",
+        "width": "model.width + right.width",
+        "padding-bottom": "1em"
+      }
+    ],
     "split-right": [
       {
         "id": "top",

@@ -111,5 +111,6 @@
     "bottom": [
       "temperature-slider"
     ]
-  }
+  },
+  "template": "wide-right"
 }

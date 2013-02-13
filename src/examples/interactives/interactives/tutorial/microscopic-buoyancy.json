@@ -43,5 +43,6 @@
     "bottom": [
       "gfield"
     ]
-  }
+  },
+  "template": "wide-right"
 }

@@ -111,5 +111,6 @@
     "right": [
       "bar-graph"
     ]
-  }
+  },
+  "template": "narrow-right"
 }

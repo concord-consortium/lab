@@ -113,5 +113,6 @@
     "right": [
       "propertiesGraph"
     ]
-  }
+  },
+  "template": "wide-right"
 }
