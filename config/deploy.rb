@@ -53,6 +53,8 @@ namespace :deploy do
     run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
     run "cd /var/www/app; bundle install"
     run "cd /var/www/app; make public"
+    webapp.make_server_settings
+    webapp.import_interactives    
   end
 
 
