@@ -73,9 +73,9 @@ define(function (require) {
 
         // for model clock
         timeLabel,
-        modelTimeFormatter = d3.format("5.0f"),
+        modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
-        timeSuffix = " (fs)",
+        timeSuffix = " (ns)",
 
         radialBonds,
         radialBondResults,
@@ -115,7 +115,7 @@ define(function (require) {
 
 
     function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('time')) + timeSuffix;
+      return timePrefix + modelTimeFormatter(model.get('time')/1000) + timeSuffix;
     }
 
     function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
