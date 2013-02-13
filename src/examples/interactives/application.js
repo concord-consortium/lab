@@ -29,6 +29,7 @@ AUTHORING = false;
       $selectIframeSize = $("#select-iframe-size"),
 
       $updateInteractiveButton = $("#update-interactive-button"),
+      $saveInteractiveButton = $("#save-interactive-button"),
       $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
@@ -588,6 +589,7 @@ AUTHORING = false;
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
       $iframeWrapper.bind('resize', updateShareIframeContent);
     }
+    setupCopySaveInteractive();
   }
 
   function setupIframeListenerFor(iframe) {
@@ -656,6 +658,106 @@ AUTHORING = false;
     window.addEventListener('message', receiveMessage, false);
     iframePhone.post = post;
     return iframePhone;
+  }
+
+  function remoteSaveInteractive(interactiveTitle, interactiveState){
+    var httpMethod = 'POST',
+    url = '/interactives';
+
+    // if (interactive['from_import']) {
+    //   $saveInteractiveButton.text("Save As");
+    // }else {
+    //   httpMethod = 'PUT';
+    //   url = url + '/' + interactive.id;
+    // }
+
+    newInteractiveState = jQuery.extend(true, {}, interactiveState);
+    newInteractiveState['title'] = interactiveTitle;
+    // get the group from the current interactive
+    newInteractiveState['groupKey'] = interactive['groupKey'];
+    interactiveJSON = {'interactive': newInteractiveState};
+
+    jQuery.ajax({
+      type: httpMethod,
+      url: url,
+      data: JSON.stringify(interactiveJSON),
+      success: function(results) {
+        if (typeof results === 'string') results = JSON.parse(results);
+        interactive = results;
+
+        if (interactive.title) {
+          document.title = interactive.title;
+        }
+
+        document.location.hash = interactive.path
+      },
+      dataType: "json",
+      contentType: "application/json",
+      processData: false
+    });
+    
+  }
+
+  function getInteractiveState(interactiveTitle){
+
+    if(onFullPage()) {
+      interactiveState = controller.serialize();
+      remoteSaveInteractive(interactiveTitle, interactiveState);
+      editor.setValue(JSON.stringify(interactiveState, null, indent));
+    } else {
+      iframePhone.post({ type:'getInteractiveState' });
+      iframePhone.addListener('interactiveState', function(message) {
+        // this needs to be in the callback for the postMessage to 
+        // the iframe.
+        remoteSaveInteractive(interactiveTitle, message);
+        editor.setValue(JSON.stringify(message, null, indent));
+      });
+    }
+  }
+
+  function setupCopySaveInteractive() {
+
+    if (interactive['from_import']) {
+      $saveInteractiveButton.text("Save As");
+    }else {
+      $saveInteractiveButton.text("Save");      
+    }
+
+    $(".save-interactive-form").dialog({
+      autoOpen: false,
+      modal: true,
+      buttons: {
+        "Save": function() {
+          var interactiveTitle = $(".save-interactive-title").val();
+          $(this).dialog("close");
+          getInteractiveState(interactiveTitle);
+        },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $saveInteractiveButton.on('click', function() {
+      var interactiveState, newInteractiveState, interactiveJSON;
+
+      $('.save-interactive-form').dialog("open");
+
+
+      // try {
+      //   // warn user 
+
+      //   } catch (e) {
+      //     alert("Interactive JSON syntax error: " + e.message);
+      //     throw new Error("Interactive JSON syntax error: " + e.message);
+      //   }
+
+        if(onFullPage()) {
+          controller.loadInteractive(interactive, '#interactive-container');
+        } else {
+          iframePhone.post({ type:'loadInteractive', data:interactive  });
+        }
+      });
   }
 
   // Setup and enable next and previous Interactive buttons

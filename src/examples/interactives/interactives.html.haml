@@ -102,6 +102,11 @@
             %label{:for => "show-editor"} Interactive Editor
           #editor-content.extras-item-content
             .extras-item-controls
+              .save-interactive-form
+                %form
+                  %label{:for => "save-interactive-title"} Save
+                  %input.save-interactive-title#text#ui-widget-content#ui-corner-all{:type => "text"}
+              %button#save-interactive-button Save
               %button#update-interactive-button Update Interactive
               %button#update-json-from-interactive-button Update JSON from Interactive
               %button.right#autoformat-interactive-json-button AutoFormat

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Parsers::Base do
   let(:uri )      {"http://mockserver.nowhere/foo.json"} 
   let(:json)      {"{\"one\":1,\"two\":2}"             }
-  let(:data_hash) { {'one'=> 1,'two'=> 2}              }  
+  let(:data_hash) { {'from_import' => true, 'one'=> 1,'two'=> 2}              }  
 
   describe "#initialize" do
     context "without a nil uri spec" do
@@ -18,7 +18,7 @@ describe Parsers::Base do
 
     context "with initial data" do
       let(:json)      { "{\"one\":1,\"two\":2}"     }
-      let(:data_hash) {  {'one' => 1, 'two' => 2}   }
+      let(:data_hash) {  {'from_import' => true, 'one' => 1, 'two' => 2}   }
       
       context "from a hash" do
         subject { Parsers::Base.new(nil,data_hash) }

@@ -6,6 +6,7 @@ module Parsers
 
     def initialize(uri=Dir.pwd,data={})
       self.data_hash = {}
+      self.data_hash['from_import'] = true
       self.update_data!(data)
       self.uri_helper = UriHelper.from_def(uri)
     end
@@ -19,12 +20,15 @@ module Parsers
         update_from_json!(new_datas)
       when Hash
         update_from_hash!(new_datas)
+      else
+        fail ArgumentError, "argument is not a String or Hash!"
       end
       self.migrate!
       return self
     end
 
     def update_from_hash!(hash)
+      fail ArgumentError, "argument is not a Hash" unless hash.is_a? Hash
       self.data_hash.merge!(hash)
       return self
     end
@@ -33,7 +37,8 @@ module Parsers
       begin
         self.update_from_hash!(JSON.parse(json))
       rescue JSON::ParserError
-        raise ParsingError.new("invalid json")
+        # raise ParsingError.new("invalid json")
+        raise ParsingError.new
       end
     end
 
@@ -50,6 +55,8 @@ module Parsers
     end
 
     def parse_entity(hash_data, parser)
+      fail ArgumentError, "first argument is not a Hash" unless hash_data.is_a? Hash
+      fail ArgumentError, "second argument is not a Parser" unless parser.ancestors.include? Parsers::Base
       parser.new(self.uri_helper,hash_data).parse
     end
 

@@ -22,6 +22,7 @@ module Presenters
 
           # these are all in the generated models
           p.set('type','md2d')
+          p.add('from_import')
           p.add('height')
           p.add('width')
           p.add('lennardJonesForces')
@@ -49,13 +50,13 @@ module Presenters
           p.add('restraints')
           p.add('geneticProperties')
           p.add('textBoxes')
-
         end
       end
 
       def interactive_model_properties
         HashProperties.new(self.md2d).hash_value do |p|
           p.add('id', 'local_ref_id')
+          p.set('type',"md2d")
           p.set('url', self.json_path)
         end
       end

@@ -33,7 +33,9 @@ module Presenters
 
     def runtime_properties
       HashProperties.new(self.interactive).hash_value do |p|
+        p.set('groupKey',self.interactive.group_id)
         p.add('title')
+        p.add('from_import')
         p.add('publicationStatus')
         p.add('subtitle')
         p.add('about')

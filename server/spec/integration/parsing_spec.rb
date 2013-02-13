@@ -7,7 +7,11 @@ describe "Round Trip parsing" do
     let(:interactive_file){ "interactives/basic-examples/one-atom.json" }
     let(:interactive_path){ sample_file_path interactive_file      }
     let(:model_file)      { "models/md2d/one-atom.json"            }
-    let(:model_raw_hash)  { JSON.parse(read_sample_file model_file)}
+    let(:model_raw_hash)  do
+      hash = JSON.parse(read_sample_file model_file)
+      hash['from_import'] = true
+      hash
+    end
 
     let(:interactive_hash) do
       JSON.parse(read_sample_file interactive_file)
@@ -24,7 +28,7 @@ describe "Round Trip parsing" do
     end
 
     it "should have matching interactive hash" do
-      interactive = Parsers::Interactive.new(interactive_path).parse()
+      interactive = Parsers::Interactive.new(interactive_path,{'path' => "one-atom.json"}).parse()
       presenter   = Presenters::Interactive.new(interactive)
       props = presenter.runtime_properties
 
@@ -66,11 +70,11 @@ describe "Round Trip parsing" do
 
     end
 
-    it "should have matchign models hashes" do
-      interactive = Parsers::Interactive.new(interactive_path).parse()
-      interactive.md2ds.each do |m|
-        presenter   = Presenters::Models::Md2d.new(m)
-        presenter.runtime_properties.should == model_hash
+    it "should have matching models hashes" do
+      interactive = Parsers::Interactive.new(interactive_path,  {'path' => "one-atom.json"}).parse()
+      interactive.interactive_models.each do |im|
+        presenter   = Presenters::Models::Md2d.new(im.md2d)
+        presenter.runtime_properties.should == model_hash        
       end
     end
   end

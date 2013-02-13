@@ -16,6 +16,7 @@ module Parsers
       model_hash = {
         "id"  => self.data_hash.delete('id'),
         "url" => self.data_hash.delete('url'),
+        "viewOptions" => self.data_hash['viewOptions']
       }
       model = self.parse_entity(model_hash,self.md2d_parser)
       self.data_hash['md2d_id'] = model.id

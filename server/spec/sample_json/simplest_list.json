@@ -1,0 +1,20 @@
+{
+  "interactives": [
+    {
+      "title": "Testing: Only One Atom",
+      "path": "interactives/basic-examples/one-atom.json",
+      "groupKey": "basic-examples",
+      "subtitle": "The MD2D model works with just a single atom also.",
+      "about": "",
+      "publicationStatus": "public"
+    }
+  ],
+  "groups": [
+    {
+      "path": "basic-examples",
+      "name": "Basic Interactive Examples",
+      "category": "Examples"
+    }
+  ]
+}
+

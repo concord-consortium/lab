@@ -1,10 +1,12 @@
 class BaseDataObject < CouchRest::Model::Base
 
+  include Recloner
+  
   class_attribute :alternate_id_key
 
   # track imorted (from buld process)
   property :parent_doc_revision, String
-  property :from_import,         TrueClass, :default => true
+  property :from_import,         TrueClass, :default => false
 
 
   def self.delete_everything

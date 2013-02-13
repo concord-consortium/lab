@@ -17,6 +17,24 @@ describe Parsers::InteractiveList do
     end
   end
 
+  describe "#parse interactives" do
+    let(:simplest_json_uri)      { sample_file_path 'simplest_list.json' }
+    subject do 
+      parser = Parsers::InteractiveList.new(simplest_json_uri)
+      parser.parse
+      parser
+    end
+
+    its(:interactives) { should have_exactly(1).items }
+    its(:groups) { should have_exactly(1).items }
+    
+    it "should have only imported interactives" do
+      subject.interactives.each do |i|
+        i.from_import.should be_true
+      end
+    end
+  end
+  
   describe "#parse" do
     subject do 
       parser = Parsers::InteractiveList.new(json_uri)
@@ -27,7 +45,11 @@ describe Parsers::InteractiveList do
     
     context "a simple list with valid interactive definitions in it" do
       # as of Jan 2013 ~95 interactives
-      its(:interactives) { should have_at_least(90).items } 
+      its(:interactives) { should have_at_least(90).items }
+    end
+
+    context "a simple list with valid groups definitions in it" do
+      its(:groups) { should have_exactly(13).items } 
     end
 
     context "a list which is missing interactives" do

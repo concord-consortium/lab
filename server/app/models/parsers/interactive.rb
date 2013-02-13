@@ -13,7 +13,7 @@ module Parsers
       if (self.data_hash['path'])
         self.uri_helper.set_relative_path(data_hash['path'])
       end
-      self.data_hash['staticExamplePath'] = self.data_hash['path']
+      self.data_hash['staticExamplePath'] = self.data_hash.fetch('path')
       self.generate_couch_doc_id(self.data_hash['path'])
       self.data_hash['path'] = "/interactives/" + self.data_hash['id']
 
