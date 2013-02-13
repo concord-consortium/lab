@@ -68,6 +68,7 @@
 ; Datasets are named by their color in a way that makes it trivial to add datasets by adding new colors in the pull-down lists. 
 ; The x,y values of data are saved in turtles called dots in x-val and y-val. ploce x-val y-val converts these into screen coordinates and shows the resulting dots
 
+__includes [ "../../netlogo-modules/data-export-modular.nls" ]
 
 globals [
   grid-params ; see below
@@ -119,12 +120,6 @@ globals [
   old-pick-graphs
   old-in-grid?
   old-in-grid2?
-  
-  ModelData
-  ModelDescription
-  RunSeries
-  DataSeries
-  data-ready?
   
   pseudo-a-at-cursor
   dum-mass         ; the effective mass of the dummy's upper body
@@ -238,7 +233,8 @@ to initialize
   set run-number 0
   set vertical-axis-type "Position (m)"
   set run-data [ ]      ; this global stores the results of runs. Each run creates five values, the four parameters and survival
-  init-RunSeries
+
+  setup-data-export     ;;; initialize the modular JSON data export functions
     
   ; initialize globals   
   set ticLength 3     ; the length of the tic marks below the grid   
@@ -334,7 +330,6 @@ to initialize
   draw-view ; creates everthing in the view--all graphs and actors. 
     ; once executed, everything needed to draw the view is contained in grid-params and walk-params and grid2-params
   reset-ticks
-  make-ModelDescription   ; needed to communicate with the outside world
 end
 
 to-report layout  ; uses the global 'stage' and the screen boundaries to locate the screen and stage
@@ -968,7 +963,7 @@ to run-airbag ; computes and draws the position or velocity graphs of the airbag
         set dummy-crashed? true 
         set x-dum 0 set v-dum 0 ]]
         
-    update-DataSeries t x-dum v-dum
+    update-data-series ( list t x-dum v-dum )
     update-dummy t x-dum v-dum cyan              ; place the dummy and add a dot to the graph
     update-bag t white                           ; place the bag and add a dot to the graph (the bag is white--its graph is d-color)
 
@@ -984,7 +979,7 @@ to run-airbag ; computes and draws the position or velocity graphs of the airbag
   tick
 
   ; now update RunSeries 
-  update-RunSeries a-max
+  update-run-series a-max
 end
 
 ;::::::::::::::::::::::::::::::::::::::::::::::::::;;
@@ -1000,8 +995,6 @@ to setup-for-run
   set variables-locked? true  ; used to stop any changes during a run
   tick  
 
-  init-DataSeries        ; one of the data export functions
-  
   set run-number run-number + 1 ; increment the run counter 
   let d-color cyan; the dummy and position and velocity lines are all cyan
   ask actors   [st]
@@ -1723,109 +1716,100 @@ to place2 [x y]   ; in dot context, places the current dot on screen2 using x,y 
      st
 ;   ]
 end 
-    
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;; Data export functions ;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to init-RunSeries
-  set RunSeries "[\n  ]"        ; 
+
+;;;
+;;; Start of data-export methods
+;;;
+;;; *** setup-data-export
+;;;
+;;; Structure definitions for setup-data-export method:
+;;;
+;;; computational-inputs
+;;;   label, units, min, max, visible
+;;;
+;;;   label: string
+;;;   units: string
+;;;   min: number
+;;;   max: number
+;;;   visible: boolean
+;;;
+;;;   alternate form when value of units is "categorical"
+;;;   label units [categorical-type1 categorical-type2 ...]  visible
+;;;
+;;; computational-outputs
+;;;   label, units, min, max, visible
+;;;
+;;;   label: string
+;;;   units: string
+;;;   min: number
+;;;   max: number
+;;;   visible: boolean
+;;;
+;;; student-inputs
+;;;   label, unit-type
+;;;
+;;;   label: string
+;;;   unit-type: string
+;;;
+;;; model-information
+;;;   name, filename, version
+;;;
+;;; time-series-data (an array of lists)
+;;;   label, units, min, max
+;;;
+;;; Edit setup-data-export and call when your model is setup
+;;;
+
+to setup-data-export
+  let computational-inputs [
+    [ "Distance to steering wheel" "m" 0.1 0.5 true ]
+    [ "Car speed" "m/s" 0 40 true ]
+    [ "Airbag size" "m" 0 0.5 true ]
+    [ "Time to fill bag" "s" 0.01 0.05 true ] ]
+  let computational-outputs [
+    [ "Maximum acceleration" "g" 0 200 true ]
+    [ "Dummy Survival" "categorical" [ "Yes" "No" "Maybe"] true ] ]
+  let student-inputs [
+    [ "Goal" "categorical" ] ]
+  let model-information [ 
+    [ "airbags" "airbags.v19b-include-modular.nlogo" "v19b-include-modular" ] ]
+  let time-series-data [
+    [ "Time" "s" 0 0.1 ]
+    [ "Position" "m" 0 0.6 ]
+    [ "Velocity" "m/s" -10 10 ]
+  ]
+  let setup (list computational-inputs computational-outputs student-inputs model-information time-series-data)
+  data-export:initialize setup
 end
 
-to init-DataSeries
-  set DataSeries "[ ]"        ; this will contain triplet dummy values in json format
+;;;
+;;; update-run-series [ a-max ]
+;;;
+;;;    pass in any needed values as arguments if they are not accessible as global variables
+;;;
+
+to update-run-series [ a-max ]
+  let computational-inputs  ( list distance-to-steering-wheel car-speed airbag-size time-to-fill-bag )
+  let computational-outputs ( list a-max dummy-status )
+  let student-inputs        ( list the-question )
+  let run-series-data ( list computational-inputs computational-outputs student-inputs )
+  data-export:update-run-series run-series-data
 end
 
-to update-RunSeries [ a-max ]
-  let postamble "\n  ]"
-  let temp "\n"
-  if run-number > 1 [set temp ",\n"]  ; subsequent runs need to be delimited with a comma.
+;;;
+;;; update-data-series [ data-series ]
+;;;
+;;;    pass in any needed values as arguments if they are not global variables
+;;;
 
-  set temp (word temp "    {\n")
-  set temp (word temp "      \"TimeSeriesData\": " DataSeries ",\n")
-  set temp (word temp "      \"computationalInputs\": [" Distance-to-steering-wheel ", " car-speed ", " airbag-size ",\n")
-  set temp (word temp "        " time-to-fill-bag ", " time-to-stop-going-40 " ],\n")
-  set temp (word temp "      \"computationalOutputs\": [ " a-max ", \"" dummy-status "\" ],\n")
-  set temp (word temp "      \"studentInputs\": [ \"" the-question "\" ]\n")
-  set temp (word temp "    }")
-
-  let len-rs length RunSeries
-  let len-pa length postamble
-  set RunSeries substring RunSeries 0 (len-rs - len-pa)
-  ; set RunSeries bl RunSeries    ; strip off the final square bracket
-  set RunSeries (word RunSeries temp "\n  ]")  ; add in the new DataSeries and append a final sqare bracket
-
+to update-data-series [ data-series ]
+  data-export:update-data-series data-series
 end
 
-to update-DataSeries [ x-dum v-dum t ]
-  ; now updata DataSeries
-  let trip ""  if t != 0 [set trip ","] ; the first triplet doesn't have a preceding comma.
-  set trip (word trip "[" t ", " x-dum ", " v-dum "]")
-  set DataSeries bl DataSeries    ; strip off the final square bracket
-  set DataSeries (word DataSeries trip "]")  ; add in the new triplet and append a final sqare bracket
-end
-
-to make-ModelDescription
-  set data-ready? false
-  let temp ""
-
-  set temp (word temp "{\n")
-  set temp (word temp "    \"timeSeriesData\": [\n")
-  set temp (word temp "      { \"label\": \"Time\", \"units\": \"s\", \"min\": 0, \"max\": " max-x " },\n")
-  set temp (word temp "      { \"label\": \"Position\", \"units\": \"m\", \"min\": 0, \"max\": " max-y " },\n")
-  set temp (word temp "      { \"label\": \"Velocity\", \"units\": \"m/s\", \"min\": -10, \"max\": " 10 " }\n")
-  set temp (word temp "    ],\n")
-  set temp (word temp "    \"computationalInputs\": [\n")
-  set temp (word temp "      { \"label\": \"Distance to steering wheel\",\"units\": \"m\", \"min\": 0.1, \"max\":0.5 },\n")
-  set temp (word temp "      { \"label\": \"Car speed\",\"units\": \"m/s\", \"min\": 0, \"max\":40 },\n")
-  set temp (word temp "      { \"label\": \"Airbag size\",\"units\": \"m\", \"min\": 0, \"max\":0.5 },\n")
-  set temp (word temp "      { \"label\": \"Time to fill bag\",\"units\": \"s\", \"min\": 0.01, \"max\":0.05 },\n")
-  set temp (word temp "      { \"label\": \"const (airbag-stiffness)\", \"hidden\": true, \"units\": \"m/s^2\", \"min\": 0, \"max\":6000 },\n")
-  set temp (word temp "      { \"label\": \"Maximum time to stop\", \"hidden\": true, \"units\": \"s\", \"min\": 0.02, \"max\": 0.1 },\n")
-  set temp (word temp "      { \"label\": \"Deflate time\", \"hidden\": true, \"units\": \"s\", \"min\": 0, \"max\":10 }\n")
-  set temp (word temp "    ],\n")
-  set temp (word temp "    \"computationalOutputs\": [\n")
-  set temp (word temp "      { \"label\": \"Maximum acceleration\", \"units\": \"g\", \"min\": 0, \"max\": 200 },\n")
-  set temp (word temp "      { \"label\": \"Dummy Survival\", \"units\": \"categorical\", \"values\": [\"Yes\",\"No\",\"Maybe\"]  }\n")
-  set temp (word temp "    ],\n")
-  set temp (word temp "    \"studentInputs\": [\n")
-  set temp (word temp "      { \"label\": \"Goal\", \"units\": \"categorical\" }\n")
-  set temp (word temp "    ]\n")
-  set temp (word temp "  }")
-
-  set ModelDescription temp
-  set data-ready? true
-end
-
-to make-ModelData
-  make-ModelDescription
-  set data-ready? false
-  let temp ""
-
-  set temp (word temp "{\n")
-  set temp (word temp "  \"description\": " ModelDescription ",\n")
-  set temp (word temp "  \"runs\": " RunSeries "\n")
-  set temp (word temp "}\n")
-
-  set ModelData temp
-  set data-ready? true
-end
-
-to examine-graph    ; reports values depending on where the mouse is on the graph
-  let temp last grid-params
-  let m first temp let c item 1 temp
-  while [ not mouse-in-grid?] []
-  while [mouse-inside?] [
-    let t (mouse-xcor - c) / m
-    set pseudo-a-at-cursor pseudo t]
-end
-
-    
-    
-  
-  
-  
-  
+;;;
+;;; end of data-export methods
+;;;
   
 @#$#@#$#@
 GRAPHICS-WINDOW
