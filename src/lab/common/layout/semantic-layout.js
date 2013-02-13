@@ -7,7 +7,11 @@
 
 define(function (require) {
 
-  var minModelWidth = 200;
+  var minModelWidth = 200,
+      containerColors = [
+        "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
+        "rgba(0,255,255,0.1)", "rgba(255,255,128,0.1)", "rgba(128,255,0,0.1)", "rgba(255,128,0,0.1)"
+      ];
 
   return function SemanticLayout($interactiveContainer, containers, componentLocations, components, modelController) {
 
@@ -45,36 +49,51 @@ define(function (require) {
     function layoutInteractive() {
       var redraws = 0;
 
+      // 1. Calculate dimensions of containers which don't specify explicitly define it.
+      //    It's necessary to do it each time, as when size of the container is changed,
+      //    also size of the components can be changed (e.g. due to new font size).
       setMinDimensions();
-      positionContainers();
 
+      // 2. Calculate optimal layout.
+      positionContainers();
       while (redraws < 25 && !resizeModelContainer()) {
         positionContainers();
         redraws++;
       }
 
+      // 3. Notify components that their containers have new sizes.
       modelController.resize();
       // TODO: resize also other components!
     }
 
+    // Calculate width for containers which doesn't explicitly specify its width.
+    // In such case, width is determined by the content, no reflow will be allowed.
     function setMinDimensions() {
-      var id, $container;
+      var $container, i, len;
 
-      for (id in $containers) {
-        if (!$containers.hasOwnProperty(id) || id === "model") continue;
-        $container = $containers[id];
-        $container.css("width", "");
-        $container.css("height", "");
-        $container.css("min-width", "");
-        $container.css("min-height", "");
-        $container.css("min-width", $container.outerWidth(true));
-        $container.css("min-height", $container.outerHeight(true));
+      function setRowMinWidth() {
+        var minWidth = 0;
+        // $(this) refers to one row.
+        $(this).children().each(function () {
+          // $(this) refers to element in row.
+          minWidth += $(this).outerWidth(true);
+        });
+        $(this).css("min-width", Math.ceil(minWidth));
+      }
+
+      for (i = 0, len = containers.length; i < len; i++) {
+        // Set min-width only for containers, which DO NOT specify
+        // "width" explicitly in their definitions.
+        if (containers[i].width === undefined) {
+          $container = $containers[containers[i].id];
+          $container.children().each(setRowMinWidth);
+          $container.css("min-width", $container.outerWidth(true));
+        }
       }
     }
 
     function createContainers() {
-      var colors = ["rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)"],
-          container, id, prop, i, ii;
+      var container, id, prop, i, ii;
 
       $containers = {};
 
@@ -87,7 +106,7 @@ define(function (require) {
         $containers[id] = $("<div id='"+id+"'>");
         $containers[id].css({
           display: "inline-block",
-          background: colors[i%colors.length]
+          background: containerColors[i % containerColors.length]
         }).appendTo($interactiveContainer);
 
         // add any padding-* properties directly to the container's style
@@ -248,10 +267,14 @@ define(function (require) {
       availableWidth  = $interactiveContainer.width();
       availableHeight = $interactiveContainer.height();
 
+      // TODO: this is quite naive approach.
+      // It should be changed to some fitness function defining quality of the layout.
+      // Using current algorithm, very often we follow some local minima.
       if ((maxX <= availableWidth && maxY <= availableHeight) &&
           (availableWidth - maxX < 1 || availableHeight - maxY < 1) &&
           (minLeft < 1 && minTop < 1)) {
         // Perfect solution found!
+        // (TODO: not so perfect, see above)
         return true;
       }
 
