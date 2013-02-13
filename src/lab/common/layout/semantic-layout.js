@@ -47,7 +47,7 @@ define(function (require) {
     }
 
     function layoutInteractive() {
-      var redraws = 0;
+      var redraws = 0, id;
 
       // 1. Calculate dimensions of containers which don't specify explicitly define it.
       //    It's necessary to do it each time, as when size of the container is changed,
@@ -63,7 +63,11 @@ define(function (require) {
 
       // 3. Notify components that their containers have new sizes.
       modelController.resize();
-      // TODO: resize also other components!
+      for (id in components) {
+        if (components.hasOwnProperty(id) && components[id].resize !== undefined) {
+          components[id].resize();
+        }
+      }
     }
 
     // Calculate width for containers which doesn't explicitly specify its width.
@@ -82,12 +86,15 @@ define(function (require) {
       }
 
       for (i = 0, len = containers.length; i < len; i++) {
-        // Set min-width only for containers, which DO NOT specify
-        // "width" explicitly in their definitions.
+        $container = $containers[containers[i].id];
         if (containers[i].width === undefined) {
-          $container = $containers[containers[i].id];
+          // Set min-width only for containers, which DO NOT specify
+          // "width" explicitly in their definitions.
           $container.children().each(setRowMinWidth);
           $container.css("min-width", $container.outerWidth(true));
+        }
+        if (containers[i]["min-width"] !== undefined) {
+          $container.css("min-width", containers[i]["min-width"]);
         }
       }
     }
@@ -124,7 +131,7 @@ define(function (require) {
           lastContainer, $rows, comps,
           i, ii, j, jj, k, kk;
 
-      comps = $.extend(true, {}, components);
+      comps = $.extend({}, components);
 
       for (i = 0, ii = containers.length; i<ii; i++) {
         container = containers[i];
@@ -140,6 +147,12 @@ define(function (require) {
         for (j = 0, jj = divContents.length; j < jj; j++) {
           items = divContents[j];
           $row = $('<div class="interactive-' + container.id + '-row"/>');
+          // Each row should have width 100% of its parent container.
+          $row.css("width", "100%");
+          // When there is only one row, ensure that it fills whole container.
+          if (jj === 1) {
+            $row.css("height", "100%");
+          }
           $containers[container.id].append($row);
           for (k = 0, kk = items.length; k < kk; k++) {
             $row.append(comps[items[k]].getViewContainer());
