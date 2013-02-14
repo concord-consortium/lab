@@ -8,7 +8,6 @@ define(function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
       console               = require('common/console'),
-      layout                = require('common/layout/layout'),
       amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
       GeneticRenderer       = require('md2d/views/genetic-renderer'),
       wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
@@ -48,8 +47,6 @@ define(function (require) {
         imageContainerTop    = containers.imageContainerTop,
         textContainerBelow   = containers.textContainerBelow,
         textContainerTop     = containers.textContainerTop,
-
-        emsize,
 
         dragOrigin,
 
@@ -1407,9 +1404,12 @@ define(function (require) {
     }
 
     function setupClock() {
-      var xunitOffset;
-      xunitOffset = model.get("xunits") ? 30 : 0;
-      // add model time display
+      var clockColor = d3.lab(model.get("backgroundColor"));
+      // This ensures that color will be visible on background.
+      // Decide between white and black usingL value of background color in LAB space.
+      clockColor.l = clockColor.l > 50 ? 0 : 100;
+      clockColor.a = clockColor.b = 0;
+      // Add model time display.
       mainContainer.selectAll('.modelTimeLabel').remove();
       // Update clock status.
       showClock = model.get("showClock");
@@ -1418,9 +1418,10 @@ define(function (require) {
           .attr("class", "modelTimeLabel")
           .text(modelTimeLabel())
           // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
-          .attr("x", model2px(0) + 5 * emsize)
-          .attr("y", model2pxInv(0) + 30 * emsize + xunitOffset * emsize)
-          .style("text-anchor","start");
+          .attr("x", model2px(0) + 3)
+          .attr("y", model2pxInv(0) - 3)
+          .style("text-anchor", "start")
+          .style("fill", clockColor.rgb());
       }
     }
 
@@ -1532,7 +1533,6 @@ define(function (require) {
         model2px = m2px;
         model2pxInv = m2pxInv;
       }
-      emsize = layout.getVizProperties().emsize;
       setupClock();
       setupObstacles();
       setupVdwPairs();

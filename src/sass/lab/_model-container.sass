@@ -1,0 +1,59 @@
+// Styles for various elements managed by model view and MD2D renderer,
+// which don't have to be styled dynamically.
+#model-container
+  // Radial bonds.
+  .radialbond1, .radialbond2
+    // Various radial bond styles:
+    // Default radial bonds have color calculated dynamically using JavaScipt.
+    &.disulphideBond
+      // Disulphide radial bonds have overwritten stroke color to yellow.
+      // !important to overwrite value set by JavaScript code.
+      stroke: #ffe95a !important
+
+  // DNA.
+  .dna
+    text
+      font-family: monospace
+      fill: #333
+      &.shadow
+        stroke: #eee
+        stroke-opacity: 0.7
+
+    .marked-mrna
+      font-weight: bold
+      fill: #D11
+
+  // Various elements.
+  text.modelTimeLabel
+    font-size: 1em
+
+  circle, .line
+    fill: none
+    stroke: steelblue
+    stroke-width: 1.5px
+
+  text.title
+    font-size: 1.0em
+
+  text.xlabel
+    font-size: 0.85em
+
+  text.ylabel
+    font-size: 0.85em
+
+  g.y
+    font-size: 0.75em
+  g.x
+    font-size: 0.75em
+
+  div.tooltip
+    display: none
+    position: absolute
+    padding: 0.4em 0.6em
+    font-size: 0.9em
+    background: #fff
+    border: solid 1px #aaa
+    border-radius: 0.8em
+    pointer-events: none
+    pre
+      margin: 0.2em

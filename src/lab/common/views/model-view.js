@@ -52,8 +52,7 @@ define(function (require) {
         textContainerBelow,
         textContainerTop,
 
-        offsetLeft, offsetTop,
-        showClock;
+        offsetLeft, offsetTop;
 
     function processOptions(newModelUrl, newModel) {
       modelUrl = newModelUrl || modelUrl;
@@ -82,11 +81,11 @@ define(function (require) {
       };
 
       if (model.get("xunits")) {
-        padding.bottom += (20  * emsize);
+        padding.bottom += (15  * emsize);
       }
 
       if (model.get("yunits")) {
-        padding.left += (20  * emsize);
+        padding.left += (15  * emsize);
       }
 
       if (model.get("controlButtons")) {
@@ -226,17 +225,12 @@ define(function (require) {
 
       if (model.get("yunits")) {
         gye.append("text")
-            .attr("x", "-0.5em")
+            .attr("x", "-0.15em")
             .attr("dy", "0.30em")
             .attr("text-anchor", "end")
             .text(fy);
       } else {
         gye.select("text").remove();
-      }
-
-      // update model time display
-      if (showClock) {
-        timeLabel.text(modelTimeLabel());
       }
 
       gy.exit().remove();
@@ -438,6 +432,7 @@ define(function (require) {
     function init() {
       // render model container ... the chrome around the model
       renderContainer();
+      setupPlaybackControls();
 
       // dynamically add modelUrl as a model property so the renderer
       // can find resources on paths relative to the model
@@ -453,14 +448,14 @@ define(function (require) {
       repaint();
 
       // Redraw container each time when some visual-related property is changed.
-      model.addPropertiesListener([ "showClock", "backgroundColor"], repaint);
+      model.addPropertiesListener([ "backgroundColor"], repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits"],
         function() {
           renderContainer();
+          setupPlaybackControls();
           repaint();
         }
       );
-      setupPlaybackControls();
     }
 
     //
