@@ -32,11 +32,13 @@ define(function () {
       if (option.selected) {
         $option.attr("checked", option.selected);
       }
-      $span = $('<span>')
+      $span = $('<span class="radio">')
         .append($option)
         .append(option.text);
-      $div.append($span).append("<br/>");
-
+      $div.append($span)
+      if (component.orientation === "vertical") {
+        $div.append("<br/>");
+      }
       $option.change((function(option, index) {
         return function() {
           var i, len;

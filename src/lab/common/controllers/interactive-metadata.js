@@ -226,6 +226,9 @@ define(function() {
       type: {
         required: true
       },
+      orientation: {
+        defaultValue: "vertical"
+      },
       options: {
         defaultValue: []
       }
