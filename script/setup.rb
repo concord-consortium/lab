@@ -17,7 +17,7 @@ rescue Errno::ENOENT
 
 *** missing config/config.yml
 
-    cp config/config_sample.yml config/config.yml
+    cp config/config.sample.yml config/config.yml
 
     and edit appropriately ...
 

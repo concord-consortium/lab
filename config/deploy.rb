@@ -43,7 +43,7 @@ namespace :deploy do
     run "cd /var/www/app; bundle install"
     run "cd /var/www/app/server; bundle install"
     run "cd /var/www/app/server; cp config/couchdb.sample.yml config/couchdb.yml"
-    run "cd /var/www/app; cp config/config_sample.yml config/config.yml"
+    run "cd /var/www/app; cp config/config.sample.yml config/config.yml"
     run "cd /var/www/app; make clean; make"
     update_jnlps
   end
