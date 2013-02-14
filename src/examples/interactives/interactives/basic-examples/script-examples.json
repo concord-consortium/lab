@@ -206,15 +206,32 @@
         "pulldown2"
       ],
       [
-        "temperature-property-slider",
-        "temperature-action-slider"
-      ],
-      [
         "radio-horizontal"
       ]
     ],
-    "rightwide": [
-      "radio"
+    "right": [
+      [ "temperature-property-slider" ],
+      [ "temperature-action-slider" ],
+      [ "radio" ]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "top",
+      "bottom": "model.top"
+    },
+    {
+      "id": "right",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-bottom": "1em"
+    }
+  ]
 }
