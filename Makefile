@@ -41,7 +41,14 @@ SASS_EXAMPLE_FILES := $(shell find src/examples -name '*.sass' -exec echo {} \; 
 vpath %.sass src/examples
 
 SASS_DOC_FILES := $(shell find src/doc -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/server\/public\/\1.css/' )
+DOC_FILES := $(SASS_DOC_FILES)
 vpath %.sass src/doc
+
+DOC_FILES += $(shell find src/doc -name '*.html' -print | sed s'/src\/\(.*\)\.html/server\/public\/\1.html/')
+vpath %.html src/doc
+
+DOC_FILES += $(shell find src/doc -name '*.css' -print | sed s'/src\/\(.*\)\.css/server\/public\/\1.css/')
+vpath %.css src/doc
 
 SCSS_EXAMPLE_FILES := $(shell find src -type d -name 'sass' -prune -o -name '*.scss' -exec echo {} \; | grep -v bourbon | sed s'/src\/\(.*\)\.scss/server\/public\/\1.css/' )
 vpath %.scss src
@@ -89,7 +96,7 @@ src: \
 	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_FILES) \
 	$(SASS_EXAMPLE_FILES) \
-	$(SASS_DOC_FILES) \
+	$(DOC_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	$(INTERACTIVE_FILES) \
@@ -232,8 +239,8 @@ server/public/examples:
 server/public/doc: \
 	server/public/doc/interactives \
 	server/public/doc/models
-	# copy directories, javascript, json, and image resources from src/examples/
-	rsync -aq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ server/public/doc/
+	# copy HTML/CSS, directories, javascript, json, and image resources from src/doc/
+	rsync -aq --filter '+ */' --include='*.html' --include='*.css' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ server/public/doc/
 
 server/public/doc/interactives:
 	mkdir -p server/public/doc/interactives
@@ -554,6 +561,14 @@ test/%.html: test/%.html.haml
 server/public/%.html: src/%.html.haml
 	haml -r ./script/setup.rb $< $@
 
+server/public/%.html: src/%.html
+	mkdir -p `dirname $@`
+	cp $< $@
+
+server/public/%.css: src/%.css
+	mkdir -p `dirname $@`
+	cp $< $@
+
 server/public/index.css:
 	$(SASS_COMPILER) src/index.sass server/public/index.css
 
@@ -600,7 +615,7 @@ sce:
 
 .PHONY: sd
 sd:
-	@echo $(SASS_DOC_FILES)
+	@echo $(DOC_FILES)
 
 .PHONY: s1
 sl:
