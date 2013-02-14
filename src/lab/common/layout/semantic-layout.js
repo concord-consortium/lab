@@ -22,7 +22,7 @@ define(function (require) {
         // Note that 0.4 is "small" size, 0.6 is "medium" size and 1.0 is "large" size.
         .domain([0.4, 0.6, 1.1, 5])
         // Range: font sizes in "em".
-        .range([0.6, 0.9, 1.1, 5])
+        .range([0.6, 0.8, 0.9, 5])
         // Clamp to ensure that font is not smaller than minimum font size
         // (first value in range array above).
         .clamp(true),
@@ -63,37 +63,6 @@ define(function (require) {
         case "width":
           return $container.outerWidth();
       }
-    }
-
-    function layoutInteractive() {
-      var redraws = 0, id;
-
-      // 0. Set font size of the interactive-container based on its size.
-      setFontSize();
-
-      // 1. Calculate dimensions of containers which don't specify explicitly define it.
-      //    It's necessary to do it each time, as when size of the container is changed,
-      //    also size of the components can be changed (e.g. due to new font size).
-      setMinDimensions();
-
-      // 2. Calculate optimal layout.
-      modelWidth = $interactiveContainer.width();
-      positionContainers();
-      while (redraws < 35 && !resizeModelContainer()) {
-        positionContainers();
-        redraws++;
-      }
-
-      // 3. Notify components that their containers have new sizes.
-      modelController.resize();
-      for (id in components) {
-        if (components.hasOwnProperty(id) && components[id].resize !== undefined) {
-          components[id].resize();
-        }
-      }
-
-      // 4. Set / remove colors of containers depending on the value of Lab.config.authoring
-      setupBackground();
     }
 
     function setFontSize() {
@@ -401,11 +370,43 @@ define(function (require) {
       }
     }
 
-    layout.layoutInteractive = layoutInteractive;
-    layout.positionContainers = positionContainers;
-    layout.resizeModelContainer = resizeModelContainer;
+    // Public API.
+    layout = {
+      layoutInteractive: function () {
+        var redraws = 0, id;
 
+        // 0. Set font size of the interactive-container based on its size.
+        setFontSize();
+
+        // 1. Calculate dimensions of containers which don't specify explicitly define it.
+        //    It's necessary to do it each time, as when size of the container is changed,
+        //    also size of the components can be changed (e.g. due to new font size).
+        setMinDimensions();
+
+        // 2. Calculate optimal layout.
+        modelWidth = $interactiveContainer.width();
+        positionContainers();
+        while (redraws < 35 && !resizeModelContainer()) {
+          positionContainers();
+          redraws++;
+        }
+
+        // 3. Notify components that their containers have new sizes.
+        modelController.resize();
+        for (id in components) {
+          if (components.hasOwnProperty(id) && components[id].resize !== undefined) {
+            components[id].resize();
+          }
+        }
+
+        // 4. Set / remove colors of containers depending on the value of Lab.config.authoring
+        setupBackground();
+      }
+    };
+
+    //
     // Initialize.
+    //
     createContainers();
     placeComponentsInContainers();
 
