@@ -383,6 +383,7 @@ define(function (require) {
         vis.selectAll("g.y").remove();
       }
 
+      // Set new dimensions of the top-level SVG container.
       vis1
         .attr({
           width: cx,
@@ -393,13 +394,15 @@ define(function (require) {
           height: cy
         });
 
+      // Update padding, as it can be changed after rescaling.
+      vis
+        .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
       // Rescale main plot.
-      // Update also padding, as it can be changed due to resizing.
       vis.select("rect.plot")
         .attr({
           width: size.width,
-          height: size.height,
-          transform: "translate(" + padding.left + "," + padding.top + ")"
+          height: size.height
         });
 
       redraw();
