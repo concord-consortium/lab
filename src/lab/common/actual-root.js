@@ -2,7 +2,7 @@
 
 define(function (require) {
   // Dependencies.
-  var staticResourceMatch = new RegExp("/(\/.*?)\/(doc|examples|experiments)(\/\w+)*?\/\w+\.html/"),
+  var staticResourceMatch = new RegExp("(\\/.*?)\\/(doc|examples|experiments)(\\/\\w+)*?\\/\\w+\\.html"),
       // String to be returned.
       value;
 
