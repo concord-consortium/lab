@@ -1,4 +1,4 @@
-/*global define: false, $: false */
+/*global define: false, $: false, d3: false */
 // ------------------------------------------------------------
 //
 //   Semantic Layout
@@ -11,14 +11,21 @@ define(function (require) {
 
       // Minimum width of the model.
       minModelWidth = 200,
-      // Min / max size of body font-size, it's adjusted using interactive-container dimensions.
-      minFontSize = 0.7, // em
-      maxFontSize = 1.4, // em
-      // Basic font size.
-      basicFontSize = 1, // em
-      // Dimensions of the interactive which ensure that font size will be equal to "basicFontSize".
+
+      // Canonical dimensions of the interactive, deciding about font size.
       basicInteractiveWidth = 1000,
       basicInteractiveHeight = 600,
+
+      // Font scaling function.
+      fontScale =  d3.scale.linear()
+        // Domain: actual interactive size to basic interactive size ratio.
+        // Note that 0.4 is "small" size, 0.6 is "medium" size and 1.0 is "large" size.
+        .domain([0.4, 0.6, 1.1, 5])
+        // Range: font sizes in "em".
+        .range([0.6, 0.9, 1.1, 5])
+        // Clamp to ensure that font is not smaller than minimum font size
+        // (first value in range array above).
+        .clamp(true),
 
       containerColors = [
         "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
@@ -35,7 +42,7 @@ define(function (require) {
         minTop = Infinity,
         maxX = -Infinity,
         maxY = -Infinity,
-        modelWidth = 1000,
+        modelWidth = minModelWidth,
         modelTop = 0,
         modelLeft = 0;
 
@@ -70,9 +77,9 @@ define(function (require) {
       setMinDimensions();
 
       // 2. Calculate optimal layout.
-      modelWidth = 1000;
+      modelWidth = $interactiveContainer.width();
       positionContainers();
-      while (redraws < 25 && !resizeModelContainer()) {
+      while (redraws < 35 && !resizeModelContainer()) {
         positionContainers();
         redraws++;
       }
@@ -92,11 +99,13 @@ define(function (require) {
     function setFontSize() {
       var xRatio = $interactiveContainer.width() / basicInteractiveWidth,
           yRatio = $interactiveContainer.height() / basicInteractiveHeight,
-          ratio = basicFontSize * Math.min(xRatio, yRatio);
+          ratio = Math.min(xRatio, yRatio);
 
-      ratio = Math.max(ratio, minFontSize);
-      ratio = Math.min(ratio, maxFontSize);
-      $("body").css("font-size", ratio + "em");
+      // Set font-size of #responsive-content element. So, if application author
+      // wants to avoid rescaling of font-size for some elements, they should not
+      // be included in #responsive-content DIV.
+      // TODO: #responsive-content ID is hardcoded, change it?
+      $("#responsive-content").css("font-size", fontScale(ratio) + "em");
     }
 
     // Calculate width for containers which doesn't explicitly specify its width.

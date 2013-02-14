@@ -82,7 +82,7 @@ div.tooltip
     cursor: pointer
     opacity: 1.0
 
-$embeddable-pane-font-size: 1.2em
+$embeddable-pane-font-size: 1.0em
 
 #about, #share
   float: right
@@ -102,7 +102,7 @@ $embeddable-pane-font-size: 1.2em
   position: absolute
   border-radius: 0.5em
   @include box-shadow(1px 1px 15px rgba(000,000,000,0.5))
-  width: 60%
+  width: 80%
   height: auto
   min-height: $embeddable-pane-font-size*8
   max-height: 80%
@@ -122,15 +122,15 @@ $embeddable-pane-font-size: 1.2em
     width: 98%
     height: auto
     font-family: inherit
-    font-size: $embeddable-pane-font-size*0.6
+    font-size: $embeddable-pane-font-size*0.9
   textarea#share-iframe-content
-    height: $embeddable-pane-font-size*4.0
+    height: $embeddable-pane-font-size*5.0
 
 #share-iframe-form
   margin-top: 0.35em
   select
     margin-bottom: 0.35em
-    font-size: $embeddable-pane-font-size*0.8
+    font-size: $embeddable-pane-font-size*0.9
 
 #about-pane, #share-pane
   left: inherit
@@ -177,11 +177,11 @@ $embeddable-pane-font-size: 1.2em
     color: #DDD
 
 #credits-content, #about-content, #share-content
-  margin: 0.5em 1em 1em 1em
+  margin: 0 1em
   font-size: $embeddable-pane-font-size
   display: inline-block
   overflow: auto
-  width: 90%
+  width: 95%
   max-height: 20em
   p
     font-weight: 600
@@ -189,4 +189,4 @@ $embeddable-pane-font-size: 1.2em
     text-decoration: none
 
 #share-license
-  font-size: $embeddable-pane-font-size*0.6
+  font-size: $embeddable-pane-font-size*0.8

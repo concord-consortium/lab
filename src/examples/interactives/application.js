@@ -96,7 +96,7 @@ AUTHORING = false;
       interactivesPromise,
       buttonHandlersAdded = false,
       modelButtonHandlersAdded = false;
-  
+
   function isEmbeddablePage() {
     return ($selectInteractive.length === 0);
   }
@@ -124,10 +124,10 @@ AUTHORING = false;
       selectInteractiveHandler();
     } else {
       interactivesPromise.done(function(){
-        // set the default interactive, from the first interactive in 
+        // set the default interactive, from the first interactive in
         // the first group returned from the server
         var firstGroupPath = interactiveDescriptions.groups[0].path;
-        var firstInteractive = _.find(interactiveDescriptions.interactives, function(interactive){ 
+        var firstInteractive = _.find(interactiveDescriptions.interactives, function(interactive){
           return interactive.groupKey == firstGroupPath;
         });
         document.location.hash = firstInteractive.path;
@@ -343,13 +343,13 @@ AUTHORING = false;
         selection = $selectIframeSize.val();
     switch(selection) {
       case "small":
-      $iframeWrapper.width('350px').height('260px');
+      $iframeWrapper.width('400px').height('300px');
       break;
       case "medium":
       $iframeWrapper.width('600px').height('400px');
       break;
       case "large":
-      $iframeWrapper.width('925px').height('575px');
+      $iframeWrapper.width('1000px').height('600px');
       break;
     }
     saveOptionsToCookie();
