@@ -16,7 +16,11 @@ CONFIG[:jsconfig][:actualRoot] = "" if CONFIG[:jsconfig][:actualRoot] == nil
 jsconfig = <<HEREDOC
 // this file is generated during build process by: ./script/generate-js-config.rb
 define(function (require) {
-  return #{JSON.pretty_generate(CONFIG[:jsconfig])};
+  var actualRoot = require('common/actual-root'),
+      publicAPI;
+  publicAPI = #{JSON.pretty_generate(CONFIG[:jsconfig])};
+  publicAPI.actualRoot = actualRoot;
+  return publicAPI;
 });
 HEREDOC
 

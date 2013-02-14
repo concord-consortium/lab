@@ -84,29 +84,6 @@ from my filesystem:
     XMLHttpRequest cannot load file:///Users/stephen/Downloads/concord-consortium-lab-9771ec6/examples/interactives/interactives/samples/1-oil-and-water-shake.json.
     Origin null is not allowed by Access-Control-Allow-Origin.
 
-If you deploy this folder of content at any directory level other than the root folder of
-your web server you will need to look for and edit this section in the `lab/lab.js` file and
-change the value for `actualRoot` to specify the path to the root of the Lab resources:
-
-    // this file is generated during build process by: ./script/generate-js-config.rb
-    define('lab.config',['require'],function (require) {
-      return {
-      "sharing": true,
-      "home": "http://lab.concord.org",
-      "homeInteractivePath": "/examples/interactives/interactive.html",
-      "homeEmbeddablePath": "/examples/interactives/embeddable.html",
-      "utmCampaign": null,
-      "actualRoot": "",
-      "logging": true,
-      "tracing": false
-    };
-    });
-
-For example if you deploy the Lab resource on your server in the directory `/external/resources` you
-should set actualRoot to "/external/resources":
-
-    "actualRoot": "/external/resources",
-
 ## Setup Development
 
 Lab uses a number of RubyGems and node modules to manage development. Lab's test framework
@@ -309,7 +286,7 @@ The Ruby Gem Nokogiri requires libxslt and libxml2, install them with:
 Final note, before you `make everything` setup the project configurations files by copying the
 configuration samples:
 
-    cp config/config_sample.yml config/config.yml
+    cp config/config.sample.yml config/config.yml
     cp server/config/couchdb.sample.yml server/config/couchdb.yml
 
 ### Use git to create a local clone of the Lab repository.
@@ -1792,7 +1769,7 @@ AWS account.**
     This file should have its permissions set to 600, and the folder it is in (e.g. ~/.ec2) should be 700.
 5.  Create or identify an appropriate AWS security group. For deployment to the lab servers managed
     by CC the `lab.dev` security group is used.
-6.  Edit the `:deploy` section of `config/config.yml` using values in `config/config_sample.yml`
+6.  Edit the `:deploy` section of `config/config.yml` using values in `config/config.sample.yml`
     as a guide.
 
     Here's an example from the `:deploy` section of a working `config.yml`:
@@ -2037,7 +2014,7 @@ Creating a new Lab server on AWS consists of three steps:
 
         $ scp <path-to-keystore> deploy@<hostname>:/var/www/app/config/<new-keystore-name>.jks
 
-      Now ssh to the new host and edit the [java section](https://github.com/concord-consortium/lab/blob/master/config/config_sample.yml#L2-6)
+      Now ssh to the new host and edit the [java section](https://github.com/concord-consortium/lab/blob/master/config/config.sample.yml#L2-6)
       of `/var/www/app/config/config.yml` to update the values for `:password`, `:alias`, and `:keystore_path`.
 
 3. Finishing the setup of the server with a capistrano task
