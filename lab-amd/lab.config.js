@@ -1,12 +1,18 @@
 // this file is generated during build process by: ./script/generate-js-config.rb
 define(function (require) {
-  return {
+  var actualRoot = require('common/actual-root'),
+      publicAPI;
+  publicAPI = {
   "sharing": true,
   "home": "http://lab.concord.org",
   "homeInteractivePath": "/examples/interactives/interactive.html",
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
+  "actualRoot": "",
   "logging": true,
-  "tracing": false
+  "tracing": false,
+  "authoring": false
 };
+  publicAPI.actualRoot = actualRoot;
+  return publicAPI;
 });

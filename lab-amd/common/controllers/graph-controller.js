@@ -3,15 +3,8 @@
 
 define(function (require) {
   var RealTimeGraph = require('grapher/core/real-time-graph'),
-      defaults = {
-        title:  "Graph",
-        xlabel: "Model Time (ps)",
-        xmin:   0,
-        xmax:   20,
-        ylabel: "",
-        ymin:   0,
-        ymax:   10
-      },
+      metadata  = require('common/controllers/interactive-metadata'),
+      validator = require('common/validator'),
 
       // Note: We always explicitly copy properties from component spec to grapher options hash,
       // in order to avoid tighly coupling an externally-exposed API (the component spec) to an
@@ -28,7 +21,7 @@ define(function (require) {
 
   return function graphController(component) {
     var // HTML element containing view
-        $container = $('<div>').attr('id', component.id).addClass('properties-graph'),
+        $container,
         grapher,
         controller,
         properties,
@@ -69,7 +62,7 @@ define(function (require) {
       for (cProp in grapherOptionForComponentSpecProperty) {
         if (grapherOptionForComponentSpecProperty.hasOwnProperty(cProp)) {
           gOption = grapherOptionForComponentSpecProperty[cProp];
-          options[gOption] = (component[cProp] != null) ? component[cProp] : defaults[cProp];
+          options[gOption] = component[cProp];
         }
       }
       return options;
@@ -161,8 +154,14 @@ define(function (require) {
       });
     }
 
+    //
+    // Initialization.
+    //
+    // Validate component definition, use validated copy of the properties.
+    component = validator.validateCompleteness(metadata.graph, component);
     // The list of properties we are being asked to graph.
     properties = component.properties.slice();
+    $container = $('<div>').attr('id', component.id).addClass('properties-graph');
 
     return controller = {
 
@@ -173,7 +172,7 @@ define(function (require) {
         if (grapher) {
           resetGrapher();
         } else {
-          grapher = new RealTimeGraph('#' + component.id, getOptions());
+          grapher = new RealTimeGraph($container[0], getOptions());
         }
         resetData();
         registerModelListeners();
@@ -191,6 +190,41 @@ define(function (require) {
       */
       getViewContainer: function() {
         return $container;
+      },
+
+      resize: function () {
+        // For now only "fit to parent" behavior is supported.
+        $container.width("100%");
+        $container.height("100%");
+        if (grapher) {
+          grapher.resize();
+        }
+      },
+
+      /**
+        Returns serialized component definition.
+      */
+      serialize: function () {
+        // The only thing which needs to be updated is scaling of axes.
+        // Note however that the serialized definition should always have
+        // 'xmin' set to initial value, as after deserialization we assume
+        // that there is no previous data and simulations should start from the beginning.
+        var result = $.extend(true, {}, component),
+            // Get current domains settings, e.g. after dragging performed by the user.
+            // TODO: this should be reflected somehow in the grapher model,
+            // not grabbed directly from the view as now. Waiting for refactoring.
+            xDomain = grapher.getXDomain(),
+            yDomain = grapher.getYDomain(),
+            startX  = component.xmin;
+
+        result.ymin = yDomain[0];
+        result.ymax = yDomain[1];
+        // Shift graph back to the original origin, but keep scale of the X axis.
+        // This is not very clear, but follows the rule of least surprise for the user.
+        result.xmin = startX;
+        result.xmax = startX + xDomain[1] - xDomain[0];
+
+        return result;
       }
     };
   };

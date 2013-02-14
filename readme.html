@@ -140,7 +140,10 @@ A live version of the readme is always available here:
   </li>
   <li><a href="#testing-test">Testing: <code>test/</code></a>    <ul>
       <li><a href="#a-simple-example-of-test-driven-development">A Simple Example of Test Driven Development</a></li>
-      <li><a href="#debugging-tests-using-the-node-debugger">Debugging Tests using the node debugger</a></li>
+      <li><a href="#debugging-tests-using-the-node-debugger">Debugging Tests using the node debugger</a>        <ul>
+          <li><a href="#using-node-inspector-while-debugging">Using node-inspector while debugging</a></li>
+        </ul>
+      </li>
     </ul>
   </li>
   <li><a href="#physical-constants-and-units">Physical constants and units</a>    <ul>
@@ -519,7 +522,7 @@ default, both of which are used for the java projects.</p>
 <p>Final note, before you <code>make everything</code> setup the project configurations files by copying the
 configuration samples:</p>
 
-<pre><code>cp config/config_sample.yml config/config.yml
+<pre><code>cp config/config.sample.yml config/config.yml
 cp server/config/couchdb.sample.yml server/config/couchdb.yml
 </code></pre>
 
@@ -1974,6 +1977,35 @@ Press Ctrl + C to leave debug repl
 <p><a href="https://github.com/dannycoates/node-inspector">node-inspector</a>
 <a href="http://search.npmjs.org/#/node-inspector">npm package for node-inspector</a></p>
 
+<h4 id="using-node-inspector-while-debugging">Using node-inspector while debugging</h4>
+
+<p><a href="https://npmjs.org/package/node-inspector">node-inspector</a> supports using the webkit inspector in Chrome to support
+interactive debugging in node. This can be particualrly help when debugging tests.</p>
+
+<p>Example:</p>
+
+<p>Add a debugger statement to your test:</p>
+
+<pre><code>originalModelJson = fs.readFileSync(testDir + "expected-json/" + modelJsonFile).toString();
+modelName = /\/?([^\/]*)\.json/.exec(modelJsonFile)[1];
+debugger;
+originalModel = JSON.parse(originalModelJson);
+model = new Model(originalModel);
+</code></pre>
+
+<p>Start a debugging session:</p>
+
+<pre><code>$ node --debug-brk ./node_modules/vows/bin/vows --no-color test/vows/mml-conversions/deserialize-serialize-test.js
+debugger listening on port 5858
+</code></pre>
+
+<p>Start node-inspector:</p>
+
+<pre><code>$ ./node_modules/.bin/node-inspector &amp;
+info  - socket.io started
+visit http://0.0.0.0:8080/debug?port=5858 to start debugging
+</code></pre>
+
 <h2 id="physical-constants-and-units">Physical constants and units</h2>
 
 <p>The core of the molecular dynamics engine performs computations using dimensioned quantities; we do
@@ -2078,9 +2110,8 @@ is used to store the static pages and client-side code built by the Makefile at 
 <p>In addition the content of the <code>gh-pages</code> branch is used to create the
 <a href="#distribution-of-project-and-examples">downloadable archive distributions of Lab</a></p>
 
-<p>The contents of the
-gh-pages branch are automatically made available in a standard web-page form (as opposed to the standard Github
-page for showing a repository) at this url:</p>
+<p>The contents of the gh-pages branch are automatically made available in a standard
+web-page form (as opposed to the standard Github page for showing a repository) at this url:</p>
 
 <p><a href="http://concord-consortium.github.com/lab/">concord-consortium.github.com/lab</a></p>
 
@@ -2166,7 +2197,7 @@ This file should have its permissions set to 600, and the folder it is in (e.g. 
   <li>Create or identify an appropriate AWS security group. For deployment to the lab servers managed
 by CC the <code>lab.dev</code> security group is used.</li>
   <li>
-    <p>Edit the <code>:deploy</code> section of <code>config/config.yml</code> using values in <code>config/config_sample.yml</code>
+    <p>Edit the <code>:deploy</code> section of <code>config/config.yml</code> using values in <code>config/config.sample.yml</code>
 as a guide.</p>
 
     <p>Here’s an example from the <code>:deploy</code> section of a working <code>config.yml</code>:</p>
@@ -2438,7 +2469,7 @@ thor cloud:update_dns_record hostname ipaddress  # updating IP address for DNS r
     <pre><code> $ scp &lt;path-to-keystore&gt; deploy@&lt;hostname&gt;:/var/www/app/config/&lt;new-keystore-name&gt;.jks
 </code></pre>
 
-    <p>Now ssh to the new host and edit the <a href="https://github.com/concord-consortium/lab/blob/master/config/config_sample.yml#L2-6">java section</a>
+    <p>Now ssh to the new host and edit the <a href="https://github.com/concord-consortium/lab/blob/master/config/config.sample.yml#L2-6">java section</a>
    of <code>/var/www/app/config/config.yml</code> to update the values for <code>:password</code>, <code>:alias</code>, and <code>:keystore_path</code>.</p>
   </li>
   <li>

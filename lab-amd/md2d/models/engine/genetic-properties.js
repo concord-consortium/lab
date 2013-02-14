@@ -3,6 +3,7 @@
 define(function (require) {
 
   var validator        = require('common/validator'),
+      serialize        = require('common/serialize'),
       metadata         = require('md2d/models/metadata'),
       aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
 
@@ -14,6 +15,7 @@ define(function (require) {
         changePreHook,
         changePostHook,
         data,
+        remainingAAs,
 
         dispatch = d3.dispatch("change"),
 
@@ -85,6 +87,8 @@ define(function (require) {
             // 2. mRNA is no longer valid. Do not recalculate it automatically
             //    (transribeDNA method should be used).
             delete data.mRNA;
+            // 3. Any translation in progress should be reseted.
+            delete data.translationStep;
           }
 
           changePostHook();
@@ -117,6 +121,11 @@ define(function (require) {
       // Deserializes genetic properties.
       deserialize: function (props) {
         create(props);
+      },
+
+      // Serializes genetic properties.
+      serialize: function () {
+        return data ? serialize(metadata.geneticProperties, data) : undefined;
       },
 
       // Convenient method for validation. It doesn't throw an exception,
@@ -197,6 +206,27 @@ define(function (require) {
         }
 
         return result;
+      },
+
+      translateStepByStep: function() {
+        var aaSequence, aaAbbr;
+
+        changePreHook();
+
+        aaSequence = api.translate();
+        if (data.translationStep === undefined) {
+          data.translationStep = 0;
+        } else {
+          data.translationStep += 1;
+        }
+        aaAbbr = aaSequence[data.translationStep];
+        if (aaAbbr === undefined) {
+          data.translationStep = "end";
+        }
+        changePostHook();
+        dispatch.change();
+
+        return aaAbbr;
       }
     };
 

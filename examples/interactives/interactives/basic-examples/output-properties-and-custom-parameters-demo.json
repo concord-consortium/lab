@@ -63,8 +63,8 @@
     }
   ],
   "exports": {
-    "parameters": ["startingGravity", "startingLength", "startingAngle", "ballMass", "ballFriction"],
-    "outputs": ["currentAngle", "kineticEnergy"]
+    "perRun": ["startingGravity", "startingLength", "startingAngle", "ballMass", "ballFriction"],
+    "perTick": ["currentAngle", "kineticEnergy"]
   },
   "components": [
     {
@@ -194,12 +194,6 @@
       "property": "keShading"
     },
     {
-      "type": "button",
-      "id": "export",
-      "text": "Export to DataGames",
-      "action": "exportData();"
-    },
-    {
       "type": "graph",
       "id": "propertiesGraph",
       "title": "Energy vs. starting gravity and starting length",
@@ -211,7 +205,7 @@
     }
   ],
   "layout": {
-    "rightwide": [
+    "right": [
       "propertiesGraph"
     ],
     "bottom": [
@@ -227,11 +221,10 @@
       ],
       [
         "kinetic-energy1",
-        "current-angle-slider",
         "current-angle-output1",
-        "current-angle-output2",
-        "export"
+        "current-angle-output2"
       ]
     ]
-  }
+  },
+  "template": "wide-right"
 }

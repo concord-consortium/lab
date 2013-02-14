@@ -332,6 +332,66 @@ var requirejs, require, define;
 
 define("../vendor/almond/almond", function(){});
 
+// this file is generated during build process by: ./script/generate-js-version.rb
+define('lab.version',['require'],function (require) {
+  return {
+    "repo": {
+      "branch": "master",
+      "commit": {
+        "sha":           "52a7418deb34c0339ab30ec1a86294217edf7fb9",
+        "short_sha":      "52a7418d",
+        "url":            "https://github.com/concord-consortium/lab/commit/52a7418d",
+        "author":        "Stephen Bannasch",
+        "email":         "stephen.bannasch@gmail.com",
+        "date":          "2013-02-14 17:15:53 -0500",
+        "short_message": "use correct form of regex string for RegExp()",
+        "message":       "use correct form of regex string for RegExp()\n\nIS [#44317763]\n\nWhen using the RexExp() function the string arg should\n*not* have the enclosing &quot;/&quot; characters used to define\na regex expression in-line \n\n*And* &#x27;\&#x27; chars must be escaped twice, once in the regex\nitself and a second time because of the string parsing."
+      },
+      "dirty": false
+    }
+  };
+});
+
+/*global define: false */
+
+define('common/actual-root',['require'],function (require) {
+  // Dependencies.
+  var staticResourceMatch = new RegExp("(\\/.*?)\\/(doc|examples|experiments)(\\/\\w+)*?\\/\\w+\\.html"),
+      // String to be returned.
+      value;
+
+  function actualRoot() {
+    var match = document.location.pathname.match(staticResourceMatch);
+    if (match && match[1]) {
+      return match[1]
+    } else {
+      return ""
+    }
+  }
+
+  value = actualRoot();
+  return value;
+});
+
+// this file is generated during build process by: ./script/generate-js-config.rb
+define('lab.config',['require','common/actual-root'],function (require) {
+  var actualRoot = require('common/actual-root'),
+      publicAPI;
+  publicAPI = {
+  "sharing": true,
+  "home": "http://lab.concord.org",
+  "homeInteractivePath": "/examples/interactives/interactive.html",
+  "homeEmbeddablePath": "/examples/interactives/embeddable.html",
+  "utmCampaign": null,
+  "actualRoot": "",
+  "logging": true,
+  "tracing": false,
+  "authoring": false
+};
+  publicAPI.actualRoot = actualRoot;
+  return publicAPI;
+});
+
 /*globals define */
 //TODO: Should change and newdomain be global variables?
 
@@ -625,7 +685,7 @@ define('common/layout/layout',['require'],function (require) {
           containerHeight = $(window).height(),
           mcWidth = $('#model-container').width();
 
-      modelDimensions = viewLists.moleculeContainers[0].scale();
+      modelDimensions = viewLists.modelContainers[0].scale();
       modelAspectRatio = modelDimensions[2] / modelDimensions[3];
       modelWidthFactor = 0.85;
 
@@ -659,14 +719,14 @@ define('common/layout/layout',['require'],function (require) {
         modelHeight = containerHeight * modelHeightFactor;
         modelWidth = modelHeight * modelAspectRatio;
       }
-      viewSizes.moleculeContainers = [modelWidth, modelHeight];
+      viewSizes.modelContainers = [modelWidth, modelHeight];
       if (viewLists.energyGraphs) {
         viewSizes.energyGraphs = [containerWidth * 0.40];
       }
 
-      // Resize moleculeContainer first to determine actual container height for right-side
+      // Resize modelContainer first to determine actual container height for right-side
       // Probably a way to do this with CSS ...
-      viewLists.moleculeContainers[0].resize(modelWidth, modelHeight);
+      viewLists.modelContainers[0].resize(modelWidth, modelHeight);
 
       modelHeight = $("#model-container").height();
       $("#rightwide").height(modelHeight);
@@ -677,7 +737,7 @@ define('common/layout/layout',['require'],function (require) {
       }
 
       for (viewType in viewLists) {
-        if (viewType === "moleculeContainers") continue;
+        // if (viewType === "modelContainers") continue;
         if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
           i = -1;  while(++i < viewLists[viewType].length) {
             if (viewSizes[viewType]) {
@@ -709,7 +769,7 @@ define('common/layout/layout',['require'],function (require) {
           containerWidth = $("#content").width(),
           containerHeight = $("#content").height();
 
-      modelDimensions = viewLists.moleculeContainers[0].scale();
+      modelDimensions = viewLists.modelContainers[0].scale();
       modelAspectRatio = modelDimensions[2] / modelDimensions[3];
       modelWidthFactor = 0.85;
 
@@ -747,14 +807,14 @@ define('common/layout/layout',['require'],function (require) {
         modelHeight = containerHeight * modelHeightFactor;
         modelWidth = modelHeight * modelAspectRatio;
       }
-      viewSizes.moleculeContainers = [modelWidth, modelHeight];
+      viewSizes.modelContainers = [modelWidth, modelHeight];
       if (viewLists.energyGraphs) {
         viewSizes.energyGraphs = [containerWidth * 0.40];
       }
 
-      // Resize moleculeContainer first to determine actual container height for right-side
+      // Resize modelContainer first to determine actual container height for right-side
       // Probably a way to do this with CSS ...
-      viewLists.moleculeContainers[0].resize(modelWidth, modelHeight);
+      viewLists.modelContainers[0].resize(modelWidth, modelHeight);
 
       modelHeight = $("#model-container").height();
       $("#rightwide").height(modelHeight);
@@ -765,7 +825,7 @@ define('common/layout/layout',['require'],function (require) {
       }
 
       for (viewType in viewLists) {
-        if (viewType === "moleculeContainers") continue;
+        if (viewType === "modelContainers") continue;
         if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
           i = -1;  while(++i < viewLists[viewType].length) {
             if (viewSizes[viewType]) {
@@ -786,14 +846,14 @@ define('common/layout/layout',['require'],function (require) {
           pageWidth = layout.display.page.width,
           pageHeight = layout.display.page.height;
 
-      mcsize = viewLists.moleculeContainers[0].scale();
+      mcsize = viewLists.modelContainers[0].scale();
       modelAspectRatio = mcsize[0] / mcsize[1];
       width = pageWidth * 0.40;
       height = width * 1/modelAspectRatio;
-      // HACK that will normally only work with one moleculeContainer
-      // or if all the moleculeContainers end up the same width
-      i = -1;  while(++i < viewLists.moleculeContainers.length) {
-        viewLists.moleculeContainers[i].resize(width, height);
+      // HACK that will normally only work with one modelContainer
+      // or if all the modelContainers end up the same width
+      i = -1;  while(++i < viewLists.modelContainers.length) {
+        viewLists.modelContainers[i].resize(width, height);
       }
       if (viewLists.appletContainers) {
         i = -1;  while(++i < viewLists.appletContainers.length) {
@@ -812,7 +872,7 @@ define('common/layout/layout',['require'],function (require) {
           pageWidth = layout.display.page.width,
           pageHeight = layout.display.page.height;
 
-      mcsize = viewLists.moleculeContainers[0].scale();
+      mcsize = viewLists.modelContainers[0].scale();
       modelAspectRatio = mcsize[0] / mcsize[1];
       widthToPageRatio = mcsize[0] / pageWidth;
       width = pageWidth * 0.46;
@@ -821,8 +881,8 @@ define('common/layout/layout',['require'],function (require) {
         height = pageHeight * 0.70;
         width = height * modelAspectRatio;
       }
-      i = -1;  while(++i < viewLists.moleculeContainers.length) {
-        viewLists.moleculeContainers[i].resize(width, height);
+      i = -1;  while(++i < viewLists.modelContainers.length) {
+        viewLists.modelContainers[i].resize(width, height);
       }
       rightQuarterWidth = (pageWidth - width) * 0.41;
       rightHeight = height * 0.42;
@@ -864,6 +924,20 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
     var cx = 600, cy = 300,
         node;
 
+    // FIXME The following two scenarios should result in the same code path being followed:
+    //
+    // (1)
+    //    var g = Graph(); g(d3.select("#graph"));
+    // (2)
+    //    var g = Graph("#graph");
+    //
+    // However, currently, if Graph() is invoked as in (2) then a different path is taken through
+    // scale(), and this appears to affect the path through subsequent code. The proof of this
+    // is that the grapher fails if we move the following if-statement to the end of Graph(),
+    // just before the invocation of graph(elem). Moving the if-statement and invoking
+    // Graph() via (2) should just be the rough equivalent of scenario (1), but apparently, it's not
+    // (or possibly scenario (1) doesn't work.)
+
     if (arguments.length) {
       elem = d3.select(elem);
       node = elem.node();
@@ -896,28 +970,28 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
         downx, downy, dragged, selected,
         titles = [],
         default_options = {
-          "title":          "Graph",
-          "xlabel":         "X Axis",
-          "ylabel":         "Y Axis",
-          "xscale":         "linear",
-          "yscale":         "linear",
-          "xTicCount":       10,
-          "yTicCount":        8,
-          "xFormatter":     "3.3r",
-          "yFormatter":     "3.3r",
-          "xscaleExponent": 0.5,
-          "yscaleExponent": 0.5,
-          "axisShift":       10,
-          "xmax":            60,
-          "xmin":             0,
-          "ymax":            40,
-          "ymin":             0,
-          "circleRadius":    10.0,
-          "strokeWidth":      2.0,
-          "dataChange":      true,
-          "addData":         true,
-          "points":          false,
-          "notification":    false
+          title:          "Graph",
+          xlabel:         "X Axis",
+          ylabel:         "Y Axis",
+          xscale:         "linear",
+          yscale:         "linear",
+          xTicCount:       10,
+          yTicCount:        8,
+          xFormatter:     "3.3r",
+          yFormatter:     "3.3r",
+          xscaleExponent:   0.5,
+          yscaleExponent:   0.5,
+          axisShift:       10,
+          xmax:            60,
+          xmin:             0,
+          ymax:            40,
+          ymin:             0,
+          circleRadius:    10.0,
+          strokeWidth:      2.0,
+          dataChange:      true,
+          addData:         true,
+          points:          false,
+          notification:    false
         },
 
         selection_region = {
@@ -1740,7 +1814,7 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
     graph.elem = function(_) {
       if (!arguments.length) return elem;
       elem = d3.select(_);
-      elem.call(graph);
+      graph(elem);
       return graph;
     };
 
@@ -1984,7 +2058,7 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
     };
 
     if (elem) {
-      elem.call(graph);
+      graph(elem);
     }
 
     return graph;
@@ -1997,7 +2071,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
   // Dependencies.
   var axis = require('grapher/core/axis');
 
-  return function RealTimeGraph(id, options, message) {
+  return function RealTimeGraph(idOrElement, options, message) {
     var elem,
         node,
         cx,
@@ -2067,7 +2141,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
           bars: false
         };
 
-    initialize(id, options, message);
+    initialize(idOrElement, options, message);
 
     function setupOptions(options) {
       if (options) {
@@ -2128,9 +2202,11 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       // emsize = displayProperties.emsize;
     }
 
-    function initialize(id, opts, message) {
-      if (id) {
-        elem = d3.select(id);
+    function initialize(idOrElement, opts, message) {
+      if (idOrElement) {
+        // d3.select works both for element ID (e.g. "#grapher")
+        // and for DOM element.
+        elem = d3.select(idOrElement);
         node = elem.node();
         cx = elem.property("clientWidth");
         cy = elem.property("clientHeight");
@@ -2138,7 +2214,6 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
 
       if (opts || !options) {
         options = setupOptions(opts);
-        newOptions = undefined;
       }
 
       if (svg !== undefined) {
@@ -3032,7 +3107,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       var domain = xScale.domain(),
           xextent = domain[1] - domain[0],
           shift = xextent * 0.8,
-          ds;
+          ds,
           i;
       if (newdata instanceof Array && newdata.length > 0) {
         if (newdata[0] instanceof Array) {
@@ -3051,9 +3126,17 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       return graph;
     };
 
-    graph.reset = function(id, options, message) {
+    graph.getXDomain = function () {
+      return xScale.domain();
+    };
+
+    graph.getYDomain = function () {
+      return yScale.domain();
+    };
+
+    graph.reset = function(idOrElement, options, message) {
       if (arguments.length) {
-        graph.initialize(id, options, message);
+        graph.initialize(idOrElement, options, message);
       } else {
         graph.initialize();
       }
@@ -6093,9 +6176,11 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
 
 /*global define: false, window: false */
 
-define('grapher/public-api',['require','grapher/core/graph','grapher/core/real-time-graph','grapher/bar-graph/bar-graph-model','grapher/bar-graph/bar-graph-view'],function (require) {
+define('grapher/public-api',['require','../lab.version','../lab.config','grapher/core/graph','grapher/core/real-time-graph','grapher/bar-graph/bar-graph-model','grapher/bar-graph/bar-graph-view'],function (require) {
   'use strict';
   var
+    version = require('../lab.version'),
+    config  = require('../lab.config'),
     graph         = require('grapher/core/graph'),
     realTimeGraph = require('grapher/core/real-time-graph'),
     BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
@@ -6121,6 +6206,9 @@ define('grapher/public-api',['require','grapher/core/graph','grapher/core/real-t
   // Finally, export API to global namespace.
   // Create or get 'Lab' global object (namespace).
   window.Lab = window.Lab || {};
+  // Export config modules.
+  window.Lab.config = config;
+
   // Export this API under 'grapher' name.
   window.Lab.grapher = publicAPI;
 

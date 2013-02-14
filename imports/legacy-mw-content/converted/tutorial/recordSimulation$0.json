@@ -29,6 +29,8 @@
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
     "textBoxes": [
       {
         "text": "Drag the knob with mouse, or press the slider and use the left and right arrow key, or roll the wheel of the mouse (if any) to play back the recorded simulation freely.",
@@ -89,40 +91,29 @@
         "frame": "rounded rectangle",
         "backgroundColor": "rgb(192,192,255)"
       }
-    ]
-  },
-  "elements": [
-    {
-      "id": 0,
-      "mass": 120,
-      "sigma": 0.15,
-      "epsilon": -0.1
+    ],
+    "fitToParent": false,
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
     },
-    {
-      "id": 1,
-      "mass": 240,
-      "sigma": 0.14,
-      "epsilon": -0.1
-    },
-    {
-      "id": 2,
-      "mass": 18,
-      "sigma": 0.14,
-      "epsilon": -0.009999999776482582
-    },
-    {
-      "id": 3,
-      "mass": 80,
-      "sigma": 0.4,
-      "epsilon": -0.1
-    },
-    {
-      "id": 4,
-      "mass": 600,
-      "sigma": 0.3,
-      "epsilon": -5
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
     }
-  ],
+  },
   "pairwiseLJProperties": [
     {
       "element1": 2,
@@ -131,6 +122,36 @@
       "epsilon": -0.019999999552965164
     }
   ],
+  "elements": {
+    "mass": [
+      120,
+      240,
+      18,
+      80,
+      600
+    ],
+    "sigma": [
+      0.15,
+      0.14,
+      0.14,
+      0.4,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.009999999776482582,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -855310,
+      -9066941,
+      -9092186,
+      -3355393,
+      -855310
+    ]
+  },
   "atoms": {
     "x": [
       3.86,

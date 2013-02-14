@@ -332,17 +332,44 @@ var requirejs, require, define;
 
 define("../vendor/almond/almond", function(){});
 
+/*global define: false */
+
+define('common/actual-root',['require'],function (require) {
+  // Dependencies.
+  var staticResourceMatch = new RegExp("(\\/.*?)\\/(doc|examples|experiments)(\\/\\w+)*?\\/\\w+\\.html"),
+      // String to be returned.
+      value;
+
+  function actualRoot() {
+    var match = document.location.pathname.match(staticResourceMatch);
+    if (match && match[1]) {
+      return match[1]
+    } else {
+      return ""
+    }
+  }
+
+  value = actualRoot();
+  return value;
+});
+
 // this file is generated during build process by: ./script/generate-js-config.rb
-define('lab.config',['require'],function (require) {
-  return {
+define('lab.config',['require','common/actual-root'],function (require) {
+  var actualRoot = require('common/actual-root'),
+      publicAPI;
+  publicAPI = {
   "sharing": true,
   "home": "http://lab.concord.org",
   "homeInteractivePath": "/examples/interactives/interactive.html",
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
+  "actualRoot": "",
   "logging": true,
-  "tracing": false
+  "tracing": false,
+  "authoring": false
 };
+  publicAPI.actualRoot = actualRoot;
+  return publicAPI;
 });
 
 /*global define: false console: true */
@@ -503,15 +530,15 @@ define('arrays/index',['require','exports','module'],function (require, exports,
     }
 
     switch(source.constructor) {
-      case Array: return Array;
-      case Float32Array: return Float32Array;
-      case Uint8Array: return Uint8Array;
-      case Float64Array: return Float64Array;
-      case Int32Array: return Int32Array;
-      case Int16Array: return Int16Array;
-      case Int8Array: return Int8Array;
-      case Uint32Array: return Uint32Array;
-      case Uint16Array: return Uint16Array;
+      case Array:             return Array;
+      case Float32Array:      return Float32Array;
+      case Uint8Array:        return Uint8Array;
+      case Float64Array:      return Float64Array;
+      case Int32Array:        return Int32Array;
+      case Int16Array:        return Int16Array;
+      case Int8Array:         return Int8Array;
+      case Uint32Array:       return Uint32Array;
+      case Uint16Array:       return Uint16Array;
       case Uint8ClampedArray: return Uint8ClampedArray;
       default:
         throw new Error(
@@ -688,11 +715,23 @@ define('arrays/index',['require','exports','module'],function (require, exports,
   };
 
   arrays.isArray = function (object) {
-    try {
-      arrays.constructor_function(object);
-      return true;
-    } catch (e) {
+    if (object === undefined || object === null) {
       return false;
+    }
+    switch(Object.prototype.toString.call(object)) {
+      case "[object Array]":
+      case "[object Float32Array]":
+      case "[object Float64Array]":
+      case "[object Uint8Array]":
+      case "[object Uint16Array]":
+      case "[object Uint32Array]":
+      case "[object Uint8ClampedArray]":
+      case "[object Int8Array]":
+      case "[object Int16Array]":
+      case "[object Int32Array]":
+        return true;
+      default:
+        return false;
     }
   };
 
@@ -6776,7 +6815,7 @@ define('energy2d/views/description',[],function () {
 });
 
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false, ACTUAL_ROOT: false */
+/*globals define: false, $: false  */
 
 // Basic Energy2D controller.
 //
@@ -6841,10 +6880,10 @@ define('energy2d/controllers/interactive',['require','energy2d/modeler','energy2
       // Private methods.
       //
       actualRootPath = function (url) {
-        if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
+        if (typeof Lab.config.actualRoot === "undefined" || url.charAt(0) !== "/") {
           return url;
         }
-        return ACTUAL_ROOT + url;
+        return Lab.config.actualRoot + url;
       },
 
       createEnergy2DScene = function (component_def) {
@@ -7105,9 +7144,10 @@ define('energy2d/controllers/interactive',['require','energy2d/modeler','energy2
 /*globals define: false, window: false */
 //main.js
 
-define('energy2d/public-api',['require','energy2d/controllers/interactive'],function (require) {
+define('energy2d/public-api',['require','../lab.config','energy2d/controllers/interactive'],function (require) {
   'use strict';
   var
+    config  = require('../lab.config'),
     InteractiveController = require('energy2d/controllers/interactive'),
     // Object to be returned.
     public_api;
@@ -7121,11 +7161,15 @@ define('energy2d/public-api',['require','energy2d/controllers/interactive'],func
     // ==========================================================================
   };
 
+  // ###
   // Finally, export API to global namespace.
-  // Create / get global 'lab' object.
-  window.lab = window.lab || {};
+  // Create or get 'Lab' global object (namespace).
+  window.Lab = window.Lab || {};
+  // Export config modules.
+  window.Lab.config = config;
+
   // Export this API under 'lab.energy2d' name.
-  window.lab.energy2d = public_api;
+  window.Lab.energy2d = public_api;
 
   // Also return public_api as module.
   return public_api;

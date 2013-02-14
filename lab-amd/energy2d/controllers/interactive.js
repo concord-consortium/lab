@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false, ACTUAL_ROOT: false */
+/*globals define: false, $: false  */
 
 // Basic Energy2D controller.
 //
@@ -64,10 +64,10 @@ define(function (require) {
       // Private methods.
       //
       actualRootPath = function (url) {
-        if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
+        if (typeof Lab.config.actualRoot === "undefined" || url.charAt(0) !== "/") {
           return url;
         }
-        return ACTUAL_ROOT + url;
+        return Lab.config.actualRoot + url;
       },
 
       createEnergy2DScene = function (component_def) {

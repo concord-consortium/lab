@@ -2,11 +2,16 @@
 
 define(function () {
 
+  var metadata  = require('common/controllers/interactive-metadata'),
+      validator = require('common/validator');
+
   return function CheckboxController(component, scriptingAPI) {
-    var propertyName  = component.property,
-        onClickScript = component.onClick,
+    var propertyName,
+        onClickScript,
+        initialValue,
         $checkbox,
         $label,
+        $element,
         controller,
 
         // Updates checkbox using model property. Used in modelLoadedCallback.
@@ -22,10 +27,17 @@ define(function () {
           }
         };
 
+    // Validate component definition, use validated copy of the properties.
+    component = validator.validateCompleteness(metadata.checkbox, component);
+    propertyName  = component.property;
+    onClickScript = component.onClick;
+    initialValue  = component.initialValue;
+
     $checkbox = $('<input type="checkbox">').attr('id', component.id);
     $label = $('<label>').append(component.text).append($checkbox);
-    // Append class to label, as it's the most outer container in this case.
-    $label.addClass("interactive-checkbox");
+    $element = $('<div>').append($label);
+    // Append class to the most outer container.
+    $element.addClass("interactive-checkbox");
 
     // Process onClick script if it is defined.
     if (onClickScript) {
@@ -66,11 +78,28 @@ define(function () {
           // Perform initial checkbox setup.
           updateCheckbox();
         }
+        else if (initialValue !== undefined) {
+          $checkbox.attr('checked', initialValue);
+        }
       },
 
       // Returns view container. Label tag, as it contains checkbox anyway.
       getViewContainer: function () {
-        return $label;
+        return $element;
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        var result = $.extend(true, {}, component);
+
+        if (propertyName === undefined) {
+          // No property binding. Just action script.
+          // Update "initialValue" to represent current
+          // value of the slider.
+          result.initialValue = $checkbox.is(':checked') ? true : false;
+        }
+
+        return result;
       }
     };
     // Return Public API object.

@@ -41,17 +41,7 @@ define(function() {
     return Object.keys(listeners);
   }
 
-  function initialize() {
-    if (window.parent === window) return;
-
-    // We kick off communication with the parent window by sending a "hello" message. Then we wait
-    // for a handshake (another "hello" message) from the parent window.
-    postHello({
-      type: 'hello',
-      origin: document.location.href.match(/(.*?\/\/.*?)\//)[1]
-    });
-
-    window.addEventListener('message', function(message) {
+  function messageListener(message) {
       // Anyone can send us a message. Only pay attention to messages from parent.
       if (message.source !== window.parent) return;
 
@@ -71,7 +61,22 @@ define(function() {
       if (message.origin === parentOrigin) {
         if (listeners[messageData.type]) listeners[messageData.type](messageData);
       }
-   }, false);
+   }
+
+  function initialize() {
+    if (window.parent === window) return;
+
+    // We kick off communication with the parent window by sending a "hello" message. Then we wait
+    // for a handshake (another "hello" message) from the parent window.
+    postHello({
+      type: 'hello',
+      origin: document.location.href.match(/(.*?\/\/.*?)\//)[1]
+    });
+
+    // Make sure that even if initialize() is called many times,
+    // only one instance of messageListener will be registered as listener.
+    // So, add closure function instead of anonymous function created here.
+    window.addEventListener('message', messageListener, false);
   }
 
   return controller = {

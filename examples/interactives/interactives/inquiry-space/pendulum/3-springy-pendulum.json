@@ -173,7 +173,7 @@
     }
   ],
   "layout": {
-    "rightwide": [
+    "right": [
       "propertiesGraph"
     ],
     "bottom": [
@@ -192,5 +192,6 @@
         "ke-shading"
       ]
     ]
-  }
+  },
+  "template": "wide-right"
 }

@@ -1,4 +1,4 @@
-/*global Lab _ $ d3 CodeMirror controllers model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
+/*global Lab _ $ d3 CodeMirror controllers alert model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -6,10 +6,6 @@ DEVELOPMENT = true;
 // Strawman setting for telling the interactive to be in "author mode",
 // allowing things like positioning textBoxes by hand.
 AUTHORING = false;
-
-var ROOT = "/examples",
-    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
-    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
 
 (function() {
 
@@ -33,10 +29,12 @@ var ROOT = "/examples",
       $selectIframeSize = $("#select-iframe-size"),
 
       $updateInteractiveButton = $("#update-interactive-button"),
+      $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
 
       $updateModelButton = $("#update-model-button"),
+      $updateJsonFromModelButton = $("#update-json-from-model-button"),
       $autoFormatModelJsonButton = $("#autoformat-model-json-button"),
       $modelTextArea = $("#model-text-area"),
 
@@ -95,28 +93,49 @@ var ROOT = "/examples",
       hash,
       jsonModelPath, contentItems, mmlPath,
       viewType,
+      interactivesPromise,
       buttonHandlersAdded = false,
       modelButtonHandlersAdded = false;
+
+  function isEmbeddablePage() {
+    return ($selectInteractive.length === 0);
+  }
+
+  if (!isEmbeddablePage()) {
+    interactivesPromise = $.get('interactives.json');
+
+    interactivesPromise.done(function(results) {
+      if (typeof results === 'string') {
+        results = JSON.parse(results);
+      }
+       interactiveDescriptions = results;
+    });
+
+    // TODO: some of the Deferred, ajax call have no error handlers?
+    interactivesPromise.fail(function(){
+      // TODO: need a better way to display errors
+      console.log("Failed to retrieve interactives.json");
+      alert("Failed to retrieve interactives.json");
+    });
+  }
 
   if (!document.location.hash) {
     if ($selectInteractive.length > 0 && $selectInteractive.val()) {
       selectInteractiveHandler();
     } else {
-      document.location.hash = '#interactives/samples/1-oil-and-water-shake.json';
+      interactivesPromise.done(function(){
+        // set the default interactive, from the first interactive in
+        // the first group returned from the server
+        var firstGroupPath = interactiveDescriptions.groups[0].path;
+        var firstInteractive = _.find(interactiveDescriptions.interactives, function(interactive){
+          return interactive.groupKey == firstGroupPath;
+        });
+        document.location.hash = firstInteractive.path;
+      });
     }
   }
 
-  function getHash() {
-    var match,
-        h = document.location.hash;
-    if (h) {
-      match = h.match(/(.*?\.json)/);
-      h = match[1];
-    }
-    return h;
-  }
-
-  if (hash = getHash()) {
+  if (hash = document.location.hash) {
     interactiveUrl = hash.substr(1, hash.length);
 
     $.get(interactiveUrl).done(function(results) {
@@ -181,7 +200,7 @@ var ROOT = "/examples",
   });
 
   $(window).bind('hashchange', function() {
-    if (getHash() !== hash) {
+    if (document.location.hash !== hash) {
       location.reload();
     }
   });
@@ -323,14 +342,17 @@ var ROOT = "/examples",
     var $iframeWrapper = $("#iframe-wrapper"),
         selection = $selectIframeSize.val();
     switch(selection) {
+      case "tiny":
+      $iframeWrapper.width('350px').height('263px');
+      break;
       case "small":
-      $iframeWrapper.width('350px').height('260px');
+      $iframeWrapper.width('400px').height('300px');
       break;
       case "medium":
       $iframeWrapper.width('600px').height('400px');
       break;
       case "large":
-      $iframeWrapper.width('925px').height('575px');
+      $iframeWrapper.width('1000px').height('600px');
       break;
     }
     saveOptionsToCookie();
@@ -414,15 +436,14 @@ var ROOT = "/examples",
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
 
     jsonModelPath = interactive.models[0].url;
-    $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
+    $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
 
     setupCodeEditor();
   }
 
   function setupFullPage() {
-    $.get('interactives.json').done(function(results) {
-      if (typeof results === 'string') results = JSON.parse(results);
-      interactiveDescriptions = results;
+    interactivesPromise.done(function(results) {
+
       restoreOptionsFromCookie();
       setupSelectList();
       $("#select-filters input").click(setupSelectList);
@@ -493,7 +514,7 @@ var ROOT = "/examples",
     contentItems = getObjects(modelList, "mml", mmlPath);
     if (contentItems.length > 0) {
       java_mw_href = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
-                      origin + ACTUAL_ROOT + "/imports/legacy-mw-content/" + contentItems[0].cml;
+                      origin + Lab.config.actualRoot + "/imports/legacy-mw-content/" + contentItems[0].cml;
       java_mw_link.attr("href", java_mw_href);
     } else {
       java_mw_link.removeAttr("href");
@@ -524,8 +545,8 @@ var ROOT = "/examples",
     if(onFullPage()) {
       // set keyboard focus on MD2D view
       // FIXME: generalize when multiple model types implemented
-      controller.modelController.moleculeContainer.setFocus();
-      $("#json-model-link").attr("href", origin + ACTUAL_ROOT + jsonModelPath);
+      controller.modelController.modelContainer.setFocus();
+      $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
       // $selectIframeSize.attr('disabled', 'disabled');
       setupCodeEditor();
       setupModelCodeEditor();
@@ -701,7 +722,12 @@ var ROOT = "/examples",
     if (!buttonHandlersAdded) {
       buttonHandlersAdded = true;
       $updateInteractiveButton.on('click', function() {
-        interactive = JSON.parse(editor.getValue());
+        try {
+          interactive = JSON.parse(editor.getValue());
+        } catch (e) {
+          alert("Interactive JSON syntax error: " + e.message);
+          throw new Error("Interactive JSON syntax error: " + e.message);
+        }
         if(onFullPage()) {
           controller.loadInteractive(interactive, '#interactive-container');
         } else {
@@ -710,7 +736,20 @@ var ROOT = "/examples",
       });
 
       $autoFormatInteractiveJsonButton.on('click', function() {
-        editor.autoFormatRange(editor.getCursor(true), editor.getCursor(false));
+        autoFormatEditorContent(editor);
+      });
+
+      $updateJsonFromInteractiveButton.on('click', function() {
+        var interactiveState;
+        if(onFullPage()) {
+          interactiveState = controller.serialize();
+          editor.setValue(JSON.stringify(interactiveState, null, indent));
+        } else {
+          iframePhone.post({ type:'getInteractiveState' });
+          iframePhone.addListener('interactiveState', function(message) {
+            editor.setValue(JSON.stringify(message, null, indent));
+          });
+        }
       });
 
       $showEditor.change(function() {
@@ -727,7 +766,7 @@ var ROOT = "/examples",
   // Model Code Editor
   //
   function setupModelCodeEditor() {
-    $.get(ACTUAL_ROOT + interactive.models[0].url).done(function(results) {
+    $.get(Lab.config.actualRoot + interactive.models[0].url).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
       var md2dModel = results;
       $modelTextArea.text(JSON.stringify(md2dModel, null, indent));
@@ -744,7 +783,12 @@ var ROOT = "/examples",
       if (!modelButtonHandlersAdded) {
         modelButtonHandlersAdded = true;
         $updateModelButton.on('click', function() {
-          md2dModel = JSON.parse(modelEditor.getValue());
+          try {
+            md2dModel = JSON.parse(modelEditor.getValue());
+          } catch (e) {
+            alert("Model JSON syntax error: " + e.message);
+            throw new Error("Model JSON syntax error: " + e.message);
+          }
           if(onFullPage()) {
             controller.loadModel(interactive.models[0].id, md2dModel);
           } else {
@@ -753,7 +797,20 @@ var ROOT = "/examples",
         });
 
         $autoFormatModelJsonButton.on('click', function() {
-          modelEditor.autoFormatRange(modelEditor.getCursor(true), modelEditor.getCursor(false));
+          autoFormatEditorContent(modelEditor);
+        });
+
+        $updateJsonFromModelButton.on('click', function() {
+          var modelState;
+          if(onFullPage()) {
+            modelState = controller.getModelController().state();
+            modelEditor.setValue(JSON.stringify(modelState, null, indent));
+          } else {
+            iframePhone.post({ type:'getModelState' });
+            iframePhone.addListener('modelState', function(message) {
+              modelEditor.setValue(JSON.stringify(message, null, indent));
+            });
+          }
         });
 
         $showModelEditor.change(function() {
@@ -765,6 +822,16 @@ var ROOT = "/examples",
         }).change();
       }
     });
+  }
+
+  function autoFormatEditorContent(ed) {
+    var cursorStart = ed.getCursor("start"),
+        cursorEnd = ed.getCursor("end"),
+        lastLine = ed.lineCount(),
+        viewPort = ed.getViewport();
+    ed.autoFormatRange({ ch:0, line: 0 }, { ch:0, line: lastLine });
+    ed.setSelection(cursorStart, cursorEnd);
+    ed.scrollIntoView({ ch:0, line: viewPort.from });
   }
 
   //

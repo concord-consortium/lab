@@ -76,7 +76,7 @@ define(function() {
       }
     },
 
-    modelViewProperties: {
+    viewOptions: {
       backgroundColor: {
         defaultValue: "#eeeeee"
       },
@@ -117,10 +117,60 @@ define(function() {
         defaultValue: 0
       },
       images: {
-
+        defaultValue: []
+      },
+      imageMapping: {
+        defaultValue: {}
       },
       textBoxes: {
-
+        defaultValue: []
+      },
+      fitToParent: {
+        defaultValue: false
+      },
+      xlabel: {
+        defaultValue: false
+      },
+      ylabel: {
+        defaultValue: false
+      },
+      xunits: {
+        defaultValue: false
+      },
+      yunits: {
+        defaultValue: false
+      },
+      controlButtons: {
+        defaultValue: "play"
+      },
+      gridLines: {
+        defaultValue: false
+      },
+      atomNumbers: {
+        defaultValue: false
+      },
+      enableAtomTooltips: {
+        defaultValue: false
+      },
+      enableKeyboardHandlers: {
+        defaultValue: true
+      },
+      atomTraceColor: {
+        defaultValue: "#6913c5"
+      },
+      velocityVectors: {
+        defaultValue: {
+          color: "#000",
+          width: 0.01,
+          length: 2
+        }
+      },
+      forceVectors: {
+        defaultValue: {
+          color: "#169C30",
+          width: 0.01,
+          length: 2
+        }
       }
     },
 
@@ -188,10 +238,6 @@ define(function() {
     },
 
     element: {
-      id: {
-        defaultValue: 0,
-        immutable: true
-      },
       mass: {
         defaultValue: 120
       },
@@ -202,7 +248,11 @@ define(function() {
         defaultValue: -0.1
       },
       radius: {
-        readOnly: true
+        readOnly: true,
+        serialize: false
+      },
+      color: {
+        defaultValue: -855310
       }
     },
 
@@ -261,7 +311,8 @@ define(function() {
       },
       // Final value of pressure in Bars.
       westProbeValue: {
-        readOnly: true
+        readOnly: true,
+        serialize: false
       },
       // Pressure probe, north side.
       northProbe: {
@@ -269,7 +320,8 @@ define(function() {
       },
       // Final value of pressure in Bars.
       northProbeValue: {
-        readOnly: true
+        readOnly: true,
+        serialize: false
       },
       // Pressure probe, east side.
       eastProbe: {
@@ -277,7 +329,8 @@ define(function() {
       },
       // Final value of pressure in Bars.
       eastProbeValue: {
-        readOnly: true
+        readOnly: true,
+        serialize: false
       },
       // Pressure probe, south side.
       southProbe: {
@@ -285,7 +338,8 @@ define(function() {
       },
       // Final value of pressure in Bars.
       southProbeValue: {
-        readOnly: true
+        readOnly: true,
+        serialize: false
       },
       // View options.
       colorR: {
@@ -357,6 +411,23 @@ define(function() {
       DNA: {
         defaultValue: ""
       },
+      DNAComplement: {
+        readOnly: true,
+        serialize: false
+      },
+      mRNA: {
+        // Immutable directly via set method.
+        // Use provided API to generate mRNA.
+        immutable: true
+      },
+      translationStep: {
+        // When this property is undefined, it means that the translation
+        // hasn't been yet started. Note that when translation is finished,
+        // translationStep will be equal to "end".
+        // Immutable directly via set method.
+        // Use provided API to translate step by step.
+        immutable: true
+      },
       x: {
         defaultValue: 0.01
       },
@@ -366,11 +437,8 @@ define(function() {
       height: {
         defaultValue: 0.12
       },
-      DNAComplement: {
-        readOnly: true
-      },
-      mRNA: {
-        readOnly: true
+      width: {
+        defaultValue: 0.08
       }
     },
 

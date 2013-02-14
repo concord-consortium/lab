@@ -1,4 +1,4 @@
-/*globals $ CodeMirror controllers model alert DEVELOPMENT: true */
+/*globals $ CodeMirror Lab controllers model alert DEVELOPMENT: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -30,7 +30,8 @@ var ROOT = "/experiments",
       nl_obj_panel, nl_obj_workspace, nl_obj_world,
       nl_obj_program, nl_obj_observer, nl_obj_globals,
       nlGlobals,
-      clearDataReady;
+      clearDataReady,
+      exportedTimeStamps = {};
 
   if (!document.location.hash) {
     if (selectInteractive) {
@@ -111,25 +112,13 @@ var ROOT = "/experiments",
   }
 
   function buttonStatusCallback() {
-    var export_button = exportData,
-        show_button = showData,
-        dgready = "DG-DATA-READY?",
-        observer = nl_obj_observer,
-        globals = nlGlobals,
-        enable = false;
+    var enable = dgDataReady();
 
-    try {
-      enable = observer.getVariable(globals.indexOf(dgready));
-      if (enable) {
-        export_button.disabled = false;
-        show_button.disabled = false;
-      } else {
-        export_button.disabled = true;
-        show_button.disabled = true;
-      }
-    } catch (e) {
+    if (enable === null || !exportData) {
       // Do nothing--we'll try again in the next timer interval.
+      return;
     }
+    exportData.disabled = !enable;
   }
 
   $(window).load(function() {
@@ -155,32 +144,73 @@ var ROOT = "/experiments",
   }
 
   function nl_read_global(global) {
+    if (nlGlobals.indexOf(global) < 0) return null;
     return nl_obj_observer.getVariable(nlGlobals.indexOf(global));
   }
 
   function dgDataReady() {
-    return nl_read_global("DG-DATA-READY?");
+    var ready = nl_read_global("DG-DATA-READY?");
+
+    if (ready !== null) return ready;
+    return nl_read_global("DATA-EXPORT:DATA-READY?");
   }
 
   function getExportedData() {
-    return nl_read_global("DG-OUTPUT");
+    return nl_read_global("DG-OUTPUT") || nl_read_global("DATA-EXPORT:MODEL-DATA");
   }
 
   function exportDataHandler() {
-    nl_cmd_execute("export-data");
+    try {
+      nl_cmd_execute("export-data");
+    } catch (e) {
+      nl_cmd_execute("data-export:make-model-data");
+    }
     clearDataReady = window.setInterval(exportDataReadyCallback, 250);
   }
 
   function exportDataReadyCallback() {
-    var dgExportDone = nl_read_global("DG-EXPORTED?");
+    var dgExportDone = nl_read_global("DG-EXPORTED?"),
+        nRunsExported = 0,
+        data;
+
+    if (dgExportDone === null) dgExportDone = nl_read_global("DATA-EXPORT:DATA-READY?");
     if (dgExportDone) {
       clearInterval(clearDataReady);
-      data = nl_read_global("DG-OUTPUT");
+      data = getExportedData();
+
       if (exportedData) {
         exportedData.textContent = data;
       } else {
         console.log(data);
-        ISNetLogo.DGExporter.exportData(JSON.parse(data));
+        data = JSON.parse(data);
+
+        if (data.collection_name) {
+          // data appears to be in format required by ISNetLogo.DGExporter
+          ISNetLogo.DGExporter.exportData(data);
+        } else if (data.description) {
+          // data appears to be in format of the NetLogo data exporter module (readable by
+          // Lab.importExport.netlogoImporter)
+
+          Lab.importExport.netlogoImporter.timeStamps(data).forEach(function(ts) {
+            if (exportedTimeStamps[ts]) {
+              return;
+            }
+
+            var n   = Lab.importExport.netlogoImporter.runHavingTimeStamp(data, ts),
+                run = Lab.importExport.netlogoImporter.importRun(data, n);
+
+            Lab.importExport.dgExporter.exportData(
+              run.perRunLabels,
+              run.perRunValues,
+              run.perTickLabels,
+              run.perTickValues
+            );
+            nRunsExported++;
+            exportedTimeStamps[ts] = true;
+          });
+
+          if (nRunsExported > 0) Lab.importExport.dgExporter.openTable();
+        }
       }
     }
   }

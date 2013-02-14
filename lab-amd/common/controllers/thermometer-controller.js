@@ -2,7 +2,9 @@
 
 define(function (require) {
 
-  var Thermometer = require('cs!common/components/thermometer');
+  var Thermometer = require('cs!common/components/thermometer'),
+      metadata  = require('common/controllers/interactive-metadata'),
+      validator = require('common/validator');
 
   /**
     An 'interactive thermometer' object, that wraps a base Thermometer with a label for use
@@ -15,22 +17,18 @@ define(function (require) {
      getView:              Returns base Thermometer object, with no label.
   */
   return function ThermometerController(component) {
-    var $thermometer = $('<div>').attr('id', component.id),
+    var reading = component.reading,
+        units,
+        offset,
+        scale,
+        digits,
 
-        reading = component.reading,
-        units = "K",
-        offset = 0,
-        scale = 1,
-        digits = 0,
+        labelIsReading,
+        labelText,
 
-        labelIsReading = !!component.labelIsReading,
-        labelText = labelIsReading ? "" : "Thermometer",
-        $label = $('<p class="label">').text(labelText).width('6em'),
-        $elem = $('<div class="interactive-thermometer">')
-                .append($thermometer)
-                .append($label),
+        $thermometer, $label, $elem,
 
-        thermometerComponent = new Thermometer($thermometer, null, component.min, component.max),
+        thermometerComponent,
         controller,
 
         updateLabel = function (temperature) {
@@ -49,12 +47,25 @@ define(function (require) {
     //
     // Initialization.
     //
-    if (reading) {
-      if (reading.units  !== undefined) units  = reading.units;
-      if (reading.offset !== undefined) offset = reading.offset;
-      if (reading.scale  !== undefined) scale  = reading.scale;
-      if (reading.digits !== undefined) digits = reading.digits;
-    }
+    component = validator.validateCompleteness(metadata.thermometer, component);
+    reading = component.reading;
+    units = reading.units;
+    offset = reading.offset;
+    scale  = reading.scale;
+    digits = reading.digits;
+
+    labelIsReading = !!component.labelIsReading;
+    labelText = labelIsReading ? "" : "Thermometer";
+
+    $thermometer = $('<div>').attr('id', component.id);
+    $label = $('<p class="label">').text(labelText);
+    $elem = $('<div class="interactive-thermometer">')
+      .append($thermometer)
+      .append($label);
+    $elem.css({
+      height: "100%"
+    });
+    thermometerComponent = new Thermometer($thermometer, null, component.min, component.max);
 
     // Public API.
     controller = {
@@ -75,6 +86,18 @@ define(function (require) {
 
       getView: function () {
         return thermometerComponent;
+      },
+
+      resize: function () {
+        $thermometer.height($elem.height() - $label.height());
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        // Return the initial component definition.
+        // Displayed value is always defined by the model,
+        // so it shouldn't be serialized.
+        return component;
       }
     };
     // Return Public API object.

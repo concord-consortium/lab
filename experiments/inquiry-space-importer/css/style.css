@@ -180,15 +180,21 @@ header h1 {
 
 #sensor-selector {
   position: absolute;
-  top: 0.4em;
-  left: 3.5em;
-  width: 80%;
+  top: 0.3em;
+  left: 4em;
+  width: 60%;
+}
+
+#tare-button {
+  position: absolute;
+  top: 0;
+  left: 21em;
 }
 
 #realtime-display {
   position: absolute;
   top: 0;
-
+  left:;
   font-size: 1.6em;
   line-height: 1.2;
   color: fireBrick;

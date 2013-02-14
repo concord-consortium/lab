@@ -29,6 +29,8 @@
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
     "textBoxes": [
       {
         "text": "Sir Isaac Newton  David Arns  Under a spreading apple tree, The village genius stands; His mind conceives of wondrous things, He writes them with his hands; His fame goes forth to all the world-- He's known in many lands. A tiny babe on Christmas Day in 1642 Was born to Mrs. Newton while outside, the cold winds blew. And on the farm, through childhood, precocious Isaac grew.  And after chores, he built devices to see just how they worked, To see what laws of nature underneath the workings lurked. (When people called them \"toys,\" that's what got Isaac really irked.)  His mother saw he was no farmer, sent him off to school; He quickly showed at Cambridge that he was nobody's fool: He began to bring to light the laws that all of nature rule.  In one chapter in his story (though apocryphal, it's said), An apple, falling from a tree impacted on his head, Which drew his thoughts to gravity, and we all know where that led.  He wondered if, by any chance, the self-same gravitation That pulls an apple to the ground, affected all creation: The moon, the planets, and the sun. . . Thus went his cogitation.  He determined that the gravity of earth indeed controls The orbit of our moon, as 'round the earth it ever rolls. Now, describing it mathematically was one of Newton's goals.  He discovered that the math you need to show the laws of nature, Surpassed the knowledge of that day; the cosmos' legislature Required new math, so Newton wrote his \"fluxions\" nomenclature.  He talked of falling bodies and his famous Laws of Motion, And of colors seen in bubbles and the tides upon the ocean. And his crowning jewel, \"Principia,\" created great commotion.  Yes, Newton's brilliant mind, it was a trunk with many twigs-- His mind branched out in every way (right through his powdered wigs). His greatest contribution, though, was cookies made from figs.   --- Scrolled by Molecular Workbench",
@@ -37,41 +39,60 @@
         "layer": 1,
         "color": "rgb(255,255,255)"
       }
+    ],
+    "fitToParent": false,
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      120,
+      240,
+      360,
+      480,
+      600
+    ],
+    "sigma": [
+      0.21,
+      0.23,
+      0.25,
+      0.27,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -855310,
+      -9066941,
+      -9092186,
+      -2539040,
+      -855310
     ]
   },
-  "elements": [
-    {
-      "id": 0,
-      "mass": 120,
-      "sigma": 0.21,
-      "epsilon": -0.1
-    },
-    {
-      "id": 1,
-      "mass": 240,
-      "sigma": 0.23,
-      "epsilon": -0.1
-    },
-    {
-      "id": 2,
-      "mass": 360,
-      "sigma": 0.25,
-      "epsilon": -0.1
-    },
-    {
-      "id": 3,
-      "mass": 480,
-      "sigma": 0.27,
-      "epsilon": -0.1
-    },
-    {
-      "id": 4,
-      "mass": 600,
-      "sigma": 0.3,
-      "epsilon": -5
-    }
-  ],
-  "pairwiseLJProperties": [],
   "atoms": {
     "x": [],
     "y": [],

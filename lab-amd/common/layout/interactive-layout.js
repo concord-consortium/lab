@@ -35,8 +35,8 @@ define(function (require) {
     // grab 'viewLists' from legacy layout system
     viewLists = layout.views;
 
-    w = $(viewLists.moleculeContainers[0].outerNode).width();
-    h = $(viewLists.moleculeContainers[0].outerNode).height();
+    w = $(viewLists.modelContainers[0].outerNode).width();
+    h = $(viewLists.modelContainers[0].outerNode).height();
     modelAspectRatio = w / h;
 
     // Model container should take up 60% of parent container width...
@@ -50,8 +50,8 @@ define(function (require) {
     modelWidth = containerWidth * modelWidthFactor;
     modelHeight = modelWidth / modelAspectRatio;
 
-    // width of moleculeContainer derives automatically from height
-    viewSizes.moleculeContainers = [modelWidth, modelHeight];
+    // width of modelContainer derives automatically from height
+    viewSizes.modelContainers = [modelWidth, modelHeight];
 
     if (viewLists.energyGraphs) {
       viewSizes.energyGraphs = [containerWidth * 0.45, modelHeight];
@@ -75,7 +75,7 @@ define(function (require) {
     }
 
     // Get the actual molecule container height after resize (minimum width may have come into play)
-    h = $(viewLists.moleculeContainers[0].outerNode).height();
+    h = $(viewLists.modelContainers[0].outerNode).height();
 
     if (layout.views.thermometers) {
       setThermometerHeight(layout.views.thermometers[0], 0.8 * h);
@@ -87,7 +87,7 @@ define(function (require) {
     // Push the model-container down so its top lines up with the energy graph's top exactly.
     // After brief investigation, couldn't tell for sure why the energyGraph container was being pushed down ~5px by the browser...
     if (viewLists.energyGraphs) {
-      $(viewLists.moleculeContainers[0].outerNode).css('top', 5);
+      $(viewLists.modelContainers[0].outerNode).css('top', 5);
     }
   };
 });

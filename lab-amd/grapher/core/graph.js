@@ -10,6 +10,20 @@ define(function (require) {
     var cx = 600, cy = 300,
         node;
 
+    // FIXME The following two scenarios should result in the same code path being followed:
+    //
+    // (1)
+    //    var g = Graph(); g(d3.select("#graph"));
+    // (2)
+    //    var g = Graph("#graph");
+    //
+    // However, currently, if Graph() is invoked as in (2) then a different path is taken through
+    // scale(), and this appears to affect the path through subsequent code. The proof of this
+    // is that the grapher fails if we move the following if-statement to the end of Graph(),
+    // just before the invocation of graph(elem). Moving the if-statement and invoking
+    // Graph() via (2) should just be the rough equivalent of scenario (1), but apparently, it's not
+    // (or possibly scenario (1) doesn't work.)
+
     if (arguments.length) {
       elem = d3.select(elem);
       node = elem.node();
@@ -42,28 +56,28 @@ define(function (require) {
         downx, downy, dragged, selected,
         titles = [],
         default_options = {
-          "title":          "Graph",
-          "xlabel":         "X Axis",
-          "ylabel":         "Y Axis",
-          "xscale":         "linear",
-          "yscale":         "linear",
-          "xTicCount":       10,
-          "yTicCount":        8,
-          "xFormatter":     "3.3r",
-          "yFormatter":     "3.3r",
-          "xscaleExponent": 0.5,
-          "yscaleExponent": 0.5,
-          "axisShift":       10,
-          "xmax":            60,
-          "xmin":             0,
-          "ymax":            40,
-          "ymin":             0,
-          "circleRadius":    10.0,
-          "strokeWidth":      2.0,
-          "dataChange":      true,
-          "addData":         true,
-          "points":          false,
-          "notification":    false
+          title:          "Graph",
+          xlabel:         "X Axis",
+          ylabel:         "Y Axis",
+          xscale:         "linear",
+          yscale:         "linear",
+          xTicCount:       10,
+          yTicCount:        8,
+          xFormatter:     "3.3r",
+          yFormatter:     "3.3r",
+          xscaleExponent:   0.5,
+          yscaleExponent:   0.5,
+          axisShift:       10,
+          xmax:            60,
+          xmin:             0,
+          ymax:            40,
+          ymin:             0,
+          circleRadius:    10.0,
+          strokeWidth:      2.0,
+          dataChange:      true,
+          addData:         true,
+          points:          false,
+          notification:    false
         },
 
         selection_region = {
@@ -886,7 +900,7 @@ define(function (require) {
     graph.elem = function(_) {
       if (!arguments.length) return elem;
       elem = d3.select(_);
-      elem.call(graph);
+      graph(elem);
       return graph;
     };
 
@@ -1130,7 +1144,7 @@ define(function (require) {
     };
 
     if (elem) {
-      elem.call(graph);
+      graph(elem);
     }
 
     return graph;

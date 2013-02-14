@@ -55,6 +55,30 @@
           "label": "2000"
         }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show-gridlines",
+      "text": "Show Grid Lines",
+      "property": "gridLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-xunits",
+      "text": "Show X units",
+      "property": "xunits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-yunits",
+      "text": "Show Y units",
+      "property": "yunits"
     }
-  ]
+  ],
+  "layout": {
+    "bottom": [
+      ["trace-atom", "mark-trace-atom", "untrace-atom", "temperature-property-slider"],
+      ["show-gridlines", "show-xunits", "show-yunits"]
+    ]
+  }
 }

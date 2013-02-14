@@ -4,14 +4,14 @@ define(function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "e41e5c8a307ff6eb7914f6a4fcec02dd835a64b9",
-        "short_sha":      "e41e5c8a",
-        "url":            "https://github.com/concord-consortium/lab/commit/e41e5c8a",
-        "author":        "Dan Damelin",
-        "email":         "ddamelin@concord.org",
-        "date":          "2013-01-22 14:54:30 -0500",
-        "short_message": "Changed background color of solid, liquid, and gas phase change models to gray",
-        "message":       "Changed background color of solid, liquid, and gas phase change models to gray"
+        "sha":           "52a7418deb34c0339ab30ec1a86294217edf7fb9",
+        "short_sha":      "52a7418d",
+        "url":            "https://github.com/concord-consortium/lab/commit/52a7418d",
+        "author":        "Stephen Bannasch",
+        "email":         "stephen.bannasch@gmail.com",
+        "date":          "2013-02-14 17:15:53 -0500",
+        "short_message": "use correct form of regex string for RegExp()",
+        "message":       "use correct form of regex string for RegExp()\n\nIS [#44317763]\n\nWhen using the RexExp() function the string arg should\n*not* have the enclosing &quot;/&quot; characters used to define\na regex expression in-line \n\n*And* &#x27;\&#x27; chars must be escaped twice, once in the regex\nitself and a second time because of the string parsing."
       },
       "dirty": false
     }

@@ -59,6 +59,18 @@ define (require) ->
       # Avoid an unwanted comprehension.
       return
 
+    serialize: () ->
+      result = []
+      for own key1, innerObj of @_data
+        for own key2 of innerObj
+          if key1 < key2
+            props = @get key1, key2
+            props.element1 = Number key1
+            props.element2 = Number key2
+            result.push props
+
+      result
+
     ###
     Clone-Restore Interface.
     ###

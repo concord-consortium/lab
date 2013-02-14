@@ -110,8 +110,9 @@
     }
   ],
   "layout": {
-    "rightwide": [
+    "right": [
       "propertiesGraph"
     ]
-  }
+  },
+  "template": "wide-right"
 }

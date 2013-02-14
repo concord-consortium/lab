@@ -29,6 +29,8 @@
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
     "textBoxes": [
       {
         "text": "The temperatures of these slabs as a function of time will be computed.",
@@ -39,47 +41,59 @@
         "backgroundColor": "rgb(0,255,0)"
       }
     ],
+    "fitToParent": false,
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
     "velocityVectors": {
-      "color": "rgb(0,255,0)"
+      "color": "rgb(0,255,0)",
+      "width": 0.01,
+      "length": 2
     },
     "forceVectors": {
-      "length": 0.24,
-      "color": "rgb(255,255,255)"
+      "color": "rgb(255,255,255)",
+      "width": 0.01,
+      "length": 0.24
     }
   },
-  "elements": [
-    {
-      "id": 0,
-      "mass": 100,
-      "sigma": 0.22,
-      "epsilon": -0.1
-    },
-    {
-      "id": 1,
-      "mass": 200,
-      "sigma": 0.18,
-      "epsilon": -0.1
-    },
-    {
-      "id": 2,
-      "mass": 10,
-      "sigma": 0.2,
-      "epsilon": -0.1
-    },
-    {
-      "id": 3,
-      "mass": 50,
-      "sigma": 0.1,
-      "epsilon": -0.05000000074505806
-    },
-    {
-      "id": 4,
-      "mass": 600,
-      "sigma": 0.3,
-      "epsilon": -5
-    }
-  ],
   "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      100,
+      200,
+      10,
+      50,
+      600
+    ],
+    "sigma": [
+      0.22,
+      0.18,
+      0.2,
+      0.1,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.05000000074505806,
+      -5
+    ],
+    "color": [
+      -855310,
+      -9066941,
+      -3355393,
+      -65281,
+      -855310
+    ]
+  },
   "atoms": {
     "x": [
       1.128369307246406,

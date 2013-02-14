@@ -29,43 +29,62 @@
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
+    "textBoxes": [],
+    "fitToParent": false,
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
     "velocityVectors": {
-      "width": 0.03
+      "color": "#000",
+      "width": 0.03,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
     }
   },
-  "elements": [
-    {
-      "id": 0,
-      "mass": 20,
-      "sigma": 0.3,
-      "epsilon": -0.009999999776482582
-    },
-    {
-      "id": 1,
-      "mass": 40,
-      "sigma": 0.2,
-      "epsilon": -0.019999999552965164
-    },
-    {
-      "id": 2,
-      "mass": 60,
-      "sigma": 0.4,
-      "epsilon": -0.1
-    },
-    {
-      "id": 3,
-      "mass": 80,
-      "sigma": 0.35,
-      "epsilon": -0.1
-    },
-    {
-      "id": 4,
-      "mass": 600,
-      "sigma": 0.3,
-      "epsilon": -5
-    }
-  ],
   "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      20,
+      40,
+      60,
+      80,
+      600
+    ],
+    "sigma": [
+      0.3,
+      0.2,
+      0.4,
+      0.35,
+      0.3
+    ],
+    "epsilon": [
+      -0.009999999776482582,
+      -0.019999999552965164,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -13108,
+      -1,
+      -13369549,
+      -2539040,
+      -855310
+    ]
+  },
   "atoms": {
     "x": [
       2.38,

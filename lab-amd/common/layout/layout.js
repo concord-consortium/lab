@@ -237,7 +237,7 @@ define(function (require) {
           containerHeight = $(window).height(),
           mcWidth = $('#model-container').width();
 
-      modelDimensions = viewLists.moleculeContainers[0].scale();
+      modelDimensions = viewLists.modelContainers[0].scale();
       modelAspectRatio = modelDimensions[2] / modelDimensions[3];
       modelWidthFactor = 0.85;
 
@@ -271,14 +271,14 @@ define(function (require) {
         modelHeight = containerHeight * modelHeightFactor;
         modelWidth = modelHeight * modelAspectRatio;
       }
-      viewSizes.moleculeContainers = [modelWidth, modelHeight];
+      viewSizes.modelContainers = [modelWidth, modelHeight];
       if (viewLists.energyGraphs) {
         viewSizes.energyGraphs = [containerWidth * 0.40];
       }
 
-      // Resize moleculeContainer first to determine actual container height for right-side
+      // Resize modelContainer first to determine actual container height for right-side
       // Probably a way to do this with CSS ...
-      viewLists.moleculeContainers[0].resize(modelWidth, modelHeight);
+      viewLists.modelContainers[0].resize(modelWidth, modelHeight);
 
       modelHeight = $("#model-container").height();
       $("#rightwide").height(modelHeight);
@@ -289,7 +289,7 @@ define(function (require) {
       }
 
       for (viewType in viewLists) {
-        if (viewType === "moleculeContainers") continue;
+        // if (viewType === "modelContainers") continue;
         if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
           i = -1;  while(++i < viewLists[viewType].length) {
             if (viewSizes[viewType]) {
@@ -321,7 +321,7 @@ define(function (require) {
           containerWidth = $("#content").width(),
           containerHeight = $("#content").height();
 
-      modelDimensions = viewLists.moleculeContainers[0].scale();
+      modelDimensions = viewLists.modelContainers[0].scale();
       modelAspectRatio = modelDimensions[2] / modelDimensions[3];
       modelWidthFactor = 0.85;
 
@@ -359,14 +359,14 @@ define(function (require) {
         modelHeight = containerHeight * modelHeightFactor;
         modelWidth = modelHeight * modelAspectRatio;
       }
-      viewSizes.moleculeContainers = [modelWidth, modelHeight];
+      viewSizes.modelContainers = [modelWidth, modelHeight];
       if (viewLists.energyGraphs) {
         viewSizes.energyGraphs = [containerWidth * 0.40];
       }
 
-      // Resize moleculeContainer first to determine actual container height for right-side
+      // Resize modelContainer first to determine actual container height for right-side
       // Probably a way to do this with CSS ...
-      viewLists.moleculeContainers[0].resize(modelWidth, modelHeight);
+      viewLists.modelContainers[0].resize(modelWidth, modelHeight);
 
       modelHeight = $("#model-container").height();
       $("#rightwide").height(modelHeight);
@@ -377,7 +377,7 @@ define(function (require) {
       }
 
       for (viewType in viewLists) {
-        if (viewType === "moleculeContainers") continue;
+        if (viewType === "modelContainers") continue;
         if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
           i = -1;  while(++i < viewLists[viewType].length) {
             if (viewSizes[viewType]) {
@@ -398,14 +398,14 @@ define(function (require) {
           pageWidth = layout.display.page.width,
           pageHeight = layout.display.page.height;
 
-      mcsize = viewLists.moleculeContainers[0].scale();
+      mcsize = viewLists.modelContainers[0].scale();
       modelAspectRatio = mcsize[0] / mcsize[1];
       width = pageWidth * 0.40;
       height = width * 1/modelAspectRatio;
-      // HACK that will normally only work with one moleculeContainer
-      // or if all the moleculeContainers end up the same width
-      i = -1;  while(++i < viewLists.moleculeContainers.length) {
-        viewLists.moleculeContainers[i].resize(width, height);
+      // HACK that will normally only work with one modelContainer
+      // or if all the modelContainers end up the same width
+      i = -1;  while(++i < viewLists.modelContainers.length) {
+        viewLists.modelContainers[i].resize(width, height);
       }
       if (viewLists.appletContainers) {
         i = -1;  while(++i < viewLists.appletContainers.length) {
@@ -424,7 +424,7 @@ define(function (require) {
           pageWidth = layout.display.page.width,
           pageHeight = layout.display.page.height;
 
-      mcsize = viewLists.moleculeContainers[0].scale();
+      mcsize = viewLists.modelContainers[0].scale();
       modelAspectRatio = mcsize[0] / mcsize[1];
       widthToPageRatio = mcsize[0] / pageWidth;
       width = pageWidth * 0.46;
@@ -433,8 +433,8 @@ define(function (require) {
         height = pageHeight * 0.70;
         width = height * modelAspectRatio;
       }
-      i = -1;  while(++i < viewLists.moleculeContainers.length) {
-        viewLists.moleculeContainers[i].resize(width, height);
+      i = -1;  while(++i < viewLists.modelContainers.length) {
+        viewLists.modelContainers[i].resize(width, height);
       }
       rightQuarterWidth = (pageWidth - width) * 0.41;
       rightHeight = height * 0.42;

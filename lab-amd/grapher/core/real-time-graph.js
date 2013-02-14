@@ -4,7 +4,7 @@ define(function (require) {
   // Dependencies.
   var axis = require('grapher/core/axis');
 
-  return function RealTimeGraph(id, options, message) {
+  return function RealTimeGraph(idOrElement, options, message) {
     var elem,
         node,
         cx,
@@ -74,7 +74,7 @@ define(function (require) {
           bars: false
         };
 
-    initialize(id, options, message);
+    initialize(idOrElement, options, message);
 
     function setupOptions(options) {
       if (options) {
@@ -135,9 +135,11 @@ define(function (require) {
       // emsize = displayProperties.emsize;
     }
 
-    function initialize(id, opts, message) {
-      if (id) {
-        elem = d3.select(id);
+    function initialize(idOrElement, opts, message) {
+      if (idOrElement) {
+        // d3.select works both for element ID (e.g. "#grapher")
+        // and for DOM element.
+        elem = d3.select(idOrElement);
         node = elem.node();
         cx = elem.property("clientWidth");
         cy = elem.property("clientHeight");
@@ -145,7 +147,6 @@ define(function (require) {
 
       if (opts || !options) {
         options = setupOptions(opts);
-        newOptions = undefined;
       }
 
       if (svg !== undefined) {
@@ -1039,7 +1040,7 @@ define(function (require) {
       var domain = xScale.domain(),
           xextent = domain[1] - domain[0],
           shift = xextent * 0.8,
-          ds;
+          ds,
           i;
       if (newdata instanceof Array && newdata.length > 0) {
         if (newdata[0] instanceof Array) {
@@ -1058,9 +1059,17 @@ define(function (require) {
       return graph;
     };
 
-    graph.reset = function(id, options, message) {
+    graph.getXDomain = function () {
+      return xScale.domain();
+    };
+
+    graph.getYDomain = function () {
+      return yScale.domain();
+    };
+
+    graph.reset = function(idOrElement, options, message) {
       if (arguments.length) {
-        graph.initialize(id, options, message);
+        graph.initialize(idOrElement, options, message);
       } else {
         graph.initialize();
       }

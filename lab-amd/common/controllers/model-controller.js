@@ -11,12 +11,11 @@
 /*jslint onevar: true*/
 define(function (require) {
   // Dependencies.
-  var Model             = require('md2d/models/modeler'),
-      MoleculeContainer = require('md2d/views/molecule-container'),
-      ModelPlayer       = require('cs!common/components/model_player'),
-      Benchmarks        = require('md2d/benchmarks/benchmarks');
+  var arrays            = require('arrays'),
+      ModelPlayer       = require('cs!common/components/model_player');
 
-  return function modelController(moleculeViewId, modelConfig, interactiveViewConfig, interactiveModelConfig) {
+  return function modelController(modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
+                                  Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller = {},
 
         // event dispatcher
@@ -28,7 +27,7 @@ define(function (require) {
 
         benchmarks,
 
-        moleculeContainer,
+        modelContainer,
 
         // We pass this object to the "ModelPlayer" to intercept messages for the model
         // instead of allowing the ModelPlayer to talk to the model directly.
@@ -52,7 +51,7 @@ define(function (require) {
             if (model.reset) {
               model.reset();
             }
-            reload(modelConfig, interactiveViewConfig);
+            reload(modelUrl, modelConfig);
           },
 
           is_stopped: function() {
@@ -68,7 +67,7 @@ define(function (require) {
       //
       // ------------------------------------------------------------
       function tickHandler() {
-        moleculeContainer.updateDrawablePositions();
+        modelContainer.update();
       }
 
 
@@ -77,7 +76,16 @@ define(function (require) {
           var p;
           for(p in base) {
             if (overlay[p] === undefined) {
-              overlay[p] = base[p];
+              if (arrays.isArray(base[p])) {
+                // Array.
+                overlay[p] = $.extend(true, [], base[p]);
+              } else if (typeof base[p] === "object") {
+                // Object.
+                overlay[p] = $.extend(true, {}, base[p]);
+              } else {
+                // Basic type.
+                overlay[p] = base[p];
+              }
             } else if (typeof overlay[p] === "object" && !(overlay[p] instanceof Array)) {
               overlay[p] = meldOptions(base[p], overlay[p]);
             }
@@ -110,7 +118,7 @@ define(function (require) {
 
       // ------------------------------------------------------------
       //
-      //   MD2D Benchmarks Setup
+      //   Benchmarks Setup
       //
 
       function setupBenchmarks() {
@@ -119,7 +127,7 @@ define(function (require) {
 
       // ------------------------------------------------------------
       //
-      //   Molecular Model Setup
+      //   Model Setup
       //
 
       function setupModel() {
@@ -147,18 +155,15 @@ define(function (require) {
         model_player.forward = function() {
           model.stepForward();
           if (!model.isNewStep()) {
-            moleculeContainer.updateDrawablePositions();
+            modelContainer.update();
           }
-        },
+        };
         model_player.back = function() {
           model.stepBack();
-          moleculeContainer.updateDrawablePositions();
-        },
+          modelContainer.update();
+        };
 
-        moleculeContainer = new MoleculeContainer(moleculeViewId, viewOptions, model);
-
-        moleculeContainer.updateMoleculeRadius();
-        moleculeContainer.setupDrawables();
+        modelContainer = new ModelContainer(modelViewId, modelUrl, model);
       }
 
       function resetModelPlayer() {
@@ -168,16 +173,15 @@ define(function (require) {
         // reset player and container view for model
         //
         // ------------------------------------------------------------
-        moleculeContainer.reset(viewOptions, model);
-        moleculeContainer.updateMoleculeRadius();
-        moleculeContainer.setupDrawables();
+        modelContainer.reset(modelUrl, model);
       }
 
       /**
         Note: newModelConfig, newinteractiveViewConfig are optional. Calling this without
         arguments will simply reload the current model.
       */
-      function reload(newModelConfig, newInteractiveViewConfig, newInteractiveModelConfig) {
+      function reload(newModelUrl, newModelConfig, newInteractiveViewConfig, newInteractiveModelConfig) {
+        modelUrl = newModelUrl || modelUrl;
         modelConfig = newModelConfig || modelConfig;
         interactiveViewConfig = newInteractiveViewConfig || interactiveViewConfig;
         interactiveModelConfig = newInteractiveModelConfig || interactiveModelConfig;
@@ -187,7 +191,19 @@ define(function (require) {
       }
 
       function repaint() {
-        moleculeContainer.setupDrawables();
+        modelContainer.repaint();
+      }
+
+      function resize() {
+        modelContainer.resize();
+      }
+
+      function getHeightForWidth(width) {
+        return modelContainer.getHeightForWidth(width);
+      }
+
+      function state() {
+        return model.serialize();
       }
 
       // ------------------------------------------------------------
@@ -223,8 +239,13 @@ define(function (require) {
 
       controller.reload = reload;
       controller.repaint = repaint;
-      controller.moleculeContainer = moleculeContainer;
+      controller.resize = resize;
+      controller.getHeightForWidth = getHeightForWidth;
+      controller.modelContainer = modelContainer;
+      controller.state = state;
       controller.benchmarks = benchmarks;
+      controller.type = Model.type;
+      controller.ScriptingAPI = ScriptingAPI;
 
       return controller;
   };

@@ -118,6 +118,34 @@
       ]
     },
     {
+      "type": "radio",
+      "id": "radio-horizontal",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Boiling Point",
+          "loadModel": "page3$0-with-heatbath",
+          "selected": true
+        },
+        {
+          "text": "Oil and Water",
+          "loadModel": "page3$1"
+        },
+        {
+          "text": "Oil and Water Mixed",
+          "loadModel": "oilAndWaterMix"
+        },
+        {
+          "text": "Show alert dialog",
+          "action": "alert('Alert!')"
+        },
+        {
+          "text": "This option is disabled",
+          "disabled": true
+        }
+      ]
+    },
+    {
       "type": "slider",
       "id": "temperature-property-slider",
       "title": "Temperature (set via property link)",
@@ -178,9 +206,32 @@
         "pulldown2"
       ],
       [
-        "temperature-property-slider",
-        "temperature-action-slider"
+        "radio-horizontal"
       ]
+    ],
+    "right": [
+      [ "temperature-property-slider" ],
+      [ "temperature-action-slider" ],
+      [ "radio" ]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "top",
+      "bottom": "model.top"
+    },
+    {
+      "id": "right",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-bottom": "1em"
+    }
+  ]
 }

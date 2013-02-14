@@ -2,14 +2,17 @@
   "type": "md2d",
   "width": 0.5,
   "height": 0.5,
-  "elements": [
-    {
-      "id": 0,
-      "mass": 20,
-      "sigma": 0.07,
-      "epsilon": -0.0010000000474974513
-    }
-  ],
+  "elements": {
+    "mass": [
+      20
+    ],
+    "sigma": [
+      0.07
+    ],
+    "epsilon": [
+      -0.0010000000474974513
+    ]
+  },
   "atoms": {
     "x": [
       0.285

@@ -9,6 +9,7 @@ define(function (require) {
   // defining other global variables.
   require('md2d/public-api');
   require('grapher/public-api');
+  require('import-export/public-api');
 
   // ###
   // Create or get 'Lab' global object (namespace).

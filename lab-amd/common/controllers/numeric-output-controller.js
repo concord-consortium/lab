@@ -2,11 +2,14 @@
 
 define(function () {
 
+  var metadata  = require('common/controllers/interactive-metadata'),
+      validator = require('common/validator');
+
   return function NumericOutputController(component, scriptingAPI) {
-    var propertyName = component.property,
-        label = component.label,
-        units = component.units,
-        displayValue = component.displayValue,
+    var propertyName,
+        label,
+        units,
+        displayValue,
         $numericOutput,
         $label,
         $number,
@@ -26,6 +29,13 @@ define(function () {
     //
     // Initialization.
     //
+    // Validate component definition, use validated copy of the properties.
+    component = validator.validateCompleteness(metadata.numericOutput, component);
+    propertyName = component.property;
+    label = component.label;
+    units = component.units;
+    displayValue = component.displayValue;
+
     // Setup view.
     $label  = $('<span class="label"></span>');
     $number = $('<span class="value"></span>');
@@ -59,6 +69,14 @@ define(function () {
       // Returns view container. Label tag, as it contains checkbox anyway.
       getViewContainer: function () {
         return $numericOutput;
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        // Return the initial component definition.
+        // Numeric output component doesn't have any state, which can be changed.
+        // It's value is defined by underlying model.
+        return $.extend(true, {}, component);
       }
     };
     // Return Public API object.

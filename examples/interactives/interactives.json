@@ -25,6 +25,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Area versus Applied Pressure",
+      "path": "interactives/basic-examples/area-versus-applied-pressure.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Demo showing how the area (two-dimensional \"volume\") of a gas changes with changes in the force applied by a piston",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Atom Tracing",
       "path": "interactives/basic-examples/atom-tracing.json",
       "groupKey": "basic-examples",
@@ -89,6 +97,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Oil and Water for Slow Computers",
+      "path": "interactives/basic-examples/oil-and-water-for-slow-computers.json",
+      "groupKey": "basic-examples",
+      "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
+      "about": "This version of the model is adapted for slower computers amd browsers.",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "onPropertyChange Demo",
       "path": "interactives/basic-examples/on-property-change.json",
       "groupKey": "basic-examples",
@@ -146,6 +162,14 @@
       "path": "interactives/basic-examples/script-examples.json",
       "groupKey": "basic-examples",
       "subtitle": "Examples of defining and using different Interactive components.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Simple Ball Drop",
+      "path": "interactives/basic-examples/simple-ball-drop.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Simple analog of a macroscopic ball dropped in a gravitational field",
       "about": "",
       "publicationStatus": "public"
     },
@@ -294,6 +318,14 @@
       "groupKey": "conversion-tests",
       "subtitle": "",
       "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Custom Element Colors",
+      "path": "interactives/conversion-tests/custom-element-colors.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "This model has a separate custom color defined for each of the four default elements.",
+      "about": "The custom colors from left to right are: orange, light-blue, red, and yellow.",
       "publicationStatus": "public"
     },
     {

@@ -1,10 +1,15 @@
-/*global define model $ ACTUAL_ROOT */
+/*global define model $ */
 
 define(function (require) {
   // Dependencies.
-  var BarGraphController      = require('common/controllers/bar-graph-controller'),
+  var labConfig               = require('lab.config'),
+      arrays                  = require('arrays'),
+      alert                   = require('common/alert'),
+      metadata                = require('common/controllers/interactive-metadata'),
+      validator               = require('common/validator'),
+      BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
-      DgExportController      = require('common/controllers/dg-export-controller'),
+      ExportController        = require('common/controllers/export-controller'),
       ScriptingAPI            = require('common/controllers/scripting-api'),
       ButtonController        = require('common/controllers/button-controller'),
       CheckboxController      = require('common/controllers/checkbox-controller'),
@@ -15,12 +20,10 @@ define(function (require) {
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
 
-      layout                  = require('common/layout/layout'),
-      setupInteractiveLayout  = require('common/layout/interactive-layout'),
+      SemanticLayout          = require('common/layout/semantic-layout'),
+      templates               = require('common/layout/templates'),
 
-      MD2DModelController     = require('md2d/controllers/model-controller'),
-      MD2DScriptingAPI        = require('md2d/controllers/scripting-api'),
-
+      MD2DModelController     = require('md2d/controllers/controller'),
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
       // - Value is a constructor function of the given component.
@@ -33,7 +36,10 @@ define(function (require) {
       // the InteractiveController follows this convention.
       //
       // The instantiated component should provide following interface:
-      // # getViewContainer()    - function returning jQuery object containing
+      // # serialize()           - function returning a JSON object, which represents current state
+      //                           of the component. When component doesn't change its state,
+      //                           it should just return a copy (!) of the initial component definition.
+      // # getViewContainer()    - function returning a jQuery object containing
       //                           DOM elements of the component.
       // # modelLoadedCallback() - optional function taking no arguments, a callback
       //                           which should be called when the model is loaded.
@@ -63,9 +69,15 @@ define(function (require) {
         onLoadScripts = [],
 
         // Hash of instantiated components.
-        // Key   - component type.
+        // Key   - component ID.
         // Value - array of component instances.
-        componentInstances = {},
+        componentByID = {},
+
+        // Simple list of instantiated components.
+        componentList = [],
+
+        // List of custom parameters which are used by the interactive.
+        customParametersByName = [],
 
         // API for scripts defined in the interactive JSON file.
         scriptingAPI,
@@ -74,12 +86,12 @@ define(function (require) {
         modelScriptingAPI,
 
         // Handles exporting data to DataGames, if 'exports' are specified.
-        dgExportController,
+        exportController,
 
         // Doesn't currently have any public methods, but probably will.
         parentMessageAPI,
 
-        setupScreenCalledTwice = false;
+        semanticLayout;
 
 
     function getModel(modelId) {
@@ -110,8 +122,7 @@ define(function (require) {
       } else {
         interactiveViewOptions = { controlButtons: 'play' };
       }
-      interactiveViewOptions.fit_to_parent = !layoutStyle;
-      interactiveViewOptions.interactiveUrl = modelDefinition.url;
+      interactiveViewOptions.fitToParent = !layoutStyle;
 
       onLoadScripts = [];
       if (modelDefinition.onLoad) {
@@ -124,61 +135,69 @@ define(function (require) {
       }
 
       if (modelConfig) {
-        finishWithLoadedModel(modelConfig)
+        finishWithLoadedModel(modelDefinition.url, modelConfig);
       } else {
-        $.get(ACTUAL_ROOT + modelDefinition.url).done(function(modelConfig) {
+        $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
 
           // Deal with the servers that return the json as text/plain
           modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
 
-          finishWithLoadedModel(modelConfig);
+          finishWithLoadedModel(modelDefinition.url, modelConfig);
         });
       }
 
-      function finishWithLoadedModel(modelConfig) {
-        // set default model type to "md2d"
-        modelConfig.type = modelConfig.type || "md2d";
+      function finishWithLoadedModel(modelUrl, modelConfig) {
         if (modelController) {
-          modelController.reload(modelConfig, interactiveViewOptions, interactiveModelOptions);
+          modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
         } else {
-          switch(modelConfig.type) {
-            case "md2d":
-            modelController = new MD2DModelController('#model-container', modelConfig, interactiveViewOptions, interactiveModelOptions);
-            // Extending universal Interactive scriptingAPI with model-specific scripting API
-            scriptingAPI.extend(MD2DScriptingAPI);
-            scriptingAPI.exposeScriptingAPI();
-            break;
-            case "a-different-model-type":
-            break;
-          }
-
-          modelLoaded();
+          // Create container for model.
+          // TODO: cleanup it, probably there is a better place to create this div.
+          $interactiveContainer.append('<div id="model-container" class="container">');
+          createModelController(modelConfig.type, modelUrl, modelConfig);
+          modelLoaded(modelConfig);
           // also be sure to get notified when the underlying model changes
           modelController.on('modelReset', modelLoaded);
           controller.modelController = modelController;
         }
       }
+
+      function createModelController(type, modelUrl, modelConfig) {
+        // set default model type to "md2d"
+        var modelType = type || "md2d";
+        switch(modelType) {
+          case "md2d":
+          modelController = new MD2DModelController('#model-container', modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
+          break;
+        }
+        // Extending universal Interactive scriptingAPI with model-specific scripting API
+        if (modelController.ScriptingAPI) {
+          scriptingAPI.extend(modelController.ScriptingAPI);
+          scriptingAPI.exposeScriptingAPI();
+        }
+      }
     }
 
     function createComponent(component) {
-          // Get type of the requested component from JSON definition.
+          // Get type and ID of the requested component from JSON definition.
       var type = component.type,
-          // Use an appropriate constructor function and create a new instance of the given type.
-          // Note that we use constant set of parameters for every type:
-          // 1. component definition (exact object from interactive JSON),
-          // 2. scripting API object,
-          // 3. public API of the InteractiveController.
-          comp = new ComponentConstructor[type](component, scriptingAPI, controller);
+          id = component.id,
+          comp;
+
+      // Use an appropriate constructor function and create a new instance of the given type.
+      // Note that we use constant set of parameters for every type:
+      // 1. component definition (exact object from interactive JSON),
+      // 2. scripting API object,
+      // 3. public API of the InteractiveController.
+      comp = new ComponentConstructor[type](component, scriptingAPI, controller);
 
       // Save the new instance.
-      if (componentInstances[type] === undefined) {
-        // Create array for instances.
-        componentInstances[type] = [];
-      }
-      componentInstances[type].push(comp);
+      componentByID[id] = comp;
+      componentList.push(comp);
 
-      // And return it.
-      return comp;
+      // Register component callback if it is available.
+      if (comp.modelLoadedCallback) {
+        componentCallbacks.push(comp.modelLoadedCallback);
+      }
     }
 
     /**
@@ -197,7 +216,7 @@ define(function (require) {
       that depend on the model's properties, then draw the screen.
     */
     function modelLoaded() {
-      var i, listener;
+      var i, listener, template, layout;
 
       setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
@@ -209,46 +228,31 @@ define(function (require) {
         componentCallbacks[i]();
       }
 
-      // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model, modelController.moleculeContainer, controller);
-
-      layout.addView('moleculeContainers', modelController.moleculeContainer);
-
-      // Note that in the code below we assume that there is only ONE instance of each component.
-      // This is not very generic, but the only supported scenario by the current layout system.
-      if (componentInstances.thermometer)
-        layout.addView('thermometers', componentInstances.thermometer[0].getView());
-      if (componentInstances.graph)
-        // TODO: energyGraphs should be changed to lineGraphs?
-        layout.addView('energyGraphs', componentInstances.graph[0].getView());
-      if (componentInstances.barGraph)
-        layout.addView('barGraphs', componentInstances.barGraph[0]);
-
-      $(window).unbind('resize');
-
-      if (layoutStyle) {
-        // currently a layout style is specified when rendering the "embedded" Interactive
-        // or when the "render in iframe" option is chosen in the Interactive Browser
-        layout.selection = layoutStyle;
-        layout.setupScreen();
-
-        // layout.setupScreen modifies the size of the molecule view's containing element based on
-        // its current size. The first two times it is called, it sets the container to two different
-        // sizes. After that, further calls do not change the size of the container. (For some reason,
-        // when the screen resizes, only one call to setupScreen is required.)
-        //
-        // The following is therefore a dirty hack to pretend layout.setupScreen behaves more nicely.
-        if (!setupScreenCalledTwice) {
-          layout.setupScreen();
-          setupScreenCalledTwice = true;
+      if (interactive.template) {
+        if (typeof interactive.template === "string") {
+          template = templates[interactive.template];
+        } else {
+          template = interactive.template;
         }
-
-        $(window).on('resize', layout.setupScreen);
-      } else {
-        // Render path used in Interactive Browser when the "render in iframe" option is not chosen
-        setupInteractiveLayout();
-        $(window).on('resize', setupInteractiveLayout);
       }
+
+      // the authored definition of which components go in which container
+      layout = interactive.layout;
+
+      // TODO: this should be moved out of modelLoaded (?)
+      $interactiveContainer.children().not("#model-container").each(function () {
+        $(this).detach();
+      });
+      semanticLayout = new SemanticLayout($interactiveContainer, template, layout, componentByID, modelController);
+
+      semanticLayout.layoutInteractive();
+      $(window).unbind('resize');
+      $(window).on('resize', function() {
+        semanticLayout.layoutInteractive();
+      });
+
+      // setup messaging with embedding parent window
+      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
 
       for(i = 0; i < propertiesListeners.length; i++) {
         listener = propertiesListeners[i];
@@ -265,6 +269,97 @@ define(function (require) {
     }
 
     /**
+      Validates interactive definition.
+
+      Displays meaningful info in case of any errors. Also an exception is being thrown.
+
+      @param interactive
+        hash representing the interactive specification
+    */
+    function validateInteractive(interactive) {
+      var i, len, models, parameters, outputs, filteredOutputs, components, errMsg;
+
+      // Validate top level interactive properties.
+      try {
+        interactive = validator.validateCompleteness(metadata.interactive, interactive);
+      } catch (e) {
+        errMsg = "Incorrect interactive definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      // Set up the list of possible models.
+      models = interactive.models;
+      try {
+        for (i = 0, len = models.length; i < len; i++) {
+          models[i] = validator.validateCompleteness(metadata.model, models[i]);
+          modelsHash[models[i].id] = models[i];
+        }
+      } catch (e) {
+        errMsg = "Incorrect model definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      parameters = interactive.parameters;
+      try {
+        for (i = 0, len = parameters.length; i < len; i++) {
+          parameters[i] = validator.validateCompleteness(metadata.parameter, parameters[i]);
+        }
+      } catch (e) {
+        errMsg = "Incorrect parameter definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      outputs = interactive.outputs;
+      try {
+        for (i = 0, len = outputs.length; i < len; i++) {
+          outputs[i] = validator.validateCompleteness(metadata.output, outputs[i]);
+        }
+      } catch (e) {
+        errMsg = "Incorrect output definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      filteredOutputs = interactive.filteredOutputs;
+      try {
+        for (i = 0, len = filteredOutputs.length; i < len; i++) {
+          filteredOutputs[i] = validator.validateCompleteness(metadata.filteredOutput, filteredOutputs[i]);
+        }
+      } catch (e) {
+        errMsg = "Incorrect filtered output definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      components = interactive.components;
+      try {
+        for (i = 0, len = components.length; i < len; i++) {
+          components[i] = validator.validateCompleteness(metadata[components[i].type], components[i]);
+        }
+      } catch (e) {
+        errMsg = "Incorrect " + components[i].type + " component definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      // Validate exporter, if any...
+      if (interactive.exports) {
+        try {
+          interactive.exports = validator.validateCompleteness(metadata.exports, interactive.exports);
+        } catch (e) {
+          errMsg = "Incorrect exports definition:\n" + e.message;
+          alert(errMsg);
+          throw new Error(errMsg);
+        }
+      }
+
+      return interactive;
+    }
+
+    /**
       The main method called when this controller is created.
 
       Populates the element pointed to by viewSelector with divs to contain the
@@ -277,125 +372,53 @@ define(function (require) {
         jQuery selector that finds the element to put the interactive view into
     */
     function loadInteractive(newInteractive, viewSelector) {
-      var model,
-          componentJsons,
-          components = {},
-          component,
-          divContents,
-          $row, items,
-          div,
-          componentId,
-          $top, $right, $rightwide, $bottom,
-          i, j, ii;
+      var componentJsons,
+          $exportButton,
+          i, len;
 
       componentCallbacks = [];
-      interactive = newInteractive;
+
+      // Validate interactive.
+      interactive = validateInteractive(newInteractive);
+
       if (viewSelector) {
         $interactiveContainer = $(viewSelector);
       }
-      if ($interactiveContainer.children().length === 0) {
-        $top = $('<div class="interactive-top" id="top"/>');
-        $top.append('<div class="interactive-top" id="model-container"/>');
-        if (interactive.layout && interactive.layout.right !== undefined) {
-          $right = $('<div class="interactive-top" id="right"/>');
-          $top.append($right);
-        }
-        if (interactive.layout && interactive.layout.rightwide) {
-          $rightwide = $('<div id="rightwide"/>');
-          $top.append($rightwide);
-        }
-        $interactiveContainer.append($top);
-        $interactiveContainer.append('<div class="interactive-bottom" id="bottom"/>');
-      } else {
-        $bottom = $("#bottom");
-        $right = $("#right");
-        $rightwide = $("#rightwide");
-        $bottom.html('');
-        if ($right) {
-          $right.empty();
-        }
-        if ($rightwide) {
-          $rightwide.empty();
-        }
+
+      // Set up the list of possible models.
+      models = interactive.models;
+      for (i = 0, len = models.length; i < len; i++) {
+        modelsHash[models[i].id] = models[i];
       }
 
-      // set up the list of possible models
-      if (interactive.models !== null && interactive.models.length > 0) {
-        models = interactive.models;
-        for (i=0, ii=models.length; i<ii; i++) {
-          model = models[i];
-          model.id = model.id || "model"+i;
-          modelsHash[model.id] = model;
-        }
-        loadModel(models[0].id);
-      }
+      // Load first model.
+      loadModel(models[0].id);
 
+      // Prepare interactive components.
       componentJsons = interactive.components || [];
 
-      for (i = 0, ii=componentJsons.length; i<ii; i++) {
-        component = createComponent(componentJsons[i]);
-        // Register component callback if it is available.
-        if (component.modelLoadedCallback) {
-          componentCallbacks.push(component.modelLoadedCallback);
-        }
-        components[componentJsons[i].id] = component;
+      // Clear component instances.
+      componentList = [];
+      componentByID = {};
+
+      for (i = 0, len = componentJsons.length; i < len; i++) {
+        createComponent(componentJsons[i]);
       }
 
       // Setup exporter, if any...
       if (interactive.exports) {
-        dgExportController = new DgExportController(interactive.exports);
-        // componentCallbacks is just a list of callbacks to make when model loads; it should
-        // perhaps be renamed.
-        componentCallbacks.push(dgExportController.modelLoadedCallback);
-      }
+        exportController = new ExportController(interactive.exports);
+        componentCallbacks.push(exportController.modelLoadedCallback);
 
-      // look at each div defined in layout, and add any components in that
-      // array to that div. Then rm the component from components so we can
-      // add the remainder to #bottom at the end
-      if (interactive.layout) {
-        for (div in interactive.layout) {
-          if (interactive.layout.hasOwnProperty(div)) {
-            divContents = interactive.layout[div];
-            if (typeof divContents === "string") {
-              // simply add the author-defined html in its entirety
-              $('#'+div).html(divContents);
-            } else {
-              if (Object.prototype.toString.call(divContents[0]) !== "[object Array]") {
-                divContents = [divContents];
-              }
-              for (i = 0; i < divContents.length; i++) {
-                items = divContents[i];
-                $row = $('<div class="interactive-' + div + '-row"/>');
-                $('#'+div).append($row);
-                for (j = 0; j < items.length; j++) {
-                  componentId = items[j];
-                  if (components[componentId]) {
-                    $row.append(components[componentId].getViewContainer());
-                    delete components[componentId];
-                  }
-                }
-              }
-            }
-          }
+        if (ExportController.isExportAvailable()) {
+          $exportButton = $("<button>")
+                            .attr('id', 'export-data')
+                            .addClass('component')
+                            .html("Analyze Data")
+                            .on('click', function() { exportController.exportData(); })
+                            .appendTo($('#bottom'));
         }
       }
-
-      // add the remaining components -- first try to append them to dom elements that
-      // may have been defined by the author, and if that fails, add them to #bottom
-      if ($('#bottom.row').length === 0) {
-        $row = $('<div class="interactive-' + div + '-row"/>');
-        $('#bottom').append($row);
-      }
-      for (componentId in components) {
-        if (components.hasOwnProperty(componentId)) {
-          if ($('#interactive-container #'+componentId).length > 0) {
-            $('#interactive-container #'+componentId).append(components[componentId].getViewContainer());
-          } else {
-            $row.append(components[componentId].getViewContainer());
-          }
-        }
-      }
-
     }
 
     /**
@@ -456,15 +479,16 @@ define(function (require) {
     function setupCustomParameters(modelParameters, interactiveParameters) {
       if (!modelParameters && !interactiveParameters) return;
 
-      var i,
-          parameter,
-          // append modelParameters second so they're processed later (and override entries of the
-          // same name in interactiveParameters)
-          parameters = (interactiveParameters || []).concat(modelParameters || []),
-          initialValues = {};
+      var initialValues = {},
+          customParameters,
+          i, parameter;
 
-      for (i = 0; i < parameters.length; i++) {
-        parameter = parameters[i];
+      // append modelParameters second so they're processed later (and override entries of the
+      // same name in interactiveParameters)
+      customParameters = (interactiveParameters || []).concat(modelParameters || []);
+
+      for (i = 0; i < customParameters.length; i++) {
+        parameter = customParameters[i];
         model.defineParameter(parameter.name, {
           label: parameter.label,
           units: parameter.units
@@ -473,6 +497,11 @@ define(function (require) {
         if (parameter.initialValue !== undefined) {
           initialValues[parameter.name] = parameter.initialValue;
         }
+        // Save reference to the definition which is finally used.
+        // Note that if parameter is defined both in interactive top-level scope
+        // and models section, one from model sections will be defined in this hash.
+        // It's necessary to update correctly values of parameters during serialization.
+        customParametersByName[parameter.name] = parameter;
       }
 
       model.set(initialValues);
@@ -483,7 +512,7 @@ define(function (require) {
     //
     controller = {
       getDGExportController: function () {
-        return dgExportController;
+        return exportController;
       },
       getModelController: function () {
         return modelController;
@@ -491,8 +520,69 @@ define(function (require) {
       pushOnLoadScript: function (callback) {
         onLoadScripts.push(callback);
       },
+      /**
+        Serializes interactive, returns object ready to be stringified.
+        e.g. JSON.stringify(interactiveController.serialize());
+      */
+      serialize: function () {
+        var result, i, len, param, val;
+
+        // This is the tricky part.
+        // Basically, parameters can be defined in two places - in model definition object or just as a top-level
+        // property of the interactive definition. 'customParameters' list contains references to all parameters
+        // currently used by the interactive, no matter where they were specified. So, it's enough to process
+        // and update only these parameters. Because of that, later we can easily serialize interactive definition
+        // with updated values and avoid deciding whether this parameter is defined in 'models' section
+        // or top-level 'parameters' section. It will be updated anyway.
+        if (model !== undefined && model.get !== undefined) {
+          for (param in customParametersByName) {
+            if (customParametersByName.hasOwnProperty(param)) {
+              param = customParametersByName[param];
+              val = model.get(param.name);
+              if (val !== undefined) {
+                param.initialValue = val;
+              }
+            }
+          }
+        }
+
+        // Copy basic properties from the initial definition, as they are immutable.
+        result = {
+          title: interactive.title,
+          publicationStatus: interactive.publicationStatus,
+          subtitle: interactive.subtitle,
+          about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
+          // Node that models section can also contain custom parameters definition. However, their initial values
+          // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
+          models: $.extend(true, [], interactive.models),
+          // All used parameters are already updated, they contain currently used values.
+          parameters: $.extend(true, [], interactive.parameters),
+          // Outputs are directly bound to the model, we can copy their initial definitions.
+          outputs: $.extend(true, [], interactive.outputs),
+          filteredOutputs: $.extend(true, [], interactive.filteredOutputs)
+        };
+
+        // Serialize components.
+        result.components = [];
+        for (i = 0, len = componentList.length; i < len; i++) {
+          if (componentList[i].serialize) {
+            result.components.push(componentList[i].serialize());
+          }
+        }
+
+        // Copy layout from the initial definition, as it is immutable.
+        result.layout = $.extend(true, {}, interactive.layout);
+        if (typeof interactive.template === "string") {
+          result.template = interactive.template;
+        } else {
+          result.template = $.extend(true, {}, interactive.template);
+        }
+
+        return result;
+      },
       // Make these private variables and functions available
       loadInteractive: loadInteractive,
+      validateInteractive: validateInteractive,
       loadModel: loadModel
     };
 

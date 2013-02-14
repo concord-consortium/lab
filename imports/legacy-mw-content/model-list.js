@@ -2429,6 +2429,13 @@ modelList = [
     "section": "new-examples-for-nextgen",
     "content": [
       {
+        "name": "area-versus-applied-pressure",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/area-versus-applied-pressure.cml",
+        "mml": "new-examples-for-nextgen/area-versus-applied-pressure$0.mml",
+        "json": "converted/new-examples-for-nextgen/area-versus-applied-pressure$0.json"
+      },
+      {
         "name": "multiatomic-gas",
         "path": "new-examples-for-nextgen/",
         "cml": "new-examples-for-nextgen/multiatomic-gas.cml",
@@ -2462,6 +2469,13 @@ modelList = [
         "cml": "new-examples-for-nextgen/remove-atoms.cml",
         "mml": "new-examples-for-nextgen/remove-atoms$0.mml",
         "json": "converted/new-examples-for-nextgen/remove-atoms$0.json"
+      },
+      {
+        "name": "simple-ball-drop",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/simple-ball-drop.cml",
+        "mml": "new-examples-for-nextgen/simple-ball-drop$0.mml",
+        "json": "converted/new-examples-for-nextgen/simple-ball-drop$0.json"
       },
       {
         "name": "simple-gas",
@@ -2810,6 +2824,13 @@ modelList = [
         "cml": "conversion-and-physics-examples/boiling-point-with-clock.cml",
         "mml": "conversion-and-physics-examples/boiling-point-with-clock$0.mml",
         "json": "converted/conversion-and-physics-examples/boiling-point-with-clock$0.json"
+      },
+      {
+        "name": "custom-element-colors",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/custom-element-colors.cml",
+        "mml": "conversion-and-physics-examples/custom-element-colors$0.mml",
+        "json": "converted/conversion-and-physics-examples/custom-element-colors$0.json"
       },
       {
         "name": "custom-lj-properties",

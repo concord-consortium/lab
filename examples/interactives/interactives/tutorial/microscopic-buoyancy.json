@@ -37,11 +37,12 @@
     }
   ],
   "layout": {
-    "rightwide": [
+    "right": [
       "propertiesGraph"
     ],
     "bottom": [
       "gfield"
     ]
-  }
+  },
+  "template": "wide-right"
 }

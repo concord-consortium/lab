@@ -94,7 +94,7 @@
     }
   ],
   "layout": {
-    "rightwide": [
+    "right": [
       "propertiesGraph"
     ],
     "bottom": [
@@ -102,5 +102,6 @@
       "pulldown1",
       "add-velocity"
     ]
-  }
+  },
+  "template": "wide-right"
 }

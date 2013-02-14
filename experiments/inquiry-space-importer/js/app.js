@@ -1,4 +1,5 @@
 /*global defineClass extendClass Lab d3 */
+/*jshint eqnull:true */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 (function() {
@@ -64,6 +65,7 @@ ISImporter.sensors = {
     readingUnits: "°C",
     maxReading: 40,
     samplesPerSecond: 10,
+    downsampleRate: 5,
     maxSeconds: 20
   },
 
@@ -82,19 +84,21 @@ ISImporter.sensors = {
     maxSeconds: 20
   },
 
-  goLinkForce50N: {
+  goLinkForce: {
     applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.goLinkForce50N.applet',
+      listenerPath: 'ISImporter.sensors.goLinkForce.applet',
       sensorType: 'force 50n',
       appletId: 'force-sensor'
     }),
     menuGroup:  MENU_GROUPS.GO_LINK,
-    menuText: "Force (50N)",
+    menuText: "Force",
+    tareable: true,
     title: "Force",
     readingUnits: "N",
     minReading: -50,
     maxReading: 50,
     samplesPerSecond: 100,
+    downsampleRate: 10,
     maxSeconds: 10
   },
 
@@ -111,6 +115,7 @@ ISImporter.sensors = {
     minReading: 0,
     maxReading: 14,
     samplesPerSecond: 10,
+    downsampleRate: 10,
     maxSeconds: 60
   },
 
@@ -173,6 +178,7 @@ ISImporter.sensors = {
     readingUnits: "°C",
     maxReading: 40,
     samplesPerSecond: 10,
+    downsampleRate: 5,
     maxSeconds: 20
   },
 
@@ -191,19 +197,21 @@ ISImporter.sensors = {
     maxSeconds: 20
   },
 
-  labQuestForce50N: {
+  labQuestForce: {
     applet: new ISImporter.LabQuestApplet({
-      listenerPath: 'ISImporter.sensors.labQuestForce50N.applet',
+      listenerPath: 'ISImporter.sensors.labQuestForce.applet',
       sensorType: 'force 50n',
       appletId: 'force-sensor'
     }),
     menuGroup:  MENU_GROUPS.LAB_QUEST,
-    menuText: "Force (50N)",
+    menuText: "Force",
+    tareable: true,
     title: "Force",
     readingUnits: "N",
     minReading: -50,
     maxReading: 50,
     samplesPerSecond: 100,
+    downsampleRate: 10,
     maxSeconds: 10
   },
 
@@ -220,6 +228,7 @@ ISImporter.sensors = {
     minReading: 0,
     maxReading: 14,
     samplesPerSecond: 10,
+    downsampleRate: 10,
     maxSeconds: 60
   },
 
@@ -380,6 +389,7 @@ ISImporter.appController = new ISImporter.Object({
   selecting: false,
 
   // could split interface controller from generic app container--but not yet.
+  $tareButton: null,
   $sensorSelector: null,
   $startButton: null,
   $stopButton: null,
@@ -390,7 +400,15 @@ ISImporter.appController = new ISImporter.Object({
   init: function() {
     var self = this;
     this.appletDataListener = function(y) {
-      self.dataset.add(y);
+      if (self.sensor.tareable) {
+        y -= (self.sensor.tareValue || 0);
+      }
+      self.rawDataset.add(y);
+    };
+
+    this.tareListener = function(y) {
+      self.sensor.tareValue = y;
+      self.endTare();
     };
 
     this.initInterface();
@@ -414,6 +432,12 @@ ISImporter.appController = new ISImporter.Object({
     });
 
     // Set up button handlers. Surely this boilerplate can be eliminated.
+    this.$tareButton = $('#tare-button');
+    this.$tareButton.on('click', function() {
+      if ($(this).hasClass('disabled')) return false;
+      self.tare();
+    });
+
     this.$startButton = $('#start-button');
     this.$startButton.on('click', function() {
       if ($(this).hasClass('disabled')) return false;
@@ -458,6 +482,8 @@ ISImporter.appController = new ISImporter.Object({
     this.disable(this.$startButton);
     this.disable(this.$stopButton);
     this.disable(this.$resetButton);
+    this.disable(this.$exportButton);
+    this.disable(this.$selectButton);
   },
 
   enable: function($button) {
@@ -533,9 +559,10 @@ ISImporter.appController = new ISImporter.Object({
     }
 
     if (this.started) this.stop();
+    if (this.taring) this.endTare();
 
     if (this.currentApplet) {
-      this.currentApplet.removeListener('data', this.appletDataListener);
+      this.currentApplet.removeListeners('data');
       this.currentApplet.remove();
     }
 
@@ -546,7 +573,8 @@ ISImporter.appController = new ISImporter.Object({
     });
 
     this.dataset = new ISImporter.Dataset();
-    this.dataset.setXIncrement( 1 / (this.sensor.samplesPerSecond || 10) );
+    this.rawDataset = this.getNewRawDataset();
+    this.dataset.setXIncrement( this.rawDataset.getXIncrement() * (this.sensor.downsampleRate || 1) );
 
     this.setupRealtimeDisplay(this.sensor.readingUnits);
 
@@ -556,39 +584,74 @@ ISImporter.appController = new ISImporter.Object({
     ISImporter.graphController.setYMax( this.sensor.maxReading );
     ISImporter.graphController.setTitle( this.sensor.title + " Graph");
 
-    this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.append();
 
     // we'll skip explicit state management... for now.
     this.disableControlButtons();
+
+    if (this.sensor.tareable) {
+      this.disable(this.$tareButton);
+      this.show(this.$tareButton);
+    } else {
+      this.hide(this.$tareButton);
+    }
+
     ISImporter.graphController.removeNotification();
+  },
+
+  // useful because it creates a new counter for filtering data
+  getNewRawDataset: function() {
+    var rawDataset = new ISImporter.Dataset(),
+        self = this;
+
+    rawDataset.setXIncrement( 1 / (this.sensor.samplesPerSecond || 10));
+
+    // Filter the raw dataset
+    rawDataset.on('data', (function() {
+      var count = 0,
+          downsampleRate  = self.sensor.downsampleRate || 1,
+          filteredDataset = self.dataset;
+
+      return function(d) {
+        if (count++ % downsampleRate === 0) {
+          filteredDataset.add(d[1]);
+        }
+      };
+    }()));
+    return rawDataset;
   },
 
   metadataLabelChanged: function(fieldNum) {},
   metadataValueChanged: function(fieldNum) {},
   frequencyChanged: function() {},
-  selectionChanged: function() {
-
-  },
+  selectionChanged: function() {},
 
   sensorAppletReady: function() {
     if (this.currentAppletReady) return;
     this.currentAppletReady = true;
     this.enable(this.$startButton);
+    if (this.sensor.tareable) this.enable(this.$tareButton);
   },
 
   start: function() {
     this.started = true;
+    this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.start();
     this.disable(this.$startButton);
+    this.disable(this.$tareButton);
     this.enable(this.$stopButton);
   },
 
   stop: function() {
     this.started = false;
     if (this.currentApplet) this.currentApplet.stop();
+
     this.disable(this.$stopButton);
+    this.enable(this.$tareButton);
     this.enable(this.$resetButton);
+
+    this.$realtimeDisplayValue.text('');
+    this.$realtimeDisplayUnits.hide();
 
     if (this.dataset.getLength() > 0) {
       this.enable(this.$exportButton);
@@ -597,13 +660,57 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   reset: function() {
+    if (this.taring) return;
+    this.currentApplet.removeListener('data', this.appletDataListener);
+    this.rawDataset = this.getNewRawDataset();
     this.dataset.setDataPoints();   // perhaps this should be a 'clear' convenience method
     this.dataset.select(null);
     this.dataset.setNextX(0);
     this.enable(this.$startButton);
+    this.enable(this.$tareButton);
     this.disable(this.$resetButton);
     this.disable(this.$selectButton);
     this.disable(this.$exportButton);
+  },
+
+  tare: function() {
+    var self = this;
+
+    if (this.started) return false;
+
+    this.taring = true;
+    this.$tareButton.text("Zeroing...");
+    this.disable(this.$tareButton);
+    this.disable(this.$startButton);
+    this.disable(this.$resetButton);
+
+    this.currentApplet.removeListener('data', this.appletDataListener);
+    this.currentApplet.on('data', this.tareListener);
+
+    // Make sure UI updates before applet start locks it up...
+    // TODO: should this happen in SensorApplet (js) class itself?
+    window.setTimeout(function() {
+      self.currentApplet.start();
+    }, 10);
+  },
+
+  endTare: function() {
+    this.currentApplet.removeListener('data', this.tareListener);
+    this.currentApplet.stop();
+
+    this.taring = false;
+
+    // we've got your state management fail right here:
+    if (this.dataset.getLength() > 0) {
+      this.enable(this.$resetButton);
+    } else {
+      this.enable(this.$startButton);
+    }
+
+    this.$tareButton.text("Zero");
+    if (this.sensor.tareable) {
+      this.enable(this.$tareButton);
+    }
   },
 
   exportData: function() {
@@ -624,7 +731,7 @@ ISImporter.appController = new ISImporter.Object({
       }
     }
 
-    ISImporter.DGExporter.exportData(this.sensor.applet.sensorType, data, metadata);
+    ISImporter.DGExporter.exportData(this.sensor.title, data, metadata);
 
     this.selecting = false;
 

@@ -2,18 +2,14 @@
 
 define(function () {
 
+  var metadata  = require('common/controllers/interactive-metadata'),
+      validator = require('common/validator');
+
   return function SliderController(component, scriptingAPI) {
-    var min = component.min,
-        max = component.max,
-        steps = component.steps,
-        action = component.action,
-        propertyName = component.property,
-        initialValue = component.initialValue,
-        title = component.title || "",
-        labels = component.labels || [],
-        displayValue = component.displayValue,
-        i,
-        label,
+    var min, max, steps, propertyName,
+        action, initialValue,
+        title, labels, displayValue,
+        i, label,
         // View elements.
         $elem,
         $title,
@@ -39,6 +35,18 @@ define(function () {
     //
     // Initialize.
     //
+    // Validate component definition, use validated copy of the properties.
+    component = validator.validateCompleteness(metadata.slider, component);
+    min = component.min;
+    max = component.max;
+    steps = component.steps;
+    action = component.action;
+    propertyName = component.property;
+    initialValue = component.initialValue;
+    title = component.title;
+    labels = component.labels;
+    displayValue = component.displayValue;
+
     // Setup view.
     if (min === undefined) min = 0;
     if (max === undefined) max = 10;
@@ -47,7 +55,7 @@ define(function () {
     $title = $('<p class="title">' + title + '</p>');
     // we pick up the SVG slider component CSS if we use the generic class name 'slider'
     $container = $('<div class="container">');
-    $slider = $('<div class="html-slider">');
+    $slider = $('<div class="html-slider">').attr('id', component.id);
     $container.append($slider);
 
     $slider.slider({
@@ -132,6 +140,27 @@ define(function () {
       // Returns view container (div).
       getViewContainer: function () {
         return $elem;
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        var result = $.extend(true, {}, component);
+
+        if (propertyName) {
+          // Two way binding between slider and model property.
+          // Initial value was used to set model property once,
+          // we do not need to do this again. Value of the slider
+          // will be defined by the model.
+          delete result.initialValue;
+        }
+        else {
+          // No property binding. Just action script.
+          // Update "initialValue" to represent current
+          // value of the slider.
+          result.initialValue = $slider.slider('value');
+        }
+
+        return result;
       }
     };
     // Return Public API object.

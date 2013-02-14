@@ -105,11 +105,12 @@
     }
   ],
   "layout": {
-    "rightwide": [
+    "right": [
       "propertiesGraph"
     ],
     "bottom": [
       "temperature-slider"
     ]
-  }
+  },
+  "template": "wide-right"
 }

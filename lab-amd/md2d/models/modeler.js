@@ -7,7 +7,7 @@ define(function(require) {
       console              = require('common/console'),
       md2d                 = require('md2d/models/engine/md2d'),
       metadata             = require('md2d/models/metadata'),
-      TickHistory          = require('md2d/models/tick-history'),
+      TickHistory          = require('common/models/tick-history'),
       RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
       Solvent              = require('cs!md2d/models/solvent'),
       serialize            = require('common/serialize'),
@@ -18,6 +18,10 @@ define(function(require) {
       _ = require('underscore');
 
   return function Model(initialProperties) {
+
+    // all models created with this constructor will be of type: "md2d"
+    this.constructor.type = "md2d";
+
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
@@ -31,6 +35,7 @@ define(function(require) {
         stopped = true,
         restart = false,
         newStep = false,
+        translationAnimInProgress = false,
         lastSampleTime,
         sampleTimes = [],
 
@@ -807,27 +812,41 @@ define(function(require) {
     };
 
     model.createElements = function(_elements) {
-      var elementsByID = {},
-          i, len;
+      // Options for addElement method.
+      var options = {
+        // Deserialization process, invalidating change hooks will be called manually.
+        deserialization: true
+      },
+      i, num, prop, elementProps;
 
-      for (i = 0, len = _elements.length; i < len; i++) {
-        elementsByID[_elements[i].id] = _elements[i];
+      // Call the hook manually, as addElement won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePreHook();
+
+      if (_elements === undefined) {
+        // Special case when elements are not defined.
+        // Empty object will be filled with default values.
+        model.addElement({id: 0}, options);
+        return;
       }
 
-      // Ensure that approprieate number of editable elements exist.
-      // This is enforced by backward compatibility with Classic MW.
-      // Every element with index < aminoacidsHelper.firstElementID specifies some immutable amino acid.
-      for (i = engine.getNumberOfElements(); i < aminoacidsHelper.firstElementID; i++) {
-        if (elementsByID[i]) {
-          // Use element provided by model JSON.
-          model.addElement(elementsByID[i]);
-        } else {
-          // Add default, editable element.
-          model.addElement({
-            id: i
-          });
+      // _elements is hash of arrays (as specified in JSON model).
+      // So, for each index, create object containing properties of
+      // element 'i'. Later, use these properties to add element
+      // using basic addElement method.
+      for (i = 0, num = _elements.mass.length; i < num; i++) {
+        elementProps = {};
+        for (prop in _elements) {
+          if (_elements.hasOwnProperty(prop)) {
+            elementProps[prop] = _elements[prop][i];
+          }
         }
+        model.addElement(elementProps, options);
       }
+
+      // Call the hook manually, as addRadialBond won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePostHook();
 
       return model;
     };
@@ -909,7 +928,8 @@ define(function(require) {
         engine.setupAtomsRandomly({
           temperature: model.get('targetTemperature'),
           // Provide number of user-defined, editable elements.
-          userElements: editableElements.length
+          // There is at least one default element, even if no elements are specified in JSON.
+          userElements: editableElements === undefined ? 1 : editableElements.mass.length
         });
         if (config.relax)
           engine.relaxToTemperature();
@@ -1062,7 +1082,7 @@ define(function(require) {
       charge (default is neutral).
     */
     model.addRandomAtom = function(el, charge) {
-      if (el == null) el = Math.floor( Math.random() * editableElements.length );
+      if (el == null) el = Math.floor( Math.random() * elements.mass.length );
       if (charge == null) charge = 0;
 
       var size   = model.size(),
@@ -1377,11 +1397,7 @@ define(function(require) {
           props = {},
           propName;
       for (propName in elementMetaData) {
-        // Treat ID separately, as ID is not stored by
-        // engine explicitly.
-        if (propName === 'id') {
-          props.id = i;
-        } else if (elementMetaData.hasOwnProperty(propName)) {
+        if (elementMetaData.hasOwnProperty(propName)) {
           props[propName] = elements[propName][i];
         }
       }
@@ -1593,6 +1609,10 @@ define(function(require) {
       return atoms;
     };
 
+    model.get_elements = function() {
+      return elements;
+    };
+
     model.get_results = function() {
       return results;
     };
@@ -1707,6 +1727,76 @@ define(function(require) {
       return generatedAACount;
     };
 
+    model.extendProtein = function (xPos, yPos, aaAbbr) {
+      invalidatingChangePreHook();
+
+      engine.extendProtein(xPos, yPos, aaAbbr);
+      // Enforce modeler to recalculate results array.
+      // TODO: it's a workaround, investigate the problem.
+      results.length = 0;
+
+      invalidatingChangePostHook();
+
+      dispatch.addAtom();
+    };
+
+    /**
+      Performs only one step of translation.
+
+      Returns true when translation is finished, false otherwise.
+    */
+    model.translateStepByStep = function () {
+      var abbr = engine.geneticProperties.translateStepByStep(),
+          markerPos = engine.geneticProperties.get().translationStep,
+          symbolHeight = engine.geneticProperties.get().height,
+          symbolWidth = engine.geneticProperties.get().width,
+          xPos = symbolWidth * markerPos * 3 + 1.5 * symbolWidth,
+          yPos = symbolHeight * 5,
+          width = model.get("width"),
+          height = model.get("height"),
+          lastAA;
+
+      while (xPos > width) {
+        xPos -= symbolWidth * 3;
+      }
+      while (yPos > height) {
+        yPos -= symbolHeight;
+      }
+
+      if (abbr !== undefined) {
+        model.extendProtein(xPos, yPos, abbr);
+      } else {
+        lastAA = model.get_num_atoms() - 1;
+        model.setAtomProperties(lastAA, {pinned: false});
+      }
+
+      // That means that the last step of translation has just been performed.
+      return abbr === undefined;
+    };
+
+    model.animateTranslation = function () {
+      var translationStep = function () {
+            var lastStep = model.translateStepByStep();
+            if (lastStep === false) {
+              setTimeout(translationStep, 1000);
+            }
+          };
+
+      // Avoid two timers running at the same time.
+      if (translationAnimInProgress === true) {
+        return;
+      }
+      translationAnimInProgress = true;
+
+      // If model is stopped, play it.
+      if (stopped) {
+        model.resume();
+      }
+
+      // Start the animation.
+      translationStep();
+    };
+
     model.start = function() {
       return model.resume();
     };
@@ -1806,7 +1896,7 @@ define(function(require) {
       // model view properties. Attempts to set immutable or read-only
       // properties will be caught.
       validator.validate(metadata.mainProperties, hash);
-      validator.validate(metadata.modelViewProperties, hash);
+      validator.validate(metadata.viewOptions, hash);
 
       if (engine) invalidatingChangePreHook();
       set_properties(hash);
@@ -2002,17 +2092,99 @@ define(function(require) {
       }
     };
 
+    model.getPropertyType = function(name) {
+      if (outputsByName[name]) {
+        return 'output'
+      }
+      if (parametersByName[name]) {
+        return 'parameter'
+      }
+    };
+
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
-    model.serialize = function(includeAtoms) {
-      var propCopy = $.extend({}, properties);
-      if (includeAtoms) {
-        propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
+    model.serialize = function() {
+      var propCopy = {},
+          ljProps, i, len,
+
+          removeAtomsArrayIfDefault = function(name, defaultVal) {
+            if (propCopy.atoms[name].every(function(i) {
+              return i === defaultVal;
+            })) {
+              delete propCopy.atoms[name];
+            }
+          };
+
+      propCopy = serialize(metadata.mainProperties, properties);
+      propCopy.viewOptions = serialize(metadata.viewOptions, properties);
+      propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
+
+      if (engine.getNumberOfRadialBonds()) {
+        propCopy.radialBonds = serialize(metadata.radialBond, radialBonds, engine.getNumberOfRadialBonds());
       }
-      if (editableElements) {
-        propCopy.editableElements = editableElements;
+      if (engine.getNumberOfAngularBonds()) {
+        propCopy.angularBonds = serialize(metadata.angularBond, angularBonds, engine.getNumberOfAngularBonds());
       }
-      propCopy.width = model.get('width');
-      propCopy.height = model.get('height');
+      if (engine.getNumberOfObstacles()) {
+        propCopy.obstacles = serialize(metadata.obstacle, obstacles, engine.getNumberOfObstacles());
+
+        propCopy.obstacles.color = [];
+        // Convert color from internal representation to one expected for serialization.
+        for (i = 0, len = propCopy.obstacles.colorR.length; i < len; i++) {
+          propCopy.obstacles.color.push([
+            propCopy.obstacles.colorR[i],
+            propCopy.obstacles.colorG[i],
+            propCopy.obstacles.colorB[i]
+          ]);
+
+          // Silly, but allows to pass current serialization tests.
+          // FIXME: try to create more flexible tests for serialization.
+          propCopy.obstacles.westProbe[i] = Boolean(propCopy.obstacles.westProbe[i]);
+          propCopy.obstacles.northProbe[i] = Boolean(propCopy.obstacles.northProbe[i]);
+          propCopy.obstacles.eastProbe[i] = Boolean(propCopy.obstacles.eastProbe[i]);
+          propCopy.obstacles.southProbe[i] = Boolean(propCopy.obstacles.southProbe[i]);
+        }
+        delete propCopy.obstacles.colorR;
+        delete propCopy.obstacles.colorG;
+        delete propCopy.obstacles.colorB;
+      }
+      if (engine.getNumberOfRestraints() > 0) {
+        propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
+      }
+
+      if (engine.geneticProperties.get() !== undefined) {
+        propCopy.geneticProperties = engine.geneticProperties.serialize();
+      }
+
+      // FIXME: for now Amino Acid elements are *not* editable and should not be serialized
+      // -- only copy first five elements
+      propCopy.elements = serialize(metadata.element, elements, 5);
+
+      // The same situation for Custom LJ Properties. Do not serialize properties for amino acids.
+      propCopy.pairwiseLJProperties = [];
+      ljProps = engine.pairwiseLJProperties.serialize();
+      for (i = 0, len = ljProps.length; i < len; i++) {
+        if (ljProps[i].element1 <= 5 && ljProps[i].element2 <= 5) {
+          propCopy.pairwiseLJProperties.push(ljProps[i]);
+        }
+      }
+
+      // Do the weird post processing of the JSON, which is also done by MML parser.
+      // Remove targetTemperature when heat-bath is disabled.
+      if (propCopy.temperatureControl === false) {
+        delete propCopy.targetTemperature;
+      }
+      // Remove atomTraceId when atom tracing is disabled.
+      if (propCopy.viewOptions.showAtomTrace === false) {
+        delete propCopy.viewOptions.atomTraceId;
+      }
+      if (propCopy.modelSampleRate === "default") {
+        delete propCopy.modelSampleRate;
+      }
+
+      removeAtomsArrayIfDefault("marked", metadata.atom.marked.defaultValue);
+      removeAtomsArrayIfDefault("visible", metadata.atom.visible.defaultValue);
+      removeAtomsArrayIfDefault("draggable", metadata.atom.draggable.defaultValue);
+
       return propCopy;
     };
 
@@ -2066,9 +2238,7 @@ define(function(require) {
     set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
 
     // Set the model view options.
-    // These options are view-related, but are stored in model,
-    // as e.g. they should be saved in tick history.
-    set_properties(validator.validateCompleteness(metadata.modelViewProperties, initialProperties.viewOptions || {}));
+    set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
 
     // Setup engine object.
     model.initializeEngine();
@@ -2079,13 +2249,7 @@ define(function(require) {
     // TODO: Elements are stored and treated different from other objects.
     // This is enforced by current createNewAtoms() method which should be
     // depreciated. When it's changed, change also editableElements handling.
-    if (initialProperties.elements) {
-      editableElements = initialProperties.elements;
-    } else {
-      // Make sure that some editable elements are provided.
-      // Provide array with one empty object. Default values will be used.
-      editableElements = [{}];
-    }
+    editableElements = initialProperties.elements;
     // Create editable elements.
     model.createElements(editableElements);
     // Create elements which specify amino acids also.

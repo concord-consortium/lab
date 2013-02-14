@@ -75,12 +75,13 @@
         "maxValue": 5,
         "title": "Avg. Kinetic Energy of Large Atoms"
       },
-      "input1": "largeAtomKE"
+      "property": "largeAtomKE"
     }
   ],
   "layout": {
-    "rightwide": [
+    "right": [
       "bar-graph"
     ]
-  }
+  },
+  "template": "narrow-right"
 }

@@ -104,12 +104,13 @@
         "maxValue": 2,
         "title": "Pressure (Bar)"
       },
-      "input1": "pressureProbeFiltered"
+      "property": "pressureProbeFiltered"
     }
   ],
   "layout": {
-    "rightwide": [
+    "right": [
       "bar-graph"
     ]
-  }
+  },
+  "template": "narrow-right"
 }

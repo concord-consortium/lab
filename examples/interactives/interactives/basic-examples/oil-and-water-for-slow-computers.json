@@ -1,0 +1,135 @@
+{
+  "title": "Oil and Water for Slow Computers",
+  "publicationStatus": "draft",
+  "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
+  "about": "This version of the model is adapted for slower computers amd browsers.",
+  "models": [
+    {
+      "id": "page3$1",
+      "url": "/imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true })"
+    },
+    {
+      "id": "oilAndWaterMix",
+      "url": "/imports/legacy-mw-content/converted/benchmarks/oil-and-water/oilAndWaterMix.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true, timeStep: 1, viewRefreshInterval: 50, modelSampleRate: 'default' })"
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "shake",
+      "text": "Shake up the oil and water mixture",
+      "action": "loadModel('oilAndWaterMix');"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-overall",
+      "options": [
+        {
+          "text": "Set performance tuning for ...",
+          "disabled": true
+        },
+        {
+          "text": "Regular Computer",
+          "action": "set({ timeStep: 1, viewRefreshInterval: 50, modelSampleRate: 'default' })"
+        },
+        {
+          "text": "Slow Computer",
+          "action": "set({ timeStep: 1.5, viewRefreshInterval: 50, modelSampleRate: 'default' })"
+        },
+        {
+          "text": "Tablet",
+          "action": "set({ timeStep: 2, viewRefreshInterval: 80, modelSampleRate: 'default' })"
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "timestep-slider",
+      "min": 0.01,
+      "max": 5,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": 0.01,
+          "label": "0.01"
+        },
+        {
+          "value": 5.0,
+          "label": "5.0"
+        }
+      ],
+      "steps": 500,
+      "title": "timeStep",
+      "property": "timeStep"
+    },
+    {
+      "type": "slider",
+      "id": "refreshrate-slider",
+      "min": 1,
+      "max": 150,
+      "displayValue": "return value;",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 150,
+          "label": "150"
+        }
+      ],
+      "steps": 149,
+      "title": "viewRefreshInterval",
+      "property": "viewRefreshInterval"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-model-sample-rate",
+      "options": [
+        {
+          "text": "Model Sample Rate (Hz) ...",
+          "disabled": true
+        },
+        {
+          "text": "10",
+          "action": "set({ 'modelSampleRate' : 10 });"
+        },
+        {
+          "text": "15",
+          "action": "set({ 'modelSampleRate' : 15 });"
+        },
+        {
+          "text": "20",
+          "action": "set({ 'modelSampleRate' : 20 });"
+        },
+        {
+          "text": "30",
+          "action": "set({ 'modelSampleRate' : 30 });"
+        },
+        {
+          "text": "default (requestAnimationFrame)",
+          "selected": true,
+          "action": "set({ 'modelSampleRate' : 'default' });"
+        },
+        {
+          "text": "120",
+          "action": "set({ 'modelSampleRate' : 120 });"
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+       [ "shake", "select-overall" ],
+       [ "timestep-slider", "refreshrate-slider", "select-model-sample-rate" ]
+    ]
+  }
+}

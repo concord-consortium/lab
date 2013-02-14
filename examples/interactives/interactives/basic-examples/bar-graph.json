@@ -35,12 +35,13 @@
         "barColor": "#F42",
         "title": "Kinetic Energy of Particle (eV)"
       },
-      "input1": "atom0Ke"
+      "property": "atom0Ke"
     }
   ],
   "layout": {
-    "rightwide": [
+    "right": [
       "bar-graph"
     ]
-  }
+  },
+  "template": "narrow-right"
 }

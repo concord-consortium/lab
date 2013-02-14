@@ -6,10 +6,6 @@
 //
 // ------------------------------------------------------------
 
-var ROOT = "/examples",
-    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
-    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
-
 var graph,
     stopStreaming = false,
     selectSize = document.getElementById('select-size'),
