@@ -342,6 +342,9 @@ AUTHORING = false;
     var $iframeWrapper = $("#iframe-wrapper"),
         selection = $selectIframeSize.val();
     switch(selection) {
+      case "tiny":
+      $iframeWrapper.width('350px').height('263px');
+      break;
       case "small":
       $iframeWrapper.width('400px').height('300px');
       break;
