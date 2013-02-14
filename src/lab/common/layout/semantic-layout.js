@@ -8,9 +8,10 @@
 define(function (require) {
 
   var labConfig = require('lab.config'),
+      alert     = require('common/alert'),
 
       // Minimum width of the model.
-      minModelWidth = 200,
+      minModelWidth = 150,
 
       // Canonical dimensions of the interactive, deciding about font size.
       basicInteractiveWidth = 1000,
@@ -167,8 +168,13 @@ define(function (require) {
           }
           $containers[container.id].append($row);
           for (k = 0, kk = items.length; k < kk; k++) {
-            $row.append(comps[items[k]].getViewContainer());
-            delete comps[items[k]];
+            id = items[k];
+            if (comps[id] !== undefined) {
+              $row.append(comps[id].getViewContainer());
+              delete comps[id];
+            } else {
+              alert("Incorrect layout definition. Component with ID '" + id + "'' is not defined.");
+            }
           }
         }
       }
