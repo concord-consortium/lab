@@ -68,10 +68,11 @@ define(function (require) {
       emsize = $(e).css('font-size');
       // Remove "px", convert to number.
       emsize = Number(emsize.substring(0, emsize.length - 2));
-      // Convert value to "em", using 14px as a basic font size.
+      // Convert value to "em", using 18px as a basic font size.
       // It doesn't have to reflect true 1em value in current context.
-      // It just means, that we assume that for 14px font-size, everything has scale 1.
-      emsize /= 14;
+      // It just means, that we assume that for 18px font-size,
+      // padding and playback have scale 1.
+      emsize /= 18;
 
       padding = {
          "top":    10 * emsize,
