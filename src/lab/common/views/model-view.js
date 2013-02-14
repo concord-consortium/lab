@@ -63,19 +63,21 @@ define(function (require) {
       }
     }
 
-    function scale() {
-      var modelWidth = model.get('width'),
-          modelHeight = model.get('height'),
-          aspectRatio = modelWidth / modelHeight;
-
-      // TODO: temporary workaround.
-      emsize = 1;
+    // Padding is based on the calculated font-size used for the model view container.
+    function updatePadding() {
+      emsize = $(e).css('font-size');
+      // Remove "px", convert to number.
+      emsize = Number(emsize.substring(0, emsize.length - 2));
+      // Convert value to "em", using 14px as a basic font size.
+      // It doesn't have to reflect true 1em value in current context.
+      // It just means, that we assume that for 14px font-size, everything has scale 1.
+      emsize /= 14;
 
       padding = {
-         "top":    20,
-         "right":  25,
-         "bottom": 10,
-         "left":   25
+         "top":    10 * emsize,
+         "right":  10 * emsize,
+         "bottom": 10 * emsize,
+         "left":   10 * emsize
       };
 
       if (model.get("xunits")) {
@@ -91,15 +93,20 @@ define(function (require) {
       } else {
         padding.bottom += (15  * emsize);
       }
+    }
+
+    function scale() {
+      var modelWidth = model.get('width'),
+          modelHeight = model.get('height'),
+          aspectRatio = modelWidth / modelHeight;
+
+      updatePadding();
 
       cx = elem.property("clientWidth");
       width = cx - padding.left  - padding.right;
       height = width / aspectRatio;
-      // cy = elem.property("clientHeight");
-      // height = cy - padding.top  - padding.bottom;
-      // width = height * aspectRatio;
       cy = height + padding.top  + padding.bottom;
-      node.style.height = cy +"px";
+      node.style.height = cy + "px";
 
       // Container size in px.
       size = {
@@ -334,9 +341,7 @@ define(function (require) {
             height: cy
           });
 
-        vis = vis1.append("g")
-            .attr("class", "particle-container-vis")
-            .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+        vis = vis1.append("g").attr("class", "particle-container-vis");
 
         plot = vis.append("rect")
             .attr("class", "plot");
@@ -358,7 +363,6 @@ define(function (require) {
         imageContainerTop    = vis.append("g").attr("class", "image-container-top");
         textContainerTop     = vis.append("g").attr("class", "text-container-top");
 
-        //
         containers = {
           node: node,
           gridContainer:        gridContainer,
@@ -389,10 +393,13 @@ define(function (require) {
           height: cy
         });
 
+      // Rescale main plot.
+      // Update also padding, as it can be changed due to resizing.
       vis.select("rect.plot")
         .attr({
           width: size.width,
-          height: size.height
+          height: size.height,
+          transform: "translate(" + padding.left + "," + padding.top + ")"
         });
 
       redraw();
@@ -478,6 +485,8 @@ define(function (require) {
             modelHeight = model.get('height'),
             aspectRatio = modelWidth / modelHeight,
             height;
+
+        updatePadding();
 
         width = width - padding.left - padding.right;
         height = width / aspectRatio;
