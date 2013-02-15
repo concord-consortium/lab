@@ -46,10 +46,10 @@ button.component
 .interactive-slider
   display: inline-block
   vertical-align: middle
-  margin: 1.5em 1em 0 0
+  margin: 1em 3em 3em 0
   // Style jQuery UI classes.
   .ui-slider
-    // Fill the container which has adjustable dimensions.
+    // Fill the container which follows .interactive-slider dimensions.
     width: 100%
     height: 100%
   .ui-slider-handle
@@ -71,6 +71,9 @@ button.component
     position: relative
     // bottom margin has to account for size of labels, which are taken out of flow
     margin: 0 2em 0 0
+    // Fill the .interactive-slider container which has adjustable dimensions.
+    width: 100%
+    height: 100%
     .label
       position: absolute
       // "width: 2x; margin-left: -x; left: y%" places the center of the .label at exactly y%

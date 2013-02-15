@@ -55,13 +55,6 @@ define(function () {
     $title = $('<p class="title">' + title + '</p>');
     // we pick up the SVG slider component CSS if we use the generic class name 'slider'
     $container = $('<div class="container">');
-    // Apply custom width and height settings.
-    // Styles for jQuery UI components (see SASS files) ensure
-    // that it will follow dimensions of its container.
-    $container.css({
-      width: component.width,
-      height: component.height
-    });
     $slider = $('<div class="html-slider">').attr('id', component.id);
     $slider.appendTo($container);
 
@@ -76,6 +69,14 @@ define(function () {
     $elem = $('<div class="interactive-slider">')
               .append($title)
               .append($container);
+
+    // Apply custom width and height settings.
+    // Styles for jQuery UI components (see SASS files) ensure
+    // that it will follow dimensions of its container.
+    $elem.css({
+      width: component.width,
+      height: component.height
+    });
 
     for (i = 0; i < labels.length; i++) {
       label = labels[i];
