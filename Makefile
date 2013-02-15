@@ -451,7 +451,9 @@ src/vendor/lightgl.js/lightgl.js:
 	cd src/vendor/lightgl.js; python build.py
 
 src/vendor/jquery/dist/jquery.min.js: src/vendor/jquery
-	cd src/vendor/jquery; npm install; ./node_modules/grunt/bin/grunt
+	cd src/vendor/jquery; npm install; \
+	 npm rm grunt-compare-size; npm install grunt-compare-size@0.2.0; \
+	 ./node_modules/grunt/bin/grunt
 
 src/vendor/jquery:
 	git submodule update --init --recursive
