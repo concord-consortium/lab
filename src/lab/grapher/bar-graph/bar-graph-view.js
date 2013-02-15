@@ -223,20 +223,6 @@ define(function (require) {
             .attr("y", this.yScale(value));
         },
 
-        // Returns real height of parent DOM element.
-        // Might be useful for getting "fit to parent"
-        // behavior.
-        getParentHeight: function () {
-          return this.$el.parent().height();
-        },
-
-        // Returns real width of parent DOM element.
-        // Might be useful for getting "fit to parent"
-        // behavior.
-        getParentWidth: function () {
-          return this.$el.parent().width();
-        },
-
         // This function should be called whenever model attribute is changed.
         modelChanged: function () {
           var changedAttributes = this.model.changedAttributes(),

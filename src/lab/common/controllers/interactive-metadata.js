@@ -341,6 +341,12 @@ define(function() {
       property: {
         required: true
       },
+      width: {
+        defaultValue: "100%"
+      },
+      height: {
+        defaultValue: "100%"
+      },
       options: {
         defaultValue: {
           // Min value displayed.

@@ -78,6 +78,11 @@ define(function (require) {
     component = validator.validateCompleteness(metadata.barGraph, component);
     barGraphModel = new BarGraphModel(filterOptions(component.options));
     barGraphView  = new BarGraphView({model: barGraphModel, id: component.id});
+    // Apply custom width and height settings.
+    barGraphView.$el.css({
+      width: component.width,
+      height: component.height
+    });
     property = component.property;
 
     controller = {
@@ -98,16 +103,14 @@ define(function (require) {
       },
 
       // Method required by layout module.
-      resize: function (width, height) {
-        if (width === undefined)
-          width = barGraphView.getParentWidth();
-
-        if (height === undefined)
-          height = barGraphView.getParentHeight();
-
+      resize: function () {
+        // Inform model about possible new dimensions (when $el dimensions
+        // are specified in % or em, they will probably change each time
+        // the interactive container is changed). It's important to do that,
+        // as various visual elements can be adjusted (font size, padding etc.).
         barGraphModel.set({
-          width: width,
-          height: height
+          width: barGraphView.$el.width(),
+          height: barGraphView.$el.height()
         });
       },
 
