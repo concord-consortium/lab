@@ -407,16 +407,21 @@ define(function (require) {
 
       // Setup exporter, if any...
       if (interactive.exports) {
+        // Regardless of whether or not we are able to export data to an enclosing container,
+        // setup export controller so you can debug exports by typing script.exportData() in the
+        // console.
         exportController = new ExportController(interactive.exports);
         componentCallbacks.push(exportController.modelLoadedCallback);
 
+        // If there is an enclosing container we can export data to (e.g., we're iframed into
+        // DataGames) then add an "Analyze Data" button the bottom position of the interactive
         if (ExportController.isExportAvailable()) {
-          $exportButton = $("<button>")
-                            .attr('id', 'export-data')
-                            .addClass('component')
-                            .html("Analyze Data")
-                            .on('click', function() { exportController.exportData(); })
-                            .appendTo($('#bottom'));
+          createComponent({
+            "type": "button",
+            "text": "Analyze Data",
+            "id": "-lab-analyze-data",
+            "action": "exportData();"
+          });
         }
       }
     }
