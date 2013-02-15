@@ -77,7 +77,7 @@ define(function (require) {
     // Calculate width for containers which doesn't explicitly specify its width.
     // In such case, width is determined by the content, no reflow will be allowed.
     function setMinDimensions() {
-      var $container, i, len;
+      var maxMinWidth, $container, i, len;
 
       function setRowMinWidth() {
         var minWidth = 0;
@@ -87,6 +87,9 @@ define(function (require) {
           minWidth += $(this).outerWidth(true);
         });
         $(this).css("min-width", Math.ceil(minWidth));
+        if (minWidth > maxMinWidth) {
+          maxMinWidth = minWidth;
+        }
       }
 
       for (i = 0, len = containers.length; i < len; i++) {
@@ -94,8 +97,9 @@ define(function (require) {
         if (containers[i].width === undefined) {
           // Set min-width only for containers, which DO NOT specify
           // "width" explicitly in their definitions.
+          maxMinWidth = -Infinity;
           $container.children().each(setRowMinWidth);
-          $container.css("min-width", $container.outerWidth(true));
+          $container.css("min-width", maxMinWidth);
         }
         if (containers[i]["min-width"] !== undefined) {
           $container.css("min-width", containers[i]["min-width"]);
