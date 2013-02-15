@@ -1,5 +1,7 @@
 /*jslint indent: 2, sloppy: true, node: true */
 
+require("../../env");
+
 var
   requirejs = require('requirejs'),
   config    = require('../../requirejs-config'),
