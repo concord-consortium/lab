@@ -83,6 +83,7 @@ AUTHORING = false;
       $nextInteractive = $("#next-interactive"),
 
       applicationCallbacks,
+      resizeCallbacks,
       editor,
       modelEditor,
       controller,
@@ -183,7 +184,7 @@ AUTHORING = false;
     restoreOptionsFromCookie();
 
     if(!onFullIFramePage()) {
-      controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
+      controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType, [{ resize: updateShareIframeContent }]);
     }
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
@@ -292,10 +293,12 @@ AUTHORING = false;
       $("#share-embeddable-link").attr("href", embeddableUrl);
       $('#share-embeddable-link-content').val(embeddableUrl);
       updateShareIframeContent();
+      $(document).resize(updateShareIframeContent);
     } else {
       $shareLink.hide();
       return;
     }
+    // $(window).bind('resize', updateShareIframeContent);
   }
 
   function updateShareIframeContent() {
