@@ -162,6 +162,11 @@ define(function (require) {
     // The list of properties we are being asked to graph.
     properties = component.properties.slice();
     $container = $('<div>').attr('id', component.id).addClass('properties-graph');
+    // Apply custom width and height settings.
+    $container.css({
+      width: component.width,
+      height: component.height
+    });
 
     return controller = {
 
@@ -194,8 +199,6 @@ define(function (require) {
 
       resize: function () {
         // For now only "fit to parent" behavior is supported.
-        $container.width("100%");
-        $container.height("100%");
         if (grapher) {
           grapher.resize();
         }

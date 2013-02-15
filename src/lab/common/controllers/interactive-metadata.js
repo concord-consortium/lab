@@ -305,6 +305,12 @@ define(function() {
       title: {
         defaultValue: "Graph"
       },
+      width: {
+        defaultValue: "100%"
+      },
+      height: {
+        defaultValue: "100%"
+      },
       xlabel: {
         defaultValue: "Model Time (ps)"
       },
