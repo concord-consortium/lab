@@ -296,36 +296,35 @@ AUTHORING = false;
       $shareLink.hide();
       return;
     }
-    function updateShareIframeContent() {
-      var actualWidth, actualHeight,
-          sizeAttributes = "",
-          sizeChoice = $shareSelectIframeSize.val(),
-          notEmbedded = $selectInteractive.length,
-          $content;
+  }
 
-      if (notEmbedded) {
-        $content = $("#content");
-        actualWidth = $content.width();
-        actualHeight = $content.height();
-      } else {
-        actualWidth = $(document).width();
-        actualHeight = $(document).height();
-      }
-      switch(sizeChoice) {
-        case "actual":
-        sizeAttributes = 'width="' + actualWidth + 'px" height="' + actualHeight + 'px"';
-        break;
-        case "smaller":
-        sizeAttributes = 'width="' + Math.floor(actualWidth * 0.7) + 'px" height="' + Math.floor(actualHeight  * 0.7) + 'px"';
-        break;
-        case "larger":
-        sizeAttributes = 'width="' + Math.floor(actualWidth * 1.5) + 'px" height="' + Math.floor(actualHeight  * 1.5) + 'px"';
-        break;
-      }
-      $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+  function updateShareIframeContent() {
+    var actualWidth, actualHeight,
+        sizeAttributes = "",
+        sizeChoice = $shareSelectIframeSize.val(),
+        notEmbedded = $selectInteractive.length,
+        $content;
+
+    if (notEmbedded) {
+      $content = $("#content");
+      actualWidth = $content.width();
+      actualHeight = $content.height();
+    } else {
+      actualWidth = $(document).width();
+      actualHeight = $(document).height();
     }
-    setupSharePane.resize = updateShareIframeContent;
-    layout.addView('setupSharePane', setupSharePane);
+    switch(sizeChoice) {
+      case "actual":
+      sizeAttributes = 'width="' + actualWidth + 'px" height="' + actualHeight + 'px"';
+      break;
+      case "smaller":
+      sizeAttributes = 'width="' + Math.floor(actualWidth * 0.7) + 'px" height="' + Math.floor(actualHeight  * 0.7) + 'px"';
+      break;
+      case "larger":
+      sizeAttributes = 'width="' + Math.floor(actualWidth * 1.5) + 'px" height="' + Math.floor(actualHeight  * 1.5) + 'px"';
+      break;
+    }
+    $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
   }
 
   //
@@ -583,7 +582,7 @@ AUTHORING = false;
       iframePhone = setupIframeListenerFor($iframe[0]);
 
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
-      // $(".view").bind('resize', update);
+      $iframeWrapper.bind('resize', updateShareIframeContent);
     }
   }
 
