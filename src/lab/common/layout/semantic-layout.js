@@ -35,14 +35,10 @@ define(function (require) {
 
   return function SemanticLayout($interactiveContainer, containers, componentLocations, components, modelController) {
 
-    var layout = {},
+    var layout,
         $modelContainer,
         $containers,
 
-        minLeft = Infinity,
-        minTop = Infinity,
-        maxX = -Infinity,
-        maxY = -Infinity,
         modelWidth = minModelWidth,
         modelTop = 0,
         modelLeft = 0;
@@ -198,10 +194,10 @@ define(function (require) {
           left, top, right, bottom, i, ii;
 
       $modelContainer.css({
-        width: modelWidth,
+        width:  modelWidth,
         height: modelController.getHeightForWidth(modelWidth),
-        left: modelLeft,
-        top: modelTop,
+        left:   modelLeft,
+        top:    modelTop,
         position: "absolute"
       });
 
@@ -254,26 +250,15 @@ define(function (require) {
     // of the other containers around it.
     function resizeModelContainer() {
       var speed = 0.3,
-      id, $container,
-      right, bottom, top, left,
-      availableWidth, availableHeight, ratio;
+          maxX = -Infinity,
+          maxY = -Infinity,
+          minX = Infinity,
+          minY = Infinity,
+          id, $container,
+          right, bottom, top, left,
+          availableWidth, availableHeight, ratio;
 
-      if (isNaN(modelWidth) || modelWidth < minModelWidth) {
-        modelWidth = minModelWidth;
-      }
-      if (isNaN(modelLeft)) {
-        modelLeft = 0;
-      }
-      if (isNaN(modelTop)) {
-        modelTop = 0;
-      }
-
-      // Calc maxX and maxY.
-      maxY = -Infinity;
-      maxX = -Infinity;
-      minLeft = Infinity;
-      minTop = Infinity;
-
+      // Calculate boundaries of the interactive.
       for (id in $containers) {
         if (!$containers.hasOwnProperty(id)) continue;
         $container = $containers[id];
@@ -286,12 +271,12 @@ define(function (require) {
           maxY = bottom;
         }
         left = getDimensionOfContainer($container, "left");
-        if (left < minLeft) {
-          minLeft = left;
+        if (left < minX) {
+          minX = left;
         }
         top = getDimensionOfContainer($container, "top");
-        if (top < minTop) {
-          minTop = top;
+        if (top < minY) {
+          minY = top;
         }
       }
 
@@ -303,7 +288,7 @@ define(function (require) {
       // Using current algorithm, very often we follow some local minima.
       if ((maxX <= availableWidth && maxY <= availableHeight) &&
           (availableWidth - maxX < 1 || availableHeight - maxY < 1) &&
-          (minLeft < 1 && minTop < 1)) {
+          (minX < 1 && minY < 1)) {
         // Perfect solution found!
         // (TODO: not so perfect, see above)
         return true;
@@ -323,8 +308,8 @@ define(function (require) {
         modelWidth = minModelWidth;
       }
 
-      modelLeft -= minLeft;
-      modelTop -= minTop;
+      modelLeft -= minX;
+      modelTop -= minY;
 
       return false;
     }

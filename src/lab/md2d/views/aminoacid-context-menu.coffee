@@ -42,11 +42,13 @@ define (require) ->
   ###
   register: (model, view, selector) ->
     # Unregister the same menu first.
-    $.contextMenu 'destroy', selector
+    $.contextMenu "destroy", selector
     # Register new one.
     $.contextMenu
       # Selector defines DOM elements which can trigger this menu.
       selector: selector
+      # Append to "#responsive-content" to enable dynamic font-scaling.
+      appendTo: "#responsive-content"
       # Class of the menu.
       className: MENU_CLASS
       # Disable animation of the whole menu. Use standard show/hide instead
@@ -69,7 +71,7 @@ define (require) ->
         model.setAtomProperties props.idx, element: elemId
         # Redraw view.
         # TODO: model should dispatch appropriate event, which should trigger repaint automatically.
-        view.setupDrawables()
+        view.repaint()
 
       # Note that this function is almost the same as the default implementation
       # in jQuery.contextMenu. However, there is a small fix. Very often the height of menu was
