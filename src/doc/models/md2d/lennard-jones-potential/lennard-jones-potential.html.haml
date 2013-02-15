@@ -11,7 +11,7 @@
       if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
     %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "../../../../examples/examples.css", :rel => "stylesheet", :type => "text/css"}/
-    %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "style.css", :rel => "stylesheet", :type => "text/css"}/
     = ANALYTICS
   %body
     #header
@@ -30,13 +30,13 @@
     #chart{:style => "margin-left:5em; width:50em; height:25em;"}
     .description
       %p
-        The force between two neutral atoms is the derivative of the Lennard-Jones potential. 
+        The force between two neutral atoms is the derivative of the Lennard-Jones potential.
       %p
         The slope of the potential function at the point where the potential is zero \(\sigma\) (sigma)
         is negative so when two neutral atoms have a separation of \(\sigma\) radii there is a repulsive force.
       %p
-        The slope of the potential function at \(\varepsilon\) (epsilon) is zero -- this is the 
-        maximum depth of the potential well. At this distance apart two neutral atoms experience zero 
+        The slope of the potential function at \(\varepsilon\) (epsilon) is zero -- this is the
+        maximum depth of the potential well. At this distance apart two neutral atoms experience zero
         net-force, they neither attract or repel.
       %p
         As the distance between two neutral atoms becomes greater than \(\varepsilon\) the slope of the
@@ -44,7 +44,7 @@
         diminishes as the distance becomes greater.
       %p
         In the graph above you can change effective the force as a function of distance by either
-        changing the depth of the potential well by dragging \(\varepsilon\) (epsilon) up and down 
+        changing the depth of the potential well by dragging \(\varepsilon\) (epsilon) up and down
         or changing the zero point for the potential by dragging \(\sigma\) (sigma) left and right.
       %h2 References:
       %p
