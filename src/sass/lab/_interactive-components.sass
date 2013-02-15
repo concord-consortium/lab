@@ -46,16 +46,21 @@ button.component
 .interactive-slider
   display: inline-block
   vertical-align: middle
-  margin: 0.5em 1em 0 0
+  margin: 1.5em 1em 0 0
   // Style jQuery UI classes.
-  .ui-slider .ui-slider-handle
+  .ui-slider
+    // Fill the container which has adjustable dimensions.
+    width: 100%
+    height: 100%
+  .ui-slider-handle
     font-size: 0.8em
     font-weight: normal
     text-align: center
     width: auto
     min-width: 1.2em
-    min-height: 1.4em
-    padding: 0em 0.2em 0em 0.2em
+    min-height: 1.5em
+    height: 110%
+    padding: 0.1em 0.2em 0em 0.2em
   .title
     display: inline-block
     font-size: 1em
@@ -65,19 +70,13 @@ button.component
     // make this a positioned element so the .label can be positioned absolute
     position: relative
     // bottom margin has to account for size of labels, which are taken out of flow
-    // left and right margins have to account for
-    margin: 0 2em 1.2em 0
-    // This will be the width of the slider div itself
-    width: 12em
-    .html-slider
-      width: 100%
+    margin: 0 2em 0 0
     .label
       position: absolute
-      top: 0.1em
       // "width: 2x; margin-left: -x; left: y%" places the center of the .label at exactly y%
       // of the width of the parent
       width: 6em
-      margin-left: -3em
+      margin: 0 0 0 -3em
       // Now, make the text itself centered in the .label element
       text-align: center
       // And finally, make the position labels a bit smaller than the title and other text

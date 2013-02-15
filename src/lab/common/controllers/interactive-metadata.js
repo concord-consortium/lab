@@ -196,6 +196,12 @@ define(function() {
       labels: {
         defaultValue: []
       },
+      width: {
+        defaultValue: "12em"
+      },
+      height: {
+        defaultValue: "1em"
+      },
       displayValue: {},
       property: {},
       action: {},
