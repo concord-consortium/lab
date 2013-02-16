@@ -97,7 +97,7 @@ def xcode_check
   end
 end
 
-@warnings = {}      
+@warnings = {}
 @errors = {}
 ruby_check
 nodejs_check
@@ -113,7 +113,7 @@ unless @warnings.empty?
   @warnings.each { |k, v|
     puts <<-HEREDOC
 #{k} #{v["requirement"]}
-    
+
 #{v["details"]}
     HEREDOC
   }
