@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 required_ruby_version = "1.9.3"
-required_ruby_patchlevel = 194
+required_ruby_patchlevel = 385
 
 minimum_node_version = "v0.8.6"
 
