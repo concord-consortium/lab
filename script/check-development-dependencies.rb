@@ -5,7 +5,7 @@ require 'json'
 @required_ruby_version = "1.9.3"
 @required_ruby_patchlevel = 385
 @minimum_node_version = "v0.8.6"
-@minimum_couchdb_version = "1.2.0"
+@minimum_couchdb_version = "1.2.1"
 
 def macosx
   RUBY_PLATFORM.include?('darwin')
@@ -18,7 +18,7 @@ end
 def ruby_check
   requirement = "= #{@required_ruby_version}-p#{@required_ruby_patchlevel}"
   if RUBY_VERSION != @required_ruby_version || RUBY_PATCHLEVEL != @required_ruby_patchlevel
-    @notifications["Ruby"] = {
+    @errors["Ruby"] = {
       "requirement" => requirement,
       "details" => <<-HEREDOC
   ==> Ruby #{RUBY_VERSION}-p#{RUBY_PATCHLEVEL} installed
@@ -37,7 +37,7 @@ def nodejs_check
     minimum_node_version_arr = @minimum_node_version.split('.').map { |e| e.to_i }
     # Compare version numbers one by one using array comparison operator.
     unless (node_version_arr <=> minimum_node_version_arr) >= 0
-      @notifications["Nodejs"] = {
+      @errors["Nodejs"] = {
         "requirement" => requirement,
         "details" => <<-HEREDOC
   ==> nodejs #{node_version} installed
@@ -60,20 +60,20 @@ def couchdb_check
   response = `curl http://localhost:5984 2> /dev/null`
   # => {"couchdb":"Welcome","version":"1.2.0"}
   if response.empty?
-    @notifications["Couchdb"] = {
+    @warnings["Couchdb"] = {
       "requirement" => requirement,
       "details" => <<-HEREDOC
-  ==> couchdb not installed or not running ...
+  ==> couchdb not installed or not running, web server persistence won't work ...
       HEREDOC
     }
   else
     couch = JSON.parse(response)
     couch_version = couch["version"]
     if couch_version < @minimum_couchdb_version
-      @notifications["Couchdb"] = {
+      @warnings["Couchdb"] = {
         "requirement" => requirement,
         "details" => <<-HEREDOC
-  ==> couchdb #{couch_version} installed
+  ==> couchdb #{couch_version} installed, web server persistence might not work
         HEREDOC
       }
         
@@ -86,7 +86,7 @@ def xcode_check
     requirement = "Xcode"
     xcode = `xcode-select -print-path  2> /dev/null`
     if xcode.empty?
-      @notifications["Mac OS X"] = {
+      @errors["Mac OS X"] = {
         "requirement" => requirement,
         "details" => <<-HEREDOC
   ==> Either you don't have xcode installed ... or you haven't used
@@ -96,20 +96,37 @@ def xcode_check
     end
   end
 end
-      
-@notifications = {}
+
+@warnings = {}      
+@errors = {}
 ruby_check
 nodejs_check
 couchdb_check
 xcode_check if macosx
 
-unless @notifications.empty?
+unless @warnings.empty?
   puts <<-HEREDOC
 
-*** Missing development dependencies, building Lab project requires:
+*** Warning: missing optional development dependencies:
 
   HEREDOC
-  @notifications.each { |k, v|
+  @warnings.each { |k, v|
+    puts <<-HEREDOC
+#{k} #{v["requirement"]}
+    
+#{v["details"]}
+    HEREDOC
+  }
+  exit 1
+end
+
+unless @errors.empty?
+  puts <<-HEREDOC
+
+*** Error: missing development dependencies, building Lab project requires:
+
+  HEREDOC
+  @errors.each { |k, v|
     puts <<-HEREDOC
 #{k} #{v["requirement"]}
     
