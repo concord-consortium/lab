@@ -118,6 +118,7 @@ clean:
 	rm -f src/lab/lab.version.js
 	# Node modules.
 	rm -rf node_modules
+	git submodule foreach --recursive 'git fetch --tags'
 	git submodule update --init --recursive
 	rm -f src/vendor/jquery/dist/jquery*.js
 	rm -f src/vendor/jquery-ui/dist/jquery-ui*.js
