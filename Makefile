@@ -67,7 +67,6 @@ LAB_JS_FILES = \
 	server/public/lab/lab.js
 
 all: \
-	check-development-dependencies \
 	src/vendor/d3 \
 	node_modules \
 	bin \
