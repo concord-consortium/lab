@@ -74,10 +74,6 @@ all: \
 	server/public
 	$(MAKE) src
 
-.PHONY: check-ruby-and-node
-check-ruby-and-node:
-	ruby script/check-ruby-and-node.rb
-
 .PHONY: everything
 everything:
 	$(MAKE) clean
@@ -104,11 +100,13 @@ src: \
 	server/public/index.css \
 	server/public/lab-amd
 
+.PHONY: jnlp-all
 jnlp-all: clean-jnlp \
 	server/public/jnlp
 	script/build-and-deploy-jars.rb --maven-update
 
 clean:
+	ruby script/check-development-dependencies.rb
 	bundle install --binstubs
 	cd server && bundle install --binstubs
 	# Server dir cleanup.
@@ -118,11 +116,19 @@ clean:
 	rm -f src/lab/lab.version.js
 	# Node modules.
 	rm -rf node_modules
-	git submodule foreach --recursive 'git fetch --tags'
-	git submodule update --init --recursive
+	-$(MAKE) submodule-update || $(MAKE) submodule-update-tags
 	rm -f src/vendor/jquery/dist/jquery*.js
 	rm -f src/vendor/jquery-ui/dist/jquery-ui*.js
 	rm -f src/vendor/lightgl.js/lightgl.js
+
+.PHONY: submodule-update
+submodule-update:
+	git submodule update --init --recursive
+
+.PHONY: submodule-update-tags
+submodule-update-tags:
+	git submodule foreach --recursive 'git fetch --tags'
+	git submodule update --init --recursive
 
 clean-jnlp:
 	rm -rf server/public/jnlp
