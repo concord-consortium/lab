@@ -40,11 +40,11 @@
         "if (props.x > 1.8) return;",
         "props.x *= 5;",
         "props.xPrev *= 5;",
-        "setObstacleProperties(0, props);",
+        "setObstacleProperties(0, {x:props.x, xPrev: props.xPrev});",
         "for(var i = 0; i < getNumberOfAtoms(); i++) {",
         "  props = getAtomProperties(i);",
         "  props.x *= 5;",
-        "  setAtomProperties(i, props);",
+        "  setAtomProperties(i, {x:props.x});",
         "}"
       ]
     },
@@ -57,11 +57,11 @@
         "if (props.x < 1.8) return;",
         "props.x *= 0.2;",
         "props.xPrev *= 0.2;",
-        "setObstacleProperties(0, props);",
+        "setObstacleProperties(0, {x:props.x, xPrev: props.xPrev});",
         "for(var i = 0; i < getNumberOfAtoms(); i++) {",
         "  props = getAtomProperties(i);",
         "  props.x *= 0.19;",
-        "  setAtomProperties(i, props);",
+        "  setAtomProperties(i, {x:props.x});",
         "}"
       ]
     },
