@@ -163,6 +163,7 @@ AUTHORING = false;
         }
       }
 
+      resizeCallbacks = [setupSharePane];
       interactiveDefinitionLoaded.resolve();
     });
   }
@@ -184,7 +185,7 @@ AUTHORING = false;
     restoreOptionsFromCookie();
 
     if(!onFullIFramePage()) {
-      controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType, [{ resize: updateShareIframeContent }]);
+      controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType, resizeCallbacks);
     }
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
@@ -293,12 +294,10 @@ AUTHORING = false;
       $("#share-embeddable-link").attr("href", embeddableUrl);
       $('#share-embeddable-link-content').val(embeddableUrl);
       updateShareIframeContent();
-      $(document).resize(updateShareIframeContent);
     } else {
       $shareLink.hide();
       return;
     }
-    // $(window).bind('resize', updateShareIframeContent);
   }
 
   function updateShareIframeContent() {
@@ -329,6 +328,8 @@ AUTHORING = false;
     }
     $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
   }
+
+  setupSharePane.resize = updateShareIframeContent;
 
   //
   // The following functions are only used when rendering the
