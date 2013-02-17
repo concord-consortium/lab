@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Activity Title: Page 12</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+           
+&#216; 
+ 
+
+ 
+
+
+</text>
+<section start="0" end="36">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;pagetitle&quot;&gt;
+      &lt;strong&gt;Activity Title:&lt;/strong&gt; Some subtitle. (Don&apos;t forget to set the 
+      MW page title too.)
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot; width=&quot;14&quot;&gt;
+          &lt;a href=&quot;page11.cml&quot;&gt;&lt;font&gt;&lt;img src=&quot;prev.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page13.cml&quot;&gt;&lt;img src=&quot;next.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img src=&quot;page.jpg&quot; height=&quot;26&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img src=&quot;index.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img src=&quot;page1.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img src=&quot;page2.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img src=&quot;page3.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img src=&quot;page4.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img src=&quot;page5.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img src=&quot;page6.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img src=&quot;page7.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;page8.jpg&quot; height=&quot;26&quot; width=&quot;29&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page9.jpg&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;font&gt;&lt;img src=&quot;page10.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;25&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img src=&quot;page11.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page12.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;page12Selected.jpg&quot; height=&quot;26&quot; width=&quot;27&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page13.cml&quot;&gt;&lt;font&gt;&lt;img src=&quot;page13.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;27&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page14.cml&quot;&gt;&lt;img src=&quot;page14.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page15.cml&quot;&gt;&lt;img src=&quot;page15.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;mainidea&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;98&quot; height=&quot;58&quot; src=&quot;motionMainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;p class=&quot;mainidea&quot;&gt;
+            Place some sort of introductory text or framing question here, and 
+            delete the others.
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>45</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="25">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>21.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="14" end="15">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>test3$0.mml</resource><border>none</border><button>Select Object</button><button>What's This?</button><button>Draw Lines</button><button>Draw Rectangle</button><button>Draw Ellipse</button><button>Mark Object</button><button>Count Objects</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Toggle Average Position</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Add Diatomic Molecule</button><button>Add Triatomic Molecule</button><button>Add Benzene</button><button>Add Chain Molecule</button><button>Add Obstacle</button><button>Fill Area with Nt Atoms</button><button>Fill Area with Pl Atoms</button><button>Fill Area with Ws Atoms</button><button>Fill Area with Ck Atoms</button><button>Add Rectangular Molecular Surface</button><button>Add Rectangular Molecular Ribbon</button><button>Add Circular Molecular Surface</button><button>Add Circular Molecular Ribbon</button><button>Add Curved Molecular Surface</button><button>Add Curved Molecular Ribbon</button><button>Add Molecular Surface in Free-Form Shape</button><button>Add an Amino Acid to Polypeptide</button><button>Subtract an Amino Acid from Polypeptide</button><button>Add a Nucleotide to DNA</button><button>Subtract a Nucleotide from DNA</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Add Positive Charge</button><button>Add Negative Charge</button><button>Increase Restraint</button><button>Decrease Restraint</button><button>Increase Damping</button><button>Decrease Damping</button><button>Rotate Object</button><button>Duplicate Object</button><button>Delete Objects</button><button>Setup Boundary</button><button>Change Type</button><button>Change Velocity</button><button>Build Radial Bond</button><button>Build Angular Bond</button></component></content>
+
+<content start="15" end="16">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>25.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 1</timeseries>
+<description>outside positive concentration</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<multiplier>1000.0</multiplier>
+<width>20</width>
+<height>330</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-1d0a01</bgcolor>
+<fgcolor>-6d8e49</fgcolor>
+<minimum>0.0</minimum>
+<maximum>50.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="17" end="18">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>12.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="18" end="19">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<description>outside negative concentration</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<multiplier>1000.0</multiplier>
+<width>20</width>
+<height>330</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-b2021</bgcolor>
+<fgcolor>-6d8e49</fgcolor>
+<minimum>0.0</minimum>
+<maximum>50.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="19" end="20">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>60.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-top: 5px&quot;&gt;
+    &lt;p align=&quot;right&quot; class=&quot;firstp&quot;&gt;
+      &lt;img width=&quot;17&quot; height=&quot;131&quot; src=&quot;chemTitle.png&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 2</timeseries>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>330</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-111113</bgcolor>
+<fgcolor>-b3ab6</fgcolor>
+<minimum>0.0</minimum>
+<maximum>14.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="21" end="22">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>12.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 3</timeseries>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>330</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-111113</bgcolor>
+<fgcolor>-b3ab6</fgcolor>
+<minimum>0.0</minimum>
+<maximum>14.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="23" end="24">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>40.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-top: 5px&quot;&gt;
+    &lt;p align=&quot;left&quot; class=&quot;firstp&quot;&gt;
+      &lt;img width=&quot;17&quot; height=&quot;205&quot; src=&quot;peTitle.png&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="28">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+</content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>300</height>
+</component></content>
+
+<content start="27" end="28">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="28" end="30">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>90</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style1 { font-size: 10px }
+      --&gt;
+    &lt;/style&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; style=&quot;width: 730&quot;&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          ATP concentration
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;select script3=&quot;script:mw2d:1:set %saltRight %high;
+    set textbox[2].color (0,0,0,0); set textbox[2].background (0,0,0,0); set textbox[2].border 0;
+	set textbox[0].color (0,0,0,0); set textbox[0].background (0,0,0,0); set textbox[0].border 0; set textbox[0].shadow 0;
+	select atom within(%rx,%ry,%rwidth,%rheight);
+	remove;
+	set %currentNum 0;
+	while (%currentNum &lt; %high);
+		add atom 0 (rand()*%rwidth+%rx,rand()*%rheight);
+		set %currentNum count(0,%rx,%ry,%rwidth,%rheight);
+	endwhile;
+   	set %currentNum 0;
+	while (%currentNum &lt; %high);
+		add atom 1 (rand()*%rwidth+%rx,rand()*%rheight);
+		set %currentNum count(1,%rx,%ry,%rwidth,%rheight);
+	endwhile;
+	set %currentNum 0;
+    while (%currentNum &lt; (%totalAtoms-(%high*2)));
+		add atom 2 (rand()*%rwidth+%rx,rand()*%rheight);
+		set %currentNum count(2,%rx,%ry,%rwidth,%rheight);
+	endwhile;
+        if ((%saltLeft &gt; 0) and (%saltRight &gt; 0));
+    	external disableRun.mws;
+     endif;&quot; script2=&quot;script:mw2d:1:set %saltRight %low;
+    set textbox[2].color (0,0,0,0); set textbox[2].background (0,0,0,0); set textbox[2].border 0;
+	set textbox[0].color (0,0,0,0); set textbox[0].background (0,0,0,0); set textbox[0].border 0; set textbox[0].shadow 0;
+	select atom within(%rx,%ry,%rwidth,%rheight);
+	remove;
+	set %currentNum 0;
+	while (%currentNum &lt; %low);
+		add atom 0 (rand()*%rwidth+%rx,rand()*%rheight);
+		set %currentNum count(0,%rx,%ry,%rwidth,%rheight);
+	endwhile;
+   	set %currentNum 0;
+	while (%currentNum &lt; %low);
+		add atom 1 (rand()*%rwidth+%rx,rand()*%rheight);
+		set %currentNum count(1,%rx,%ry,%rwidth,%rheight);
+	endwhile;
+	set %currentNum 0;
+    while (%currentNum &lt; (%totalAtoms-(%low*2)));
+		add atom 2 (rand()*%rwidth+%rx,rand()*%rheight);
+		set %currentNum count(2,%rx,%ry,%rwidth,%rheight);
+	endwhile;
+        if ((%saltLeft &gt; 0) and (%saltRight &gt; 0));
+    	external disableRun.mws;
+     endif;&quot; script1=&quot;script:mw2d:1:set %saltRight 0;
+    select atom within(%rx,%ry,%rwidth,%rheight);
+    remove;
+    set textbox[2].color (0,0,0,255); set textbox[2].background (220,236,218,255); set textbox[2].border 2;&quot; selfscript3=&quot;//do nothing&quot; selfscript2=&quot;// do nothing&quot; id=&quot;jumpMenu&quot; name=&quot;jumpMenu&quot; selfscript1=&quot;enablecomponent 2 false&quot;&gt;
+            &lt;option&gt;none 
+            &lt;option&gt;low 
+            &lt;option&gt;high 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+        &lt;td style=&quot;width: 155px&quot; align=&quot;center&quot; rowspan=&quot;2&quot;&gt;
+          &lt;input value=&quot;run&quot; selfscript=&quot;enablecomponent 2 false; enablecomponent 3 true; enablecomponent 4 true; enablecomponent 0 false; enablecomponent 1 false;&quot; script=&quot;script:mw2d:1:minimize 1 10; run;&quot; type=&quot;submit&quot; id=&quot;button&quot; name=&quot;button&quot;&gt;
+          &amp;#160; &lt;input value=&quot;stop&quot; selfscript=&quot;enablecomponent 2 true; enablecomponent 3 false;&quot; script=&quot;script:mw2d:1:stop;&quot; type=&quot;submit&quot; id=&quot;button2&quot; name=&quot;button2&quot;&gt;&lt;br&gt;&lt;input value=&quot;reset&quot; selfscript=&quot;enablecomponent 2 true; enablecomponent 3 false; enablecomponent 4 false; enablecomponent 0 true; enablecomponent 1 true;&quot; script=&quot;script:mw2d:1:stop;
+    	select atom all;
+        remove;
+    	set obstacle[0].x 22.2;
+		set %currentNum 0;
+		while (%currentNum &lt; %saltRight);
+			add atom 0 (rand()*%rwidth+%rx,rand()*%rheight);
+			set %currentNum count(0,%rx,%ry,%rwidth,%rheight);
+		endwhile;
+ 	  	set %currentNum 0;
+		while (%currentNum &lt; %saltRight);
+			add atom 1 (rand()*%rwidth+%rx,rand()*%rheight);
+			set %currentNum count(1,%rx,%ry,%rwidth,%rheight);
+		endwhile;
+		set %currentNum 0;
+ 	    while (%currentNum &lt; (%totalAtoms-(%saltRight*2)));
+			add atom 2 (rand()*%rwidth+%rx,rand()*%rheight);
+			set %currentNum count(2,%rx,%ry,%rwidth,%rheight);
+		endwhile;
+		set %currentNum 0;
+		while (%currentNum &lt; %saltLeft);
+			add atom 0 (rand()*%lwidth,rand()*%lheight);
+			set %currentNum count(0,%lx,%ly,%lwidth,%lheight);
+		endwhile;
+   		set %currentNum 0;
+		while (%currentNum &lt; %saltLeft);
+			add atom 1 (rand()*%lwidth,rand()*%lheight);
+			set %currentNum count(1,%lx,%ly,%lwidth,%lheight);
+		endwhile;
+		set %currentNum 0;
+   		while (%currentNum &lt; (%totalAtoms-(%saltleft*2)));
+			add atom 2 (rand()*%lwidth,rand()*%lheight);
+			set %currentNum count(2,%lx,%ly,%lwidth,%lheight);
+		endwhile;
+       	if (%cellMsgOn);
+	      	select image 3;
+            remove;
+            set %cellMsgOn 0;
+        endif;&quot; type=&quot;submit&quot; id=&quot;button3&quot; name=&quot;button3&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          Ca&lt;sup&gt;+2&lt;/sup&gt; concentration
+        &lt;/td&gt;
+        &lt;td align=&quot;left&quot;&gt;
+          &lt;select script3=&quot;script:mw2d:1:set %saltLeft %high;
+    set textbox[1].color (0,0,0,0); set textbox[1].background (0,0,0,0); set textbox[1].border 0;
+	set textbox[0].color (0,0,0,0); set textbox[0].background (0,0,0,0); set textbox[0].border 0; set textbox[0].shadow 0;
+	select atom within(%lx,%ly,%lwidth,%lheight);
+	remove;
+	set %currentNum 0;
+	while (%currentNum &lt; %high);
+		add atom 0 (rand()*%lwidth,rand()*%lheight);
+		set %currentNum count(0,%lx,%ly,%lwidth,%lheight);
+	endwhile;
+   	set %currentNum 0;
+	while (%currentNum &lt; %high);
+		add atom 1 (rand()*%lwidth,rand()*%lheight);
+		set %currentNum count(1,%lx,%ly,%lwidth,%lheight);
+	endwhile;
+	set %currentNum 0;
+    while (%currentNum &lt; (%totalAtoms-(%high*2)));
+		add atom 2 (rand()*%lwidth,rand()*%lheight);
+		set %currentNum count(2,%lx,%ly,%lwidth,%lheight);
+	endwhile;
+    if ((%saltLeft &gt; 0) and (%saltRight &gt; 0));
+    	external disableRun.mws;
+     endif;&quot; script2=&quot;script:mw2d:1:set %saltLeft %low;
+    set textbox[1].color (0,0,0,0); set textbox[1].background (0,0,0,0); set textbox[1].border 0;
+	set textbox[0].color (0,0,0,0); set textbox[0].background (0,0,0,0); set textbox[0].border 0; set textbox[0].shadow 0;
+	select atom within(%lx,%ly,%lwidth,%lheight);
+	remove;
+	set %currentNum 0;
+	while (%currentNum &lt; %low);
+		add atom 0 (rand()*%lwidth,rand()*%lheight);
+		set %currentNum count(0,%lx,%ly,%lwidth,%lheight);
+	endwhile;
+   	set %currentNum 0;
+	while (%currentNum &lt; %low);
+		add atom 1 (rand()*%lwidth,rand()*%lheight);
+		set %currentNum count(1,%lx,%ly,%lwidth,%lheight);
+	endwhile;
+	set %currentNum 0;
+    while (%currentNum &lt; (%totalAtoms-(%low*2)));
+		add atom 2 (rand()*%lwidth,rand()*%lheight);
+		set %currentNum count(2,%lx,%ly,%lwidth,%lheight);
+	endwhile;
+    if ((%saltLeft &gt; 0) and (%saltRight &gt; 0));
+    	external disableRun.mws;
+     endif;&quot; script1=&quot;script:mw2d:1:set %saltLeft 0;
+    select atom within(%lx,%ly,%lwidth,%lheight);
+    remove;
+    set textbox[1].color (0,0,0,255); set textbox[1].background (220,236,218,255); set textbox[1].border 2;&quot; selfscript3=&quot;//do nothing&quot; selfscript2=&quot;//do nothing&quot; id=&quot;jumpMenu2&quot; name=&quot;jumpMenu2&quot; selfscript1=&quot;enablecomponent 2 false&quot;&gt;
+            &lt;option&gt;none 
+            &lt;option&gt;low 
+            &lt;option&gt;high 
+          &lt;/select&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="31" end="33">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img src=&quot;navBarBottomColorBar.gif&quot; height=&quot;6&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;navBarBottomLeftMargin.jpg&quot; height=&quot;26&quot; width=&quot;8&quot;&gt;
+          &lt;a href=&quot;page11.cml&quot;&gt;&lt;font&gt;&lt;img src=&quot;prev.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page13.cml&quot;&gt;&lt;img src=&quot;next.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img src=&quot;page.jpg&quot; height=&quot;26&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img src=&quot;index.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img src=&quot;page1.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img src=&quot;page2.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img src=&quot;page3.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img src=&quot;page4.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img src=&quot;page5.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img src=&quot;page6.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img src=&quot;page7.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;page8.jpg&quot; height=&quot;26&quot; width=&quot;29&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page9.jpg&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;font&gt;&lt;img src=&quot;page10.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;25&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img src=&quot;page11.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page12.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;page12Selected.jpg&quot; height=&quot;26&quot; width=&quot;27&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page13.cml&quot;&gt;&lt;font&gt;&lt;img src=&quot;page13.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;27&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page14.cml&quot;&gt;&lt;img src=&quot;page14.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page15.cml&quot;&gt;&lt;img src=&quot;page15.jpg&quot; border=&quot;0&quot; height=&quot;26&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img src=&quot;navBarBottomRightMargin.jpg&quot; height=&quot;26&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<content start="34" end="35">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="35" end="36">
+</paragraph>
+</section>
+</document>

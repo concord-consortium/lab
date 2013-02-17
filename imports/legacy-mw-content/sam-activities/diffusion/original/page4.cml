@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion, Osmosis, and Active Transport: Concentration and breathing.</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+ 
+       
+ 
+    
+ 
+
+
+</text>
+<section start="0" end="35">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;pagetitle&quot;&gt;
+      &lt;strong&gt;Diffusion, Osmosis, and Active Transport:&lt;/strong&gt; Concentration 
+      and breathing.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;a href=&quot;page3.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4Selected.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;mainidea&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;98&quot; height=&quot;58&quot; src=&quot;motionMainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;p class=&quot;mainidea&quot;&gt;
+            Why do red blood cells absorb oxygen in our lungs and release it 
+            to the rest of our body? Why not the other way around?
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>160.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      You have seen that concentration affects the overall flow of a substance 
+      across a membrane. If a cell moves (or is moved) into an area of low or 
+      high concentration, it will cause the concentration inside the cell to 
+      change. For some single-celled creatures, this is how they get nutrients 
+      to be absorbed into their cells. For red blood cells, this is part of 
+      the story that helps to explain how they pick up oxygen in your lungs 
+      and deliver it to the rest of your body.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Use the model below to move a red blood cell into environments with 
+      different concentrations of oxygen and observe how the oxygen 
+      concentration inside of the red blood cell changes when you put it in 
+      different environments.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="15">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>45</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-right: 3px; margin-top: 10&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;right&quot;&gt;
+      &lt;img width=&quot;584&quot; height=&quot;25&quot; src=&quot;rbcTitle.png&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="23">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>22.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="16" end="17">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page4$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="17" end="18">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>29.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="18" end="19">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 1</timeseries>
+<datatype>1</datatype>
+<samplingpoints>25</samplingpoints>
+<multiplier>0.5</multiplier>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-1d0a01</bgcolor>
+<fgcolor>-100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>200.0</maximum>
+<value>121.0</value>
+</component></content>
+
+<content start="19" end="20">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>15.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<datatype>1</datatype>
+<samplingpoints>25</samplingpoints>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-b2021</bgcolor>
+<fgcolor>-100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>200.0</maximum>
+<value>106.0</value>
+</component></content>
+
+<content start="21" end="22">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>29.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="25">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="23" end="24">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>48</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot; style=&quot;text-indent: -32px; margin-left: 60px; margin-top: 3px; width: 500px&quot;&gt;
+      Note: Real red blood cells are not shaped like a square. This shape was 
+      used for technical reasons to make the model easier to construct.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="30">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>371</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      What happens to the oxygen concentration of the cell when you move it to 
+      a new environment?
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>It stays the same.</choice>
+<choice>It goes up.</choice>
+<choice>It goes down.</choice>
+<choice>It goes up or down until it reaches equilibrium.</choice>
+<answer>3</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message wrongRBCConcChoice.html; -choiceseparator- script:page:0:message wrongRBCConcChoice.html; -choiceseparator- script:page:0:message wrongRBCConcChoice.html; -choiceseparator- script:page:0:message correctRBCConcChoice.html;</script>
+</component></content>
+
+<content start="26" end="28">
+</content>
+
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>371</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Explain how a red blood cell delivers oxygen from your lungs to the rest 
+      of your body. &lt;a href=&quot;script:page:0:message rbcHint.html&quot;&gt;hint&lt;/a&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="32">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot; width=&quot;8&quot;&gt;
+          &lt;a href=&quot;page3.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4Selected.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<Alignment>1</Alignment>
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<content start="33" end="34">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="34" end="35">
+</paragraph>
+</section>
+</document>

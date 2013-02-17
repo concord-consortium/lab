@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion, Osmosis, and Active Transport: The role of surface area.</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+ 
+       
+ 
+
+    
+ 
+
+
+</text>
+<section start="0" end="36">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;pagetitle&quot;&gt;
+      &lt;strong&gt;Diffusion, Osmosis, and Active Transport:&lt;/strong&gt; The role of 
+      surface area.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; width=&quot;54&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6Selected.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;mainidea&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;58&quot; width=&quot;98&quot; src=&quot;motionMainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;p class=&quot;mainidea&quot;&gt;
+            What role does surface area play in diffusion rates and why is the 
+            diffusion rate important?
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>410.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;p class=&quot;firstp&quot;&gt;
+            One theme you see in many biological systems is a network of 
+            channels that forms smaller and smaller branches. It&apos;s a pattern 
+            we see in our lungs, our blood vessels, and our kidneys, to name a 
+            few. There seems to be an evolutionary advantage to having &lt;strong&gt;these 
+            branched systems which greatly increase the surface area between 
+            the inside and outside&lt;/strong&gt; of these structures.
+          &lt;/p&gt;
+          &lt;p&gt;
+            To the right is a diagram of how the air passages in your lungs 
+            branch out into smaller and smaller branches, ending in tiny 
+            alveoli (air sacs) surrounded by blood vessels as shown in the 
+            magnified upper right part of the image.&lt;br&gt;
+          &lt;/p&gt;
+          &lt;p&gt;
+            Why have we evolved to have such delicate, high surface area 
+            systems? What advantage is there to having a larger surface area 
+            separating two things (e.g., inside of lungs and bloodstream, 
+            inside of digestion system and bloodstream, inside of kidney and 
+            bloodstream)?&lt;br&gt;
+          &lt;/p&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;333&quot; width=&quot;282&quot; src=&quot;respitorySystem.png&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;p class=&quot;firstp&quot;&gt;
+            Use the model below to explore how surface area affects the 
+            diffusion of substances across a boundary. The line separates the 
+            model into two equal halves. &lt;strong&gt;Change the surface area 
+            (longer line means larger surface) and time how long it takes the 
+            model to reach equilibrium through diffusion.&lt;/strong&gt; Hint: It 
+            may be best to determine equilibrium by looking at the 
+            concentration graphs.
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="15">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>45</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-top: 10; margin-right: 2px&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;right&quot;&gt;
+      &lt;img height=&quot;26&quot; width=&quot;712&quot; src=&quot;inOutTitle.png&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="23">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>25.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="16" end="17">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page6$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>109.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style1 { font-size: 10px }
+      --&gt;
+    &lt;/style&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color: #6d9a7c&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot; align=&quot;center&quot;&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;center&quot; colspan=&quot;2&quot;&gt;
+          &lt;span class=&quot;style1&quot;&gt;&lt;strong&gt;surface area&lt;/strong&gt;&lt;/span&gt;&lt;strong&gt;&lt;br&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:mw2d:1:reset; load surface5.mml; set %surfVal 5; script:textbox:3:enablecomponent 6 true; enablecomponent 7 false;&quot; name=&quot;RadioGroup1&quot; id=&quot;RadioGroup1_5&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          large
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:mw2d:1:reset; load surface4.mml; set %surfVal 4; script:textbox:3:enablecomponent 6 true; enablecomponent 7 false;&quot; name=&quot;RadioGroup1&quot; id=&quot;RadioGroup1_0&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          .....
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:mw2d:1:reset; load surface3.mml; set %surfVal 3; script:textbox:3:enablecomponent 6 true; enablecomponent 7 false;&quot; name=&quot;RadioGroup1&quot; id=&quot;RadioGroup1_1&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          ....
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:mw2d:1:reset; load surface2.mml; set %surfVal 2; script:textbox:3:enablecomponent 6 true; enablecomponent 7 false;&quot; name=&quot;RadioGroup1&quot; id=&quot;RadioGroup1_2&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          ...
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:mw2d:1:reset; load surface1.mml; set %surfVal 1; script:textbox:3:enablecomponent 6 true; enablecomponent 7 false;&quot; name=&quot;RadioGroup1&quot; id=&quot;RadioGroup1_3&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          ..
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input value=&quot;radio&quot; type=&quot;radio&quot; script=&quot;script:mw2d:1:reset; load surface0.mml; set %surfVal 0; script:textbox:3:enablecomponent 6 true; enablecomponent 7 false;&quot; name=&quot;RadioGroup1&quot; id=&quot;RadioGroup1_4&quot; checked=&quot;checked&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          small
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;center&quot; colspan=&quot;2&quot;&gt;
+          &lt;p style=&quot;margin-top: 0px&quot; class=&quot;firstp&quot;&gt;
+            &lt;input value=&quot;run&quot; selfscript=&quot;enablecomponent 6 false; enablecomponent 7 true;&quot; type=&quot;submit&quot; script=&quot;script:mw2d:1:run;&quot; name=&quot;button&quot; id=&quot;button&quot;&gt;
+            
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;center&quot; colspan=&quot;2&quot;&gt;
+          &lt;span style=&quot;margin-top: 5px&quot; class=&quot;firstp&quot;&gt;&lt;input style=&quot;margin-top: 5px&quot; value=&quot;stop&quot; selfscript=&quot;enablecomponent 6 true; enablecomponent 7 false;&quot; type=&quot;submit&quot; script=&quot;script:mw2d:1:stop;&quot; name=&quot;button2&quot; id=&quot;button2&quot;&gt;
+          &lt;/span&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;center&quot; colspan=&quot;2&quot;&gt;
+          &lt;span style=&quot;margin-top: 5px&quot; class=&quot;firstp&quot;&gt;&lt;input style=&quot;margin-top: 5px&quot; value=&quot;reset&quot; selfscript=&quot;enablecomponent 6 true; enablecomponent 7 false;&quot; type=&quot;submit&quot; script=&quot;script:mw2d:1:reset;&quot; name=&quot;button3&quot; id=&quot;button3&quot;&gt;
+&lt;/span&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="18" end="19">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 1</timeseries>
+<average>true</average>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-1d0a01</bgcolor>
+<fgcolor>-100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>200.0</maximum>
+<value>100.0</value>
+</component></content>
+
+<content start="19" end="20">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>15.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<average>true</average>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-b2021</bgcolor>
+<fgcolor>-100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>200.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="21" end="22">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>26.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="22" end="23">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="23" end="25">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="23" end="24">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>25</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon><size>8</size></content>
+
+<content start="24" end="25">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="26" end="31">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>371</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      How does surface area affect diffusion rates?
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>Surface area has no effect on diffusion rate.</choice>
+<choice>Smaller surface area = faster diffusion rate.</choice>
+<choice>Larger surface area = slower diffusion rate.</choice>
+<choice>Larger surface area = faster diffusion rate.</choice>
+<answer>3</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message noSurfaceArea.html -choiceseparator- script:page:0:message noSurfaceArea.html -choiceseparator- script:page:0:message noSurfaceArea.html -choiceseparator- script:page:0:message yesSurfaceArea.html</script>
+</component></content>
+
+<content start="27" end="29">
+</content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>371</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Single-celled organisms absorb everything they need directly through 
+      their &amp;quot;skin,&amp;quot; their cell membrane. However, you could never get enough 
+      oxygen if oxygen could only diffuse through your skin. Explain why it is 
+      necessary to have lungs with large surface areas:
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="33">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; width=&quot;14&quot; src=&quot;navBarBottomColorBar.gif&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; width=&quot;8&quot; src=&quot;navBarBottomLeftMargin.jpg&quot;&gt;
+          &lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; width=&quot;54&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6Selected.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; width=&quot;7&quot; src=&quot;navBarBottomRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<content start="34" end="35">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="35" end="36">
+</paragraph>
+</section>
+</document>

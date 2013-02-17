@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion, Osmosis, and Active Transport: Making an electric potential.</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+
+ 
+             
+ 
+
+
+
+</text>
+<section start="0" end="25">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>45</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-left: 3px; margin-top: 8px&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;left&quot;&gt;
+      &lt;img src=&quot;potentialTitle.png&quot; height=&quot;27&quot; width=&quot;656&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="19">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>15.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="6" end="7">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page9$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>20.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 1</timeseries>
+<description>outside positive concentration</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-1d0a01</bgcolor>
+<fgcolor>-10000</fgcolor>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<value>9.0</value>
+</component></content>
+
+<content start="9" end="10">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<description>outside negative concentration</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-1d0a01</bgcolor>
+<fgcolor>-4a0100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<value>9.0</value>
+</component></content>
+
+<content start="11" end="12">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>30.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 3</timeseries>
+<description>inside positive concentration</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-b2021</bgcolor>
+<fgcolor>-10000</fgcolor>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<value>9.0</value>
+</component></content>
+
+<content start="13" end="14">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 2</timeseries>
+<description>inside negative concentratiopn</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-b2021</bgcolor>
+<fgcolor>-4a0100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<value>9.0</value>
+</component></content>
+
+<content start="15" end="16">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>25.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 4</timeseries>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-111113</bgcolor>
+<fgcolor>-b3ab6</fgcolor>
+<minimum>0.0</minimum>
+<maximum>40.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="17" end="18">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>40.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-top: 5px&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;left&quot;&gt;
+      &lt;img src=&quot;peTitle.png&quot; height=&quot;205&quot; width=&quot;17&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="18" end="19">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="19" end="21">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>90</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style1 { font-size: 10px }
+      --&gt;
+    &lt;/style&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width: 730&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;right&quot;&gt;
+          &lt;input name=&quot;checkbox&quot; script_selected=&quot;script:mw2d:1:select element 2; set visible off; select atom none; set %waterHidden 1;&quot; script_deselected=&quot;script:mw2d:1:select element 2; set visible on; select atom none; set %waterHidden 0;&quot; id=&quot;checkbox&quot; type=&quot;checkbox&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          hide water
+        &lt;/td&gt;
+        &lt;td rowspan=&quot;2&quot; align=&quot;center&quot; style=&quot;width: 155px&quot;&gt;
+          &lt;input name=&quot;button&quot; selfscript=&quot;enablecomponent 1 false; enablecomponent 2 true;&quot; value=&quot;run&quot; script=&quot;script:mw2d:1:minimize 1 10; run;&quot; id=&quot;button&quot; type=&quot;submit&quot;&gt;
+          &amp;#160; &lt;input name=&quot;button2&quot; selfscript=&quot;enablecomponent 1 true; enablecomponent 2 false;&quot; value=&quot;stop&quot; script=&quot;script:mw2d:1:stop;&quot; id=&quot;button2&quot; type=&quot;submit&quot;&gt;&lt;br&gt;&lt;input name=&quot;button3&quot; selfscript=&quot;enablecomponent 1 false; enablecomponent 2 true;&quot; value=&quot;reset&quot; script=&quot;script:mw2d:1:reset; if (%waterHidden); select element 2; set visible off; endif; run;&quot; id=&quot;button3&quot; type=&quot;submit&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;
+          &lt;span class=&quot;style1&quot;&gt;Note: The size of the ions in this model are 
+          larger&lt;br&gt;to make them easier to grab with the mouse.&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<Alignment>1</Alignment>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<content start="23" end="24">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="24" end="25">
+</paragraph>
+</section>
+</document>

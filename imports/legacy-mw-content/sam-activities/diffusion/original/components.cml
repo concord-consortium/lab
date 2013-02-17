@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Activity Title: Index</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+   
+
+   
+
+    
+
+ 
+
+ 
+     
+ 
+
+Here are some icons you may find useful for referring to common buttons inside of MW (I have others, so ask if what you need is not here:
+                                                                 
+
+</text>
+<section start="0" end="238">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="6">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>371.0</width>
+<height>225.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      Here is a textbox. Copy this to your page, resize it to fit, and remove 
+      the border.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Matte</border>
+</component></content>
+
+<content start="3" end="4">
+</content>
+
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>371.0</width>
+<height>225.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      Here is a textbox that has a border and color. Sometimes this may be 
+      used if you have a key or legend next to a model, or possibly a control 
+      panel made from scripted html buttons. There is a 10 pixel margin around 
+      the edges here.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="11">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>371.0</width>
+<height>380.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;p class=&quot;firstp&quot;&gt;
+            This textbox is intended to be a control panel for some type of 
+            model container. Below are example radio buttons in a single 
+            column, and a couple of other example controls. Replace this text 
+            with your own or delete it.
+          &lt;/p&gt;
+          &lt;p class=&quot;firstp&quot;&gt;
+            &amp;#160;
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot; style=&quot;width: 10%&quot;&gt;
+          &lt;input checked=&quot;checked&quot; name=&quot;RadioGroup1&quot; script=&quot;script:mw:1: ... some MW sricpts&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_0&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td style=&quot;width: 90%&quot;&gt;
+          Radio1
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; script=&quot;script:jmol:1: ... some Jmol script ...&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_1&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio2
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; script=&quot;script:page:1:message blah.html ... or some other page script, but message is the only one I know of right now&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_2&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio3
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; script=&quot;script:textbox:1:load blah.html ... or some other textbox command, but load is the only one I know of right now&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_3&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio4
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; script=&quot;script:[some other component here ... mw3d,colorbar, applet, plugin, xygraph, spectrometer, energylevel]:1:some script appropriate for the object&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_4&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio5
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input script_selected=&quot;script:jmol:1:something to do when checked&quot; name=&quot;checkbox&quot; script_deselected=&quot;script:jmol:1:something to do when unchecked&quot; type=&quot;checkbox&quot; id=&quot;checkbox&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          toggle something
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;
+          &lt;input name=&quot;button1&quot; script=&quot;script:jmol:1:do this when button pressed&quot; type=&quot;submit&quot; value=&quot;do something&quot; id=&quot;button1&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;
+          &lt;select script4=&quot;script:jmol:1:the script for the fourth menu item&quot; script3=&quot;script:jmol:1:the script for the third menu item&quot; script2=&quot;script:jmol:1:the script for the second menu item&quot; script1=&quot;script:jmol:1:the script for the first menu item ... if nothing is to be done use somethingn like - delay 0.1&quot; name=&quot;menu&quot;&gt;
+            &lt;option selected&gt;select something here 
+            &lt;option&gt;item1 
+            &lt;option&gt;item2 
+            &lt;option&gt;item3 
+          &lt;/select&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="8" end="9">
+</content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>371.0</width>
+<height>380.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;4&quot;&gt;
+          &lt;p class=&quot;firstp&quot;&gt;
+            This textbox is intended to be a control panel for some type of 
+            model container. Below are example radio buttons in a double 
+            column, and a couple of other example controls. Replace this text 
+            with your own or delete it.
+          &lt;/p&gt;
+          &lt;p class=&quot;firstp&quot;&gt;
+            &amp;#160;
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot; style=&quot;width: 15%&quot;&gt;
+          &lt;input checked=&quot;checked&quot; name=&quot;RadioGroup1&quot; script=&quot;script:mw:1: ... some MW sricpts&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_0&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td style=&quot;width: 35%&quot;&gt;
+          Radio1-1
+        &lt;/td&gt;
+        &lt;td style=&quot;width: 15%&quot; align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup2&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup2_0&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td style=&quot;width: 35%&quot;&gt;
+          Radio2-1
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; script=&quot;script:jmol:1: ... some Jmol script ...&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_1&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio1-2
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input checked=&quot;checked&quot; name=&quot;RadioGroup2&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup2_1&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio2-2
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; script=&quot;script:page:1:message blah.html ... or some other page script, but message is the only one I know of right now&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_2&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio1-3
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup2&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup2_2&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio2-3
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; script=&quot;script:textbox:1:load blah.html ... or some other textbox command, but load is the only one I know of right now&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_3&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio1-4
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup2&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup2_3&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio2-4
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; script=&quot;script:[some other component here ... mw3d,colorbar, applet, plugin, xygraph, spectrometer, energylevel]:1:some script appropriate for the object&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_4&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio1-5
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input name=&quot;RadioGroup2&quot; type=&quot;radio&quot; value=&quot;radio&quot; id=&quot;RadioGroup2_4&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Radio2-5
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input script_selected=&quot;script:jmol:1:something to do when checked&quot; name=&quot;checkbox&quot; script_deselected=&quot;script:jmol:1:something to do when unchecked&quot; type=&quot;checkbox&quot; id=&quot;checkbox&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td colspan=&quot;3&quot;&gt;
+          toggle something
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;4&quot; align=&quot;center&quot;&gt;
+          &lt;input name=&quot;button1&quot; script=&quot;script:jmol:1:do this when button pressed&quot; type=&quot;submit&quot; value=&quot;do something&quot; id=&quot;button1&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;4&quot; align=&quot;center&quot;&gt;
+          &lt;select script4=&quot;script:jmol:1:the script for the fourth menu item&quot; script3=&quot;script:jmol:1:the script for the third menu item&quot; script2=&quot;script:jmol:1:the script for the second menu item&quot; script1=&quot;script:jmol:1:the script for the first menu item ... if nothing is to be done use somethingn like - delay 0.1&quot; name=&quot;menu&quot;&gt;
+            &lt;option selected&gt;select something here 
+            &lt;option&gt;item1 
+            &lt;option&gt;item2 
+            &lt;option&gt;item3 
+          &lt;/select&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="17">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>371</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Insert your question text here:
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>choice 1</choice>
+<choice>choice 2</choice>
+<choice>choice 3</choice>
+<choice>choice 4</choice>
+<answer>0</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="13" end="15">
+</content>
+
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>371</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Insert your question text here:
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="20">
+<Alignment>1</Alignment>
+<content start="18" end="19">
+<component><class>org.concord.modeler.ImageQuestion</class><width>350</width><height>250</height><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Insert your question text here:
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="23">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>28</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;&lt;/html&gt;</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="29">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>220</height><title>&lt;html&gt;&lt;/html&gt;</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>400</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      This multiple choice question has scripts to load different responses in 
+      the box next to it. To copy this, drag from the bottom right corner 
+      outside of the colored frame to the to top left. Be sure to deselect 
+      this before pasting into your own page.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>choice 1</choice>
+<choice>choice 2</choice>
+<choice>choice 3</choice>
+<answer>2</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:textbox:3:load choice1.html -choiceseparator- script:textbox:3:load choice2.html -choiceseparator- script:textbox:3:load choice3.html</script>
+</component></content>
+
+<content start="25" end="26">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>220</height><title>&lt;html&gt;&lt;/html&gt;</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>320.0</width>
+<height>220.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;p&gt;
+        &amp;#160;
+      &lt;/p&gt;
+      &lt;p&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;After 
+        making a choice, press the &amp;quot;check answer&amp;quot; button.&lt;/font&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-373738</bgcolor>
+<border>Raised Etched</border>
+</component></content>
+
+<content start="27" end="28">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>220</height><title>&lt;html&gt;&lt;/html&gt;</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="31">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>28</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;&lt;/html&gt;</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="170">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="32" end="170">
+</content>
+
+</paragraph>
+<paragraph start="170" end="236">
+<Alignment>1</Alignment>
+<content start="170" end="171">
+<icon>addNegativeCharge.gif</icon></content>
+
+<content start="171" end="172">
+</content>
+
+<content start="172" end="173">
+<icon>addPositiveCharge.gif</icon></content>
+
+<content start="173" end="174">
+</content>
+
+<content start="174" end="175">
+<icon>coolObjects.gif</icon></content>
+
+<content start="175" end="177">
+</content>
+
+<content start="177" end="178">
+<icon>cutObject.gif</icon></content>
+
+<content start="178" end="179">
+</content>
+
+<content start="179" end="180">
+<icon>countObjects.gif</icon></content>
+
+<content start="180" end="181">
+</content>
+
+<content start="181" end="182">
+<icon>drawLine.gif</icon></content>
+
+<content start="182" end="183">
+</content>
+
+<content start="183" end="184">
+<icon>drawRect.gif</icon></content>
+
+<content start="184" end="185">
+</content>
+
+<content start="185" end="186">
+<icon>circleAnnotation.gif</icon></content>
+
+<content start="186" end="187">
+</content>
+
+<content start="187" end="188">
+<icon>dropAtom1.gif</icon></content>
+
+<content start="188" end="189">
+</content>
+
+<content start="189" end="190">
+<icon>dropAtom2.gif</icon></content>
+
+<content start="190" end="191">
+</content>
+
+<content start="191" end="192">
+<icon>dropAtom3.gif</icon></content>
+
+<content start="192" end="193">
+</content>
+
+<content start="193" end="194">
+<icon>dropAtom4.gif</icon></content>
+
+<content start="194" end="196">
+</content>
+
+<content start="196" end="197">
+<icon>dropRectangularObstacle.gif</icon></content>
+
+<content start="197" end="198">
+</content>
+
+<content start="198" end="199">
+<icon>duplicate.gif</icon></content>
+
+<content start="199" end="200">
+</content>
+
+<content start="200" end="201">
+<icon>fillWhite.gif</icon></content>
+
+<content start="201" end="202">
+</content>
+
+<content start="202" end="203">
+<icon>heatObjects.gif</icon></content>
+
+<content start="203" end="204">
+</content>
+
+<content start="204" end="205">
+<icon>markObjects.gif</icon></content>
+
+<content start="205" end="207">
+</content>
+
+<content start="207" end="208">
+<icon>movieSlider.gif</icon></content>
+
+<content start="208" end="209">
+</content>
+
+<content start="209" end="210">
+<icon>reset.gif</icon></content>
+
+<content start="210" end="211">
+</content>
+
+<content start="211" end="212">
+<icon>playBackwards.gif</icon></content>
+
+<content start="212" end="213">
+</content>
+
+<content start="213" end="214">
+<icon>stepBackward.gif</icon></content>
+
+<content start="214" end="215">
+</content>
+
+<content start="215" end="216">
+<icon>pause.gif</icon></content>
+
+<content start="216" end="218">
+</content>
+
+<content start="218" end="219">
+<icon>stepForward.gif</icon></content>
+
+<content start="219" end="220">
+</content>
+
+<content start="220" end="221">
+<icon>play.gif</icon></content>
+
+<content start="221" end="222">
+</content>
+
+<content start="222" end="223">
+<icon>quickHeatAndCoolButtons.gif</icon></content>
+
+<content start="223" end="224">
+</content>
+
+<content start="224" end="225">
+<icon>rotateObject.gif</icon></content>
+
+<content start="225" end="226">
+</content>
+
+<content start="226" end="227">
+<icon>selectObject.gif</icon></content>
+
+<content start="227" end="228">
+</content>
+
+<content start="228" end="229">
+<icon>setVelocity.gif</icon></content>
+
+<content start="229" end="230">
+</content>
+
+<content start="230" end="231">
+<icon>showTrajectory.gif</icon></content>
+
+<content start="231" end="232">
+</content>
+
+<content start="232" end="233">
+<icon>portrait_icon.jpg</icon></content>
+
+<content start="233" end="234">
+</content>
+
+<content start="234" end="235">
+<icon>pencil.gif</icon></content>
+
+<content start="235" end="236">
+</content>
+
+</paragraph>
+<paragraph start="236" end="237">
+<content start="236" end="237">
+</content>
+
+</paragraph>
+<paragraph start="237" end="238">
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion, Osmosis, and Active Transport: Making an electric potential.</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+ 
+             
+ 
+    
+ 
+
+
+</text>
+<section start="0" end="41">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;pagetitle&quot;&gt;
+      &lt;strong&gt;Diffusion, Osmosis, and Active Transport:&lt;/strong&gt; Making an 
+      electric potential.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page9Selected.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>95</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;mainIdea&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;98&quot; height=&quot;58&quot; src=&quot;motionMainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;p class=&quot;mainIdea&quot;&gt;
+            Frequently cells need to keep high concentrations of some chemical 
+            inside, or they need to keep other chemicals out (low 
+            concentration inside). What happens when you actively move ions 
+            into or out of a cell?
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>180.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      Through the processes of osmosis and diffusion, nature tends toward a 
+      state where concentrations of everything are equalized. However, there 
+      are times when it is necessary to create a situation where the 
+      concentrations are not equal. Concentration differences between the 
+      inside and outside of cells help to power the electrical signals in your 
+      nerves, give you stength to flex your muscles, and allow your cells to 
+      control the flow of water through osmosis.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Below is a model showing a cell membrane, which, as you have seen, is 
+      not permeable to ions. &lt;strong&gt;Try moving ions from one side of the 
+      membrane to the other. &lt;/strong&gt;&lt;a href=&quot;script:page:0:message moveIonsHelp.html&quot;&gt;(help?)&lt;/a&gt; 
+      Do this until you build up a significant difference in the 
+      concentrations inside and outside of the cell, and run the model. Can 
+      you think of different ways to try this out?
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="15">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>45</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-left: 3px; margin-top: 8px&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;left&quot;&gt;
+      &lt;img width=&quot;656&quot; height=&quot;27&quot; src=&quot;potentialTitle.png&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="29">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>15.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="16" end="17">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page9$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="17" end="18">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>20.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="18" end="19">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 1</timeseries>
+<description>outside positive concentration</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-1d0a01</bgcolor>
+<fgcolor>-10000</fgcolor>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<value>9.0</value>
+</component></content>
+
+<content start="19" end="20">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<description>outside negative concentration</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-1d0a01</bgcolor>
+<fgcolor>-4a0100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<value>9.0</value>
+</component></content>
+
+<content start="21" end="22">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>30.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 3</timeseries>
+<description>inside positive concentration</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-b2021</bgcolor>
+<fgcolor>-10000</fgcolor>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<value>9.0</value>
+</component></content>
+
+<content start="23" end="24">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 2</timeseries>
+<description>inside negative concentratiopn</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-b2021</bgcolor>
+<fgcolor>-4a0100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<value>9.0</value>
+</component></content>
+
+<content start="25" end="26">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>25.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 4</timeseries>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-111113</bgcolor>
+<fgcolor>-b3ab6</fgcolor>
+<minimum>0.0</minimum>
+<maximum>40.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="27" end="28">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>40.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-top: 5px&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;left&quot;&gt;
+      &lt;img width=&quot;17&quot; height=&quot;205&quot; src=&quot;peTitle.png&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="28" end="29">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="29" end="31">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="29" end="30">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>90</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style1 { font-size: 10px }
+      --&gt;
+    &lt;/style&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table cellpadding=&quot;0&quot; style=&quot;width: 730&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;right&quot;&gt;
+          &lt;input name=&quot;checkbox&quot; script_selected=&quot;script:mw2d:1:select element 2; set visible off; select atom none; set %waterHidden 1;&quot; id=&quot;checkbox&quot; script_deselected=&quot;script:mw2d:1:select element 2; set visible on; select atom none; set %waterHidden 0;&quot; type=&quot;checkbox&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          hide water
+        &lt;/td&gt;
+        &lt;td style=&quot;width: 155px&quot; rowspan=&quot;2&quot; align=&quot;center&quot;&gt;
+          &lt;input value=&quot;run&quot; name=&quot;button&quot; selfscript=&quot;enablecomponent 1 false; enablecomponent 2 true;&quot; script=&quot;script:mw2d:1:minimize 1 10; run;&quot; id=&quot;button&quot; type=&quot;submit&quot;&gt;
+          &amp;#160; &lt;input value=&quot;stop&quot; name=&quot;button2&quot; selfscript=&quot;enablecomponent 1 true; enablecomponent 2 false;&quot; script=&quot;script:mw2d:1:stop;&quot; id=&quot;button2&quot; type=&quot;submit&quot;&gt;&lt;br&gt;&lt;input value=&quot;reset&quot; name=&quot;button3&quot; selfscript=&quot;enablecomponent 1 false; enablecomponent 2 true;&quot; script=&quot;script:mw2d:1:reset; if (%waterHidden); select element 2; set visible off; endif; run;&quot; id=&quot;button3&quot; type=&quot;submit&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;
+          &lt;span class=&quot;style1&quot;&gt;Note: The size of the ions in this model are 
+          larger&lt;br&gt;to make them easier to grab with the mouse.&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="36">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>371</width>
+<height>240</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      What must be done to get an electric potential (a voltage) across the 
+      membrane?
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>Move all the water to one side.</choice>
+<choice>Make the concentrations equal inside and out.</choice>
+<choice>&lt;html&gt;Make the concentrations of at least one ion different inside and out.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;Make the concentrations of both ions different inside and out.&lt;/html&gt;</choice>
+<answer>2</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message noVoltage1.html -choiceseparator- script:page:0:message noVoltage2.html -choiceseparator- script:page:0:message yesVoltage.html -choiceseparator- script:page:0:message noVoltage3.html</script>
+</component></content>
+
+<content start="32" end="34">
+</content>
+
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>5</row>
+<width>371</width>
+<height>240</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      How can you get the maximum voltage across the cell membrane?
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>Move all the water to one side.</choice>
+<choice>Move all the positive to one side.</choice>
+<choice>Move all the negative to one side.</choice>
+<choice>Move all of the ions both + and - to one side.</choice>
+<choice>&lt;html&gt;Move all the positives to one side and negatives to the other.&lt;/html&gt;</choice>
+<answer>4</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message noVoltageMax1.html -choiceseparator- script:page:0:message noVoltageMax2.html -choiceseparator- script:page:0:message noVoltageMax2.html -choiceseparator- script:page:0:message noVoltageMax3.html -choiceseparator- script:page:0:message yesVoltageMax.html</script>
+</component></content>
+
+<content start="35" end="36">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="36" end="38">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot; width=&quot;8&quot;&gt;
+          &lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page9Selected.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<content start="39" end="40">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="40" end="41">
+</paragraph>
+</section>
+</document>
