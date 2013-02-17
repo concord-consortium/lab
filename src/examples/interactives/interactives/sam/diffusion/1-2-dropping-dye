@@ -1,0 +1,15 @@
+{
+  title: "Basic Diffusion",
+  publicationStatus: "draft",
+  subtitle: "A drop of dye spreading out in water.",
+  about: "Click in the model to drop a small amount of dye and observe how it diffuses through the water.",
+  models: [
+    {
+      "id": "model1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/original-interactives-in-pages/page1/page1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ]
+}
