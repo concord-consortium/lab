@@ -18,6 +18,10 @@
   :name: "Science of Atoms and Molecules: DNA-to-proteins"
   :category: Curriculum
 
+- :path: sam/diffusion
+  :name: "Science of Atoms and Molecules: Diffusion"
+  :category: Curriculum
+
 - :path: inquiry-space/pendulum
   :name: "Inquiry Space: Pendulums"
   :category: Curriculum
