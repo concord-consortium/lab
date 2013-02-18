@@ -15,6 +15,11 @@
           "name": "tracedAtomID",
           "onChange": "",
           "initialValue": -99
+        },
+        {
+          "name": "wasMarked",
+          "onChange": "",
+          "initialValue": 0
         }
       ]
     }
@@ -25,20 +30,35 @@
       "id": "trace",
       "text": "Trace Random Atom",
       "action": [
+        "var opt = {supressRepaint: true};",
         "var atomID = randomAtoms(1);",
         "var tracedAtomID = get('tracedAtom');",
         "if (tracedAtomID != -99) {",
-          "setAtomProperties(tracedAtomID, {element: 0});",
+          "setAtomProperties(tracedAtomID, {element: 0, marked: get('wasMarked')}, false, false, opt);",
         "}",
-        "setAtomProperties(atomID, {element: 1});",
+        "setAtomProperties(atomID, {element: 1}, false, false, opt);",
         "set({tracedAtom: atomID});",
+        "set({wasMarked: getAtomProperties(atomID).marked});",
+        "setAtomProperties(atomID, { marked: 0}, false, false, opt);",
         "traceAtom(atomID);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "drop-dye",
+      "text": "Add Drop of Dye",
+      "action": [
+        "var atomsToMark = within(0,get('height'),1,1);",
+        "if (atomsToMark != -1) {",
+          "markAtoms(atomsToMark);",
+          "start();",
+        "}"
       ]
     }
   ],
   "layout": {
     "under-model": [
-      "trace"
+      "trace","drop-dye"
     ]
   },
   "template": [
