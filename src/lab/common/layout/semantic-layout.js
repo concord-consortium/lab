@@ -210,10 +210,10 @@ define(function (require) {
         $container = $containers[container.id];
 
         if (!container.left && !container.right) {
-          container.left = "model.left";
+          container.left = "0";
         }
         if (!container.top && !container.bottom) {
-          container.top = "model.top";
+          container.top = "0";
         }
 
         if (!container.top && !container.bottom) {

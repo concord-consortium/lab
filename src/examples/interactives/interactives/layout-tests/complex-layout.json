@@ -61,7 +61,7 @@
     {
       "type": "barGraph",
       "id": "bar-graph",
-      "width": "8em",
+      "width": "10em",
       "height": "100%",
       "options": {
         "minValue": 0,
@@ -148,16 +148,19 @@
   "template": [
     {
       "id": "top",
+      "left": "model.left",
       "bottom": "model.top",
       "width": "model.width"
     },
     {
       "id": "left",
+      "top": "model.top",
       "right": "model.left",
       "height": "model.height"
     },
     {
       "id": "right-upper",
+      "top": "model.top",
       "left": "model.right",
       "height": "model.height * 0.5",
       "padding-left": "1em",
@@ -175,6 +178,7 @@
     },
     {
       "id": "bottom-left",
+      "left": "model.left",
       "top": "model.bottom",
       "padding-bottom": "1em"
     },
