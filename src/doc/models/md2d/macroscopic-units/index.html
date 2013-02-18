@@ -92,7 +92,8 @@
         the model (after the transformation from femtoseconds), let \(10^4\) femtoseconds represent
         1 second:
 
-        $$\text{1 fs \(\rightarrow 10^4\) s, while maintaining timeStep \(\times\) viewRefreshInterval} = 167$$
+        $$10^4 \text{ fs} \rightarrow 1 \text{ s}$$
+        $$ \text{ (also ensure timeStep \(\times\) viewRefreshInterval = 167 fs/frame)}$$
       </p>
 
       <h2>Converting MD2D Units to MKS Units: Derived Units</h2>
@@ -158,10 +159,13 @@
         friction is a ratio of force to velocity. In MD2D, this is represented as a ratio of
         \(\text{amu nm}/ \text{fs}^2\) to \(\text{nm / fs}\), or \(\text{amu / fs}\).
 
-        $$1 \text{ amu / fs} \times 10^4 \text{ fs / s} = 1 \text{ kg / s }
+        $$1 \text{ amu/fs}
+          \cdot 10^4 \text{ fs/s}
+          \cdot 1 \text{ kg/amu}
+          = 10^4 \text{ kg/s }
           (= 1 \frac{\text{N}}{^\text{m}/_\text{s}})$$
 
-        $$\therefore 1 \text{ amu / fs} \rightarrow 1 \text{ kg / s } (= 1 \frac{\text{N}}{^\text{m}/_\text{s}})$$
+        $$\therefore 1 \text{ amu/fs} \rightarrow 1 \text{ kg/s } (= 1 \frac{\text{N}}{^\text{m}/_\text{s}})$$
       </p>
 
       <h3>Spring Constants</h3>
@@ -174,13 +178,13 @@
       <p>
         Using the translation of energy units derived above, the correspondence is:
 
-        $$1 \text{eV} / \text{nm}^2
+        $$1 \text{ eV} / \text{nm}^2
           \cdot (9.649 \times 10^3 \text{ J}/\text{eV})
           \cdot (1 \text{ nm}/\text{m})^2
           = 9.649 \times 10^3 \text{ J}/\text{m}^2
           = 9.649 \times 10^3 \text{ N} / \text{m}$$
 
-        $$\therefore 1 \text{eV} / \text{nm}^2 \rightarrow 9.649 \times 10^3 \text{ N} / \text{m}$$
+        $$\therefore 1 \text{ eV} / \text{nm}^2 \rightarrow 9.649 \times 10^3 \text{ N} / \text{m}$$
       </p>
 
       <h3>Charge</h3>
