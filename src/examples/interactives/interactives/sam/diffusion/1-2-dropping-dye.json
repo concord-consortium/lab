@@ -6,10 +6,47 @@
   "models": [
     {
       "id": "model1",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion//page1/page1$0.json",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/page1/page1$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
-      }
+      },
+      "parameters": [
+        {
+          "name": "tracedAtomID",
+          "initialValue": -99
+        }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "trace",
+      "text": "Trace Random Atom",
+      "action": [
+        "var atomId = randomAtoms(1);",
+        "var tracedAtomID = get('tracedAtom');",
+        "if (tracedAtomID != -99) {",
+          "setAtomProperties(tracedAtomID, {element: 0});",
+        "}",
+        "setAtomProperties(atomID, {element: 1});",
+        "set({tracedAtom: atomID});",
+        "traceAtom(atomId);"
+      ]
+    }
+  ],
+  "layout": {
+    "under-model": [
+      "trace"
+    ]
+  },
+  "template": [
+    {
+      "id": "under-model",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "1em"
     }
   ]
 }
