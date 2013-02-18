@@ -8,9 +8,23 @@
       "id": "model1",
       "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/page1/page1$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      },
-      "onLoad": "set({ tracedAtom: -99, wasMarked: 0 });"
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "waterDyeKey.png": "waterDyeKey.svg"
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "tracedAtom",
+      "initialValue": -99,
+      "onChange": ""
+    },
+    {
+      "name": "wasMarked",
+      "initialValue": 0,
+      "onChange": ""
     }
   ],
   "components": [
@@ -56,7 +70,8 @@
       "top": "model.bottom",
       "left": "model.left",
       "width": "model.width",
-      "padding-top": "1em"
+      "padding-top": "0.25em",
+      "align": "center"
     }
   ]
 }
