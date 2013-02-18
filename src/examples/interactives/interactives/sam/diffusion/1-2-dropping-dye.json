@@ -12,7 +12,7 @@
       },
       "parameters": [
         {
-          "name": "tracedAtomID",
+          "name": "tracedAtom",
           "onChange": "",
           "initialValue": -99
         },
