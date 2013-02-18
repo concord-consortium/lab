@@ -331,9 +331,10 @@ define(function (require) {
             width: cx,
             height: cy
           })
+          // SVG element should always fit its parent container.
           .style({
-            width: cx,
-            height: cy
+            width: "100%",
+            height: "100%"
           });
 
         vis = vis1.append("g").attr("class", "particle-container-vis");
@@ -381,10 +382,6 @@ define(function (require) {
       // Set new dimensions of the top-level SVG container.
       vis1
         .attr({
-          width: cx,
-          height: cy
-        })
-        .style({
           width: cx,
           height: cy
         });
