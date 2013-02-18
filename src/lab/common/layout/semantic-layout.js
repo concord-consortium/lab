@@ -129,11 +129,16 @@ define(function (require) {
         id = container.id;
         $containers[id] = $("<div id='"+id+"'>").appendTo($interactiveContainer);
         $containers[id].css("display", "inline-block");
-        // add any padding-* properties directly to the container's style
+
         for (prop in container) {
           if (!container.hasOwnProperty(prop)) continue;
+          // Add any padding-* properties directly to the container's style.
           if (/^padding-/.test(prop)) {
             $containers[id].css(prop, container[prop]);
+          }
+          // Support also "align" property.
+          if (prop === "align") {
+            $containers[id].css("text-align", container[prop]);
           }
         }
       }
