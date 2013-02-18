@@ -171,7 +171,7 @@ define(function (require) {
           this.axisContainer.selectAll("text")
             .style({
               "fill": options.textColor,
-              "stroke-width": 0,
+              "stroke": "none",
               // Workaround for hiding numeric labels. D3 doesn't provide any convenient function
               // for that. Returning empty string as tickFormat causes that bounding box width is
               // calculated incorrectly.
