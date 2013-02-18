@@ -10,18 +10,7 @@
       "viewOptions": {
         "controlButtons": "play_reset"
       },
-      "parameters": [
-        {
-          "name": "tracedAtom",
-          "onChange": "",
-          "initialValue": -99
-        },
-        {
-          "name": "wasMarked",
-          "onChange": "",
-          "initialValue": 0
-        }
-      ]
+      "onLoad": "set({ tracedAtom: -99, wasMarked: 0 });"
     }
   ],
   "components": [
