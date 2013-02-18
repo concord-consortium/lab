@@ -131,6 +131,36 @@ define(function (require) {
       },
 
       /**
+        Returns array of atom indices.
+        within(1,1,0.5) returns all atoms within 0.5 nm of position (1nm,1nm) within the model.
+        within(1,1,0.2,0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
+          with the lower-left corner specified by the postion (1nm,1nm).
+      **/
+      within: function(x,y,p1,p2) {
+        var atomsWithin = [];
+        var numAtoms = model.get_num_atoms();
+        var props, dist, inX, inY;
+        var n = 0;
+
+        for (var i = 0; i < numAtoms; i++) {
+          props = model.getAtomProperties(i);
+          if (typeof p2 === 'undefined') {
+            dist = Math.sqrt(Math.pow(x-props.x,2) + Math.pow(y-props.y,2));
+            if (dist <= p1) {
+              atomsWithin[n++] = i;
+            }
+          } else {
+            inX = ((props.x >= x) && (props.x <= (x+p1)));
+            inY = ((props.y <= y) && (props.y >= (y-p2)));
+            if (inX && inY) {
+              atomsWithin[n++] = i;
+            }
+          }
+        }
+        return (n === 0 ? -1 : atomsWithin);
+      },
+
+      /**
         Accepts atom indices as arguments, or an array containing atom indices.
         Unmarks all atoms, then marks the requested atom indices.
         Repaints the screen to make the marks visible.
