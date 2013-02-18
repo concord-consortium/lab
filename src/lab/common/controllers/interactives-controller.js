@@ -224,10 +224,6 @@ define(function (require) {
       // to exist during its definition.
       setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
 
-      for(i = 0; i < componentCallbacks.length; i++) {
-        componentCallbacks[i]();
-      }
-
       if (interactive.template) {
         if (typeof interactive.template === "string") {
           template = templates[interactive.template];
@@ -259,6 +255,13 @@ define(function (require) {
           }
         }
       });
+
+      // Call component callbacks *after* layout. Some callbacks require that
+      // their views are already attached to the DOM, e.g. (bar graph uses getBBox()
+      // which in Firefox works only when element is visible and rendered).
+      for(i = 0; i < componentCallbacks.length; i++) {
+        componentCallbacks[i]();
+      }
 
       // setup messaging with embedding parent window
       parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
@@ -382,7 +385,6 @@ define(function (require) {
     */
     function loadInteractive(newInteractive, viewSelector) {
       var componentJsons,
-          $exportButton,
           i, len;
 
       componentCallbacks = [];
