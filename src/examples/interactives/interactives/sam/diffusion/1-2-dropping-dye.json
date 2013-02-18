@@ -13,6 +13,7 @@
       "parameters": [
         {
           "name": "tracedAtomID",
+          "onChange": "",
           "initialValue": -99
         }
       ]
@@ -24,14 +25,14 @@
       "id": "trace",
       "text": "Trace Random Atom",
       "action": [
-        "var atomId = randomAtoms(1);",
+        "var atomID = randomAtoms(1);",
         "var tracedAtomID = get('tracedAtom');",
         "if (tracedAtomID != -99) {",
           "setAtomProperties(tracedAtomID, {element: 0});",
         "}",
         "setAtomProperties(atomID, {element: 1});",
         "set({tracedAtom: atomID});",
-        "traceAtom(atomId);"
+        "traceAtom(atomID);"
       ]
     }
   ],
