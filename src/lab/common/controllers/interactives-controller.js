@@ -216,7 +216,7 @@ define(function (require) {
       that depend on the model's properties, then draw the screen.
     */
     function modelLoaded() {
-      var i, listener, template, layout;
+      var i, listener, template, layout, fontScale;
 
       setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
@@ -232,14 +232,16 @@ define(function (require) {
         }
       }
 
-      // the authored definition of which components go in which container
+      // The authored definition of which components go in which container.
       layout = interactive.layout;
+      // Font scale which affect whole interactive container.
+      fontScale = interactive.fontScale;
 
       // TODO: this should be moved out of modelLoaded (?)
       $interactiveContainer.children().not("#model-container").each(function () {
         $(this).detach();
       });
-      semanticLayout = new SemanticLayout($interactiveContainer, template, layout, componentByID, modelController);
+      semanticLayout = new SemanticLayout($interactiveContainer, template, layout, componentByID, modelController, fontScale);
 
       $(window).unbind('resize');
       $(window).on('resize', function() {

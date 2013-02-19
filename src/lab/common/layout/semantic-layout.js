@@ -12,13 +12,19 @@ define(function (require) {
 
       // Minimum width of the model.
       minModelWidth = 150,
+      // Minimum font size (in ems).
+      minFontSize = 0.65,
+      // Canonical dimensions of the interactive, they decide about font size.
+      // (1 * fontScale) em is used for the interactive which fits this container:
+      canonicalInteractiveWidth = 500,
+      canonicalInteractiveHeight = 350,
 
       containerColors = [
         "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
         "rgba(0,255,255,0.1)", "rgba(255,255,128,0.1)", "rgba(128,255,0,0.1)", "rgba(255,128,0,0.1)"
       ];
 
-  return function SemanticLayout($interactiveContainer, containers, componentLocations, components, modelController) {
+  return function SemanticLayout($interactiveContainer, containers, componentLocations, components, modelController, fontScale) {
 
     var layout,
         $modelContainer,
@@ -28,14 +34,22 @@ define(function (require) {
         modelTop = 0,
         modelLeft = 0,
 
+        // Interactive dimensions which fits canonical dimensions.
+        // So, basic dimensions are <= canonical dimensions.
+        // They are required to correctly determine font size
+        // (as we can't simply use canonical dimensions).
+        basicInteractiveWidth,
+        basicInteractiveHeight,
+
+        // Interactive aspect ratio. It's used to determine font size.
+        // Note that it may change a little bit during resizing (as there are
+        // some dimensions defined in px, like borders, user agent styles etc.),
+        // however this slight differences don't have any significant impact on result.
+        interactiveAspectRatio,
+
+        // Dimensions of the container.
         availableWidth,
-        availableHeight,
-
-        // Canonical dimensions of the interactive, deciding about font size.
-        basicInteractiveWidth = 500,
-        basicInteractiveHeight = 350,
-
-        interactiveAspectRatio;
+        availableHeight;
 
     function getDimensionOfContainer($container, dim) {
       var position = $container.position();
@@ -58,24 +72,26 @@ define(function (require) {
 
     function setFontSize() {
       var containerAspectRatio = availableWidth / availableHeight,
-          scale;
+          font;
 
       if (interactiveAspectRatio <= containerAspectRatio) {
-        scale = availableHeight / basicInteractiveHeight;
+        font = availableHeight / basicInteractiveHeight;
       } else {
-        scale = availableWidth / basicInteractiveWidth;
+        font = availableWidth / basicInteractiveWidth;
       }
 
-      // Ensure min font size.
-      if (scale < 0.65) {
-        scale = 0.65;
+      font *= fontScale;
+
+      // Ensure min font size (in 'em').
+      if (font < minFontSize) {
+        font = minFontSize;
       }
 
       // Set font-size of #responsive-content element. So, if application author
       // wants to avoid rescaling of font-size for some elements, they should not
       // be included in #responsive-content DIV.
       // TODO: #responsive-content ID is hardcoded, change it?
-      $("#responsive-content").css("font-size", scale + "em");
+      $("#responsive-content").css("font-size", font + "em");
     }
 
     // Calculate width for containers which doesn't explicitly specify its width.
@@ -362,10 +378,12 @@ define(function (require) {
       var redraws = 0,
           maxX = -Infinity,
           maxY = -Infinity,
+          canonicalAspectRatio = canonicalInteractiveWidth / canonicalInteractiveHeight,
           id, $container, val;
 
-      availableWidth = basicInteractiveWidth;
-      availableHeight = basicInteractiveHeight;
+      availableWidth = canonicalInteractiveWidth;
+      availableHeight = canonicalInteractiveHeight;
+
       setMinDimensions();
       modelWidth = availableWidth;
       positionContainers();
@@ -388,14 +406,13 @@ define(function (require) {
       }
 
       interactiveAspectRatio = maxX / maxY;
-      if (interactiveAspectRatio < (availableWidth / availableHeight)) {
-        basicInteractiveWidth = basicInteractiveHeight * interactiveAspectRatio;
+      if (interactiveAspectRatio < canonicalAspectRatio) {
+        basicInteractiveWidth = canonicalInteractiveHeight * interactiveAspectRatio;
+        basicInteractiveHeight = canonicalInteractiveHeight;
       } else {
-        basicInteractiveHeight = basicInteractiveWidth / interactiveAspectRatio;
+        basicInteractiveWidth = canonicalInteractiveWidth;
+        basicInteractiveHeight = canonicalInteractiveWidth / interactiveAspectRatio;
       }
-
-
-      console.log(basicInteractiveWidth + " x " + basicInteractiveHeight);
     }
 
     // Public API.

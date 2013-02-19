@@ -23,6 +23,10 @@ define(function() {
         defaultValue: ""
       },
 
+      fontScale: {
+        defaultValue: 1
+      },
+
       models: {
         // List of model definitions. Its definition is below ('model').
         required: true
