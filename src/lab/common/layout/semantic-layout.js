@@ -16,8 +16,8 @@ define(function (require) {
       minFontSize = 0.65,
       // Canonical dimensions of the interactive, they decide about font size.
       // (1 * fontScale) em is used for the interactive which fits this container:
-      canonicalInteractiveWidth = 500,
-      canonicalInteractiveHeight = 350,
+      canonicalInteractiveWidth = 600,
+      canonicalInteractiveHeight = 420,
 
       containerColors = [
         "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",

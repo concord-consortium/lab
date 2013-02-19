@@ -352,7 +352,7 @@ AUTHORING = false;
       $iframeWrapper.width('400px').height('280px');
       break;
       case "medium":
-      $iframeWrapper.width('500px').height('350px');
+      $iframeWrapper.width('600px').height('420px');
       break;
       case "large":
       $iframeWrapper.width('1000px').height('700px');
