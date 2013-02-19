@@ -2,6 +2,7 @@
   "title": "Amino Acids",
   "publicationStatus": "draft",
   "subtitle": "A basic test of the proteins engine.",
+  "fontScale": 0.6,
   "about": [
     "Using this interactive you can:<ul>",
     "<li>change type of amino acids (right click on the amino acid to open a special context menu),</li>",

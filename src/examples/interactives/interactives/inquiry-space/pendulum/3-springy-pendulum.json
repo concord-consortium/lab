@@ -3,6 +3,7 @@
   "publicationStatus": "public",
   "subtitle": "",
   "about": "",
+  "fontScale": 0.8,
   "models": [
     {
       "id": "pendulum1$0",

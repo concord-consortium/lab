@@ -3,6 +3,7 @@
   "publicationStatus": "public",
   "subtitle": "Examples of defining and using different Interactive components.",
   "about": "",
+  "fontScale": 0.7,
   "models": [
     {
       "id": "page3$0-with-heatbath",

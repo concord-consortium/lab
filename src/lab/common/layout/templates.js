@@ -17,7 +17,8 @@ define(function () {
       {
         "id": "bottom",
         "top": "model.bottom",
-        "width": "interactive.width"
+        "width": "interactive.width",
+        "padding-top": "0.5em"
       }
     ],
     "narrow-right": [
@@ -38,7 +39,8 @@ define(function () {
       {
         "id": "bottom",
         "top": "model.bottom",
-        "width": "interactive.width"
+        "width": "interactive.width",
+        "padding-top": "0.5em"
       }
     ],
     "wide-right": [
@@ -59,7 +61,8 @@ define(function () {
       {
         "id": "bottom",
         "top": "model.bottom",
-        "width": "interactive.width"
+        "width": "interactive.width",
+        "padding-top": "0.5em"
       }
     ]
   };

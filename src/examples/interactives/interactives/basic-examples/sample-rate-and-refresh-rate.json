@@ -6,6 +6,7 @@
     "Try to change timeStep, viewRefreshInterval or modelSampleRate and observe changes in the speed of simulation execution.",
     "See <a href=\"/readme.html#md2d-simulation-stepping\">readme</a> for more details."
   ],
+  "fontScale": 0.8,
   "models": [
     {
       "id": "simple-gas$0",

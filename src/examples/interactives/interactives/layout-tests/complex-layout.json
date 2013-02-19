@@ -3,6 +3,7 @@
   "publicationStatus": "public",
   "subtitle": "",
   "about": "",
+  "fontScale": 0.7,
   "models": [
     {
       "id": "100-atoms-charged",
@@ -61,7 +62,7 @@
     {
       "type": "barGraph",
       "id": "bar-graph",
-      "width": "10em",
+      "width": "8em",
       "height": "100%",
       "options": {
         "minValue": 0,
