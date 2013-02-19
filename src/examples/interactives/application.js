@@ -346,16 +346,16 @@ AUTHORING = false;
         selection = $selectIframeSize.val();
     switch(selection) {
       case "tiny":
-      $iframeWrapper.width('350px').height('263px');
+      $iframeWrapper.width('350px').height('245px');
       break;
       case "small":
-      $iframeWrapper.width('400px').height('300px');
+      $iframeWrapper.width('400px').height('280px');
       break;
       case "medium":
-      $iframeWrapper.width('600px').height('400px');
+      $iframeWrapper.width('500px').height('350px');
       break;
       case "large":
-      $iframeWrapper.width('1000px').height('600px');
+      $iframeWrapper.width('1000px').height('700px');
       break;
     }
     saveOptionsToCookie();
