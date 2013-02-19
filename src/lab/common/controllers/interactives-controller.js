@@ -241,7 +241,6 @@ define(function (require) {
       });
       semanticLayout = new SemanticLayout($interactiveContainer, template, layout, componentByID, modelController);
 
-      semanticLayout.layoutInteractive();
       $(window).unbind('resize');
       $(window).on('resize', function() {
         semanticLayout.layoutInteractive();
@@ -256,9 +255,9 @@ define(function (require) {
         }
       });
 
-      // Call component callbacks *after* layout. Some callbacks require that
-      // their views are already attached to the DOM, e.g. (bar graph uses getBBox()
-      // which in Firefox works only when element is visible and rendered).
+      // Call component callbacks *when* the layout is created.
+      // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
+      //getBBox() which in Firefox works only when element is visible and rendered).
       for(i = 0; i < componentCallbacks.length; i++) {
         componentCallbacks[i]();
       }
@@ -278,6 +277,9 @@ define(function (require) {
       for(i = 0; i < modelLoadedCallbacks.length; i++) {
         modelLoadedCallbacks[i]();
       }
+
+      // Finally, layout interactive.
+      semanticLayout.layoutInteractive();
     }
 
     /**

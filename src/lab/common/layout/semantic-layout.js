@@ -1,4 +1,4 @@
-/*global define: false, $: false, d3: false */
+/*global define: false, $: false */
 // ------------------------------------------------------------
 //
 //   Semantic Layout
@@ -13,21 +13,6 @@ define(function (require) {
       // Minimum width of the model.
       minModelWidth = 150,
 
-      // Canonical dimensions of the interactive, deciding about font size.
-      basicInteractiveWidth = 1000,
-      basicInteractiveHeight = 600,
-
-      // Font scaling function.
-      fontScale =  d3.scale.linear()
-        // Domain: actual interactive size to basic interactive size ratio.
-        // Note that 0.4 is "small" size, 0.6 is "medium" size and 1.0 is "large" size.
-        .domain([0.4, 0.6, 1.1, 5])
-        // Range: font sizes in "em".
-        .range([0.6, 0.8, 0.9, 5])
-        // Clamp to ensure that font is not smaller than minimum font size
-        // (first value in range array above).
-        .clamp(true),
-
       containerColors = [
         "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
         "rgba(0,255,255,0.1)", "rgba(255,255,128,0.1)", "rgba(128,255,0,0.1)", "rgba(255,128,0,0.1)"
@@ -41,7 +26,16 @@ define(function (require) {
 
         modelWidth = minModelWidth,
         modelTop = 0,
-        modelLeft = 0;
+        modelLeft = 0,
+
+        availableWidth,
+        availableHeight,
+
+        // Canonical dimensions of the interactive, deciding about font size.
+        basicInteractiveWidth = 500,
+        basicInteractiveHeight = 350,
+
+        interactiveAspectRatio;
 
     function getDimensionOfContainer($container, dim) {
       var position = $container.position();
@@ -63,15 +57,25 @@ define(function (require) {
     }
 
     function setFontSize() {
-      var xRatio = $interactiveContainer.width() / basicInteractiveWidth,
-          yRatio = $interactiveContainer.height() / basicInteractiveHeight,
-          ratio = Math.min(xRatio, yRatio);
+      var containerAspectRatio = availableWidth / availableHeight,
+          scale;
+
+      if (interactiveAspectRatio <= containerAspectRatio) {
+        scale = availableHeight / basicInteractiveHeight;
+      } else {
+        scale = availableWidth / basicInteractiveWidth;
+      }
+
+      // Ensure min font size.
+      if (scale < 0.65) {
+        scale = 0.65;
+      }
 
       // Set font-size of #responsive-content element. So, if application author
       // wants to avoid rescaling of font-size for some elements, they should not
       // be included in #responsive-content DIV.
       // TODO: #responsive-content ID is hardcoded, change it?
-      $("#responsive-content").css("font-size", fontScale(ratio) + "em");
+      $("#responsive-content").css("font-size", scale + "em");
     }
 
     // Calculate width for containers which doesn't explicitly specify its width.
@@ -98,6 +102,7 @@ define(function (require) {
           // Set min-width only for containers, which DO NOT specify
           // "width" explicitly in their definitions.
           maxMinWidth = -Infinity;
+          $container.css("min-width", 0);
           $container.children().each(setRowMinWidth);
           $container.css("min-width", maxMinWidth);
         }
@@ -122,13 +127,17 @@ define(function (require) {
       $containers = {};
 
       $modelContainer = $interactiveContainer.find("#model-container");
+      $modelContainer.css("position", "absolute");
       $containers.model = $modelContainer;
 
-      for (i = 0, ii = containers.length; i<ii; i++) {
+      for (i = 0, ii = containers.length; i < ii; i++) {
         container = containers[i];
         id = container.id;
-        $containers[id] = $("<div id='"+id+"'>").appendTo($interactiveContainer);
-        $containers[id].css("display", "inline-block");
+        $containers[id] = $("<div id='" + id + "'>").appendTo($interactiveContainer);
+        $containers[id].css({
+          "display": "inline-block",
+          "position": "absolute"
+        });
 
         for (prop in container) {
           if (!container.hasOwnProperty(prop)) continue;
@@ -206,8 +215,7 @@ define(function (require) {
         width:  modelWidth,
         height: modelController.getHeightForWidth(modelWidth),
         left:   modelLeft,
-        top:    modelTop,
-        position: "absolute"
+        top:    modelTop
       });
 
       for (i = 0, ii = containers.length; i<ii; i++) {
@@ -221,12 +229,6 @@ define(function (require) {
           container.top = "0";
         }
 
-        if (!container.top && !container.bottom) {
-          container.top = "model.top";
-        }
-        if (!container.left && !container.right) {
-          container.left = "model.left";
-        }
         if (container.left) {
           left = parseDimension(container.left);
           $container.css("left", left);
@@ -251,21 +253,18 @@ define(function (require) {
           top = bottom - $container.outerHeight();
           $container.css("top", top);
         }
-        $container.css("position", "absolute");
       }
     }
 
     // shrinks the model to fit in the interactive, given the sizes
     // of the other containers around it.
     function resizeModelContainer() {
-      var speed = 0.3,
-          maxX = -Infinity,
+      var maxX = -Infinity,
           maxY = -Infinity,
           minX = Infinity,
           minY = Infinity,
           id, $container,
-          right, bottom, top, left,
-          availableWidth, availableHeight, ratio;
+          right, bottom, top, left, ratio;
 
       // Calculate boundaries of the interactive.
       for (id in $containers) {
@@ -289,9 +288,6 @@ define(function (require) {
         }
       }
 
-      availableWidth  = $interactiveContainer.width();
-      availableHeight = $interactiveContainer.height();
-
       // TODO: this is quite naive approach.
       // It should be changed to some fitness function defining quality of the layout.
       // Using current algorithm, very often we follow some local minima.
@@ -303,16 +299,10 @@ define(function (require) {
         return true;
       }
 
-      if (maxX > availableWidth || maxY > availableHeight) {
-        ratio = Math.min(1 - speed * (maxX - availableWidth) / availableWidth, 1 - speed * (maxY - availableHeight) / availableHeight);
-      }
-      if (maxX < availableWidth && maxY < availableHeight) {
-        ratio = Math.min(1 + speed * (availableWidth - maxX) / availableWidth, 1 + speed * (availableHeight - maxY) / availableHeight);
-      }
-      if (ratio !== undefined) {
+      ratio = Math.min(availableWidth / maxX, availableHeight / maxY);
+      if (!isNaN(ratio)) {
         modelWidth = modelWidth * ratio;
       }
-
       if (modelWidth < minModelWidth) {
         modelWidth = minModelWidth;
       }
@@ -347,19 +337,17 @@ define(function (require) {
       }
     }
 
-    // parses a container's dimension, such as "model.height"
+    // Parses a container's dimension, such as "model.height".
     function getDimension(dim) {
-      var id, $container, attr;
-
-      id = dim.split(".")[0];
-      if (id === "interactive") {
-        $container = $interactiveContainer;
-      } else {
-        $container = $containers[id];
+      switch(dim) {
+        case "interactive.width":
+          return availableWidth;
+        case "interactive.height":
+          return availableHeight;
+        default:
+          dim = dim.split(".");
+          return getDimensionOfContainer($containers[dim[0]], dim[1]);
       }
-      attr = dim.split(".")[1];
-
-      return getDimensionOfContainer($container, attr);
     }
 
     function getObject(arr, id) {
@@ -370,10 +358,54 @@ define(function (require) {
       }
     }
 
+    function calcInteractiveAspectRatio() {
+      var redraws = 0,
+          maxX = -Infinity,
+          maxY = -Infinity,
+          id, $container, val;
+
+      availableWidth = basicInteractiveWidth;
+      availableHeight = basicInteractiveHeight;
+      setMinDimensions();
+      modelWidth = availableWidth;
+      positionContainers();
+      while (redraws < 15 && !resizeModelContainer()) {
+        positionContainers();
+        redraws++;
+      }
+
+      for (id in $containers) {
+        if (!$containers.hasOwnProperty(id)) continue;
+        $container = $containers[id];
+        val = getDimensionOfContainer($container, "right");
+        if (val > maxX) {
+          maxX = val;
+        }
+        val = getDimensionOfContainer($container, "bottom");
+        if (val > maxY) {
+          maxY = val;
+        }
+      }
+
+      interactiveAspectRatio = maxX / maxY;
+      if (interactiveAspectRatio < (availableWidth / availableHeight)) {
+        basicInteractiveWidth = basicInteractiveHeight * interactiveAspectRatio;
+      } else {
+        basicInteractiveHeight = basicInteractiveWidth / interactiveAspectRatio;
+      }
+
+
+      console.log(basicInteractiveWidth + " x " + basicInteractiveHeight);
+    }
+
     // Public API.
     layout = {
       layoutInteractive: function () {
-        var redraws = 0, id;
+        var redraws = 0,
+            id;
+
+        availableWidth  = $interactiveContainer.width();
+        availableHeight = $interactiveContainer.height();
 
         // 0. Set font size of the interactive-container based on its size.
         setFontSize();
@@ -384,7 +416,7 @@ define(function (require) {
         setMinDimensions();
 
         // 2. Calculate optimal layout.
-        modelWidth = $interactiveContainer.width();
+        modelWidth = availableWidth;
         positionContainers();
         while (redraws < 35 && !resizeModelContainer()) {
           positionContainers();
@@ -409,6 +441,7 @@ define(function (require) {
     //
     createContainers();
     placeComponentsInContainers();
+    calcInteractiveAspectRatio();
 
     return layout;
   };
