@@ -134,9 +134,9 @@ define(function (require) {
         Returns array of atom indices.
         within(1,1,0.5) returns all atoms within 0.5 nm of position (1nm,1nm) within the model.
         within(1,1,0.2,0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
-          with the lower-left corner specified by the postion (1nm,1nm).
+          with the upper-left corner specified by the postion (1nm,1nm).
       **/
-      within: function(x,y,p1,p2) {
+      atomsWithin: function(x,y,p1,p2) {
         var atomsWithin = [];
         var numAtoms = model.get_num_atoms();
         var props, dist, inX, inY;
