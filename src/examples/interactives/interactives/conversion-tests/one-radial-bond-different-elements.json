@@ -1,7 +1,7 @@
 {
   "title": "One Radial Bond, Different Elements",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Currently demonstrates a rendering bug ... the radial bond should not extend past the white atom.",
   "about": "",
   "models": [
     {

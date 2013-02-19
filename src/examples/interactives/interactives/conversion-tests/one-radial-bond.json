@@ -1,7 +1,7 @@
 {
   "title": "One Radial Bond",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Demonstrates effect of aliased signals caused by undersampling.",
   "about": "",
   "models": [
     {
