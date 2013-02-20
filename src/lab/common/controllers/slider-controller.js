@@ -77,6 +77,17 @@ define(function () {
       width: component.width,
       height: component.height
     });
+    // If width is defined as percent, remove left and right margins.
+    // They can break layout when e.g. width is set to 100%.
+    // TODO: This is only temporary solution. In the future each
+    // component should define margin: 0, and components spacing
+    // should be managed by the semantic layout.
+    if (/%$/.test(component.width)) {
+      $elem.css({
+        "margin-left": 0,
+        "margin-right": 0
+      });
+    }
 
     for (i = 0; i < labels.length; i++) {
       label = labels[i];
