@@ -68,10 +68,12 @@
     {
       "id": "right-output",
       "left": "model.right",
-      "top": "model.bottom",
+      "top": "right-graph.bottom",
+      "align": "center",
       "height": "3em",
       "width": "model.height",
-      "padding-left": "1em"
+      "padding-left": "1em",
+      "padding-top": "0.5em"
     },
     {
       "id": "bottom",
