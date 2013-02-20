@@ -176,20 +176,29 @@ define(function (require) {
     }
 
     function createVectorArrowHeads(color, name) {
-      var arrowHead = mainContainer.append("defs")
-        .append("marker")
-        .attr("id", "Triangle-"+name)
-        .attr("viewBox", "0 0 10 10")
-        .attr("refX", "0")
-        .attr("refY", "5")
-        .attr("markerUnits", "strokeWidth")
-        .attr("markerWidth", "4")
-        .attr("markerHeight", "3")
-        .attr("orient", "auto")
-        .attr("stroke", color)
-        .attr("fill", color);
-      arrowHead.append("path")
-          .attr("d", "M 0 0 L 10 5 L 0 10 z");
+      var defs,
+          id = "Triangle-"+name,
+          arrowHead;
+      defs = mainContainer.select("defs");
+      if (defs.empty()) {
+        defs = mainContainer.append("defs");
+      }
+      arrowHead = defs.select("#" + id);
+      if (arrowHead.empty()) {
+        arrowHead = defs.append("marker")
+          .attr("id", "Triangle-"+name)
+          .attr("viewBox", "0 0 10 10")
+          .attr("refX", "0")
+          .attr("refY", "5")
+          .attr("markerUnits", "strokeWidth")
+          .attr("markerWidth", "4")
+          .attr("markerHeight", "3")
+          .attr("orient", "auto")
+          .attr("stroke", color)
+          .attr("fill", color);
+        arrowHead.append("path")
+            .attr("d", "M 0 0 L 10 5 L 0 10 z");
+      }
     }
 
     // Returns gradient appropriate for a given atom.
