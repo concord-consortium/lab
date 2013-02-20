@@ -3,8 +3,7 @@
 define(function (require) {
   // Dependencies.
   var axis                    = require('grapher/core/axis'),
-      registerKeyboardHandler = require('grapher/core/register-keyboard-handler'),
-      layout                  = require('common/layout/layout');
+      registerKeyboardHandler = require('grapher/core/register-keyboard-handler');
 
   return function Graph(elem, options, message) {
     var cx = 600, cy = 300,
@@ -42,7 +41,6 @@ define(function (require) {
         ds,
         stroke, tx, ty, fx, fy,
         circleCursorStyle,
-        displayProperties,
         emsize, strokeWidth,
         sizeType = {
           category: "medium",
@@ -143,8 +141,11 @@ define(function (require) {
         node.style.height = cy +"px";
       }
       calculateSizeType();
-      displayProperties = layout.getDisplayProperties();
-      emsize = displayProperties.emsize;
+      // Previously there was used layout module to
+      // define emsize. However, setting this value
+      // to 1 doesn't seem to change anything.
+      // TODO: cleanup it.
+      emsize = 1;
     }
 
     function initialize(newOptions, mesg) {

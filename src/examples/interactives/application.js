@@ -1,4 +1,4 @@
-/*global Lab _ $ d3 CodeMirror controllers alert model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
+/*global Lab _ $ d3 CodeMirror controllers alert model modelList benchmark DEVELOPMENT: true AUTHORING: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -695,7 +695,7 @@ AUTHORING = false;
       contentType: "application/json",
       processData: false
     });
-    
+
   }
 
   function getInteractiveState(interactiveTitle){
@@ -707,7 +707,7 @@ AUTHORING = false;
     } else {
       iframePhone.post({ type:'getInteractiveState' });
       iframePhone.addListener('interactiveState', function(message) {
-        // this needs to be in the callback for the postMessage to 
+        // this needs to be in the callback for the postMessage to
         // the iframe.
         remoteSaveInteractive(interactiveTitle, message);
         editor.setValue(JSON.stringify(message, null, indent));
@@ -720,7 +720,7 @@ AUTHORING = false;
     if (interactive['from_import']) {
       $saveInteractiveButton.text("Save As");
     }else {
-      $saveInteractiveButton.text("Save");      
+      $saveInteractiveButton.text("Save");
     }
 
     $(".save-interactive-form").dialog({
@@ -745,7 +745,7 @@ AUTHORING = false;
 
 
       // try {
-      //   // warn user 
+      //   // warn user
 
       //   } catch (e) {
       //     alert("Interactive JSON syntax error: " + e.message);
