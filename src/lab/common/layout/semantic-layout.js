@@ -391,7 +391,11 @@ define(function (require) {
 
       availableWidth = canonicalInteractiveWidth;
       availableHeight = canonicalInteractiveHeight;
-
+      // Set basic interactive dimensions to default values to ensure that default font will be used.
+      basicInteractiveWidth = canonicalInteractiveWidth;
+      basicInteractiveHeight = canonicalInteractiveHeight;
+      // Set font size to ensure that "fontScale" and "canonicalFontSize" are taken into account.
+      setFontSize();
       setMinDimensions();
       modelWidth = availableWidth;
       positionContainers();
