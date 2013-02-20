@@ -1310,7 +1310,7 @@ define(function (require, exports, module) {
             // radian
             angle = angularBondAngle[i];
 
-            // eV/radian^2
+            // (eV/nm * nm) / radian
             k = angularBondStrength[i];
 
             // Calculate angle (theta) between two vectors:
