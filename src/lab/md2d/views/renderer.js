@@ -355,9 +355,7 @@ define(function (require) {
             "class": function (d) { return d.isAminoAcid() ? "draggable amino-acid" : "draggable"; },
             "r":  function(d) { return model2px(d.radius); },
             "cx": function(d) { return model2px(d.x); },
-            "cy": function(d) { return model2pxInv(d.y); }
-          })
-          .style({
+            "cy": function(d) { return model2pxInv(d.y); },
             "fill-opacity": function(d) { return d.visible; },
             "fill": function (d, i) { return gradientNameForParticle[i]; }
           })
@@ -376,9 +374,7 @@ define(function (require) {
         .attr({
           "class": "vector-"+name,
           "marker-end": "url(#Triangle-"+name+")",
-          "d": pathFunc
-        })
-        .style({
+          "d": pathFunc,
           "stroke-width": widthFunc,
           "stroke": color,
           "fill": "none"
@@ -389,9 +385,7 @@ define(function (require) {
       atomTrace.enter().append("path")
         .attr({
           "class": "atomTrace",
-          "d": getAtomTracePath
-        })
-        .style({
+          "d": getAtomTracePath,
           "stroke-width": model2px(0.01),
           "stroke": atomTraceColor,
           "fill": "none",
@@ -415,9 +409,7 @@ define(function (require) {
           "x": 0,
           "y": 0,
           "width": function(d, i) {return model2px(obstacles.width[i]); },
-          "height": function(d, i) {return model2px(obstacles.height[i]); }
-        })
-        .style({
+          "height": function(d, i) {return model2px(obstacles.height[i]); },
           "fill": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; },
           "stroke-width": function(d, i) { return obstacles.visible[i] ? 0.2 : 0.0; },
           "stroke": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; }
@@ -477,9 +469,7 @@ define(function (require) {
         // Finally, set common attributes and stying for both vertical and horizontal forces.
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
-            "marker-end": "url(#Triangle-"+ FORCE_STR +")"
-          })
-          .style({
+            "marker-end": "url(#Triangle-"+ FORCE_STR +")",
             "stroke-width": model2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
@@ -489,38 +479,41 @@ define(function (require) {
 
     function radialBondEnter() {
       radialBond1.enter().append("path")
-          .attr("d", function (d) {
-            return findPoints(d,1);})
+          .attr({
+            "d": function (d) { return findPoints(d,1); },
+            "stroke-width": function (d) {
+              if (isSpringBond(d)) {
+                return Math.log(d.strength) / 4 + model2px(0.005);
+              } else {
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+              }
+            },
+            "stroke": getBondAtom1Color,
+            "fill": "none"
+          })
           .classed("radialbond1", true)
           .classed("disulphideBond", function (d) {
             return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-          })
-          .style("stroke-width", function (d) {
-            if (isSpringBond(d)) {
-              return Math.log(d.strength) / 4 + model2px(0.005);
-            } else {
-              return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
-            }
-          })
-          .style("stroke", getBondAtom1Color)
-          .style("fill", "none");
+          });
 
       radialBond2.enter().append("path")
-          .attr("d", function (d) {
-            return findPoints(d,2); })
+          .attr({
+            "d": function (d) { return findPoints(d,2); },
+            "stroke-width": function (d) {
+              if (isSpringBond(d)) {
+                return Math.log(d.strength) / 4 + model2px(0.005);
+              } else {
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+              }
+            },
+            "stroke": getBondAtom2Color,
+            "fill": "none"
+          })
           .classed("radialbond2", true)
           .classed("disulphideBond", function (d) {
             return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-          })
-          .style("stroke-width", function (d) {
-            if (isSpringBond(d)) {
-              return Math.log(d.strength) / 4 + model2px(0.005);
-            } else {
-              return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
-            }
-          })
-          .style("stroke", getBondAtom2Color)
-          .style("fill", "none");
+          });
+
     }
 
     function findPoints(d, num) {
@@ -598,6 +591,8 @@ define(function (require) {
     }
 
     function vdwLinesEnter() {
+      var strokeWidth = model2px(0.02),
+          strokeDasharray = model2px(0.03) + " " + model2px(0.02);
       // update existing lines
       vdwLines.attr({
         "x1": function(d) { return model2px(modelResults[d[0]].x); },
@@ -616,8 +611,8 @@ define(function (require) {
           "y2": function(d) { return model2pxInv(modelResults[d[1]].y); }
         })
         .style({
-          "stroke-width": model2px(0.02),
-          "stroke-dasharray": model2px(0.03) + " " + model2px(0.02)
+          "stroke-width": strokeWidth,
+          "stroke-dasharray": strokeDasharray
         });
 
       // remove old lines
@@ -1134,7 +1129,7 @@ define(function (require) {
 
       if (keShadingMode) {
         // Update particles color. Array of colors should be already updated.
-        particle.style("fill", function (d, i) { return gradientNameForParticle[i]; });
+        particle.attr("fill", function (d, i) { return gradientNameForParticle[i]; });
       }
 
       label.attr("transform", function (d) {
@@ -1173,10 +1168,8 @@ define(function (require) {
 
     function updateVectors(vector, pathFunc, widthFunc) {
       vector.attr({
-         "d": pathFunc
-      })
-      .style({
-        "stroke-width": widthFunc
+         "d": pathFunc,
+         "stroke-width": widthFunc
       });
     }
 
@@ -1215,8 +1208,8 @@ define(function (require) {
 
       if (keShadingMode) {
         // Update also radial bonds color when keShading is on.
-        radialBond1.style("stroke", getBondAtom1Color);
-        radialBond2.style("stroke", getBondAtom2Color);
+        radialBond1.attr("stroke", getBondAtom1Color);
+        radialBond2.attr("stroke", getBondAtom2Color);
       }
     }
 
@@ -1349,8 +1342,8 @@ define(function (require) {
           // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
           .attr("x", model2px(0) + 3)
           .attr("y", model2pxInv(0) - 3)
-          .style("text-anchor", "start")
-          .style("fill", clockColor.rgb());
+          .attr("text-anchor", "start")
+          .attr("fill", clockColor.rgb());
       }
     }
 
