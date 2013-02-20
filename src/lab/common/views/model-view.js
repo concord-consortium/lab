@@ -315,6 +315,8 @@ define(function (require) {
       if (vis === undefined) {
         vis1 = d3.select(node).append("svg")
           .attr({
+            'xmlns': 'http://www.w3.org/2000/svg',
+            'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
             width: cx,
             height: cy
           })
