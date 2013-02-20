@@ -14,7 +14,7 @@ define(function (require) {
   var arrays            = require('arrays'),
       ModelPlayer       = require('cs!common/components/model_player');
 
-  return function modelController(modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
+  return function modelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller = {},
 
@@ -163,7 +163,7 @@ define(function (require) {
           modelContainer.update();
         };
 
-        modelContainer = new ModelContainer(modelViewId, modelUrl, model);
+        modelContainer = new ModelContainer(modelUrl, model);
       }
 
       function resetModelPlayer() {
@@ -196,10 +196,6 @@ define(function (require) {
 
       function resize() {
         modelContainer.resize();
-      }
-
-      function getHeightForWidth(width) {
-        return modelContainer.getHeightForWidth(width);
       }
 
       function state() {
@@ -237,10 +233,17 @@ define(function (require) {
         dispatch.on(type, listener);
       };
 
+      controller.getViewContainer = function () {
+        return modelContainer.$el;
+      };
+
+      controller.getHeightForWidth = function (width) {
+        return modelContainer.getHeightForWidth(width);
+      };
+
       controller.reload = reload;
       controller.repaint = repaint;
       controller.resize = resize;
-      controller.getHeightForWidth = getHeightForWidth;
       controller.modelContainer = modelContainer;
       controller.state = state;
       controller.benchmarks = benchmarks;

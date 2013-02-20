@@ -1,5 +1,12 @@
 @import 'sass/bourbon/bourbon'
 
+#model-container
+  background: $component-background-color
+  border-radius: 0.5em
+  box-shadow: 1px 1px 3px rgba(000,000,000,0.2)
+  &:focus
+    outline: $focus-outline-color solid 0.2em
+
 // Interactive select and button are typical select / button
 // DOM elements with 'component' class.
 select.component

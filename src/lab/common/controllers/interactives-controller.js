@@ -150,9 +150,6 @@ define(function (require) {
         if (modelController) {
           modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
         } else {
-          // Create container for model.
-          // TODO: cleanup it, probably there is a better place to create this div.
-          $interactiveContainer.append('<div id="model-container" class="container">');
           createModelController(modelConfig.type, modelUrl, modelConfig);
           modelLoaded(modelConfig);
           // also be sure to get notified when the underlying model changes
@@ -166,7 +163,7 @@ define(function (require) {
         var modelType = type || "md2d";
         switch(modelType) {
           case "md2d":
-          modelController = new MD2DModelController('#model-container', modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
+          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
           break;
         }
         // Extending universal Interactive scriptingAPI with model-specific scripting API
@@ -238,7 +235,7 @@ define(function (require) {
       fontScale = interactive.fontScale;
 
       // TODO: this should be moved out of modelLoaded (?)
-      $interactiveContainer.children().not("#model-container").each(function () {
+      $interactiveContainer.children().each(function () {
         $(this).detach();
       });
       semanticLayout = new SemanticLayout($interactiveContainer, template, layout, componentByID, modelController, fontScale);

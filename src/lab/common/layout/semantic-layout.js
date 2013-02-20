@@ -14,10 +14,14 @@ define(function (require) {
       minModelWidth = 150,
       // Minimum font size (in ems).
       minFontSize = 0.65,
+      // Canoncical font size (in ems).
+      canonicalFontSize = 0.9,
       // Canonical dimensions of the interactive, they decide about font size.
-      // (1 * fontScale) em is used for the interactive which fits this container:
-      canonicalInteractiveWidth = 600,
-      canonicalInteractiveHeight = 420,
+      // (canoncicalFontSize * fontScale) em is used for the interactive which fits this container:
+      // 98% because 2% is reserved for left and right padding (see: src/sass/_semantic-layout.sass).
+      canonicalInteractiveWidth = 600 * 0.98,
+      // 94% because 5% is reserved for banner with credits, about and share links (see: src/sass/_semantic-layout.sass).
+      canonicalInteractiveHeight = 420 * 0.94,
 
       containerColors = [
         "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
@@ -72,15 +76,15 @@ define(function (require) {
 
     function setFontSize() {
       var containerAspectRatio = availableWidth / availableHeight,
-          font;
+          containerScale, font;
 
       if (interactiveAspectRatio <= containerAspectRatio) {
-        font = availableHeight / basicInteractiveHeight;
+        containerScale = availableHeight / basicInteractiveHeight;
       } else {
-        font = availableWidth / basicInteractiveWidth;
+        containerScale = availableWidth / basicInteractiveWidth;
       }
 
-      font *= fontScale;
+      font = canonicalFontSize * fontScale * containerScale;
 
       // Ensure min font size (in 'em').
       if (font < minFontSize) {
@@ -142,8 +146,12 @@ define(function (require) {
 
       $containers = {};
 
-      $modelContainer = $interactiveContainer.find("#model-container");
-      $modelContainer.css("position", "absolute");
+      $modelContainer = modelController.getViewContainer();
+      $modelContainer.css({
+        "display": "inline-block",
+        "position": "absolute"
+      });
+      $modelContainer.appendTo($interactiveContainer);
       $containers.model = $modelContainer;
 
       for (i = 0, ii = containers.length; i < ii; i++) {

@@ -308,7 +308,7 @@ define(function (require) {
         // Heat bath symbol.
         if (heatBath) {
             yPos += yMargin;
-            imageSelect = d3.select("#heat-bath")
+            imageSelect = mainContainer.select("#heat-bath")
               .attr("y", yPos + "%")
               .style("display", "");
 
@@ -317,18 +317,18 @@ define(function (require) {
             imageHeight = Number(imageHeight.substring(0, imageHeight.length - 1));
             yPos += imageHeight;
         } else {
-            d3.select("#heat-bath").style("display","none");
+            mainContainer.select("#heat-bath").style("display","none");
         }
 
         // Kinetic Energy shading gradient.
         // Put it under heat bath symbol.
         if (keShadingMode) {
             yPos += yMargin;
-            d3.select("#ke-gradient")
+            mainContainer.select("#ke-gradient")
               .attr("y", yPos + "%")
               .style("display", "");
         } else {
-            d3.select("#ke-gradient").style("display", "none");
+            mainContainer.select("#ke-gradient").style("display", "none");
         }
     }
 
@@ -1362,10 +1362,11 @@ define(function (require) {
 
       atomTraceColor = model.get("atomTraceColor");
 
-      createSymbolImages();
+
       createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
       createVectorArrowHeads(forceVectorColor, FORCE_STR);
 
+      createSymbolImages();
       createAdditionalGradients();
 
       // Register additional controls, context menus etc.
@@ -1403,8 +1404,6 @@ define(function (require) {
 
       setupTooTips();
       setupRendererOptions();
-
-      repaint();
 
       // Subscribe for model events.
       model.addPropertiesListener(["temperatureControl"], drawSymbolImages);

@@ -12,27 +12,20 @@ define(function (require) {
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
       gradients             = require('common/views/gradients');
 
-  return function ModelView(e, modelUrl, model, Renderer) {
+  return function ModelView(modelUrl, model, Renderer) {
         // Public API object to be returned.
     var api = {},
         renderer,
         containers = {},
-        elem = d3.select(e),
-        node = elem.node(),
-        // in fit-to-parent mode, the d3 selection containing outermost container
-        outerElement,
-        cx = elem.property("clientWidth"),
-        cy = elem.property("clientHeight"),
-        width, height,
+        $el,
+        node,
         emsize,
         imagePath,
         vis1, vis, plot,
         playbackComponent,
+        cx, cy,
         padding, size, modelSize,
-        dragged,
         playbackXPos, playbackYPos,
-        timePrefix = "",
-        timeSuffix = " (fs)",
 
         // Basic scaling function, it transforms model units to "pixels".
         // Use it for dimensions of objects rendered inside the view.
@@ -64,7 +57,7 @@ define(function (require) {
 
     // Padding is based on the calculated font-size used for the model view container.
     function updatePadding() {
-      emsize = $(e).css('font-size');
+      emsize = $el.css('font-size');
       // Remove "px", convert to number.
       emsize = Number(emsize.substring(0, emsize.length - 2));
       // Convert value to "em", using 18px as a basic font size.
@@ -98,17 +91,18 @@ define(function (require) {
     function scale() {
       var modelWidth = model.get('width'),
           modelHeight = model.get('height'),
-          aspectRatio = modelWidth / modelHeight;
+          aspectRatio = modelWidth / modelHeight,
+          width, height;
 
       updatePadding();
 
-      cx = elem.property("clientWidth");
+      cx = $el.width();
       width = cx - padding.left  - padding.right;
       height = width / aspectRatio;
       cy = height + padding.top  + padding.bottom;
       node.style.height = cy + "px";
 
-      // Container size in px.
+      // Plot size in px.
       size = {
         "width":  width,
         "height": height
@@ -147,13 +141,6 @@ define(function (require) {
       model2pxInv = d3.scale.linear()
           .domain([modelSize.height, 0])
           .range([0, size.height]);
-
-      dragged = null;
-      return [cx, cy, width, height];
-    }
-
-    function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('time')) + timeSuffix;
     }
 
     function redraw() {
@@ -321,11 +308,11 @@ define(function (require) {
     }
 
     function renderContainer() {
+      // Update cx, cy, size and modelSize variables.
       scale();
-      // create container, or update properties if it already exists
-      if (vis === undefined) {
 
-        outerElement = elem;
+      // Create container, or update properties if it already exists.
+      if (vis === undefined) {
         vis1 = d3.select(node).append("svg")
           .attr({
             width: cx,
@@ -467,12 +454,10 @@ define(function (require) {
 
     api = {
       update: null,
-      node: null,
-      outerNode: null,
+      $el: null,
       scale: scale,
       setFocus: setFocus,
       resize: function() {
-        scale();
         processOptions();
         init();
       },
@@ -509,13 +494,26 @@ define(function (require) {
     };
 
     // Initialization.
+    // jQuery object with model container.
+    $el = $("<div>")
+      .attr({
+        "id": "model-container",
+        "class": "container"
+      })
+      // Set initial dimensions.
+      .css({
+        "width": "50px",
+        "height": "50px"
+      });
+    // DOM element.
+    node = $el[0];
+
     processOptions();
     init();
 
     // Extend Public withExport initialized object to initialized objects
     api.update = renderer.update;
-    api.node = node;
-    api.outerNode = outerElement.node();
+    api.$el = $el;
 
     return api;
   };

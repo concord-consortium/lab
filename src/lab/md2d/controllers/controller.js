@@ -10,8 +10,8 @@ define(function (require) {
       ScriptingAPI      = require('md2d/controllers/scripting-api'),
       Benchmarks        = require('md2d/benchmarks/benchmarks');
 
-  return function (modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig) {
-    return new ModelController(modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
+  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig) {
+    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
                                      Model, ModelContainer, ScriptingAPI, Benchmarks);
-  }
+  };
 });
