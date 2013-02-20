@@ -568,6 +568,7 @@ define(function (require) {
           title: interactive.title,
           publicationStatus: interactive.publicationStatus,
           subtitle: interactive.subtitle,
+          fontScale: interactive.fontScale,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
           // Node that models section can also contain custom parameters definition. However, their initial values
           // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
