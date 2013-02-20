@@ -36,7 +36,7 @@ class InteractivesController < ApplicationController
     
     if @interactive.save
       render({
-        :json     => @interactive,
+        :json     => presenter(@interactive).runtime_properties,
         :status   => :created,
         :location => interactive_path(@interactive)
       })
@@ -48,6 +48,24 @@ class InteractivesController < ApplicationController
     end
   end
 
+  def update
+    @interactive = Interactive.find(params[:id])
+
+    if @interactive.update_attributes(params[:interactive]) &&  @interactive.update_interactive_models(params[:interactive][:models])
+      render({
+        :json     => presenter(@interactive).runtime_properties,
+        :status   => :created,
+        :location => interactive_path(@interactive)
+      })
+    else
+      render({
+        :json => @interactive.errors,
+        :status => :unprocessable_entity
+      })
+      
+    end
+  end
+  
   private
   def presenter(model=nil)
     model ||= Interactive.get(params[:id])

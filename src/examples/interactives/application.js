@@ -71,14 +71,20 @@ AUTHORING = false;
       foldFunc,
       interactiveUrl,
       interactive,
+      interactiveRemote,
       hash,
       jsonModelPath, contentItems, mmlPath,
       interactivesPromise,
       buttonHandlersAdded = false,
+      interactiveRemoteKeys = ['id', 'from_import', 'groupKey', 'path'],
       modelButtonHandlersAdded = false;
 
   function isEmbeddablePage() {
     return ($selectInteractive.length === 0);
+  }
+
+  function isStaticPage() {
+    return !(document.location.pathname.match(/^\/interactives.*/));
   }
 
   if (!isEmbeddablePage()) {
@@ -121,7 +127,8 @@ AUTHORING = false;
 
     $.get(interactiveUrl).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
-      interactive = results;
+      interactiveRemote = results;
+      interactive = _.omit(interactiveRemote, interactiveRemoteKeys);
 
       if (interactive.title) {
         document.title = interactive.title;
@@ -452,7 +459,9 @@ AUTHORING = false;
 
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
     }
-    setupCopySaveInteractive();
+    if(!isStaticPage()) {
+      setupCopySaveInteractive();
+    }
   }
 
   function setupIframeListenerFor(iframe) {
@@ -529,17 +538,18 @@ AUTHORING = false;
         newInteractiveState,
         interactiveJSON;
 
-    // if (interactive['from_import']) {
-    //   $saveInteractiveButton.text("Save As");
-    // }else {
-    //   httpMethod = 'PUT';
-    //   url = url + '/' + interactive.id;
-    // }
-
-    newInteractiveState = $.extend(true, {}, interactiveState);
+    if(!interactiveRemote.from_import) {
+      httpMethod = 'PUT';
+      url = '/interactives/' + interactiveRemote.id;
+    }
+    // create an interactive to POST/PUT
+    // merge the, possibly updated, interactive with the interactive last 
+    // loaded from the webapp.
+    newInteractiveState = jQuery.extend(true, interactiveRemote, interactiveState);
     newInteractiveState['title'] = interactiveTitle;
     // get the group from the current interactive
-    newInteractiveState['groupKey'] = interactive['groupKey'];
+    newInteractiveState['groupKey'] = interactiveRemote.groupKey;
+    newInteractiveState.from_import = false;
     interactiveJSON = {'interactive': newInteractiveState};
 
     $.ajax({
@@ -548,13 +558,26 @@ AUTHORING = false;
       data: JSON.stringify(interactiveJSON),
       success: function(results) {
         if (typeof results === 'string') results = JSON.parse(results);
-        interactive = results;
+        interactiveRemote = results;
+        interactive = _.omit(interactiveRemote, interactiveRemoteKeys);
+
+
+        if(onFullPage()) {
+          controller.loadInteractive(interactive, '#interactive-container');
+        } else {
+          iframePhone.post({ type:'loadInteractive', data:interactive  });
+          $interactiveTitle.text(interactive.title);
+          $('#interactive-subtitle').text(interactive.subtitle);
+        }
 
         if (interactive.title) {
           document.title = interactive.title;
         }
 
-        document.location.hash = interactive.path;
+        document.location.hash = interactiveRemote.path
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert("Error: "+ textStatus + " : " + errorThrown)
       },
       dataType: "json",
       contentType: "application/json",
@@ -563,61 +586,43 @@ AUTHORING = false;
 
   }
 
-  function getInteractiveState(interactiveTitle){
-    var interactiveState;
-
-    if(onFullPage()) {
-      interactiveState = controller.serialize();
-      remoteSaveInteractive(interactiveTitle, interactiveState);
-      editor.setValue(JSON.stringify(interactiveState, null, indent));
-    } else {
-      iframePhone.post({ type:'getInteractiveState' });
-      iframePhone.addListener('interactiveState', function(message) {
-        // this needs to be in the callback for the postMessage to
-        // the iframe.
-        remoteSaveInteractive(interactiveTitle, message);
-        editor.setValue(JSON.stringify(message, null, indent));
-      });
-    }
-  }
-
   function setupCopySaveInteractive() {
+    $saveInteractiveButton.show();
 
-    if (interactive['from_import']) {
-      $saveInteractiveButton.text("Save As");
+    if (interactiveRemote.from_import) {
+      // Copying an imported interactive
+      $saveInteractiveButton.text("Save As ...");
+      $(".save-interactive-form").dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+          "Save": function() {
+            var interactiveTitle = $(".save-interactive-title").val();
+            $(this).dialog("close");
+            interactiveState = JSON.parse(editor.getValue());
+            remoteSaveInteractive(interactiveTitle, interactiveState);
+            editor.setValue(JSON.stringify(interactiveState, null, indent));
+          },
+          "Cancel": function() {
+            $(this).dialog("close");
+          }
+        }
+      });
+      
     }else {
+      // Saving an Interactive
       $saveInteractiveButton.text("Save");
     }
 
-    $(".save-interactive-form").dialog({
-      autoOpen: false,
-      modal: true,
-      buttons: {
-        "Save": function() {
-          var interactiveTitle = $(".save-interactive-title").val();
-          $(this).dialog("close");
-          getInteractiveState(interactiveTitle);
-        },
-        "Cancel": function() {
-          $(this).dialog("close");
-        }
-      }
-    });
-
     $saveInteractiveButton.on('click', function() {
-      $('.save-interactive-form').dialog("open");
-      // try {
-      //   // warn user
-
-      //   } catch (e) {
-      //     alert("Interactive JSON syntax error: " + e.message);
-      //     throw new Error("Interactive JSON syntax error: " + e.message);
-      //   }
-
-      if(onFullPage()) {
-        controller.loadInteractive(interactive, '#interactive-container');
+      if (interactiveRemote.from_import) {
+        // Prompt for the name of Interactive that will be a 
+        // copy of the exisiting imported interactive
+        $('.save-interactive-form').dialog("open");
       } else {
-        iframePhone.post({ type:'loadInteractive', data:interactive });
+        interactiveState = JSON.parse(editor.getValue());
+        remoteSaveInteractive(interactive['title'], interactiveState);
+        editor.setValue(JSON.stringify(interactiveState, null, indent));
       }
     });
   }
@@ -698,6 +703,8 @@ AUTHORING = false;
           controller.loadInteractive(interactive, '#interactive-container');
         } else {
           iframePhone.post({ type:'loadInteractive', data:interactive  });
+          $interactiveTitle.text(interactive.title);
+          $('#interactive-subtitle').text(interactive.subtitle);
         }
       });
 
@@ -748,6 +755,11 @@ AUTHORING = false;
       }
       if (!modelButtonHandlersAdded) {
         modelButtonHandlersAdded = true;
+        
+        if (!isStaticPage()){
+          !setupSaveModel(md2dModel);
+        }
+
         $updateModelButton.on('click', function() {
           try {
             md2dModel = JSON.parse(modelEditor.getValue());
