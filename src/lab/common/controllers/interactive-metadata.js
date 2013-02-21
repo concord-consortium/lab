@@ -98,7 +98,10 @@ define(function() {
       onChange: {},
       // Optional description.
       label: {},
-      units: {}
+      unitType: {},
+      unitName: {},
+      unitPluralName: {},
+      unitAbbreviation: {}
     },
 
     output: {
@@ -110,7 +113,10 @@ define(function() {
       },
       // Optional description.
       label: {},
-      units: {}
+      unitType: {},
+      unitName: {},
+      unitPluralName: {},
+      unitAbbreviation: {}
     },
 
     filteredOutput: {
@@ -131,7 +137,10 @@ define(function() {
       },
       // Optional description.
       label: {},
-      units: {}
+      unitType: {},
+      unitName: {},
+      unitPluralName: {},
+      unitAbbreviation: {}
     },
 
     exports: {

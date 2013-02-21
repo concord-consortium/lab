@@ -486,13 +486,19 @@ define(function (require) {
             case "basic":
               model.defineOutput(output.name, {
                 label: output.label,
-                units: output.units
+                unitType: output.unitType,
+                unitName: output.unitName,
+                unitPluralName: output.unitPluralName,
+                unitAbbreviation: output.unitAbbreviation
               }, scriptingAPI.makeFunctionInScriptContext(getStringFromArray(output.value)));
               break;
             case "filtered":
               model.defineFilteredOutput(output.name, {
                 label: output.label,
-                units: output.units
+                unitType: output.unitType,
+                unitName: output.unitName,
+                unitPluralName: output.unitPluralName,
+                unitAbbreviation: output.unitAbbreviation
               }, output.property, output.type, output.period);
               break;
           }
@@ -525,7 +531,10 @@ define(function (require) {
         // Define parameter using modeler.
         model.defineParameter(parameter.name, {
           label: parameter.label,
-          units: parameter.units
+          unitType: parameter.unitType,
+          unitName: parameter.unitName,
+          unitPluralName: parameter.unitPluralName,
+          unitAbbreviation: parameter.unitAbbreviation
         }, onChangeFunc);
 
         if (parameter.initialValue !== undefined) {

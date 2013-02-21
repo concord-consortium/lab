@@ -15,6 +15,9 @@ define(function(require) {
       aminoacids           = require('md2d/models/aminoacids-props'),
       aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
       units                = require('md2d/models/engine/constants/units'),
+      PropertyDescription  = require('md2d/models/property-description'),
+      // For now, assume MD2D units only. Shortly we will allow this to change.
+      unitsDefinition      = require('md2d/models/unit-definitions/md2d'),
       _ = require('underscore');
 
   return function Model(initialProperties) {
@@ -1961,10 +1964,10 @@ define(function(require) {
 
       `calculate` should be a no-arg function which should calculate the property value.
     */
-    model.defineOutput = function(name, description, calculate) {
+    model.defineOutput = function(name, descriptionHash, calculate) {
       outputNames.push(name);
       outputsByName[name] = {
-        description: description,
+        description: new PropertyDescription(unitsDefinition, descriptionHash),
         calculate: calculate,
         hasCachedValue: false,
         // Used to keep track of whether this property changed as a side effect of some other change
@@ -2067,9 +2070,9 @@ define(function(require) {
       arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
       parameters are updated by the tick history.
     */
-    model.defineParameter = function(name, description, setter) {
+    model.defineParameter = function(name, descriptionHash, setter) {
       parametersByName[name] = {
-        description: description,
+        description: new PropertyDescription(unitsDefinition, descriptionHash),
         setter: setter,
         isDefined: false
       };
@@ -2096,7 +2099,7 @@ define(function(require) {
     model.getPropertyDescription = function(name) {
       var property = outputsByName[name] || parametersByName[name];
       if (property) {
-        return _.extend({}, property.description);
+        return property.description;
       }
     };
 
@@ -2226,35 +2229,35 @@ define(function(require) {
     // Define some default output properties.
     model.defineOutput('time', {
       label: "Time",
-      units: "fs"
+      unitType: 'time'
     }, function() {
       return modelOutputState.time;
     });
 
     model.defineOutput('kineticEnergy', {
       label: "Kinetic Energy",
-      units: "eV"
+      unitType: 'energy'
     }, function() {
       return modelOutputState.KE;
     });
 
     model.defineOutput('potentialEnergy', {
       label: "Potential Energy",
-      units: "eV"
+      unitType: 'energy'
     }, function() {
       return modelOutputState.PE;
     });
 
     model.defineOutput('totalEnergy', {
       label: "Total Energy",
-      units: "eV"
+      unitType: 'energy'
     }, function() {
       return modelOutputState.KE + modelOutputState.PE;
     });
 
     model.defineOutput('temperature', {
       label: "Temperature",
-      units: "K"
+      unitType: 'temperature'
     }, function() {
       return modelOutputState.temperature;
     });

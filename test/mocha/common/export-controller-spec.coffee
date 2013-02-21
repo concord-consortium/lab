@@ -31,22 +31,22 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
         model.defineOutput 'perRunOutput', {
           label: "per-run output"
-          units: "units 1"
+          unitAbbreviation: "units 1"
         }, -> 1 + model.get 'time'
 
         model.defineOutput 'perTickOutput', {
           label: "per-tick output"
-          units: "units 2"
+          unitAbbreviation: "units 2"
         }, -> 2 + model.get 'time'
 
         model.defineParameter 'perRunParam', {
           label: "per-run parameter",
-          units: "units 3"
+          unitAbbreviation: "units 3"
         }, -> null
 
         model.defineParameter 'perTickParam', {
           label: "per-tick parameter",
-          units: "units 4"
+          unitAbbreviation: "units 4"
         }, -> null
 
         model.set

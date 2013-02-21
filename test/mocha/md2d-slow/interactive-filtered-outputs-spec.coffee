@@ -6,7 +6,7 @@ output1 =
   {
     "name":  "filteredOutput",
     "label": "customLabel",
-    "units": "customUnit",
+    "unitType": "length",
     "property": "time",
     "type": "RunningAverage",
     "period": "2500"
@@ -48,35 +48,35 @@ describe "Lab interactives: filtered output properties", ->
           controller = interactivesController interactive, 'body'
         model.get('filteredOutput').should.equal 0 # time = 0
 
-      it "respects the 'units' key of the property definition", ->
+      it "respects the 'unitType' key of the property definition", ->
         interactive.filteredOutputs = [output1]
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
-        model.getPropertyDescription('filteredOutput').should.have.property 'units', 'customUnit'
+        model.getPropertyDescription('filteredOutput').getHash().should.have.property 'unitType', 'length'
 
       it "respects the 'label' key of the property definition", ->
         interactive.filteredOutputs = [output1]
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
-        model.getPropertyDescription('filteredOutput').should.have.property 'label', 'customLabel'
+        model.getPropertyDescription('filteredOutput').getHash().should.have.property 'label', 'customLabel'
 
       it "respects the 'property' key of the property definition", ->
         interactive.filteredOutputs = [output1]
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
-        model.getPropertyDescription('filteredOutput').should.have.property 'property', 'time'
+        model.getPropertyDescription('filteredOutput').getHash().should.have.property 'property', 'time'
 
       it "respects the 'type' key of the property definition", ->
         interactive.filteredOutputs = [output1]
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
-        model.getPropertyDescription('filteredOutput').should.have.property 'type', 'RunningAverage'
+        model.getPropertyDescription('filteredOutput').getHash().should.have.property 'type', 'RunningAverage'
 
       it "respects the 'period' key of the property definition", ->
         interactive.filteredOutputs = [output1]
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
-        model.getPropertyDescription('filteredOutput').should.have.property 'period', '2500'
+        model.getPropertyDescription('filteredOutput').getHash().should.have.property 'period', '2500'
 
       it "lets you define a filtered output property in the models section of the interactive definition", ->
         interactive.models[0].filteredOutputs = [output1]

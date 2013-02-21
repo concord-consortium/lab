@@ -42,18 +42,20 @@ define(function (require) {
     }
 
     function getLabelForProperty(property) {
-      var desc = model.getPropertyDescription(property),
-          ret = "";
+      var desc  = model.getPropertyDescription(property),
+          label = desc.getLabel(),
+          units = desc.getUnitAbbreviation(),
+          ret   = "";
 
-      if (desc.label && desc.label.length > 0) {
-        ret += desc.label;
+      if (label.length > 0) {
+        ret += label;
       } else {
         ret += property;
       }
 
-      if (desc.units && desc.units.length > 0) {
+      if (units && units.length > 0) {
         ret += " (";
-        ret += desc.units;
+        ret += units;
         ret += ")";
       }
       return ret;
@@ -65,7 +67,7 @@ define(function (require) {
         // Show time in picoseconds by default b/c ps are the time unit used by the standard graph.
         model.defineOutput('timeInPs', {
           label: "Time",
-          units: "ps"
+          unitAbbreviation: "ps"
         }, function() {
           return model.get('time')/1000;
         });

@@ -23,7 +23,7 @@ describe "MD2D custom parameters", ->
         model.get('testParameter').should.equal 1
 
       it "should be possible to retrieve the parameter's property description using Model#getPropertyDescription", ->
-        model.getPropertyDescription('testParameter').should.eql { property1: 'value' }
+        model.getPropertyDescription('testParameter').getHash().should.eql { property1: 'value' }
 
       describe "when the parameter's value is set using Model#set", ->
         observer = null

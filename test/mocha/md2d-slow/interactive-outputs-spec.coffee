@@ -6,7 +6,7 @@ output1 =
   {
     "name":  "customOutput",
     "label": "customLabel",
-    "units": "customUnit",
+    "unitType": "length",
     "value": "return 'output1';"
   }
 
@@ -44,17 +44,17 @@ describe "Lab interactives: custom output properties", ->
           controller = interactivesController interactive, 'body'
         model.get('customOutput').should.equal 'output1'
 
-      it "respects the 'units' key of the property definition", ->
+      it "respects the 'unitType' key of the property definition", ->
         interactive.outputs = [output1]
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
-        model.getPropertyDescription('customOutput').should.have.property 'units', 'customUnit'
+        model.getPropertyDescription('customOutput').getHash().should.have.property 'unitType', 'length'
 
       it "respects the 'label' key of the property definition", ->
         interactive.outputs = [output1]
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
-        model.getPropertyDescription('customOutput').should.have.property 'label', 'customLabel'
+        model.getPropertyDescription('customOutput').getHash().should.have.property 'label', 'customLabel'
 
       it "lets you define a custom output property in the models section of the interactive definition", ->
         interactive.models[0].outputs = [output1]
