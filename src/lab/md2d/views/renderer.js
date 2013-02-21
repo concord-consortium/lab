@@ -926,8 +926,8 @@ define(function (require) {
               // Note that this attrs should be set *after* all previous styling options.
               // .node() will return first node in selection. It's OK - both texts
               // (label and its shadow) have the same dimension.
-              "x": -txtSelection.node().getComputedTextLength() / 2,
-              "y": "0.31em"//bBox.height / 4
+              "x": -txtSelection.node().getBBox().width / 2,
+              "y": "0.31em"
             });
         }
         // Set common attributes for shadows.
