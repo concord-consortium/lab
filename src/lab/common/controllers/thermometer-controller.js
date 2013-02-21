@@ -62,9 +62,23 @@ define(function (require) {
     $elem = $('<div class="interactive-thermometer">')
       .append($thermometer)
       .append($label);
-    $elem.css({
-      height: "100%"
-    });
+
+    // Support custom dimensions. Implementation may seem unclear,
+    // but the goal is to provide most obvious behavior for authors.
+    // We can simply set height of the most outer container.
+    // Thermometer will adjusts itself appropriately.
+    $elem.css("height", component.height);
+    // Width is more tricky.
+    if (!/%$/.test(component.width)) {
+      // When it's ems or px, its enough to set thermometer width.
+      $thermometer.css("width", component.width);
+    } else {
+      // Whet it's defined in %, set width of the most outer container
+      // to that value and thermometer width to 100%.
+      $elem.css("width", component.width);
+      $thermometer.css("width", "100%");
+    }
+
     thermometerComponent = new Thermometer($thermometer, null, component.min, component.max);
 
     // Public API.

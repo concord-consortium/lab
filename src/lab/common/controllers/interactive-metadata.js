@@ -289,6 +289,16 @@ define(function() {
       max: {
         required: true
       },
+      width: {
+        // It controls width of the thermometer graphics!
+        // It won't affect label, e.g. making it truncated
+        // as width is only "2.5em".
+        defaultValue: "2.5em"
+      },
+      height: {
+        // Height of the whole thermometer with reading.
+        defaultValue: "100%"
+      },
       labelIsReading: {
         defaultValue: false
       },
