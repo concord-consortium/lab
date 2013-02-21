@@ -431,8 +431,6 @@ define(function (require) {
         renderer.reset(model, containers, model2px, model2pxInv);
       }
 
-      repaint();
-
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits"],
@@ -462,6 +460,7 @@ define(function (require) {
       resize: function() {
         processOptions();
         init();
+        repaint();
       },
       getHeightForWidth: function (width) {
         var modelWidth = model.get('width'),
