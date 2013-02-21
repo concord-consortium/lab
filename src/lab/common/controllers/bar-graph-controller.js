@@ -83,6 +83,8 @@ define(function (require) {
       width: component.width,
       height: component.height
     });
+    // Each interactive component has to have class "component".
+    barGraphView.$el.addClass("component");
     property = component.property;
 
     controller = {
