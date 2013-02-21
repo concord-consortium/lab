@@ -9,6 +9,7 @@ define(function (require) {
 
   var labConfig = require('lab.config'),
       arrays    = require('arrays'),
+      console   = require('common/console'),
       alert     = require('common/alert'),
 
       // Minimum width of the model.
@@ -456,6 +457,8 @@ define(function (require) {
         var redraws = 0,
             id;
 
+        console.time('[layout] update');
+
         availableWidth  = $interactiveContainer.width();
         availableHeight = $interactiveContainer.height();
 
@@ -474,6 +477,7 @@ define(function (require) {
           positionContainers();
           redraws++;
         }
+        console.log('[layout] update: ' + redraws + ' iterations');
 
         // 3. Notify components that their containers have new sizes.
         modelController.resize();
@@ -485,6 +489,8 @@ define(function (require) {
 
         // 4. Set / remove colors of containers depending on the value of Lab.config.authoring
         setupBackground();
+
+        console.timeEnd('[layout] update');
       }
     };
 
