@@ -159,6 +159,12 @@ define(function() {
       },
       text: {
         defaultValue: ""
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
       }
     },
 

@@ -15,6 +15,12 @@ define(function () {
     $button = $('<button>').attr('id', component.id).html(component.text);
     $button.addClass("component");
 
+    // Custom dimensions.
+    $button.css({
+      width: component.width,
+      height: component.height
+    });
+
     $button.click(scriptingAPI.makeFunctionInScriptContext(component.action));
 
     // Public API.
