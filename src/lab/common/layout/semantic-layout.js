@@ -178,8 +178,9 @@ define(function (require) {
     }
 
     function placeComponentsInContainers() {
-      var id, container, divContents, items, $row,
-          lastContainer, $rows, comps,
+      var id, container, divContents, items,
+          $row, $rows, $containerComponents,
+          lastContainer, comps,
           i, ii, j, jj, k, kk;
 
       comps = $.extend({}, components);
@@ -217,17 +218,28 @@ define(function (require) {
         }
       }
 
-      // add any remaining components to "bottom" or last container
+      // Add any remaining components to "bottom" or last container.
       lastContainer = getObject(containers, "bottom") || containers[containers.length-1];
+      $rows = $containers[lastContainer.id].children();
+      $row = $rows.last();
+      if (!$row.length) {
+        $row = $('<div class="interactive-' + container.id + '-row"/>');
+        $containers[container.id].append($row);
+      }
       for (id in comps) {
         if (!comps.hasOwnProperty(id)) continue;
-        $rows = $containers[lastContainer.id].children();
-        $row = $rows.last();
-        if (!$row.length) {
-          $row = $('<div class="interactive-' + container.id + '-row"/>');
-          $containers[container.id].append($row);
-        }
         $row.append(comps[id].getViewContainer());
+      }
+
+      // When there are multiple components in a container, ensure that there
+      // is spacing between them.
+      // See src/sass/lab/_semantic-layout.sass for .component-spacing class definition.
+      for (i = 0, ii = containers.length; i < ii; i++) {
+        // First children() call returns rows, second one components.
+        $containerComponents = $containers[containers[i].id].children().children();
+        if ($containerComponents.length > 1) {
+          $containerComponents.addClass("component-spacing");
+        }
       }
     }
 

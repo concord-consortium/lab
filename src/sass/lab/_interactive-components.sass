@@ -7,6 +7,18 @@
   &:focus
     outline: $focus-outline-color solid 0.2em
 
+.component
+  display: inline-block
+  margin: 0
+  padding: 0
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  -o-user-select: none
+  user-select: none
+  overflow: hidden
+
 // Interactive select and button are typical select / button
 // DOM elements with 'component' class.
 select.component
@@ -19,7 +31,6 @@ button.component
   padding: 0.2em
 
 .interactive-checkbox
-  margin: 0.5em
   display: inline-block
 
   input[type="checkbox"]
@@ -32,7 +43,6 @@ button.component
 
 .numeric-output
   display: inline-block
-  margin-right: 1em
   span.label
     display: inline-block
     padding-right: 0.5em
@@ -54,10 +64,12 @@ button.component
 .interactive-slider
   display: inline-block
   vertical-align: middle
-  margin: 0.5em 1.5em 3em 1.5em
+  margin: 0
+  // Leave some space for long labels.
+  padding: 0 0.7em
   // Style jQuery UI classes.
   .ui-slider
-    // Fill the container which follows .interactive-slider dimensions.
+    // Follow dimensions of a .container DIV.
     width: 100%
     height: 100%
   .ui-slider-handle
@@ -73,18 +85,16 @@ button.component
     display: inline-block
     font-size: 1em
     white-space: nowrap
-    margin: 0 0 0.5em 0
+    margin: 0 0 0.3em 0
     vertical-align: top
   .container
     // make this a positioned element so the .label can be positioned absolute
     position: relative
     // bottom margin has to account for size of labels, which are taken out of flow
-    margin: 0 2em 0 0
-    // Fill the .interactive-slider container which has adjustable dimensions.
-    width: 100%
-    height: 100%
+    margin-bottom: 1em
     .label
       position: absolute
+      display: inline-block
       // "width: 2x; margin-left: -x; left: y%" places the center of the .label at exactly y%
       // of the width of the parent
       width: 6em
@@ -104,6 +114,7 @@ button.component
     line-height: 1.3em
 
 .interactive-thermometer
+  display: inline-block
   vertical-align: middle
   .label
     margin: 0
