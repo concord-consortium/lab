@@ -43,6 +43,11 @@ define(function (require) {
       //                           DOM elements of the component.
       // # modelLoadedCallback() - optional function taking no arguments, a callback
       //                           which should be called when the model is loaded.
+      //
+      // Note that each components view container (so, jQuery object returned by getViewContainer() has to
+      // have class 'component'! It's required and checked in the runtime by the interactive controller.
+      // It ensures good practices while implementing new components.
+      // Please see: src/sass/lab/_interactive-component.sass to check what this CSS class defines.
       ComponentConstructor = {
         'button':        ButtonController,
         'checkbox':      CheckboxController,
@@ -186,6 +191,10 @@ define(function (require) {
       // 2. scripting API object,
       // 3. public API of the InteractiveController.
       comp = new ComponentConstructor[type](component, scriptingAPI, controller);
+
+      if (!comp.getViewContainer().hasClass("component")) {
+        throw new Error("Invalid Interactive Component implementation. Each component has to have 'component' class.");
+      }
 
       // Save the new instance.
       componentByID[id] = comp;
