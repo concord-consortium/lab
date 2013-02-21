@@ -210,7 +210,7 @@ define(function() {
         defaultValue: "12em"
       },
       height: {
-        defaultValue: "1em"
+        defaultValue: "3.75em"
       },
       displayValue: {},
       property: {},
