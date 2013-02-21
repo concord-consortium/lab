@@ -38,6 +38,8 @@ define(function () {
     $element = $('<div>').append($label);
     // Append class to the most outer container.
     $element.addClass("interactive-checkbox");
+    // Each interactive component has to have class "component".
+    $element.addClass("component");
 
     // Process onClick script if it is defined.
     if (onClickScript) {

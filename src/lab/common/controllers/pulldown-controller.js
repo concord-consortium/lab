@@ -20,6 +20,7 @@ define(function () {
     }
 
     $pulldown = $('<select>').attr('id', component.id);
+    // Each interactive component has to have class "component".
     $pulldown.addClass("component");
 
     for (i = 0, len = options.length; i < len; i++) {

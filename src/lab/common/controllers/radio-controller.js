@@ -19,6 +19,7 @@ define(function () {
     }
 
     $div = $('<div>').attr('id', component.id);
+    // Each interactive component has to have class "component".
     $div.addClass("component");
 
     for (i = 0, len = options.length; i < len; i++) {

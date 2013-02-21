@@ -162,11 +162,14 @@ define(function (require) {
     // The list of properties we are being asked to graph.
     properties = component.properties.slice();
     $container = $('<div>').attr('id', component.id).addClass('properties-graph');
+    // Each interactive component has to have class "component".
+    $container.addClass("component");
     // Apply custom width and height settings.
     $container.css({
       width: component.width,
       height: component.height
     });
+
 
     return controller = {
 

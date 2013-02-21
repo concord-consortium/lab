@@ -47,6 +47,9 @@ define(function () {
         .append($number)
         .append($units);
 
+    // Each interactive component has to have class "component".
+    $numericOutput.addClass("component");
+
     if (displayValue) {
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
     }

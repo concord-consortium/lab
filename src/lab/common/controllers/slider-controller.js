@@ -155,6 +155,8 @@ define(function () {
     $elem = $('<div class="interactive-slider">')
               .append($title)
               .append($container);
+    // Each interactive component has to have class "component".
+    $elem.addClass("component");
 
     for (i = 0; i < labels.length; i++) {
       label = labels[i];

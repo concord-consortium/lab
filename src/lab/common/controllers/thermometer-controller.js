@@ -62,6 +62,8 @@ define(function (require) {
     $elem = $('<div class="interactive-thermometer">')
       .append($thermometer)
       .append($label);
+    // Each interactive component has to have class "component".
+    $elem.addClass("component");
 
     // Support custom dimensions. Implementation may seem unclear,
     // but the goal is to provide most obvious behavior for authors.
