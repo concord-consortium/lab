@@ -8,6 +8,7 @@
 define(function (require) {
 
   var labConfig = require('lab.config'),
+      arrays    = require('arrays'),
       alert     = require('common/alert'),
 
       // Minimum width of the model.
@@ -180,7 +181,7 @@ define(function (require) {
     function placeComponentsInContainers() {
       var id, container, divContents, items,
           $row, $rows, $containerComponents,
-          lastContainer, comps,
+          lastContainer, comps, errMsg,
           i, ii, j, jj, k, kk;
 
       comps = $.extend({}, components);
@@ -192,7 +193,16 @@ define(function (require) {
         }
         if (!divContents) continue;
 
-        if (Object.prototype.toString.call(divContents[0]) !== "[object Array]") {
+        if (!arrays.isArray(divContents)) {
+          // Inform an author and skip this container.
+          errMsg = "Incorrect layout definition for '" + container.id + "' container. It should specify " +
+                   "an array of components or an array of arrays of components (multiple rows).";
+          alert(errMsg);
+          continue;
+        }
+
+        if (!arrays.isArray(divContents[0])) {
+          // Only one row specified. Wrap it into array to process it easier.
           divContents = [divContents];
         }
 
@@ -208,12 +218,13 @@ define(function (require) {
           $containers[container.id].append($row);
           for (k = 0, kk = items.length; k < kk; k++) {
             id = items[k];
-            if (comps[id] !== undefined) {
-              $row.append(comps[id].getViewContainer());
-              delete comps[id];
-            } else {
+            if (comps[id] === undefined) {
+              // Inform an author and skip this definition.
               alert("Incorrect layout definition. Component with ID '" + id + "'' is not defined.");
+              continue;
             }
+            $row.append(comps[id].getViewContainer());
+            delete comps[id];
           }
         }
       }
