@@ -2229,35 +2229,40 @@ define(function(require) {
     // Define some default output properties.
     model.defineOutput('time', {
       label: "Time",
-      unitType: 'time'
+      unitType: 'time',
+      format: 'f'
     }, function() {
       return modelOutputState.time;
     });
 
     model.defineOutput('kineticEnergy', {
       label: "Kinetic Energy",
-      unitType: 'energy'
+      unitType: 'energy',
+      format: '.4g'
     }, function() {
       return modelOutputState.KE;
     });
 
     model.defineOutput('potentialEnergy', {
       label: "Potential Energy",
-      unitType: 'energy'
+      unitType: 'energy',
+      format: '.4g'
     }, function() {
       return modelOutputState.PE;
     });
 
     model.defineOutput('totalEnergy', {
       label: "Total Energy",
-      unitType: 'energy'
+      unitType: 'energy',
+      format: '.4g'
     }, function() {
       return modelOutputState.KE + modelOutputState.PE;
     });
 
     model.defineOutput('temperature', {
       label: "Temperature",
-      unitType: 'temperature'
+      unitType: 'temperature',
+      format: 'f'
     }, function() {
       return modelOutputState.temperature;
     });
