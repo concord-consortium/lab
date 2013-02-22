@@ -51,7 +51,7 @@ define(function () {
       $span = $('<span class="radio">')
         .append($option)
         .append(option.text);
-      $div.append($span)
+      $div.append($span);
       if (component.orientation === "vertical") {
         $div.append("<br/>");
       }
@@ -59,11 +59,13 @@ define(function () {
         return function() {
           var i, len;
 
-          // Update component definition.
-          for (i = 0, len = options.length; i < len; i++) {
-            delete options[i].selected;
+          // Update component definition only if there is no property binding.
+          if (component.property === undefined) {
+            for (i = 0, len = options.length; i < len; i++) {
+              delete options[i].selected;
+            }
+            options[index].selected = true;
           }
-          options[index].selected = true;
 
           if (option.action){
             scriptingAPI.makeFunctionInScriptContext(option.action)();
