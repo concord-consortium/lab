@@ -59,7 +59,7 @@
     {
       "type": "button",
       "id": "add-inside",
-      "text": "Add Yellow Molecule",
+      "text": "Add Purple Molecule",
       "action": [
         "var elemNum = 3;",
         "var maxX = getObstacleProperties(0).x - getElementProperties(elemNum).sigma;",
@@ -69,7 +69,7 @@
     {
       "type": "button",
       "id": "add-outside",
-      "text": "Add Purple Molecule",
+      "text": "Add Yellow Molecule",
       "action": [
         "var elemNum = 1;",
         "var minX = getObstacleProperties(0).x + getObstacleProperties(0).width + getElementProperties(elemNum).sigma;",
@@ -79,7 +79,7 @@
     {
       "type": "button",
       "id": "remove-inside",
-      "text": "Remove Yellow Molecule",
+      "text": "Remove Purple Molecule",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  if (getAtomProperties(i).x < getObstacleProperties(0).x) {",
@@ -92,7 +92,7 @@
     {
       "type": "button",
       "id": "remove-outside",
-      "text": "Remove Purple Molecule",
+      "text": "Remove Yellow Molecule",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  if (getAtomProperties(i).x > (getObstacleProperties(0).x + getObstacleProperties(0).width)) {",
@@ -105,7 +105,7 @@
     {
       "type": "button",
       "id": "heat-inside",
-      "text": "Heat Yellow Gas",
+      "text": "Heat Purple Gas",
       "action": [
         "if (get('temperature') < 10000) {",
         "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -124,7 +124,7 @@
     {
       "type": "button",
       "id": "heat-outside",
-      "text": "Heat Purple Gas",
+      "text": "Heat Yellow Gas",
       "action": [
         "if (get('temperature') < 10000) {",
         "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -143,7 +143,7 @@
     {
       "type": "button",
       "id": "cool-inside",
-      "text": "Cool Yellow Gas",
+      "text": "Cool Purple Gas",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  var atom = getAtomProperties(i);",
@@ -157,7 +157,7 @@
     {
       "type": "button",
       "id": "cool-outside",
-      "text": "Cool Purple Gas",
+      "text": "Cool Yellow Gas",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  var atom = getAtomProperties(i);",
