@@ -6,9 +6,24 @@ define(function () {
       validator = require('common/validator');
 
   return function RadioController(component, scriptingAPI, interactivesController) {
-    var $div, $option, $span,
+        // List of jQuery objects wrapping <input type="radio">.
+    var $options = [],
+        $div, $option, $span,
         controller,
         options, option, i, len;
+
+    // Updates radio using model property. Used in modelLoadedCallback.
+    // Make sure that this function is only called when:
+    // a) model is loaded,
+    // b) radio is bound to some property.
+    function updateRadio() {
+      var value = model.get(component.property);
+      for (i = 0, len = options.length; i < len; i++) {
+        if (options[i].value === value) {
+          $options[i].attr("checked", true);
+        }
+      }
+    }
 
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.radio, component);
@@ -21,12 +36,12 @@ define(function () {
     $div = $('<div>').attr('id', component.id);
     // Each interactive component has to have class "component".
     $div.addClass("component");
-
     for (i = 0, len = options.length; i < len; i++) {
       option = options[i];
       $option = $('<input>')
         .attr('type', "radio")
         .attr('name', component.id);
+      $options.push($option);
       if (option.disabled) {
         $option.attr("disabled", option.disabled);
       }
@@ -55,17 +70,25 @@ define(function () {
           } else if (option.loadModel){
             model.stop();
             interactivesController.loadModel(option.loadModel);
+          } else if (option.value !== undefined) {
+            model.set(component.property, option.value);
           }
         };
       })(option, i));
     }
 
+
     // Public API.
     controller = {
-      // No modelLoadeCallback is defined. In case of need:
-      // modelLoadedCallback: function () {
-      //   (...)
-      // },
+      modelLoadedCallback: function () {
+        // Connect radio with model's property if its name is defined.
+        if (component.property !== undefined) {
+          // Register listener for property.
+          model.addPropertiesListener([component.property], updateRadio);
+          // Perform initial radio setup.
+          updateRadio();
+        }
+      },
 
       // Returns view container.
       getViewContainer: function () {

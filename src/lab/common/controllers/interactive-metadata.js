@@ -273,7 +273,7 @@ define(function() {
       },
       property: {
         // Radio can be also connected to a model property.
-        // In such case, options should define value", not "action".
+        // In such case, options should define "value", not "action".
       }
     },
 
@@ -281,14 +281,21 @@ define(function() {
       text: {
         defaultValue: ""
       },
-      disabled: {},
-      selected: {},
       action: {
         // Use it when radio is not bound to any model property.
+        conflictsWith: ["value"]
       },
       value: {
-        // Ut it when radio is bound to some model property.
+        // Use it when radio is bound to some model property.
+        conflictsWith: ["action"]
       },
+      selected: {
+        // Use it when radio is not bound to any model property.
+        // When "property" is used for radio, it will determine
+        // selection.
+        conflictsWith: ["value"]
+      },
+      disabled: {},
       loadModel: {}
     },
 
