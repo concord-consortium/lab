@@ -16,8 +16,7 @@ define(function(require) {
       aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
       units                = require('md2d/models/engine/constants/units'),
       PropertyDescription  = require('md2d/models/property-description'),
-      // For now, assume MD2D units only. Shortly we will allow this to change.
-      unitsDefinition      = require('md2d/models/unit-definitions/md2d'),
+      unitDefinitions     = require('md2d/models/unit-definitions/index'),
       _ = require('underscore');
 
   return function Model(initialProperties) {
@@ -244,7 +243,10 @@ define(function(require) {
         filteredOutputsByName = {},
 
         // The currently-defined parameters.
-        parametersByName = {};
+        parametersByName = {},
+
+        // The currently-operative set of units. Default to md2d.
+        unitsDefinition = unitDefinitions.md2d;
 
     function notifyPropertyListeners(listeners) {
       listeners = _.uniq(listeners);
