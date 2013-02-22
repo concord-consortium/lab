@@ -34,6 +34,8 @@
             "text": "Balloon skin",
             "x": 2.1593974304199217,
             "y": 1.43,
+            "width": 0.3,
+            "textAlign": "center",
             "layer": 1,
             "hostType": "RectangularObstacle",
             "hostIndex": 0
@@ -49,7 +51,6 @@
         ]
       },
       "onLoad": [
-        "setTextBoxProperties(2, {width: 0.3, textAlign: 'center'});",
         "onPropertyChange('atomInside', function(n) {",
         "  setTextBoxProperties(3, {text: 'Atoms inside: ' + n}) ",
         "});"
