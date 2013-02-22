@@ -3,6 +3,7 @@
   "publicationStatus": "public",
   "subtitle": "Tracing and marking atoms.",
   "about": "Atom Tracing example",
+  "fontScale": 0.9,
   "models": [
     {
       "id": "model",

@@ -3,6 +3,7 @@
   "publicationStatus": "public",
   "subtitle": "Creating and interacting with Obstacles using scripts.",
   "about": "",
+  "fontScale": 0.9,
   "models": [
     {
       "id": "three-atoms-three-elements$0",
