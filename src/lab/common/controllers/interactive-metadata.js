@@ -178,10 +178,17 @@ define(function() {
       text: {
         defaultValue: ""
       },
-      property: {},
-      onClick: {},
-      // Note that 'initialValue' makes sense only for checkboxes without property binding.
-      initialValue: {}
+      property: {
+        conflictsWith: ["initialValue"]
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      },
+      initialValue: {
+        // Note that 'initialValue' makes sense only for checkboxes without property binding.
+        // Do not use checkbox as setter.
+        conflictsWith: ["property"]
+      }
     },
 
     slider: {
