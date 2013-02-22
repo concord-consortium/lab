@@ -245,6 +245,10 @@ define(function() {
       },
       options: {
         defaultValue: []
+      },
+      property: {
+        // Pulldown can be also connected to a model property.
+        // In such case, options should define "value", not "action".
       }
     },
 
@@ -252,9 +256,21 @@ define(function() {
       text: {
         defaultValue: ""
       },
+      action: {
+        // Use it when pulldown is not bound to any model property.
+        conflictsWith: ["value"]
+      },
+      value: {
+        // Use it when pulldown is bound to some model property.
+        conflictsWith: ["action"]
+      },
+      selected: {
+        // Use it when pulldown is not bound to any model property.
+        // When "property" is used for pulldown, it will determine
+        // selection.
+        conflictsWith: ["value"]
+      },
       disabled: {},
-      selected: {},
-      action: {},
       loadModel: {}
     },
 

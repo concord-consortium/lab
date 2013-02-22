@@ -6,10 +6,25 @@ define(function () {
       validator = require('common/validator');
 
   return function PulldownController(component, scriptingAPI, interactivesController) {
-    var $pulldown, $option,
+        // List of jQuery objects wrapping <select> elements.
+    var $options = [],
+        $pulldown, $option,
         options, option,
         controller,
         i, len;
+
+    // Updates radio using model property. Used in modelLoadedCallback.
+    // Make sure that this function is only called when:
+    // a) model is loaded,
+    // b) radio is bound to some property.
+    function updatePulldown() {
+      var value = model.get(component.property);
+      for (i = 0, len = options.length; i < len; i++) {
+        if (options[i].value === value) {
+          $options[i].attr("selected", true);
+        }
+      }
+    }
 
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.pulldown, component);
@@ -26,6 +41,7 @@ define(function () {
     for (i = 0, len = options.length; i < len; i++) {
       option = options[i];
       $option = $('<option>').html(option.text);
+      $options.push($option);
       if (option.disabled) {
         $option.attr("disabled", option.disabled);
       }
@@ -40,26 +56,35 @@ define(function () {
           action = component.options[index].action,
           i, len;
 
-      // Update component definition.
-      for (i = 0, len = options.length; i < len; i++) {
-        delete options[i].selected;
+      // Update component definition only if there is no property binding.
+      if (component.property === undefined) {
+        for (i = 0, len = options.length; i < len; i++) {
+          delete options[i].selected;
+        }
+        options[index].selected = true;
       }
-      options[index].selected = true;
 
       if (action){
         scriptingAPI.makeFunctionInScriptContext(action)();
       } else if (component.options[index].loadModel){
         model.stop();
         interactivesController.loadModel(component.options[index].loadModel);
+      } else if (option.value !== undefined) {
+        model.set(component.property, options[index].value);
       }
     });
 
     // Public API.
     controller = {
-      // No modelLoadeCallback is defined. In case of need:
-      // modelLoadedCallback: function () {
-      //   (...)
-      // },
+      modelLoadedCallback: function () {
+        // Connect pulldown with model's property if its name is defined.
+        if (component.property !== undefined) {
+          // Register listener for property.
+          model.addPropertiesListener([component.property], updatePulldown);
+          // Perform initial pulldown setup.
+          updatePulldown();
+        }
+      },
 
       // Returns view container.
       getViewContainer: function () {
