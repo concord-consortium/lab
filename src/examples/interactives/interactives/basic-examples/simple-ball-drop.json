@@ -15,13 +15,13 @@
   "outputs": [
     {
       "name": "ballHeight",
-      "units": "m",
+      "unitAbbreviation": "m",
       "label": "Ball Height",
       "value": "return getAtomProperties(0).y;"
     },
     {
       "name": "macroTime",
-      "units": "s",
+      "unitAbbreviation": "s",
       "label": "Time",
       "value": "return get('time') * 1e-4"
     }
@@ -30,7 +30,7 @@
     {
       "name": "gravity",
       "label": "Gravitational acceleration",
-      "units": "(m/s²)",
+      "unitAbbreviation": "(m/s²)",
       "onChange": "set({ gravitationalField: value * 1e-8});",
       "initialValue": 9.8
     }

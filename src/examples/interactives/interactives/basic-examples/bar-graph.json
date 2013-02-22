@@ -18,7 +18,7 @@
   "outputs": [
     {
       "name": "atom0Ke",
-      "units": "eV",
+      "unitType": "energy",
       "label": "Kinetic Energy of Particle",
       "value": [
         "return atomsKe([4]);"

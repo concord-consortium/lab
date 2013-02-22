@@ -61,7 +61,6 @@
     {
       "name": "atomInside",
       "label": "Atoms Inside Balloon",
-      "units": "",
       "value": [
         "var atomNum = 0;",
         "var obsX = getObstacleProperties(0).x;",
