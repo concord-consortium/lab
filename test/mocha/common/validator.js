@@ -15,13 +15,17 @@ requirejs([
         required: true
       },
       optionalProp: {
-        defaultValue: -1
+        defaultValue: -1,
+        conflictsWith: ["conflictingProp"]
       },
       readOnlyProp: {
         readOnly: true
       },
       immutableProp: {
         immutable: true
+      },
+      conflictingProp: {
+        conflictsWith: ["optionalProp"]
       }
     };
   });
@@ -97,6 +101,17 @@ requirejs([
       it('should fail when input contains immutable properties', function() {
         var input = {
           immutableProp: 1
+        };
+
+        (function () {
+          validator.validate(metadata, input);
+        }).should.throwError();
+      });
+
+      it('should detect conflicting properties', function() {
+        var input = {
+          optionalProp: 1,
+          conflictingProp: 2
         };
 
         (function () {

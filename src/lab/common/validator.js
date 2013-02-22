@@ -15,6 +15,16 @@ define(function(require) {
   ValidationError.prototype = new Error();
   ValidationError.prototype.constructor = ValidationError;
 
+  function checkConflicts(input, propName, conflictingProps) {
+    var i, len;
+    for (i = 0, len = conflictingProps.length; i < len; i++) {
+      if (input.hasOwnProperty(conflictingProps[i])) {
+        throw new ValidationError(propName, "Properties set contains conflicting properties: " +
+          conflictingProps[i] + " and " + propName);
+      }
+    }
+  }
+
   return {
 
     // Basic validation.
@@ -43,6 +53,9 @@ define(function(require) {
             }
             if (!ignoreImmutable && propMetadata.immutable === true) {
               throw new ValidationError(prop, "Properties set tries to overwrite immutable property " + prop);
+            }
+            if (propMetadata.conflictsWith) {
+              checkConflicts(input, prop, propMetadata.conflictsWith);
             }
             result[prop] = input[prop];
           }
