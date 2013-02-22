@@ -1924,6 +1924,16 @@ define(function(require) {
       }
     };
 
+    model.format = function(property, opts) {
+      opts = opts || {};
+
+      var desc = model.getPropertyDescription(property);
+      if (desc) {
+        return desc.format(model.get(property), opts);
+      }
+      return d3.format(opts.format || 'g')(model.get(property));
+    }
+
     /**
       Add a listener callback that will be notified when any of the properties in the passed-in
       array of properties is changed. (The argument `properties` can also be a string, if only a
