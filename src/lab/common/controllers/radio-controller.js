@@ -6,18 +6,23 @@ define(function () {
       validator = require('common/validator');
 
   return function RadioController(component, scriptingAPI, interactivesController) {
-        // List of jQuery objects wrapping <input type="radio">.
-    var $options = [],
+        // Public API.
+    var controller,
+        // DOM elements.
         $div, $option, $span,
-        controller,
-        options, option, i, len;
+        // Options definitions from component JSON definition.
+        options,
+        // List of jQuery objects wrapping <input type="radio"> elements.
+        $options = [];
 
     // Updates radio using model property. Used in modelLoadedCallback.
     // Make sure that this function is only called when:
     // a) model is loaded,
     // b) radio is bound to some property.
     function updateRadio() {
-      var value = model.get(component.property);
+      var value = model.get(component.property),
+          i, len;
+
       for (i = 0, len = options.length; i < len; i++) {
         if (options[i].value === value) {
           $options[i].attr("checked", true);
@@ -25,60 +30,57 @@ define(function () {
       }
     }
 
-    // Validate component definition, use validated copy of the properties.
-    component = validator.validateCompleteness(metadata.radio, component);
-    // Validate radio options too.
-    options = component.options;
-    for (i = 0, len = options.length; i < len; i++) {
-      options[i] = validator.validateCompleteness(metadata.radioOption, options[i]);
-    }
+    function initialize() {
+      var i, len, option;
 
-    $div = $('<div>').attr('id', component.id);
-    // Each interactive component has to have class "component".
-    $div.addClass("component");
-    for (i = 0, len = options.length; i < len; i++) {
-      option = options[i];
-      $option = $('<input>')
-        .attr('type', "radio")
-        .attr('name', component.id);
-      $options.push($option);
-      if (option.disabled) {
-        $option.attr("disabled", option.disabled);
+      // Validate component definition, use validated copy of the properties.
+      component = validator.validateCompleteness(metadata.radio, component);
+      // Validate radio options too.
+      options = component.options;
+      for (i = 0, len = options.length; i < len; i++) {
+        options[i] = validator.validateCompleteness(metadata.radioOption, options[i]);
       }
-      if (option.selected) {
-        $option.attr("checked", option.selected);
-      }
-      $span = $('<span class="radio">')
-        .append($option)
-        .append(option.text);
-      $div.append($span);
-      if (component.orientation === "vertical") {
-        $div.append("<br/>");
-      }
-      $option.change((function(option, index) {
-        return function() {
-          var i, len;
 
-          // Update component definition only if there is no property binding.
-          if (component.property === undefined) {
-            for (i = 0, len = options.length; i < len; i++) {
-              delete options[i].selected;
+      // Create HTML elements.
+      $div = $('<div>').attr('id', component.id);
+      // Each interactive component has to have class "component".
+      $div.addClass("component");
+
+      // Create options (<input type="radio">)
+      for (i = 0, len = options.length; i < len; i++) {
+        option = options[i];
+        $option = $('<input>')
+          .attr('type', "radio")
+          .attr('name', component.id);
+        $options.push($option);
+
+        if (option.disabled) {
+          $option.attr("disabled", option.disabled);
+        }
+        if (option.selected) {
+          $option.attr("checked", option.selected);
+        }
+        $span = $('<span class="radio">')
+          .append($option)
+          .append(option.text);
+        $div.append($span);
+        if (component.orientation === "vertical") {
+          $div.append("<br/>");
+        }
+        $option.change((function(option) {
+          return function() {
+            if (option.action){
+              scriptingAPI.makeFunctionInScriptContext(option.action)();
+            } else if (option.loadModel){
+              model.stop();
+              interactivesController.loadModel(option.loadModel);
+            } else if (option.value !== undefined) {
+              model.set(component.property, option.value);
             }
-            options[index].selected = true;
-          }
-
-          if (option.action){
-            scriptingAPI.makeFunctionInScriptContext(option.action)();
-          } else if (option.loadModel){
-            model.stop();
-            interactivesController.loadModel(option.loadModel);
-          } else if (option.value !== undefined) {
-            model.set(component.property, option.value);
-          }
-        };
-      })(option, i));
+          };
+        })(option));
+      }
     }
-
 
     // Public API.
     controller = {
@@ -99,11 +101,26 @@ define(function () {
 
       // Returns serialized component definition.
       serialize: function () {
-        // Return compoment definition. It's always valid,
-        // as selected option is updated during 'change' callback.
+        var i, len;
+        if (component.property === undefined) {
+          // When property binding is not defined, we need to keep track
+          // which option is currently selected.
+          for (i = 0, len = options.length; i < len; i++) {
+            if ($options[i].attr("checked")) {
+              options[i].selected = true;
+            } else {
+              delete options[i].selected;
+            }
+          }
+        }
+        // Note that 'options' array above is a reference to component.options array.
+        // Every thing is updated, return a copy.
         return $.extend(true, {}, component);
       }
     };
+
+    initialize();
+
     // Return Public API object.
     return controller;
   };
