@@ -299,7 +299,23 @@ define(function (require) {
         hash representing the interactive specification
     */
     function validateInteractive(interactive) {
-      var i, len, models, parameters, outputs, filteredOutputs, components, errMsg;
+      var i, len, models, model, components, errMsg;
+
+      function validateArray(modelName, array) {
+        var i, len, errMsg;
+        // Support undefined / null values - just return.
+        if (!array) return;
+
+        try {
+          for (i = 0, len = array.length; i < len; i++) {
+            array[i] = validator.validateCompleteness(metadata[modelName], array[i]);
+          }
+        } catch (e) {
+          errMsg = "Incorrect " + modelName +  " definition:\n" + e.message;
+          alert(errMsg);
+          throw new Error(errMsg);
+        }
+      }
 
       // Validate top level interactive properties.
       try {
@@ -310,50 +326,18 @@ define(function (require) {
         throw new Error(errMsg);
       }
 
-      // Set up the list of possible models.
+      validateArray("model", interactive.models);
+      validateArray("parameter", interactive.parameters);
+      validateArray("output", interactive.outputs);
+      validateArray("filteredOutput", interactive.filteredOutputs);
+
+      // Validate also nested strucutres.
       models = interactive.models;
-      try {
-        for (i = 0, len = models.length; i < len; i++) {
-          models[i] = validator.validateCompleteness(metadata.model, models[i]);
-          modelsHash[models[i].id] = models[i];
-        }
-      } catch (e) {
-        errMsg = "Incorrect model definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      parameters = interactive.parameters;
-      try {
-        for (i = 0, len = parameters.length; i < len; i++) {
-          parameters[i] = validator.validateCompleteness(metadata.parameter, parameters[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect parameter definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      outputs = interactive.outputs;
-      try {
-        for (i = 0, len = outputs.length; i < len; i++) {
-          outputs[i] = validator.validateCompleteness(metadata.output, outputs[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect output definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      filteredOutputs = interactive.filteredOutputs;
-      try {
-        for (i = 0, len = filteredOutputs.length; i < len; i++) {
-          filteredOutputs[i] = validator.validateCompleteness(metadata.filteredOutput, filteredOutputs[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect filtered output definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
+      for (i = 0, len = models.length; i < len; i++) {
+        model = models[i];
+        validateArray("parameter", model.parameters);
+        validateArray("output", model.outputs);
+        validateArray("filteredOutput", model.filteredOutputs);
       }
 
       components = interactive.components;
@@ -507,7 +491,7 @@ define(function (require) {
 
       var initialValues = {},
           customParameters,
-          i, parameter;
+          i, parameter, onChangeFunc;
 
       // append modelParameters second so they're processed later (and override entries of the
       // same name in interactiveParameters)
@@ -515,10 +499,16 @@ define(function (require) {
 
       for (i = 0; i < customParameters.length; i++) {
         parameter = customParameters[i];
+        // onChange callback is optional.
+        onChangeFunc = undefined;
+        if (parameter.onChange) {
+          onChangeFunc = scriptingAPI.makeFunctionInScriptContext('value', getStringFromArray(parameter.onChange));
+        }
+        // Define parameter using modeler.
         model.defineParameter(parameter.name, {
           label: parameter.label,
           units: parameter.units
-        }, scriptingAPI.makeFunctionInScriptContext('value', getStringFromArray(parameter.onChange)));
+        }, onChangeFunc);
 
         if (parameter.initialValue !== undefined) {
           initialValues[parameter.name] = parameter.initialValue;

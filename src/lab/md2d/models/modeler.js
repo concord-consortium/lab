@@ -2072,8 +2072,11 @@ define(function(require) {
       properties['set_'+name] = function(value) {
         properties[name] = value;
         parametersByName[name].isDefined = true;
-        // set a useful 'this' binding in the setter:
-        parametersByName[name].setter.call(model, value);
+        // setter is optional.
+        if (parametersByName[name].setter) {
+          // set a useful 'this' binding in the setter:
+          parametersByName[name].setter.call(model, value);
+        }
       };
     };
 
