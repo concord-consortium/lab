@@ -117,7 +117,6 @@ unless @warnings.empty?
 #{v["details"]}
     HEREDOC
   }
-  exit 1
 end
 
 unless @errors.empty?
