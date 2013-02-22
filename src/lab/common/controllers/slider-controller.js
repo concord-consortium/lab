@@ -36,8 +36,6 @@ define(function () {
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
-        var obj;
-
         if (propertyName) {
           model.addPropertiesListener([propertyName], updateSlider);
         }
@@ -51,12 +49,6 @@ define(function () {
             if (displayValue) {
               $sliderHandle.text(displayValue(initialValue));
             }
-          }
-
-          if (propertyName) {
-            obj = {};
-            obj.propertyName = initialValue;
-            model.set(obj);
           }
         } else if (propertyName) {
           updateSlider();
@@ -100,14 +92,7 @@ define(function () {
       serialize: function () {
         var result = $.extend(true, {}, component);
 
-        if (propertyName) {
-          // Two way binding between slider and model property.
-          // Initial value was used to set model property once,
-          // we do not need to do this again. Value of the slider
-          // will be defined by the model.
-          delete result.initialValue;
-        }
-        else {
+        if (!propertyName) {
           // No property binding. Just action script.
           // Update "initialValue" to represent current
           // value of the slider.

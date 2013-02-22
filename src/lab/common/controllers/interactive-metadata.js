@@ -213,9 +213,20 @@ define(function() {
         defaultValue: "3.75em"
       },
       displayValue: {},
-      property: {},
-      action: {},
-      initialValue: {}
+      // Use "property" OR "action" + "initialValue".
+      property: {
+        // If you use property binding, do not mix it with action scripts and initial values.
+        conflictsWith: ["initialValue", "action"]
+      },
+      action: {
+        conflictsWith: ["property"]
+      },
+      initialValue: {
+        // Do not use slider as a property setter.
+        // There are better ways to do it, e.g.:
+        // "onLoad" scripts (and set({ }) call inside), "modelOptions", etc.
+        conflictsWith: ["property"]
+      }
     },
 
     pulldown: {
@@ -252,6 +263,10 @@ define(function() {
       },
       options: {
         defaultValue: []
+      },
+      property: {
+        // Radio can be also connected to a model property.
+        // In such case, options should define value", not "action".
       }
     },
 
@@ -261,7 +276,12 @@ define(function() {
       },
       disabled: {},
       selected: {},
-      action: {},
+      action: {
+        // Use it when radio is not bound to any model property.
+      },
+      value: {
+        // Ut it when radio is bound to some model property.
+      },
       loadModel: {}
     },
 
