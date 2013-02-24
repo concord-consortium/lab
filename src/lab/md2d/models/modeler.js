@@ -355,11 +355,11 @@ define(function(require) {
         }
       }
 
-      // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
+      // timeStepsPerTick is defined in Classic MW as the number of timesteps per view update.
       // However, in MD2D we prefer the more physical notion of integrating for a particular
       // length of time.
       console.time('integration');
-      engine.integrate(model.get('viewRefreshInterval') * timeStep, timeStep);
+      engine.integrate(model.get('timeStepsPerTick') * timeStep, timeStep);
       console.timeEnd('integration');
       console.time('reading model state');
       updateAllOutputProperties();
@@ -2304,7 +2304,7 @@ define(function(require) {
         "showVelocityVectors",
         "showForceVectors",
         "showClock",
-        "viewRefreshInterval",
+        "timeStepsPerTick",
         "timeStep",
         "viscosity",
         "gravitationalField"

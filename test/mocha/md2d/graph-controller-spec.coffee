@@ -122,7 +122,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
             it "should pass option.sample = viewRefreshRate * timeStep (/ 1000)", ->
               options = mock.RealTimeGraph.getCall(0).args[1]
-              options.should.have.property 'sample', model.get('viewRefreshInterval') * model.get('timeStep') / 1000
+              options.should.have.property 'sample', model.get('timeStepsPerTick') * model.get('timeStep') / 1000
 
           describe "after 1 model tick", ->
             beforeEach ->
@@ -216,7 +216,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
               it "should pass option.sample = viewRefreshRate * timeStep (/ 1000)", ->
                 options = grapher.reset.getCall(0).args[1]
-                options.should.have.property 'sample', model.get('viewRefreshInterval') * model.get('timeStep') / 1000
+                options.should.have.property 'sample', model.get('timeStepsPerTick') * model.get('timeStep') / 1000
 
               it "should pass 1 array of length 2 to new_data", ->
                 newData = grapher.new_data.getCall(0).args[0]
@@ -278,10 +278,10 @@ helpers.withIsolatedRequireJS (requirejs) ->
               grapher.reset.callCount.should.equal 1
             sampleShouldBeCorrect = ->
               options = grapher.reset.getCall(0).args[1]
-              options.sample.should.equal model.get('viewRefreshInterval') * model.get('timeStep') / 1000
+              options.sample.should.equal model.get('timeStepsPerTick') * model.get('timeStep') / 1000
 
-            it "should reset the graph and sample size after viewRefreshInterval is changed", ->
-              model.set viewRefreshInterval: 2 * model.get 'viewRefreshInterval'
+            it "should reset the graph and sample size after timeStepsPerTick is changed", ->
+              model.set timeStepsPerTick: 2 * model.get 'timeStepsPerTick'
               grapherShouldReset()
               sampleShouldBeCorrect()
 

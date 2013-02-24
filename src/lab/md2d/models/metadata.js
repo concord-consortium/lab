@@ -71,7 +71,7 @@ define(function() {
       viscosity: {
         defaultValue: 1
       },
-      viewRefreshInterval: {
+      timeStepsPerTick: {
         defaultValue: 50
       }
     },

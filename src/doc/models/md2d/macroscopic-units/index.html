@@ -81,7 +81,7 @@
       <h3>Time</h3>
       <p>
         MD2D records time in femtoseconds. If we choose a reasonable <code>timeStep</code> such as 1
-        fs, and a <code>viewRefreshInterval</code> of 167 time steps per view refresh, then 167 fs
+        fs, and a <code>timeStepsPerTick</code> of 167 time steps per view refresh, then 167 fs
         of model time will pass between view refreshes, which occur 60 times per second. (At least
         for simpler models that run at the full frame rate.) In that scenario, 1 second of wall
         clock time corresponds to approximately \(10^4 \mbox{ fs}\) of model time.
@@ -93,7 +93,7 @@
         1 second:
 
         $$10^4 \text{ fs} \rightarrow 1 \text{ s}$$
-        $$ \text{ (also ensure timeStep \(\times\) viewRefreshInterval = 167 fs/frame)}$$
+        $$ \text{ (also ensure timeStep \(\times\) timeStepsPerTick = 167 fs/frame)}$$
       </p>
 
       <h2>Converting MD2D Units to MKS Units: Derived Units</h2>

@@ -1011,18 +1011,18 @@ AUTHORING = false;
     }
 
     function modelSampleSizeInPs() {
-      var viewRefreshInterval, timeStep;
+      var timeStepsPerTick, timeStep;
 
       if (_model) {
-        viewRefreshInterval = _model.get('viewRefreshInterval');
+        timeStepsPerTick = _model.get('timeStepsPerTick');
         timeStep    = _model.get('timeStep');
-        return _model.get("viewRefreshInterval") * _model.get("timeStep")/1000;
+        return _model.get("timeStepsPerTick") * _model.get("timeStep")/1000;
       }
       else {
-        viewRefreshInterval = 60;
+        timeStepsPerTick = 60;
         timeStep = 10;
       }
-      return viewRefreshInterval * timeStep / 1000;
+      return timeStepsPerTick * timeStep / 1000;
     }
 
 

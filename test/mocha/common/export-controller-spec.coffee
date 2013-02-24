@@ -27,7 +27,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
         # for convenience, make the model advance 1 *ps* per tick
         model.set
           timeStep: 1000
-          viewRefreshInterval: 1
+          timeStepsPerTick: 1
 
         model.defineOutput 'perRunOutput', {
           label: "per-run output"

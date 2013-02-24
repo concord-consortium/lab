@@ -6,7 +6,7 @@
   "height": 3,
   "viscosity": 1,
   "gravitationalField": false,
-  "viewRefreshInterval": 1,
+  "timeStepsPerTick": 1,
   "timeStep": 1,
   "elements": {
     "id": [

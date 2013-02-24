@@ -1,10 +1,10 @@
 {
-  "title": "View Refresh Rate and Model Sample Rate Examples",
+  "title": "Explore model integration time step, period, and sample rate",
   "publicationStatus": "public",
-  "subtitle": "Experiment with parameters which define stepping of the simulation.",
+  "subtitle": "Model parameters controlling the integration time step, period, and sample rate can be customized.",
   "about": [
-    "Try to change timeStep, viewRefreshInterval or modelSampleRate and observe changes in the speed of simulation execution.",
-    "See <a href=\"/readme.html#md2d-simulation-stepping\">readme</a> for more details."
+    "Try to change timeStep, timeStepsPerTick or modelSampleRate and observe changes in the speed of simulation execution.",
+    "See <a href=\"/readme.html#md2d-simulation-stepping\" class='opens-in-new-window' target='_blank'>readme</a> for more details."
   ],
   "fontScale": 0.8,
   "models": [
@@ -82,7 +82,7 @@
         "setTimeout(function() {",
         "stop();",
         "var time = getTime() - startTime;",
-        "alert( (format('1.2f')(time / (get('viewRefreshInterval') * get('timeStep')) / 2)) + ' fps');",
+        "alert( (format('1.2f')(time / (get('timeStepsPerTick') * get('timeStep')) / 2)) + ' fps');",
         "}, 2000);",
         "}, 100);",
         "}, 2000);"
@@ -125,8 +125,8 @@
         }
       ],
       "steps": 149,
-      "title": "viewRefreshInterval",
-      "property": "viewRefreshInterval"
+      "title": "timeStepsPerTick",
+      "property": "timeStepsPerTick"
     },
     {
       "type": "pulldown",

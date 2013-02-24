@@ -2,7 +2,11 @@
   "title": "Oil and Water for Slow Computers",
   "publicationStatus": "draft",
   "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
-  "about": "This version of the model is adapted for slower computers amd browsers.",
+  "about": [
+    "This version of 'Oil and Water' is an experimental adaptation for slower computers amd browsers. Try the Performance Tuning selections for: <b>Regular</b>, <b>Slow Computer</b>, or <b>Tablet</b>.",
+    "Changing this selection sets the timeStep, timeStepsPerTick or modelSampleRate model parameters. See <a href=\"/readme.html#md2d-simulation-stepping\" class='opens-in-new-window' target='_blank'>readme</a> for more details."
+  ],
+  "fontScale": 0.8,
   "models": [
     {
       "id": "page3$1",
@@ -10,7 +14,7 @@
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
-      "onLoad": "set({ showClock: true })"
+      "onLoad": "set({ showClock: true });"
     },
     {
       "id": "oilAndWaterMix",
@@ -18,7 +22,23 @@
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
-      "onLoad": "set({ showClock: true, timeStep: 1, viewRefreshInterval: 50, modelSampleRate: 'default' })"
+      "onLoad": "set({ showClock: true });"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "computerSpeed",
+      "initialValue": 1,
+      "onChange": [
+        [ "switch(value) {                                                                        "],
+        [ "  case 1: set({ timeStep: 1.0, timeStepsPerTick: 50, modelSampleRate: 'default' }); "],
+        [ "  break;                                                                               "],
+        [ "  case 2: set({ timeStep: 1.5, timeStepsPerTick: 50, modelSampleRate: 'default' }); "],
+        [ "  break;                                                                               "],
+        [ "  case 3: set({ timeStep: 2.0, timeStepsPerTick: 80, modelSampleRate: 'default' }); "],
+        [ "  break;                                                                               "],
+        [ "}                                                                                      "]
+      ]
     }
   ],
   "components": [
@@ -31,6 +51,7 @@
     {
       "type": "pulldown",
       "id": "select-overall",
+      "property": "computerSpeed",
       "options": [
         {
           "text": "Set performance tuning for ...",
@@ -38,15 +59,15 @@
         },
         {
           "text": "Regular Computer",
-          "action": "set({ timeStep: 1, viewRefreshInterval: 50, modelSampleRate: 'default' })"
+          "value": 1
         },
         {
           "text": "Slow Computer",
-          "action": "set({ timeStep: 1.5, viewRefreshInterval: 50, modelSampleRate: 'default' })"
+          "value": 2
         },
         {
           "text": "Tablet",
-          "action": "set({ timeStep: 2, viewRefreshInterval: 80, modelSampleRate: 'default' })"
+          "value": 3
         }
       ]
     },
@@ -87,12 +108,13 @@
         }
       ],
       "steps": 149,
-      "title": "viewRefreshInterval",
-      "property": "viewRefreshInterval"
+      "title": "timeStepsPerTick",
+      "property": "timeStepsPerTick"
     },
     {
       "type": "pulldown",
       "id": "select-model-sample-rate",
+      "property": "modelSampleRate",
       "options": [
         {
           "text": "Model Sample Rate (Hz) ...",
@@ -100,28 +122,27 @@
         },
         {
           "text": "10",
-          "action": "set({ 'modelSampleRate' : 10 });"
+          "value": 10
         },
         {
           "text": "15",
-          "action": "set({ 'modelSampleRate' : 15 });"
+          "value": 15
         },
         {
           "text": "20",
-          "action": "set({ 'modelSampleRate' : 20 });"
+          "value": 10
         },
         {
           "text": "30",
-          "action": "set({ 'modelSampleRate' : 30 });"
+          "value": 10
         },
         {
           "text": "default (requestAnimationFrame)",
-          "selected": true,
-          "action": "set({ 'modelSampleRate' : 'default' });"
+          "value": "default"
         },
         {
           "text": "120",
-          "action": "set({ 'modelSampleRate' : 120 });"
+          "value": 120
         }
       ]
     }

@@ -26,7 +26,7 @@ requirejs([
         mol_number: 50,
         lennardJonesForces: true,
         coulombForces: true,
-        viewRefreshInterval: 100
+        timeStepsPerTick: 100
       };
 
   suite.addBatch({
@@ -36,7 +36,7 @@ requirejs([
           mol_number: 0,
           lennardJonesForces: true,
           coulombForces: true,
-          viewRefreshInterval: 100
+          timeStepsPerTick: 100
         });
         return model;
       },

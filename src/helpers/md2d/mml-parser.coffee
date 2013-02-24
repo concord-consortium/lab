@@ -307,9 +307,9 @@ parseMML = (mmlString) ->
     viscosity = getFloatProperty universeProps, "viscosity", "float"
 
     ###
-      viewRefreshInterval
+      timeStepsPerTick
     ###
-    viewRefreshInterval = getFloatProperty $mml.root(), "viewRefreshInterval", "int"
+    timeStepsPerTick = getFloatProperty $mml.root(), "viewRefreshInterval", "int"
 
     ###
       timeStep
@@ -798,7 +798,7 @@ parseMML = (mmlString) ->
       height              : height
       viscosity           : viscosity
       gravitationalField  : gravitationalField
-      viewRefreshInterval : viewRefreshInterval
+      timeStepsPerTick    : timeStepsPerTick
       timeStep            : timeStep
       dielectricConstant  : dielectricConstant
       solventForceType    : solventForceType

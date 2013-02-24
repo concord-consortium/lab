@@ -8,7 +8,7 @@
   "gravitationalField": false,
   "timeStep": 0.9879999756813049,
   "viscosity": 1,
-  "viewRefreshInterval": 50,
+  "timeStepsPerTick": 50,
   "viewOptions": {
     "showClock": true,
     "keShading": false,

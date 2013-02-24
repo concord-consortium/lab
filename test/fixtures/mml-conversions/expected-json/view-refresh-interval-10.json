@@ -7,7 +7,7 @@
   "height": 1.5,
   "viscosity": 1,
   "gravitationalField": 8.000000000000001e-7,
-  "viewRefreshInterval": 10,
+  "timeStepsPerTick": 10,
   "timeStep": 1,
   "dielectricConstant": 1,
   "realisticDielectricEffect": true,

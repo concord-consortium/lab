@@ -32,7 +32,7 @@ define(function (require) {
       current implementation of the grapher requires this knowledge.)
     */
     function getSamplePeriod() {
-      return model.get('viewRefreshInterval') * model.get('timeStep') / 1000;
+      return model.get('timeStepsPerTick') * model.get('timeStep') / 1000;
     }
 
     /**
@@ -148,7 +148,7 @@ define(function (require) {
 
       // As an imperfect hack (really the grapher should allow us to pass the correct x-axis value)
       // we reset the graph if a model property change changes the time interval between ticks
-      model.addPropertiesListener(['viewRefreshInterval', 'timeStep'], function() {
+      model.addPropertiesListener(['timeStepsPerTick', 'timeStep'], function() {
         resetGrapher();
         resetData();
       });

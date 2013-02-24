@@ -1065,29 +1065,29 @@ executables made available via Bundler.)
 Main parameters which define speed and accuracy of simulation in MD2D are:
 
 - timeStep,
-- viewRefreshInterval,
+- timeStepsPerTick,
 - modelSampleRate.
 
 To explain them let's start from the definition of the model "tick". One "tick" consists of:
 
-- running simulation for **viewRefreshInterval** * **timeStep** femtoseconds,
+- running simulation for **timeStepsPerTick** * **timeStep** femtoseconds,
 - update of the view.
 
 The "tick" is constantly repeated while simulation is running.
 
-So, when viewRefreshInterval = 50 and timeStep = 1fs, one "tick" causes that the engine performs calculations for 50fs.
+So, when timeStepsPerTick= 50 and timeStep = 1fs, one "tick" causes that the engine performs calculations for 50fs.
 
 **timeStep** defines a time value used during the one integration step in the engine internals. It affects accuracy of calculations.
-**viewRefreshInterval** in fact defines number of these integration steps during one "tick". It is defined because it makes no sense to refresh view too often.
+**timeStepsPerTick** in fact defines number of these integration steps during one "tick". It is defined because it makes no sense to refresh view too often.
 
 Using pseudo-code we can say that tick is:
 
-    for (i = 0 to viewRefreshInterval) {
+    for (i = 0 to timeStepsPerTick) {
        engine.advanceBy(timeStep)
     }
     view.update()
 
-That's why viewRefreshInterval = 50 and timeStep = 1fs is different from viewRefreshInterval = 25 and timeStep = 2fs.
+That's why timeStepsPerTick = 50 and timeStep = 1fs is different from timeStepsPerTick = 25 and timeStep = 2fs.
 First one will be more accurate and two times slower (more or less) than second one, however both configurations will cause that one "tick" advance model by 50fs (25 * 2fs or 50 * 1fs).
 
 **modelSampleRate** defines how often we should execute "tick". Of course, in most cases we should call it as often as it's possible and that's the default behavior (with upper limit of 60 times per second to avoid running simple models too fast).
