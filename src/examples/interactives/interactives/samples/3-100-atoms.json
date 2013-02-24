@@ -20,7 +20,7 @@
     {
       "type": "checkbox",
       "id": "charged-box",
-      "text": "charged atoms",
+      "text": "Charge",
       "property": "chargeShading",
       "onClick": [
         "if (value) {",
@@ -100,8 +100,7 @@
       "thermometer"
     ],
     "bottom": [
-      ["charged-box"],
-      ["epsilon-slider", "temperature-slider"]
+      ["charged-box", "epsilon-slider", "temperature-slider"]
     ]
   }
 }

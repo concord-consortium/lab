@@ -19,5 +19,15 @@
       "text": "Add a random atom",
       "action": "addRandomAtom()"
     }
+  ],
+  "layout": [ "add-atom" ],
+  "template": [
+    {
+      "id": "right",
+      "top": "6em",
+      "left": "model.right",
+      "padding-left": "1em",
+      "align": "center"
+    }
   ]
 }

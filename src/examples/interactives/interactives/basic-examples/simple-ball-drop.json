@@ -72,5 +72,22 @@
       "property": "ballHeight",
       "displayValue": "return format('1.2f')(value)"
     }
+  ],
+  "layout": {
+    "right": [
+      ["gravity-slider"],
+      ["time-display"],
+      ["ball-height-display"]
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "6em",
+      "width": "16em",
+      "left": "model.right",
+      "padding-left": "1em",
+      "align": "left"
+    }
   ]
 }
