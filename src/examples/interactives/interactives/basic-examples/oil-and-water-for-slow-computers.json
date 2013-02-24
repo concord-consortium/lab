@@ -30,14 +30,14 @@
       "name": "computerSpeed",
       "initialValue": 1,
       "onChange": [
-        [ "switch(value) {                                                                        "],
-        [ "  case 1: set({ timeStep: 1.0, timeStepsPerTick: 50, modelSampleRate: 'default' }); "],
-        [ "  break;                                                                               "],
-        [ "  case 2: set({ timeStep: 1.5, timeStepsPerTick: 50, modelSampleRate: 'default' }); "],
-        [ "  break;                                                                               "],
-        [ "  case 3: set({ timeStep: 2.0, timeStepsPerTick: 80, modelSampleRate: 'default' }); "],
-        [ "  break;                                                                               "],
-        [ "}                                                                                      "]
+        "switch(value) {                                                                     ",
+        "  case 1: set({ timeStep: 1.0, timeStepsPerTick: 50, modelSampleRate: 'default' }); ",
+        "  break;                                                                            ",
+        "  case 2: set({ timeStep: 1.5, timeStepsPerTick: 50, modelSampleRate: 'default' }); ",
+        "  break;                                                                            ",
+        "  case 3: set({ timeStep: 2.0, timeStepsPerTick: 80, modelSampleRate: 'default' }); ",
+        "  break;                                                                            ",
+        "}                                                                                   "
       ]
     }
   ],
