@@ -104,7 +104,11 @@ and the specific Ruby Gems needed for building Lab and running the Lab server.
 After installation you should see something like the following:
 
     $  ruby -v
-    ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-darwin10.8.0]
+    ruby 1.9.3p392 (2013-02-22 revision 39386) [x86_64-darwin10.8.0]
+
+If you already have RVM installed update to the most up-to-date stable version.
+
+    $ rvm get stable
 
 Once you have a working version of Ruby 1.9.3 check to see if the RubyGem [bundler](http://gembundler.com/)
 is already installed:
@@ -113,13 +117,14 @@ is already installed:
 
     *** LOCAL GEMS ***
 
-    bundler (1.1.3)
+    bundler (1.2.4)
 
-If Bundler is not installed install it now:
+If Bundler is not installed install it now into the global gemset for ruby-1.9.3-p392
 
+    $ rvm gemset use global
     $ gem install bundler
-    Fetching: bundler-1.1.3.gem (100%)
-    Successfully installed bundler-1.1.3
+    Fetching: bundler-1.2.4.gem (100%)
+    Successfully installed bundler-1.2.4
     1 gem installed
 
 #### nodejs and npm, the Node Package Manager

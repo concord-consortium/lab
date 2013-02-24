@@ -3,7 +3,7 @@
 require 'json'
 
 @required_ruby_version = "1.9.3"
-@required_ruby_patchlevel = 385
+@required_ruby_patchlevel = 392
 @minimum_node_version = "v0.8.6"
 @minimum_couchdb_version = "1.2.0"
 
