@@ -147,6 +147,28 @@ define(function() {
     /**
       Interactive components:
     */
+    text: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      },
+      text: {
+        // Text content.
+        defaultValue: ""
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      }
+    },
+
     button: {
       id: {
         required: true
