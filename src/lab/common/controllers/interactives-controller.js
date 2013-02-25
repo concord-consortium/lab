@@ -13,6 +13,7 @@ define(function (require) {
       ScriptingAPI            = require('common/controllers/scripting-api'),
       ButtonController        = require('common/controllers/button-controller'),
       CheckboxController      = require('common/controllers/checkbox-controller'),
+      TextController          = require('common/controllers/text-controller'),
       RadioController         = require('common/controllers/radio-controller'),
       SliderController        = require('common/controllers/slider-controller'),
       PulldownController      = require('common/controllers/pulldown-controller'),
@@ -43,12 +44,17 @@ define(function (require) {
       //                           DOM elements of the component.
       // # modelLoadedCallback() - optional function taking no arguments, a callback
       //                           which should be called when the model is loaded.
+      // # resize()              - optional function taking no arguments, a callback
+      //                           which will be called by the layout algorithm when component's container
+      //                           dimensions are changed. This lets component to adjust itself to the
+      //                           new container dimensions.
       //
       // Note that each components view container (so, jQuery object returned by getViewContainer() has to
       // have class 'component'! It's required and checked in the runtime by the interactive controller.
       // It ensures good practices while implementing new components.
       // Please see: src/sass/lab/_interactive-component.sass to check what this CSS class defines.
       ComponentConstructor = {
+        'text':          TextController,
         'button':        ButtonController,
         'checkbox':      CheckboxController,
         'pulldown':      PulldownController,
