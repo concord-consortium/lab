@@ -67,6 +67,7 @@ define(function (require) {
     var controller = {},
         modelController,
         $interactiveContainer,
+        $parent,
         models = [],
         modelsHash = {},
         propertiesListeners = [],
@@ -249,10 +250,14 @@ define(function (require) {
       });
       semanticLayout = new SemanticLayout($interactiveContainer, template, layout, componentByID, modelController, fontScale);
 
-      $(window).unbind('resize');
-      $(window).on('resize', function() {
-        controller.resize();
-      });
+      // We are rendering in embeddable mode if only element on page
+      // so resize when window resizes.
+      if (onlyElementOnPage()) {
+        $(window).unbind('resize');
+        $(window).on('resize', function() {
+          controller.resize();
+        });
+      }
 
       // Call component callbacks *when* the layout is created.
       // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
@@ -357,6 +362,20 @@ define(function (require) {
     }
 
     /**
+      Is the Interactive the only element on the page?
+
+      An Interactive can either be displayed as the only content on a page
+      (often in an iframe) or in a dom element on a page with other elements.
+
+      TODO: make more robust
+      This function makes a simplifying assumption that the Interactive is the
+      only content on the page if the parent of the parent is the <cody> element
+    */
+    function onlyElementOnPage() {
+      return $parent.prop("nodeName") === "BODY"
+    }
+
+    /**
       The main method called when this controller is created.
 
       Populates the element pointed to by viewSelector with divs to contain the
@@ -377,8 +396,10 @@ define(function (require) {
       // Validate interactive.
       interactive = validateInteractive(newInteractive);
 
+      // FIXME: does the controller work without a viewSelector?
       if (viewSelector) {
         $interactiveContainer = $(viewSelector);
+        $parent = $interactiveContainer.parent().parent();
       }
 
       // Set up the list of possible models.

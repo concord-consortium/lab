@@ -19,6 +19,8 @@ AUTHORING = false;
       groups,
       iframePhone,
 
+      $content = $("#content"),
+
       $interactiveHeader = $("#interactive-header"),
       $interactiveTitle = $("#interactive-title"),
 
@@ -26,7 +28,7 @@ AUTHORING = false;
 
       $selectInteractive = $("#select-interactive"),
 
-      $selectIframeSize = $("#select-iframe-size"),
+      $selectInteractiveSize = $("#select-interactive-size"),
 
       $updateInteractiveButton = $("#update-interactive-button"),
       $saveInteractiveButton = $("#save-interactive-button"),
@@ -305,11 +307,9 @@ AUTHORING = false;
     var actualWidth, actualHeight,
         sizeAttributes = "",
         sizeChoice = $shareSelectIframeSize.val(),
-        notEmbedded = $selectInteractive.length,
-        $content;
+        notEmbedded = $selectInteractive.length;
 
     if (notEmbedded) {
-      $content = $("#content");
       actualWidth = $content.width();
       actualHeight = $content.height();
     } else {
@@ -342,8 +342,8 @@ AUTHORING = false;
 
   $selectInteractive.change(selectInteractiveHandler);
 
-  function selectIframeSizeHandler() {
-    var selection = $selectIframeSize.val(),
+  function selectInteractiveSizeHandler() {
+    var selection = $selectInteractiveSize.val(),
         dimensions = {
           "tiny":   {width: "350px",  height: "245px"},
           "small":  {width: "400px",  height: "280px"},
@@ -354,7 +354,7 @@ AUTHORING = false;
 
     saveOptionsToCookie();
     if (onFullPage()) {
-      $("#content").width(dim.width).height(dim.height);
+      $content.width(dim.width).height(dim.height);
       // Window size is not change, so we have to call "resize()"
       // method manually.
       controller.resize();
@@ -365,7 +365,7 @@ AUTHORING = false;
     }
   }
 
-  $selectIframeSize.change(selectIframeSizeHandler);
+  $selectInteractiveSize.change(selectInteractiveSizeHandler);
 
   // used to extract values from nested object: modelList
   function getObjects(obj, key, val) {
@@ -500,7 +500,6 @@ AUTHORING = false;
     document.cookie = "lab-interactive-options=" + $("#interactive-controls").serialize() + " ; max-age=" + 30*60*60*24;
   }
 
-
   function finishSetupFullPage() {
     var java_mw_href,
         java_mw_link = $("#java-mw-link"),
@@ -554,7 +553,7 @@ AUTHORING = false;
       // FIXME: generalize when multiple model types implemented
       controller.modelController.modelContainer.setFocus();
       $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
-      // $selectIframeSize.attr('disabled', 'disabled');
+      // $selectInteractiveSize.attr('disabled', 'disabled');
       setupCodeEditor();
       setupModelCodeEditor();
       setupBenchmarks();
@@ -564,13 +563,18 @@ AUTHORING = false;
       setupAtomDataTable();
       $("#content-banner").show();
       $("#extras-bottom").show();
-      selectIframeSizeHandler();
+      selectInteractiveSizeHandler();
+      $selectInteractiveSize.removeAttr('disabled');
+      $content.resizable({
+        helper: "ui-resizable-helper",
+        resize: controller.resize
+      });
     } else {
       setupEnergyGraph();
       $("#content-banner").hide();
       // $("#model-energy-graph").hide();
       $("#model-datatable").hide();
-      $("#content").css("border", "none");
+      $content.css("border", "none");
       setupCodeEditor();
       setupModelCodeEditor();
       setupBenchmarks();
@@ -579,19 +583,18 @@ AUTHORING = false;
       var $iframeWrapper,
           $iframe;
 
-      $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectIframeSize.val() + '"></div>'),
+      $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>'),
       $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
 
-      $("#content").append($iframeWrapper);
+      $content.append($iframeWrapper);
       $("#responsive-content").hide();
-      selectIframeSizeHandler();
-      $selectIframeSize.removeAttr('disabled');
+      selectInteractiveSizeHandler();
+      $selectInteractiveSize.removeAttr('disabled');
 
       $iframeWrapper.append($iframe);
       iframePhone = setupIframeListenerFor($iframe[0]);
 
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
-      $iframeWrapper.bind('resize', updateShareIframeContent);
     }
     setupCopySaveInteractive();
   }
