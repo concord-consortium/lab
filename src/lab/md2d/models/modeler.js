@@ -831,21 +831,16 @@ define(function(require) {
     };
 
     model.createElements = function(_elements) {
-      // Options for addElement method.
-      var options = {
-        // Deserialization process, invalidating change hooks will be called manually.
-        deserialization: true
-      },
-      i, num, prop, elementProps;
+      var i, num, prop, elementProps;
 
-      // Call the hook manually, as addElement won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       if (_elements === undefined) {
         // Special case when elements are not defined.
         // Empty object will be filled with default values.
-        model.addElement({id: 0}, options);
+        model.addElement({id: 0});
+        model.endBatch();
         return;
       }
 
@@ -860,12 +855,11 @@ define(function(require) {
             elementProps[prop] = _elements[prop][i];
           }
         }
-        model.addElement(elementProps, options);
+        model.addElement(elementProps);
       }
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       return model;
     };
@@ -904,15 +898,12 @@ define(function(require) {
           // Options for addAtom method.
       var options = {
             // Do not check the position of atom, assume that it's valid.
-            supressCheck: true,
-            // Deserialization process, invalidating change hooks will be called manually.
-            deserialization: true
+            supressCheck: true
           },
           i, num, prop, atomProps;
 
-      // Call the hook manually, as addAtom won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       if (typeof config === 'number') {
         num = config;
@@ -954,9 +945,8 @@ define(function(require) {
           engine.relaxToTemperature();
       }
 
-      // Call the hook manually, as addAtom won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
@@ -966,17 +956,11 @@ define(function(require) {
     };
 
     model.createRadialBonds = function(_radialBonds) {
-          // Options for addRadialBond method.
-      var options = {
-            // Deserialization process, invalidating change hooks will be called manually.
-            deserialization: true
-          },
-          num = _radialBonds.strength.length,
+      var num = _radialBonds.strength.length,
           i, prop, radialBondProps;
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       // _radialBonds is hash of arrays (as specified in JSON model).
       // So, for each index, create object containing properties of
@@ -989,28 +973,21 @@ define(function(require) {
             radialBondProps[prop] = _radialBonds[prop][i];
           }
         }
-        model.addRadialBond(radialBondProps, options);
+        model.addRadialBond(radialBondProps);
       }
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       return model;
     };
 
     model.createAngularBonds = function(_angularBonds) {
-          // Options for addAngularBond method.
-      var options = {
-            // Deserialization process, invalidating change hooks will be called manually.
-            deserialization: true
-          },
-          num = _angularBonds.strength.length,
+      var num = _angularBonds.strength.length,
           i, prop, angularBondProps;
 
-      // Call the hook manually, as addAngularBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       // _angularBonds is hash of arrays (as specified in JSON model).
       // So, for each index, create object containing properties of
@@ -1023,12 +1000,11 @@ define(function(require) {
             angularBondProps[prop] = _angularBonds[prop][i];
           }
         }
-        model.addAngularBond(angularBondProps, options);
+        model.addAngularBond(angularBondProps);
       }
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       return model;
     };
