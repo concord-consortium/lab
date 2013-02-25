@@ -113,9 +113,18 @@
       "text": "Button (100% x 100%)",
       "width": "100%",
       "height": "100%"
+    },
+    {
+      "type": "text",
+      "id": "text-comp",
+      "text": "This is a text with width explicitly set to 8em and default height",
+      "width": "8em"
     }
   ],
   "layout": {
+    "top": [
+      "temperature-slider"
+    ],
     "right-upper": [
       "graph1"
     ],
@@ -125,10 +134,10 @@
     "left": [
       "bar-graph"
     ],
-    "top": [
-      "temperature-slider"
-    ],
     "bottom-left": [
+      "text-comp"
+    ],
+    "bottom": [
       "graph2",
       "button-big",
       "thermometer",
@@ -168,6 +177,12 @@
     },
     {
       "id": "bottom-left",
+      "left": "left.left",
+      "top": "left.bottom",
+      "padding-bottom": "1em"
+    },
+    {
+      "id": "bottom",
       "left": "model.left",
       "top": "model.bottom",
       "padding-bottom": "1em"
