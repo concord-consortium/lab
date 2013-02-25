@@ -623,6 +623,18 @@ define(function(require) {
     }
 
     /**
+      return a random element index ... which is *not* an amino acid element
+    */
+    function randomElement() {
+      var len = engine.getNumberOfElements(),
+          el = Math.floor( Math.random() * len );
+      while(aminoacidsHelper.isAminoAcid(el)) {
+        el = Math.floor( Math.random() * len );
+      }
+      return el;
+    }
+
+    /**
       Create set of amino acids elements. Use descriptions
       provided in 'aminoacids' array.
     */
@@ -1082,7 +1094,7 @@ define(function(require) {
       charge (default is neutral).
     */
     model.addRandomAtom = function(el, charge) {
-      if (el == null) el = Math.floor( Math.random() * elements.mass.length );
+      if (el == null) el = randomElement();
       if (charge == null) charge = 0;
 
       var size   = model.size(),
