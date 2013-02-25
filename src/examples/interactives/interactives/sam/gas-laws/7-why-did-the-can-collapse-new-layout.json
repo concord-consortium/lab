@@ -57,6 +57,18 @@
       "property": "showVelocityVectors"
     },
     {
+      "type": "text",
+      "id": "purple-label",
+      "text": "Purple Atoms",
+      "width": "5em"
+    },
+    {
+      "type": "text",
+      "id": "yellow-label",
+      "text": "Yellow Atoms",
+      "width": "5em"
+    },
+    {
       "type": "button",
       "id": "add-inside",
       "text": "Add",
@@ -179,12 +191,14 @@
   ],
   "layout": {
     "left": [
+      ["purple-label"],
       ["add-inside"],
       ["remove-inside"],
       ["heat-inside"],
       ["cool-inside"]
     ],
     "right": [
+      ["yellow-label"],
       ["add-outside"],
       ["remove-outside"],
       ["heat-outside"],
@@ -195,15 +209,15 @@
   "template": [
     {
       "id": "left",
-      "top": "6em",
+      "top": "5em",
       "right": "model.left",
-      "align": "right"
+      "align": "center"
     },
     {
       "id": "right",
-      "top": "6em",
+      "top": "5em",
       "left": "model.right",
-      "align": "left"
+      "align": "center"
     },
     {
       "id": "bottom",
