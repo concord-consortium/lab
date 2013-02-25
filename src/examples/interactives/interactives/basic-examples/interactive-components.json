@@ -1,5 +1,5 @@
 {
-  "title": "Test Button, Slider, and Pulldown Examples",
+  "title": "Interactive Components",
   "publicationStatus": "public",
   "subtitle": "Examples of defining and using different Interactive components.",
   "about": "",
@@ -45,12 +45,6 @@
         "}",
         "set({targetTemperature: newTemp});"
       ]
-    },
-    {
-      "type": "button",
-      "id": "log-model",
-      "text": "Log value of model",
-      "action": "console.log(model);"
     },
     {
       "type": "button",
@@ -192,6 +186,17 @@
         }
       ],
       "action": "set({targetTemperature: value});"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "text": "Simple Text Component"
+    },
+    {
+      "type": "text",
+      "id": "text-link",
+      "text": "Clickable Text (it starts the simulation)",
+      "onClick": "start();"
     }
   ],
   "layout": {
@@ -199,7 +204,6 @@
       [
         "abs-zero",
         "add-heat",
-        "log-model",
         "throw-error"
       ],
       [
@@ -208,6 +212,10 @@
       ],
       [
         "radio-horizontal"
+      ],
+      [
+        "text",
+        "text-link"
       ]
     ],
     "right": [
