@@ -29,6 +29,17 @@ button.component
   font-size: 1em
   padding: 0.2em
 
+.interactive-radio
+  &.horizontal
+    // Horizontal alignment of options.
+    span + span
+      // Add margin only *between* spans (span + span).
+      margin-left: 1em
+  &.vertical
+    // Vertical alignment of options.
+    span
+      display: block
+
 .interactive-checkbox
   input[type="checkbox"]
     -webkit-transform: scale(1,1)

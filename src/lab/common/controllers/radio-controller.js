@@ -43,8 +43,11 @@ define(function () {
 
       // Create HTML elements.
       $div = $('<div>').attr('id', component.id);
+      $div.addClass("interactive-radio");
       // Each interactive component has to have class "component".
       $div.addClass("component");
+      // Add class defining component orientation - "horizontal" or "vertical".
+      $div.addClass(component.orientation);
 
       // Create options (<input type="radio">)
       for (i = 0, len = options.length; i < len; i++) {
@@ -60,13 +63,11 @@ define(function () {
         if (option.selected) {
           $option.attr("checked", option.selected);
         }
-        $span = $('<span class="radio">')
+        $span = $('<span>')
           .append($option)
           .append(option.text);
         $div.append($span);
-        if (component.orientation === "vertical") {
-          $div.append("<br/>");
-        }
+
         $option.change((function(option) {
           return function() {
             if (option.action){
