@@ -1793,6 +1793,7 @@ define(function(require) {
     };
 
     model.start = function() {
+      if (!stopped) return model;
       return model.resume();
     };
 
