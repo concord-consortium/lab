@@ -156,10 +156,10 @@ define(function (require) {
           modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
         } else {
           createModelController(modelConfig.type, modelUrl, modelConfig);
-          modelLoaded(modelConfig);
           // also be sure to get notified when the underlying model changes
           modelController.on('modelReset', modelLoaded);
           controller.modelController = modelController;
+          modelLoaded(modelConfig);
         }
       }
 
