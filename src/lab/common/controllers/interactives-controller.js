@@ -251,16 +251,7 @@ define(function (require) {
 
       $(window).unbind('resize');
       $(window).on('resize', function() {
-        semanticLayout.layoutInteractive();
-        // Call application controller (application.js) resizeCallbacks if there are any.
-        // Currently this is used for the Share pane generated <iframe> content.
-        // TODO: make a model dialog component and treat the links at the top as
-        // componments in the layout. New designs may put these links at the bottom ... etc
-        for(i = 0; i < resizeCallbacks.length; i++) {
-          if (resizeCallbacks[i].resize !== undefined) {
-            resizeCallbacks[i].resize();
-          }
-        }
+        controller.resize();
       });
 
       // Call component callbacks *when* the layout is created.
@@ -535,6 +526,24 @@ define(function (require) {
       },
       pushOnLoadScript: function (callback) {
         onLoadScripts.push(callback);
+      },
+      /**
+        Notifies interactive controller that the dimensions of its container have changed.
+        It triggers the layout algorithm again.
+      */
+      resize: function () {
+          var i;
+
+          semanticLayout.layoutInteractive();
+          // Call application controller (application.js) resizeCallbacks if there are any.
+          // Currently this is used for the Share pane generated <iframe> content.
+          // TODO: make a model dialog component and treat the links at the top as
+          // componments in the layout. New designs may put these links at the bottom ... etc
+          for(i = 0; i < resizeCallbacks.length; i++) {
+            if (resizeCallbacks[i].resize !== undefined) {
+              resizeCallbacks[i].resize();
+            }
+          }
       },
       /**
         Serializes interactive, returns object ready to be stringified.
