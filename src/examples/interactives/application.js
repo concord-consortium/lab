@@ -343,23 +343,26 @@ AUTHORING = false;
   $selectInteractive.change(selectInteractiveHandler);
 
   function selectIframeSizeHandler() {
-    var $iframeWrapper = $("#iframe-wrapper"),
-        selection = $selectIframeSize.val();
-    switch(selection) {
-      case "tiny":
-      $iframeWrapper.width('350px').height('245px');
-      break;
-      case "small":
-      $iframeWrapper.width('400px').height('280px');
-      break;
-      case "medium":
-      $iframeWrapper.width('600px').height('420px');
-      break;
-      case "large":
-      $iframeWrapper.width('1000px').height('700px');
-      break;
-    }
+    var selection = $selectIframeSize.val(),
+        dimensions = {
+          "tiny":   {width: "350px",  height: "245px"},
+          "small":  {width: "400px",  height: "280px"},
+          "medium": {width: "600px",  height: "420px"},
+          "large":  {width: "1000px", height: "700px"}
+        },
+        dim = dimensions[selection];
+
     saveOptionsToCookie();
+    if (onFullPage()) {
+      $("#content").width(dim.width).height(dim.height);
+      // Window size is not change, so we have to call "resize()"
+      // method manually.
+      controller.resize();
+    } else {
+      $("#iframe-wrapper").width(dim.width).height(dim.height);
+      // No need to call controller.resize(), as interactive controller
+      // automatically binds to the window resize event.
+    }
   }
 
   $selectIframeSize.change(selectIframeSizeHandler);
@@ -561,6 +564,7 @@ AUTHORING = false;
       setupAtomDataTable();
       $("#content-banner").show();
       $("#extras-bottom").show();
+      selectIframeSizeHandler();
     } else {
       setupEnergyGraph();
       $("#content-banner").hide();
@@ -572,14 +576,14 @@ AUTHORING = false;
       setupBenchmarks();
       // send this message to Interactive in iframe
       // controller.modelController.moleculeContainer.setFocus();
-      var childIFrameObj = {},
-          $iframeWrapper,
+      var $iframeWrapper,
           $iframe;
 
       $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectIframeSize.val() + '"></div>'),
       $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
 
-      $("#viz").append($iframeWrapper);
+      $("#content").append($iframeWrapper);
+      $("#responsive-content").hide();
       selectIframeSizeHandler();
       $selectIframeSize.removeAttr('disabled');
 
