@@ -29,6 +29,18 @@ button.component
   font-size: 1em
   padding: 0.2em
 
+
+.interactive-text
+  p
+    // Ensure that there are no margins added by the user agent styles.
+    margin: 0
+    padding: 0
+    // Notify users that this is a clickable text (link).
+    &.clickable
+      color: #048
+      cursor: pointer
+      opacity: 1.0
+
 .interactive-radio
   &.horizontal
     // Horizontal alignment of options.
