@@ -18,6 +18,9 @@ define(function() {
         unitType: "length",
         immutable: true
       },
+      unitsScheme: {
+        defaultValue: "md2d"
+      },
       lennardJonesForces: {
         defaultValue: true
       },
