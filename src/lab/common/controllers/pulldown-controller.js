@@ -15,19 +15,15 @@ define(function () {
         // List of jQuery objects wrapping <select> elements.
         $options = [];
 
-    // Updates radio using model property. Used in modelLoadedCallback.
+    // Updates pulldown using model property. Used in modelLoadedCallback.
     // Make sure that this function is only called when:
     // a) model is loaded,
-    // b) radio is bound to some property.
+    // b) pulldown is bound to some property.
     function updatePulldown() {
-      var value = model.get(component.property),
-          i, len;
-
-      for (i = 0, len = options.length; i < len; i++) {
-        if (options[i].value === value) {
-          $options[i].attr("selected", true);
-        }
-      }
+      // Clear current selection.
+      $pulldown.val([]);
+      // Try to set a new value.
+      $pulldown.val(model.get(component.property));
     }
 
     function initialize() {
@@ -50,10 +46,13 @@ define(function () {
         $option = $('<option>').html(option.text);
         $options.push($option);
         if (option.disabled) {
-          $option.attr("disabled", option.disabled);
+          $option.prop("disabled", option.disabled);
         }
         if (option.selected) {
-          $option.attr("selected", option.selected);
+          $option.prop("selected", option.selected);
+        }
+        if (option.value) {
+          $option.prop("value", option.value);
         }
         $pulldown.append($option);
       }
@@ -97,7 +96,7 @@ define(function () {
           // When property binding is not defined, we need to keep track
           // which option is currently selected.
           for (i = 0, len = options.length; i < len; i++) {
-            if ($options[i].attr("selected")) {
+            if ($options[i].prop("selected")) {
               options[i].selected = true;
             } else {
               delete options[i].selected;

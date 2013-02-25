@@ -26,6 +26,8 @@ define(function () {
       for (i = 0, len = options.length; i < len; i++) {
         if (options[i].value === value) {
           $options[i].attr("checked", true);
+        } else {
+          $options[i].removeAttr("checked");
         }
       }
     }
