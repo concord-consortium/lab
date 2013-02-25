@@ -32,6 +32,14 @@
   ],
   "outputs": [
     {
+      "name": "purpleAtoms",
+      "value": "return getNumberOfAtoms('element[i] == 3');"
+    },
+    {
+      "name": "yellowAtoms",
+      "value": "return getNumberOfAtoms('element[i] == 1');"
+    },
+    {
       "name": "avgSpeed",
       "units": "nm/fs?",
       "label": "area",
@@ -55,6 +63,16 @@
       "id": "show-velocity",
       "text": "Show Velocity",
       "property": "showVelocityVectors"
+    },
+    {
+      "type": "numericOutput",
+      "id": "purple-atoms",
+      "property": "purpleAtoms"
+    },
+    {
+      "type": "numericOutput",
+      "id": "yellow-atoms",
+      "property": "yellowAtoms"
     },
     {
       "type": "text",
@@ -192,6 +210,7 @@
   "layout": {
     "left": [
       ["purple-label"],
+      ["purple-atoms"],
       ["add-inside"],
       ["remove-inside"],
       ["heat-inside"],
@@ -199,6 +218,7 @@
     ],
     "right": [
       ["yellow-label"],
+      ["yellow-atoms"],
       ["add-outside"],
       ["remove-outside"],
       ["heat-outside"],
@@ -209,13 +229,13 @@
   "template": [
     {
       "id": "left",
-      "top": "5em",
+      "top": "3em",
       "right": "model.left",
       "align": "center"
     },
     {
       "id": "right",
-      "top": "5em",
+      "top": "3em",
       "left": "model.right",
       "align": "center"
     },

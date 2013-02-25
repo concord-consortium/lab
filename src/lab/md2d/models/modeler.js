@@ -1544,7 +1544,7 @@ define(function(require) {
     model.removeTextBox = function(i) {
       var text = properties.textBoxes;
       if (i >=0 && i < text.length) {
-        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1))
+        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1));
         dispatch.textBoxesChanged();
       } else {
         throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
@@ -1633,8 +1633,8 @@ define(function(require) {
       return radialBondResults;
     };
 
-    model.get_num_atoms = function() {
-      return engine.getNumberOfAtoms();
+    model.get_num_atoms = function(f) {
+      return engine.getNumberOfAtoms(f);
     };
 
     model.get_obstacles = function() {
@@ -2118,10 +2118,10 @@ define(function(require) {
 
     model.getPropertyType = function(name) {
       if (outputsByName[name]) {
-        return 'output'
+        return 'output';
       }
       if (parametersByName[name]) {
-        return 'parameter'
+        return 'parameter';
       }
     };
 

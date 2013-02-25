@@ -22,8 +22,8 @@ define(function (require) {
 
     return {
       /* Returns number of atoms in the system. */
-      getNumberOfAtoms: function getNumberOfAtoms() {
-        return model.get_num_atoms();
+      getNumberOfAtoms: function getNumberOfAtoms(f) {
+        return model.get_num_atoms(f);
       },
 
       /* Returns number of obstacles in the system. */
