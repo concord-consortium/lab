@@ -51,11 +51,13 @@
       "id": "drop-dye",
       "text": "Add Drop of Dye",
       "action": [
-        "var atomsToMark = atomsWithin(0,get('height'),1,1);",
-        "if (atomsToMark != -1) {",
-          "markAtoms(atomsToMark);",
-          "start();",
-        "}"
+        "batch(function() {",
+          "var atomsToMark = atomsWithin(0,get('height'),1,1);",
+          "if (atomsToMark != -1) {",
+            "markAtoms(atomsToMark);",
+          "}",
+        "});",
+        "start();"
       ]
     }
   ],

@@ -89,6 +89,9 @@ define(function(require) {
 
         listeners = {},
 
+        // If this is true, output properties will not be recalculated on changes
+        supressInvalidatingChangeHooks = false,
+
         properties = {
           /**
             These functions are optional setters that will be called *instead* of simply setting
@@ -464,6 +467,8 @@ define(function(require) {
       by considered non-invalidating changes that don't require calling this hook.
     */
     function invalidatingChangePreHook() {
+      if (supressInvalidatingChangeHooks) return;
+
       storeOutputPropertiesBeforeChange();
     }
 
@@ -471,6 +476,8 @@ define(function(require) {
       ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
     */
     function invalidatingChangePostHook() {
+      if (supressInvalidatingChangeHooks) return;
+
       updateOutputPropertiesAfterChange();
       if (tickHistory) tickHistory.invalidateFollowingState();
       dispatch.invalidation();
@@ -2124,6 +2131,26 @@ define(function(require) {
         return 'parameter';
       }
     };
+
+    /**
+      Call before running a function that would otherwise trigger a number
+      of invalidatingChangePre/PostHooks, which would slow down the model when
+      each change causes a recalculation. This can be used whenever you can
+      safely assume that all actions executed between startBatch and endBatch
+      will not depend on triggered property changes.
+
+      endBatch() *must* be called after the actions are complete, or output
+      properties will no longer be updated.
+      */
+    model.startBatch = function() {
+      invalidatingChangePreHook();
+      supressInvalidatingChangeHooks = true;
+    }
+
+    model.endBatch = function() {
+      supressInvalidatingChangeHooks = false;
+      invalidatingChangePostHook();
+    }
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function() {

@@ -410,6 +410,15 @@ define(function (require) {
 
       setTextBoxProperties: function(i, props) {
         model.setTextBoxProperties(i, props);
+      },
+
+      batch: function(func) {
+        model.startBatch();
+        func();
+        model.endBatch();
+
+        // call repaint manually
+        api.repaint();
       }
 
     };
