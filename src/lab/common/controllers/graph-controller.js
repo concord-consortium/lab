@@ -16,7 +16,15 @@ define(function (require) {
         xmax: 'xmax',
         ylabel: 'ylabel',
         ymin: 'ymin',
-        ymax: 'ymax'
+        ymax: 'ymax',
+        xTicCount: 'xTicCount',
+        yTicCount: 'yTicCount',
+        xscaleExponent: 'xscaleExponent',
+        yscaleExponent: 'yscaleExponent',
+        xFormatter: 'xFormatter',
+        yFormatter: 'yFormatter',
+        lines: 'lines',
+        bars: 'bars'
       };
 
   return function graphController(component) {
