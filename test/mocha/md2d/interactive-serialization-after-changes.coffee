@@ -65,14 +65,17 @@ interactive =
 describe "Lab interactives: serialization", ->
   requirejs [
     'common/controllers/interactives-controller',
-    'common/layout/semantic-layout-config'
-  ], (interactivesController, layoutConfig) ->
+    'common/layout/semantic-layout-config',
+    'lab.config'
+  ], (interactivesController, layoutConfig, labConfig) ->
 
     before ->
       # This test requires that all view elements are attached to DOM (JSDOM). So, we cannot mock
       # layout and the test tends to be pretty slow. To optimize it, limit number of layout algorithm
       # iterations to 0, because we completely do not care about layout quality.
       layoutConfig.iterationsLimit = 0
+      # Also disable logging in Lab project so as not to obfuscate Mocha reporter.
+      labConfig.logging = false
 
 
     describe "serialization after changes of interactive components should reflect these changes", ->
