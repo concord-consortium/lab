@@ -426,6 +426,30 @@ define(function() {
       },
       ymax: {
         defaultValue: 10
+      },
+      xTicCount: {
+        defaultValue: 10
+      },
+      yTicCount: {
+        defaultValue: 10
+      },
+      xscaleExponent: {
+        defaultValue: 0.5
+      },
+      yscaleExponent: {
+        defaultValue: 0.5
+      },
+      xFormatter: {
+        defaultValue: "3.2r"
+      },
+      yFormatter: {
+        defaultValue: "3.2r"
+      },
+      lines: {
+        defaultValue: true
+      },
+      bars: {
+        defaultValue: false
       }
     },
 
