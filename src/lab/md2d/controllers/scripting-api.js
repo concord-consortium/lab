@@ -90,7 +90,7 @@ define(function (require) {
             throw e;
         }
 
-        this.repaintIfReady();
+        api.repaintIfReady();
       },
 
       /*
@@ -104,7 +104,7 @@ define(function (require) {
             throw e;
         }
 
-        this.repaintIfReady();
+        api.repaintIfReady();
       },
 
       addRandomAtom: function addRandomAtom() {
@@ -184,14 +184,15 @@ define(function (require) {
         for (i = 0, len = arguments.length; i < len; i++) {
           model.setAtomProperties(arguments[i], {marked: 1});
         }
-        this.repaintIfReady();
+
+        api.repaintIfReady();
       },
 
       unmarkAllAtoms: function unmarkAllAtoms() {
         for (var i = 0, len = model.get_num_atoms(); i < len; i++) {
           model.setAtomProperties(i, {marked: 0});
         }
-        this.repaintIfReady();
+        api.repaintIfReady();
       },
 
       traceAtom: function traceAtom(i) {
@@ -211,7 +212,7 @@ define(function (require) {
       */
       setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
         model.setAtomProperties(i, props, checkLocation, moveMolecule);
-        this.repaintIfReady(options);
+        api.repaintIfReady(options);
       },
 
       /**
@@ -224,7 +225,7 @@ define(function (require) {
 
       setElementProperties: function setElementProperties(i, props) {
         model.setElementProperties(i, props);
-        this.repaintIfReady();
+        api.repaintIfReady();
       },
 
       /**
@@ -253,7 +254,7 @@ define(function (require) {
           if (!options || !options.silent)
             throw e;
         }
-        this.repaintIfReady();
+        api.repaintIfReady();
       },
 
       /**
@@ -262,7 +263,7 @@ define(function (require) {
       */
       setObstacleProperties: function setObstacleProperties(i, props) {
         model.setObstacleProperties(i, props);
-        this.repaintIfReady();
+        api.repaintIfReady();
       },
 
       /**
@@ -284,12 +285,12 @@ define(function (require) {
             throw e;
         }
 
-        this.repaintIfReady();
+        api.repaintIfReady();
       },
 
       setRadialBondProperties: function setRadialBondProperties(i, props) {
         model.setRadialBondProperties(i, props);
-        this.repaintIfReady();
+        api.repaintIfReady();
       },
 
       getRadialBondProperties: function getRadialBondProperties(i) {
@@ -298,7 +299,7 @@ define(function (require) {
 
       setAngularBondProperties: function setAngularBondProperties(i, props) {
         model.setAngularBondProperties(i, props);
-        this.repaintIfReady();
+        api.repaintIfReady();
       },
 
       getAngularBondProperties: function getAngularBondProperties(i) {
@@ -397,7 +398,7 @@ define(function (require) {
 
       minimizeEnergy: function minimizeEnergy() {
         model.minimizeEnergy();
-        this.repaintIfReady();
+        api.repaintIfReady();
       },
 
       addTextBox: function(props) {
@@ -428,7 +429,7 @@ define(function (require) {
         inBatch = false;
 
         // call repaint manually
-        this.repaintIfReady();
+        api.repaintIfReady();
       }
 
     };
