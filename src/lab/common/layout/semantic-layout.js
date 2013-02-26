@@ -7,28 +7,11 @@
 
 define(function (require) {
 
-  var labConfig = require('lab.config'),
-      arrays    = require('arrays'),
-      console   = require('common/console'),
-      alert     = require('common/alert'),
-
-      // Minimum width of the model.
-      minModelWidth = 150,
-      // Minimum font size (in ems).
-      minFontSize = 0.65,
-      // Canoncical font size (in ems).
-      canonicalFontSize = 0.9,
-      // Canonical dimensions of the interactive, they decide about font size.
-      // (canoncicalFontSize * fontScale) em is used for the interactive which fits this container:
-      // 98% because 2% is reserved for left and right padding (see: src/sass/_semantic-layout.sass).
-      canonicalInteractiveWidth = 600 * 0.98,
-      // 94% because 5% is reserved for banner with credits, about and share links (see: src/sass/_semantic-layout.sass).
-      canonicalInteractiveHeight = 420 * 0.94,
-
-      containerColors = [
-        "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
-        "rgba(0,255,255,0.1)", "rgba(255,255,128,0.1)", "rgba(128,255,0,0.1)", "rgba(255,128,0,0.1)"
-      ];
+  var labConfig    = require('lab.config'),
+      layoutConfig = require('common/layout/semantic-layout-config'),
+      arrays       = require('arrays'),
+      console      = require('common/console'),
+      alert        = require('common/alert');
 
   return function SemanticLayout($interactiveContainer, containers, componentLocations, components, modelController, fontScale) {
 
@@ -36,7 +19,7 @@ define(function (require) {
         $modelContainer,
         $containers,
 
-        modelWidth = minModelWidth,
+        modelWidth = layoutConfig.minModelWidth,
         modelTop = 0,
         modelLeft = 0,
 
@@ -86,11 +69,11 @@ define(function (require) {
         containerScale = availableWidth / basicInteractiveWidth;
       }
 
-      font = canonicalFontSize * fontScale * containerScale;
+      font = layoutConfig.canonicalFontSize * fontScale * containerScale;
 
       // Ensure min font size (in 'em').
-      if (font < minFontSize) {
-        font = minFontSize;
+      if (font < layoutConfig.minFontSize) {
+        font = layoutConfig.minFontSize;
       }
 
       // Set font-size of #responsive-content element. So, if application author
@@ -135,11 +118,12 @@ define(function (require) {
     }
 
     function setupBackground() {
-      var id, i, len;
+      var colors = layoutConfig.containerColors,
+          id, i, len;
 
       for (i = 0, len = containers.length; i < len; i++) {
         id = containers[i].id;
-        $containers[id].css("background", labConfig.authoring ? containerColors[i % containerColors.length] : "");
+        $containers[id].css("background", labConfig.authoring ? colors[i % colors.length] : "");
       }
     }
 
@@ -351,8 +335,8 @@ define(function (require) {
       if (!isNaN(ratio)) {
         modelWidth = modelWidth * ratio;
       }
-      if (modelWidth < minModelWidth) {
-        modelWidth = minModelWidth;
+      if (modelWidth < layoutConfig.minModelWidth) {
+        modelWidth = layoutConfig.minModelWidth;
       }
 
       modelLeft -= minX;
@@ -407,10 +391,12 @@ define(function (require) {
     }
 
     function calcInteractiveAspectRatio() {
-      var redraws = 0,
+      var redraws = layoutConfig.iterationsLimit,
+          canonicalInteractiveWidth = layoutConfig.canonicalInteractiveWidth,
+          canonicalInteractiveHeight = layoutConfig.canonicalInteractiveHeight,
+          canonicalAspectRatio = canonicalInteractiveWidth / canonicalInteractiveHeight,
           maxX = -Infinity,
           maxY = -Infinity,
-          canonicalAspectRatio = canonicalInteractiveWidth / canonicalInteractiveHeight,
           id, $container, val;
 
       availableWidth = canonicalInteractiveWidth;
@@ -423,9 +409,8 @@ define(function (require) {
       setMinDimensions();
       modelWidth = availableWidth;
       positionContainers();
-      while (redraws < 15 && !resizeModelContainer()) {
+      while (redraws-- > 0 && !resizeModelContainer()) {
         positionContainers();
-        redraws++;
       }
 
       for (id in $containers) {
@@ -454,7 +439,7 @@ define(function (require) {
     // Public API.
     layout = {
       layoutInteractive: function () {
-        var redraws = 0,
+        var redraws = layoutConfig.iterationsLimit,
             id;
 
         console.time('[layout] update');
@@ -473,11 +458,10 @@ define(function (require) {
         // 2. Calculate optimal layout.
         modelWidth = availableWidth;
         positionContainers();
-        while (redraws < 35 && !resizeModelContainer()) {
+        while (redraws-- > 0 && !resizeModelContainer()) {
           positionContainers();
-          redraws++;
         }
-        console.log('[layout] update: ' + redraws + ' iterations');
+        console.log('[layout] update: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
 
         // 3. Notify components that their containers have new sizes.
         modelController.resize();
