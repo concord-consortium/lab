@@ -2,39 +2,7 @@ fs      = require 'fs'
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-helpers.withIsolatedRequireJS (requirejs) ->
-
-  # Mock the view code, which depends on Canvas and SVG internals that don't work in JSDOM.
-  mock =
-    BarGraphView: ->
-      initialize:      ->
-      render:          ->
-      updateBar:       ->
-      getParentHeight: ->
-      getParentWidth:  ->
-      modelChanged:    ->
-    RealTimeGraph: ->
-      new_data:        ->
-      add_points:      ->
-      updateOrRescale: ->
-      showMarker:      ->
-      reset:           ->
-      resize:          ->
-      getXDomain:      -> [0, 10]
-      getYDomain:      -> [0, 10]
-    Renderer: ->
-      update:          ->
-      repaint:         ->
-      reset:           ->
-      model2px:        ->
-      model2pxInv:     ->
-
-  requirejs.define 'grapher/core/real-time-graph', [], ->
-    (-> mock.RealTimeGraph(arguments...))
-  requirejs.define 'grapher/bar-graph/bar-graph-view', [], ->
-    (-> mock.BarGraphView(arguments...))
-  requirejs.define 'md2d/views/renderer', [], ->
-    (-> mock.Renderer(arguments...))
+helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
 
   # A tiny helper function.
   endsWith = (str, suffix) ->
