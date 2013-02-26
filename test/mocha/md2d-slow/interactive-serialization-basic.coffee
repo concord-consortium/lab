@@ -49,7 +49,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
         # Overwrite default float arrays type. It's required, as when Float32Array is used,
         # there are some numerical errors involved, which cause that serialize-deserialize
         # tests fail.
-        arrayTypes.float = "Float64Array"
+        arrayTypes.floatType = "Float64Array"
 
       describe "serialization right after initialization should return object equal to original JSON input", ->
         # Limit test only to interactives from 'conversion-test' directory.

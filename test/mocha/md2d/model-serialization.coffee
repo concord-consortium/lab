@@ -40,7 +40,7 @@ describe "MD2D modeler deserialization and serialization", ->
       # Overwrite default float arrays type. It's required, as when Float32Array is used,
       # there are some numerical errors involved, which cause that serialize-deserialize
       # tests fail.
-      arrayTypes.float = "Float64Array"
+      arrayTypes.floatType = "Float64Array"
 
       # "Test inside test": compareUnorderedArrays can be error-prone, so test it here.
       compareUnorderedArrays([1, 2], [2, 1], (a, b) -> a == b)

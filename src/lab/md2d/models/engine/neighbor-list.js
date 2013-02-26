@@ -28,13 +28,13 @@ define(function (require) {
           listCapacity = maxAtomsNum * (maxAtomsNum - 1) / 2;
           forceUpdate = true;
 
-          list = arrays.create(listCapacity, 0, arrayTypes.int16);
-          head = arrays.create(maxAtomsNum, -1, arrayTypes.int16);
-          tail = arrays.create(maxAtomsNum, -1, arrayTypes.int16);
+          list = arrays.create(listCapacity, 0, arrayTypes.int16Type);
+          head = arrays.create(maxAtomsNum, -1, arrayTypes.int16Type);
+          tail = arrays.create(maxAtomsNum, -1, arrayTypes.int16Type);
           // Fill x and y with Infinity, so shouldUpdate(..)
           // will return true during first call after initialization.
-          x    = arrays.create(maxAtomsNum, Infinity, arrayTypes.float);
-          y    = arrays.create(maxAtomsNum, Infinity, arrayTypes.float);
+          x    = arrays.create(maxAtomsNum, Infinity, arrayTypes.floatType);
+          y    = arrays.create(maxAtomsNum, Infinity, arrayTypes.floatType);
         };
 
     init();
