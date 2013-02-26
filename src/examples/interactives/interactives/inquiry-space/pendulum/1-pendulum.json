@@ -19,7 +19,8 @@
       "modelOptions": {
         "unitsScheme": "mks",
         "timeStepsPerTick": 167,
-        "timeStep": 1
+        "timeStep": 1,
+        "modelSampleRate": 60
       },
       "onLoad": [
         "function resetAngle() {",
