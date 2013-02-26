@@ -7,8 +7,7 @@ MARKDOWN_COMPILER = bin/kramdown
 # Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
 # the test's title, not its pathname. So we need to find everything in test/vows first.
 VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs ./node_modules/.bin/vows --isolate --dot-matrix
-MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' ! -path '*slow*' | xargs node_modules/.bin/mocha --reporter dot
-MOCHA_SLOW_TESTS = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' -path '*slow*' | xargs -n 1 ./node_modules/.bin/mocha --reporter dot
+MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs node_modules/.bin/mocha --reporter dot
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src
 BROWSERIFY = ./node_modules/.bin/browserify
@@ -514,10 +513,8 @@ test: test/layout.html \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
 	@echo
-	@echo 'Running regular Mocha tests ...'
+	@echo 'Mocha tests ...'
 	@$(MOCHA)
-	@echo 'Running slow Mocha tests ...'
-	@$(MOCHA_SLOW_TESTS)
 	@echo 'Vows tests ...'
 	@$(VOWS)
 	@echo
@@ -526,7 +523,7 @@ test: test/layout.html \
 test-src: test/layout.html \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
-	@echo 'Running regular Mocha tests (skipping slow Mocha tests)...'
+	@echo 'Running Mocha tests ...'
 	@$(MOCHA)
 	@echo 'Running Vows tests ...'
 	@$(VOWS)
@@ -540,20 +537,13 @@ test-vows:
 # run mocha test WITHOUT trying to build Lab JS first. Run 'make; make test-mocha' to build & test.
 .PHONY: test-mocha
 test-mocha:
-	@echo 'Running regular Mocha tests ...'
+	@echo 'Running Mocha tests ...'
 	@$(MOCHA)
-	@echo 'Running slow Mocha tests ...'
-	@$(MOCHA_SLOW_TESTS)
 
 .PHONY: debug-mocha
 debug-mocha:
-	@echo 'Running regular Mocha tests in debug mode (skipping slow Mocha tests)...'
+	@echo 'Running Mocha tests in debug mode...'
 	@$(MOCHA) --debug-brk
-
-.PHONY: debug-mocha-slow
-debug-mocha-slow:
-	@echo 'Running slow Mocha tests in debug mode ...'
-	@$(MOCHA_SLOW_TESTS) --debug-brk
 
 %.min.js: %.js
 	@rm -f $@
