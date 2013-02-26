@@ -10,13 +10,16 @@
       "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
+        "gridLines": true,
         "showClock": false,
         "velocityVectors": {
           "length": 10
         }
       },
       "modelOptions": {
-        "unitsScheme": "mks"
+        "unitsScheme": "mks",
+        "timeStepsPerTick": 167,
+        "timeStep": 1
       },
       "onLoad": [
         "function resetAngle() {",
@@ -36,10 +39,14 @@
   ],
   "outputs": [
     {
-      "name": "ballHeight",
-      "unitType": "length",
-      "label": "Ball Height",
-      "value": "return getAtomProperties(1).y;"
+      "name": "currentAngle",
+      "unitAbbreviation": "&deg;",
+      "label": "Current Angle",
+      "value": [
+        "var a0 = getAtomProperties(0),",
+        "    a1 = getAtomProperties(1);",
+        "return Math.atan((a1.x-a0.x)/(a0.y-a1.y)) * rad2deg;"
+      ]
     }
   ],
   "parameters": [
@@ -68,8 +75,8 @@
     {
       "type": "slider",
       "id": "gravity-slider",
-      "min": 1,
-      "max": 20,
+      "min": 0.8,
+      "max": 19.8,
       "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
@@ -81,27 +88,27 @@
           "label": "20"
         }
       ],
-      "steps": 39,
+      "steps": 38,
       "title": "Gravity (m/s²)",
       "property": "gravitationalField"
     },
     {
       "type": "slider",
       "id": "length-slider",
-      "min": 0.1,
+      "min": 0.2,
       "max": 2,
       "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
-          "value": 0.1,
-          "label": "0.1"
+          "value": 0.2,
+          "label": "0.2"
         },
         {
           "value": 2,
           "label": "2.0"
         }
       ],
-      "steps": 30,
+      "steps": 19,
       "title": "Rod Length (m)",
       "property": "rodLength"
     },
@@ -121,7 +128,7 @@
           "label": "45&deg;"
         }
       ],
-      "steps": 90,
+      "steps": 30,
       "title": "Starting Angle",
       "property": "startingAngle"
     },
@@ -149,7 +156,7 @@
       "type": "slider",
       "id": "damping-slider",
       "min": 0,
-      "max": 1,
+      "max": 2,
       "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
@@ -157,13 +164,26 @@
           "label": "0"
         },
         {
-          "value": 1.0,
-          "label": "1.0"
+          "value": 2.0,
+          "label": "2.0"
         }
       ],
-      "steps": 25,
+      "steps": 20,
       "title": "Damping Force (Newton per m/s)",
       "property": "damping"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "velocity-vectors",
+      "text": "Show Velocity Vector?",
+      "property": "showVelocityVectors"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-angle-display",
+      "property": "currentAngle",
+      "displayValue": "return format('f')(value)"
     },
     {
       "type": "numericOutput",
@@ -172,36 +192,18 @@
       "displayValue": "return format('1.2f')(value)"
     },
     {
-      "type": "numericOutput",
-      "id": "ball-height-display",
-      "property": "ballHeight",
-      "displayValue": "return format('1.2f')(value)"
-    },
-    {
-      "type": "checkbox",
-      "id": "ke-shading",
-      "text": "KE Shading",
-      "property": "keShading"
-    },
-    {
-      "type": "checkbox",
-      "id": "velocity-vectors",
-      "text": "Velocity Vector",
-      "property": "showVelocityVectors"
-    },
-    {
       "type": "graph",
       "id": "propertiesGraph",
-      "title": "Height of the Ball",
+      "title": "Pendulum Angle (°)",
       "xlabel": "Time",
       "ylabel": "m",
-      "ymin": 0.1,
-      "ymax": 2.3,
+      "ymin": -50,
+      "ymax": 50,
       "xmax": 0.01,
       "xTicCount": 5,
       "xFormatter": "2.1e",
       "properties": [
-        "ballHeight"
+        "currentAngle"
       ]
     }
   ],
@@ -212,17 +214,16 @@
     "bottom": [
       [
         "gravity-slider",
-        "angle-slider",
-        "length-slider"
+        "length-slider",
+        "angle-slider"
       ],
       [
         "mass-slider",
-        "damping-slider",
-        "ball-height-display"
+        "damping-slider"
       ],
       [
         "velocity-vectors",
-        "ke-shading",
+        "current-angle-display",
         "time-display"
       ]
     ]
