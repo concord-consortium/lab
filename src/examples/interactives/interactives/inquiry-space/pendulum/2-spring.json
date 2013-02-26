@@ -6,25 +6,136 @@
   "fontScale": 0.8,
   "models": [
     {
-      "id": "pendulum1$0",
-      "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "id": "spring-mass",
+      "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/spring-mass$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "gridLines": true,
+        "showClock": false,
         "velocityVectors": {
           "length": 10
         }
       },
-      "onLoad": "setRadialBondProperties(0, { length: 0.75, type: 106 }); var a0 = getAtomProperties(0), angle = 0*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, { x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0 }); start();"
+      "modelOptions": {
+        "unitsScheme": "mks",
+        "timeStepsPerTick": 167,
+        "timeStep": 1
+      },
+      "onLoad": [
+        "function resetDisplacement() {",
+        "  set({startingDisplacement: get('startingDisplacement')});",
+        "}",
+        "function stopMotion() {",
+        "  stop();",
+        "  setAtomProperties(1, { vx: 0, vy: 0 });",
+        "}",
+        "onPropertyChange('springConstant', resetDisplacement);",
+        "onPropertyChange('ballMass', resetDisplacement);",
+        "onPropertyChange('gravitationalField', resetDisplacement);",
+        "onPropertyChange('damping', resetDisplacement);",
+        "onPropertyChange('startingDisplacement', stopMotion);"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ballDisplacement",
+      "unitType": "length",
+      "label": "Distance From Equilibrium",
+      "value": "return getAtomProperties(0).y - getAtomProperties(1).y - getRadialBondProperties(0).length;"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "ballMass",
+      "onChange": "setElementProperties(3, { mass: value });",
+      "initialValue": 1
+    },
+    {
+      "name": "springConstant",
+      "onChange": "setRadialBondProperties(0, { strength: value });",
+      "initialValue": 200
+    },
+    {
+      "name": "startingDisplacement",
+      "onChange": [
+        "var length = getRadialBondProperties(0).length + value;",
+        "setAtomProperties(1, { y: getAtomProperties(0).y - length });"
+      ],
+      "initialValue": 0.25
+    },
+    {
+      "name": "damping",
+      "onChange": "setAtomProperties(1, { friction: value });",
+      "initialValue": 0
     }
   ],
   "components": [
     {
       "type": "slider",
       "id": "gravity-slider",
+      "min": 0.8,
+      "max": 19.8,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 20,
+          "label": "20"
+        }
+      ],
+      "steps": 38,
+      "title": "Gravity (m/s²)",
+      "property": "gravitationalField"
+    },
+    {
+      "type": "slider",
+      "id": "spring-constant-slider",
+      "min": 100,
+      "max": 300,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 100,
+          "label": "100"
+        },
+        {
+          "value": 300,
+          "label": "300"
+        }
+      ],
+      "steps": 20,
+      "title": "Spring Constant (N/m)",
+      "property": "springConstant"
+    },
+    {
+      "type": "slider",
+      "id": "length-slider",
+      "min": -0.5,
+      "max": 0.5,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": -0.5,
+          "label": "-0.5"
+        },
+        {
+          "value": 0.5,
+          "label": "0.5"
+        }
+      ],
+      "steps": 20,
+      "title": "Starting Distance From Equilibrium (m)",
+      "property": "startingDisplacement"
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider",
       "min": 0.1,
-      "max": 4,
-      "initialValue": 1,
+      "max": 2,
       "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
@@ -32,83 +143,19 @@
           "label": "0.1"
         },
         {
-          "value": 4,
-          "label": "4.0"
-        }
-      ],
-      "steps": 39,
-      "title": "Starting Gravity",
-      "action": "set({ gravitationalField: value*8e-8 });"
-    },
-    {
-      "type": "slider",
-      "id": "length-slider",
-      "min": 0.0666,
-      "max": 2,
-      "initialValue": 1.333,
-      "displayValue": "return format('1.1f')(value*1.5)",
-      "labels": [
-        {
-          "value": 0.0666,
-          "label": "0.1"
-        },
-        {
           "value": 2,
-          "label": "3.0"
+          "label": "2.0"
         }
       ],
-      "steps": 29,
-      "title": "Starting length (m)",
-      "action": "stop(); var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = 0; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});"
+      "steps": 19,
+      "title": "Mass of the Ball (kg)",
+      "property": "ballMass"
     },
     {
       "type": "slider",
-      "id": "mass-slider",
-      "min": 1,
-      "max": 50,
-      "initialValue": 15,
-      "displayValue": "return format('f')(value*10)",
-      "labels": [
-        {
-          "value": 1,
-          "label": "10"
-        },
-        {
-          "value": 50,
-          "label": "500"
-        }
-      ],
-      "steps": 49,
-      "title": "Mass of the ball (grams)",
-      "action": "setElementProperties(3, { mass: value*120 });"
-    },
-    {
-      "type": "slider",
-      "id": "spring-constant-slider",
-      "min": 0.5,
-      "max": 45,
-      "initialValue": 8,
-      "displayValue": "return format('1.1f')(value)",
-      "labels": [
-        {
-          "value": 0.5,
-          "label": "0.5"
-        },
-        {
-          "value": 45,
-          "label": "45"
-        }
-      ],
-      "steps": 89,
-      "title": "Spring Constant (N/m)",
-      "action": "setRadialBondProperties(0, { strength: value });"
-    },
-    {
-      "type": "slider",
-      "id": "friction-slider",
+      "id": "damping-slider",
       "min": 0,
-      "max": 1,
-      "initialValue": 0,
+      "max": 2,
       "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
@@ -116,39 +163,45 @@
           "label": "0"
         },
         {
-          "value": 1,
-          "label": "1.0"
+          "value": 2,
+          "label": "2.0"
         }
       ],
-      "steps": 25,
-      "title": "Friction",
-      "action": "setAtomProperties(1, { friction: value });"
-    },
-    {
-      "type": "checkbox",
-      "id": "ke-shading",
-      "text": "KE Shading",
-      "property": "keShading"
+      "steps": 20,
+      "title": "Damping Force (Newton per m/s)",
+      "property": "damping"
     },
     {
       "type": "checkbox",
       "id": "velocity-vectors",
-      "text": "Velocity Vectors",
+      "text": "Show Velocity Vector?",
       "property": "showVelocityVectors"
+    },
+    {
+      "type": "numericOutput",
+      "id": "displacement-display",
+      "property": "ballDisplacement",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "time-display",
+      "property": "time",
+      "displayValue": "return format('1.2f')(value)"
     },
     {
       "type": "graph",
       "id": "propertiesGraph",
-      "title": "Energy of the System (KE:red, PE:green, TE:blue)",
-      "xlabel": "Model Time (ps)",
-      "ylabel": "eV",
-      "ymin": -0.1,
-      "ymax": 1,
-      "xmax": 50,
+      "title": "Distance From Equilibrium (m)",
+      "xlabel": "Time",
+      "ylabel": "m",
+      "ymin": -1.5,
+      "ymax": 1.5,
+      "xmax": 0.01,
+      "xTicCount": 5,
+      "xFormatter": "2.1e",
       "properties": [
-        "kineticEnergy",
-        "potentialEnergy",
-        "totalEnergy"
+        "ballDisplacement"
       ]
     }
   ],
@@ -159,16 +212,17 @@
     "bottom": [
       [
         "gravity-slider",
+        "spring-constant-slider",
         "length-slider"
       ],
       [
-        "spring-constant-slider",
         "mass-slider",
-        "friction-slider"
+        "damping-slider"
       ],
       [
         "velocity-vectors",
-        "ke-shading"
+        "displacement-display",
+        "time-display"
       ]
     ]
   },
