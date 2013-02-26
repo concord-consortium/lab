@@ -18,7 +18,9 @@ define(function (require) {
 
   return function MD2DScriptingAPI (api) {
 
-    var dnaEditDialog = new DNAEditDialog();
+    var dnaEditDialog = new DNAEditDialog(),
+        // whether we are currently processing a batch command, suppresses repaint
+        inBatch = false;
 
     return {
       /* Returns number of atoms in the system. */
@@ -88,7 +90,7 @@ define(function (require) {
             throw e;
         }
 
-        api.repaint();
+        this.repaintIfReady();
       },
 
       /*
@@ -102,7 +104,7 @@ define(function (require) {
             throw e;
         }
 
-        api.repaint();
+        this.repaintIfReady();
       },
 
       addRandomAtom: function addRandomAtom() {
@@ -182,14 +184,14 @@ define(function (require) {
         for (i = 0, len = arguments.length; i < len; i++) {
           model.setAtomProperties(arguments[i], {marked: 1});
         }
-        api.repaint();
+        this.repaintIfReady();
       },
 
       unmarkAllAtoms: function unmarkAllAtoms() {
         for (var i = 0, len = model.get_num_atoms(); i < len; i++) {
           model.setAtomProperties(i, {marked: 0});
         }
-        api.repaint();
+        this.repaintIfReady();
       },
 
       traceAtom: function traceAtom(i) {
@@ -209,9 +211,7 @@ define(function (require) {
       */
       setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
         model.setAtomProperties(i, props, checkLocation, moveMolecule);
-        if (!(options && options.supressRepaint)) {
-          api.repaint();
-        }
+        this.repaintIfReady(options);
       },
 
       /**
@@ -224,7 +224,7 @@ define(function (require) {
 
       setElementProperties: function setElementProperties(i, props) {
         model.setElementProperties(i, props);
-        api.repaint();
+        this.repaintIfReady();
       },
 
       /**
@@ -253,7 +253,7 @@ define(function (require) {
           if (!options || !options.silent)
             throw e;
         }
-        api.repaint();
+        this.repaintIfReady();
       },
 
       /**
@@ -262,7 +262,7 @@ define(function (require) {
       */
       setObstacleProperties: function setObstacleProperties(i, props) {
         model.setObstacleProperties(i, props);
-        api.repaint();
+        this.repaintIfReady();
       },
 
       /**
@@ -284,12 +284,12 @@ define(function (require) {
             throw e;
         }
 
-        api.repaint();
+        this.repaintIfReady();
       },
 
       setRadialBondProperties: function setRadialBondProperties(i, props) {
         model.setRadialBondProperties(i, props);
-        api.repaint();
+        this.repaintIfReady();
       },
 
       getRadialBondProperties: function getRadialBondProperties(i) {
@@ -298,7 +298,7 @@ define(function (require) {
 
       setAngularBondProperties: function setAngularBondProperties(i, props) {
         model.setAngularBondProperties(i, props);
-        api.repaint();
+        this.repaintIfReady();
       },
 
       getAngularBondProperties: function getAngularBondProperties(i) {
@@ -397,7 +397,7 @@ define(function (require) {
 
       minimizeEnergy: function minimizeEnergy() {
         model.minimizeEnergy();
-        api.repaint();
+        this.repaintIfReady();
       },
 
       addTextBox: function(props) {
@@ -412,13 +412,23 @@ define(function (require) {
         model.setTextBoxProperties(i, props);
       },
 
+      repaintIfReady: function(options) {
+        if (!(inBatch || options && options.supressRepaint)) {
+          api.repaint();
+        }
+      },
+
       batch: function(func) {
+        inBatch = true;
+
         model.startBatch();
         func();
         model.endBatch();
 
+        inBatch = false;
+
         // call repaint manually
-        api.repaint();
+        this.repaintIfReady();
       }
 
     };
