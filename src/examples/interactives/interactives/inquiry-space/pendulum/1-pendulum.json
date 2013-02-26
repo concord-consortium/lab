@@ -17,7 +17,21 @@
       },
       "modelOptions": {
         "unitsScheme": "mks"
-      }
+      },
+      "onLoad": [
+        "function resetAngle() {",
+        "  set({startingAngle: get('startingAngle')});",
+        "}",
+        "function stopMotion() {",
+        "  stop();",
+        "  setAtomProperties(1, { vx: 0, vy: 0 });",
+        "}",
+        "onPropertyChange('rodLength', resetAngle);",
+        "onPropertyChange('ballMass', resetAngle);",
+        "onPropertyChange('gravitationalField', resetAngle);",
+        "onPropertyChange('damping', resetAngle);",
+        "onPropertyChange('startingAngle', stopMotion);"
+      ]
     }
   ],
   "outputs": [
