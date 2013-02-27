@@ -112,7 +112,7 @@ define(function (require) {
       },
 
       adjustTemperature: function adjustTemperature(fraction) {
-        model.set({targetTemperature: fraction * model.get('temperature')});
+        model.set({targetTemperature: fraction * model.get('targetTemperature')});
       },
 
       limitHighTemperature: function limitHighTemperature(t) {
