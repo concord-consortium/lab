@@ -1288,7 +1288,7 @@ define(function (require) {
     function isEventWithinInteractive() {
       var elem = d3.event.sourceEvent.target;
 
-      return (elem.ownerSVGElement || $(elem).closest("#interactive-container").length > 0)
+      return (elem.ownerSVGElement || $(elem).closest("#responsive-content, #interactive-body").length > 0)
     }
 
     function nodeDrag(d, i) {
