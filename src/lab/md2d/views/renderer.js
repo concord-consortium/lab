@@ -1491,7 +1491,6 @@ define(function (require) {
         model2px = m2px;
         model2pxInv = m2pxInv;
       }
-      setupClock();
       setupObstacles();
       setupVdwPairs();
       setupColorsOfParticles();
@@ -1503,6 +1502,7 @@ define(function (require) {
       drawSymbolImages();
       drawImageAttachment();
       drawTextBoxes();
+      setupClock();
       setupFirefoxWarning();
     }
 
