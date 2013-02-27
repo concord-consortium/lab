@@ -95,6 +95,9 @@ define(function(require) {
         // If this is true, output properties will not be recalculated on changes
         supressInvalidatingChangeHooks = false,
 
+        // Invalidating change hooks might between others
+        invalidatingChangeHookNestingLevel = 0,
+
         properties = {
           /**
             These functions are optional setters that will be called *instead* of simply setting
@@ -242,6 +245,10 @@ define(function(require) {
         // Function adding new sample for filtered outputs. Other properties of filtered output
         // are stored in outputsByName object, as filtered output is just extension of normal output.
         filteredOutputsByName = {},
+
+        // Whewther to suppress caching of output properties. Should only be needed between
+        // invalidatingChangePreHook and invalidatingChangePostHook
+        suppressOutputPropertyCaching = false,
 
         // The currently-defined parameters.
         parametersByName = {},
@@ -512,6 +519,12 @@ define(function(require) {
       }
     }
 
+    // FIXME
+    //
+    // Instead of requiring balanced calls to "PreHooks" and "PostHooks", we should instead accept a
+    // callback containing actions to perform in between the pre and post actions. That would be a
+    // better way of ensuring that pre and post hooks are always balanced.
+
     /**
       ALWAYS CALL THIS FUNCTION before any change to model state outside a model step
       (i.e., outside a tick, seek, stepForward, stepBack)
@@ -521,8 +534,11 @@ define(function(require) {
     */
     function invalidatingChangePreHook() {
       if (supressInvalidatingChangeHooks) return;
+      invalidatingChangeHookNestingLevel++;
 
       storeOutputPropertiesBeforeChange();
+      deleteOutputPropertyCachedValues();
+      suppressOutputPropertyCaching = true;
     }
 
     /**
@@ -530,10 +546,23 @@ define(function(require) {
     */
     function invalidatingChangePostHook() {
       if (supressInvalidatingChangeHooks) return;
+      invalidatingChangeHookNestingLevel--;
 
+      if (invalidatingChangeHookNestingLevel === 0) {
+        suppressOutputPropertyCaching = false;
+      }
       updateOutputPropertiesAfterChange();
       if (tickHistory) tickHistory.invalidateFollowingState();
       dispatch.invalidation();
+    }
+
+    function deleteOutputPropertyCachedValues() {
+      var i, output;
+
+      for (i = 0; i < outputNames.length; i++) {
+        output = outputsByName[outputNames[i]];
+        output.hasCachedValue = false;
+      }
     }
 
     /**
@@ -572,13 +601,6 @@ define(function(require) {
 
       readModelState();
 
-      // Mark _all_ cached values invalid ... we're not going to be checking the values of the
-      // unobserved properties, so we have to assume their value changed.
-      for (i = 0; i < outputNames.length; i++) {
-        output = outputsByName[outputNames[i]];
-        output.hasCachedValue = false;
-      }
-
       // Update all filtered outputs.
       // Note that this have to be performed after invalidation of all outputs
       // (as filtered output can filter another output).
@@ -593,9 +615,11 @@ define(function(require) {
         output = outputsByName[outputName];
 
         if ((l = listeners[outputName]) && l.length > 0) {
-          // Though we invalidated all cached values above, nevertheless some outputs may have been
-          // computed & cached during a previous pass through this loop, as a side effect of the
-          // calculation of some other property. Therefore we can respect hasCachedValue here.
+          // Though we invalidated all cached values in the invalidatingChangePreHook, and
+          // suppressed caching until the invalidatingChangePostHook, nevertheless some outputs may
+          // have been computed & cached during a previous pass through this loop, as a side effect
+          // of the calculation of some other property. Therefore we can respect hasCachedValue
+          // here.
           if (!output.hasCachedValue) {
             output.cachedValue = output.calculate();
             output.hasCachedValue = true;
@@ -1982,11 +2006,15 @@ define(function(require) {
       if (properties.hasOwnProperty(property)) {
         ret = properties[property];
       } else if (output = outputsByName[property]) {
-        if (!output.hasCachedValue) {
-          output.hasCachedValue = true;
-          output.cachedValue = output.calculate();
+        if (suppressOutputPropertyCaching) {
+          ret = output.calculate();
+        } else {
+          if (!output.hasCachedValue) {
+            output.hasCachedValue = true;
+            output.cachedValue = output.calculate();
+          }
+          ret = output.cachedValue;
         }
-        ret = output.cachedValue;
       }
 
       // translateFromMD2DUnits function defined above works on hashes, not individual values, so
