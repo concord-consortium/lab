@@ -18,23 +18,23 @@
       "type": "radio",
       "id": "force-buttons",
       "orientation": "horizontal",
+      "property": "gravitationalField",
       "options": [
         {
           "text": "No force",
-          "action": " set({ 'gravitationalField' : false });",
-          "selected": true
+          "value": false
         },
         {
           "text": "Small force",
-          "action": " set({ 'gravitationalField' : 2e-8 });"
+          "value": 2e-8
         },
         {
           "text": "Medium force",
-          "action": " set({ 'gravitationalField' : 6e-8 });"
+          "value": 6e-8
         },
         {
           "text": "Large force",
-          "action": " set({ 'gravitationalField' : 8e-8 });"
+          "value": 8e-8
         }
       ]
     }

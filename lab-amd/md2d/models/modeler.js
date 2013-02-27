@@ -89,6 +89,9 @@ define(function(require) {
 
         listeners = {},
 
+        // If this is true, output properties will not be recalculated on changes
+        supressInvalidatingChangeHooks = false,
+
         properties = {
           /**
             These functions are optional setters that will be called *instead* of simply setting
@@ -355,11 +358,11 @@ define(function(require) {
         }
       }
 
-      // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
+      // timeStepsPerTick is defined in Classic MW as the number of timesteps per view update.
       // However, in MD2D we prefer the more physical notion of integrating for a particular
       // length of time.
       console.time('integration');
-      engine.integrate(model.get('viewRefreshInterval') * timeStep, timeStep);
+      engine.integrate(model.get('timeStepsPerTick') * timeStep, timeStep);
       console.timeEnd('integration');
       console.time('reading model state');
       updateAllOutputProperties();
@@ -464,6 +467,8 @@ define(function(require) {
       by considered non-invalidating changes that don't require calling this hook.
     */
     function invalidatingChangePreHook() {
+      if (supressInvalidatingChangeHooks) return;
+
       storeOutputPropertiesBeforeChange();
     }
 
@@ -471,6 +476,8 @@ define(function(require) {
       ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
     */
     function invalidatingChangePostHook() {
+      if (supressInvalidatingChangeHooks) return;
+
       updateOutputPropertiesAfterChange();
       if (tickHistory) tickHistory.invalidateFollowingState();
       dispatch.invalidation();
@@ -620,6 +627,18 @@ define(function(require) {
           };
         }
       }
+    }
+
+    /**
+      return a random element index ... which is *not* an amino acid element
+    */
+    function randomElement() {
+      var len = engine.getNumberOfElements(),
+          el = Math.floor( Math.random() * len );
+      while(aminoacidsHelper.isAminoAcid(el)) {
+        el = Math.floor( Math.random() * len );
+      }
+      return el;
     }
 
     /**
@@ -812,21 +831,16 @@ define(function(require) {
     };
 
     model.createElements = function(_elements) {
-      // Options for addElement method.
-      var options = {
-        // Deserialization process, invalidating change hooks will be called manually.
-        deserialization: true
-      },
-      i, num, prop, elementProps;
+      var i, num, prop, elementProps;
 
-      // Call the hook manually, as addElement won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       if (_elements === undefined) {
         // Special case when elements are not defined.
         // Empty object will be filled with default values.
-        model.addElement({id: 0}, options);
+        model.addElement({id: 0});
+        model.endBatch();
         return;
       }
 
@@ -841,12 +855,11 @@ define(function(require) {
             elementProps[prop] = _elements[prop][i];
           }
         }
-        model.addElement(elementProps, options);
+        model.addElement(elementProps);
       }
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       return model;
     };
@@ -885,15 +898,12 @@ define(function(require) {
           // Options for addAtom method.
       var options = {
             // Do not check the position of atom, assume that it's valid.
-            supressCheck: true,
-            // Deserialization process, invalidating change hooks will be called manually.
-            deserialization: true
+            supressCheck: true
           },
           i, num, prop, atomProps;
 
-      // Call the hook manually, as addAtom won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       if (typeof config === 'number') {
         num = config;
@@ -935,9 +945,8 @@ define(function(require) {
           engine.relaxToTemperature();
       }
 
-      // Call the hook manually, as addAtom won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
@@ -947,17 +956,11 @@ define(function(require) {
     };
 
     model.createRadialBonds = function(_radialBonds) {
-          // Options for addRadialBond method.
-      var options = {
-            // Deserialization process, invalidating change hooks will be called manually.
-            deserialization: true
-          },
-          num = _radialBonds.strength.length,
+      var num = _radialBonds.strength.length,
           i, prop, radialBondProps;
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       // _radialBonds is hash of arrays (as specified in JSON model).
       // So, for each index, create object containing properties of
@@ -970,28 +973,21 @@ define(function(require) {
             radialBondProps[prop] = _radialBonds[prop][i];
           }
         }
-        model.addRadialBond(radialBondProps, options);
+        model.addRadialBond(radialBondProps);
       }
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       return model;
     };
 
     model.createAngularBonds = function(_angularBonds) {
-          // Options for addAngularBond method.
-      var options = {
-            // Deserialization process, invalidating change hooks will be called manually.
-            deserialization: true
-          },
-          num = _angularBonds.strength.length,
+      var num = _angularBonds.strength.length,
           i, prop, angularBondProps;
 
-      // Call the hook manually, as addAngularBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       // _angularBonds is hash of arrays (as specified in JSON model).
       // So, for each index, create object containing properties of
@@ -1004,12 +1000,11 @@ define(function(require) {
             angularBondProps[prop] = _angularBonds[prop][i];
           }
         }
-        model.addAngularBond(angularBondProps, options);
+        model.addAngularBond(angularBondProps);
       }
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       return model;
     };
@@ -1082,7 +1077,7 @@ define(function(require) {
       charge (default is neutral).
     */
     model.addRandomAtom = function(el, charge) {
-      if (el == null) el = Math.floor( Math.random() * elements.mass.length );
+      if (el == null) el = randomElement();
       if (charge == null) charge = 0;
 
       var size   = model.size(),
@@ -1115,7 +1110,7 @@ define(function(require) {
 
       Returns false and does not add the atom if the potential energy change of adding an *uncharged*
       atom of the specified element to the specified location would be positive (i.e, if the atom
-      intrudes into the repulsive region of another atom.)
+      intrudes into the repulsive region of another atom), or if atom is placed inside an obstacle
 
       Otherwise, returns true.
 
@@ -1532,7 +1527,7 @@ define(function(require) {
     model.removeTextBox = function(i) {
       var text = properties.textBoxes;
       if (i >=0 && i < text.length) {
-        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1))
+        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1));
         dispatch.textBoxesChanged();
       } else {
         throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
@@ -1621,8 +1616,8 @@ define(function(require) {
       return radialBondResults;
     };
 
-    model.get_num_atoms = function() {
-      return engine.getNumberOfAtoms();
+    model.get_num_atoms = function(f) {
+      return engine.getNumberOfAtoms(f);
     };
 
     model.get_obstacles = function() {
@@ -1798,6 +1793,7 @@ define(function(require) {
     };
 
     model.start = function() {
+      if (!stopped) return model;
       return model.resume();
     };
 
@@ -1891,7 +1887,16 @@ define(function(require) {
       return model;
     };
 
-    model.set = function(hash) {
+    model.set = function(key, val) {
+      var hash;
+      if (arguments.length === 1) {
+        // Hash of options provided.
+        hash = key;
+      } else {
+        // Key - value pair provied.
+        hash = {};
+        hash[key] = val;
+      }
       // Perform validation in case of setting main properties or
       // model view properties. Attempts to set immutable or read-only
       // properties will be caught.
@@ -2072,8 +2077,11 @@ define(function(require) {
       properties['set_'+name] = function(value) {
         properties[name] = value;
         parametersByName[name].isDefined = true;
-        // set a useful 'this' binding in the setter:
-        parametersByName[name].setter.call(model, value);
+        // setter is optional.
+        if (parametersByName[name].setter) {
+          // set a useful 'this' binding in the setter:
+          parametersByName[name].setter.call(model, value);
+        }
       };
     };
 
@@ -2094,12 +2102,32 @@ define(function(require) {
 
     model.getPropertyType = function(name) {
       if (outputsByName[name]) {
-        return 'output'
+        return 'output';
       }
       if (parametersByName[name]) {
-        return 'parameter'
+        return 'parameter';
       }
     };
+
+    /**
+      Call before running a function that would otherwise trigger a number
+      of invalidatingChangePre/PostHooks, which would slow down the model when
+      each change causes a recalculation. This can be used whenever you can
+      safely assume that all actions executed between startBatch and endBatch
+      will not depend on triggered property changes.
+
+      endBatch() *must* be called after the actions are complete, or output
+      properties will no longer be updated.
+      */
+    model.startBatch = function() {
+      invalidatingChangePreHook();
+      supressInvalidatingChangeHooks = true;
+    }
+
+    model.endBatch = function() {
+      supressInvalidatingChangeHooks = false;
+      invalidatingChangePostHook();
+    }
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function() {
@@ -2292,7 +2320,7 @@ define(function(require) {
         "showVelocityVectors",
         "showForceVectors",
         "showClock",
-        "viewRefreshInterval",
+        "timeStepsPerTick",
         "timeStep",
         "viscosity",
         "gravitationalField"

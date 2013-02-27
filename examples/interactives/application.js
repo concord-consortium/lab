@@ -1,4 +1,4 @@
-/*global Lab _ $ d3 CodeMirror controllers alert model modelList benchmark layout DEVELOPMENT: true AUTHORING: true */
+/*global Lab, _, $, d3, CodeMirror, controllers, alert, model, modelList, benchmark, DEVELOPMENT: true, AUTHORING: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -14,21 +14,23 @@ AUTHORING = false;
       origin,
       embeddablePath,
       embeddableUrl,
+      embeddableSharingUrl,
       interactiveDescriptions,
       interactives,
       groups,
       iframePhone,
 
+      $content = $("#content"),
+
       $interactiveHeader = $("#interactive-header"),
       $interactiveTitle = $("#interactive-title"),
 
-      $interactiveControls = $("#interactive-controls"),
-
       $selectInteractive = $("#select-interactive"),
 
-      $selectIframeSize = $("#select-iframe-size"),
+      $selectInteractiveSize = $("#select-interactive-size"),
 
       $updateInteractiveButton = $("#update-interactive-button"),
+      $saveInteractiveButton = $("#save-interactive-button"),
       $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
@@ -48,6 +50,7 @@ AUTHORING = false;
 
       $shareLink = $("#share-link"),
       $sharePane = $("#share-pane"),
+      $shareContent = $("#share-content"),
       $sharePaneClose = $('#share-pane-close'),
       $shareIframeContent = $("#share-iframe-content"),
       $shareSelectIframeSize = $("#share-select-iframe-size"),
@@ -83,6 +86,7 @@ AUTHORING = false;
       $nextInteractive = $("#next-interactive"),
 
       applicationCallbacks,
+      resizeCallbacks,
       editor,
       modelEditor,
       controller,
@@ -95,7 +99,9 @@ AUTHORING = false;
       viewType,
       interactivesPromise,
       buttonHandlersAdded = false,
-      modelButtonHandlersAdded = false;
+      modelButtonHandlersAdded = false,
+
+      copyrightDiv = '<div id="share-license"><strong>Copyright © 2013&nbsp;</strong><a class="opens-in-new-window" href="http://concord.org" id="share-license-link" target="_blank">The Concord Consortium</a>. All rights reserved. The software is licensed under&nbsp;<a class="opens-in-new-window" href="http://opensource.org/licenses/BSD-2-Clause" id="share-license-link" target="_blank">Simplified BSD</a>, <a class="opens-in-new-window" href="http://opensource.org/licenses/MIT" id="share-license-link" target="_blank">MIT</a> or <a class="opens-in-new-window" href="http://opensource.org/licenses/Apache-2.0" id="share-license-link" target="_blank">Apache 2.0</a> licenses. Please provide attribution to the Concord Consortium and the URL&nbsp;<a class="opens-in-new-window" href="http://concord.org/" id="share-license-link" target="_blank">http://concord.org</a>.</div>';
 
   function isEmbeddablePage() {
     return ($selectInteractive.length === 0);
@@ -135,7 +141,8 @@ AUTHORING = false;
     }
   }
 
-  if (hash = document.location.hash) {
+  hash = document.location.hash;
+  if (hash) {
     interactiveUrl = hash.substr(1, hash.length);
 
     $.get(interactiveUrl).done(function(results) {
@@ -162,6 +169,7 @@ AUTHORING = false;
         }
       }
 
+      resizeCallbacks = [setupSharePane];
       interactiveDefinitionLoaded.resolve();
     });
   }
@@ -182,8 +190,12 @@ AUTHORING = false;
 
     restoreOptionsFromCookie();
 
+    if (onFullPage()) {
+      selectInteractiveSizeHandler();
+    }
+
     if(!onFullIFramePage()) {
-      controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
+      controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType, resizeCallbacks);
     }
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
@@ -227,6 +239,9 @@ AUTHORING = false;
     concordUrl = 'http://concord.org';
     nextGenUrl = 'http://mw.concord.org/nextgen/';
     interactiveCreditsUrl = Lab.config.home + Lab.config.homeEmbeddablePath + hash;
+    if (Lab.config.homeForSharing) {
+      interactiveCreditsUrl = Lab.config.homeForSharing + Lab.config.homeEmbeddablePath + hash;
+    }
     newWindow = " class='opens-in-new-window' target='_blank";
     utmString = "utm_source=" + encodeURIComponent(interactive.title.replace(/ /gi,"+")) + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
 
@@ -242,10 +257,12 @@ AUTHORING = false;
     googleOrgLink = "<a href='http://www.google.org/' " + newWindow + "'>Google.org</a>";
     $creditsContent.append('<p>This interactive was created by the ' + concordLink + ' using our ' + nextGenLink + ' software, with funding by a grant from ' + googleOrgLink + '.</p>');
     if (!Lab.config.sharing) {
-      $creditsContent.append('<p>Explore or embed a <a href=' + interactiveCreditsUrl +
-        ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive, and discover other open source interactives for math, science and engineering at <a href="' +
+
+      $creditsContent.append('<p>Find a <a href=' + interactiveCreditsUrl +
+        ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive along with dozens of other open-source interactives for science, math and engineering at <a href="' +
         concordUrl + '" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
     }
+    $creditsContent.append(copyrightDiv);
   }
 
   function setupAboutPane() {
@@ -278,7 +295,11 @@ AUTHORING = false;
   }
 
   function setupSharePane() {
+    embeddableSharingUrl = embeddableUrl;
     if (Lab.config.sharing) {
+      if (Lab.config.homeForSharing) {
+        embeddableSharingUrl = Lab.config.homeForSharing + Lab.config.homeEmbeddablePath + hash;
+      }
       $shareLink.show();
       $shareLink.click(function() {
         $sharePane.show(100);
@@ -289,44 +310,44 @@ AUTHORING = false;
       $shareSelectIframeSize.change(updateShareIframeContent);
       $sharePane.draggable({ handle: "#share-pane-banner" });
       $("#share-pane-title").text("Share: " + interactive.title);
-      $("#share-embeddable-link").attr("href", embeddableUrl);
-      $('#share-embeddable-link-content').val(embeddableUrl);
+      $("#share-embeddable-link").attr("href", embeddableSharingUrl);
+      $('#share-embeddable-link-content').val(embeddableSharingUrl);
       updateShareIframeContent();
+      $shareContent.append(copyrightDiv);
     } else {
       $shareLink.hide();
       return;
     }
-    function updateShareIframeContent() {
-      var actualWidth, actualHeight,
-          sizeAttributes = "",
-          sizeChoice = $shareSelectIframeSize.val(),
-          notEmbedded = $selectInteractive.length,
-          $content;
-
-      if (notEmbedded) {
-        $content = $("#content");
-        actualWidth = $content.width();
-        actualHeight = $content.height();
-      } else {
-        actualWidth = $(document).width();
-        actualHeight = $(document).height();
-      }
-      switch(sizeChoice) {
-        case "actual":
-        sizeAttributes = 'width="' + actualWidth + 'px" height="' + actualHeight + 'px"';
-        break;
-        case "smaller":
-        sizeAttributes = 'width="' + Math.floor(actualWidth * 0.7) + 'px" height="' + Math.floor(actualHeight  * 0.7) + 'px"';
-        break;
-        case "larger":
-        sizeAttributes = 'width="' + Math.floor(actualWidth * 1.5) + 'px" height="' + Math.floor(actualHeight  * 1.5) + 'px"';
-        break;
-      }
-      $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
-    }
-    setupSharePane.resize = updateShareIframeContent;
-    layout.addView('setupSharePane', setupSharePane);
   }
+
+  function updateShareIframeContent() {
+    var actualWidth, actualHeight,
+        sizeAttributes = "",
+        sizeChoice = $shareSelectIframeSize.val(),
+        notEmbedded = $selectInteractive.length;
+
+    if (notEmbedded) {
+      actualWidth = $content.width();
+      actualHeight = $content.height();
+    } else {
+      actualWidth = $(document).width();
+      actualHeight = $(document).height();
+    }
+    switch(sizeChoice) {
+      case "actual":
+      sizeAttributes = 'width="' + actualWidth + 'px" height="' + actualHeight + 'px"';
+      break;
+      case "smaller":
+      sizeAttributes = 'width="' + Math.floor(actualWidth * 0.7) + 'px" height="' + Math.floor(actualHeight  * 0.7) + 'px"';
+      break;
+      case "larger":
+      sizeAttributes = 'width="' + Math.floor(actualWidth * 1.5) + 'px" height="' + Math.floor(actualHeight  * 1.5) + 'px"';
+      break;
+    }
+    $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no" scrolling="no" src="' + embeddableSharingUrl + '"></iframe>');
+  }
+
+  setupSharePane.resize = updateShareIframeContent;
 
   //
   // The following functions are only used when rendering the
@@ -338,27 +359,32 @@ AUTHORING = false;
 
   $selectInteractive.change(selectInteractiveHandler);
 
-  function selectIframeSizeHandler() {
-    var $iframeWrapper = $("#iframe-wrapper"),
-        selection = $selectIframeSize.val();
-    switch(selection) {
-      case "tiny":
-      $iframeWrapper.width('350px').height('263px');
-      break;
-      case "small":
-      $iframeWrapper.width('400px').height('300px');
-      break;
-      case "medium":
-      $iframeWrapper.width('600px').height('400px');
-      break;
-      case "large":
-      $iframeWrapper.width('1000px').height('600px');
-      break;
-    }
+  function selectInteractiveSizeHandler() {
+    var selection = $selectInteractiveSize.val(),
+        dimensions = {
+          "tiny":   {width: "350px",  height: "245px"},
+          "small":  {width: "400px",  height: "280px"},
+          "medium": {width: "600px",  height: "420px"},
+          "large":  {width: "1000px", height: "700px"}
+        },
+        dim = dimensions[selection];
+
     saveOptionsToCookie();
+    if (onFullPage()) {
+      $content.width(dim.width).height(dim.height);
+      // Window size is not change, so we have to call "resize()"
+      // method manually.
+      if (controller) {
+        controller.resize();
+      }
+    } else {
+      $("#iframe-wrapper").width(dim.width).height(dim.height);
+      // No need to call controller.resize(), as interactive controller
+      // automatically binds to the window resize event.
+    }
   }
 
-  $selectIframeSize.change(selectIframeSizeHandler);
+  $selectInteractiveSize.change(selectInteractiveSizeHandler);
 
   // used to extract values from nested object: modelList
   function getObjects(obj, key, val) {
@@ -493,7 +519,6 @@ AUTHORING = false;
     document.cookie = "lab-interactive-options=" + $("#interactive-controls").serialize() + " ; max-age=" + 30*60*60*24;
   }
 
-
   function finishSetupFullPage() {
     var java_mw_href,
         java_mw_link = $("#java-mw-link"),
@@ -547,7 +572,7 @@ AUTHORING = false;
       // FIXME: generalize when multiple model types implemented
       controller.modelController.modelContainer.setFocus();
       $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
-      // $selectIframeSize.attr('disabled', 'disabled');
+      // $selectInteractiveSize.attr('disabled', 'disabled');
       setupCodeEditor();
       setupModelCodeEditor();
       setupBenchmarks();
@@ -557,34 +582,39 @@ AUTHORING = false;
       setupAtomDataTable();
       $("#content-banner").show();
       $("#extras-bottom").show();
+      $selectInteractiveSize.removeAttr('disabled');
+      $content.resizable({
+        helper: "ui-resizable-helper",
+        resize: controller.resize
+      });
     } else {
       setupEnergyGraph();
       $("#content-banner").hide();
       // $("#model-energy-graph").hide();
       $("#model-datatable").hide();
-      $("#content").css("border", "none");
+      $content.css("border", "none");
       setupCodeEditor();
       setupModelCodeEditor();
       setupBenchmarks();
       // send this message to Interactive in iframe
       // controller.modelController.moleculeContainer.setFocus();
-      var childIFrameObj = {},
-          $iframeWrapper,
+      var $iframeWrapper,
           $iframe;
 
-      $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectIframeSize.val() + '"></div>'),
+      $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>');
       $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
 
-      $("#viz").append($iframeWrapper);
-      selectIframeSizeHandler();
-      $selectIframeSize.removeAttr('disabled');
+      $content.append($iframeWrapper);
+      $("#responsive-content").hide();
+      selectInteractiveSizeHandler();
+      $selectInteractiveSize.removeAttr('disabled');
 
       $iframeWrapper.append($iframe);
       iframePhone = setupIframeListenerFor($iframe[0]);
 
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
-      // $(".view").bind('resize', update);
     }
+    setupCopySaveInteractive();
   }
 
   function setupIframeListenerFor(iframe) {
@@ -653,6 +683,106 @@ AUTHORING = false;
     window.addEventListener('message', receiveMessage, false);
     iframePhone.post = post;
     return iframePhone;
+  }
+
+  function remoteSaveInteractive(interactiveTitle, interactiveState){
+    var httpMethod = 'POST',
+    url = '/interactives';
+
+    // if (interactive['from_import']) {
+    //   $saveInteractiveButton.text("Save As");
+    // }else {
+    //   httpMethod = 'PUT';
+    //   url = url + '/' + interactive.id;
+    // }
+
+    newInteractiveState = jQuery.extend(true, {}, interactiveState);
+    newInteractiveState['title'] = interactiveTitle;
+    // get the group from the current interactive
+    newInteractiveState['groupKey'] = interactive['groupKey'];
+    interactiveJSON = {'interactive': newInteractiveState};
+
+    jQuery.ajax({
+      type: httpMethod,
+      url: url,
+      data: JSON.stringify(interactiveJSON),
+      success: function(results) {
+        if (typeof results === 'string') results = JSON.parse(results);
+        interactive = results;
+
+        if (interactive.title) {
+          document.title = interactive.title;
+        }
+
+        document.location.hash = interactive.path;
+      },
+      dataType: "json",
+      contentType: "application/json",
+      processData: false
+    });
+
+  }
+
+  function getInteractiveState(interactiveTitle){
+
+    if(onFullPage()) {
+      interactiveState = controller.serialize();
+      remoteSaveInteractive(interactiveTitle, interactiveState);
+      editor.setValue(JSON.stringify(interactiveState, null, indent));
+    } else {
+      iframePhone.post({ type:'getInteractiveState' });
+      iframePhone.addListener('interactiveState', function(message) {
+        // this needs to be in the callback for the postMessage to
+        // the iframe.
+        remoteSaveInteractive(interactiveTitle, message);
+        editor.setValue(JSON.stringify(message, null, indent));
+      });
+    }
+  }
+
+  function setupCopySaveInteractive() {
+
+    if (interactive['from_import']) {
+      $saveInteractiveButton.text("Save As");
+    }else {
+      $saveInteractiveButton.text("Save");
+    }
+
+    $(".save-interactive-form").dialog({
+      autoOpen: false,
+      modal: true,
+      buttons: {
+        "Save": function() {
+          var interactiveTitle = $(".save-interactive-title").val();
+          $(this).dialog("close");
+          getInteractiveState(interactiveTitle);
+        },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $saveInteractiveButton.on('click', function() {
+      var interactiveState, newInteractiveState, interactiveJSON;
+
+      $('.save-interactive-form').dialog("open");
+
+
+      // try {
+      //   // warn user
+
+      //   } catch (e) {
+      //     alert("Interactive JSON syntax error: " + e.message);
+      //     throw new Error("Interactive JSON syntax error: " + e.message);
+      //   }
+
+        if(onFullPage()) {
+          controller.loadInteractive(interactive, '#interactive-container');
+        } else {
+          iframePhone.post({ type:'loadInteractive', data:interactive  });
+        }
+      });
   }
 
   // Setup and enable next and previous Interactive buttons
@@ -906,18 +1036,18 @@ AUTHORING = false;
     }
 
     function modelSampleSizeInPs() {
-      var viewRefreshInterval, timeStep;
+      var timeStepsPerTick, timeStep;
 
       if (_model) {
-        viewRefreshInterval = _model.get('viewRefreshInterval');
+        timeStepsPerTick = _model.get('timeStepsPerTick');
         timeStep    = _model.get('timeStep');
-        return _model.get("viewRefreshInterval") * _model.get("timeStep")/1000;
+        return _model.get("timeStepsPerTick") * _model.get("timeStep")/1000;
       }
       else {
-        viewRefreshInterval = 60;
+        timeStepsPerTick = 60;
         timeStep = 10;
       }
-      return viewRefreshInterval * timeStep / 1000;
+      return timeStepsPerTick * timeStep / 1000;
     }
 
 

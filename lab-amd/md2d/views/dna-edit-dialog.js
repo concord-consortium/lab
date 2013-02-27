@@ -20,10 +20,11 @@ define(function () {
           // jQuery UI Dialog.
           $dialogDiv.dialog({
             dialogClass: "dna-edit-dialog",
+            // Ensure that font is being scaled dynamically.
+            appendTo: "#responsive-content",
             title: "DNA Code on Sense Strand",
             autoOpen: false,
-            width: "30em",
-            modal: true,
+            width: "35em",
             buttons: {
               "Apply": function () {
                 model.getGeneticProperties().set({

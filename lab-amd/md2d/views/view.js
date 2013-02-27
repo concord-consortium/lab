@@ -6,12 +6,11 @@
 // ------------------------------------------------------------
 define(function (require) {
   // Dependencies.
-  var console               = require('common/console'),
-      ModelView             = require("common/views/model-view"),
+  var ModelView             = require("common/views/model-view"),
       Renderer              = require("md2d/views/renderer");
 
-  return function (e, modelUrl, model) {
-    return new ModelView(e, modelUrl, model, Renderer);
-  }
+  return function (modelUrl, model) {
+    return new ModelView(modelUrl, model, Renderer);
+  };
 
 });

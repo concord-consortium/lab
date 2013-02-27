@@ -13,7 +13,14 @@ define(function () {
     component = validator.validateCompleteness(metadata.button, component);
 
     $button = $('<button>').attr('id', component.id).html(component.text);
+    // Each interactive component has to have class "component".
     $button.addClass("component");
+
+    // Custom dimensions.
+    $button.css({
+      width: component.width,
+      height: component.height
+    });
 
     $button.click(scriptingAPI.makeFunctionInScriptContext(component.action));
 

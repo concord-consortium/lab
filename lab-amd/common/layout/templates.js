@@ -4,10 +4,12 @@ define(function () {
     "simple": [
       {
         "id": "top",
-        "bottom": "model.top"
+        "bottom": "model.top",
+        "width": "interactive.width"
       },
       {
         "id": "right",
+        "top": "model.top",
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em"
@@ -16,16 +18,18 @@ define(function () {
         "id": "bottom",
         "top": "model.bottom",
         "width": "interactive.width",
-        "padding-bottom": "1em"
+        "padding-top": "0.5em"
       }
     ],
     "narrow-right": [
       {
         "id": "top",
-        "bottom": "model.top"
+        "bottom": "model.top",
+        "width": "interactive.width"
       },
       {
         "id": "right",
+        "top": "model.top",
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em",
@@ -36,16 +40,18 @@ define(function () {
         "id": "bottom",
         "top": "model.bottom",
         "width": "interactive.width",
-        "padding-bottom": "1em"
+        "padding-top": "0.5em"
       }
     ],
     "wide-right": [
       {
         "id": "top",
-        "bottom": "model.top"
+        "bottom": "model.top",
+        "width": "interactive.width"
       },
       {
         "id": "right",
+        "top": "model.top",
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em",
@@ -56,53 +62,7 @@ define(function () {
         "id": "bottom",
         "top": "model.bottom",
         "width": "interactive.width",
-        "padding-bottom": "1em"
-      }
-    ],
-    "split-right": [
-      {
-        "id": "top",
-        "bottom": "model.top"
-      },
-      {
-        "id": "right-top",
-        "left": "model.right",
-        "height": "model.height/2",
-        "padding-left": "1em"
-      },
-      {
-        "id": "right-bottom",
-        "left": "model.right",
-        "top": "model.top + model.height/2",
-        "height": "model.height/2",
-        "padding-left": "1em"
-      },
-      {
-        "id": "bottom",
-        "top": "model.bottom",
-        "width": "interactive.width",
-        "padding-top": "1em"
-      }
-    ],
-    "big-top": [
-      {
-        "id": "top",
-        "bottom": "model.top",
-        "height": "model.height/3",
-        "width": "model.width + right.width",
-        "padding-bottom": "1em"
-      },
-      {
-        "id": "right",
-        "left": "model.right",
-        "height": "model.height",
-        "padding-left": "1em"
-      },
-      {
-        "id": "bottom",
-        "top": "model.bottom",
-        "width": "interactive.width",
-        "padding-top": "1em"
+        "padding-top": "0.5em"
       }
     ]
   };

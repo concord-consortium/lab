@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion, Osmosis, and Active Transport: The porous membrane.</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+  
+    
+
+
+ 
+ 
+ 
+    
+ 
+
+    
+
+ 
+
+
+</text>
+<section start="0" end="48">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;pagetitle&quot;&gt;
+      &lt;strong&gt;Diffusion, Osmosis, and Active Transport:&lt;/strong&gt; The porous 
+      membrane.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;a href=&quot;page6.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7Selected.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;mainidea&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;98&quot; height=&quot;58&quot; src=&quot;motionMainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;p class=&quot;mainidea&quot;&gt;
+            Many molecules and even single atom ions can&apos;t diffuse easily 
+            through the cell membrane. How do they get into and out of cells?
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;subhead&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;33&quot; height=&quot;23&quot; src=&quot;motionBullet.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;p class=&quot;subhead&quot;&gt;
+            Most Ions and Molecules Need Pores to Pass Through Membranes
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="16">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>400.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      Until now you have only observed oxygen and carbon dioxide diffusing 
+      through a cell membrane. The way those two molecules directly pass 
+      through the cell membrane is actually quite uncommon. Most molecules are 
+      unable to pass through the membrane, so some kind of hole must be made 
+      to allow them to diffuse through. This is done using one or more 
+      proteins to create a pore in the membrane that allows only specific 
+      molecules or ions to pass through.
+    &lt;/p&gt;
+    &lt;p&gt;
+      To the right is the model of such a pore. This one allows water to pass 
+      through a cell membrane.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Explore the model by &lt;a href=&quot;script:page:0:message animControls.html&quot;&gt;using 
+      the animation controls&lt;/a&gt; and use the &amp;quot;snapshot&amp;quot; button below to take 
+      pictures that will help you answer the questions below.
+    &lt;/p&gt;
+    &lt;p align=&quot;center&quot;&gt;
+      &lt;input value=&quot;take a snapshot&quot; name=&quot;button&quot; script=&quot;script:jmol:1:snapshot&quot; id=&quot;button&quot; type=&quot;submit&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>define ~poreLipids within(34.0,atomno=34999 and model=5) or within(34.0,atomno=38891 and model=5) or atomno=36076 or atomno=36077 or atomno=36079 or atomno=25870 or atomno=25734 or atomno=25065 or atomno=940 or atomno=25066 or atomno=24948 or atomno=24931 or atomno=24930 or atomno=25064 or atomno=25062 or atomno=36075 or atomno=29926 or atomno=29772 or within(4.0, atomno=3507) or atomno=24215 or atomno=3489 or atomno=2835 or atomno=24126 or atomno=24127 or atomno=24128 or atomno=3512 or atomno=3520 or atomno=3525 or atomno=3524 or atomno=3523 or within(3.0,atomno=2683) or atomno=3526 or atomno=3514 or atomno=3579 or atomno=3576 or atomno=3582 or atomno=2772 or atomno=29755 or atomno=30828 or atomno=12778 or atomno=12777 or atomno=12775 or atomno=12776 or atomno=13868 or atomno=13867 or atomno=13869 or atomno=13831;
+define ~singlePore model=1;
+define ~halfPoreSmall (80-107 or 125-167 or 173-249) and model=1;
+define ~halfPoreLarge model=1 and not ~halfPoreSmall and not water;
+define ~lipidHead model=5 and (oxygen or phosphorus or nitrogen or *.C1 or *.C2 or *.C3 or *.C11 or *.C12 or *.C13 or *.C14 or *.C15);
+define ~lipidTail model=5 and not ~lipidHead;
+select not model=5;
+translateSelected {-43 -46 -27};
+select all;
+center selected;
+select ~lipidHead;
+color atoms [xeb4000];
+select ~lipidTail;
+color atoms [xffbf00];
+display none;
+set echo middle top;
+set echo all;
+color echo [xdcecda];
+select protein;
+color atoms lightblue;
+select water;
+color atoms blue;
+font echo 18 SANSSERIF plain;
+echo &quot;||Use the animation controls below|to go on a guided tour of an aquapore.||At each stop on the tour|you can explore the model by|dragging the mouse to rotate the model|and shift-dragging to zoom the model.||Check out the questions below|to find out what kind of snapshots|you should take along the way.&quot;
+set echo bottom center;
+font echo 12 sansserif;
+color echo pink;
+echo &quot;*Note: With large biological molecules the hydrogen|atoms are commonly not shown.&quot;</script><menubar>false</menubar><toolbar>false</toolbar><resource>aquaporeMem.pdb.gz</resource><state>page7$0.jms</state><width>400.0</width>
+<height>400.0</height>
+</component></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="21">
+<Alignment>1</Alignment>
+<content start="16" end="17">
+<component><class>org.concord.modeler.ImageQuestion</class><width>371</width><height>371</height><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Take an image showing a side view of an aquapore poking out of both 
+      sides of a piece of cell membrane. &lt;font color=&quot;#a63739&quot; size=&quot;-1&quot;&gt;(Note: 
+      You will need to find the right scene on the molecule tour and rotate 
+      the molecule yourself to get the correct image.) &lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="17" end="19">
+</content>
+
+<content start="19" end="20">
+<component><class>org.concord.modeler.ImageQuestion</class><width>371</width><height>371</height><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Take an image showing water going through the channel formed by the 
+      aquapore:
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<Alignment>1</Alignment>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="25">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;subhead&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;33&quot; height=&quot;23&quot; src=&quot;motionBullet.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;p class=&quot;subhead&quot;&gt;
+            Determining Which Molecules and/or Ions Need Pores
+          &lt;/p&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="27">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>40.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      Use the buttons next to the model below to explore which kinds of atoms 
+      or molecules can pass freely through a cell membrane, and which can not.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="29">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>45</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-right: 2px; margin-top: 10&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;left&quot;&gt;
+      &lt;img width=&quot;712&quot; height=&quot;26&quot; src=&quot;aquaporeTitle.png&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="28" end="29">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="29" end="34">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="30" end="31">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page7$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>195.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style1 { font-family: Arial, Helvetica, sans-serif }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-left: 8&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;span class=&quot;style1&quot;&gt;&lt;strong&gt;SELECT ONE&lt;/strong&gt;&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;p&gt;
+            &lt;input value=&quot;radio&quot; name=&quot;RadioGroup1&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%pos%dotmml; else; load %pos%dotmml; endif; set %currentmodel round(%pos); run &quot; id=&quot;RadioGroup1_0&quot; type=&quot;radio&quot;&gt;
+            &lt;br&gt;
+            
+          &lt;/p&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;positive ion (Na&lt;sup&gt;+&lt;/sup&gt;)&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img height=&quot;8&quot; src=&quot;pos.png&quot; width=&quot;8&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input value=&quot;radio&quot; name=&quot;RadioGroup1&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%neg%dotmml; else; load %neg%dotmml; endif; set %currentmodel round(%neg); run&quot; id=&quot;RadioGroup1_1&quot; type=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;negative ion (Cl&lt;sup&gt;-&lt;/sup&gt;)&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img height=&quot;8&quot; src=&quot;neg.png&quot; width=&quot;8&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input value=&quot;radio&quot; name=&quot;RadioGroup1&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%co2%dotmml; else; load %co2%dotmml; endif; set %currentmodel round(%co2); run&quot; id=&quot;RadioGroup1_2&quot; type=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;small non-polar (CO&lt;sub&gt;2&lt;/sub&gt;)&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img height=&quot;8&quot; src=&quot;co2.png&quot; width=&quot;8&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input value=&quot;radio&quot; name=&quot;RadioGroup1&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%water%dotmml; else; load %water%dotmml; endif; set %currentmodel round(%water); run&quot; id=&quot;RadioGroup1_3&quot; type=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;small polar (H&lt;sub&gt;2&lt;/sub&gt;O)&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img height=&quot;14&quot; src=&quot;water.png&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input value=&quot;radio&quot; name=&quot;RadioGroup1&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%sugar%dotmml; else; load %sugar%dotmml; endif; set %currentmodel round(%sugar); run&quot; id=&quot;RadioGroup1_4&quot; type=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;medium polar (sugar)&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img height=&quot;28&quot; src=&quot;sugar.png&quot; width=&quot;28&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input value=&quot;radio&quot; name=&quot;RadioGroup1&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%mix%dotmml; else; load %mix%dotmml; endif; set %currentmodel round(%mix); run&quot; id=&quot;RadioGroup1_5&quot; type=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;mix of everything&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;bottom&quot;&gt;
+          &lt;input name=&quot;checkbox&quot; script_selected=&quot;script:mw2d:1:set %aquaporeOn 1; if (%currentmodel != 0.0); load %aqua-%currentmodel%dotmml; run; endif;&quot; id=&quot;checkbox&quot; script_deselected=&quot;script:mw2d:1:set %aquaporeOn 0; if(%currentmodel != 0.0); load %currentmodel%dotmml; run; endif;&quot; type=&quot;checkbox&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td style=&quot;height: 30&quot; valign=&quot;bottom&quot;&gt;
+          &lt;span class=&quot;style1&quot;&gt;with aquapore&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td style=&quot;height: 30&quot; valign=&quot;bottom&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-926584</bgcolor>
+</component></content>
+
+<content start="32" end="33">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="33" end="34">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="34" end="36">
+<Alignment>1</Alignment>
+<content start="34" end="35">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>25</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon><size>8</size></content>
+
+<content start="35" end="36">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="37" end="42">
+<Alignment>1</Alignment>
+<content start="37" end="38">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>5</row>
+<width>371</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Which are the only types of molecules that pass easily through the cell 
+      membrane without an aquapore?
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>positive ions</choice>
+<choice>negative ions</choice>
+<choice>small non-polar molecules</choice>
+<choice>small polar molecules</choice>
+<choice>medium sized polar molecules</choice>
+<answer>2</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message noPassage.html; -choiceseparator- script:page:0:message noPassage.html; -choiceseparator- script:page:0:message yesPassage.html; -choiceseparator- script:page:0:message noPassage.html; -choiceseparator- script:page:0:message noPassage.html;</script>
+</component></content>
+
+<content start="38" end="40">
+</content>
+
+<content start="40" end="41">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>371</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;bioStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      What is true of most naturally occuring pores?
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>They allow only ions to pass through.</choice>
+<choice>They allow most molecules to pass through.</choice>
+<choice>They let anything that is the right size through.</choice>
+<choice>They are specific to one kind of molecule.</choice>
+<answer>3</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message noPorePassage.html; -choiceseparator- script:page:0:message noPorePassage.html; -choiceseparator- script:page:0:message noPorePassage.html; -choiceseparator- script:page:0:message yesPorePassage.html;</script>
+</component></content>
+
+<content start="41" end="42">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<Alignment>1</Alignment>
+<content start="42" end="43">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="43" end="45">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot; width=&quot;8&quot;&gt;
+          &lt;a href=&quot;page6.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7Selected.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<Alignment>1</Alignment>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<content start="46" end="47">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="47" end="48">
+</paragraph>
+</section>
+</document>

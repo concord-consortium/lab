@@ -2,6 +2,7 @@
   "title": "Hydrogen Bonds: A Special Type of Attraction",
   "publicationStatus": "public",
   "subtitle": "Explore how polar molecules interact via hydrogen bonds.",
+  "fontScale": 0.99,
   "about": [
     "Explore hydrogen bonds forming between polar molecules, such as water. Hydrogen bonds are shown with dotted lines.",
     "Show partial charges and run the model. Where do hydrogen bonds form? Try changing the temperature of the model. How does the pattern of hydrogen bonding explain the lattice that makes up ice crystals?"

@@ -81,25 +81,6 @@ h3 {
 a {
   text-decoration: none; }
 
-.component {
-  display: inline-block;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-  overflow: hidden;
-  margin: 1em 1em 0 0;
-  padding: 0; }
-  .component div {
-    display: block;
-    position: relative;
-    margin: 0px;
-    padding: 0px; }
-  .component span.radio {
-    padding: 0em 0.5em; }
-
 .component_group {
   display: inline-block; }
 
@@ -172,74 +153,105 @@ a {
 .playbacksvgbutton:active .pause-center {
   fill: #a5a5a5; }
 
+#model-container {
+  background: #f9eec1;
+  border-radius: 0.5em;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); }
+  #model-container:focus {
+    outline: rgba(46, 192, 236, 0.2) solid 0.2em; }
+
+.component {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none; }
+
 select.component {
   font-size: 1em; }
 
 button.component {
-  display: inline-block;
+  white-space: nowrap;
   font-size: 1em;
   padding: 0.2em; }
 
-.interactive-checkbox {
-  margin: 1em 1em 0 0;
-  display: inline-block; }
-  .interactive-checkbox input[type="checkbox"] {
-    -webkit-transform: scale(1, 1);
-    -ms-transform: scale(1, 1);
-    -moz-transform: scale(1, 1);
-    -o-transform: scale(1, 1);
-    padding: 0.2em 0.2em;
-    font-size: 1.5em; }
+.interactive-text p {
+  margin: 0;
+  padding: 0; }
+  .interactive-text p.clickable {
+    color: #004488;
+    cursor: pointer;
+    opacity: 1; }
+  .interactive-text p.basic {
+    font-size: 1em; }
+  .interactive-text p.header {
+    font-size: 1.1em;
+    font-weight: 600; }
 
-.numeric-output {
+.interactive-radio.horizontal span + span {
+  margin-left: 1em; }
+.interactive-radio.vertical span {
+  display: block; }
+
+.interactive-checkbox input[type="checkbox"] {
+  -webkit-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -moz-transform: scale(1, 1);
+  -o-transform: scale(1, 1);
+  padding: 0.2em 0.2em;
+  font-size: 1.5em; }
+
+.numeric-output span.label {
   display: inline-block;
-  margin-right: 1em; }
-  .numeric-output span.label {
-    display: inline-block;
-    padding-right: 0.5em; }
-  .numeric-output span.value {
-    display: inline-block;
-    padding: 0em 0.2em 0em 0.5em;
-    min-width: 3em;
-    text-align: right;
-    font-weight: 600;
-    border-bottom-style: dotted;
-    border-color: Grey;
-    border-width: 1px; }
-  .numeric-output span.units {
-    display: inline-block;
-    padding-left: 0.2em;
-    padding-right: 0.5em;
-    font-style: italic; }
+  padding-right: 0.5em; }
+.numeric-output span.value {
+  display: inline-block;
+  padding: 0em 0.2em 0em 0.5em;
+  min-width: 3em;
+  text-align: right;
+  font-weight: 600;
+  border-bottom-style: dotted;
+  border-color: Grey;
+  border-width: 1px; }
+.numeric-output span.units {
+  display: inline-block;
+  padding-left: 0.2em;
+  padding-right: 0.5em;
+  font-style: italic; }
 
 .interactive-slider {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0.5em 1em 0 0; }
-  .interactive-slider .ui-slider .ui-slider-handle {
+  padding: 0 0.7em; }
+  .interactive-slider .ui-slider {
+    width: 100%;
+    height: 100%; }
+  .interactive-slider .ui-slider-handle {
     font-size: 0.8em;
     font-weight: normal;
     text-align: center;
     width: auto;
     min-width: 1.2em;
-    min-height: 1.4em;
-    padding: 0em 0.2em 0em 0.2em; }
+    min-height: 1.5em;
+    height: 110%;
+    padding: 0.1em 0.2em 0em 0.2em; }
   .interactive-slider .title {
     display: inline-block;
     font-size: 1em;
-    margin: 0 0 0.5em 0;
+    white-space: nowrap;
+    margin: 0 0 0.3em 0;
     vertical-align: top; }
   .interactive-slider .container {
     position: relative;
-    margin: 0 2em 1.2em 0;
-    width: 12em; }
-    .interactive-slider .container .html-slider {
-      width: 100%; }
+    margin-bottom: 1em; }
     .interactive-slider .container .label {
       position: absolute;
-      top: 0.1em;
+      display: inline-block;
       width: 6em;
-      margin-left: -3em;
+      margin: 0 0 0 -3em;
       text-align: center;
       font-size: 0.8em; }
 
@@ -252,42 +264,33 @@ button.component {
     margin: 0.5em 0 0 0.5em;
     line-height: 1.3em; }
 
-.interactive-thermometer {
-  vertical-align: middle;
-  height: 4em; }
-  .interactive-thermometer .label {
-    margin: 0;
-    text-align: center;
-    font-size: 1em; }
-  .interactive-thermometer .thermometer {
+.interactive-thermometer .label {
+  margin: 0;
+  text-align: center;
+  font-size: 1em; }
+.interactive-thermometer .thermometer {
+  display: block;
+  margin: auto;
+  border: 2px solid #f4b626;
+  position: relative;
+  border-radius: 1.5em 1.5em 0.2em 0.2em; }
+  .interactive-thermometer .thermometer div {
     display: block;
-    width: 2em;
-    margin: auto;
-    border: 2px solid #f4b626;
     position: relative;
-    border-radius: 1.5em 1.5em 0.2em 0.2em; }
-    .interactive-thermometer .thermometer div {
-      display: block;
-      position: relative;
-      margin: 0px;
-      padding: 0px; }
-    .interactive-thermometer .thermometer .thermometer_fill {
-      position: absolute;
-      width: 70%;
-      left: 15%;
-      bottom: 0;
-      background: #e16a3e;
-      border-radius: 0.75em 0.75em 0em 0em; }
+    margin: 0px;
+    padding: 0px; }
+  .interactive-thermometer .thermometer .thermometer_fill {
+    position: absolute;
+    width: 70%;
+    left: 15%;
+    bottom: 0;
+    background: #e16a3e;
+    border-radius: 0.75em 0.75em 0em 0em; }
 
 .properties-graph {
-  display: inline-block;
-  vertical-align: bottom;
   position: relative;
-  width: 7em;
-  height: 7em;
   background: #f9eec1;
   border-radius: 0.5em;
-  -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); }
 
 * {
@@ -295,13 +298,11 @@ button.component {
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-#iframe-wrapper {
-  width: 925px;
-  height: 575px;
-  border: 2px #dddddd solid; }
-  #iframe-wrapper iframe {
-    width: 100%;
-    height: 100%; }
+#responsive-content {
+  width: 100%;
+  font-size: 0.9em;
+  height: 100%;
+  padding: 0 1%; }
 
 #content-banner {
   z-index: 10;
@@ -318,8 +319,11 @@ button.component {
 
 #interactive-container {
   width: 100%;
-  height: 95%;
+  height: 94%;
   position: relative; }
+
+.component-spacing {
+  margin: 0.5em; }
 
 .aminoacids-menu {
   min-width: 9em;
@@ -388,12 +392,12 @@ button.component {
 #model-container .dna .marked-mrna {
   font-weight: bold;
   fill: #dd1111; }
+#model-container line.attractionforce {
+  stroke: #aaaaaa;
+  stroke-width: 2.5;
+  stroke-dasharray: 3 2; }
 #model-container text.modelTimeLabel {
   font-size: 1em; }
-#model-container circle, #model-container .line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px; }
 #model-container text.title {
   font-size: 1em; }
 #model-container text.xlabel {
@@ -429,7 +433,6 @@ button.component {
   right: 0;
   background: #f9eec1;
   border-radius: 0.5em;
-  -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   height: 100%;
   width: 100%;
@@ -441,28 +444,6 @@ button.component {
 applet {
   border: thin solid #eeeeee; }
 
-#model-container {
-  background: #f9eec1;
-  border-radius: 0.5em;
-  -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); }
-  #model-container:focus {
-    outline: #2ecfec solid 0.2em; }
-  #model-container line.attractionforce {
-    stroke: #aaaaaa;
-    stroke-width: 2.5;
-    stroke-dasharray: 3 2; }
-  #model-container circle {
-    stroke: transparent;
-    stroke-width: 1;
-    fill: white;
-    fill-opacity: 1; }
-    #model-container circle.selected {
-      fill: #ff7f0e;
-      stroke: #ff7f0e; }
-  #model-container rect {
-    border: solid 1px #cccccc; }
-
 #credits {
   float: left;
   vertical-align: middle;
@@ -471,6 +452,29 @@ applet {
   #credits:hover {
     cursor: pointer;
     opacity: 1; }
+
+#firefox-warning-pane {
+  display: none;
+  position: absolute;
+  font-size: 1em;
+  width: auto;
+  opacity: 0.8;
+  color: #d51607;
+  background-color: rgba(255, 204, 204, 0.8);
+  border-radius: 0.5em;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+  z-index: -100;
+  margin: 0em;
+  padding: 0em; }
+  #firefox-warning-pane:hover {
+    opacity: 1; }
+  #firefox-warning-pane p {
+    margin: 0.2em 0.5em; }
+    #firefox-warning-pane p a {
+      color: #d51607; }
+      #firefox-warning-pane p a:hover {
+        color: #f72818;
+        font-weight: 600; }
 
 #about, #share {
   float: right;
@@ -489,9 +493,9 @@ applet {
   display: none;
   position: absolute;
   border-radius: 0.5em;
-  -webkit-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.5);
   box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.5);
   width: 80%;
+  max-width: 40em;
   height: auto;
   min-height: 8em;
   max-height: 80%;
@@ -500,7 +504,8 @@ applet {
   z-index: 100;
   margin: 0.5em;
   padding: 0em;
-  background-color: #efefef; }
+  background-color: #efefef;
+  padding-bottom: 0.5em; }
   #credits-pane p, #about-pane p, #share-pane p {
     margin-top: 1em;
     margin-bottom: 1em; }
@@ -695,7 +700,6 @@ ul {
 #save-button {
   border: 1px solid #076fe4;
   border-radius: 3px;
-  -webkit-box-shadow: inset 0 1px 0 0 #8ebcf1;
   box-shadow: inset 0 1px 0 0 #8ebcf1;
   color: white;
   display: inline-block;
@@ -713,7 +717,6 @@ ul {
   text-shadow: 0 1px 0 #0065d6;
   -webkit-background-clip: padding-box; }
   #save-button:hover:not(:disabled) {
-    -webkit-box-shadow: inset 0 1px 0 0 #60a2ec;
     box-shadow: inset 0 1px 0 0 #60a2ec;
     cursor: pointer;
     background-color: #2f87ea;
@@ -725,7 +728,6 @@ ul {
     background-image: linear-gradient(top, #2f87ea, #086fe3); }
   #save-button:active:not(:disabled) {
     border: 1px solid #076fe4;
-    -webkit-box-shadow: inset 0 0 8px 4px #0868d3, inset 0 0 8px 4px #0868d3, 0 1px 1px 0 #eeeeee;
     box-shadow: inset 0 0 8px 4px #0868d3, inset 0 0 8px 4px #0868d3, 0 1px 1px 0 #eeeeee; }
   #save-button:disabled {
     opacity: 0.5;

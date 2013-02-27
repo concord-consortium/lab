@@ -77,7 +77,7 @@
             setTimeout(function() {
               model.stop();
               var elapsedModelTime = model.get('time') - start;
-              done( elapsedModelTime / (model.get('viewRefreshInterval') * model.get('timeStep')) / 2 );
+              done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
             }, 2000);
           }, 100);
         }, 1000);

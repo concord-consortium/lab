@@ -1,0 +1,1302 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_07" class="java.beans.XMLDecoder"> 
+ <object id="Element0" class="org.concord.mw2d.models.Element"> 
+  <void property="mass"> 
+   <double>0.16666666666666666</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>7.0</double> 
+  </void> 
+ </object> 
+ <object id="Element1" class="org.concord.mw2d.models.Element"> 
+  <void property="ID"> 
+   <int>1</int> 
+  </void> 
+  <void property="mass"> 
+   <double>0.3333333333333333</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>22.0</double> 
+  </void> 
+ </object> 
+ <object id="Element2" class="org.concord.mw2d.models.Element"> 
+  <void property="ID"> 
+   <int>2</int> 
+  </void> 
+  <void property="epsilon"> 
+   <double>0.0010000000474974513</double> 
+  </void> 
+  <void property="mass"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>19.010000228881836</double> 
+  </void> 
+ </object> 
+ <object id="Element3" class="org.concord.mw2d.models.Element"> 
+  <void property="ID"> 
+   <int>3</int> 
+  </void> 
+  <void property="epsilon"> 
+   <double>0.010700000450015068</double> 
+  </void> 
+  <void property="mass"> 
+   <double>0.6666666666666666</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>20.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Affinity"> 
+  <void property="epsilon"> 
+   <void method="put"> 
+    <object id="Pair0" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element2"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.0071428571827709675</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair1" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element1"/> 
+     </void> 
+    </object> 
+    <double>0.014285714365541935</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair2" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.010714286006987095</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair3" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>0.010714286006987095</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>0.014285714365541935</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.010714286006987095</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair6" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object id="Element4" class="org.concord.mw2d.models.Element"> 
+       <void property="ID"> 
+        <int>4</int> 
+       </void> 
+       <void property="mass"> 
+        <double>5.0</double> 
+       </void> 
+      </object> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair7" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element4"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair8" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element2"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element4"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair9" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element3"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element4"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+  </void> 
+  <void property="lbMixing"> 
+   <void method="put"> 
+    <object idref="Pair0"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair1"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair2"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair7"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair8"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair9"/> 
+    <boolean>true</boolean> 
+   </void> 
+  </void> 
+  <void property="repulsive"> 
+   <void method="put"> 
+    <object idref="Pair0"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair1"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair2"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair7"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair8"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair9"/> 
+    <boolean>false</boolean> 
+   </void> 
+  </void> 
+  <void property="sigma"> 
+   <void method="put"> 
+    <object idref="Pair0"/> 
+    <double>17.966459274291992</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair1"/> 
+    <double>11.433199882507324</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair2"/> 
+    <double>20.193706512451172</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <double>11.136234283447266</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
+    <double>20.04522132873535</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <double>10.83926773071289</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <double>9.16515138991168</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair7"/> 
+    <double>12.96148139681572</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair8"/> 
+    <double>15.874507866387544</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair9"/> 
+    <double>18.33030277982336</double> 
+   </void> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.AtomicModel$State"> 
+  <void property="boundary"> 
+   <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
+    <void property="height"> 
+     <double>330.0</double> 
+    </void> 
+    <void property="viewSize"> 
+     <object class="java.awt.Dimension"> 
+      <int>500</int> 
+      <int>330</int> 
+     </object> 
+    </void> 
+    <void property="width"> 
+     <double>500.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="heatBath"> 
+   <object class="org.concord.mw2d.models.HeatBath"> 
+    <void property="expectedTemperature"> 
+     <double>1050.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="lightSource"> 
+   <object class="org.concord.mw2d.models.LightSource"/> 
+  </void> 
+  <void property="numberOfParticles"> 
+   <int>12</int> 
+  </void> 
+  <void property="obstacles"> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="height"> 
+      <double>61.0</double> 
+     </void> 
+     <void property="visible"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="width"> 
+      <double>14.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>179.0</double> 
+     </void> 
+     <void property="y"> 
+      <double>138.0</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="height"> 
+      <double>125.0</double> 
+     </void> 
+     <void property="visible"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="width"> 
+      <double>47.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>189.0</double> 
+     </void> 
+     <void property="y"> 
+      <double>204.0</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="height"> 
+      <double>131.0</double> 
+     </void> 
+     <void property="visible"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="width"> 
+      <double>48.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>189.0</double> 
+     </void> 
+     <void property="y"> 
+      <double>2.0</double> 
+     </void> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="properties"> 
+   <void method="put"> 
+    <string>filename</string> 
+    <string>page12$0.mml</string> 
+   </void> 
+   <void method="put"> 
+    <string>date</string> 
+    <object class="java.util.Date"> 
+     <long>1225668960000</long> 
+    </object> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>/Users/ddamelin/Desktop/diffusionActiveTrans _05DD/page12$0.mml</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>36895</long> 
+   </void> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>/Users/ddamelin/Desktop/diffusionActiveTrans _05DD</string> 
+   </void> 
+  </void> 
+  <void property="quantumRule"> 
+   <object class="org.concord.mw2d.models.QuantumRule"/> 
+  </void> 
+  <void property="script"> 
+   <string>beginexternal;
+	@colorbar:10:enablecomponent 2 false;enablecomponent 3 false;enablecomponent 4 false;
+endexternal;
+
+define %waitingForCaBinding 1;
+define %waitingForATPBinding 0;
+define %waitingForATPSettling 0;
+define %waitingForClearCavity 0;
+define %waitingForProteinTransition 0;
+define %waitingForCaSettling 0;
+define %waitingForATPPocketFormation 0;
+define %waitingForCaRelease 0;
+define %waitingForFlashTransition 0;
+define %waitingForProteinReset 0;
+define %waitingForCaText 0;
+define %formingATPSiteText 1;
+define %waitingForATPText 2;
+define %waitingForReactionText 3;
+define %messagesOn 1;
+define %topBlockerInPlace 1;
+define %bottomBlockerInPlace 1;
+define %topParticleIndex -1;
+define %bottomParticleIndex -1;
+define %caToCapture -1;
+define %caToCaptureFar -1;
+define %caToCaptureNear -1;
+define %restraintSet 0;
+define %caLeft 0;
+define %caRight 0;
+define %proteinX 17.2;
+define %proteinY 11.3;
+define %proteinImage 0;
+define %endTransitionTime 0;
+define %thisAtom 0;
+define %atp1toCapture 0;
+define %atp2toCapture 0;
+define %bondToRemove 0;
+define %partOfMolecule -1;
+define %leftConc 0;
+define %rightConc 0;
+define %totalChemicalEnergy %number_of_molecules;
+define %chemicalEnergy 0;
+define %voltage 0;
+define %leftConc 0;
+define %rightConc 0;
+define %i 0;
+define %atpConc -1;
+define %caConc -1;
+
+define %leftWidth 18.6;
+define %rightWidth %width-%leftWidth;
+define %flashX 23.1;
+define %flashY 20.7;
+define %atpAtomX 24.9;
+define %atpAtomY 20.8;
+define %pocket1x 25;
+define %pocket1y  19.9
+define %pocket2x 25.9;
+define %pocket2y  20.4
+define %pocket3x 24.9;
+define %pocket3y  20.9
+define %pocket4x 24.5;
+define %pocket4y  21.9;
+define %rsurface1x 24;
+define %rsurface1y 19.6;
+define %rsurface2x 22.9;
+define %rsurface2y 19.3;
+define %rsurface3x 21.8;
+define %rsurface3y 18.9;
+define %rsurface4x 20.8;
+define %rsurface4y 18.5;
+define %rsurface5x 19.9;
+define %rsurface5y 17.9;
+define %rsurface6x 19.8;
+define %rsurface6y 15.3;
+define %rsurface7x 20.7;
+define %rsurface7y 14.7;
+define %rsurface8x 21.9;
+define %rsurface8y 14.7;
+define %rsurface9x 23;
+define %rsurface9y 14.5;
+define %rsurface10x 24;
+define %rsurface10y 14.2;
+define %nonATPsurfaceX 25;
+define %nonATPsurfaceY 12.8;
+define %lsurface1x 18.4;
+define %lsurface1y 12.5;
+define %lsurface2x 18.2;
+define %lsurface2y 13.8;
+define %lsurface3x 19.2;
+define %lsurface3y 14.3;
+define %lsurface4x 20.5;
+define %lsurface4y 14.6;
+define %lsurface5x 21.7;
+define %lsurface5y 15.1;
+define %lsurface6x 22.9;
+define %lsurface6y 15.6;
+define %lsurface7x 25.8;
+define %lsurface7y 15.1;
+define %lsurface8x 25.8;
+define %lsurface8y 16.2;
+define %lsurface9x 23;
+define %lsurface9y 18.4;
+define %lsurface10x 21.8;
+define %lsurface10y 18.9;
+define %lsurface11x 20.4;
+define %lsurface11y 19.3;
+define %lsurface12x 19;
+define %lsurface12y 19.5;
+define %lsurface13x 17.8;
+define %lsurface13y 20.2;
+define %lsurface14x 18.3;
+define %lsurface14y 21.5;
+
+define %flashImage 0;
+define %obsLeftX 17.9;
+define %obsRightX 23.6;
+define %obsY 13.8;
+define %obsWidth 1.4;
+define %obsHeight 6.1;
+define %leftObs 0;
+define %rightObs 0;
+define %rightObs2 0;
+define %obsRight2x 25.3;
+define %obsRight2y 14.6;
+define %obsRight2width 0.8;
+define %obsRight2height 2.2;
+define %proteinAreaX 16;
+define %proteinAreaY 12.7;
+define %proteinAreaW 11.8;
+define %proteinAreaH 8.2;
+define %caCount 0;
+define %atpCount 0;
+define %atomsInProtein 0;
+define %pAnchorX 26.6;
+define %pAnchorY 18;
+define %atpAnchor1x 26.4;
+define %atpAnchor1y 22.2;
+define %atpAnchor2x 25.4;
+define %atpAnchor2y 25;
+define %atpRestraintDeltaX 0.02;
+define %atpRestraintDeltaY -0.42;
+define %caRestraintX 21.1;
+define %caRestraintY 16.3;
+define %caRestraintDeltaX -0.08;
+define %caRestraintDeltaY -0.01;
+define %waitingForCa 0;
+define %formingATP 1;
+define %waitingForATP 2;
+define %releasingATP 3;
+define %watingForCaRelease 4;
+define %restoringProtein 5;
+define %waitingForCaText 0;
+define %formingATPSiteText 1;
+define %waitingForATP 2;
+define %waitingForReaction 3;</string> 
+  </void> 
+  <void property="tasks"> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>capture ca ion</string> 
+     </void> 
+     <void property="interval"> 
+      <int>200</int> 
+     </void> 
+     <void property="name"> 
+      <string>1 capture Ca</string> 
+     </void> 
+     <void property="script"> 
+      <string>if (%waitingForCaBinding);
+	set %caToCaptureFar nearest(2,%caRestraintX,%caRestraintY,30);
+	set %caToCaptureNear nearest(2,%caRestraintX,%caRestraintY,1);
+	set %caToCapture %caToCaptureFar;
+	if ((%caToCaptureFar != -1) and (%atom[%caToCaptureFar].rx &gt; %leftWidth));
+		if (%caToCaptureNear != -1);
+			set atom[%caToCapture].restraint 1000;
+			set atom[%caToCapture].restraint.x %caRestraintX;
+			set atom[%caToCapture].restraint.y %caRestraintY;
+			set atom[%caToCapture].friction 1;
+			set %waitingForCaBinding 0;
+			set %waitingForCaSettling 1;
+			set %restraintSet 0;
+			set %endTransitionTime &quot;%model_time+400&quot;;
+		else;
+			if (%restraintSet == 0);
+				set %restraintSet 1;
+				set atom[%caToCapture].restraint 1;
+				set atom[%caToCapture].restraint.x %caRestraintX;
+				set atom[%caToCapture].restraint.y %caRestraintY;
+			endif;
+		endif;
+	endif;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>wait for Ca to settle down then load next animation</string> 
+     </void> 
+     <void property="interval"> 
+      <int>100</int> 
+     </void> 
+     <void property="name"> 
+      <string>2 settle Ca ion</string> 
+     </void> 
+     <void property="script"> 
+      <string>If ((%waitingForCaSettling) and (%model_time &gt; %endTransitionTime));
+	set %waitingForCaSettling 0;
+	set image[%formingATP].frame 1;
+	set image[%formingATP].loop 1;
+	set image[%formingATP].visible on;
+	set image[%waitingForCa].visible off;
+	set %thisAtom nearest(1, %atpAtomX, %atpAtomY);
+	select atom %thisAtom;
+	remove;
+	add atom 0 (%pocket1x, %pocket1y); select atom &quot;%number_of_atoms-1&quot;; set movable off;
+	add atom 0 (%pocket2x, %pocket2y); select atom &quot;%number_of_atoms-1&quot;; set movable off;
+	add atom 0 (%pocket3x, %pocket3y); select atom &quot;%number_of_atoms-1&quot;; set movable off;
+	add atom 0 (%pocket4x, %pocket4y); select atom &quot;%number_of_atoms-1&quot;; set movable off;
+	set movable off;
+	set %waitingForATPPocketFormation 1;
+	set %endTransitionTime &quot;%model_time+800&quot;;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>waitng for atp pocket formation</string> 
+     </void> 
+     <void property="interval"> 
+      <int>100</int> 
+     </void> 
+     <void property="name"> 
+      <string>3 waiting for ATP pocket</string> 
+     </void> 
+     <void property="script"> 
+      <string>If ((%waitingForATPPocketFormation) and (%model_time &gt; %endTransitionTime));
+	set %waitingForATPPocketFormation 0;
+	set %waitingForATPBinding 1;
+endif;
+</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>wait for ATP capture</string> 
+     </void> 
+     <void property="interval"> 
+      <int>100</int> 
+     </void> 
+     <void property="name"> 
+      <string>4 capture ATP</string> 
+     </void> 
+     <void property="script"> 
+      <string>if (%waitingForATPBinding);
+	set %atp1toCapture nearest(3,%atpAnchor1x,%atpAnchor1y,20);
+	set %partOfMolecule whichMolecule(%atp1toCapture);
+	if ((%atp1toCapture != -1) and (%partOfMolecule != -1));
+		if (%atom[%atp1toCapture].charge &lt; 0);
+			set %atp1toCapture nearesttoatom(3,%atp1toCapture,10,2);
+		endif;
+			set atom[%atp1toCapture].restraint 20;
+			set atom[%atp1toCapture].restraint.x %atpAnchor1x;
+			set atom[%atp1toCapture].restraint.y %atpAnchor1y;
+			set atom[%atp1toCapture].friction 1;
+			set %atp2toCapture nearesttoatom(3,%atp1toCapture,10,2);
+			set atom[%atp2toCapture].restraint 20;
+			set atom[%atp2toCapture].restraint.x %atpAnchor2x;
+			set atom[%atp2toCapture].restraint.y %atpAnchor2y;
+			set atom[%atp2toCapture].friction 1;
+			set %waitingForATPBinding 0;
+			set %waitingForATPSettling 1;
+			set %endTransitionTime &quot;%model_time+1600&quot;;
+	endif;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>wait for ATP to settle in place then initiate reaction</string> 
+     </void> 
+     <void property="interval"> 
+      <int>100</int> 
+     </void> 
+     <void property="name"> 
+      <string>5 wait for ATP settling</string> 
+     </void> 
+     <void property="script"> 
+      <string>If ((%waitingForATPSettling) and (%model_time &gt; %endTransitionTime));
+	set %waitingForATPSettling 0;
+	set %waitingForClearCavity 1;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>waitng for only one Ca in protein</string> 
+     </void> 
+     <void property="interval"> 
+      <int>50</int> 
+     </void> 
+     <void property="name"> 
+      <string>6 waiting for clear cavity</string> 
+     </void> 
+     <void property="script"> 
+      <string>If (%waitingForClearCavity);
+	set %caCount count(2,%proteinAreaX,%proteinAreaY,%proteinAreaW,%proteinAreaH);
+	set %atpCount count(3,%proteinAreaX,%proteinAreaY,%proteinAreaW,%proteinAreaH);
+	set %atomsInProtein &quot;%caCount+%atpCount&quot;;
+	if (%atomsInProtein == 1);
+		set %waitingForClearCavity 0;
+		select element 0-1;
+		remove;
+		add obstacle (%obsRightX, %obsY, %obsWidth, %obsHeight);
+		set %rightObs &quot;%number_of_obstacles-1&quot;;
+		set obstacle[%rightObs].visible off;
+		add obstacle (%obsRight2x, %obsRight2y, %obsRight2width, %obsRight2height);
+		set %rightObs2 &quot;%number_of_obstacles-1&quot;;
+		set obstacle[%rightObs2].visible off;
+		set %waitingForFlashTransition 1;
+		set %endTransitionTime &quot;%model_time+500&quot;;
+		add image flash.gif (%flashX,%flashY);	
+		set %i 0;
+	endif;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>open protein to release calcium</string> 
+     </void> 
+     <void property="interval"> 
+      <int>100</int> 
+     </void> 
+     <void property="name"> 
+      <string>8 transition protein</string> 
+     </void> 
+     <void property="script"> 
+      <string>If (%waitingForProteinTransition);
+	if (%model_time &gt; %endTransitionTime);
+		set %waitingForProteinTransition 0;
+		select obstacle %leftObs;
+		remove;
+		set %rightObs %rightObs-1;
+		set %rightObs2 %rightObs2-1;
+		add atom 0 (%lsurface1x,%lsurface1y);
+		add atom 0 (%lsurface2x,%lsurface2y);
+		add atom 0 (%lsurface3x,%lsurface3y);
+		add atom 0 (%lsurface4x,%lsurface4y);
+		add atom 0 (%lsurface5x,%lsurface5y);
+		add atom 0 (%lsurface6x,%lsurface6y);
+		add atom 0 (%lsurface9x,%lsurface9y);
+		add atom 0 (%lsurface10x,%lsurface10y);
+		add atom 0 (%lsurface11x,%lsurface11y);
+		add atom 0 (%lsurface12x,%lsurface12y);
+		add atom 0 (%lsurface13x,%lsurface13y);
+		add atom 0 (%lsurface14x,%lsurface14y);
+		select element 0;
+		set movable off;
+		set atom[%caToCapture].restraint 0;
+		set atom[%caToCapture].friction 0;
+		set %waitingForCaRelease 1;
+	else;
+		%i++;
+		set atom[%caToCapture].restraint.x &quot;%caRestraintX+%i*%caRestraintDeltaX&quot;;
+		set atom[%caToCapture].restraint.y &quot;%caRestraintY+%i*%caRestraintDeltaY&quot;;
+		set atom[%atp1toCapture].restraint.x &quot;%atpAnchor1x+%i*%atpRestraintDeltaX&quot;;
+		set atom[%atp1toCapture].restraint.y &quot;%atpAnchor1y+%i*%atpRestraintDeltaY&quot;;
+		set atom[%atp1toCapture].rx &quot;%atpAnchor1x+%i*%atpRestraintDeltaX&quot;;
+		set atom[%atp1toCapture].ry &quot;%atpAnchor1y+%i*%atpRestraintDeltaY&quot;;
+	endif;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>waiting for flash to finish</string> 
+     </void> 
+     <void property="name"> 
+      <string>7 waiting for flash</string> 
+     </void> 
+     <void property="script"> 
+      <string>If ((%waitingForFlashTransition) and (%model_time &gt; %endTransitionTime));
+	set %waitingForFlashTransition 0;
+	set image[%releasingATP].frame 1;
+	set image[%releasingATP].loop 1;
+	set image[%releasingATP].visible on;
+	set image[%formingATP].visible off;
+	set %caToCapture nearest(2,%caRestraintX,%caRestraintY,2);
+	set %atp1toCapture nearest(3,%atpAnchor1x,%atpAnchor1y,2);
+	set %atp2toCapture nearesttoatom(3,%atp1toCapture,10,2);
+	set atom[%atp2toCapture].restraint 0;
+	set atom[%atp2toCapture].friction 0;
+	set %atpBond whichrbond(%atp1toCapture,%atp2toCapture);
+	select rbond %atpBond;
+	remove;
+	set %flashImage %number_of_images-1;
+	select image %flashImage;
+	remove;
+	add image adp.gif atomno=%atp2toCapture;
+	add image p.gif atomno=%atp1toCapture;
+	set %endTransitionTime &quot;%model_time+1000&quot;;
+	set %waitingForProteinTransition 1;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>waiting  for ca release and clear protein</string> 
+     </void> 
+     <void property="interval"> 
+      <int>100</int> 
+     </void> 
+     <void property="name"> 
+      <string>9 wating for ca release</string> 
+     </void> 
+     <void property="script"> 
+      <string>If (%waitingForCaRelease);
+	set %atomsInProtein count(2,%proteinAreaX,%proteinAreaY,%proteinAreaW,%proteinAreaH);
+	if (%atomsInProtein == 0);
+		set %waitingForCaRelease 0;
+		select element 0;
+		remove;
+		add obstacle (%obsLeftX, %obsY, %obsWidth, %obsHeight);
+		set %leftObs &quot;%number_of_obstacles-1&quot;;
+		set obstacle[%leftObs].visible off;
+		set image[%restoringProtein].frame 1;
+		set image[%restoringProtein].loop 1;
+		set image[%restoringProtein].visible on;
+		set image[%releasingATP].visible off;
+		set %atp1toCapture nearest(3,%pAnchorX,%pAnchorY);
+		set atom[%atp1toCapture].restraint 0;
+		set atom[%atp1toCapture].friction 0;
+		set atom[%atp1toCapture].vx 300;
+		set %waitingForProteinReset 1;
+		set %endTransitionTime &quot;%model_time+1000&quot;;
+	endif;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>revert to original shape</string> 
+     </void> 
+     <void property="interval"> 
+      <int>100</int> 
+     </void> 
+     <void property="name"> 
+      <string>10 reset protein</string> 
+     </void> 
+     <void property="script"> 
+      <string>If ((%waitingForProteinReset) and (%model_time &gt; %endTransitionTime));
+	set %waitingForProteinReset 0;
+	set image[%waitingForCa].visible on;
+	set image[%restoringProtein].visible off;
+	select obstacle %rightObs2;
+	remove;
+	select obstacle %rightObs;
+	remove;
+	set %leftObs %leftObs-2;
+	add atom 0 (%rsurface1x,%rsurface1y);
+	add atom 0 (%rsurface2x,%rsurface2y);
+	add atom 0 (%rsurface3x,%rsurface3y);
+	add atom 0 (%rsurface4x,%rsurface4y);
+	add atom 0 (%rsurface5x,%rsurface5y);
+	add atom 0 (%rsurface6x,%rsurface6y);
+	add atom 0 (%rsurface7x,%rsurface7y);
+	add atom 0 (%rsurface8x,%rsurface8y);
+	add atom 0 (%rsurface9x,%rsurface9y);
+	add atom 0 (%rsurface10x,%rsurface10y);
+	select element 0;
+	set movable off;
+	set %topBlockerInPlace 0;
+	set %bottomBlockerInPlace 0;
+	set %waitingForCaBinding 1;
+	set %caToCapture -1;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>add atom to block top of protein</string> 
+     </void> 
+     <void property="interval"> 
+      <int>100</int> 
+     </void> 
+     <void property="name"> 
+      <string>add top blocker</string> 
+     </void> 
+     <void property="script"> 
+      <string>if (%topBlockerInPlace != 1);
+	add atom 1 (%nonATPsurfaceX,%nonATPsurfaceY);
+	set %topParticleIndex nearest(1,%nonATPsurfaceX,%nonATPsurfaceY,1);
+	if (%topParticleIndex != -1);
+		set %topBlockerInPlace 1;
+		set atom[%topParticleIndex].movable off;
+	endif;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>add bottom blocker</string> 
+     </void> 
+     <void property="interval"> 
+      <int>100</int> 
+     </void> 
+     <void property="name"> 
+      <string>add bottom blocker</string> 
+     </void> 
+     <void property="script"> 
+      <string>if (%bottomBlockerInPlace != 1);
+	add atom 1 (%atpAtomX,%atpAtomY);
+	set %bottomParticleIndex nearest(1,%atpAtomX,%atpAtomY,1);
+	if (%bottomParticleIndex != -1);
+		set %bottomBlockerInPlace 1;
+		set atom[%bottomParticleIndex].movable off;
+	endif;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string>update the graphs</string> 
+     </void> 
+     <void property="interval"> 
+      <int>100</int> 
+     </void> 
+     <void property="name"> 
+      <string>update graphs</string> 
+     </void> 
+     <void property="script"> 
+      <string>set %leftConc count(2,0,0,%leftWidth, %height);
+set %leftConc %leftConc/(%leftWidth*%height);
+set %rightConc count(2,%leftWidth,0,%rightWidth,%height);
+set %rightConc %rightConc/(%rightWidth*%height);
+set %chemicalEnergy %number_of_molecules;
+set %voltage %totalChemicalEnergy-%chemicalEnergy;
+
+store 1 %leftConc;
+store 0 %rightConc;
+store 2 %chemicalEnergy;
+store 3 %voltage;</string> 
+     </void> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="timeStep"> 
+   <double>1.0</double> 
+  </void> 
+  <void property="universe"> 
+   <object class="org.concord.mw2d.models.Universe"/> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.AtomisticView$State"> 
+  <void property="colorCode"> 
+   <string>None</string> 
+  </void> 
+  <void property="elementColors"> 
+   <void index="2"> 
+    <int>-7179849</int> 
+   </void> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$ImageFill"> 
+    <void property="URL"> 
+     <string>membraneBkgLarge.png</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="forceFlavor"> 
+   <void property="color"> 
+    <object class="java.awt.Color"> 
+     <int>255</int> 
+     <int>0</int> 
+     <int>255</int> 
+     <int>255</int> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="images"> 
+   <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="6"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
+      <void property="URI"> 
+       <string>waitingForCa.gif</string> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="x"> 
+       <double>172.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>113.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="1"> 
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
+      <void property="URI"> 
+       <string>CaAtpaseFormATPSite.gif</string> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>1</byte> 
+      </void> 
+      <void property="visible"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="x"> 
+       <double>172.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>113.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="2"> 
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
+      <void property="URI"> 
+       <string>waitingForATP.gif</string> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="visible"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="x"> 
+       <double>172.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>113.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="3"> 
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
+      <void property="URI"> 
+       <string>CaAtpaseReleaseCa.gif</string> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>3</byte> 
+      </void> 
+      <void property="visible"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="x"> 
+       <double>172.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>113.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="4"> 
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
+      <void property="URI"> 
+       <string>waitingForCaRelease.gif</string> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>4</byte> 
+      </void> 
+      <void property="visible"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="x"> 
+       <double>172.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>113.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="5"> 
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
+      <void property="URI"> 
+       <string>CaAtpaseRestore.gif</string> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>5</byte> 
+      </void> 
+      <void property="visible"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="x"> 
+       <double>172.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>113.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
+  </void> 
+  <void property="momentumFlavor"> 
+   <void property="color"> 
+    <object class="java.awt.Color"> 
+     <int>0</int> 
+     <int>0</int> 
+     <int>255</int> 
+     <int>255</int> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="showClock"> 
+   <boolean>false</boolean> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
+   <int>1</int> 
+  </void> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>249.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>208.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
+   <int>1</int> 
+  </void> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>250.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>128.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>240.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>142.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>230.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>145.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>219.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>147.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>207.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>147.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>198.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>153.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>199.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>179.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>208.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>185.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>218.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>189.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>229.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>193.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="movable"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>240.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>196.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.MolecularModel$State"/> 
+</java> 

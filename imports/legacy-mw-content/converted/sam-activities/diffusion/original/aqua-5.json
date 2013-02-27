@@ -1,0 +1,289 @@
+{
+  "type": "md2d",
+  "width": 5.35,
+  "height": 2.5,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
+  "viewOptions": {
+    "backgroundColor": "rgba(226,245,255,255)",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "surface0.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0.01,
+        "imageY": 2.52
+      },
+      {
+        "imageUri": "pores1.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 2.34,
+        "imageY": 2.59
+      },
+      {
+        "imageUri": "pores2.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 2.32,
+        "imageY": 2.17
+      },
+      {
+        "imageUri": "pores3.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 2.32,
+        "imageY": 1.43
+      },
+      {
+        "imageUri": "pores4.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 2.32,
+        "imageY": 1.02
+      },
+      {
+        "imageUri": "pores5.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 2.41,
+        "imageY": 0.27
+      }
+    ],
+    "imageMapping": {},
+    "textBoxes": [],
+    "fitToParent": false,
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      20,
+      40,
+      60,
+      80,
+      600
+    ],
+    "sigma": [
+      0.07,
+      0.07,
+      0.21,
+      0.28,
+      0.3
+    ],
+    "epsilon": [
+      -0.009999999776482582,
+      -0.009999999776482582,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -256,
+      -6066457,
+      -9092186,
+      -1,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      0.694204317934313,
+      1.254651930628525,
+      0.9503429381560674,
+      1.4785747694819351,
+      1.2898694975967575,
+      1.8709174734517457,
+      0.9760618659007113,
+      1.0905049303698309,
+      1.5052896410455983,
+      1.878677261528361
+    ],
+    "y": [
+      0.9877637430349537,
+      2.2224938685079234,
+      1.4563220241793107,
+      1.1338366318846473,
+      1.6346534139547935,
+      0.34489137506936,
+      0.6904023742111665,
+      0.18986906782708246,
+      0.2684212249455578,
+      1.5161382705741195
+    ],
+    "vx": [
+      -0.00020025497348643927,
+      0.000504344139483665,
+      -0.00007246540126311082,
+      -0.00021519840551563103,
+      -0.0012172280584344035,
+      -0.00010606913338193053,
+      0.00039958930203413024,
+      -0.0004526555050829194,
+      -0.0008514732603380961,
+      0.00029016579180199934
+    ],
+    "vy": [
+      -0.00022568521987596638,
+      -0.0008299554473663566,
+      0.00001780624510111185,
+      -0.00035121783408284887,
+      0.0002682173205133418,
+      0.00041654893839297686,
+      -0.0002622428032066597,
+      -0.00009390530231653516,
+      -0.00006826836380543325,
+      0.0000717134754620393
+    ],
+    "charge": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "element": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "pinned": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "obstacles": {
+    "x": [
+      2.44
+    ],
+    "y": [
+      0
+    ],
+    "vx": [
+      0
+    ],
+    "vy": [
+      0
+    ],
+    "externalFx": [
+      0
+    ],
+    "externalFy": [
+      0
+    ],
+    "friction": [
+      0
+    ],
+    "height": [
+      2.48
+    ],
+    "width": [
+      0.48
+    ],
+    "mass": [
+      "Infinity"
+    ],
+    "westProbe": [
+      false
+    ],
+    "northProbe": [
+      false
+    ],
+    "eastProbe": [
+      false
+    ],
+    "southProbe": [
+      false
+    ],
+    "color": [
+      [
+        128,
+        128,
+        128
+      ]
+    ],
+    "visible": [
+      false
+    ]
+  }
+}

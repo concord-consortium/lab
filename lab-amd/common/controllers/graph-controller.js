@@ -16,7 +16,15 @@ define(function (require) {
         xmax: 'xmax',
         ylabel: 'ylabel',
         ymin: 'ymin',
-        ymax: 'ymax'
+        ymax: 'ymax',
+        xTicCount: 'xTicCount',
+        yTicCount: 'yTicCount',
+        xscaleExponent: 'xscaleExponent',
+        yscaleExponent: 'yscaleExponent',
+        xFormatter: 'xFormatter',
+        yFormatter: 'yFormatter',
+        lines: 'lines',
+        bars: 'bars'
       };
 
   return function graphController(component) {
@@ -32,7 +40,7 @@ define(function (require) {
       current implementation of the grapher requires this knowledge.)
     */
     function getSamplePeriod() {
-      return model.get('viewRefreshInterval') * model.get('timeStep') / 1000;
+      return model.get('timeStepsPerTick') * model.get('timeStep') / 1000;
     }
 
     /**
@@ -148,7 +156,7 @@ define(function (require) {
 
       // As an imperfect hack (really the grapher should allow us to pass the correct x-axis value)
       // we reset the graph if a model property change changes the time interval between ticks
-      model.addPropertiesListener(['viewRefreshInterval', 'timeStep'], function() {
+      model.addPropertiesListener(['timeStepsPerTick', 'timeStep'], function() {
         resetGrapher();
         resetData();
       });
@@ -162,6 +170,14 @@ define(function (require) {
     // The list of properties we are being asked to graph.
     properties = component.properties.slice();
     $container = $('<div>').attr('id', component.id).addClass('properties-graph');
+    // Each interactive component has to have class "component".
+    $container.addClass("component");
+    // Apply custom width and height settings.
+    $container.css({
+      width: component.width,
+      height: component.height
+    });
+
 
     return controller = {
 
@@ -194,8 +210,6 @@ define(function (require) {
 
       resize: function () {
         // For now only "fit to parent" behavior is supported.
-        $container.width("100%");
-        $container.height("100%");
         if (grapher) {
           grapher.resize();
         }

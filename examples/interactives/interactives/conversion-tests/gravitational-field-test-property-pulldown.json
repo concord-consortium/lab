@@ -1,0 +1,71 @@
+{
+  "title": "Gravitational Fields (property-pulldown)",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "gravitational-field-test$0",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/gravitational-field-test$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set('gravitationalField', 8e-7);"
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "property": "gravitationalField",
+      "options": [
+        {
+          "text": "Gravitational Field Off",
+          "value": false
+        },
+        {
+          "text": "Gravitational Field: 1",
+          "value": 2e-9
+        },
+        {
+          "text": "Gravitational Field: 2",
+          "value": 8e-9
+        },
+        {
+          "text": "Gravitational Field: 5",
+          "value": 2e-8
+        },
+        {
+          "text": "Gravitational Field: 10",
+          "value": 4e-8
+        },
+        {
+          "text": "Gravitational Field: 20",
+          "value": 8e-8
+        },
+        {
+          "text": "Gravitational Field: 50",
+          "value": 2e-7
+        },
+        {
+          "text": "Gravitational Field: 100",
+          "value": 4e-7
+        },
+        {
+          "text": "Gravitational Field: 200",
+          "value": 8e-7
+        },
+        {
+          "text": "Gravitational Field: 400",
+          "value": 1.6e-6
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "button1",
+      "text": "Reset",
+      "action": "reset();"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "title": "Basic Diffusion",
+  "publicationStatus": "draft",
+  "subtitle": "A drop of dye spreading out in water.",
+  "about": "Click in the model to drop a small amount of dye and observe how it diffuses through the water.",
+  "models": [
+    {
+      "id": "model1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/page1/page1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "waterDyeKey.png": "waterDyeKey.svg"
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "tracedAtom",
+      "initialValue": -99,
+      "onChange": ""
+    },
+    {
+      "name": "wasMarked",
+      "initialValue": 0,
+      "onChange": ""
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "trace",
+      "text": "Trace Random Atom",
+      "action": [
+        "var opt = {supressRepaint: true};",
+        "var atomID = randomAtoms(1);",
+        "var tracedAtomID = get('tracedAtom');",
+        "if (tracedAtomID != -99) {",
+          "setAtomProperties(tracedAtomID, {element: 0, marked: get('wasMarked')}, false, false, opt);",
+        "}",
+        "setAtomProperties(atomID, {element: 1}, false, false, opt);",
+        "set({tracedAtom: atomID});",
+        "set({wasMarked: getAtomProperties(atomID).marked});",
+        "setAtomProperties(atomID, { marked: 0}, false, false, opt);",
+        "traceAtom(atomID);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "drop-dye",
+      "text": "Add Drop of Dye",
+      "action": [
+        "batch(function() {",
+          "var atomsToMark = atomsWithin(0,get('height'),1,1);",
+          "if (atomsToMark != -1) {",
+            "markAtoms(atomsToMark);",
+          "}",
+        "});",
+        "start();"
+      ]
+    }
+  ],
+  "layout": {
+    "under-model": [
+      "trace","drop-dye"
+    ]
+  },
+  "template": [
+    {
+      "id": "under-model",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "0.25em",
+      "align": "center"
+    }
+  ]
+}

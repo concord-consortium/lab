@@ -2,6 +2,7 @@
   "title": "Amino Acids Momentum Test",
   "publicationStatus": "draft",
   "subtitle": "",
+  "fontScale": 0.6,
   "about": [
     "A simple test checking whether the total momentum of each molecule (amino acids chain) is always equal to zero.",
     "Amino acids in water or oil are pushed toward the molecule center of mass or in the opposite direction (it depends on the hydrophobicity of the amino acids). In most cases the sum of these forces would be different from zero and would cause a confusing movement of the molecule. They would drift and collide with boundaries.",

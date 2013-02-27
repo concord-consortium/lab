@@ -1,0 +1,392 @@
+{
+  "type": "md2d",
+  "width": 5,
+  "height": 3.3,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": true,
+  "targetTemperature": 1050,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "waitingForCa.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 1.72,
+        "imageY": 2.17
+      },
+      {
+        "imageUri": "CaAtpaseFormATPSite.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 1.72,
+        "imageY": 2.17
+      },
+      {
+        "imageUri": "waitingForATP.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 1.72,
+        "imageY": 2.17
+      },
+      {
+        "imageUri": "CaAtpaseReleaseCa.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 1.72,
+        "imageY": 2.17
+      },
+      {
+        "imageUri": "waitingForCaRelease.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 1.72,
+        "imageY": 2.17
+      },
+      {
+        "imageUri": "CaAtpaseRestore.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 1.72,
+        "imageY": 2.17
+      }
+    ],
+    "imageMapping": {},
+    "textBoxes": [
+      {
+        "text": "CALCIUM TRANSPORT CHANNEL. (A protein complex for pumping calcium.)",
+        "x": 0.11,
+        "y": 3.22,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(255,255,255)"
+      }
+    ],
+    "fitToParent": false,
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [
+    {
+      "element1": 2,
+      "element2": 3,
+      "sigma": 0.17966459274291993,
+      "epsilon": -0.0071428571827709675
+    },
+    {
+      "element1": 0,
+      "element2": 1,
+      "sigma": 0.11433199882507324,
+      "epsilon": -0.014285714365541935
+    },
+    {
+      "element1": 1,
+      "element2": 3,
+      "sigma": 0.2019370651245117,
+      "epsilon": -0.010714286006987095
+    },
+    {
+      "element1": 0,
+      "element2": 2,
+      "sigma": 0.11136234283447266,
+      "epsilon": -0.010714286006987095
+    },
+    {
+      "element1": 1,
+      "element2": 2,
+      "sigma": 0.20045221328735352,
+      "epsilon": -0.014285714365541935
+    },
+    {
+      "element1": 0,
+      "element2": 3,
+      "sigma": 0.10839267730712891,
+      "epsilon": -0.010714286006987095
+    }
+  ],
+  "elements": {
+    "mass": [
+      20,
+      40,
+      60,
+      80,
+      600
+    ],
+    "sigma": [
+      0.07,
+      0.22,
+      0.19010000228881835,
+      0.2,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.0010000000474974513,
+      -0.010700000450015068,
+      -5
+    ],
+    "color": [
+      -855310,
+      -9066941,
+      -7179849,
+      -2539040,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      2.49,
+      2.5,
+      2.4,
+      2.3,
+      2.19,
+      2.07,
+      1.98,
+      1.99,
+      2.08,
+      2.18,
+      2.29,
+      2.4
+    ],
+    "y": [
+      1.22,
+      2.02,
+      1.88,
+      1.85,
+      1.83,
+      1.83,
+      1.77,
+      1.51,
+      1.45,
+      1.41,
+      1.37,
+      1.34
+    ],
+    "vx": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vy": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "charge": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "element": [
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "pinned": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "obstacles": {
+    "x": [
+      1.79,
+      1.89,
+      1.89
+    ],
+    "y": [
+      1.31,
+      0.010000000000000009,
+      1.9699999999999998
+    ],
+    "vx": [
+      0,
+      0,
+      0
+    ],
+    "vy": [
+      0,
+      0,
+      0
+    ],
+    "externalFx": [
+      0,
+      0,
+      0
+    ],
+    "externalFy": [
+      0,
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0,
+      0
+    ],
+    "height": [
+      0.61,
+      1.25,
+      1.31
+    ],
+    "width": [
+      0.14,
+      0.47,
+      0.48
+    ],
+    "mass": [
+      "Infinity",
+      "Infinity",
+      "Infinity"
+    ],
+    "westProbe": [
+      false,
+      false,
+      false
+    ],
+    "northProbe": [
+      false,
+      false,
+      false
+    ],
+    "eastProbe": [
+      false,
+      false,
+      false
+    ],
+    "southProbe": [
+      false,
+      false,
+      false
+    ],
+    "color": [
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ]
+    ],
+    "visible": [
+      false,
+      false,
+      false
+    ]
+  }
+}

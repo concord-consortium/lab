@@ -171,7 +171,7 @@ define(function (require) {
           this.axisContainer.selectAll("text")
             .style({
               "fill": options.textColor,
-              "stroke-width": 0,
+              "stroke": "none",
               // Workaround for hiding numeric labels. D3 doesn't provide any convenient function
               // for that. Returning empty string as tickFormat causes that bounding box width is
               // calculated incorrectly.
@@ -221,20 +221,6 @@ define(function (require) {
           this.bar
             .attr("height", this.heightScale(value))
             .attr("y", this.yScale(value));
-        },
-
-        // Returns real height of parent DOM element.
-        // Might be useful for getting "fit to parent"
-        // behavior.
-        getParentHeight: function () {
-          return this.$el.parent().height();
-        },
-
-        // Returns real width of parent DOM element.
-        // Might be useful for getting "fit to parent"
-        // behavior.
-        getParentWidth: function () {
-          return this.$el.parent().width();
         },
 
         // This function should be called whenever model attribute is changed.

@@ -29,7 +29,8 @@
   margin: 0.5em 1em;
   width: 25em; }
   #interactive-description:last-child {
-    width: 23.23176%; }
+    width: 23.23176%;
+    padding-right: 0; }
 
 #interactive-container {
   display: table-cell;
@@ -37,7 +38,8 @@
   width: 51.17883%;
   position: relative; }
   #interactive-container:last-child {
-    width: 48.82117%; }
+    width: 48.82117%;
+    padding-right: 0; }
 
 #right-panel {
   display: table-cell;
@@ -45,7 +47,8 @@
   width: 25.58941%;
   margin: 2em; }
   #right-panel:last-child {
-    width: 23.23176%; }
+    width: 23.23176%;
+    padding-right: 0; }
 
 #right-panel div {
   margin-bottom: 2em; }

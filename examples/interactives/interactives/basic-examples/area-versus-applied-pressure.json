@@ -3,6 +3,7 @@
   "publicationStatus": "public",
   "subtitle": "Demo showing how the area (two-dimensional \"volume\") of a gas changes with changes in the force applied by a piston",
   "about": "",
+  "fontScale": 0.8,
   "models": [
     {
       "id": "main-model",

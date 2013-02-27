@@ -1,4 +1,4 @@
-/*global define model $ */
+/*global define, model, $ */
 
 define(function (require) {
   // Dependencies.
@@ -13,6 +13,7 @@ define(function (require) {
       ScriptingAPI            = require('common/controllers/scripting-api'),
       ButtonController        = require('common/controllers/button-controller'),
       CheckboxController      = require('common/controllers/checkbox-controller'),
+      TextController          = require('common/controllers/text-controller'),
       RadioController         = require('common/controllers/radio-controller'),
       SliderController        = require('common/controllers/slider-controller'),
       PulldownController      = require('common/controllers/pulldown-controller'),
@@ -43,7 +44,17 @@ define(function (require) {
       //                           DOM elements of the component.
       // # modelLoadedCallback() - optional function taking no arguments, a callback
       //                           which should be called when the model is loaded.
+      // # resize()              - optional function taking no arguments, a callback
+      //                           which will be called by the layout algorithm when component's container
+      //                           dimensions are changed. This lets component to adjust itself to the
+      //                           new container dimensions.
+      //
+      // Note that each components view container (so, jQuery object returned by getViewContainer() has to
+      // have class 'component'! It's required and checked in the runtime by the interactive controller.
+      // It ensures good practices while implementing new components.
+      // Please see: src/sass/lab/_interactive-component.sass to check what this CSS class defines.
       ComponentConstructor = {
+        'text':          TextController,
         'button':        ButtonController,
         'checkbox':      CheckboxController,
         'pulldown':      PulldownController,
@@ -55,7 +66,7 @@ define(function (require) {
         'numericOutput': NumericOutputController
       };
 
-  return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
+  return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle, resizeCallbacks) {
 
     modelLoadedCallbacks = modelLoadedCallbacks || [];
 
@@ -150,14 +161,46 @@ define(function (require) {
         if (modelController) {
           modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
         } else {
-          // Create container for model.
-          // TODO: cleanup it, probably there is a better place to create this div.
-          $interactiveContainer.append('<div id="model-container" class="container">');
           createModelController(modelConfig.type, modelUrl, modelConfig);
-          modelLoaded(modelConfig);
           // also be sure to get notified when the underlying model changes
           modelController.on('modelReset', modelLoaded);
           controller.modelController = modelController;
+          // Finally, it's possible to setup layout.
+          // Layout requires that model controller is availalbe and initialized,
+          // that's why we have to setup it here and not e.g. in loadInteractive.
+          setupLayout();
+          // Setup model and notify observers that model was loaded.
+          modelLoaded(modelConfig);
+        }
+      }
+
+      function setupLayout() {
+        var template, layout, fontScale;
+
+        if (interactive.template) {
+          if (typeof interactive.template === "string") {
+            template = templates[interactive.template];
+          } else {
+            template = interactive.template;
+          }
+        }
+        // The authored definition of which components go in which container.
+        layout = interactive.layout;
+        // Font scale which affect whole interactive container.
+        fontScale = interactive.fontScale;
+
+        semanticLayout.setupInteractive(template, layout, componentByID, modelController, fontScale);
+
+        // Finally, layout interactive.
+        semanticLayout.layoutInteractive();
+
+        // We are rendering in embeddable mode if only element on page
+        // so resize when window resizes.
+        if (onlyElementOnPage()) {
+          $(window).unbind('resize');
+          $(window).on('resize', function() {
+            controller.resize();
+          });
         }
       }
 
@@ -166,7 +209,7 @@ define(function (require) {
         var modelType = type || "md2d";
         switch(modelType) {
           case "md2d":
-          modelController = new MD2DModelController('#model-container', modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
+          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
           break;
         }
         // Extending universal Interactive scriptingAPI with model-specific scripting API
@@ -189,6 +232,10 @@ define(function (require) {
       // 2. scripting API object,
       // 3. public API of the InteractiveController.
       comp = new ComponentConstructor[type](component, scriptingAPI, controller);
+
+      if (!comp.getViewContainer().hasClass("component")) {
+        throw new Error("Invalid Interactive Component implementation. Each component has to have 'component' class.");
+      }
 
       // Save the new instance.
       componentByID[id] = comp;
@@ -216,7 +263,7 @@ define(function (require) {
       that depend on the model's properties, then draw the screen.
     */
     function modelLoaded() {
-      var i, listener, template, layout;
+      var i, listener;
 
       setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
@@ -224,32 +271,12 @@ define(function (require) {
       // to exist during its definition.
       setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
 
+      // Call component callbacks *when* the layout is created.
+      // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
+      //getBBox() which in Firefox works only when element is visible and rendered).
       for(i = 0; i < componentCallbacks.length; i++) {
         componentCallbacks[i]();
       }
-
-      if (interactive.template) {
-        if (typeof interactive.template === "string") {
-          template = templates[interactive.template];
-        } else {
-          template = interactive.template;
-        }
-      }
-
-      // the authored definition of which components go in which container
-      layout = interactive.layout;
-
-      // TODO: this should be moved out of modelLoaded (?)
-      $interactiveContainer.children().not("#model-container").each(function () {
-        $(this).detach();
-      });
-      semanticLayout = new SemanticLayout($interactiveContainer, template, layout, componentByID, modelController);
-
-      semanticLayout.layoutInteractive();
-      $(window).unbind('resize');
-      $(window).on('resize', function() {
-        semanticLayout.layoutInteractive();
-      });
 
       // setup messaging with embedding parent window
       parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
@@ -277,7 +304,23 @@ define(function (require) {
         hash representing the interactive specification
     */
     function validateInteractive(interactive) {
-      var i, len, models, parameters, outputs, filteredOutputs, components, errMsg;
+      var i, len, models, model, components, errMsg;
+
+      function validateArray(modelName, array) {
+        var i, len, errMsg;
+        // Support undefined / null values - just return.
+        if (!array) return;
+
+        try {
+          for (i = 0, len = array.length; i < len; i++) {
+            array[i] = validator.validateCompleteness(metadata[modelName], array[i]);
+          }
+        } catch (e) {
+          errMsg = "Incorrect " + modelName +  " definition:\n" + e.message;
+          alert(errMsg);
+          throw new Error(errMsg);
+        }
+      }
 
       // Validate top level interactive properties.
       try {
@@ -288,50 +331,18 @@ define(function (require) {
         throw new Error(errMsg);
       }
 
-      // Set up the list of possible models.
+      validateArray("model", interactive.models);
+      validateArray("parameter", interactive.parameters);
+      validateArray("output", interactive.outputs);
+      validateArray("filteredOutput", interactive.filteredOutputs);
+
+      // Validate also nested strucutres.
       models = interactive.models;
-      try {
-        for (i = 0, len = models.length; i < len; i++) {
-          models[i] = validator.validateCompleteness(metadata.model, models[i]);
-          modelsHash[models[i].id] = models[i];
-        }
-      } catch (e) {
-        errMsg = "Incorrect model definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      parameters = interactive.parameters;
-      try {
-        for (i = 0, len = parameters.length; i < len; i++) {
-          parameters[i] = validator.validateCompleteness(metadata.parameter, parameters[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect parameter definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      outputs = interactive.outputs;
-      try {
-        for (i = 0, len = outputs.length; i < len; i++) {
-          outputs[i] = validator.validateCompleteness(metadata.output, outputs[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect output definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      filteredOutputs = interactive.filteredOutputs;
-      try {
-        for (i = 0, len = filteredOutputs.length; i < len; i++) {
-          filteredOutputs[i] = validator.validateCompleteness(metadata.filteredOutput, filteredOutputs[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect filtered output definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
+      for (i = 0, len = models.length; i < len; i++) {
+        model = models[i];
+        validateArray("parameter", model.parameters);
+        validateArray("output", model.outputs);
+        validateArray("filteredOutput", model.filteredOutputs);
       }
 
       components = interactive.components;
@@ -360,6 +371,20 @@ define(function (require) {
     }
 
     /**
+      Is the Interactive the only element on the page?
+
+      An Interactive can either be displayed as the only content on a page
+      (often in an iframe) or in a dom element on a page with other elements.
+
+      TODO: make more robust
+      This function makes a simplifying assumption that the Interactive is the
+      only content on the page if the parent of the parent is the <body> element
+    */
+    function onlyElementOnPage() {
+      return $interactiveContainer.parent().parent().prop("nodeName") === "BODY";
+    }
+
+    /**
       The main method called when this controller is created.
 
       Populates the element pointed to by viewSelector with divs to contain the
@@ -373,17 +398,12 @@ define(function (require) {
     */
     function loadInteractive(newInteractive, viewSelector) {
       var componentJsons,
-          $exportButton,
           i, len;
 
       componentCallbacks = [];
 
       // Validate interactive.
       interactive = validateInteractive(newInteractive);
-
-      if (viewSelector) {
-        $interactiveContainer = $(viewSelector);
-      }
 
       // Set up the list of possible models.
       models = interactive.models;
@@ -407,16 +427,21 @@ define(function (require) {
 
       // Setup exporter, if any...
       if (interactive.exports) {
+        // Regardless of whether or not we are able to export data to an enclosing container,
+        // setup export controller so you can debug exports by typing script.exportData() in the
+        // console.
         exportController = new ExportController(interactive.exports);
         componentCallbacks.push(exportController.modelLoadedCallback);
 
+        // If there is an enclosing container we can export data to (e.g., we're iframed into
+        // DataGames) then add an "Analyze Data" button the bottom position of the interactive
         if (ExportController.isExportAvailable()) {
-          $exportButton = $("<button>")
-                            .attr('id', 'export-data')
-                            .addClass('component')
-                            .html("Analyze Data")
-                            .on('click', function() { exportController.exportData(); })
-                            .appendTo($('#bottom'));
+          createComponent({
+            "type": "button",
+            "text": "Analyze Data",
+            "id": "-lab-analyze-data",
+            "action": "exportData();"
+          });
         }
       }
     }
@@ -481,7 +506,7 @@ define(function (require) {
 
       var initialValues = {},
           customParameters,
-          i, parameter;
+          i, parameter, onChangeFunc;
 
       // append modelParameters second so they're processed later (and override entries of the
       // same name in interactiveParameters)
@@ -489,10 +514,16 @@ define(function (require) {
 
       for (i = 0; i < customParameters.length; i++) {
         parameter = customParameters[i];
+        // onChange callback is optional.
+        onChangeFunc = undefined;
+        if (parameter.onChange) {
+          onChangeFunc = scriptingAPI.makeFunctionInScriptContext('value', getStringFromArray(parameter.onChange));
+        }
+        // Define parameter using modeler.
         model.defineParameter(parameter.name, {
           label: parameter.label,
           units: parameter.units
-        }, scriptingAPI.makeFunctionInScriptContext('value', getStringFromArray(parameter.onChange)));
+        }, onChangeFunc);
 
         if (parameter.initialValue !== undefined) {
           initialValues[parameter.name] = parameter.initialValue;
@@ -519,6 +550,24 @@ define(function (require) {
       },
       pushOnLoadScript: function (callback) {
         onLoadScripts.push(callback);
+      },
+      /**
+        Notifies interactive controller that the dimensions of its container have changed.
+        It triggers the layout algorithm again.
+      */
+      resize: function () {
+        var i;
+
+        semanticLayout.layoutInteractive();
+        // Call application controller (application.js) resizeCallbacks if there are any.
+        // Currently this is used for the Share pane generated <iframe> content.
+        // TODO: make a model dialog component and treat the links at the top as
+        // componments in the layout. New designs may put these links at the bottom ... etc
+        for(i = 0; i < resizeCallbacks.length; i++) {
+          if (resizeCallbacks[i].resize !== undefined) {
+            resizeCallbacks[i].resize();
+          }
+        }
       },
       /**
         Serializes interactive, returns object ready to be stringified.
@@ -551,6 +600,7 @@ define(function (require) {
           title: interactive.title,
           publicationStatus: interactive.publicationStatus,
           subtitle: interactive.subtitle,
+          fontScale: interactive.fontScale,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
           // Node that models section can also contain custom parameters definition. However, their initial values
           // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
@@ -594,7 +644,11 @@ define(function (require) {
     scriptingAPI = new ScriptingAPI(controller, modelScriptingAPI);
     // Expose API to global namespace (prototyping / testing using the browser console).
     scriptingAPI.exposeScriptingAPI();
-
+    // Select interactive container.
+    // TODO: controller rather should create it itself to follow pattern of other components.
+    $interactiveContainer = $(viewSelector);
+    // Initialize semantic layout.
+    semanticLayout = new SemanticLayout($interactiveContainer);
     // Run this when controller is created.
     loadInteractive(interactive, viewSelector);
 

@@ -28,24 +28,10 @@
       "action": "adjustTemperature(1.1); limitHighTemperature(4000);"
     },
     {
-      "type": "slider",
-      "id": "temperature-slider",
-      "min": 0,
-      "max": 4000,
-      "displayValue": "return format('1f')(value)",
-      "labels": [
-        {
-          "value": 0,
-          "label": "0 K"
-        },
-        {
-          "value": 4000,
-          "label": "4000 K"
-        }
-      ],
-      "steps": 400,
-      "title": "Temperature",
-      "property": "targetTemperature"
+      "type": "numericOutput",
+      "id": "temperature-output",
+      "property": "temperature",
+      "displayValue": "return format('f')(value)"
     },
     {
       "type": "graph",
@@ -64,14 +50,36 @@
     }
   ],
   "layout": {
-    "right": [
-      "propertiesGraph"
-    ],
+    "right-graph": [ "propertiesGraph" ],
+    "right-output": [ "temperature-output" ],
     "bottom": [
       "heat",
-      "cool",
-      "temperature-slider"
+      "cool"
     ]
   },
-  "template": "wide-right"
+  "template": [
+    {
+      "id": "right-graph",
+      "left": "model.right",
+      "height": "model.height * 0.8",
+      "width": "model.height",
+      "padding-left": "1em"
+    },
+    {
+      "id": "right-output",
+      "left": "model.right",
+      "top": "right-graph.bottom",
+      "align": "center",
+      "height": "3em",
+      "width": "model.height",
+      "padding-left": "1em",
+      "padding-top": "0.5em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "padding-bottom": "1em"
+    }
+  ]
 }

@@ -67,6 +67,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Interactive Components",
+      "path": "interactives/basic-examples/interactive-components.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Examples of defining and using different Interactive components.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Interactive View and Model Options",
       "path": "interactives/basic-examples/interactive-model-and-view-options.json",
       "groupKey": "basic-examples",
@@ -81,10 +89,10 @@
       "publicationStatus": "public"
     },
     {
-      "title": "Testing: Layout Example",
+      "title": "Testing: Layout Example with html",
       "path": "interactives/basic-examples/layout-example-html.json",
       "groupKey": "basic-examples",
-      "subtitle": "",
+      "subtitle": "Current layout system does not support embedded html.",
       "about": "",
       "publicationStatus": "draft"
     },
@@ -101,7 +109,10 @@
       "path": "interactives/basic-examples/oil-and-water-for-slow-computers.json",
       "groupKey": "basic-examples",
       "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
-      "about": "This version of the model is adapted for slower computers amd browsers.",
+      "about": [
+        "This version of 'Oil and Water' is an experimental adaptation for slower computers amd browsers. Try the Performance Tuning selections for: <b>Regular</b>, <b>Slow Computer</b>, or <b>Tablet</b>.",
+        "Changing this selection sets the timeStep, timeStepsPerTick or modelSampleRate model parameters. See <a href=\"/readme.html#md2d-simulation-stepping\" class='opens-in-new-window' target='_blank'>readme</a> for more details."
+      ],
       "publicationStatus": "draft"
     },
     {
@@ -131,10 +142,18 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Pulldown and radio button used with custom parameters",
+      "path": "interactives/basic-examples/pulldown-and-radio-buttons-with-custom-parameters.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Testing property/value based pulldown and radio-button group using derived properties such as startingLength and startingAngle.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Testing: Pulling Uncharged Atoms",
       "path": "interactives/basic-examples/pulling-uncharged-atoms.json",
       "groupKey": "basic-examples",
-      "subtitle": "Atoms can dragged to new positions, try pulling the green one. This model starts running when loaded.",
+      "subtitle": "Atoms can dragged to new positions, try pulling the red one a bit to the right and letting go. This model starts running when loaded.",
       "about": "These atoms are uncharged and have a van der Waals attraction. Pull one a short distance away and it will move back towards the other. However pull them far enough apart and they won't move back together.",
       "publicationStatus": "public"
     },
@@ -147,22 +166,14 @@
       "publicationStatus": "public"
     },
     {
-      "title": "View Refresh Rate and Model Sample Rate Examples",
+      "title": "Explore model integration time step, period, and sample rate",
       "path": "interactives/basic-examples/sample-rate-and-refresh-rate.json",
       "groupKey": "basic-examples",
-      "subtitle": "Experiment with parameters which define stepping of the simulation.",
+      "subtitle": "Model parameters controlling the integration time step, period, and sample rate can be customized.",
       "about": [
-        "Try to change timeStep, viewRefreshInterval or modelSampleRate and observe changes in the speed of simulation execution.",
-        "See <a href=\"/readme.html#md2d-simulation-stepping\">readme</a> for more details."
+        "Try to change timeStep, timeStepsPerTick or modelSampleRate and observe changes in the speed of simulation execution.",
+        "See <a href=\"/readme.html#md2d-simulation-stepping\" class='opens-in-new-window' target='_blank'>readme</a> for more details."
       ],
-      "publicationStatus": "public"
-    },
-    {
-      "title": "Test Button, Slider, and Pulldown Examples",
-      "path": "interactives/basic-examples/script-examples.json",
-      "groupKey": "basic-examples",
-      "subtitle": "Examples of defining and using different Interactive components.",
-      "about": "",
       "publicationStatus": "public"
     },
     {
@@ -380,6 +391,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Gravitational Fields (property-pulldown)",
+      "path": "interactives/conversion-tests/gravitational-field-test-property-pulldown.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Gravitational Fields",
       "path": "interactives/conversion-tests/gravitational-field-test.json",
       "groupKey": "conversion-tests",
@@ -439,7 +458,7 @@
       "title": "Obstacle Friction",
       "path": "interactives/conversion-tests/obstacle-friction.json",
       "groupKey": "conversion-tests",
-      "subtitle": "",
+      "subtitle": "Friction test: the obstacle should reach an atom after ~11 000 fs! You can also observe the Kinetic Energy graph.",
       "about": "",
       "publicationStatus": "public"
     },
@@ -455,7 +474,7 @@
       "title": "One Radial Bond, Different Elements",
       "path": "interactives/conversion-tests/one-radial-bond-different-elements.json",
       "groupKey": "conversion-tests",
-      "subtitle": "",
+      "subtitle": "Currently demonstrates a rendering bug ... the radial bond should not extend past the white atom.",
       "about": "",
       "publicationStatus": "public"
     },
@@ -463,7 +482,7 @@
       "title": "One Radial Bond",
       "path": "interactives/conversion-tests/one-radial-bond.json",
       "groupKey": "conversion-tests",
-      "subtitle": "",
+      "subtitle": "Demonstrates effect of aliased signals caused by undersampling.",
       "about": "",
       "publicationStatus": "public"
     },
@@ -519,7 +538,7 @@
       "title": "Visible and Invisible Atoms",
       "path": "interactives/conversion-tests/visible-and-invisible.json",
       "groupKey": "conversion-tests",
-      "subtitle": "Invisible atoms also participate in the molecular dynamics model.",
+      "subtitle": "There are four large invisible atoms near the center. These also participate in the molecular dynamics model.",
       "about": [
         "This model defines 8 atoms. There are four larger yellow atoms initially defined as invisible closer to the center. These are surrounded by four smaller purple atoms further away from the center.",
         "After starting the model the smaller purple atoms will start showing visible interactions with the invisible atoms at 7900 fs.",
@@ -548,6 +567,30 @@
       "path": "interactives/inquiry-space/pendulum/3-springy-pendulum.json",
       "groupKey": "inquiry-space/pendulum",
       "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Horizontal Align",
+      "path": "interactives/layout-tests/align.json",
+      "groupKey": "layout-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Complex Layout",
+      "path": "interactives/layout-tests/complex-layout.json",
+      "groupKey": "layout-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Custom Component Dimensions",
+      "path": "interactives/layout-tests/custom-component-dimensions.json",
+      "groupKey": "layout-tests",
+      "subtitle": "Graph, Bar Graph, Thermometer, Slider, Button and Text can have custom dimensions specified using 'width' and 'height' properties (all CSS values are accepted).",
       "about": "",
       "publicationStatus": "public"
     },
@@ -591,6 +634,22 @@
       "title": "Mutations",
       "path": "interactives/sam/DNA-to-proteins/6-mutations.json",
       "groupKey": "sam/DNA-to-proteins",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Basic Diffusion",
+      "path": "interactives/sam/diffusion/1-2-dropping-dye.json",
+      "groupKey": "sam/diffusion",
+      "subtitle": "A drop of dye spreading out in water.",
+      "about": "Click in the model to drop a small amount of dye and observe how it diffuses through the water.",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Empty",
+      "path": "interactives/sam/diffusion/empty.json",
+      "groupKey": "sam/diffusion",
       "subtitle": "",
       "about": "",
       "publicationStatus": "draft"
@@ -641,6 +700,18 @@
       "subtitle": "Explore how the volume of a gas is related to the number of gas molecules.",
       "about": "The model contains gas molecules under constant pressure. The barrier moves when the volume of gas expands or contracts. Run the model and select different numbers of molecules from the drop-down menu. What is the relationship between the number of molecules and the volume of a gas?",
       "publicationStatus": "public"
+    },
+    {
+      "title": "Pressure Equilibrium (new layout)",
+      "path": "interactives/sam/gas-laws/7-why-did-the-can-collapse-new-layout.json",
+      "groupKey": "sam/gas-laws",
+      "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
+      "about": [
+        "There are gases on both sides of a moveable barrier (piston), which stays in the same place (more or less) when you run the model because the gas pressure on the piston is in equilibrium.",
+        "Add purple gas molecules and watch what happens to the piston. Reset the model. Now add yellow gas molecules. What happens to the piston?",
+        "Try heating or cooling the gas molecules. Explain the change in equilibrium with each change. Which has a greater effect on equilibrium -- changing the number of gas molecules or changing the temperature? Why?"
+      ],
+      "publicationStatus": "draft"
     },
     {
       "title": "Pressure Equilibrium",
@@ -902,6 +973,11 @@
     {
       "path": "sam/DNA-to-proteins",
       "name": "Science of Atoms and Molecules: DNA-to-proteins",
+      "category": "Curriculum"
+    },
+    {
+      "path": "sam/diffusion",
+      "name": "Science of Atoms and Molecules: Diffusion",
       "category": "Curriculum"
     },
     {

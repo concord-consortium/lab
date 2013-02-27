@@ -314,7 +314,12 @@ and the specific Ruby Gems needed for building Lab and running the Lab server.</
 <p>After installation you should see something like the following:</p>
 
 <pre><code>$  ruby -v
-ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-darwin10.8.0]
+ruby 1.9.3p392 (2013-02-22 revision 39386) [x86_64-darwin10.8.0]
+</code></pre>
+
+<p>If you already have RVM installed update to the most up-to-date stable version.</p>
+
+<pre><code>$ rvm get stable
 </code></pre>
 
 <p>Once you have a working version of Ruby 1.9.3 check to see if the RubyGem <a href="http://gembundler.com/">bundler</a>
@@ -324,14 +329,15 @@ is already installed:</p>
 
 *** LOCAL GEMS ***
 
-bundler (1.1.3)
+bundler (1.2.4)
 </code></pre>
 
-<p>If Bundler is not installed install it now:</p>
+<p>If Bundler is not installed install it now into the global gemset for ruby-1.9.3-p392</p>
 
-<pre><code>$ gem install bundler
-Fetching: bundler-1.1.3.gem (100%)
-Successfully installed bundler-1.1.3
+<pre><code>$ rvm gemset use global
+$ gem install bundler
+Fetching: bundler-1.2.4.gem (100%)
+Successfully installed bundler-1.2.4
 1 gem installed
 </code></pre>
 
@@ -1017,6 +1023,7 @@ object <code>Lab.config</code>.</p>
 <pre><code>:jsconfig:
   :sharing: true
   :home: http://lab.concord.org
+  :homeForSharing:
   :homeInteractivePath: /examples/interactives/interactive.html
   :homeEmbeddablePath: /examples/interactives/embeddable.html
   :utmCampaign: &lt;external-campaign-key&gt;
@@ -1026,6 +1033,11 @@ object <code>Lab.config</code>.</p>
 The default value for this is <code>true</code>.</p>
 
 <p><strong><code>home</code></strong> Url used to reference cannonical site when sharing is turned off.</p>
+
+<p><strong><code>homeForSharing</code></strong> Set :homeForSharing to the host where shared Interactives are found
+if you don’t want to share the ones on the actual server. Example if you host the
+Interactives on a static S3 site and want the sharing links to point to the same
+Interactives at “http://lab.concord.org”</p>
 
 <p><strong><code>homeInteractivePath</code></strong> Path to page to run non-embeddable version of Interactives.</p>
 
@@ -1051,6 +1063,7 @@ sharing is impractical in some manner you can disable the display of the Interac
 <pre><code>:jsconfig:
   :sharing: false
   :home: http://lab.concord.org
+  :homeForSharing: http://lab.concord.org
   :homeInteractivePath: /examples/interactives/interactive.html
   :homeEmbeddablePath: /examples/interactives/embeddable.html
   :utmCampaign: &lt;external-campaign-key&gt;
@@ -1059,6 +1072,10 @@ sharing is impractical in some manner you can disable the display of the Interac
 <p>The additional values for <code>:home</code>, <code>homeInteractivePath</code>, and <code>homeEmbeddablePath</code> are used to construct an
 additional paragraph in the Interactive <strong>About</strong> box providing a link to the Interactive on the production
 <a href="http://lab.concord.org">site for the project</a>.</p>
+
+<p>You can also enable Sharing <strong>but</strong> use a separate host for generating the sharing urls by entering a value
+for <strong>homeForSharing</strong>. If you are <em>also</em> hosting the the Lab Interactives in a subdirectory you must also
+set the values for <strong>homeEmbeddablePath</strong> and <strong>homeInteractivePath</strong> as shown above.</p>
 
 <p>The value for <code>utmCampaign</code> is optional. If present and the <strong>home</strong> site has enabled Google Analytics
 setting a value for <code>utmCampaign</code> will allow better tracking of users who click through links in the
@@ -1401,33 +1418,33 @@ executables made available via Bundler.)</p>
 
 <ul>
   <li>timeStep,</li>
-  <li>viewRefreshInterval,</li>
+  <li>timeStepsPerTick,</li>
   <li>modelSampleRate.</li>
 </ul>
 
 <p>To explain them let’s start from the definition of the model “tick”. One “tick” consists of:</p>
 
 <ul>
-  <li>running simulation for <strong>viewRefreshInterval</strong> * <strong>timeStep</strong> femtoseconds,</li>
+  <li>running simulation for <strong>timeStepsPerTick</strong> * <strong>timeStep</strong> femtoseconds,</li>
   <li>update of the view.</li>
 </ul>
 
 <p>The “tick” is constantly repeated while simulation is running.</p>
 
-<p>So, when viewRefreshInterval = 50 and timeStep = 1fs, one “tick” causes that the engine performs calculations for 50fs.</p>
+<p>So, when timeStepsPerTick= 50 and timeStep = 1fs, one “tick” causes that the engine performs calculations for 50fs.</p>
 
 <p><strong>timeStep</strong> defines a time value used during the one integration step in the engine internals. It affects accuracy of calculations.
-<strong>viewRefreshInterval</strong> in fact defines number of these integration steps during one “tick”. It is defined because it makes no sense to refresh view too often.</p>
+<strong>timeStepsPerTick</strong> in fact defines number of these integration steps during one “tick”. It is defined because it makes no sense to refresh view too often.</p>
 
 <p>Using pseudo-code we can say that tick is:</p>
 
-<pre><code>for (i = 0 to viewRefreshInterval) {
+<pre><code>for (i = 0 to timeStepsPerTick) {
    engine.advanceBy(timeStep)
 }
 view.update()
 </code></pre>
 
-<p>That’s why viewRefreshInterval = 50 and timeStep = 1fs is different from viewRefreshInterval = 25 and timeStep = 2fs.
+<p>That’s why timeStepsPerTick = 50 and timeStep = 1fs is different from timeStepsPerTick = 25 and timeStep = 2fs.
 First one will be more accurate and two times slower (more or less) than second one, however both configurations will cause that one “tick” advance model by 50fs (25 * 2fs or 50 * 1fs).</p>
 
 <p><strong>modelSampleRate</strong> defines how often we should execute “tick”. Of course, in most cases we should call it as often as it’s possible and that’s the default behavior (with upper limit of 60 times per second to avoid running simple models too fast).</p>

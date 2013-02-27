@@ -55,9 +55,26 @@
     }
   ],
   "layout": {
-    "bottom": [
-      ["current-obstacles", "kick-atom"],
-      ["show-gridlines", "show-xunits", "show-yunits"]
+    "bottom": [ "current-obstacles", "kick-atom"],
+    "right": [
+      ["show-gridlines"],
+      ["show-xunits"],
+      ["show-yunits"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "align": "center"
+    },
+    {
+      "id": "right",
+      "top": "6em",
+      "width": "12em",
+      "left": "model.right",
+      "padding-left": "1em",
+      "align": "right"
+    }
+  ]
 }

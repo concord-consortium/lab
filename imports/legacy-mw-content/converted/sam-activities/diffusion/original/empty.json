@@ -1,0 +1,195 @@
+{
+  "type": "md2d",
+  "width": 5,
+  "height": 2.5,
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": true,
+  "targetTemperature": 4000,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
+  "viewOptions": {
+    "backgroundColor": "rgba(226,245,255,255)",
+    "showClock": false,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "insideOutsideBkgLarge.png",
+        "imageHostIndex": 0,
+        "imageHostType": "RectangularObstacle",
+        "imageLayer": 2,
+        "imageX": -3.5,
+        "imageY": 2.505
+      },
+      {
+        "imageUri": "membraneManyPores.png",
+        "imageHostIndex": 0,
+        "imageHostType": "RectangularObstacle",
+        "imageLayer": 1,
+        "imageX": 2.14,
+        "imageY": 2.665
+      }
+    ],
+    "imageMapping": {},
+    "textBoxes": [
+      {
+        "text": "membrane with many aquapores, allowing water through easily",
+        "x": 0.32,
+        "y": 2.36,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(233,232,232)"
+      },
+      {
+        "text": "set the OUTSIDE salt concentration",
+        "x": 0.46,
+        "y": 0.62,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(220,236,218)"
+      },
+      {
+        "text": "set the INSIDE salt concentration",
+        "x": 3.35,
+        "y": 0.64,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(220,236,218)"
+      }
+    ],
+    "fitToParent": false,
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      45,
+      70,
+      60,
+      80,
+      600
+    ],
+    "sigma": [
+      0.07,
+      0.07,
+      0.07,
+      0.28,
+      0.3
+    ],
+    "epsilon": [
+      -0.009999999776482582,
+      -0.009999999776482582,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -65536,
+      -4849920,
+      -9092186,
+      -2539040,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
+  },
+  "obstacles": {
+    "x": [
+      2.22
+    ],
+    "y": [
+      0.020000000000000018
+    ],
+    "vx": [
+      0
+    ],
+    "vy": [
+      0
+    ],
+    "externalFx": [
+      0
+    ],
+    "externalFy": [
+      0
+    ],
+    "friction": [
+      0.004
+    ],
+    "height": [
+      2.47
+    ],
+    "width": [
+      0.56
+    ],
+    "mass": [
+      "Infinity"
+    ],
+    "westProbe": [
+      true
+    ],
+    "northProbe": [
+      false
+    ],
+    "eastProbe": [
+      true
+    ],
+    "southProbe": [
+      false
+    ],
+    "color": [
+      [
+        128,
+        128,
+        128
+      ]
+    ],
+    "visible": [
+      false
+    ]
+  }
+}

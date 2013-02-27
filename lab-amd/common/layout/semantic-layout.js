@@ -1,4 +1,4 @@
-/*global define: false, $: false, d3: false */
+/*global define: false, $: false */
 // ------------------------------------------------------------
 //
 //   Semantic Layout
@@ -7,45 +7,45 @@
 
 define(function (require) {
 
-  var labConfig = require('lab.config'),
-      alert     = require('common/alert'),
+  var labConfig    = require('lab.config'),
+      layoutConfig = require('common/layout/semantic-layout-config'),
+      arrays       = require('arrays'),
+      console      = require('common/console'),
+      alert        = require('common/alert');
 
-      // Minimum width of the model.
-      minModelWidth = 150,
+  return function SemanticLayout($interactiveContainer) {
 
-      // Canonical dimensions of the interactive, deciding about font size.
-      basicInteractiveWidth = 1000,
-      basicInteractiveHeight = 600,
+    var layout,
 
-      // Font scaling function.
-      fontScale =  d3.scale.linear()
-        // Domain: actual interactive size to basic interactive size ratio.
-        // Note that 0.4 is "small" size, 0.6 is "medium" size and 1.0 is "large" size.
-        .domain([0.4, 0.6, 1.1, 5])
-        // Range: font sizes in "em".
-        .range([0.6, 0.8, 0.9, 5])
-        // Clamp to ensure that font is not smaller than minimum font size
-        // (first value in range array above).
-        .clamp(true),
+        containers,
+        componentLocations,
+        components,
+        modelController,
+        fontScale,
 
-      containerColors = [
-        "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
-        "rgba(0,255,255,0.1)", "rgba(255,255,128,0.1)", "rgba(128,255,0,0.1)", "rgba(255,128,0,0.1)"
-      ];
-
-  return function SemanticLayout($interactiveContainer, containers, componentLocations, components, modelController) {
-
-    var layout = {},
         $modelContainer,
         $containers,
 
-        minLeft = Infinity,
-        minTop = Infinity,
-        maxX = -Infinity,
-        maxY = -Infinity,
-        modelWidth = minModelWidth,
+        modelWidth = layoutConfig.minModelWidth,
         modelTop = 0,
-        modelLeft = 0;
+        modelLeft = 0,
+
+        // Interactive dimensions which fits canonical dimensions.
+        // So, basic dimensions are <= canonical dimensions.
+        // They are required to correctly determine font size
+        // (as we can't simply use canonical dimensions).
+        basicInteractiveWidth,
+        basicInteractiveHeight,
+
+        // Interactive aspect ratio. It's used to determine font size.
+        // Note that it may change a little bit during resizing (as there are
+        // some dimensions defined in px, like borders, user agent styles etc.),
+        // however this slight differences don't have any significant impact on result.
+        interactiveAspectRatio,
+
+        // Dimensions of the container.
+        availableWidth,
+        availableHeight;
 
     function getDimensionOfContainer($container, dim) {
       var position = $container.position();
@@ -67,21 +67,33 @@ define(function (require) {
     }
 
     function setFontSize() {
-      var xRatio = $interactiveContainer.width() / basicInteractiveWidth,
-          yRatio = $interactiveContainer.height() / basicInteractiveHeight,
-          ratio = Math.min(xRatio, yRatio);
+      var containerAspectRatio = availableWidth / availableHeight,
+          containerScale, font;
+
+      if (interactiveAspectRatio <= containerAspectRatio) {
+        containerScale = availableHeight / basicInteractiveHeight;
+      } else {
+        containerScale = availableWidth / basicInteractiveWidth;
+      }
+
+      font = layoutConfig.canonicalFontSize * fontScale * containerScale;
+
+      // Ensure min font size (in 'em').
+      if (font < layoutConfig.minFontSize) {
+        font = layoutConfig.minFontSize;
+      }
 
       // Set font-size of #responsive-content element. So, if application author
       // wants to avoid rescaling of font-size for some elements, they should not
       // be included in #responsive-content DIV.
       // TODO: #responsive-content ID is hardcoded, change it?
-      $("#responsive-content").css("font-size", fontScale(ratio) + "em");
+      $("#responsive-content").css("font-size", font + "em");
     }
 
     // Calculate width for containers which doesn't explicitly specify its width.
     // In such case, width is determined by the content, no reflow will be allowed.
     function setMinDimensions() {
-      var $container, i, len;
+      var maxMinWidth, $container, i, len;
 
       function setRowMinWidth() {
         var minWidth = 0;
@@ -91,6 +103,9 @@ define(function (require) {
           minWidth += $(this).outerWidth(true);
         });
         $(this).css("min-width", Math.ceil(minWidth));
+        if (minWidth > maxMinWidth) {
+          maxMinWidth = minWidth;
+        }
       }
 
       for (i = 0, len = containers.length; i < len; i++) {
@@ -98,8 +113,10 @@ define(function (require) {
         if (containers[i].width === undefined) {
           // Set min-width only for containers, which DO NOT specify
           // "width" explicitly in their definitions.
+          maxMinWidth = -Infinity;
+          $container.css("min-width", 0);
           $container.children().each(setRowMinWidth);
-          $container.css("min-width", $container.outerWidth(true));
+          $container.css("min-width", maxMinWidth);
         }
         if (containers[i]["min-width"] !== undefined) {
           $container.css("min-width", containers[i]["min-width"]);
@@ -108,40 +125,58 @@ define(function (require) {
     }
 
     function setupBackground() {
-      var id, i, len;
+      var colors = layoutConfig.containerColors,
+          id, i, len;
 
       for (i = 0, len = containers.length; i < len; i++) {
         id = containers[i].id;
-        $containers[id].css("background", labConfig.authoring ? containerColors[i % containerColors.length] : "");
+        $containers[id].css("background", labConfig.authoring ? colors[i % colors.length] : "");
       }
     }
 
     function createContainers() {
       var container, id, prop, i, ii;
 
+      // Cleanup interactive container.
+      $interactiveContainer.empty();
+
       $containers = {};
 
-      $modelContainer = $interactiveContainer.find("#model-container");
+      $modelContainer = modelController.getViewContainer();
+      $modelContainer.css({
+        "display": "inline-block",
+        "position": "absolute"
+      });
+      $modelContainer.appendTo($interactiveContainer);
       $containers.model = $modelContainer;
 
-      for (i = 0, ii = containers.length; i<ii; i++) {
+      for (i = 0, ii = containers.length; i < ii; i++) {
         container = containers[i];
         id = container.id;
-        $containers[id] = $("<div id='"+id+"'>").appendTo($interactiveContainer);
-        $containers[id].css("display", "inline-block");
-        // add any padding-* properties directly to the container's style
+        $containers[id] = $("<div id='" + id + "'>").appendTo($interactiveContainer);
+        $containers[id].css({
+          "display": "inline-block",
+          "position": "absolute"
+        });
+
         for (prop in container) {
           if (!container.hasOwnProperty(prop)) continue;
+          // Add any padding-* properties directly to the container's style.
           if (/^padding-/.test(prop)) {
             $containers[id].css(prop, container[prop]);
+          }
+          // Support also "align" property.
+          if (prop === "align") {
+            $containers[id].css("text-align", container[prop]);
           }
         }
       }
     }
 
     function placeComponentsInContainers() {
-      var id, container, divContents, items, $row,
-          lastContainer, $rows, comps,
+      var id, container, divContents, items,
+          $row, $rows, $containerComponents,
+          lastContainer, comps, errMsg,
           i, ii, j, jj, k, kk;
 
       comps = $.extend({}, components);
@@ -153,7 +188,16 @@ define(function (require) {
         }
         if (!divContents) continue;
 
-        if (Object.prototype.toString.call(divContents[0]) !== "[object Array]") {
+        if (!arrays.isArray(divContents)) {
+          // Inform an author and skip this container.
+          errMsg = "Incorrect layout definition for '" + container.id + "' container. It should specify " +
+                   "an array of components or an array of arrays of components (multiple rows).";
+          alert(errMsg);
+          continue;
+        }
+
+        if (!arrays.isArray(divContents[0])) {
+          // Only one row specified. Wrap it into array to process it easier.
           divContents = [divContents];
         }
 
@@ -169,27 +213,39 @@ define(function (require) {
           $containers[container.id].append($row);
           for (k = 0, kk = items.length; k < kk; k++) {
             id = items[k];
-            if (comps[id] !== undefined) {
-              $row.append(comps[id].getViewContainer());
-              delete comps[id];
-            } else {
+            if (comps[id] === undefined) {
+              // Inform an author and skip this definition.
               alert("Incorrect layout definition. Component with ID '" + id + "'' is not defined.");
+              continue;
             }
+            $row.append(comps[id].getViewContainer());
+            delete comps[id];
           }
         }
       }
 
-      // add any remaining components to "bottom" or last container
+      // Add any remaining components to "bottom" or last container.
       lastContainer = getObject(containers, "bottom") || containers[containers.length-1];
+      $rows = $containers[lastContainer.id].children();
+      $row = $rows.last();
+      if (!$row.length) {
+        $row = $('<div class="interactive-' + container.id + '-row"/>');
+        $containers[container.id].append($row);
+      }
       for (id in comps) {
         if (!comps.hasOwnProperty(id)) continue;
-        $rows = $containers[lastContainer.id].children();
-        $row = $rows.last();
-        if (!$row.length) {
-          $row = $('<div class="interactive-' + container.id + '-row"/>');
-          $containers[container.id].append($row);
-        }
         $row.append(comps[id].getViewContainer());
+      }
+
+      // When there are multiple components in a container, ensure that there
+      // is spacing between them.
+      // See src/sass/lab/_semantic-layout.sass for .component-spacing class definition.
+      for (i = 0, ii = containers.length; i < ii; i++) {
+        // First children() call returns rows, second one components.
+        $containerComponents = $containers[containers[i].id].children().children();
+        if ($containerComponents.length > 1) {
+          $containerComponents.addClass("component-spacing");
+        }
       }
     }
 
@@ -198,11 +254,10 @@ define(function (require) {
           left, top, right, bottom, i, ii;
 
       $modelContainer.css({
-        width: modelWidth,
+        width:  modelWidth,
         height: modelController.getHeightForWidth(modelWidth),
-        left: modelLeft,
-        top: modelTop,
-        position: "absolute"
+        left:   modelLeft,
+        top:    modelTop
       });
 
       for (i = 0, ii = containers.length; i<ii; i++) {
@@ -210,18 +265,12 @@ define(function (require) {
         $container = $containers[container.id];
 
         if (!container.left && !container.right) {
-          container.left = "model.left";
+          container.left = "0";
         }
         if (!container.top && !container.bottom) {
-          container.top = "model.top";
+          container.top = "0";
         }
 
-        if (!container.top && !container.bottom) {
-          container.top = "model.top";
-        }
-        if (!container.left && !container.right) {
-          container.left = "model.left";
-        }
         if (container.left) {
           left = parseDimension(container.left);
           $container.css("left", left);
@@ -246,34 +295,20 @@ define(function (require) {
           top = bottom - $container.outerHeight();
           $container.css("top", top);
         }
-        $container.css("position", "absolute");
       }
     }
 
     // shrinks the model to fit in the interactive, given the sizes
     // of the other containers around it.
     function resizeModelContainer() {
-      var speed = 0.3,
-      id, $container,
-      right, bottom, top, left,
-      availableWidth, availableHeight, ratio;
+      var maxX = -Infinity,
+          maxY = -Infinity,
+          minX = Infinity,
+          minY = Infinity,
+          id, $container,
+          right, bottom, top, left, ratio;
 
-      if (isNaN(modelWidth) || modelWidth < minModelWidth) {
-        modelWidth = minModelWidth;
-      }
-      if (isNaN(modelLeft)) {
-        modelLeft = 0;
-      }
-      if (isNaN(modelTop)) {
-        modelTop = 0;
-      }
-
-      // Calc maxX and maxY.
-      maxY = -Infinity;
-      maxX = -Infinity;
-      minLeft = Infinity;
-      minTop = Infinity;
-
+      // Calculate boundaries of the interactive.
       for (id in $containers) {
         if (!$containers.hasOwnProperty(id)) continue;
         $container = $containers[id];
@@ -286,45 +321,36 @@ define(function (require) {
           maxY = bottom;
         }
         left = getDimensionOfContainer($container, "left");
-        if (left < minLeft) {
-          minLeft = left;
+        if (left < minX) {
+          minX = left;
         }
         top = getDimensionOfContainer($container, "top");
-        if (top < minTop) {
-          minTop = top;
+        if (top < minY) {
+          minY = top;
         }
       }
-
-      availableWidth  = $interactiveContainer.width();
-      availableHeight = $interactiveContainer.height();
 
       // TODO: this is quite naive approach.
       // It should be changed to some fitness function defining quality of the layout.
       // Using current algorithm, very often we follow some local minima.
       if ((maxX <= availableWidth && maxY <= availableHeight) &&
           (availableWidth - maxX < 1 || availableHeight - maxY < 1) &&
-          (minLeft < 1 && minTop < 1)) {
+          (minX < 1 && minY < 1)) {
         // Perfect solution found!
         // (TODO: not so perfect, see above)
         return true;
       }
 
-      if (maxX > availableWidth || maxY > availableHeight) {
-        ratio = Math.min(1 - speed * (maxX - availableWidth) / availableWidth, 1 - speed * (maxY - availableHeight) / availableHeight);
-      }
-      if (maxX < availableWidth && maxY < availableHeight) {
-        ratio = Math.min(1 + speed * (availableWidth - maxX) / availableWidth, 1 + speed * (availableHeight - maxY) / availableHeight);
-      }
-      if (ratio !== undefined) {
+      ratio = Math.min(availableWidth / maxX, availableHeight / maxY);
+      if (!isNaN(ratio)) {
         modelWidth = modelWidth * ratio;
       }
-
-      if (modelWidth < minModelWidth) {
-        modelWidth = minModelWidth;
+      if (modelWidth < layoutConfig.minModelWidth) {
+        modelWidth = layoutConfig.minModelWidth;
       }
 
-      modelLeft -= minLeft;
-      modelTop -= minTop;
+      modelLeft -= minX;
+      modelTop -= minY;
 
       return false;
     }
@@ -353,19 +379,17 @@ define(function (require) {
       }
     }
 
-    // parses a container's dimension, such as "model.height"
+    // Parses a container's dimension, such as "model.height".
     function getDimension(dim) {
-      var id, $container, attr;
-
-      id = dim.split(".")[0];
-      if (id === "interactive") {
-        $container = $interactiveContainer;
-      } else {
-        $container = $containers[id];
+      switch(dim) {
+        case "interactive.width":
+          return availableWidth;
+        case "interactive.height":
+          return availableHeight;
+        default:
+          dim = dim.split(".");
+          return getDimensionOfContainer($containers[dim[0]], dim[1]);
       }
-      attr = dim.split(".")[1];
-
-      return getDimensionOfContainer($container, attr);
     }
 
     function getObject(arr, id) {
@@ -376,10 +400,95 @@ define(function (require) {
       }
     }
 
+    function calcInteractiveAspectRatio() {
+      var redraws = layoutConfig.iterationsLimit,
+          canonicalInteractiveWidth = layoutConfig.canonicalInteractiveWidth,
+          canonicalInteractiveHeight = layoutConfig.canonicalInteractiveHeight,
+          canonicalAspectRatio = canonicalInteractiveWidth / canonicalInteractiveHeight,
+          maxX = -Infinity,
+          maxY = -Infinity,
+          id, $container, val;
+
+      availableWidth = canonicalInteractiveWidth;
+      availableHeight = canonicalInteractiveHeight;
+      // Set basic interactive dimensions to default values to ensure that default font will be used.
+      basicInteractiveWidth = canonicalInteractiveWidth;
+      basicInteractiveHeight = canonicalInteractiveHeight;
+      // Set font size to ensure that "fontScale" and "canonicalFontSize" are taken into account.
+      setFontSize();
+      setMinDimensions();
+      modelWidth = availableWidth;
+      positionContainers();
+      while (--redraws > 0 && !resizeModelContainer()) {
+        positionContainers();
+      }
+
+      for (id in $containers) {
+        if (!$containers.hasOwnProperty(id)) continue;
+        $container = $containers[id];
+        val = getDimensionOfContainer($container, "right");
+        if (val > maxX) {
+          maxX = val;
+        }
+        val = getDimensionOfContainer($container, "bottom");
+        if (val > maxY) {
+          maxY = val;
+        }
+      }
+
+      interactiveAspectRatio = maxX / maxY;
+      if (interactiveAspectRatio < canonicalAspectRatio) {
+        basicInteractiveWidth = canonicalInteractiveHeight * interactiveAspectRatio;
+        basicInteractiveHeight = canonicalInteractiveHeight;
+      } else {
+        basicInteractiveWidth = canonicalInteractiveWidth;
+        basicInteractiveHeight = canonicalInteractiveWidth / interactiveAspectRatio;
+      }
+    }
+
     // Public API.
     layout = {
+      /**
+        Setups interactive layout. Cleanups interactive container, creates new containers and places
+        components inside them.
+
+        This method should be called each time when at least one of the following objects is changed:
+          - layout template,
+          - component locations,
+          - components,
+          - model controller,
+          - font scale.
+
+        @param {array} newContainer List of layout containers.
+        @param {Object} newComponentLocations Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
+        @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
+        @param {ModelController} newModelController Model Controller object.
+        @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
+      */
+      setupInteractive: function(newContainers, newComponentLocations, newComponents, newModelController, newFontScale) {
+        containers = newContainers;
+        componentLocations = newComponentLocations;
+        components = newComponents;
+        modelController = newModelController;
+        fontScale = newFontScale;
+
+        createContainers();
+        placeComponentsInContainers();
+        calcInteractiveAspectRatio();
+      },
+
+      /**
+        Layouts interactive. Adjusts size of the model container to ensure that all components are inside the
+        interactive container and all available space is used in the best way.
+      */
       layoutInteractive: function () {
-        var redraws = 0, id;
+        var redraws = layoutConfig.iterationsLimit,
+            id;
+
+        console.time('[layout] update');
+
+        availableWidth  = $interactiveContainer.width();
+        availableHeight = $interactiveContainer.height();
 
         // 0. Set font size of the interactive-container based on its size.
         setFontSize();
@@ -390,12 +499,12 @@ define(function (require) {
         setMinDimensions();
 
         // 2. Calculate optimal layout.
-        modelWidth = $interactiveContainer.width();
+        modelWidth = availableWidth;
         positionContainers();
-        while (redraws < 35 && !resizeModelContainer()) {
+        while (--redraws > 0 && !resizeModelContainer()) {
           positionContainers();
-          redraws++;
         }
+        console.log('[layout] update: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
 
         // 3. Notify components that their containers have new sizes.
         modelController.resize();
@@ -407,14 +516,10 @@ define(function (require) {
 
         // 4. Set / remove colors of containers depending on the value of Lab.config.authoring
         setupBackground();
+
+        console.timeEnd('[layout] update');
       }
     };
-
-    //
-    // Initialize.
-    //
-    createContainers();
-    placeComponentsInContainers();
 
     return layout;
   };

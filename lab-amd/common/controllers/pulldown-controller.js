@@ -6,59 +6,83 @@ define(function () {
       validator = require('common/validator');
 
   return function PulldownController(component, scriptingAPI, interactivesController) {
-    var $pulldown, $option,
-        options, option,
-        controller,
-        i, len;
+        // Public API.
+    var controller,
+        // DOM elements.
+        $pulldown, $option,
+        // Options definitions from component JSON definition.
+        options,
+        // List of jQuery objects wrapping <select> elements.
+        $options = [];
 
-    // Validate component definition, use validated copy of the properties.
-    component = validator.validateCompleteness(metadata.pulldown, component);
-    // Validate pulldown options too.
-    options = component.options;
-    for (i = 0, len = options.length; i < len; i++) {
-      options[i] = validator.validateCompleteness(metadata.pulldownOption, options[i]);
+    // Updates pulldown using model property. Used in modelLoadedCallback.
+    // Make sure that this function is only called when:
+    // a) model is loaded,
+    // b) pulldown is bound to some property.
+    function updatePulldown() {
+      // Clear current selection.
+      $pulldown.val([]);
+      // Try to set a new value.
+      $pulldown.val(model.get(component.property));
     }
 
-    $pulldown = $('<select>').attr('id', component.id);
-    $pulldown.addClass("component");
+    function initialize() {
+      var i, len, option;
 
-    for (i = 0, len = options.length; i < len; i++) {
-      option = options[i];
-      $option = $('<option>').html(option.text);
-      if (option.disabled) {
-        $option.attr("disabled", option.disabled);
-      }
-      if (option.selected) {
-        $option.attr("selected", option.selected);
-      }
-      $pulldown.append($option);
-    }
-
-    $pulldown.change(function() {
-      var index = $(this).prop('selectedIndex'),
-          action = component.options[index].action,
-          i, len;
-
-      // Update component definition.
+      // Validate component definition, use validated copy of the properties.
+      component = validator.validateCompleteness(metadata.pulldown, component);
+      // Validate pulldown options too.
+      options = component.options;
       for (i = 0, len = options.length; i < len; i++) {
-        delete options[i].selected;
+        options[i] = validator.validateCompleteness(metadata.pulldownOption, options[i]);
       }
-      options[index].selected = true;
 
-      if (action){
-        scriptingAPI.makeFunctionInScriptContext(action)();
-      } else if (component.options[index].loadModel){
-        model.stop();
-        interactivesController.loadModel(component.options[index].loadModel);
+      $pulldown = $('<select>').attr('id', component.id);
+      // Each interactive component has to have class "component".
+      $pulldown.addClass("component");
+
+      for (i = 0, len = options.length; i < len; i++) {
+        option = options[i];
+        $option = $('<option>').html(option.text);
+        $options.push($option);
+        if (option.disabled) {
+          $option.prop("disabled", option.disabled);
+        }
+        if (option.selected) {
+          $option.prop("selected", option.selected);
+        }
+        if (option.value) {
+          $option.prop("value", option.value);
+        }
+        $pulldown.append($option);
       }
-    });
+
+      $pulldown.change(function() {
+        var index = $(this).prop('selectedIndex'),
+            action = component.options[index].action;
+
+        if (action){
+          scriptingAPI.makeFunctionInScriptContext(action)();
+        } else if (component.options[index].loadModel){
+          model.stop();
+          interactivesController.loadModel(component.options[index].loadModel);
+        } else if (option.value !== undefined) {
+          model.set(component.property, options[index].value);
+        }
+      });
+    }
 
     // Public API.
     controller = {
-      // No modelLoadeCallback is defined. In case of need:
-      // modelLoadedCallback: function () {
-      //   (...)
-      // },
+      modelLoadedCallback: function () {
+        // Connect pulldown with model's property if its name is defined.
+        if (component.property !== undefined) {
+          // Register listener for property.
+          model.addPropertiesListener([component.property], updatePulldown);
+          // Perform initial pulldown setup.
+          updatePulldown();
+        }
+      },
 
       // Returns view container.
       getViewContainer: function () {
@@ -67,11 +91,26 @@ define(function () {
 
       // Returns serialized component definition.
       serialize: function () {
-        // Return compoment definition. It's always valid,
-        // as selected option is updated during 'change' callback.
+        var i, len;
+        if (component.property === undefined) {
+          // When property binding is not defined, we need to keep track
+          // which option is currently selected.
+          for (i = 0, len = options.length; i < len; i++) {
+            if ($options[i].prop("selected")) {
+              options[i].selected = true;
+            } else {
+              delete options[i].selected;
+            }
+          }
+        }
+        // Note that 'options' array above is a reference to component.options array.
+        // Every thing is updated, return a copy.
         return $.extend(true, {}, component);
       }
     };
+
+    initialize();
+
     // Return Public API object.
     return controller;
   };

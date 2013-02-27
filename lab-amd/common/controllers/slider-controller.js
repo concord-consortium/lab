@@ -32,6 +32,77 @@ define(function () {
           }
         };
 
+    // Public API.
+    controller = {
+      // This callback should be trigger when model is loaded.
+      modelLoadedCallback: function () {
+        if (propertyName) {
+          model.addPropertiesListener([propertyName], updateSlider);
+        }
+
+        if (initialValue !== undefined && initialValue !== null) {
+          // Make sure to call the action with the startup value of slider. (The script action may
+          // manipulate the model, so we have to make sure it runs after the model loads.)
+          if (action) {
+            $slider.slider('value', initialValue);
+            action(initialValue);
+            if (displayValue) {
+              $sliderHandle.text(displayValue(initialValue));
+            }
+          }
+        } else if (propertyName) {
+          updateSlider();
+        }
+      },
+
+      // Returns view container (div).
+      getViewContainer: function () {
+        return $elem;
+      },
+
+      resize: function () {
+        var remainingHeight;
+        // Apply custom width and height settings.
+        // In fact width can be applied only once during initialization, because
+        // it doesn't need any calculations when container size is changed.
+        // However, to keep resizing in one place both width and height
+        // adjustment are performed in this method.
+        // Also not that we set dimensions of the $container, not $slider.
+        // Slider itself will always follow dimensions of container DIV.
+        // We have to do it that way to ensure that labels refer correct dimensions.
+        if (!/%$/.test(component.width)) {
+          $container.css("width", component.width);
+        } else {
+          $elem.css("width", component.width);
+          $container.css("width", "100%");
+        }
+        // Height calculation is more complex, calculate dynamically
+        // available height for slider itself.
+        // Note that component.height refers to the height of the
+        // *whole* component!
+        $elem.css("height", component.height);
+        remainingHeight = $elem.height() - $title.outerHeight(true);
+        if ($label !== undefined) {
+          remainingHeight -= $label.outerHeight(true);
+        }
+        $container.css("height", remainingHeight);
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        var result = $.extend(true, {}, component);
+
+        if (!propertyName) {
+          // No property binding. Just action script.
+          // Update "initialValue" to represent current
+          // value of the slider.
+          result.initialValue = $slider.slider('value');
+        }
+
+        return result;
+      }
+    };
+
     //
     // Initialize.
     //
@@ -56,7 +127,7 @@ define(function () {
     // we pick up the SVG slider component CSS if we use the generic class name 'slider'
     $container = $('<div class="container">');
     $slider = $('<div class="html-slider">').attr('id', component.id);
-    $container.append($slider);
+    $slider.appendTo($container);
 
     $slider.slider({
       min: min,
@@ -69,6 +140,8 @@ define(function () {
     $elem = $('<div class="interactive-slider">')
               .append($title)
               .append($container);
+    // Each interactive component has to have class "component".
+    $elem.addClass("component");
 
     for (i = 0; i < labels.length; i++) {
       label = labels[i];
@@ -106,63 +179,8 @@ define(function () {
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
     }
 
-    // Public API.
-    controller = {
-      // This callback should be trigger when model is loaded.
-      modelLoadedCallback: function () {
-        var obj;
+    controller.resize();
 
-        if (propertyName) {
-          model.addPropertiesListener([propertyName], updateSlider);
-        }
-
-        if (initialValue !== undefined && initialValue !== null) {
-          // Make sure to call the action with the startup value of slider. (The script action may
-          // manipulate the model, so we have to make sure it runs after the model loads.)
-          if (action) {
-            $slider.slider('value', initialValue);
-            action(initialValue);
-            if (displayValue) {
-              $sliderHandle.text(displayValue(initialValue));
-            }
-          }
-
-          if (propertyName) {
-            obj = {};
-            obj.propertyName = initialValue;
-            model.set(obj);
-          }
-        } else if (propertyName) {
-          updateSlider();
-        }
-      },
-
-      // Returns view container (div).
-      getViewContainer: function () {
-        return $elem;
-      },
-
-      // Returns serialized component definition.
-      serialize: function () {
-        var result = $.extend(true, {}, component);
-
-        if (propertyName) {
-          // Two way binding between slider and model property.
-          // Initial value was used to set model property once,
-          // we do not need to do this again. Value of the slider
-          // will be defined by the model.
-          delete result.initialValue;
-        }
-        else {
-          // No property binding. Just action script.
-          // Update "initialValue" to represent current
-          // value of the slider.
-          result.initialValue = $slider.slider('value');
-        }
-
-        return result;
-      }
-    };
     // Return Public API object.
     return controller;
   };

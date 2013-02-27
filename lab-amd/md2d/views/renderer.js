@@ -1,4 +1,4 @@
-/*global $ alert define: false, d3: false */
+/*global $ alert define: false, d3: false Image */
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
@@ -8,6 +8,7 @@ define(function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
       console               = require('common/console'),
+      benchmark             = require('common/benchmark/benchmark'),
       amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
       GeneticRenderer       = require('md2d/views/genetic-renderer'),
       wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
@@ -126,86 +127,6 @@ define(function (require) {
         obstacles.colorB[i] + ")";
     }
 
-    function redraw() {
-      var tx = function(d) { return "translate(" + model2px(d) + ",0)"; },
-          ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
-          stroke = function(d) { return d ? "#ccc" : "#666"; },
-          fx = model2px.tickFormat(5),
-          fy = model2pxInv.tickFormat(5);
-
-      if (d3.event && d3.event.transform) {
-          d3.event.transform(model2px, model2pxInv);
-      }
-
-      // Regenerate x-ticks…
-      var gx = gridContainer.selectAll("g.x")
-          .data(model2px.ticks(5), String)
-          .attr("transform", tx)
-          .classed("axes", true);
-
-      gx.select("text").text(fx);
-
-      var gxe = gx.enter().insert("g", "a")
-          .attr("class", "x")
-          .attr("transform", tx);
-
-      if (model.get("gridLines")) {
-        gxe.append("line")
-            .attr("stroke", stroke)
-            .attr("y1", 0)
-            .attr("y2", size.height);
-      } else {
-        gxe.selectAll("line").remove();
-      }
-
-      if (model.get("xunits")) {
-        gxe.append("text")
-            .attr("y", size.height)
-            .attr("dy", "1.25em")
-            .attr("text-anchor", "middle")
-            .text(fx);
-      } else {
-        gxe.select("text").remove();
-      }
-
-      gx.exit().remove();
-
-      // Regenerate y-ticks…
-      var gy = gridContainer.selectAll("g.y")
-          .data(model2pxInv.ticks(5), String)
-          .attr("transform", ty)
-          .classed("axes", true);
-
-      gy.select("text")
-          .text(fy);
-
-      var gye = gy.enter().insert("g", "a")
-          .attr("class", "y")
-          .attr("transform", ty)
-          .attr("background-fill", "#FFEEB6");
-
-      if (model.get("gridLines")) {
-        gye.append("line")
-            .attr("stroke", stroke)
-            .attr("x1", 0)
-            .attr("x2", size.width);
-      } else {
-        gye.selectAll("line").remove();
-      }
-
-      if (model.get("yunits")) {
-        gye.append("text")
-            .attr("x", "-0.5em")
-            .attr("dy", "0.30em")
-            .attr("text-anchor", "end")
-            .text(fy);
-      } else {
-        gye.select("text").remove();
-      }
-
-      gy.exit().remove();
-    }
-
     // Pass in the signed 24-bit Integer used for Java MW elementColors
     // See: https://github.com/mbostock/d3/wiki/Colors
     function createElementColorGradient(id, signedInt, mainContainer) {
@@ -256,20 +177,29 @@ define(function (require) {
     }
 
     function createVectorArrowHeads(color, name) {
-      var arrowHead = mainContainer.append("defs")
-        .append("marker")
-        .attr("id", "Triangle-"+name)
-        .attr("viewBox", "0 0 10 10")
-        .attr("refX", "0")
-        .attr("refY", "5")
-        .attr("markerUnits", "strokeWidth")
-        .attr("markerWidth", "4")
-        .attr("markerHeight", "3")
-        .attr("orient", "auto")
-        .attr("stroke", color)
-        .attr("fill", color);
-      arrowHead.append("path")
-          .attr("d", "M 0 0 L 10 5 L 0 10 z");
+      var defs,
+          id = "Triangle-"+name,
+          arrowHead;
+      defs = mainContainer.select("defs");
+      if (defs.empty()) {
+        defs = mainContainer.append("defs");
+      }
+      arrowHead = defs.select("#" + id);
+      if (arrowHead.empty()) {
+        arrowHead = defs.append("marker")
+          .attr("id", "Triangle-"+name)
+          .attr("viewBox", "0 0 10 10")
+          .attr("refX", "0")
+          .attr("refY", "5")
+          .attr("markerUnits", "strokeWidth")
+          .attr("markerWidth", "4")
+          .attr("markerHeight", "3")
+          .attr("orient", "auto")
+          .attr("stroke", color)
+          .attr("fill", color);
+        arrowHead.append("path")
+            .attr("d", "M 0 0 L 10 5 L 0 10 z");
+      }
     }
 
     // Returns gradient appropriate for a given atom.
@@ -388,7 +318,7 @@ define(function (require) {
         // Heat bath symbol.
         if (heatBath) {
             yPos += yMargin;
-            imageSelect = d3.select("#heat-bath")
+            imageSelect = mainContainer.select("#heat-bath")
               .attr("y", yPos + "%")
               .style("display", "");
 
@@ -397,18 +327,18 @@ define(function (require) {
             imageHeight = Number(imageHeight.substring(0, imageHeight.length - 1));
             yPos += imageHeight;
         } else {
-            d3.select("#heat-bath").style("display","none");
+            mainContainer.select("#heat-bath").style("display","none");
         }
 
         // Kinetic Energy shading gradient.
         // Put it under heat bath symbol.
         if (keShadingMode) {
             yPos += yMargin;
-            d3.select("#ke-gradient")
+            mainContainer.select("#ke-gradient")
               .attr("y", yPos + "%")
               .style("display", "");
         } else {
-            d3.select("#ke-gradient").style("display", "none");
+            mainContainer.select("#ke-gradient").style("display", "none");
         }
     }
 
@@ -426,9 +356,7 @@ define(function (require) {
             "class": function (d) { return d.isAminoAcid() ? "draggable amino-acid" : "draggable"; },
             "r":  function(d) { return model2px(d.radius); },
             "cx": function(d) { return model2px(d.x); },
-            "cy": function(d) { return model2pxInv(d.y); }
-          })
-          .style({
+            "cy": function(d) { return model2pxInv(d.y); },
             "fill-opacity": function(d) { return d.visible; },
             "fill": function (d, i) { return gradientNameForParticle[i]; }
           })
@@ -447,9 +375,7 @@ define(function (require) {
         .attr({
           "class": "vector-"+name,
           "marker-end": "url(#Triangle-"+name+")",
-          "d": pathFunc
-        })
-        .style({
+          "d": pathFunc,
           "stroke-width": widthFunc,
           "stroke": color,
           "fill": "none"
@@ -460,9 +386,7 @@ define(function (require) {
       atomTrace.enter().append("path")
         .attr({
           "class": "atomTrace",
-          "d": getAtomTracePath
-        })
-        .style({
+          "d": getAtomTracePath,
           "stroke-width": model2px(0.01),
           "stroke": atomTraceColor,
           "fill": "none",
@@ -486,9 +410,7 @@ define(function (require) {
           "x": 0,
           "y": 0,
           "width": function(d, i) {return model2px(obstacles.width[i]); },
-          "height": function(d, i) {return model2px(obstacles.height[i]); }
-        })
-        .style({
+          "height": function(d, i) {return model2px(obstacles.height[i]); },
           "fill": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; },
           "stroke-width": function(d, i) { return obstacles.visible[i] ? 0.2 : 0.0; },
           "stroke": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; }
@@ -548,9 +470,7 @@ define(function (require) {
         // Finally, set common attributes and stying for both vertical and horizontal forces.
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
-            "marker-end": "url(#Triangle-"+ FORCE_STR +")"
-          })
-          .style({
+            "marker-end": "url(#Triangle-"+ FORCE_STR +")",
             "stroke-width": model2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
@@ -560,38 +480,41 @@ define(function (require) {
 
     function radialBondEnter() {
       radialBond1.enter().append("path")
-          .attr("d", function (d) {
-            return findPoints(d,1);})
+          .attr({
+            "d": function (d) { return findPoints(d,1); },
+            "stroke-width": function (d) {
+              if (isSpringBond(d)) {
+                return Math.log(d.strength) / 4 + model2px(0.005);
+              } else {
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+              }
+            },
+            "stroke": getBondAtom1Color,
+            "fill": "none"
+          })
           .classed("radialbond1", true)
           .classed("disulphideBond", function (d) {
             return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-          })
-          .style("stroke-width", function (d) {
-            if (isSpringBond(d)) {
-              return Math.log(d.strength) / 4 + model2px(0.005);
-            } else {
-              return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
-            }
-          })
-          .style("stroke", getBondAtom1Color)
-          .style("fill", "none");
+          });
 
       radialBond2.enter().append("path")
-          .attr("d", function (d) {
-            return findPoints(d,2); })
+          .attr({
+            "d": function (d) { return findPoints(d,2); },
+            "stroke-width": function (d) {
+              if (isSpringBond(d)) {
+                return Math.log(d.strength) / 4 + model2px(0.005);
+              } else {
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+              }
+            },
+            "stroke": getBondAtom2Color,
+            "fill": "none"
+          })
           .classed("radialbond2", true)
           .classed("disulphideBond", function (d) {
             return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-          })
-          .style("stroke-width", function (d) {
-            if (isSpringBond(d)) {
-              return Math.log(d.strength) / 4 + model2px(0.005);
-            } else {
-              return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
-            }
-          })
-          .style("stroke", getBondAtom2Color)
-          .style("fill", "none");
+          });
+
     }
 
     function findPoints(d, num) {
@@ -669,6 +592,8 @@ define(function (require) {
     }
 
     function vdwLinesEnter() {
+      var strokeWidth = model2px(0.02),
+          strokeDasharray = model2px(0.03) + " " + model2px(0.02);
       // update existing lines
       vdwLines.attr({
         "x1": function(d) { return model2px(modelResults[d[0]].x); },
@@ -687,8 +612,8 @@ define(function (require) {
           "y2": function(d) { return model2pxInv(modelResults[d[1]].y); }
         })
         .style({
-          "stroke-width": model2px(0.02),
-          "stroke-dasharray": model2px(0.03) + " " + model2px(0.02)
+          "stroke-width": strokeWidth,
+          "stroke-dasharray": strokeDasharray
         });
 
       // remove old lines
@@ -703,10 +628,8 @@ define(function (require) {
       var img = [],
           img_height,
           img_width,
-          imgHost,
-          imgHostType,
+          coords,
           imglayer,
-          imgX, imgY,
           container,
           i;
 
@@ -723,11 +646,6 @@ define(function (require) {
             imageContainerTop.selectAll("image.image_attach"+i).remove();
             imageContainerBelow.selectAll("image.image_attach"+i).remove();
 
-            imgHost = modelResults[imageProp[i].imageHostIndex];
-            imgHostType = imageProp[i].imageHostType;
-            imglayer = imageProp[i].imageLayer;
-            imgX = model2px(imageProp[i].imageX);
-            imgY = model2pxInv(imageProp[i].imageY);
             // Cache the image width and height.
             // In Classic MW model size is defined in 0.1A.
             // Model unit (0.1A) - pixel ratio is always 1. The same applies
@@ -737,10 +655,13 @@ define(function (require) {
             img_width = model2px(imageSizes[i][0]);
             img_height = model2px(imageSizes[i][1]);
 
+            coords = getImageCoords(i);
+
+            imglayer = imageProp[i].imageLayer;
             container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
             container.append("image")
-              .attr("x", function() { if (imgHostType === "") { return imgX; } else { return model2px(imgHost.x) - img_width / 2; } })
-              .attr("y", function() { if (imgHostType === "") { return imgY; } else { return model2pxInv(imgHost.y) - img_height / 2; } })
+              .attr("x", coords[0])
+              .attr("y", coords[1])
               .attr("class", "image_attach"+i+" draggable")
               .attr("xlink:href", img[i].src)
               .attr("width", img_width)
@@ -751,7 +672,7 @@ define(function (require) {
       }
     }
 
-    function getTextBoxCoords(d, i) {
+    function getTextBoxCoords(d) {
       var x, y, frameX, frameY;
       if (d.hostType) {
         if (d.hostType === "Atom") {
@@ -1002,8 +923,8 @@ define(function (require) {
               // Note that this attrs should be set *after* all previous styling options.
               // .node() will return first node in selection. It's OK - both texts
               // (label and its shadow) have the same dimension.
-              "x": -txtSelection.node().getComputedTextLength() / 2,
-              "y": "0.31em"//bBox.height / 4
+              "x": -txtSelection.node().getBBox().width / 2,
+              "y": "0.31em"
             });
         }
         // Set common attributes for shadows.
@@ -1205,7 +1126,7 @@ define(function (require) {
 
       if (keShadingMode) {
         // Update particles color. Array of colors should be already updated.
-        particle.style("fill", function (d, i) { return gradientNameForParticle[i]; });
+        particle.attr("fill", function (d, i) { return gradientNameForParticle[i]; });
       }
 
       label.attr("transform", function (d) {
@@ -1244,10 +1165,8 @@ define(function (require) {
 
     function updateVectors(vector, pathFunc, widthFunc) {
       vector.attr({
-         "d": pathFunc
-      })
-      .style({
-        "stroke-width": widthFunc
+         "d": pathFunc,
+         "stroke-width": widthFunc
       });
     }
 
@@ -1286,27 +1205,44 @@ define(function (require) {
 
       if (keShadingMode) {
         // Update also radial bonds color when keShading is on.
-        radialBond1.style("stroke", getBondAtom1Color);
-        radialBond2.style("stroke", getBondAtom2Color);
+        radialBond1.attr("stroke", getBondAtom1Color);
+        radialBond2.attr("stroke", getBondAtom2Color);
       }
     }
 
+    function getImageCoords(i) {
+      var props = imageProp[i],
+          x, y, img_width, img_height;
+      if (props.imageHostType) {
+        if (props.imageHostType === "Atom") {
+          x = modelResults[props.imageHostIndex].x;
+          y = modelResults[props.imageHostIndex].y;
+        } else if (props.imageHostType === "RectangularObstacle") {
+          x = obstacles.x[props.imageHostIndex] + (obstacles.width[props.imageHostIndex] / 2);
+          y = obstacles.y[props.imageHostIndex] + (obstacles.height[props.imageHostIndex] / 2);
+        }
+        img_width = imageSizes[i][0];
+        img_height = imageSizes[i][1];
+        x = x - img_width / 2;
+        y = y + img_height / 2;
+      } else {
+        x = props.imageX;
+        y = props.imageY;
+      }
+      return [model2px(x), model2pxInv(y)];
+    }
+
     function updateImageAttachment(){
-      var numImages, img_height, img_width, imgHost, imgHostType, imglayer, imgX, imgY, container, i;
+      var numImages, imglayer, coords, i;
       numImages= imageProp.length;
       for(i = 0; i < numImages; i++) {
         if (!imageSizes || !imageSizes[i]) continue;
-        imgHost =  modelResults[imageProp[i].imageHostIndex];
-        imgHostType =  imageProp[i].imageHostType;
-        imgX = model2px(imageProp[i].imageX);
-        imgY = model2pxInv(imageProp[i].imageY);
+        coords = getImageCoords(i);
         imglayer = imageProp[i].imageLayer;
-        img_width = model2px(imageSizes[i][0]);
-        img_height = model2px(imageSizes[i][1]);
         container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
         container.selectAll("image.image_attach"+i)
-          .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return model2px(imgHost.x) - img_width / 2; } })
-          .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return model2pxInv(imgHost.y) - img_height / 2; } });
+          .attr("x", coords[0])
+          .attr("y", coords[1]);
       }
     }
 
@@ -1347,10 +1283,33 @@ define(function (require) {
       return { x: clip(x, 0, modelWidth), y: clip(y, 0, modelHeight) };
     }
 
+    // check to see if d3 event target is either an svg element or
+    // contained within #interactive-container
+    function isEventWithinInteractive() {
+      var elem = d3.event.sourceEvent.target;
+
+      return (elem.ownerSVGElement || $(elem).closest("#interactive-container").length > 0)
+    }
+
     function nodeDrag(d, i) {
-      var dragX = model2px.invert(d3.event.x),
-          dragY = model2pxInv.invert(d3.event.y),
+      var dragX,
+          dragY,
           drag;
+
+      if (!isEventWithinInteractive()) {
+        // we are outside the frame, drop the element by firing mouseup
+        if( document.createEvent ) {
+          var evObj = document.createEvent('MouseEvent');
+          evObj.initEvent( 'mouseup', true, false );
+          d3.event.sourceEvent.target.dispatchEvent(evObj);
+        } else if( document.createEventObject ) {
+          d3.event.sourceEvent.target.fireEvent('onmouseup');
+        }
+        return;
+      }
+
+      dragX = model2px.invert(d3.event.x);
+      dragY = model2pxInv.invert(d3.event.y);
 
       if (model.is_stopped()) {
         drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
@@ -1363,7 +1322,7 @@ define(function (require) {
       }
     }
 
-    function textDrag(d, i) {
+    function textDrag(d) {
       var dragDx = model2px.invert(d3.event.dx),
           dragDy = model2px.invert(d3.event.dy);
 
@@ -1420,8 +1379,29 @@ define(function (require) {
           // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
           .attr("x", model2px(0) + 3)
           .attr("y", model2pxInv(0) - 3)
-          .style("text-anchor", "start")
-          .style("fill", clockColor.rgb());
+          .attr("text-anchor", "start")
+          .attr("fill", clockColor.rgb());
+      }
+    }
+
+    function setupFirefoxWarning() {
+      var $firefoxWarningPane,
+          pos,
+          top,
+          left,
+          b = benchmark.what_browser();
+
+      if (b.browser === "Firefox" && b.version >= "18") {
+        $firefoxWarningPane = $("#firefox-warning-pane");
+        pos = containers.pos();
+        top  = pos.bottom - $firefoxWarningPane.height();
+        left = pos.right - $firefoxWarningPane.width();
+        $firefoxWarningPane.css({
+          display: "inline",
+          top: top -5,
+          left: left - 15,
+          'z-index': 100
+        });
       }
     }
 
@@ -1442,10 +1422,11 @@ define(function (require) {
 
       atomTraceColor = model.get("atomTraceColor");
 
-      createSymbolImages();
+
       createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
       createVectorArrowHeads(forceVectorColor, FORCE_STR);
 
+      createSymbolImages();
       createAdditionalGradients();
 
       // Register additional controls, context menus etc.
@@ -1484,8 +1465,6 @@ define(function (require) {
       setupTooTips();
       setupRendererOptions();
 
-      repaint();
-
       // Subscribe for model events.
       model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
 
@@ -1503,6 +1482,8 @@ define(function (require) {
       model.on('addRadialBond', setupRadialBonds);
       model.on('removeRadialBond', setupRadialBonds);
       model.on('textBoxesChanged', drawTextBoxes);
+
+      setupFirefoxWarning();
 
     }
 
@@ -1533,7 +1514,6 @@ define(function (require) {
         model2px = m2px;
         model2pxInv = m2pxInv;
       }
-      setupClock();
       setupObstacles();
       setupVdwPairs();
       setupColorsOfParticles();
@@ -1545,6 +1525,8 @@ define(function (require) {
       drawSymbolImages();
       drawImageAttachment();
       drawTextBoxes();
+      setupClock();
+      setupFirefoxWarning();
     }
 
     //

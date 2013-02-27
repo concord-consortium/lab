@@ -25,12 +25,12 @@ define(function (require) {
   // Return all available types of arrays.
   // If you need to use new type, declare it here.
   return {
-    float:  useTyped ? 'Float32Array' : 'regular',
-    int32:  useTyped ? 'Int32Array'   : 'regular',
-    int16:  useTyped ? 'Int16Array'   : 'regular',
-    int8:   useTyped ? 'Int8Array'    : 'regular',
-    uint16: useTyped ? 'Uint16Array'  : 'regular',
-    uint8:  useTyped ? 'Uint8Array'   : 'regular'
+    floatType:  useTyped ? 'Float32Array' : 'regular',
+    int32Type:  useTyped ? 'Int32Array'   : 'regular',
+    int16Type:  useTyped ? 'Int16Array'   : 'regular',
+    int8Type:   useTyped ? 'Int8Array'    : 'regular',
+    uint16Type: useTyped ? 'Uint16Array'  : 'regular',
+    uint8Type:  useTyped ? 'Uint8Array'   : 'regular'
   };
 
 });

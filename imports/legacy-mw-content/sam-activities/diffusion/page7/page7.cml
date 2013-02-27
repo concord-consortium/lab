@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion, Osmosis, and Active Transport: The porous membrane.</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+
+  
+
+
+
+
+ 
+    
+ 
+
+
+
+
+</text>
+<section start="0" end="24">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="6">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>400.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      Until now you have only observed oxygen and carbon dioxide diffusing 
+      through a cell membrane. The way those two molecules directly pass 
+      through the cell membrane is actually quite uncommon. Most molecules are 
+      unable to pass through the membrane, so some kind of hole must be made 
+      to allow them to diffuse through. This is done using one or more 
+      proteins to create a pore in the membrane that allows only specific 
+      molecules or ions to pass through.
+    &lt;/p&gt;
+    &lt;p&gt;
+      To the right is the model of such a pore. This one allows water to pass 
+      through a cell membrane.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Explore the model by &lt;a href=&quot;script:page:0:message animControls.html&quot;&gt;using 
+      the animation controls&lt;/a&gt; and use the &amp;quot;snapshot&amp;quot; button below to take 
+      pictures that will help you answer the questions below.
+    &lt;/p&gt;
+    &lt;p align=&quot;center&quot;&gt;
+      &lt;input name=&quot;button&quot; value=&quot;take a snapshot&quot; script=&quot;script:jmol:1:snapshot&quot; id=&quot;button&quot; type=&quot;submit&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>define ~poreLipids within(34.0,atomno=34999 and model=5) or within(34.0,atomno=38891 and model=5) or atomno=36076 or atomno=36077 or atomno=36079 or atomno=25870 or atomno=25734 or atomno=25065 or atomno=940 or atomno=25066 or atomno=24948 or atomno=24931 or atomno=24930 or atomno=25064 or atomno=25062 or atomno=36075 or atomno=29926 or atomno=29772 or within(4.0, atomno=3507) or atomno=24215 or atomno=3489 or atomno=2835 or atomno=24126 or atomno=24127 or atomno=24128 or atomno=3512 or atomno=3520 or atomno=3525 or atomno=3524 or atomno=3523 or within(3.0,atomno=2683) or atomno=3526 or atomno=3514 or atomno=3579 or atomno=3576 or atomno=3582 or atomno=2772 or atomno=29755 or atomno=30828 or atomno=12778 or atomno=12777 or atomno=12775 or atomno=12776 or atomno=13868 or atomno=13867 or atomno=13869 or atomno=13831;
+define ~singlePore model=1;
+define ~halfPoreSmall (80-107 or 125-167 or 173-249) and model=1;
+define ~halfPoreLarge model=1 and not ~halfPoreSmall and not water;
+define ~lipidHead model=5 and (oxygen or phosphorus or nitrogen or *.C1 or *.C2 or *.C3 or *.C11 or *.C12 or *.C13 or *.C14 or *.C15);
+define ~lipidTail model=5 and not ~lipidHead;
+select not model=5;
+translateSelected {-43 -46 -27};
+select all;
+center selected;
+select ~lipidHead;
+color atoms [xeb4000];
+select ~lipidTail;
+color atoms [xffbf00];
+display none;
+set echo middle top;
+set echo all;
+color echo [xdcecda];
+select protein;
+color atoms lightblue;
+select water;
+color atoms blue;
+font echo 18 SANSSERIF plain;
+echo &quot;||Use the animation controls below|to go on a guided tour of an aquapore.||At each stop on the tour|you can explore the model by|dragging the mouse to rotate the model|and shift-dragging to zoom the model.||Check out the questions below|to find out what kind of snapshots|you should take along the way.&quot;
+set echo bottom center;
+font echo 12 sansserif;
+color echo pink;
+echo &quot;*Note: With large biological molecules the hydrogen|atoms are commonly not shown.&quot;</script><menubar>false</menubar><toolbar>false</toolbar><resource>aquaporeMem.pdb.gz</resource><state>page7$0.jms</state><width>400.0</width>
+<height>400.0</height>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="12">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>45</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-right: 2px; margin-top: 10&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;left&quot;&gt;
+      &lt;img src=&quot;aquaporeTitle.png&quot; height=&quot;26&quot; width=&quot;712&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="11" end="12">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="12" end="17">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="13" end="14">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page7$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>195.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style1 { font-family: Arial, Helvetica, sans-serif }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-left: 8&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;span class=&quot;style1&quot;&gt;&lt;strong&gt;SELECT ONE&lt;/strong&gt;&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;p&gt;
+            &lt;input name=&quot;RadioGroup1&quot; value=&quot;radio&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%pos%dotmml; else; load %pos%dotmml; endif; set %currentmodel round(%pos); run &quot; id=&quot;RadioGroup1_0&quot; type=&quot;radio&quot;&gt;
+            &lt;br&gt;
+            
+          &lt;/p&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;positive ion (Na&lt;sup&gt;+&lt;/sup&gt;)&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img height=&quot;8&quot; width=&quot;8&quot; src=&quot;pos.png&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; value=&quot;radio&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%neg%dotmml; else; load %neg%dotmml; endif; set %currentmodel round(%neg); run&quot; id=&quot;RadioGroup1_1&quot; type=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;negative ion (Cl&lt;sup&gt;-&lt;/sup&gt;)&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img height=&quot;8&quot; width=&quot;8&quot; src=&quot;neg.png&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; value=&quot;radio&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%co2%dotmml; else; load %co2%dotmml; endif; set %currentmodel round(%co2); run&quot; id=&quot;RadioGroup1_2&quot; type=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;small non-polar (CO&lt;sub&gt;2&lt;/sub&gt;)&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img height=&quot;8&quot; width=&quot;8&quot; src=&quot;co2.png&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; value=&quot;radio&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%water%dotmml; else; load %water%dotmml; endif; set %currentmodel round(%water); run&quot; id=&quot;RadioGroup1_3&quot; type=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;small polar (H&lt;sub&gt;2&lt;/sub&gt;O)&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img height=&quot;14&quot; width=&quot;14&quot; src=&quot;water.png&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; value=&quot;radio&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%sugar%dotmml; else; load %sugar%dotmml; endif; set %currentmodel round(%sugar); run&quot; id=&quot;RadioGroup1_4&quot; type=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;medium polar (sugar)&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img height=&quot;28&quot; width=&quot;28&quot; src=&quot;sugar.png&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input name=&quot;RadioGroup1&quot; value=&quot;radio&quot; script=&quot;script:mw2d:1:if (%aquaporeOn); load %aqua-%mix%dotmml; else; load %mix%dotmml; endif; set %currentmodel round(%mix); run&quot; id=&quot;RadioGroup1_5&quot; type=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class=&quot;style1&quot;&gt;mix of everything&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;bottom&quot;&gt;
+          &lt;input name=&quot;checkbox&quot; script_selected=&quot;script:mw2d:1:set %aquaporeOn 1; if (%currentmodel != 0.0); load %aqua-%currentmodel%dotmml; run; endif;&quot; script_deselected=&quot;script:mw2d:1:set %aquaporeOn 0; if(%currentmodel != 0.0); load %currentmodel%dotmml; run; endif;&quot; id=&quot;checkbox&quot; type=&quot;checkbox&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td valign=&quot;bottom&quot; style=&quot;height: 30&quot;&gt;
+          &lt;span class=&quot;style1&quot;&gt;with aquapore&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td valign=&quot;bottom&quot; style=&quot;height: 30&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-926584</bgcolor>
+</component></content>
+
+<content start="15" end="16">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="16" end="17">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="17" end="19">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>25</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon><size>8</size></content>
+
+<content start="18" end="19">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<content start="22" end="23">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="23" end="24">
+</paragraph>
+</section>
+</document>

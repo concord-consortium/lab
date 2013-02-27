@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion, Osmosis, and Active Transport: Net flow from high to low.</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+
+ 
+           
+ 
+
+
+
+</text>
+<section start="0" end="23">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>45</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-top: 10&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;center&quot;&gt;
+      &lt;img src=&quot;insideOutsideTitle.png&quot; height=&quot;26&quot; width=&quot;713&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="17">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>23.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="6" end="7">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page2$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>35.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<average>true</average>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-1d0a01</bgcolor>
+<fgcolor>-5c9119</fgcolor>
+<minimum>0.0</minimum>
+<maximum>120.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="9" end="10">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>15.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 1</timeseries>
+<datatype>1</datatype>
+<samplingpoints>50</samplingpoints>
+<average>true</average>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-1d0a01</bgcolor>
+<fgcolor>-100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>120.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="11" end="12">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>50.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 2</timeseries>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<average>true</average>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-b2021</bgcolor>
+<fgcolor>-5c9119</fgcolor>
+<minimum>0.0</minimum>
+<maximum>120.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="13" end="14">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>15.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 3</timeseries>
+<datatype>1</datatype>
+<samplingpoints>50</samplingpoints>
+<average>true</average>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-b2021</bgcolor>
+<fgcolor>-100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>120.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="15" end="16">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>32.0</width><height>250</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="16" end="17">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="17" end="19">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="17" end="18">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>100</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style1 { font-size: 10px }
+      --&gt;
+    &lt;/style&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width: 730&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          CO&lt;sub&gt;2&lt;/sub&gt; concentration
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;select name=&quot;jumpMenu&quot; script3=&quot;script:mw2d:1:set %co2Left %high;
+	select element 1 within(%lx,%ly,%lwidth,%lheight);
+	remove;
+	set %currentNum count(1,%lx,%ly,%lwidth,%lheight);
+	while (%currentNum &lt; %co2Left);
+		add atom 1 (rand()*%lwidth,rand()*%lheight);
+		set %currentNum count(1,%lx,%ly,%lwidth,%lheight);
+	endwhile;&quot; script2=&quot;script:mw2d:1:set %co2Left %low;
+	select element 1 within(%lx,%ly,%lwidth,%lheight);
+	remove;
+	set %currentNum count(1,%lx,%ly,%lwidth,%lheight);
+	while (%currentNum &lt; %co2Left);
+		add atom 1 (rand()*%lwidth,rand()*%lheight);
+		set %currentNum count(1,%lx,%ly,%lwidth,%lheight);
+	endwhile;&quot; script1=&quot;script:mw2d:1:set %co2Left 0;
+	select element 1 within(%lx,%ly,%lwidth,%lheight);
+	remove; 
+	if (%number_of_atoms == 0);
+		external disableStartReset.mws; 
+	endif;&quot; id=&quot;jumpMenu&quot; selfscript3=&quot;enablecomponent 2 true; enablecomponent 4 true;&quot; selfscript2=&quot;enablecomponent 2 true; enablecomponent 4 true;&quot; selfscript1=&quot;//do nothing&quot;&gt;
+            &lt;option&gt;none 
+            &lt;option&gt;low 
+            &lt;option&gt;high 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          CO&lt;sub&gt;2&lt;/sub&gt; concentration
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;select name=&quot;jumpMenu&quot; script3=&quot;script:mw2d:1:set %co2Right %high;
+	select element 1 within(%rx,%ry,%rwidth,%rheight);
+	remove;
+	set %currentNum count(1,%rx,%ry,%rwidth,%rheight);
+	while (%currentNum &lt; %co2Right);
+		add atom 1 (%rx+rand()*%rwidth,%ry+rand()*%rheight);
+		set %currentNum count(1,%rx,%ry,%rwidth,%rheight);
+	endwhile;&quot; script2=&quot;script:mw2d:1:set %co2Right %low;
+	select element 1 within(%rx,%ry,%rwidth,%rheight);
+	remove;
+	set %currentNum count(1,%rx,%ry,%rwidth,%rheight);
+	while (%currentNum &lt; %co2Right);
+		add atom 1 (%rx+rand()*%rwidth,%ry+rand()*%rheight);
+		set %currentNum count(1,%rx,%ry,%rwidth,%rheight);
+	endwhile;&quot; script1=&quot;script:mw2d:1:set %co2Right 0;
+	select element 1 within(%rx,%ry,%rwidth,%rheight);
+	remove; 
+	if (%number_of_atoms == 0);
+		external disableStartReset.mws; 
+	endif;&quot; id=&quot;jumpMenu&quot; selfscript3=&quot;enablecomponent 2 true; enablecomponent 4 true;&quot; selfscript2=&quot;enablecomponent 2 true; enablecomponent 4 true;&quot; selfscript1=&quot;//do nothing&quot;&gt;
+            &lt;option&gt;none 
+            &lt;option&gt;low 
+            &lt;option&gt;high 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+        &lt;td rowspan=&quot;2&quot; align=&quot;center&quot; style=&quot;width: 155px&quot;&gt;
+          &lt;input name=&quot;button&quot; selfscript=&quot;enablecomponent 2 false; enablecomponent 3 true; enablecomponent 0 false; enablecomponent 1 false; enablecomponent 5 false; enablecomponent 6 false;&quot; value=&quot;run&quot; script=&quot;script:mw2d:1:minimize 1 10; set temperature %startTemp; run;&quot; id=&quot;button&quot; type=&quot;submit&quot;&gt;
+          &amp;#160; &lt;input name=&quot;button2&quot; selfscript=&quot;enablecomponent 2 true; enablecomponent 3 false;&quot; value=&quot;stop&quot; script=&quot;script:mw2d:1:stop; set action MARK_ID;&quot; id=&quot;button2&quot; type=&quot;submit&quot;&gt;&lt;br&gt;&lt;input name=&quot;button3&quot; selfscript=&quot;enablecomponent 2 true; enablecomponent 3 false; enablecomponent 0 true; enablecomponent 1 true; enablecomponent 5 true; enablecomponent 6 true;&quot; value=&quot;reset&quot; script=&quot;script:mw2d:1:reset;
+		// add left carbon dioxide
+		define %currentNum 0;
+		set %currentNum count(1,%lx,%ly,%lwidth,%lheight);
+		while (%currentNum &lt; %co2Left);
+			add atom 1 (rand()*%lwidth,rand()*%lheight);
+			set %currentNum count(1,%lx,%ly,%lwidth,%lheight);
+		endwhile;
+		// add left oxygen
+		set %currentNum count(0,%lx,%ly,%lwidth,%lheight);
+		while (%currentNum &lt; %o2Left);
+			add atom 0 (rand()*%lwidth,rand()*%lheight);
+			set %currentNum count(0,%lx,%ly,%lwidth,%lheight);
+		endwhile;
+		// add right carbon dioxide
+		set %currentNum count(1,%rx,%ry,%rwidth,%rheight);
+		while (%currentNum &lt; %co2Right);
+			add atom 1 (%rx+rand()*%rwidth,%ry+rand()*%rheight);
+			set %currentNum count(1,%rx,%ry,%rwidth,%rheight);
+		endwhile;
+		// add right oxygen
+		set %currentNum count(0,%rx,%ry,%rwidth,%rheight);
+		while (%currentNum &lt; %o2Right);
+			add atom 0 (%rx+rand()*%rwidth,%ry+rand()*%rheight);
+			set %currentNum count(0,%rx,%ry,%rwidth,%rheight);
+		endwhile;
+		set action MARK_ID;&quot; id=&quot;button3&quot; type=&quot;submit&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          O&lt;sub&gt;2&lt;/sub&gt; concentration
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;select name=&quot;jumpMenu&quot; script3=&quot;script:mw2d:1:set %o2Left %high;
+	select element 0 within(%lx,%ly,%lwidth,%lheight);
+	remove;
+	set %currentNum count(0,%lx,%ly,%lwidth,%lheight);
+	while (%currentNum &lt; %o2Left);
+		add atom 0 (rand()*%lwidth,rand()*%lheight);
+		set %currentNum count(0,%lx,%ly,%lwidth,%lheight);
+	endwhile;&quot; script2=&quot;script:mw2d:1:set %o2Left %low;
+	select element 0 within(%lx,%ly,%lwidth,%lheight);
+	remove;
+	set %currentNum count(0,%lx,%ly,%lwidth,%lheight);
+	while (%currentNum &lt; %o2Left);
+		add atom 0 (rand()*%lwidth,rand()*%lheight);
+		set %currentNum count(0,%lx,%ly,%lwidth,%lheight);
+	endwhile;&quot; script1=&quot;script:mw2d:1:set %o2Right 0;
+	select element 0 within(%lx,%ly,%lwidth,%lheight);
+	remove; 
+	if (%number_of_atoms == 0);
+		external disableStartReset.mws; 
+	endif;&quot; id=&quot;jumpMenu&quot; selfscript3=&quot;enablecomponent 2 true; enablecomponent 4 true;&quot; selfscript2=&quot;enablecomponent 2 true; enablecomponent 4 true;&quot; selfscript1=&quot;//do nothing&quot;&gt;
+            &lt;option&gt;none 
+            &lt;option&gt;low 
+            &lt;option&gt;high 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          O&lt;sub&gt;2&lt;/sub&gt; concentration
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;select name=&quot;jumpMenu&quot; script3=&quot;script:mw2d:1:set %o2Right %high;
+	select element 0 within(%rx,%ry,%rwidth,%rheight);
+	remove;
+	set %currentNum count(0,%rx,%ry,%rwidth,%rheight);
+	while (%currentNum &lt; %o2Right);
+		add atom 0 (%rx+rand()*%rwidth,%ry+rand()*%rheight);
+		set %currentNum count(0,%rx,%ry,%rwidth,%rheight);
+	endwhile;&quot; script2=&quot;script:mw2d:1:set %o2Right %low;
+	select element 0 within(%rx,%ry,%rwidth,%rheight);
+	remove;
+	set %currentNum count(0,%rx,%ry,%rwidth,%rheight);
+	while (%currentNum &lt; %o2Right);
+		add atom 0 (%rx+rand()*%rwidth,%ry+rand()*%rheight);
+		set %currentNum count(0,%rx,%ry,%rwidth,%rheight);
+	endwhile;&quot; script1=&quot;script:mw2d:1:set %o2Right 0;
+	select element 0 within(%rx,%ry,%rwidth,%rheight);
+	remove; 
+	remove; 
+	if (%number_of_atoms == 0);
+		external disableStartReset.mws; 
+	endif;&quot; id=&quot;jumpMenu&quot; selfscript3=&quot;enablecomponent 2 true; enablecomponent 4 true;&quot; selfscript2=&quot;enablecomponent 2 true; enablecomponent 4 true;&quot; selfscript1=&quot;//do nothing&quot;&gt;
+            &lt;option&gt;none 
+            &lt;option&gt;low 
+            &lt;option&gt;high 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;5&quot; align=&quot;center&quot;&gt;
+          &lt;span class=&quot;style1&quot;&gt;When the model is stopped, you can drag the 
+          mouse over one or more molecules to highlight them.&lt;/span&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon><size>8</size></content>
+
+<content start="18" end="19">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<content start="21" end="22">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="22" end="23">
+</paragraph>
+</section>
+</document>

@@ -113,7 +113,7 @@ define(function (require) {
     }
 
     function scale(w, h) {
-      if (!arguments.length) {
+      if (!w && !h) {
         cx = elem.property("clientWidth");
         cy = elem.property("clientHeight");
       } else {
@@ -130,9 +130,7 @@ define(function (require) {
         }
       }
       calculateSizeType();
-      // displayProperties = layout.getDisplayProperties();
-      emsize = parseFloat($('#viz').css('font-size') || $('body').css('font-size'))/10;
-      // emsize = displayProperties.emsize;
+      emsize = parseFloat($(idOrElement).css('font-size')) / 10;
     }
 
     function initialize(idOrElement, opts, message) {

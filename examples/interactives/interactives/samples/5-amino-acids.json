@@ -2,6 +2,7 @@
   "title": "Protein Folding",
   "publicationStatus": "public",
   "subtitle": "Explore simple protein folding.",
+  "fontScale": 0.6,
   "about": [
     "Discover how the properties of amino acids in a protein interact with their environment to cause proteins to fold in a particular way.",
     "Generate different proteins, select the solvent type, and change the color scheme for amino acids using the buttons below the model.",
@@ -155,8 +156,8 @@
   ],
   "layout": {
     "bottom": [
-      ["show-labels", "select-color-scheme"],
-      ["select-solvent", "random-protein-button"]
+      ["show-labels", "select-color-scheme", "select-solvent"],
+      ["random-protein-button"]
     ]
   }
 }

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion, Osmosis, and Active Transport: Introduction.</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+
+ 
+
+
+   
+
+
+
+</text>
+<section start="0" end="15">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageMd3d</class><resource>page1$0.mdd</resource><coordinate>page1$0.xyz</coordinate><width>330</width><height>270</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<recorderless>true</recorderless>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<SpaceBelow>15.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="11">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>361.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-right: 10&quot;&gt;
+    &lt;p&gt;
+      To the right is a model showing pure water. Try the following:
+    &lt;/p&gt;
+    &lt;ol&gt;
+      &lt;li&gt;
+        Place a drop of food coloring by clicking somewhere in the container.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Observe how the dye diffuses.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Stop the model, and use the &amp;quot;show path&amp;quot; button &lt;img src=&quot;showTrajectory.gif&quot; height=&quot;14&quot; border=&quot;0&quot; width=&quot;14&quot;&gt;&lt;a href=&quot;script:page:0:message showTrajectoryHelp.html&quot;&gt;(help?)&lt;/a&gt; 
+        to see the path various dye molecules have taken.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Then reset the model and repeat your observations, but place the dye 
+        in a different location.
+      &lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;p align=&quot;center&quot;&gt;
+      &lt;input name=&quot;run&quot; value=&quot;run&quot; selfscript=&quot;enablecomponent 0 false; enablecomponent 1 true;&quot; script=&quot;script:mw2d:1:run; set %modelRunning 1; cursor dropper.png (8,28);&quot; id=&quot;run&quot; type=&quot;submit&quot;&gt;
+      &amp;#160; &lt;input name=&quot;stop&quot; enabled=&quot;false&quot; value=&quot;stop&quot; selfscript=&quot;enablecomponent 0 true; enablecomponent 1 false;&quot; script=&quot;script:mw2d:1:stop; set %modelRunning 0; cursor null;&quot; id=&quot;stop&quot; type=&quot;submit&quot;&gt; 
+      &amp;#160; &lt;input name=&quot;reset&quot; value=&quot;reset&quot; selfscript=&quot;enablecomponent 0 false; enablecomponent 1 true;&quot; script=&quot;script:mw2d:1:reset;run; set %modelRunning 1; cursor dropper.png (8,28);&quot; id=&quot;reset&quot; type=&quot;submit&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="8" end="9">
+</content>
+
+<content start="9" end="10">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page1$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><button>Toggle Trajectory</button></component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<content start="13" end="14">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="14" end="15">
+</paragraph>
+</section>
+</document>

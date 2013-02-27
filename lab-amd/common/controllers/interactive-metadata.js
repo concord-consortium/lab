@@ -23,6 +23,10 @@ define(function() {
         defaultValue: ""
       },
 
+      fontScale: {
+        defaultValue: 1
+      },
+
       models: {
         // List of model definitions. Its definition is below ('model').
         required: true
@@ -143,6 +147,33 @@ define(function() {
     /**
       Interactive components:
     */
+    text: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      },
+      text: {
+        // Text content.
+        defaultValue: ""
+      },
+      style: {
+        // Semantic description of text style.
+        // Accepted values: "basic", "header".
+        defaultValue: "basic"
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      }
+    },
+
     button: {
       id: {
         required: true
@@ -155,6 +186,12 @@ define(function() {
       },
       text: {
         defaultValue: ""
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
       }
     },
 
@@ -168,10 +205,17 @@ define(function() {
       text: {
         defaultValue: ""
       },
-      property: {},
-      onClick: {},
-      // Note that 'initialValue' makes sense only for checkboxes without property binding.
-      initialValue: {}
+      property: {
+        conflictsWith: ["initialValue"]
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      },
+      initialValue: {
+        // Note that 'initialValue' makes sense only for checkboxes without property binding.
+        // Do not use checkbox as setter.
+        conflictsWith: ["property"]
+      }
     },
 
     slider: {
@@ -196,10 +240,27 @@ define(function() {
       labels: {
         defaultValue: []
       },
+      width: {
+        defaultValue: "12em"
+      },
+      height: {
+        defaultValue: "3.75em"
+      },
       displayValue: {},
-      property: {},
-      action: {},
-      initialValue: {}
+      // Use "property" OR "action" + "initialValue".
+      property: {
+        // If you use property binding, do not mix it with action scripts and initial values.
+        conflictsWith: ["initialValue", "action"]
+      },
+      action: {
+        conflictsWith: ["property"]
+      },
+      initialValue: {
+        // Do not use slider as a property setter.
+        // There are better ways to do it, e.g.:
+        // "onLoad" scripts (and set({ }) call inside), "modelOptions", etc.
+        conflictsWith: ["property"]
+      }
     },
 
     pulldown: {
@@ -211,6 +272,10 @@ define(function() {
       },
       options: {
         defaultValue: []
+      },
+      property: {
+        // Pulldown can be also connected to a model property.
+        // In such case, options should define "value", not "action".
       }
     },
 
@@ -218,9 +283,21 @@ define(function() {
       text: {
         defaultValue: ""
       },
+      action: {
+        // Use it when pulldown is not bound to any model property.
+        conflictsWith: ["value"]
+      },
+      value: {
+        // Use it when pulldown is bound to some model property.
+        conflictsWith: ["action"]
+      },
+      selected: {
+        // Use it when pulldown is not bound to any model property.
+        // When "property" is used for pulldown, it will determine
+        // selection.
+        conflictsWith: ["value"]
+      },
       disabled: {},
-      selected: {},
-      action: {},
       loadModel: {}
     },
 
@@ -236,6 +313,10 @@ define(function() {
       },
       options: {
         defaultValue: []
+      },
+      property: {
+        // Radio can be also connected to a model property.
+        // In such case, options should define "value", not "action".
       }
     },
 
@@ -243,9 +324,21 @@ define(function() {
       text: {
         defaultValue: ""
       },
+      action: {
+        // Use it when radio is not bound to any model property.
+        conflictsWith: ["value"]
+      },
+      value: {
+        // Use it when radio is bound to some model property.
+        conflictsWith: ["action"]
+      },
+      selected: {
+        // Use it when radio is not bound to any model property.
+        // When "property" is used for radio, it will determine
+        // selection.
+        conflictsWith: ["value"]
+      },
       disabled: {},
-      selected: {},
-      action: {},
       loadModel: {}
     },
 
@@ -279,6 +372,16 @@ define(function() {
       max: {
         required: true
       },
+      width: {
+        // It controls width of the thermometer graphics!
+        // It won't affect label, e.g. making it truncated
+        // as width is only "2.5em".
+        defaultValue: "2.5em"
+      },
+      height: {
+        // Height of the whole thermometer with reading.
+        defaultValue: "100%"
+      },
       labelIsReading: {
         defaultValue: false
       },
@@ -305,6 +408,12 @@ define(function() {
       title: {
         defaultValue: "Graph"
       },
+      width: {
+        defaultValue: "100%"
+      },
+      height: {
+        defaultValue: "100%"
+      },
       xlabel: {
         defaultValue: "Model Time (ps)"
       },
@@ -322,6 +431,30 @@ define(function() {
       },
       ymax: {
         defaultValue: 10
+      },
+      xTicCount: {
+        defaultValue: 10
+      },
+      yTicCount: {
+        defaultValue: 10
+      },
+      xscaleExponent: {
+        defaultValue: 0.5
+      },
+      yscaleExponent: {
+        defaultValue: 0.5
+      },
+      xFormatter: {
+        defaultValue: "3.2r"
+      },
+      yFormatter: {
+        defaultValue: "3.2r"
+      },
+      lines: {
+        defaultValue: true
+      },
+      bars: {
+        defaultValue: false
       }
     },
 
@@ -334,6 +467,12 @@ define(function() {
       },
       property: {
         required: true
+      },
+      width: {
+        defaultValue: "100%"
+      },
+      height: {
+        defaultValue: "100%"
       },
       options: {
         defaultValue: {

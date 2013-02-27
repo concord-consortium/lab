@@ -313,6 +313,12 @@ modelList = [
     ]
   },
   {
+    "section": "sam-activities/diffusion",
+    "content": [
+
+    ]
+  },
+  {
     "section": "sam-activities/DNA-to-proteins",
     "content": [
 

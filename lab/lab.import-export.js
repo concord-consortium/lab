@@ -360,6 +360,7 @@ define('lab.config',['require','common/actual-root'],function (require) {
   publicAPI = {
   "sharing": true,
   "home": "http://lab.concord.org",
+  "homeForSharing": "http://lab.concord.org",
   "homeInteractivePath": "/examples/interactives/interactive.html",
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,

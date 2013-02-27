@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion, Osmosis, and Active Transport: Active transport</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+
+ 
+           
+ 
+
+
+
+
+</text>
+<section start="0" end="23">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>45</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-left: 10px; margin-top: 10px&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;left&quot;&gt;
+      &lt;img src=&quot;atpTitle.png&quot; height=&quot;23&quot; width=&quot;596&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="16">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>21.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="5" end="6">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page10$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>25.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 1</timeseries>
+<description>outside positive concentration</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<multiplier>1000.0</multiplier>
+<width>20</width>
+<height>330</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-1d0a01</bgcolor>
+<fgcolor>-6d8e49</fgcolor>
+<minimum>0.0</minimum>
+<maximum>50.0</maximum>
+<value>26.06712281703949</value>
+</component></content>
+
+<content start="8" end="9">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>12.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<description>outside negative concentration</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<multiplier>1000.0</multiplier>
+<width>20</width>
+<height>330</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-b2021</bgcolor>
+<fgcolor>-6d8e49</fgcolor>
+<minimum>0.0</minimum>
+<maximum>50.0</maximum>
+<value>26.056746020913124</value>
+</component></content>
+
+<content start="10" end="11">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>60.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-top: 5px&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;right&quot;&gt;
+      &lt;img src=&quot;chemTitle.png&quot; height=&quot;131&quot; width=&quot;17&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 2</timeseries>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>330</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-111113</bgcolor>
+<fgcolor>-b3ab6</fgcolor>
+<minimum>0.0</minimum>
+<maximum>14.0</maximum>
+<value>6.0</value>
+</component></content>
+
+<content start="12" end="13">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>12.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 3</timeseries>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>20</width>
+<height>330</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<bgcolor>-111113</bgcolor>
+<fgcolor>-b3ab6</fgcolor>
+<minimum>0.0</minimum>
+<maximum>14.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="14" end="15">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>40.0</width><height>330</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-top: 5px&quot;&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;left&quot;&gt;
+      &lt;img src=&quot;peTitle.png&quot; height=&quot;205&quot; width=&quot;17&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="15" end="16">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="16" end="18">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="16" end="17">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>100</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style3 { color: #CC0000 }
+        .style2 { color: #bb0000; font-size: 9px }
+        .style1 { font-size: 10px }
+      --&gt;
+    &lt;/style&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width: 730&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td style=&quot;width: 90px&quot; align=&quot;right&quot; rowspan=&quot;2&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          ATP concentration
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;select name=&quot;jumpMenu&quot; script3=&quot;script:mw2d:1:set %atpConc 2;&quot; script2=&quot;script:mw2d:1:set %atpConc 1;&quot; script1=&quot;script:mw2d:1:set %atpConc -1;&quot; id=&quot;jumpMenu&quot; selfscript3=&quot;enablecomponent 1 true;&quot; selfscript2=&quot;enablecomponent 1 true;&quot; selfscript1=&quot;// do nothing;&quot;&gt;
+            &lt;option&gt;none 
+            &lt;option&gt;low 
+            &lt;option&gt;high 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+        &lt;td rowspan=&quot;2&quot; style=&quot;width: 120px&quot;&gt;
+          &lt;input name=&quot;button4&quot; value=&quot;load model&quot; selfscript=&quot;enablecomponent 2 true; enablecomponent 3 false; enablecomponent 4 false;&quot; script=&quot;script:mw2d:1:
+          		if ((%atpConc == -1) or (%caConc == -1));
+                	message addBoth.html;
+                else;
+                	stop immediately;
+                	set %filename round(%caConc*10+%atpConc);
+                    load %filename%ext;
+                    set %totalChemicalEnergy %number_of_molecules;
+                    set %waitingForCaBinding 1;
+                    set %waitingForATPBinding 0;
+                    set %waitingForATPSettling 0;
+                    set %waitingForClearCavity 0;
+                    set %waitingForProteinTransition 0;
+                    set %waitingForCaSettling 0;
+                    set %waitingForATPPocketFormation 0;
+                    set %waitingForCaRelease 0;
+                    set %waitingForFlashTransition 0;
+                    set %waitingForProteinReset 0;
+                    set %topBlockerInPlace 1;
+                    set %bottomBlockerInPlace 1;
+                    set %topParticleIndex -1;
+                    set %bottomParticleIndex -1;
+                    set %caToCapture -1;
+                    set %caToCaptureFar -1;
+                    set %caToCaptureNear -1;
+                    set %restraintSet 0;
+                    set %leftObs 0;
+                    set %rightObs 0;
+                    set %rightObs2 0;
+                    set %flashImage 0;
+                    set %caCount 0;
+                    set %atpCount 0;
+                    set %atomsInProtein 0;
+                    set %caLeft 0;
+                    set %caRight 0;
+                    beginexternal;
+                    	@colorbar:10:enablecomponent 2 true;  enablecomponent 1 false;
+                    endexternal;
+               endif;&quot; id=&quot;button4&quot; type=&quot;submit&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;
+          &lt;input name=&quot;button&quot; value=&quot;run&quot; selfscript=&quot;enablecomponent 2 false; enablecomponent 3 true; enablecomponent 4 true;&quot; script=&quot;script:mw2d:1:minimize 1 10; run;&quot; id=&quot;button&quot; type=&quot;submit&quot;&gt;
+          &lt;input name=&quot;button2&quot; value=&quot;stop&quot; selfscript=&quot;enablecomponent 2 true; enablecomponent 3 false;&quot; script=&quot;script:mw2d:1:stop;&quot; id=&quot;button2&quot; type=&quot;submit&quot;&gt;
+          &lt;input name=&quot;button3&quot; value=&quot;reset&quot; selfscript=&quot;enablecomponent 2 true; enablecomponent 3 false; enablecomponent 4 false;&quot; script=&quot;script:mw2d:1:
+          		          		if ((%atpConc == -1) or (%caConc == -1));
+                	message addBoth.html;
+                else;
+                	stop immediately;
+                	set %filename round(%caConc*10+%atpConc);
+                    load %filename%ext;
+                    set %totalChemicalEnergy %number_of_molecules;
+                    set %waitingForCaBinding 1;
+                    set %waitingForATPBinding 0;
+                    set %waitingForATPSettling 0;
+                    set %waitingForClearCavity 0;
+                    set %waitingForProteinTransition 0;
+                    set %waitingForCaSettling 0;
+                    set %waitingForATPPocketFormation 0;
+                    set %waitingForCaRelease 0;
+                    set %waitingForFlashTransition 0;
+                    set %waitingForProteinReset 0;
+                    set %topBlockerInPlace 1;
+                    set %bottomBlockerInPlace 1;
+                    set %topParticleIndex -1;
+                    set %bottomParticleIndex -1;
+                    set %caToCapture -1;
+                    set %caToCaptureFar -1;
+                    set %caToCaptureNear -1;
+                    set %restraintSet 0;
+                    set %leftObs 0;
+                    set %rightObs 0;
+                    set %rightObs2 0;
+                    set %flashImage 0;
+                    set %caCount 0;
+                    set %atpCount 0;
+                    set %atomsInProtein 0;
+                    set %caLeft 0;
+                    set %caRight 0;
+               endif;&quot; id=&quot;button3&quot; type=&quot;submit&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          Ca&lt;sup&gt;+2&lt;/sup&gt; concentration
+        &lt;/td&gt;
+        &lt;td align=&quot;left&quot;&gt;
+          &lt;select name=&quot;jumpMenu2&quot; script3=&quot;script:mw2d:1:set %caConc 2;&quot; script2=&quot;script:mw2d:1:set %caConc 1;&quot; script1=&quot;script:mw2d:1:set %caConc -1;&quot; id=&quot;jumpMenu&quot; selfscript3=&quot;enablecomponent 1 true;&quot; selfscript2=&quot;enablecomponent 1 true;&quot; selfscript1=&quot;// do nothing&quot;&gt;
+            &lt;option&gt;none 
+            &lt;option&gt;low 
+            &lt;option&gt;high 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot; style=&quot;width: 30px&quot;&gt;
+          &lt;input name=&quot;checkbox&quot; script_selected=&quot;script:mw2d:1:set %messagesOn 1;&quot; script_deselected=&quot;script:mw2d:1:set %messagesOn 0; select textbox all; set visible off; select textbox none;&quot; id=&quot;checkbox&quot; type=&quot;checkbox&quot; checked=&quot;checked&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td align=&quot;left&quot;&gt;
+          messages on
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot; style=&quot;width: 90px&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;3&quot; align=&quot;center&quot;&gt;
+          &lt;span class=&quot;style2&quot;&gt;After changing concentrations press the &amp;quot;load 
+          model&amp;quot; button.&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot; style=&quot;width: 30px&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td align=&quot;left&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-926584</bgcolor></icon></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<content start="21" end="22">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="22" end="23">
+</paragraph>
+</section>
+</document>

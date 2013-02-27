@@ -1,7 +1,7 @@
 {
-  "title": "Testing: Layout Example",
+  "title": "Testing: Layout Example with html",
   "publicationStatus": "draft",
-  "subtitle": "",
+  "subtitle": "Current layout system does not support embedded html.",
   "about": "",
   "models": [
     {
@@ -51,7 +51,6 @@
     }
   ],
   "layout": {
-    "bottom": "<img src='http://lab.dev.concord.org/resources/layout/cc-logo.png'/> <span id='start' style='position: absolute; left: 30%'/> <span id='stop' style='position: absolute; left: 35%'/>  <span style='position: absolute; left: 45%;'>Click here to reset: <span id='reset'/></span>",
-    "right": ""
+    "bottom": [ "<img src='http://lab.dev.concord.org/resources/layout/cc-logo.png'/> <span id='start' style='position: absolute; left: 30%'/> <span id='stop' style='position: absolute; left: 35%'/>  <span style='position: absolute; left: 45%;'>Click here to reset: <span id='reset'/></span>" ]
   }
 }

@@ -29,7 +29,8 @@
   margin: 0.5em 1em;
   width: 25em; }
   #interactive-description:last-child {
-    width: 23.23176%; }
+    width: 23.23176%;
+    padding-right: 0; }
 
 #interactive-container {
   display: table-cell;
@@ -37,7 +38,8 @@
   width: 59.70863%;
   position: relative; }
   #interactive-container:last-child {
-    width: 57.35098%; }
+    width: 57.35098%;
+    padding-right: 0; }
 
 .energy2d-scene-view {
   display: inline-block;

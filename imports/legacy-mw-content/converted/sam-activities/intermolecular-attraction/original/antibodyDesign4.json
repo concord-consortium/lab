@@ -15,7 +15,7 @@
   "additionalSolventForceThreshold": 10,
   "polarAAEpsilon": -2,
   "viscosity": 1,
-  "viewRefreshInterval": 50,
+  "timeStepsPerTick": 50,
   "viewOptions": {
     "backgroundColor": "rgba(255,255,192,255)",
     "showClock": false,

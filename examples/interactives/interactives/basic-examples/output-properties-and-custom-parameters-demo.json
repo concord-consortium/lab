@@ -3,6 +3,7 @@
   "publicationStatus": "public",
   "subtitle": "",
   "about": "",
+  "fontScale": 0.8,
   "models": [
     {
       "id": "pendulum1$0",
@@ -208,12 +209,14 @@
     "right": [
       "propertiesGraph"
     ],
+    "top": [
+      "ke-shading"
+    ],
     "bottom": [
       [
         "gravity-slider",
         "angle-slider",
-        "length-slider",
-        "ke-shading"
+        "length-slider"
       ],
       [
         "mass-slider",

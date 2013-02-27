@@ -338,14 +338,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "52a7418deb34c0339ab30ec1a86294217edf7fb9",
-        "short_sha":      "52a7418d",
-        "url":            "https://github.com/concord-consortium/lab/commit/52a7418d",
-        "author":        "Stephen Bannasch",
-        "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-02-14 17:15:53 -0500",
-        "short_message": "use correct form of regex string for RegExp()",
-        "message":       "use correct form of regex string for RegExp()\n\nIS [#44317763]\n\nWhen using the RexExp() function the string arg should\n*not* have the enclosing &quot;/&quot; characters used to define\na regex expression in-line \n\n*And* &#x27;\&#x27; chars must be escaped twice, once in the regex\nitself and a second time because of the string parsing."
+        "sha":           "bd72db10ec4067362e44d838ac342659eaee36a2",
+        "short_sha":      "bd72db10",
+        "url":            "https://github.com/concord-consortium/lab/commit/bd72db10",
+        "author":        "Sam Fentress",
+        "email":         "sfentress@concord.org",
+        "date":          "2013-02-27 14:05:34 -0500",
+        "short_message": "Trigger dragend when mouse leaves interactive container.",
+        "message":       "Trigger dragend when mouse leaves interactive container.\n\nWe check the target of the drag event and see whether\nit is either an svg element or a dom element contained\nwithin the #interactive-container. If it isn&#x27;t, fire\na mouseup event to trigger d3&#x27;s dragend event.\n\nThis has been tested in Chrome, FF and Safari.\n\nNote this hard-codes the selector &quot;#interactive-container&quot;.\nThis same selector is being hard-coded in the semantic-\nlayout (which doesn&#x27;t appear to use the selector passed in\nby application.js to the interactive controller).\nTODO: Use the selector passed in by application.js and\nmake it a variable that&#x27;s accessible in other parts of\nthe code."
       },
       "dirty": false
     }
@@ -380,6 +380,7 @@ define('lab.config',['require','common/actual-root'],function (require) {
   publicAPI = {
   "sharing": true,
   "home": "http://lab.concord.org",
+  "homeForSharing": "http://lab.concord.org",
   "homeInteractivePath": "/examples/interactives/interactive.html",
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
@@ -857,6 +858,10 @@ define('common/controllers/interactive-metadata',[],function() {
         defaultValue: ""
       },
 
+      fontScale: {
+        defaultValue: 1
+      },
+
       models: {
         // List of model definitions. Its definition is below ('model').
         required: true
@@ -977,6 +982,33 @@ define('common/controllers/interactive-metadata',[],function() {
     /**
       Interactive components:
     */
+    text: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      },
+      text: {
+        // Text content.
+        defaultValue: ""
+      },
+      style: {
+        // Semantic description of text style.
+        // Accepted values: "basic", "header".
+        defaultValue: "basic"
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      }
+    },
+
     button: {
       id: {
         required: true
@@ -989,6 +1021,12 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       text: {
         defaultValue: ""
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
       }
     },
 
@@ -1002,10 +1040,17 @@ define('common/controllers/interactive-metadata',[],function() {
       text: {
         defaultValue: ""
       },
-      property: {},
-      onClick: {},
-      // Note that 'initialValue' makes sense only for checkboxes without property binding.
-      initialValue: {}
+      property: {
+        conflictsWith: ["initialValue"]
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      },
+      initialValue: {
+        // Note that 'initialValue' makes sense only for checkboxes without property binding.
+        // Do not use checkbox as setter.
+        conflictsWith: ["property"]
+      }
     },
 
     slider: {
@@ -1030,10 +1075,27 @@ define('common/controllers/interactive-metadata',[],function() {
       labels: {
         defaultValue: []
       },
+      width: {
+        defaultValue: "12em"
+      },
+      height: {
+        defaultValue: "3.75em"
+      },
       displayValue: {},
-      property: {},
-      action: {},
-      initialValue: {}
+      // Use "property" OR "action" + "initialValue".
+      property: {
+        // If you use property binding, do not mix it with action scripts and initial values.
+        conflictsWith: ["initialValue", "action"]
+      },
+      action: {
+        conflictsWith: ["property"]
+      },
+      initialValue: {
+        // Do not use slider as a property setter.
+        // There are better ways to do it, e.g.:
+        // "onLoad" scripts (and set({ }) call inside), "modelOptions", etc.
+        conflictsWith: ["property"]
+      }
     },
 
     pulldown: {
@@ -1045,6 +1107,10 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       options: {
         defaultValue: []
+      },
+      property: {
+        // Pulldown can be also connected to a model property.
+        // In such case, options should define "value", not "action".
       }
     },
 
@@ -1052,9 +1118,21 @@ define('common/controllers/interactive-metadata',[],function() {
       text: {
         defaultValue: ""
       },
+      action: {
+        // Use it when pulldown is not bound to any model property.
+        conflictsWith: ["value"]
+      },
+      value: {
+        // Use it when pulldown is bound to some model property.
+        conflictsWith: ["action"]
+      },
+      selected: {
+        // Use it when pulldown is not bound to any model property.
+        // When "property" is used for pulldown, it will determine
+        // selection.
+        conflictsWith: ["value"]
+      },
       disabled: {},
-      selected: {},
-      action: {},
       loadModel: {}
     },
 
@@ -1070,6 +1148,10 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       options: {
         defaultValue: []
+      },
+      property: {
+        // Radio can be also connected to a model property.
+        // In such case, options should define "value", not "action".
       }
     },
 
@@ -1077,9 +1159,21 @@ define('common/controllers/interactive-metadata',[],function() {
       text: {
         defaultValue: ""
       },
+      action: {
+        // Use it when radio is not bound to any model property.
+        conflictsWith: ["value"]
+      },
+      value: {
+        // Use it when radio is bound to some model property.
+        conflictsWith: ["action"]
+      },
+      selected: {
+        // Use it when radio is not bound to any model property.
+        // When "property" is used for radio, it will determine
+        // selection.
+        conflictsWith: ["value"]
+      },
       disabled: {},
-      selected: {},
-      action: {},
       loadModel: {}
     },
 
@@ -1113,6 +1207,16 @@ define('common/controllers/interactive-metadata',[],function() {
       max: {
         required: true
       },
+      width: {
+        // It controls width of the thermometer graphics!
+        // It won't affect label, e.g. making it truncated
+        // as width is only "2.5em".
+        defaultValue: "2.5em"
+      },
+      height: {
+        // Height of the whole thermometer with reading.
+        defaultValue: "100%"
+      },
       labelIsReading: {
         defaultValue: false
       },
@@ -1139,6 +1243,12 @@ define('common/controllers/interactive-metadata',[],function() {
       title: {
         defaultValue: "Graph"
       },
+      width: {
+        defaultValue: "100%"
+      },
+      height: {
+        defaultValue: "100%"
+      },
       xlabel: {
         defaultValue: "Model Time (ps)"
       },
@@ -1156,6 +1266,30 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       ymax: {
         defaultValue: 10
+      },
+      xTicCount: {
+        defaultValue: 10
+      },
+      yTicCount: {
+        defaultValue: 10
+      },
+      xscaleExponent: {
+        defaultValue: 0.5
+      },
+      yscaleExponent: {
+        defaultValue: 0.5
+      },
+      xFormatter: {
+        defaultValue: "3.2r"
+      },
+      yFormatter: {
+        defaultValue: "3.2r"
+      },
+      lines: {
+        defaultValue: true
+      },
+      bars: {
+        defaultValue: false
       }
     },
 
@@ -1168,6 +1302,12 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       property: {
         required: true
+      },
+      width: {
+        defaultValue: "100%"
+      },
+      height: {
+        defaultValue: "100%"
       },
       options: {
         defaultValue: {
@@ -1220,6 +1360,16 @@ define('common/validator',['require','arrays'],function(require) {
   ValidationError.prototype = new Error();
   ValidationError.prototype.constructor = ValidationError;
 
+  function checkConflicts(input, propName, conflictingProps) {
+    var i, len;
+    for (i = 0, len = conflictingProps.length; i < len; i++) {
+      if (input.hasOwnProperty(conflictingProps[i])) {
+        throw new ValidationError(propName, "Properties set contains conflicting properties: " +
+          conflictingProps[i] + " and " + propName);
+      }
+    }
+  }
+
   return {
 
     // Basic validation.
@@ -1248,6 +1398,9 @@ define('common/validator',['require','arrays'],function(require) {
             }
             if (!ignoreImmutable && propMetadata.immutable === true) {
               throw new ValidationError(prop, "Properties set tries to overwrite immutable property " + prop);
+            }
+            if (propMetadata.conflictsWith) {
+              checkConflicts(input, prop, propMetadata.conflictsWith);
             }
             result[prop] = input[prop];
           }
@@ -4230,7 +4383,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
           this.axisContainer.selectAll("text")
             .style({
               "fill": options.textColor,
-              "stroke-width": 0,
+              "stroke": "none",
               // Workaround for hiding numeric labels. D3 doesn't provide any convenient function
               // for that. Returning empty string as tickFormat causes that bounding box width is
               // calculated incorrectly.
@@ -4280,20 +4433,6 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
           this.bar
             .attr("height", this.heightScale(value))
             .attr("y", this.yScale(value));
-        },
-
-        // Returns real height of parent DOM element.
-        // Might be useful for getting "fit to parent"
-        // behavior.
-        getParentHeight: function () {
-          return this.$el.parent().height();
-        },
-
-        // Returns real width of parent DOM element.
-        // Might be useful for getting "fit to parent"
-        // behavior.
-        getParentWidth: function () {
-          return this.$el.parent().width();
         },
 
         // This function should be called whenever model attribute is changed.
@@ -4410,6 +4549,13 @@ define('common/controllers/bar-graph-controller',['require','grapher/bar-graph/b
     component = validator.validateCompleteness(metadata.barGraph, component);
     barGraphModel = new BarGraphModel(filterOptions(component.options));
     barGraphView  = new BarGraphView({model: barGraphModel, id: component.id});
+    // Apply custom width and height settings.
+    barGraphView.$el.css({
+      width: component.width,
+      height: component.height
+    });
+    // Each interactive component has to have class "component".
+    barGraphView.$el.addClass("component");
     property = component.property;
 
     controller = {
@@ -4430,16 +4576,14 @@ define('common/controllers/bar-graph-controller',['require','grapher/bar-graph/b
       },
 
       // Method required by layout module.
-      resize: function (width, height) {
-        if (width === undefined)
-          width = barGraphView.getParentWidth();
-
-        if (height === undefined)
-          height = barGraphView.getParentHeight();
-
+      resize: function () {
+        // Inform model about possible new dimensions (when $el dimensions
+        // are specified in % or em, they will probably change each time
+        // the interactive container is changed). It's important to do that,
+        // as various visual elements can be adjusted (font size, padding etc.).
         barGraphModel.set({
-          width: width,
-          height: height
+          width: barGraphView.$el.width(),
+          height: barGraphView.$el.height()
         });
       },
 
@@ -4619,7 +4763,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
     }
 
     function scale(w, h) {
-      if (!arguments.length) {
+      if (!w && !h) {
         cx = elem.property("clientWidth");
         cy = elem.property("clientHeight");
       } else {
@@ -4636,9 +4780,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
       calculateSizeType();
-      // displayProperties = layout.getDisplayProperties();
-      emsize = parseFloat($('#viz').css('font-size') || $('body').css('font-size'))/10;
-      // emsize = displayProperties.emsize;
+      emsize = parseFloat($(idOrElement).css('font-size')) / 10;
     }
 
     function initialize(idOrElement, opts, message) {
@@ -5614,7 +5756,15 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
         xmax: 'xmax',
         ylabel: 'ylabel',
         ymin: 'ymin',
-        ymax: 'ymax'
+        ymax: 'ymax',
+        xTicCount: 'xTicCount',
+        yTicCount: 'yTicCount',
+        xscaleExponent: 'xscaleExponent',
+        yscaleExponent: 'yscaleExponent',
+        xFormatter: 'xFormatter',
+        yFormatter: 'yFormatter',
+        lines: 'lines',
+        bars: 'bars'
       };
 
   return function graphController(component) {
@@ -5630,7 +5780,7 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
       current implementation of the grapher requires this knowledge.)
     */
     function getSamplePeriod() {
-      return model.get('viewRefreshInterval') * model.get('timeStep') / 1000;
+      return model.get('timeStepsPerTick') * model.get('timeStep') / 1000;
     }
 
     /**
@@ -5746,7 +5896,7 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
 
       // As an imperfect hack (really the grapher should allow us to pass the correct x-axis value)
       // we reset the graph if a model property change changes the time interval between ticks
-      model.addPropertiesListener(['viewRefreshInterval', 'timeStep'], function() {
+      model.addPropertiesListener(['timeStepsPerTick', 'timeStep'], function() {
         resetGrapher();
         resetData();
       });
@@ -5760,6 +5910,14 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
     // The list of properties we are being asked to graph.
     properties = component.properties.slice();
     $container = $('<div>').attr('id', component.id).addClass('properties-graph');
+    // Each interactive component has to have class "component".
+    $container.addClass("component");
+    // Apply custom width and height settings.
+    $container.css({
+      width: component.width,
+      height: component.height
+    });
+
 
     return controller = {
 
@@ -5792,8 +5950,6 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
 
       resize: function () {
         // For now only "fit to parent" behavior is supported.
-        $container.width("100%");
-        $container.height("100%");
         if (grapher) {
           grapher.resize();
         }
@@ -6400,7 +6556,14 @@ define('common/controllers/button-controller',['common/controllers/interactive-m
     component = validator.validateCompleteness(metadata.button, component);
 
     $button = $('<button>').attr('id', component.id).html(component.text);
+    // Each interactive component has to have class "component".
     $button.addClass("component");
+
+    // Custom dimensions.
+    $button.css({
+      width: component.width,
+      height: component.height
+    });
 
     $button.click(scriptingAPI.makeFunctionInScriptContext(component.action));
 
@@ -6468,6 +6631,8 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
     $element = $('<div>').append($label);
     // Append class to the most outer container.
     $element.addClass("interactive-checkbox");
+    // Each interactive component has to have class "component".
+    $element.addClass("component");
 
     // Process onClick script if it is defined.
     if (onClickScript) {
@@ -6537,6 +6702,73 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
   };
 });
 
+/*global define, $ */
+
+define('common/controllers/text-controller',['common/controllers/interactive-metadata','common/validator'],function () {
+
+  var metadata  = require('common/controllers/interactive-metadata'),
+      validator = require('common/validator');
+
+  return function TextController(component, scriptingAPI) {
+        // Public API.
+    var controller,
+        // The most outer DIV containing whole component.
+        $element,
+        // <p> element with text content.
+        $text,
+        // Custom "onClick" script.
+        onClickFunction;
+
+    function initialize() {
+      // Validate component definition, use validated copy of the properties.
+      component = validator.validateCompleteness(metadata.text, component);
+      $element = $("<div>").attr("id", component.id);
+      // Append class to the most outer container.
+      $element.addClass("interactive-text");
+      // Each interactive component has to have class "component".
+      $element.addClass("component");
+      // Append text content.
+      $text = $("<p>").text(component.text).appendTo($element);
+      // Add class defining style of the component ("basic" and "header" values supported,
+      // please see: sass/lab/_interactice-components.sass).
+      $text.addClass(component.style);
+      // Process optional onClick script.
+      if (component.onClick) {
+        onClickFunction = scriptingAPI.makeFunctionInScriptContext(component.onClick);
+        $text.on("click", onClickFunction);
+        // Also add a special class indicating that this text node is a clickable.
+        $text.addClass("clickable");
+      }
+      // Apply custom width and height.
+      $element.css({
+        width: component.width,
+        height: component.height
+      });
+    }
+
+    // Public API.
+    controller = {
+      // modelLoadedCallback is optional and unnecessary for this component.
+      // modelLoadedCallback: function () {
+      // },
+
+      getViewContainer: function () {
+        return $element;
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        return $.extend(true, {}, component);
+      }
+    };
+
+    initialize();
+
+    // Return Public API object.
+    return controller;
+  };
+});
+
 /*global define $ model */
 
 define('common/controllers/radio-controller',['common/controllers/interactive-metadata','common/validator'],function () {
@@ -6545,65 +6777,96 @@ define('common/controllers/radio-controller',['common/controllers/interactive-me
       validator = require('common/validator');
 
   return function RadioController(component, scriptingAPI, interactivesController) {
-    var $div, $option, $span,
-        controller,
-        options, option, i, len;
+        // Public API.
+    var controller,
+        // DOM elements.
+        $div, $option, $span,
+        // Options definitions from component JSON definition.
+        options,
+        // List of jQuery objects wrapping <input type="radio"> elements.
+        $options = [];
 
-    // Validate component definition, use validated copy of the properties.
-    component = validator.validateCompleteness(metadata.radio, component);
-    // Validate radio options too.
-    options = component.options;
-    for (i = 0, len = options.length; i < len; i++) {
-      options[i] = validator.validateCompleteness(metadata.radioOption, options[i]);
+    // Updates radio using model property. Used in modelLoadedCallback.
+    // Make sure that this function is only called when:
+    // a) model is loaded,
+    // b) radio is bound to some property.
+    function updateRadio() {
+      var value = model.get(component.property),
+          i, len;
+
+      for (i = 0, len = options.length; i < len; i++) {
+        if (options[i].value === value) {
+          $options[i].attr("checked", true);
+        } else {
+          $options[i].removeAttr("checked");
+        }
+      }
     }
 
-    $div = $('<div>').attr('id', component.id);
-    $div.addClass("component");
+    function initialize() {
+      var i, len, option;
 
-    for (i = 0, len = options.length; i < len; i++) {
-      option = options[i];
-      $option = $('<input>')
-        .attr('type', "radio")
-        .attr('name', component.id);
-      if (option.disabled) {
-        $option.attr("disabled", option.disabled);
+      // Validate component definition, use validated copy of the properties.
+      component = validator.validateCompleteness(metadata.radio, component);
+      // Validate radio options too.
+      options = component.options;
+      for (i = 0, len = options.length; i < len; i++) {
+        options[i] = validator.validateCompleteness(metadata.radioOption, options[i]);
       }
-      if (option.selected) {
-        $option.attr("checked", option.selected);
-      }
-      $span = $('<span class="radio">')
-        .append($option)
-        .append(option.text);
-      $div.append($span)
-      if (component.orientation === "vertical") {
-        $div.append("<br/>");
-      }
-      $option.change((function(option, index) {
-        return function() {
-          var i, len;
 
-          // Update component definition.
-          for (i = 0, len = options.length; i < len; i++) {
-            delete options[i].selected;
-          }
-          options[index].selected = true;
+      // Create HTML elements.
+      $div = $('<div>').attr('id', component.id);
+      $div.addClass("interactive-radio");
+      // Each interactive component has to have class "component".
+      $div.addClass("component");
+      // Add class defining component orientation - "horizontal" or "vertical".
+      $div.addClass(component.orientation);
 
-          if (option.action){
-            scriptingAPI.makeFunctionInScriptContext(option.action)();
-          } else if (option.loadModel){
-            model.stop();
-            interactivesController.loadModel(option.loadModel);
-          }
-        };
-      })(option, i));
+      // Create options (<input type="radio">)
+      for (i = 0, len = options.length; i < len; i++) {
+        option = options[i];
+        $option = $('<input>')
+          .attr('type', "radio")
+          .attr('name', component.id);
+        $options.push($option);
+
+        if (option.disabled) {
+          $option.attr("disabled", option.disabled);
+        }
+        if (option.selected) {
+          $option.attr("checked", option.selected);
+        }
+        $span = $('<span>')
+          .append($option)
+          .append(option.text);
+        $div.append($span);
+
+        $option.change((function(option) {
+          return function() {
+            if (option.action){
+              scriptingAPI.makeFunctionInScriptContext(option.action)();
+            } else if (option.loadModel){
+              model.stop();
+              interactivesController.loadModel(option.loadModel);
+            } else if (option.value !== undefined) {
+              model.set(component.property, option.value);
+            }
+          };
+        })(option));
+      }
     }
 
     // Public API.
     controller = {
-      // No modelLoadeCallback is defined. In case of need:
-      // modelLoadedCallback: function () {
-      //   (...)
-      // },
+      modelLoadedCallback: function () {
+        // Connect radio with model's property if its name is defined.
+        if (component.property !== undefined) {
+          // Register listener for property.
+          model.addPropertiesListener([component.property], updateRadio);
+          // Perform initial radio setup.
+          updateRadio();
+        }
+      },
 
       // Returns view container.
       getViewContainer: function () {
@@ -6612,11 +6875,26 @@ define('common/controllers/radio-controller',['common/controllers/interactive-me
 
       // Returns serialized component definition.
       serialize: function () {
-        // Return compoment definition. It's always valid,
-        // as selected option is updated during 'change' callback.
+        var i, len;
+        if (component.property === undefined) {
+          // When property binding is not defined, we need to keep track
+          // which option is currently selected.
+          for (i = 0, len = options.length; i < len; i++) {
+            if ($options[i].attr("checked")) {
+              options[i].selected = true;
+            } else {
+              delete options[i].selected;
+            }
+          }
+        }
+        // Note that 'options' array above is a reference to component.options array.
+        // Every thing is updated, return a copy.
         return $.extend(true, {}, component);
       }
     };
+
+    initialize();
+
     // Return Public API object.
     return controller;
   };
@@ -6656,6 +6934,77 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
           }
         };
 
+    // Public API.
+    controller = {
+      // This callback should be trigger when model is loaded.
+      modelLoadedCallback: function () {
+        if (propertyName) {
+          model.addPropertiesListener([propertyName], updateSlider);
+        }
+
+        if (initialValue !== undefined && initialValue !== null) {
+          // Make sure to call the action with the startup value of slider. (The script action may
+          // manipulate the model, so we have to make sure it runs after the model loads.)
+          if (action) {
+            $slider.slider('value', initialValue);
+            action(initialValue);
+            if (displayValue) {
+              $sliderHandle.text(displayValue(initialValue));
+            }
+          }
+        } else if (propertyName) {
+          updateSlider();
+        }
+      },
+
+      // Returns view container (div).
+      getViewContainer: function () {
+        return $elem;
+      },
+
+      resize: function () {
+        var remainingHeight;
+        // Apply custom width and height settings.
+        // In fact width can be applied only once during initialization, because
+        // it doesn't need any calculations when container size is changed.
+        // However, to keep resizing in one place both width and height
+        // adjustment are performed in this method.
+        // Also not that we set dimensions of the $container, not $slider.
+        // Slider itself will always follow dimensions of container DIV.
+        // We have to do it that way to ensure that labels refer correct dimensions.
+        if (!/%$/.test(component.width)) {
+          $container.css("width", component.width);
+        } else {
+          $elem.css("width", component.width);
+          $container.css("width", "100%");
+        }
+        // Height calculation is more complex, calculate dynamically
+        // available height for slider itself.
+        // Note that component.height refers to the height of the
+        // *whole* component!
+        $elem.css("height", component.height);
+        remainingHeight = $elem.height() - $title.outerHeight(true);
+        if ($label !== undefined) {
+          remainingHeight -= $label.outerHeight(true);
+        }
+        $container.css("height", remainingHeight);
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        var result = $.extend(true, {}, component);
+
+        if (!propertyName) {
+          // No property binding. Just action script.
+          // Update "initialValue" to represent current
+          // value of the slider.
+          result.initialValue = $slider.slider('value');
+        }
+
+        return result;
+      }
+    };
+
     //
     // Initialize.
     //
@@ -6680,7 +7029,7 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
     // we pick up the SVG slider component CSS if we use the generic class name 'slider'
     $container = $('<div class="container">');
     $slider = $('<div class="html-slider">').attr('id', component.id);
-    $container.append($slider);
+    $slider.appendTo($container);
 
     $slider.slider({
       min: min,
@@ -6693,6 +7042,8 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
     $elem = $('<div class="interactive-slider">')
               .append($title)
               .append($container);
+    // Each interactive component has to have class "component".
+    $elem.addClass("component");
 
     for (i = 0; i < labels.length; i++) {
       label = labels[i];
@@ -6730,63 +7081,8 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
     }
 
-    // Public API.
-    controller = {
-      // This callback should be trigger when model is loaded.
-      modelLoadedCallback: function () {
-        var obj;
+    controller.resize();
 
-        if (propertyName) {
-          model.addPropertiesListener([propertyName], updateSlider);
-        }
-
-        if (initialValue !== undefined && initialValue !== null) {
-          // Make sure to call the action with the startup value of slider. (The script action may
-          // manipulate the model, so we have to make sure it runs after the model loads.)
-          if (action) {
-            $slider.slider('value', initialValue);
-            action(initialValue);
-            if (displayValue) {
-              $sliderHandle.text(displayValue(initialValue));
-            }
-          }
-
-          if (propertyName) {
-            obj = {};
-            obj.propertyName = initialValue;
-            model.set(obj);
-          }
-        } else if (propertyName) {
-          updateSlider();
-        }
-      },
-
-      // Returns view container (div).
-      getViewContainer: function () {
-        return $elem;
-      },
-
-      // Returns serialized component definition.
-      serialize: function () {
-        var result = $.extend(true, {}, component);
-
-        if (propertyName) {
-          // Two way binding between slider and model property.
-          // Initial value was used to set model property once,
-          // we do not need to do this again. Value of the slider
-          // will be defined by the model.
-          delete result.initialValue;
-        }
-        else {
-          // No property binding. Just action script.
-          // Update "initialValue" to represent current
-          // value of the slider.
-          result.initialValue = $slider.slider('value');
-        }
-
-        return result;
-      }
-    };
     // Return Public API object.
     return controller;
   };
@@ -6800,59 +7096,83 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
       validator = require('common/validator');
 
   return function PulldownController(component, scriptingAPI, interactivesController) {
-    var $pulldown, $option,
-        options, option,
-        controller,
-        i, len;
+        // Public API.
+    var controller,
+        // DOM elements.
+        $pulldown, $option,
+        // Options definitions from component JSON definition.
+        options,
+        // List of jQuery objects wrapping <select> elements.
+        $options = [];
 
-    // Validate component definition, use validated copy of the properties.
-    component = validator.validateCompleteness(metadata.pulldown, component);
-    // Validate pulldown options too.
-    options = component.options;
-    for (i = 0, len = options.length; i < len; i++) {
-      options[i] = validator.validateCompleteness(metadata.pulldownOption, options[i]);
+    // Updates pulldown using model property. Used in modelLoadedCallback.
+    // Make sure that this function is only called when:
+    // a) model is loaded,
+    // b) pulldown is bound to some property.
+    function updatePulldown() {
+      // Clear current selection.
+      $pulldown.val([]);
+      // Try to set a new value.
+      $pulldown.val(model.get(component.property));
     }
 
-    $pulldown = $('<select>').attr('id', component.id);
-    $pulldown.addClass("component");
+    function initialize() {
+      var i, len, option;
 
-    for (i = 0, len = options.length; i < len; i++) {
-      option = options[i];
-      $option = $('<option>').html(option.text);
-      if (option.disabled) {
-        $option.attr("disabled", option.disabled);
-      }
-      if (option.selected) {
-        $option.attr("selected", option.selected);
-      }
-      $pulldown.append($option);
-    }
-
-    $pulldown.change(function() {
-      var index = $(this).prop('selectedIndex'),
-          action = component.options[index].action,
-          i, len;
-
-      // Update component definition.
+      // Validate component definition, use validated copy of the properties.
+      component = validator.validateCompleteness(metadata.pulldown, component);
+      // Validate pulldown options too.
+      options = component.options;
       for (i = 0, len = options.length; i < len; i++) {
-        delete options[i].selected;
+        options[i] = validator.validateCompleteness(metadata.pulldownOption, options[i]);
       }
-      options[index].selected = true;
 
-      if (action){
-        scriptingAPI.makeFunctionInScriptContext(action)();
-      } else if (component.options[index].loadModel){
-        model.stop();
-        interactivesController.loadModel(component.options[index].loadModel);
+      $pulldown = $('<select>').attr('id', component.id);
+      // Each interactive component has to have class "component".
+      $pulldown.addClass("component");
+
+      for (i = 0, len = options.length; i < len; i++) {
+        option = options[i];
+        $option = $('<option>').html(option.text);
+        $options.push($option);
+        if (option.disabled) {
+          $option.prop("disabled", option.disabled);
+        }
+        if (option.selected) {
+          $option.prop("selected", option.selected);
+        }
+        if (option.value) {
+          $option.prop("value", option.value);
+        }
+        $pulldown.append($option);
       }
-    });
+
+      $pulldown.change(function() {
+        var index = $(this).prop('selectedIndex'),
+            action = component.options[index].action;
+
+        if (action){
+          scriptingAPI.makeFunctionInScriptContext(action)();
+        } else if (component.options[index].loadModel){
+          model.stop();
+          interactivesController.loadModel(component.options[index].loadModel);
+        } else if (option.value !== undefined) {
+          model.set(component.property, options[index].value);
+        }
+      });
+    }
 
     // Public API.
     controller = {
-      // No modelLoadeCallback is defined. In case of need:
-      // modelLoadedCallback: function () {
-      //   (...)
-      // },
+      modelLoadedCallback: function () {
+        // Connect pulldown with model's property if its name is defined.
+        if (component.property !== undefined) {
+          // Register listener for property.
+          model.addPropertiesListener([component.property], updatePulldown);
+          // Perform initial pulldown setup.
+          updatePulldown();
+        }
+      },
 
       // Returns view container.
       getViewContainer: function () {
@@ -6861,11 +7181,26 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
 
       // Returns serialized component definition.
       serialize: function () {
-        // Return compoment definition. It's always valid,
-        // as selected option is updated during 'change' callback.
+        var i, len;
+        if (component.property === undefined) {
+          // When property binding is not defined, we need to keep track
+          // which option is currently selected.
+          for (i = 0, len = options.length; i < len; i++) {
+            if ($options[i].prop("selected")) {
+              options[i].selected = true;
+            } else {
+              delete options[i].selected;
+            }
+          }
+        }
+        // Note that 'options' array above is a reference to component.options array.
+        // Every thing is updated, return a copy.
         return $.extend(true, {}, component);
       }
     };
+
+    initialize();
+
     // Return Public API object.
     return controller;
   };
@@ -6919,6 +7254,9 @@ define('common/controllers/numeric-output-controller',['common/controllers/inter
         .append($label)
         .append($number)
         .append($units);
+
+    // Each interactive component has to have class "component".
+    $numericOutput.addClass("component");
 
     if (displayValue) {
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
@@ -7458,9 +7796,25 @@ define('common/controllers/thermometer-controller',['require','cs!common/compone
     $elem = $('<div class="interactive-thermometer">')
       .append($thermometer)
       .append($label);
-    $elem.css({
-      height: "100%"
-    });
+    // Each interactive component has to have class "component".
+    $elem.addClass("component");
+
+    // Support custom dimensions. Implementation may seem unclear,
+    // but the goal is to provide most obvious behavior for authors.
+    // We can simply set height of the most outer container.
+    // Thermometer will adjusts itself appropriately.
+    $elem.css("height", component.height);
+    // Width is more tricky.
+    if (!/%$/.test(component.width)) {
+      // When it's ems or px, its enough to set thermometer width.
+      $thermometer.css("width", component.width);
+    } else {
+      // Whet it's defined in %, set width of the most outer container
+      // to that value and thermometer width to 100%.
+      $elem.css("width", component.width);
+      $thermometer.css("width", "100%");
+    }
+
     thermometerComponent = new Thermometer($thermometer, null, component.min, component.max);
 
     // Public API.
@@ -7501,54 +7855,98 @@ define('common/controllers/thermometer-controller',['require','cs!common/compone
   };
 });
 
-/*global define: false, $: false, d3: false */
+/*global define: false */
+// ------------------------------------------------------------
+//
+//   Semantic Layout Configuration
+//
+// ------------------------------------------------------------
+
+define('common/layout/semantic-layout-config',[],function () {
+  return {
+    /**
+      Maximum number of iterations of the layout algorithm during single layoutInteractive() call.
+    */
+    iterationsLimit: 35,
+    /**
+      Minimum width of the model.
+    */
+    minModelWidth: 150,
+    /**
+      Minimum font size (in ems).
+    */
+    minFontSize: 0.65,
+    /**
+      Canoncical font size (in ems).
+    */
+    canonicalFontSize: 0.9,
+    /**
+      Canonical dimensions of the interactive, they decide about font size.
+      (canoncicalFontSize * fontScale) em is used for the interactive which fits this container:
+      98% because 2% is reserved for left and right padding (see: src/sass/_semantic-layout.sass).
+    */
+    canonicalInteractiveWidth: 600 * 0.98,
+    /**
+      94% because 5% is reserved for banner with credits, about and share links (see: src/sass/_semantic-layout.sass).
+    */
+    canonicalInteractiveHeight: 420 * 0.94,
+    /**
+      Colors used to mark layout containers in the authoring mode.
+    */
+    containerColors: [
+      "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
+      "rgba(0,255,255,0.1)", "rgba(255,255,128,0.1)", "rgba(128,255,0,0.1)", "rgba(255,128,0,0.1)"
+    ]
+  };
+});
+/*global define: false, $: false */
 // ------------------------------------------------------------
 //
 //   Semantic Layout
 //
 // ------------------------------------------------------------
 
-define('common/layout/semantic-layout',['require','lab.config','common/alert'],function (require) {
+define('common/layout/semantic-layout',['require','lab.config','common/layout/semantic-layout-config','arrays','common/console','common/alert'],function (require) {
 
-  var labConfig = require('lab.config'),
-      alert     = require('common/alert'),
+  var labConfig    = require('lab.config'),
+      layoutConfig = require('common/layout/semantic-layout-config'),
+      arrays       = require('arrays'),
+      console      = require('common/console'),
+      alert        = require('common/alert');
 
-      // Minimum width of the model.
-      minModelWidth = 150,
+  return function SemanticLayout($interactiveContainer) {
 
-      // Canonical dimensions of the interactive, deciding about font size.
-      basicInteractiveWidth = 1000,
-      basicInteractiveHeight = 600,
+    var layout,
 
-      // Font scaling function.
-      fontScale =  d3.scale.linear()
-        // Domain: actual interactive size to basic interactive size ratio.
-        // Note that 0.4 is "small" size, 0.6 is "medium" size and 1.0 is "large" size.
-        .domain([0.4, 0.6, 1.1, 5])
-        // Range: font sizes in "em".
-        .range([0.6, 0.8, 0.9, 5])
-        // Clamp to ensure that font is not smaller than minimum font size
-        // (first value in range array above).
-        .clamp(true),
+        containers,
+        componentLocations,
+        components,
+        modelController,
+        fontScale,
 
-      containerColors = [
-        "rgba(0,0,255,0.1)", "rgba(255,0,0,0.1)", "rgba(0,255,0,0.1)", "rgba(255,255,0,0.1)",
-        "rgba(0,255,255,0.1)", "rgba(255,255,128,0.1)", "rgba(128,255,0,0.1)", "rgba(255,128,0,0.1)"
-      ];
-
-  return function SemanticLayout($interactiveContainer, containers, componentLocations, components, modelController) {
-
-    var layout = {},
         $modelContainer,
         $containers,
 
-        minLeft = Infinity,
-        minTop = Infinity,
-        maxX = -Infinity,
-        maxY = -Infinity,
-        modelWidth = minModelWidth,
+        modelWidth = layoutConfig.minModelWidth,
         modelTop = 0,
-        modelLeft = 0;
+        modelLeft = 0,
+
+        // Interactive dimensions which fits canonical dimensions.
+        // So, basic dimensions are <= canonical dimensions.
+        // They are required to correctly determine font size
+        // (as we can't simply use canonical dimensions).
+        basicInteractiveWidth,
+        basicInteractiveHeight,
+
+        // Interactive aspect ratio. It's used to determine font size.
+        // Note that it may change a little bit during resizing (as there are
+        // some dimensions defined in px, like borders, user agent styles etc.),
+        // however this slight differences don't have any significant impact on result.
+        interactiveAspectRatio,
+
+        // Dimensions of the container.
+        availableWidth,
+        availableHeight;
 
     function getDimensionOfContainer($container, dim) {
       var position = $container.position();
@@ -7570,21 +7968,33 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
     }
 
     function setFontSize() {
-      var xRatio = $interactiveContainer.width() / basicInteractiveWidth,
-          yRatio = $interactiveContainer.height() / basicInteractiveHeight,
-          ratio = Math.min(xRatio, yRatio);
+      var containerAspectRatio = availableWidth / availableHeight,
+          containerScale, font;
+
+      if (interactiveAspectRatio <= containerAspectRatio) {
+        containerScale = availableHeight / basicInteractiveHeight;
+      } else {
+        containerScale = availableWidth / basicInteractiveWidth;
+      }
+
+      font = layoutConfig.canonicalFontSize * fontScale * containerScale;
+
+      // Ensure min font size (in 'em').
+      if (font < layoutConfig.minFontSize) {
+        font = layoutConfig.minFontSize;
+      }
 
       // Set font-size of #responsive-content element. So, if application author
       // wants to avoid rescaling of font-size for some elements, they should not
       // be included in #responsive-content DIV.
       // TODO: #responsive-content ID is hardcoded, change it?
-      $("#responsive-content").css("font-size", fontScale(ratio) + "em");
+      $("#responsive-content").css("font-size", font + "em");
     }
 
     // Calculate width for containers which doesn't explicitly specify its width.
     // In such case, width is determined by the content, no reflow will be allowed.
     function setMinDimensions() {
-      var $container, i, len;
+      var maxMinWidth, $container, i, len;
 
       function setRowMinWidth() {
         var minWidth = 0;
@@ -7594,6 +8004,9 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
           minWidth += $(this).outerWidth(true);
         });
         $(this).css("min-width", Math.ceil(minWidth));
+        if (minWidth > maxMinWidth) {
+          maxMinWidth = minWidth;
+        }
       }
 
       for (i = 0, len = containers.length; i < len; i++) {
@@ -7601,8 +8014,10 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
         if (containers[i].width === undefined) {
           // Set min-width only for containers, which DO NOT specify
           // "width" explicitly in their definitions.
+          maxMinWidth = -Infinity;
+          $container.css("min-width", 0);
           $container.children().each(setRowMinWidth);
-          $container.css("min-width", $container.outerWidth(true));
+          $container.css("min-width", maxMinWidth);
         }
         if (containers[i]["min-width"] !== undefined) {
           $container.css("min-width", containers[i]["min-width"]);
@@ -7611,40 +8026,58 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
     }
 
     function setupBackground() {
-      var id, i, len;
+      var colors = layoutConfig.containerColors,
+          id, i, len;
 
       for (i = 0, len = containers.length; i < len; i++) {
         id = containers[i].id;
-        $containers[id].css("background", labConfig.authoring ? containerColors[i % containerColors.length] : "");
+        $containers[id].css("background", labConfig.authoring ? colors[i % colors.length] : "");
       }
     }
 
     function createContainers() {
       var container, id, prop, i, ii;
 
+      // Cleanup interactive container.
+      $interactiveContainer.empty();
+
       $containers = {};
 
-      $modelContainer = $interactiveContainer.find("#model-container");
+      $modelContainer = modelController.getViewContainer();
+      $modelContainer.css({
+        "display": "inline-block",
+        "position": "absolute"
+      });
+      $modelContainer.appendTo($interactiveContainer);
       $containers.model = $modelContainer;
 
-      for (i = 0, ii = containers.length; i<ii; i++) {
+      for (i = 0, ii = containers.length; i < ii; i++) {
         container = containers[i];
         id = container.id;
-        $containers[id] = $("<div id='"+id+"'>").appendTo($interactiveContainer);
-        $containers[id].css("display", "inline-block");
-        // add any padding-* properties directly to the container's style
+        $containers[id] = $("<div id='" + id + "'>").appendTo($interactiveContainer);
+        $containers[id].css({
+          "display": "inline-block",
+          "position": "absolute"
+        });
+
         for (prop in container) {
           if (!container.hasOwnProperty(prop)) continue;
+          // Add any padding-* properties directly to the container's style.
           if (/^padding-/.test(prop)) {
             $containers[id].css(prop, container[prop]);
+          }
+          // Support also "align" property.
+          if (prop === "align") {
+            $containers[id].css("text-align", container[prop]);
           }
         }
       }
     }
 
     function placeComponentsInContainers() {
-      var id, container, divContents, items, $row,
-          lastContainer, $rows, comps,
+      var id, container, divContents, items,
+          $row, $rows, $containerComponents,
+          lastContainer, comps, errMsg,
           i, ii, j, jj, k, kk;
 
       comps = $.extend({}, components);
@@ -7656,7 +8089,16 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
         }
         if (!divContents) continue;
 
-        if (Object.prototype.toString.call(divContents[0]) !== "[object Array]") {
+        if (!arrays.isArray(divContents)) {
+          // Inform an author and skip this container.
+          errMsg = "Incorrect layout definition for '" + container.id + "' container. It should specify " +
+                   "an array of components or an array of arrays of components (multiple rows).";
+          alert(errMsg);
+          continue;
+        }
+
+        if (!arrays.isArray(divContents[0])) {
+          // Only one row specified. Wrap it into array to process it easier.
           divContents = [divContents];
         }
 
@@ -7672,27 +8114,39 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
           $containers[container.id].append($row);
           for (k = 0, kk = items.length; k < kk; k++) {
             id = items[k];
-            if (comps[id] !== undefined) {
-              $row.append(comps[id].getViewContainer());
-              delete comps[id];
-            } else {
+            if (comps[id] === undefined) {
+              // Inform an author and skip this definition.
               alert("Incorrect layout definition. Component with ID '" + id + "'' is not defined.");
+              continue;
             }
+            $row.append(comps[id].getViewContainer());
+            delete comps[id];
           }
         }
       }
 
-      // add any remaining components to "bottom" or last container
+      // Add any remaining components to "bottom" or last container.
       lastContainer = getObject(containers, "bottom") || containers[containers.length-1];
+      $rows = $containers[lastContainer.id].children();
+      $row = $rows.last();
+      if (!$row.length) {
+        $row = $('<div class="interactive-' + container.id + '-row"/>');
+        $containers[container.id].append($row);
+      }
       for (id in comps) {
         if (!comps.hasOwnProperty(id)) continue;
-        $rows = $containers[lastContainer.id].children();
-        $row = $rows.last();
-        if (!$row.length) {
-          $row = $('<div class="interactive-' + container.id + '-row"/>');
-          $containers[container.id].append($row);
-        }
         $row.append(comps[id].getViewContainer());
+      }
+
+      // When there are multiple components in a container, ensure that there
+      // is spacing between them.
+      // See src/sass/lab/_semantic-layout.sass for .component-spacing class definition.
+      for (i = 0, ii = containers.length; i < ii; i++) {
+        // First children() call returns rows, second one components.
+        $containerComponents = $containers[containers[i].id].children().children();
+        if ($containerComponents.length > 1) {
+          $containerComponents.addClass("component-spacing");
+        }
       }
     }
 
@@ -7701,11 +8155,10 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
           left, top, right, bottom, i, ii;
 
       $modelContainer.css({
-        width: modelWidth,
+        width:  modelWidth,
         height: modelController.getHeightForWidth(modelWidth),
-        left: modelLeft,
-        top: modelTop,
-        position: "absolute"
+        left:   modelLeft,
+        top:    modelTop
       });
 
       for (i = 0, ii = containers.length; i<ii; i++) {
@@ -7713,18 +8166,12 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
         $container = $containers[container.id];
 
         if (!container.left && !container.right) {
-          container.left = "model.left";
+          container.left = "0";
         }
         if (!container.top && !container.bottom) {
-          container.top = "model.top";
+          container.top = "0";
         }
 
-        if (!container.top && !container.bottom) {
-          container.top = "model.top";
-        }
-        if (!container.left && !container.right) {
-          container.left = "model.left";
-        }
         if (container.left) {
           left = parseDimension(container.left);
           $container.css("left", left);
@@ -7749,34 +8196,20 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
           top = bottom - $container.outerHeight();
           $container.css("top", top);
         }
-        $container.css("position", "absolute");
       }
     }
 
     // shrinks the model to fit in the interactive, given the sizes
     // of the other containers around it.
     function resizeModelContainer() {
-      var speed = 0.3,
-      id, $container,
-      right, bottom, top, left,
-      availableWidth, availableHeight, ratio;
+      var maxX = -Infinity,
+          maxY = -Infinity,
+          minX = Infinity,
+          minY = Infinity,
+          id, $container,
+          right, bottom, top, left, ratio;
 
-      if (isNaN(modelWidth) || modelWidth < minModelWidth) {
-        modelWidth = minModelWidth;
-      }
-      if (isNaN(modelLeft)) {
-        modelLeft = 0;
-      }
-      if (isNaN(modelTop)) {
-        modelTop = 0;
-      }
-
-      // Calc maxX and maxY.
-      maxY = -Infinity;
-      maxX = -Infinity;
-      minLeft = Infinity;
-      minTop = Infinity;
-
+      // Calculate boundaries of the interactive.
       for (id in $containers) {
         if (!$containers.hasOwnProperty(id)) continue;
         $container = $containers[id];
@@ -7789,45 +8222,36 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
           maxY = bottom;
         }
         left = getDimensionOfContainer($container, "left");
-        if (left < minLeft) {
-          minLeft = left;
+        if (left < minX) {
+          minX = left;
         }
         top = getDimensionOfContainer($container, "top");
-        if (top < minTop) {
-          minTop = top;
+        if (top < minY) {
+          minY = top;
         }
       }
-
-      availableWidth  = $interactiveContainer.width();
-      availableHeight = $interactiveContainer.height();
 
       // TODO: this is quite naive approach.
       // It should be changed to some fitness function defining quality of the layout.
       // Using current algorithm, very often we follow some local minima.
       if ((maxX <= availableWidth && maxY <= availableHeight) &&
           (availableWidth - maxX < 1 || availableHeight - maxY < 1) &&
-          (minLeft < 1 && minTop < 1)) {
+          (minX < 1 && minY < 1)) {
         // Perfect solution found!
         // (TODO: not so perfect, see above)
         return true;
       }
 
-      if (maxX > availableWidth || maxY > availableHeight) {
-        ratio = Math.min(1 - speed * (maxX - availableWidth) / availableWidth, 1 - speed * (maxY - availableHeight) / availableHeight);
-      }
-      if (maxX < availableWidth && maxY < availableHeight) {
-        ratio = Math.min(1 + speed * (availableWidth - maxX) / availableWidth, 1 + speed * (availableHeight - maxY) / availableHeight);
-      }
-      if (ratio !== undefined) {
+      ratio = Math.min(availableWidth / maxX, availableHeight / maxY);
+      if (!isNaN(ratio)) {
         modelWidth = modelWidth * ratio;
       }
-
-      if (modelWidth < minModelWidth) {
-        modelWidth = minModelWidth;
+      if (modelWidth < layoutConfig.minModelWidth) {
+        modelWidth = layoutConfig.minModelWidth;
       }
 
-      modelLeft -= minLeft;
-      modelTop -= minTop;
+      modelLeft -= minX;
+      modelTop -= minY;
 
       return false;
     }
@@ -7856,19 +8280,17 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
       }
     }
 
-    // parses a container's dimension, such as "model.height"
+    // Parses a container's dimension, such as "model.height".
     function getDimension(dim) {
-      var id, $container, attr;
-
-      id = dim.split(".")[0];
-      if (id === "interactive") {
-        $container = $interactiveContainer;
-      } else {
-        $container = $containers[id];
+      switch(dim) {
+        case "interactive.width":
+          return availableWidth;
+        case "interactive.height":
+          return availableHeight;
+        default:
+          dim = dim.split(".");
+          return getDimensionOfContainer($containers[dim[0]], dim[1]);
       }
-      attr = dim.split(".")[1];
-
-      return getDimensionOfContainer($container, attr);
     }
 
     function getObject(arr, id) {
@@ -7879,10 +8301,95 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
       }
     }
 
+    function calcInteractiveAspectRatio() {
+      var redraws = layoutConfig.iterationsLimit,
+          canonicalInteractiveWidth = layoutConfig.canonicalInteractiveWidth,
+          canonicalInteractiveHeight = layoutConfig.canonicalInteractiveHeight,
+          canonicalAspectRatio = canonicalInteractiveWidth / canonicalInteractiveHeight,
+          maxX = -Infinity,
+          maxY = -Infinity,
+          id, $container, val;
+
+      availableWidth = canonicalInteractiveWidth;
+      availableHeight = canonicalInteractiveHeight;
+      // Set basic interactive dimensions to default values to ensure that default font will be used.
+      basicInteractiveWidth = canonicalInteractiveWidth;
+      basicInteractiveHeight = canonicalInteractiveHeight;
+      // Set font size to ensure that "fontScale" and "canonicalFontSize" are taken into account.
+      setFontSize();
+      setMinDimensions();
+      modelWidth = availableWidth;
+      positionContainers();
+      while (--redraws > 0 && !resizeModelContainer()) {
+        positionContainers();
+      }
+
+      for (id in $containers) {
+        if (!$containers.hasOwnProperty(id)) continue;
+        $container = $containers[id];
+        val = getDimensionOfContainer($container, "right");
+        if (val > maxX) {
+          maxX = val;
+        }
+        val = getDimensionOfContainer($container, "bottom");
+        if (val > maxY) {
+          maxY = val;
+        }
+      }
+
+      interactiveAspectRatio = maxX / maxY;
+      if (interactiveAspectRatio < canonicalAspectRatio) {
+        basicInteractiveWidth = canonicalInteractiveHeight * interactiveAspectRatio;
+        basicInteractiveHeight = canonicalInteractiveHeight;
+      } else {
+        basicInteractiveWidth = canonicalInteractiveWidth;
+        basicInteractiveHeight = canonicalInteractiveWidth / interactiveAspectRatio;
+      }
+    }
+
     // Public API.
     layout = {
+      /**
+        Setups interactive layout. Cleanups interactive container, creates new containers and places
+        components inside them.
+
+        This method should be called each time when at least one of the following objects is changed:
+          - layout template,
+          - component locations,
+          - components,
+          - model controller,
+          - font scale.
+
+        @param {array} newContainer List of layout containers.
+        @param {Object} newComponentLocations Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
+        @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
+        @param {ModelController} newModelController Model Controller object.
+        @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
+      */
+      setupInteractive: function(newContainers, newComponentLocations, newComponents, newModelController, newFontScale) {
+        containers = newContainers;
+        componentLocations = newComponentLocations;
+        components = newComponents;
+        modelController = newModelController;
+        fontScale = newFontScale;
+
+        createContainers();
+        placeComponentsInContainers();
+        calcInteractiveAspectRatio();
+      },
+
+      /**
+        Layouts interactive. Adjusts size of the model container to ensure that all components are inside the
+        interactive container and all available space is used in the best way.
+      */
       layoutInteractive: function () {
-        var redraws = 0, id;
+        var redraws = layoutConfig.iterationsLimit,
+            id;
+
+        console.time('[layout] update');
+
+        availableWidth  = $interactiveContainer.width();
+        availableHeight = $interactiveContainer.height();
 
         // 0. Set font size of the interactive-container based on its size.
         setFontSize();
@@ -7893,12 +8400,12 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
         setMinDimensions();
 
         // 2. Calculate optimal layout.
-        modelWidth = $interactiveContainer.width();
+        modelWidth = availableWidth;
         positionContainers();
-        while (redraws < 35 && !resizeModelContainer()) {
+        while (--redraws > 0 && !resizeModelContainer()) {
           positionContainers();
-          redraws++;
         }
+        console.log('[layout] update: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
 
         // 3. Notify components that their containers have new sizes.
         modelController.resize();
@@ -7910,14 +8417,10 @@ define('common/layout/semantic-layout',['require','lab.config','common/alert'],f
 
         // 4. Set / remove colors of containers depending on the value of Lab.config.authoring
         setupBackground();
+
+        console.timeEnd('[layout] update');
       }
     };
-
-    //
-    // Initialize.
-    //
-    createContainers();
-    placeComponentsInContainers();
 
     return layout;
   };
@@ -7929,10 +8432,12 @@ define('common/layout/templates',[],function () {
     "simple": [
       {
         "id": "top",
-        "bottom": "model.top"
+        "bottom": "model.top",
+        "width": "interactive.width"
       },
       {
         "id": "right",
+        "top": "model.top",
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em"
@@ -7941,16 +8446,18 @@ define('common/layout/templates',[],function () {
         "id": "bottom",
         "top": "model.bottom",
         "width": "interactive.width",
-        "padding-bottom": "1em"
+        "padding-top": "0.5em"
       }
     ],
     "narrow-right": [
       {
         "id": "top",
-        "bottom": "model.top"
+        "bottom": "model.top",
+        "width": "interactive.width"
       },
       {
         "id": "right",
+        "top": "model.top",
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em",
@@ -7961,16 +8468,18 @@ define('common/layout/templates',[],function () {
         "id": "bottom",
         "top": "model.bottom",
         "width": "interactive.width",
-        "padding-bottom": "1em"
+        "padding-top": "0.5em"
       }
     ],
     "wide-right": [
       {
         "id": "top",
-        "bottom": "model.top"
+        "bottom": "model.top",
+        "width": "interactive.width"
       },
       {
         "id": "right",
+        "top": "model.top",
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em",
@@ -7981,53 +8490,7 @@ define('common/layout/templates',[],function () {
         "id": "bottom",
         "top": "model.bottom",
         "width": "interactive.width",
-        "padding-bottom": "1em"
-      }
-    ],
-    "split-right": [
-      {
-        "id": "top",
-        "bottom": "model.top"
-      },
-      {
-        "id": "right-top",
-        "left": "model.right",
-        "height": "model.height/2",
-        "padding-left": "1em"
-      },
-      {
-        "id": "right-bottom",
-        "left": "model.right",
-        "top": "model.top + model.height/2",
-        "height": "model.height/2",
-        "padding-left": "1em"
-      },
-      {
-        "id": "bottom",
-        "top": "model.bottom",
-        "width": "interactive.width",
-        "padding-top": "1em"
-      }
-    ],
-    "big-top": [
-      {
-        "id": "top",
-        "bottom": "model.top",
-        "height": "model.height/3",
-        "width": "model.width + right.width",
-        "padding-bottom": "1em"
-      },
-      {
-        "id": "right",
-        "left": "model.right",
-        "height": "model.height",
-        "padding-left": "1em"
-      },
-      {
-        "id": "bottom",
-        "top": "model.bottom",
-        "width": "interactive.width",
-        "padding-top": "1em"
+        "padding-top": "0.5em"
       }
     ]
   };
@@ -8097,7 +8560,7 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
   var arrays            = require('arrays'),
       ModelPlayer       = require('cs!common/components/model_player');
 
-  return function modelController(modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
+  return function modelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller = {},
 
@@ -8246,7 +8709,7 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
           modelContainer.update();
         };
 
-        modelContainer = new ModelContainer(modelViewId, modelUrl, model);
+        modelContainer = new ModelContainer(modelUrl, model);
       }
 
       function resetModelPlayer() {
@@ -8279,10 +8742,6 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
 
       function resize() {
         modelContainer.resize();
-      }
-
-      function getHeightForWidth(width) {
-        return modelContainer.getHeightForWidth(width);
       }
 
       function state() {
@@ -8320,10 +8779,17 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
         dispatch.on(type, listener);
       };
 
+      controller.getViewContainer = function () {
+        return modelContainer.$el;
+      };
+
+      controller.getHeightForWidth = function (width) {
+        return modelContainer.getHeightForWidth(width);
+      };
+
       controller.reload = reload;
       controller.repaint = repaint;
       controller.resize = resize;
-      controller.getHeightForWidth = getHeightForWidth;
       controller.modelContainer = modelContainer;
       controller.state = state;
       controller.benchmarks = benchmarks;
@@ -8361,12 +8827,12 @@ define('common/array-types',['require','arrays'],function (require) {
   // Return all available types of arrays.
   // If you need to use new type, declare it here.
   return {
-    float:  useTyped ? 'Float32Array' : 'regular',
-    int32:  useTyped ? 'Int32Array'   : 'regular',
-    int16:  useTyped ? 'Int16Array'   : 'regular',
-    int8:   useTyped ? 'Int8Array'    : 'regular',
-    uint16: useTyped ? 'Uint16Array'  : 'regular',
-    uint8:  useTyped ? 'Uint8Array'   : 'regular'
+    floatType:  useTyped ? 'Float32Array' : 'regular',
+    int32Type:  useTyped ? 'Int32Array'   : 'regular',
+    int16Type:  useTyped ? 'Int16Array'   : 'regular',
+    int8Type:   useTyped ? 'Int8Array'    : 'regular',
+    uint16Type: useTyped ? 'Uint16Array'  : 'regular',
+    uint8Type:  useTyped ? 'Uint8Array'   : 'regular'
   };
 
 });
@@ -9667,7 +10133,7 @@ define('md2d/models/metadata',[],function() {
       viscosity: {
         defaultValue: 1
       },
-      viewRefreshInterval: {
+      timeStepsPerTick: {
         defaultValue: 50
       }
     },
@@ -10646,13 +11112,13 @@ define('md2d/models/engine/neighbor-list',['require','arrays','common/array-type
           listCapacity = maxAtomsNum * (maxAtomsNum - 1) / 2;
           forceUpdate = true;
 
-          list = arrays.create(listCapacity, 0, arrayTypes.int16);
-          head = arrays.create(maxAtomsNum, -1, arrayTypes.int16);
-          tail = arrays.create(maxAtomsNum, -1, arrayTypes.int16);
+          list = arrays.create(listCapacity, 0, arrayTypes.int16Type);
+          head = arrays.create(maxAtomsNum, -1, arrayTypes.int16Type);
+          tail = arrays.create(maxAtomsNum, -1, arrayTypes.int16Type);
           // Fill x and y with Infinity, so shouldUpdate(..)
           // will return true during first call after initialization.
-          x    = arrays.create(maxAtomsNum, Infinity, arrayTypes.float);
-          y    = arrays.create(maxAtomsNum, Infinity, arrayTypes.float);
+          x    = arrays.create(maxAtomsNum, Infinity, arrayTypes.floatType);
+          y    = arrays.create(maxAtomsNum, Infinity, arrayTypes.floatType);
         };
 
     init();
@@ -11393,10 +11859,10 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         createElementsArray = function(num) {
           elements = engine.elements = {};
 
-          elements.mass    = arrays.create(num, 0, arrayTypes.float);
-          elements.epsilon = arrays.create(num, 0, arrayTypes.float);
-          elements.sigma   = arrays.create(num, 0, arrayTypes.float);
-          elements.radius  = arrays.create(num, 0, arrayTypes.float);
+          elements.mass    = arrays.create(num, 0, arrayTypes.floatType);
+          elements.epsilon = arrays.create(num, 0, arrayTypes.floatType);
+          elements.sigma   = arrays.create(num, 0, arrayTypes.floatType);
+          elements.radius  = arrays.create(num, 0, arrayTypes.floatType);
           elements.color   = arrays.create(num, 0, arrayTypes.Int32Array);
 
           assignShortcutReferences.elements();
@@ -11406,29 +11872,29 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           atoms  = engine.atoms  = {};
 
           // TODO. DRY this up by letting the property list say what type each array is
-          atoms.radius         = arrays.create(num, 0, arrayTypes.float);
-          atoms.px             = arrays.create(num, 0, arrayTypes.float);
-          atoms.py             = arrays.create(num, 0, arrayTypes.float);
-          atoms.x              = arrays.create(num, 0, arrayTypes.float);
-          atoms.y              = arrays.create(num, 0, arrayTypes.float);
-          atoms.vx             = arrays.create(num, 0, arrayTypes.float);
-          atoms.vy             = arrays.create(num, 0, arrayTypes.float);
-          atoms.speed          = arrays.create(num, 0, arrayTypes.float);
-          atoms.ax             = arrays.create(num, 0, arrayTypes.float);
-          atoms.ay             = arrays.create(num, 0, arrayTypes.float);
-          atoms.charge         = arrays.create(num, 0, arrayTypes.float);
-          atoms.friction       = arrays.create(num, 0, arrayTypes.float);
-          atoms.element        = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.pinned         = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.mass           = arrays.create(num, 0, arrayTypes.float);
-          atoms.hydrophobicity = arrays.create(num, 0, arrayTypes.int8);
-          atoms.visited        = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.radius         = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.px             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.py             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.x              = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.y              = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.vx             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.vy             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.speed          = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.ax             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.ay             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.charge         = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.friction       = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.element        = arrays.create(num, 0, arrayTypes.uint8Type);
+          atoms.pinned         = arrays.create(num, 0, arrayTypes.uint8Type);
+          atoms.mass           = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.hydrophobicity = arrays.create(num, 0, arrayTypes.int8Type);
+          atoms.visited        = arrays.create(num, 0, arrayTypes.uint8Type);
           // For the sake of clarity, manage all atoms properties in one
           // place (engine). In the future, think about separation of engine
           // properties and view-oriented properties like these:
-          atoms.marked         = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.visible        = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.draggable      = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.marked         = arrays.create(num, 0, arrayTypes.uint8Type);
+          atoms.visible        = arrays.create(num, 0, arrayTypes.uint8Type);
+          atoms.draggable      = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.atoms();
         },
@@ -11436,11 +11902,11 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         createRadialBondsArray = function(num) {
           radialBonds = engine.radialBonds = {};
 
-          radialBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16);
-          radialBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16);
-          radialBonds.length   = arrays.create(num, 0, arrayTypes.float);
-          radialBonds.strength = arrays.create(num, 0, arrayTypes.float);
-          radialBonds.type     = arrays.create(num, 0, arrayTypes.uint8);
+          radialBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16Type);
+          radialBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16Type);
+          radialBonds.length   = arrays.create(num, 0, arrayTypes.floatType);
+          radialBonds.strength = arrays.create(num, 0, arrayTypes.floatType);
+          radialBonds.type     = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.radialBonds();
         },
@@ -11448,10 +11914,10 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         createRestraintsArray = function(num) {
           restraints = engine.restraints = {};
 
-          restraints.atomIndex = arrays.create(num, 0, arrayTypes.uint16);
-          restraints.k         = arrays.create(num, 0, arrayTypes.float);
-          restraints.x0        = arrays.create(num, 0, arrayTypes.float);
-          restraints.y0        = arrays.create(num, 0, arrayTypes.float);
+          restraints.atomIndex = arrays.create(num, 0, arrayTypes.uint16Type);
+          restraints.k         = arrays.create(num, 0, arrayTypes.floatType);
+          restraints.x0        = arrays.create(num, 0, arrayTypes.floatType);
+          restraints.y0        = arrays.create(num, 0, arrayTypes.floatType);
 
           assignShortcutReferences.restraints();
         },
@@ -11459,11 +11925,11 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         createAngularBondsArray = function(num) {
           angularBonds = engine.angularBonds = {};
 
-          angularBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16);
-          angularBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16);
-          angularBonds.atom3    = arrays.create(num, 0, arrayTypes.uint16);
-          angularBonds.angle    = arrays.create(num, 0, arrayTypes.float);
-          angularBonds.strength = arrays.create(num, 0, arrayTypes.float);
+          angularBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16Type);
+          angularBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16Type);
+          angularBonds.atom3    = arrays.create(num, 0, arrayTypes.uint16Type);
+          angularBonds.angle    = arrays.create(num, 0, arrayTypes.floatType);
+          angularBonds.strength = arrays.create(num, 0, arrayTypes.floatType);
 
           assignShortcutReferences.angularBonds();
         },
@@ -11472,18 +11938,18 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           vdwPairs = engine.vdwPairs = {};
 
           vdwPairs.count = 0;
-          vdwPairs.atom1 = arrays.create(num, 0, arrayTypes.uint16);
-          vdwPairs.atom2 = arrays.create(num, 0, arrayTypes.uint16);
+          vdwPairs.atom1 = arrays.create(num, 0, arrayTypes.uint16Type);
+          vdwPairs.atom2 = arrays.create(num, 0, arrayTypes.uint16Type);
         },
 
         createSpringForcesArray = function(num) {
           springForces = engine.springForces = [];
 
           // TODO: not very descriptive. Use hash of arrays like elsewhere.
-          springForces[0] = arrays.create(num, 0, arrayTypes.uint16);
-          springForces[1] = arrays.create(num, 0, arrayTypes.float);
-          springForces[2] = arrays.create(num, 0, arrayTypes.float);
-          springForces[3] = arrays.create(num, 0, arrayTypes.float);
+          springForces[0] = arrays.create(num, 0, arrayTypes.uint16Type);
+          springForces[1] = arrays.create(num, 0, arrayTypes.floatType);
+          springForces[2] = arrays.create(num, 0, arrayTypes.floatType);
+          springForces[3] = arrays.create(num, 0, arrayTypes.floatType);
 
           assignShortcutReferences.springForces();
         },
@@ -11491,30 +11957,30 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         createObstaclesArray = function(num) {
           obstacles = engine.obstacles = {};
 
-          obstacles.x           = arrays.create(num, 0, arrayTypes.float);
-          obstacles.y           = arrays.create(num, 0, arrayTypes.float);
-          obstacles.width       = arrays.create(num, 0, arrayTypes.float);
-          obstacles.height      = arrays.create(num, 0, arrayTypes.float);
-          obstacles.mass        = arrays.create(num, 0, arrayTypes.float);
-          obstacles.vx          = arrays.create(num, 0, arrayTypes.float);
-          obstacles.vy          = arrays.create(num, 0, arrayTypes.float);
-          obstacles.externalFx  = arrays.create(num, 0, arrayTypes.float);
-          obstacles.externalFy  = arrays.create(num, 0, arrayTypes.float);
-          obstacles.friction    = arrays.create(num, 0, arrayTypes.float);
-          obstacles.westProbe   = arrays.create(num, 0, arrayTypes.uint8);
-          obstacles.northProbe  = arrays.create(num, 0, arrayTypes.uint8);
-          obstacles.eastProbe   = arrays.create(num, 0, arrayTypes.uint8);
-          obstacles.southProbe  = arrays.create(num, 0, arrayTypes.uint8);
-          obstacles.westProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.northProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.eastProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.southProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.xPrev       = arrays.create(num, 0, arrayTypes.float);
-          obstacles.yPrev       = arrays.create(num, 0, arrayTypes.float);
-          obstacles.colorR      = arrays.create(num, 0, arrayTypes.float);
-          obstacles.colorG      = arrays.create(num, 0, arrayTypes.float);
-          obstacles.colorB      = arrays.create(num, 0, arrayTypes.float);
-          obstacles.visible     = arrays.create(num, 0, arrayTypes.uint8);
+          obstacles.x           = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.y           = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.width       = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.height      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.mass        = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.vx          = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.vy          = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalFx  = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalFy  = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.friction    = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.westProbe   = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.northProbe  = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.eastProbe   = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.southProbe  = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.westProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.northProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.eastProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.southProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.xPrev       = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.yPrev       = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.colorR      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.colorG      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.colorB      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.visible     = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.obstacles();
         },
@@ -13312,11 +13778,24 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
       canPlaceAtom: function(element, _x, _y, i) {
         var orig_x,
             orig_y,
-            PEAtLocation;
+            PEAtLocation,
+            j;
 
-        // first do the simpler check to see if we're outside the walls or intersect an obstacle
+        // first do the simpler check to see if we're outside the walls
         if ( !engine.atomInBounds(_x, _y, i) ) {
           return false;
+        }
+
+        // Check collision with obstacles.
+        for (j = 0; j < N_obstacles; j++) {
+          testX = obstacleX[j];
+          testY = obstacleY[j];
+          testXMax = testX + obstacleWidth[j];
+          testYMax = testY + obstacleHeight[j];
+          if ((_x > testX && _x < testXMax) &&
+              (_y > testY && _y < testYMax)) {
+            return false;
+          }
         }
 
         // then check PE at location
@@ -13831,8 +14310,18 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         return elementRadius[el];
       },
 
-      getNumberOfAtoms: function() {
-        return N;
+      getNumberOfAtoms: function(f) {
+        if (typeof f === 'undefined') {
+          return N;
+        }  else {
+          var i,
+              count = 0,
+              func = new Function('i', 'return this.atoms.' + f).bind(this);
+          for (i = 0; i < N; i++) {
+            if (func(i)) count++;
+          }
+          return count;
+        }
       },
 
       getNumberOfElements: function() {
@@ -14809,6 +15298,9 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
         listeners = {},
 
+        // If this is true, output properties will not be recalculated on changes
+        supressInvalidatingChangeHooks = false,
+
         properties = {
           /**
             These functions are optional setters that will be called *instead* of simply setting
@@ -15075,11 +15567,11 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
         }
       }
 
-      // viewRefreshInterval is defined in Classic MW as the number of timesteps per view update.
+      // timeStepsPerTick is defined in Classic MW as the number of timesteps per view update.
       // However, in MD2D we prefer the more physical notion of integrating for a particular
       // length of time.
       console.time('integration');
-      engine.integrate(model.get('viewRefreshInterval') * timeStep, timeStep);
+      engine.integrate(model.get('timeStepsPerTick') * timeStep, timeStep);
       console.timeEnd('integration');
       console.time('reading model state');
       updateAllOutputProperties();
@@ -15184,6 +15676,8 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       by considered non-invalidating changes that don't require calling this hook.
     */
     function invalidatingChangePreHook() {
+      if (supressInvalidatingChangeHooks) return;
+
       storeOutputPropertiesBeforeChange();
     }
 
@@ -15191,6 +15685,8 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
     */
     function invalidatingChangePostHook() {
+      if (supressInvalidatingChangeHooks) return;
+
       updateOutputPropertiesAfterChange();
       if (tickHistory) tickHistory.invalidateFollowingState();
       dispatch.invalidation();
@@ -15340,6 +15836,18 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           };
         }
       }
+    }
+
+    /**
+      return a random element index ... which is *not* an amino acid element
+    */
+    function randomElement() {
+      var len = engine.getNumberOfElements(),
+          el = Math.floor( Math.random() * len );
+      while(aminoacidsHelper.isAminoAcid(el)) {
+        el = Math.floor( Math.random() * len );
+      }
+      return el;
     }
 
     /**
@@ -15532,21 +16040,16 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     };
 
     model.createElements = function(_elements) {
-      // Options for addElement method.
-      var options = {
-        // Deserialization process, invalidating change hooks will be called manually.
-        deserialization: true
-      },
-      i, num, prop, elementProps;
+      var i, num, prop, elementProps;
 
-      // Call the hook manually, as addElement won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       if (_elements === undefined) {
         // Special case when elements are not defined.
         // Empty object will be filled with default values.
-        model.addElement({id: 0}, options);
+        model.addElement({id: 0});
+        model.endBatch();
         return;
       }
 
@@ -15561,12 +16064,11 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
             elementProps[prop] = _elements[prop][i];
           }
         }
-        model.addElement(elementProps, options);
+        model.addElement(elementProps);
       }
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       return model;
     };
@@ -15605,15 +16107,12 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           // Options for addAtom method.
       var options = {
             // Do not check the position of atom, assume that it's valid.
-            supressCheck: true,
-            // Deserialization process, invalidating change hooks will be called manually.
-            deserialization: true
+            supressCheck: true
           },
           i, num, prop, atomProps;
 
-      // Call the hook manually, as addAtom won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       if (typeof config === 'number') {
         num = config;
@@ -15655,9 +16154,8 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           engine.relaxToTemperature();
       }
 
-      // Call the hook manually, as addAtom won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
@@ -15667,17 +16165,11 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     };
 
     model.createRadialBonds = function(_radialBonds) {
-          // Options for addRadialBond method.
-      var options = {
-            // Deserialization process, invalidating change hooks will be called manually.
-            deserialization: true
-          },
-          num = _radialBonds.strength.length,
+      var num = _radialBonds.strength.length,
           i, prop, radialBondProps;
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       // _radialBonds is hash of arrays (as specified in JSON model).
       // So, for each index, create object containing properties of
@@ -15690,28 +16182,21 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
             radialBondProps[prop] = _radialBonds[prop][i];
           }
         }
-        model.addRadialBond(radialBondProps, options);
+        model.addRadialBond(radialBondProps);
       }
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       return model;
     };
 
     model.createAngularBonds = function(_angularBonds) {
-          // Options for addAngularBond method.
-      var options = {
-            // Deserialization process, invalidating change hooks will be called manually.
-            deserialization: true
-          },
-          num = _angularBonds.strength.length,
+      var num = _angularBonds.strength.length,
           i, prop, angularBondProps;
 
-      // Call the hook manually, as addAngularBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePreHook();
+      // Start batch process
+      model.startBatch();
 
       // _angularBonds is hash of arrays (as specified in JSON model).
       // So, for each index, create object containing properties of
@@ -15724,12 +16209,11 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
             angularBondProps[prop] = _angularBonds[prop][i];
           }
         }
-        model.addAngularBond(angularBondProps, options);
+        model.addAngularBond(angularBondProps);
       }
 
-      // Call the hook manually, as addRadialBond won't do it due to
-      // deserialization option set to true.
-      invalidatingChangePostHook();
+      // End batch process
+      model.endBatch();
 
       return model;
     };
@@ -15802,7 +16286,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       charge (default is neutral).
     */
     model.addRandomAtom = function(el, charge) {
-      if (el == null) el = Math.floor( Math.random() * elements.mass.length );
+      if (el == null) el = randomElement();
       if (charge == null) charge = 0;
 
       var size   = model.size(),
@@ -15835,7 +16319,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
       Returns false and does not add the atom if the potential energy change of adding an *uncharged*
       atom of the specified element to the specified location would be positive (i.e, if the atom
-      intrudes into the repulsive region of another atom.)
+      intrudes into the repulsive region of another atom), or if atom is placed inside an obstacle
 
       Otherwise, returns true.
 
@@ -16252,7 +16736,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     model.removeTextBox = function(i) {
       var text = properties.textBoxes;
       if (i >=0 && i < text.length) {
-        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1))
+        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1));
         dispatch.textBoxesChanged();
       } else {
         throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
@@ -16341,8 +16825,8 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       return radialBondResults;
     };
 
-    model.get_num_atoms = function() {
-      return engine.getNumberOfAtoms();
+    model.get_num_atoms = function(f) {
+      return engine.getNumberOfAtoms(f);
     };
 
     model.get_obstacles = function() {
@@ -16518,6 +17002,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     };
 
     model.start = function() {
+      if (!stopped) return model;
       return model.resume();
     };
 
@@ -16611,7 +17096,16 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       return model;
     };
 
-    model.set = function(hash) {
+    model.set = function(key, val) {
+      var hash;
+      if (arguments.length === 1) {
+        // Hash of options provided.
+        hash = key;
+      } else {
+        // Key - value pair provied.
+        hash = {};
+        hash[key] = val;
+      }
       // Perform validation in case of setting main properties or
       // model view properties. Attempts to set immutable or read-only
       // properties will be caught.
@@ -16792,8 +17286,11 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       properties['set_'+name] = function(value) {
         properties[name] = value;
         parametersByName[name].isDefined = true;
-        // set a useful 'this' binding in the setter:
-        parametersByName[name].setter.call(model, value);
+        // setter is optional.
+        if (parametersByName[name].setter) {
+          // set a useful 'this' binding in the setter:
+          parametersByName[name].setter.call(model, value);
+        }
       };
     };
 
@@ -16814,12 +17311,32 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
     model.getPropertyType = function(name) {
       if (outputsByName[name]) {
-        return 'output'
+        return 'output';
       }
       if (parametersByName[name]) {
-        return 'parameter'
+        return 'parameter';
       }
     };
+
+    /**
+      Call before running a function that would otherwise trigger a number
+      of invalidatingChangePre/PostHooks, which would slow down the model when
+      each change causes a recalculation. This can be used whenever you can
+      safely assume that all actions executed between startBatch and endBatch
+      will not depend on triggered property changes.
+
+      endBatch() *must* be called after the actions are complete, or output
+      properties will no longer be updated.
+      */
+    model.startBatch = function() {
+      invalidatingChangePreHook();
+      supressInvalidatingChangeHooks = true;
+    }
+
+    model.endBatch = function() {
+      supressInvalidatingChangeHooks = false;
+      invalidatingChangePostHook();
+    }
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function() {
@@ -17012,7 +17529,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
         "showVelocityVectors",
         "showForceVectors",
         "showClock",
-        "viewRefreshInterval",
+        "timeStepsPerTick",
         "timeStep",
         "viscosity",
         "gravitationalField"
@@ -17427,27 +17944,34 @@ define('common/views/gradients',['require'],function (require) {
     mainColorOfGradient: {},
     createRadialGradient: function (id, lightColor, medColor, darkColor, mainContainer) {
       var gradientUrl,
-          gradient = mainContainer.append("defs")
-          .append("radialGradient")
+          defs,
+          gradient;
+      defs = mainContainer.select("defs");
+      if (defs.empty()) {
+        defs = mainContainer.append("defs");
+      }
+      gradient = defs.select("#" + id);
+      if (gradient.empty()) {
+        gradient = defs.append("radialGradient")
           .attr("id", id)
           .attr("cx", "50%")
           .attr("cy", "47%")
           .attr("r", "53%")
           .attr("fx", "35%")
           .attr("fy", "30%");
-      gradient.append("stop")
+        gradient.append("stop")
           .attr("stop-color", lightColor)
           .attr("offset", "0%");
-      gradient.append("stop")
+        gradient.append("stop")
           .attr("stop-color", medColor)
           .attr("offset", "40%");
-      gradient.append("stop")
+        gradient.append("stop")
           .attr("stop-color", darkColor)
           .attr("offset", "80%");
-      gradient.append("stop")
+        gradient.append("stop")
           .attr("stop-color", medColor)
           .attr("offset", "100%");
-
+      }
       gradientUrl = "url(#" + id + ")";
       // Store main color (for now - dark color) of the gradient.
       // Useful for radial bonds. Keys are URLs for convenience.
@@ -17473,27 +17997,20 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
       gradients             = require('common/views/gradients');
 
-  return function ModelView(e, modelUrl, model, Renderer) {
+  return function ModelView(modelUrl, model, Renderer) {
         // Public API object to be returned.
     var api = {},
         renderer,
         containers = {},
-        elem = d3.select(e),
-        node = elem.node(),
-        // in fit-to-parent mode, the d3 selection containing outermost container
-        outerElement,
-        cx = elem.property("clientWidth"),
-        cy = elem.property("clientHeight"),
-        width, height,
+        $el,
+        node,
         emsize,
         imagePath,
         vis1, vis, plot,
         playbackComponent,
+        cx, cy,
         padding, size, modelSize,
-        dragged,
         playbackXPos, playbackYPos,
-        timePrefix = "",
-        timeSuffix = " (fs)",
 
         // Basic scaling function, it transforms model units to "pixels".
         // Use it for dimensions of objects rendered inside the view.
@@ -17525,7 +18042,7 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
 
     // Padding is based on the calculated font-size used for the model view container.
     function updatePadding() {
-      emsize = $(e).css('font-size');
+      emsize = $el.css('font-size');
       // Remove "px", convert to number.
       emsize = Number(emsize.substring(0, emsize.length - 2));
       // Convert value to "em", using 18px as a basic font size.
@@ -17559,17 +18076,18 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
     function scale() {
       var modelWidth = model.get('width'),
           modelHeight = model.get('height'),
-          aspectRatio = modelWidth / modelHeight;
+          aspectRatio = modelWidth / modelHeight,
+          width, height;
 
       updatePadding();
 
-      cx = elem.property("clientWidth");
+      cx = $el.width();
       width = cx - padding.left  - padding.right;
       height = width / aspectRatio;
       cy = height + padding.top  + padding.bottom;
       node.style.height = cy + "px";
 
-      // Container size in px.
+      // Plot size in px.
       size = {
         "width":  width,
         "height": height
@@ -17608,13 +18126,6 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
       model2pxInv = d3.scale.linear()
           .domain([modelSize.height, 0])
           .range([0, size.height]);
-
-      dragged = null;
-      return [cx, cy, width, height];
-    }
-
-    function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('time')) + timeSuffix;
     }
 
     function redraw() {
@@ -17782,19 +18293,22 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
     }
 
     function renderContainer() {
+      // Update cx, cy, size and modelSize variables.
       scale();
-      // create container, or update properties if it already exists
-      if (vis === undefined) {
 
-        outerElement = elem;
+      // Create container, or update properties if it already exists.
+      if (vis === undefined) {
         vis1 = d3.select(node).append("svg")
           .attr({
+            'xmlns': 'http://www.w3.org/2000/svg',
+            'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
             width: cx,
             height: cy
           })
+          // SVG element should always fit its parent container.
           .style({
-            width: cx,
-            height: cy
+            width: "100%",
+            height: "100%"
           });
 
         vis = vis1.append("g").attr("class", "particle-container-vis");
@@ -17842,10 +18356,6 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
       // Set new dimensions of the top-level SVG container.
       vis1
         .attr({
-          width: cx,
-          height: cy
-        })
-        .style({
           width: cx,
           height: cy
         });
@@ -17899,14 +18409,18 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
       // can find resources on paths relative to the model
       model.url = modelUrl;
 
+      // Add a pos() function to containers so the model renderer can more easily
+      // manipulate absolutely positioned dom elements it may create or manage
+      containers.pos = function() {
+        return  mainContainer.node().parentElement.getBoundingClientRect();
+      }
+
       // create a model renderer ... if one hasn't already been created
       if (!renderer) {
         renderer = new Renderer(model, containers, model2px, model2pxInv);
       } else {
         renderer.reset(model, containers, model2px, model2pxInv);
       }
-
-      repaint();
 
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
@@ -17931,14 +18445,13 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
 
     api = {
       update: null,
-      node: null,
-      outerNode: null,
+      $el: null,
       scale: scale,
       setFocus: setFocus,
       resize: function() {
-        scale();
         processOptions();
         init();
+        repaint();
       },
       getHeightForWidth: function (width) {
         var modelWidth = model.get('width'),
@@ -17958,6 +18471,7 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
       reset: function(newModelUrl, newModel) {
         processOptions(newModelUrl, newModel);
         init();
+        repaint();
       },
       model2px: function(val) {
         // Note that we shouldn't just do:
@@ -17973,3769 +18487,29 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
     };
 
     // Initialization.
+    // jQuery object with model container.
+    $el = $("<div>")
+      .attr({
+        "id": "model-container",
+        "class": "container"
+      })
+      // Set initial dimensions.
+      .css({
+        "width": "50px",
+        "height": "50px"
+      });
+    // DOM element.
+    node = $el[0];
+
     processOptions();
     init();
 
     // Extend Public withExport initialized object to initialized objects
     api.update = renderer.update;
-    api.node = node;
-    api.outerNode = outerElement.node();
+    api.$el = $el;
 
     return api;
   };
-});
-
-
-/*
-Simple module which provides context menu for amino acids. It allows
-to dynamically change type of amino acids in a convenient way.
-It uses jQuery.contextMenu plug-in.
-
-CSS style definition: sass/lab/_aminoacid-context-menu.sass
-*/
-
-
-(function() {
-
-  define('cs!md2d/views/aminoacid-context-menu',['require','cs!md2d/models/aminoacids-helper'],function(require) {
-    var HYDROPHILIC_CAT_CLASS, HYDROPHILIC_CLASS, HYDROPHOBIC_CAT_CLASS, HYDROPHOBIC_CLASS, MARKED_CLASS, MENU_CLASS, NEG_CHARGE_CLASS, POS_CHARGE_CLASS, aminoacids, showCategory;
-    aminoacids = require('cs!md2d/models/aminoacids-helper');
-    MENU_CLASS = "aminoacids-menu";
-    HYDROPHOBIC_CLASS = "hydrophobic";
-    HYDROPHOBIC_CAT_CLASS = "hydrophobic-category";
-    HYDROPHILIC_CLASS = "hydrophilic";
-    HYDROPHILIC_CAT_CLASS = "hydrophilic-category";
-    POS_CHARGE_CLASS = "pos-charge";
-    NEG_CHARGE_CLASS = "neg-charge";
-    MARKED_CLASS = "marked";
-    showCategory = function(type, animate) {
-      var func;
-      func = {
-        show: animate ? "slideDown" : "show",
-        hide: animate ? "slideUp" : "hide"
-      };
-      if (type === "hydrophobic") {
-        $("." + HYDROPHOBIC_CLASS)[func.show]();
-        $("." + HYDROPHILIC_CLASS)[func.hide]();
-        $("." + HYDROPHOBIC_CAT_CLASS).addClass("expanded");
-        return $("." + HYDROPHILIC_CAT_CLASS).removeClass("expanded");
-      } else {
-        $("." + HYDROPHOBIC_CLASS)[func.hide]();
-        $("." + HYDROPHILIC_CLASS)[func.show]();
-        $("." + HYDROPHOBIC_CAT_CLASS).removeClass("expanded");
-        return $("." + HYDROPHILIC_CAT_CLASS).addClass("expanded");
-      }
-    };
-    return {
-      /*
-        Register context menu for DOM elements defined by @selector.
-        @model, @view are associated model and view, used to set
-        properties and redraw view.
-      */
-
-      register: function(model, view, selector) {
-        $.contextMenu('destroy', selector);
-        $.contextMenu({
-          selector: selector,
-          className: MENU_CLASS,
-          animation: {
-            show: "show",
-            hide: "hide"
-          },
-          callback: function(key, options) {
-            var elemId, marked, props;
-            props = d3.select(options.$trigger[0]).datum();
-            marked = aminoacids.getAminoAcidByElement(props.element).abbreviation;
-            options.items[marked].$node.removeClass(MARKED_CLASS);
-            elemId = aminoacids.abbrToElement(key);
-            model.setAtomProperties(props.idx, {
-              element: elemId
-            });
-            return view.setupDrawables();
-          },
-          position: function(opt, x, y) {
-            var $win, bottom, height, offset, right, triggerIsFixed, width;
-            $win = $(window);
-            if (!x && !y) {
-              opt.determinePosition.call(this, opt.$menu);
-              return;
-            } else if (x === "maintain" && y === "maintain") {
-              offset = opt.$menu.position();
-            } else {
-              triggerIsFixed = opt.$trigger.parents().andSelf().filter(function() {
-                return $(this).css('position') === "fixed";
-              }).length;
-              if (triggerIsFixed) {
-                y -= $win.scrollTop();
-                x -= $win.scrollLeft();
-              }
-              offset = {
-                top: y,
-                left: x
-              };
-            }
-            bottom = $win.scrollTop() + $win.height();
-            right = $win.scrollLeft() + $win.width();
-            /*
-                    !!! Workaround for the correct positioning:
-                    Use scrollHeight / scrollWidth as these functions return correct height / width
-                    in contrast to opt.$menu.height() / opt.$menu.width().
-            */
-
-            height = opt.$menu[0].scrollHeight;
-            width = opt.$menu[0].scrollWidth;
-            if (offset.top + height > bottom) {
-              offset.top -= height;
-            }
-            if (offset.left + width > right) {
-              offset.left -= width;
-            }
-            offset.left += 1;
-            return opt.$menu.css(offset);
-          },
-          events: {
-            show: function(options) {
-              var $node, key, props;
-              props = d3.select(options.$trigger[0]).datum();
-              key = aminoacids.getAminoAcidByElement(props.element).abbreviation;
-              $node = options.items[key].$node;
-              $node.addClass(MARKED_CLASS);
-              if ($node.hasClass(HYDROPHOBIC_CLASS)) {
-                showCategory("hydrophobic");
-              } else {
-                showCategory("hydrophilic");
-              }
-              return true;
-            },
-            hide: function(options) {
-              var key, props;
-              props = d3.select(options.$trigger[0]).datum();
-              key = aminoacids.getAminoAcidByElement(props.element).abbreviation;
-              options.items[key].$node.removeClass(MARKED_CLASS);
-              return true;
-            }
-          },
-          items: {
-            "Hydrophobic": {
-              name: "Hydrophobic",
-              className: "" + HYDROPHOBIC_CAT_CLASS,
-              callback: function() {
-                showCategory("hydrophobic", true);
-                return false;
-              }
-            },
-            "Gly": {
-              name: "Glycine",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Ala": {
-              name: "Alanine",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Val": {
-              name: "Valine",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Leu": {
-              name: "Leucine",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Ile": {
-              name: "Isoleucine",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Phe": {
-              name: "Phenylalanine",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Pro": {
-              name: "Proline",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Trp": {
-              name: "Tryptophan",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Met": {
-              name: "Methionine",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Cys": {
-              name: "Cysteine",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Tyr": {
-              name: "Tyrosine",
-              className: "" + HYDROPHOBIC_CLASS
-            },
-            "Hydrophilic": {
-              name: "Hydrophilic",
-              className: "" + HYDROPHILIC_CAT_CLASS,
-              callback: function() {
-                showCategory("hydrophilic", true);
-                return false;
-              }
-            },
-            "Asn": {
-              name: "Asparagine",
-              className: "" + HYDROPHILIC_CLASS
-            },
-            "Gln": {
-              name: "Glutamine",
-              className: "" + HYDROPHILIC_CLASS
-            },
-            "Ser": {
-              name: "Serine",
-              className: "" + HYDROPHILIC_CLASS
-            },
-            "Thr": {
-              name: "Threonine",
-              className: "" + HYDROPHILIC_CLASS
-            },
-            "Asp": {
-              name: "Asparticacid",
-              className: "" + HYDROPHILIC_CLASS + " " + NEG_CHARGE_CLASS
-            },
-            "Glu": {
-              name: "Glutamicacid",
-              className: "" + HYDROPHILIC_CLASS + " " + NEG_CHARGE_CLASS
-            },
-            "Lys": {
-              name: "Lysine",
-              className: "" + HYDROPHILIC_CLASS + " " + POS_CHARGE_CLASS
-            },
-            "Arg": {
-              name: "Arginine",
-              className: "" + HYDROPHILIC_CLASS + " " + POS_CHARGE_CLASS
-            },
-            "His": {
-              name: "Histidine",
-              className: "" + HYDROPHILIC_CLASS + " " + POS_CHARGE_CLASS
-            }
-          }
-        });
-        return showCategory("hydrophobic");
-      }
-    };
-  });
-
-}).call(this);
-
-/*global define: false */
-
-define('md2d/views/genetic-renderer',['require'],function (require) {
-
-  return function GeneticRenderer(container, parentView, model) {
-    var api,
-        model2px,
-        model2pxInv,
-
-        init = function() {
-          // Save shortcuts.
-          model2px = parentView.model2px;
-          model2pxInv = parentView.model2pxInv;
-          // Redraw DNA / mRNA on every genetic properties change.
-          model.getGeneticProperties().on("change", api.setup);
-        },
-
-        renderText = function(container, txt, fontSize, dx, dy, markerPos) {
-          var x = 0,
-              xAttr = "",
-              textElement,
-              i, len;
-
-          // Necessary for example in Firefox.
-          fontSize += "px";
-
-          for (i = 0, len = txt.length; i < len; i++) {
-            xAttr += x + "px ";
-            x += dx;
-          }
-
-          if (markerPos === undefined || markerPos === "end") {
-            markerPos = txt.length / 3;
-          }
-          markerPos *= 3;
-
-          // Text shadow.
-          container.append("text")
-            .text(txt)
-            .attr({
-              "class": "shadow",
-              "x": xAttr,
-              "dy": dy
-            })
-            .style({
-                "stroke-width": model2px(0.01),
-                "font-size": fontSize
-            });
-
-          // Final text.
-          textElement = container.append("text")
-            .attr({
-              "class": "front",
-              "x": xAttr,
-              "dy": dy
-            })
-            .style("font-size", fontSize);
-
-          textElement.append("tspan")
-            .text(txt.substring(0, markerPos));
-          textElement.append("tspan")
-            .attr("class", "marked-mrna")
-            .text(txt.substring(markerPos, markerPos + 3));
-          textElement.append("tspan")
-            .text(txt.substring(markerPos + 3));
-        };
-
-    api = {
-      setup: function () {
-        var props = model.getGeneticProperties().get(),
-            dnaGElement, fontSize, dx;
-
-        if (props === undefined) {
-          return;
-        }
-
-        container.selectAll("g.dna").remove();
-
-        dnaGElement = container.append("g").attr({
-          "class": "dna",
-          // (0nm, 0nm) + small, constant offset in px.
-          "transform": "translate(" + model2px(props.x) + "," + model2pxInv(props.y) + ")"
-        });
-
-        fontSize = model2px(props.height);
-        dx = model2px(props.width);
-
-        // DNA code on sense strand.
-        renderText(dnaGElement, props.DNA, fontSize, dx, -fontSize);
-        // DNA complementary sequence.
-        renderText(dnaGElement, props.DNAComplement, fontSize, dx, 0);
-        // mRNA (if available).
-        if (props.mRNA !== undefined) {
-          renderText(dnaGElement, props.mRNA, fontSize, dx, -2.5 * fontSize, props.translationStep);
-        }
-      }
-    };
-
-    init();
-
-    return api;
-  };
-});
-
-
-/*
-  A simple function to wrap a string of text into an SVG text node of a given width
-  by creating tspans and adding words to them until the computedTextLength of the
-  tspan is greater than the desired width. Returns the number of lines.
-
-  If no wrapping is desired, use maxWidth=-1
-*/
-
-
-(function() {
-
-  define('cs!common/layout/wrap-svg-text',['require'],function(require) {
-    var svgUrl, wrapSVGText;
-    svgUrl = "http://www.w3.org/2000/svg";
-    return wrapSVGText = window.wrapSVGText = function(text, svgTextNode, maxWidth, x, dy) {
-      var computedTextLength, curLineLength, dashArray, dashes, i, lastWord, line, numLines, result, tempText, textNode, tspanNode, widestWidth, word, words, _i, _len;
-      dashes = /-/gi;
-      dashArray = (function() {
-        var _results;
-        _results = [];
-        while (result = dashes.exec(text)) {
-          _results.push(result.index);
-        }
-        return _results;
-      })();
-      words = text.split(/[\s-]/);
-      curLineLength = 0;
-      computedTextLength = 0;
-      numLines = 1;
-      widestWidth = 0;
-      if (maxWidth === -1) {
-        maxWidth = Infinity;
-      }
-      for (i = _i = 0, _len = words.length; _i < _len; i = ++_i) {
-        word = words[i];
-        curLineLength += word.length + 1;
-        if (computedTextLength > maxWidth || i === 0) {
-          if (i > 0) {
-            tempText = tspanNode.firstChild.nodeValue;
-            if (tempText.length > words[i - 1].length + 1) {
-              lastWord = tempText.slice(tempText.length - words[i - 1].length - 1);
-              tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - words[i - 1].length - 1);
-            } else if (tempText.length === words[i - 1].length + 1) {
-              tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - 1);
-            }
-            widestWidth = Math.max(tspanNode.getComputedTextLength(), widestWidth);
-            numLines++;
-          }
-          tspanNode = document.createElementNS(svgUrl, "tspan");
-          tspanNode.setAttributeNS(null, "x", x);
-          tspanNode.setAttributeNS(null, "dy", i === 0 ? 0 : dy);
-          textNode = document.createTextNode(line);
-          tspanNode.appendChild(textNode);
-          svgTextNode.appendChild(tspanNode);
-          if (~dashArray.indexOf(curLineLength - 1)) {
-            line = word + "-";
-          } else {
-            line = word + " ";
-          }
-          if (i && lastWord) {
-            line = lastWord + line;
-          }
-        } else {
-          if (~dashArray.indexOf(curLineLength - 1)) {
-            line += word + "-";
-          } else {
-            line += word + " ";
-          }
-        }
-        tspanNode.firstChild.nodeValue = line;
-        computedTextLength = tspanNode.getComputedTextLength();
-        if (i && i === words.length - 1 && computedTextLength > maxWidth) {
-          tempText = tspanNode.firstChild.nodeValue;
-          tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - words[i].length - 1);
-          tspanNode = document.createElementNS(svgUrl, "tspan");
-          tspanNode.setAttributeNS(null, "x", x);
-          tspanNode.setAttributeNS(null, "dy", dy);
-          textNode = document.createTextNode(words[i]);
-          tspanNode.appendChild(textNode);
-          svgTextNode.appendChild(tspanNode);
-          numLines++;
-        }
-      }
-      if (widestWidth === 0) {
-        widestWidth = svgTextNode.childNodes[0].getComputedTextLength();
-      }
-      return {
-        lines: numLines,
-        width: widestWidth
-      };
-    };
-  });
-
-}).call(this);
-
-/*global $ alert define: false, d3: false */
-// ------------------------------------------------------------
-//
-//   MD2D View Renderer
-//
-// ------------------------------------------------------------
-define('md2d/views/renderer',['require','lab.config','common/console','cs!md2d/views/aminoacid-context-menu','md2d/views/genetic-renderer','cs!common/layout/wrap-svg-text','common/views/gradients'],function (require) {
-  // Dependencies.
-  var labConfig             = require('lab.config'),
-      console               = require('common/console'),
-      amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
-      GeneticRenderer       = require('md2d/views/genetic-renderer'),
-      wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
-      gradients             = require('common/views/gradients'),
-
-      RADIAL_BOND_TYPES = {
-        STANDARD_STICK  : 101,
-        LONG_SPRING     : 102,
-        BOND_SOLID_LINE : 103,
-        GHOST           : 104,
-        UNICOLOR_STICK  : 105,
-        SHORT_SPRING    : 106,
-        DOUBLE_BOND     : 107,
-        TRIPLE_BOND     : 108,
-        DISULPHIDE_BOND : 109
-      };
-
-  return function MD2DView(model, containers, model2px, model2pxInv) {
-        // Public API object to be returned.
-    var api = {},
-
-        // The model function get_results() returns a 2 dimensional array
-        // of particle indices and properties that is updated every model tick.
-        // This array is not garbage-collected so the view can be assured that
-        // the latest modelResults will be in this array when the view is executing
-        modelResults,
-        modelElements,
-        modelWidth,
-        modelHeight,
-        aspectRatio,
-
-        // "Containers" - SVG g elements used to position layers of the final visualization.
-        mainContainer        = containers.mainContainer,
-        radialBondsContainer = containers.radialBondsContainer,
-        VDWLinesContainer    = containers.VDWLinesContainer,
-        imageContainerBelow  = containers.imageContainerBelow,
-        imageContainerTop    = containers.imageContainerTop,
-        textContainerBelow   = containers.textContainerBelow,
-        textContainerTop     = containers.textContainerTop,
-
-        dragOrigin,
-
-        // Renderers specific for MD2D
-        // TODO: for now only DNA is rendered in a separate class, try to create
-        // new renderers in separate files for clarity and easier testing.
-        geneticRenderer,
-
-        gradientNameForElement,
-        // Set of gradients used for Kinetic Energy Shading.
-        gradientNameForKELevel = [],
-        // Number of gradients used for Kinetic Energy Shading.
-        KE_SHADING_STEPS = 25,
-        // Array which defines a gradient assigned to a given particle.
-        gradientNameForParticle = [],
-
-        atomTooltipOn,
-
-        particle, label, labelEnter,
-        moleculeDiv, moleculeDivPre,
-
-        // for model clock
-        timeLabel,
-        modelTimeFormatter = d3.format("5.1f"),
-        timePrefix = "",
-        timeSuffix = " (ps)",
-
-        radialBonds,
-        radialBondResults,
-        obstacle,
-        obstacles,
-        mockObstaclesArray = [],
-        radialBond1, radialBond2,
-        vdwPairs = [],
-        vdwLines,
-        chargeShadingMode,
-        keShadingMode,
-        drawVdwLines,
-        drawVelocityVectors,
-        velocityVectorColor,
-        velocityVectorWidth,
-        velocityVectorLength,
-        drawForceVectors,
-        forceVectorColor,
-        forceVectorWidth,
-        forceVectorLength,
-        velVector,
-        forceVector,
-        imageProp,
-        imageMapping,
-        imageSizes = [],
-        textBoxes,
-        imagePath,
-        drawAtomTrace,
-        atomTraceId,
-        atomTraceColor,
-        atomTrace,
-        atomTracePath,
-        showClock,
-
-        VELOCITY_STR = "velocity",
-        FORCE_STR    = "force";
-
-
-    function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('time')/1000) + timeSuffix;
-    }
-
-    function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
-      return model.setAtomProperties(i, {x: xpos, y: ypos}, checkPosition, moveMolecule);
-    }
-
-    function getObstacleColor(i) {
-      return "rgb(" +
-        obstacles.colorR[i] + "," +
-        obstacles.colorG[i] + "," +
-        obstacles.colorB[i] + ")";
-    }
-
-    function redraw() {
-      var tx = function(d) { return "translate(" + model2px(d) + ",0)"; },
-          ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
-          stroke = function(d) { return d ? "#ccc" : "#666"; },
-          fx = model2px.tickFormat(5),
-          fy = model2pxInv.tickFormat(5);
-
-      if (d3.event && d3.event.transform) {
-          d3.event.transform(model2px, model2pxInv);
-      }
-
-      // Regenerate x-ticks…
-      var gx = gridContainer.selectAll("g.x")
-          .data(model2px.ticks(5), String)
-          .attr("transform", tx)
-          .classed("axes", true);
-
-      gx.select("text").text(fx);
-
-      var gxe = gx.enter().insert("g", "a")
-          .attr("class", "x")
-          .attr("transform", tx);
-
-      if (model.get("gridLines")) {
-        gxe.append("line")
-            .attr("stroke", stroke)
-            .attr("y1", 0)
-            .attr("y2", size.height);
-      } else {
-        gxe.selectAll("line").remove();
-      }
-
-      if (model.get("xunits")) {
-        gxe.append("text")
-            .attr("y", size.height)
-            .attr("dy", "1.25em")
-            .attr("text-anchor", "middle")
-            .text(fx);
-      } else {
-        gxe.select("text").remove();
-      }
-
-      gx.exit().remove();
-
-      // Regenerate y-ticks…
-      var gy = gridContainer.selectAll("g.y")
-          .data(model2pxInv.ticks(5), String)
-          .attr("transform", ty)
-          .classed("axes", true);
-
-      gy.select("text")
-          .text(fy);
-
-      var gye = gy.enter().insert("g", "a")
-          .attr("class", "y")
-          .attr("transform", ty)
-          .attr("background-fill", "#FFEEB6");
-
-      if (model.get("gridLines")) {
-        gye.append("line")
-            .attr("stroke", stroke)
-            .attr("x1", 0)
-            .attr("x2", size.width);
-      } else {
-        gye.selectAll("line").remove();
-      }
-
-      if (model.get("yunits")) {
-        gye.append("text")
-            .attr("x", "-0.5em")
-            .attr("dy", "0.30em")
-            .attr("text-anchor", "end")
-            .text(fy);
-      } else {
-        gye.select("text").remove();
-      }
-
-      gy.exit().remove();
-    }
-
-    // Pass in the signed 24-bit Integer used for Java MW elementColors
-    // See: https://github.com/mbostock/d3/wiki/Colors
-    function createElementColorGradient(id, signedInt, mainContainer) {
-      var colorstr = (signedInt + Math.pow(2, 24)).toString(16),
-          color,
-          medColor,
-          lightColor,
-          darkColor,
-          i;
-
-      for (i = colorstr.length; i < 6; i++) {
-        colorstr = String(0) + colorstr;
-      }
-      color      = d3.rgb("#" + colorstr);
-      medColor   = color.toString();
-      lightColor = color.brighter(1).toString();
-      darkColor  = color.darker(1).toString();
-      return gradients.createRadialGradient(id, lightColor, medColor, darkColor, mainContainer);
-    }
-
-    function createAdditionalGradients() {
-          // Scale used for Kinetic Energy Shading gradients.
-      var medColorScale = d3.scale.linear()
-            .interpolate(d3.interpolateRgb)
-            .range(["#F2F2F2", "#FF8080"]),
-          // Scale used for Kinetic Energy Shading gradients.
-          darkColorScale = d3.scale.linear()
-            .interpolate(d3.interpolateRgb)
-            .range(["#A4A4A4", "#FF2020"]),
-          gradientName,
-          gradientUrl,
-          KELevel,
-          i;
-
-      // Kinetic Energy Shading gradients
-      for (i = 0; i < KE_SHADING_STEPS; i++) {
-        gradientName = "ke-shading-" + i;
-        KELevel = i / KE_SHADING_STEPS;
-        gradientUrl = gradients.createRadialGradient(gradientName, "#FFFFFF", medColorScale(KELevel),
-          darkColorScale(KELevel), mainContainer);
-        gradientNameForKELevel[i] = gradientUrl;
-      }
-
-      for (i= 0; i < 4; i++) {
-        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
-      }
-      gradientNameForElement = ["url(#elem0-grad)", "url(#elem1-grad)", "url(#elem2-grad)", "url(#elem3-grad)"];
-    }
-
-    function createVectorArrowHeads(color, name) {
-      var arrowHead = mainContainer.append("defs")
-        .append("marker")
-        .attr("id", "Triangle-"+name)
-        .attr("viewBox", "0 0 10 10")
-        .attr("refX", "0")
-        .attr("refY", "5")
-        .attr("markerUnits", "strokeWidth")
-        .attr("markerWidth", "4")
-        .attr("markerHeight", "3")
-        .attr("orient", "auto")
-        .attr("stroke", color)
-        .attr("fill", color);
-      arrowHead.append("path")
-          .attr("d", "M 0 0 L 10 5 L 0 10 z");
-    }
-
-    // Returns gradient appropriate for a given atom.
-    // d - atom data.
-    function getParticleGradient(d) {
-        var ke, keIndex, charge;
-
-        if (d.marked) return "url(#mark-grad)";
-
-        if (keShadingMode) {
-          ke  = model.getAtomKineticEnergy(d.idx),
-          // Convert Kinetic Energy to [0, 1] range
-          // using empirically tested transformations.
-          // K.E. shading should be similar to the classic MW K.E. shading.
-          keIndex = Math.min(5 * ke, 1);
-
-          return gradientNameForKELevel[Math.round(keIndex * (KE_SHADING_STEPS - 1))];
-        }
-
-        if (chargeShadingMode) {
-          charge = d.charge;
-
-          if (charge === 0) return "url(#neutral-grad)";
-          return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
-        }
-
-        if (!d.isAminoAcid()) {
-          return gradientNameForElement[d.element % 4];
-        }
-        // Particle represents amino acid.
-        switch (model.get("aminoAcidColorScheme")) {
-          case "none":
-            return "url(#neutral-grad)";
-          case "hydrophobicity":
-            return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
-          case "charge":
-            if (d.charge === 0) return "url(#neutral-grad)";
-            return d.charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
-          case "chargeAndHydro":
-            if (d.charge < -0.000001)
-              return "url(#neg-grad)";
-            if (d.charge > 0.000001)
-              return "url(#pos-grad)";
-            return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
-          default:
-            throw new Error("ModelContainer: unknown amino acid color scheme.");
-        }
-    }
-
-    // Returns first color appropriate for a given radial bond (color next to atom1).
-    // d - radial bond data.
-    function getBondAtom1Color(d) {
-      if (isSpringBond(d)) {
-        return "#888";
-      } else {
-        return gradients.mainColorOfGradient[gradientNameForParticle[d.atom1]];
-      }
-    }
-
-    // Returns second color appropriate for a given radial bond (color next to atom2).
-    // d - radial bond data.
-    function getBondAtom2Color(d) {
-      if (isSpringBond(d)) {
-        return "#888";
-      } else {
-        return gradients.mainColorOfGradient[gradientNameForParticle[d.atom2]];
-      }
-    }
-
-    // Create key images which can be shown in the
-    // upper left corner in different situations.
-    // IMPORTANT: use percentage values whenever possible,
-    // especially for *height* attribute!
-    // It will allow to properly calculate images
-    // placement in drawSymbolImages() function.
-    function createSymbolImages() {
-      var xMargin = "1%";
-      // only add these images if they don't already exist
-      if ($("#heat-bath").length === 0) {
-        // Heat bath key image.
-        mainContainer.append("image")
-            .attr({
-              "id": "heat-bath",
-              "x": xMargin,
-              "width": "3%",
-              "height": "3%",
-              "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/heatbath.gif"
-            });
-      }
-      if ($("#ke-gradient").length === 0) {
-        // Kinetic Energy Shading gradient image.
-        mainContainer.append("image")
-            .attr({
-              "id": "ke-gradient",
-              "x": xMargin,
-              "width": "12%",
-              "height": "12%",
-              "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/ke-gradient.png"
-            });
-      }
-    }
-
-    // Draw key images in the upper left corner.
-    // Place them in one row, dynamically calculate
-    // y position.
-    function drawSymbolImages() {
-        var heatBath = model.get('temperatureControl'),
-            imageSelect, imageHeight,
-            // Variables used for calculating proper y positions.
-            // The unit for these values is percentage points!
-            yPos = 0,
-            yMargin = 1;
-
-        // Heat bath symbol.
-        if (heatBath) {
-            yPos += yMargin;
-            imageSelect = d3.select("#heat-bath")
-              .attr("y", yPos + "%")
-              .style("display", "");
-
-            imageHeight = imageSelect.attr("height");
-            // Truncate % symbol and convert to Number.
-            imageHeight = Number(imageHeight.substring(0, imageHeight.length - 1));
-            yPos += imageHeight;
-        } else {
-            d3.select("#heat-bath").style("display","none");
-        }
-
-        // Kinetic Energy shading gradient.
-        // Put it under heat bath symbol.
-        if (keShadingMode) {
-            yPos += yMargin;
-            d3.select("#ke-gradient")
-              .attr("y", yPos + "%")
-              .style("display", "");
-        } else {
-            d3.select("#ke-gradient").style("display", "none");
-        }
-    }
-
-    function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
-    }
-
-    /**
-      Call this wherever a d3 selection is being used to add circles for atoms
-    */
-
-    function particleEnter() {
-      particle.enter().append("circle")
-          .attr({
-            "class": function (d) { return d.isAminoAcid() ? "draggable amino-acid" : "draggable"; },
-            "r":  function(d) { return model2px(d.radius); },
-            "cx": function(d) { return model2px(d.x); },
-            "cy": function(d) { return model2pxInv(d.y); }
-          })
-          .style({
-            "fill-opacity": function(d) { return d.visible; },
-            "fill": function (d, i) { return gradientNameForParticle[i]; }
-          })
-          .on("mousedown", moleculeMouseDown)
-          .on("mouseover", moleculeMouseOver)
-          .on("mouseout", moleculeMouseOut)
-          .call(d3.behavior.drag()
-            .on("dragstart", nodeDragStart)
-            .on("drag", nodeDrag)
-            .on("dragend", nodeDragEnd)
-          );
-    }
-
-    function vectorEnter(vector, pathFunc, widthFunc, color, name) {
-      vector.enter().append("path")
-        .attr({
-          "class": "vector-"+name,
-          "marker-end": "url(#Triangle-"+name+")",
-          "d": pathFunc
-        })
-        .style({
-          "stroke-width": widthFunc,
-          "stroke": color,
-          "fill": "none"
-        });
-    }
-
-    function atomTraceEnter() {
-      atomTrace.enter().append("path")
-        .attr({
-          "class": "atomTrace",
-          "d": getAtomTracePath
-        })
-        .style({
-          "stroke-width": model2px(0.01),
-          "stroke": atomTraceColor,
-          "fill": "none",
-          "stroke-dasharray": "6, 6"
-        });
-    }
-
-    function obstacleEnter() {
-      var obstacleGroup = obstacle.enter().append("g");
-
-      obstacleGroup
-        .attr("class", "obstacle")
-        .attr("transform",
-          function (d, i) {
-            return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
-          }
-        );
-      obstacleGroup.append("rect")
-        .attr({
-          "class": "obstacle-shape",
-          "x": 0,
-          "y": 0,
-          "width": function(d, i) {return model2px(obstacles.width[i]); },
-          "height": function(d, i) {return model2px(obstacles.height[i]); }
-        })
-        .style({
-          "fill": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; },
-          "stroke-width": function(d, i) { return obstacles.visible[i] ? 0.2 : 0.0; },
-          "stroke": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; }
-        });
-
-      // Append external force markers.
-      obstacleGroup.each(function (d, i) {
-        // Fast path, if no forces are defined.
-        if (!obstacles.externalFx[i] && !obstacles.externalFy[i])
-          return;
-
-        // Note that arrows indicating obstacle external force use
-        // the same options for styling like arrows indicating atom force.
-        // Only their length is fixed.
-        var obstacleGroupEl = d3.select(this),
-            obsHeight = obstacles.height[i],
-            obsWidth = obstacles.width[i],
-            obsFx = obstacles.externalFx[i],
-            obsFy = obstacles.externalFy[i],
-            // Use fixed length of force vectors (in nm).
-            vecLen = 0.06,
-            space = 0.06,
-            step, coords;
-
-        // Set arrows indicating horizontal force.
-        if (obsFx) {
-          // Make sure that arrows keep constant distance between both ends of an obstacle.
-          step = (obsHeight - 2 * space) / Math.round((obsHeight - 2 * space) / 0.2);
-          coords = d3.range(space, obsHeight, step);
-          obstacleGroupEl.selectAll("path.obstacle-force-hor").data(coords).enter().append("path")
-            .attr({
-              "class": "obstacle-force-hor",
-              "d": function (d) {
-                if (obsFx < 0)
-                  return "M " + model2px(obsWidth + vecLen + space) + "," + model2px(d) + " L " + model2px(obsWidth + space) + "," + model2px(d);
-                else
-                  return "M " + model2px(-vecLen - space) + "," + model2px(d) + " L " + model2px(-space) + "," + model2px(d);
-              }
-            });
-        }
-        // Later set arrows indicating vertical force.
-        if (obsFy) {
-          // Make sure that arrows keep constant distance between both ends of an obstacle.
-          step = (obsWidth - 2 * space) / Math.round((obsWidth - 2 * space) / 0.2);
-          coords = d3.range(space, obsWidth, step);
-          obstacleGroupEl.selectAll("path.obstacle-force-vert").data(coords).enter().append("path")
-            .attr({
-              "class": "obstacle-force-vert",
-              "d": function (d) {
-                if (obsFy < 0)
-                  return "M " + model2px(d) + "," + model2px(-vecLen - space) + " L " + model2px(d) + "," + model2px(-space);
-                else
-                  return "M " + model2px(d) + "," + model2px(obsHeight + vecLen + space) + " L " + model2px(d) + "," + model2px(obsHeight + space);
-              }
-            });
-        }
-        // Finally, set common attributes and stying for both vertical and horizontal forces.
-        obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
-          .attr({
-            "marker-end": "url(#Triangle-"+ FORCE_STR +")"
-          })
-          .style({
-            "stroke-width": model2px(forceVectorWidth),
-            "stroke": forceVectorColor,
-            "fill": "none"
-          });
-      });
-    }
-
-    function radialBondEnter() {
-      radialBond1.enter().append("path")
-          .attr("d", function (d) {
-            return findPoints(d,1);})
-          .classed("radialbond1", true)
-          .classed("disulphideBond", function (d) {
-            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-          })
-          .style("stroke-width", function (d) {
-            if (isSpringBond(d)) {
-              return Math.log(d.strength) / 4 + model2px(0.005);
-            } else {
-              return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
-            }
-          })
-          .style("stroke", getBondAtom1Color)
-          .style("fill", "none");
-
-      radialBond2.enter().append("path")
-          .attr("d", function (d) {
-            return findPoints(d,2); })
-          .classed("radialbond2", true)
-          .classed("disulphideBond", function (d) {
-            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-          })
-          .style("stroke-width", function (d) {
-            if (isSpringBond(d)) {
-              return Math.log(d.strength) / 4 + model2px(0.005);
-            } else {
-              return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
-            }
-          })
-          .style("stroke", getBondAtom2Color)
-          .style("fill", "none");
-    }
-
-    function findPoints(d, num) {
-      var pointX, pointY,
-          j,
-          dx, dy,
-          x1, x2,
-          y1, y2,
-          radius_x1, radius_x2, radiusFactorX,
-          radius_y1, radius_y2, radiusFactorY,
-          path,
-          costheta,
-          sintheta,
-          length,
-          strength,
-          numTurns,
-          springDiameter,
-          cosThetaDiameter,
-          sinThetaDiameter,
-          cosThetaSpikes,
-          sinThetaSpikes;
-
-      x1 = model2px(d.x1);
-      y1 = model2pxInv(d.y1);
-      x2 = model2px(d.x2);
-      y2 = model2pxInv(d.y2);
-      dx = x2 - x1;
-      dy = y2 - y1;
-
-      strength = d.strength;
-      length = Math.sqrt(dx*dx + dy*dy) / model2px(0.01);
-
-      numTurns = Math.floor(d.length * 24);
-      springDiameter = length / numTurns;
-
-      costheta = dx / length;
-      sintheta = dy / length;
-      cosThetaDiameter = costheta * springDiameter;
-      sinThetaDiameter = sintheta * springDiameter;
-      cosThetaSpikes = costheta * numTurns;
-      sinThetaSpikes = sintheta * numTurns;
-
-      radius_x1 = model2px(modelResults[d.atom1].radius) * costheta;
-      radius_x2 = model2px(modelResults[d.atom2].radius) * costheta;
-      radius_y1 = model2px(modelResults[d.atom1].radius) * sintheta;
-      radius_y2 = model2px(modelResults[d.atom2].radius) * sintheta;
-      radiusFactorX = radius_x1 - radius_x2;
-      radiusFactorY = radius_y1 - radius_y2;
-
-      if (isSpringBond(d)) {
-        path = "M "+x1+","+y1+" " ;
-        for (j = 0; j < numTurns; j++) {
-          if (j % 2 === 0) {
-            pointX = x1 + (j + 0.5) * cosThetaDiameter - 0.5 * sinThetaSpikes;
-            pointY = y1 + (j + 0.5) * sinThetaDiameter + 0.5 * cosThetaSpikes;
-          }
-          else {
-            pointX = x1 + (j + 0.5) * cosThetaDiameter + 0.5 * sinThetaSpikes;
-            pointY = y1 + (j + 0.5) * sinThetaDiameter - 0.5 * cosThetaSpikes;
-          }
-          path += " L "+pointX+","+pointY;
-        }
-        return path += " L "+x2+","+y2;
-      } else {
-        if (num === 1) {
-          return "M "+x1+","+y1+" L "+((x2+x1+radiusFactorX)/2)+" , "+((y2+y1+radiusFactorY)/2);
-        } else {
-          return "M "+((x2+x1+radiusFactorX)/2)+" , "+((y2+y1+radiusFactorY)/2)+" L "+x2+","+y2;
-        }
-      }
-    }
-
-    function isSpringBond(d){
-      return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
-    }
-
-    function vdwLinesEnter() {
-      // update existing lines
-      vdwLines.attr({
-        "x1": function(d) { return model2px(modelResults[d[0]].x); },
-        "y1": function(d) { return model2pxInv(modelResults[d[0]].y); },
-        "x2": function(d) { return model2px(modelResults[d[1]].x); },
-        "y2": function(d) { return model2pxInv(modelResults[d[1]].y); }
-      });
-
-      // append new lines
-      vdwLines.enter().append('line')
-        .attr({
-          "class": "attractionforce",
-          "x1": function(d) { return model2px(modelResults[d[0]].x); },
-          "y1": function(d) { return model2pxInv(modelResults[d[0]].y); },
-          "x2": function(d) { return model2px(modelResults[d[1]].x); },
-          "y2": function(d) { return model2pxInv(modelResults[d[1]].y); }
-        })
-        .style({
-          "stroke-width": model2px(0.02),
-          "stroke-dasharray": model2px(0.03) + " " + model2px(0.02)
-        });
-
-      // remove old lines
-      vdwLines.exit().remove();
-    }
-
-    function getImagePath(imgProp) {
-      return imagePath + (imageMapping[imgProp.imageUri] || imgProp.imageUri);
-    }
-
-    function drawImageAttachment() {
-      var img = [],
-          img_height,
-          img_width,
-          imgHost,
-          imgHostType,
-          imglayer,
-          imgX, imgY,
-          container,
-          i;
-
-      imageContainerTop.selectAll("image").remove();
-      imageContainerBelow.selectAll("image").remove();
-
-      if (!imageProp) return;
-
-      for (i = 0; i < imageProp.length; i++) {
-        img[i] = new Image();
-        img[i].src = getImagePath(imageProp[i]);
-        img[i].onload = (function(i) {
-          return function() {
-            imageContainerTop.selectAll("image.image_attach"+i).remove();
-            imageContainerBelow.selectAll("image.image_attach"+i).remove();
-
-            imgHost = modelResults[imageProp[i].imageHostIndex];
-            imgHostType = imageProp[i].imageHostType;
-            imglayer = imageProp[i].imageLayer;
-            imgX = model2px(imageProp[i].imageX);
-            imgY = model2pxInv(imageProp[i].imageY);
-            // Cache the image width and height.
-            // In Classic MW model size is defined in 0.1A.
-            // Model unit (0.1A) - pixel ratio is always 1. The same applies
-            // to images. We can assume that their pixel dimensions are
-            // in 0.1A also. So convert them to nm (* 0.01).
-            imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
-            img_width = model2px(imageSizes[i][0]);
-            img_height = model2px(imageSizes[i][1]);
-
-            container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
-            container.append("image")
-              .attr("x", function() { if (imgHostType === "") { return imgX; } else { return model2px(imgHost.x) - img_width / 2; } })
-              .attr("y", function() { if (imgHostType === "") { return imgY; } else { return model2pxInv(imgHost.y) - img_height / 2; } })
-              .attr("class", "image_attach"+i+" draggable")
-              .attr("xlink:href", img[i].src)
-              .attr("width", img_width)
-              .attr("height", img_height)
-              .attr("pointer-events", "none");
-          };
-        })(i);
-      }
-    }
-
-    function getTextBoxCoords(d, i) {
-      var x, y, frameX, frameY;
-      if (d.hostType) {
-        if (d.hostType === "Atom") {
-          x = modelResults[d.hostIndex].x;
-          y = modelResults[d.hostIndex].y;
-        } else {
-          x = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
-          y = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
-        }
-      } else {
-        x = d.x;
-        y = d.y;
-      }
-      frameX = x - 0.1;
-      frameY = y + 0.15;
-      return [model2px(x), model2pxInv(y), model2px(frameX), model2pxInv(frameY)];
-    }
-
-    function updateTextBoxes() {
-      var layers = [textContainerTop, textContainerBelow],
-          updateText;
-
-      updateText = function (layerNum) {
-        var layer = layers[layerNum - 1];
-
-        layerTextBoxes = textBoxes.filter(function(t) { return t.layer == layerNum; });
-
-        layer.selectAll("g.textBoxWrapper rect")
-          .data(layerTextBoxes.filter( function(d) { return d.frame; } ))
-          .attr({
-            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
-            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
-          });
-
-        layer.selectAll("g.textBoxWrapper text")
-          .data(layerTextBoxes)
-          .attr({
-            "y": function(d,i) {
-              $(this).find("tspan").attr("x", getTextBoxCoords(d,i)[0]);
-              return getTextBoxCoords(d,i)[1];
-            }
-          });
-      };
-
-      updateText(1);
-      updateText(2);
-    }
-
-    function drawTextBoxes() {
-      var size, layers, appendTextBoxes;
-
-      textBoxes = model.get('textBoxes');
-
-      size = model.size();
-
-      layers = [textContainerTop, textContainerBelow];
-
-      // Append to either top or bottom layer depending on item's layer #.
-      appendTextBoxes = function (layerNum) {
-        var layer = layers[layerNum - 1],
-            text, layerTextBoxes, selection;
-
-        layer.selectAll("g.textBoxWrapper").remove();
-
-        layerTextBoxes = textBoxes.filter(function(t) { return t.layer == layerNum; });
-
-        selection = layer.selectAll("g.textBoxWrapper")
-          .data(layerTextBoxes);
-        text = selection.enter().append("svg:g")
-          .attr("class", "textBoxWrapper");
-
-        text.filter(function (d) { return d.frame; })
-          .append("rect")
-          .attr({
-            "class": function(d, i) { return "textBoxFrame text-"+i; },
-            "style": function(d) {
-              var backgroundColor = d.backgroundColor || "white";
-              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1";
-            },
-            "width": 0,
-            "height": 0,
-            "rx": function(d)  { return d.frame == "rounded rectangle" ? 8  : 0; },
-            "ry": function(d)  { return d.frame == "rounded rectangle" ? 10 : 0; },
-            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
-            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
-          });
-
-        text.append("text")
-          .attr({
-            "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
-            "x-data": function(d,i) { return getTextBoxCoords(d,i)[0]; },
-            "y": function(d,i)      { return getTextBoxCoords(d,i)[1]; },
-            "width-data": function(d) { return model2px(d.width); },
-            "width":  model2px(size[0]),
-            "height": model2px(size[1]),
-            "xml:space": "preserve",
-            "font-family": "'Open Sans', sans-serif",
-            "font-size": model2px(0.12),
-            "fill": function(d) { return d.color || "black"; },
-            "text-data": function(d) { return d.text; },
-            "text-anchor": function(d) {
-              var align = d.textAlign || "left";
-              if (align === "center") align = "middle";
-              return align;
-            },
-            "has-host": function(d) { return !!d.hostType; }
-          })
-          .call(d3.behavior.drag()
-            .on("drag", textDrag)
-            .on("dragend", function(d) {
-              // simple output to console for now, eventually should just get
-              // serialized back to interactive (or model?) JSON on author save
-              console.log('"x": '+d.x+",");
-              console.log('"y": '+d.y+",");
-            })
-          );
-        selection.exit().remove();
-      };
-
-      appendTextBoxes(1);
-      appendTextBoxes(2);
-
-      // wrap text
-      $(".textBox").each( function() {
-        var text  = this.getAttributeNS(null, "text-data"),
-            x     = this.getAttributeNS(null, "x-data"),
-            width = this.getAttributeNS(null, "width-data") || -1,
-            dy    = model2px(0.16),
-            hasHost = this.getAttributeNS(null, "has-host"),
-            textAlign = this.getAttributeNS(null, "text-anchor"),
-            result, frame, dx;
-
-        while (this.firstChild) {     // clear element first
-          this.removeChild(this.firstChild);
-        }
-
-        result = wrapSVGText(text, this, width, x, dy);
-
-        if (this.parentNode.childElementCount > 1) {
-          frame = this.parentNode.childNodes[0];
-          frame.setAttributeNS(null, "width", result.width + model2px(0.2));
-          frame.setAttributeNS(null, "height", (result.lines * dy) + model2px(0.06));
-        }
-
-        // center all hosted labels simply by tweaking the g.transform
-        if (textAlign === "middle") {
-          dx = result.width / 2;
-          $(this).attr("transform", "translate("+dx+",0)");
-        }
-        if (hasHost === "true") {
-          dx = -result.width / 2;
-          dy = (result.lines-1) * dy / -2 + 4.5;
-          $(this.parentNode).attr("transform", "translate("+dx+","+dy+")");
-        }
-      });
-    }
-
-    function setupColorsOfParticles() {
-      var i, len;
-
-      chargeShadingMode = model.get("chargeShading");
-      keShadingMode = model.get("keShading");
-
-      gradientNameForParticle.length = modelResults.length;
-      for (i = 0, len = modelResults.length; i < len; i++)
-        gradientNameForParticle[i] = getParticleGradient(modelResults[i]);
-    }
-
-    function setupParticles() {
-      var showChargeSymbols = model.get("showChargeSymbols"),
-          useThreeLetterCode = model.get("useThreeLetterCode");
-
-      mainContainer.selectAll("circle").remove();
-      mainContainer.selectAll("g.label").remove();
-
-      particle = mainContainer.selectAll("circle").data(modelResults);
-      updateParticleRadius();
-
-      particleEnter();
-
-      label = mainContainer.selectAll("g.label")
-          .data(modelResults);
-
-      labelEnter = label.enter().append("g")
-          .attr("class", "label")
-          .attr("transform", function(d) {
-            return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
-          });
-
-      labelEnter.each(function (d) {
-        var selection = d3.select(this),
-            txtValue, txtSelection;
-        // Append appropriate label. For now:
-        // If 'atomNumbers' option is enabled, use indices.
-        // If not and there is available 'label'/'symbol' property, use one of them
-        // (check 'useThreeLetterCode' option to decide which one).
-        // If not and 'showChargeSymbols' option is enabled, use charge symbols.
-        if (model.get("atomNumbers")) {
-          selection.append("text")
-            .text(d.idx)
-            .style("font-size", model2px(1.4 * d.radius) + "px");
-        }
-        else if (useThreeLetterCode && d.label) {
-          // Add shadow - a white stroke, which increases readability.
-          selection.append("text")
-            .text(d.label)
-            .attr("class", "shadow")
-            .style("font-size", model2px(d.radius) + "px");
-          selection.append("text")
-            .text(d.label)
-            .style("font-size", model2px(d.radius) + "px");
-        }
-        else if (!useThreeLetterCode && d.symbol) {
-          // Add shadow - a white stroke, which increases readability.
-          selection.append("text")
-            .text(d.symbol)
-            .attr("class", "shadow")
-            .style("font-size", model2px(1.4 * d.radius) + "px");
-          selection.append("text")
-            .text(d.symbol)
-            .style("font-size", model2px(1.4 * d.radius) + "px");
-        }
-        else if (showChargeSymbols) {
-          if (d.charge > 0){
-            txtValue = "+";
-          } else if (d.charge < 0){
-            txtValue = "-";
-          } else {
-            return;
-          }
-          selection.append("text")
-            .text(txtValue)
-            .style("font-size", model2px(1.6 * d.radius) + "px");
-        }
-        // Set common attributes for labels (+ shadows).
-        txtSelection = selection.selectAll("text");
-        // Check if node exists and if so, set appropriate attributes.
-        if (txtSelection.node()) {
-          txtSelection
-            .attr("pointer-events", "none")
-            .style({
-              "font-weight": "bold",
-              "opacity": 0.7
-            });
-          txtSelection
-            .attr({
-              // Center labels, use real width and height.
-              // Note that this attrs should be set *after* all previous styling options.
-              // .node() will return first node in selection. It's OK - both texts
-              // (label and its shadow) have the same dimension.
-              "x": -txtSelection.node().getComputedTextLength() / 2,
-              "y": "0.31em"//bBox.height / 4
-            });
-        }
-        // Set common attributes for shadows.
-        selection.select("text.shadow")
-          .style({
-            "stroke": "#fff",
-            "stroke-width": 0.15 * model2px(d.radius),
-            "stroke-opacity": 0.7
-          });
-      });
-    }
-
-    function setupObstacles() {
-      obstacles = model.get_obstacles();
-      mainContainer.selectAll("g.obstacle").remove();
-      if (obstacles) {
-        mockObstaclesArray.length = obstacles.x.length;
-        obstacle = mainContainer.selectAll("g.obstacle").data(mockObstaclesArray);
-        obstacleEnter();
-      }
-    }
-
-    function setupRadialBonds() {
-      radialBondsContainer.selectAll("path.radialbond1").remove();
-      radialBondsContainer.selectAll("path.radialbond2").remove();
-      radialBonds = model.get_radial_bonds();
-      radialBondResults = model.get_radial_bond_results();
-      if (radialBondResults) {
-        radialBond1 = radialBondsContainer.selectAll("path.radialbond1").data(radialBondResults);
-        radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(radialBondResults);
-        radialBondEnter();
-      }
-    }
-
-    function setupVdwPairs() {
-      VDWLinesContainer.selectAll("line.attractionforce").remove();
-      updateVdwPairsArray();
-      drawVdwLines = model.get("showVDWLines");
-      if (drawVdwLines) {
-        vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
-        vdwLinesEnter();
-      }
-    }
-
-    // The vdw hash returned by md2d consists of typed arrays of length N*N-1/2
-    // To make these d3-friendly we turn them into an array of atom pairs, only
-    // as long as we need.
-    function updateVdwPairsArray() {
-      var vdwHash = model.get_vdw_pairs();
-      for (var i = 0; i < vdwHash.count; i++) {
-        vdwPairs[i] = [vdwHash.atom1[i], vdwHash.atom2[i]];
-      }
-      // if vdwPairs was longer at the previous tick, trim the end
-      vdwPairs.splice(vdwHash.count);
-    }
-
-    function setupVectors() {
-      mainContainer.selectAll("path.vector-"+VELOCITY_STR).remove();
-      mainContainer.selectAll("path.vector-"+FORCE_STR).remove();
-
-      drawVelocityVectors = model.get("showVelocityVectors");
-      drawForceVectors    = model.get("showForceVectors");
-      if (drawVelocityVectors) {
-        velVector = mainContainer.selectAll("path.vector-"+VELOCITY_STR).data(modelResults);
-        vectorEnter(velVector, getVelVectorPath, getVelVectorWidth, velocityVectorColor, VELOCITY_STR);
-      }
-      if (drawForceVectors) {
-        forceVector = mainContainer.selectAll("path.vector-"+FORCE_STR).data(modelResults);
-        vectorEnter(forceVector, getForceVectorPath, getForceVectorWidth, forceVectorColor, FORCE_STR);
-      }
-    }
-
-    function setupAtomTrace() {
-      mainContainer.selectAll("path.atomTrace").remove();
-      atomTracePath = "";
-
-      drawAtomTrace = model.get("showAtomTrace");
-      atomTraceId = model.get("atomTraceId");
-      if (drawAtomTrace) {
-        atomTrace = mainContainer.selectAll("path.atomTrace").data([modelResults[atomTraceId]]);
-        atomTraceEnter();
-      }
-    }
-
-    function updateVdwPairs() {
-      // Get new set of pairs from model.
-      updateVdwPairsArray();
-
-      vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
-      vdwLinesEnter();
-    }
-
-    function mousedown() {
-      setFocus();
-    }
-
-    function setFocus() {
-      if (model.get("enableKeyboardHandlers")) {
-        containers.node.focus();
-      }
-    }
-
-    function moleculeMouseOver(d, i) {
-      if (model.get("enableAtomTooltips")) {
-        renderAtomTooltip(i);
-      }
-    }
-
-    function moleculeMouseDown(d, i) {
-      containers.node.focus();
-      if (model.get("enableAtomTooltips")) {
-        if (atomTooltipOn !== false) {
-          moleculeDiv.style("opacity", 1e-6);
-          moleculeDiv.style("display", "none");
-          atomTooltipOn = false;
-        } else {
-          if (d3.event.shiftKey) {
-            atomTooltipOn = i;
-          } else {
-            atomTooltipOn = false;
-          }
-          renderAtomTooltip(i);
-        }
-      }
-    }
-
-    function renderAtomTooltip(i) {
-      moleculeDiv
-            .style("opacity", 1.0)
-            .style("display", "inline")
-            .style("background", "rgba(100%, 100%, 100%, 0.7)")
-            .style("left", model2px(modelResults[i].x) + 60 + "px")
-            .style("top",  model2pxInv(modelResults[i].y) + 30 + "px")
-            .style("zIndex", 100)
-            .transition().duration(250);
-
-      moleculeDivPre.text(
-          "atom: " + i + "\n" +
-          "time: " + modelTimeLabel() + "\n" +
-          "speed: " + d3.format("+6.3e")(modelResults[i].speed) + "\n" +
-          "vx:    " + d3.format("+6.3e")(modelResults[i].vx)    + "\n" +
-          "vy:    " + d3.format("+6.3e")(modelResults[i].vy)    + "\n" +
-          "ax:    " + d3.format("+6.3e")(modelResults[i].ax)    + "\n" +
-          "ay:    " + d3.format("+6.3e")(modelResults[i].ay)    + "\n"
-        );
-    }
-
-    function moleculeMouseOut() {
-      if (!atomTooltipOn && atomTooltipOn !== 0) {
-        moleculeDiv.style("opacity", 1e-6).style("zIndex" -1);
-      }
-    }
-
-    function updateDrawablePositions() {
-      console.time('view update');
-      if (obstacles) {
-        obstacle.attr("transform", function (d, i) {
-          return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
-        });
-      }
-
-      if (drawVdwLines) {
-        updateVdwPairs();
-      }
-      // When Kinetic Energy Shading is enabled, update style of atoms
-      // during each frame.
-      if (keShadingMode) {
-        setupColorsOfParticles();
-      }
-      if (radialBondResults) {
-        updateRadialBonds();
-      }
-      updateParticles();
-      if (drawVelocityVectors) {
-        updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
-      }
-      if (drawForceVectors) {
-        updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
-      }
-      if (drawAtomTrace) {
-        updateAtomTrace();
-      }
-      if(imageProp && imageProp.length !== 0) {
-        updateImageAttachment();
-      }
-      if (textBoxes && textBoxes.length > 0) {
-        updateTextBoxes();
-      }
-      console.timeEnd('view update');
-    }
-
-    // TODO: this function name seems to be inappropriate to
-    // its content.
-    function updateParticles() {
-      particle.attr({
-        "cx": function(d) { return model2px(d.x); },
-        "cy": function(d) { return model2pxInv(d.y); }
-      });
-
-      if (keShadingMode) {
-        // Update particles color. Array of colors should be already updated.
-        particle.style("fill", function (d, i) { return gradientNameForParticle[i]; });
-      }
-
-      label.attr("transform", function (d) {
-        return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
-      });
-
-      if (atomTooltipOn === 0 || atomTooltipOn > 0) {
-        renderAtomTooltip(atomTooltipOn);
-      }
-    }
-
-    function getVelVectorPath(d) {
-      var x_pos = model2px(d.x),
-          y_pos = model2pxInv(d.y),
-          path = "M "+x_pos+","+y_pos,
-          scale = velocityVectorLength * 100;
-      return path + " L "+(x_pos + model2px(d.vx*scale))+","+(y_pos - model2px(d.vy*scale));
-    }
-
-    function getForceVectorPath(d) {
-      var x_pos = model2px(d.x),
-          y_pos = model2pxInv(d.y),
-          mass  = d.mass,
-          scale = forceVectorLength * 100,
-          path  = "M "+x_pos+","+y_pos;
-      return path + " L "+(x_pos + model2px(d.ax*mass*scale))+","+(y_pos - model2px(d.ay*mass*scale));
-    }
-
-    function getVelVectorWidth(d) {
-      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? model2px(velocityVectorWidth) : 0;
-    }
-
-    function getForceVectorWidth(d) {
-      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? model2px(forceVectorWidth) : 0;
-    }
-
-    function updateVectors(vector, pathFunc, widthFunc) {
-      vector.attr({
-         "d": pathFunc
-      })
-      .style({
-        "stroke-width": widthFunc
-      });
-    }
-
-    function getAtomTracePath(d) {
-      // until we implement buffered array model output properties,
-      // we just keep the path history in the path string
-      var dx = Math.floor(model2px(d.x) * 100) / 100,
-          dy = Math.floor(model2pxInv(d.y) * 100) / 100,
-          lIndex, sIndex;
-      if (!atomTracePath) {
-        atomTracePath = "M"+dx+","+dy+"L";
-        return "M "+dx+","+dy;
-      } else {
-        atomTracePath += dx+","+dy + " ";
-      }
-
-      // fake buffered array functionality by knocking out the first
-      // element of the string when we get too big
-      if (atomTracePath.length > 4000) {
-        lIndex = atomTracePath.indexOf("L");
-        sIndex = atomTracePath.indexOf(" ");
-        atomTracePath = "M" + atomTracePath.slice(lIndex+1, sIndex) + "L" + atomTracePath.slice(sIndex+1);
-      }
-      return atomTracePath;
-    }
-
-    function updateAtomTrace() {
-      atomTrace.attr({
-        "d": getAtomTracePath
-      });
-    }
-
-    function updateRadialBonds() {
-      radialBond1.attr("d", function (d) { return findPoints(d, 1); });
-      radialBond2.attr("d", function (d) { return findPoints(d, 2); });
-
-      if (keShadingMode) {
-        // Update also radial bonds color when keShading is on.
-        radialBond1.style("stroke", getBondAtom1Color);
-        radialBond2.style("stroke", getBondAtom2Color);
-      }
-    }
-
-    function updateImageAttachment(){
-      var numImages, img_height, img_width, imgHost, imgHostType, imglayer, imgX, imgY, container, i;
-      numImages= imageProp.length;
-      for(i = 0; i < numImages; i++) {
-        if (!imageSizes || !imageSizes[i]) continue;
-        imgHost =  modelResults[imageProp[i].imageHostIndex];
-        imgHostType =  imageProp[i].imageHostType;
-        imgX = model2px(imageProp[i].imageX);
-        imgY = model2pxInv(imageProp[i].imageY);
-        imglayer = imageProp[i].imageLayer;
-        img_width = model2px(imageSizes[i][0]);
-        img_height = model2px(imageSizes[i][1]);
-        container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
-        container.selectAll("image.image_attach"+i)
-          .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return model2px(imgHost.x) - img_width / 2; } })
-          .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return model2pxInv(imgHost.y) - img_height / 2; } });
-      }
-    }
-
-    function nodeDragStart(d, i) {
-      if (model.is_stopped()) {
-        // cache the *original* atom position so we can go back to it if drag is disallowed
-        dragOrigin = [d.x, d.y];
-      }
-      else if ( d.draggable ) {
-        model.liveDragStart(i);
-      }
-    }
-
-    /**
-      Given x, y, and a bounding box (object with keys top, left, bottom, and right relative to
-      (x, y), returns an (x, y) constrained to keep the bounding box within the molecule container.
-    */
-    function dragBoundingBox(x, y, bbox) {
-      if (bbox.left + x < 0)                x = 0 - bbox.left;
-      if (bbox.right + x > modelWidth) x = modelWidth - bbox.right;
-      if (bbox.bottom + y < 0)              y = 0 - bbox.bottom;
-      if (bbox.top + y > modelHeight)  y = modelHeight - bbox.top;
-
-      return { x: x, y: y };
-    }
-
-    function clip(value, min, max) {
-      if (value < min) return min;
-      if (value > max) return max;
-      return value;
-    }
-
-    /**
-      Given x, y, make sure that x and y are clipped to remain within the model container's
-      boundaries
-    */
-    function dragPoint(x, y) {
-      return { x: clip(x, 0, modelWidth), y: clip(y, 0, modelHeight) };
-    }
-
-    function nodeDrag(d, i) {
-      var dragX = model2px.invert(d3.event.x),
-          dragY = model2pxInv.invert(d3.event.y),
-          drag;
-
-      if (model.is_stopped()) {
-        drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
-        setAtomPosition(i, drag.x, drag.y, false, true);
-        updateDrawablePositions();
-      }
-      else if ( d.draggable ) {
-        drag = dragPoint(dragX, dragY);
-        model.liveDrag(drag.x, drag.y);
-      }
-    }
-
-    function textDrag(d, i) {
-      var dragDx = model2px.invert(d3.event.dx),
-          dragDy = model2px.invert(d3.event.dy);
-
-      if (!(AUTHORING && model.is_stopped())) {
-      // for now we don't have user-draggable textBoxes
-        return;
-      }
-      else {
-        d.x = d.x + dragDx;
-        d.y = d.y - dragDy;
-        updateTextBoxes();
-      }
-    }
-
-    function nodeDragEnd(d, i) {
-      if (model.is_stopped()) {
-
-        if (!setAtomPosition(i, d.x, d.y, true, true)) {
-          alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
-          setAtomPosition(i, dragOrigin[0], dragOrigin[1], false, true);
-        }
-        updateDrawablePositions();
-      }
-      else if (d.draggable) {
-        // here we just assume we are removing the one and only spring force.
-        // This assumption will have to change if we can have more than one.
-        model.liveDragEnd();
-      }
-    }
-
-    function setupTooTips() {
-      if ( moleculeDiv === undefined) {
-        moleculeDiv = d3.select("body").append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 1e-6);
-        moleculeDivPre = moleculeDiv.append("pre");
-      }
-    }
-
-    function setupClock() {
-      var clockColor = d3.lab(model.get("backgroundColor"));
-      // This ensures that color will be visible on background.
-      // Decide between white and black usingL value of background color in LAB space.
-      clockColor.l = clockColor.l > 50 ? 0 : 100;
-      clockColor.a = clockColor.b = 0;
-      // Add model time display.
-      mainContainer.selectAll('.modelTimeLabel').remove();
-      // Update clock status.
-      showClock = model.get("showClock");
-      if (showClock) {
-        timeLabel = mainContainer.append("text")
-          .attr("class", "modelTimeLabel")
-          .text(modelTimeLabel())
-          // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
-          .attr("x", model2px(0) + 3)
-          .attr("y", model2pxInv(0) - 3)
-          .style("text-anchor", "start")
-          .style("fill", clockColor.rgb());
-      }
-    }
-
-    function setupRendererOptions() {
-      imageProp = model.get("images");
-      imageMapping = model.get("imageMapping");
-      if (model.url) {
-        imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
-      }
-
-      velocityVectorColor = model.get("velocityVectors").color;
-      velocityVectorWidth  = model.get("velocityVectors").width;
-      velocityVectorLength = model.get("velocityVectors").length;
-
-      forceVectorColor = model.get("forceVectors").color;
-      forceVectorWidth  = model.get("forceVectors").width;
-      forceVectorLength = model.get("forceVectors").length;
-
-      atomTraceColor = model.get("atomTraceColor");
-
-      createSymbolImages();
-      createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
-      createVectorArrowHeads(forceVectorColor, FORCE_STR);
-
-      createAdditionalGradients();
-
-      // Register additional controls, context menus etc.
-      // Note that special selector for class is used. Typical class selectors
-      // (e.g. '.amino-acid') cause problems when interacting with SVG nodes.
-      amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
-
-      // Initialize renderers.
-      geneticRenderer = new GeneticRenderer(mainContainer, api, model);
-    }
-
-    //
-    // *** Main Renderer functions ***
-    //
-
-    //
-    // MD2D Renderer: init
-    //
-    // Called when Renderer is created.
-    //
-    function init() {
-      mainContainer        = containers.mainContainer,
-      radialBondsContainer = containers.radialBondsContainer,
-      VDWLinesContainer    = containers.VDWLinesContainer,
-      imageContainerBelow  = containers.imageContainerBelow,
-      imageContainerTop    = containers.imageContainerTop,
-      textContainerBelow   = containers.textContainerBelow,
-      textContainerTop     = containers.textContainerTop,
-
-      modelResults  = model.get_results();
-      modelElements = model.get_elements();
-      modelWidth    = model.get('width');
-      modelHeight   = model.get('height');
-      aspectRatio   = modelWidth / modelHeight;
-
-      setupTooTips();
-      setupRendererOptions();
-
-      repaint();
-
-      // Subscribe for model events.
-      model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
-
-      // Redraw container each time when some visual-related property is changed.
-      model.addPropertiesListener([
-        "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
-        "showVDWLines", "VDWLinesCutoff",
-        "showVelocityVectors", "showForceVectors",
-        "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "showClock", "backgroundColor"],
-          repaint);
-
-      model.on('addAtom', repaint);
-      model.on('removeAtom', repaint);
-      model.on('addRadialBond', setupRadialBonds);
-      model.on('removeRadialBond', setupRadialBonds);
-      model.on('textBoxesChanged', drawTextBoxes);
-
-    }
-
-    //
-    // MD2D Renderer: reset
-    //
-    // Call when model is reset or reloaded.
-    //
-    function reset(mod, cont, m2px, m2pxInv) {
-      model = mod;
-      containers = cont;
-      model2px = m2px;
-      model2pxInv = m2pxInv;
-      init();
-    }
-
-    //
-    // MD2D Renderer: repaint
-    //
-    // Call when container being rendered into changes size, in that case
-    // pass in new D3 scales for model2pcx transformations.
-    //
-    // Also call when the number of objects changes suc that the conatiner
-    // must be setup again.
-    //
-    function repaint(m2px, m2pxInv) {
-      if (arguments.length) {
-        model2px = m2px;
-        model2pxInv = m2pxInv;
-      }
-      setupClock();
-      setupObstacles();
-      setupVdwPairs();
-      setupColorsOfParticles();
-      setupRadialBonds();
-      setupParticles();
-      geneticRenderer.setup();
-      setupVectors();
-      setupAtomTrace();
-      drawSymbolImages();
-      drawImageAttachment();
-      drawTextBoxes();
-    }
-
-    //
-    // MD2D Renderer: update
-    //
-    // Call to update visualization when model result state changes.
-    // Normally called on every model tick.
-    //
-    function update() {
-      console.time('view update');
-      if (obstacles) {
-        obstacle.attr("transform", function (d, i) {
-          return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
-        });
-      }
-
-      if (drawVdwLines) {
-        updateVdwPairs();
-      }
-      // When Kinetic Energy Shading is enabled, update style of atoms
-      // during each frame.
-      if (keShadingMode) {
-        setupColorsOfParticles();
-      }
-
-      if (radialBondResults) {
-        updateRadialBonds();
-      }
-
-      // update model time display
-      if (showClock) {
-        timeLabel.text(modelTimeLabel());
-      }
-
-      updateParticles();
-
-      if (drawVelocityVectors) {
-        updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
-      }
-      if (drawForceVectors) {
-        updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
-      }
-      if (drawAtomTrace) {
-        updateAtomTrace();
-      }
-      if(imageProp && imageProp.length !== 0) {
-        updateImageAttachment();
-      }
-      if (textBoxes && textBoxes.length > 0) {
-        updateTextBoxes();
-      }
-      console.timeEnd('view update');
-    }
-
-    //
-    // Public API to instantiated Renderer
-    //
-    api = {
-      // Expose private methods.
-      update: update,
-      repaint: repaint,
-      reset: reset,
-      model2px: function(val) {
-        // Note that we shouldn't just do:
-        // api.nm2px = nm2px;
-        // as nm2px local variable can be reinitialized
-        // many times due container rescaling process.
-        return model2px(val);
-      },
-      model2pxInv: function(val) {
-        // See comments for nm2px.
-        return model2pxInv(val);
-      }
-    };
-
-    // Initialization.
-    init();
-
-    return api;
-  };
-});
-
-/*global $ define: false */
-// ------------------------------------------------------------
-//
-//   MD2D View Container
-//
-// ------------------------------------------------------------
-define('md2d/views/view',['require','common/console','common/views/model-view','md2d/views/renderer'],function (require) {
-  // Dependencies.
-  var console               = require('common/console'),
-      ModelView             = require("common/views/model-view"),
-      Renderer              = require("md2d/views/renderer");
-
-  return function (e, modelUrl, model) {
-    return new ModelView(e, modelUrl, model, Renderer);
-  }
-
-});
-
-/*global $, define, model */
-
-define('md2d/views/dna-edit-dialog',[],function () {
-
-  return function DNAEditDialog() {
-    var api,
-        $dialogDiv,
-        $dnaTextInput,
-        $errorMsg,
-        $submitButton,
-
-        init = function() {
-          // Basic dialog elements.
-          $dialogDiv = $('<div></div>');
-          $dnaTextInput = $('<input type="text" id="dna-sequence-input" size="45"></input>');
-          $dnaTextInput.appendTo($dialogDiv);
-          $errorMsg = $('<p class="error"></p>');
-          $errorMsg.appendTo($dialogDiv);
-
-          // jQuery UI Dialog.
-          $dialogDiv.dialog({
-            dialogClass: "dna-edit-dialog",
-            title: "DNA Code on Sense Strand",
-            autoOpen: false,
-            width: "30em",
-            modal: true,
-            buttons: {
-              "Apply": function () {
-                model.getGeneticProperties().set({
-                  DNA: $dnaTextInput.val()
-                });
-                $(this).dialog("close");
-              }
-            }
-          });
-
-          // Dynamic validation on input.
-          $submitButton = $(".dna-edit-dialog button:contains('Apply')");
-          $dnaTextInput.on("input", function () {
-            var props = {
-                  DNA: $dnaTextInput.val()
-                },
-                status;
-            status = model.getGeneticProperties().validate(props);
-            if (status.valid === false) {
-              $submitButton.button("disable");
-              $errorMsg.text(status.errors["DNA"]);
-            } else {
-              $submitButton.button("enable");
-              $errorMsg.text("");
-            }
-          });
-        };
-
-    api = {
-      open: function () {
-        // Clear previous errors.
-        $errorMsg.text("");
-        $submitButton.removeAttr("disabled");
-        // Set current value of DNA code.
-        $dnaTextInput.val(model.getGeneticProperties().get().DNA);
-        $dialogDiv.dialog("open");
-      }
-    };
-
-    init();
-
-    return api;
-  };
-});
-
-/*global define model */
-
-define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog'],function (require) {
-
-  var DNAEditDialog = require('md2d/views/dna-edit-dialog');
-
-  /**
-    Define the model-specific MD2D scripting API used by 'action' scripts on interactive elements.
-
-    The universal Interactive scripting API is extended with the properties of the
-    object below which will be exposed to the interactive's 'action' scripts as if
-    they were local vars. All other names (including all globals, but excluding
-    Javascript builtins) will be unavailable in the script context; and scripts
-    are run in strict mode so they don't accidentally expose or read globals.
-
-    @param: api
-  */
-
-  return function MD2DScriptingAPI (api) {
-
-    var dnaEditDialog = new DNAEditDialog();
-
-    return {
-      /* Returns number of atoms in the system. */
-      getNumberOfAtoms: function getNumberOfAtoms() {
-        return model.get_num_atoms();
-      },
-
-      /* Returns number of obstacles in the system. */
-      getNumberOfObstacles: function getNumberOfObstacles() {
-        return model.getNumberOfObstacles();
-      },
-
-      /* Returns number of elements in the system. */
-      getNumberOfElements: function getNumberOfElements() {
-        return model.getNumberOfElements();
-      },
-
-      /* Returns number of radial bonds in the system. */
-      getNumberOfRadialBonds: function getNumberOfRadialBonds() {
-        return model.getNumberOfRadialBonds();
-      },
-
-      /* Returns number of angular bonds in the system. */
-      getNumberOfAngularBonds: function getNumberOfAngularBonds() {
-        return model.getNumberOfAngularBonds();
-      },
-
-      addAtom: function addAtom(props, options) {
-        if (options && options.supressRepaint) {
-          // Translate supressRepaint option to
-          // option understable by modeler.
-          // supresRepaint is a conveniance option for
-          // Scripting API users.
-          options.supressEvent = true;
-        }
-        return model.addAtom(props, options);
-      },
-
-      /*
-        Removes atom 'i'.
-      */
-      removeAtom: function removeAtom(i, options) {
-        if (options && options.supressRepaint) {
-          // Translate supressRepaint option to
-          // option understable by modeler.
-          // supresRepaint is a conveniance option for
-          // Scripting API users.
-          options.supressEvent = true;
-          delete options.supressRepaint;
-        }
-        try {
-          model.removeAtom(i, options);
-        } catch (e) {
-          if (!options || !options.silent)
-            throw e;
-        }
-      },
-
-      /*
-        Removes radial bond 'i'.
-      */
-      removeRadialBond: function removeRadialBond(i, options) {
-        try {
-          model.removeRadialBond(i);
-        } catch (e) {
-          if (!options || !options.silent)
-            throw e;
-        }
-
-        api.repaint();
-      },
-
-      /*
-        Removes angular bond 'i'.
-      */
-      removeAngularBond: function removeAngularBond(i, options) {
-        try {
-          model.removeAngularBond(i);
-        } catch (e) {
-          if (!options || !options.silent)
-            throw e;
-        }
-
-        api.repaint();
-      },
-
-      addRandomAtom: function addRandomAtom() {
-        return model.addRandomAtom.apply(model, arguments);
-      },
-
-      adjustTemperature: function adjustTemperature(fraction) {
-        model.set({targetTemperature: fraction * model.get('temperature')});
-      },
-
-      limitHighTemperature: function limitHighTemperature(t) {
-        if (model.get('targetTemperature') > t) model.set({targetTemperature: t});
-      },
-
-      /** returns a list of integers corresponding to atoms in the system */
-      randomAtoms: function randomAtoms(n) {
-        var numAtoms = model.get_num_atoms();
-
-        if (n === null) n = 1 + api.randomInteger(numAtoms-1);
-
-        if (!api.isInteger(n)) throw new Error("randomAtoms: number of atoms requested, " + n + ", is not an integer.");
-        if (n < 0) throw new Error("randomAtoms: number of atoms requested, " + n + ", was less be greater than zero.");
-
-        if (n > numAtoms) n = numAtoms;
-        return api.choose(n, numAtoms);
-      },
-
-      /**
-        Accepts atom indices as arguments, or an array containing atom indices.
-        Unmarks all atoms, then marks the requested atom indices.
-        Repaints the screen to make the marks visible.
-      */
-      markAtoms: function markAtoms() {
-        var i,
-            len;
-
-        if (arguments.length === 0) return;
-
-        // allow passing an array instead of a list of atom indices
-        if (api.isArray(arguments[0])) {
-          return markAtoms.apply(null, arguments[0]);
-        }
-
-        api.unmarkAllAtoms();
-
-        // mark the requested atoms
-        for (i = 0, len = arguments.length; i < len; i++) {
-          model.setAtomProperties(arguments[i], {marked: 1});
-        }
-        api.repaint();
-      },
-
-      unmarkAllAtoms: function unmarkAllAtoms() {
-        for (var i = 0, len = model.get_num_atoms(); i < len; i++) {
-          model.setAtomProperties(i, {marked: 0});
-        }
-        api.repaint();
-      },
-
-      traceAtom: function traceAtom(i) {
-        if (i === null) return;
-
-        model.set({atomTraceId: i});
-        model.set({showAtomTrace: true});
-      },
-
-      untraceAtom: function untraceAtom() {
-        model.set({showAtomTrace: false});
-      },
-
-      /**
-        Sets individual atom properties using human-readable hash.
-        e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
-      */
-      setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
-        model.setAtomProperties(i, props, checkLocation, moveMolecule);
-        if (!(options && options.supressRepaint)) {
-          api.repaint();
-        }
-      },
-
-      /**
-        Returns atom properties as a human-readable hash.
-        e.g. getAtomProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
-      */
-      getAtomProperties: function getAtomProperties(i) {
-        return model.getAtomProperties(i);
-      },
-
-      setElementProperties: function setElementProperties(i, props) {
-        model.setElementProperties(i, props);
-        api.repaint();
-      },
-
-      /**
-        Sets custom pairwise LJ properties (epsilon or sigma), which will
-        be used instead of the mean values of appropriate element properties.
-        i, j - IDs of the elements which should have custom pairwise LJ properties.
-        props - object containing sigma, epsilon or both.
-        e.g. setPairwiseLJProperties(0, 1, {epsilon: -0.2})
-      */
-      setPairwiseLJProperties: function setPairwiseLJProperties(i, j, props) {
-        model.getPairwiseLJProperties().set(i, j, props);
-      },
-
-      getElementProperties: function getElementProperties(i) {
-        return model.getElementProperties(i);
-      },
-
-      /**
-        Adds an obstacle using human-readable hash of properties.
-        e.g. addObstacle({x: 1, y: 0.5, width: 1, height: 1})
-      */
-      addObstacle: function addObstacle(props, options) {
-        try {
-          model.addObstacle(props);
-        } catch (e) {
-          if (!options || !options.silent)
-            throw e;
-        }
-        api.repaint();
-      },
-
-      /**
-        Sets individual obstacle properties using human-readable hash.
-        e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalFx: 0.00001})
-      */
-      setObstacleProperties: function setObstacleProperties(i, props) {
-        model.setObstacleProperties(i, props);
-        api.repaint();
-      },
-
-      /**
-        Returns obstacle properties as a human-readable hash.
-        e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalFx: 0.00001, ... }
-      */
-      getObstacleProperties: function getObstacleProperties(i) {
-        return model.getObstacleProperties(i);
-      },
-
-      /**
-        Removes obstacle 'i'.
-      */
-      removeObstacle: function removeObstacle(i, options) {
-        try {
-          model.removeObstacle(i);
-        } catch (e) {
-          if (!options || !options.silent)
-            throw e;
-        }
-
-        api.repaint();
-      },
-
-      setRadialBondProperties: function setRadialBondProperties(i, props) {
-        model.setRadialBondProperties(i, props);
-        api.repaint();
-      },
-
-      getRadialBondProperties: function getRadialBondProperties(i) {
-        return model.getRadialBondProperties(i);
-      },
-
-      setAngularBondProperties: function setAngularBondProperties(i, props) {
-        model.setAngularBondProperties(i, props);
-        api.repaint();
-      },
-
-      getAngularBondProperties: function getAngularBondProperties(i) {
-        return model.getAngularBondProperties(i);
-      },
-
-      /**
-        Sets genetic properties using human-readable hash.
-        e.g. setGeneticProperties({ DNA: "ATCG" })
-      */
-      setGeneticProperties: function setGeneticProperties(props) {
-        model.getGeneticProperties().set(props);
-      },
-
-      /**
-        Returns genetic properties as a human-readable hash.
-        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
-      */
-      getGeneticProperties: function getGeneticProperties() {
-        return model.getGeneticProperties().get();
-      },
-
-      /**
-        Opens DNA properties dialog, which allows to set DNA code.
-      */
-      openDNADialog: function showDNADialog() {
-        dnaEditDialog.open();
-      },
-
-      /**
-        Triggers transcription of mRNA from DNA.
-        Result should be rendered. It is also stored in genetic properties.
-
-        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
-      */
-      transcribe: function transcribeDNA() {
-        model.getGeneticProperties().transcribeDNA();
-      },
-
-      /**
-        Triggers translation of mRNA to protein.
-      */
-      translate: function translate() {
-        var aaSequence = model.getGeneticProperties().translate();
-        model.generateProtein(aaSequence);
-      },
-
-      translateStepByStep: function translateStepByStep() {
-        model.translateStepByStep();
-      },
-
-      animateTranslation: function animateTranslation() {
-        model.animateTranslation();
-      },
-
-      /**
-        Generates a random protein.
-
-        'expectedLength' parameter controls the maximum (and expected) number of amino
-        acids of the resulting protein. When expected length is too big (due to limited
-        area of the model), protein will be truncated and warning shown.
-      */
-      generateRandomProtein: function (expectedLength) {
-        var realLength = model.generateProtein(undefined, expectedLength);
-
-        if (realLength !== expectedLength) {
-          throw new Error("Generated protein was truncated due to limited area of the model. Only" +
-            realLength + " amino acids were generated.");
-        }
-      },
-
-      /**
-        Sets solvent. You can use three predefined solvents: "water", "oil" or "vacuum".
-        This is only a convenience method. The same effect can be achieved by manual setting
-        of 'solventForceFactor', 'dielectricConstant' and 'backgroundColor' properties.
-      */
-      setSolvent: function setSolvent(type) {
-        model.setSolvent(type);
-      },
-
-      pe: function pe() {
-        return model.get('potentialEnergy');
-      },
-
-      ke: function ke() {
-        return model.get('kineticEnergy');
-      },
-
-      atomsKe: function atomsKe(atomsList) {
-        var sum = 0, i;
-        for (i = 0; i < atomsList.length; i++) {
-          sum += model.getAtomKineticEnergy(atomsList[i]);
-        }
-        return sum;
-      },
-
-      minimizeEnergy: function minimizeEnergy() {
-        model.minimizeEnergy();
-        api.repaint();
-      },
-
-      addTextBox: function(props) {
-        model.addTextBox(props);
-      },
-
-      removeTextBox: function(i) {
-        model.removeTextBox(i);
-      },
-
-      setTextBoxProperties: function(i, props) {
-        model.setTextBoxProperties(i, props);
-      }
-
-    };
-
-  };
-});
-
-/*global define model */
-
-define('md2d/benchmarks/benchmarks',['require'],function (require) {
-
-  return function Benchmarks(controller) {
-
-    var benchmarks = [
-      {
-        name: "commit",
-        numeric: false,
-        run: function(done) {
-          var link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
-          if (Lab.version.repo.dirty) {
-            link += " <i>dirty</i>";
-          }
-          done(link);
-        }
-      },
-      {
-        name: "atoms",
-        numeric: true,
-        run: function(done) {
-          done(model.get_num_atoms());
-        }
-      },
-      {
-        name: "temperature",
-        numeric: true,
-        formatter: d3.format("5.1f"),
-        run: function(done) {
-          done(model.get("temperature"));
-        }
-      },
-      {
-        name: "just graphics (steps/s)",
-        numeric: true,
-        formatter: d3.format("5.1f"),
-        run: function(done) {
-          var elapsed, start, i;
-
-          model.stop();
-          start = +Date.now();
-          i = -1;
-          while (i++ < 100) {
-            controller.modelContainer.update();
-          }
-          elapsed = Date.now() - start;
-          done(100/elapsed*1000);
-        }
-      },
-      {
-        name: "model (steps/s)",
-        numeric: true,
-        formatter: d3.format("5.1f"),
-        run: function(done) {
-          var elapsed, start, i;
-
-          model.stop();
-          start = +Date.now();
-          i = -1;
-          while (i++ < 100) {
-            // advance model 1 tick, but don't paint the display
-            model.tick(1, { dontDispatchTickEvent: true });
-          }
-          elapsed = Date.now() - start;
-          done(100/elapsed*1000);
-        }
-      },
-      {
-        name: "model+graphics (steps/s)",
-        numeric: true,
-        formatter: d3.format("5.1f"),
-        run: function(done) {
-          var start, elapsed, i;
-
-          model.stop();
-          start = +Date.now();
-          i = -1;
-          while (i++ < 100) {
-            model.tick();
-          }
-          elapsed = Date.now() - start;
-          done(100/elapsed*1000);
-        }
-      },
-      {
-        name: "fps",
-        numeric: true,
-        formatter: d3.format("5.1f"),
-        run: function(done) {
-          // warmup
-          model.start();
-          setTimeout(function() {
-            model.stop();
-            var start = model.get('time');
-            setTimeout(function() {
-              // actual fps calculation
-              model.start();
-              setTimeout(function() {
-                model.stop();
-                var elapsedModelTime = model.get('time') - start;
-                done( elapsedModelTime / (model.get('viewRefreshInterval') * model.get('timeStep')) / 2 );
-              }, 2000);
-            }, 100);
-          }, 1000);
-        }
-      },
-      {
-        name: "interactive",
-        numeric: false,
-        run: function(done) {
-          done(window.location.pathname + window.location.hash);
-        }
-      }
-    ];
-
-    return benchmarks;
-
-  }
-
-});
-
-/*global
-  define
-*/
-/*jslint onevar: true*/
-define('md2d/controllers/controller',['require','common/controllers/model-controller','md2d/models/modeler','md2d/views/view','md2d/controllers/scripting-api','md2d/benchmarks/benchmarks'],function (require) {
-  // Dependencies.
-  var ModelController   = require("common/controllers/model-controller"),
-      Model             = require('md2d/models/modeler'),
-      ModelContainer    = require('md2d/views/view'),
-      ScriptingAPI      = require('md2d/controllers/scripting-api'),
-      Benchmarks        = require('md2d/benchmarks/benchmarks');
-
-  return function (modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig) {
-    return new ModelController(modelViewId, modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
-                                     Model, ModelContainer, ScriptingAPI, Benchmarks);
-  }
-});
-
-/*global define model $ */
-
-define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller'],function (require) {
-  // Dependencies.
-  var labConfig               = require('lab.config'),
-      arrays                  = require('arrays'),
-      alert                   = require('common/alert'),
-      metadata                = require('common/controllers/interactive-metadata'),
-      validator               = require('common/validator'),
-      BarGraphController      = require('common/controllers/bar-graph-controller'),
-      GraphController         = require('common/controllers/graph-controller'),
-      ExportController        = require('common/controllers/export-controller'),
-      ScriptingAPI            = require('common/controllers/scripting-api'),
-      ButtonController        = require('common/controllers/button-controller'),
-      CheckboxController      = require('common/controllers/checkbox-controller'),
-      RadioController         = require('common/controllers/radio-controller'),
-      SliderController        = require('common/controllers/slider-controller'),
-      PulldownController      = require('common/controllers/pulldown-controller'),
-      NumericOutputController = require('common/controllers/numeric-output-controller'),
-      ParentMessageAPI        = require('common/controllers/parent-message-api'),
-      ThermometerController   = require('common/controllers/thermometer-controller'),
-
-      SemanticLayout          = require('common/layout/semantic-layout'),
-      templates               = require('common/layout/templates'),
-
-      MD2DModelController     = require('md2d/controllers/controller'),
-      // Set of available components.
-      // - Key defines 'type', which is used in the interactive JSON.
-      // - Value is a constructor function of the given component.
-      // Each constructor should assume that it will be called with
-      // following arguments:
-      // 1. component definition (unmodified object from the interactive JSON),
-      // 2. scripting API object,
-      // 3. public API of the InteractiveController.
-      // Of course, some of them can be passed unnecessarily, but
-      // the InteractiveController follows this convention.
-      //
-      // The instantiated component should provide following interface:
-      // # serialize()           - function returning a JSON object, which represents current state
-      //                           of the component. When component doesn't change its state,
-      //                           it should just return a copy (!) of the initial component definition.
-      // # getViewContainer()    - function returning a jQuery object containing
-      //                           DOM elements of the component.
-      // # modelLoadedCallback() - optional function taking no arguments, a callback
-      //                           which should be called when the model is loaded.
-      ComponentConstructor = {
-        'button':        ButtonController,
-        'checkbox':      CheckboxController,
-        'pulldown':      PulldownController,
-        'radio':         RadioController,
-        'thermometer':   ThermometerController,
-        'barGraph':      BarGraphController,
-        'graph':         GraphController,
-        'slider':        SliderController,
-        'numericOutput': NumericOutputController
-      };
-
-  return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
-
-    modelLoadedCallbacks = modelLoadedCallbacks || [];
-
-    var controller = {},
-        modelController,
-        $interactiveContainer,
-        models = [],
-        modelsHash = {},
-        propertiesListeners = [],
-        componentCallbacks = [],
-        onLoadScripts = [],
-
-        // Hash of instantiated components.
-        // Key   - component ID.
-        // Value - array of component instances.
-        componentByID = {},
-
-        // Simple list of instantiated components.
-        componentList = [],
-
-        // List of custom parameters which are used by the interactive.
-        customParametersByName = [],
-
-        // API for scripts defined in the interactive JSON file.
-        scriptingAPI,
-
-        // additional model-specific scripting api
-        modelScriptingAPI,
-
-        // Handles exporting data to DataGames, if 'exports' are specified.
-        exportController,
-
-        // Doesn't currently have any public methods, but probably will.
-        parentMessageAPI,
-
-        semanticLayout;
-
-
-    function getModel(modelId) {
-      if (modelsHash[modelId]) {
-        return modelsHash[modelId];
-      }
-      throw new Error("No model found with id "+modelId);
-    }
-
-    /**
-      Load the model from the model definitions hash.
-      'modelLoaded' is called after the model loads.
-
-      @param: modelId.
-      @optionalParam modelObject
-    */
-    function loadModel(modelId, modelConfig) {
-      var modelDefinition = getModel(modelId),
-          interactiveViewOptions,
-          interactiveModelOptions;
-
-      controller.currentModel = modelDefinition;
-
-      if (modelDefinition.viewOptions) {
-        // Make a deep copy of modelDefinition.viewOptions, so we can freely mutate interactiveViewOptions
-        // without the results being serialized or displayed in the interactives editor.
-        interactiveViewOptions = $.extend(true, {}, modelDefinition.viewOptions);
-      } else {
-        interactiveViewOptions = { controlButtons: 'play' };
-      }
-      interactiveViewOptions.fitToParent = !layoutStyle;
-
-      onLoadScripts = [];
-      if (modelDefinition.onLoad) {
-        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(modelDefinition.onLoad) ) );
-      }
-
-      if (modelDefinition.modelOptions) {
-        // Make a deep copy of modelDefinition.modelOptions.
-        interactiveModelOptions = $.extend(true, {}, modelDefinition.modelOptions);
-      }
-
-      if (modelConfig) {
-        finishWithLoadedModel(modelDefinition.url, modelConfig);
-      } else {
-        $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
-
-          // Deal with the servers that return the json as text/plain
-          modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
-
-          finishWithLoadedModel(modelDefinition.url, modelConfig);
-        });
-      }
-
-      function finishWithLoadedModel(modelUrl, modelConfig) {
-        if (modelController) {
-          modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
-        } else {
-          // Create container for model.
-          // TODO: cleanup it, probably there is a better place to create this div.
-          $interactiveContainer.append('<div id="model-container" class="container">');
-          createModelController(modelConfig.type, modelUrl, modelConfig);
-          modelLoaded(modelConfig);
-          // also be sure to get notified when the underlying model changes
-          modelController.on('modelReset', modelLoaded);
-          controller.modelController = modelController;
-        }
-      }
-
-      function createModelController(type, modelUrl, modelConfig) {
-        // set default model type to "md2d"
-        var modelType = type || "md2d";
-        switch(modelType) {
-          case "md2d":
-          modelController = new MD2DModelController('#model-container', modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
-          break;
-        }
-        // Extending universal Interactive scriptingAPI with model-specific scripting API
-        if (modelController.ScriptingAPI) {
-          scriptingAPI.extend(modelController.ScriptingAPI);
-          scriptingAPI.exposeScriptingAPI();
-        }
-      }
-    }
-
-    function createComponent(component) {
-          // Get type and ID of the requested component from JSON definition.
-      var type = component.type,
-          id = component.id,
-          comp;
-
-      // Use an appropriate constructor function and create a new instance of the given type.
-      // Note that we use constant set of parameters for every type:
-      // 1. component definition (exact object from interactive JSON),
-      // 2. scripting API object,
-      // 3. public API of the InteractiveController.
-      comp = new ComponentConstructor[type](component, scriptingAPI, controller);
-
-      // Save the new instance.
-      componentByID[id] = comp;
-      componentList.push(comp);
-
-      // Register component callback if it is available.
-      if (comp.modelLoadedCallback) {
-        componentCallbacks.push(comp.modelLoadedCallback);
-      }
-    }
-
-    /**
-      Generic function that accepts either a string or an array of strings,
-      and returns the complete string
-    */
-    function getStringFromArray(str) {
-      if (typeof str === 'string') {
-        return str;
-      }
-      return str.join('\n');
-    }
-
-    /**
-      Call this after the model loads, to process any queued resize and update events
-      that depend on the model's properties, then draw the screen.
-    */
-    function modelLoaded() {
-      var i, listener, template, layout;
-
-      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
-      setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
-      // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
-      // to exist during its definition.
-      setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
-
-      for(i = 0; i < componentCallbacks.length; i++) {
-        componentCallbacks[i]();
-      }
-
-      if (interactive.template) {
-        if (typeof interactive.template === "string") {
-          template = templates[interactive.template];
-        } else {
-          template = interactive.template;
-        }
-      }
-
-      // the authored definition of which components go in which container
-      layout = interactive.layout;
-
-      // TODO: this should be moved out of modelLoaded (?)
-      $interactiveContainer.children().not("#model-container").each(function () {
-        $(this).detach();
-      });
-      semanticLayout = new SemanticLayout($interactiveContainer, template, layout, componentByID, modelController);
-
-      semanticLayout.layoutInteractive();
-      $(window).unbind('resize');
-      $(window).on('resize', function() {
-        semanticLayout.layoutInteractive();
-      });
-
-      // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
-
-      for(i = 0; i < propertiesListeners.length; i++) {
-        listener = propertiesListeners[i];
-        model.addPropertiesListener(listener[0], listener[1]);
-      }
-
-      for(i = 0; i < onLoadScripts.length; i++) {
-        onLoadScripts[i]();
-      }
-
-      for(i = 0; i < modelLoadedCallbacks.length; i++) {
-        modelLoadedCallbacks[i]();
-      }
-    }
-
-    /**
-      Validates interactive definition.
-
-      Displays meaningful info in case of any errors. Also an exception is being thrown.
-
-      @param interactive
-        hash representing the interactive specification
-    */
-    function validateInteractive(interactive) {
-      var i, len, models, parameters, outputs, filteredOutputs, components, errMsg;
-
-      // Validate top level interactive properties.
-      try {
-        interactive = validator.validateCompleteness(metadata.interactive, interactive);
-      } catch (e) {
-        errMsg = "Incorrect interactive definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      // Set up the list of possible models.
-      models = interactive.models;
-      try {
-        for (i = 0, len = models.length; i < len; i++) {
-          models[i] = validator.validateCompleteness(metadata.model, models[i]);
-          modelsHash[models[i].id] = models[i];
-        }
-      } catch (e) {
-        errMsg = "Incorrect model definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      parameters = interactive.parameters;
-      try {
-        for (i = 0, len = parameters.length; i < len; i++) {
-          parameters[i] = validator.validateCompleteness(metadata.parameter, parameters[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect parameter definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      outputs = interactive.outputs;
-      try {
-        for (i = 0, len = outputs.length; i < len; i++) {
-          outputs[i] = validator.validateCompleteness(metadata.output, outputs[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect output definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      filteredOutputs = interactive.filteredOutputs;
-      try {
-        for (i = 0, len = filteredOutputs.length; i < len; i++) {
-          filteredOutputs[i] = validator.validateCompleteness(metadata.filteredOutput, filteredOutputs[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect filtered output definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      components = interactive.components;
-      try {
-        for (i = 0, len = components.length; i < len; i++) {
-          components[i] = validator.validateCompleteness(metadata[components[i].type], components[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect " + components[i].type + " component definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      // Validate exporter, if any...
-      if (interactive.exports) {
-        try {
-          interactive.exports = validator.validateCompleteness(metadata.exports, interactive.exports);
-        } catch (e) {
-          errMsg = "Incorrect exports definition:\n" + e.message;
-          alert(errMsg);
-          throw new Error(errMsg);
-        }
-      }
-
-      return interactive;
-    }
-
-    /**
-      The main method called when this controller is created.
-
-      Populates the element pointed to by viewSelector with divs to contain the
-      molecule container (view) and the various components specified in the interactive
-      definition, and
-
-      @param newInteractive
-        hash representing the interactive specification
-      @param viewSelector
-        jQuery selector that finds the element to put the interactive view into
-    */
-    function loadInteractive(newInteractive, viewSelector) {
-      var componentJsons,
-          $exportButton,
-          i, len;
-
-      componentCallbacks = [];
-
-      // Validate interactive.
-      interactive = validateInteractive(newInteractive);
-
-      if (viewSelector) {
-        $interactiveContainer = $(viewSelector);
-      }
-
-      // Set up the list of possible models.
-      models = interactive.models;
-      for (i = 0, len = models.length; i < len; i++) {
-        modelsHash[models[i].id] = models[i];
-      }
-
-      // Load first model.
-      loadModel(models[0].id);
-
-      // Prepare interactive components.
-      componentJsons = interactive.components || [];
-
-      // Clear component instances.
-      componentList = [];
-      componentByID = {};
-
-      for (i = 0, len = componentJsons.length; i < len; i++) {
-        createComponent(componentJsons[i]);
-      }
-
-      // Setup exporter, if any...
-      if (interactive.exports) {
-        exportController = new ExportController(interactive.exports);
-        componentCallbacks.push(exportController.modelLoadedCallback);
-
-        if (ExportController.isExportAvailable()) {
-          $exportButton = $("<button>")
-                            .attr('id', 'export-data')
-                            .addClass('component')
-                            .html("Analyze Data")
-                            .on('click', function() { exportController.exportData(); })
-                            .appendTo($('#bottom'));
-        }
-      }
-    }
-
-    /**
-      After a model loads, this method sets up the custom output properties specified in the "model"
-      section of the interactive and in the interactive.
-
-      Any output property definitions in the model section of the interactive specification override
-      properties with the same that are specified in the main body if the interactive specification.
-
-      @outputType - accept two values "basic" and "filtered", as this function can be used for processing
-        both types of outputs.
-    */
-    function setupCustomOutputs(outputType, modelOutputs, interactiveOutputs) {
-      if (!modelOutputs && !interactiveOutputs) return;
-
-      var outputs = {},
-          prop,
-          output;
-
-      function processOutputsArray(outputsArray) {
-        if (!outputsArray) return;
-        for (var i = 0; i < outputsArray.length; i++) {
-          outputs[outputsArray[i].name] = outputsArray[i];
-        }
-      }
-
-      // per-model output definitions override output definitions from interactives
-      processOutputsArray(interactiveOutputs);
-      processOutputsArray(modelOutputs);
-
-      for (prop in outputs) {
-        if (outputs.hasOwnProperty(prop)) {
-          output = outputs[prop];
-          // DOM elements (and, by analogy, Next Gen MW interactive components like slides)
-          // have "ids". But, in English, properties have "names", but not "ids".
-          switch (outputType) {
-            case "basic":
-              model.defineOutput(output.name, {
-                label: output.label,
-                units: output.units
-              }, scriptingAPI.makeFunctionInScriptContext(getStringFromArray(output.value)));
-              break;
-            case "filtered":
-              model.defineFilteredOutput(output.name, {
-                label: output.label,
-                units: output.units
-              }, output.property, output.type, output.period);
-              break;
-          }
-        }
-      }
-    }
-
-    /**
-      After a model loads, this method is used to set up the custom parameters specified in the
-      model section of the interactive, or in the toplevel of the interactive
-    */
-    function setupCustomParameters(modelParameters, interactiveParameters) {
-      if (!modelParameters && !interactiveParameters) return;
-
-      var initialValues = {},
-          customParameters,
-          i, parameter;
-
-      // append modelParameters second so they're processed later (and override entries of the
-      // same name in interactiveParameters)
-      customParameters = (interactiveParameters || []).concat(modelParameters || []);
-
-      for (i = 0; i < customParameters.length; i++) {
-        parameter = customParameters[i];
-        model.defineParameter(parameter.name, {
-          label: parameter.label,
-          units: parameter.units
-        }, scriptingAPI.makeFunctionInScriptContext('value', getStringFromArray(parameter.onChange)));
-
-        if (parameter.initialValue !== undefined) {
-          initialValues[parameter.name] = parameter.initialValue;
-        }
-        // Save reference to the definition which is finally used.
-        // Note that if parameter is defined both in interactive top-level scope
-        // and models section, one from model sections will be defined in this hash.
-        // It's necessary to update correctly values of parameters during serialization.
-        customParametersByName[parameter.name] = parameter;
-      }
-
-      model.set(initialValues);
-    }
-
-    //
-    // Public API.
-    //
-    controller = {
-      getDGExportController: function () {
-        return exportController;
-      },
-      getModelController: function () {
-        return modelController;
-      },
-      pushOnLoadScript: function (callback) {
-        onLoadScripts.push(callback);
-      },
-      /**
-        Serializes interactive, returns object ready to be stringified.
-        e.g. JSON.stringify(interactiveController.serialize());
-      */
-      serialize: function () {
-        var result, i, len, param, val;
-
-        // This is the tricky part.
-        // Basically, parameters can be defined in two places - in model definition object or just as a top-level
-        // property of the interactive definition. 'customParameters' list contains references to all parameters
-        // currently used by the interactive, no matter where they were specified. So, it's enough to process
-        // and update only these parameters. Because of that, later we can easily serialize interactive definition
-        // with updated values and avoid deciding whether this parameter is defined in 'models' section
-        // or top-level 'parameters' section. It will be updated anyway.
-        if (model !== undefined && model.get !== undefined) {
-          for (param in customParametersByName) {
-            if (customParametersByName.hasOwnProperty(param)) {
-              param = customParametersByName[param];
-              val = model.get(param.name);
-              if (val !== undefined) {
-                param.initialValue = val;
-              }
-            }
-          }
-        }
-
-        // Copy basic properties from the initial definition, as they are immutable.
-        result = {
-          title: interactive.title,
-          publicationStatus: interactive.publicationStatus,
-          subtitle: interactive.subtitle,
-          about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
-          // Node that models section can also contain custom parameters definition. However, their initial values
-          // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
-          models: $.extend(true, [], interactive.models),
-          // All used parameters are already updated, they contain currently used values.
-          parameters: $.extend(true, [], interactive.parameters),
-          // Outputs are directly bound to the model, we can copy their initial definitions.
-          outputs: $.extend(true, [], interactive.outputs),
-          filteredOutputs: $.extend(true, [], interactive.filteredOutputs)
-        };
-
-        // Serialize components.
-        result.components = [];
-        for (i = 0, len = componentList.length; i < len; i++) {
-          if (componentList[i].serialize) {
-            result.components.push(componentList[i].serialize());
-          }
-        }
-
-        // Copy layout from the initial definition, as it is immutable.
-        result.layout = $.extend(true, {}, interactive.layout);
-        if (typeof interactive.template === "string") {
-          result.template = interactive.template;
-        } else {
-          result.template = $.extend(true, {}, interactive.template);
-        }
-
-        return result;
-      },
-      // Make these private variables and functions available
-      loadInteractive: loadInteractive,
-      validateInteractive: validateInteractive,
-      loadModel: loadModel
-    };
-
-    //
-    // Initialization.
-    //
-
-    // Create scripting API.
-    scriptingAPI = new ScriptingAPI(controller, modelScriptingAPI);
-    // Expose API to global namespace (prototyping / testing using the browser console).
-    scriptingAPI.exposeScriptingAPI();
-
-    // Run this when controller is created.
-    loadInteractive(interactive, viewSelector);
-
-    return controller;
-  };
-});
-
-/*global define: false, $: false, model: false */
-// ------------------------------------------------------------
-//
-//   Screen Layout
-//
-// ------------------------------------------------------------
-
-define('common/layout/layout',['require'],function (require) {
-
-  var layout = { version: "0.0.1" };
-
-  layout.selection = "";
-
-  layout.display = {};
-
-  layout.canonical = {
-    width:  1280,
-    height: 800
-  };
-
-  layout.regularDisplay = false;
-
-  layout.notRendered = true;
-  layout.fontsize = false;
-  layout.emsize = 1;
-  layout.cancelFullScreen = false;
-  layout.checkboxFactor = 1.1;
-  layout.checkboxScale = 1.1;
-  layout.fullScreenRender = false;
-
-  layout.canonical.width  = 1280;
-  layout.canonical.height = 800;
-
-  layout.getDisplayProperties = function(obj) {
-    if (!arguments.length) {
-      obj = {};
-    }
-    obj.screen = {
-        width:  screen.width,
-        height: screen.height
-    };
-    obj.client = {
-        width:  document.body.clientWidth,
-        height: document.body.clientHeight
-    };
-    obj.window = {
-        width:  $(window).width(),
-        height: $(window).height()
-    };
-    obj.page = {
-        width: layout.getPageWidth(),
-        height: layout.getPageHeight()
-    };
-    obj.screenFactorWidth  = obj.window.width / layout.canonical.width;
-    obj.screenFactorHeight = obj.window.height / layout.canonical.height;
-    obj.emsize = Math.max(obj.screenFactorWidth * 1.1, obj.screenFactorHeight);
-    return obj;
-  };
-
-  layout.setBodyEmsize = function(scale) {
-    var emsize,
-        $componentsWithText = $("#interactive-container  p,label,button,select,option").filter(":visible"),
-        $headerContent = $("#content-banner div"),
-        $popupPanes = $("#credits-pane, #share-pane, #about-pane").find("div,textarea,label,select"),
-        minFontSize;
-    if (!layout.display) {
-      layout.display = layout.getDisplayProperties();
-    }
-    emsize = Math.max(layout.display.screenFactorWidth * 1.2, layout.display.screenFactorHeight * 1.2);
-    if (scale) { emsize *= scale; }
-    $('body').css('font-size', emsize + 'em');
-    applyMinFontSizeFilter(emsize, $componentsWithText, "9px");
-    applyMinFontSizeFilter(emsize, $headerContent, "10px");
-    applyMinFontSizeFilter(emsize, $popupPanes, "9px");
-    layout.emsize = emsize;
-  };
-
-  function applyMinFontSizeFilter(emsize, $elements, minSize) {
-    if (emsize <= 0.5) {
-      $elements.css("font-size", minSize);
-    } else {
-      $elements.each(function() {
-        var style,
-            index;
-        if (!style) {
-          style = $(this).attr('style');
-        }
-        if (style) {
-          index = style.indexOf('font-size');
-          if (index !== -1) {
-            style = style.replace(/font-size: .*;/g, '');
-            $(this).attr('style', style);
-          }
-        }
-      });
-    }
-  }
-
-  layout.getVizProperties = function(obj) {
-    var $viz = $('#viz');
-
-    if (!arguments.length) {
-      obj = {};
-    }
-    obj.width = $viz.width();
-    obj.height = $viz.height();
-    obj.screenFactorWidth  = obj.width / layout.canonical.width;
-    obj.screenFactorHeight = obj.height / layout.canonical.height;
-    obj.emsize = Math.min(obj.screenFactorWidth * 1.1, obj.screenFactorHeight);
-    return obj;
-  };
-
-  layout.setVizEmsize = function() {
-    var emsize,
-        $viz = $('#viz');
-
-    if (!layout.vis) {
-      layout.vis = layout.getVizProperties();
-    }
-    emsize = Math.min(layout.viz.screenFactorWidth * 1.2, layout.viz.screenFactorHeight * 1.2);
-    $viz.css('font-size', emsize + 'em');
-  };
-
-  layout.screenEqualsPage = function() {
-    return ((layout.display.screen.width  === layout.display.page.width) ||
-            (layout.display.screen.height === layout.display.page.height));
-  };
-
-  layout.checkForResize = function() {
-    if ((layout.display.screen.width  !== screen.width) ||
-        (layout.display.screen.height !== screen.height) ||
-        (layout.display.window.width  !== document.width) ||
-        (layout.display.window.height !== document.height)) {
-      layout.setupScreen();
-    }
-  };
-
-  layout.views = {};
-
-  layout.addView = function(type, view) {
-    if (!layout.views[type]) {
-      layout.views[type] = [];
-    }
-    layout.views[type].push(view);
-  };
-
-  layout.setView = function(type, viewArray) {
-    layout.views[type] = viewArray;
-  };
-
-  layout.setupScreen = function(event) {
-    var emsize,
-        viewLists  = layout.views,
-        fullscreen = document.fullScreen ||
-                     document.webkitIsFullScreen ||
-                     document.mozFullScreen;
-
-    if (event && event.forceRender) {
-      layout.notRendered = true;
-    }
-
-    layout.display = layout.getDisplayProperties();
-    layout.viz = layout.getVizProperties();
-
-    if (!layout.regularDisplay) {
-      layout.regularDisplay = layout.getDisplayProperties();
-    }
-
-
-    if(fullscreen || layout.fullScreenRender  || layout.screenEqualsPage()) {
-      layout.fullScreenRender = true;
-      layout.screenFactorWidth  = layout.display.page.width / layout.canonical.width;
-      layout.screenFactorHeight = layout.display.page.height / layout.canonical.height;
-      layout.checkboxFactor = Math.max(0.8, layout.checkboxScale * layout.emsize);
-      $('body').css('font-size', layout.emsize + "em");
-      layout.notRendered = true;
-      switch (layout.selection) {
-
-        // only fluid on page load (and when resizing on transition to and from full-screen)
-        default:
-        if (layout.notRendered) {
-          setupFullScreen();
-        }
-        break;
-      }
-    } else {
-      if (layout.cancelFullScreen || layout.fullScreenRender) {
-        layout.cancelFullScreen = false;
-        layout.fullScreenRender = false;
-        layout.notRendered = true;
-        layout.regularDisplay = layout.previous_display;
-      } else {
-        layout.regularDisplay = layout.getDisplayProperties();
-      }
-      layout.screenFactorWidth  = layout.display.page.width / layout.canonical.width;
-      layout.screenFactorHeight = layout.display.page.height / layout.canonical.height;
-      layout.checkboxFactor = Math.max(0.8, layout.checkboxScale * layout.emsize);
-      switch (layout.selection) {
-
-        // all component position definitions are set from properties
-        case "interactive-iframe":
-        layout.setBodyEmsize();
-        setupInteractiveIFrameScreen();
-        break;
-
-        // like interactive-iframe, but has editor on left
-        case "interactive-author-iframe":
-        layout.setBodyEmsize(0.7);
-        setupInteractiveAuthorIFrameScreen();
-        break;
-
-        default:
-        layout.setVizEmsize();
-        setupRegularScreen();
-        break;
-      }
-      layout.regularDisplay = layout.getDisplayProperties();
-    }
-
-    //
-    //
-    // Interactive iframe Screen Layout
-    //
-    function setupInteractiveIFrameScreen() {
-      var i,
-          modelWidth,
-          modelHeight,
-          modelDimensions,
-          modelAspectRatio,
-          modelWidthFactor,
-          modelPaddingFactor,
-          modelHeightFactor = 0.85,
-          bottomFactor = 0.0015,
-          viewSizes = {},
-          viewType,
-          containerWidth = $(window).width(),
-          containerHeight = $(window).height(),
-          mcWidth = $('#model-container').width();
-
-      modelDimensions = viewLists.modelContainers[0].scale();
-      modelAspectRatio = modelDimensions[2] / modelDimensions[3];
-      modelWidthFactor = 0.85;
-
-      modelWidthPaddingFactor = modelDimensions[0]/modelDimensions[2] - 1.05;
-      modelWidthFactor -= modelWidthPaddingFactor;
-
-      modelHeightPaddingFactor = modelDimensions[1]/modelDimensions[3] - 1.05;
-      modelHeightFactor -= modelHeightPaddingFactor;
-
-      if (viewLists.thermometers) {
-        modelWidthFactor -= 0.10;
-      }
-
-      if (viewLists.energyGraphs) {
-        modelWidthFactor -= 0.35;
-      }
-
-      // account for proportionally larger buttons when embeddable size gets very small
-      if (layout.emsize <= 0.5) {
-        bottomFactor *= 0.5/layout.emsize;
-      }
-
-      viewLists.bottomItems = $('#bottom').children().length;
-      if (viewLists.bottomItems) {
-        modelHeightFactor -= ($('#bottom').height() * bottomFactor);
-      }
-
-      modelWidth = containerWidth * modelWidthFactor;
-      modelHeight = modelWidth / modelAspectRatio;
-      if (modelHeight > containerHeight * modelHeightFactor) {
-        modelHeight = containerHeight * modelHeightFactor;
-        modelWidth = modelHeight * modelAspectRatio;
-      }
-      viewSizes.modelContainers = [modelWidth, modelHeight];
-      if (viewLists.energyGraphs) {
-        viewSizes.energyGraphs = [containerWidth * 0.40];
-      }
-
-      // Resize modelContainer first to determine actual container height for right-side
-      // Probably a way to do this with CSS ...
-      viewLists.modelContainers[0].resize(modelWidth, modelHeight);
-
-      modelHeight = $("#model-container").height();
-      $("#rightwide").height(modelHeight);
-
-      if (viewLists.barGraphs) {
-        // Keep width of the bar graph proportional to its height.
-        viewSizes.barGraphs = [35 + modelHeight * 0.22];
-      }
-
-      for (viewType in viewLists) {
-        // if (viewType === "modelContainers") continue;
-        if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
-          i = -1;  while(++i < viewLists[viewType].length) {
-            if (viewSizes[viewType]) {
-              viewLists[viewType][i].resize(viewSizes[viewType][0], viewSizes[viewType][1]);
-            } else {
-              viewLists[viewType][i].resize();
-            }
-          }
-        }
-      }
-    }
-
-    //
-    //
-    // Interactive authoring iframe Screen Layout
-    //
-    function setupInteractiveAuthorIFrameScreen() {
-      var i,
-          modelWidth,
-          modelHeight,
-          modelDimensions,
-          modelAspectRatio,
-          modelWidthFactor,
-          modelPaddingFactor,
-          modelHeightFactor = 0.85,
-          bottomFactor = 0.0015,
-          viewSizes = {},
-          viewType,
-          containerWidth = $("#content").width(),
-          containerHeight = $("#content").height();
-
-      modelDimensions = viewLists.modelContainers[0].scale();
-      modelAspectRatio = modelDimensions[2] / modelDimensions[3];
-      modelWidthFactor = 0.85;
-
-      modelWidthPaddingFactor = modelDimensions[0]/modelDimensions[2] - 1.05;
-      modelWidthFactor -= modelWidthPaddingFactor;
-
-      modelHeightPaddingFactor = modelDimensions[1]/modelDimensions[3] - 1.05;
-      modelHeightFactor -= modelHeightPaddingFactor;
-
-      if (viewLists.thermometers) {
-        modelWidthFactor -= 0.05;
-      }
-
-      if (viewLists.barGraphs) {
-        modelWidthFactor -= 0.15;
-      }
-
-      if (viewLists.energyGraphs) {
-        modelWidthFactor -= 0.35;
-      }
-
-      // account for proportionally larger buttons when embeddable size gets very small
-      if (layout.emsize <= 0.5) {
-        bottomFactor *= 0.5/layout.emsize;
-      }
-
-      viewLists.bottomItems = $('#bottom').children().length;
-      if (viewLists.bottomItems) {
-        modelHeightFactor -= ($('#bottom').height() * bottomFactor);
-      }
-
-      modelWidth = containerWidth * modelWidthFactor;
-      modelHeight = modelWidth / modelAspectRatio;
-      if (modelHeight > containerHeight * modelHeightFactor) {
-        modelHeight = containerHeight * modelHeightFactor;
-        modelWidth = modelHeight * modelAspectRatio;
-      }
-      viewSizes.modelContainers = [modelWidth, modelHeight];
-      if (viewLists.energyGraphs) {
-        viewSizes.energyGraphs = [containerWidth * 0.40];
-      }
-
-      // Resize modelContainer first to determine actual container height for right-side
-      // Probably a way to do this with CSS ...
-      viewLists.modelContainers[0].resize(modelWidth, modelHeight);
-
-      modelHeight = $("#model-container").height();
-      $("#rightwide").height(modelHeight);
-
-      if (viewLists.barGraphs) {
-        // Keep width of the bar graph proportional to its height.
-        viewSizes.barGraphs = [35 + modelHeight * 0.22];
-      }
-
-      for (viewType in viewLists) {
-        if (viewType === "modelContainers") continue;
-        if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
-          i = -1;  while(++i < viewLists[viewType].length) {
-            if (viewSizes[viewType]) {
-              viewLists[viewType][i].resize(viewSizes[viewType][0], viewSizes[viewType][1]);
-            } else {
-              viewLists[viewType][i].resize();
-            }
-          }
-        }
-      }
-    }
-
-    //
-    // Compare Screen Layout
-    //
-    function compareScreen() {
-      var i, width, height, mcsize, modelAspectRatio,
-          pageWidth = layout.display.page.width,
-          pageHeight = layout.display.page.height;
-
-      mcsize = viewLists.modelContainers[0].scale();
-      modelAspectRatio = mcsize[0] / mcsize[1];
-      width = pageWidth * 0.40;
-      height = width * 1/modelAspectRatio;
-      // HACK that will normally only work with one modelContainer
-      // or if all the modelContainers end up the same width
-      i = -1;  while(++i < viewLists.modelContainers.length) {
-        viewLists.modelContainers[i].resize(width, height);
-      }
-      if (viewLists.appletContainers) {
-        i = -1;  while(++i < viewLists.appletContainers.length) {
-          viewLists.appletContainers[i].resize(width, height);
-        }
-      }
-    }
-
-    //
-    // Full Screen Layout
-    //
-    function setupFullScreen() {
-      var i, width, height, mcsize,
-          rightHeight, rightHalfWidth, rightQuarterWidth,
-          widthToPageRatio, modelAspectRatio,
-          pageWidth = layout.display.page.width,
-          pageHeight = layout.display.page.height;
-
-      mcsize = viewLists.modelContainers[0].scale();
-      modelAspectRatio = mcsize[0] / mcsize[1];
-      widthToPageRatio = mcsize[0] / pageWidth;
-      width = pageWidth * 0.46;
-      height = width * 1/modelAspectRatio;
-      if (height > pageHeight*0.70) {
-        height = pageHeight * 0.70;
-        width = height * modelAspectRatio;
-      }
-      i = -1;  while(++i < viewLists.modelContainers.length) {
-        viewLists.modelContainers[i].resize(width, height);
-      }
-      rightQuarterWidth = (pageWidth - width) * 0.41;
-      rightHeight = height * 0.42;
-      i = -1;  while(++i < viewLists.potentialCharts.length) {
-        viewLists.potentialCharts[i].resize(rightQuarterWidth, rightHeight);
-      }
-      i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
-        viewLists.speedDistributionCharts[i].resize(rightQuarterWidth, rightHeight);
-      }
-      rightHalfWidth = (pageWidth - width) * 0.86;
-      rightHeight = height * 0.57;
-      i = -1;  while(++i < viewLists.energyCharts.length) {
-        viewLists.energyCharts[i].resize(rightHalfWidth, rightHeight);
-      }
-    }
-  };
-
-  layout.getPageHeight = function() {
-    return $(document).height();
-  };
-
-  layout.getPageWidth = function() {
-    return $(document).width();
-  };
-
-  // Finally, return ready module.
-  return layout;
 });
 
 /*globals define: false, d3: false */
@@ -21817,7 +18591,7 @@ define('common/layout/layout',['require'],function (require) {
             setTimeout(function() {
               model.stop();
               var elapsedModelTime = model.get('time') - start;
-              done( elapsedModelTime / (model.get('viewRefreshInterval') * model.get('timeStep')) / 2 );
+              done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
             }, 2000);
           }, 100);
         }, 1000);
@@ -22202,12 +18976,3385 @@ define('common/benchmark/benchmark',['require'],function (require) {
   };
 });
 
+
+/*
+Simple module which provides context menu for amino acids. It allows
+to dynamically change type of amino acids in a convenient way.
+It uses jQuery.contextMenu plug-in.
+
+CSS style definition: sass/lab/_aminoacid-context-menu.sass
+*/
+
+
+(function() {
+
+  define('cs!md2d/views/aminoacid-context-menu',['require','cs!md2d/models/aminoacids-helper'],function(require) {
+    var HYDROPHILIC_CAT_CLASS, HYDROPHILIC_CLASS, HYDROPHOBIC_CAT_CLASS, HYDROPHOBIC_CLASS, MARKED_CLASS, MENU_CLASS, NEG_CHARGE_CLASS, POS_CHARGE_CLASS, aminoacids, showCategory;
+    aminoacids = require('cs!md2d/models/aminoacids-helper');
+    MENU_CLASS = "aminoacids-menu";
+    HYDROPHOBIC_CLASS = "hydrophobic";
+    HYDROPHOBIC_CAT_CLASS = "hydrophobic-category";
+    HYDROPHILIC_CLASS = "hydrophilic";
+    HYDROPHILIC_CAT_CLASS = "hydrophilic-category";
+    POS_CHARGE_CLASS = "pos-charge";
+    NEG_CHARGE_CLASS = "neg-charge";
+    MARKED_CLASS = "marked";
+    showCategory = function(type, animate) {
+      var func;
+      func = {
+        show: animate ? "slideDown" : "show",
+        hide: animate ? "slideUp" : "hide"
+      };
+      if (type === "hydrophobic") {
+        $("." + HYDROPHOBIC_CLASS)[func.show]();
+        $("." + HYDROPHILIC_CLASS)[func.hide]();
+        $("." + HYDROPHOBIC_CAT_CLASS).addClass("expanded");
+        return $("." + HYDROPHILIC_CAT_CLASS).removeClass("expanded");
+      } else {
+        $("." + HYDROPHOBIC_CLASS)[func.hide]();
+        $("." + HYDROPHILIC_CLASS)[func.show]();
+        $("." + HYDROPHOBIC_CAT_CLASS).removeClass("expanded");
+        return $("." + HYDROPHILIC_CAT_CLASS).addClass("expanded");
+      }
+    };
+    return {
+      /*
+        Register context menu for DOM elements defined by @selector.
+        @model, @view are associated model and view, used to set
+        properties and redraw view.
+      */
+
+      register: function(model, view, selector) {
+        $.contextMenu("destroy", selector);
+        $.contextMenu({
+          selector: selector,
+          appendTo: "#responsive-content",
+          className: MENU_CLASS,
+          animation: {
+            show: "show",
+            hide: "hide"
+          },
+          callback: function(key, options) {
+            var elemId, marked, props;
+            props = d3.select(options.$trigger[0]).datum();
+            marked = aminoacids.getAminoAcidByElement(props.element).abbreviation;
+            options.items[marked].$node.removeClass(MARKED_CLASS);
+            elemId = aminoacids.abbrToElement(key);
+            model.setAtomProperties(props.idx, {
+              element: elemId
+            });
+            return view.repaint();
+          },
+          position: function(opt, x, y) {
+            var $win, bottom, height, offset, right, triggerIsFixed, width;
+            $win = $(window);
+            if (!x && !y) {
+              opt.determinePosition.call(this, opt.$menu);
+              return;
+            } else if (x === "maintain" && y === "maintain") {
+              offset = opt.$menu.position();
+            } else {
+              triggerIsFixed = opt.$trigger.parents().andSelf().filter(function() {
+                return $(this).css('position') === "fixed";
+              }).length;
+              if (triggerIsFixed) {
+                y -= $win.scrollTop();
+                x -= $win.scrollLeft();
+              }
+              offset = {
+                top: y,
+                left: x
+              };
+            }
+            bottom = $win.scrollTop() + $win.height();
+            right = $win.scrollLeft() + $win.width();
+            /*
+                    !!! Workaround for the correct positioning:
+                    Use scrollHeight / scrollWidth as these functions return correct height / width
+                    in contrast to opt.$menu.height() / opt.$menu.width().
+            */
+
+            height = opt.$menu[0].scrollHeight;
+            width = opt.$menu[0].scrollWidth;
+            if (offset.top + height > bottom) {
+              offset.top -= height;
+            }
+            if (offset.left + width > right) {
+              offset.left -= width;
+            }
+            offset.left += 1;
+            return opt.$menu.css(offset);
+          },
+          events: {
+            show: function(options) {
+              var $node, key, props;
+              props = d3.select(options.$trigger[0]).datum();
+              key = aminoacids.getAminoAcidByElement(props.element).abbreviation;
+              $node = options.items[key].$node;
+              $node.addClass(MARKED_CLASS);
+              if ($node.hasClass(HYDROPHOBIC_CLASS)) {
+                showCategory("hydrophobic");
+              } else {
+                showCategory("hydrophilic");
+              }
+              return true;
+            },
+            hide: function(options) {
+              var key, props;
+              props = d3.select(options.$trigger[0]).datum();
+              key = aminoacids.getAminoAcidByElement(props.element).abbreviation;
+              options.items[key].$node.removeClass(MARKED_CLASS);
+              return true;
+            }
+          },
+          items: {
+            "Hydrophobic": {
+              name: "Hydrophobic",
+              className: "" + HYDROPHOBIC_CAT_CLASS,
+              callback: function() {
+                showCategory("hydrophobic", true);
+                return false;
+              }
+            },
+            "Gly": {
+              name: "Glycine",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Ala": {
+              name: "Alanine",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Val": {
+              name: "Valine",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Leu": {
+              name: "Leucine",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Ile": {
+              name: "Isoleucine",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Phe": {
+              name: "Phenylalanine",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Pro": {
+              name: "Proline",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Trp": {
+              name: "Tryptophan",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Met": {
+              name: "Methionine",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Cys": {
+              name: "Cysteine",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Tyr": {
+              name: "Tyrosine",
+              className: "" + HYDROPHOBIC_CLASS
+            },
+            "Hydrophilic": {
+              name: "Hydrophilic",
+              className: "" + HYDROPHILIC_CAT_CLASS,
+              callback: function() {
+                showCategory("hydrophilic", true);
+                return false;
+              }
+            },
+            "Asn": {
+              name: "Asparagine",
+              className: "" + HYDROPHILIC_CLASS
+            },
+            "Gln": {
+              name: "Glutamine",
+              className: "" + HYDROPHILIC_CLASS
+            },
+            "Ser": {
+              name: "Serine",
+              className: "" + HYDROPHILIC_CLASS
+            },
+            "Thr": {
+              name: "Threonine",
+              className: "" + HYDROPHILIC_CLASS
+            },
+            "Asp": {
+              name: "Asparticacid",
+              className: "" + HYDROPHILIC_CLASS + " " + NEG_CHARGE_CLASS
+            },
+            "Glu": {
+              name: "Glutamicacid",
+              className: "" + HYDROPHILIC_CLASS + " " + NEG_CHARGE_CLASS
+            },
+            "Lys": {
+              name: "Lysine",
+              className: "" + HYDROPHILIC_CLASS + " " + POS_CHARGE_CLASS
+            },
+            "Arg": {
+              name: "Arginine",
+              className: "" + HYDROPHILIC_CLASS + " " + POS_CHARGE_CLASS
+            },
+            "His": {
+              name: "Histidine",
+              className: "" + HYDROPHILIC_CLASS + " " + POS_CHARGE_CLASS
+            }
+          }
+        });
+        return showCategory("hydrophobic");
+      }
+    };
+  });
+
+}).call(this);
+
+/*global define: false */
+
+define('md2d/views/genetic-renderer',['require'],function (require) {
+
+  return function GeneticRenderer(container, parentView, model) {
+    var api,
+        model2px,
+        model2pxInv,
+
+        init = function() {
+          // Save shortcuts.
+          model2px = parentView.model2px;
+          model2pxInv = parentView.model2pxInv;
+          // Redraw DNA / mRNA on every genetic properties change.
+          model.getGeneticProperties().on("change", api.setup);
+        },
+
+        renderText = function(container, txt, fontSize, dx, dy, markerPos) {
+          var x = 0,
+              xAttr = "",
+              textElement,
+              i, len;
+
+          // Necessary for example in Firefox.
+          fontSize += "px";
+
+          for (i = 0, len = txt.length; i < len; i++) {
+            xAttr += x + "px ";
+            x += dx;
+          }
+
+          if (markerPos === undefined || markerPos === "end") {
+            markerPos = txt.length / 3;
+          }
+          markerPos *= 3;
+
+          // Text shadow.
+          container.append("text")
+            .text(txt)
+            .attr({
+              "class": "shadow",
+              "x": xAttr,
+              "dy": dy
+            })
+            .style({
+                "stroke-width": model2px(0.01),
+                "font-size": fontSize
+            });
+
+          // Final text.
+          textElement = container.append("text")
+            .attr({
+              "class": "front",
+              "x": xAttr,
+              "dy": dy
+            })
+            .style("font-size", fontSize);
+
+          textElement.append("tspan")
+            .text(txt.substring(0, markerPos));
+          textElement.append("tspan")
+            .attr("class", "marked-mrna")
+            .text(txt.substring(markerPos, markerPos + 3));
+          textElement.append("tspan")
+            .text(txt.substring(markerPos + 3));
+        };
+
+    api = {
+      setup: function () {
+        var props = model.getGeneticProperties().get(),
+            dnaGElement, fontSize, dx;
+
+        if (props === undefined) {
+          return;
+        }
+
+        container.selectAll("g.dna").remove();
+
+        dnaGElement = container.append("g").attr({
+          "class": "dna",
+          // (0nm, 0nm) + small, constant offset in px.
+          "transform": "translate(" + model2px(props.x) + "," + model2pxInv(props.y) + ")"
+        });
+
+        fontSize = model2px(props.height);
+        dx = model2px(props.width);
+
+        // DNA code on sense strand.
+        renderText(dnaGElement, props.DNA, fontSize, dx, -fontSize);
+        // DNA complementary sequence.
+        renderText(dnaGElement, props.DNAComplement, fontSize, dx, 0);
+        // mRNA (if available).
+        if (props.mRNA !== undefined) {
+          renderText(dnaGElement, props.mRNA, fontSize, dx, -2.5 * fontSize, props.translationStep);
+        }
+      }
+    };
+
+    init();
+
+    return api;
+  };
+});
+
+
+/*
+  A simple function to wrap a string of text into an SVG text node of a given width
+  by creating tspans and adding words to them until the computedTextLength of the
+  tspan is greater than the desired width. Returns the number of lines.
+
+  If no wrapping is desired, use maxWidth=-1
+*/
+
+
+(function() {
+
+  define('cs!common/layout/wrap-svg-text',['require'],function(require) {
+    var svgUrl, wrapSVGText;
+    svgUrl = "http://www.w3.org/2000/svg";
+    return wrapSVGText = window.wrapSVGText = function(text, svgTextNode, maxWidth, x, dy) {
+      var computedTextLength, curLineLength, dashArray, dashes, i, lastWord, line, numLines, result, tempText, textNode, tspanNode, widestWidth, word, words, _i, _len;
+      dashes = /-/gi;
+      dashArray = (function() {
+        var _results;
+        _results = [];
+        while (result = dashes.exec(text)) {
+          _results.push(result.index);
+        }
+        return _results;
+      })();
+      words = text.split(/[\s-]/);
+      curLineLength = 0;
+      computedTextLength = 0;
+      numLines = 1;
+      widestWidth = 0;
+      if (maxWidth === -1) {
+        maxWidth = Infinity;
+      }
+      for (i = _i = 0, _len = words.length; _i < _len; i = ++_i) {
+        word = words[i];
+        curLineLength += word.length + 1;
+        if (computedTextLength > maxWidth || i === 0) {
+          if (i > 0) {
+            tempText = tspanNode.firstChild.nodeValue;
+            if (tempText.length > words[i - 1].length + 1) {
+              lastWord = tempText.slice(tempText.length - words[i - 1].length - 1);
+              tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - words[i - 1].length - 1);
+            } else if (tempText.length === words[i - 1].length + 1) {
+              tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - 1);
+            }
+            widestWidth = Math.max(tspanNode.getComputedTextLength(), widestWidth);
+            numLines++;
+          }
+          tspanNode = document.createElementNS(svgUrl, "tspan");
+          tspanNode.setAttributeNS(null, "x", x);
+          tspanNode.setAttributeNS(null, "dy", i === 0 ? 0 : dy);
+          textNode = document.createTextNode(line);
+          tspanNode.appendChild(textNode);
+          svgTextNode.appendChild(tspanNode);
+          if (~dashArray.indexOf(curLineLength - 1)) {
+            line = word + "-";
+          } else {
+            line = word + " ";
+          }
+          if (i && lastWord) {
+            line = lastWord + line;
+          }
+        } else {
+          if (~dashArray.indexOf(curLineLength - 1)) {
+            line += word + "-";
+          } else {
+            line += word + " ";
+          }
+        }
+        tspanNode.firstChild.nodeValue = line;
+        computedTextLength = tspanNode.getComputedTextLength();
+        if (i && i === words.length - 1 && computedTextLength > maxWidth) {
+          tempText = tspanNode.firstChild.nodeValue;
+          tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - words[i].length - 1);
+          tspanNode = document.createElementNS(svgUrl, "tspan");
+          tspanNode.setAttributeNS(null, "x", x);
+          tspanNode.setAttributeNS(null, "dy", dy);
+          textNode = document.createTextNode(words[i]);
+          tspanNode.appendChild(textNode);
+          svgTextNode.appendChild(tspanNode);
+          numLines++;
+        }
+      }
+      if (widestWidth === 0) {
+        widestWidth = svgTextNode.childNodes[0].getComputedTextLength();
+      }
+      return {
+        lines: numLines,
+        width: widestWidth
+      };
+    };
+  });
+
+}).call(this);
+
+/*global $ alert define: false, d3: false Image */
+// ------------------------------------------------------------
+//
+//   MD2D View Renderer
+//
+// ------------------------------------------------------------
+define('md2d/views/renderer',['require','lab.config','common/console','common/benchmark/benchmark','cs!md2d/views/aminoacid-context-menu','md2d/views/genetic-renderer','cs!common/layout/wrap-svg-text','common/views/gradients'],function (require) {
+  // Dependencies.
+  var labConfig             = require('lab.config'),
+      console               = require('common/console'),
+      benchmark             = require('common/benchmark/benchmark'),
+      amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
+      GeneticRenderer       = require('md2d/views/genetic-renderer'),
+      wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
+      gradients             = require('common/views/gradients'),
+
+      RADIAL_BOND_TYPES = {
+        STANDARD_STICK  : 101,
+        LONG_SPRING     : 102,
+        BOND_SOLID_LINE : 103,
+        GHOST           : 104,
+        UNICOLOR_STICK  : 105,
+        SHORT_SPRING    : 106,
+        DOUBLE_BOND     : 107,
+        TRIPLE_BOND     : 108,
+        DISULPHIDE_BOND : 109
+      };
+
+  return function MD2DView(model, containers, model2px, model2pxInv) {
+        // Public API object to be returned.
+    var api = {},
+
+        // The model function get_results() returns a 2 dimensional array
+        // of particle indices and properties that is updated every model tick.
+        // This array is not garbage-collected so the view can be assured that
+        // the latest modelResults will be in this array when the view is executing
+        modelResults,
+        modelElements,
+        modelWidth,
+        modelHeight,
+        aspectRatio,
+
+        // "Containers" - SVG g elements used to position layers of the final visualization.
+        mainContainer        = containers.mainContainer,
+        radialBondsContainer = containers.radialBondsContainer,
+        VDWLinesContainer    = containers.VDWLinesContainer,
+        imageContainerBelow  = containers.imageContainerBelow,
+        imageContainerTop    = containers.imageContainerTop,
+        textContainerBelow   = containers.textContainerBelow,
+        textContainerTop     = containers.textContainerTop,
+
+        dragOrigin,
+
+        // Renderers specific for MD2D
+        // TODO: for now only DNA is rendered in a separate class, try to create
+        // new renderers in separate files for clarity and easier testing.
+        geneticRenderer,
+
+        gradientNameForElement,
+        // Set of gradients used for Kinetic Energy Shading.
+        gradientNameForKELevel = [],
+        // Number of gradients used for Kinetic Energy Shading.
+        KE_SHADING_STEPS = 25,
+        // Array which defines a gradient assigned to a given particle.
+        gradientNameForParticle = [],
+
+        atomTooltipOn,
+
+        particle, label, labelEnter,
+        moleculeDiv, moleculeDivPre,
+
+        // for model clock
+        timeLabel,
+        modelTimeFormatter = d3.format("5.1f"),
+        timePrefix = "",
+        timeSuffix = " (ps)",
+
+        radialBonds,
+        radialBondResults,
+        obstacle,
+        obstacles,
+        mockObstaclesArray = [],
+        radialBond1, radialBond2,
+        vdwPairs = [],
+        vdwLines,
+        chargeShadingMode,
+        keShadingMode,
+        drawVdwLines,
+        drawVelocityVectors,
+        velocityVectorColor,
+        velocityVectorWidth,
+        velocityVectorLength,
+        drawForceVectors,
+        forceVectorColor,
+        forceVectorWidth,
+        forceVectorLength,
+        velVector,
+        forceVector,
+        imageProp,
+        imageMapping,
+        imageSizes = [],
+        textBoxes,
+        imagePath,
+        drawAtomTrace,
+        atomTraceId,
+        atomTraceColor,
+        atomTrace,
+        atomTracePath,
+        showClock,
+
+        VELOCITY_STR = "velocity",
+        FORCE_STR    = "force";
+
+
+    function modelTimeLabel() {
+      return timePrefix + modelTimeFormatter(model.get('time')/1000) + timeSuffix;
+    }
+
+    function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
+      return model.setAtomProperties(i, {x: xpos, y: ypos}, checkPosition, moveMolecule);
+    }
+
+    function getObstacleColor(i) {
+      return "rgb(" +
+        obstacles.colorR[i] + "," +
+        obstacles.colorG[i] + "," +
+        obstacles.colorB[i] + ")";
+    }
+
+    // Pass in the signed 24-bit Integer used for Java MW elementColors
+    // See: https://github.com/mbostock/d3/wiki/Colors
+    function createElementColorGradient(id, signedInt, mainContainer) {
+      var colorstr = (signedInt + Math.pow(2, 24)).toString(16),
+          color,
+          medColor,
+          lightColor,
+          darkColor,
+          i;
+
+      for (i = colorstr.length; i < 6; i++) {
+        colorstr = String(0) + colorstr;
+      }
+      color      = d3.rgb("#" + colorstr);
+      medColor   = color.toString();
+      lightColor = color.brighter(1).toString();
+      darkColor  = color.darker(1).toString();
+      return gradients.createRadialGradient(id, lightColor, medColor, darkColor, mainContainer);
+    }
+
+    function createAdditionalGradients() {
+          // Scale used for Kinetic Energy Shading gradients.
+      var medColorScale = d3.scale.linear()
+            .interpolate(d3.interpolateRgb)
+            .range(["#F2F2F2", "#FF8080"]),
+          // Scale used for Kinetic Energy Shading gradients.
+          darkColorScale = d3.scale.linear()
+            .interpolate(d3.interpolateRgb)
+            .range(["#A4A4A4", "#FF2020"]),
+          gradientName,
+          gradientUrl,
+          KELevel,
+          i;
+
+      // Kinetic Energy Shading gradients
+      for (i = 0; i < KE_SHADING_STEPS; i++) {
+        gradientName = "ke-shading-" + i;
+        KELevel = i / KE_SHADING_STEPS;
+        gradientUrl = gradients.createRadialGradient(gradientName, "#FFFFFF", medColorScale(KELevel),
+          darkColorScale(KELevel), mainContainer);
+        gradientNameForKELevel[i] = gradientUrl;
+      }
+
+      for (i= 0; i < 4; i++) {
+        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
+      }
+      gradientNameForElement = ["url(#elem0-grad)", "url(#elem1-grad)", "url(#elem2-grad)", "url(#elem3-grad)"];
+    }
+
+    function createVectorArrowHeads(color, name) {
+      var defs,
+          id = "Triangle-"+name,
+          arrowHead;
+      defs = mainContainer.select("defs");
+      if (defs.empty()) {
+        defs = mainContainer.append("defs");
+      }
+      arrowHead = defs.select("#" + id);
+      if (arrowHead.empty()) {
+        arrowHead = defs.append("marker")
+          .attr("id", "Triangle-"+name)
+          .attr("viewBox", "0 0 10 10")
+          .attr("refX", "0")
+          .attr("refY", "5")
+          .attr("markerUnits", "strokeWidth")
+          .attr("markerWidth", "4")
+          .attr("markerHeight", "3")
+          .attr("orient", "auto")
+          .attr("stroke", color)
+          .attr("fill", color);
+        arrowHead.append("path")
+            .attr("d", "M 0 0 L 10 5 L 0 10 z");
+      }
+    }
+
+    // Returns gradient appropriate for a given atom.
+    // d - atom data.
+    function getParticleGradient(d) {
+        var ke, keIndex, charge;
+
+        if (d.marked) return "url(#mark-grad)";
+
+        if (keShadingMode) {
+          ke  = model.getAtomKineticEnergy(d.idx),
+          // Convert Kinetic Energy to [0, 1] range
+          // using empirically tested transformations.
+          // K.E. shading should be similar to the classic MW K.E. shading.
+          keIndex = Math.min(5 * ke, 1);
+
+          return gradientNameForKELevel[Math.round(keIndex * (KE_SHADING_STEPS - 1))];
+        }
+
+        if (chargeShadingMode) {
+          charge = d.charge;
+
+          if (charge === 0) return "url(#neutral-grad)";
+          return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
+        }
+
+        if (!d.isAminoAcid()) {
+          return gradientNameForElement[d.element % 4];
+        }
+        // Particle represents amino acid.
+        switch (model.get("aminoAcidColorScheme")) {
+          case "none":
+            return "url(#neutral-grad)";
+          case "hydrophobicity":
+            return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
+          case "charge":
+            if (d.charge === 0) return "url(#neutral-grad)";
+            return d.charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
+          case "chargeAndHydro":
+            if (d.charge < -0.000001)
+              return "url(#neg-grad)";
+            if (d.charge > 0.000001)
+              return "url(#pos-grad)";
+            return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
+          default:
+            throw new Error("ModelContainer: unknown amino acid color scheme.");
+        }
+    }
+
+    // Returns first color appropriate for a given radial bond (color next to atom1).
+    // d - radial bond data.
+    function getBondAtom1Color(d) {
+      if (isSpringBond(d)) {
+        return "#888";
+      } else {
+        return gradients.mainColorOfGradient[gradientNameForParticle[d.atom1]];
+      }
+    }
+
+    // Returns second color appropriate for a given radial bond (color next to atom2).
+    // d - radial bond data.
+    function getBondAtom2Color(d) {
+      if (isSpringBond(d)) {
+        return "#888";
+      } else {
+        return gradients.mainColorOfGradient[gradientNameForParticle[d.atom2]];
+      }
+    }
+
+    // Create key images which can be shown in the
+    // upper left corner in different situations.
+    // IMPORTANT: use percentage values whenever possible,
+    // especially for *height* attribute!
+    // It will allow to properly calculate images
+    // placement in drawSymbolImages() function.
+    function createSymbolImages() {
+      var xMargin = "1%";
+      // only add these images if they don't already exist
+      if ($("#heat-bath").length === 0) {
+        // Heat bath key image.
+        mainContainer.append("image")
+            .attr({
+              "id": "heat-bath",
+              "x": xMargin,
+              "width": "3%",
+              "height": "3%",
+              "preserveAspectRatio": "xMinYMin",
+              "xlink:href": "../../resources/heatbath.gif"
+            });
+      }
+      if ($("#ke-gradient").length === 0) {
+        // Kinetic Energy Shading gradient image.
+        mainContainer.append("image")
+            .attr({
+              "id": "ke-gradient",
+              "x": xMargin,
+              "width": "12%",
+              "height": "12%",
+              "preserveAspectRatio": "xMinYMin",
+              "xlink:href": "../../resources/ke-gradient.png"
+            });
+      }
+    }
+
+    // Draw key images in the upper left corner.
+    // Place them in one row, dynamically calculate
+    // y position.
+    function drawSymbolImages() {
+        var heatBath = model.get('temperatureControl'),
+            imageSelect, imageHeight,
+            // Variables used for calculating proper y positions.
+            // The unit for these values is percentage points!
+            yPos = 0,
+            yMargin = 1;
+
+        // Heat bath symbol.
+        if (heatBath) {
+            yPos += yMargin;
+            imageSelect = mainContainer.select("#heat-bath")
+              .attr("y", yPos + "%")
+              .style("display", "");
+
+            imageHeight = imageSelect.attr("height");
+            // Truncate % symbol and convert to Number.
+            imageHeight = Number(imageHeight.substring(0, imageHeight.length - 1));
+            yPos += imageHeight;
+        } else {
+            mainContainer.select("#heat-bath").style("display","none");
+        }
+
+        // Kinetic Energy shading gradient.
+        // Put it under heat bath symbol.
+        if (keShadingMode) {
+            yPos += yMargin;
+            mainContainer.select("#ke-gradient")
+              .attr("y", yPos + "%")
+              .style("display", "");
+        } else {
+            mainContainer.select("#ke-gradient").style("display", "none");
+        }
+    }
+
+    function updateParticleRadius() {
+      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
+    }
+
+    /**
+      Call this wherever a d3 selection is being used to add circles for atoms
+    */
+
+    function particleEnter() {
+      particle.enter().append("circle")
+          .attr({
+            "class": function (d) { return d.isAminoAcid() ? "draggable amino-acid" : "draggable"; },
+            "r":  function(d) { return model2px(d.radius); },
+            "cx": function(d) { return model2px(d.x); },
+            "cy": function(d) { return model2pxInv(d.y); },
+            "fill-opacity": function(d) { return d.visible; },
+            "fill": function (d, i) { return gradientNameForParticle[i]; }
+          })
+          .on("mousedown", moleculeMouseDown)
+          .on("mouseover", moleculeMouseOver)
+          .on("mouseout", moleculeMouseOut)
+          .call(d3.behavior.drag()
+            .on("dragstart", nodeDragStart)
+            .on("drag", nodeDrag)
+            .on("dragend", nodeDragEnd)
+          );
+    }
+
+    function vectorEnter(vector, pathFunc, widthFunc, color, name) {
+      vector.enter().append("path")
+        .attr({
+          "class": "vector-"+name,
+          "marker-end": "url(#Triangle-"+name+")",
+          "d": pathFunc,
+          "stroke-width": widthFunc,
+          "stroke": color,
+          "fill": "none"
+        });
+    }
+
+    function atomTraceEnter() {
+      atomTrace.enter().append("path")
+        .attr({
+          "class": "atomTrace",
+          "d": getAtomTracePath,
+          "stroke-width": model2px(0.01),
+          "stroke": atomTraceColor,
+          "fill": "none",
+          "stroke-dasharray": "6, 6"
+        });
+    }
+
+    function obstacleEnter() {
+      var obstacleGroup = obstacle.enter().append("g");
+
+      obstacleGroup
+        .attr("class", "obstacle")
+        .attr("transform",
+          function (d, i) {
+            return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
+          }
+        );
+      obstacleGroup.append("rect")
+        .attr({
+          "class": "obstacle-shape",
+          "x": 0,
+          "y": 0,
+          "width": function(d, i) {return model2px(obstacles.width[i]); },
+          "height": function(d, i) {return model2px(obstacles.height[i]); },
+          "fill": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; },
+          "stroke-width": function(d, i) { return obstacles.visible[i] ? 0.2 : 0.0; },
+          "stroke": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; }
+        });
+
+      // Append external force markers.
+      obstacleGroup.each(function (d, i) {
+        // Fast path, if no forces are defined.
+        if (!obstacles.externalFx[i] && !obstacles.externalFy[i])
+          return;
+
+        // Note that arrows indicating obstacle external force use
+        // the same options for styling like arrows indicating atom force.
+        // Only their length is fixed.
+        var obstacleGroupEl = d3.select(this),
+            obsHeight = obstacles.height[i],
+            obsWidth = obstacles.width[i],
+            obsFx = obstacles.externalFx[i],
+            obsFy = obstacles.externalFy[i],
+            // Use fixed length of force vectors (in nm).
+            vecLen = 0.06,
+            space = 0.06,
+            step, coords;
+
+        // Set arrows indicating horizontal force.
+        if (obsFx) {
+          // Make sure that arrows keep constant distance between both ends of an obstacle.
+          step = (obsHeight - 2 * space) / Math.round((obsHeight - 2 * space) / 0.2);
+          coords = d3.range(space, obsHeight, step);
+          obstacleGroupEl.selectAll("path.obstacle-force-hor").data(coords).enter().append("path")
+            .attr({
+              "class": "obstacle-force-hor",
+              "d": function (d) {
+                if (obsFx < 0)
+                  return "M " + model2px(obsWidth + vecLen + space) + "," + model2px(d) + " L " + model2px(obsWidth + space) + "," + model2px(d);
+                else
+                  return "M " + model2px(-vecLen - space) + "," + model2px(d) + " L " + model2px(-space) + "," + model2px(d);
+              }
+            });
+        }
+        // Later set arrows indicating vertical force.
+        if (obsFy) {
+          // Make sure that arrows keep constant distance between both ends of an obstacle.
+          step = (obsWidth - 2 * space) / Math.round((obsWidth - 2 * space) / 0.2);
+          coords = d3.range(space, obsWidth, step);
+          obstacleGroupEl.selectAll("path.obstacle-force-vert").data(coords).enter().append("path")
+            .attr({
+              "class": "obstacle-force-vert",
+              "d": function (d) {
+                if (obsFy < 0)
+                  return "M " + model2px(d) + "," + model2px(-vecLen - space) + " L " + model2px(d) + "," + model2px(-space);
+                else
+                  return "M " + model2px(d) + "," + model2px(obsHeight + vecLen + space) + " L " + model2px(d) + "," + model2px(obsHeight + space);
+              }
+            });
+        }
+        // Finally, set common attributes and stying for both vertical and horizontal forces.
+        obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
+          .attr({
+            "marker-end": "url(#Triangle-"+ FORCE_STR +")",
+            "stroke-width": model2px(forceVectorWidth),
+            "stroke": forceVectorColor,
+            "fill": "none"
+          });
+      });
+    }
+
+    function radialBondEnter() {
+      radialBond1.enter().append("path")
+          .attr({
+            "d": function (d) { return findPoints(d,1); },
+            "stroke-width": function (d) {
+              if (isSpringBond(d)) {
+                return Math.log(d.strength) / 4 + model2px(0.005);
+              } else {
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+              }
+            },
+            "stroke": getBondAtom1Color,
+            "fill": "none"
+          })
+          .classed("radialbond1", true)
+          .classed("disulphideBond", function (d) {
+            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
+          });
+
+      radialBond2.enter().append("path")
+          .attr({
+            "d": function (d) { return findPoints(d,2); },
+            "stroke-width": function (d) {
+              if (isSpringBond(d)) {
+                return Math.log(d.strength) / 4 + model2px(0.005);
+              } else {
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+              }
+            },
+            "stroke": getBondAtom2Color,
+            "fill": "none"
+          })
+          .classed("radialbond2", true)
+          .classed("disulphideBond", function (d) {
+            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
+          });
+
+    }
+
+    function findPoints(d, num) {
+      var pointX, pointY,
+          j,
+          dx, dy,
+          x1, x2,
+          y1, y2,
+          radius_x1, radius_x2, radiusFactorX,
+          radius_y1, radius_y2, radiusFactorY,
+          path,
+          costheta,
+          sintheta,
+          length,
+          strength,
+          numTurns,
+          springDiameter,
+          cosThetaDiameter,
+          sinThetaDiameter,
+          cosThetaSpikes,
+          sinThetaSpikes;
+
+      x1 = model2px(d.x1);
+      y1 = model2pxInv(d.y1);
+      x2 = model2px(d.x2);
+      y2 = model2pxInv(d.y2);
+      dx = x2 - x1;
+      dy = y2 - y1;
+
+      strength = d.strength;
+      length = Math.sqrt(dx*dx + dy*dy) / model2px(0.01);
+
+      numTurns = Math.floor(d.length * 24);
+      springDiameter = length / numTurns;
+
+      costheta = dx / length;
+      sintheta = dy / length;
+      cosThetaDiameter = costheta * springDiameter;
+      sinThetaDiameter = sintheta * springDiameter;
+      cosThetaSpikes = costheta * numTurns;
+      sinThetaSpikes = sintheta * numTurns;
+
+      radius_x1 = model2px(modelResults[d.atom1].radius) * costheta;
+      radius_x2 = model2px(modelResults[d.atom2].radius) * costheta;
+      radius_y1 = model2px(modelResults[d.atom1].radius) * sintheta;
+      radius_y2 = model2px(modelResults[d.atom2].radius) * sintheta;
+      radiusFactorX = radius_x1 - radius_x2;
+      radiusFactorY = radius_y1 - radius_y2;
+
+      if (isSpringBond(d)) {
+        path = "M "+x1+","+y1+" " ;
+        for (j = 0; j < numTurns; j++) {
+          if (j % 2 === 0) {
+            pointX = x1 + (j + 0.5) * cosThetaDiameter - 0.5 * sinThetaSpikes;
+            pointY = y1 + (j + 0.5) * sinThetaDiameter + 0.5 * cosThetaSpikes;
+          }
+          else {
+            pointX = x1 + (j + 0.5) * cosThetaDiameter + 0.5 * sinThetaSpikes;
+            pointY = y1 + (j + 0.5) * sinThetaDiameter - 0.5 * cosThetaSpikes;
+          }
+          path += " L "+pointX+","+pointY;
+        }
+        return path += " L "+x2+","+y2;
+      } else {
+        if (num === 1) {
+          return "M "+x1+","+y1+" L "+((x2+x1+radiusFactorX)/2)+" , "+((y2+y1+radiusFactorY)/2);
+        } else {
+          return "M "+((x2+x1+radiusFactorX)/2)+" , "+((y2+y1+radiusFactorY)/2)+" L "+x2+","+y2;
+        }
+      }
+    }
+
+    function isSpringBond(d){
+      return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
+    }
+
+    function vdwLinesEnter() {
+      var strokeWidth = model2px(0.02),
+          strokeDasharray = model2px(0.03) + " " + model2px(0.02);
+      // update existing lines
+      vdwLines.attr({
+        "x1": function(d) { return model2px(modelResults[d[0]].x); },
+        "y1": function(d) { return model2pxInv(modelResults[d[0]].y); },
+        "x2": function(d) { return model2px(modelResults[d[1]].x); },
+        "y2": function(d) { return model2pxInv(modelResults[d[1]].y); }
+      });
+
+      // append new lines
+      vdwLines.enter().append('line')
+        .attr({
+          "class": "attractionforce",
+          "x1": function(d) { return model2px(modelResults[d[0]].x); },
+          "y1": function(d) { return model2pxInv(modelResults[d[0]].y); },
+          "x2": function(d) { return model2px(modelResults[d[1]].x); },
+          "y2": function(d) { return model2pxInv(modelResults[d[1]].y); }
+        })
+        .style({
+          "stroke-width": strokeWidth,
+          "stroke-dasharray": strokeDasharray
+        });
+
+      // remove old lines
+      vdwLines.exit().remove();
+    }
+
+    function getImagePath(imgProp) {
+      return imagePath + (imageMapping[imgProp.imageUri] || imgProp.imageUri);
+    }
+
+    function drawImageAttachment() {
+      var img = [],
+          img_height,
+          img_width,
+          coords,
+          imglayer,
+          container,
+          i;
+
+      imageContainerTop.selectAll("image").remove();
+      imageContainerBelow.selectAll("image").remove();
+
+      if (!imageProp) return;
+
+      for (i = 0; i < imageProp.length; i++) {
+        img[i] = new Image();
+        img[i].src = getImagePath(imageProp[i]);
+        img[i].onload = (function(i) {
+          return function() {
+            imageContainerTop.selectAll("image.image_attach"+i).remove();
+            imageContainerBelow.selectAll("image.image_attach"+i).remove();
+
+            // Cache the image width and height.
+            // In Classic MW model size is defined in 0.1A.
+            // Model unit (0.1A) - pixel ratio is always 1. The same applies
+            // to images. We can assume that their pixel dimensions are
+            // in 0.1A also. So convert them to nm (* 0.01).
+            imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
+            img_width = model2px(imageSizes[i][0]);
+            img_height = model2px(imageSizes[i][1]);
+
+            coords = getImageCoords(i);
+
+            imglayer = imageProp[i].imageLayer;
+            container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
+            container.append("image")
+              .attr("x", coords[0])
+              .attr("y", coords[1])
+              .attr("class", "image_attach"+i+" draggable")
+              .attr("xlink:href", img[i].src)
+              .attr("width", img_width)
+              .attr("height", img_height)
+              .attr("pointer-events", "none");
+          };
+        })(i);
+      }
+    }
+
+    function getTextBoxCoords(d) {
+      var x, y, frameX, frameY;
+      if (d.hostType) {
+        if (d.hostType === "Atom") {
+          x = modelResults[d.hostIndex].x;
+          y = modelResults[d.hostIndex].y;
+        } else {
+          x = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
+          y = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
+        }
+      } else {
+        x = d.x;
+        y = d.y;
+      }
+      frameX = x - 0.1;
+      frameY = y + 0.15;
+      return [model2px(x), model2pxInv(y), model2px(frameX), model2pxInv(frameY)];
+    }
+
+    function updateTextBoxes() {
+      var layers = [textContainerTop, textContainerBelow],
+          updateText;
+
+      updateText = function (layerNum) {
+        var layer = layers[layerNum - 1];
+
+        layerTextBoxes = textBoxes.filter(function(t) { return t.layer == layerNum; });
+
+        layer.selectAll("g.textBoxWrapper rect")
+          .data(layerTextBoxes.filter( function(d) { return d.frame; } ))
+          .attr({
+            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
+            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
+          });
+
+        layer.selectAll("g.textBoxWrapper text")
+          .data(layerTextBoxes)
+          .attr({
+            "y": function(d,i) {
+              $(this).find("tspan").attr("x", getTextBoxCoords(d,i)[0]);
+              return getTextBoxCoords(d,i)[1];
+            }
+          });
+      };
+
+      updateText(1);
+      updateText(2);
+    }
+
+    function drawTextBoxes() {
+      var size, layers, appendTextBoxes;
+
+      textBoxes = model.get('textBoxes');
+
+      size = model.size();
+
+      layers = [textContainerTop, textContainerBelow];
+
+      // Append to either top or bottom layer depending on item's layer #.
+      appendTextBoxes = function (layerNum) {
+        var layer = layers[layerNum - 1],
+            text, layerTextBoxes, selection;
+
+        layer.selectAll("g.textBoxWrapper").remove();
+
+        layerTextBoxes = textBoxes.filter(function(t) { return t.layer == layerNum; });
+
+        selection = layer.selectAll("g.textBoxWrapper")
+          .data(layerTextBoxes);
+        text = selection.enter().append("svg:g")
+          .attr("class", "textBoxWrapper");
+
+        text.filter(function (d) { return d.frame; })
+          .append("rect")
+          .attr({
+            "class": function(d, i) { return "textBoxFrame text-"+i; },
+            "style": function(d) {
+              var backgroundColor = d.backgroundColor || "white";
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1";
+            },
+            "width": 0,
+            "height": 0,
+            "rx": function(d)  { return d.frame == "rounded rectangle" ? 8  : 0; },
+            "ry": function(d)  { return d.frame == "rounded rectangle" ? 10 : 0; },
+            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
+            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
+          });
+
+        text.append("text")
+          .attr({
+            "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
+            "x-data": function(d,i) { return getTextBoxCoords(d,i)[0]; },
+            "y": function(d,i)      { return getTextBoxCoords(d,i)[1]; },
+            "width-data": function(d) { return model2px(d.width); },
+            "width":  model2px(size[0]),
+            "height": model2px(size[1]),
+            "xml:space": "preserve",
+            "font-family": "'Open Sans', sans-serif",
+            "font-size": model2px(0.12),
+            "fill": function(d) { return d.color || "black"; },
+            "text-data": function(d) { return d.text; },
+            "text-anchor": function(d) {
+              var align = d.textAlign || "left";
+              if (align === "center") align = "middle";
+              return align;
+            },
+            "has-host": function(d) { return !!d.hostType; }
+          })
+          .call(d3.behavior.drag()
+            .on("drag", textDrag)
+            .on("dragend", function(d) {
+              // simple output to console for now, eventually should just get
+              // serialized back to interactive (or model?) JSON on author save
+              console.log('"x": '+d.x+",");
+              console.log('"y": '+d.y+",");
+            })
+          );
+        selection.exit().remove();
+      };
+
+      appendTextBoxes(1);
+      appendTextBoxes(2);
+
+      // wrap text
+      $(".textBox").each( function() {
+        var text  = this.getAttributeNS(null, "text-data"),
+            x     = this.getAttributeNS(null, "x-data"),
+            width = this.getAttributeNS(null, "width-data") || -1,
+            dy    = model2px(0.16),
+            hasHost = this.getAttributeNS(null, "has-host"),
+            textAlign = this.getAttributeNS(null, "text-anchor"),
+            result, frame, dx;
+
+        while (this.firstChild) {     // clear element first
+          this.removeChild(this.firstChild);
+        }
+
+        result = wrapSVGText(text, this, width, x, dy);
+
+        if (this.parentNode.childElementCount > 1) {
+          frame = this.parentNode.childNodes[0];
+          frame.setAttributeNS(null, "width", result.width + model2px(0.2));
+          frame.setAttributeNS(null, "height", (result.lines * dy) + model2px(0.06));
+        }
+
+        // center all hosted labels simply by tweaking the g.transform
+        if (textAlign === "middle") {
+          dx = result.width / 2;
+          $(this).attr("transform", "translate("+dx+",0)");
+        }
+        if (hasHost === "true") {
+          dx = -result.width / 2;
+          dy = (result.lines-1) * dy / -2 + 4.5;
+          $(this.parentNode).attr("transform", "translate("+dx+","+dy+")");
+        }
+      });
+    }
+
+    function setupColorsOfParticles() {
+      var i, len;
+
+      chargeShadingMode = model.get("chargeShading");
+      keShadingMode = model.get("keShading");
+
+      gradientNameForParticle.length = modelResults.length;
+      for (i = 0, len = modelResults.length; i < len; i++)
+        gradientNameForParticle[i] = getParticleGradient(modelResults[i]);
+    }
+
+    function setupParticles() {
+      var showChargeSymbols = model.get("showChargeSymbols"),
+          useThreeLetterCode = model.get("useThreeLetterCode");
+
+      mainContainer.selectAll("circle").remove();
+      mainContainer.selectAll("g.label").remove();
+
+      particle = mainContainer.selectAll("circle").data(modelResults);
+      updateParticleRadius();
+
+      particleEnter();
+
+      label = mainContainer.selectAll("g.label")
+          .data(modelResults);
+
+      labelEnter = label.enter().append("g")
+          .attr("class", "label")
+          .attr("transform", function(d) {
+            return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
+          });
+
+      labelEnter.each(function (d) {
+        var selection = d3.select(this),
+            txtValue, txtSelection;
+        // Append appropriate label. For now:
+        // If 'atomNumbers' option is enabled, use indices.
+        // If not and there is available 'label'/'symbol' property, use one of them
+        // (check 'useThreeLetterCode' option to decide which one).
+        // If not and 'showChargeSymbols' option is enabled, use charge symbols.
+        if (model.get("atomNumbers")) {
+          selection.append("text")
+            .text(d.idx)
+            .style("font-size", model2px(1.4 * d.radius) + "px");
+        }
+        else if (useThreeLetterCode && d.label) {
+          // Add shadow - a white stroke, which increases readability.
+          selection.append("text")
+            .text(d.label)
+            .attr("class", "shadow")
+            .style("font-size", model2px(d.radius) + "px");
+          selection.append("text")
+            .text(d.label)
+            .style("font-size", model2px(d.radius) + "px");
+        }
+        else if (!useThreeLetterCode && d.symbol) {
+          // Add shadow - a white stroke, which increases readability.
+          selection.append("text")
+            .text(d.symbol)
+            .attr("class", "shadow")
+            .style("font-size", model2px(1.4 * d.radius) + "px");
+          selection.append("text")
+            .text(d.symbol)
+            .style("font-size", model2px(1.4 * d.radius) + "px");
+        }
+        else if (showChargeSymbols) {
+          if (d.charge > 0){
+            txtValue = "+";
+          } else if (d.charge < 0){
+            txtValue = "-";
+          } else {
+            return;
+          }
+          selection.append("text")
+            .text(txtValue)
+            .style("font-size", model2px(1.6 * d.radius) + "px");
+        }
+        // Set common attributes for labels (+ shadows).
+        txtSelection = selection.selectAll("text");
+        // Check if node exists and if so, set appropriate attributes.
+        if (txtSelection.node()) {
+          txtSelection
+            .attr("pointer-events", "none")
+            .style({
+              "font-weight": "bold",
+              "opacity": 0.7
+            });
+          txtSelection
+            .attr({
+              // Center labels, use real width and height.
+              // Note that this attrs should be set *after* all previous styling options.
+              // .node() will return first node in selection. It's OK - both texts
+              // (label and its shadow) have the same dimension.
+              "x": -txtSelection.node().getBBox().width / 2,
+              "y": "0.31em"
+            });
+        }
+        // Set common attributes for shadows.
+        selection.select("text.shadow")
+          .style({
+            "stroke": "#fff",
+            "stroke-width": 0.15 * model2px(d.radius),
+            "stroke-opacity": 0.7
+          });
+      });
+    }
+
+    function setupObstacles() {
+      obstacles = model.get_obstacles();
+      mainContainer.selectAll("g.obstacle").remove();
+      if (obstacles) {
+        mockObstaclesArray.length = obstacles.x.length;
+        obstacle = mainContainer.selectAll("g.obstacle").data(mockObstaclesArray);
+        obstacleEnter();
+      }
+    }
+
+    function setupRadialBonds() {
+      radialBondsContainer.selectAll("path.radialbond1").remove();
+      radialBondsContainer.selectAll("path.radialbond2").remove();
+      radialBonds = model.get_radial_bonds();
+      radialBondResults = model.get_radial_bond_results();
+      if (radialBondResults) {
+        radialBond1 = radialBondsContainer.selectAll("path.radialbond1").data(radialBondResults);
+        radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(radialBondResults);
+        radialBondEnter();
+      }
+    }
+
+    function setupVdwPairs() {
+      VDWLinesContainer.selectAll("line.attractionforce").remove();
+      updateVdwPairsArray();
+      drawVdwLines = model.get("showVDWLines");
+      if (drawVdwLines) {
+        vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
+        vdwLinesEnter();
+      }
+    }
+
+    // The vdw hash returned by md2d consists of typed arrays of length N*N-1/2
+    // To make these d3-friendly we turn them into an array of atom pairs, only
+    // as long as we need.
+    function updateVdwPairsArray() {
+      var vdwHash = model.get_vdw_pairs();
+      for (var i = 0; i < vdwHash.count; i++) {
+        vdwPairs[i] = [vdwHash.atom1[i], vdwHash.atom2[i]];
+      }
+      // if vdwPairs was longer at the previous tick, trim the end
+      vdwPairs.splice(vdwHash.count);
+    }
+
+    function setupVectors() {
+      mainContainer.selectAll("path.vector-"+VELOCITY_STR).remove();
+      mainContainer.selectAll("path.vector-"+FORCE_STR).remove();
+
+      drawVelocityVectors = model.get("showVelocityVectors");
+      drawForceVectors    = model.get("showForceVectors");
+      if (drawVelocityVectors) {
+        velVector = mainContainer.selectAll("path.vector-"+VELOCITY_STR).data(modelResults);
+        vectorEnter(velVector, getVelVectorPath, getVelVectorWidth, velocityVectorColor, VELOCITY_STR);
+      }
+      if (drawForceVectors) {
+        forceVector = mainContainer.selectAll("path.vector-"+FORCE_STR).data(modelResults);
+        vectorEnter(forceVector, getForceVectorPath, getForceVectorWidth, forceVectorColor, FORCE_STR);
+      }
+    }
+
+    function setupAtomTrace() {
+      mainContainer.selectAll("path.atomTrace").remove();
+      atomTracePath = "";
+
+      drawAtomTrace = model.get("showAtomTrace");
+      atomTraceId = model.get("atomTraceId");
+      if (drawAtomTrace) {
+        atomTrace = mainContainer.selectAll("path.atomTrace").data([modelResults[atomTraceId]]);
+        atomTraceEnter();
+      }
+    }
+
+    function updateVdwPairs() {
+      // Get new set of pairs from model.
+      updateVdwPairsArray();
+
+      vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
+      vdwLinesEnter();
+    }
+
+    function mousedown() {
+      setFocus();
+    }
+
+    function setFocus() {
+      if (model.get("enableKeyboardHandlers")) {
+        containers.node.focus();
+      }
+    }
+
+    function moleculeMouseOver(d, i) {
+      if (model.get("enableAtomTooltips")) {
+        renderAtomTooltip(i);
+      }
+    }
+
+    function moleculeMouseDown(d, i) {
+      containers.node.focus();
+      if (model.get("enableAtomTooltips")) {
+        if (atomTooltipOn !== false) {
+          moleculeDiv.style("opacity", 1e-6);
+          moleculeDiv.style("display", "none");
+          atomTooltipOn = false;
+        } else {
+          if (d3.event.shiftKey) {
+            atomTooltipOn = i;
+          } else {
+            atomTooltipOn = false;
+          }
+          renderAtomTooltip(i);
+        }
+      }
+    }
+
+    function renderAtomTooltip(i) {
+      moleculeDiv
+            .style("opacity", 1.0)
+            .style("display", "inline")
+            .style("background", "rgba(100%, 100%, 100%, 0.7)")
+            .style("left", model2px(modelResults[i].x) + 60 + "px")
+            .style("top",  model2pxInv(modelResults[i].y) + 30 + "px")
+            .style("zIndex", 100)
+            .transition().duration(250);
+
+      moleculeDivPre.text(
+          "atom: " + i + "\n" +
+          "time: " + modelTimeLabel() + "\n" +
+          "speed: " + d3.format("+6.3e")(modelResults[i].speed) + "\n" +
+          "vx:    " + d3.format("+6.3e")(modelResults[i].vx)    + "\n" +
+          "vy:    " + d3.format("+6.3e")(modelResults[i].vy)    + "\n" +
+          "ax:    " + d3.format("+6.3e")(modelResults[i].ax)    + "\n" +
+          "ay:    " + d3.format("+6.3e")(modelResults[i].ay)    + "\n"
+        );
+    }
+
+    function moleculeMouseOut() {
+      if (!atomTooltipOn && atomTooltipOn !== 0) {
+        moleculeDiv.style("opacity", 1e-6).style("zIndex" -1);
+      }
+    }
+
+    function updateDrawablePositions() {
+      console.time('view update');
+      if (obstacles) {
+        obstacle.attr("transform", function (d, i) {
+          return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
+        });
+      }
+
+      if (drawVdwLines) {
+        updateVdwPairs();
+      }
+      // When Kinetic Energy Shading is enabled, update style of atoms
+      // during each frame.
+      if (keShadingMode) {
+        setupColorsOfParticles();
+      }
+      if (radialBondResults) {
+        updateRadialBonds();
+      }
+      updateParticles();
+      if (drawVelocityVectors) {
+        updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
+      }
+      if (drawForceVectors) {
+        updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
+      }
+      if (drawAtomTrace) {
+        updateAtomTrace();
+      }
+      if(imageProp && imageProp.length !== 0) {
+        updateImageAttachment();
+      }
+      if (textBoxes && textBoxes.length > 0) {
+        updateTextBoxes();
+      }
+      console.timeEnd('view update');
+    }
+
+    // TODO: this function name seems to be inappropriate to
+    // its content.
+    function updateParticles() {
+      particle.attr({
+        "cx": function(d) { return model2px(d.x); },
+        "cy": function(d) { return model2pxInv(d.y); }
+      });
+
+      if (keShadingMode) {
+        // Update particles color. Array of colors should be already updated.
+        particle.attr("fill", function (d, i) { return gradientNameForParticle[i]; });
+      }
+
+      label.attr("transform", function (d) {
+        return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
+      });
+
+      if (atomTooltipOn === 0 || atomTooltipOn > 0) {
+        renderAtomTooltip(atomTooltipOn);
+      }
+    }
+
+    function getVelVectorPath(d) {
+      var x_pos = model2px(d.x),
+          y_pos = model2pxInv(d.y),
+          path = "M "+x_pos+","+y_pos,
+          scale = velocityVectorLength * 100;
+      return path + " L "+(x_pos + model2px(d.vx*scale))+","+(y_pos - model2px(d.vy*scale));
+    }
+
+    function getForceVectorPath(d) {
+      var x_pos = model2px(d.x),
+          y_pos = model2pxInv(d.y),
+          mass  = d.mass,
+          scale = forceVectorLength * 100,
+          path  = "M "+x_pos+","+y_pos;
+      return path + " L "+(x_pos + model2px(d.ax*mass*scale))+","+(y_pos - model2px(d.ay*mass*scale));
+    }
+
+    function getVelVectorWidth(d) {
+      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? model2px(velocityVectorWidth) : 0;
+    }
+
+    function getForceVectorWidth(d) {
+      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? model2px(forceVectorWidth) : 0;
+    }
+
+    function updateVectors(vector, pathFunc, widthFunc) {
+      vector.attr({
+         "d": pathFunc,
+         "stroke-width": widthFunc
+      });
+    }
+
+    function getAtomTracePath(d) {
+      // until we implement buffered array model output properties,
+      // we just keep the path history in the path string
+      var dx = Math.floor(model2px(d.x) * 100) / 100,
+          dy = Math.floor(model2pxInv(d.y) * 100) / 100,
+          lIndex, sIndex;
+      if (!atomTracePath) {
+        atomTracePath = "M"+dx+","+dy+"L";
+        return "M "+dx+","+dy;
+      } else {
+        atomTracePath += dx+","+dy + " ";
+      }
+
+      // fake buffered array functionality by knocking out the first
+      // element of the string when we get too big
+      if (atomTracePath.length > 4000) {
+        lIndex = atomTracePath.indexOf("L");
+        sIndex = atomTracePath.indexOf(" ");
+        atomTracePath = "M" + atomTracePath.slice(lIndex+1, sIndex) + "L" + atomTracePath.slice(sIndex+1);
+      }
+      return atomTracePath;
+    }
+
+    function updateAtomTrace() {
+      atomTrace.attr({
+        "d": getAtomTracePath
+      });
+    }
+
+    function updateRadialBonds() {
+      radialBond1.attr("d", function (d) { return findPoints(d, 1); });
+      radialBond2.attr("d", function (d) { return findPoints(d, 2); });
+
+      if (keShadingMode) {
+        // Update also radial bonds color when keShading is on.
+        radialBond1.attr("stroke", getBondAtom1Color);
+        radialBond2.attr("stroke", getBondAtom2Color);
+      }
+    }
+
+    function getImageCoords(i) {
+      var props = imageProp[i],
+          x, y, img_width, img_height;
+      if (props.imageHostType) {
+        if (props.imageHostType === "Atom") {
+          x = modelResults[props.imageHostIndex].x;
+          y = modelResults[props.imageHostIndex].y;
+        } else if (props.imageHostType === "RectangularObstacle") {
+          x = obstacles.x[props.imageHostIndex] + (obstacles.width[props.imageHostIndex] / 2);
+          y = obstacles.y[props.imageHostIndex] + (obstacles.height[props.imageHostIndex] / 2);
+        }
+        img_width = imageSizes[i][0];
+        img_height = imageSizes[i][1];
+        x = x - img_width / 2;
+        y = y + img_height / 2;
+      } else {
+        x = props.imageX;
+        y = props.imageY;
+      }
+      return [model2px(x), model2pxInv(y)];
+    }
+
+    function updateImageAttachment(){
+      var numImages, imglayer, coords, i;
+      numImages= imageProp.length;
+      for(i = 0; i < numImages; i++) {
+        if (!imageSizes || !imageSizes[i]) continue;
+        coords = getImageCoords(i);
+        imglayer = imageProp[i].imageLayer;
+        container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
+        container.selectAll("image.image_attach"+i)
+          .attr("x", coords[0])
+          .attr("y", coords[1]);
+      }
+    }
+
+    function nodeDragStart(d, i) {
+      if (model.is_stopped()) {
+        // cache the *original* atom position so we can go back to it if drag is disallowed
+        dragOrigin = [d.x, d.y];
+      }
+      else if ( d.draggable ) {
+        model.liveDragStart(i);
+      }
+    }
+
+    /**
+      Given x, y, and a bounding box (object with keys top, left, bottom, and right relative to
+      (x, y), returns an (x, y) constrained to keep the bounding box within the molecule container.
+    */
+    function dragBoundingBox(x, y, bbox) {
+      if (bbox.left + x < 0)                x = 0 - bbox.left;
+      if (bbox.right + x > modelWidth) x = modelWidth - bbox.right;
+      if (bbox.bottom + y < 0)              y = 0 - bbox.bottom;
+      if (bbox.top + y > modelHeight)  y = modelHeight - bbox.top;
+
+      return { x: x, y: y };
+    }
+
+    function clip(value, min, max) {
+      if (value < min) return min;
+      if (value > max) return max;
+      return value;
+    }
+
+    /**
+      Given x, y, make sure that x and y are clipped to remain within the model container's
+      boundaries
+    */
+    function dragPoint(x, y) {
+      return { x: clip(x, 0, modelWidth), y: clip(y, 0, modelHeight) };
+    }
+
+    // check to see if d3 event target is either an svg element or
+    // contained within #interactive-container
+    function isEventWithinInteractive() {
+      var elem = d3.event.sourceEvent.target;
+
+      return (elem.ownerSVGElement || $(elem).closest("#interactive-container").length > 0)
+    }
+
+    function nodeDrag(d, i) {
+      var dragX,
+          dragY,
+          drag;
+
+      if (!isEventWithinInteractive()) {
+        // we are outside the frame, drop the element by firing mouseup
+        if( document.createEvent ) {
+          var evObj = document.createEvent('MouseEvent');
+          evObj.initEvent( 'mouseup', true, false );
+          d3.event.sourceEvent.target.dispatchEvent(evObj);
+        } else if( document.createEventObject ) {
+          d3.event.sourceEvent.target.fireEvent('onmouseup');
+        }
+        return;
+      }
+
+      dragX = model2px.invert(d3.event.x);
+      dragY = model2pxInv.invert(d3.event.y);
+
+      if (model.is_stopped()) {
+        drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
+        setAtomPosition(i, drag.x, drag.y, false, true);
+        updateDrawablePositions();
+      }
+      else if ( d.draggable ) {
+        drag = dragPoint(dragX, dragY);
+        model.liveDrag(drag.x, drag.y);
+      }
+    }
+
+    function textDrag(d) {
+      var dragDx = model2px.invert(d3.event.dx),
+          dragDy = model2px.invert(d3.event.dy);
+
+      if (!(AUTHORING && model.is_stopped())) {
+      // for now we don't have user-draggable textBoxes
+        return;
+      }
+      else {
+        d.x = d.x + dragDx;
+        d.y = d.y - dragDy;
+        updateTextBoxes();
+      }
+    }
+
+    function nodeDragEnd(d, i) {
+      if (model.is_stopped()) {
+
+        if (!setAtomPosition(i, d.x, d.y, true, true)) {
+          alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
+          setAtomPosition(i, dragOrigin[0], dragOrigin[1], false, true);
+        }
+        updateDrawablePositions();
+      }
+      else if (d.draggable) {
+        // here we just assume we are removing the one and only spring force.
+        // This assumption will have to change if we can have more than one.
+        model.liveDragEnd();
+      }
+    }
+
+    function setupTooTips() {
+      if ( moleculeDiv === undefined) {
+        moleculeDiv = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 1e-6);
+        moleculeDivPre = moleculeDiv.append("pre");
+      }
+    }
+
+    function setupClock() {
+      var clockColor = d3.lab(model.get("backgroundColor"));
+      // This ensures that color will be visible on background.
+      // Decide between white and black usingL value of background color in LAB space.
+      clockColor.l = clockColor.l > 50 ? 0 : 100;
+      clockColor.a = clockColor.b = 0;
+      // Add model time display.
+      mainContainer.selectAll('.modelTimeLabel').remove();
+      // Update clock status.
+      showClock = model.get("showClock");
+      if (showClock) {
+        timeLabel = mainContainer.append("text")
+          .attr("class", "modelTimeLabel")
+          .text(modelTimeLabel())
+          // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
+          .attr("x", model2px(0) + 3)
+          .attr("y", model2pxInv(0) - 3)
+          .attr("text-anchor", "start")
+          .attr("fill", clockColor.rgb());
+      }
+    }
+
+    function setupFirefoxWarning() {
+      var $firefoxWarningPane,
+          pos,
+          top,
+          left,
+          b = benchmark.what_browser();
+
+      if (b.browser === "Firefox" && b.version >= "18") {
+        $firefoxWarningPane = $("#firefox-warning-pane");
+        pos = containers.pos();
+        top  = pos.bottom - $firefoxWarningPane.height();
+        left = pos.right - $firefoxWarningPane.width();
+        $firefoxWarningPane.css({
+          display: "inline",
+          top: top -5,
+          left: left - 15,
+          'z-index': 100
+        });
+      }
+    }
+
+    function setupRendererOptions() {
+      imageProp = model.get("images");
+      imageMapping = model.get("imageMapping");
+      if (model.url) {
+        imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
+      }
+
+      velocityVectorColor = model.get("velocityVectors").color;
+      velocityVectorWidth  = model.get("velocityVectors").width;
+      velocityVectorLength = model.get("velocityVectors").length;
+
+      forceVectorColor = model.get("forceVectors").color;
+      forceVectorWidth  = model.get("forceVectors").width;
+      forceVectorLength = model.get("forceVectors").length;
+
+      atomTraceColor = model.get("atomTraceColor");
+
+
+      createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
+      createVectorArrowHeads(forceVectorColor, FORCE_STR);
+
+      createSymbolImages();
+      createAdditionalGradients();
+
+      // Register additional controls, context menus etc.
+      // Note that special selector for class is used. Typical class selectors
+      // (e.g. '.amino-acid') cause problems when interacting with SVG nodes.
+      amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
+
+      // Initialize renderers.
+      geneticRenderer = new GeneticRenderer(mainContainer, api, model);
+    }
+
+    //
+    // *** Main Renderer functions ***
+    //
+
+    //
+    // MD2D Renderer: init
+    //
+    // Called when Renderer is created.
+    //
+    function init() {
+      mainContainer        = containers.mainContainer,
+      radialBondsContainer = containers.radialBondsContainer,
+      VDWLinesContainer    = containers.VDWLinesContainer,
+      imageContainerBelow  = containers.imageContainerBelow,
+      imageContainerTop    = containers.imageContainerTop,
+      textContainerBelow   = containers.textContainerBelow,
+      textContainerTop     = containers.textContainerTop,
+
+      modelResults  = model.get_results();
+      modelElements = model.get_elements();
+      modelWidth    = model.get('width');
+      modelHeight   = model.get('height');
+      aspectRatio   = modelWidth / modelHeight;
+
+      setupTooTips();
+      setupRendererOptions();
+
+      // Subscribe for model events.
+      model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
+
+      // Redraw container each time when some visual-related property is changed.
+      model.addPropertiesListener([
+        "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
+        "showVDWLines", "VDWLinesCutoff",
+        "showVelocityVectors", "showForceVectors",
+        "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
+        "showClock", "backgroundColor"],
+          repaint);
+
+      model.on('addAtom', repaint);
+      model.on('removeAtom', repaint);
+      model.on('addRadialBond', setupRadialBonds);
+      model.on('removeRadialBond', setupRadialBonds);
+      model.on('textBoxesChanged', drawTextBoxes);
+
+      setupFirefoxWarning();
+
+    }
+
+    //
+    // MD2D Renderer: reset
+    //
+    // Call when model is reset or reloaded.
+    //
+    function reset(mod, cont, m2px, m2pxInv) {
+      model = mod;
+      containers = cont;
+      model2px = m2px;
+      model2pxInv = m2pxInv;
+      init();
+    }
+
+    //
+    // MD2D Renderer: repaint
+    //
+    // Call when container being rendered into changes size, in that case
+    // pass in new D3 scales for model2pcx transformations.
+    //
+    // Also call when the number of objects changes suc that the conatiner
+    // must be setup again.
+    //
+    function repaint(m2px, m2pxInv) {
+      if (arguments.length) {
+        model2px = m2px;
+        model2pxInv = m2pxInv;
+      }
+      setupObstacles();
+      setupVdwPairs();
+      setupColorsOfParticles();
+      setupRadialBonds();
+      setupParticles();
+      geneticRenderer.setup();
+      setupVectors();
+      setupAtomTrace();
+      drawSymbolImages();
+      drawImageAttachment();
+      drawTextBoxes();
+      setupClock();
+      setupFirefoxWarning();
+    }
+
+    //
+    // MD2D Renderer: update
+    //
+    // Call to update visualization when model result state changes.
+    // Normally called on every model tick.
+    //
+    function update() {
+      console.time('view update');
+      if (obstacles) {
+        obstacle.attr("transform", function (d, i) {
+          return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
+        });
+      }
+
+      if (drawVdwLines) {
+        updateVdwPairs();
+      }
+      // When Kinetic Energy Shading is enabled, update style of atoms
+      // during each frame.
+      if (keShadingMode) {
+        setupColorsOfParticles();
+      }
+
+      if (radialBondResults) {
+        updateRadialBonds();
+      }
+
+      // update model time display
+      if (showClock) {
+        timeLabel.text(modelTimeLabel());
+      }
+
+      updateParticles();
+
+      if (drawVelocityVectors) {
+        updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
+      }
+      if (drawForceVectors) {
+        updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
+      }
+      if (drawAtomTrace) {
+        updateAtomTrace();
+      }
+      if(imageProp && imageProp.length !== 0) {
+        updateImageAttachment();
+      }
+      if (textBoxes && textBoxes.length > 0) {
+        updateTextBoxes();
+      }
+      console.timeEnd('view update');
+    }
+
+    //
+    // Public API to instantiated Renderer
+    //
+    api = {
+      // Expose private methods.
+      update: update,
+      repaint: repaint,
+      reset: reset,
+      model2px: function(val) {
+        // Note that we shouldn't just do:
+        // api.nm2px = nm2px;
+        // as nm2px local variable can be reinitialized
+        // many times due container rescaling process.
+        return model2px(val);
+      },
+      model2pxInv: function(val) {
+        // See comments for nm2px.
+        return model2pxInv(val);
+      }
+    };
+
+    // Initialization.
+    init();
+
+    return api;
+  };
+});
+
+/*global $ define: false */
+// ------------------------------------------------------------
+//
+//   MD2D View Container
+//
+// ------------------------------------------------------------
+define('md2d/views/view',['require','common/views/model-view','md2d/views/renderer'],function (require) {
+  // Dependencies.
+  var ModelView             = require("common/views/model-view"),
+      Renderer              = require("md2d/views/renderer");
+
+  return function (modelUrl, model) {
+    return new ModelView(modelUrl, model, Renderer);
+  };
+
+});
+
+/*global $, define, model */
+
+define('md2d/views/dna-edit-dialog',[],function () {
+
+  return function DNAEditDialog() {
+    var api,
+        $dialogDiv,
+        $dnaTextInput,
+        $errorMsg,
+        $submitButton,
+
+        init = function() {
+          // Basic dialog elements.
+          $dialogDiv = $('<div></div>');
+          $dnaTextInput = $('<input type="text" id="dna-sequence-input" size="45"></input>');
+          $dnaTextInput.appendTo($dialogDiv);
+          $errorMsg = $('<p class="error"></p>');
+          $errorMsg.appendTo($dialogDiv);
+
+          // jQuery UI Dialog.
+          $dialogDiv.dialog({
+            dialogClass: "dna-edit-dialog",
+            // Ensure that font is being scaled dynamically.
+            appendTo: "#responsive-content",
+            title: "DNA Code on Sense Strand",
+            autoOpen: false,
+            width: "35em",
+            buttons: {
+              "Apply": function () {
+                model.getGeneticProperties().set({
+                  DNA: $dnaTextInput.val()
+                });
+                $(this).dialog("close");
+              }
+            }
+          });
+
+          // Dynamic validation on input.
+          $submitButton = $(".dna-edit-dialog button:contains('Apply')");
+          $dnaTextInput.on("input", function () {
+            var props = {
+                  DNA: $dnaTextInput.val()
+                },
+                status;
+            status = model.getGeneticProperties().validate(props);
+            if (status.valid === false) {
+              $submitButton.button("disable");
+              $errorMsg.text(status.errors["DNA"]);
+            } else {
+              $submitButton.button("enable");
+              $errorMsg.text("");
+            }
+          });
+        };
+
+    api = {
+      open: function () {
+        // Clear previous errors.
+        $errorMsg.text("");
+        $submitButton.removeAttr("disabled");
+        // Set current value of DNA code.
+        $dnaTextInput.val(model.getGeneticProperties().get().DNA);
+        $dialogDiv.dialog("open");
+      }
+    };
+
+    init();
+
+    return api;
+  };
+});
+
+/*global define model */
+
+define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog'],function (require) {
+
+  var DNAEditDialog = require('md2d/views/dna-edit-dialog');
+
+  /**
+    Define the model-specific MD2D scripting API used by 'action' scripts on interactive elements.
+
+    The universal Interactive scripting API is extended with the properties of the
+    object below which will be exposed to the interactive's 'action' scripts as if
+    they were local vars. All other names (including all globals, but excluding
+    Javascript builtins) will be unavailable in the script context; and scripts
+    are run in strict mode so they don't accidentally expose or read globals.
+
+    @param: api
+  */
+
+  return function MD2DScriptingAPI (api) {
+
+    var dnaEditDialog = new DNAEditDialog(),
+        // whether we are currently processing a batch command, suppresses repaint
+        inBatch = false;
+
+    return {
+      /* Returns number of atoms in the system. */
+      getNumberOfAtoms: function getNumberOfAtoms(f) {
+        return model.get_num_atoms(f);
+      },
+
+      /* Returns number of obstacles in the system. */
+      getNumberOfObstacles: function getNumberOfObstacles() {
+        return model.getNumberOfObstacles();
+      },
+
+      /* Returns number of elements in the system. */
+      getNumberOfElements: function getNumberOfElements() {
+        return model.getNumberOfElements();
+      },
+
+      /* Returns number of radial bonds in the system. */
+      getNumberOfRadialBonds: function getNumberOfRadialBonds() {
+        return model.getNumberOfRadialBonds();
+      },
+
+      /* Returns number of angular bonds in the system. */
+      getNumberOfAngularBonds: function getNumberOfAngularBonds() {
+        return model.getNumberOfAngularBonds();
+      },
+
+      addAtom: function addAtom(props, options) {
+        if (options && options.supressRepaint) {
+          // Translate supressRepaint option to
+          // option understable by modeler.
+          // supresRepaint is a conveniance option for
+          // Scripting API users.
+          options.supressEvent = true;
+        }
+        return model.addAtom(props, options);
+      },
+
+      /*
+        Removes atom 'i'.
+      */
+      removeAtom: function removeAtom(i, options) {
+        if (options && options.supressRepaint) {
+          // Translate supressRepaint option to
+          // option understable by modeler.
+          // supresRepaint is a conveniance option for
+          // Scripting API users.
+          options.supressEvent = true;
+          delete options.supressRepaint;
+        }
+        try {
+          model.removeAtom(i, options);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+      },
+
+      /*
+        Removes radial bond 'i'.
+      */
+      removeRadialBond: function removeRadialBond(i, options) {
+        try {
+          model.removeRadialBond(i);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+
+        api.repaintIfReady();
+      },
+
+      /*
+        Removes angular bond 'i'.
+      */
+      removeAngularBond: function removeAngularBond(i, options) {
+        try {
+          model.removeAngularBond(i);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+
+        api.repaintIfReady();
+      },
+
+      addRandomAtom: function addRandomAtom() {
+        return model.addRandomAtom.apply(model, arguments);
+      },
+
+      adjustTemperature: function adjustTemperature(fraction) {
+        model.set({targetTemperature: fraction * model.get('targetTemperature')});
+      },
+
+      limitHighTemperature: function limitHighTemperature(t) {
+        if (model.get('targetTemperature') > t) model.set({targetTemperature: t});
+      },
+
+      /** returns a list of integers corresponding to atoms in the system */
+      randomAtoms: function randomAtoms(n) {
+        var numAtoms = model.get_num_atoms();
+
+        if (n === null) n = 1 + api.randomInteger(numAtoms-1);
+
+        if (!api.isInteger(n)) throw new Error("randomAtoms: number of atoms requested, " + n + ", is not an integer.");
+        if (n < 0) throw new Error("randomAtoms: number of atoms requested, " + n + ", was less be greater than zero.");
+
+        if (n > numAtoms) n = numAtoms;
+        return api.choose(n, numAtoms);
+      },
+
+      /**
+        Returns array of atom indices.
+        within(1,1,0.5) returns all atoms within 0.5 nm of position (1nm,1nm) within the model.
+        within(1,1,0.2,0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
+          with the upper-left corner specified by the postion (1nm,1nm).
+      **/
+      atomsWithin: function(x,y,p1,p2) {
+        var atomsWithin = [];
+        var numAtoms = model.get_num_atoms();
+        var props, dist, inX, inY;
+        var n = 0;
+
+        for (var i = 0; i < numAtoms; i++) {
+          props = model.getAtomProperties(i);
+          if (typeof p2 === 'undefined') {
+            dist = Math.sqrt(Math.pow(x-props.x,2) + Math.pow(y-props.y,2));
+            if (dist <= p1) {
+              atomsWithin[n++] = i;
+            }
+          } else {
+            inX = ((props.x >= x) && (props.x <= (x+p1)));
+            inY = ((props.y <= y) && (props.y >= (y-p2)));
+            if (inX && inY) {
+              atomsWithin[n++] = i;
+            }
+          }
+        }
+        return (n === 0 ? -1 : atomsWithin);
+      },
+
+      /**
+        Accepts atom indices as arguments, or an array containing atom indices.
+        Unmarks all atoms, then marks the requested atom indices.
+        Repaints the screen to make the marks visible.
+      */
+      markAtoms: function markAtoms() {
+        var i,
+            len;
+
+        if (arguments.length === 0) return;
+
+        // allow passing an array instead of a list of atom indices
+        if (api.isArray(arguments[0])) {
+          return markAtoms.apply(null, arguments[0]);
+        }
+
+        api.unmarkAllAtoms();
+
+        // mark the requested atoms
+        for (i = 0, len = arguments.length; i < len; i++) {
+          model.setAtomProperties(arguments[i], {marked: 1});
+        }
+
+        api.repaintIfReady();
+      },
+
+      unmarkAllAtoms: function unmarkAllAtoms() {
+        for (var i = 0, len = model.get_num_atoms(); i < len; i++) {
+          model.setAtomProperties(i, {marked: 0});
+        }
+        api.repaintIfReady();
+      },
+
+      traceAtom: function traceAtom(i) {
+        if (i === null) return;
+
+        model.set({atomTraceId: i});
+        model.set({showAtomTrace: true});
+      },
+
+      untraceAtom: function untraceAtom() {
+        model.set({showAtomTrace: false});
+      },
+
+      /**
+        Sets individual atom properties using human-readable hash.
+        e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
+      */
+      setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
+        model.setAtomProperties(i, props, checkLocation, moveMolecule);
+        api.repaintIfReady(options);
+      },
+
+      /**
+        Returns atom properties as a human-readable hash.
+        e.g. getAtomProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
+      */
+      getAtomProperties: function getAtomProperties(i) {
+        return model.getAtomProperties(i);
+      },
+
+      setElementProperties: function setElementProperties(i, props) {
+        model.setElementProperties(i, props);
+        api.repaintIfReady();
+      },
+
+      /**
+        Sets custom pairwise LJ properties (epsilon or sigma), which will
+        be used instead of the mean values of appropriate element properties.
+        i, j - IDs of the elements which should have custom pairwise LJ properties.
+        props - object containing sigma, epsilon or both.
+        e.g. setPairwiseLJProperties(0, 1, {epsilon: -0.2})
+      */
+      setPairwiseLJProperties: function setPairwiseLJProperties(i, j, props) {
+        model.getPairwiseLJProperties().set(i, j, props);
+      },
+
+      getElementProperties: function getElementProperties(i) {
+        return model.getElementProperties(i);
+      },
+
+      /**
+        Adds an obstacle using human-readable hash of properties.
+        e.g. addObstacle({x: 1, y: 0.5, width: 1, height: 1})
+      */
+      addObstacle: function addObstacle(props, options) {
+        try {
+          model.addObstacle(props);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+        api.repaintIfReady();
+      },
+
+      /**
+        Sets individual obstacle properties using human-readable hash.
+        e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalFx: 0.00001})
+      */
+      setObstacleProperties: function setObstacleProperties(i, props) {
+        model.setObstacleProperties(i, props);
+        api.repaintIfReady();
+      },
+
+      /**
+        Returns obstacle properties as a human-readable hash.
+        e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalFx: 0.00001, ... }
+      */
+      getObstacleProperties: function getObstacleProperties(i) {
+        return model.getObstacleProperties(i);
+      },
+
+      /**
+        Removes obstacle 'i'.
+      */
+      removeObstacle: function removeObstacle(i, options) {
+        try {
+          model.removeObstacle(i);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+
+        api.repaintIfReady();
+      },
+
+      setRadialBondProperties: function setRadialBondProperties(i, props) {
+        model.setRadialBondProperties(i, props);
+        api.repaintIfReady();
+      },
+
+      getRadialBondProperties: function getRadialBondProperties(i) {
+        return model.getRadialBondProperties(i);
+      },
+
+      setAngularBondProperties: function setAngularBondProperties(i, props) {
+        model.setAngularBondProperties(i, props);
+        api.repaintIfReady();
+      },
+
+      getAngularBondProperties: function getAngularBondProperties(i) {
+        return model.getAngularBondProperties(i);
+      },
+
+      /**
+        Sets genetic properties using human-readable hash.
+        e.g. setGeneticProperties({ DNA: "ATCG" })
+      */
+      setGeneticProperties: function setGeneticProperties(props) {
+        model.getGeneticProperties().set(props);
+      },
+
+      /**
+        Returns genetic properties as a human-readable hash.
+        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
+      */
+      getGeneticProperties: function getGeneticProperties() {
+        return model.getGeneticProperties().get();
+      },
+
+      /**
+        Opens DNA properties dialog, which allows to set DNA code.
+      */
+      openDNADialog: function showDNADialog() {
+        dnaEditDialog.open();
+      },
+
+      /**
+        Triggers transcription of mRNA from DNA.
+        Result should be rendered. It is also stored in genetic properties.
+
+        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
+      */
+      transcribe: function transcribeDNA() {
+        model.getGeneticProperties().transcribeDNA();
+      },
+
+      /**
+        Triggers translation of mRNA to protein.
+      */
+      translate: function translate() {
+        var aaSequence = model.getGeneticProperties().translate();
+        model.generateProtein(aaSequence);
+      },
+
+      translateStepByStep: function translateStepByStep() {
+        model.translateStepByStep();
+      },
+
+      animateTranslation: function animateTranslation() {
+        model.animateTranslation();
+      },
+
+      /**
+        Generates a random protein.
+
+        'expectedLength' parameter controls the maximum (and expected) number of amino
+        acids of the resulting protein. When expected length is too big (due to limited
+        area of the model), protein will be truncated and warning shown.
+      */
+      generateRandomProtein: function (expectedLength) {
+        var realLength = model.generateProtein(undefined, expectedLength);
+
+        if (realLength !== expectedLength) {
+          throw new Error("Generated protein was truncated due to limited area of the model. Only" +
+            realLength + " amino acids were generated.");
+        }
+      },
+
+      /**
+        Sets solvent. You can use three predefined solvents: "water", "oil" or "vacuum".
+        This is only a convenience method. The same effect can be achieved by manual setting
+        of 'solventForceFactor', 'dielectricConstant' and 'backgroundColor' properties.
+      */
+      setSolvent: function setSolvent(type) {
+        model.setSolvent(type);
+      },
+
+      pe: function pe() {
+        return model.get('potentialEnergy');
+      },
+
+      ke: function ke() {
+        return model.get('kineticEnergy');
+      },
+
+      atomsKe: function atomsKe(atomsList) {
+        var sum = 0, i;
+        for (i = 0; i < atomsList.length; i++) {
+          sum += model.getAtomKineticEnergy(atomsList[i]);
+        }
+        return sum;
+      },
+
+      minimizeEnergy: function minimizeEnergy() {
+        model.minimizeEnergy();
+        api.repaintIfReady();
+      },
+
+      addTextBox: function(props) {
+        model.addTextBox(props);
+      },
+
+      removeTextBox: function(i) {
+        model.removeTextBox(i);
+      },
+
+      setTextBoxProperties: function(i, props) {
+        model.setTextBoxProperties(i, props);
+      },
+
+      repaintIfReady: function(options) {
+        if (!(inBatch || options && options.supressRepaint)) {
+          api.repaint();
+        }
+      },
+
+      batch: function(func) {
+        inBatch = true;
+
+        model.startBatch();
+        func();
+        model.endBatch();
+
+        inBatch = false;
+
+        // call repaint manually
+        api.repaintIfReady();
+      }
+
+    };
+
+  };
+});
+
+/*global define model */
+
+define('md2d/benchmarks/benchmarks',['require'],function (require) {
+
+  return function Benchmarks(controller) {
+
+    var benchmarks = [
+      {
+        name: "commit",
+        numeric: false,
+        run: function(done) {
+          var link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
+          if (Lab.version.repo.dirty) {
+            link += " <i>dirty</i>";
+          }
+          done(link);
+        }
+      },
+      {
+        name: "atoms",
+        numeric: true,
+        run: function(done) {
+          done(model.get_num_atoms());
+        }
+      },
+      {
+        name: "temperature",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          done(model.get("temperature"));
+        }
+      },
+      {
+        name: "just graphics (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var elapsed, start, i;
+
+          model.stop();
+          start = +Date.now();
+          i = -1;
+          while (i++ < 100) {
+            controller.modelContainer.update();
+          }
+          elapsed = Date.now() - start;
+          done(100/elapsed*1000);
+        }
+      },
+      {
+        name: "model (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var elapsed, start, i;
+
+          model.stop();
+          start = +Date.now();
+          i = -1;
+          while (i++ < 100) {
+            // advance model 1 tick, but don't paint the display
+            model.tick(1, { dontDispatchTickEvent: true });
+          }
+          elapsed = Date.now() - start;
+          done(100/elapsed*1000);
+        }
+      },
+      {
+        name: "model+graphics (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var start, elapsed, i;
+
+          model.stop();
+          start = +Date.now();
+          i = -1;
+          while (i++ < 100) {
+            model.tick();
+          }
+          elapsed = Date.now() - start;
+          done(100/elapsed*1000);
+        }
+      },
+      {
+        name: "fps",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          // warmup
+          model.start();
+          setTimeout(function() {
+            model.stop();
+            var start = model.get('time');
+            setTimeout(function() {
+              // actual fps calculation
+              model.start();
+              setTimeout(function() {
+                model.stop();
+                var elapsedModelTime = model.get('time') - start;
+                done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
+              }, 2000);
+            }, 100);
+          }, 1000);
+        }
+      },
+      {
+        name: "interactive",
+        numeric: false,
+        run: function(done) {
+          done(window.location.pathname + window.location.hash);
+        }
+      }
+    ];
+
+    return benchmarks;
+
+  }
+
+});
+
+/*global
+  define
+*/
+/*jslint onevar: true*/
+define('md2d/controllers/controller',['require','common/controllers/model-controller','md2d/models/modeler','md2d/views/view','md2d/controllers/scripting-api','md2d/benchmarks/benchmarks'],function (require) {
+  // Dependencies.
+  var ModelController   = require("common/controllers/model-controller"),
+      Model             = require('md2d/models/modeler'),
+      ModelContainer    = require('md2d/views/view'),
+      ScriptingAPI      = require('md2d/controllers/scripting-api'),
+      Benchmarks        = require('md2d/benchmarks/benchmarks');
+
+  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig) {
+    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
+                                     Model, ModelContainer, ScriptingAPI, Benchmarks);
+  };
+});
+
+/*global define, model, $ */
+
+define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller'],function (require) {
+  // Dependencies.
+  var labConfig               = require('lab.config'),
+      arrays                  = require('arrays'),
+      alert                   = require('common/alert'),
+      metadata                = require('common/controllers/interactive-metadata'),
+      validator               = require('common/validator'),
+      BarGraphController      = require('common/controllers/bar-graph-controller'),
+      GraphController         = require('common/controllers/graph-controller'),
+      ExportController        = require('common/controllers/export-controller'),
+      ScriptingAPI            = require('common/controllers/scripting-api'),
+      ButtonController        = require('common/controllers/button-controller'),
+      CheckboxController      = require('common/controllers/checkbox-controller'),
+      TextController          = require('common/controllers/text-controller'),
+      RadioController         = require('common/controllers/radio-controller'),
+      SliderController        = require('common/controllers/slider-controller'),
+      PulldownController      = require('common/controllers/pulldown-controller'),
+      NumericOutputController = require('common/controllers/numeric-output-controller'),
+      ParentMessageAPI        = require('common/controllers/parent-message-api'),
+      ThermometerController   = require('common/controllers/thermometer-controller'),
+
+      SemanticLayout          = require('common/layout/semantic-layout'),
+      templates               = require('common/layout/templates'),
+
+      MD2DModelController     = require('md2d/controllers/controller'),
+      // Set of available components.
+      // - Key defines 'type', which is used in the interactive JSON.
+      // - Value is a constructor function of the given component.
+      // Each constructor should assume that it will be called with
+      // following arguments:
+      // 1. component definition (unmodified object from the interactive JSON),
+      // 2. scripting API object,
+      // 3. public API of the InteractiveController.
+      // Of course, some of them can be passed unnecessarily, but
+      // the InteractiveController follows this convention.
+      //
+      // The instantiated component should provide following interface:
+      // # serialize()           - function returning a JSON object, which represents current state
+      //                           of the component. When component doesn't change its state,
+      //                           it should just return a copy (!) of the initial component definition.
+      // # getViewContainer()    - function returning a jQuery object containing
+      //                           DOM elements of the component.
+      // # modelLoadedCallback() - optional function taking no arguments, a callback
+      //                           which should be called when the model is loaded.
+      // # resize()              - optional function taking no arguments, a callback
+      //                           which will be called by the layout algorithm when component's container
+      //                           dimensions are changed. This lets component to adjust itself to the
+      //                           new container dimensions.
+      //
+      // Note that each components view container (so, jQuery object returned by getViewContainer() has to
+      // have class 'component'! It's required and checked in the runtime by the interactive controller.
+      // It ensures good practices while implementing new components.
+      // Please see: src/sass/lab/_interactive-component.sass to check what this CSS class defines.
+      ComponentConstructor = {
+        'text':          TextController,
+        'button':        ButtonController,
+        'checkbox':      CheckboxController,
+        'pulldown':      PulldownController,
+        'radio':         RadioController,
+        'thermometer':   ThermometerController,
+        'barGraph':      BarGraphController,
+        'graph':         GraphController,
+        'slider':        SliderController,
+        'numericOutput': NumericOutputController
+      };
+
+  return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle, resizeCallbacks) {
+
+    modelLoadedCallbacks = modelLoadedCallbacks || [];
+
+    var controller = {},
+        modelController,
+        $interactiveContainer,
+        models = [],
+        modelsHash = {},
+        propertiesListeners = [],
+        componentCallbacks = [],
+        onLoadScripts = [],
+
+        // Hash of instantiated components.
+        // Key   - component ID.
+        // Value - array of component instances.
+        componentByID = {},
+
+        // Simple list of instantiated components.
+        componentList = [],
+
+        // List of custom parameters which are used by the interactive.
+        customParametersByName = [],
+
+        // API for scripts defined in the interactive JSON file.
+        scriptingAPI,
+
+        // additional model-specific scripting api
+        modelScriptingAPI,
+
+        // Handles exporting data to DataGames, if 'exports' are specified.
+        exportController,
+
+        // Doesn't currently have any public methods, but probably will.
+        parentMessageAPI,
+
+        semanticLayout;
+
+
+    function getModel(modelId) {
+      if (modelsHash[modelId]) {
+        return modelsHash[modelId];
+      }
+      throw new Error("No model found with id "+modelId);
+    }
+
+    /**
+      Load the model from the model definitions hash.
+      'modelLoaded' is called after the model loads.
+
+      @param: modelId.
+      @optionalParam modelObject
+    */
+    function loadModel(modelId, modelConfig) {
+      var modelDefinition = getModel(modelId),
+          interactiveViewOptions,
+          interactiveModelOptions;
+
+      controller.currentModel = modelDefinition;
+
+      if (modelDefinition.viewOptions) {
+        // Make a deep copy of modelDefinition.viewOptions, so we can freely mutate interactiveViewOptions
+        // without the results being serialized or displayed in the interactives editor.
+        interactiveViewOptions = $.extend(true, {}, modelDefinition.viewOptions);
+      } else {
+        interactiveViewOptions = { controlButtons: 'play' };
+      }
+      interactiveViewOptions.fitToParent = !layoutStyle;
+
+      onLoadScripts = [];
+      if (modelDefinition.onLoad) {
+        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(modelDefinition.onLoad) ) );
+      }
+
+      if (modelDefinition.modelOptions) {
+        // Make a deep copy of modelDefinition.modelOptions.
+        interactiveModelOptions = $.extend(true, {}, modelDefinition.modelOptions);
+      }
+
+      if (modelConfig) {
+        finishWithLoadedModel(modelDefinition.url, modelConfig);
+      } else {
+        $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
+
+          // Deal with the servers that return the json as text/plain
+          modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
+
+          finishWithLoadedModel(modelDefinition.url, modelConfig);
+        });
+      }
+
+      function finishWithLoadedModel(modelUrl, modelConfig) {
+        if (modelController) {
+          modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
+        } else {
+          createModelController(modelConfig.type, modelUrl, modelConfig);
+          // also be sure to get notified when the underlying model changes
+          modelController.on('modelReset', modelLoaded);
+          controller.modelController = modelController;
+          // Finally, it's possible to setup layout.
+          // Layout requires that model controller is availalbe and initialized,
+          // that's why we have to setup it here and not e.g. in loadInteractive.
+          setupLayout();
+          // Setup model and notify observers that model was loaded.
+          modelLoaded(modelConfig);
+        }
+      }
+
+      function setupLayout() {
+        var template, layout, fontScale;
+
+        if (interactive.template) {
+          if (typeof interactive.template === "string") {
+            template = templates[interactive.template];
+          } else {
+            template = interactive.template;
+          }
+        }
+        // The authored definition of which components go in which container.
+        layout = interactive.layout;
+        // Font scale which affect whole interactive container.
+        fontScale = interactive.fontScale;
+
+        semanticLayout.setupInteractive(template, layout, componentByID, modelController, fontScale);
+
+        // Finally, layout interactive.
+        semanticLayout.layoutInteractive();
+
+        // We are rendering in embeddable mode if only element on page
+        // so resize when window resizes.
+        if (onlyElementOnPage()) {
+          $(window).unbind('resize');
+          $(window).on('resize', function() {
+            controller.resize();
+          });
+        }
+      }
+
+      function createModelController(type, modelUrl, modelConfig) {
+        // set default model type to "md2d"
+        var modelType = type || "md2d";
+        switch(modelType) {
+          case "md2d":
+          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
+          break;
+        }
+        // Extending universal Interactive scriptingAPI with model-specific scripting API
+        if (modelController.ScriptingAPI) {
+          scriptingAPI.extend(modelController.ScriptingAPI);
+          scriptingAPI.exposeScriptingAPI();
+        }
+      }
+    }
+
+    function createComponent(component) {
+          // Get type and ID of the requested component from JSON definition.
+      var type = component.type,
+          id = component.id,
+          comp;
+
+      // Use an appropriate constructor function and create a new instance of the given type.
+      // Note that we use constant set of parameters for every type:
+      // 1. component definition (exact object from interactive JSON),
+      // 2. scripting API object,
+      // 3. public API of the InteractiveController.
+      comp = new ComponentConstructor[type](component, scriptingAPI, controller);
+
+      if (!comp.getViewContainer().hasClass("component")) {
+        throw new Error("Invalid Interactive Component implementation. Each component has to have 'component' class.");
+      }
+
+      // Save the new instance.
+      componentByID[id] = comp;
+      componentList.push(comp);
+
+      // Register component callback if it is available.
+      if (comp.modelLoadedCallback) {
+        componentCallbacks.push(comp.modelLoadedCallback);
+      }
+    }
+
+    /**
+      Generic function that accepts either a string or an array of strings,
+      and returns the complete string
+    */
+    function getStringFromArray(str) {
+      if (typeof str === 'string') {
+        return str;
+      }
+      return str.join('\n');
+    }
+
+    /**
+      Call this after the model loads, to process any queued resize and update events
+      that depend on the model's properties, then draw the screen.
+    */
+    function modelLoaded() {
+      var i, listener;
+
+      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
+      setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
+      // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
+      // to exist during its definition.
+      setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
+
+      // Call component callbacks *when* the layout is created.
+      // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
+      //getBBox() which in Firefox works only when element is visible and rendered).
+      for(i = 0; i < componentCallbacks.length; i++) {
+        componentCallbacks[i]();
+      }
+
+      // setup messaging with embedding parent window
+      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
+
+      for(i = 0; i < propertiesListeners.length; i++) {
+        listener = propertiesListeners[i];
+        model.addPropertiesListener(listener[0], listener[1]);
+      }
+
+      for(i = 0; i < onLoadScripts.length; i++) {
+        onLoadScripts[i]();
+      }
+
+      for(i = 0; i < modelLoadedCallbacks.length; i++) {
+        modelLoadedCallbacks[i]();
+      }
+    }
+
+    /**
+      Validates interactive definition.
+
+      Displays meaningful info in case of any errors. Also an exception is being thrown.
+
+      @param interactive
+        hash representing the interactive specification
+    */
+    function validateInteractive(interactive) {
+      var i, len, models, model, components, errMsg;
+
+      function validateArray(modelName, array) {
+        var i, len, errMsg;
+        // Support undefined / null values - just return.
+        if (!array) return;
+
+        try {
+          for (i = 0, len = array.length; i < len; i++) {
+            array[i] = validator.validateCompleteness(metadata[modelName], array[i]);
+          }
+        } catch (e) {
+          errMsg = "Incorrect " + modelName +  " definition:\n" + e.message;
+          alert(errMsg);
+          throw new Error(errMsg);
+        }
+      }
+
+      // Validate top level interactive properties.
+      try {
+        interactive = validator.validateCompleteness(metadata.interactive, interactive);
+      } catch (e) {
+        errMsg = "Incorrect interactive definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      validateArray("model", interactive.models);
+      validateArray("parameter", interactive.parameters);
+      validateArray("output", interactive.outputs);
+      validateArray("filteredOutput", interactive.filteredOutputs);
+
+      // Validate also nested strucutres.
+      models = interactive.models;
+      for (i = 0, len = models.length; i < len; i++) {
+        model = models[i];
+        validateArray("parameter", model.parameters);
+        validateArray("output", model.outputs);
+        validateArray("filteredOutput", model.filteredOutputs);
+      }
+
+      components = interactive.components;
+      try {
+        for (i = 0, len = components.length; i < len; i++) {
+          components[i] = validator.validateCompleteness(metadata[components[i].type], components[i]);
+        }
+      } catch (e) {
+        errMsg = "Incorrect " + components[i].type + " component definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      // Validate exporter, if any...
+      if (interactive.exports) {
+        try {
+          interactive.exports = validator.validateCompleteness(metadata.exports, interactive.exports);
+        } catch (e) {
+          errMsg = "Incorrect exports definition:\n" + e.message;
+          alert(errMsg);
+          throw new Error(errMsg);
+        }
+      }
+
+      return interactive;
+    }
+
+    /**
+      Is the Interactive the only element on the page?
+
+      An Interactive can either be displayed as the only content on a page
+      (often in an iframe) or in a dom element on a page with other elements.
+
+      TODO: make more robust
+      This function makes a simplifying assumption that the Interactive is the
+      only content on the page if the parent of the parent is the <body> element
+    */
+    function onlyElementOnPage() {
+      return $interactiveContainer.parent().parent().prop("nodeName") === "BODY";
+    }
+
+    /**
+      The main method called when this controller is created.
+
+      Populates the element pointed to by viewSelector with divs to contain the
+      molecule container (view) and the various components specified in the interactive
+      definition, and
+
+      @param newInteractive
+        hash representing the interactive specification
+      @param viewSelector
+        jQuery selector that finds the element to put the interactive view into
+    */
+    function loadInteractive(newInteractive, viewSelector) {
+      var componentJsons,
+          i, len;
+
+      componentCallbacks = [];
+
+      // Validate interactive.
+      interactive = validateInteractive(newInteractive);
+
+      // Set up the list of possible models.
+      models = interactive.models;
+      for (i = 0, len = models.length; i < len; i++) {
+        modelsHash[models[i].id] = models[i];
+      }
+
+      // Load first model.
+      loadModel(models[0].id);
+
+      // Prepare interactive components.
+      componentJsons = interactive.components || [];
+
+      // Clear component instances.
+      componentList = [];
+      componentByID = {};
+
+      for (i = 0, len = componentJsons.length; i < len; i++) {
+        createComponent(componentJsons[i]);
+      }
+
+      // Setup exporter, if any...
+      if (interactive.exports) {
+        // Regardless of whether or not we are able to export data to an enclosing container,
+        // setup export controller so you can debug exports by typing script.exportData() in the
+        // console.
+        exportController = new ExportController(interactive.exports);
+        componentCallbacks.push(exportController.modelLoadedCallback);
+
+        // If there is an enclosing container we can export data to (e.g., we're iframed into
+        // DataGames) then add an "Analyze Data" button the bottom position of the interactive
+        if (ExportController.isExportAvailable()) {
+          createComponent({
+            "type": "button",
+            "text": "Analyze Data",
+            "id": "-lab-analyze-data",
+            "action": "exportData();"
+          });
+        }
+      }
+    }
+
+    /**
+      After a model loads, this method sets up the custom output properties specified in the "model"
+      section of the interactive and in the interactive.
+
+      Any output property definitions in the model section of the interactive specification override
+      properties with the same that are specified in the main body if the interactive specification.
+
+      @outputType - accept two values "basic" and "filtered", as this function can be used for processing
+        both types of outputs.
+    */
+    function setupCustomOutputs(outputType, modelOutputs, interactiveOutputs) {
+      if (!modelOutputs && !interactiveOutputs) return;
+
+      var outputs = {},
+          prop,
+          output;
+
+      function processOutputsArray(outputsArray) {
+        if (!outputsArray) return;
+        for (var i = 0; i < outputsArray.length; i++) {
+          outputs[outputsArray[i].name] = outputsArray[i];
+        }
+      }
+
+      // per-model output definitions override output definitions from interactives
+      processOutputsArray(interactiveOutputs);
+      processOutputsArray(modelOutputs);
+
+      for (prop in outputs) {
+        if (outputs.hasOwnProperty(prop)) {
+          output = outputs[prop];
+          // DOM elements (and, by analogy, Next Gen MW interactive components like slides)
+          // have "ids". But, in English, properties have "names", but not "ids".
+          switch (outputType) {
+            case "basic":
+              model.defineOutput(output.name, {
+                label: output.label,
+                units: output.units
+              }, scriptingAPI.makeFunctionInScriptContext(getStringFromArray(output.value)));
+              break;
+            case "filtered":
+              model.defineFilteredOutput(output.name, {
+                label: output.label,
+                units: output.units
+              }, output.property, output.type, output.period);
+              break;
+          }
+        }
+      }
+    }
+
+    /**
+      After a model loads, this method is used to set up the custom parameters specified in the
+      model section of the interactive, or in the toplevel of the interactive
+    */
+    function setupCustomParameters(modelParameters, interactiveParameters) {
+      if (!modelParameters && !interactiveParameters) return;
+
+      var initialValues = {},
+          customParameters,
+          i, parameter, onChangeFunc;
+
+      // append modelParameters second so they're processed later (and override entries of the
+      // same name in interactiveParameters)
+      customParameters = (interactiveParameters || []).concat(modelParameters || []);
+
+      for (i = 0; i < customParameters.length; i++) {
+        parameter = customParameters[i];
+        // onChange callback is optional.
+        onChangeFunc = undefined;
+        if (parameter.onChange) {
+          onChangeFunc = scriptingAPI.makeFunctionInScriptContext('value', getStringFromArray(parameter.onChange));
+        }
+        // Define parameter using modeler.
+        model.defineParameter(parameter.name, {
+          label: parameter.label,
+          units: parameter.units
+        }, onChangeFunc);
+
+        if (parameter.initialValue !== undefined) {
+          initialValues[parameter.name] = parameter.initialValue;
+        }
+        // Save reference to the definition which is finally used.
+        // Note that if parameter is defined both in interactive top-level scope
+        // and models section, one from model sections will be defined in this hash.
+        // It's necessary to update correctly values of parameters during serialization.
+        customParametersByName[parameter.name] = parameter;
+      }
+
+      model.set(initialValues);
+    }
+
+    //
+    // Public API.
+    //
+    controller = {
+      getDGExportController: function () {
+        return exportController;
+      },
+      getModelController: function () {
+        return modelController;
+      },
+      pushOnLoadScript: function (callback) {
+        onLoadScripts.push(callback);
+      },
+      /**
+        Notifies interactive controller that the dimensions of its container have changed.
+        It triggers the layout algorithm again.
+      */
+      resize: function () {
+        var i;
+
+        semanticLayout.layoutInteractive();
+        // Call application controller (application.js) resizeCallbacks if there are any.
+        // Currently this is used for the Share pane generated <iframe> content.
+        // TODO: make a model dialog component and treat the links at the top as
+        // componments in the layout. New designs may put these links at the bottom ... etc
+        for(i = 0; i < resizeCallbacks.length; i++) {
+          if (resizeCallbacks[i].resize !== undefined) {
+            resizeCallbacks[i].resize();
+          }
+        }
+      },
+      /**
+        Serializes interactive, returns object ready to be stringified.
+        e.g. JSON.stringify(interactiveController.serialize());
+      */
+      serialize: function () {
+        var result, i, len, param, val;
+
+        // This is the tricky part.
+        // Basically, parameters can be defined in two places - in model definition object or just as a top-level
+        // property of the interactive definition. 'customParameters' list contains references to all parameters
+        // currently used by the interactive, no matter where they were specified. So, it's enough to process
+        // and update only these parameters. Because of that, later we can easily serialize interactive definition
+        // with updated values and avoid deciding whether this parameter is defined in 'models' section
+        // or top-level 'parameters' section. It will be updated anyway.
+        if (model !== undefined && model.get !== undefined) {
+          for (param in customParametersByName) {
+            if (customParametersByName.hasOwnProperty(param)) {
+              param = customParametersByName[param];
+              val = model.get(param.name);
+              if (val !== undefined) {
+                param.initialValue = val;
+              }
+            }
+          }
+        }
+
+        // Copy basic properties from the initial definition, as they are immutable.
+        result = {
+          title: interactive.title,
+          publicationStatus: interactive.publicationStatus,
+          subtitle: interactive.subtitle,
+          fontScale: interactive.fontScale,
+          about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
+          // Node that models section can also contain custom parameters definition. However, their initial values
+          // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
+          models: $.extend(true, [], interactive.models),
+          // All used parameters are already updated, they contain currently used values.
+          parameters: $.extend(true, [], interactive.parameters),
+          // Outputs are directly bound to the model, we can copy their initial definitions.
+          outputs: $.extend(true, [], interactive.outputs),
+          filteredOutputs: $.extend(true, [], interactive.filteredOutputs)
+        };
+
+        // Serialize components.
+        result.components = [];
+        for (i = 0, len = componentList.length; i < len; i++) {
+          if (componentList[i].serialize) {
+            result.components.push(componentList[i].serialize());
+          }
+        }
+
+        // Copy layout from the initial definition, as it is immutable.
+        result.layout = $.extend(true, {}, interactive.layout);
+        if (typeof interactive.template === "string") {
+          result.template = interactive.template;
+        } else {
+          result.template = $.extend(true, {}, interactive.template);
+        }
+
+        return result;
+      },
+      // Make these private variables and functions available
+      loadInteractive: loadInteractive,
+      validateInteractive: validateInteractive,
+      loadModel: loadModel
+    };
+
+    //
+    // Initialization.
+    //
+
+    // Create scripting API.
+    scriptingAPI = new ScriptingAPI(controller, modelScriptingAPI);
+    // Expose API to global namespace (prototyping / testing using the browser console).
+    scriptingAPI.exposeScriptingAPI();
+    // Select interactive container.
+    // TODO: controller rather should create it itself to follow pattern of other components.
+    $interactiveContainer = $(viewSelector);
+    // Initialize semantic layout.
+    semanticLayout = new SemanticLayout($interactiveContainer);
+    // Run this when controller is created.
+    loadInteractive(interactive, viewSelector);
+
+    return controller;
+  };
+});
+
 /*global define: false, window: false */
 
 // TODO: just temporary solution, refactor it.
-define('md2d/public-api',['require','common/controllers/interactives-controller','common/layout/layout','common/benchmark/benchmark'],function (require) {
+define('md2d/public-api',['require','common/controllers/interactives-controller','common/benchmark/benchmark'],function (require) {
   var interactivesController  = require('common/controllers/interactives-controller'),
-      layout                  = require('common/layout/layout'),
       benchmark               = require('common/benchmark/benchmark'),
       // Object to be returned.
       publicAPI;
@@ -22221,8 +22368,7 @@ define('md2d/public-api',['require','common/controllers/interactives-controller'
   };
   // Export this API under 'controllers' name.
   window.controllers = publicAPI;
-  // Also export layout and benchmark.
-  window.layout = layout;
+  // Also export benchmark.
   window.benchmark = benchmark;
 
   // Return public API as a module.
@@ -22239,11 +22385,10 @@ define('grapher/core/register-keyboard-handler',['require'],function (require) {
 
 /*globals define, d3 */
 
-define('grapher/core/graph',['require','grapher/core/axis','grapher/core/register-keyboard-handler','common/layout/layout'],function (require) {
+define('grapher/core/graph',['require','grapher/core/axis','grapher/core/register-keyboard-handler'],function (require) {
   // Dependencies.
   var axis                    = require('grapher/core/axis'),
-      registerKeyboardHandler = require('grapher/core/register-keyboard-handler'),
-      layout                  = require('common/layout/layout');
+      registerKeyboardHandler = require('grapher/core/register-keyboard-handler');
 
   return function Graph(elem, options, message) {
     var cx = 600, cy = 300,
@@ -22281,7 +22426,6 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
         ds,
         stroke, tx, ty, fx, fy,
         circleCursorStyle,
-        displayProperties,
         emsize, strokeWidth,
         sizeType = {
           category: "medium",
@@ -22382,8 +22526,11 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
         node.style.height = cy +"px";
       }
       calculateSizeType();
-      displayProperties = layout.getDisplayProperties();
-      emsize = displayProperties.emsize;
+      // Previously there was used layout module to
+      // define emsize. However, setting this value
+      // to 1 doesn't seem to change anything.
+      // TODO: cleanup it.
+      emsize = 1;
     }
 
     function initialize(newOptions, mesg) {

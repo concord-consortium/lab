@@ -18,12 +18,14 @@ define(function (require) {
 
   return function MD2DScriptingAPI (api) {
 
-    var dnaEditDialog = new DNAEditDialog();
+    var dnaEditDialog = new DNAEditDialog(),
+        // whether we are currently processing a batch command, suppresses repaint
+        inBatch = false;
 
     return {
       /* Returns number of atoms in the system. */
-      getNumberOfAtoms: function getNumberOfAtoms() {
-        return model.get_num_atoms();
+      getNumberOfAtoms: function getNumberOfAtoms(f) {
+        return model.get_num_atoms(f);
       },
 
       /* Returns number of obstacles in the system. */
@@ -88,7 +90,7 @@ define(function (require) {
             throw e;
         }
 
-        api.repaint();
+        api.repaintIfReady();
       },
 
       /*
@@ -102,7 +104,7 @@ define(function (require) {
             throw e;
         }
 
-        api.repaint();
+        api.repaintIfReady();
       },
 
       addRandomAtom: function addRandomAtom() {
@@ -110,7 +112,7 @@ define(function (require) {
       },
 
       adjustTemperature: function adjustTemperature(fraction) {
-        model.set({targetTemperature: fraction * model.get('temperature')});
+        model.set({targetTemperature: fraction * model.get('targetTemperature')});
       },
 
       limitHighTemperature: function limitHighTemperature(t) {
@@ -128,6 +130,36 @@ define(function (require) {
 
         if (n > numAtoms) n = numAtoms;
         return api.choose(n, numAtoms);
+      },
+
+      /**
+        Returns array of atom indices.
+        within(1,1,0.5) returns all atoms within 0.5 nm of position (1nm,1nm) within the model.
+        within(1,1,0.2,0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
+          with the upper-left corner specified by the postion (1nm,1nm).
+      **/
+      atomsWithin: function(x,y,p1,p2) {
+        var atomsWithin = [];
+        var numAtoms = model.get_num_atoms();
+        var props, dist, inX, inY;
+        var n = 0;
+
+        for (var i = 0; i < numAtoms; i++) {
+          props = model.getAtomProperties(i);
+          if (typeof p2 === 'undefined') {
+            dist = Math.sqrt(Math.pow(x-props.x,2) + Math.pow(y-props.y,2));
+            if (dist <= p1) {
+              atomsWithin[n++] = i;
+            }
+          } else {
+            inX = ((props.x >= x) && (props.x <= (x+p1)));
+            inY = ((props.y <= y) && (props.y >= (y-p2)));
+            if (inX && inY) {
+              atomsWithin[n++] = i;
+            }
+          }
+        }
+        return (n === 0 ? -1 : atomsWithin);
       },
 
       /**
@@ -152,14 +184,15 @@ define(function (require) {
         for (i = 0, len = arguments.length; i < len; i++) {
           model.setAtomProperties(arguments[i], {marked: 1});
         }
-        api.repaint();
+
+        api.repaintIfReady();
       },
 
       unmarkAllAtoms: function unmarkAllAtoms() {
         for (var i = 0, len = model.get_num_atoms(); i < len; i++) {
           model.setAtomProperties(i, {marked: 0});
         }
-        api.repaint();
+        api.repaintIfReady();
       },
 
       traceAtom: function traceAtom(i) {
@@ -179,9 +212,7 @@ define(function (require) {
       */
       setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
         model.setAtomProperties(i, props, checkLocation, moveMolecule);
-        if (!(options && options.supressRepaint)) {
-          api.repaint();
-        }
+        api.repaintIfReady(options);
       },
 
       /**
@@ -194,7 +225,7 @@ define(function (require) {
 
       setElementProperties: function setElementProperties(i, props) {
         model.setElementProperties(i, props);
-        api.repaint();
+        api.repaintIfReady();
       },
 
       /**
@@ -223,7 +254,7 @@ define(function (require) {
           if (!options || !options.silent)
             throw e;
         }
-        api.repaint();
+        api.repaintIfReady();
       },
 
       /**
@@ -232,7 +263,7 @@ define(function (require) {
       */
       setObstacleProperties: function setObstacleProperties(i, props) {
         model.setObstacleProperties(i, props);
-        api.repaint();
+        api.repaintIfReady();
       },
 
       /**
@@ -254,12 +285,12 @@ define(function (require) {
             throw e;
         }
 
-        api.repaint();
+        api.repaintIfReady();
       },
 
       setRadialBondProperties: function setRadialBondProperties(i, props) {
         model.setRadialBondProperties(i, props);
-        api.repaint();
+        api.repaintIfReady();
       },
 
       getRadialBondProperties: function getRadialBondProperties(i) {
@@ -268,7 +299,7 @@ define(function (require) {
 
       setAngularBondProperties: function setAngularBondProperties(i, props) {
         model.setAngularBondProperties(i, props);
-        api.repaint();
+        api.repaintIfReady();
       },
 
       getAngularBondProperties: function getAngularBondProperties(i) {
@@ -367,7 +398,7 @@ define(function (require) {
 
       minimizeEnergy: function minimizeEnergy() {
         model.minimizeEnergy();
-        api.repaint();
+        api.repaintIfReady();
       },
 
       addTextBox: function(props) {
@@ -380,6 +411,25 @@ define(function (require) {
 
       setTextBoxProperties: function(i, props) {
         model.setTextBoxProperties(i, props);
+      },
+
+      repaintIfReady: function(options) {
+        if (!(inBatch || options && options.supressRepaint)) {
+          api.repaint();
+        }
+      },
+
+      batch: function(func) {
+        inBatch = true;
+
+        model.startBatch();
+        func();
+        model.endBatch();
+
+        inBatch = false;
+
+        // call repaint manually
+        api.repaintIfReady();
       }
 
     };

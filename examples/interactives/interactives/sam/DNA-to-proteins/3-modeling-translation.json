@@ -46,8 +46,8 @@
   ],
   "layout": {
     "bottom": [
-      ["transcribe", "translate", "animate-translation"],
-      ["transcribe-step", "translate-step"]
+      ["transcribe", "translate"],
+      ["animate-translation", "translate-step"]
     ]
   }
 }

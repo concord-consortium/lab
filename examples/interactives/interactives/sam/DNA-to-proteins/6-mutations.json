@@ -29,7 +29,6 @@
   "layout": {
     "bottom": [
       "transcribe", "translate"
-    ],
-    "right": "<a href='#'>Genetic code table</a>"
+    ]
   }
 }

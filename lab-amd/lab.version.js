@@ -4,14 +4,14 @@ define(function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "52a7418deb34c0339ab30ec1a86294217edf7fb9",
-        "short_sha":      "52a7418d",
-        "url":            "https://github.com/concord-consortium/lab/commit/52a7418d",
-        "author":        "Stephen Bannasch",
-        "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-02-14 17:15:53 -0500",
-        "short_message": "use correct form of regex string for RegExp()",
-        "message":       "use correct form of regex string for RegExp()\n\nIS [#44317763]\n\nWhen using the RexExp() function the string arg should\n*not* have the enclosing &quot;/&quot; characters used to define\na regex expression in-line \n\n*And* &#x27;\&#x27; chars must be escaped twice, once in the regex\nitself and a second time because of the string parsing."
+        "sha":           "bd72db10ec4067362e44d838ac342659eaee36a2",
+        "short_sha":      "bd72db10",
+        "url":            "https://github.com/concord-consortium/lab/commit/bd72db10",
+        "author":        "Sam Fentress",
+        "email":         "sfentress@concord.org",
+        "date":          "2013-02-27 14:05:34 -0500",
+        "short_message": "Trigger dragend when mouse leaves interactive container.",
+        "message":       "Trigger dragend when mouse leaves interactive container.\n\nWe check the target of the drag event and see whether\nit is either an svg element or a dom element contained\nwithin the #interactive-container. If it isn&#x27;t, fire\na mouseup event to trigger d3&#x27;s dragend event.\n\nThis has been tested in Chrome, FF and Safari.\n\nNote this hard-codes the selector &quot;#interactive-container&quot;.\nThis same selector is being hard-coded in the semantic-\nlayout (which doesn&#x27;t appear to use the selector passed in\nby application.js to the interactive controller).\nTODO: Use the selector passed in by application.js and\nmake it a variable that&#x27;s accessible in other parts of\nthe code."
       },
       "dirty": false
     }
