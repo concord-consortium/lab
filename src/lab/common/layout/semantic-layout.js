@@ -239,12 +239,12 @@ define(function (require) {
       }
 
       // Add any remaining components to "bottom" or last container.
-      lastContainer = getObject(containerSpecList, "bottom") || containerSpecList[containerSpecList.length-1];
+      lastContainer = containerSpecByID.bottom || containerSpecList[containerSpecList.length-1];
       $rows = $containerByID[lastContainer.id].children();
       $row = $rows.last();
       if (!$row.length) {
         $row = $('<div class="interactive-row"/>');
-        $containerByID[container.id].append($row);
+        $containerByID[lastContainer.id].append($row);
       }
       for (id in comps) {
         if (!comps.hasOwnProperty(id)) continue;
@@ -416,14 +416,6 @@ define(function (require) {
         default:
           dim = dim.split(".");
           return getDimensionOfContainer($containerByID[dim[0]], dim[1]);
-      }
-    }
-
-    function getObject(arr, id) {
-      for (var i = 0, ii = arr.length; i<ii; i++) {
-        if (arr[i].id === id) {
-          return arr[i];
-        }
       }
     }
 
