@@ -235,8 +235,11 @@ AUTHORING = false;
     $("#credits-pane-title").text("Credits: " + interactive.title);
 
     concordUrl = 'http://concord.org';
-    nextGenUrl = 'http://mw.concord.org/nextgen/';
+    nextGenUrl = 'http://mw.concord.org/nextgen/';    
     interactiveCreditsUrl = Lab.config.home + Lab.config.homeEmbeddablePath + hash;
+    if (Lab.config.homeForSharing) {
+      interactiveCreditsUrl = Lab.config.homeForSharing + Lab.config.homeEmbeddablePath + hash;
+    }
     newWindow = " class='opens-in-new-window' target='_blank";
     utmString = "utm_source=" + encodeURIComponent(interactive.title.replace(/ /gi,"+")) + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
 
@@ -294,7 +297,6 @@ AUTHORING = false;
     if (Lab.config.sharing) {
       if (Lab.config.homeForSharing) {
         embeddableSharingUrl = Lab.config.homeForSharing + Lab.config.homeEmbeddablePath + hash;
-        // embeddableSharingUrl = embeddableUrl.replace(/http:\/\/.*?\//, Lab.config.homeForSharing + '/');
       }
       $shareLink.show();
       $shareLink.click(function() {
