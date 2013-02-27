@@ -1283,10 +1283,33 @@ define(function (require) {
       return { x: clip(x, 0, modelWidth), y: clip(y, 0, modelHeight) };
     }
 
+    // check to see if d3 event target is either an svg element or
+    // contained within #interactive-container
+    function isEventWithinInteractive() {
+      var elem = d3.event.sourceEvent.target;
+
+      return (elem.ownerSVGElement || $(elem).closest("#interactive-container").length > 0)
+    }
+
     function nodeDrag(d, i) {
-      var dragX = model2px.invert(d3.event.x),
-          dragY = model2pxInv.invert(d3.event.y),
+      var dragX,
+          dragY,
           drag;
+
+      if (!isEventWithinInteractive()) {
+        // we are outside the frame, drop the element by firing mouseup
+        if( document.createEvent ) {
+          var evObj = document.createEvent('MouseEvent');
+          evObj.initEvent( 'mouseup', true, false );
+          d3.event.sourceEvent.target.dispatchEvent(evObj);
+        } else if( document.createEventObject ) {
+          d3.event.sourceEvent.target.fireEvent('onmouseup');
+        }
+        return;
+      }
+
+      dragX = model2px.invert(d3.event.x);
+      dragY = model2pxInv.invert(d3.event.y);
 
       if (model.is_stopped()) {
         drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
