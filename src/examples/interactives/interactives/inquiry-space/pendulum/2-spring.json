@@ -180,6 +180,12 @@
       "property": "damping"
     },
     {
+      "type": "numericOutput",
+      "id": "equilibrium-display",
+      "property": "equilibriumLength",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
       "type": "checkbox",
       "id": "velocity-vectors",
       "text": "Show Velocity Vector?",
@@ -226,7 +232,8 @@
       ],
       [
         "mass-slider",
-        "damping-slider"
+        "damping-slider",
+        "equilibrium-display"
       ],
       [
         "velocity-vectors",
