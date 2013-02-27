@@ -1,9 +1,8 @@
 var requirejs = require('requirejs'),
-    path      = require('path');
+    path      = require('path'),
+    document = global.document = require("jsdom").jsdom("<html><head></head><body></body></html>"),
+    window = global.window = document.createWindow();
 
-// Set up any vendored libraries that are normally included via script tag in the modules under test.
-// Note that d3 handles all necessary dependencies like 'jsdom'.
-d3 = require('d3');
 require(path.normalize(__dirname + "/../../vendor/jquery/dist/jquery.min.js"));
 $  = window.jQuery;
 
