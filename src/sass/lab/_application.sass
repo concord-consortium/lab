@@ -31,6 +31,29 @@ applet
 
 $embeddable-pane-font-size: 1.0em
 
+#firefox-warning-pane
+  display: none
+  position: absolute
+  font-size: $embeddable-pane-font-size
+  width: auto
+  opacity: 0.8
+  color: $model-warning-color
+  background-color: $model-warning-background
+  border-radius: 0.5em
+  box-shadow: 1px 1px 10px rgba(000,000,000,0.3)
+  z-index: -100
+  margin: 0em
+  padding: 0em
+  &:hover
+    opacity: 1.0
+  p
+    margin: 0.2em 0.5em
+    a
+      color: $model-warning-color
+      &:hover
+        color: lighten( $model-warning-color, 10% )
+        font-weight: 600
+
 #about, #share
   float: right
   vertical-align: middle

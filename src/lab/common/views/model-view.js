@@ -424,6 +424,12 @@ define(function (require) {
       // can find resources on paths relative to the model
       model.url = modelUrl;
 
+      // Add a pos() function to containers so the model renderer can more easily
+      // manipulate absolutely positioned dom elements it may create or manage
+      containers.pos = function() {
+        return  mainContainer.node().parentElement.getBoundingClientRect();
+      }
+
       // create a model renderer ... if one hasn't already been created
       if (!renderer) {
         renderer = new Renderer(model, containers, model2px, model2pxInv);

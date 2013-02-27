@@ -8,6 +8,7 @@ define(function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
       console               = require('common/console'),
+      benchmark             = require('common/benchmark/benchmark'),
       amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
       GeneticRenderer       = require('md2d/views/genetic-renderer'),
       wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
@@ -1347,6 +1348,27 @@ define(function (require) {
       }
     }
 
+    function setupFirefoxWarning() {
+      var $firefoxWarningPane,
+          pos,
+          top,
+          left,
+          b = benchmark.what_browser();
+
+      if (b.browser === "Firefox" && b.version >= "18") {
+        $firefoxWarningPane = $("#firefox-warning-pane");
+        pos = containers.pos();
+        top  = pos.bottom - $firefoxWarningPane.height();
+        left = pos.right - $firefoxWarningPane.width();
+        $firefoxWarningPane.css({
+          display: "inline",
+          top: top -5,
+          left: left - 15,
+          'z-index': 100
+        });
+      }
+    }
+
     function setupRendererOptions() {
       imageProp = model.get("images");
       imageMapping = model.get("imageMapping");
@@ -1425,6 +1447,8 @@ define(function (require) {
       model.on('removeRadialBond', setupRadialBonds);
       model.on('textBoxesChanged', drawTextBoxes);
 
+      setupFirefoxWarning();
+
     }
 
     //
@@ -1466,6 +1490,7 @@ define(function (require) {
       drawSymbolImages();
       drawImageAttachment();
       drawTextBoxes();
+      setupFirefoxWarning();
     }
 
     //
