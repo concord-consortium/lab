@@ -70,7 +70,7 @@
         "var newLength = get('equilibriumLength') - value;",
         "setAtomProperties(1, { y: getAtomProperties(0).y - newLength });"
       ],
-      "initialValue": 0.25
+      "initialValue": 0.6
     },
     {
       "name": "damping",
