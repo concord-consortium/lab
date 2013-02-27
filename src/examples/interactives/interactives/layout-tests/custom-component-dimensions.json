@@ -1,7 +1,7 @@
 {
   "title": "Custom Component Dimensions",
   "publicationStatus": "public",
-  "subtitle": "Graph, Bar Graph, Thermometer, Slider and Button can have custom dimensions specified using 'width' and 'height' properties (all CSS values are accepted).",
+  "subtitle": "Graph, Bar Graph, Thermometer, Slider, Button and Text can have custom dimensions specified using 'width' and 'height' properties (all CSS values are accepted).",
   "about": "",
   "fontScale": 0.7,
   "models": [
