@@ -4,6 +4,11 @@
   :logging: true
   :tracing: false
   :home: http://lab.concord.org
+  # Set :homeForSharing to the host where shared Interactives are found
+  # if you don't want to share the ones on the actual server.
+  # Example if you host the Interactives on a static S3 site and want the
+  # sharing links to point to the same Interactives at http://lab.concord.org
+  :homeForSharing:
   :homeInteractivePath: /examples/interactives/interactive.html
   :homeEmbeddablePath: /examples/interactives/embeddable.html
   :actualRoot: ""

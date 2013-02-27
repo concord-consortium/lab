@@ -14,6 +14,7 @@ AUTHORING = false;
       origin,
       embeddablePath,
       embeddableUrl,
+      embeddableSharingUrl,
       interactiveDescriptions,
       interactives,
       groups,
@@ -51,6 +52,7 @@ AUTHORING = false;
 
       $shareLink = $("#share-link"),
       $sharePane = $("#share-pane"),
+      $shareContent = $("#share-content"),
       $sharePaneClose = $('#share-pane-close'),
       $shareIframeContent = $("#share-iframe-content"),
       $shareSelectIframeSize = $("#share-select-iframe-size"),
@@ -99,7 +101,9 @@ AUTHORING = false;
       viewType,
       interactivesPromise,
       buttonHandlersAdded = false,
-      modelButtonHandlersAdded = false;
+      modelButtonHandlersAdded = false,
+
+      copyrightDiv = '<div id="share-license"><strong>Copyright © 2013&nbsp;</strong><a class="opens-in-new-window" href="http://concord.org" id="share-license-link" target="_blank">The Concord Consortium</a>. All rights reserved. The software is licensed under&nbsp;<a class="opens-in-new-window" href="http://opensource.org/licenses/BSD-2-Clause" id="share-license-link" target="_blank">Simplified BSD</a>, <a class="opens-in-new-window" href="http://opensource.org/licenses/MIT" id="share-license-link" target="_blank">MIT</a> or <a class="opens-in-new-window" href="http://opensource.org/licenses/Apache-2.0" id="share-license-link" target="_blank">Apache 2.0</a> licenses. Please provide attribution to the Concord Consortium and the URL&nbsp;<a class="opens-in-new-window" href="http://concord.org/" id="share-license-link" target="_blank">http://concord.org</a>.</div>';
 
   function isEmbeddablePage() {
     return ($selectInteractive.length === 0);
@@ -139,7 +143,8 @@ AUTHORING = false;
     }
   }
 
-  if (hash = document.location.hash) {
+  hash = document.location.hash;
+  if (hash) {
     interactiveUrl = hash.substr(1, hash.length);
 
     $.get(interactiveUrl).done(function(results) {
@@ -247,10 +252,12 @@ AUTHORING = false;
     googleOrgLink = "<a href='http://www.google.org/' " + newWindow + "'>Google.org</a>";
     $creditsContent.append('<p>This interactive was created by the ' + concordLink + ' using our ' + nextGenLink + ' software, with funding by a grant from ' + googleOrgLink + '.</p>');
     if (!Lab.config.sharing) {
-      $creditsContent.append('<p>Explore or embed a <a href=' + interactiveCreditsUrl +
-        ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive, and discover other open source interactives for math, science and engineering at <a href="' +
+      
+      $creditsContent.append('<p>Find a <a href=' + interactiveCreditsUrl +
+        ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactivealong with dozens of other open-source interactives for science, math and engineering at <a href="' +
         concordUrl + '" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
     }
+    $creditsContent.append(copyrightDiv);
   }
 
   function setupAboutPane() {
@@ -283,7 +290,12 @@ AUTHORING = false;
   }
 
   function setupSharePane() {
+    embeddableSharingUrl = embeddableUrl;
     if (Lab.config.sharing) {
+      if (Lab.config.homeForSharing) {
+        embeddableSharingUrl = Lab.config.homeForSharing + Lab.config.homeEmbeddablePath + hash;
+        // embeddableSharingUrl = embeddableUrl.replace(/http:\/\/.*?\//, Lab.config.homeForSharing + '/');
+      }
       $shareLink.show();
       $shareLink.click(function() {
         $sharePane.show(100);
@@ -294,9 +306,10 @@ AUTHORING = false;
       $shareSelectIframeSize.change(updateShareIframeContent);
       $sharePane.draggable({ handle: "#share-pane-banner" });
       $("#share-pane-title").text("Share: " + interactive.title);
-      $("#share-embeddable-link").attr("href", embeddableUrl);
-      $('#share-embeddable-link-content').val(embeddableUrl);
+      $("#share-embeddable-link").attr("href", embeddableSharingUrl);
+      $('#share-embeddable-link-content').val(embeddableSharingUrl);
       updateShareIframeContent();
+      $shareContent.append(copyrightDiv);
     } else {
       $shareLink.hide();
       return;
@@ -327,7 +340,7 @@ AUTHORING = false;
       sizeAttributes = 'width="' + Math.floor(actualWidth * 1.5) + 'px" height="' + Math.floor(actualHeight  * 1.5) + 'px"';
       break;
     }
-    $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+    $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no" scrolling="no" src="' + embeddableSharingUrl + '"></iframe>');
   }
 
   setupSharePane.resize = updateShareIframeContent;
@@ -583,7 +596,7 @@ AUTHORING = false;
       var $iframeWrapper,
           $iframe;
 
-      $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>'),
+      $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>');
       $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
 
       $content.append($iframeWrapper);
@@ -696,7 +709,7 @@ AUTHORING = false;
           document.title = interactive.title;
         }
 
-        document.location.hash = interactive.path
+        document.location.hash = interactive.path;
       },
       dataType: "json",
       contentType: "application/json",
