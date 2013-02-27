@@ -57,7 +57,7 @@
     {
       "name": "ballMass",
       "onChange": "setElementProperties(3, { mass: value });",
-      "initialValue": 1
+      "initialValue": 1.5
     },
     {
       "name": "springConstant",
@@ -142,17 +142,17 @@
     {
       "type": "slider",
       "id": "mass-slider",
-      "min": 0.1,
-      "max": 2,
+      "min": 0.5,
+      "max": 2.5,
       "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
-          "value": 0.1,
-          "label": "0.1"
+          "value": 0.5,
+          "label": "0.5"
         },
         {
-          "value": 2,
-          "label": "2.0"
+          "value": 2.5,
+          "label": "2.5"
         }
       ],
       "steps": 19,
