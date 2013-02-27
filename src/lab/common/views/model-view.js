@@ -486,6 +486,7 @@ define(function (require) {
       reset: function(newModelUrl, newModel) {
         processOptions(newModelUrl, newModel);
         init();
+        repaint();
       },
       model2px: function(val) {
         // Note that we shouldn't just do:
