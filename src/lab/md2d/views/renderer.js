@@ -1,4 +1,4 @@
-/*global $ alert define: false, d3: false */
+/*global $ alert define: false, d3: false Image */
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
@@ -628,10 +628,8 @@ define(function (require) {
       var img = [],
           img_height,
           img_width,
-          imgHost,
-          imgHostType,
+          coords,
           imglayer,
-          imgX, imgY,
           container,
           i;
 
@@ -648,11 +646,6 @@ define(function (require) {
             imageContainerTop.selectAll("image.image_attach"+i).remove();
             imageContainerBelow.selectAll("image.image_attach"+i).remove();
 
-            imgHost = modelResults[imageProp[i].imageHostIndex];
-            imgHostType = imageProp[i].imageHostType;
-            imglayer = imageProp[i].imageLayer;
-            imgX = model2px(imageProp[i].imageX);
-            imgY = model2pxInv(imageProp[i].imageY);
             // Cache the image width and height.
             // In Classic MW model size is defined in 0.1A.
             // Model unit (0.1A) - pixel ratio is always 1. The same applies
@@ -662,10 +655,13 @@ define(function (require) {
             img_width = model2px(imageSizes[i][0]);
             img_height = model2px(imageSizes[i][1]);
 
+            coords = getImageCoords(i);
+
+            imglayer = imageProp[i].imageLayer;
             container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
             container.append("image")
-              .attr("x", function() { if (imgHostType === "") { return imgX; } else { return model2px(imgHost.x) - img_width / 2; } })
-              .attr("y", function() { if (imgHostType === "") { return imgY; } else { return model2pxInv(imgHost.y) - img_height / 2; } })
+              .attr("x", coords[0])
+              .attr("y", coords[1])
               .attr("class", "image_attach"+i+" draggable")
               .attr("xlink:href", img[i].src)
               .attr("width", img_width)
@@ -676,7 +672,7 @@ define(function (require) {
       }
     }
 
-    function getTextBoxCoords(d, i) {
+    function getTextBoxCoords(d) {
       var x, y, frameX, frameY;
       if (d.hostType) {
         if (d.hostType === "Atom") {
@@ -1214,22 +1210,39 @@ define(function (require) {
       }
     }
 
+    function getImageCoords(i) {
+      var props = imageProp[i],
+          x, y, img_width, img_height;
+      if (props.imageHostType) {
+        if (props.imageHostType === "Atom") {
+          x = modelResults[props.imageHostIndex].x;
+          y = modelResults[props.imageHostIndex].y;
+        } else if (props.imageHostType === "RectangularObstacle") {
+          x = obstacles.x[props.imageHostIndex] + (obstacles.width[props.imageHostIndex] / 2);
+          y = obstacles.y[props.imageHostIndex] + (obstacles.height[props.imageHostIndex] / 2);
+        }
+        img_width = imageSizes[i][0];
+        img_height = imageSizes[i][1];
+        x = x - img_width / 2;
+        y = y + img_height / 2;
+      } else {
+        x = props.imageX;
+        y = props.imageY;
+      }
+      return [model2px(x), model2pxInv(y)];
+    }
+
     function updateImageAttachment(){
-      var numImages, img_height, img_width, imgHost, imgHostType, imglayer, imgX, imgY, container, i;
+      var numImages, imglayer, coords, i;
       numImages= imageProp.length;
       for(i = 0; i < numImages; i++) {
         if (!imageSizes || !imageSizes[i]) continue;
-        imgHost =  modelResults[imageProp[i].imageHostIndex];
-        imgHostType =  imageProp[i].imageHostType;
-        imgX = model2px(imageProp[i].imageX);
-        imgY = model2pxInv(imageProp[i].imageY);
+        coords = getImageCoords(i);
         imglayer = imageProp[i].imageLayer;
-        img_width = model2px(imageSizes[i][0]);
-        img_height = model2px(imageSizes[i][1]);
         container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
         container.selectAll("image.image_attach"+i)
-          .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return model2px(imgHost.x) - img_width / 2; } })
-          .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return model2pxInv(imgHost.y) - img_height / 2; } });
+          .attr("x", coords[0])
+          .attr("y", coords[1]);
       }
     }
 
@@ -1286,7 +1299,7 @@ define(function (require) {
       }
     }
 
-    function textDrag(d, i) {
+    function textDrag(d) {
       var dragDx = model2px.invert(d3.event.dx),
           dragDy = model2px.invert(d3.event.dy);
 
