@@ -120,6 +120,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
       },
       SemanticLayout = function() {
         return {
+          setupInteractive: function() {},
           layoutInteractive: function() {}
         };
       };

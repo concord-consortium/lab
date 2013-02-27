@@ -13,9 +13,16 @@ define(function (require) {
       console      = require('common/console'),
       alert        = require('common/alert');
 
-  return function SemanticLayout($interactiveContainer, containers, componentLocations, components, modelController, fontScale) {
+  return function SemanticLayout($interactiveContainer) {
 
     var layout,
+
+        containers,
+        componentLocations,
+        components,
+        modelController,
+        fontScale,
+
         $modelContainer,
         $containers,
 
@@ -129,6 +136,9 @@ define(function (require) {
 
     function createContainers() {
       var container, id, prop, i, ii;
+
+      // Cleanup interactive container.
+      $interactiveContainer.empty();
 
       $containers = {};
 
@@ -409,7 +419,7 @@ define(function (require) {
       setMinDimensions();
       modelWidth = availableWidth;
       positionContainers();
-      while (redraws-- > 0 && !resizeModelContainer()) {
+      while (--redraws > 0 && !resizeModelContainer()) {
         positionContainers();
       }
 
@@ -438,6 +448,39 @@ define(function (require) {
 
     // Public API.
     layout = {
+      /**
+        Setups interactive layout. Cleanups interactive container, creates new containers and places
+        components inside them.
+
+        This method should be called each time when at least one of the following objects is changed:
+          - layout template,
+          - component locations,
+          - components,
+          - model controller,
+          - font scale.
+
+        @param {array} newContainer List of layout containers.
+        @param {Object} newComponentLocations Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
+        @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
+        @param {ModelController} newModelController Model Controller object.
+        @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
+      */
+      setupInteractive: function(newContainers, newComponentLocations, newComponents, newModelController, newFontScale) {
+        containers = newContainers;
+        componentLocations = newComponentLocations;
+        components = newComponents;
+        modelController = newModelController;
+        fontScale = newFontScale;
+
+        createContainers();
+        placeComponentsInContainers();
+        calcInteractiveAspectRatio();
+      },
+
+      /**
+        Layouts interactive. Adjusts size of the model container to ensure that all components are inside the
+        interactive container and all available space is used in the best way.
+      */
       layoutInteractive: function () {
         var redraws = layoutConfig.iterationsLimit,
             id;
@@ -458,7 +501,7 @@ define(function (require) {
         // 2. Calculate optimal layout.
         modelWidth = availableWidth;
         positionContainers();
-        while (redraws-- > 0 && !resizeModelContainer()) {
+        while (--redraws > 0 && !resizeModelContainer()) {
           positionContainers();
         }
         console.log('[layout] update: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
@@ -477,13 +520,6 @@ define(function (require) {
         console.timeEnd('[layout] update');
       }
     };
-
-    //
-    // Initialize.
-    //
-    createContainers();
-    placeComponentsInContainers();
-    calcInteractiveAspectRatio();
 
     return layout;
   };
