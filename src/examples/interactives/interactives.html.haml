@@ -159,37 +159,37 @@
             .model-benchmark-results
               %table#model-benchmark-results.model-benchmark-results
 
-  #credits-pane
-    #credits-pane-banner
-      %span#credits-pane-title About
-      #credits-pane-close X
-    #credits-content
+    #credits-pane
+      #credits-pane-banner
+        %span#credits-pane-title About
+        #credits-pane-close X
+      #credits-content
 
-  #about-pane
-    #about-pane-banner
-      %span#about-pane-title About
-      #about-pane-close X
-    #about-content
+    #about-pane
+      #about-pane-banner
+        %span#about-pane-title About
+        #about-pane-close X
+      #about-content
 
-  #share-pane
-    #share-pane-banner
-      %span#share-pane-title Share
-      #share-pane-close X
-    #share-content
-      %p
-        Paste this
-        %a#share-embeddable-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} link
-        in email or IM.
-      %textarea#share-embeddable-link-content
-      %p< Paste HTML to embed in website or blog.
-      #share-iframe-form<
-        Select Size:
-        %select#share-select-iframe-size
-          %option{:value => "smaller"} 30% smaller
-          %option{:value => "actual", :selected => true} actual
-          %option{:value => "larger"} 50% larger
-        %textarea#share-iframe-content
-    %script{:src => "../../lab/lab.js", :type => "text/javascript"}
-    %script{:src => "../../imports/legacy-mw-content/model-list.js", :type => "text/javascript"}
-    %script{:src => "application.js", :type => "text/javascript"}
+    #share-pane
+      #share-pane-banner
+        %span#share-pane-title Share
+        #share-pane-close X
+      #share-content
+        %p
+          Paste this
+          %a#share-embeddable-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} link
+          in email or IM.
+        %textarea#share-embeddable-link-content
+        %p< Paste HTML to embed in website or blog.
+        #share-iframe-form<
+          Select Size:
+          %select#share-select-iframe-size
+            %option{:value => "smaller"} 30% smaller
+            %option{:value => "actual", :selected => true} actual
+            %option{:value => "larger"} 50% larger
+          %textarea#share-iframe-content
+      %script{:src => "../../lab/lab.js", :type => "text/javascript"}
+      %script{:src => "../../imports/legacy-mw-content/model-list.js", :type => "text/javascript"}
+      %script{:src => "application.js", :type => "text/javascript"}
 
