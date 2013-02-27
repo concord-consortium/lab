@@ -1110,7 +1110,7 @@ define(function(require) {
 
       Returns false and does not add the atom if the potential energy change of adding an *uncharged*
       atom of the specified element to the specified location would be positive (i.e, if the atom
-      intrudes into the repulsive region of another atom.)
+      intrudes into the repulsive region of another atom), or if atom is placed inside an obstacle
 
       Otherwise, returns true.
 

@@ -2583,11 +2583,24 @@ define(function (require, exports, module) {
       canPlaceAtom: function(element, _x, _y, i) {
         var orig_x,
             orig_y,
-            PEAtLocation;
+            PEAtLocation,
+            j;
 
-        // first do the simpler check to see if we're outside the walls or intersect an obstacle
+        // first do the simpler check to see if we're outside the walls
         if ( !engine.atomInBounds(_x, _y, i) ) {
           return false;
+        }
+
+        // Check collision with obstacles.
+        for (j = 0; j < N_obstacles; j++) {
+          testX = obstacleX[j];
+          testY = obstacleY[j];
+          testXMax = testX + obstacleWidth[j];
+          testYMax = testY + obstacleHeight[j];
+          if ((_x > testX && _x < testXMax) &&
+              (_y > testY && _y < testYMax)) {
+            return false;
+          }
         }
 
         // then check PE at location
