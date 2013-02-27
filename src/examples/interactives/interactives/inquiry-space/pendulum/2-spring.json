@@ -43,7 +43,14 @@
       "name": "ballDisplacement",
       "unitType": "length",
       "label": "Distance From Equilibrium",
-      "value": "return getAtomProperties(0).y - getAtomProperties(1).y - getRadialBondProperties(0).length;"
+      "value": "return getAtomProperties(0).y - getAtomProperties(1).y - get('equilibriumLength');"
+    },
+    {
+      "name": "equilibriumLength",
+      "unitType": "length",
+      "label": "Equilibrium Spring Length",
+      "value": "return getRadialBondProperties(0).length + (get('ballMass') * get('gravitationalField') / get('springConstant'));"
+
     }
   ],
   "parameters": [
@@ -60,8 +67,9 @@
     {
       "name": "startingDisplacement",
       "onChange": [
-        "var length = getRadialBondProperties(0).length + value;",
-        "setAtomProperties(1, { y: getAtomProperties(0).y - length });"
+        "var newLength = get('equilibriumLength') + value;",
+        "console.log('newLength: ' + newLength)",
+        "setAtomProperties(1, { y: getAtomProperties(0).y - newLength });"
       ],
       "initialValue": 0.25
     },
