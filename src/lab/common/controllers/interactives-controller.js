@@ -231,8 +231,8 @@ define(function (require) {
     function modelLoaded() {
       var i, listener, template, layout, fontScale;
 
-      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
+      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
       // to exist during its definition.
       setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
