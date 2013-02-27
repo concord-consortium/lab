@@ -43,7 +43,7 @@
       "name": "ballDisplacement",
       "unitType": "length",
       "label": "Distance From Equilibrium",
-      "value": "return getAtomProperties(0).y - getAtomProperties(1).y - get('equilibriumLength');"
+      "value": "return get('equilibriumLength') - (getAtomProperties(0).y - getAtomProperties(1).y);"
     },
     {
       "name": "equilibriumLength",
@@ -67,8 +67,7 @@
     {
       "name": "startingDisplacement",
       "onChange": [
-        "var newLength = get('equilibriumLength') + value;",
-        "console.log('newLength: ' + newLength)",
+        "var newLength = get('equilibriumLength') - value;",
         "setAtomProperties(1, { y: getAtomProperties(0).y - newLength });"
       ],
       "initialValue": 0.25
@@ -123,20 +122,20 @@
     {
       "type": "slider",
       "id": "length-slider",
-      "min": -0.5,
-      "max": 0.5,
+      "min": -0.6,
+      "max": 0.6,
       "displayValue": "return format('1.2f')(value)",
       "labels": [
         {
-          "value": -0.5,
-          "label": "-0.5"
+          "value": -0.6,
+          "label": "-0.6"
         },
         {
-          "value": 0.5,
-          "label": "0.5"
+          "value": 0.6,
+          "label": "0.6"
         }
       ],
-      "steps": 20,
+      "steps": 24,
       "title": "Starting Distance From Equilibrium (m)",
       "property": "startingDisplacement"
     },
@@ -204,9 +203,10 @@
       "title": "Distance From Equilibrium (m)",
       "xlabel": "Time",
       "ylabel": "m",
-      "ymin": -1.5,
-      "ymax": 1.5,
+      "ymin": -0.6,
+      "ymax": 0.6,
       "xmax": 0.01,
+      "yFormatter": "1.1f",
       "xTicCount": 5,
       "xFormatter": "2.1e",
       "properties": [
