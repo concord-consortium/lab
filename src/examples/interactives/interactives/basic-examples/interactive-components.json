@@ -189,8 +189,14 @@
     },
     {
       "type": "text",
-      "id": "text",
-      "text": "Simple Text Component"
+      "id": "text-basic",
+      "text": "Basic Text"
+    },
+    {
+      "type": "text",
+      "id": "text-header",
+      "style": "header",
+      "text": "Header"
     },
     {
       "type": "text",
@@ -214,7 +220,8 @@
         "radio-horizontal"
       ],
       [
-        "text",
+        "text-header",
+        "text-basic",
         "text-link"
       ]
     ],

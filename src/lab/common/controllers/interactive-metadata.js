@@ -161,6 +161,11 @@ define(function() {
         // Text content.
         defaultValue: ""
       },
+      style: {
+        // Semantic description of text style.
+        // Accepted values: "basic", "header".
+        defaultValue: "basic"
+      },
       width: {
         defaultValue: "auto"
       },

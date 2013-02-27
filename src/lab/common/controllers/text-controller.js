@@ -1,4 +1,4 @@
-/*global define $ */
+/*global define, $ */
 
 define(function () {
 
@@ -25,6 +25,9 @@ define(function () {
       $element.addClass("component");
       // Append text content.
       $text = $("<p>").text(component.text).appendTo($element);
+      // Add class defining style of the component ("basic" and "header" values supported,
+      // please see: sass/lab/_interactice-components.sass).
+      $text.addClass(component.style);
       // Process optional onClick script.
       if (component.onClick) {
         onClickFunction = scriptingAPI.makeFunctionInScriptContext(component.onClick);
