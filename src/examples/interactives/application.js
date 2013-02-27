@@ -1,4 +1,4 @@
-/*global Lab _ $ d3 CodeMirror controllers alert model modelList benchmark DEVELOPMENT: true AUTHORING: true */
+/*global Lab, _, $, d3, CodeMirror, controllers, alert, model, modelList, benchmark, DEVELOPMENT: true, AUTHORING: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -24,8 +24,6 @@ AUTHORING = false;
 
       $interactiveHeader = $("#interactive-header"),
       $interactiveTitle = $("#interactive-title"),
-
-      $interactiveControls = $("#interactive-controls"),
 
       $selectInteractive = $("#select-interactive"),
 
@@ -192,6 +190,10 @@ AUTHORING = false;
 
     restoreOptionsFromCookie();
 
+    if (onFullPage()) {
+      selectInteractiveSizeHandler();
+    }
+
     if(!onFullIFramePage()) {
       controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType, resizeCallbacks);
     }
@@ -235,7 +237,7 @@ AUTHORING = false;
     $("#credits-pane-title").text("Credits: " + interactive.title);
 
     concordUrl = 'http://concord.org';
-    nextGenUrl = 'http://mw.concord.org/nextgen/';    
+    nextGenUrl = 'http://mw.concord.org/nextgen/';
     interactiveCreditsUrl = Lab.config.home + Lab.config.homeEmbeddablePath + hash;
     if (Lab.config.homeForSharing) {
       interactiveCreditsUrl = Lab.config.homeForSharing + Lab.config.homeEmbeddablePath + hash;
@@ -255,7 +257,7 @@ AUTHORING = false;
     googleOrgLink = "<a href='http://www.google.org/' " + newWindow + "'>Google.org</a>";
     $creditsContent.append('<p>This interactive was created by the ' + concordLink + ' using our ' + nextGenLink + ' software, with funding by a grant from ' + googleOrgLink + '.</p>');
     if (!Lab.config.sharing) {
-      
+
       $creditsContent.append('<p>Find a <a href=' + interactiveCreditsUrl +
         ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive along with dozens of other open-source interactives for science, math and engineering at <a href="' +
         concordUrl + '" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
@@ -372,7 +374,9 @@ AUTHORING = false;
       $content.width(dim.width).height(dim.height);
       // Window size is not change, so we have to call "resize()"
       // method manually.
-      controller.resize();
+      if (controller) {
+        controller.resize();
+      }
     } else {
       $("#iframe-wrapper").width(dim.width).height(dim.height);
       // No need to call controller.resize(), as interactive controller
@@ -578,7 +582,6 @@ AUTHORING = false;
       setupAtomDataTable();
       $("#content-banner").show();
       $("#extras-bottom").show();
-      selectInteractiveSizeHandler();
       $selectInteractiveSize.removeAttr('disabled');
       $content.resizable({
         helper: "ui-resizable-helper",
