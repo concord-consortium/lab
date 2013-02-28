@@ -66,7 +66,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.js
 
 all: \
-	src/vendor/d3 \
+	src/vendor/d3.js \
 	node_modules \
 	bin \
 	server/public
@@ -118,6 +118,7 @@ clean:
 	rm -f src/vendor/jquery/dist/jquery*.js
 	rm -f src/vendor/jquery-ui/dist/jquery-ui*.js
 	rm -f src/vendor/lightgl.js/lightgl.js
+	rm -f src/vendor/d3*.js
 
 .PHONY: submodule-update
 submodule-update:
@@ -131,8 +132,8 @@ submodule-update-tags:
 clean-jnlp:
 	rm -rf server/public/jnlp
 
-src/vendor/d3:
-	git submodule update --init --recursive
+src/vendor/d3.js:
+	cd src/vendor/d3; npm install; make
 
 node_modules: node_modules/coffee-script \
 	node_modules/jsdom \
