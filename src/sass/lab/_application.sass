@@ -20,15 +20,6 @@
 applet
   border: thin solid #EEE
 
-#credits
-  float: left
-  vertical-align: middle
-  display: table-cell
-  opacity: 0.5
-  &:hover
-    cursor: pointer
-    opacity: 1.0
-
 $embeddable-pane-font-size: 1.0em
 
 #firefox-warning-pane
@@ -54,18 +45,11 @@ $embeddable-pane-font-size: 1.0em
         color: lighten( $model-warning-color, 10% )
         font-weight: 600
 
-#about, #share
-  float: right
-  vertical-align: middle
-  display: table-cell
-  margin-right: 2em
-  opacity: 0.5
-  &:hover
-    cursor: pointer
-    opacity: 1.0
-
-#share-link
-  display: none
+#credits-link, #about-link, #share-link
+  p
+    color: gray
+  p:hover
+    color: black
 
 #credits-pane, #about-pane, #share-pane
   display: none

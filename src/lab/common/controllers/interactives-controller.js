@@ -21,6 +21,8 @@ define(function (require) {
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
 
+      // Helper function which just provides banner definition.
+      setupBanner             = require('common/controllers/setup-banner'),
       SemanticLayout          = require('common/layout/semantic-layout'),
       templates               = require('common/layout/templates'),
 
@@ -175,21 +177,33 @@ define(function (require) {
       }
 
       function setupLayout() {
-        var template, layout, fontScale;
+        var template, layout, components, fontScale, banner;
 
-        if (interactive.template) {
-          if (typeof interactive.template === "string") {
-            template = templates[interactive.template];
-          } else {
-            template = interactive.template;
-          }
+        if (typeof interactive.template === "string") {
+          template = templates[interactive.template];
+        } else {
+          template = interactive.template;
         }
+
         // The authored definition of which components go in which container.
         layout = interactive.layout;
         // Font scale which affect whole interactive container.
         fontScale = interactive.fontScale;
 
-        semanticLayout.setupInteractive(template, layout, componentByID, modelController, fontScale);
+        // Banner hash containing components, layout containers and layout deinition
+        // (components location). Keep it in a separate structure, because we do not
+        // expect these objects to be serialized!
+        banner = setupBanner(interactive.about);
+        // Note that all of these operations create a new object.
+        // So interactive definition specified by the author won't be affected.
+        // This is imporant for serialization correctness.
+        template = template.concat(banner.template);
+        layout = $.extend({}, layout, banner.layout);
+        components = $.extend({}, componentByID, banner.components);
+
+        // Setup interactive using both author components and components
+        // created automatically in this controller.
+        semanticLayout.setupInteractive(template, layout, components, modelController, fontScale);
 
         // Finally, layout interactive.
         semanticLayout.layoutInteractive();
