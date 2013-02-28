@@ -126,6 +126,7 @@ submodule-update:
 
 .PHONY: submodule-update-tags
 submodule-update-tags:
+	git submodule sync
 	git submodule foreach --recursive 'git fetch --tags'
 	git submodule update --init --recursive
 
