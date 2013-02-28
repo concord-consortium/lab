@@ -1,6 +1,6 @@
 [submodule "src/vendor/d3"]
 	path = src/vendor/d3
-	url = git://github.com/mbostock/d3.git
+	url = git://github.com/concord-consortium/d3.git
 [submodule "src/vendor/science.js"]
 	path = src/vendor/science.js
 	url = git://github.com/jasondavies/science.js.git
