@@ -37,7 +37,7 @@
     "cheerio": "0.x",
     "jade": "*",
     "mkdirp": "0.3.2",
-    "requirejs": "2.0.6",
+    "requirejs": "*",
     "amdefine": ">=0.0.2",
     "mocha": ">=1.7.0",
     "should": ">=1.2.1",
