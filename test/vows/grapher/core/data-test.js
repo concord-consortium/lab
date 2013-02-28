@@ -1,18 +1,13 @@
-require("../../../env");
+var helpers   = require("../../../helpers");
+helpers.setupBrowserEnvironment();
 
-var requirejs = require('requirejs'),
-    config    = require('../../../requirejs-config'),
-    vows = require("vows"),
-    assert = require("assert");
+var vows      = require("vows"),
+    assert    = require("assert"),
+    requirejs = helpers.getRequireJS(),
 
-// Use Lab RequireJS configuration.
-requirejs.config(config.labConfig);
+    data = requirejs('grapher/core/data'),
 
-requirejs([
-  'grapher/core/data'
-], function (data) {
-
-var suite = vows.describe("grapher/core/data");
+    suite = vows.describe("grapher/core/data");
 
 suite.addBatch({
   "data": {
@@ -29,4 +24,3 @@ suite.addBatch({
 });
 
 suite.export(module);
-});
