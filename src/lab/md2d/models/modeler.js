@@ -82,7 +82,7 @@ define(function(require) {
         radialBondResults,
 
         // The index of the "spring force" used to implement dragging of atoms in a running model
-        liveDragSpringForceIndex,
+        liveDragSpringForceIndex = null,
 
         // Cached value of the 'friction' property of the atom being dragged in a running model
         liveDragSavedFriction,
@@ -1553,6 +1553,8 @@ define(function(require) {
       adjusting the friction of the dragged atom.
     */
     model.liveDragStart = function(atomIndex, x, y) {
+      if (liveDragSpringForceIndex !== null) return;    // don't add a second liveDrag force
+
       if (x == null) x = atoms.x[atomIndex];
       if (y == null) y = atoms.y[atomIndex];
 
@@ -1585,6 +1587,7 @@ define(function(require) {
 
       model.setAtomProperties(atomIndex, { friction: liveDragSavedFriction });
       model.removeSpringForce(liveDragSpringForceIndex);
+      liveDragSpringForceIndex = null;
     };
 
     // return a copy of the array of speeds
