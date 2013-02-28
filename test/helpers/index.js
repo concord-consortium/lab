@@ -51,10 +51,28 @@ exports.getRequireJS = function() {
   // Forces reloading of the cached requirejs module
   delete require.cache[require.resolve('requirejs')];
 
-  var config    = require('../requirejs-config'),
-      requirejs = require('requirejs');
+  var documentBackup,
+      config,
+      requirejs;
 
+  // Workaround for new RequireJS version.
+  // When document is defined, RequireJS will assume
+  // that it's executed in the browser environment.
+  // So, if we setup document earlier (jsdom), hide
+  // it for a while to fool RequireJS.
+  if (typeof document !== 'undefined') {
+    documentBackup = document;
+    document = undefined;
+  }
+
+  config    = require('../requirejs-config'),
+  requirejs = require('requirejs');
   requirejs.config(config.labConfig);
+
+  if (typeof documentBackup !== 'undefined') {
+    document = documentBackup;
+  }
+
   return requirejs;
 };
 
