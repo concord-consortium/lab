@@ -16,16 +16,9 @@ requirejs.config({
   }
 });
 
-requirejs([
-  'md2d/models/modeler',
-  'common/validator',
-  'md2d/models/metadata',
-  'cs!md2d/models/solvent'
-], function (Modeler, validator, metadata, Solvent) {
-  // Export API for Node.js scripts.
-  exports.Modeler   = Modeler;
-  // Used by MML -> JSON conversion script.
-  exports.validator = validator;
-  exports.metadata  = metadata;
-  exports.Solvent   = Solvent;
-});
+// Export API for Node.js scripts.
+exports.Modeler   = requirejs('md2d/models/modeler');
+// Used by MML -> JSON conversion script.
+exports.validator = requirejs('common/validator');
+exports.metadata  = requirejs('md2d/models/metadata');
+exports.Solvent   = requirejs('cs!md2d/models/solvent');
