@@ -45,7 +45,8 @@
     'cs' :'../vendor/require-cs/cs',
     'coffee-script': '../vendor/coffee-script/extras/coffee-script',
     'underscore': '../vendor/underscore/underscore',
-    'backbone': '../vendor/backbone/backbone'
+    'backbone': '../vendor/backbone/backbone',
+    'mustache': '../../node_modules/mustache/mustache'
   },
 
   // Protect global namespace and call export of API.
