@@ -109,7 +109,13 @@ define(function (require) {
         showClock,
 
         VELOCITY_STR = "velocity",
-        FORCE_STR    = "force";
+        FORCE_STR    = "force",
+
+        browser = benchmark.what_browser(),
+
+        // this is a hack put in place to temporarily deal with an image-size
+        // caching bug in Chrome Canary
+        needCachebusting = browser.browser = "Chrome" && browser.version >= "26";
 
 
     function modelTimeLabel() {
@@ -640,7 +646,8 @@ define(function (require) {
 
       for (i = 0; i < imageProp.length; i++) {
         img[i] = new Image();
-        img[i].src = getImagePath(imageProp[i]);
+        // temp: add cachebusting string if we are in Chrome 26 or above
+        img[i].src = getImagePath(imageProp[i]) + (needCachebusting ? "?"+Math.random() : "");
         img[i].onload = (function(i) {
           return function() {
             imageContainerTop.selectAll("image.image_attach"+i).remove();
@@ -852,6 +859,15 @@ define(function (require) {
       updateParticleRadius();
 
       particleEnter();
+      // Hack to make dragging atoms work in FF.
+      // The second of two closely-space clicks generates a dragstart
+      // event in FF which causes atom dragging to not work until
+      // after a subsequent click in the model not on an atom.
+      //
+      // I'm not sure why this needs to be a dragstart listener
+      // on the document and not for example just on the atoms
+      // or SVG group container they are a part of.
+      document.ondragstart = function() { return false; };
 
       label = mainContainer.selectAll("g.label")
           .data(modelResults);
@@ -1283,33 +1299,10 @@ define(function (require) {
       return { x: clip(x, 0, modelWidth), y: clip(y, 0, modelHeight) };
     }
 
-    // check to see if d3 event target is either an svg element or
-    // contained within #interactive-container
-    function isEventWithinInteractive() {
-      var elem = d3.event.sourceEvent.target;
-
-      return (elem.ownerSVGElement || $(elem).closest("#interactive-container").length > 0)
-    }
-
     function nodeDrag(d, i) {
-      var dragX,
-          dragY,
+      var dragX = model2px.invert(d3.event.x),
+          dragY = model2pxInv.invert(d3.event.y),
           drag;
-
-      if (!isEventWithinInteractive()) {
-        // we are outside the frame, drop the element by firing mouseup
-        if( document.createEvent ) {
-          var evObj = document.createEvent('MouseEvent');
-          evObj.initEvent( 'mouseup', true, false );
-          d3.event.sourceEvent.target.dispatchEvent(evObj);
-        } else if( document.createEventObject ) {
-          d3.event.sourceEvent.target.fireEvent('onmouseup');
-        }
-        return;
-      }
-
-      dragX = model2px.invert(d3.event.x);
-      dragY = model2pxInv.invert(d3.event.y);
 
       if (model.is_stopped()) {
         drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
@@ -1389,7 +1382,7 @@ define(function (require) {
           pos,
           top,
           left,
-          b = benchmark.what_browser();
+          b = benchmark.what_browser();   // we need to recalc this for FF, for some reason
 
       if (b.browser === "Firefox" && b.version >= "18") {
         $firefoxWarningPane = $("#firefox-warning-pane");

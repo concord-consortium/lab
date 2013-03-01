@@ -387,44 +387,49 @@ button.component {
   .dna-edit-dialog .error {
     color: #cc0000; }
 
-#model-container .radialbond1.disulphideBond, #model-container .radialbond2.disulphideBond {
-  stroke: #ffe95a !important; }
-#model-container .dna text {
-  font-family: monospace;
-  fill: #333333; }
-  #model-container .dna text.shadow {
-    stroke: #eeeeee;
-    stroke-opacity: 0.7; }
-#model-container .dna .marked-mrna {
-  font-weight: bold;
-  fill: #dd1111; }
-#model-container line.attractionforce {
-  stroke: #aaaaaa;
-  stroke-width: 2.5;
-  stroke-dasharray: 3 2; }
-#model-container text.modelTimeLabel {
-  font-size: 1em; }
-#model-container text.title {
-  font-size: 1em; }
-#model-container text.xlabel {
-  font-size: 0.85em; }
-#model-container text.ylabel {
-  font-size: 0.85em; }
-#model-container g.y {
-  font-size: 0.75em; }
-#model-container g.x {
-  font-size: 0.75em; }
-#model-container div.tooltip {
-  display: none;
-  position: absolute;
-  padding: 0.4em 0.6em;
-  font-size: 0.9em;
-  background: white;
-  border: solid 1px #aaaaaa;
-  border-radius: 0.8em;
-  pointer-events: none; }
-  #model-container div.tooltip pre {
-    margin: 0.2em; }
+#model-container {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+  #model-container .radialbond1.disulphideBond, #model-container .radialbond2.disulphideBond {
+    stroke: #ffe95a !important; }
+  #model-container .dna text {
+    font-family: monospace;
+    fill: #333333; }
+    #model-container .dna text.shadow {
+      stroke: #eeeeee;
+      stroke-opacity: 0.7; }
+  #model-container .dna .marked-mrna {
+    font-weight: bold;
+    fill: #dd1111; }
+  #model-container line.attractionforce {
+    stroke: #aaaaaa;
+    stroke-width: 2.5;
+    stroke-dasharray: 3 2; }
+  #model-container text.modelTimeLabel {
+    font-size: 1em; }
+  #model-container text.title {
+    font-size: 1em; }
+  #model-container text.xlabel {
+    font-size: 0.85em; }
+  #model-container text.ylabel {
+    font-size: 0.85em; }
+  #model-container g.y {
+    font-size: 0.75em; }
+  #model-container g.x {
+    font-size: 0.75em; }
+  #model-container div.tooltip {
+    display: none;
+    position: absolute;
+    padding: 0.4em 0.6em;
+    font-size: 0.9em;
+    background: white;
+    border: solid 1px #aaaaaa;
+    border-radius: 0.8em;
+    pointer-events: none; }
+    #model-container div.tooltip pre {
+      margin: 0.2em; }
 
 * {
   -webkit-box-sizing: border-box;
