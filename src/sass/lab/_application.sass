@@ -22,6 +22,22 @@ applet
 
 $embeddable-pane-font-size: 1.0em
 
+
+.ui-widget-header
+  font-size: $embeddable-pane-font-size
+  font-weight: bold
+  background: lighten(#3A878B, 15%)
+  border: none
+  color: #fff
+  opacity: 0.7
+  border-radius: 0.5em 0.5em 0 0
+
+.ui-dialog
+  border: #fff
+  border-radius: 0.5em
+  box-shadow: 1px 1px 15px rgba(000,000,000,0.5)
+  padding: 0
+
 #firefox-warning-pane
   display: none
   position: absolute
@@ -50,6 +66,16 @@ $embeddable-pane-font-size: 1.0em
     color: gray
   p:hover
     color: black
+
+.credits-dialog, .about-dialog
+  p
+    font-weight: 600
+  a, a.opens-in-new-window
+    color: #00E
+    text-decoration: none
+    padding: 0
+  a:visited
+    color: #551A8B
 
 #credits-pane, #about-pane, #share-pane
   display: none
