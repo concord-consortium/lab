@@ -193,7 +193,7 @@ define(function (require) {
         // Banner hash containing components, layout containers and layout deinition
         // (components location). Keep it in a separate structure, because we do not
         // expect these objects to be serialized!
-        banner = setupBanner(interactive.about);
+        banner = setupBanner(interactive);
         // Note that all of these operations create a new object.
         // So interactive definition specified by the author won't be affected.
         // This is imporant for serialization correctness.
