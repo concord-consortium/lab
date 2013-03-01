@@ -852,6 +852,15 @@ define(function (require) {
       updateParticleRadius();
 
       particleEnter();
+      // Hack to make dragging atoms work in FF.
+      // The second of two closely-space clicks generates a dragstart
+      // event in FF which causes atom dragging to not work until
+      // after a subsequent click in the model not on an atom.
+      //
+      // I'm not sure why this needs to be a dragstart listener
+      // on the document and not for example just on the atoms
+      // or SVG group container they are a part of.
+      document.ondragstart = function() { return false; };
 
       label = mainContainer.selectAll("g.label")
           .data(modelResults);
