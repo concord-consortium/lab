@@ -109,7 +109,13 @@ define(function (require) {
         showClock,
 
         VELOCITY_STR = "velocity",
-        FORCE_STR    = "force";
+        FORCE_STR    = "force",
+
+        browser = benchmark.what_browser(),
+
+        // this is a hack put in place to temporarily deal with an image-size
+        // caching bug in Chrome Canary
+        needCachebusting = browser.browser = "Chrome" && browser.version >= "26";
 
 
     function modelTimeLabel() {
@@ -640,7 +646,8 @@ define(function (require) {
 
       for (i = 0; i < imageProp.length; i++) {
         img[i] = new Image();
-        img[i].src = getImagePath(imageProp[i]);
+        // temp: add cachebusting string if we are in Chrome 26 or above
+        img[i].src = getImagePath(imageProp[i]) + (needCachebusting ? "?"+Math.random() : "");
         img[i].onload = (function(i) {
           return function() {
             imageContainerTop.selectAll("image.image_attach"+i).remove();
@@ -1375,7 +1382,7 @@ define(function (require) {
           pos,
           top,
           left,
-          b = benchmark.what_browser();
+          b = benchmark.what_browser();   // we need to recalc this for FF, for some reason
 
       if (b.browser === "Firefox" && b.version >= "18") {
         $firefoxWarningPane = $("#firefox-warning-pane");
