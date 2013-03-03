@@ -33,9 +33,16 @@ define(function () {
     onClickScript = component.onClick;
     initialValue  = component.initialValue;
 
+    $label = $('<label>').append(component.text);
     $checkbox = $('<input type="checkbox">').attr('id', component.id);
-    $label = $('<label>').append(component.text).append($checkbox);
-    $element = $('<div>').append($label);
+
+    // default is to have label on left of checkbox
+    if (component.textOn === "right") {
+      $element = $('<div>').append($checkbox).append($label);
+    } else {
+      $element = $('<div>').append($label).append($checkbox);
+    }
+
     // Append class to the most outer container.
     $element.addClass("interactive-checkbox");
     // Each interactive component has to have class "component".

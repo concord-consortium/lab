@@ -205,6 +205,9 @@ define(function() {
       text: {
         defaultValue: ""
       },
+      textOn: {
+        defaultValue: "left"
+      },
       width: {
         defaultValue: "auto"
       },
