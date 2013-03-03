@@ -361,6 +361,9 @@ define(function() {
       units: {
         defaultValue: ""
       },
+      orientation: {
+        defaultValue: "horizontal"
+      },
       width: {
         defaultValue: "auto"
       },
