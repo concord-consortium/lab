@@ -50,6 +50,9 @@ define(function () {
     // Each interactive component has to have class "component".
     $numericOutput.addClass("component");
 
+    // Add class defining component orientation - "horizontal" or "vertical".
+    $numericOutput.addClass(component.orientation);
+
     // Custom dimensions.
     $numericOutput.css({
       width: component.width,
