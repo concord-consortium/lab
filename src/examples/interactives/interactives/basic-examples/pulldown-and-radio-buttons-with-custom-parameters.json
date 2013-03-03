@@ -124,6 +124,7 @@
       "id": "mass-slider",
       "min": 10,
       "max": 500,
+      "width": "12em",
       "displayValue": "return format('f')(value)",
       "labels": [
         {
@@ -144,6 +145,7 @@
       "id": "friction-slider",
       "min": 0,
       "max": 1,
+      "width": "12em",
       "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
@@ -163,12 +165,14 @@
       "type": "checkbox",
       "id": "ke-shading",
       "text": "KE Shading",
+      "width": "14em",
       "property": "keShading"
     },
     {
       "type": "checkbox",
       "id": "velocity-vectors",
       "text": "Velocity Vectors",
+      "width": "14em",
       "property": "showVelocityVectors"
     },
     {
