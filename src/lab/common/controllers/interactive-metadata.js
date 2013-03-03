@@ -205,6 +205,12 @@ define(function() {
       text: {
         defaultValue: ""
       },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
       property: {
         conflictsWith: ["initialValue"]
       },
@@ -354,6 +360,12 @@ define(function() {
       },
       units: {
         defaultValue: ""
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
       },
       property: {},
       displayValue: {}

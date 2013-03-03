@@ -41,6 +41,12 @@ define(function () {
     // Each interactive component has to have class "component".
     $element.addClass("component");
 
+    // Custom dimensions.
+    $element.css({
+      width: component.width,
+      height: component.height
+    });
+
     // Process onClick script if it is defined.
     if (onClickScript) {
       // Create a function which assumes we pass it a parameter called 'value'.

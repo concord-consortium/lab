@@ -50,6 +50,12 @@ define(function () {
     // Each interactive component has to have class "component".
     $numericOutput.addClass("component");
 
+    // Custom dimensions.
+    $numericOutput.css({
+      width: component.width,
+      height: component.height
+    });
+
     if (displayValue) {
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
     }
