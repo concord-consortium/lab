@@ -203,7 +203,7 @@ define(function (require) {
 
         for (j = 0, jj = divContents.length; j < jj; j++) {
           items = divContents[j];
-          $row = $('<div class="interactive-' + container.id + '-row"/>');
+          $row = $('<div class="interactive-row"/>');
           // Each row should have width 100% of its parent container.
           $row.css("width", "100%");
           // When there is only one row, ensure that it fills whole container.
@@ -229,7 +229,7 @@ define(function (require) {
       $rows = $containers[lastContainer.id].children();
       $row = $rows.last();
       if (!$row.length) {
-        $row = $('<div class="interactive-' + container.id + '-row"/>');
+        $row = $('<div class="interactive-row"/>');
         $containers[container.id].append($row);
       }
       for (id in comps) {
