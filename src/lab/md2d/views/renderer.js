@@ -64,10 +64,10 @@ define(function (require) {
         // Array which defines a gradient assigned to a given particle.
         gradientNameForParticle = [],
 
-        atomTooltipOn,
+        atomTooltipOn = false,
 
         particle, label, labelEnter,
-        moleculeDiv, moleculeDivPre,
+        atomToolTip, atomToolTipPre,
 
         // for model clock
         timeLabel,
@@ -1044,7 +1044,7 @@ define(function (require) {
     }
 
     function moleculeMouseOver(d, i) {
-      if (model.get("enableAtomTooltips")) {
+      if (model.get("enableAtomTooltips") && (atomTooltipOn === false)) {
         renderAtomTooltip(i);
       }
     }
@@ -1053,8 +1053,8 @@ define(function (require) {
       containers.node.focus();
       if (model.get("enableAtomTooltips")) {
         if (atomTooltipOn !== false) {
-          moleculeDiv.style("opacity", 1e-6);
-          moleculeDiv.style("display", "none");
+          atomToolTip.style("opacity", 1e-6);
+          atomToolTip.style("display", "none");
           atomTooltipOn = false;
         } else {
           if (d3.event.shiftKey) {
@@ -1068,16 +1068,20 @@ define(function (require) {
     }
 
     function renderAtomTooltip(i) {
-      moleculeDiv
+      var pos = containers.pos(),
+          left = pos.left + model2px(modelResults[i].x),
+          top  = pos.top +  model2pxInv(modelResults[i].y);
+
+      atomToolTip
             .style("opacity", 1.0)
             .style("display", "inline")
             .style("background", "rgba(100%, 100%, 100%, 0.7)")
-            .style("left", model2px(modelResults[i].x) + 60 + "px")
-            .style("top",  model2pxInv(modelResults[i].y) + 30 + "px")
+            .style("left", left + "px")
+            .style("top",  top + "px")
             .style("zIndex", 100)
             .transition().duration(250);
 
-      moleculeDivPre.text(
+      atomToolTipPre.text(
           "atom: " + i + "\n" +
           "time: " + modelTimeLabel() + "\n" +
           "speed: " + d3.format("+6.3e")(modelResults[i].speed) + "\n" +
@@ -1090,7 +1094,7 @@ define(function (require) {
 
     function moleculeMouseOut() {
       if (!atomTooltipOn && atomTooltipOn !== 0) {
-        moleculeDiv.style("opacity", 1e-6).style("zIndex" -1);
+        atomToolTip.style("opacity", 1e-6).style("zIndex" -1);
       }
     }
 
@@ -1346,12 +1350,12 @@ define(function (require) {
       }
     }
 
-    function setupTooTips() {
-      if ( moleculeDiv === undefined) {
-        moleculeDiv = d3.select("body").append("div")
+    function setupToolTips() {
+      if ( atomToolTip === undefined) {
+        atomToolTip = d3.select("#model-container").append("div")
             .attr("class", "tooltip")
             .style("opacity", 1e-6);
-        moleculeDivPre = moleculeDiv.append("pre");
+        atomToolTipPre = atomToolTip.append("pre");
       }
     }
 
@@ -1455,7 +1459,6 @@ define(function (require) {
       modelHeight   = model.get('height');
       aspectRatio   = modelWidth / modelHeight;
 
-      setupTooTips();
       setupRendererOptions();
 
       // Subscribe for model events.
@@ -1519,6 +1522,7 @@ define(function (require) {
       drawImageAttachment();
       drawTextBoxes();
       setupClock();
+      setupToolTips();
       setupFirefoxWarning();
     }
 
