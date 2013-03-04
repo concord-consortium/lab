@@ -1,50 +1,6 @@
 @import 'sass/bourbon/bourbon'
 @import 'sass/neat/neat'
 
-#applet-container
-  display: inline-block
-  top: 0
-  bottom: 0
-  left: 0
-  right: 0
-  background: $component-background-color
-  border-radius: 0.5em
-  box-shadow: 1px 1px 3px rgba(000,000,000,0.2)
-  height: 100%
-  width: 100%
-  min-width: 20em
-  min-height: 20em
-  margin: 2px 1em 2px 0px
-  padding: 0.8em
-
-applet
-  border: thin solid #EEE
-
-$embeddable-pane-font-size: 1.0em
-
-#firefox-warning-pane
-  display: none
-  position: absolute
-  font-size: $embeddable-pane-font-size
-  width: auto
-  opacity: 0.8
-  color: $model-warning-color
-  background-color: $model-warning-background
-  border-radius: 0.5em
-  box-shadow: 1px 1px 10px rgba(000,000,000,0.3)
-  z-index: -100
-  margin: 0em
-  padding: 0em
-  &:hover
-    opacity: 1.0
-  p
-    margin: 0.2em 0.5em
-    a
-      color: $model-warning-color
-      &:hover
-        color: lighten( $model-warning-color, 10% )
-        font-weight: 600
-
 #credits-link, #about-link, #share-link
   p
     color: gray
@@ -75,98 +31,46 @@ $embeddable-pane-font-size: 1.0em
   margin-top: 1em
   font-size: 0.8em
 
-#credits-pane, #about-pane, #share-pane
+#firefox-warning-pane
   display: none
   position: absolute
+  font-size: 1em
+  width: auto
+  opacity: 0.8
+  color: $model-warning-color
+  background-color: $model-warning-background
   border-radius: 0.5em
-  box-shadow: 1px 1px 15px rgba(000,000,000,0.5)
-  width: 80%
-  max-width: 40em
-  height: auto
-  min-height: $embeddable-pane-font-size*8
-  max-height: 80%
-  top: 3em
-  left: 4em
-  z-index: 100
-  margin: 0.5em
-  padding: 0em
-  background-color: $very-light-gray
-  padding-bottom: 0.5em
-  p
-    margin-top: 1em
-    margin-bottom: 1em
-  textarea
-    margin-top: 0.35em
-    margin-bottom: 0.35em
-    padding: 0.35em
-    width: 98%
-    height: auto
-    font-family: inherit
-    font-size: $embeddable-pane-font-size*0.9
-  textarea#share-iframe-content
-    height: $embeddable-pane-font-size*5.0
-
-#share-iframe-form
-  margin-top: 0.35em
-  select
-    margin-bottom: 0.35em
-    font-size: $embeddable-pane-font-size*0.9
-
-#about-pane, #share-pane
-  left: inherit
-  right: 2em
-  min-height: $embeddable-pane-font-size*15
-  p
-    margin-top: 0.35em
-    margin-bottom: 0.35em
-
-#share-pane
-  top: 2em
-  right: 4em
-  max-height: 90%
-
-#credits-pane-banner, #about-pane-banner, #share-pane-banner
-  width: 100.2%
-  display: table
-  opacity: 0.7
+  box-shadow: 1px 1px 10px rgba(000,000,000,0.3)
+  z-index: -100
   margin: 0em
-  padding: .5em 1.3em
-  height: $embeddable-pane-font-size*1.25
-  color: white
-  background-color: lighten( #3A878B, 15% )
-  border-top-right-radius: 0.5em
-  border-top-left-radius: 0.5em
+  padding: 0em
   &:hover
-    cursor: move
-
-#credits-pane-title, #about-pane-title, #share-pane-title
-  vertical-align: middle
-  display: table-cell
-  font-size: $embeddable-pane-font-size
-  font-weight: bold
-
-#credits-pane-close, #about-pane-close, #share-pane-close
-  float: right
-  vertical-align: middle
-  display: table-cell
-  margin-left: 1em
-  font-size: $embeddable-pane-font-size
-  font-weight: 600
-  &:hover
-    cursor: pointer
-    color: #DDD
-
-#credits-content, #about-content, #share-content
-  margin: 0 1em
-  font-size: $embeddable-pane-font-size
-  display: inline-block
-  overflow: auto
-  width: 95%
-  max-height: 20em
+    opacity: 1.0
   p
-    font-weight: 600
-  a
-    text-decoration: none
+    margin: 0.2em 0.5em
+    a
+      color: $model-warning-color
+      &:hover
+        color: lighten( $model-warning-color, 10% )
+        font-weight: 600
 
-#share-license
-  font-size: $embeddable-pane-font-size*0.8
+// TODO: Main Lab interactives aren't using it.
+// Check where it's used, move or remove it.
+#applet-container
+  display: inline-block
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  background: $component-background-color
+  border-radius: 0.5em
+  box-shadow: 1px 1px 3px rgba(000,000,000,0.2)
+  height: 100%
+  width: 100%
+  min-width: 20em
+  min-height: 20em
+  margin: 2px 1em 2px 0px
+  padding: 0.8em
+
+applet
+  border: thin solid #EEE
