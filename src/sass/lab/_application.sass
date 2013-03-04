@@ -67,15 +67,25 @@ $embeddable-pane-font-size: 1.0em
   p:hover
     color: black
 
-.credits-dialog, .about-dialog
+.credits-dialog, .about-dialog, .share-dialog
   p
     font-weight: 600
+    margin: 0.5em 0
   a, a.opens-in-new-window
     color: #00E
     text-decoration: none
     padding: 0
   a:visited
     color: #551A8B
+
+.share-dialog
+  textarea
+    display: block
+    font-size: 0.8em
+    width: 100%
+
+    &#share-iframe-content
+      height: 4em
 
 #credits-pane, #about-pane, #share-pane
   display: none

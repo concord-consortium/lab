@@ -7,6 +7,7 @@ define(function () {
       inherit        = require('common/inherit'),
       TextController = require('common/controllers/text-controller'),
       BasicDialog    = require('common/controllers/basic-dialog'),
+      ShareDialog    = require('common/controllers/share-dialog'),
 
       copyrightDiv = '<div id="share-license"><strong>Copyright © 2013&nbsp;</strong>' +
         '<a class="opens-in-new-window" href="http://concord.org" id="share-license-link" target="_blank">' +
@@ -88,20 +89,22 @@ define(function () {
   inherit(CreditsDialog, BasicDialog);
 
   /**
-    Returns a hash containing:
-     - components,
-     - containers,
-     - layout definition (components location).
-    All these things are used to build the interactive banner.
-
-    @param {Object} interactive Interactive definition.
-  */
-  return function setupBanner(interactive) {
+   * Returns a hash containing:
+   *  - components,
+   *  - containers,
+   *  - layout definition (components location).
+   * All these things are used to build the interactive banner.
+   *
+   * @param {Object} interactive Interactive JSON definition.
+   * @param {InteractivesController} interactivesController
+   */
+  return function setupBanner(interactive, interactivesController) {
     var components = {},
         template = [],
         layout = {},
 
         creditsDialog,
+        shareDialog,
         aboutDialog;
 
     function createLinkInContainer(link, container) {
@@ -153,13 +156,14 @@ define(function () {
     // has to be defined *after* banner-right container which is used
     // in its specification!
     if (labConfig.sharing) {
+      shareDialog = new ShareDialog(interactive, interactivesController);
       createLinkInContainer(
       {
         "type": "text",
         "id": "share-link",
         "text": "Share",
         "style": "header",
-        "onClick": function () { $("#share-pane").show(100); }
+        "onClick": function () { shareDialog.open(); }
       },
       {
         "id": "banner-middle",

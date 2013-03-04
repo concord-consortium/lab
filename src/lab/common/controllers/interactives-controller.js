@@ -68,7 +68,7 @@ define(function (require) {
         'numericOutput': NumericOutputController
       };
 
-  return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle, resizeCallbacks) {
+  return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
 
     modelLoadedCallbacks = modelLoadedCallbacks || [];
 
@@ -80,6 +80,7 @@ define(function (require) {
         propertiesListeners = [],
         componentCallbacks = [],
         onLoadScripts = [],
+        resizeCallbacks = [],
 
         // Hash of instantiated components.
         // Key   - component ID.
@@ -193,7 +194,7 @@ define(function (require) {
         // Banner hash containing components, layout containers and layout deinition
         // (components location). Keep it in a separate structure, because we do not
         // expect these objects to be serialized!
-        banner = setupBanner(interactive);
+        banner = setupBanner(interactive, controller);
         // Note that all of these operations create a new object.
         // So interactive definition specified by the author won't be affected.
         // This is imporant for serialization correctness.
@@ -573,15 +574,19 @@ define(function (require) {
         var i;
 
         semanticLayout.layoutInteractive();
-        // Call application controller (application.js) resizeCallbacks if there are any.
-        // Currently this is used for the Share pane generated <iframe> content.
-        // TODO: make a model dialog component and treat the links at the top as
-        // componments in the layout. New designs may put these links at the bottom ... etc
+        // TODO: use events!
         for(i = 0; i < resizeCallbacks.length; i++) {
-          if (resizeCallbacks[i].resize !== undefined) {
-            resizeCallbacks[i].resize();
-          }
+          resizeCallbacks[i]();
         }
+      },
+      /**
+       * Adds a callback, which is triggered when interactive container is resized.
+       * TODO: provide generic .on method, use events (d3.dispatcher?).
+       *
+       * @param  {Function} callback
+       */
+      onResize: function (callback) {
+        resizeCallbacks.push(callback);
       },
       /**
         Serializes interactive, returns object ready to be stringified.
