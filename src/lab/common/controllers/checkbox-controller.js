@@ -36,11 +36,11 @@ define(function () {
     $label = $('<label>').append(component.text);
     $checkbox = $('<input type="checkbox">').attr('id', component.id);
 
-    // default is to have label on left of checkbox
-    if (component.textOn === "right") {
-      $element = $('<div>').append($checkbox).append($label);
-    } else {
+    // default is to have label on right of checkbox
+    if (component.textOn === "left") {
       $element = $('<div>').append($label).append($checkbox);
+    } else {
+      $element = $('<div>').append($checkbox).append($label);
     }
 
     // Append class to the most outer container.

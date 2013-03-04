@@ -251,21 +251,18 @@
       "type": "checkbox",
       "id": "show-gridlines",
       "text": "Grid Lines",
-      "textOn": "right",
       "property": "gridLines"
     },
     {
       "type": "checkbox",
       "id": "show-xunits",
       "text": "X units",
-      "textOn": "right",
       "property": "xunits"
     },
     {
       "type": "checkbox",
       "id": "show-yunits",
       "text": "Y units",
-      "textOn": "right",
       "property": "yunits"
     }
   ],
