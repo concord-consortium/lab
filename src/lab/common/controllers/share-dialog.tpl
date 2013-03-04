@@ -6,13 +6,13 @@
   </p>
   <textarea>{{embeddableSharingUrl}}</textarea>
   <p>Paste HTML to embed in website or blog.</p>
-  <div>Select Size:
+  <p>Select Size:
     <select id='iframe-size'>
       <option value='smaller'>30% smaller</option>
       <option selected value='actual'>actual</option>
       <option value='larger'>50% larger</option>
     </select>
-    <textarea id='share-iframe-content'></textarea>
-  </div>
+  </p>
+  <textarea id='share-iframe-content'></textarea>
   {{> copyright}}
 </div>
