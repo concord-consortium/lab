@@ -32,7 +32,6 @@
     "images": [],
     "imageMapping": {},
     "textBoxes": [],
-    "fitToParent": false,
     "xlabel": false,
     "ylabel": false,
     "xunits": false,
@@ -77,10 +76,10 @@
       -5
     ],
     "color": [
-      -855310, 
-      -9066941, 
-      -9092186, 
-      -2539040, 
+      -855310,
+      -9066941,
+      -9092186,
+      -2539040,
       -855310
     ]
   },

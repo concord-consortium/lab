@@ -141,9 +141,6 @@ define(function() {
       textBoxes: {
         defaultValue: []
       },
-      fitToParent: {
-        defaultValue: false
-      },
       xlabel: {
         defaultValue: false
       },
