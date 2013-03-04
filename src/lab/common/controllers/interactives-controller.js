@@ -68,7 +68,7 @@ define(function (require) {
         'numericOutput': NumericOutputController
       };
 
-  return function interactivesController(interactive, viewSelector, layoutStyle) {
+  return function interactivesController(interactive, viewSelector) {
 
     var controller = {},
         modelController,
@@ -135,7 +135,6 @@ define(function (require) {
       } else {
         interactiveViewOptions = { controlButtons: 'play' };
       }
-      interactiveViewOptions.fitToParent = !layoutStyle;
 
       onLoadScripts = [];
       if (modelDefinition.onLoad) {

@@ -73,7 +73,6 @@ AUTHORING = false;
       interactive,
       hash,
       jsonModelPath, contentItems, mmlPath,
-      viewType,
       interactivesPromise,
       buttonHandlersAdded = false,
       modelButtonHandlersAdded = false;
@@ -137,10 +136,7 @@ AUTHORING = false;
       } else {
         // else we are being embedded ...
         if ($editor.length) {
-          viewType = 'interactive-author-iframe';
           applicationCallbacks = [setupEmbeddableAuthorPage];
-        } else {
-          viewType = 'interactive-iframe';
         }
       }
 
@@ -169,7 +165,7 @@ AUTHORING = false;
     }
 
     if(!onFullIFramePage()) {
-      controller = controllers.interactivesController(interactive, '#interactive-container', viewType);
+      controller = controllers.interactivesController(interactive, '#interactive-container');
       controller.on("modelLoaded", applicationCallbacks);
     }
 
