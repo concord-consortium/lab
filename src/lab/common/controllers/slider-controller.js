@@ -1,4 +1,4 @@
-/*global define $ model*/
+/*global define, $, model*/
 
 define(function () {
 
@@ -67,15 +67,10 @@ define(function () {
         // it doesn't need any calculations when container size is changed.
         // However, to keep resizing in one place both width and height
         // adjustment are performed in this method.
-        // Also not that we set dimensions of the $container, not $slider.
+        // Also not that we set dimensions of the most outer container, not slider.
         // Slider itself will always follow dimensions of container DIV.
         // We have to do it that way to ensure that labels refer correct dimensions.
-        if (!/%$/.test(component.width)) {
-          $container.css("width", component.width);
-        } else {
-          $elem.css("width", component.width);
-          $container.css("width", "100%");
-        }
+        $elem.css("width", component.width);
         // Height calculation is more complex, calculate dynamically
         // available height for slider itself.
         // Note that component.height refers to the height of the
