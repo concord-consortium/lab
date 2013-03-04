@@ -55,7 +55,7 @@ suite.addBatch({
       // FIXME: custom error strings
       // expected [ 100, 100 ],
       // got      [ 1, 1 ] (deepEqual) // molecules-test.js:46
-      assert.deepEqual(model.dimensions(), [10, 10]);
+      assert.deepEqual(model.dimensions(), [0, 0, 10, 10]);
     },
     "creates 50 molecules without setting model size or initializing forces": function(model) {
       assert.equal(model.get_num_atoms(), 50);
