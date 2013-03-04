@@ -11,7 +11,7 @@
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "gridLines": true,
-        "showClock": false,
+        "showClock": true,
         "velocityVectors": {
           "length": 10
         }
@@ -198,23 +198,17 @@
       "displayValue": "return format('1.2f')(value)"
     },
     {
-      "type": "numericOutput",
-      "id": "time-display",
-      "property": "time",
-      "displayValue": "return format('1.2f')(value)"
-    },
-    {
       "type": "graph",
       "id": "propertiesGraph",
       "title": "Distance From Equilibrium (m)",
-      "xlabel": "Time",
-      "ylabel": "m",
+      "xlabel": "Time (s)",
+      "ylabel": "Distance (m)",
       "ymin": -0.6,
       "ymax": 0.6,
-      "xmax": 0.01,
+      "xmax": 10,
       "yFormatter": "1.1f",
       "xTicCount": 5,
-      "xFormatter": "2.1e",
+      "xFormatter": "f",
       "properties": [
         "ballDisplacement"
       ]
@@ -233,12 +227,11 @@
       [
         "mass-slider",
         "damping-slider",
-        "equilibrium-display"
+        "velocity-vectors"
       ],
       [
-        "velocity-vectors",
-        "displacement-display",
-        "time-display"
+        "equilibrium-display",
+        "displacement-display"
       ]
     ]
   },

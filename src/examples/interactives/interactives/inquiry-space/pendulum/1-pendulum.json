@@ -11,7 +11,7 @@
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "gridLines": true,
-        "showClock": false,
+        "showClock": true,
         "velocityVectors": {
           "length": 10
         }
@@ -187,22 +187,16 @@
       "displayValue": "return format('f')(value)"
     },
     {
-      "type": "numericOutput",
-      "id": "time-display",
-      "property": "time",
-      "displayValue": "return format('1.2f')(value)"
-    },
-    {
       "type": "graph",
       "id": "propertiesGraph",
       "title": "Pendulum Angle (°)",
-      "xlabel": "Time",
-      "ylabel": "m",
+      "xlabel": "Time  (s)",
+      "ylabel": "Angle (°)",
       "ymin": -50,
       "ymax": 50,
-      "xmax": 0.01,
+      "xmax": 10,
       "xTicCount": 5,
-      "xFormatter": "2.1e",
+      "xFormatter": "f",
       "properties": [
         "currentAngle"
       ]
@@ -220,12 +214,11 @@
       ],
       [
         "mass-slider",
-        "damping-slider"
+        "damping-slider",
+        "velocity-vectors"
       ],
       [
-        "velocity-vectors",
-        "current-angle-display",
-        "time-display"
+        "current-angle-display"
       ]
     ]
   },
