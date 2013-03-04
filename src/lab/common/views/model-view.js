@@ -40,11 +40,6 @@ define(function (require) {
         // Use it for dimensions of objects rendered inside the view.
         modelSize2px,
 
-        // Inverted scaling function for size transforming model units to "pixels".
-        // Use it for Y coordinates, as Y axis in model coordinate system increases
-        // from bottom to top, while but SVG has increases from top to bottom
-        modelSize2pxInv,
-
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
         gridContainer,
@@ -163,11 +158,6 @@ define(function (require) {
       // Basic modelSize2px scaling function for size.
       modelSize2px = function (sizeX) {
         return model2px(modelMinX + sizeX);
-      };
-
-      // Inverted modelSize2px scaling function for size (for y-coordinates, inverted domain).
-      modelSize2pxInv = function (sizeY) {
-        return model2px(modelMinY + sizeY);
       };
 
     }
@@ -461,9 +451,9 @@ define(function (require) {
 
       // create a model renderer ... if one hasn't already been created
       if (!renderer) {
-        renderer = new Renderer(model, containers, model2px, model2pxInv, modelSize2px, modelSize2pxInv);
+        renderer = new Renderer(model, containers, model2px, model2pxInv, modelSize2px);
       } else {
-        renderer.reset(model, containers, model2px, model2pxInv, modelSize2px, modelSize2pxInv);
+        renderer.reset(model, containers, model2px, model2pxInv, modelSize2px);
       }
 
       // Redraw container each time when some visual-related property is changed.
@@ -484,7 +474,7 @@ define(function (require) {
     //
     function repaint() {
       setupBackground();
-      renderer.repaint(model2px, model2pxInv, modelSize2px, modelSize2pxInv);
+      renderer.repaint(model2px, model2pxInv, modelSize2px);
     }
 
     api = {
@@ -531,10 +521,6 @@ define(function (require) {
       modelSize2px: function(val) {
         // See comments for model2px.
         return modelSize2px(val);
-      },
-      modelSize2pxInv: function(val) {
-        // See comments for model2px.
-        return modelSize2pxInv(val);
       }
     };
 

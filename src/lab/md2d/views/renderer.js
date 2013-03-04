@@ -26,7 +26,7 @@ define(function (require) {
         DISULPHIDE_BOND : 109
       };
 
-  return function MD2DView(model, containers, m2px, m2pxInv, mSize2px, mSize2pxInv) {
+  return function MD2DView(model, containers, m2px, m2pxInv, mSize2px) {
         // Public API object to be returned.
     var api = {},
 
@@ -52,11 +52,6 @@ define(function (require) {
         // Basic scaling function for size, it transforms model units to "pixels".
         // Use it for dimensions of objects rendered inside the view.
         modelSize2px = mSize2px,
-
-        // Inverted scaling function for size transforming model units to "pixels".
-        // Use it for Y coordinates, as Y axis in model coordinate system increases
-        // from bottom to top, while but SVG has increases from top to bottom
-        modelSize2pxInv = mSize2pxInv,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer        = containers.mainContainer,
@@ -1518,13 +1513,12 @@ define(function (require) {
     //
     // Call when model is reset or reloaded.
     //
-    function reset(mod, cont, m2px, m2pxInv, mSize2px, mSize2pxInv) {
+    function reset(mod, cont, m2px, m2pxInv, mSize2px) {
       model = mod;
       containers = cont;
       model2px = m2px;
       model2pxInv = m2pxInv;
       modelSize2px = mSize2px;
-      modelSize2pxInv = mSize2pxInv;
       init();
     }
 
@@ -1537,12 +1531,11 @@ define(function (require) {
     // Also call when the number of objects changes such that the container
     // must be setup again.
     //
-    function repaint(m2px, m2pxInv, mSize2px, mSize2pxInv) {
+    function repaint(m2px, m2pxInv, mSize2px) {
       if (arguments.length) {
         model2px = m2px;
         model2pxInv = m2pxInv;
         modelSize2px = mSize2px;
-        modelSize2pxInv = mSize2pxInv;
       }
       setupObstacles();
       setupVdwPairs();
