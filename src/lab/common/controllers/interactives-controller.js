@@ -68,9 +68,7 @@ define(function (require) {
         'numericOutput': NumericOutputController
       };
 
-  return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle) {
-
-    modelLoadedCallbacks = modelLoadedCallbacks || [];
+  return function interactivesController(interactive, viewSelector, layoutStyle) {
 
     var controller = {},
         modelController,
@@ -81,6 +79,7 @@ define(function (require) {
         componentCallbacks = [],
         onLoadScripts = [],
         resizeCallbacks = [],
+        modelLoadedCallbacks = [],
 
         // Hash of instantiated components.
         // Key   - component ID.
@@ -580,13 +579,25 @@ define(function (require) {
         }
       },
       /**
-       * Adds a callback, which is triggered when interactive container is resized.
-       * TODO: provide generic .on method, use events (d3.dispatcher?).
+       * Adds an event listener for the specified type.
+       * Supported events are: "resize" and "modelLoaded".
        *
-       * @param  {Function} callback
+       * @param {string} type Event type ("resize" or "modelLoaded").
+       * @param  {function|array} callback Callback function or an array of functions.
        */
-      onResize: function (callback) {
-        resizeCallbacks.push(callback);
+      on: function (type, callback) {
+        if (typeof callback === "function") {
+          callback = [callback];
+        }
+
+        switch(type) {
+          case "resize":
+            resizeCallbacks.concat(callback);
+            break;
+          case "modelLoaded":
+            modelLoadedCallbacks.concat(callback);
+            break;
+        }
       },
       /**
         Serializes interactive, returns object ready to be stringified.

@@ -169,7 +169,8 @@ AUTHORING = false;
     }
 
     if(!onFullIFramePage()) {
-      controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType);
+      controller = controllers.interactivesController(interactive, '#interactive-container', viewType);
+      controller.on("modelLoaded", applicationCallbacks);
     }
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];

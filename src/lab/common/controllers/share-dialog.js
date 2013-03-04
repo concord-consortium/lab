@@ -48,7 +48,7 @@ define(function (require) {
     this._$iframeContent = this.$element.find("#share-iframe-content");
 
     this._$iframeSize.on('change', $.proxy(this.updateIframeSize, this));
-    interactivesController.onResize($.proxy(this.updateIframeSize, this));
+    interactivesController.on("resize", $.proxy(this.updateIframeSize, this));
     this.updateIframeSize();
   }
   inherit(ShareDialog, BasicDialog);
