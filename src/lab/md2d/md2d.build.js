@@ -42,6 +42,8 @@
 
   // Additional modules.
   paths: {
+    // Plugin for loading plain text files.
+    'text': '../vendor/text/text',
     'cs' :'../vendor/require-cs/cs',
     'coffee-script': '../vendor/coffee-script/extras/coffee-script',
     'underscore': '../vendor/underscore/underscore',
