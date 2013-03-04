@@ -318,7 +318,7 @@
       "id": "bottom",
       "top": "model.bottom",
       "width": "interactive.width",
-      "padding-bottom": "1em"
+      "padding-top": "0.5em"
     }
   ]
 }
