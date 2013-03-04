@@ -66,6 +66,7 @@ define(function () {
         "top": "0",
         "right": "interactive.width",
         "padding-left": "1em",
+        "padding-right": "1em",
         "align": "right",
         "aboveOthers": true
       });
@@ -90,6 +91,7 @@ define(function () {
         "top": "0",
         // "banner-right" can be undefined, so check it.
         "right": aboutDialog ? "banner-right.left" : "interactive.width",
+        "padding-right": "1em",
         "align": "right",
         "aboveOthers": true
       });
