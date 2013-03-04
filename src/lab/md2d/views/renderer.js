@@ -72,7 +72,7 @@ define(function (require) {
         timeLabel,
         modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
-        timeSuffix = " (ps)",
+        timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")",
 
         radialBonds,
         radialBondResults,
@@ -112,7 +112,7 @@ define(function (require) {
 
 
     function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('time')/1000) + timeSuffix;
+      return timePrefix + modelTimeFormatter(model.get('displayTime')) + timeSuffix;
     }
 
     function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
