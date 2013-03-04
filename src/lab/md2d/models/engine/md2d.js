@@ -142,6 +142,12 @@ define(function (require, exports, module) {
         // System dimensions as [x, y] in nanometers. Default value can be changed until particles are created.
         size = [10, 10],
 
+        // System dimensions as minX, minY, maxX, maxY. Default value can be changed until turles are created.
+        minX =  0,
+        minY =  0,
+        maxX = 10,
+        maxY = 10,
+
         // Viscosity of the medium of the model
         viscosity,
 
@@ -1985,20 +1991,22 @@ define(function (require, exports, module) {
         time = t;
       },
 
-      setSize: function(v) {
+      setDimensions: function(v) {
         // NB. We may want to create a simple state diagram for the md engine (as well as for the 'modeler' defined in
         // lab.molecules.js)
         if (sizeHasBeenInitialized) {
           throw new Error("The molecular model's size has already been set, and cannot be reset.");
         }
-        var width  = (v[0] && v[0] > 0) ? v[0] : 10,
-            height = (v[1] && v[1] > 0) ? v[1] : 10;
-        size = [width, height];
+        minX = v[0];
+        minY = v[1];
+        maxX = v[2];
+        maxY = v[3];
+        size = [maxX - minX, maxY - minY];
         sizeHasBeenInitialized = true;
       },
 
-      getSize: function() {
-        return [size[0], size[1]];
+      getDimensions: function() {
+        return [minX, minY, maxX, maxY];
       },
 
       getLJCalculator: function() {

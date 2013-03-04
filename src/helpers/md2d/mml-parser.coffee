@@ -887,6 +887,12 @@ parseMML = (mmlString) ->
     # Remove modelSampleRate as this is Next Gen MW specific option.
     delete json.modelSampleRate
 
+    # Remove minX, minYm, maxX, maxY, in MD2D these are derived from model width and height
+    delete json.minX
+    delete json.minY
+    delete json.maxX
+    delete json.maxY
+
     return json: json
   # catch e
   #   return error: e.toString()
