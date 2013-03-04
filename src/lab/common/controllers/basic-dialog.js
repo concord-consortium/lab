@@ -10,7 +10,7 @@ define(function () {
     dialogClass: "interactive-dialog",
     // Ensure that font is being scaled dynamically!
     appendTo: "#responsive-content",
-    width: "30em"
+    width: "80%"
   };
 
   function BasicDialog(options) {

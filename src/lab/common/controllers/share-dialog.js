@@ -6,6 +6,7 @@ define(function (require) {
       inherit        = require('common/inherit'),
       BasicDialog    = require('common/controllers/basic-dialog'),
       shareDialogTpl = require('text!common/controllers/share-dialog.tpl'),
+      copyrightTpl   = require('text!common/controllers/copyright.tpl'),
 
       location = document.location,
 
@@ -37,7 +38,7 @@ define(function (require) {
       this._view.embeddableSharingUrl = origin + embeddablePath + hash;
     }
 
-    this.setContent(mustache.render(shareDialogTpl, this._view));
+    this.setContent(mustache.render(shareDialogTpl, this._view, {copyright: copyrightTpl}));
 
     /** @private */
     this._$interactiveContainer = $("#responsive-content");
