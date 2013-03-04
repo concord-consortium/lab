@@ -21,6 +21,24 @@ module Models
       end
     end
 
+    def update
+      @md2d_model = Models::Md2d.find(params['id'])
+
+      if @md2d_model.update_attributes(params[:md2d])
+        render({
+                 :json     => presenter(@m2d_model).runtime_properties,
+                 :status   => :created,
+                 :location => models_md2d_path(@md2d_model)
+               })
+      else
+        render({
+                 :json => @interactive.errors,
+                 :status => :unprocessable_entity
+               })
+        
+      end
+    end
+
     private
 
     def presenter(model=nil)

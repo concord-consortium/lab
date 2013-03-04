@@ -30,6 +30,7 @@ AUTHORING = false;
 
       $updateInteractiveButton = $("#update-interactive-button"),
       $saveInteractiveButton = $("#save-interactive-button"),
+      $saveModelButton = $("#save-model-button"),
       $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
@@ -72,11 +73,13 @@ AUTHORING = false;
       interactiveUrl,
       interactive,
       interactiveRemote,
+      modelRemote,
       hash,
       jsonModelPath, contentItems, mmlPath,
       interactivesPromise,
       buttonHandlersAdded = false,
       interactiveRemoteKeys = ['id', 'from_import', 'groupKey', 'path'],
+      modelRemoteKeys = ['id', 'from_import', 'location'],
       modelButtonHandlersAdded = false;
 
   function isEmbeddablePage() {
@@ -586,6 +589,34 @@ AUTHORING = false;
 
   }
 
+  function remoteSaveModel(modelState){
+    var modelJSON = {'md2d': modelState};
+
+    jQuery.ajax({
+      type: 'PUT',
+      url: '/models/md2ds/' + modelRemote.id,
+      data: JSON.stringify(modelJSON),
+      success: function(results) {
+        if (typeof results === 'string') results = JSON.parse(results);
+        modelRemote = results;
+        md2dModel = _.omit(modelRemote, modelRemoteKeys);
+
+        if(onFullPage()) {
+            controller.loadModel(modelRemote.id, md2dModel);
+        } else {
+          iframePhone.post({ type:'loadModel', data: { modelId: modelRemote.id, modelObject: md2dModel } });
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert("Error: "+ textStatus + " : " + errorThrown)
+      },
+      dataType: "json",
+      contentType: "application/json",
+      processData: false
+    });
+
+  }
+
   function setupCopySaveInteractive() {
     $saveInteractiveButton.show();
 
@@ -624,6 +655,24 @@ AUTHORING = false;
         remoteSaveInteractive(interactive['title'], interactiveState);
         editor.setValue(JSON.stringify(interactiveState, null, indent));
       }
+    });
+  }
+
+  function setupSaveModel(md2dModel) {
+    if (modelRemote.from_import) {
+      // if model is imported than it can only be copied
+      // by copying the interactive that contains it.
+      $saveModelButton.hide();
+      return;
+    }else {
+      $saveModelButton.show();
+      $saveModelButton.text("Save");
+    }
+
+    $saveModelButton.on('click', function() {
+      modelState = JSON.parse(modelEditor.getValue());
+      remoteSaveModel(modelState);
+      modelEditor.setValue(JSON.stringify(modelState, null, indent));
     });
   }
 
@@ -741,7 +790,8 @@ AUTHORING = false;
   function setupModelCodeEditor() {
     $.get(Lab.config.actualRoot + interactive.models[0].url).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
-      var md2dModel = results;
+      modelRemote = results;
+      var md2dModel = _.omit(modelRemote, modelRemoteKeys);
       $modelTextArea.text(JSON.stringify(md2dModel, null, indent));
       foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
       if (!modelEditor) {

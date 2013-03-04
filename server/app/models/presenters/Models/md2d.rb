@@ -23,6 +23,8 @@ module Presenters
           # these are all in the generated models
           p.set('type','md2d')
           p.add('from_import')
+          p.add('id')
+          p.set('location', self.json_path)
           p.add('height')
           p.add('width')
           p.add('lennardJonesForces')
