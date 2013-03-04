@@ -7,7 +7,7 @@ define(function (require) {
 
   var ExportController = function exportController(spec) {
     var perRun  = (spec.perRun || []).slice(),
-        perTick = ['timeInPs'].concat(spec.perTick.slice()),
+        perTick = ['displayTime'].concat(spec.perTick.slice()),
         perTickValues,
         controller;
 
@@ -64,14 +64,6 @@ define(function (require) {
     return controller = {
 
       modelLoadedCallback: function() {
-        // Show time in picoseconds by default b/c ps are the time unit used by the standard graph.
-        model.defineOutput('timeInPs', {
-          label: "Time",
-          unitAbbreviation: "ps"
-        }, function() {
-          return model.get('time')/1000;
-        });
-
         // put per-run parameters before per-run outputs
         function is(type) {
           return function(p) { return model.getPropertyType(p) === type; };
