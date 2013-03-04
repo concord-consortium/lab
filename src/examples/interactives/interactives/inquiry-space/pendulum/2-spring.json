@@ -40,7 +40,7 @@
   ],
   "outputs": [
     {
-      "name": "ballDisplacement",
+      "name": "currentDisplacement",
       "unitType": "length",
       "label": "Distance From Equilibrium",
       "value": "return get('equilibriumLength') - (getAtomProperties(0).y - getAtomProperties(1).y);"
@@ -53,19 +53,36 @@
 
     }
   ],
+  "exports": {
+    "perRun": ["gravity", "springConstant", "startingDisplacement", "ballMass", "damping"],
+    "perTick": ["currentDisplacement"]
+  },
   "parameters": [
     {
+      "name": "gravity",
+      "label": "Gravity",
+      "unitType": "acceleration",
+      "onChange": "set('gravitationalField', value);",
+      "initialValue": 9.8
+    },
+    {
       "name": "ballMass",
+      "label": "Ball Mass",
+      "unitType": "mass",
       "onChange": "setElementProperties(3, { mass: value });",
       "initialValue": 1.5
     },
     {
       "name": "springConstant",
+      "label": "Spring Constant",
+      "unitType": "stiffness",
       "onChange": "setRadialBondProperties(0, { strength: value });",
       "initialValue": 200
     },
     {
       "name": "startingDisplacement",
+      "label": "Starting Distance From Equilibrium",
+      "unitType": "length",
       "onChange": [
         "var newLength = get('equilibriumLength') - value;",
         "setAtomProperties(1, { y: getAtomProperties(0).y - newLength });"
@@ -74,6 +91,8 @@
     },
     {
       "name": "damping",
+      "label": "Damping",
+      "unitType": "dampingCoefficient",
       "onChange": "setAtomProperties(1, { friction: value });",
       "initialValue": 0
     }
@@ -97,7 +116,7 @@
       ],
       "steps": 38,
       "title": "Gravity (m/s²)",
-      "property": "gravitationalField"
+      "property": "gravity"
     },
     {
       "type": "slider",
@@ -176,7 +195,7 @@
         }
       ],
       "steps": 20,
-      "title": "Damping Force (Newton per m/s)",
+      "title": "Damping (Newton per m/s)",
       "property": "damping"
     },
     {
@@ -194,7 +213,7 @@
     {
       "type": "numericOutput",
       "id": "displacement-display",
-      "property": "ballDisplacement",
+      "property": "currentDisplacement",
       "displayValue": "return format('1.2f')(value)"
     },
     {
@@ -210,7 +229,7 @@
       "xTicCount": 5,
       "xFormatter": "f",
       "properties": [
-        "ballDisplacement"
+        "currentDisplacement"
       ]
     }
   ],

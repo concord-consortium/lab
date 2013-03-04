@@ -41,8 +41,8 @@
   "outputs": [
     {
       "name": "currentAngle",
-      "unitAbbreviation": "&deg;",
-      "label": "Current Angle",
+      "unitAbbreviation": "°",
+      "label": "Angle",
       "value": [
         "var a0 = getAtomProperties(0),",
         "    a1 = getAtomProperties(1);",
@@ -52,26 +52,45 @@
   ],
   "parameters": [
     {
+      "name": "gravity",
+      "label": "Gravity",
+      "unitType": "acceleration",
+      "onChange": "set('gravitationalField', value);",
+      "initialValue": 9.8
+    },
+    {
       "name": "rodLength",
+      "label": "Rod Length",
+      "unitType": "length",
       "onChange": "var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
       "initialValue": 1.0
     },
     {
       "name": "startingAngle",
+      "label": "Starting Angle",
+      "unitAbbreviation": "°",
       "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
       "initialValue": 45
     },
     {
       "name": "ballMass",
+      "label": "Ball Mass",
+      "unitType": "mass",
       "onChange": "setElementProperties(3, { mass: value });",
       "initialValue": 1.5
     },
     {
       "name": "damping",
+      "label": "Damping",
+      "unitType": "dampingCoefficient",
       "onChange": "setAtomProperties(1, { friction: value });",
       "initialValue": 0
     }
   ],
+  "exports": {
+    "perRun": ["gravity", "rodLength", "startingAngle", "ballMass", "damping"],
+    "perTick": ["currentAngle"]
+  },
   "components": [
     {
       "type": "slider",
@@ -91,7 +110,7 @@
       ],
       "steps": 38,
       "title": "Gravity (m/s²)",
-      "property": "gravitationalField"
+      "property": "gravity"
     },
     {
       "type": "slider",
@@ -170,7 +189,7 @@
         }
       ],
       "steps": 20,
-      "title": "Damping Force (Newton per m/s)",
+      "title": "Damping (Newton per m/s)",
       "property": "damping"
     },
 
