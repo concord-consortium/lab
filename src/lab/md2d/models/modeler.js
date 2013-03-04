@@ -336,7 +336,7 @@ define(function(require) {
 
       for (parameterName in savedParameters) {
         if (savedParameters.hasOwnProperty(parameterName)) {
-          // restore the property value if it was different or not defined in the current time step
+          // restore the property value if it was dispfferent or not defined in the current time step
           if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
             properties[parameterName] = savedParameters[parameterName];
             parametersByName[parameterName].isDefined = true;
@@ -2454,6 +2454,53 @@ define(function(require) {
     }, function() {
       return modelOutputState.time;
     });
+
+    // Confusing detail for review: setting 'unitType' here will cause the return value of the
+    // output function to be translated to macroscopic units, however, the function takes
+    // macroscopic units as input. Therefore we must not set 'unitType'.
+    model.defineOutput('timePerTick', {
+      label: "Model time per tick",
+      unitName:         unitsDefinition.units.time.name,
+      unitPluralName:   unitsDefinition.units.time.pluralName,
+      unitAbbreviation: unitsDefinition.units.time.abbreviation,
+      format: 'f'
+    }, function() {
+      return model.get('timeStep') * model.get('timeStepsPerTick');
+    });
+
+    (function() {
+      var displayTimeUnits;
+
+      // Allow units definition to declare a "Display time"; specifically, let MD2D units definition
+      // define a "displayValue" section in the time unit that returns ps instead of fs.
+
+      if (unitsDefinition.units.time.displayValue) {
+        displayTimeUnits = unitsDefinition.units.time.displayValue;
+      } else {
+        displayTimeUnits = _.extend({}, unitsDefinition.units.time);
+        displayTimeUnits.unitsPerBaseUnit = 1;
+      }
+
+      model.defineOutput('displayTime', {
+        label: "Time",
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.abbreviation,
+        format: '.3f'
+      }, function() {
+        return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
+      });
+
+      model.defineOutput('displayTimePerTick', {
+        label: "Model time per tick",
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.abbreviation,
+        format: '.3f'
+      }, function() {
+        return model.get('timePerTick') * displayTimeUnits.unitsPerBaseUnit;
+      });
+    }());
 
     model.defineOutput('kineticEnergy', {
       label: "Kinetic Energy",

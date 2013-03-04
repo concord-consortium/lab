@@ -35,7 +35,13 @@ define(function() {
       time: {
         name: "femtosecond",
         pluralName: "femtoseconds",
-        abbreviation: "fs"
+        abbreviation: "fs",
+        displayValue: {
+          unitsPerBaseUnit: 1e-3,
+          pluralName: "picoseconds",
+          name: "picosecond",
+          abbreviation: "ps"
+        }
       },
 
       // For unclear reasons, Classic MW scales the damping coefficient of obstacles linearly with
