@@ -33,10 +33,6 @@ define(function (require) {
         // Model container jQuery object.
         $modelContainer,
 
-        modelWidth = layoutConfig.minModelWidth,
-        modelTop = 0,
-        modelLeft = 0,
-
         // Interactive dimensions which fits canonical dimensions.
         // So, basic dimensions are <= canonical dimensions.
         // They are required to correctly determine font size
@@ -52,7 +48,21 @@ define(function (require) {
 
         // Dimensions of the container.
         availableWidth,
-        availableHeight;
+        availableHeight,
+
+        // Most important variables.
+        // In fact they define state of the layout.
+        modelWidth,
+        modelTop,
+        modelLeft,
+        topBoundary;
+
+    function reset() {
+      modelWidth = layoutConfig.minModelWidth;
+      modelTop = 0;
+      modelLeft = 0;
+      topBoundary = 0;
+    }
 
     function getDimensionOfContainer($container, dim) {
       var position = $container.position();
@@ -265,7 +275,7 @@ define(function (require) {
 
     function positionContainers() {
       var container, $container,
-          left, top, right, bottom, i, ii;
+          left, top, right, bottom, i, ii, id;
 
       $modelContainer.css({
         width:  modelWidth,
@@ -309,6 +319,26 @@ define(function (require) {
           top = bottom - $container.outerHeight();
           $container.css("top", top);
         }
+
+        // Containers with "aboveOthers" property should be treated in a special
+        // way. It's a group of absolutely positioned containers, which is always
+        // placed above other containers. So, in fact they define topBoundary
+        // for other components.
+        if (container.aboveOthers) {
+          bottom = getDimensionOfContainer($container, "bottom");
+          if (bottom > topBoundary) {
+            topBoundary = bottom;
+          }
+        }
+      }
+
+      // Shift typical containers (aboveOther == false) according to the top boundary.
+      for (id in $containerByID) {
+        if (!$containerByID.hasOwnProperty(id)) continue;
+        if (containerSpecByID[id] && containerSpecByID[id].aboveOthers) continue;
+        $container = $containerByID[id];
+        top = getDimensionOfContainer($container, "top");
+        $container.css("top", top + topBoundary);
       }
     }
 
@@ -319,26 +349,13 @@ define(function (require) {
           maxY = -Infinity,
           minX = Infinity,
           minY = Infinity,
-          topBoundary = 0,
           id, $container,
           right, bottom, top, left, ratio;
 
-      // Calculate boundaries of the interactive.
       for (id in $containerByID) {
         if (!$containerByID.hasOwnProperty(id)) continue;
+        if (containerSpecByID[id] && containerSpecByID[id].aboveOthers) continue;
         $container = $containerByID[id];
-        // containers with "aboveOthers" property should be treated in a special
-        // way. It's a group of absolutely positioned containers, which is always
-        // placed above other containers. So, in fact they define topBoundary
-        // for other components.
-        if (containerSpecByID[id] && containerSpecByID[id].aboveOthers) {
-          bottom = getDimensionOfContainer($container, "bottom");
-          if (bottom > topBoundary) {
-            topBoundary = bottom;
-          }
-          // Skip other calculations, topBoundary check is enough.
-          continue;
-        }
         right = getDimensionOfContainer($container, "right");
         if (right > maxX) {
           maxX = right;
@@ -361,8 +378,8 @@ define(function (require) {
       // It should be changed to some fitness function defining quality of the layout.
       // Using current algorithm, very often we follow some local minima.
       if ((maxX <= availableWidth && maxY <= availableHeight) &&
-          (availableWidth - maxX < 1 || availableHeight - maxY < 1) &&
-          (minX < 1 && minY - topBoundary < 1)) {
+          (Math.abs(availableWidth - maxX) < 1 || Math.abs(availableHeight - maxY) < 1) &&
+          (Math.abs(minX) < 1 && Math.abs(minY - topBoundary) < 1)) {
         // Perfect solution found!
         // (TODO: not so perfect, see above)
         return true;
@@ -428,15 +445,19 @@ define(function (require) {
           maxY = -Infinity,
           id, $container, val;
 
+      reset();
       availableWidth = canonicalInteractiveWidth;
       availableHeight = canonicalInteractiveHeight;
+      modelWidth = availableWidth;
+
       // Set basic interactive dimensions to default values to ensure that default font will be used.
       basicInteractiveWidth = canonicalInteractiveWidth;
       basicInteractiveHeight = canonicalInteractiveHeight;
+
       // Set font size to ensure that "fontScale" and "canonicalFontSize" are taken into account.
       setFontSize();
       setMinDimensions();
-      modelWidth = availableWidth;
+
       positionContainers();
       while (--redraws > 0 && !resizeModelContainer()) {
         positionContainers();
@@ -506,8 +527,10 @@ define(function (require) {
 
         console.time('[layout] update');
 
+        reset();
         availableWidth  = $interactiveContainer.width();
         availableHeight = $interactiveContainer.height();
+        modelWidth = availableWidth; // optimization
 
         // 0. Set font size of the interactive-container based on its size.
         setFontSize();
@@ -518,7 +541,6 @@ define(function (require) {
         setMinDimensions();
 
         // 2. Calculate optimal layout.
-        modelWidth = availableWidth;
         positionContainers();
         while (--redraws > 0 && !resizeModelContainer()) {
           positionContainers();

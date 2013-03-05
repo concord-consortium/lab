@@ -45,9 +45,9 @@ define(function (require) {
       // # getViewContainer()    - function returning a jQuery object containing
       //                           DOM elements of the component.
       // # modelLoadedCallback() - optional function taking no arguments, a callback
-      //                           which should be called when the model is loaded.
+      //                           which is called when the model is loaded.
       // # resize()              - optional function taking no arguments, a callback
-      //                           which will be called by the layout algorithm when component's container
+      //                           which is called by the layout algorithm when component's container
       //                           dimensions are changed. This lets component to adjust itself to the
       //                           new container dimensions.
       //
@@ -196,7 +196,7 @@ define(function (require) {
         // Note that all of these operations create a new object.
         // So interactive definition specified by the author won't be affected.
         // This is imporant for serialization correctness.
-        template = template.concat(banner.template);
+        template = banner.template.concat(template);
         layout = $.extend({}, layout, banner.layout);
         components = $.extend({}, componentByID, banner.components);
 
