@@ -591,10 +591,10 @@ define(function (require) {
 
         switch(type) {
           case "resize":
-            resizeCallbacks.concat(callback);
+            resizeCallbacks = resizeCallbacks.concat(callback);
             break;
           case "modelLoaded":
-            modelLoadedCallbacks.concat(callback);
+            modelLoadedCallbacks = modelLoadedCallbacks.concat(callback);
             break;
         }
       },
