@@ -1,6 +1,6 @@
 /*global define, $ */
 
-define(function () {
+define(function (require) {
 
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
