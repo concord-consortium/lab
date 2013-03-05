@@ -67,3 +67,6 @@
 [submodule "src/vendor/jquery-context-menu"]
 	path = src/vendor/jquery-context-menu
 	url = git://github.com/medialize/jQuery-contextMenu.git
+[submodule "src/vendor/jquery-selectBoxIt"]
+	path = src/vendor/jquery-selectBoxIt
+	url = git://github.com/gfranko/jquery.selectBoxIt.js.git

@@ -301,6 +301,7 @@ server/public/vendor: \
 	server/public/vendor/jquery/jquery.min.js \
 	server/public/vendor/jquery-ui/jquery-ui.min.js \
 	server/public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
+	server/public/vendor/jquery-selectBoxIt \
 	server/public/vendor/tinysort/jquery.tinysort.js \
 	server/public/vendor/jquery-context-menu \
 	server/public/vendor/science.js \
@@ -348,6 +349,11 @@ server/public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
 
 server/public/vendor/jquery-ui-touch-punch:
 	mkdir -p server/public/vendor/jquery-ui-touch-punch
+
+server/public/vendor/jquery-selectBoxIt:
+	mkdir -p server/public/vendor/jquery-selectBoxIt
+	cp src/vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js server/public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js
+	cp src/vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css server/public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.css
 
 server/public/vendor/jquery-context-menu:
 	mkdir -p server/public/vendor/jquery-context-menu
