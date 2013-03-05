@@ -141,9 +141,9 @@ describe "Lab interactives: serialization", ->
       validatedInteractive = controller.validateInteractive(interactive)
 
       # Change value of the pulldown.
-      $("#pulldown1").val "option2"
+      $("#pulldown1 select").val "option2"
       # Manually trigger change event, as ".val" doesn't do it.
-      $("#pulldown1").trigger "change"
+      $("#pulldown1 select").trigger "change"
       delete validatedInteractive.components[2].options[0].selected
       validatedInteractive.components[2].options[1].selected = true
 

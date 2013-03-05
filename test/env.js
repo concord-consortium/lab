@@ -21,6 +21,7 @@ $ = jQuery = window.jQuery;
 // Setup libraries which depend on jQuery.
 require("../server/public/vendor/jquery-ui/jquery-ui.js");
 require("../server/public/vendor/jquery-context-menu/jquery.contextMenu.js");
+require("../server/public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js");
 
 // Additional environment features for testing.
 require("./env-assert");
