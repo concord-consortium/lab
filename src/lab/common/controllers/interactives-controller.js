@@ -685,6 +685,8 @@ define(function (require) {
     // Select interactive container.
     // TODO: controller rather should create it itself to follow pattern of other components.
     $interactiveContainer = $(viewSelector);
+    // add container to API
+    controller.interactiveContainer = $interactiveContainer;
     // Initialize semantic layout.
     semanticLayout = new SemanticLayout($interactiveContainer);
     // Run this when controller is created.

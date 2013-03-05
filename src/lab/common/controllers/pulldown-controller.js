@@ -27,7 +27,8 @@ define(function () {
     }
 
     function initialize() {
-      var i, len, option, ulWidth, arrowWidth;
+      var i, len, option, ulWidth, arrowWidth,
+          parent = interactivesController.interactiveContainer;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.pulldown, component);
@@ -90,26 +91,26 @@ define(function () {
       // However, this is still problematic because we haven't added the element to
       // the page yet. This $().measure function allows us to embed the element hidden
       // on the page first to allow us to check the required width.
-      $.fn.measure = function(fn, selector) {
-        var el, selection, result;
-        el = $(this).clone(false);
-        el.css({
-          visibility: 'hidden',
-          position: 'absolute'
-        });
-        el.appendTo('body');
-        if (selector) {
-          selection = el.find(selector);
-        } else {
-          selection = el;
-        }
-        result = fn.apply(selection);
-        el.remove();
-        return result;
-      };
+      $.fn.measure = function(fn, selector, parent) {
+          var el, selection, result;
+          el = $(this).clone(false);
+          el.css({
+            visibility: 'hidden',
+            position: 'absolute'
+          });
+          el.appendTo(parent);
+          if (selector) {
+            selection = el.find(selector);
+          } else {
+            selection = el;
+          }
+          result = fn.apply(selection);
+          el.remove();
+          return result;
+        };
 
-      ulWidth    = $wrapper.measure(function(){ return this.width() }, "ul" );
-      arrowWidth = $wrapper.measure(function(){ return this.width() }, ".selectboxit-arrow-container" );
+        ulWidth    = $wrapper.measure(function(){ return this.width() }, "ul", parent );
+        arrowWidth = $wrapper.measure(function(){ return this.width() }, ".selectboxit-arrow-container", parent );
 
       $wrapper.find(".selectboxit").css("width", ulWidth+arrowWidth);
       $wrapper.find(".selectboxit-text").css("max-width", ulWidth);
