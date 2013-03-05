@@ -144,6 +144,7 @@
       "type": "slider",
       "id": "temperature-property-slider",
       "title": "Temperature (set via property link)",
+      "width": "18em",
       "min": 1,
       "max": 3000,
       "steps": 30,
@@ -167,6 +168,7 @@
       "type": "slider",
       "id": "temperature-action-slider",
       "title": "Temperature (set via action)",
+      "width": "18em",
       "min": 1,
       "max": 3000,
       "steps": 30,
@@ -203,6 +205,11 @@
       "id": "text-link",
       "text": "Clickable Text (it starts the simulation)",
       "onClick": "start();"
+    },
+    {
+      "type": "image",
+      "id": "image",
+      "src": "http://lab.concord.org/resources/layout/cc-logo.png"
     }
   ],
   "layout": {
@@ -223,6 +230,9 @@
         "text-header",
         "text-basic",
         "text-link"
+      ],
+      [
+        "image"
       ]
     ],
     "right": [
