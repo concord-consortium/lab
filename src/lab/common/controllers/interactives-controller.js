@@ -197,7 +197,7 @@ define(function (require) {
         banner = setupBanner(interactive, controller);
         // Note that all of these operations create a new object.
         // So interactive definition specified by the author won't be affected.
-        // This is imporant for serialization correctness.
+        // This is important for serialization correctness.
         template = banner.template.concat(template);
         layout = $.extend({}, layout, banner.layout);
         components = $.extend({}, componentByID, banner.components);
@@ -258,7 +258,9 @@ define(function (require) {
 
       // Register component callback if it is available.
       if (comp.modelLoadedCallback) {
-        componentCallbacks.push(comp.modelLoadedCallback);
+        // $.proxy ensures that callback will be always executed
+        // in the context of correct object ('this' binding).
+        componentCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
       }
     }
 
@@ -408,10 +410,8 @@ define(function (require) {
 
       @param newInteractive
         hash representing the interactive specification
-      @param viewSelector
-        jQuery selector that finds the element to put the interactive view into
     */
-    function loadInteractive(newInteractive, viewSelector) {
+    function loadInteractive(newInteractive) {
       var componentJsons,
           i, len;
 
