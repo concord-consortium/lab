@@ -207,8 +207,27 @@
       "onClick": "start();"
     },
     {
+      "type": "text",
+      "id": "abs-path-label",
+      "width": "12em",
+      "text": "Image with absolute URL:"
+    },
+    {
+      "type": "text",
+      "id": "rel-path-label",
+      "width": "12em",
+      "text": "Image with relative URL (relative to model URL!):"
+    },
+    {
       "type": "image",
-      "id": "image",
+      "id": "image-relative-path",
+      "width": "5em",
+      "src": "oilWaterComp.png"
+    },
+    {
+      "type": "image",
+      "id": "image-absolute-path",
+      "width": "10em",
       "src": "http://lab.concord.org/resources/layout/cc-logo.png"
     }
   ],
@@ -232,7 +251,10 @@
         "text-link"
       ],
       [
-        "image"
+        "abs-path-label", "image-absolute-path"
+      ],
+      [
+        "rel-path-label", "image-relative-path"
       ]
     ],
     "right": [
