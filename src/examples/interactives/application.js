@@ -536,7 +536,7 @@ AUTHORING = false;
               "width": 600,
               "height":400
             },
-            "url": "DataGames/Games/concord-lab" + "/examples/interactives/embeddable.html#" +  interactiveUrl
+            "url": Lab.config.dataGamesProxyPrefix + "examples/interactives/embeddable.html#" +  interactiveUrl
           }],
           dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
       return encodeURI(dgUrl);
