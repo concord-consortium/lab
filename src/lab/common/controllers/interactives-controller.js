@@ -168,54 +168,8 @@ define(function (require) {
           // also be sure to get notified when the underlying model changes
           modelController.on('modelReset', modelLoaded);
           controller.modelController = modelController;
-          // Finally, it's possible to setup layout.
-          // Layout requires that model controller is availalbe and initialized,
-          // that's why we have to setup it here and not e.g. in loadInteractive.
-          setupLayout();
           // Setup model and notify observers that model was loaded.
           modelLoaded(modelConfig);
-        }
-      }
-
-      function setupLayout() {
-        var template, layout, components, fontScale, banner;
-
-        if (typeof interactive.template === "string") {
-          template = templates[interactive.template];
-        } else {
-          template = interactive.template;
-        }
-
-        // The authored definition of which components go in which container.
-        layout = interactive.layout;
-        // Font scale which affect whole interactive container.
-        fontScale = interactive.fontScale;
-
-        // Banner hash containing components, layout containers and layout deinition
-        // (components location). Keep it in a separate structure, because we do not
-        // expect these objects to be serialized!
-        banner = setupBanner(interactive, controller);
-        // Note that all of these operations create a new object.
-        // So interactive definition specified by the author won't be affected.
-        // This is important for serialization correctness.
-        template = banner.template.concat(template);
-        layout = $.extend({}, layout, banner.layout);
-        components = $.extend({}, componentByID, banner.components);
-
-        // Setup interactive using both author components and components
-        // created automatically in this controller.
-        semanticLayout.setupInteractive(template, layout, components, modelController, fontScale);
-
-        // Finally, layout interactive.
-        semanticLayout.layoutInteractive();
-
-        // We are rendering in embeddable mode if only element on page
-        // so resize when window resizes.
-        if (onlyElementOnPage()) {
-          $(window).unbind('resize');
-          $(window).on('resize', function() {
-            controller.resize();
-          });
         }
       }
 
@@ -232,6 +186,48 @@ define(function (require) {
           scriptingAPI.extend(modelController.ScriptingAPI);
           scriptingAPI.exposeScriptingAPI();
         }
+      }
+    }
+
+    function setupLayout() {
+      var template, layout, components, fontScale, banner;
+
+      if (typeof interactive.template === "string") {
+        template = templates[interactive.template];
+      } else {
+        template = interactive.template;
+      }
+
+      // The authored definition of which components go in which container.
+      layout = interactive.layout;
+      // Font scale which affect whole interactive container.
+      fontScale = interactive.fontScale;
+
+      // Banner hash containing components, layout containers and layout deinition
+      // (components location). Keep it in a separate structure, because we do not
+      // expect these objects to be serialized!
+      banner = setupBanner(interactive, controller);
+      // Note that all of these operations create a new object.
+      // So interactive definition specified by the author won't be affected.
+      // This is important for serialization correctness.
+      template = banner.template.concat(template);
+      layout = $.extend({}, layout, banner.layout);
+      components = $.extend({}, componentByID, banner.components);
+
+      // Setup interactive using both author components and components
+      // created automatically in this controller.
+      semanticLayout.setupInteractive(template, layout, components, modelController, fontScale);
+
+      // Finally, layout interactive.
+      semanticLayout.layoutInteractive();
+
+      // We are rendering in embeddable mode if only element on page
+      // so resize when window resizes.
+      if (onlyElementOnPage()) {
+        $(window).unbind('resize');
+        $(window).on('resize', function() {
+          controller.resize();
+        });
       }
     }
 
@@ -310,6 +306,11 @@ define(function (require) {
       for(i = 0; i < modelLoadedCallbacks.length; i++) {
         modelLoadedCallbacks[i]();
       }
+
+      // Finally, it's possible to setup layout.
+      // Layout requires that model controller is availalbe and initialized,
+      // that's why we have to setup it here and not e.g. in loadInteractive.
+      setupLayout();
     }
 
     /**
