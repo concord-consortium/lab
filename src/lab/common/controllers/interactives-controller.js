@@ -589,14 +589,13 @@ define(function (require) {
       on: function (type, callback) {
         if (typeof callback === "function") {
           callback = [callback];
-        } else if (_.isArray(callback) && callback.length > 0) {
-          if (_.some(callback, function(cb){ typeof cb !== 'function'})){
-            throw new Error("Invalid callback, must be an array of functions");
+        } else if ($.isArray(callback)) {
+          if (callback.some(function (cb) { return typeof cb !== 'function'; })) {
+            throw new Error("Invalid callback, must be an array of functions.");
           }
         } else {
-          throw new Error("Invalid callback, must be a function or array of functions");
+          throw new Error("Invalid callback, must be a function or array of functions.");
         }
-
 
         switch(type) {
           case "resize":
