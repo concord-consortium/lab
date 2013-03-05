@@ -2,8 +2,11 @@
 
 define(function (require) {
 
-  var inherit              = require('common/inherit'),
-      InteractiveComponent = require('common/controllers/interactive-component');
+  var labConfig            = require('lab.config'),
+      inherit              = require('common/inherit'),
+      InteractiveComponent = require('common/controllers/interactive-component'),
+
+      externalUrl = /^https?:\/\//i;
 
   /**
    * Image controller.
@@ -11,26 +14,57 @@ define(function (require) {
    * @constructor
    * @extends InteractiveComponent
    * @param {Object} component Component JSON definition.
+   * @param {ScriptingAPI} scriptingAPI
+   * @param {InteractiveController} controller
    */
-  function ImageController(component) {
-    var $img = $("<img>");
-
+  function ImageController(component, scriptingAPI, controller) {
     // Call super constructor.
     InteractiveComponent.call(this, "image", component);
 
-    $img.attr("src", component.src);
+    /** @private */
+    this._controller = controller;
+    /** @private */
+    this._$img = $("<img>");
+    /** @private */
+    this._externalUrl = externalUrl.test(this.component.src);
 
-    // Whem dimension is different from "auto",
+    if (this._externalUrl) {
+      // If URL is external, we can setup it just once.
+      this._$img.attr("src", this.component.src);
+    }
+
+    // When a dimension is different from "auto",
     // ensure that image fits its parent container.
     if (this.component.width !== "auto") {
-      $img.css("width", "100%");
+      this._$img.css("width", "100%");
     }
     if (this.component.height !== "auto") {
-      $img.css("height", "100%");
+      this._$img.css("height", "100%");
     }
-    $img.appendTo(this.$element);
+    this._$img.appendTo(this.$element);
   }
   inherit(ImageController, InteractiveComponent);
+
+  /**
+   * Implements optional callback supported by Interactive Controller.
+   */
+  ImageController.prototype.modelLoadedCallback = function() {
+    var src, modelUrl;
+    // It's necessary to update path only if its relative (as it's relative to
+    // model file).
+    if (!this._externalUrl) {
+      src = this.component.src;
+      // Relative path should be relative to the model definition file, to
+      // follow pattern used for images inside model container.
+      // TODO: not sure if it makes sense for the Interactive images. When web
+      // application is ready, probably it will be changed anyway.
+      modelUrl = this._controller.getModelController().modelUrl;
+      // Remove <model-name>.json from url.
+      modelUrl = modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
+      src = labConfig.actualRoot + modelUrl + src;
+      this._$img.attr("src", src);
+    }
+  };
 
   return ImageController;
 });

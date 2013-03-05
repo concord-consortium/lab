@@ -182,6 +182,8 @@ define(function() {
         required: true
       },
       src: {
+        // Absolute path should start with http(s)://
+        // Relative path is relative to model URL.
         defaultValue: ""
       },
       width: {
