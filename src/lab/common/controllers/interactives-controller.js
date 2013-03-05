@@ -14,6 +14,7 @@ define(function (require) {
       ButtonController        = require('common/controllers/button-controller'),
       CheckboxController      = require('common/controllers/checkbox-controller'),
       TextController          = require('common/controllers/text-controller'),
+      ImageController         = require('common/controllers/image-controller'),
       RadioController         = require('common/controllers/radio-controller'),
       SliderController        = require('common/controllers/slider-controller'),
       PulldownController      = require('common/controllers/pulldown-controller'),
@@ -57,6 +58,7 @@ define(function (require) {
       // Please see: src/sass/lab/_interactive-component.sass to check what this CSS class defines.
       ComponentConstructor = {
         'text':          TextController,
+        'image':         ImageController,
         'button':        ButtonController,
         'checkbox':      CheckboxController,
         'pulldown':      PulldownController,

@@ -174,6 +174,29 @@ define(function() {
       }
     },
 
+    image: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      src: {
+        defaultValue: ""
+      },
+      width: {
+        // Fixed width as a default value can seem counter-intuitive,
+        // however it ensures that images scale themselves by default (ems!).
+        // Author can adjust its width or height manually.
+        // Both width and height equal to "auto" will cause that image won't
+        // scale, as it will use its dimensions in px!
+        defaultValue: "12em"
+      },
+      height: {
+        defaultValue: "auto"
+      }
+    },
+
     button: {
       id: {
         required: true
