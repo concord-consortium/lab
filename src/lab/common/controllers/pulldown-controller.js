@@ -9,7 +9,7 @@ define(function () {
         // Public API.
     var controller,
         // DOM elements.
-        $pulldown, $option,
+        $wrapper, $pulldown, $option,
         // Options definitions from component JSON definition.
         options,
         // List of jQuery objects wrapping <select> elements.
@@ -27,7 +27,7 @@ define(function () {
     }
 
     function initialize() {
-      var i, len, option;
+      var i, len, option, ulWidth, arrowWidth;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.pulldown, component);
@@ -37,9 +37,7 @@ define(function () {
         options[i] = validator.validateCompleteness(metadata.pulldownOption, options[i]);
       }
 
-      $pulldown = $('<select>').attr('id', component.id);
-      // Each interactive component has to have class "component".
-      $pulldown.addClass("component");
+      $pulldown = $('<select>');
 
       for (i = 0, len = options.length; i < len; i++) {
         option = options[i];
@@ -70,6 +68,51 @@ define(function () {
           model.set(component.property, options[index].value);
         }
       });
+
+      // Add $pulldown to a wrapping span. This way $pulldown.selectBoxIt() will create
+      // a selectBox element which will also be in the span, and then we can return
+      // this element to be embedded in the interactive
+      $wrapper = $('<span>')
+        .attr('id', component.id)
+        .addClass("component")
+        .append($pulldown);
+
+      $pulldown.selectBoxIt();
+
+      // SelectBoxIt assumes that all select boxes are always going to have a width
+      // set in CSS (default 220px). This doesn't work for us, as we don't know how
+      // wide the content is going to be. Instead we have to measure the needed width
+      // of the internal ul list, and use that to define the width of the select box.
+      //
+      // This issue has been raised in SelectBoxIt:
+      // https://github.com/gfranko/jquery.selectBoxIt.js/issues/129
+      //
+      // However, this is still problematic because we haven't added the element to
+      // the page yet. This $().measure function allows us to embed the element hidden
+      // on the page first to allow us to check the required width.
+      $.fn.measure = function(fn, selector) {
+        var el, selection, result;
+        el = $(this).clone(false);
+        el.css({
+          visibility: 'hidden',
+          position: 'absolute'
+        });
+        el.appendTo('body');
+        if (selector) {
+          selection = el.find(selector);
+        } else {
+          selection = el;
+        }
+        result = fn.apply(selection);
+        el.remove();
+        return result;
+      };
+
+      ulWidth    = $wrapper.measure(function(){ return this.width() }, "ul" );
+      arrowWidth = $wrapper.measure(function(){ return this.width() }, ".selectboxit-arrow-container" );
+
+      $wrapper.find(".selectboxit").css("width", ulWidth+arrowWidth);
+      $wrapper.find(".selectboxit-text").css("max-width", ulWidth);
     }
 
     // Public API.
@@ -86,7 +129,7 @@ define(function () {
 
       // Returns view container.
       getViewContainer: function () {
-        return $pulldown;
+        return $wrapper;
       },
 
       // Returns serialized component definition.
