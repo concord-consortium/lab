@@ -166,7 +166,9 @@ AUTHORING = false;
 
     if(!onFullIFramePage()) {
       controller = controllers.interactivesController(interactive, '#interactive-container');
-      controller.on("modelLoaded", applicationCallbacks);
+      if (_.isArray(applicationCallbacks) && applicationCallbacks.length > 0) {
+        controller.on("modelLoaded", applicationCallbacks);
+      }
     }
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
