@@ -537,7 +537,10 @@ define(function (require) {
         $modelContainer = modelController.getViewContainer();
         $modelContainer.css({
           "display": "inline-block",
-          "position": "absolute"
+          "position": "absolute",
+          // Model should be below other components when they overlap.
+          // E.g. when overlapping images are used.
+          "z-index": "-1"
         });
         $modelContainer.appendTo($interactiveContainer);
         $containerByID.model = $modelContainer;
