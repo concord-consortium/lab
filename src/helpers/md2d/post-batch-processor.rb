@@ -131,6 +131,7 @@ class MD2DImports
       @model_list.push(MD2DDirectory.new("new-examples-for-nextgen").section)
       @model_list.push(MD2DDirectory.new("student/classic/pendulum").section)
       @model_list.push(MD2DDirectory.new("visual/Recycling").section)
+      @model_list.push(MD2DDirectory.new("visual/Detergents").section)
       @model_list.push(MD2DSection.new("inquiry-space").section)
       @model_list.push(MD2DSection.new("layout-tests").section)
       @dirs = Dir["tutorial/**"]
