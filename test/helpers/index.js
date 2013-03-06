@@ -138,7 +138,8 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
       },
       SemanticLayout = function() {
         return {
-          setupInteractive: function() {},
+          initialize: function() {},
+          setupModel: function() {},
           layoutInteractive: function() {}
         };
       };

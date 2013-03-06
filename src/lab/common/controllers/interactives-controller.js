@@ -171,6 +171,10 @@ define(function (require) {
           // Setup model and notify observers that model was loaded.
           modelLoaded(modelConfig);
         }
+        // Setup model in layout.
+        semanticLayout.setupModel(modelController);
+        // Finally, layout interactive.
+        semanticLayout.layoutInteractive();
       }
 
       function createModelController(type, modelUrl, modelConfig) {
@@ -214,12 +218,9 @@ define(function (require) {
       layout = $.extend({}, layout, banner.layout);
       components = $.extend({}, componentByID, banner.components);
 
-      // Setup interactive using both author components and components
+      // Setup layout using both author components and components
       // created automatically in this controller.
-      semanticLayout.setupInteractive(template, layout, components, modelController, fontScale);
-
-      // Finally, layout interactive.
-      semanticLayout.layoutInteractive();
+      semanticLayout.initialize(template, layout, components, fontScale);
 
       // We are rendering in embeddable mode if only element on page
       // so resize when window resizes.
@@ -306,11 +307,6 @@ define(function (require) {
       for(i = 0; i < modelLoadedCallbacks.length; i++) {
         modelLoadedCallbacks[i]();
       }
-
-      // Finally, it's possible to setup layout.
-      // Layout requires that model controller is availalbe and initialized,
-      // that's why we have to setup it here and not e.g. in loadInteractive.
-      setupLayout();
     }
 
     /**
@@ -460,6 +456,9 @@ define(function (require) {
           });
         }
       }
+
+      // When all components are created, we can initialize semantic layout.
+      setupLayout();
     }
 
     /**

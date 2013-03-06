@@ -160,14 +160,6 @@ define(function (require) {
       $containerByID = {};
       containerSpecByID = {};
 
-      $modelContainer = modelController.getViewContainer();
-      $modelContainer.css({
-        "display": "inline-block",
-        "position": "absolute"
-      });
-      $modelContainer.appendTo($interactiveContainer);
-      $containerByID.model = $modelContainer;
-
       for (i = 0, ii = containerSpecList.length; i < ii; i++) {
         container = containerSpecList[i];
         id = container.id;
@@ -463,6 +455,8 @@ define(function (require) {
         positionContainers();
       }
 
+      console.log('[layout] aspect ratio calc: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
+
       for (id in $containerByID) {
         if (!$containerByID.hasOwnProperty(id)) continue;
         $container = $containerByID[id];
@@ -489,43 +483,82 @@ define(function (require) {
     // Public API.
     layout = {
       /**
-        Setups interactive layout. Cleanups interactive container, creates new containers and places
-        components inside them.
-
-        This method should be called each time when at least one of the following objects is changed:
-          - layout template,
-          - component locations,
-          - components,
-          - model controller,
-          - font scale.
-
-        @param {array} newContainers List of layout containers.
-        @param {Object} newContainersContent Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
-        @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
-        @param {ModelController} newModelController Model Controller object.
-        @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
-      */
-      setupInteractive: function(newContainers, newContainersContent, newComponents, newModelController, newFontScale) {
+       * Setups interactive layout. Cleanups interactive container, creates new containers and places
+       * components inside them.
+       *
+       * This method should be called each time when at least one of the following objects is changed:
+       *  - layout template,
+       *  - component locations,
+       *  - components,
+       *  - model controller,
+       *  - font scale.
+       *
+       * @param {array} newContainers List of layout containers.
+       * @param {Object} newContainersContent Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
+       * @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
+       *
+       * @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
+       */
+      initialize: function(newContainers, newContainersContent, newComponents, newFontScale) {
         containerSpecList = newContainers;
         containersContent = newContainersContent;
         componentByID = newComponents;
-        modelController = newModelController;
         fontScale = newFontScale;
 
         createContainers();
         placeComponentsInContainers();
-        calcInteractiveAspectRatio();
+        // Clear previous aspect ratio, as new components
+        // can completely change it.
+        interactiveAspectRatio = null;
       },
 
       /**
-        Layouts interactive. Adjusts size of the model container to ensure that all components are inside the
-        interactive container and all available space is used in the best way.
-      */
+       * Setups model controller, as well as model container provided by it.
+       * Model Controller should implement getViewVontainer() method.
+       * Always call this function after initialize()!
+       *
+       * @param {ModelController} newModelController Model Controller object.
+       */
+      setupModel: function (newModelController) {
+        modelController = newModelController;
+        // Clear previous aspect ratio, as new model
+        // can completely change it.
+        interactiveAspectRatio = null;
+
+        if ($containerByID.model) {
+          if ($containerByID.model === modelController.getViewContainer()) {
+            // Do nothing, the valid model container is already inside interactive container.
+            return;
+          }
+          // If there is an old model container, remove it.
+          $containerByID.model.remove();
+        }
+
+        $modelContainer = modelController.getViewContainer();
+        $modelContainer.css({
+          "display": "inline-block",
+          "position": "absolute"
+        });
+        $modelContainer.appendTo($interactiveContainer);
+        $containerByID.model = $modelContainer;
+      },
+
+      /**
+       * Layouts interactive. Adjusts size of the model container to ensure that all components are inside the
+       * interactive container and all available space is used in the best way.
+       */
       layoutInteractive: function () {
         var redraws = layoutConfig.iterationsLimit,
             id;
 
         console.time('[layout] update');
+
+        if (!interactiveAspectRatio) {
+          // Calculate aspect ratio when it's needed.
+          // Adding a new component or model change can invalidate current
+          // aspect ratio.
+          calcInteractiveAspectRatio();
+        }
 
         reset();
         availableWidth  = $interactiveContainer.width();
