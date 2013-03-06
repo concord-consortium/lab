@@ -12,6 +12,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
   dgExporter =
     exportData: sinon.spy()
     openTable:  sinon.spy()
+    logEvent: sinon.spy()
 
   requirejs.define 'import-export/dg-exporter', [], -> dgExporter
 
@@ -147,3 +148,70 @@ helpers.withIsolatedRequireJS (requirejs) ->
             model.set gravitationalField: 0
             points = exportedTimePoints()
             points.should.eql [0]
+
+      describe "event logging", ->
+        beforeEach ->
+          dgExporter.logEvent.reset()
+
+        describe "after the model is started", ->
+          beforeEach ->
+            model.resume()
+
+          it "should log \"User started model\"", ->
+            dgExporter.logEvent.callCount.should.eql 1
+            call = dgExporter.logEvent.getCall 0
+            call.args[0].should.match /^User started model./
+
+          it "should pass the per-run parameters", ->
+            call = dgExporter.logEvent.getCall 0
+            json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
+            hash = JSON.parse(json)
+            hash.should.eql {
+              action: "started",
+              type: "model",
+              fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
+              values: [10, 1]
+            }
+
+
+        describe "after a model reset", ->
+          beforeEach ->
+            model.reset()
+
+          it "should log \"User reset model\"", ->
+            dgExporter.logEvent.callCount.should.eql 1
+            call = dgExporter.logEvent.getCall 0
+            call.args[0].should.match /^User reset model./
+
+          it "should pass the per-run parameters", ->
+            call = dgExporter.logEvent.getCall 0
+            json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
+            hash = JSON.parse(json)
+            hash.should.eql {
+              action: "reset",
+              type: "model",
+              fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
+              values: [10, 1]
+            }
+
+        describe "after exportData is called", ->
+          beforeEach ->
+            exportController.exportData()
+
+          it "should log \"User exported model\"", ->
+            dgExporter.logEvent.callCount.should.eql 1
+            call = dgExporter.logEvent.getCall 0
+            call.args[0].should.match /^User exported model./
+
+          it "should pass the per-run parameters", ->
+            call = dgExporter.logEvent.getCall 0
+            json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
+            hash = JSON.parse(json)
+            hash.should.eql {
+              action: "exported",
+              type: "model",
+              fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
+              values: [10, 1]
+            }
+
+

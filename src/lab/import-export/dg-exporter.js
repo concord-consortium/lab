@@ -168,6 +168,15 @@ define(function(require) {
         type: 'DG.TableView',
         log: false
       });
+    },
+
+    /**
+      Call any time to log an event to DataGames
+    */
+    logEvent: function(logString) {
+      this.doCommand('logAction', {
+        formatStr: logString
+      });
     }
   };
 });

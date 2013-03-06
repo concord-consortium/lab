@@ -33,12 +33,44 @@ define(function (require) {
       perTickValues.length = model.stepCounter() + 1;
     }
 
+    function logEvent(action) {
+      var logString,
+          perRunPropertyLabels = [],
+          perRunPropertyValues = [],
+          i;
+
+      for (i = 0; i < perRun.length; i++) {
+        perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
+        perRunPropertyValues[i] = model.get(perRun[i]);
+      }
+
+      logString = "User " + action + " model. ";
+      logString += "Per-run Settings and Data: ";
+      logString += JSON.stringify({
+        action: action,
+        type: "model",
+        fields: perRunPropertyLabels,
+        values: perRunPropertyValues
+      });
+
+      dgExporter.logEvent(logString);
+    }
+
     function registerModelListeners() {
       // Namespace listeners to '.exportController' so we can eventually remove them all at once
       model.on('tick.exportController', appendDataPoint);
       model.on('reset.exportController', resetData);
       model.on('play.exportController', removeDataAfterStepPointer);
       model.on('invalidation.exportController', removeDataAfterStepPointer);
+
+      model.on('play.exportController', function() {
+        logEvent('started');
+      });
+
+      model.on('willReset.exportController', function() {
+        logEvent('reset');
+      });
+
     }
 
     function getLabelForProperty(property) {
@@ -79,6 +111,8 @@ define(function (require) {
             perRunPropertyValues = [],
             perTickLabels = [],
             i;
+
+        logEvent('exported');
 
         for (i = 0; i < perRun.length; i++) {
           perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
