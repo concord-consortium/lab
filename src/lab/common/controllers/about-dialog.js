@@ -9,13 +9,20 @@ define(function (require) {
    * About Dialog. Inherits from Basic Dialog.
    *
    * @constructor
+   */
+  function AboutDialog() {
+    BasicDialog.call(this, {dialogClass: "about-dialog"});
+  }
+  inherit(AboutDialog, BasicDialog);
+
+  /**
+   * Updates dialog content using interactive JSON definition.
+   *
    * @param {Object} interactive Interactive JSON definition.
    */
-  function AboutDialog(interactive) {
+  AboutDialog.prototype.update = function(interactive) {
     var $aboutContent = $("<div>"),
         about;
-
-    BasicDialog.call(this, {dialogClass: "about-dialog"});
 
     this.set("title", "About: " + interactive.title);
 
@@ -28,8 +35,7 @@ define(function (require) {
     });
 
     this.setContent($aboutContent);
-  }
-  inherit(AboutDialog, BasicDialog);
+  };
 
   return AboutDialog;
 });

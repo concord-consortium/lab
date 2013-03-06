@@ -3,10 +3,7 @@
 define(function () {
 
   var labConfig      = require('lab.config'),
-      TextController = require('common/controllers/text-controller'),
-      AboutDialog    = require('common/controllers/about-dialog'),
-      ShareDialog    = require('common/controllers/share-dialog'),
-      CreditsDialog  = require('common/controllers/credits-dialog');
+      TextController = require('common/controllers/text-controller');
 
   /**
    * Returns a hash containing:
@@ -16,16 +13,16 @@ define(function () {
    * All these things are used to build the interactive banner.
    *
    * @param {Object} interactive Interactive JSON definition.
-   * @param {InteractivesController} interactivesController
+   * @param {CreditsDialog} creditsDialog
+   * @param {AboutDialog} aboutDialog
+   * @param {ShareDialog} shareDialog
    */
-  return function setupBanner(interactive, interactivesController) {
+  return function setupBanner(interactive, creditsDialog, aboutDialog, shareDialog) {
     var components = {},
         template = [],
         layout = {},
-
-        creditsDialog,
-        shareDialog,
-        aboutDialog;
+        // About link visible if there is about section or subtitle.
+        aboutVisible = interactive.about || interactive.subtitle;
 
     function createLinkInContainer(link, container) {
       components[link.id] = new TextController(link);
@@ -33,7 +30,7 @@ define(function () {
       layout[container.id] = [link.id];
     }
 
-    creditsDialog = new CreditsDialog(interactive);
+    creditsDialog.update(interactive);
     createLinkInContainer(
     {
       "type": "text",
@@ -51,8 +48,8 @@ define(function () {
     });
 
     // Define about link only if "about" or "subtitle" section is available.
-    if (interactive.about || interactive.subtitle) {
-      aboutDialog = new AboutDialog(interactive);
+    if (aboutVisible) {
+      aboutDialog.update(interactive);
       createLinkInContainer(
       {
         "type": "text",
@@ -77,7 +74,7 @@ define(function () {
     // has to be defined *after* banner-right container which is used
     // in its specification!
     if (labConfig.sharing) {
-      shareDialog = new ShareDialog(interactive, interactivesController);
+      shareDialog.update(interactive);
       createLinkInContainer(
       {
         "type": "text",
@@ -90,7 +87,7 @@ define(function () {
         "id": "banner-middle",
         "top": "0",
         // "banner-right" can be undefined, so check it.
-        "right": aboutDialog ? "banner-right.left" : "interactive.width",
+        "right": aboutVisible ? "banner-right.left" : "interactive.width",
         "padding-right": "1em",
         "align": "right",
         "aboveOthers": true

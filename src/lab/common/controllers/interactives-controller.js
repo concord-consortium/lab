@@ -24,6 +24,9 @@ define(function (require) {
 
       // Helper function which just provides banner definition.
       setupBanner             = require('common/controllers/setup-banner'),
+      AboutDialog             = require('common/controllers/about-dialog'),
+      ShareDialog             = require('common/controllers/share-dialog'),
+      CreditsDialog           = require('common/controllers/credits-dialog'),
       SemanticLayout          = require('common/layout/semantic-layout'),
       templates               = require('common/layout/templates'),
 
@@ -105,6 +108,11 @@ define(function (require) {
 
         // Doesn't currently have any public methods, but probably will.
         parentMessageAPI,
+
+        // Dialogs which can be shown using banner.
+        aboutDialog,
+        shareDialog,
+        creditsDialog,
 
         semanticLayout;
 
@@ -210,7 +218,7 @@ define(function (require) {
       // Banner hash containing components, layout containers and layout deinition
       // (components location). Keep it in a separate structure, because we do not
       // expect these objects to be serialized!
-      banner = setupBanner(interactive, controller);
+      banner = setupBanner(interactive, creditsDialog, aboutDialog, shareDialog);
       // Note that all of these operations create a new object.
       // So interactive definition specified by the author won't be affected.
       // This is important for serialization correctness.
@@ -688,6 +696,10 @@ define(function (require) {
     controller.interactiveContainer = $interactiveContainer;
     // Initialize semantic layout.
     semanticLayout = new SemanticLayout($interactiveContainer);
+    creditsDialog = new CreditsDialog();
+    aboutDialog = new AboutDialog();
+    shareDialog = new ShareDialog();
+    controller.on("resize", $.proxy(shareDialog.updateIframeSize, shareDialog));
     // Run this when controller is created.
     loadInteractive(interactive, viewSelector);
 

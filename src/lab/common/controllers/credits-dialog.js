@@ -12,9 +12,18 @@ define(function (require) {
    * Credits Dialog. Inherits from Basic Dialog.
    *
    * @constructor
+   */
+  function CreditsDialog() {
+    BasicDialog.call(this, {dialogClass: "credits-dialog"});
+  }
+  inherit(CreditsDialog, BasicDialog);
+
+  /**
+   * Updates dialog content using interactive JSON definition.
+   *
    * @param {Object} interactive Interactive JSON definition.
    */
-  function CreditsDialog(interactive) {
+  CreditsDialog.prototype.update = function(interactive) {
     var view = {
           concordUrl: 'http://concord.org',
           nextGenUrl: 'http://mw.concord.org/nextgen/'
@@ -22,7 +31,6 @@ define(function (require) {
         hash = document.location.hash,
         utmString;
 
-    BasicDialog.call(this, {dialogClass: "credits-dialog"});
     this.set("title", "Credits: " + interactive.title);
 
     if (labConfig.homeForSharing) {
@@ -44,8 +52,7 @@ define(function (require) {
     }
 
     this.setContent(mustache.render(creditsDialogTpl, view, {copyright: copyrightTpl}));
-  }
-  inherit(CreditsDialog, BasicDialog);
+  };
 
   return CreditsDialog;
 });

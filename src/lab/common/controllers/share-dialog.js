@@ -21,13 +21,12 @@ define(function (require) {
    * @param {Object} interactive Interactive JSON definition.
    * @param {InteractivesController} interactivesController
    */
-  function ShareDialog(interactive, interactivesController) {
+  function ShareDialog() {
     var hash           = location.hash,
         origin         = location.href.match(/(.*?\/\/.*?)\//)[1],
         embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
 
     BasicDialog.call(this, {dialogClass: "share-dialog"});
-    this.set("title", "Share: " + interactive.title);
 
     /** @private */
     this._view = {};
@@ -48,7 +47,6 @@ define(function (require) {
     this._$iframeContent = this.$element.find("#share-iframe-content");
 
     this._$iframeSize.on('change', $.proxy(this.updateIframeSize, this));
-    interactivesController.on("resize", $.proxy(this.updateIframeSize, this));
     this.updateIframeSize();
   }
   inherit(ShareDialog, BasicDialog);
@@ -77,6 +75,15 @@ define(function (require) {
     }
 
     this._$iframeContent.val(iframeTpl(this._view));
+  };
+
+  /**
+   * Updates dialog content using interactive JSON definition.
+   *
+   * @param {Object} interactive Interactive JSON definition.
+   */
+  ShareDialog.prototype.update = function(interactive) {
+    this.set("title", "Credits: " + interactive.title);
   };
 
   return ShareDialog;
