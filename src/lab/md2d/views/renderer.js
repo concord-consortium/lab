@@ -297,7 +297,7 @@ define(function (require) {
     function createSymbolImages() {
       var xMargin = "1%";
       // only add these images if they don't already exist
-      if ($("#heat-bath").length === 0) {
+      if (mainContainer.select("#heat-bath").empty()) {
         // Heat bath key image.
         mainContainer.append("image")
             .attr({
@@ -309,7 +309,7 @@ define(function (require) {
               "xlink:href": "../../resources/heatbath.gif"
             });
       }
-      if ($("#ke-gradient").length === 0) {
+      if (mainContainer.select("#ke-gradient").empty()) {
         // Kinetic Energy Shading gradient image.
         mainContainer.append("image")
             .attr({

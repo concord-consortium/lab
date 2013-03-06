@@ -409,7 +409,7 @@ define(function (require) {
     }
 
     function setupPlaybackControls() {
-      d3.select('.model-controller').remove();
+      vis1.select('.model-controller').remove();
       switch (model.get("controlButtons")) {
         case "play":
           playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
