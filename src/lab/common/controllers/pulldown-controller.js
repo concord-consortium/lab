@@ -1,4 +1,4 @@
-/*global define $ model*/
+/*global require define $ model*/
 
 $.fn.measure = function(fn, selector, parent) {
   var el, selection, result;
@@ -47,7 +47,7 @@ define(function () {
     function initialize() {
       var i, len, option,
           parent = interactivesController.interactiveContainer,
-          ulWidth, arrowWidth;
+          ulWidth, arrowWidth, boxWidth;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.pulldown, component);
@@ -113,8 +113,8 @@ define(function () {
       // However, this is still problematic because we haven't added the element to
       // the page yet. This $().measure function allows us to embed the element hidden
       // on the page first to allow us to check the required width.
-      ulWidth    = $wrapper.measure(function(){ return this.width() }, "ul", parent );
-      arrowWidth = $wrapper.measure(function(){ return this.width() }, ".selectboxit-arrow-container", parent );
+      ulWidth    = $wrapper.measure(function(){ return this.width(); }, "ul", parent );
+      arrowWidth = $wrapper.measure(function(){ return this.width(); }, ".selectboxit-arrow-container", parent );
 
       // ems for a given pixel size
       function pxToEm(input) {
@@ -122,8 +122,13 @@ define(function () {
         return (input / emSize);
       }
 
-      $wrapper.find(".selectboxit").css("width", (pxToEm(ulWidth+arrowWidth)+0.2)+"em");
+      boxWidth = (pxToEm(ulWidth+arrowWidth)+0.2)+"em";
+
+      $wrapper.find(".selectboxit").css("width", boxWidth);
       $wrapper.find(".selectboxit-text").css("max-width", pxToEm(ulWidth)+"em");
+
+      // set hidden select box dimensions too, for mobile devices
+      $wrapper.find(".selectboxit-container select").css({width: boxWidth, height: "100%"});
     }
 
     // Public API.
