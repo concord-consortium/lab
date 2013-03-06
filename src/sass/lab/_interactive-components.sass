@@ -25,10 +25,27 @@ select.component
   font-size: 1em
 
 button.component
-  white-space: nowrap
+  @include linear-gradient(#fafafa, #c2c2c2, $fallback: #eee)
   font-size: 1em
-  padding: 0.2em
+  font-family: 'Open Sans', Verdana, Geneva, sans-serif
+  height: 2em
+  border: 1px solid #ccc
+  border-bottom: 1px solid #bbb
+  border-radius: 0.7em
+  color: #333
+  padding-left: 1em
+  padding-right: 1em
+  text-align: center
+  text-shadow: 0 1px 0 #eee
 
+  &:hover
+    @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+    cursor: pointer
+
+  &:active
+    border: 1px solid #aaa
+    border-bottom: 1px solid #888
+    @include box-shadow(inset 0 0 5px 2px #aaa, 0 1px 0 0 #eee)
 
 .interactive-text
   p

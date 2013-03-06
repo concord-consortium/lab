@@ -59,21 +59,13 @@
 
 .selectboxit-btn,
 .selectboxit-btn:focus
-  background-color: #ffffff
+  background-color: #f6f6f6
   background-position: 0 0
-  background-image: -moz-linear-gradient(top, #ffffff, #c2c2c2)
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#c2c2c2))
-  background-image: -webkit-linear-gradient(top, #ffffff, #c2c2c2)
-  background-image: -o-linear-gradient(top, #ffffff, #c2c2c2)
-  background-image: linear-gradient(to bottom, #ffffff, #c2c2c2)
+  @include linear-gradient(#fafafa, #c2c2c2, $fallback: #eee)
 
 .selectboxit-btn:hover,
 .selectboxit-btn:active
   color: #333333
-  background-color: #ffffff
+  background-color: #fff
   background-position: 0 0
-  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6)
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6))
-  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6)
-  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6)
-  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6)
+  @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
