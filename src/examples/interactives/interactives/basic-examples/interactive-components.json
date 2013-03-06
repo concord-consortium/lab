@@ -221,7 +221,7 @@
     {
       "type": "image",
       "id": "image-relative-path",
-      "width": "5em",
+      "height": "3em",
       "src": "oilWaterComp.png"
     },
     {
