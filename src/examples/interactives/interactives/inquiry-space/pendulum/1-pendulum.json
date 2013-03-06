@@ -46,7 +46,7 @@
       "value": [
         "var a0 = getAtomProperties(0),",
         "    a1 = getAtomProperties(1);",
-        "return Math.atan((a1.x-a0.x)/(a0.y-a1.y)) * rad2deg;"
+        "return Math.atan2(-Math.abs(a1.y-a0.y), a1.x-a0.x) * rad2deg + 90;"
       ]
     }
   ],
@@ -61,9 +61,9 @@
     {
       "name": "rodLength",
       "label": "Rod Length",
-      "unitType": "length",
-      "onChange": "var len = value, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
-      "initialValue": 1.0
+      "unitAbbreviation": "cm",
+      "onChange": "var len = value/1000, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 1000
     },
     {
       "name": "startingAngle",
@@ -75,9 +75,9 @@
     {
       "name": "ballMass",
       "label": "Ball Mass",
-      "unitType": "mass",
-      "onChange": "setElementProperties(3, { mass: value });",
-      "initialValue": 1.5
+      "unitAbbreviation": "g",
+      "onChange": "setElementProperties(3, { mass: value/1000 });",
+      "initialValue": 250
     },
     {
       "name": "damping",
@@ -115,84 +115,83 @@
     {
       "type": "slider",
       "id": "length-slider",
-      "min": 0.2,
-      "max": 2,
-      "displayValue": "return format('1.1f')(value)",
+      "min": 10,
+      "max": 2000,
+      "displayValue": "return format('f')(value)",
       "labels": [
         {
-          "value": 0.2,
-          "label": "0.2"
+          "value": 10,
+          "label": "10 cm"
         },
         {
-          "value": 2,
-          "label": "2.0"
+          "value": 2000,
+          "label": "2 m"
         }
       ],
-      "steps": 19,
-      "title": "Rod Length (m)",
+      "steps": 995,
+      "title": "Rod Length (cm)",
       "property": "rodLength"
     },
     {
       "type": "slider",
       "id": "angle-slider",
-      "min": -45,
-      "max": 45,
-      "displayValue": "return format('f')(value)",
-      "labels": [
-        {
-          "value": -45,
-          "label": "-45&deg;"
-        },
-        {
-          "value": 45,
-          "label": "45&deg;"
-        }
-      ],
-      "steps": 30,
-      "title": "Starting Angle",
-      "property": "startingAngle"
-    },
-    {
-      "type": "slider",
-      "id": "mass-slider",
-      "min": 0.5,
-      "max": 2.5,
-      "displayValue": "return format('1.1f')(value)",
-      "labels": [
-        {
-          "value": 0.5,
-          "label": "0.5"
-        },
-        {
-          "value": 2.5,
-          "label": "2.5"
-        }
-      ],
-      "steps": 19,
-      "title": "Mass of the Ball (kg)",
-      "property": "ballMass"
-    },
-    {
-      "type": "slider",
-      "id": "damping-slider",
       "min": 0,
-      "max": 2,
-      "displayValue": "return format('1.1f')(value)",
+      "max": 90,
+      "displayValue": "return format('f')(value)",
       "labels": [
         {
           "value": 0,
           "label": "0"
         },
         {
-          "value": 2.0,
-          "label": "2.0"
+          "value": 90,
+          "label": "90"
+        }
+      ],
+      "steps": 45,
+      "title": "Starting Angle (&deg;)",
+      "property": "startingAngle"
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider",
+      "min": 5,
+      "max": 500,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 5,
+          "label": "5"
+        },
+        {
+          "value": 500,
+          "label": "500"
+        }
+      ],
+      "steps": 99,
+      "title": "Mass of the Ball (g)",
+      "property": "ballMass"
+    },
+    {
+      "type": "slider",
+      "id": "damping-slider",
+      "min": 0,
+      "max": 1,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 1.0,
+          "label": "1"
         }
       ],
       "steps": 20,
       "title": "Damping (Newton per m/s)",
       "property": "damping"
     },
-
     {
       "type": "checkbox",
       "id": "velocity-vectors",
@@ -211,8 +210,8 @@
       "title": "Pendulum Angle (°)",
       "xlabel": "Time  (s)",
       "ylabel": "Angle (°)",
-      "ymin": -50,
-      "ymax": 50,
+      "ymin": -100,
+      "ymax": 100,
       "xmax": 10,
       "xTicCount": 5,
       "xFormatter": "f",
