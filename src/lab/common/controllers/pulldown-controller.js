@@ -45,7 +45,9 @@ define(function () {
     }
 
     function initialize() {
-      var i, len, option;
+      var i, len, option,
+          parent = interactivesController.interactiveContainer,
+          ulWidth, arrowWidth;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.pulldown, component);
@@ -97,7 +99,31 @@ define(function () {
 
       $pulldown.selectBoxIt();
 
-      controller.resize();
+      $wrapper.find(".selectboxit").css("width", "auto");
+      $wrapper.find(".selectboxit-text").css("max-width", "none");
+
+      // SelectBoxIt assumes that all select boxes are always going to have a width
+      // set in CSS (default 220px). This doesn't work for us, as we don't know how
+      // wide the content is going to be. Instead we have to measure the needed width
+      // of the internal ul list, and use that to define the width of the select box.
+      //
+      // This issue has been raised in SelectBoxIt:
+      // https://github.com/gfranko/jquery.selectBoxIt.js/issues/129
+      //
+      // However, this is still problematic because we haven't added the element to
+      // the page yet. This $().measure function allows us to embed the element hidden
+      // on the page first to allow us to check the required width.
+      ulWidth    = $wrapper.measure(function(){ return this.width() }, "ul", parent );
+      arrowWidth = $wrapper.measure(function(){ return this.width() }, ".selectboxit-arrow-container", parent );
+
+      // ems for a given pixel size
+      function pxToEm(input) {
+        var emSize = parseFloat(parent.css("font-size"));
+        return (input / emSize);
+      }
+
+      $wrapper.find(".selectboxit").css("width", (pxToEm(ulWidth+arrowWidth)+0.2)+"em");
+      $wrapper.find(".selectboxit-text").css("max-width", pxToEm(ulWidth)+"em");
     }
 
     // Public API.
@@ -115,37 +141,6 @@ define(function () {
       // Returns view container.
       getViewContainer: function () {
         return $wrapper;
-      },
-
-      resize: function () {
-        var parent = interactivesController.interactiveContainer,
-            ulWidth, arrowWidth;
-
-        $wrapper.find(".selectboxit").css("width", "auto");
-        $wrapper.find(".selectboxit-text").css("max-width", "none");
-
-        // SelectBoxIt assumes that all select boxes are always going to have a width
-        // set in CSS (default 220px). This doesn't work for us, as we don't know how
-        // wide the content is going to be. Instead we have to measure the needed width
-        // of the internal ul list, and use that to define the width of the select box.
-        //
-        // This issue has been raised in SelectBoxIt:
-        // https://github.com/gfranko/jquery.selectBoxIt.js/issues/129
-        //
-        // However, this is still problematic because we haven't added the element to
-        // the page yet. This $().measure function allows us to embed the element hidden
-        // on the page first to allow us to check the required width.
-        ulWidth    = $wrapper.measure(function(){ return this.width() }, "ul", parent );
-        arrowWidth = $wrapper.measure(function(){ return this.width() }, ".selectboxit-arrow-container", parent );
-
-        // pixels for a given em size
-        function em(input) {
-          var emSize = parseFloat(parent.css("font-size"));
-          return (emSize * input);
-        }
-
-        $wrapper.find(".selectboxit").css("width", ulWidth+arrowWidth+em(0.2));
-        $wrapper.find(".selectboxit-text").css("max-width", ulWidth);
       },
 
       // Returns serialized component definition.
