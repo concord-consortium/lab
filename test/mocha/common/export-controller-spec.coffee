@@ -128,11 +128,10 @@ helpers.withIsolatedRequireJS (requirejs) ->
             points.should.eql [0, 1]
 
         describe "a model reset", ->
-          it "should reset the timeseries data to one data point"
-            # model.reset() doesn't appear to work quite right at the moment
-            # model.tick()
-            # model.reset()
-            # exportedTimePoints().should.eql [0]
+          it "should reset the timeseries data to one data point", ->
+            model.tick()
+            model.reset()
+            exportedTimePoints().should.eql [0]
 
         describe "a step back", ->
           it "should not remove data points from the timeseries data", ->
