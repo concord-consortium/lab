@@ -34,6 +34,10 @@
   :name: "VISUAL: Detergents"
   :category: Curriculum
 
+- :path: visual/chemical-reactions
+  :name: "VISUAL: Chemical Reactions"
+  :category: Curriculum
+
 - :path: basic-examples
   :name: "Basic Interactive Examples"
   :category: Examples

@@ -1,0 +1,95 @@
+{
+  "title": "Hydrogen Combustion",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "hydrogen1newcolors$0",
+      "url": "/imports/legacy-mw-content/converted/visual/ChemicalReactions/hydrogen1newcolors$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name":  "simplifiedTemperature",
+      "label": "Temperature",
+      "units": "°",
+      "value": "return get('temperature')/200;"
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "filteredSimplifiedTemperature",
+      "label": "Temperature",
+      "units": "°",
+      "property": "simplifiedTemperature",
+      "type": "RunningAverage",
+      "period": 2500
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "spark-button",
+      "text": "Spark",
+      "action": ""
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "width": "8em",
+      "options": {
+        "minValue": 0,
+        "maxValue": 50,
+        "barColor": "#F42",
+        "title": "Temperature"
+      },
+      "property": "filteredSimplifiedTemperature"
+    },
+    {
+      "type": "numericOutput",
+      "id": "temperature-output",
+      "property": "filteredSimplifiedTemperature",
+      "orientation": "vertical",
+      "displayValue": "return format('1.1f')(value)"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "spark-button"
+    ],
+    "right": [
+      "bar-graph"
+    ],
+    "bottom-right": [
+      "temperature-output"
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "0.5em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "1.0em",
+      "align": "center"
+    },
+    {
+      "id": "bottom-right",
+      "top": "model.bottom",
+      "left": "model.right",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
+}
