@@ -208,10 +208,10 @@ define(function() {
         defaultValue: ""
       },
       width: {
-        defaultValue: "auto"
+        defaultValue: ""
       },
       height: {
-        defaultValue: "auto"
+        defaultValue: ""
       }
     },
 
