@@ -1132,8 +1132,10 @@ define(function(require) {
 
     model.reset = function() {
       dispatch.willReset();
+      invalidatingChangePreHook();
       model.resetTime();
       tickHistory.restoreInitialState();
+      invalidatingChangePostHook();
       dispatch.reset();
     };
 
