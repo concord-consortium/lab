@@ -138,7 +138,13 @@ define(function () {
         ulWidth    = $wrapper.measure(function(){ return this.width() }, "ul", parent );
         arrowWidth = $wrapper.measure(function(){ return this.width() }, ".selectboxit-arrow-container", parent );
 
-        $wrapper.find(".selectboxit").css("width", ulWidth+arrowWidth);
+        // pixels for a given em size
+        function em(input) {
+          var emSize = parseFloat(parent.css("font-size"));
+          return (emSize * input);
+        }
+
+        $wrapper.find(".selectboxit").css("width", ulWidth+arrowWidth+em(0.2));
         $wrapper.find(".selectboxit-text").css("max-width", ulWidth);
       },
 
