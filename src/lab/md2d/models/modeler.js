@@ -26,7 +26,7 @@ define(function(require) {
     this.constructor.type = "md2d";
 
     var model = {},
-        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
+        dispatch = d3.dispatch("tick", "play", "stop", "reset", "willReset", "stepForward", "stepBack",
                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
                                "removeAngularBond", "invalidation", "textBoxesChanged"),
         VDWLinesCutoffMap = {
@@ -979,6 +979,8 @@ define(function(require) {
           },
           i, num, prop, atomProps;
 
+      dispatch.willReset();
+
       // Start batch process
       model.startBatch();
 
@@ -1129,6 +1131,7 @@ define(function(require) {
     };
 
     model.reset = function() {
+      dispatch.willReset();
       model.resetTime();
       tickHistory.restoreInitialState();
       dispatch.reset();
