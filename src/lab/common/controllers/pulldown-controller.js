@@ -122,7 +122,7 @@ define(function () {
         return (input / emSize);
       }
 
-      boxWidth = (pxToEm(ulWidth+arrowWidth)+0.2)+"em";
+      boxWidth = (pxToEm(ulWidth+arrowWidth)+0.3)+"em";
 
       $wrapper.find(".selectboxit").css("width", boxWidth);
       $wrapper.find(".selectboxit-text").css("max-width", pxToEm(ulWidth)+"em");
