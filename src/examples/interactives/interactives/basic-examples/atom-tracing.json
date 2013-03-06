@@ -121,6 +121,7 @@
       "id": "bottom",
       "left": "model.left",
       "top": "model.bottom",
+      "padding-top": "0.5em",
       "width": "model.width",
       "align": "center"
     }
