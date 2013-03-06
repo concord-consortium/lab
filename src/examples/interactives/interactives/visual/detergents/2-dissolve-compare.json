@@ -21,23 +21,37 @@
   ],
   "components": [
     {
-      "type": "radio",
-      "id": "model-buttons",
-      "orientation": "horizontal",
+      "type": "text",
+      "id": "models-label",
+      "style": "header",
+      "text": "Select "
+    },
+    {
+      "type": "pulldown",
+      "id": "model-pulldown",
       "options": [
         {
           "text": "Polar/polar",
           "loadModel": "DissolveCompare$0"
         },
         {
-          "text": "Nonolar/nonpolar",
+          "text": "Nonpolar/nonpolar",
           "loadModel": "DissolveCompare$1"
         }
       ]
+    },
+    {
+      "type": "button",
+      "id": "remove-barrier",
+      "text": "Remove barrier",
+      "action": "if (getNumberOfObstacles() > 0) { removeObstacle(0) };"
     }
   ],
   "layout": {
     "bottom": [
+      "models-label",
+      "model-pulldown",
+      "remove-barrier"
     ]
   }
 }
