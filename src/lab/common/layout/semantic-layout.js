@@ -167,7 +167,8 @@ define(function (require) {
         $containerByID[id] = $("<div id='" + id + "'>").appendTo($interactiveContainer);
         $containerByID[id].css({
           "display": "inline-block",
-          "position": "absolute"
+          "position": "absolute",
+          "z-index": "1"
         });
 
         for (prop in container) {
@@ -538,9 +539,7 @@ define(function (require) {
         $modelContainer.css({
           "display": "inline-block",
           "position": "absolute",
-          // Model should be below other components when they overlap.
-          // E.g. when overlapping images are used.
-          "z-index": "-1"
+          "z-index": "0"
         });
         $modelContainer.appendTo($interactiveContainer);
         $containerByID.model = $modelContainer;
