@@ -464,15 +464,15 @@ define(function (require) {
               "class": "obstacle-force-hor",
               "d": function (d) {
                 if (obsFx < 0)
-                  return "M " + modelSize2px(obsWidth + vecLen + space)
-                              + "," + modelSize2px(d)
-                              + " L " + modelSize2px(obsWidth + space)
-                              + "," + modelSize2px(d);
+                  return "M " + modelSize2px(obsWidth + vecLen + space) +
+                              "," + modelSize2px(d) +
+                              " L " + modelSize2px(obsWidth + space) +
+                              "," + modelSize2px(d);
                 else
-                  return "M " + modelSize2px(-vecLen - space)
-                              + "," + modelSize2px(d)
-                              + " L " + modelSize2px(-space)
-                              + "," + modelSize2px(d);
+                  return "M " + modelSize2px(-vecLen - space) +
+                              "," + modelSize2px(d) +
+                              " L " + modelSize2px(-space) +
+                              "," + modelSize2px(d);
               }
             });
         }
@@ -486,15 +486,15 @@ define(function (require) {
               "class": "obstacle-force-vert",
               "d": function (d) {
                 if (obsFy < 0)
-                  return "M " + modelSize2px(d)
-                              + "," + modelSize2px(-vecLen - space)
-                              + " L " + modelSize2px(d)
-                              + "," + modelSize2px(-space);
+                  return "M " + modelSize2px(d) +
+                              "," + modelSize2px(-vecLen - space) +
+                              " L " + modelSize2px(d) +
+                              "," + modelSize2px(-space);
                 else
-                  return "M " + modelSize2px(d)
-                              + "," + modelSize2px(obsHeight + vecLen + space)
-                              + " L " + modelSize2px(d)
-                              + "," + modelSize2px(obsHeight + space);
+                  return "M " + modelSize2px(d) +
+                              "," + modelSize2px(obsHeight + vecLen + space) +
+                              " L " + modelSize2px(d) +
+                              "," + modelSize2px(obsHeight + space);
               }
             });
         }
@@ -1376,8 +1376,9 @@ define(function (require) {
     }
 
     function setupToolTips() {
-      if ( atomToolTip === undefined) {
-        atomToolTip = d3.select("#model-container").append("div")
+      var mc = d3.select("#model-container");
+      if ( atomToolTip === undefined && !mc.empty()) {
+        atomToolTip = mc.append("div")
             .attr("class", "tooltip")
             .style("opacity", 1e-6);
         atomToolTipPre = atomToolTip.append("pre");
