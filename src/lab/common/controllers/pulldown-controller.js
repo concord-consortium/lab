@@ -1,5 +1,23 @@
 /*global define $ model*/
 
+$.fn.measure = function(fn, selector, parent) {
+  var el, selection, result;
+  el = $(this).clone(false);
+  el.css({
+    visibility: 'hidden',
+    position: 'absolute'
+  });
+  el.appendTo(parent);
+  if (selector) {
+    selection = el.find(selector);
+  } else {
+    selection = el;
+  }
+  result = fn.apply(selection);
+  el.remove();
+  return result;
+};
+
 define(function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
@@ -27,8 +45,7 @@ define(function () {
     }
 
     function initialize() {
-      var i, len, option, ulWidth, arrowWidth,
-          parent = interactivesController.interactiveContainer;
+      var i, len, option;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.pulldown, component);
@@ -80,48 +97,7 @@ define(function () {
 
       $pulldown.selectBoxIt();
 
-      function updateSize() {
-        $wrapper.find(".selectboxit").css("width", "auto");
-        $wrapper.find(".selectboxit-text").css("max-width", "none");
-
-        // SelectBoxIt assumes that all select boxes are always going to have a width
-        // set in CSS (default 220px). This doesn't work for us, as we don't know how
-        // wide the content is going to be. Instead we have to measure the needed width
-        // of the internal ul list, and use that to define the width of the select box.
-        //
-        // This issue has been raised in SelectBoxIt:
-        // https://github.com/gfranko/jquery.selectBoxIt.js/issues/129
-        //
-        // However, this is still problematic because we haven't added the element to
-        // the page yet. This $().measure function allows us to embed the element hidden
-        // on the page first to allow us to check the required width.
-        $.fn.measure = function(fn, selector, parent) {
-          var el, selection, result;
-          el = $(this).clone(false);
-          el.css({
-            visibility: 'hidden',
-            position: 'absolute'
-          });
-          el.appendTo(parent);
-          if (selector) {
-            selection = el.find(selector);
-          } else {
-            selection = el;
-          }
-          result = fn.apply(selection);
-          el.remove();
-          return result;
-        };
-
-        ulWidth    = $wrapper.measure(function(){ return this.width() }, "ul", parent );
-        arrowWidth = $wrapper.measure(function(){ return this.width() }, ".selectboxit-arrow-container", parent );
-
-        $wrapper.find(".selectboxit").css("width", ulWidth+arrowWidth);
-        $wrapper.find(".selectboxit-text").css("max-width", ulWidth);
-      }
-
-      interactivesController.on("resize", updateSize);
-      updateSize();
+      controller.resize();
     }
 
     // Public API.
@@ -139,6 +115,31 @@ define(function () {
       // Returns view container.
       getViewContainer: function () {
         return $wrapper;
+      },
+
+      resize: function () {
+        var parent = interactivesController.interactiveContainer,
+            ulWidth, arrowWidth;
+
+        $wrapper.find(".selectboxit").css("width", "auto");
+        $wrapper.find(".selectboxit-text").css("max-width", "none");
+
+        // SelectBoxIt assumes that all select boxes are always going to have a width
+        // set in CSS (default 220px). This doesn't work for us, as we don't know how
+        // wide the content is going to be. Instead we have to measure the needed width
+        // of the internal ul list, and use that to define the width of the select box.
+        //
+        // This issue has been raised in SelectBoxIt:
+        // https://github.com/gfranko/jquery.selectBoxIt.js/issues/129
+        //
+        // However, this is still problematic because we haven't added the element to
+        // the page yet. This $().measure function allows us to embed the element hidden
+        // on the page first to allow us to check the required width.
+        ulWidth    = $wrapper.measure(function(){ return this.width() }, "ul", parent );
+        arrowWidth = $wrapper.measure(function(){ return this.width() }, ".selectboxit-arrow-container", parent );
+
+        $wrapper.find(".selectboxit").css("width", ulWidth+arrowWidth);
+        $wrapper.find(".selectboxit-text").css("max-width", ulWidth);
       },
 
       // Returns serialized component definition.
