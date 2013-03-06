@@ -38,6 +38,10 @@
   :name: "VISUAL: Chemical Reactions"
   :category: Curriculum
 
+- :path: visual/plate-tectonics
+  :name: "VISUAL: Plate Techtonics"
+  :category: Curriculum
+
 - :path: basic-examples
   :name: "Basic Interactive Examples"
   :category: Examples
