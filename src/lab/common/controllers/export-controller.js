@@ -33,7 +33,7 @@ define(function (require) {
       perTickValues.length = model.stepCounter() + 1;
     }
 
-    function logEvent(action) {
+    function logAction(action) {
       var logString,
           perRunPropertyLabels = [],
           perRunPropertyValues = [],
@@ -53,7 +53,7 @@ define(function (require) {
         values: perRunPropertyValues
       });
 
-      dgExporter.logEvent(logString);
+      dgExporter.logAction(logString);
     }
 
     function registerModelListeners() {
@@ -64,11 +64,11 @@ define(function (require) {
       model.on('invalidation.exportController', removeDataAfterStepPointer);
 
       model.on('play.exportController', function() {
-        logEvent('started');
+        logAction('started');
       });
 
       model.on('willReset.exportController', function() {
-        logEvent('reset');
+        logAction('reset');
       });
 
     }
@@ -112,7 +112,7 @@ define(function (require) {
             perTickLabels = [],
             i;
 
-        logEvent('exported');
+        logAction('exported');
 
         for (i = 0; i < perRun.length; i++) {
           perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
