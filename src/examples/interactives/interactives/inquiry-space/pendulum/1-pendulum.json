@@ -155,20 +155,20 @@
     {
       "type": "slider",
       "id": "mass-slider",
-      "min": 5,
-      "max": 500,
+      "min": 10,
+      "max": 400,
       "displayValue": "return format('f')(value)",
       "labels": [
         {
-          "value": 5,
-          "label": "5"
+          "value": 10,
+          "label": "10"
         },
         {
-          "value": 500,
-          "label": "500"
+          "value": 400,
+          "label": "400"
         }
       ],
-      "steps": 99,
+      "steps": 39,
       "title": "Mass of the Ball (g)",
       "property": "ballMass"
     },
