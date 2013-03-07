@@ -124,5 +124,14 @@ ISImporter.DGExporter = {
       type: 'DG.TableView',
       log: false
     });
+  },
+
+  /**
+    Call any time to log an event to DataGames
+  */
+  logAction: function(logString) {
+    this.doCommand('logAction', {
+      formatStr: logString
+    });
   }
 };
