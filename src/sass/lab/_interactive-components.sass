@@ -75,13 +75,28 @@ button.component
       display: block
 
 .interactive-checkbox
-  input[type="checkbox"]
-    -webkit-transform: scale(1,1)
-    -ms-transform: scale(1,1)
-    -moz-transform: scale(1,1)
-    -o-transform: scale(1,1)
-    padding: 0.2em 0.2em
-    font-size: 1.5em
+  font-size: 1em
+  .fakeCheckable
+    // Custom div used for checkbox styling.
+    // Colors and size match Upstatement proposal.
+    position: relative
+    display: inline-block
+    vertical-align: middle
+    width: 1em
+    height: 1em
+    margin: 0 0.4em 0 0
+    padding: 0
+    background: #e6e7e8
+    &.checked:before
+      content: ""
+      background: #58595b
+      position: absolute
+      top: 20%
+      left: 20%
+      right: 20%
+      bottom: 20%
+  label
+    vertical-align: middle
 
 .numeric-output
   span.label
