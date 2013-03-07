@@ -147,8 +147,7 @@ define(function(require) {
       this.doCommand('createCases', {
         collection: this.childCollectionName,
         values: timeSeriesData,
-        parent: parentCase.caseID,
-        log: false
+        parent: parentCase.caseID
       });
 
       // Step 6. Close the case.

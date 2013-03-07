@@ -108,8 +108,7 @@ ISImporter.DGExporter = {
     this.doCommand('createCases', {
       collection: this.childCollectionName,
       values: data,
-      parent: dgCase.caseID,
-      log: false
+      parent: dgCase.caseID
     });
 
     // Step 6. Close the case.
