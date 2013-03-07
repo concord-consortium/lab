@@ -3110,6 +3110,40 @@ define(function (require, exports, module) {
         }
       },
 
+      getRadialBondsForAtom: function(index) {
+        var rbonds = [],
+            i,
+            i1,
+            i2;
+
+        for (i = 0; i < N_radialBonds; i++) {
+          i1 = radialBondAtom1Index[i];
+          i2 = radialBondAtom2Index[i];
+          if (index == i1 || index == i2) {
+            rbonds.push(i);
+          }
+        }
+        return rbonds;
+      },
+
+      getAngularBondsForAtom: function(index) {
+        var abonds = [],
+            i,
+            i1,
+            i2,
+            i3;
+
+        for (i = 0; i < N_angularBonds; i++) {
+          i1 = angularBondAtom1Index[i];
+          i2 = angularBondAtom2Index[i];
+          i3 = angularBondAtom3Index[i];
+          if (index == i1 || index == i2 || index == i3) {
+            abonds.push(i);
+          }
+        }
+        return abonds;
+      },
+
       // Total mass of all particles in the system, in Dalton (atomic mass units).
       getTotalMass: function() {
         var totalMass = 0, i;

@@ -1396,6 +1396,18 @@ define(function(require) {
       return props;
     };
 
+    model.getRadialBondsForAtom = function(i) {
+      return engine.getRadialBondsForAtom(i);
+    };
+
+    model.getAngularBondsForAtom = function(i) {
+      return engine.getAngularBondsForAtom(i);
+    };
+
+    model.getMoleculeAtoms = function(i) {
+      return engine.getMoleculeAtoms(i);
+    };
+
     model.setElementProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.element, props);

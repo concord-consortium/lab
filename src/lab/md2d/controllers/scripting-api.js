@@ -223,6 +223,30 @@ define(function (require) {
         return model.getAtomProperties(i);
       },
 
+      /**
+        Returns an array consisting of radial bonds indices for the atom
+        e.g. getRadialBondsForAtom(5) --> [2]
+      */
+      getRadialBondsForAtom: function getRadialBondsForAtom(i) {
+        return model.getRadialBondsForAtom(i);
+      },
+
+      /**
+        Returns an array consisting of the angular bonds indices for the atom
+        e.g. getAngularBondsForAtom(5) --> [6, 8]
+      */
+      getAngularBondsForAtom: function getAngularBondsForAtom(i) {
+        return model.getAngularBondsForAtom(i);
+      },
+
+      /**
+        Returns all atoms in the same molecule as atom i
+        (not including i itself)
+      */
+      getMoleculeAtoms: function getMoleculeAtoms(i) {
+        return model.getMoleculeAtoms(i);
+      },
+
       setElementProperties: function setElementProperties(i, props) {
         model.setElementProperties(i, props);
         api.repaintIfReady();
