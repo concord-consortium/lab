@@ -110,15 +110,17 @@ button.component
     height: 1em
     margin: 0 0.4em 0 0
     padding: 0
-    background: #e6e7e8
+    // #e6e7e8 is a color proposed by Upstatement.
+    // However it doesn't work well with white background.
+    background: darken(#e6e7e8, 10%)
     &.checked:before
       content: ""
       background: #58595b
       position: absolute
-      top: 20%
-      left: 20%
-      right: 20%
-      bottom: 20%
+      top: 0.22197em
+      left: 0.22197em
+      right: 0.22197em
+      bottom: 0.22197em
 
 .numeric-output
   span.label
