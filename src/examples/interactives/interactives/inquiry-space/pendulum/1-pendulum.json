@@ -62,8 +62,8 @@
       "name": "rodLength",
       "label": "Rod Length",
       "unitAbbreviation": "cm",
-      "onChange": "var len = value/1000, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
-      "initialValue": 1000
+      "onChange": "var len = value/100, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 100
     },
     {
       "name": "startingAngle",
@@ -116,7 +116,7 @@
       "type": "slider",
       "id": "length-slider",
       "min": 10,
-      "max": 2000,
+      "max": 200,
       "displayValue": "return format('f')(value)",
       "labels": [
         {
@@ -124,11 +124,11 @@
           "label": "10 cm"
         },
         {
-          "value": 2000,
+          "value": 200,
           "label": "2 m"
         }
       ],
-      "steps": 995,
+      "steps": 19,
       "title": "Rod Length (cm)",
       "property": "rodLength"
     },
