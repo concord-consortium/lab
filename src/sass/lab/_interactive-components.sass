@@ -1,5 +1,11 @@
 @import 'sass/bourbon/bourbon'
 
+// Mixin for icons using CSS background.
+@mixin icon-bg($url, $position, $size)
+  background-repeat: no-repeat
+  background-size: $size
+  background-image: url($url)
+
 #model-container
   background: $component-background-color
   border-radius: 0.5em
@@ -64,6 +70,7 @@ button.component
       font-weight: 600
 
 .interactive-radio
+  font-size: 1em
   &.horizontal
     // Horizontal alignment of options.
     span + span
@@ -73,9 +80,26 @@ button.component
     // Vertical alignment of options.
     span
       display: block
+  input[type="radio"]
+    display: none
+  label
+    vertical-align: middle
+  .fakeCheckable
+    // Custom div used for radio styling.
+    display: inline-block
+    vertical-align: middle
+    margin: 0 0.4em 0 0
+    padding: 0
+    width: 1.0em
+    height: 1.0em
+    @include icon-bg("../../resources/upstatement/unchecked.svg", center, 100%)
+    &.checked
+      @include icon-bg("../../resources/upstatement/checked.svg", center, 100%)
 
 .interactive-checkbox
   font-size: 1em
+  label
+    vertical-align: middle
   .fakeCheckable
     // Custom div used for checkbox styling.
     // Colors and size match Upstatement proposal.
@@ -95,8 +119,6 @@ button.component
       left: 20%
       right: 20%
       bottom: 20%
-  label
-    vertical-align: middle
 
 .numeric-output
   span.label
