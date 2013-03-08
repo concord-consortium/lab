@@ -3,11 +3,11 @@
 .top { width: auto; }
 
 #export {
-  margin: 0.5em;
+  margin: 1em 2.5em;
   padding: 0.5em; }
 
 #exported-data {
-  margin: 0.5em 0em;
+  margin: 0.5em;
   padding: 0.5em;
   font-size: 70%;
   font-family:monospace,monospace;

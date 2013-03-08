@@ -5,6 +5,29 @@
 ;;; Structure definitions for setup-data-export method:
 ;;;
 ;;; *** computational-inputs
+;;;
+;;; These represent computational inputs to the model. Inputs that
+;;;
+;;; If the computational input is used in model but hidden from student
+;;; the visible property will end up being set to false
+;;;
+;;;   label, units, min, max, visible
+;;;
+;;;   label: string
+;;;   units: string
+;;;   min: number
+;;;   max: number
+;;;   visible: boolean
+;;;
+;;; If the computational input is categorical instead of numerical:
+;;; set value of "units" to "categorical" and if possible include a "values"
+;;; property with a value consisting of an array of possible categories
+;;;
+;;;   alternate form when value of units is "categorical"
+;;;   label units [categorical-type1 categorical-type2 ...]  visible
+;;;
+;;; *** representational-inputs
+;;;
 ;;; If the computational input is used in model but hidden from student
 ;;; the visible property will end up being set to false
 ;;;
@@ -120,10 +143,16 @@ globals [
   data-export:model-data
   data-export:model-description
   data-export:run-series
+  data-export:last-run-series-data
+  data-export:serialized-run-series
   data-export:data-series
+  data-export:data-series-length
   data-export:data-ready?
   data-export:computational-inputs
   data-export:computational-inputs-keys
+  data-export:representational-inputs
+  data-export:representational-inputs-keys
+  data-export:representational-inputs-categorical-keys
   data-export:computational-outputs
   data-export:computational-outputs-keys
   data-export:computational-outputs-categorical-keys
@@ -136,46 +165,67 @@ globals [
   data-export:data-series-labels
   data-export:run-number
   data-export:data-series-trip
+  data-export:inquiry-summary
 ]
 
 to data-export:initialize [ setup ]
   data-export:init-run-series
   data-export:init-data-series
 
-  set data-export:computational-inputs                   item 0 setup
-  set data-export:computational-inputs-keys              [ "label" "units" "min" "max" ]
+  set data-export:computational-inputs                     item 0 setup
+  set data-export:computational-inputs-keys                [ "label" "units" "min" "max" ]
 
-  set data-export:computational-outputs                  item 1 setup
-  set data-export:computational-outputs-keys             [ "label" "units" "min" "max" ]
-  set data-export:computational-outputs-categorical-keys [ "label" "units" "values" ]
+  set data-export:representational-inputs                  item 1 setup
+  set data-export:representational-inputs-keys             [ "label" "units" "min" "max" ]
+  set data-export:representational-inputs-categorical-keys [ "label" "units" "values" ]
 
-  set data-export:student-inputs                         item 2 setup
-  set data-export:student-inputs-keys                    [ "label" "units"]
+  set data-export:computational-outputs                    item 2 setup
+  set data-export:computational-outputs-keys               [ "label" "units" "min" "max" ]
+  set data-export:computational-outputs-categorical-keys   [ "label" "units" "values" ]
 
-  set data-export:model-information                      item 3 setup
-  set data-export:model-information-keys                 [ "name" "fileName" "version"]
+  set data-export:student-inputs                           item 3 setup
+  set data-export:student-inputs-keys                      [ "label" "units"]
 
-  set data-export:times-series-data                      item 4 setup
-  set data-export:times-series-keys                      [ "label" "units" "min" "max" ]
+  set data-export:model-information                        item 4 setup
+  set data-export:model-information-keys                   [ "name" "fileName" "version"]
+
+  set data-export:times-series-data                        item 5 setup
+  set data-export:times-series-keys                        [ "label" "units" "min" "max" ]
 
   set data-export:data-series-labels   map [ first ? ] data-export:times-series-data
   data-export:make-model-data
 end
 
 to data-export:init-run-series
-  set data-export:run-series "[\n  ]"
+  set data-export:run-series []
+  set data-export:serialized-run-series ""
   set data-export:run-number 1
 end
 
 to data-export:init-data-series
   set data-export:data-series "[]"        ; this will contain timeseries dummy in json format
   set data-export:data-series-trip ""
+  set data-export:data-series-length 0
 end
 
 to data-export:update-data-series [ new-data-series ]
   set data-export:data-series butlast data-export:data-series                                  ; strip off the final square bracket
   set data-export:data-series ( word data-export:data-series data-export:data-series-trip "[" reduce [ ( word ?1 ", " ?2 ) ] new-data-series "]]")
   set data-export:data-series-trip ","                                                         ; subsequent sets of data have a preceding comma
+  set data-export:data-series-length  data-export:data-series-length + 1
+end
+
+to data-export:init-inquiry-summary
+  set data-export:inquiry-summary ""        ; this will contain inquiry-summary data in a string form generated by the model from student actions after a run
+end
+
+to data-export:update-inquiry-summary [ new-inquiry-summary ]
+  set data-export:inquiry-summary new-inquiry-summary
+  if not empty? data-export:run-series [
+    ; then replace last run-series in data-export:run-series list with update inquiry-summary data
+    let run-series data-export:create-run-series data-export:last-run-series-data
+    set data-export:run-series butlast data-export:run-series
+    set data-export:run-series lput run-series data-export:run-series ]
 end
 
 ;;;
@@ -187,11 +237,12 @@ to data-export:make-model-description
   set data-export:data-ready? false
   let temp ""
   set temp (word temp "{\n")
-  set temp (word temp data-export:section 4 "timeSeriesData" data-export:times-series-keys [ ] data-export:times-series-data ",\n" )
-  set temp (word temp data-export:section 4 "computationalInputs" data-export:computational-inputs-keys [ ] data-export:computational-inputs ",\n" )
-  set temp (word temp data-export:section 4 "computationalOutputs" data-export:computational-outputs-keys data-export:computational-outputs-categorical-keys data-export:computational-outputs ",\n" )
-  set temp (word temp data-export:section 4 "studentInputs" data-export:student-inputs-keys [ ] data-export:student-inputs ",\n" )
-  set temp (word temp data-export:section 4 "modelInformation" data-export:model-information-keys [ ] data-export:model-information "\n" )
+  set temp (word temp data-export:section 4 "timeSeriesData"         data-export:times-series-keys            [ ] data-export:times-series-data ",\n" )
+  set temp (word temp data-export:section 4 "computationalInputs"    data-export:computational-inputs-keys    [ ] data-export:computational-inputs ",\n" )
+  set temp (word temp data-export:section 4 "representationalInputs" data-export:representational-inputs-keys data-export:representational-inputs-categorical-keys data-export:representational-inputs ",\n" )
+  set temp (word temp data-export:section 4 "computationalOutputs"   data-export:computational-outputs-keys   data-export:computational-outputs-categorical-keys   data-export:computational-outputs ",\n" )
+  set temp (word temp data-export:section 4 "studentInputs"          data-export:student-inputs-keys          [ ] data-export:student-inputs ",\n" )
+  set temp (word temp data-export:section 4 "modelInformation"       data-export:model-information-keys       [ ] data-export:model-information "\n" )
   set temp (word temp "  }")
   set data-export:model-description temp
   set data-export:data-ready? true
@@ -199,37 +250,70 @@ end
 
 to data-export:make-model-data
   data-export:make-model-description
+  data-export:serialize-run-series
   set data-export:data-ready? false
   let temp ""
   set temp (word temp "{\n")
-  set temp (word temp "  \"description\": " data-export:model-description ",\n")
-  set temp (word temp "  \"runs\": " data-export:run-series "\n")
+  set temp (word temp "  \"description\": " data-export:model-description     ",\n")
+  set temp (word temp "  \"runs\": "        data-export:serialized-run-series "\n")
   set temp (word temp "}\n")
   set data-export:model-data temp
   set data-export:data-ready? true
 end
 
-to data-export:update-run-series [ run-series-data ]
+to data-export:serialize-run-series
+  set data-export:serialized-run-series "[\n"
+  set data-export:run-number 0
+  let comma-newline ",\n"
   let postamble "\n  ]"
-  let temp "\n"
-  if data-export:run-number > 1 [set temp ",\n"]  ; subsequent runs need to be delimited with a comma.
-  set temp (word temp "    {\n")
-  set temp (word temp "      \"timeStamp\": \"" date-and-time "\",\n")
-  set temp (word temp "      \"timeSeriesData\": " data-export:data-series ",\n")
-  set temp (word temp (data-export:run-series-item 6 "computationalInputs"  (item 0 run-series-data) ","))
-  set temp (word temp (data-export:run-series-item 6 "computationalOutputs" (item 1 run-series-data) ","))
-  set temp (word temp (data-export:run-series-item 6 "studentInputs"        (item 2 run-series-data) ""))
-  set temp (word temp "    }")
-  let len-rs length data-export:run-series
-  let len-pa length postamble
-  set data-export:run-series substring data-export:run-series 0 (len-rs - len-pa)
-  set data-export:run-series (word data-export:run-series temp "\n  ]")  ; add in the new data-export:data-series and append a final sqare bracket
-  set data-export:run-number data-export:run-number + 1
+  ; serialize the list of strings in data-export:run-series
+  ; and update global: data-export:serialized-run-series
+  ;  if data-export:run-number > 1 [set temp ",\n"]  ; subsequent runs need to be delimited with a comma.
+
+  foreach data-export:run-series [
+    let run-series ?
+    set data-export:serialized-run-series (word data-export:serialized-run-series run-series ",\n")
+    set data-export:run-number data-export:run-number + 1 ]
+  ; remove the last comma-newline
+  let len-cnl length comma-newline
+  let len-rs length data-export:serialized-run-series
+  set data-export:serialized-run-series substring data-export:serialized-run-series 0 (len-rs - len-cnl)
+  ; and replace with postamble
+  set data-export:serialized-run-series (word data-export:serialized-run-series postamble)
 end
 
-to-report data-export:run-series-item [indent label-name items comma]
+to data-export:update-run-series [ run-series-data ]
+  set data-export:last-run-series-data run-series-data
+  let run-series data-export:create-run-series run-series-data
+  set data-export:run-series lput run-series data-export:run-series
+  data-export:init-data-series
+  data-export:init-inquiry-summary
+end
+
+to-report data-export:create-run-series [ run-series-data ]
+  let run-series ""
+  set run-series (word run-series "    {\n")
+  set run-series (word run-series "      \"timeStamp\": \"" date-and-time "\",\n")
+  set run-series (word run-series "      \"timeSeriesDataLength\": " data-export:data-series-length ",\n")
+  set run-series (word run-series "      \"timeSeriesData\": " data-export:data-series ",\n")
+  set run-series (word run-series (data-export:run-series-array 6 "computationalInputs"     (item 0 run-series-data) ","))
+  set run-series (word run-series (data-export:run-series-array 6 "representationalInputs"  (item 1 run-series-data) ","))
+  set run-series (word run-series (data-export:run-series-array 6 "computationalOutputs"    (item 2 run-series-data) ","))
+  set run-series (word run-series (data-export:run-series-array 6 "studentInputs"           (item 3 run-series-data) ","))
+  set run-series (word run-series (data-export:run-series-item  6 "inquirySummary" data-export:inquiry-summary ""))
+  set run-series (word run-series "    }")
+  report run-series
+end
+
+
+to-report data-export:run-series-array [indent label-name elements comma]
   let q "\""
-  report (word (data-export:indent-string indent) q label-name q ": [" (reduce [ ( word ?1 ", " ?2 ) ] map data-export:jsonify-item items) "]" comma "\n")
+  report (word (data-export:indent-string indent) q label-name q ": [" (reduce [ ( word ?1 ", " ?2 ) ] map data-export:jsonify-item elements) "]" comma "\n")
+end
+
+to-report data-export:run-series-item [indent label-name element comma]
+  let q "\""
+  report (word (data-export:indent-string indent) q label-name q ":" data-export:jsonify-item element comma "\n")
 end
 
 to-report data-export:section [ indent name keys categorical-keys dataset epilog]
