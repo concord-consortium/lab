@@ -17,6 +17,7 @@ var ROOT = "/experiments",
       showData = document.getElementById('show-data'),
       exportedData = document.getElementById('exported-data'),
 
+      $exportedData = $("exported-data"),
       editor,
       controller,
       indent = 2,
@@ -180,6 +181,9 @@ var ROOT = "/experiments",
 
       if (exportedData) {
         exportedData.textContent = data;
+        if (editor) {
+          editor.setValue(data);
+        }
       } else {
         console.log(data);
         data = JSON.parse(data);
@@ -244,7 +248,29 @@ var ROOT = "/experiments",
       return encodeURI(dgUrl);
     });
 
+    setupCodeEditor();
+
     selectInteractive.onchange = selectInteractiveHandler;
+  }
+
+  //
+  // Interactive Code Editor
+  //
+  function setupCodeEditor() {
+    var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+    $exportedData.text("");
+    if (!editor) {
+      editor = CodeMirror.fromTextArea(exportedData, {
+        mode: { name: "javascript", json: true },
+        indentUnit: indent,
+        lineNumbers: true,
+        lineWrapping: false,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        collapseRange: true,
+        onGutterClick: foldFunc
+      });
+    }
   }
 
   // startButtonStatusCallback();
