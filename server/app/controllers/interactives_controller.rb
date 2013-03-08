@@ -42,7 +42,7 @@ class InteractivesController < ApplicationController
       })
     else
       render({
-        :json => @interactive.errors,
+        :json => @interactive.errors.messages,
         :status => :unprocessable_entity
       })
     end
@@ -72,6 +72,8 @@ class InteractivesController < ApplicationController
     Presenters::Interactive.new(model)
   end
 
+  # TODO: refactor this and Parsers#Interactive#generate_couch_doc_id
+  # into the Interactive model
   def create_path_and_id(group)
     groupKey = group.path.gsub('/','_')
     title = params[:interactive][:title].gsub(' ', '_')
