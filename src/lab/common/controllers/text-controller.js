@@ -1,6 +1,6 @@
-/*global define $ */
+/*global define, $ */
 
-define(function () {
+define(function (require) {
 
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
@@ -25,9 +25,18 @@ define(function () {
       $element.addClass("component");
       // Append text content.
       $text = $("<p>").text(component.text).appendTo($element);
+      // Add class defining style of the component ("basic" and "header" values supported,
+      // please see: sass/lab/_interactice-components.sass).
+      $text.addClass(component.style);
       // Process optional onClick script.
       if (component.onClick) {
-        onClickFunction = scriptingAPI.makeFunctionInScriptContext(component.onClick);
+        if (typeof component.onClick !== "function") {
+          // Create function from the string or array of strings.
+          onClickFunction = scriptingAPI.makeFunctionInScriptContext(component.onClick);
+        } else {
+          // Just assign ready function.
+          onClickFunction = component.onClick;
+        }
         $text.on("click", onClickFunction);
         // Also add a special class indicating that this text node is a clickable.
         $text.addClass("clickable");

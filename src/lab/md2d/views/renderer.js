@@ -1,4 +1,4 @@
-/*global $ alert define: false, d3: false */
+/*global $ alert define: false, d3: false Image */
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
@@ -8,6 +8,7 @@ define(function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
       console               = require('common/console'),
+      benchmark             = require('common/benchmark/benchmark'),
       amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
       GeneticRenderer       = require('md2d/views/genetic-renderer'),
       wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
@@ -25,7 +26,7 @@ define(function (require) {
         DISULPHIDE_BOND : 109
       };
 
-  return function MD2DView(model, containers, model2px, model2pxInv) {
+  return function MD2DView(model, containers, m2px, m2pxInv, mSize2px) {
         // Public API object to be returned.
     var api = {},
 
@@ -38,6 +39,19 @@ define(function (require) {
         modelWidth,
         modelHeight,
         aspectRatio,
+
+        // Basic scaling functions for position, it transforms model units to "pixels".
+        // Use it for positions of objects rendered inside the view.
+        model2px = m2px,
+
+        // Inverted scaling function for position transforming model units to "pixels".
+        // Use it for Y coordinates, as Y axis in model coordinate system increases
+        // from bottom to top, while but SVG has increases from top to bottom
+        model2pxInv = m2pxInv,
+
+        // Basic scaling function for size, it transforms model units to "pixels".
+        // Use it for dimensions of objects rendered inside the view.
+        modelSize2px = mSize2px,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer        = containers.mainContainer,
@@ -63,10 +77,10 @@ define(function (require) {
         // Array which defines a gradient assigned to a given particle.
         gradientNameForParticle = [],
 
-        atomTooltipOn,
+        atomTooltipOn = false,
 
         particle, label, labelEnter,
-        moleculeDiv, moleculeDivPre,
+        atomToolTip, atomToolTipPre,
 
         // for model clock
         timeLabel,
@@ -108,7 +122,13 @@ define(function (require) {
         showClock,
 
         VELOCITY_STR = "velocity",
-        FORCE_STR    = "force";
+        FORCE_STR    = "force",
+
+        browser = benchmark.what_browser(),
+
+        // this is a hack put in place to temporarily deal with an image-size
+        // caching bug in Chrome Canary
+        needCachebusting = browser.browser = "Chrome" && browser.version >= "26";
 
 
     function modelTimeLabel() {
@@ -277,7 +297,7 @@ define(function (require) {
     function createSymbolImages() {
       var xMargin = "1%";
       // only add these images if they don't already exist
-      if ($("#heat-bath").length === 0) {
+      if (mainContainer.select("#heat-bath").empty()) {
         // Heat bath key image.
         mainContainer.append("image")
             .attr({
@@ -289,7 +309,7 @@ define(function (require) {
               "xlink:href": "../../resources/heatbath.gif"
             });
       }
-      if ($("#ke-gradient").length === 0) {
+      if (mainContainer.select("#ke-gradient").empty()) {
         // Kinetic Energy Shading gradient image.
         mainContainer.append("image")
             .attr({
@@ -342,7 +362,7 @@ define(function (require) {
     }
 
     function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
+      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return modelSize2px(d.radius); });
     }
 
     /**
@@ -353,7 +373,7 @@ define(function (require) {
       particle.enter().append("circle")
           .attr({
             "class": function (d) { return d.isAminoAcid() ? "draggable amino-acid" : "draggable"; },
-            "r":  function(d) { return model2px(d.radius); },
+            "r":  function(d) { return modelSize2px(d.radius); },
             "cx": function(d) { return model2px(d.x); },
             "cy": function(d) { return model2pxInv(d.y); },
             "fill-opacity": function(d) { return d.visible; },
@@ -386,7 +406,7 @@ define(function (require) {
         .attr({
           "class": "atomTrace",
           "d": getAtomTracePath,
-          "stroke-width": model2px(0.01),
+          "stroke-width": modelSize2px(0.01),
           "stroke": atomTraceColor,
           "fill": "none",
           "stroke-dasharray": "6, 6"
@@ -408,8 +428,8 @@ define(function (require) {
           "class": "obstacle-shape",
           "x": 0,
           "y": 0,
-          "width": function(d, i) {return model2px(obstacles.width[i]); },
-          "height": function(d, i) {return model2px(obstacles.height[i]); },
+          "width": function(d, i) {return modelSize2px(obstacles.width[i]); },
+          "height": function(d, i) {return modelSize2px(obstacles.height[i]); },
           "fill": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; },
           "stroke-width": function(d, i) { return obstacles.visible[i] ? 0.2 : 0.0; },
           "stroke": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; }
@@ -444,9 +464,15 @@ define(function (require) {
               "class": "obstacle-force-hor",
               "d": function (d) {
                 if (obsFx < 0)
-                  return "M " + model2px(obsWidth + vecLen + space) + "," + model2px(d) + " L " + model2px(obsWidth + space) + "," + model2px(d);
+                  return "M " + modelSize2px(obsWidth + vecLen + space) +
+                              "," + modelSize2px(d) +
+                              " L " + modelSize2px(obsWidth + space) +
+                              "," + modelSize2px(d);
                 else
-                  return "M " + model2px(-vecLen - space) + "," + model2px(d) + " L " + model2px(-space) + "," + model2px(d);
+                  return "M " + modelSize2px(-vecLen - space) +
+                              "," + modelSize2px(d) +
+                              " L " + modelSize2px(-space) +
+                              "," + modelSize2px(d);
               }
             });
         }
@@ -460,9 +486,15 @@ define(function (require) {
               "class": "obstacle-force-vert",
               "d": function (d) {
                 if (obsFy < 0)
-                  return "M " + model2px(d) + "," + model2px(-vecLen - space) + " L " + model2px(d) + "," + model2px(-space);
+                  return "M " + modelSize2px(d) +
+                              "," + modelSize2px(-vecLen - space) +
+                              " L " + modelSize2px(d) +
+                              "," + modelSize2px(-space);
                 else
-                  return "M " + model2px(d) + "," + model2px(obsHeight + vecLen + space) + " L " + model2px(d) + "," + model2px(obsHeight + space);
+                  return "M " + modelSize2px(d) +
+                              "," + modelSize2px(obsHeight + vecLen + space) +
+                              " L " + modelSize2px(d) +
+                              "," + modelSize2px(obsHeight + space);
               }
             });
         }
@@ -470,7 +502,7 @@ define(function (require) {
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
             "marker-end": "url(#Triangle-"+ FORCE_STR +")",
-            "stroke-width": model2px(forceVectorWidth),
+            "stroke-width": modelSize2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
           });
@@ -483,9 +515,9 @@ define(function (require) {
             "d": function (d) { return findPoints(d,1); },
             "stroke-width": function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + model2px(0.005);
+                return Math.log(d.strength) / 4 + modelSize2px(0.005);
               } else {
-                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom1Color,
@@ -501,9 +533,9 @@ define(function (require) {
             "d": function (d) { return findPoints(d,2); },
             "stroke-width": function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + model2px(0.005);
+                return Math.log(d.strength) / 4 + modelSize2px(0.005);
               } else {
-                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom2Color,
@@ -544,7 +576,7 @@ define(function (require) {
       dy = y2 - y1;
 
       strength = d.strength;
-      length = Math.sqrt(dx*dx + dy*dy) / model2px(0.01);
+      length = Math.sqrt(dx*dx + dy*dy) / modelSize2px(0.01);
 
       numTurns = Math.floor(d.length * 24);
       springDiameter = length / numTurns;
@@ -556,10 +588,10 @@ define(function (require) {
       cosThetaSpikes = costheta * numTurns;
       sinThetaSpikes = sintheta * numTurns;
 
-      radius_x1 = model2px(modelResults[d.atom1].radius) * costheta;
-      radius_x2 = model2px(modelResults[d.atom2].radius) * costheta;
-      radius_y1 = model2px(modelResults[d.atom1].radius) * sintheta;
-      radius_y2 = model2px(modelResults[d.atom2].radius) * sintheta;
+      radius_x1 = modelSize2px(modelResults[d.atom1].radius) * costheta;
+      radius_x2 = modelSize2px(modelResults[d.atom2].radius) * costheta;
+      radius_y1 = modelSize2px(modelResults[d.atom1].radius) * sintheta;
+      radius_y2 = modelSize2px(modelResults[d.atom2].radius) * sintheta;
       radiusFactorX = radius_x1 - radius_x2;
       radiusFactorY = radius_y1 - radius_y2;
 
@@ -591,8 +623,8 @@ define(function (require) {
     }
 
     function vdwLinesEnter() {
-      var strokeWidth = model2px(0.02),
-          strokeDasharray = model2px(0.03) + " " + model2px(0.02);
+      var strokeWidth = modelSize2px(0.02),
+          strokeDasharray = modelSize2px(0.03) + " " + modelSize2px(0.02);
       // update existing lines
       vdwLines.attr({
         "x1": function(d) { return model2px(modelResults[d[0]].x); },
@@ -627,10 +659,8 @@ define(function (require) {
       var img = [],
           img_height,
           img_width,
-          imgHost,
-          imgHostType,
+          coords,
           imglayer,
-          imgX, imgY,
           container,
           i;
 
@@ -641,30 +671,29 @@ define(function (require) {
 
       for (i = 0; i < imageProp.length; i++) {
         img[i] = new Image();
-        img[i].src = getImagePath(imageProp[i]);
+        // temp: add cachebusting string if we are in Chrome 26 or above
+        img[i].src = getImagePath(imageProp[i]) + (needCachebusting ? "?"+Math.random() : "");
         img[i].onload = (function(i) {
           return function() {
             imageContainerTop.selectAll("image.image_attach"+i).remove();
             imageContainerBelow.selectAll("image.image_attach"+i).remove();
 
-            imgHost = modelResults[imageProp[i].imageHostIndex];
-            imgHostType = imageProp[i].imageHostType;
-            imglayer = imageProp[i].imageLayer;
-            imgX = model2px(imageProp[i].imageX);
-            imgY = model2pxInv(imageProp[i].imageY);
             // Cache the image width and height.
             // In Classic MW model size is defined in 0.1A.
             // Model unit (0.1A) - pixel ratio is always 1. The same applies
             // to images. We can assume that their pixel dimensions are
             // in 0.1A also. So convert them to nm (* 0.01).
             imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
-            img_width = model2px(imageSizes[i][0]);
-            img_height = model2px(imageSizes[i][1]);
+            img_width = modelSize2px(imageSizes[i][0]);
+            img_height = modelSize2px(imageSizes[i][1]);
 
+            coords = getImageCoords(i);
+
+            imglayer = imageProp[i].imageLayer;
             container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
             container.append("image")
-              .attr("x", function() { if (imgHostType === "") { return imgX; } else { return model2px(imgHost.x) - img_width / 2; } })
-              .attr("y", function() { if (imgHostType === "") { return imgY; } else { return model2pxInv(imgHost.y) - img_height / 2; } })
+              .attr("x", coords[0])
+              .attr("y", coords[1])
               .attr("class", "image_attach"+i+" draggable")
               .attr("xlink:href", img[i].src)
               .attr("width", img_width)
@@ -675,7 +704,7 @@ define(function (require) {
       }
     }
 
-    function getTextBoxCoords(d, i) {
+    function getTextBoxCoords(d) {
       var x, y, frameX, frameY;
       if (d.hostType) {
         if (d.hostType === "Atom") {
@@ -729,7 +758,7 @@ define(function (require) {
 
       textBoxes = model.get('textBoxes');
 
-      size = model.size();
+      size = [ model.get('width'), model.get('height') ];
 
       layers = [textContainerTop, textContainerBelow];
 
@@ -768,12 +797,12 @@ define(function (require) {
             "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
             "x-data": function(d,i) { return getTextBoxCoords(d,i)[0]; },
             "y": function(d,i)      { return getTextBoxCoords(d,i)[1]; },
-            "width-data": function(d) { return model2px(d.width); },
-            "width":  model2px(size[0]),
-            "height": model2px(size[1]),
+            "width-data": function(d) { return modelSize2px(d.width); },
+            "width":  modelSize2px(size[0]),
+            "height": modelSize2px(size[1]),
             "xml:space": "preserve",
             "font-family": "'Open Sans', sans-serif",
-            "font-size": model2px(0.12),
+            "font-size": modelSize2px(0.12),
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
             "text-anchor": function(d) {
@@ -803,7 +832,7 @@ define(function (require) {
         var text  = this.getAttributeNS(null, "text-data"),
             x     = this.getAttributeNS(null, "x-data"),
             width = this.getAttributeNS(null, "width-data") || -1,
-            dy    = model2px(0.16),
+            dy    = modelSize2px(0.16),
             hasHost = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
             result, frame, dx;
@@ -816,8 +845,8 @@ define(function (require) {
 
         if (this.parentNode.childElementCount > 1) {
           frame = this.parentNode.childNodes[0];
-          frame.setAttributeNS(null, "width", result.width + model2px(0.2));
-          frame.setAttributeNS(null, "height", (result.lines * dy) + model2px(0.06));
+          frame.setAttributeNS(null, "width", result.width + modelSize2px(0.2));
+          frame.setAttributeNS(null, "height", (result.lines * dy) + modelSize2px(0.06));
         }
 
         // center all hosted labels simply by tweaking the g.transform
@@ -876,27 +905,27 @@ define(function (require) {
         if (model.get("atomNumbers")) {
           selection.append("text")
             .text(d.idx)
-            .style("font-size", model2px(1.4 * d.radius) + "px");
+            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
         }
         else if (useThreeLetterCode && d.label) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.label)
             .attr("class", "shadow")
-            .style("font-size", model2px(d.radius) + "px");
+            .style("font-size", modelSize2px(d.radius) + "px");
           selection.append("text")
             .text(d.label)
-            .style("font-size", model2px(d.radius) + "px");
+            .style("font-size", modelSize2px(d.radius) + "px");
         }
         else if (!useThreeLetterCode && d.symbol) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.symbol)
             .attr("class", "shadow")
-            .style("font-size", model2px(1.4 * d.radius) + "px");
+            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
           selection.append("text")
             .text(d.symbol)
-            .style("font-size", model2px(1.4 * d.radius) + "px");
+            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
         }
         else if (showChargeSymbols) {
           if (d.charge > 0){
@@ -908,7 +937,7 @@ define(function (require) {
           }
           selection.append("text")
             .text(txtValue)
-            .style("font-size", model2px(1.6 * d.radius) + "px");
+            .style("font-size", modelSize2px(1.6 * d.radius) + "px");
         }
         // Set common attributes for labels (+ shadows).
         txtSelection = selection.selectAll("text");
@@ -934,7 +963,7 @@ define(function (require) {
         selection.select("text.shadow")
           .style({
             "stroke": "#fff",
-            "stroke-width": 0.15 * model2px(d.radius),
+            "stroke-width": 0.15 * modelSize2px(d.radius),
             "stroke-opacity": 0.7
           });
       });
@@ -1031,7 +1060,7 @@ define(function (require) {
     }
 
     function moleculeMouseOver(d, i) {
-      if (model.get("enableAtomTooltips")) {
+      if (model.get("enableAtomTooltips") && (atomTooltipOn === false)) {
         renderAtomTooltip(i);
       }
     }
@@ -1040,8 +1069,8 @@ define(function (require) {
       containers.node.focus();
       if (model.get("enableAtomTooltips")) {
         if (atomTooltipOn !== false) {
-          moleculeDiv.style("opacity", 1e-6);
-          moleculeDiv.style("display", "none");
+          atomToolTip.style("opacity", 1e-6);
+          atomToolTip.style("display", "none");
           atomTooltipOn = false;
         } else {
           if (d3.event.shiftKey) {
@@ -1055,16 +1084,20 @@ define(function (require) {
     }
 
     function renderAtomTooltip(i) {
-      moleculeDiv
+      var pos = containers.pos(),
+          left = pos.left + model2px(modelResults[i].x),
+          top  = pos.top +  model2pxInv(modelResults[i].y);
+
+      atomToolTip
             .style("opacity", 1.0)
             .style("display", "inline")
             .style("background", "rgba(100%, 100%, 100%, 0.7)")
-            .style("left", model2px(modelResults[i].x) + 60 + "px")
-            .style("top",  model2pxInv(modelResults[i].y) + 30 + "px")
+            .style("left", left + "px")
+            .style("top",  top + "px")
             .style("zIndex", 100)
             .transition().duration(250);
 
-      moleculeDivPre.text(
+      atomToolTipPre.text(
           "atom: " + i + "\n" +
           "time: " + modelTimeLabel() + "\n" +
           "speed: " + d3.format("+6.3e")(modelResults[i].speed) + "\n" +
@@ -1077,7 +1110,7 @@ define(function (require) {
 
     function moleculeMouseOut() {
       if (!atomTooltipOn && atomTooltipOn !== 0) {
-        moleculeDiv.style("opacity", 1e-6).style("zIndex" -1);
+        atomToolTip.style("opacity", 1e-6).style("zIndex" -1);
       }
     }
 
@@ -1146,7 +1179,7 @@ define(function (require) {
           y_pos = model2pxInv(d.y),
           path = "M "+x_pos+","+y_pos,
           scale = velocityVectorLength * 100;
-      return path + " L "+(x_pos + model2px(d.vx*scale))+","+(y_pos - model2px(d.vy*scale));
+      return path + " L "+(x_pos + modelSize2px(d.vx*scale))+","+(y_pos - modelSize2px(d.vy*scale));
     }
 
     function getForceVectorPath(d) {
@@ -1155,15 +1188,15 @@ define(function (require) {
           mass  = d.mass,
           scale = forceVectorLength * 100,
           path  = "M "+x_pos+","+y_pos;
-      return path + " L "+(x_pos + model2px(d.ax*mass*scale))+","+(y_pos - model2px(d.ay*mass*scale));
+      return path + " L "+(x_pos + modelSize2px(d.ax*mass*scale))+","+(y_pos - modelSize2px(d.ay*mass*scale));
     }
 
     function getVelVectorWidth(d) {
-      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? model2px(velocityVectorWidth) : 0;
+      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? modelSize2px(velocityVectorWidth) : 0;
     }
 
     function getForceVectorWidth(d) {
-      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? model2px(forceVectorWidth) : 0;
+      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? modelSize2px(forceVectorWidth) : 0;
     }
 
     function updateVectors(vector, pathFunc, widthFunc) {
@@ -1213,22 +1246,39 @@ define(function (require) {
       }
     }
 
+    function getImageCoords(i) {
+      var props = imageProp[i],
+          x, y, img_width, img_height;
+      if (props.imageHostType) {
+        if (props.imageHostType === "Atom") {
+          x = modelResults[props.imageHostIndex].x;
+          y = modelResults[props.imageHostIndex].y;
+        } else if (props.imageHostType === "RectangularObstacle") {
+          x = obstacles.x[props.imageHostIndex] + (obstacles.width[props.imageHostIndex] / 2);
+          y = obstacles.y[props.imageHostIndex] + (obstacles.height[props.imageHostIndex] / 2);
+        }
+        img_width = imageSizes[i][0];
+        img_height = imageSizes[i][1];
+        x = x - img_width / 2;
+        y = y + img_height / 2;
+      } else {
+        x = props.imageX;
+        y = props.imageY;
+      }
+      return [model2px(x), model2pxInv(y)];
+    }
+
     function updateImageAttachment(){
-      var numImages, img_height, img_width, imgHost, imgHostType, imglayer, imgX, imgY, container, i;
+      var numImages, imglayer, coords, i;
       numImages= imageProp.length;
       for(i = 0; i < numImages; i++) {
         if (!imageSizes || !imageSizes[i]) continue;
-        imgHost =  modelResults[imageProp[i].imageHostIndex];
-        imgHostType =  imageProp[i].imageHostType;
-        imgX = model2px(imageProp[i].imageX);
-        imgY = model2pxInv(imageProp[i].imageY);
+        coords = getImageCoords(i);
         imglayer = imageProp[i].imageLayer;
-        img_width = model2px(imageSizes[i][0]);
-        img_height = model2px(imageSizes[i][1]);
         container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
         container.selectAll("image.image_attach"+i)
-          .attr("x",  function() { if (imgHostType === "") { return imgX; } else { return model2px(imgHost.x) - img_width / 2; } })
-          .attr("y",  function() { if (imgHostType === "") { return imgY; } else { return model2pxInv(imgHost.y) - img_height / 2; } });
+          .attr("x", coords[0])
+          .attr("y", coords[1]);
       }
     }
 
@@ -1285,7 +1335,7 @@ define(function (require) {
       }
     }
 
-    function textDrag(d, i) {
+    function textDrag(d) {
       var dragDx = model2px.invert(d3.event.dx),
           dragDy = model2px.invert(d3.event.dy);
 
@@ -1316,12 +1366,13 @@ define(function (require) {
       }
     }
 
-    function setupTooTips() {
-      if ( moleculeDiv === undefined) {
-        moleculeDiv = d3.select("body").append("div")
+    function setupToolTips() {
+      var mc = d3.select("#model-container");
+      if ( atomToolTip === undefined && !mc.empty()) {
+        atomToolTip = mc.append("div")
             .attr("class", "tooltip")
             .style("opacity", 1e-6);
-        moleculeDivPre = moleculeDiv.append("pre");
+        atomToolTipPre = atomToolTip.append("pre");
       }
     }
 
@@ -1344,6 +1395,27 @@ define(function (require) {
           .attr("y", model2pxInv(0) - 3)
           .attr("text-anchor", "start")
           .attr("fill", clockColor.rgb());
+      }
+    }
+
+    function setupFirefoxWarning() {
+      var $firefoxWarningPane,
+          pos,
+          top,
+          left,
+          b = benchmark.what_browser();   // we need to recalc this for FF, for some reason
+
+      if (b.browser === "Firefox" && b.version >= "18") {
+        $firefoxWarningPane = $("#firefox-warning-pane");
+        pos = containers.pos();
+        top  = pos.bottom - $firefoxWarningPane.height();
+        left = pos.right - $firefoxWarningPane.width();
+        $firefoxWarningPane.css({
+          display: "inline",
+          top: top -5,
+          left: left - 15,
+          'z-index': 100
+        });
       }
     }
 
@@ -1404,7 +1476,6 @@ define(function (require) {
       modelHeight   = model.get('height');
       aspectRatio   = modelWidth / modelHeight;
 
-      setupTooTips();
       setupRendererOptions();
 
       // Subscribe for model events.
@@ -1425,6 +1496,8 @@ define(function (require) {
       model.on('removeRadialBond', setupRadialBonds);
       model.on('textBoxesChanged', drawTextBoxes);
 
+      setupFirefoxWarning();
+
     }
 
     //
@@ -1432,11 +1505,12 @@ define(function (require) {
     //
     // Call when model is reset or reloaded.
     //
-    function reset(mod, cont, m2px, m2pxInv) {
+    function reset(mod, cont, m2px, m2pxInv, mSize2px) {
       model = mod;
       containers = cont;
       model2px = m2px;
       model2pxInv = m2pxInv;
+      modelSize2px = mSize2px;
       init();
     }
 
@@ -1444,17 +1518,17 @@ define(function (require) {
     // MD2D Renderer: repaint
     //
     // Call when container being rendered into changes size, in that case
-    // pass in new D3 scales for model2pcx transformations.
+    // pass in new D3 scales for model2px transformations.
     //
-    // Also call when the number of objects changes suc that the conatiner
+    // Also call when the number of objects changes such that the container
     // must be setup again.
     //
-    function repaint(m2px, m2pxInv) {
+    function repaint(m2px, m2pxInv, mSize2px) {
       if (arguments.length) {
         model2px = m2px;
         model2pxInv = m2pxInv;
+        modelSize2px = mSize2px;
       }
-      setupClock();
       setupObstacles();
       setupVdwPairs();
       setupColorsOfParticles();
@@ -1466,6 +1540,9 @@ define(function (require) {
       drawSymbolImages();
       drawImageAttachment();
       drawTextBoxes();
+      setupClock();
+      setupToolTips();
+      setupFirefoxWarning();
     }
 
     //

@@ -118,10 +118,11 @@ $header-font-color: #f8f8f8
 #content
   margin: 1.0em 1.0em 0em 1.5em
   border: 1px #ccc dashed
-  a.opens-in-new-window
-    color: #333
-    font-size: 90%
-    padding-left: 1em
+
+a.opens-in-new-window
+  color: #333
+  font-size: 90%
+  padding-left: 1em
 
 .ui-resizable-helper
   border: 2px #fff solid
@@ -181,10 +182,16 @@ button.extras-item-controls
   padding: 0em
 
 #model-editor-content, #editor-content.extras-item-content
-  margin: 0.5em 0em 0.5em 1.5em
+  margin: 0.5em 1.5em 0.5em 1.5em
   padding: 0em
 
 .save-interactive-form
+  display: none
+
+#save-interactive-button
+  display: none
+
+#save-model-button
   display: none
 
 #interactive-text-area
@@ -197,6 +204,14 @@ button.extras-item-controls
   background: #fff
   margin: 0.7em 0.5em
   height: 45em
+
+div.CodeMirror
+  span.CodeMirror-matchingbracket
+    color: #0c0
+    font-weight: bolder
+  span.CodeMirror-nonmatchingbracket
+    color: #f22
+    font-weight: normal
 
 .model-benchmark-results
   margin: 0em

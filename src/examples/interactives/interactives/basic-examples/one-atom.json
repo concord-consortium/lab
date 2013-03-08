@@ -36,45 +36,55 @@
       ]
     },
     {
+      "type": "text",
+      "id": "axes-label",
+      "text": "Axes",
+      "style": "header"
+    },
+    {
       "type": "checkbox",
       "id": "show-gridlines",
-      "text": "Show Grid Lines",
+      "text": "Grid Lines",
+      "textOn": "left",
       "property": "gridLines"
     },
     {
       "type": "checkbox",
       "id": "show-xunits",
-      "text": "Show X units",
+      "text": "X units",
+      "textOn": "left",
       "property": "xunits"
     },
     {
       "type": "checkbox",
       "id": "show-yunits",
-      "text": "Show Y units",
+      "text": "Y units",
+      "textOn": "left",
       "property": "yunits"
     }
   ],
   "layout": {
-    "bottom": [ "current-obstacles", "kick-atom"],
-    "right": [
-      ["show-gridlines"],
-      ["show-xunits"],
-      ["show-yunits"]
-    ]
+    "left": [
+      [ "axes-label" ],
+      [ "show-gridlines" ],
+      [ "show-xunits" ],
+      [ "show-yunits" ]
+    ],
+    "bottom": [ "current-obstacles", "kick-atom"]
   },
   "template": [
     {
-      "id": "bottom",
-      "top": "model.bottom",
-      "align": "center"
+      "id": "left",
+      "top": "5em",
+      "right": "model.left",
+      "align": "right"
     },
     {
-      "id": "right",
-      "top": "6em",
-      "width": "12em",
-      "left": "model.right",
-      "padding-left": "1em",
-      "align": "right"
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "padding-top": "0.5em",
+      "align": "center"
     }
   ]
 }

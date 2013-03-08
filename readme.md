@@ -294,6 +294,26 @@ configuration samples:
     cp config/config.sample.yml config/config.yml
     cp server/config/couchdb.sample.yml server/config/couchdb.yml
 
+#### Known problems with Linux during Lab build process
+
+- D3.js build process fails:
+
+        locale: Cannot set LC_ALL to default locale: No such file or directory
+
+    Solution:
+
+        $ sudo locale-gen en_US
+
+- D3.js build process fails:
+
+        make[1]: /usr/lib/nodejs:/usr/share/javascript/uglify-js/bin/uglifyjs: Command not found
+
+    Workaround:
+
+        $ unset NODE_PATH
+
+    and try to build the project again.
+
 ### Use git to create a local clone of the Lab repository.
 
 If you have commit access to the repository use this form:
@@ -717,6 +737,7 @@ In a full build environment the JavaScript configuration is set in the `:jsconfg
     :jsconfig:
       :sharing: true
       :home: http://lab.concord.org
+      :homeForSharing:
       :homeInteractivePath: /examples/interactives/interactive.html
       :homeEmbeddablePath: /examples/interactives/embeddable.html
       :utmCampaign: <external-campaign-key>
@@ -725,6 +746,11 @@ In a full build environment the JavaScript configuration is set in the `:jsconfg
 The default value for this is `true`.
 
 **`home`** Url used to reference cannonical site when sharing is turned off.
+
+**`homeForSharing`** Set :homeForSharing to the host where shared Interactives are found
+if you don't want to share the ones on the actual server. Example if you host the
+Interactives on a static S3 site and want the sharing links to point to the same
+Interactives at "http://lab.concord.org"
 
 **`homeInteractivePath`** Path to page to run non-embeddable version of Interactives.
 
@@ -750,6 +776,7 @@ sharing is impractical in some manner you can disable the display of the Interac
     :jsconfig:
       :sharing: false
       :home: http://lab.concord.org
+      :homeForSharing: http://lab.concord.org
       :homeInteractivePath: /examples/interactives/interactive.html
       :homeEmbeddablePath: /examples/interactives/embeddable.html
       :utmCampaign: <external-campaign-key>
@@ -757,6 +784,10 @@ sharing is impractical in some manner you can disable the display of the Interac
 The additional values for `:home`, `homeInteractivePath`, and `homeEmbeddablePath` are used to construct an
 additional paragraph in the Interactive **About** box providing a link to the Interactive on the production
 [site for the project](http://lab.concord.org).
+
+You can also enable Sharing **but** use a separate host for generating the sharing urls by entering a value
+for **homeForSharing**. If you are *also* hosting the the Lab Interactives in a subdirectory you must also
+set the values for **homeEmbeddablePath** and **homeInteractivePath** as shown above.
 
 The value for `utmCampaign` is optional. If present and the **home** site has enabled Google Analytics
 setting a value for `utmCampaign` will allow better tracking of users who click through links in the

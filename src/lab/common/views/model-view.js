@@ -27,13 +27,18 @@ define(function (require) {
         padding, size, modelSize,
         playbackXPos, playbackYPos,
 
-        // Basic scaling function, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
+        // Basic scaling functions for positio, it transforms model units to "pixels".
+        // Use it for positions of objects rendered inside the view.
         model2px,
-        // Inverted scaling function transforming model units to "pixels".
-        // Use it for Y coordinates, as model coordinate system has (0, 0) point
-        // in lower left corner, but SVG has (0, 0) point in upper left corner.
+
+        // Inverted scaling function for position transforming model units to "pixels".
+        // Use it for Y coordinates, as Y axis in model coordinate system increases
+        // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
+
+        // Basic scaling function for size, it transforms model units to "pixels".
+        // Use it for dimensions of objects rendered inside the view.
+        modelSize2px,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
@@ -91,6 +96,10 @@ define(function (require) {
     function scale() {
       var modelWidth = model.get('width'),
           modelHeight = model.get('height'),
+          modelMinX = model.get('minX'),
+          modelMinY = model.get('minY'),
+          modelMaxX = model.get('maxX'),
+          modelMaxY = model.get('maxY'),
           aspectRatio = modelWidth / modelHeight,
           width, height;
 
@@ -110,7 +119,11 @@ define(function (require) {
       // Model size in model units.
       modelSize = {
         "width":  modelWidth,
-        "height": modelHeight
+        "height": modelHeight,
+        "minX": modelMinX,
+        "minY": modelMinY,
+        "maxX": modelMaxX,
+        "maxY": modelMaxY
       };
 
       offsetTop  = node.offsetTop + padding.top;
@@ -132,15 +145,21 @@ define(function (require) {
 
       playbackYPos = cy - 42 * emsize;
 
-      // Basic model2px scaling function.
+      // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
-          .domain([0, modelSize.width])
+          .domain([modelSize.minX, modelSize.maxX])
           .range([0, size.width]);
 
-      // Inverted model2px scaling function (for y-coordinates, inverted domain).
+      // Inverted model2px scaling function for position (for y-coordinates, inverted domain).
       model2pxInv = d3.scale.linear()
-          .domain([modelSize.height, 0])
+          .domain([modelSize.maxY, modelSize.minY])
           .range([0, size.height]);
+
+      // Basic modelSize2px scaling function for size.
+      modelSize2px = function (sizeX) {
+        return model2px(modelMinX + sizeX);
+      };
+
     }
 
     function redraw() {
@@ -390,7 +409,7 @@ define(function (require) {
     }
 
     function setupPlaybackControls() {
-      d3.select('.model-controller').remove();
+      vis1.select('.model-controller').remove();
       switch (model.get("controlButtons")) {
         case "play":
           playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
@@ -424,11 +443,17 @@ define(function (require) {
       // can find resources on paths relative to the model
       model.url = modelUrl;
 
+      // Add a pos() function to containers so the model renderer can more easily
+      // manipulate absolutely positioned dom elements it may create or manage
+      containers.pos = function() {
+        return  mainContainer.node().parentElement.getBoundingClientRect();
+      };
+
       // create a model renderer ... if one hasn't already been created
       if (!renderer) {
-        renderer = new Renderer(model, containers, model2px, model2pxInv);
+        renderer = new Renderer(model, containers, model2px, model2pxInv, modelSize2px);
       } else {
-        renderer.reset(model, containers, model2px, model2pxInv);
+        renderer.reset(model, containers, model2px, model2pxInv, modelSize2px);
       }
 
       // Redraw container each time when some visual-related property is changed.
@@ -449,7 +474,7 @@ define(function (require) {
     //
     function repaint() {
       setupBackground();
-      renderer.repaint(model2px, model2pxInv);
+      renderer.repaint(model2px, model2pxInv, modelSize2px);
     }
 
     api = {
@@ -480,6 +505,7 @@ define(function (require) {
       reset: function(newModelUrl, newModel) {
         processOptions(newModelUrl, newModel);
         init();
+        repaint();
       },
       model2px: function(val) {
         // Note that we shouldn't just do:
@@ -491,6 +517,10 @@ define(function (require) {
       model2pxInv: function(val) {
         // See comments for model2px.
         return model2pxInv(val);
+      },
+      modelSize2px: function(val) {
+        // See comments for model2px.
+        return modelSize2px(val);
       }
     };
 

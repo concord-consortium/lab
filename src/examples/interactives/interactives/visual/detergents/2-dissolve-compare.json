@@ -1,0 +1,57 @@
+{
+  "title": "Dissolve Compare",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "DissolveCompare$0",
+      "url": "/imports/legacy-mw-content/converted/visual/Detergents/DissolveCompare$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "id": "DissolveCompare$1",
+      "url": "/imports/legacy-mw-content/converted/visual/Detergents/DissolveCompare$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "models-label",
+      "style": "header",
+      "text": "Select "
+    },
+    {
+      "type": "pulldown",
+      "id": "model-pulldown",
+      "options": [
+        {
+          "text": "Polar/polar",
+          "loadModel": "DissolveCompare$0"
+        },
+        {
+          "text": "Nonpolar/nonpolar",
+          "loadModel": "DissolveCompare$1"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "remove-barrier",
+      "text": "Remove barrier",
+      "action": "if (getNumberOfObstacles() > 0) { removeObstacle(0) };"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "models-label",
+      "model-pulldown",
+      "remove-barrier"
+    ]
+  }
+}

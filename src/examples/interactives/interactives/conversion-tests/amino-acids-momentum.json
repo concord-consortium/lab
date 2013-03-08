@@ -123,7 +123,8 @@
         }
       ],
       "displayValue": "return format('1.2f')(value)",
-      "property": "additionalSolventForceMult"
+      "property": "additionalSolventForceMult",
+      "width": "18em"
     },
     {
       "type": "slider",
@@ -143,7 +144,8 @@
         }
       ],
       "displayValue": "return format('1.2f')(value)",
-      "property": "additionalSolventForceThreshold"
+      "property": "additionalSolventForceThreshold",
+      "width": "23em"
     },
     {
       "type": "slider",
@@ -163,7 +165,8 @@
       ],
       "steps": 290,
       "title": "Pairwise Epsilon of Polar Amino Acids",
-      "property": "polarAAEpislon"
+      "property": "polarAAEpislon",
+      "width": "20em"
     },
     {
       "type": "checkbox",

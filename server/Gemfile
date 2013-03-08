@@ -64,6 +64,7 @@ end
 group :test do
   gem "rspec-rails"
   gem "webmock"
+  gem "factory_girl_rails",  "~> 4.2.1"
 end
 
 # To use ActiveModel has_secure_password

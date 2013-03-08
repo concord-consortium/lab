@@ -170,6 +170,31 @@ define(function() {
         // Text content.
         defaultValue: ""
       },
+      style: {
+        // Semantic description of text style.
+        // Accepted values: "basic", "header".
+        defaultValue: "basic"
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      }
+    },
+
+    image: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      src: {
+        // Absolute path should start with http(s)://
+        // Relative path is relative to model URL.
+        defaultValue: ""
+      },
       width: {
         defaultValue: "auto"
       },
@@ -192,10 +217,10 @@ define(function() {
         defaultValue: ""
       },
       width: {
-        defaultValue: "auto"
+        defaultValue: ""
       },
       height: {
-        defaultValue: "auto"
+        defaultValue: ""
       }
     },
 
@@ -208,6 +233,15 @@ define(function() {
       },
       text: {
         defaultValue: ""
+      },
+      textOn: {
+        defaultValue: "right"
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
       },
       property: {
         conflictsWith: ["initialValue"]
@@ -248,7 +282,7 @@ define(function() {
         defaultValue: "12em"
       },
       height: {
-        defaultValue: "3.75em"
+        defaultValue: "3.65em"
       },
       displayValue: {},
       // Use "property" OR "action" + "initialValue".
@@ -358,6 +392,15 @@ define(function() {
       },
       units: {
         defaultValue: ""
+      },
+      orientation: {
+        defaultValue: "horizontal"
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
       },
       property: {},
       displayValue: {}

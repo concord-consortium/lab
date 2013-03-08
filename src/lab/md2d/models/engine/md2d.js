@@ -142,6 +142,12 @@ define(function (require, exports, module) {
         // System dimensions as [x, y] in nanometers. Default value can be changed until particles are created.
         size = [10, 10],
 
+        // System dimensions as minX, minY, maxX, maxY. Default value can be changed until turles are created.
+        minX =  0,
+        minY =  0,
+        maxX = 10,
+        maxY = 10,
+
         // Viscosity of the medium of the model
         viscosity,
 
@@ -664,10 +670,10 @@ define(function (require, exports, module) {
         createElementsArray = function(num) {
           elements = engine.elements = {};
 
-          elements.mass    = arrays.create(num, 0, arrayTypes.float);
-          elements.epsilon = arrays.create(num, 0, arrayTypes.float);
-          elements.sigma   = arrays.create(num, 0, arrayTypes.float);
-          elements.radius  = arrays.create(num, 0, arrayTypes.float);
+          elements.mass    = arrays.create(num, 0, arrayTypes.floatType);
+          elements.epsilon = arrays.create(num, 0, arrayTypes.floatType);
+          elements.sigma   = arrays.create(num, 0, arrayTypes.floatType);
+          elements.radius  = arrays.create(num, 0, arrayTypes.floatType);
           elements.color   = arrays.create(num, 0, arrayTypes.Int32Array);
 
           assignShortcutReferences.elements();
@@ -677,29 +683,29 @@ define(function (require, exports, module) {
           atoms  = engine.atoms  = {};
 
           // TODO. DRY this up by letting the property list say what type each array is
-          atoms.radius         = arrays.create(num, 0, arrayTypes.float);
-          atoms.px             = arrays.create(num, 0, arrayTypes.float);
-          atoms.py             = arrays.create(num, 0, arrayTypes.float);
-          atoms.x              = arrays.create(num, 0, arrayTypes.float);
-          atoms.y              = arrays.create(num, 0, arrayTypes.float);
-          atoms.vx             = arrays.create(num, 0, arrayTypes.float);
-          atoms.vy             = arrays.create(num, 0, arrayTypes.float);
-          atoms.speed          = arrays.create(num, 0, arrayTypes.float);
-          atoms.ax             = arrays.create(num, 0, arrayTypes.float);
-          atoms.ay             = arrays.create(num, 0, arrayTypes.float);
-          atoms.charge         = arrays.create(num, 0, arrayTypes.float);
-          atoms.friction       = arrays.create(num, 0, arrayTypes.float);
-          atoms.element        = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.pinned         = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.mass           = arrays.create(num, 0, arrayTypes.float);
-          atoms.hydrophobicity = arrays.create(num, 0, arrayTypes.int8);
-          atoms.visited        = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.radius         = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.px             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.py             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.x              = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.y              = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.vx             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.vy             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.speed          = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.ax             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.ay             = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.charge         = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.friction       = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.element        = arrays.create(num, 0, arrayTypes.uint8Type);
+          atoms.pinned         = arrays.create(num, 0, arrayTypes.uint8Type);
+          atoms.mass           = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.hydrophobicity = arrays.create(num, 0, arrayTypes.int8Type);
+          atoms.visited        = arrays.create(num, 0, arrayTypes.uint8Type);
           // For the sake of clarity, manage all atoms properties in one
           // place (engine). In the future, think about separation of engine
           // properties and view-oriented properties like these:
-          atoms.marked         = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.visible        = arrays.create(num, 0, arrayTypes.uint8);
-          atoms.draggable      = arrays.create(num, 0, arrayTypes.uint8);
+          atoms.marked         = arrays.create(num, 0, arrayTypes.uint8Type);
+          atoms.visible        = arrays.create(num, 0, arrayTypes.uint8Type);
+          atoms.draggable      = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.atoms();
         },
@@ -707,11 +713,11 @@ define(function (require, exports, module) {
         createRadialBondsArray = function(num) {
           radialBonds = engine.radialBonds = {};
 
-          radialBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16);
-          radialBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16);
-          radialBonds.length   = arrays.create(num, 0, arrayTypes.float);
-          radialBonds.strength = arrays.create(num, 0, arrayTypes.float);
-          radialBonds.type     = arrays.create(num, 0, arrayTypes.uint8);
+          radialBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16Type);
+          radialBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16Type);
+          radialBonds.length   = arrays.create(num, 0, arrayTypes.floatType);
+          radialBonds.strength = arrays.create(num, 0, arrayTypes.floatType);
+          radialBonds.type     = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.radialBonds();
         },
@@ -719,10 +725,10 @@ define(function (require, exports, module) {
         createRestraintsArray = function(num) {
           restraints = engine.restraints = {};
 
-          restraints.atomIndex = arrays.create(num, 0, arrayTypes.uint16);
-          restraints.k         = arrays.create(num, 0, arrayTypes.float);
-          restraints.x0        = arrays.create(num, 0, arrayTypes.float);
-          restraints.y0        = arrays.create(num, 0, arrayTypes.float);
+          restraints.atomIndex = arrays.create(num, 0, arrayTypes.uint16Type);
+          restraints.k         = arrays.create(num, 0, arrayTypes.floatType);
+          restraints.x0        = arrays.create(num, 0, arrayTypes.floatType);
+          restraints.y0        = arrays.create(num, 0, arrayTypes.floatType);
 
           assignShortcutReferences.restraints();
         },
@@ -730,11 +736,11 @@ define(function (require, exports, module) {
         createAngularBondsArray = function(num) {
           angularBonds = engine.angularBonds = {};
 
-          angularBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16);
-          angularBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16);
-          angularBonds.atom3    = arrays.create(num, 0, arrayTypes.uint16);
-          angularBonds.angle    = arrays.create(num, 0, arrayTypes.float);
-          angularBonds.strength = arrays.create(num, 0, arrayTypes.float);
+          angularBonds.atom1    = arrays.create(num, 0, arrayTypes.uint16Type);
+          angularBonds.atom2    = arrays.create(num, 0, arrayTypes.uint16Type);
+          angularBonds.atom3    = arrays.create(num, 0, arrayTypes.uint16Type);
+          angularBonds.angle    = arrays.create(num, 0, arrayTypes.floatType);
+          angularBonds.strength = arrays.create(num, 0, arrayTypes.floatType);
 
           assignShortcutReferences.angularBonds();
         },
@@ -743,18 +749,18 @@ define(function (require, exports, module) {
           vdwPairs = engine.vdwPairs = {};
 
           vdwPairs.count = 0;
-          vdwPairs.atom1 = arrays.create(num, 0, arrayTypes.uint16);
-          vdwPairs.atom2 = arrays.create(num, 0, arrayTypes.uint16);
+          vdwPairs.atom1 = arrays.create(num, 0, arrayTypes.uint16Type);
+          vdwPairs.atom2 = arrays.create(num, 0, arrayTypes.uint16Type);
         },
 
         createSpringForcesArray = function(num) {
           springForces = engine.springForces = [];
 
           // TODO: not very descriptive. Use hash of arrays like elsewhere.
-          springForces[0] = arrays.create(num, 0, arrayTypes.uint16);
-          springForces[1] = arrays.create(num, 0, arrayTypes.float);
-          springForces[2] = arrays.create(num, 0, arrayTypes.float);
-          springForces[3] = arrays.create(num, 0, arrayTypes.float);
+          springForces[0] = arrays.create(num, 0, arrayTypes.uint16Type);
+          springForces[1] = arrays.create(num, 0, arrayTypes.floatType);
+          springForces[2] = arrays.create(num, 0, arrayTypes.floatType);
+          springForces[3] = arrays.create(num, 0, arrayTypes.floatType);
 
           assignShortcutReferences.springForces();
         },
@@ -762,30 +768,30 @@ define(function (require, exports, module) {
         createObstaclesArray = function(num) {
           obstacles = engine.obstacles = {};
 
-          obstacles.x           = arrays.create(num, 0, arrayTypes.float);
-          obstacles.y           = arrays.create(num, 0, arrayTypes.float);
-          obstacles.width       = arrays.create(num, 0, arrayTypes.float);
-          obstacles.height      = arrays.create(num, 0, arrayTypes.float);
-          obstacles.mass        = arrays.create(num, 0, arrayTypes.float);
-          obstacles.vx          = arrays.create(num, 0, arrayTypes.float);
-          obstacles.vy          = arrays.create(num, 0, arrayTypes.float);
-          obstacles.externalFx  = arrays.create(num, 0, arrayTypes.float);
-          obstacles.externalFy  = arrays.create(num, 0, arrayTypes.float);
-          obstacles.friction    = arrays.create(num, 0, arrayTypes.float);
-          obstacles.westProbe   = arrays.create(num, 0, arrayTypes.uint8);
-          obstacles.northProbe  = arrays.create(num, 0, arrayTypes.uint8);
-          obstacles.eastProbe   = arrays.create(num, 0, arrayTypes.uint8);
-          obstacles.southProbe  = arrays.create(num, 0, arrayTypes.uint8);
-          obstacles.westProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.northProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.eastProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.southProbeValue = arrays.create(num, 0, arrayTypes.float);
-          obstacles.xPrev       = arrays.create(num, 0, arrayTypes.float);
-          obstacles.yPrev       = arrays.create(num, 0, arrayTypes.float);
-          obstacles.colorR      = arrays.create(num, 0, arrayTypes.float);
-          obstacles.colorG      = arrays.create(num, 0, arrayTypes.float);
-          obstacles.colorB      = arrays.create(num, 0, arrayTypes.float);
-          obstacles.visible     = arrays.create(num, 0, arrayTypes.uint8);
+          obstacles.x           = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.y           = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.width       = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.height      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.mass        = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.vx          = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.vy          = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalFx  = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalFy  = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.friction    = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.westProbe   = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.northProbe  = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.eastProbe   = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.southProbe  = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.westProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.northProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.eastProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.southProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.xPrev       = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.yPrev       = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.colorR      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.colorG      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.colorB      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.visible     = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.obstacles();
         },
@@ -1985,20 +1991,22 @@ define(function (require, exports, module) {
         time = t;
       },
 
-      setSize: function(v) {
+      setDimensions: function(v) {
         // NB. We may want to create a simple state diagram for the md engine (as well as for the 'modeler' defined in
         // lab.molecules.js)
         if (sizeHasBeenInitialized) {
           throw new Error("The molecular model's size has already been set, and cannot be reset.");
         }
-        var width  = (v[0] && v[0] > 0) ? v[0] : 10,
-            height = (v[1] && v[1] > 0) ? v[1] : 10;
-        size = [width, height];
+        minX = v[0];
+        minY = v[1];
+        maxX = v[2];
+        maxY = v[3];
+        size = [maxX - minX, maxY - minY];
         sizeHasBeenInitialized = true;
       },
 
-      getSize: function() {
-        return [size[0], size[1]];
+      getDimensions: function() {
+        return [minX, minY, maxX, maxY];
       },
 
       getLJCalculator: function() {
@@ -2583,11 +2591,24 @@ define(function (require, exports, module) {
       canPlaceAtom: function(element, _x, _y, i) {
         var orig_x,
             orig_y,
-            PEAtLocation;
+            PEAtLocation,
+            j;
 
-        // first do the simpler check to see if we're outside the walls or intersect an obstacle
+        // first do the simpler check to see if we're outside the walls
         if ( !engine.atomInBounds(_x, _y, i) ) {
           return false;
+        }
+
+        // Check collision with obstacles.
+        for (j = 0; j < N_obstacles; j++) {
+          testX = obstacleX[j];
+          testY = obstacleY[j];
+          testXMax = testX + obstacleWidth[j];
+          testYMax = testY + obstacleHeight[j];
+          if ((_x > testX && _x < testXMax) &&
+              (_y > testY && _y < testYMax)) {
+            return false;
+          }
         }
 
         // then check PE at location
@@ -3087,6 +3108,40 @@ define(function (require, exports, module) {
               maxAcc = Math.abs(ay[i]);
           }
         }
+      },
+
+      getRadialBondsForAtom: function(index) {
+        var rbonds = [],
+            i,
+            i1,
+            i2;
+
+        for (i = 0; i < N_radialBonds; i++) {
+          i1 = radialBondAtom1Index[i];
+          i2 = radialBondAtom2Index[i];
+          if (index == i1 || index == i2) {
+            rbonds.push(i);
+          }
+        }
+        return rbonds;
+      },
+
+      getAngularBondsForAtom: function(index) {
+        var abonds = [],
+            i,
+            i1,
+            i2,
+            i3;
+
+        for (i = 0; i < N_angularBonds; i++) {
+          i1 = angularBondAtom1Index[i];
+          i2 = angularBondAtom2Index[i];
+          i3 = angularBondAtom3Index[i];
+          if (index == i1 || index == i2 || index == i3) {
+            abonds.push(i);
+          }
+        }
+        return abonds;
       },
 
       // Total mass of all particles in the system, in Dalton (atomic mass units).

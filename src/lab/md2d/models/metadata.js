@@ -8,6 +8,22 @@ define(function() {
         defaultValue: "md2d",
         immutable: true
       },
+      minX: {
+        defaultValue: 0,
+        serialize: false
+      },
+      maxX: {
+        defaultValue: 10,
+        serialize: false
+      },
+      minY: {
+        defaultValue: 0,
+        serialize: false
+      },
+      maxY: {
+        defaultValue: 10,
+        serialize: false
+      },
       width: {
         defaultValue: 10,
         unitType: "length",
@@ -133,9 +149,6 @@ define(function() {
       },
       textBoxes: {
         defaultValue: []
-      },
-      fitToParent: {
-        defaultValue: false
       },
       xlabel: {
         defaultValue: false

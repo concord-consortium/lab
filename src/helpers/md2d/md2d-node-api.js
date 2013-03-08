@@ -1,9 +1,8 @@
 var requirejs = require('requirejs'),
-    path      = require('path');
+    path      = require('path'),
+    document = global.document = require("jsdom").jsdom("<html><head></head><body></body></html>"),
+    window = global.window = document.createWindow();
 
-// Set up any vendored libraries that are normally included via script tag in the modules under test.
-// Note that d3 handles all necessary dependencies like 'jsdom'.
-d3 = require('d3');
 require(path.normalize(__dirname + "/../../vendor/jquery/dist/jquery.min.js"));
 $  = window.jQuery;
 
@@ -17,16 +16,9 @@ requirejs.config({
   }
 });
 
-requirejs([
-  'md2d/models/modeler',
-  'common/validator',
-  'md2d/models/metadata',
-  'cs!md2d/models/solvent'
-], function (Modeler, validator, metadata, Solvent) {
-  // Export API for Node.js scripts.
-  exports.Modeler   = Modeler;
-  // Used by MML -> JSON conversion script.
-  exports.validator = validator;
-  exports.metadata  = metadata;
-  exports.Solvent   = Solvent;
-});
+// Export API for Node.js scripts.
+exports.Modeler   = requirejs('md2d/models/modeler');
+// Used by MML -> JSON conversion script.
+exports.validator = requirejs('common/validator');
+exports.metadata  = requirejs('md2d/models/metadata');
+exports.Solvent   = requirejs('cs!md2d/models/solvent');

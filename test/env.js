@@ -15,12 +15,13 @@ screen = window.screen;
 Sizzle = require('sizzle');
 
 // Set up any vendored libraries that are normally included via script tag in the modules under test:
-require("../server/public/vendor/d3/d3.v2.min.js");
+require("../server/public/vendor/d3/d3.min.js");
 require("../server/public/vendor/jquery/jquery.js");
 $ = jQuery = window.jQuery;
 // Setup libraries which depend on jQuery.
 require("../server/public/vendor/jquery-ui/jquery-ui.js");
 require("../server/public/vendor/jquery-context-menu/jquery.contextMenu.js");
+require("../server/public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js");
 
 // Additional environment features for testing.
 require("./env-assert");

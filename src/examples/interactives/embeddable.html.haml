@@ -7,69 +7,26 @@
     %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
       if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
-    %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/d3/d3.js", :type => "text/javascript"}
     %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
     %script{:src => "../../vendor/jquery-ui/jquery-ui.min.js", :type => "text/javascript"}
     %script{:src => "../../vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js", :type => "text/javascript"}
     %script{:src => "../../vendor/jquery-context-menu/jquery.contextMenu.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js", :type => "text/javascript"}
     %link{:href => "../../vendor/jquery-ui/jquery-ui.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "../../vendor/jquery-context-menu/jquery.contextMenu.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "../../vendor/jquery-selectBoxIt/jquery.selectBoxIt.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "embeddable.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
     = ANALYTICS
   %body
     #responsive-content
-      #content-banner
-        #credits
-          #credits-link.link The Concord Consortium
-        #about
-          #about-link.link About
-        #share
-          #share-link.link Share
       #interactive-container
 
-      #credits-pane
-        #credits-pane-banner
-          %span#credits-pane-title About
-          #credits-pane-close X
-        #credits-content
+      #firefox-warning-pane
+        %p
+          %a(href='http://blog.concord.org/serious-performance-regression-in-firefox-18-and-newer' class='opens-in-new-window' target='_blank') Firefox v18+ performance issue ...
 
-      #about-pane
-        #about-pane-banner
-          %span#about-pane-title About
-          #about-pane-close X
-        #about-content
-
-      #share-pane
-        #share-pane-banner
-          %span#share-pane-title Share
-          #share-pane-close X
-        #share-content
-          %p
-            Paste this
-            %a#share-embeddable-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} link
-            in email or IM.
-          %textarea#share-embeddable-link-content
-          %p< Paste HTML to embed in website or blog.
-          #share-iframe-form<
-            Select Size:
-            %select#share-select-iframe-size
-              %option{:value => "smaller"} 30% smaller
-              %option{:value => "actual", :selected => true} actual
-              %option{:value => "larger"} 50% larger
-            %textarea#share-iframe-content
-          #share-license
-            %strong Copyright © 2013&nbsp;
-            %a#share-license-link{:href => "http://concord.org", :class => "opens-in-new-window", :target => "_blank"}> The Concord Consortium
-            \. All rights reserved. The software is licensed under&nbsp;
-            %a#share-license-link{:href => "http://opensource.org/licenses/BSD-2-Clause", :class => "opens-in-new-window", :target => "_blank"}> Simplified BSD
-            ,
-            %a#share-license-link{:href => "http://opensource.org/licenses/MIT", :class => "opens-in-new-window", :target => "_blank"} MIT
-            or
-            %a#share-license-link{:href => "http://opensource.org/licenses/Apache-2.0", :class => "opens-in-new-window", :target => "_blank"} Apache 2.0
-            licenses. Please provide attribution to the Concord Consortium and the URL&nbsp;
-            %a#share-license-link{:href => "http://concord.org/", :class => "opens-in-new-window", :target => "_blank"}> http://concord.org
-            \.
     %script{:src => "../../lab/lab.js", :type => "text/javascript"}
     %script{:src => "application.js", :type => "text/javascript"}
 

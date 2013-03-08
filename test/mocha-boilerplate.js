@@ -1,7 +1,6 @@
 /*global requirejs: true, sinon: true */
 
-var config  = require('./requirejs-config'),
-    helpers = require('./helpers');
+var helpers = require('./helpers');
 
 // Make these global and therefore predefined in Mocha tests:
 sinon     = require('sinon');

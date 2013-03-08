@@ -85,7 +85,7 @@ define(function(require) {
         radialBondResults,
 
         // The index of the "spring force" used to implement dragging of atoms in a running model
-        liveDragSpringForceIndex,
+        liveDragSpringForceIndex = null,
 
         // Cached value of the 'friction' property of the atom being dragged in a running model
         liveDragSavedFriction,
@@ -870,12 +870,25 @@ define(function(require) {
     };
 
     /**
+      Initialize minX, minYm, maxX, maxY from width and height
+      MD2D assumes that minX and minY = 0
+    */
+    model.initializeDimensions = function () {
+      model.set({
+        minX: 0,
+        maxX: model.get('width'),
+        minY: 0,
+        maxY: model.get('height')
+      });
+    };
+
+    /**
       Creates a new md2d engine and leaves it in 'engine'.
     */
     model.initializeEngine = function () {
       engine = md2d.createEngine();
 
-      engine.setSize([model.get('width'), model.get('height')]);
+      engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
       engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
       engine.useCoulombInteraction(model.get('coulombForces'));
       engine.useThermostat(model.get('temperatureControl'));
@@ -955,6 +968,7 @@ define(function(require) {
       left in whatever grid the engine's initialization leaves them in.
     */
     model.createNewAtoms = function(config) {
+      model.initializeDimensions();
       model.initializeEngine();
       model.createElements(editableElements);
       model.createAtoms(config);
@@ -1162,7 +1176,10 @@ define(function(require) {
       if (el == null) el = randomElement();
       if (charge == null) charge = 0;
 
-      var size   = model.size(),
+      var width = model.get('width'),
+          height = model.get('height'),
+          minX = model.get('minX'),
+          minY = model.get('minY'),
           radius = engine.getRadiusOfElement(el),
           x,
           y,
@@ -1172,8 +1189,8 @@ define(function(require) {
           maxTries = 10;
 
       do {
-        x = Math.random() * size[0] - 2*radius;
-        y = Math.random() * size[1] - 2*radius;
+        x = minX + Math.random() * width - 2*radius;
+        y = minY + Math.random() * height - 2*radius;
 
         // findMinimimuPELocation will return false if minimization doesn't converge, in which case
         // try again from a different x, y
@@ -1192,14 +1209,17 @@ define(function(require) {
 
       Returns false and does not add the atom if the potential energy change of adding an *uncharged*
       atom of the specified element to the specified location would be positive (i.e, if the atom
-      intrudes into the repulsive region of another atom.)
+      intrudes into the repulsive region of another atom), or if atom is placed inside an obstacle
 
       Otherwise, returns true.
 
       silent = true disables this check.
     */
     model.addAtom = function(props, options) {
-      var size = model.size(),
+      var minX = model.get('minX'),
+          minY = model.get('minY'),
+          maxX = model.get('maxX'),
+          maxY = model.get('maxY'),
           radius;
 
       options = options || {};
@@ -1209,10 +1229,10 @@ define(function(require) {
 
       // As a convenience to script authors, bump the atom within bounds
       radius = engine.getRadiusOfElement(props.element);
-      if (props.x < radius) props.x = radius;
-      if (props.x > size[0] - radius) props.x = size[0] - radius;
-      if (props.y < radius) props.y = radius;
-      if (props.y > size[1] - radius) props.y = size[1] - radius;
+      if (props.x < (minX + radius)) props.x = minX + radius;
+      if (props.x > (maxX - radius)) props.x = maxX - radius;
+      if (props.y < (minY + radius)) props.y = minY + radius;
+      if (props.y > (maxY - radius)) props.y = maxY - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
       if (!options.supressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
@@ -1458,6 +1478,18 @@ define(function(require) {
       return translateFromMD2DUnits(props, atomMetaData);
     };
 
+    model.getRadialBondsForAtom = function(i) {
+      return engine.getRadialBondsForAtom(i);
+    };
+
+    model.getAngularBondsForAtom = function(i) {
+      return engine.getAngularBondsForAtom(i);
+    };
+
+    model.getMoleculeAtoms = function(i) {
+      return engine.getMoleculeAtoms(i);
+    };
+
     model.setElementProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.element, props);
@@ -1639,6 +1671,8 @@ define(function(require) {
       adjusting the friction of the dragged atom.
     */
     model.liveDragStart = function(atomIndex, x, y) {
+      if (liveDragSpringForceIndex !== null) return;    // don't add a second liveDrag force
+
       if (x == null) x = atoms.x[atomIndex];
       if (y == null) y = atoms.y[atomIndex];
 
@@ -1671,6 +1705,7 @@ define(function(require) {
 
       model.setAtomProperties(atomIndex, { friction: liveDragSavedFriction });
       model.removeSpringForce(liveDragSpringForceIndex);
+      liveDragSpringForceIndex = null;
     };
 
     // return a copy of the array of speeds
@@ -1977,10 +2012,8 @@ define(function(require) {
       return average_speed();
     };
 
-    model.size = function(x) {
-      if (!arguments.length) return engine.getSize();
-      engine.setSize(x);
-      return model;
+    model.dimensions = function() {
+      return engine.getDimensions();
     };
 
     model.set = function(key, val) {
@@ -2363,6 +2396,9 @@ define(function(require) {
 
     // Set the model view options.
     set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
+
+    // initialize minX, minYm, maxX, maxY from model width and height
+    model.initializeDimensions();
 
     // Setup engine object.
     model.initializeEngine();

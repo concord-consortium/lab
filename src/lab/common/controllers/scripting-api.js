@@ -1,6 +1,8 @@
-/*global d3 $ define model alert */
+/*global d3, $, define, model */
 
 define(function (require) {
+
+  var alert = require('common/alert');
 
   //
   // Define the scripting API used by 'action' scripts on interactive elements.
@@ -91,6 +93,58 @@ define(function (require) {
           });
         },
 
+        /**
+         * Performs a user-defined script at any given time.
+         *
+         * @param  {number} time Time defined in model native time unit (e.g. fs for MD2D).
+         * @param  {function} action Function containing user-defined script.
+         */
+        callAt: function callAt(time, action) {
+          var actionTimeout = {
+            time: time,
+            action: action,
+            check: function() {
+              if (model.get("time") >= this.time) {
+                this.action();
+                // Optimization - when function was once executed, replace
+                // check with empty function.
+                // removePropertiesListener() method could be useful, but it
+                // isn't available yet.
+                this.check = function () {};
+              }
+            }
+          };
+          model.addPropertiesListener("time", function () {
+            actionTimeout.check();
+          });
+        },
+
+        /**
+         * Performs a user-defined script repeatedly, with a fixed time delay
+         * between each call.
+         *
+         * @param  {number} interval Interval on how often to execute the script,
+         *                           defined in model native time unit (e.g. fs for MD2D).
+         * @param  {function} action Function containing user-defined script.
+         */
+        callEvery: function callEvery(interval, action) {
+          var actionInterval = {
+            lastCall: 0,
+            interval: interval,
+            action: action,
+            execute: function() {
+              var time = model.get("time");
+              while (time - this.lastCall >= this.interval) {
+                this.action();
+                this.lastCall += this.interval;
+              }
+            }
+          };
+          model.addPropertiesListener("time", function () {
+            actionInterval.execute();
+          });
+        },
+
         start: function start() {
           model.start();
         },
@@ -126,10 +180,10 @@ define(function (require) {
 
         Math: Math,
 
-        // prevent us from overwriting window.undefined
-        undefined: undefined,
+        // Rrevent us from overwriting window.undefined.
+        "undefined": undefined,
 
-        // rudimentary debugging functionality
+        // Rudimentary debugging functionality. Use Lab alert helper function.
         alert: alert,
 
         console: window.console !== null ? window.console : {
@@ -155,7 +209,7 @@ define(function (require) {
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        jQuery.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
+        $.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
       },
 
       /**

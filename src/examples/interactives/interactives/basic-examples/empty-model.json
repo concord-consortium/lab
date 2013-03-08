@@ -20,7 +20,9 @@
       "action": "addRandomAtom()"
     }
   ],
-  "layout": [ "add-atom" ],
+  "layout": {
+    "right": [ "add-atom" ]
+  },
   "template": [
     {
       "id": "right",

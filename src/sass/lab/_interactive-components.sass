@@ -1,5 +1,11 @@
 @import 'sass/bourbon/bourbon'
 
+// Mixin for icons using CSS background.
+@mixin icon-bg($url, $position, $size)
+  background-repeat: no-repeat
+  background-size: $size
+  background-image: url($url)
+
 #model-container
   background: $component-background-color
   border-radius: 0.5em
@@ -25,10 +31,27 @@ select.component
   font-size: 1em
 
 button.component
-  white-space: nowrap
+  @include linear-gradient(#fafafa, #c2c2c2, $fallback: #eee)
   font-size: 1em
-  padding: 0.2em
+  font-family: 'Open Sans', Verdana, Geneva, sans-serif
+  height: 2em
+  border: 1px solid #ccc
+  border-bottom: 1px solid #bbb
+  border-radius: 0.7em
+  color: #333
+  padding-left: 1em
+  padding-right: 1em
+  text-align: center
+  text-shadow: 0 1px 0 #eee
 
+  &:hover
+    @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+    cursor: pointer
+
+  &:active
+    @include linear-gradient(#e6e6e6, #fff, $fallback: #fff)
+    border: 1px solid #aaa
+    border-bottom: 1px solid #888
 
 .interactive-text
   p
@@ -40,8 +63,14 @@ button.component
       color: #048
       cursor: pointer
       opacity: 1.0
+    &.basic
+      font-size: 1em
+    &.header
+      font-size: 1.1em
+      font-weight: 600
 
 .interactive-radio
+  font-size: 1em
   &.horizontal
     // Horizontal alignment of options.
     span + span
@@ -51,15 +80,47 @@ button.component
     // Vertical alignment of options.
     span
       display: block
+  input[type="radio"]
+    display: none
+  label
+    vertical-align: middle
+  .fakeCheckable
+    // Custom div used for radio styling.
+    display: inline-block
+    vertical-align: middle
+    margin: 0 0.4em 0 0
+    padding: 0
+    width: 1.1em
+    height: 1.1em
+    @include icon-bg("../../resources/upstatement/unchecked.svg", center, 100%)
+    &.checked
+      @include icon-bg("../../resources/upstatement/checked.svg", center, 100%)
 
 .interactive-checkbox
-  input[type="checkbox"]
-    -webkit-transform: scale(1,1)
-    -ms-transform: scale(1,1)
-    -moz-transform: scale(1,1)
-    -o-transform: scale(1,1)
-    padding: 0.2em 0.2em
-    font-size: 1.5em
+  font-size: 1em
+  label
+    vertical-align: middle
+  .fakeCheckable
+    // Custom div used for checkbox styling.
+    // Colors and size match Upstatement proposal.
+    position: relative
+    display: inline-block
+    vertical-align: middle
+    width: 1em
+    height: 1em
+    margin: 0 0.4em 0 0
+    padding: 0
+    // #e6e7e8 is a color proposed by Upstatement.
+    // However it doesn't work well with white background.
+    background: darken(#e6e7e8, 10%)
+    &.checked:before
+      content: ""
+      background: #58595b
+      position: absolute
+      top: 0.22197em
+      left: 0.22197em
+      right: 0.22197em
+      bottom: 0.22197em
 
 .numeric-output
   span.label
@@ -79,6 +140,13 @@ button.component
     padding-left: 0.2em
     padding-right: 0.5em
     font-style: italic
+  &.horizontal
+    span.label
+      display: inline-block
+  &.vertical
+    vertical-align: top
+    span.label
+      display: block
 
 .interactive-slider
   // Leave some space for long labels.
@@ -95,7 +163,6 @@ button.component
     width: auto
     min-width: 1.2em
     min-height: 1.5em
-    height: 110%
     padding: 0.1em 0.2em 0em 0.2em
   .title
     display: inline-block
@@ -108,6 +175,8 @@ button.component
     position: relative
     // bottom margin has to account for size of labels, which are taken out of flow
     margin-bottom: 1em
+    // follow width of the most outer container
+    width: 100%
     .label
       position: absolute
       display: inline-block

@@ -2,23 +2,24 @@ helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 simpleModel = helpers.getModel 'simple-model.json'
 
-output1 =
-  {
-    "name":  "customOutput",
-    "label": "customLabel",
-    "unitType": "length",
-    "value": "return 'output1';"
-  }
+helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
+  interactivesController = requirejs 'common/controllers/interactives-controller'
 
-output2 =
-  {
-    "name":  "customOutput",
-    "value": "return 'output2';"
-  }
+  output1 =
+    {
+      "name":  "customOutput",
+      "label": "customLabel",
+      "unitType": "length",
+      "value": "return 'output1';"
+    }
 
-describe "Lab interactives: custom output properties", ->
-  requirejs ['common/controllers/interactives-controller'], (interactivesController) ->
+  output2 =
+    {
+      "name":  "customOutput",
+      "value": "return 'output2';"
+    }
 
+  describe "Lab interactives: custom output properties", ->
     describe "interactives controller", ->
       controller = null
       interactive = null

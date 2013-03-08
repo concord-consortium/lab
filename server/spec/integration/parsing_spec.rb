@@ -10,6 +10,8 @@ describe "Round Trip parsing" do
     let(:model_raw_hash)  do
       hash = JSON.parse(read_sample_file model_file)
       hash['from_import'] = true
+      hash['id'] ="models_md2d_one-atom"
+      hash["location"] = "http://localhost:3000/models/md2ds/models_md2d_one-atom.json"
       hash
     end
 

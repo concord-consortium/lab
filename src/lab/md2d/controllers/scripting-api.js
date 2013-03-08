@@ -112,7 +112,7 @@ define(function (require) {
       },
 
       adjustTemperature: function adjustTemperature(fraction) {
-        model.set({targetTemperature: fraction * model.get('temperature')});
+        model.set({targetTemperature: fraction * model.get('targetTemperature')});
       },
 
       limitHighTemperature: function limitHighTemperature(t) {
@@ -221,6 +221,30 @@ define(function (require) {
       */
       getAtomProperties: function getAtomProperties(i) {
         return model.getAtomProperties(i);
+      },
+
+      /**
+        Returns an array consisting of radial bonds indices for the atom
+        e.g. getRadialBondsForAtom(5) --> [2]
+      */
+      getRadialBondsForAtom: function getRadialBondsForAtom(i) {
+        return model.getRadialBondsForAtom(i);
+      },
+
+      /**
+        Returns an array consisting of the angular bonds indices for the atom
+        e.g. getAngularBondsForAtom(5) --> [6, 8]
+      */
+      getAngularBondsForAtom: function getAngularBondsForAtom(i) {
+        return model.getAngularBondsForAtom(i);
+      },
+
+      /**
+        Returns all atoms in the same molecule as atom i
+        (not including i itself)
+      */
+      getMoleculeAtoms: function getMoleculeAtoms(i) {
+        return model.getMoleculeAtoms(i);
       },
 
       setElementProperties: function setElementProperties(i, props) {

@@ -2,27 +2,28 @@ helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 simpleModel = helpers.getModel 'simple-model.json'
 
-parameter1 =
-  {
-    "name":  "customParameter",
-    "unitType": "length",
-    "label": "customLabel",
-    "onChange": ["set({ parameterUsedAndValue: 'parameter1: ' + value });",
-                 "set({ parameter1SetterCalled: true });"],
-    "initialValue": 'initial value 1'
-  }
+helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
+  interactivesController = requirejs 'common/controllers/interactives-controller'
 
-parameter2 =
-  {
-    "name":  "customParameter",
-    "onChange": ["set({ parameterUsedAndValue: 'parameter2: ' + value });",
-                 "set({ parameter2SetterCalled: true });"],
-    "initialValue": 'initial value 2'
-  }
+  parameter1 =
+    {
+      "name":  "customParameter",
+      "unitType": "length",
+      "label": "customLabel",
+      "onChange": ["set({ parameterUsedAndValue: 'parameter1: ' + value });",
+                   "set({ parameter1SetterCalled: true });"],
+      "initialValue": 'initial value 1'
+    }
 
-describe "Lab interactives: custom model parameters", ->
-  requirejs ['common/controllers/interactives-controller'], (interactivesController) ->
+  parameter2 =
+    {
+      "name":  "customParameter",
+      "onChange": ["set({ parameterUsedAndValue: 'parameter2: ' + value });",
+                   "set({ parameter2SetterCalled: true });"],
+      "initialValue": 'initial value 2'
+    }
 
+  describe "Lab interactives: custom model parameters", ->
     describe "interactives controller", ->
       controller = null
       interactive = null

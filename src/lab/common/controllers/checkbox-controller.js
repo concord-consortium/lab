@@ -1,4 +1,4 @@
-/*global define $ model */
+/*global define, $, model */
 
 define(function () {
 
@@ -10,22 +10,40 @@ define(function () {
         onClickScript,
         initialValue,
         $checkbox,
+        $fakeCheckable,
         $label,
         $element,
-        controller,
+        controller;
 
-        // Updates checkbox using model property. Used in modelLoadedCallback.
-        // Make sure that this function is only called when:
-        // a) model is loaded,
-        // b) checkbox is bound to some property.
-        updateCheckbox = function () {
-          var value = model.get(propertyName);
-          if (value) {
-            $checkbox.attr('checked', true);
-          } else {
-            $checkbox.attr('checked', false);
-          }
-        };
+    // Updates checkbox using model property. Used in modelLoadedCallback.
+    // Make sure that this function is only called when:
+    // a) model is loaded,
+    // b) checkbox is bound to some property.
+    function updateCheckbox () {
+      setCheckbox(model.get(propertyName));
+    }
+
+    function setCheckbox(value) {
+      if (value) {
+        $checkbox.attr('checked', 'checked');
+        $fakeCheckable.addClass('checked');
+      } else {
+        $checkbox.removeAttr('checked');
+        $fakeCheckable.removeClass('checked');
+      }
+    }
+
+    function customClickEvent (e) {
+      e.preventDefault();
+
+      if ($checkbox.attr('checked') !== undefined) {
+        setCheckbox(false);
+      } else {
+        setCheckbox(true);
+      }
+      // Trigger change event!
+      $checkbox.trigger('change');
+    }
 
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.checkbox, component);
@@ -33,13 +51,36 @@ define(function () {
     onClickScript = component.onClick;
     initialValue  = component.initialValue;
 
+    $label = $('<label>').append('<span>' + component.text + '</span>');
+    $label.attr('for', component.id);
     $checkbox = $('<input type="checkbox">').attr('id', component.id);
-    $label = $('<label>').append(component.text).append($checkbox);
-    $element = $('<div>').append($label);
+    $fakeCheckable = $('<div class="fakeCheckable">');
+    // Hide native input, use fake checkable.
+    $checkbox.css("display", "none");
+
+    // default is to have label on right of checkbox
+    if (component.textOn === "left") {
+      $element = $('<div>').append($label).append($checkbox).append($fakeCheckable);
+    } else {
+      $element = $('<div>').append($checkbox).append($fakeCheckable).append($label);
+    }
+
     // Append class to the most outer container.
     $element.addClass("interactive-checkbox");
     // Each interactive component has to have class "component".
     $element.addClass("component");
+
+    // Ensure that custom div (used for styling) is clickable.
+    $fakeCheckable.on('touchstart click', customClickEvent);
+    // Label also requires custom event handler to ensure that click updates
+    // fake clickable element too.
+    $label.on('touchstart click', customClickEvent);
+
+    // Custom dimensions.
+    $element.css({
+      width: component.width,
+      height: component.height
+    });
 
     // Process onClick script if it is defined.
     if (onClickScript) {
@@ -47,8 +88,8 @@ define(function () {
       onClickScript = scriptingAPI.makeFunctionInScriptContext('value', onClickScript);
     }
 
-    // Register handler for click event.
-    $checkbox.click(function () {
+    // Register handler for change event.
+    $checkbox.on('change', function () {
       var value = false,
           propObj;
       // $(this) will contain a reference to the checkbox.
@@ -81,7 +122,8 @@ define(function () {
           updateCheckbox();
         }
         else if (initialValue !== undefined) {
-          $checkbox.attr('checked', initialValue);
+          setCheckbox(initialValue);
+          onClickScript(initialValue);
         }
       },
 

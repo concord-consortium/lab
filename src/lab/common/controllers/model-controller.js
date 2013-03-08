@@ -1,14 +1,5 @@
-/*global
+/*global define, DEVELOPMENT, $, d3, alert, model: true, model_player: true */
 
-  define
-  DEVELOPMENT
-  $
-  d3
-  alert
-  model: true
-  model_player: true
-*/
-/*jslint onevar: true*/
 define(function (require) {
   // Dependencies.
   var arrays            = require('arrays'),
@@ -24,10 +15,6 @@ define(function (require) {
         // Options after processing performed by processOptions().
         modelOptions,
         viewOptions,
-
-        benchmarks,
-
-        modelContainer,
 
         // We pass this object to the "ModelPlayer" to intercept messages for the model
         // instead of allowing the ModelPlayer to talk to the model directly.
@@ -51,7 +38,7 @@ define(function (require) {
             if (model.reset) {
               model.reset();
             }
-            reload(modelUrl, modelConfig);
+            reload(controller.modelUrl, modelConfig);
           },
 
           is_stopped: function() {
@@ -67,7 +54,7 @@ define(function (require) {
       //
       // ------------------------------------------------------------
       function tickHandler() {
-        modelContainer.update();
+        controller.modelContainer.update();
       }
 
 
@@ -122,7 +109,7 @@ define(function (require) {
       //
 
       function setupBenchmarks() {
-        benchmarks = new Benchmarks(controller);
+        controller.benchmarks = new Benchmarks(controller);
       }
 
       // ------------------------------------------------------------
@@ -155,15 +142,15 @@ define(function (require) {
         model_player.forward = function() {
           model.stepForward();
           if (!model.isNewStep()) {
-            modelContainer.update();
+            controller.modelContainer.update();
           }
         };
         model_player.back = function() {
           model.stepBack();
-          modelContainer.update();
+          controller.modelContainer.update();
         };
 
-        modelContainer = new ModelContainer(modelUrl, model);
+        controller.modelContainer = new ModelContainer(controller.modelUrl, model);
       }
 
       function resetModelPlayer() {
@@ -173,7 +160,7 @@ define(function (require) {
         // reset player and container view for model
         //
         // ------------------------------------------------------------
-        modelContainer.reset(modelUrl, model);
+        controller.modelContainer.reset(controller.modelUrl, model);
       }
 
       /**
@@ -181,7 +168,7 @@ define(function (require) {
         arguments will simply reload the current model.
       */
       function reload(newModelUrl, newModelConfig, newInteractiveViewConfig, newInteractiveModelConfig) {
-        modelUrl = newModelUrl || modelUrl;
+        controller.modelUrl = newModelUrl || controller.modelUrl;
         modelConfig = newModelConfig || modelConfig;
         interactiveViewConfig = newInteractiveViewConfig || interactiveViewConfig;
         interactiveModelConfig = newInteractiveModelConfig || interactiveModelConfig;
@@ -191,16 +178,50 @@ define(function (require) {
       }
 
       function repaint() {
-        modelContainer.repaint();
+        controller.modelContainer.repaint();
       }
 
       function resize() {
-        modelContainer.resize();
+        controller.modelContainer.resize();
       }
 
       function state() {
         return model.serialize();
       }
+
+      // ------------------------------------------------------------
+      //
+      // Public methods
+      //
+      // ------------------------------------------------------------
+
+      controller.on = function(type, listener) {
+        dispatch.on(type, listener);
+      };
+
+      controller.getViewContainer = function () {
+        return controller.modelContainer.$el;
+      };
+
+      controller.getHeightForWidth = function (width) {
+        return controller.modelContainer.getHeightForWidth(width);
+      };
+
+      controller.reload = reload;
+      controller.repaint = repaint;
+      controller.resize = resize;
+      controller.state = state;
+      controller.ScriptingAPI = ScriptingAPI;
+
+      // ------------------------------------------------------------
+      //
+      // Public variables
+      //
+      // ------------------------------------------------------------
+      controller.modelContainer = null;
+      controller.benchmarks = null;
+      controller.type = Model.type;
+      controller.modelUrl = modelUrl;
 
       // ------------------------------------------------------------
       //
@@ -222,33 +243,6 @@ define(function (require) {
       setupBenchmarks();
       setupModelPlayer();
       dispatch.modelReset();
-
-      // ------------------------------------------------------------
-      //
-      // Public methods
-      //
-      // ------------------------------------------------------------
-
-      controller.on = function(type, listener) {
-        dispatch.on(type, listener);
-      };
-
-      controller.getViewContainer = function () {
-        return modelContainer.$el;
-      };
-
-      controller.getHeightForWidth = function (width) {
-        return modelContainer.getHeightForWidth(width);
-      };
-
-      controller.reload = reload;
-      controller.repaint = repaint;
-      controller.resize = resize;
-      controller.modelContainer = modelContainer;
-      controller.state = state;
-      controller.benchmarks = benchmarks;
-      controller.type = Model.type;
-      controller.ScriptingAPI = ScriptingAPI;
 
       return controller;
   };

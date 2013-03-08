@@ -21,7 +21,7 @@ class Interactive < BaseDataObject
   collection_of :interactive_models
   belongs_to    :group
 
-  timestamps!
+    timestamps!
 
   design do
     view :by_title
@@ -30,5 +30,19 @@ class Interactive < BaseDataObject
   end
 
   alternate_id :path
+
+  def assign_interactive_models(models)
+    models.each do |im|
+      interactive_model = interactive_models.find(im[:id]).first
+      interactive_model.assign_from_params(im)
+    end
+  end
+  
+  def update_interactive_models(models)
+    models.all? do |im|
+      interactive_model = interactive_models.find(im[:id]).first
+      interactive_model.update_from_params(im)
+    end
+  end
 
 end

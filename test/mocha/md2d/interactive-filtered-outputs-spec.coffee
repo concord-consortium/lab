@@ -2,27 +2,28 @@ helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 simpleModel = helpers.getModel 'simple-model.json'
 
-output1 =
-  {
-    "name":  "filteredOutput",
-    "label": "customLabel",
-    "unitType": "length",
-    "property": "time",
-    "type": "RunningAverage",
-    "period": "2500"
-  }
+helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
+  interactivesController = requirejs 'common/controllers/interactives-controller'
 
-output2 =
-  {
-    "name":  "filteredOutput",
-    "property": "viscosity",
-    "type": "RunningAverage",
-    "period": "1500"
-  }
+  output1 =
+    {
+      "name":  "filteredOutput",
+      "label": "customLabel",
+      "unitType": "length",
+      "property": "time",
+      "type": "RunningAverage",
+      "period": "2500"
+    }
 
-describe "Lab interactives: filtered output properties", ->
-  requirejs ['common/controllers/interactives-controller'], (interactivesController) ->
+  output2 =
+    {
+      "name":  "filteredOutput",
+      "property": "viscosity",
+      "type": "RunningAverage",
+      "period": "1500"
+    }
 
+  describe "Lab interactives: filtered output properties", ->
     describe "interactives controller", ->
       controller = null
       interactive = null

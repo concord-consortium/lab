@@ -20,4 +20,16 @@ class InteractiveModel < BaseDataObject
     view :by_md2d_id
   end
 
+  def update_from_params(model_params)
+    # Don't assign the InteractiveModel's url or id for update
+    assign_from_params(model_params)
+    save
+  end
+
+  def assign_from_params(model_params)
+    # Don't assign the InteractiveModel's url or id for update
+    %w{onLoad viewOptions parameters modelOptions outputs filteredOutputs}.each do |attr|
+      send("#{attr.to_sym}=", model_params[attr]) if model_params[attr]
+    end
+  end
 end

@@ -51,10 +51,28 @@ exports.getRequireJS = function() {
   // Forces reloading of the cached requirejs module
   delete require.cache[require.resolve('requirejs')];
 
-  var config    = require('../requirejs-config'),
-      requirejs = require('requirejs');
+  var documentBackup,
+      config,
+      requirejs;
 
+  // Workaround for new RequireJS version.
+  // When document is defined, RequireJS will assume
+  // that it's executed in the browser environment.
+  // So, if we setup document earlier (jsdom), hide
+  // it for a while to fool RequireJS.
+  if (typeof document !== 'undefined') {
+    documentBackup = document;
+    document = undefined;
+  }
+
+  config    = require('../requirejs-config'),
+  requirejs = require('requirejs');
   requirejs.config(config.labConfig);
+
+  if (typeof documentBackup !== 'undefined') {
+    document = documentBackup;
+  }
+
   return requirejs;
 };
 
@@ -65,6 +83,73 @@ exports.getRequireJS = function() {
 */
 exports.withIsolatedRequireJS = function(continuation) {
   continuation(exports.getRequireJS());
+  // It turns out that, having deleted the old requirejs module from Node's require cache, we can't
+  // keep using the reference to it which we still have (tests break when I try to do so). However,
+  // a freshly created 'requirejs' global works fine.
+  global.requirejs = exports.getRequireJS();
+};
+
+/**
+  Passes a freshly created 'requirejs' to 'continuation' which may modify its requirejs config
+  freely. This functions also mocks a lot of view-related dependencies. Some of them are
+  problematic because JSDOM doesn't support SVG 1.1 spec (graphs, MD2D Renderer).
+  Also SemanticLayout is mocked, because it modifies a lot of DOM elements using jQuery what is really
+  slow in node.js + JSDOM environment (at the same time, it isn't necessary for the most of unit tests).
+
+  Subsequently sets the global 'requirejs' to a fresh instance of requirejs unaffected
+  by the changed config. (Note that it appears that you cannot reuse the original requirejs import.)
+*/
+exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
+  var requirejs = exports.getRequireJS(),
+      BarGraphView = function() {
+        return {
+          initialize: function() {},
+          render: function() {},
+          updateBar: function() {},
+          getParentHeight: function() {},
+          getParentWidth: function() {},
+          modelChanged: function() {}
+        };
+      },
+      RealTimeGraph = function() {
+        return {
+          new_data: function() {},
+          add_points: function() {},
+          updateOrRescale: function() {},
+          showMarker: function() {},
+          reset: function() {},
+          resize: function() {},
+          getXDomain: function() {
+            return [0, 10];
+          },
+          getYDomain: function() {
+            return [0, 10];
+          }
+        };
+      },
+      Renderer = function() {
+        return {
+          update: function() {},
+          repaint: function() {},
+          reset: function() {},
+          model2px: function() {},
+          model2pxInv: function() {}
+        };
+      },
+      SemanticLayout = function() {
+        return {
+          initialize: function() {},
+          setupModel: function() {},
+          layoutInteractive: function() {}
+        };
+      };
+  // Mock dependencies.
+  requirejs.define('grapher/core/real-time-graph', [], function() { return RealTimeGraph; });
+  requirejs.define('grapher/bar-graph/bar-graph-view', [], function() { return BarGraphView; });
+  requirejs.define('md2d/views/renderer', [], function() { return Renderer; });
+  requirejs.define('common/layout/semantic-layout', [], function() { return SemanticLayout; });
+  // Execute 'continuation' with prepared requirejs instance.
+  continuation(requirejs);
   // It turns out that, having deleted the old requirejs module from Node's require cache, we can't
   // keep using the reference to it which we still have (tests break when I try to do so). However,
   // a freshly created 'requirejs' global works fine.

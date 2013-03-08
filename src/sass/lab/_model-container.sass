@@ -1,6 +1,7 @@
 // Styles for various elements managed by model view and MD2D renderer,
 // which don't have to be styled dynamically.
 #model-container
+  @include user-select(none)
   // Radial bonds.
   .radialbond1, .radialbond2
     // Various radial bond styles:
@@ -51,7 +52,7 @@
     display: none
     position: absolute
     padding: 0.4em 0.6em
-    font-size: 0.9em
+    font-size: 0.6em
     background: #fff
     border: solid 1px #aaa
     border-radius: 0.8em
