@@ -1,6 +1,8 @@
-/*global d3 $ define model alert */
+/*global d3, $, define, model */
 
 define(function (require) {
+
+  var alert = require('common/alert');
 
   //
   // Define the scripting API used by 'action' scripts on interactive elements.
@@ -126,10 +128,10 @@ define(function (require) {
 
         Math: Math,
 
-        // prevent us from overwriting window.undefined
-        undefined: undefined,
+        // Rrevent us from overwriting window.undefined.
+        "undefined": undefined,
 
-        // rudimentary debugging functionality
+        // Rudimentary debugging functionality. Use Lab alert helper function.
         alert: alert,
 
         console: window.console !== null ? window.console : {
@@ -155,7 +157,7 @@ define(function (require) {
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        jQuery.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
+        $.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
       },
 
       /**
