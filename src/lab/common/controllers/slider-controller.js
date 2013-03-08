@@ -61,7 +61,8 @@ define(function () {
       },
 
       resize: function () {
-        var remainingHeight;
+        var emSize = parseFloat($sliderHandle.css("font-size")),
+            remainingHeight;
         // Apply custom width and height settings.
         // In fact width can be applied only once during initialization, because
         // it doesn't need any calculations when container size is changed.
@@ -81,6 +82,8 @@ define(function () {
           remainingHeight -= $label.outerHeight(true);
         }
         $container.css("height", remainingHeight);
+        // Handle also requires dynamic styling.
+        $sliderHandle.css("height", remainingHeight + emSize * 0.4);
       },
 
       // Returns serialized component definition.
