@@ -171,6 +171,7 @@ globals [
 to data-export:initialize [ setup ]
   data-export:init-run-series
   data-export:init-data-series
+  data-export:init-inquiry-summary
 
   set data-export:computational-inputs                     item 0 setup
   set data-export:computational-inputs-keys                [ "label" "units" "min" "max" ]
