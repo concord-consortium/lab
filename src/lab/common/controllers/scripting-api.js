@@ -94,7 +94,7 @@ define(function (require) {
         },
 
         /**
-         * Performs the user-defined script at any given time.
+         * Performs a user-defined script at any given time.
          *
          * @param  {number} time Time defined in model native time unit (e.g. fs for MD2D).
          * @param  {function} action Function containing user-defined script.
@@ -116,6 +116,32 @@ define(function (require) {
           };
           model.addPropertiesListener("time", function () {
             actionTimeout.check();
+          });
+        },
+
+        /**
+         * Performs a user-defined script repeatedly, with a fixed time delay
+         * between each call.
+         *
+         * @param  {number} interval Interval on how often to execute the script,
+         *                           defined in model native time unit (e.g. fs for MD2D).
+         * @param  {function} action Function containing user-defined script.
+         */
+        callEvery: function callEvery(interval, action) {
+          var actionInterval = {
+            lastCall: 0,
+            interval: interval,
+            action: action,
+            execute: function() {
+              var time = model.get("time");
+              while (time - this.lastCall >= interval) {
+                this.action();
+                this.lastCall += this.interval;
+              }
+            }
+          };
+          model.addPropertiesListener("time", function () {
+            actionInterval.execute();
           });
         },
 
