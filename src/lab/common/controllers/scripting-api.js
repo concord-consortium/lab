@@ -93,6 +93,32 @@ define(function (require) {
           });
         },
 
+        /**
+         * Performs the user-defined script at any given time.
+         *
+         * @param  {number} time Time defined in model native time unit (e.g. fs for MD2D).
+         * @param  {function} action Function containing user-defined script.
+         */
+        callAt: function callAt(time, action) {
+          var actionTimeout = {
+            time: time,
+            action: action,
+            check: function() {
+              if (model.get("time") >= this.time) {
+                this.action();
+                // Optimization - when function was once executed, replace
+                // check with empty function.
+                // removePropertiesListener() method could be useful, but it
+                // isn't available yet.
+                this.check = function () {};
+              }
+            }
+          };
+          model.addPropertiesListener("time", function () {
+            actionTimeout.check();
+          });
+        },
+
         start: function start() {
           model.start();
         },
