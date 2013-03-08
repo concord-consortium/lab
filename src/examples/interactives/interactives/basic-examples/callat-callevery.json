@@ -48,7 +48,7 @@
   ],
   "components": [
     {
-      "id": "header",
+      "id": "desc-label",
       "type": "text",
       "text": "Time of the last call of a script:"
     },
@@ -83,7 +83,7 @@
   ],
   "layout": {
     "bottom": [
-      ["header"],
+      ["desc-label"],
       ["callAt1000"],
       ["callAt1033"],
       ["callEvery3000"],
