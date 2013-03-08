@@ -34,6 +34,7 @@ AUTHORING = false;
       $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
+      $interactiveErrorDialog = $("#interactive-error-dialog"),
 
       $updateModelButton = $("#update-model-button"),
       $updateJsonFromModelButton = $("#update-json-from-model-button"),
@@ -617,7 +618,13 @@ AUTHORING = false;
         document.location.hash = interactiveRemote.path;
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        alert("Error: "+ textStatus + " : " + errorThrown);
+        var updateErrors = JSON.parse(jqXHR.responseText);
+        $interactiveErrorDialog.html("<ul></ul>");
+        for(key in updateErrors){
+          $interactiveErrorDialog.find('ul').append("<li>" + key + " " + updateErrors[key] + "</li>");          
+        }
+
+        $interactiveErrorDialog.dialog("open");
       },
       dataType: "json",
       contentType: "application/json",
@@ -691,6 +698,22 @@ AUTHORING = false;
         interactiveState = JSON.parse(editor.getValue());
         remoteSaveInteractive(interactive['title'], interactiveState);
         editor.setValue(JSON.stringify(interactiveState, null, indent));
+      }
+    });
+
+    // Error dialog for creating/updating interactives
+    $interactiveErrorDialog.dialog({
+      modal: true,
+      autoOpen: false,
+      title: "Interactive Error",
+      resizable: false,
+      dialogClass: "error",
+      heigth: 300,
+      width: 300,
+      buttons: {
+        "OK": function() {
+          $(this).dialog("close");
+        }
       }
     });
   }

@@ -13,9 +13,26 @@ WebMock.disable_net_connect!(:allow_localhost => true)
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+TEST_CONFIG = YAML.load_file("#{Rails.root}/config/couchdb.yml")["test"]
+COUCHHOST = "#{TEST_CONFIG['protocol']}://#{TEST_CONFIG['host']}:#{TEST_CONFIG['port']}"
+TESTDB    = "#{TEST_CONFIG['prefix']}_#{TEST_CONFIG['suffix']}"
+TEST_SERVER = CouchRest.new(COUCHHOST)
+TEST_SERVER.default_database = TESTDB
+DB = TEST_SERVER.database(TESTDB)
+
 RSpec.configure do |config|
 
   config.include FactoryGirl::Syntax::Methods
+  
+  config.before(:each) { reset_test_db! }
+
+  config.after(:each) do
+    cr = TEST_SERVER
+    test_dbs = cr.databases.select { |db| db =~ /^#{TESTDB}/ }
+    test_dbs.each do |db|
+      cr.database(db).delete! rescue nil
+    end
+  end
 
   # ## Mock Framework
   #
@@ -43,4 +60,11 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+end
+
+def reset_test_db!
+  DB.recreate! rescue nil 
+  # Reset the Design Cache
+  Thread.current[:couchrest_design_cache] = {}
+  DB
 end
