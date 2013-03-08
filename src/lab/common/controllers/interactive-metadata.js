@@ -273,7 +273,7 @@ define(function() {
         defaultValue: "12em"
       },
       height: {
-        defaultValue: "3.75em"
+        defaultValue: "3.65em"
       },
       displayValue: {},
       // Use "property" OR "action" + "initialValue".
