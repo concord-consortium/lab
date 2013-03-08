@@ -379,6 +379,7 @@ AUTHORING = false;
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
     jsonModelPath = interactive.models[0].url;
+    $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
 
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
