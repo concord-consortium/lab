@@ -24,7 +24,16 @@ define(function (require) {
         ds,
         circleCursorStyle,
         displayProperties,
-        emsize, strokeWidth,
+        fontSizeInPixels,
+        halfFontSizeInPixels,
+        quarterFontSizeInPixels,
+        titleFontSizeInPixels,
+        axisFontSizeInPixels,
+        xlabelFontSizeInPixels,
+        ylabelFontSizeInPixels,
+        xAxisNumberWidth,
+        yAxisNumberWidth,
+        strokeWidth,
         scaleFactor,
         sizeType = {
           category: "medium",
@@ -48,6 +57,8 @@ define(function (require) {
         cplot = {},
 
         default_options = {
+          responsiveLayout: false,
+          fontScaleRelativeToParent: true,
           title   : "graph",
           xlabel  : "x-axis",
           ylabel  : "y-axis",
@@ -91,31 +102,59 @@ define(function (require) {
     }
 
     function calculateSizeType() {
-      if(cx <= sizeType.icon) {
-        sizeType.category = 'icon';
-        sizeType.value = 0;
-      } else if (cx <= sizeType.tiny) {
-        sizeType.category = 'tiny';
-        sizeType.value = 1;
-      } else if (cx <= sizeType.small) {
-        sizeType.category = 'small';
-        sizeType.value = 2;
-      } else if (cx <= sizeType.medium) {
-        sizeType.category = 'medium';
-        sizeType.value = 3;
-      } else if (cx <= sizeType.large) {
+      if (options.responsiveLayout) {
+        if(cx <= sizeType.icon) {
+          sizeType.category = 'icon';
+          sizeType.value = 0;
+        } else if (cx <= sizeType.tiny) {
+          sizeType.category = 'tiny';
+          sizeType.value = 1;
+        } else if (cx <= sizeType.small) {
+          sizeType.category = 'small';
+          sizeType.value = 2;
+        } else if (cx <= sizeType.medium) {
+          sizeType.category = 'medium';
+          sizeType.value = 3;
+        } else if (cx <= sizeType.large) {
+          sizeType.category = 'large';
+          sizeType.value = 4;
+        } else {
+          sizeType.category = 'extralarge';
+          sizeType.value = 5;
+        }
+      } else {
         sizeType.category = 'large';
         sizeType.value = 4;
-      } else {
-        sizeType.category = 'extralarge';
-        sizeType.value = 5;
       }
+    }
+
+    function numberWidthUsingFormatter(formatter, number) {
+      var testSVG,
+          testText,
+          width;
+
+      testSVG = elem.append("svg")
+        .attr("width",  cx)
+        .attr("height", cy)
+        .attr("class", "graph");
+
+      testText = testSVG.append('g')
+        .append("text")
+          .attr("class", "axis")
+          .attr("x", -fontSizeInPixels/4 + "px")
+          .attr("dy", ".35em")
+          .attr("text-anchor", "end")
+          .text(d3.format(formatter)(number));
+
+      width = testText.node().getBBox().width;
+      testSVG.remove();
+      return width;
     }
 
     function scale(w, h) {
       if (!w && !h) {
-        cx = elem.property("clientWidth");
-        cy = elem.property("clientHeight");
+        cx = Math.max(elem.property("clientWidth"), 32);
+        cy = Math.max(elem.property("clientHeight"), 32);
       } else {
         cx = w;
         node.style.width =  cx +"px";
@@ -130,7 +169,115 @@ define(function (require) {
         }
       }
       calculateSizeType();
-      emsize = parseFloat($(idOrElement).css('font-size')) / 10;
+    }
+
+    function calculateLayout() {
+      scale();
+
+      fontSizeInPixels = parseFloat($(node).css("font-size"));
+
+      if (!options.fontScaleRelativeToParent) {
+        $(node).css("font-size", 0.5 + sizeType.value/6 + 'em');
+      }
+
+      fontSizeInPixels = parseFloat($(node).css("font-size"));
+
+      halfFontSizeInPixels = fontSizeInPixels/2;
+      quarterFontSizeInPixels = fontSizeInPixels/4;
+
+      xAxisNumberWidth = numberWidthUsingFormatter(options.xFormatter, options.xmax)*2;
+      yAxisNumberWidth = numberWidthUsingFormatter(options.yFormatter, options.ymax)*2;
+
+      if (svg === undefined) {
+        titleFontSizeInPixels =  fontSizeInPixels;
+        axisFontSizeInPixels =   fontSizeInPixels;
+        xlabelFontSizeInPixels = fontSizeInPixels;
+        ylabelFontSizeInPixels = fontSizeInPixels;
+      } else {
+        titleFontSizeInPixels =  parseFloat($("svg.graph text.title").css("font-size"));
+        axisFontSizeInPixels =   parseFloat($("svg.graph text.axis").css("font-size"));
+        xlabelFontSizeInPixels = parseFloat($("svg.graph text.xlabel").css("font-size"));
+        ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
+      }
+
+      switch(sizeType.value) {
+        case 0:         // tiny
+        padding = {
+         "top":    fontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": fontSizeInPixels,
+         "left":   fontSizeInPixels
+        };
+        break;
+
+        case 1:         // small
+        padding = {
+         "top":    fontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": fontSizeInPixels,
+         "left":   fontSizeInPixels
+        };
+        break;
+
+        case 2:         // medium
+        padding = {
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": axisFontSizeInPixels*1.25,
+         "left":   yAxisNumberWidth
+        };
+        break;
+
+        case 3:         // large
+        padding = {
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":                   fontSizeInPixels,
+         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels : yAxisNumberWidth
+        };
+        break;
+
+        default:         // extralarge
+        padding = {
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":                   fontSizeInPixels,
+         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels : yAxisNumberWidth
+        };
+        break;
+      }
+
+      if (sizeType.value > 2 ) {
+        padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * fontSizeInPixels;
+      } else {
+        titles = [titles[0]];
+      }
+
+      size = {
+        "width":  cx - padding.left - padding.right,
+        "height": cy - padding.top  - padding.bottom
+      };
+
+      xScale = d3.scale[options.xscale]()
+        .domain([options.xmin, options.xmax])
+        .range([0, size.width]);
+
+      if (options.xscale === "pow") {
+        xScale.exponent(options.xscaleExponent);
+      }
+
+      yScale = d3.scale[options.yscale]()
+        .domain([options.ymin, options.ymax]).nice()
+        .range([size.height, 0]).nice();
+
+      if (options.yscale === "pow") {
+        yScale.exponent(options.yscaleExponent);
+      }
+
+      line = d3.svg.line()
+            .x(function(d, i) { return xScale(points[i].x ); })
+            .y(function(d, i) { return yScale(points[i].y); });
+
     }
 
     function initialize(idOrElement, opts, message) {
@@ -173,53 +320,6 @@ define(function (require) {
 
       pointArray = [];
 
-      switch(sizeType.value) {
-        case 0:
-        padding = {
-         "top":    4,
-         "right":  4,
-         "bottom": 4,
-         "left":   4
-        };
-        break;
-
-        case 1:
-        padding = {
-         "top":    8,
-         "right":  8,
-         "bottom": 8,
-         "left":   8
-        };
-        break;
-
-        case 2:
-        padding = {
-         "top":    options.title  ? 25 : 15,
-         "right":  15,
-         "bottom": 20,
-         "left":   30
-        };
-        break;
-
-        case 3:
-        padding = {
-         "top":    options.title  ? 30 : 20,
-         "right":                   30,
-         "bottom": options.xlabel ? 60 : 10,
-         "left":   options.ylabel ? 70 : 45
-        };
-        break;
-
-        default:
-        padding = {
-         "top":    options.title  ? 40 : 20,
-         "right":                   30,
-         "bottom": options.xlabel ? 60 : 10,
-         "left":   options.ylabel ? 70 : 45
-        };
-        break;
-      }
-
       if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
         for (var i = 0; i < options.dataset.length; i++) {
           pointArray.push(indexedData(options.dataset[i], 0, sample));
@@ -237,39 +337,8 @@ define(function (require) {
       }
       titles.reverse();
 
-      if (sizeType.value > 2 ) {
-        padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * emsize * 22;
-      } else {
-        titles = [titles[0]];
-      }
-
-      size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
-      };
-
-      xScale = d3.scale[options.xscale]()
-        .domain([options.xmin, options.xmax])
-        .range([0, size.width]);
-
-      if (options.xscale === "pow") {
-        xScale.exponent(options.xscaleExponent);
-      }
-
-      yScale = d3.scale[options.yscale]()
-        .domain([options.ymin, options.ymax]).nice()
-        .range([size.height, 0]).nice();
-
-      if (options.yscale === "pow") {
-        yScale.exponent(options.yscaleExponent);
-      }
-
       fx = d3.format(options.xFormatter);
       fy = d3.format(options.yFormatter);
-
-      line = d3.svg.line()
-            .x(function(d, i) { return xScale(points[i].x ); })
-            .y(function(d, i) { return yScale(points[i].y); });
 
       // drag axis logic
       downx = Math.NaN;
@@ -299,13 +368,14 @@ define(function (require) {
     }
 
     function graph() {
-      scale();
+      calculateLayout();
 
       if (svg === undefined) {
 
         svg = elem.append("svg")
             .attr("width",  cx)
-            .attr("height", cy);
+            .attr("height", cy)
+            .attr("class", "graph");
 
         vis = svg.append("g")
               .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -343,10 +413,9 @@ define(function (require) {
             .data(titles, function(d) { return d; });
           title.enter().append("text")
               .attr("class", "title")
-              .style("font-size", sizeType.value/3.2 * 100 + "%")
               .text(function(d) { return d; })
               .attr("x", size.width/2)
-              .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })
+              .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; })
               .style("text-anchor","middle");
         }
 
@@ -354,12 +423,11 @@ define(function (require) {
        if (options.xlabel && sizeType.value > 2) {
           xlabel = vis.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.6 * 100 + "%")
               .attr("class", "xlabel")
               .text(options.xlabel)
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy","2.4em")
+              .attr("dy", axisFontSizeInPixels*2 + "px")
               .style("text-anchor","middle");
         }
 
@@ -367,11 +435,10 @@ define(function (require) {
         if (options.ylabel && sizeType.value > 2) {
           ylabel = vis.append("g").append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.6 * 100 + "%")
               .attr("class", "ylabel")
               .text( options.ylabel)
               .style("text-anchor","middle")
-              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
         }
 
         notification = vis.append("text")
@@ -478,9 +545,8 @@ define(function (require) {
         if (sizeType.value > 1) {
           gxe.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.7 * 100 + "%")
               .attr("y", size.height)
-              .attr("dy", "1em")
+              .attr("dy", axisFontSizeInPixels + "px")
               .attr("text-anchor", "middle")
               .style("cursor", "ew-resize")
               .text(fx)
@@ -510,8 +576,7 @@ define(function (require) {
         if (sizeType.value > 1) {
           gye.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.7 * 100 + "%")
-              .attr("x", -3)
+              .attr("x", -axisFontSizeInPixels/4 + "px")
               .attr("dy", ".35em")
               .attr("text-anchor", "end")
               .style("cursor", "ns-resize")
@@ -1072,6 +1137,8 @@ define(function (require) {
         graph.initialize();
       }
       graph();
+      // and then render again using actual size of SVG text elements are
+      graph();
       return graph;
     };
 
@@ -1082,7 +1149,11 @@ define(function (require) {
       return graph;
     };
 
-    if (node) { graph(); }
+    if (node) {
+      graph();
+      // and then render again using actual size of SVG text elements are
+      graph();
+    }
 
     return graph;
   };

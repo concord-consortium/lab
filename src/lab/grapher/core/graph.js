@@ -311,7 +311,8 @@ define(function (require) {
 
           svg = elem.append("svg")
               .attr("width",  cx)
-              .attr("height", cy);
+              .attr("height", cy)
+              .attr("class", "graph");
 
           vis = svg.append("g")
                 .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
