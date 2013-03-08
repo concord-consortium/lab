@@ -12,6 +12,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
   dgExporter =
     exportData: sinon.spy()
     openTable:  sinon.spy()
+    logAction: sinon.spy()
 
   requirejs.define 'import-export/dg-exporter', [], -> dgExporter
 
@@ -32,22 +33,22 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
       model.defineOutput 'perRunOutput', {
         label: "per-run output"
-        units: "units 1"
+        unitAbbreviation: "units 1"
       }, -> 1 + model.get 'time'
 
       model.defineOutput 'perTickOutput', {
         label: "per-tick output"
-        units: "units 2"
+        unitAbbreviation: "units 2"
       }, -> 2 + model.get 'time'
 
       model.defineParameter 'perRunParam', {
         label: "per-run parameter",
-        units: "units 3"
+        unitAbbreviation: "units 3"
       }, -> null
 
       model.defineParameter 'perTickParam', {
         label: "per-tick parameter",
-        units: "units 4"
+        unitAbbreviation: "units 4"
       }, -> null
 
       model.set
@@ -129,11 +130,10 @@ helpers.withIsolatedRequireJS (requirejs) ->
           points.should.eql [0, 1]
 
       describe "a model reset", ->
-        it "should reset the timeseries data to one data point"
-          # model.reset() doesn't appear to work quite right at the moment
-          # model.tick()
-          # model.reset()
-          # exportedTimePoints().should.eql [0]
+        it "should reset the timeseries data to one data point", ->
+          model.tick()
+          model.reset()
+          exportedTimePoints().should.eql [0]
 
       describe "a step back", ->
         it "should not remove data points from the timeseries data", ->
@@ -149,3 +149,68 @@ helpers.withIsolatedRequireJS (requirejs) ->
           model.set gravitationalField: 0
           points = exportedTimePoints()
           points.should.eql [0]
+
+    describe "event logging", ->
+      beforeEach ->
+        dgExporter.logAction.reset()
+
+      describe "after the model is started", ->
+        beforeEach ->
+          model.resume()
+
+        it "should log \"User started model\"", ->
+          dgExporter.logAction.callCount.should.eql 1
+          call = dgExporter.logAction.getCall 0
+          call.args[0].should.match /^User started model./
+
+        it "should pass the per-run parameters", ->
+          call = dgExporter.logAction.getCall 0
+          json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
+          hash = JSON.parse(json)
+          hash.should.eql {
+            action: "started",
+            type: "model",
+            fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
+            values: [10, 1]
+          }
+
+
+      describe "after a model reset", ->
+        beforeEach ->
+          model.reset()
+
+        it "should log \"User reset model\"", ->
+          dgExporter.logAction.callCount.should.eql 1
+          call = dgExporter.logAction.getCall 0
+          call.args[0].should.match /^User reset model./
+
+        it "should pass the per-run parameters", ->
+          call = dgExporter.logAction.getCall 0
+          json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
+          hash = JSON.parse(json)
+          hash.should.eql {
+            action: "reset",
+            type: "model",
+            fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
+            values: [10, 1]
+          }
+
+      describe "after exportData is called", ->
+        beforeEach ->
+          exportController.exportData()
+
+        it "should log \"User exported model\"", ->
+          dgExporter.logAction.callCount.should.eql 1
+          call = dgExporter.logAction.getCall 0
+          call.args[0].should.match /^User exported model./
+
+        it "should pass the per-run parameters", ->
+          call = dgExporter.logAction.getCall 0
+          json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
+          hash = JSON.parse(json)
+          hash.should.eql {
+            action: "exported",
+            type: "model",
+            fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
+            values: [10, 1]
+          }

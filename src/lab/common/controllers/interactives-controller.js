@@ -287,8 +287,8 @@ define(function (require) {
     function modelLoaded() {
       var i, listener;
 
-      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
+      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
       // to exist during its definition.
       setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
@@ -506,13 +506,19 @@ define(function (require) {
             case "basic":
               model.defineOutput(output.name, {
                 label: output.label,
-                units: output.units
+                unitType: output.unitType,
+                unitName: output.unitName,
+                unitPluralName: output.unitPluralName,
+                unitAbbreviation: output.unitAbbreviation
               }, scriptingAPI.makeFunctionInScriptContext(getStringFromArray(output.value)));
               break;
             case "filtered":
               model.defineFilteredOutput(output.name, {
                 label: output.label,
-                units: output.units
+                unitType: output.unitType,
+                unitName: output.unitName,
+                unitPluralName: output.unitPluralName,
+                unitAbbreviation: output.unitAbbreviation
               }, output.property, output.type, output.period);
               break;
           }
@@ -545,7 +551,10 @@ define(function (require) {
         // Define parameter using modeler.
         model.defineParameter(parameter.name, {
           label: parameter.label,
-          units: parameter.units
+          unitType: parameter.unitType,
+          unitName: parameter.unitName,
+          unitPluralName: parameter.unitPluralName,
+          unitAbbreviation: parameter.unitAbbreviation
         }, onChangeFunc);
 
         if (parameter.initialValue !== undefined) {

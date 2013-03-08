@@ -92,14 +92,13 @@ define(function (require) {
           model.start();
           setTimeout(function() {
             model.stop();
-            var start = model.get('time');
+            var startCounter = model.stepCounter();
             setTimeout(function() {
               // actual fps calculation
               model.start();
               setTimeout(function() {
                 model.stop();
-                var elapsedModelTime = model.get('time') - start;
-                done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
+                done( (model.stepCounter() - startCounter) / 2 );
               }, 2000);
             }, 100);
           }, 1000);

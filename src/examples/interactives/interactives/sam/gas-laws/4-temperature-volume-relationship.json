@@ -31,7 +31,7 @@
   "outputs": [
     {
       "name": "volume",
-      "units": "nm?",
+      "unitAbbreviation": "nm?",
       "label": "area",
       "value": [
         "return getObstacleProperties(0).x * 2;"
@@ -62,7 +62,6 @@
       "type": "numericOutput",
       "id": "current-volume",
       "label": "Volume of Gas",
-      "units": " ",
       "property": "volume",
       "displayValue": "return format('1.2f')(value)"
     }

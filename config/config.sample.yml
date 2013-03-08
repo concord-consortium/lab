@@ -26,18 +26,22 @@
   - :name: lab
     :url: lab.concord.org
     :branch: production
+    :dataGamesProxyPrefix: DataGames/Games/concord/lab/
   - :name: lab-staging
     :url: lab-staging.concord.org
     :branch: staging
   - :name: lab-dev
     :url: lab.dev.concord.org
     :branch: master
+    :dataGamesProxyPrefix: DataGames/Games/concord/lab.dev/
   - :name: lab2-dev
     :url: lab2.dev.concord.org
     :branch: inquiry-space
+    :dataGamesProxyPrefix: DataGames/Games/concord/lab.dev2/
   - :name: lab3-dev
     :url: lab3.dev.concord.org
     :branch: master
+    :dataGamesProxyPrefix: DataGames/Games/concord/lab.dev3/
   :group_name: lab.dev
   :zone_domain: concord.org.
   :zone_records_name: dev.concord.org

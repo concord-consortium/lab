@@ -8,7 +8,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
   parameter1 =
     {
       "name":  "customParameter",
-      "units": "customUnit",
+      "unitType": "length",
       "label": "customLabel",
       "onChange": ["set({ parameterUsedAndValue: 'parameter1: ' + value });",
                    "set({ parameter1SetterCalled: true });"],
@@ -51,17 +51,17 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
         model.set customParameter: 1
         model.get('parameterUsedAndValue').should.equal 'parameter1: 1'
 
-      it "respects the 'units' key of the parameter definition", ->
+      it "respects the 'unitType' key of the parameter definition", ->
         interactive.parameters = [parameter1]
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
-        model.getPropertyDescription('customParameter').should.have.property 'units', 'customUnit'
+        model.getPropertyDescription('customParameter').getHash().should.have.property 'unitType', 'length'
 
       it "respects the 'label' key of the parameter definition", ->
         interactive.parameters = [parameter1]
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
-        model.getPropertyDescription('customParameter').should.have.property 'label', 'customLabel'
+        model.getPropertyDescription('customParameter').getHash().should.have.property 'label', 'customLabel'
 
       it "lets you define a custom parameter in the models section of the interactive definition", ->
         interactive.models[0].parameters = [parameter1]

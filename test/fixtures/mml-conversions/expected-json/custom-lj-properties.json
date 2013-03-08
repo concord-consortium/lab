@@ -1,7 +1,8 @@
 {
   "type": "md2d",
   "width": 3.5,
-  "height": 1.5,
+  "height":  1.5,
+  "unitsScheme": "md2d",
   "lennardJonesForces": true,
   "coulombForces": true,
   "temperatureControl": false,

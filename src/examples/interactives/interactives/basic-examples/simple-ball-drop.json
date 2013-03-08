@@ -8,31 +8,20 @@
       "id": "main-model",
       "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-ball-drop$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step"
+        "controlButtons": "play_reset_step",
+        "showClock": false
+      },
+      "modelOptions": {
+        "unitsScheme": "mks"
       }
     }
   ],
   "outputs": [
     {
       "name": "ballHeight",
-      "units": "m",
+      "unitType": "length",
       "label": "Ball Height",
       "value": "return getAtomProperties(0).y;"
-    },
-    {
-      "name": "macroTime",
-      "units": "s",
-      "label": "Time",
-      "value": "return get('time') * 1e-4"
-    }
-  ],
-  "parameters": [
-    {
-      "name": "gravity",
-      "label": "Gravitational acceleration",
-      "units": "(m/s²)",
-      "onChange": "set({ gravitationalField: value * 1e-8});",
-      "initialValue": 9.8
     }
   ],
   "components": [
@@ -58,12 +47,12 @@
       ],
       "steps": 19,
       "title": "Gravitational acceleration (m/s²)",
-      "property": "gravity"
+      "property": "gravitationalField"
     },
     {
       "type": "numericOutput",
       "id": "time-display",
-      "property": "macroTime",
+      "property": "time",
       "displayValue": "return format('1.2f')(value)"
     },
     {

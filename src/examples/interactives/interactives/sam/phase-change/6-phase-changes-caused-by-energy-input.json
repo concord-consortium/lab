@@ -38,7 +38,7 @@
     {
       "name": "largeAtomKE",
       "label": "Kinetic Energy of Large Atoms",
-      "units": "eV",
+      "unitType": "energy",
       "value": [
         "var largeKE = 0;",
         "var numLarge = 0;",

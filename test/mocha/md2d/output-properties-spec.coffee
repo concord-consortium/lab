@@ -1,6 +1,7 @@
 helpers = require '../../helpers'
-helpers.setupBrowserEnvironment()
+
 simpleModel = helpers.getModel 'simple-model.json'
+helpers.setupBrowserEnvironment()
 
 Model = requirejs 'md2d/models/modeler'
 
@@ -45,7 +46,7 @@ describe "MD2D output properties", ->
         model.get('testProperty').should.equal 10
 
       it "can have its description retrieved by Model#getPropertyDescription", ->
-        model.getPropertyDescription('testProperty').should.eql { property1: 'value' }
+        model.getPropertyDescription('testProperty').getHash().should.eql { property1: 'value' }
 
       it "can be observed", ->
         observer = sinon.spy()

@@ -36,11 +36,12 @@ define(function (require) {
         data = [];
 
     /**
-      Returns the time interval that elapses between succeessive data points, in picoseconds. (The
-      current implementation of the grapher requires this knowledge.)
+      Returns the time interval that elapses between succeessive data points, same units as model's
+      displayTime property. (e.g, for MD2D model, picoseconds.) The current implementation of the
+      grapher requires this knowledge.
     */
     function getSamplePeriod() {
-      return model.get('timeStepsPerTick') * model.get('timeStep') / 1000;
+      return model.get('displayTimePerTick');
     }
 
     /**

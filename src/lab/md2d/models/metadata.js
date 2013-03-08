@@ -26,11 +26,16 @@ define(function() {
       },
       width: {
         defaultValue: 10,
+        unitType: "length",
         immutable: true
       },
       height: {
         defaultValue: 10,
+        unitType: "length",
         immutable: true
+      },
+      unitsScheme: {
+        defaultValue: "md2d"
       },
       lennardJonesForces: {
         defaultValue: true
@@ -42,16 +47,19 @@ define(function() {
         defaultValue: false
       },
       targetTemperature: {
-        defaultValue: 300
+        defaultValue: 300,
+        unitType: "temperature"
       },
       modelSampleRate: {
         defaultValue: "default"
       },
       gravitationalField: {
-        defaultValue: false
+        defaultValue: false,
+        unitType: "acceleration"
       },
       timeStep: {
-        defaultValue: 1
+        defaultValue: 1,
+        unitType: "time"
       },
       dielectricConstant: {
         defaultValue: 1
@@ -79,7 +87,8 @@ define(function() {
         defaultValue: 4
       },
       additionalSolventForceThreshold: {
-        defaultValue: 10
+        defaultValue: 10,
+        unitType: "length"
       },
       polarAAEpsilon: {
         defaultValue: -2
@@ -190,34 +199,42 @@ define(function() {
     atom: {
       // Required properties:
       x: {
-        required: true
+        required: true,
+        unitType: "length"
       },
       y: {
-        required: true
+        required: true,
+        unitType: "length"
       },
       // Optional properties:
       element: {
         defaultValue: 0
       },
       vx: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "velocity"
       },
       vy: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "velocity"
       },
       ax: {
         defaultValue: 0,
+        unitType: "acceleration",
         serialize: false
       },
       ay: {
         defaultValue: 0,
+        unitType: "acceleration",
         serialize: false
       },
       charge: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "charge"
       },
       friction: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "dampingCoefficient"
       },
       visible: {
         defaultValue: 1
@@ -234,33 +251,41 @@ define(function() {
       // Read-only values, can be set only by engine:
       radius: {
         readOnly: true,
+        unitType: "length",
         serialize: false
       },
       px: {
         readOnly: true,
+        unitType: "momentum",
         serialize: false
       },
       py: {
         readOnly: true,
+        unitType: "momentum",
         serialize: false
       },
       speed: {
         readOnly: true,
+        unitType: "velocity",
         serialize: false
       }
     },
 
     element: {
       mass: {
-        defaultValue: 120
+        defaultValue: 120,
+        unitType: "mass"
       },
       sigma: {
-        defaultValue: 0.3
+        defaultValue: 0.3,
+        unitType: "length"
       },
       epsilon: {
-        defaultValue: -0.1
+        defaultValue: -0.1,
+        unitType: "energy"
       },
       radius: {
+        unitType: "length",
         readOnly: true,
         serialize: false
       },
@@ -277,46 +302,58 @@ define(function() {
         defaultValue: 0
       },
       sigma: {
+        unitType: "length"
       },
       epsilon: {
+        unitType: "energy"
       }
     },
 
     obstacle: {
       // Required properties:
       width: {
+        unitType: "length",
         required: true
       },
       height: {
+        unitType: "length",
         required: true
       },
       // Optional properties:
       x: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       },
       y: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       },
       mass: {
-        defaultValue: Infinity
+        defaultValue: Infinity,
+        unitType: "mass"
       },
       vx: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "velocity"
       },
       vy: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "velocity"
       },
-      // External horizontal force, per mass unit.
+      // External horizontal force, per mass unit (i.e., despite the name it's an acceleration)
       externalFx: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "acceleration"
       },
       // External vertical force, per mass unit.
       externalFy: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "accleration"
       },
-      // Damping force, per mass unit.
+      // Damping coefficient per mass unit (= acceleration / velocity = 1 / time)
       friction: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "inverseTime"
       },
       // Pressure probe, west side.
       westProbe: {
@@ -324,6 +361,7 @@ define(function() {
       },
       // Final value of pressure in Bars.
       westProbeValue: {
+        unitType: "pressure",
         readOnly: true,
         serialize: false
       },
@@ -333,6 +371,7 @@ define(function() {
       },
       // Final value of pressure in Bars.
       northProbeValue: {
+        unitType: "pressure",
         readOnly: true,
         serialize: false
       },
@@ -342,6 +381,7 @@ define(function() {
       },
       // Final value of pressure in Bars.
       eastProbeValue: {
+        unitType: "pressure",
         readOnly: true,
         serialize: false
       },
@@ -351,6 +391,7 @@ define(function() {
       },
       // Final value of pressure in Bars.
       southProbeValue: {
+        unitType: "pressure",
         readOnly: true,
         serialize: false
       },
@@ -377,9 +418,11 @@ define(function() {
         defaultValue: 0
       },
       length: {
+        unitType: "length",
         required: true
       },
       strength: {
+        unitType: "stiffness",
         required: true
       },
       type: {
@@ -398,9 +441,11 @@ define(function() {
         defaultValue: 0
       },
       strength: {
+        unitType: "rotationalStiffness",
         required: true
       },
       angle: {
+        unitType: "angle",
         required: true
       }
     },
@@ -410,13 +455,16 @@ define(function() {
         required: true
       },
       k: {
-        defaultValue: 2000
+        defaultValue: 2000,
+        unitType: "stiffness"
       },
       x0: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       },
       y0: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       }
     },
 
@@ -460,10 +508,12 @@ define(function() {
         defaultValue: ""
       },
       x: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       },
       y: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       },
       layer: {
         defaultValue: 1

@@ -16,28 +16,28 @@
   "outputs": [
     {
       "name": "pressure0Instantaneous",
-      "units": "Bar",
+      "unitType": "pressure",
       "value": [
         "return getObstacleProperties(0).northProbeValue;"
       ]
     },
     {
       "name": "pressure1Instantaneous",
-      "units": "Bar",
+      "unitType": "pressure",
       "value": [
         "return getObstacleProperties(1).southProbeValue;"
       ]
     },
     {
       "name": "pressure2Instantaneous",
-      "units": "Bar",
+      "unitType": "pressure",
       "value": [
         "return getObstacleProperties(2).westProbeValue;"
       ]
     },
     {
       "name": "pressure3Instantaneous",
-      "units": "Bar",
+      "unitType": "pressure",
       "value": [
         "return getObstacleProperties(3).eastProbeValue;"
       ]
@@ -46,28 +46,28 @@
   "filteredOutputs": [
     {
       "name": "pressure0Filtered",
-      "units": "Bar",
+      "unitType": "pressure",
       "property": "pressure0Instantaneous",
       "type": "RunningAverage",
       "period": 2500
     },
     {
       "name": "pressure1Filtered",
-      "units": "Bar",
+      "unitType": "pressure",
       "property": "pressure1Instantaneous",
       "type": "RunningAverage",
       "period": 2500
     },
     {
       "name": "pressure2Filtered",
-      "units": "Bar",
+      "unitType": "pressure",
       "property": "pressure2Instantaneous",
       "type": "RunningAverage",
       "period": 2500
     },
     {
       "name": "pressure3Filtered",
-      "units": "Bar",
+      "unitType": "pressure",
       "property": "pressure3Instantaneous",
       "type": "RunningAverage",
       "period": 2500

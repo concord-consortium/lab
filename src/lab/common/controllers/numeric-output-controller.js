@@ -70,8 +70,8 @@ define(function () {
         if (propertyName) {
           propertyDescription = model.getPropertyDescription(propertyName);
           if (propertyDescription) {
-            if (!label) { $label.html(propertyDescription.label); }
-            if (!units) { $units.html(propertyDescription.units); }
+            if (!label) { $label.html(propertyDescription.getLabel()); }
+            if (!units) { $units.html(propertyDescription.getUnitAbbreviation()); }
           }
           renderValue();
           model.addPropertiesListener([propertyName], renderValue);

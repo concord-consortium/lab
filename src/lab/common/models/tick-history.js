@@ -64,14 +64,14 @@ define(function() {
       // save model input properties
       for (i = 0; i < modelState.input.length; i++) {
         prop = modelState.input[i];
-        destination.input[prop] = model.get(prop);
+        destination.input[prop] = modelState.getRawPropertyValue(prop);
       }
 
       // save model parameters
       parameters = modelState.parameters;
       for (name in parameters) {
         if (parameters.hasOwnProperty(name) && parameters[name].isDefined) {
-          destination.parameters[name] = model.get(name);
+          destination.parameters[name] = modelState.getRawPropertyValue(name);
         }
       }
 

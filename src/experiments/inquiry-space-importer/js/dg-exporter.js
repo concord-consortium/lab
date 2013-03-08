@@ -108,8 +108,7 @@ ISImporter.DGExporter = {
     this.doCommand('createCases', {
       collection: this.childCollectionName,
       values: data,
-      parent: dgCase.caseID,
-      log: false
+      parent: dgCase.caseID
     });
 
     // Step 6. Close the case.
@@ -123,6 +122,15 @@ ISImporter.DGExporter = {
     this.doCommand('createComponent', {
       type: 'DG.TableView',
       log: false
+    });
+  },
+
+  /**
+    Call any time to log an event to DataGames
+  */
+  logAction: function(logString) {
+    this.doCommand('logAction', {
+      formatStr: logString
     });
   }
 };
