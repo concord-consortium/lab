@@ -568,7 +568,7 @@ define(function (require) {
         d3.event.preventDefault();
         plot.style("cursor", "move");
         if (d3.event.altKey) {
-          var p = d3.svg.mouse(vis[0][0]);
+          var p = d3.mouse(vis.node());
           downx = xScale.invert(p[0]);
           downy = yScale.invert(p[1]);
           dragged = false;
@@ -579,14 +579,14 @@ define(function (require) {
       function xaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
       function yaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downy = yScale.invert(p[1]);
       }
 
@@ -599,7 +599,7 @@ define(function (require) {
       // ------------------------------------------------------------
 
       function mousemove() {
-        var p = d3.svg.mouse(vis[0][0]),
+        var p = d3.mouse(vis.node()),
             changex, changey, new_domain,
             t = d3.event.changedTouches;
 

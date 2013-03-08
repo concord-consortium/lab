@@ -634,7 +634,7 @@ define(function (require) {
         d3.select('body').style("cursor", "move");
         if (d3.event.altKey) {
           if (d3.event.shiftKey && options.addData) {
-            p = d3.svg.mouse(vis.node());
+            p = d3.mouse(vis.node());
             var newpoint = [];
             newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
             newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
@@ -647,7 +647,7 @@ define(function (require) {
             selected = newpoint;
             update();
           } else {
-            p = d3.svg.mouse(vis[0][0]);
+            p = d3.mouse(vis.node());
             downx = xScale.invert(p[0]);
             downy = yScale.invert(p[1]);
             dragged = false;
@@ -660,14 +660,14 @@ define(function (require) {
       function xaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
       function yaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downy = yScale.invert(p[1]);
       }
 
@@ -679,7 +679,7 @@ define(function (require) {
       }
 
       function mousemove() {
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
 
         d3.event.preventDefault();
         if (dragged && options.dataChange) {
