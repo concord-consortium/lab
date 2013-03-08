@@ -1,0 +1,93 @@
+{
+  "title": "callAt and callEvery Demo",
+  "publicationStatus": "public",
+  "subtitle": "Use an callAt() to perform a script at any given time. Use callEvery() to perform a script repeatedly.",
+  "about": [
+             "Changes in the model property: temperatureControl are monitored with an onPropertyChange() script."
+           ],
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "callAt(1000, function() {",
+        "  set('callAt1000', get('time'));",
+        "});",
+        "callAt(1033, function() {",
+        "  set('callAt1033', get('time'));",
+        "});",
+        "callEvery(3000, function() {",
+        "  set('callEvery3000', get('time'));",
+        "});",
+        "callEvery(3033, function() {",
+        "  set('callEvery3033', get('time'));",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "callAt1000",
+      "initialValue": "n/a"
+    },
+    {
+      "name": "callAt1033",
+      "initialValue": "n/a"
+    },
+    {
+      "name": "callEvery3000",
+      "initialValue": "n/a"
+    },
+    {
+      "name": "callEvery3033",
+      "initialValue": "n/a"
+    }
+  ],
+  "components": [
+    {
+      "id": "header",
+      "type": "text",
+      "text": "Time of the last call of a script:"
+    },
+    {
+      "id": "callAt1000",
+      "type": "numericOutput",
+      "label": "- scheduled using callAt(1000, ...):",
+      "units": "fs",
+      "property": "callAt1000"
+    },
+    {
+      "id": "callAt1033",
+      "type": "numericOutput",
+      "label": "- scheduled using callAt(1033, ...):",
+      "units": "fs",
+      "property": "callAt1033"
+    },
+    {
+      "id": "callEvery3000",
+      "type": "numericOutput",
+      "label": "- scheduled using callEvery(3000, ...):",
+      "units": "fs",
+      "property": "callEvery3000"
+    },
+    {
+      "id": "callEvery3033",
+      "type": "numericOutput",
+      "label": "- scheduled using callEvery(3033, ...):",
+      "units": "fs",
+      "property": "callEvery3033"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["header"],
+      ["callAt1000"],
+      ["callAt1033"],
+      ["callEvery3000"],
+      ["callEvery3033"]
+    ]
+  }
+}

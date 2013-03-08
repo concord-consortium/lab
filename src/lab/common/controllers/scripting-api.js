@@ -134,7 +134,7 @@ define(function (require) {
             action: action,
             execute: function() {
               var time = model.get("time");
-              while (time - this.lastCall >= interval) {
+              while (time - this.lastCall >= this.interval) {
                 this.action();
                 this.lastCall += this.interval;
               }
