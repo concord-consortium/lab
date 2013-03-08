@@ -14,7 +14,7 @@
 ; Datasets are named by their color in a way that makes it trivial to add datasets by adding new colors in the pull-down lists. 
 ; The x,y values of data are saved in turtles called dots in x-val and y-val. ploce x-val y-val converts these into screen coordinates and shows the resulting dots
 
-__includes [ "../../netlogo-modules/data-export-modular.nls" ]
+__includes [ "../../netlogo-modules/data-export-modular.nls" ]  ; used in exporting data
 
 globals [
   Filename   ; keep this up to date to link this code with the reports generated.
@@ -51,7 +51,7 @@ globals [
   run-data        ; list that saves data from each run
   run-data-word   ; text version of run-data
   ; values used in computing inquiry patterns
-  graph-type-used         ; 1 = position 2 = velocity 3 = both for each run
+  graph-type-used         ; will become a list of the display types used
   prior-runs-viewed      ; a list of all graphs other than the current one that were viewed during one run
   temp-data              ; stores part of the data from a run calculated at the end of the run, but stored only at the start of the next run
   date&time
@@ -76,17 +76,22 @@ globals [
   x-bag v-bag              ; position and velocity of the bag
   
   question-needed?           ; true if the user tries to run before entering the question
-  run-groups-viewed        ; a list of the texts selected using the pick-graph function
   used-slow-mo?            ; logical that is true if the slow-mo was used
   used-cursor?             ; logical that is true if the mouse ever entered the time-series graph
+  was-in-grid?
   cursor-times             ; The number of times the mouse entered the time series graph area
+  cursor-time-start
   cursor-time              ; The total time the mouse was in the time-series graph
   used-pointer?            ; true if the mouse ever entered the parameter graph
   pointer-times            ; The number of times the mouse entered the parameter graph area
   pointer-time             ; The total time the mouse was in the parameter graph area
+  pointer-time-start       ; used for totaling up the time the cursor was in the parameter space graph
   hover-times              ; The number of times that the user hovered over a dot in the parameter graph area
-
-
+  hover-time-start         ; The time at the beginning of a hover
+  hovering?                ; logical that is true if the cursor is hovering over a dot
+  old-hovering?
+  current-run-counter
+  run-groups-used
   ]
 
 breed [handles handle]     ; these are used to indicate handles that allow the user to move a sketched graph
@@ -223,7 +228,9 @@ to initialize
   set stage "Horizontal"
   set y-label "Position (m)"
   set variables-locked? true
-  
+  set temp-data []
+  set graph-type-used []
+  set was-in-grid? false
 
   set old-distance-to-steering-wheel distance-to-steering-wheel
   set enter-a-run-number 0
@@ -429,6 +436,8 @@ to handle-pick-graph-selector
   if run-number = 0 [stop]  ; run number contains the number of the latest run. If 0, there are no runs. 
   erase-graphs
   
+  set run-groups-used lput pick-graphs run-groups-used  ; save for research
+  
   if pick-graphs = "Last" or pick-graphs = "Last 1" [
     display-run run-number ]
   
@@ -465,6 +474,7 @@ end
 to support-mouse      ; first ask whether the mouse is in one of the grids
   if in-grid? mouse-xcor mouse-ycor [  ; if in the main grid and there is only one graph, support a cursor
     ; first figure out whether there is just one run showing.
+       
     let n-graphs 0 let graph-number 0
     let i 1
     while [i <= run-number ][
@@ -473,6 +483,14 @@ to support-mouse      ; first ask whether the mouse is in one of the grids
           set graph-number i ]
       set i i + 1 ]
     if n-graphs = 1 [   ; if exactly one graph is showing and its number is graph-number
+      
+      if not was-in-grid? [      ; get here only when entering the grid--used for research data collection
+        set used-cursor? true
+        set was-in-grid? true
+        set cursor-times cursor-times + 1 
+        update-run-data    ; save the fact that the cursor entered the grid
+        set cursor-time-start timer ]; save the time when entered 
+      
       ; unpack the parts of graph-params that are needed
       let trans item 3 grid-params
       let mx first trans 
@@ -500,25 +518,41 @@ to support-mouse      ; first ask whether the mouse is in one of the grids
       draw-actor-on-stage 1 (yb / 2) 0 white  ; draw the bag
       draw-actor-on-stage 2 y 0 cyan   ; draw the dummy
       draw-actor-on-stage 3 y 0 cyan ]] 
-  if not in-grid? mouse-xcor mouse-ycor  [
-    ask line cursor1 cursor2 [set hidden? true]]  ; end of support for the cursor in the main grid
+  if not (in-grid? mouse-xcor mouse-ycor) and was-in-grid?  [
+      set was-in-grid? false    ; you get here only the first time the mouse leaves the grid
+      ask line cursor1 cursor2 [set hidden? true]  ; end of support for the cursor in the main grid
+      set cursor-time cursor-time + timer - cursor-time-start ]    ; add to the previous cursor-time, the time 
   
   ; start of support for the cursor when the mouse is in grid2, the parameter graph
   let ig2? in-grid2? mouse-xcor mouse-ycor  ; shorthand for 'in grid 2'
   if ig2? and (not old-in-grid2?) [    ; if the mouse is in the grid2 but was not last time
     set old-in-grid2? true             ; reset flag
+    set old-hovering? false            ; the user is not hovering over a point
+    
+    set used-pointer? true             ; used for research
+    set pointer-times pointer-times + 1 
+    set pointer-time-start timer       ; save the time entered
+    update-run-data
+    
     ask lines [set thickness deselected-thickness]]       ; dim the lines
   if (not ig2?) and old-in-grid2? [    ; on exit to grid2
     set old-in-grid2? false            ; reset flag
        ; restore the thickness of the lines on leaving grid2
-    ask lines [set thickness normal-thickness  ]]
+    ask lines [set thickness normal-thickness  ]
+    set pointer-time pointer-time + timer - pointer-time-start]
   if ig2? [                            ; now thicken runs that are near the cursor
-    let i 1                            ; check each run 
+    let i 1  set hovering? false       ; check each run 
     while [i <= run-number ][
       ifelse cursor-near? i  
-        [ ask lines with [run-num = i] [set thickness selected-thickness]] ; brighten the lines in run i
+        [ ask lines with [run-num = i] [set thickness selected-thickness] ; brighten the lines in run i
+          set hovering? true ]         ; note that the user is near some run
         [ ask lines with [run-num = i] [set thickness deselected-thickness]] ; dim the lines in run i
-      set i i + 1]]
+      set i i + 1]
+    if hovering? and not old-hovering? [  ; if this is the first time hovering was noticed
+      set old-hovering? hovering?         
+      set hover-times hover-times + 1   ; increment the hovering counter
+      update-run-data ]
+    if not hovering? [set old-hovering? false]]
 end
     
 to-report cursor-near? [n]               ; reports true if the cursor is near the dot for run n in grid2
@@ -992,7 +1026,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to setup-for-run
-  if run-number > 0 [ update-run-data ]
+  if run-number > 0  [update-run-data]
   set run-number run-number + 1 ; increment the run counter   
   set the-question what-is-your-question?  ; save the question for this run
   if always-erase? [
@@ -1012,18 +1046,22 @@ to setup-for-run
                      
   ; there are a bunch of variables used in student logging that need to be initialized
   set used-slow-mo? slow-mo?          ; logical that is true if the slow-mo was used
+  set run-groups-used []
   set used-cursor? false           ; logical that is true if the mouse ever entered the time-series graph
   set cursor-times 0            ; The number of times the mouse entered the time series graph area
+  set was-in-grid? false
   set cursor-time 0            ; The total time the mouse was in the time-series graph
+  set cursor-time-start 0     
   set used-pointer? false           ; true if the mouse ever entered the parameter graph
   set pointer-times 0         ; The number of times the mouse entered the parameter graph area
   set pointer-time 0           ; The total time the mouse was in the parameter graph area
   set hover-times 0           ; The number of times that the user hovered over a dot in the parameter graph area
+  set hovering? false         ; true if the mouse is near a dot in parameter space
+  set old-hovering?  false    ; true if hovering? was true last time through the execution loop
   set prior-runs-viewed [ ]
-  set run-groups-viewed [ ]     ; a list of the texts selected using the pick-graph function
   ifelse vertical-axis-type = "Position (m)" ; type two is the velocity graph...
-    [set graph-type-used 1]
-    [set graph-type-used 2]
+    [set graph-type-used (list 1)]
+    [set graph-type-used (list 2)]
 end
 
 to recolor-dummy-graph    ; colors graph run-number red, yellow, or green depending on a-max
@@ -1248,8 +1286,9 @@ to set-y-axis
   set vertical-axis-type y-axis
 ;  ask dots [ht]
   draw-graph
-  if graph-type-used = 0 [set graph-type-used 1]    ; 1 will indicate that the user selected the position graph
-  if graph-type-used = 2 [set graph-type-used 3]    ; 3 will indicate that the user selected both graphs
+  ifelse vertical-axis-type = "Position (m)" 
+    [set graph-type-used lput 1 graph-type-used ]
+    [set graph-type-used lput 2 graph-type-used ]  
 end
 
 to set-y-axis-velocity
@@ -1316,38 +1355,41 @@ to update-run-data
   ;   6. dummy-crashed? logical
   ;   7. the question selected by the student
   ;   8. slow-mo? Logical. True if the run ended with slo-mo? true
-  ;   The variables above are computed at the end of the run ans are stored as a list in current-run-data
-  
-  ;   9. duration of the anaysis, in seconds
-  ;   10. prior-runs-viewed ( a list of run numbers viewed)
-  
-  ; at this point, the following are not yet computed--next version
-  ;  11. graph-type-used (1 for position, 2 for velocity, 3 for both)
-  ;  12. run-groups-viewed ( a list of the texts selected using the pick-graph function)
+  ;   The variables above are computed at the end of the run and are stored as a list in current-run-data
+  ;   The next set of variables are derived from user actions. This method is called every time one changes
+  ;   9. duration of the anaysis, in seconds  ; timer is set to zero at the end of a run and read just before beginning the next 
+  ;  10. prior-runs-viewed ( a list of run numbers viewed)
+  ;  11. graph-type-used (a list consisting of 1s and 2s, 1 for position, 2 for velocity)
+  ;  12. run-groups-used ( a list of the texts selected using the pick-graph function)
   ;  13. used-cursor? (true false) true if the mouse ever entered the time-series graph
-  ;  14. cursor-times The number of times the mouse entered the time series graph area
-  ;  15. cursor-time The total time the mouse was in the time-series graph
+  ;  14. cursor-times The number of times the mouse entered the time series graph area when only one graph was showing
+  ;  15. cursor-time The total time the mouse was in the time-series graph in seconds when only one graph was showing
   ;  16. used-pointer? true if the mouse ever entered the parameter graph
   ;  17. pointer-times The number of times the mouse entered the parameter graph area
   ;  18. pointer-time The total time the mouse was in the parameter graph area
   ;  19. hover-times  The number of times that the user hovered over a dot in the parameter graph area
   ;  20. question-needed? True if the user tried to run or change sliders but had not entered a question
+  ;  21. current-run-counter. An overall measure of student interaction--the number of actions a student takes
 
-  let current-run-data lput timer temp-data    ; temp-data stores the data on sliders etc. used in calculating the run
-  set current-run-data lput prior-runs-viewed current-run-data    ; prior-runs is a list, so needs to be tacked on separately
-  set current-run-data lput run-groups-viewed current-run-data    ;
-  set current-run-data lput used-cursor? current-run-data    ;
-  set current-run-data lput cursor-times current-run-data    ;
-  set current-run-data lput cursor-time current-run-data    ;
-  set current-run-data lput used-pointer? current-run-data    ;
-  set current-run-data lput pointer-times current-run-data    ;
-  set current-run-data lput pointer-time current-run-data    ;
-  set current-run-data lput hover-times current-run-data    ;
-  set current-run-data lput question-needed? current-run-data
-  ; at this point, current-run-data contains everything we want to know about the run and student analysis just updated
-  update-inquiry-summary ( word current-run-data )
-  if length run-data = run-number  [  ; if run-data already has data from a previous update to this run
-    set run-data bl run-data ]     ; remove the old updata
+  let current-run-data lput round timer temp-data    ; 9 temp-data stores the data on sliders etc. used in calculating the run
+  set current-run-data lput prior-runs-viewed current-run-data    ; 10 prior-runs is a list, so needs to be tacked on separately
+  set current-run-data lput graph-type-used current-run-data      ; 11
+  set current-run-data lput run-groups-used current-run-data      ; 12
+  set current-run-data lput used-cursor? current-run-data         ; 13
+  set current-run-data lput cursor-times current-run-data         ; 14
+  set current-run-data lput round cursor-time current-run-data    ; 15
+  set current-run-data lput used-pointer? current-run-data        ; 16
+  set current-run-data lput pointer-times current-run-data        ; 17
+  set current-run-data lput round pointer-time current-run-data   ; 18
+  set current-run-data lput hover-times current-run-data          ; 19
+  set current-run-data lput question-needed? current-run-data     ; 20
+  set current-run-data lput current-run-counter current-run-data  ; 21
+    ; at this point, current-run-data contains everything we want to know about the run and student analysis just updated
+  set current-run-counter current-run-counter + 1 ; this is set to zero at the start of a run
+;  show current-run-counter
+  update-inquiry-summary current-run-data
+  if length run-data = run-number and run-number > 0  [  ; if run-data already has data from a previous update to this run
+    set run-data bl run-data ]     ; remove the old data
     set run-data lput current-run-data run-data  ; substitute the more current run data in current-run-data
 end
 
@@ -1418,7 +1460,7 @@ to munch      ; computes and reports patterns from run-data
   output-print word "Number of runs: " length rd
   
   ; first, get the range of values used for each variable 
-  let car-min 0 let car-max 40    
+  let car-min 2 let car-max 40    
   let dist-min .1 let dist-max .5 
   let size-min .2 let size-max .5 
   let time-min .01 let time-max .03   ; note, this is the range of the time for the airbag to fill
@@ -1489,13 +1531,28 @@ to munch      ; computes and reports patterns from run-data
  let i 0
  set rd bf run-data
  while [i < length rd ][
-   output-print word "For run: " (i + 1)
+   output-print word "\n For run: " (i + 1)
    let current-run item i rd
-   output-print word "   The question: " (item 7 current-run)   
-   output-print word "   Time spent analyzing: " (item 9 current-run)  
-   output-print word "   Dummy survived? " (item 5 current-run)
-   output-print word "   Y-axes used: " (item 11 current-run)
-   output-print word "   Prior graphs viewed: " (item 10 current-run)
+ 
+   output-print word  "   Dummy survived?       " (item 5 current-run)
+   output-print word  "   Dummy crashed:        " (item 6 current-run)  
+   output-print word  "   The question:         " (item 7 current-run)    
+   output-print word  "   Slow-mo used:         " (item 8 current-run)   
+   output-print (word "   Time analyzing:       " (item 9 current-run)  "s")
+
+   output-print word  "   Prior graphs viewed:  " (item 10 current-run)
+   output-print word  "   Y-axes used:          " (item 11 current-run)
+   output-print word  "   Run groups used:      " (item 12 current-run)  
+   output-print word  "   Used cursor?:         " (item 13 current-run)  
+   output-print (word "   Cursor entered grid:  " (item 14 current-run) " times") 
+   output-print (word "   Time cursor in grid:  " (item 15 current-run) "s")
+   output-print word  "   Used pointer:         " (item 16 current-run)   
+   output-print (word "   Pointer entered grid: " (item 17 current-run) " times")
+   output-print (word "   Time pointer in grid: " (item 18 current-run) "s") 
+   output-print word  "   Hover times:          " (item 19 current-run)  
+   output-print word  "   Reminders needed:     " (item 20 current-run)
+   output-print word  "   Activity level:       " (item 21 current-run)  
+
    set i i + 1 ]
  output-print ""
   
@@ -1747,7 +1804,7 @@ end
 ;;;
 ;;; Structure definitions for setup-data-export method:
 ;;;
-;;; computational-inputs and representational-inputs
+;;; computational-inputs
 ;;;   label, units, min, max, visible
 ;;;
 ;;;   label: string
@@ -1797,7 +1854,7 @@ to setup-data-export
   let student-inputs [
     [ "Goal" "categorical" ] ]
   let model-information [
-    [ "airbags" "airbags.v19b-include-modular.nlogo" "v19b-include-modular" ] ]
+    [ "airbags" "airbags.v21.nlogo" "21a" ] ]
   let time-series-data [
     [ "Time" "s" 0 0.1 ]
     [ "Position" "m" 0 0.6 ]
@@ -1850,9 +1907,9 @@ end
 GRAPHICS-WINDOW
 230
 30
-988
+999
 597
-70
+71
 50
 5.31
 1
@@ -1864,8 +1921,8 @@ GRAPHICS-WINDOW
 0
 0
 1
--70
-70
+-71
+71
 -50
 50
 1
@@ -1943,9 +2000,9 @@ SLIDER
 45
 Car-speed
 Car-speed
-0
+2
 40
-24
+14
 2
 1
 m/s
@@ -1975,7 +2032,7 @@ Distance-to-steering-wheel
 Distance-to-steering-wheel
 0.1
 .5
-0.5
+0.35
 .05
 1
 m
@@ -1997,7 +2054,7 @@ Airbag-size
 Airbag-size
 0.2
 .5
-0.34
+0.36
 .02
 1
 m
@@ -2012,7 +2069,7 @@ Time-to-fill-bag
 Time-to-fill-bag
 .01
 .03
-0.015
+0.014
 .002
 1
 sec
@@ -2145,7 +2202,7 @@ INPUTBOX
 182
 547
 Enter-a-run-number
-0
+1
 1
 0
 Number
@@ -2294,7 +2351,7 @@ CHOOSER
 Pick-Graphs
 Pick-Graphs
 "Last" "All" "None" "Green Only" "Yellow Only" "Red Only" "Last 10" "Last 5" "Last 1"
-0
+2
 
 SLIDER
 1325
