@@ -1,4 +1,6 @@
-#viz { height: auto; }
+#viz {
+  margin: 1em 2.5em;
+  height: auto; }
 
 .top { width: auto; }
 
