@@ -69,7 +69,6 @@ AUTHORING = false;
       modelEditor,
       controller,
       indent = 2,
-      foldFunc,
       interactiveUrl,
       interactive,
       interactiveRemote,
@@ -727,14 +726,17 @@ AUTHORING = false;
   // Interactive Code Editor
   //
   function setupCodeEditor() {
+    var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
-    foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     if (!editor) {
       editor = CodeMirror.fromTextArea($interactiveTextArea.get(0), {
         mode: { name: "javascript", json: true },
         indentUnit: indent,
         lineNumbers: true,
         lineWrapping: false,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        collapseRange: true,
         onGutterClick: foldFunc
       });
     }
@@ -788,12 +790,12 @@ AUTHORING = false;
   // Model Code Editor
   //
   function setupModelCodeEditor() {
+    var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     $.get(Lab.config.actualRoot + interactive.models[0].url).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
       modelRemote = results;
       var md2dModel = _.omit(modelRemote, modelRemoteKeys);
       $modelTextArea.text(JSON.stringify(md2dModel, null, indent));
-      foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
       if (!modelEditor) {
         modelEditor = CodeMirror.fromTextArea($modelTextArea.get(0), {
           mode: { name: "javascript", json: true },
@@ -805,7 +807,7 @@ AUTHORING = false;
       }
       if (!modelButtonHandlersAdded) {
         modelButtonHandlersAdded = true;
-        
+
         if (!isStaticPage()){
           !setupSaveModel(md2dModel);
         }

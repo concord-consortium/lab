@@ -449,6 +449,7 @@ server/public/vendor/codemirror:
 	cp src/vendor/codemirror/LICENSE server/public/vendor/codemirror
 	cp src/vendor/codemirror/README.md server/public/vendor/codemirror
 	cp -R src/vendor/codemirror/lib server/public/vendor/codemirror
+	cp -R src/vendor/codemirror/addon server/public/vendor/codemirror
 	cp -R src/vendor/codemirror/mode server/public/vendor/codemirror
 	cp -R src/vendor/codemirror/theme server/public/vendor/codemirror
 	cp -R src/vendor/codemirror/keymap server/public/vendor/codemirror
