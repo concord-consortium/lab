@@ -66,7 +66,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.js
 
 all: \
-	src/vendor/d3.js \
+	src/vendor/d3/d3.js \
 	node_modules \
 	bin \
 	server/public
@@ -118,7 +118,7 @@ clean:
 	rm -f src/vendor/jquery/dist/jquery*.js
 	rm -f src/vendor/jquery-ui/dist/jquery-ui*.js
 	rm -f src/vendor/lightgl.js/lightgl.js
-	rm -f src/vendor/d3*.js
+	rm -f src/vendor/d3/d3*.js
 
 .PHONY: submodule-update
 submodule-update:
@@ -133,8 +133,8 @@ submodule-update-tags:
 clean-jnlp:
 	rm -rf server/public/jnlp
 
-src/vendor/d3.js:
-	cd src/vendor/d3; npm install; make
+src/vendor/d3/d3.js:
+	cd src/vendor/d3; unset NODE_PATH; npm install; make clean; make
 
 node_modules: node_modules/coffee-script \
 	node_modules/jsdom \
@@ -330,7 +330,7 @@ server/public/vendor/lightgl.js: src/vendor/lightgl.js/lightgl.js
 	cp src/vendor/lightgl.js/LICENSE server/public/vendor/lightgl.js/LICENSE
 	cp src/vendor/lightgl.js/README.md server/public/vendor/lightgl.js/README.md
 
-server/public/vendor/d3:
+server/public/vendor/d3: src/vendor/d3/d3.js
 	mkdir -p server/public/vendor/d3
 	cp src/vendor/d3/d3*.js server/public/vendor/d3
 	cp src/vendor/d3/LICENSE server/public/vendor/d3/LICENSE
