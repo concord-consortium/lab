@@ -32,20 +32,27 @@
   ],
   "outputs": [
     {
-      "name": "avgSpeed",
-      "unitType": "speed",
-      "label": "average speed",
+      "name": "vxMean",
+      "unitType": "velocity",
       "value": [
-        "var avgVx = 0;",
-        "var avgVy = 0;",
+        "var vxSum = 0;",
         "var atomNum = getNumberOfAtoms();",
         "for (var i = 0; i < atomNum; i++) {",
-        "  avgVx += Math.abs(getAtomProperties(i).vx);",
-        "  avgVy += Math.abs(getAtomProperties(i).vy);",
+        "  vxSum += Math.abs(getAtomProperties(i).vx);",
         "}",
-        "avgVx /= atomNum;",
-        "avgVy /= atomNum;",
-        "return { 'avgVx' : avgVx, 'avgVy': avgVy};"
+        "return vxSum / atomNum;"
+     ]
+    },
+    {
+      "name": "vyMean",
+      "unitType": "velocity",
+      "value": [
+        "var vySum = 0;",
+        "var atomNum = getNumberOfAtoms();",
+        "for (var i = 0; i < atomNum; i++) {",
+        "  vySum += Math.abs(getAtomProperties(i).vy);",
+        "}",
+        "return vySum / atomNum;"
      ]
     }
   ],
@@ -63,7 +70,7 @@
       "action": [
         "var elemNum = 3;",
         "var maxX = getObstacleProperties(0).x - getElementProperties(elemNum).sigma;",
-        "addAtom({ element: elemNum, x: maxX * Math.random()  , y: get('height') * Math.random(), vx: get('avgSpeed').avgVx, vy: get('avgSpeed').avgVy});"
+        "addAtom({ element: elemNum, x: maxX * Math.random()  , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});"
       ]
     },
     {
@@ -73,7 +80,7 @@
       "action": [
         "var elemNum = 1;",
         "var minX = getObstacleProperties(0).x + getObstacleProperties(0).width + getElementProperties(elemNum).sigma;",
-        "addAtom({ element: elemNum, x: (get('width') - minX) * Math.random() + minX , y: get('height') * Math.random(), vx: get('avgSpeed').avgVx, vy: get('avgSpeed').avgVy});"
+        "addAtom({ element: elemNum, x: (get('width') - minX) * Math.random() + minX , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});"
       ]
     },
     {
