@@ -31,7 +31,6 @@ define(function (require) {
         axisFontSizeInPixels,
         xlabelFontSizeInPixels,
         ylabelFontSizeInPixels,
-        xAxisNumberWidth,
         yAxisNumberWidth,
         strokeWidth,
         scaleFactor,
@@ -185,8 +184,7 @@ define(function (require) {
       halfFontSizeInPixels = fontSizeInPixels/2;
       quarterFontSizeInPixels = fontSizeInPixels/4;
 
-      xAxisNumberWidth = numberWidthUsingFormatter(options.xFormatter, options.xmax)*2;
-      yAxisNumberWidth = numberWidthUsingFormatter(options.yFormatter, options.ymax)*2;
+      yAxisNumberWidth = Math.max(numberWidthUsingFormatter(options.yFormatter, options.ymax)*2, numberWidthUsingFormatter(options.yFormatter, options.ymin)*2);
 
       if (svg === undefined) {
         titleFontSizeInPixels =  fontSizeInPixels;
