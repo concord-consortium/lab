@@ -1,4 +1,4 @@
-/*global $ alert define: false, d3: false Image */
+/*global $, define: false, d3: false, Image */
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
@@ -7,6 +7,7 @@
 define(function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
+      alert                 = require('common/alert'),
       console               = require('common/console'),
       benchmark             = require('common/benchmark/benchmark'),
       amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
@@ -1378,11 +1379,26 @@ define(function (require) {
     }
 
     function setupClock() {
-      var clockColor = d3.lab(model.get("backgroundColor"));
-      // This ensures that color will be visible on background.
-      // Decide between white and black usingL value of background color in LAB space.
-      clockColor.l = clockColor.l > 50 ? 0 : 100;
-      clockColor.a = clockColor.b = 0;
+      var bg = parseColor(model.get("backgroundColor")),
+          // Calculate luminance in YIQ color space.
+          luminance = (bg.r * 299 + bg.g * 587 + bg.b * 114) / 1000,
+          // This ensures that color will be visible on background.
+          // This simple algorithm is described here:
+          // http://www.w3.org/TR/AERT#color-contrast
+          clockColor = luminance >= 128 ? 'black' : 'white';
+
+      function parseColor(color) {
+        // d3.rgb is handy, however it cannor parse RGBA colors, which are sometimes
+        // used in Next Gen MW (e.g. during MML->JSON conversion).
+        // Use it regexp to parse rgba if it's necessary.
+        var rgba = color.match(/rgba\(([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)/i);
+        if (rgba !== null) {
+          return d3.rgb(rgba[1], rgba[2], rgba[3]);
+        } else {
+          return d3.rgb(color);
+        }
+      }
+
       // Add model time display.
       mainContainer.selectAll('.modelTimeLabel').remove();
       // Update clock status.
@@ -1395,7 +1411,7 @@ define(function (require) {
           .attr("x", model2px(0) + 3)
           .attr("y", model2pxInv(0) - 3)
           .attr("text-anchor", "start")
-          .attr("fill", clockColor.rgb());
+          .attr("fill", clockColor);
       }
     }
 
