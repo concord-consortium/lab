@@ -377,7 +377,7 @@ define(function (require) {
             "r":  function(d) { return modelSize2px(d.radius); },
             "cx": function(d) { return model2px(d.x); },
             "cy": function(d) { return model2pxInv(d.y); },
-            "fill-opacity": function(d) { return d.visible; },
+            "fill-opacity": function(d) { return d.visible ? 1 : 0; },
             "fill": function (d, i) { return gradientNameForParticle[i]; }
           })
           .on("mousedown", moleculeMouseDown)
