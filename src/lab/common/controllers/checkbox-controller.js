@@ -60,7 +60,7 @@ define(function () {
 
     // default is to have label on right of checkbox
     if (component.textOn === "left") {
-      $element = $('<div>').append($label).append($checkbox).append($fakeCheckable);
+      $element = $('<div>').append($label).append($checkbox).append($fakeCheckable.addClass("right"));
     } else {
       $element = $('<div>').append($checkbox).append($fakeCheckable).append($label);
     }
