@@ -152,6 +152,14 @@ define(function (require) {
          * types. Please see the model documentation to check what
          * other object types are supported.
          *
+         * Behind the scenes this functions uses class selector. So you can
+         * also inspect SVG image and check what is class of interesting
+         * object and try to use it.
+         *
+         * MD2D specific notes:
+         * Supported types: "plot", "atom", "obstacle", "image", "textBox".
+         * TODO: move it to MD2D related docs in the future.
+         *
          * @param  {string}   type     Name of the type of clickable objects.
          * @param  {Function} callback Custom click handler. It will be called
          *                             when object is clicked with (x, y, d, i) arguments:
