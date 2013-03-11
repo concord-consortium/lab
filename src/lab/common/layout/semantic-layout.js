@@ -50,18 +50,23 @@ define(function (require) {
         availableWidth,
         availableHeight,
 
+        // Amount to inset the model and components from the top left
+        padding = 10,
+
         // Most important variables.
         // In fact they define state of the layout.
         modelWidth,
         modelTop,
         modelLeft,
-        topBoundary;
+        topBoundary,
+        leftBoundary;
 
     function reset() {
       modelWidth = layoutConfig.minModelWidth;
       modelTop = 0;
       modelLeft = 0;
       topBoundary = 0;
+      leftBoundary = 0;
     }
 
     function getDimensionOfContainer($container, dim) {
@@ -92,6 +97,8 @@ define(function (require) {
       } else {
         containerScale = availableWidth / basicInteractiveWidth;
       }
+
+      padding = containerScale * 10;
 
       font = layoutConfig.canonicalFontSize * fontScale * containerScale;
 
@@ -321,12 +328,14 @@ define(function (require) {
         // placed above other containers. So, in fact they define topBoundary
         // for other components.
         if (container.aboveOthers) {
-          bottom = getDimensionOfContainer($container, "bottom");
+          bottom = getDimensionOfContainer($container, "bottom") + padding;
           if (bottom > topBoundary) {
             topBoundary = bottom;
           }
         }
       }
+
+      leftBoundary = padding;
 
       // Shift typical containers (aboveOther == false) according to the top boundary.
       for (id in $containerByID) {
@@ -335,6 +344,8 @@ define(function (require) {
         $container = $containerByID[id];
         top = getDimensionOfContainer($container, "top");
         $container.css("top", top + topBoundary);
+        left = getDimensionOfContainer($container, "left");
+        $container.css("left", left + leftBoundary);
       }
     }
 
@@ -375,7 +386,7 @@ define(function (require) {
       // Using current algorithm, very often we follow some local minima.
       if ((maxX <= availableWidth && maxY <= availableHeight) &&
           (Math.abs(availableWidth - maxX) < 1 || Math.abs(availableHeight - maxY) < 1) &&
-          (Math.abs(minX) < 1 && Math.abs(minY - topBoundary) < 1)) {
+          (Math.abs(minX - leftBoundary) < 1 && Math.abs(minY - topBoundary) < 1)) {
         // Perfect solution found!
         // (TODO: not so perfect, see above)
         return true;
@@ -389,7 +400,7 @@ define(function (require) {
         modelWidth = layoutConfig.minModelWidth;
       }
 
-      modelLeft -= minX;
+      modelLeft -= minX - leftBoundary;
       modelTop -= minY - topBoundary;
 
       return false;
@@ -422,10 +433,12 @@ define(function (require) {
     // Parses a container's dimension, such as "model.height".
     function getDimension(dim) {
       switch(dim) {
-        case "interactive.width":
+        case "container.width":
           return availableWidth;
+        case "interactive.width":
+          return availableWidth - padding;
         case "interactive.height":
-          return availableHeight;
+          return availableHeight - padding;
         default:
           dim = dim.split(".");
           return getDimensionOfContainer($containerByID[dim[0]], dim[1]);

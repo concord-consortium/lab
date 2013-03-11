@@ -24,6 +24,15 @@ define(function () {
         // About link visible if there is about section or subtitle.
         aboutVisible = interactive.about || interactive.subtitle;
 
+    template.push({
+      "id": "top-bar",
+      "top": "0",
+      "left": "0",
+      "width": "container.width",
+      "height": "banner-right.height",
+      "aboveOthers": true
+    });
+
     function createLinkInContainer(link, container) {
       components[link.id] = new TextController(link);
       template.push(container);
