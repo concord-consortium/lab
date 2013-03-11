@@ -184,7 +184,8 @@ define(function (require) {
       halfFontSizeInPixels = fontSizeInPixels/2;
       quarterFontSizeInPixels = fontSizeInPixels/4;
 
-      yAxisNumberWidth = Math.max(numberWidthUsingFormatter(options.yFormatter, options.ymax)*2, numberWidthUsingFormatter(options.yFormatter, options.ymin)*2);
+      yAxisNumberWidth = Math.max(numberWidthUsingFormatter(options.yFormatter, options.ymax)*1.5,
+                                  numberWidthUsingFormatter(options.yFormatter, options.ymin)*1.5);
 
       if (svg === undefined) {
         titleFontSizeInPixels =  fontSizeInPixels;
