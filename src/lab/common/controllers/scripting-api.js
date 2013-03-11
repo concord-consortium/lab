@@ -145,6 +145,27 @@ define(function (require) {
           });
         },
 
+        /**
+         * Sets a custom click handler for objects of a given type.
+         * Basic type which is always supported is "plot". It is empty
+         * area of a model. Various models can support different clickable
+         * types. Please see the model documentation to check what
+         * other object types are supported.
+         *
+         * @param  {string}   type     Name of the type of clickable objects.
+         * @param  {Function} callback Custom click handler. It will be called
+         *                             when object is clicked with (x, y, d, i) arguments:
+         *                               x - x coordinate in model units,
+         *                               y - y coordinate in model units,
+         *                               d - data associated with a given object (can be undefined!),
+         *                               i - ID of clicked object (usually its value makes sense if d is defined).
+         */
+        onClick: function onClick(type, callback) {
+          // Append '.' to make API simpler.
+          // So authors can just specify onClick("atom", ...) instead of class selectors.
+          interactivesController.getModelController().modelContainer.setClickHandler("." + type, callback);
+        },
+
         start: function start() {
           model.start();
         },

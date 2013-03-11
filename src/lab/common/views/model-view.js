@@ -527,11 +527,12 @@ define(function (require) {
        * Sets custom click handler.
        *
        * @param {string}   selector Selector string defining clickable objects.
-       * @param {Function} callback Custom function. It will be called with (x, y, d, i) arguments:
-       *                            x - x coordinate in model units,
-       *                            y - y coordinate in model units,
-       *                            d - data associated with a given object (can be undefined),
-       *                            i - ID of clicked object (usually its value makes sense if d is defined).
+       * @param {Function} callback Custom click handler. It will be called
+       *                            when object is clicked with (x, y, d, i) arguments:
+       *                              x - x coordinate in model units,
+       *                              y - y coordinate in model units,
+       *                              d - data associated with a given object (can be undefined!),
+       *                              i - ID of clicked object (usually its value makes sense if d is defined).
        */
       setClickHandler: function (selector, callback) {
         clickHandler[selector] = callback;
