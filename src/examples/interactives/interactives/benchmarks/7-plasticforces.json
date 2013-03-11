@@ -15,36 +15,42 @@
   ],
   "components": [
     {
-      "type": "button",
-      "id": "no-force",
-      "text": "No force",
-      "action": " set({ 'gravitationalField' : false });"
-    },
-    {
-      "type": "button",
-      "id": "small-force",
-      "text": "Small force",
-      "action": " set({ 'gravitationalField' : 8e-8 });"
-    },
-    {
-      "type": "button",
-      "id": "med-force",
-      "text": "Medium force",
-      "action": " set({ 'gravitationalField' : 2.4e-7 });"
-    },
-    {
-      "type": "button",
-      "id": "large-force",
-      "text": "Large force",
-      "action": " set({ 'gravitationalField' : 4e-7 });"
+      "type": "radio",
+      "id": "force-buttons",
+      "orientation": "horizontal",
+      "property": "gravitationalField",
+      "options": [
+        {
+          "text": "No force",
+          "value": false
+        },
+        {
+          "text": "Small force",
+          "value": 2e-8
+        },
+        {
+          "text": "Medium force",
+          "value": 6e-8
+        },
+        {
+          "text": "Large force",
+          "value": 8e-8
+        }
+      ]
     }
   ],
   "layout": {
     "bottom": [
-      "no-force",
-      "small-force",
-      "med-force",
-      "large-force"
+      "force-buttons"
     ]
-  }
+  },
+  "template":[
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
 }
