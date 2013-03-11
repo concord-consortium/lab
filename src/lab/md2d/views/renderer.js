@@ -372,7 +372,7 @@ define(function (require) {
     function particleEnter() {
       particle.enter().append("circle")
           .attr({
-            "class": function (d) { return d.isAminoAcid() ? "draggable amino-acid" : "draggable"; },
+            "class": function (d) { return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable"; },
             "r":  function(d) { return modelSize2px(d.radius); },
             "cx": function(d) { return model2px(d.x); },
             "cy": function(d) { return model2pxInv(d.y); },
