@@ -7,7 +7,7 @@
   "models": [
     {
       "id": "pendulum1$0",
-      "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/pendulum1$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }
