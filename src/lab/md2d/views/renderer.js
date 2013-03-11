@@ -1497,11 +1497,21 @@ define(function (require) {
         "showClock", "backgroundColor"],
           repaint);
 
-      model.on('addAtom', repaint);
-      model.on('removeAtom', repaint);
-      model.on('addRadialBond', setupRadialBonds);
-      model.on('removeRadialBond', setupRadialBonds);
-      model.on('textBoxesChanged', drawTextBoxes);
+
+      function redrawClickableObjects (redrawOperation) {
+        return function () {
+          redrawOperation();
+          // All objects where repainted (probably removed and added again), so
+          // it's necessary to apply click handlers again.
+          modelView.updateClickHandlers();
+        };
+      }
+
+      model.on('addAtom', redrawClickableObjects(repaint));
+      model.on('removeAtom', redrawClickableObjects(repaint));
+      model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
+      model.on('removeRadialBond', redrawClickableObjects(setupRadialBonds));
+      model.on('textBoxesChanged', redrawClickableObjects(drawTextBoxes));
 
       setupFirefoxWarning();
     }

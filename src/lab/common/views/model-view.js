@@ -7,6 +7,7 @@
 define(function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
+      console               = require('common/console'),
       PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
@@ -464,6 +465,7 @@ define(function (require) {
     function repaint() {
       setupBackground();
       renderer.repaint(model2px, model2pxInv, modelSize2px);
+      api.updateClickHandlers();
     }
 
     api = {
@@ -517,8 +519,48 @@ define(function (require) {
       },
       pos: function() {
         // Add a pos() function so the model renderer can more easily
-        // manipulate absolutely positioned dom elements it may create or manage.
+        // manipulate absolutely positioned dom elements it may create or
+        // manage.
         return  mainContainer.node().parentElement.getBoundingClientRect();
+      },
+      /**
+       * Sets custom click handler.
+       *
+       * @param {string}   selector Selector string defining clickable objects.
+       * @param {Function} callback Custom function. It will be called with (x, y, d, i) arguments:
+       *                            x - x coordinate in model units,
+       *                            y - y coordinate in model units,
+       *                            d - data associated with a given object (can be undefined),
+       *                            i - ID of clicked object (usually its value makes sense if d is defined).
+       */
+      setClickHandler: function (selector, callback) {
+        clickHandler[selector] = callback;
+        api.updateClickHandlers();
+      },
+      /**
+       * Applies all custom callback to objects matching selector
+       * Note that this function should be called each time when possibly
+       * clickable object is added or repainted!
+       */
+      updateClickHandlers: function () {
+        var selector;
+
+        function getClickHandler (callback) {
+          return function (d, i) {
+            // Get current coordinates relative to the plot area!
+            var coords = d3.mouse(plot.node()),
+                x = model2px.invert(coords[0]),
+                y = model2pxInv.invert(coords[1]);
+            console.log("[view] click at (" + x.toFixed(3) + ", " + y.toFixed(3) + ")");
+            callback(x, y, d, i);
+          };
+        }
+
+        for (selector in clickHandler) {
+          if (clickHandler.hasOwnProperty(selector)) {
+            vis.selectAll(selector).on("click", getClickHandler(clickHandler[selector]));
+          }
+        }
       }
     };
 
