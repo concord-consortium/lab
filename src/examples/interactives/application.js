@@ -25,6 +25,7 @@ AUTHORING = false;
       $interactiveTitle = $("#interactive-title"),
 
       $selectInteractive = $("#select-interactive"),
+      $selectInteractiveGroups = $("#select-interactive-groups"),
 
       $selectInteractiveSize = $("#select-interactive-size"),
 
@@ -321,6 +322,7 @@ AUTHORING = false;
       restoreOptionsFromCookie();
       setupSelectList();
       $("#select-filters input").click(setupSelectList);
+      $("#select-filters input").click(setupSelectGroups);
       $("#render-controls input").click(function() {
         saveOptionsToCookie();
         location.reload();
@@ -625,8 +627,30 @@ AUTHORING = false;
 
   }
 
+  function setupSelectGroups(){
+
+    $selectInteractiveGroups.empty();
+    _.each(groups, function(group) {
+      var publicFilter = $("#public").is(':checked'),
+      draftFilter = $("#draft").is(':checked'),
+      interactiveGroups = interactives.filter(function (interactive) {
+        if (interactive.groupKey !== group.path) return false;
+        if (interactive.publicationStatus === 'sample') return true;
+        if (publicFilter && interactive.publicationStatus === 'public') return true;
+        if (draftFilter && interactive.publicationStatus === 'draft') return true;
+      });
+      
+      $selectInteractiveGroups.append($("<option>")
+                                      .attr('value', group.id)
+                                      .text(group.name));
+
+    });
+    $selectInteractiveGroups.val(interactiveRemote.groupKey).attr('selected', true);
+  }
+
   function setupCopySaveInteractive() {
     $saveInteractiveButton.show();
+    setupSelectGroups();
 
     if (interactiveRemote.from_import) {
       // Copying an imported interactive
@@ -634,11 +658,15 @@ AUTHORING = false;
       $(".save-interactive-form").dialog({
         autoOpen: false,
         modal: true,
+        width: 'auto',
         buttons: {
           "Save": function() {
             var interactiveTitle = $(".save-interactive-title").val();
+            var interactiveGroup = $("#select-interactive-groups").val();
             $(this).dialog("close");
             interactiveState = JSON.parse(editor.getValue());
+            interactiveState.groupKey = interactiveGroup;
+
             remoteSaveInteractive(interactiveTitle, interactiveState);
             editor.setValue(JSON.stringify(interactiveState, null, indent));
           },
