@@ -62,7 +62,7 @@
         }
       ],
       "steps": 199,
-      "title": "van der Waals Atrraction",
+      "title": "Van der Waals Atrraction",
       "action": "setElementProperties(2, { epsilon: -value });"
     },
     {
