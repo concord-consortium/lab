@@ -396,7 +396,7 @@ define(function (require) {
     function parseDimension(dim) {
       var vars, i, ii, value;
 
-      if (typeof dim === "number" || /^[0-9]+(em)?$/.test(dim)) {
+      if (typeof dim === "number" || /^[0-9]+\.?[0-9]*(em)?$/.test(dim)) {
         return dim;
       }
 
