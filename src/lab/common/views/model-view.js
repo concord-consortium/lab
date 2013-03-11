@@ -1,4 +1,4 @@
-/*global $ model_player define: false, d3: false */
+/*global $, model_player, define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   PTA View Container
@@ -16,7 +16,6 @@ define(function (require) {
         // Public API object to be returned.
     var api = {},
         renderer,
-        containers = {},
         $el,
         node,
         emsize,
@@ -49,6 +48,8 @@ define(function (require) {
         imageContainerTop,
         textContainerBelow,
         textContainerTop,
+
+        clickHandler,
 
         offsetLeft, offsetTop;
 
@@ -367,8 +368,7 @@ define(function (require) {
         imageContainerTop    = vis.append("g").attr("class", "image-container-top");
         textContainerTop     = vis.append("g").attr("class", "text-container-top");
 
-        containers = {
-          node: node,
+        api.containers = {
           gridContainer:        gridContainer,
           imageContainerBelow:  imageContainerBelow,
           textContainerBelow:   textContainerBelow,
@@ -443,17 +443,11 @@ define(function (require) {
       // can find resources on paths relative to the model
       model.url = modelUrl;
 
-      // Add a pos() function to containers so the model renderer can more easily
-      // manipulate absolutely positioned dom elements it may create or manage
-      containers.pos = function() {
-        return  mainContainer.node().parentElement.getBoundingClientRect();
-      };
-
       // create a model renderer ... if one hasn't already been created
       if (!renderer) {
-        renderer = new Renderer(model, containers, model2px, model2pxInv, modelSize2px);
+        renderer = new Renderer(api, model);
       } else {
-        renderer.reset(model, containers, model2px, model2pxInv, modelSize2px);
+        renderer.reset(model);
       }
 
       // Redraw container each time when some visual-related property is changed.
@@ -478,8 +472,10 @@ define(function (require) {
     }
 
     api = {
-      update: null,
       $el: null,
+      node: null,
+      update: null,
+      containers: null,
       scale: scale,
       setFocus: setFocus,
       resize: function() {
@@ -521,6 +517,11 @@ define(function (require) {
       modelSize2px: function(val) {
         // See comments for model2px.
         return modelSize2px(val);
+      },
+      pos: function() {
+        // Add a pos() function so the model renderer can more easily
+        // manipulate absolutely positioned dom elements it may create or manage.
+        return  mainContainer.node().parentElement.getBoundingClientRect();
       }
     };
 
@@ -545,6 +546,7 @@ define(function (require) {
     // Extend Public withExport initialized object to initialized objects
     api.update = renderer.update;
     api.$el = $el;
+    api.node = node;
 
     return api;
   };

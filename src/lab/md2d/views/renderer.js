@@ -26,7 +26,7 @@ define(function (require) {
         DISULPHIDE_BOND : 109
       };
 
-  return function MD2DView(model, containers, m2px, m2pxInv, mSize2px) {
+  return function MD2DView(modelView, model) {
         // Public API object to be returned.
     var api = {},
 
@@ -42,25 +42,25 @@ define(function (require) {
 
         // Basic scaling functions for position, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
-        model2px = m2px,
+        model2px,
 
         // Inverted scaling function for position transforming model units to "pixels".
         // Use it for Y coordinates, as Y axis in model coordinate system increases
         // from bottom to top, while but SVG has increases from top to bottom
-        model2pxInv = m2pxInv,
+        model2pxInv,
 
         // Basic scaling function for size, it transforms model units to "pixels".
         // Use it for dimensions of objects rendered inside the view.
-        modelSize2px = mSize2px,
+        modelSize2px,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
-        mainContainer        = containers.mainContainer,
-        radialBondsContainer = containers.radialBondsContainer,
-        VDWLinesContainer    = containers.VDWLinesContainer,
-        imageContainerBelow  = containers.imageContainerBelow,
-        imageContainerTop    = containers.imageContainerTop,
-        textContainerBelow   = containers.textContainerBelow,
-        textContainerTop     = containers.textContainerTop,
+        mainContainer,
+        radialBondsContainer,
+        VDWLinesContainer,
+        imageContainerBelow,
+        imageContainerTop,
+        textContainerBelow,
+        textContainerTop,
 
         dragOrigin,
 
@@ -728,9 +728,10 @@ define(function (require) {
           updateText;
 
       updateText = function (layerNum) {
-        var layer = layers[layerNum - 1];
-
-        layerTextBoxes = textBoxes.filter(function(t) { return t.layer == layerNum; });
+        var layer = layers[layerNum - 1],
+            layerTextBoxes = textBoxes.filter(function (t) {
+              return t.layer === layerNum;
+            });
 
         layer.selectAll("g.textBoxWrapper rect")
           .data(layerTextBoxes.filter( function(d) { return d.frame; } ))
@@ -769,7 +770,7 @@ define(function (require) {
 
         layer.selectAll("g.textBoxWrapper").remove();
 
-        layerTextBoxes = textBoxes.filter(function(t) { return t.layer == layerNum; });
+        layerTextBoxes = textBoxes.filter(function(t) { return t.layer === layerNum; });
 
         selection = layer.selectAll("g.textBoxWrapper")
           .data(layerTextBoxes);
@@ -786,8 +787,8 @@ define(function (require) {
             },
             "width": 0,
             "height": 0,
-            "rx": function(d)  { return d.frame == "rounded rectangle" ? 8  : 0; },
-            "ry": function(d)  { return d.frame == "rounded rectangle" ? 10 : 0; },
+            "rx": function(d)  { return d.frame === "rounded rectangle" ? 8  : 0; },
+            "ry": function(d)  { return d.frame === "rounded rectangle" ? 10 : 0; },
             "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
             "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
           });
@@ -1055,7 +1056,7 @@ define(function (require) {
 
     function setFocus() {
       if (model.get("enableKeyboardHandlers")) {
-        containers.node.focus();
+        modelView.node.focus();
       }
     }
 
@@ -1066,7 +1067,7 @@ define(function (require) {
     }
 
     function moleculeMouseDown(d, i) {
-      containers.node.focus();
+      modelView.node.focus();
       if (model.get("enableAtomTooltips")) {
         if (atomTooltipOn !== false) {
           atomToolTip.style("opacity", 1e-6);
@@ -1084,7 +1085,7 @@ define(function (require) {
     }
 
     function renderAtomTooltip(i) {
-      var pos = containers.pos(),
+      var pos = modelView.pos(),
           left = pos.left + model2px(modelResults[i].x),
           top  = pos.top +  model2pxInv(modelResults[i].y);
 
@@ -1269,7 +1270,7 @@ define(function (require) {
     }
 
     function updateImageAttachment(){
-      var numImages, imglayer, coords, i;
+      var numImages, imglayer, container, coords, i;
       numImages= imageProp.length;
       for(i = 0; i < numImages; i++) {
         if (!imageSizes || !imageSizes[i]) continue;
@@ -1407,7 +1408,7 @@ define(function (require) {
 
       if (b.browser === "Firefox" && b.version >= "18") {
         $firefoxWarningPane = $("#firefox-warning-pane");
-        pos = containers.pos();
+        pos = modelView.pos();
         top  = pos.bottom - $firefoxWarningPane.height();
         left = pos.right - $firefoxWarningPane.width();
         $firefoxWarningPane.css({
@@ -1462,13 +1463,19 @@ define(function (require) {
     // Called when Renderer is created.
     //
     function init() {
-      mainContainer        = containers.mainContainer,
-      radialBondsContainer = containers.radialBondsContainer,
-      VDWLinesContainer    = containers.VDWLinesContainer,
-      imageContainerBelow  = containers.imageContainerBelow,
-      imageContainerTop    = containers.imageContainerTop,
-      textContainerBelow   = containers.textContainerBelow,
-      textContainerTop     = containers.textContainerTop,
+      // Assign shortcuts, as these variables / functions shouldn't
+      // change.
+      mainContainer        = modelView.containers.mainContainer,
+      radialBondsContainer = modelView.containers.radialBondsContainer,
+      VDWLinesContainer    = modelView.containers.VDWLinesContainer,
+      imageContainerBelow  = modelView.containers.imageContainerBelow,
+      imageContainerTop    = modelView.containers.imageContainerTop,
+      textContainerBelow   = modelView.containers.textContainerBelow,
+      textContainerTop     = modelView.containers.textContainerTop,
+
+      model2px = modelView.model2px;
+      model2pxInv = modelView.model2pxInv;
+      modelSize2px = modelView.modelSize2px;
 
       modelResults  = model.get_results();
       modelElements = model.get_elements();
@@ -1497,7 +1504,6 @@ define(function (require) {
       model.on('textBoxesChanged', drawTextBoxes);
 
       setupFirefoxWarning();
-
     }
 
     //
@@ -1505,12 +1511,8 @@ define(function (require) {
     //
     // Call when model is reset or reloaded.
     //
-    function reset(mod, cont, m2px, m2pxInv, mSize2px) {
-      model = mod;
-      containers = cont;
-      model2px = m2px;
-      model2pxInv = m2pxInv;
-      modelSize2px = mSize2px;
+    function reset(newModel) {
+      model = newModel;
       init();
     }
 
@@ -1604,18 +1606,7 @@ define(function (require) {
       // Expose private methods.
       update: update,
       repaint: repaint,
-      reset: reset,
-      model2px: function(val) {
-        // Note that we shouldn't just do:
-        // api.nm2px = nm2px;
-        // as nm2px local variable can be reinitialized
-        // many times due container rescaling process.
-        return model2px(val);
-      },
-      model2pxInv: function(val) {
-        // See comments for nm2px.
-        return model2pxInv(val);
-      }
+      reset: reset
     };
 
     // Initialization.
