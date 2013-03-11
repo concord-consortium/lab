@@ -429,15 +429,9 @@ define(function (require) {
     // *** Main Renderer functions ***
     //
 
-    //
-    // init
-    //
-    // Called when Model View Container is created.
-    //
     function init() {
-      // render model container ... the chrome around the model
-      renderContainer();
-      setupPlaybackControls();
+      // Setup model view state.
+      clickHandler = {};
 
       // dynamically add modelUrl as a model property so the renderer
       // can find resources on paths relative to the model
@@ -450,6 +444,7 @@ define(function (require) {
         renderer.reset(model);
       }
 
+      // Register listeners.
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits"],
@@ -479,8 +474,8 @@ define(function (require) {
       scale: scale,
       setFocus: setFocus,
       resize: function() {
-        processOptions();
-        init();
+        renderContainer();
+        setupPlaybackControls();
         repaint();
       },
       getHeightForWidth: function (width) {
@@ -500,6 +495,8 @@ define(function (require) {
       },
       reset: function(newModelUrl, newModel) {
         processOptions(newModelUrl, newModel);
+        renderContainer();
+        setupPlaybackControls();
         init();
         repaint();
       },
@@ -541,6 +538,8 @@ define(function (require) {
     node = $el[0];
 
     processOptions();
+    renderContainer();
+    setupPlaybackControls();
     init();
 
     // Extend Public withExport initialized object to initialized objects
