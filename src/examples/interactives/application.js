@@ -31,6 +31,7 @@ AUTHORING = false;
 
       $updateInteractiveButton = $("#update-interactive-button"),
       $saveInteractiveButton = $("#save-interactive-button"),
+      $saveAsInteractiveButton = $("#save-as-interactive-button"),
       $saveModelButton = $("#save-model-button"),
       $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
@@ -575,13 +576,14 @@ AUTHORING = false;
     return iframePhone;
   }
 
-  function remoteSaveInteractive(interactiveTitle, interactiveState){
+  function remoteSaveInteractive(interactiveState, copyInteractive){
     var httpMethod = 'POST',
         url = '/interactives',
         newInteractiveState,
         interactiveJSON;
 
-    if(!interactiveRemote.from_import) {
+    if(!copyInteractive) {
+      // updating an interactive
       httpMethod = 'PUT';
       url = '/interactives/' + interactiveRemote.id;
     }
@@ -589,9 +591,6 @@ AUTHORING = false;
     // merge the, possibly updated, interactive with the interactive last
     // loaded from the webapp.
     newInteractiveState = jQuery.extend(true, interactiveRemote, interactiveState);
-    newInteractiveState['title'] = interactiveTitle;
-    // get the group from the current interactive
-    newInteractiveState['groupKey'] = interactiveRemote.groupKey;
     newInteractiveState.from_import = false;
     interactiveJSON = {'interactive': newInteractiveState};
 
@@ -685,48 +684,48 @@ AUTHORING = false;
   }
 
   function setupCopySaveInteractive() {
-    $saveInteractiveButton.show();
-    setupSelectGroups();
+    $saveAsInteractiveButton.show();
 
-    if (interactiveRemote.from_import) {
-      // Copying an imported interactive
-      $saveInteractiveButton.text("Save As ...");
-      $(".save-interactive-form").dialog({
-        autoOpen: false,
-        modal: true,
-        width: 'auto',
-        buttons: {
-          "Save": function() {
-            var interactiveTitle = $(".save-interactive-title").val();
-            var interactiveGroup = $("#select-interactive-groups").val();
-            $(this).dialog("close");
-            interactiveState = JSON.parse(editor.getValue());
-            interactiveState.groupKey = interactiveGroup;
-
-            remoteSaveInteractive(interactiveTitle, interactiveState);
-            editor.setValue(JSON.stringify(interactiveState, null, indent));
-          },
-          "Cancel": function() {
-            $(this).dialog("close");
-          }
-        }
-      });
-
-    }else {
-      // Saving an Interactive
-      $saveInteractiveButton.text("Save");
+    if (!interactiveRemote.from_import) {
+      $saveInteractiveButton.show();
     }
 
-    $saveInteractiveButton.on('click', function() {
-      if (interactiveRemote.from_import) {
-        // Prompt for the name of Interactive that will be a
-        // copy of the exisiting imported interactive
-        $('.save-interactive-form').dialog("open");
-      } else {
-        interactiveState = JSON.parse(editor.getValue());
-        remoteSaveInteractive(interactive['title'], interactiveState);
-        editor.setValue(JSON.stringify(interactiveState, null, indent));
+    // setup the Save As dialog to make a copy of an interactive
+    setupSelectGroups();
+    $(".save-interactive-form").dialog({
+      autoOpen: false,
+      modal: true,
+      width: 'auto',
+      buttons: {
+        "Save": function() {
+          // from the dialog
+          var interactiveTitle = $(".save-interactive-title").val();
+          var interactiveGroup = $("#select-interactive-groups").val();
+          $(this).dialog("close");
+          interactiveState = JSON.parse(editor.getValue());
+          interactiveState.title = interactiveTitle;
+          interactiveState.groupKey = interactiveGroup;
+
+          // make a copy of this interactive
+          remoteSaveInteractive(interactiveState, true);
+          editor.setValue(JSON.stringify(interactiveState, null, indent));
+        },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
       }
+    });
+
+    $saveAsInteractiveButton.on('click', function() {
+        $('.save-interactive-form').dialog("open");
+    });
+
+    $saveInteractiveButton.on('click', function() {      
+      interactiveState = JSON.parse(editor.getValue());
+      interactiveState.title = interactive.title;
+      // update this interactive, false = don't copy this interactive.
+      remoteSaveInteractive(interactiveState, false);
+      editor.setValue(JSON.stringify(interactiveState, null, indent));
     });
 
     // Error dialog for creating/updating interactives
