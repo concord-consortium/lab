@@ -10,7 +10,6 @@ VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xa
 MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs node_modules/.bin/mocha --reporter dot
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src
-BROWSERIFY = ./node_modules/.bin/browserify
 R_OPTIMIZER = ./node_modules/.bin/r.js
 GENERATE_INTERACTIVE_INDEX = ruby src/helpers/examples/interactives/process-interactives.rb
 
@@ -148,7 +147,6 @@ node_modules: node_modules/coffee-script \
 	node_modules/node-inspector \
 	node_modules/d3 \
 	node_modules/science \
-	node_modules/browserify \
 	node_modules/cheerio \
 	node_modules/jade \
 	node_modules/mkdirp \
@@ -193,9 +191,6 @@ node_modules/d3:
 
 node_modules/science:
 	npm install src/vendor/science.js
-
-node_modules/browserify:
-	npm install
 
 node_modules/cheerio:
 	npm install
