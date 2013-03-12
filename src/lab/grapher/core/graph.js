@@ -315,25 +315,6 @@ define(function (require) {
       return pnts;
     }
 
-    function keydown() {
-      if (!selected) return;
-      switch (d3.event.keyCode) {
-        case 8:   // backspace
-        case 46:  // delete
-        if (options.dataChange) {
-          var i = points.indexOf(selected);
-          points.splice(i, 1);
-          selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
-          update();
-        }
-        if (d3.event && d3.event.keyCode) {
-          d3.event.preventDefault();
-          d3.event.stopPropagation();
-        }
-        break;
-      }
-    }
-
     //
     // Initialize
     //
@@ -605,6 +586,25 @@ define(function (require) {
           notification.text(mesg);
         } else {
           notification.text('');
+        }
+      }
+
+      function keydown() {
+        if (!selected) return;
+        switch (d3.event.keyCode) {
+          case 8:   // backspace
+          case 46:  // delete
+          if (options.dataChange) {
+            var i = points.indexOf(selected);
+            points.splice(i, 1);
+            selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
+            update();
+          }
+          if (d3.event && d3.event.keyCode) {
+            d3.event.preventDefault();
+            d3.event.stopPropagation();
+          }
+          break;
         }
       }
 
