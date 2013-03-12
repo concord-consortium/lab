@@ -47,7 +47,7 @@
     'cs' :'../vendor/require-cs/cs',
     'coffee-script': '../vendor/coffee-script/extras/coffee-script',
     'underscore': '../vendor/underscore/underscore',
-    'backbone': '../vendor/backbone/backbone',
+    'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache'
   },
 

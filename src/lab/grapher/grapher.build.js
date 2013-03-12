@@ -34,7 +34,7 @@
   // Additional modules.
   paths: {
     'underscore': '../vendor/underscore/underscore',
-    'backbone': '../vendor/backbone/backbone'
+    'backbone': '../../node_modules/backbone/backbone'
   },
 
   // Protect global namespace and call export of API.
