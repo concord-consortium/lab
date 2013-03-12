@@ -116,7 +116,9 @@ clean:
 	-$(MAKE) submodule-update || $(MAKE) submodule-update-tags
 	rm -f src/vendor/jquery/dist/jquery*.js
 	rm -f src/vendor/jquery-ui/dist/jquery-ui*.js
-	rm -f src/vendor/d3/d3*.js
+
+src/vendor/d3:
+	submodule-update
 
 .PHONY: submodule-update
 submodule-update:
@@ -130,9 +132,6 @@ submodule-update-tags:
 
 clean-jnlp:
 	rm -rf server/public/jnlp
-
-src/vendor/d3/d3.js:
-	cd src/vendor/d3; unset NODE_PATH; npm install; make clean; make
 
 node_modules: node_modules/d3 \
 	node_modules/arrays
@@ -257,7 +256,7 @@ server/public/vendor/dsp.js:
 	cp src/vendor/dsp.js/LICENSE server/public/vendor/dsp.js/LICENSE
 	cp src/vendor/dsp.js/README server/public/vendor/dsp.js/README
 
-server/public/vendor/d3: src/vendor/d3/d3.js
+server/public/vendor/d3: src/vendor/d3
 	mkdir -p server/public/vendor/d3
 	cp src/vendor/d3/d3*.js server/public/vendor/d3
 	cp src/vendor/d3/LICENSE server/public/vendor/d3/LICENSE
