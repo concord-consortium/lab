@@ -1,4 +1,4 @@
-/*global define, $ */
+/*global Lab, define, $ */
 
 define(function (require) {
 
@@ -7,7 +7,8 @@ define(function (require) {
       InteractiveComponent = require('common/controllers/interactive-component'),
 
       externalUrl  = /^https?:\/\//i,
-      resourcesUrl = /^\/resources\//i;
+      // any url starting with "{resources}/..." will be directed to public/resources
+      resourcesUrl = /^{resources}\//i;
 
   /**
    * Image controller.
@@ -19,6 +20,8 @@ define(function (require) {
    * @param {InteractiveController} controller
    */
   function ImageController(component, scriptingAPI, controller) {
+    var root = typeof Lab !== "undefined" ? Lab.config.actualRoot : "";
+
     // Call super constructor.
     InteractiveComponent.call(this, "image", component);
 
@@ -27,11 +30,14 @@ define(function (require) {
     /** @private */
     this._$img = $("<img>");
     /** @private */
-    this._externalUrl = externalUrl.test(this.component.src) || resourcesUrl.test(this.component.src);
+    this._externalUrl = externalUrl.test(this.component.src);
+    this._resourcesUrl = resourcesUrl.test(this.component.src);
 
     if (this._externalUrl) {
       // If URL is external, we can setup it just once.
       this._$img.attr("src", this.component.src);
+    } else if (this._resourcesUrl) {
+      this._$img.attr("src", this.component.src.replace(resourcesUrl, root + "/resources/"));
     }
 
     // When a dimension is different from "auto",

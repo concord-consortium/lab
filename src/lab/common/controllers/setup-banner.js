@@ -107,7 +107,7 @@ define(function () {
       "type": "image",
       "id": "credits-link",
       "height": "2.5em",
-      "src": "/resources/layout/cc-logo.png",
+      "src": "{resources}/layout/cc-logo.png",
       "onClick": function () { creditsDialog.open(); }
     },
     {
