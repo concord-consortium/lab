@@ -134,72 +134,12 @@ clean-jnlp:
 src/vendor/d3/d3.js:
 	cd src/vendor/d3; unset NODE_PATH; npm install; make clean; make
 
-node_modules: node_modules/coffee-script \
-	node_modules/jsdom \
-	node_modules/sizzle \
-	node_modules/backbone \
-	node_modules/underscore \
-	node_modules/uglify-js	\
-	node_modules/vows \
-	node_modules/mocha \
-	node_modules/should \
-	node_modules/sinon \
-	node_modules/node-inspector \
-	node_modules/d3 \
-	node_modules/science \
-	node_modules/cheerio \
-	node_modules/jade \
-	node_modules/mkdirp \
+node_modules: node_modules/d3 \
 	node_modules/arrays
-	npm install
-
-node_modules/coffee-script:
-	npm install
-
-node_modules/jsdom:
-	npm install
-
-node_modules/sizzle:
-	npm install
-
-node_modules/backbone:
-	npm install
-
-node_modules/underscore:
-	npm install
-
-node_modules/uglify-js:
-	npm install
-
-node_modules/vows:
-	npm install
-
-node_modules/mocha:
-	npm install
-
-node_modules/should:
-	npm install
-
-node_modules/sinon:
-	npm install
-
-node_modules/node-inspector:
 	npm install
 
 node_modules/d3:
 	npm install src/vendor/d3
-
-node_modules/science:
-	npm install src/vendor/science.js
-
-node_modules/cheerio:
-	npm install
-
-node_modules/jade:
-	npm install
-
-node_modules/mkdirp:
-	npm install
 
 node_modules/arrays:
 	npm install src/modules/arrays
