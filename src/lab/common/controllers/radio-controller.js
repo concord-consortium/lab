@@ -86,6 +86,13 @@ define(function () {
       // Add class defining component orientation - "horizontal" or "vertical".
       $div.addClass(component.orientation);
 
+      if (component.label) {
+        $label = $("<span>").text(component.label);
+        $label.addClass("label");
+        $label.addClass(component.labelOn === "top" ? "on-top" : "on-left");
+        $div.append($label);
+      }
+
       // Create options (<input type="radio">)
       for (i = 0, len = options.length; i < len; i++) {
         option = options[i];
@@ -111,6 +118,7 @@ define(function () {
           $fakeCheckable.addClass("checked");
         }
         $span = $('<span>')
+          .addClass('option')
           .append($option)
           .append($fakeCheckable)
           .append($label);

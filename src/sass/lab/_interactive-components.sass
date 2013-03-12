@@ -70,17 +70,25 @@ button.component
   font-size: 1em
   &.horizontal
     // Horizontal alignment of options.
-    span + span
-      // Add margin only *between* spans (span + span).
+    .option + .option
+      // Add margin only *between* option.
       margin-left: 1em
   &.vertical
     // Vertical alignment of options.
-    span
+    .option
       display: block
+  .label
+    // Main label, for whole radio buttons group.
+    vertical-align: middle
+    &.on-left
+      margin-right: 0.5em
+    &.on-top
+      display: block
+  label
+    // Labels for options.
+    vertical-align: middle
   input[type="radio"]
     display: none
-  label
-    vertical-align: middle
   .fakeCheckable
     // Custom div used for radio styling.
     display: inline-block
@@ -99,10 +107,10 @@ button.component
     // Align vertically select box and label.
     vertical-align: middle
   .label
-    font-size: 1.1em
     &.on-left
-      margin-right: 0.4em
+      margin-right: 0.5em
     &.on-top
+      margin-bottom: 0.1em
       display: block
 
 .interactive-checkbox

@@ -356,6 +356,13 @@ define(function() {
       orientation: {
         defaultValue: "vertical"
       },
+      label: {
+        defaultValue: ""
+      },
+      labelOn: {
+        // Other option is "left".
+        defaultValue: "top"
+      },
       options: {
         defaultValue: []
       },
