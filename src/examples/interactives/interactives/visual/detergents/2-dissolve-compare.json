@@ -21,14 +21,9 @@
   ],
   "components": [
     {
-      "type": "text",
-      "id": "models-label",
-      "style": "header",
-      "text": "Select "
-    },
-    {
       "type": "pulldown",
       "id": "model-pulldown",
+      "label": "Select",
       "options": [
         {
           "text": "Polar/polar",
@@ -49,7 +44,6 @@
   ],
   "layout": {
     "bottom": [
-      "models-label",
       "model-pulldown",
       "remove-barrier"
     ]
