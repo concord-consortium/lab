@@ -24,6 +24,7 @@
       "type": "pulldown",
       "id": "model-pulldown",
       "label": "Select",
+      "labelOn": "left",
       "options": [
         {
           "text": "Polar/polar",
