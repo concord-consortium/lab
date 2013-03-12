@@ -69,6 +69,8 @@
       "type": "pulldown",
       "id": "length-pulldown",
       "property": "startingLength",
+      "label": "Starting Length",
+      "labelOn": "top",
       "options": [
         {
           "text": "Starting Length ...",
@@ -105,6 +107,8 @@
       "id": "angle-buttons",
       "orientation": "horizontal",
       "property": "startingAngle",
+      "label": "Starting Angle",
+      "labelOn": "top",
       "options": [
         {
           "text": "45",
