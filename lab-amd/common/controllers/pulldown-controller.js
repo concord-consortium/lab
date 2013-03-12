@@ -1,4 +1,22 @@
-/*global define $ model*/
+/*global require, define, $, model */
+
+$.fn.measure = function(fn, selector, parent) {
+  var el, selection, result;
+  el = $(this).clone(false);
+  el.css({
+    visibility: 'hidden',
+    position: 'absolute'
+  });
+  el.appendTo(parent);
+  if (selector) {
+    selection = el.find(selector);
+  } else {
+    selection = el;
+  }
+  result = fn.apply(selection);
+  el.remove();
+  return result;
+};
 
 define(function () {
 
@@ -9,7 +27,7 @@ define(function () {
         // Public API.
     var controller,
         // DOM elements.
-        $pulldown, $option,
+        $wrapper, $pulldown, $option,
         // Options definitions from component JSON definition.
         options,
         // List of jQuery objects wrapping <select> elements.
@@ -27,7 +45,9 @@ define(function () {
     }
 
     function initialize() {
-      var i, len, option;
+      var parent = interactivesController.interactiveContainer,
+          $label, ulWidth, arrowWidth, boxWidth,
+          i, len, option;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.pulldown, component);
@@ -37,9 +57,7 @@ define(function () {
         options[i] = validator.validateCompleteness(metadata.pulldownOption, options[i]);
       }
 
-      $pulldown = $('<select>').attr('id', component.id);
-      // Each interactive component has to have class "component".
-      $pulldown.addClass("component");
+      $pulldown = $('<select>');
 
       for (i = 0, len = options.length; i < len; i++) {
         option = options[i];
@@ -70,6 +88,56 @@ define(function () {
           model.set(component.property, options[index].value);
         }
       });
+
+      $wrapper = $('<div>')
+        .attr('id', component.id)
+        .addClass("interactive-pulldown")
+        .addClass("component");
+
+      if (component.label) {
+        $label = $("<span>").text(component.label);
+        $label.addClass("label");
+        $label.addClass(component.labelOn === "top" ? "on-top" : "on-left");
+        $wrapper.append($label);
+      }
+
+      // Add $pulldown to a wrapping div. This way $pulldown.selectBoxIt() will create
+      // a selectBox element which will also be in the span, and then we can return
+      // this element to be embedded in the interactive
+      $wrapper.append($pulldown);
+
+      $pulldown.selectBoxIt();
+
+      $wrapper.find(".selectboxit").css("width", "auto");
+      $wrapper.find(".selectboxit-text").css("max-width", "none");
+
+      // SelectBoxIt assumes that all select boxes are always going to have a width
+      // set in CSS (default 220px). This doesn't work for us, as we don't know how
+      // wide the content is going to be. Instead we have to measure the needed width
+      // of the internal ul list, and use that to define the width of the select box.
+      //
+      // This issue has been raised in SelectBoxIt:
+      // https://github.com/gfranko/jquery.selectBoxIt.js/issues/129
+      //
+      // However, this is still problematic because we haven't added the element to
+      // the page yet. This $().measure function allows us to embed the element hidden
+      // on the page first to allow us to check the required width.
+      ulWidth    = $wrapper.measure(function(){ return this.width(); }, "ul", parent );
+      arrowWidth = $wrapper.measure(function(){ return this.width(); }, ".selectboxit-arrow-container", parent );
+
+      // ems for a given pixel size
+      function pxToEm(input) {
+        var emSize = parseFloat(parent.css("font-size"));
+        return (input / emSize);
+      }
+
+      boxWidth = (pxToEm(ulWidth+arrowWidth)+0.3)+"em";
+
+      $wrapper.find(".selectboxit").css("width", boxWidth);
+      $wrapper.find(".selectboxit-text").css("max-width", pxToEm(ulWidth)+"em");
+
+      // set hidden select box dimensions too, for mobile devices
+      $wrapper.find(".selectboxit-container select").css({width: boxWidth, height: "100%"});
     }
 
     // Public API.
@@ -86,7 +154,7 @@ define(function () {
 
       // Returns view container.
       getViewContainer: function () {
-        return $pulldown;
+        return $wrapper;
       },
 
       // Returns serialized component definition.

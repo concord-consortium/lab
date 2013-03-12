@@ -15,6 +15,9 @@ define(function(require) {
       aminoacids           = require('md2d/models/aminoacids-props'),
       aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
       units                = require('md2d/models/engine/constants/units'),
+      PropertyDescription  = require('md2d/models/property-description'),
+      unitDefinitions      = require('md2d/models/unit-definitions/index'),
+      UnitsTranslation     = require('md2d/models/units-translation'),
       _ = require('underscore');
 
   return function Model(initialProperties) {
@@ -23,7 +26,7 @@ define(function(require) {
     this.constructor.type = "md2d";
 
     var model = {},
-        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
+        dispatch = d3.dispatch("tick", "play", "stop", "reset", "willReset", "stepForward", "stepBack",
                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
                                "removeAngularBond", "invalidation", "textBoxesChanged"),
         VDWLinesCutoffMap = {
@@ -91,6 +94,9 @@ define(function(require) {
 
         // If this is true, output properties will not be recalculated on changes
         supressInvalidatingChangeHooks = false,
+
+        // Invalidating change hooks might between others
+        invalidatingChangeHookNestingLevel = 0,
 
         properties = {
           /**
@@ -240,8 +246,23 @@ define(function(require) {
         // are stored in outputsByName object, as filtered output is just extension of normal output.
         filteredOutputsByName = {},
 
+        // Whewther to suppress caching of output properties. Should only be needed between
+        // invalidatingChangePreHook and invalidatingChangePostHook
+        suppressOutputPropertyCaching = false,
+
         // The currently-defined parameters.
-        parametersByName = {};
+        parametersByName = {},
+
+        // Unit types for all the properties that can be accessed using model.set/model.get
+        mainPropertyUnitTypes,
+
+        // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
+        // model; default value is 'md2d')
+        unitsDefinition,
+
+        // Object that translates between 'native' md2d units and the units defined
+        // by unitsDefinition.
+        unitsTranslation;
 
     function notifyPropertyListeners(listeners) {
       listeners = _.uniq(listeners);
@@ -276,6 +297,8 @@ define(function(require) {
     /**
       Restores a set of "input" properties, notifying their listeners of only those properties which
       changed, and only after the whole set of properties has been updated.
+
+      Expects a hash "raw", untranslated values as returned by getRawPropertyValue
     */
     function restoreProperties(savedProperties) {
       var property,
@@ -313,7 +336,7 @@ define(function(require) {
 
       for (parameterName in savedParameters) {
         if (savedParameters.hasOwnProperty(parameterName)) {
-          // restore the property value if it was different or not defined in the current time step
+          // restore the property value if it was dispfferent or not defined in the current time step
           if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
             properties[parameterName] = savedParameters[parameterName];
             parametersByName[parameterName].isDefined = true;
@@ -340,7 +363,7 @@ define(function(require) {
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
-      var timeStep = model.get('timeStep'),
+      var timeStep = getRawPropertyValue('timeStep'),   // Definitely need *untranslated* value!
           // Save number of radial bonds in engine before integration,
           // as integration can create new disulfide bonds. This is the
           // only type of objects which can be created by the engine autmatically.
@@ -392,6 +415,7 @@ define(function(require) {
       return (ave ? 1/ave*1000: 0);
     }
 
+    /* This setter for internal use uses "raw", untranslated property values only. */
     function set_properties(hash) {
       var property, propsChanged = [];
       for (property in hash) {
@@ -412,6 +436,42 @@ define(function(require) {
         }
       }
       notifyPropertyListenersOfEvents(propsChanged);
+    }
+
+    // Returns the "raw" (untranslated) version of property 'name'. Used to provide privileged
+    // access to internal representation of properties to, e.g., TickHistory.
+    function getRawPropertyValue(name) {
+      return properties[name];
+    }
+
+    // Returns a copy of 'obj' with value replaced by fn(key, value) for every (key, value) pair.
+    // (Underscore doesn't do this: https://github.com/documentcloud/underscore/issues/220)
+    function mapValues(obj, fn) {
+      obj = _.extend({}, obj);
+      for (var k in obj) {
+        if (obj.hasOwnProperty(k)) obj[k] = fn(k, obj[k]);
+      }
+      return obj;
+    }
+
+    // Modifies a properties hash which has translated units to have MD2D units. Leaves properties
+    // without a unitType (or with an unrecognized unitType) unmodified.
+    // Returns 'properties' unmodified (not a copy) if there is no units translation in effect.
+    function translateToMD2DUnits(properties, metadata) {
+      if (!unitsTranslation) return properties;
+      return mapValues(properties, function(key, value) {
+        return unitsTranslation.translateToMD2DUnits(value, metadata[key] && metadata[key].unitType);
+      });
+    }
+
+    // Modifies a properties hash which has MD2D units to have translated units. Leaves properties
+    // without a unitType (or with an unrecognized unitType) unmodified.
+    // Returns 'properties' unmodified (not a copy) if there is no units translation in effect.
+    function translateFromMD2DUnits(properties, metadata) {
+      if (!unitsTranslation) return properties;
+      return mapValues(properties, function(key, value) {
+        return unitsTranslation.translateFromMD2DUnits(value, metadata[key] && metadata[key].unitType);
+      });
     }
 
     /**
@@ -459,6 +519,12 @@ define(function(require) {
       }
     }
 
+    // FIXME
+    //
+    // Instead of requiring balanced calls to "PreHooks" and "PostHooks", we should instead accept a
+    // callback containing actions to perform in between the pre and post actions. That would be a
+    // better way of ensuring that pre and post hooks are always balanced.
+
     /**
       ALWAYS CALL THIS FUNCTION before any change to model state outside a model step
       (i.e., outside a tick, seek, stepForward, stepBack)
@@ -468,8 +534,11 @@ define(function(require) {
     */
     function invalidatingChangePreHook() {
       if (supressInvalidatingChangeHooks) return;
+      invalidatingChangeHookNestingLevel++;
 
       storeOutputPropertiesBeforeChange();
+      deleteOutputPropertyCachedValues();
+      suppressOutputPropertyCaching = true;
     }
 
     /**
@@ -477,10 +546,23 @@ define(function(require) {
     */
     function invalidatingChangePostHook() {
       if (supressInvalidatingChangeHooks) return;
+      invalidatingChangeHookNestingLevel--;
 
+      if (invalidatingChangeHookNestingLevel === 0) {
+        suppressOutputPropertyCaching = false;
+      }
       updateOutputPropertiesAfterChange();
       if (tickHistory) tickHistory.invalidateFollowingState();
       dispatch.invalidation();
+    }
+
+    function deleteOutputPropertyCachedValues() {
+      var i, output;
+
+      for (i = 0; i < outputNames.length; i++) {
+        output = outputsByName[outputNames[i]];
+        output.hasCachedValue = false;
+      }
     }
 
     /**
@@ -519,13 +601,6 @@ define(function(require) {
 
       readModelState();
 
-      // Mark _all_ cached values invalid ... we're not going to be checking the values of the
-      // unobserved properties, so we have to assume their value changed.
-      for (i = 0; i < outputNames.length; i++) {
-        output = outputsByName[outputNames[i]];
-        output.hasCachedValue = false;
-      }
-
       // Update all filtered outputs.
       // Note that this have to be performed after invalidation of all outputs
       // (as filtered output can filter another output).
@@ -540,9 +615,11 @@ define(function(require) {
         output = outputsByName[outputName];
 
         if ((l = listeners[outputName]) && l.length > 0) {
-          // Though we invalidated all cached values above, nevertheless some outputs may have been
-          // computed & cached during a previous pass through this loop, as a side effect of the
-          // calculation of some other property. Therefore we can respect hasCachedValue here.
+          // Though we invalidated all cached values in the invalidatingChangePreHook, and
+          // suppressed caching until the invalidatingChangePostHook, nevertheless some outputs may
+          // have been computed & cached during a previous pass through this loop, as a side effect
+          // of the calculation of some other property. Therefore we can respect hasCachedValue
+          // here.
           if (!output.hasCachedValue) {
             output.cachedValue = output.calculate();
             output.hasCachedValue = true;
@@ -793,12 +870,25 @@ define(function(require) {
     };
 
     /**
+      Initialize minX, minYm, maxX, maxY from width and height
+      MD2D assumes that minX and minY = 0
+    */
+    model.initializeDimensions = function () {
+      model.set({
+        minX: 0,
+        maxX: model.get('width'),
+        minY: 0,
+        maxY: model.get('height')
+      });
+    };
+
+    /**
       Creates a new md2d engine and leaves it in 'engine'.
     */
     model.initializeEngine = function () {
       engine = md2d.createEngine();
 
-      engine.setSize([model.get('width'), model.get('height')]);
+      engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
       engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
       engine.useCoulombInteraction(model.get('coulombForces'));
       engine.useThermostat(model.get('temperatureControl'));
@@ -878,6 +968,7 @@ define(function(require) {
       left in whatever grid the engine's initialization leaves them in.
     */
     model.createNewAtoms = function(config) {
+      model.initializeDimensions();
       model.initializeEngine();
       model.createElements(editableElements);
       model.createAtoms(config);
@@ -901,6 +992,8 @@ define(function(require) {
             supressCheck: true
           },
           i, num, prop, atomProps;
+
+      dispatch.willReset();
 
       // Start batch process
       model.startBatch();
@@ -1052,8 +1145,11 @@ define(function(require) {
     };
 
     model.reset = function() {
+      dispatch.willReset();
+      invalidatingChangePreHook();
       model.resetTime();
       tickHistory.restoreInitialState();
+      invalidatingChangePostHook();
       dispatch.reset();
     };
 
@@ -1080,7 +1176,10 @@ define(function(require) {
       if (el == null) el = randomElement();
       if (charge == null) charge = 0;
 
-      var size   = model.size(),
+      var width = model.get('width'),
+          height = model.get('height'),
+          minX = model.get('minX'),
+          minY = model.get('minY'),
           radius = engine.getRadiusOfElement(el),
           x,
           y,
@@ -1090,8 +1189,8 @@ define(function(require) {
           maxTries = 10;
 
       do {
-        x = Math.random() * size[0] - 2*radius;
-        y = Math.random() * size[1] - 2*radius;
+        x = minX + Math.random() * width - 2*radius;
+        y = minY + Math.random() * height - 2*radius;
 
         // findMinimimuPELocation will return false if minimization doesn't converge, in which case
         // try again from a different x, y
@@ -1117,7 +1216,10 @@ define(function(require) {
       silent = true disables this check.
     */
     model.addAtom = function(props, options) {
-      var size = model.size(),
+      var minX = model.get('minX'),
+          minY = model.get('minY'),
+          maxX = model.get('maxX'),
+          maxY = model.get('maxY'),
           radius;
 
       options = options || {};
@@ -1127,10 +1229,10 @@ define(function(require) {
 
       // As a convenience to script authors, bump the atom within bounds
       radius = engine.getRadiusOfElement(props.element);
-      if (props.x < radius) props.x = radius;
-      if (props.x > size[0] - radius) props.x = size[0] - radius;
-      if (props.y < radius) props.y = radius;
-      if (props.y > size[1] - radius) props.y = size[1] - radius;
+      if (props.x < (minX + radius)) props.x = minX + radius;
+      if (props.x > (maxX - radius)) props.x = maxX - radius;
+      if (props.y < (minY + radius)) props.y = minY + radius;
+      if (props.y > (maxY - radius)) props.y = maxY - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
       if (!options.supressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
@@ -1359,7 +1461,7 @@ define(function(require) {
       }
 
       invalidatingChangePreHook();
-      engine.setAtomProperties(i, props);
+      engine.setAtomProperties(i, translateToMD2DUnits(props, metadata.atom));
       invalidatingChangePostHook();
       return true;
     };
@@ -1373,7 +1475,19 @@ define(function(require) {
           props[propName] = atoms[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, atomMetaData);
+    };
+
+    model.getRadialBondsForAtom = function(i) {
+      return engine.getRadialBondsForAtom(i);
+    };
+
+    model.getAngularBondsForAtom = function(i) {
+      return engine.getAngularBondsForAtom(i);
+    };
+
+    model.getMoleculeAtoms = function(i) {
+      return engine.getMoleculeAtoms(i);
     };
 
     model.setElementProperties = function(i, props) {
@@ -1383,7 +1497,7 @@ define(function(require) {
         throw new Error("Elements: elements with ID " + i + " cannot be edited, as they define amino acids.");
       }
       invalidatingChangePreHook();
-      engine.setElementProperties(i, props);
+      engine.setElementProperties(i, translateToMD2DUnits(props, metadata.element));
       invalidatingChangePostHook();
     };
 
@@ -1396,14 +1510,14 @@ define(function(require) {
           props[propName] = elements[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, elementMetaData);
     };
 
     model.setObstacleProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.obstacle, props);
       invalidatingChangePreHook();
-      engine.setObstacleProperties(i, props);
+      engine.setObstacleProperties(i, translateToMD2DUnits(props, metadata.obstacle));
       invalidatingChangePostHook();
     };
 
@@ -1416,14 +1530,14 @@ define(function(require) {
           props[propName] = obstacles[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, obstacleMetaData);
     };
 
     model.setRadialBondProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.radialBond, props);
       invalidatingChangePreHook();
-      engine.setRadialBondProperties(i, props);
+      engine.setRadialBondProperties(i, translateToMD2DUnits(props, metadata.radialBond));
       invalidatingChangePostHook();
     };
 
@@ -1436,14 +1550,14 @@ define(function(require) {
           props[propName] = radialBonds[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, radialBondMetaData);
     };
 
     model.setRestraintProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.restraint, props);
       invalidatingChangePreHook();
-      engine.setRestraintProperties(i, props);
+      engine.setRestraintProperties(i, translateToMD2DUnits(props, metadata.restraint));
       invalidatingChangePostHook();
     };
 
@@ -1456,14 +1570,14 @@ define(function(require) {
           props[propName] = restraints[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, restraintMetaData);
     };
 
     model.setAngularBondProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.angularBond, props);
       invalidatingChangePreHook();
-      engine.setAngularBondProperties(i, props);
+      engine.setAngularBondProperties(i, translateToMD2DUnits(props, metadata.angularBond));
       invalidatingChangePostHook();
     };
 
@@ -1476,7 +1590,7 @@ define(function(require) {
           props[propName] = angularBonds[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, angularBondMetaData);
     };
 
     model.setSolvent = function (solventName) {
@@ -1501,6 +1615,10 @@ define(function(require) {
     */
     model.addSpringForce = function(atomIndex, x, y, springConstant) {
       if (springConstant == null) springConstant = 500;
+
+      if (unitsTranslation) {
+        springConstant = unitsTranslation.translateToMD2DUnits(springConstant, 'stiffness');
+      }
       return engine.addSpringForce(atomIndex, x, y, springConstant);
     };
 
@@ -1619,6 +1737,8 @@ define(function(require) {
       return radialBondResults;
     };
 
+    // FIXME. Should be deprecated or just outright removed and replaced by an output property
+    // 'numberOfAtoms'.
     model.get_num_atoms = function(f) {
       return engine.getNumberOfAtoms(f);
     };
@@ -1627,18 +1747,22 @@ define(function(require) {
       return obstacles;
     };
 
+    // FIXME. Should be an output property.
     model.getNumberOfElements = function () {
       return engine.getNumberOfElements();
     };
 
+    // FIXME. Should be an output property.
     model.getNumberOfObstacles = function () {
       return engine.getNumberOfObstacles();
     };
 
+    // FIXME. Should be an output property.
     model.getNumberOfRadialBonds = function () {
       return engine.getNumberOfRadialBonds();
     };
 
+    // FIXME. Should be an output property.
     model.getNumberOfAngularBonds = function () {
       return engine.getNumberOfAngularBonds();
     };
@@ -1873,21 +1997,23 @@ define(function(require) {
     };
 
     model.ave_ke = function() {
+      // NB this old/low-level method doesn't get units translation applied.
+      // (Use model.get('kineticEnergy') / model.get('numAtoms')
       return modelOutputState.KE / model.get_num_atoms();
     };
 
     model.ave_pe = function() {
+      // NB this old/low-level method doesn't get units translation applied.
       return modelOutputState.PE / model.get_num_atoms();
     };
 
     model.speed = function() {
+      // NB this old/low-level method doesn't get units translation applied.
       return average_speed();
     };
 
-    model.size = function(x) {
-      if (!arguments.length) return engine.getSize();
-      engine.setSize(x);
-      return model;
+    model.dimensions = function() {
+      return engine.getDimensions();
     };
 
     model.set = function(key, val) {
@@ -1907,21 +2033,44 @@ define(function(require) {
       validator.validate(metadata.viewOptions, hash);
 
       if (engine) invalidatingChangePreHook();
-      set_properties(hash);
+      set_properties(translateToMD2DUnits(hash, mainPropertyUnitTypes));
       if (engine) invalidatingChangePostHook();
     };
 
     model.get = function(property) {
-      var output;
+      var output,
+          ret;
 
-      if (properties.hasOwnProperty(property)) return properties[property];
-
-      if (output = outputsByName[property]) {
-        if (output.hasCachedValue) return output.cachedValue;
-        output.hasCachedValue = true;
-        output.cachedValue = output.calculate();
-        return output.cachedValue;
+      if (properties.hasOwnProperty(property)) {
+        ret = properties[property];
+      } else if (output = outputsByName[property]) {
+        if (suppressOutputPropertyCaching) {
+          ret = output.calculate();
+        } else {
+          if (!output.hasCachedValue) {
+            output.hasCachedValue = true;
+            output.cachedValue = output.calculate();
+          }
+          ret = output.cachedValue;
+        }
       }
+
+      // translateFromMD2DUnits function defined above works on hashes, not individual values, so
+      // use the method from unitsTranslation instead.
+      if (unitsTranslation && mainPropertyUnitTypes[property]) {
+        ret = unitsTranslation.translateFromMD2DUnits(ret, mainPropertyUnitTypes[property].unitType);
+      }
+      return ret;
+    };
+
+    model.format = function(property, opts) {
+      opts = opts || {};
+
+      var desc = model.getPropertyDescription(property);
+      if (desc) {
+        return desc.format(model.get(property), opts);
+      }
+      return d3.format(opts.format || 'g')(model.get(property));
     };
 
     /**
@@ -1964,10 +2113,15 @@ define(function(require) {
 
       `calculate` should be a no-arg function which should calculate the property value.
     */
-    model.defineOutput = function(name, description, calculate) {
+    model.defineOutput = function(name, descriptionHash, calculate) {
       outputNames.push(name);
+
+      mainPropertyUnitTypes[name] = {
+        unitType: descriptionHash.unitType
+      };
+
       outputsByName[name] = {
-        description: description,
+        description: new PropertyDescription(unitsDefinition, descriptionHash),
         calculate: calculate,
         hasCachedValue: false,
         // Used to keep track of whether this property changed as a side effect of some other change
@@ -2070,11 +2224,20 @@ define(function(require) {
       arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
       parameters are updated by the tick history.
     */
-    model.defineParameter = function(name, description, setter) {
+    model.defineParameter = function(name, descriptionHash, setter) {
       parametersByName[name] = {
-        description: description,
+        description: new PropertyDescription(unitsDefinition, descriptionHash),
         setter: setter,
         isDefined: false
+      };
+
+      // Regardless of the type of unit represented by the parameter, do NOT automatically convert
+      // it to MD2D units in the set method. That is because the set method on the parameter will
+      // also call 'setter', and any native model properties set by 'setter' will be translated.
+      // If the parameter value were also translated in the set method, translations would happen
+      // twice!
+      mainPropertyUnitTypes[name] = {
+        unitType: "untranslated"
       };
 
       properties['set_'+name] = function(value) {
@@ -2099,7 +2262,7 @@ define(function(require) {
     model.getPropertyDescription = function(name) {
       var property = outputsByName[name] || parametersByName[name];
       if (property) {
-        return _.extend({}, property.description);
+        return property.description;
       }
     };
 
@@ -2226,43 +2389,6 @@ define(function(require) {
     // Friction parameter temporarily applied to the live-dragged atom.
     model.LIVE_DRAG_FRICTION = 10;
 
-    // Define some default output properties.
-    model.defineOutput('time', {
-      label: "Time",
-      units: "fs"
-    }, function() {
-      return modelOutputState.time;
-    });
-
-    model.defineOutput('kineticEnergy', {
-      label: "Kinetic Energy",
-      units: "eV"
-    }, function() {
-      return modelOutputState.KE;
-    });
-
-    model.defineOutput('potentialEnergy', {
-      label: "Potential Energy",
-      units: "eV"
-    }, function() {
-      return modelOutputState.PE;
-    });
-
-    model.defineOutput('totalEnergy', {
-      label: "Total Energy",
-      units: "eV"
-    }, function() {
-      return modelOutputState.KE + modelOutputState.PE;
-    });
-
-    model.defineOutput('temperature', {
-      label: "Temperature",
-      units: "K"
-    }, function() {
-      return modelOutputState.temperature;
-    });
-
-
     // Set the regular, main properties.
     // Note that validation process will return hash without all properties which are
     // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
@@ -2270,6 +2396,9 @@ define(function(require) {
 
     // Set the model view options.
     set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
+
+    // initialize minX, minYm, maxX, maxY from model width and height
+    model.initializeDimensions();
 
     // Setup engine object.
     model.initializeEngine();
@@ -2328,6 +2457,7 @@ define(function(require) {
         "viscosity",
         "gravitationalField"
       ],
+      getRawPropertyValue: getRawPropertyValue,
       restoreProperties: restoreProperties,
       parameters: parametersByName,
       restoreParameters: restoreParameters,
@@ -2335,6 +2465,116 @@ define(function(require) {
     }, model, defaultMaxTickHistory);
 
     newStep = true;
+
+    // Set up units scheme.
+    unitsDefinition = unitDefinitions.get(model.get('unitsScheme'));
+
+    // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
+    // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
+    // the relationships between these ratios set up so that the calculations reamin physically
+    // consistent.
+    if (model.get('unitsScheme') !== 'md2d') {
+      unitsTranslation = new UnitsTranslation(unitsDefinition);
+    }
+
+    // set up types of all properties before any third-party calls to set/get
+    mainPropertyUnitTypes = {};
+    _.each(metadata.mainProperties, function(value, key) {
+      if (value.unitType) {
+        mainPropertyUnitTypes[key] = {
+          unitType: value.unitType
+        };
+      }
+    });
+
+    // Define some default output properties.
+    model.defineOutput('time', {
+      label: "Time",
+      unitType: 'time',
+      format: 'f'
+    }, function() {
+      return modelOutputState.time;
+    });
+
+    // Confusing detail for review: setting 'unitType' here will cause the return value of the
+    // output function to be translated to macroscopic units, however, the function takes
+    // macroscopic units as input. Therefore we must not set 'unitType'.
+    model.defineOutput('timePerTick', {
+      label: "Model time per tick",
+      unitName:         unitsDefinition.units.time.name,
+      unitPluralName:   unitsDefinition.units.time.pluralName,
+      unitAbbreviation: unitsDefinition.units.time.abbreviation,
+      format: 'f'
+    }, function() {
+      return model.get('timeStep') * model.get('timeStepsPerTick');
+    });
+
+    (function() {
+      var displayTimeUnits;
+
+      // Allow units definition to declare a "Display time"; specifically, let MD2D units definition
+      // define a "displayValue" section in the time unit that returns ps instead of fs.
+
+      if (unitsDefinition.units.time.displayValue) {
+        displayTimeUnits = unitsDefinition.units.time.displayValue;
+      } else {
+        displayTimeUnits = _.extend({}, unitsDefinition.units.time);
+        displayTimeUnits.unitsPerBaseUnit = 1;
+      }
+
+      model.defineOutput('displayTime', {
+        label: "Time",
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.abbreviation,
+        format: '.3f'
+      }, function() {
+        return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
+      });
+
+      model.defineOutput('displayTimePerTick', {
+        label: "Model time per tick",
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.abbreviation,
+        format: '.3f'
+      }, function() {
+        return model.get('timePerTick') * displayTimeUnits.unitsPerBaseUnit;
+      });
+    }());
+
+    model.defineOutput('kineticEnergy', {
+      label: "Kinetic Energy",
+      unitType: 'energy',
+      format: '.4g'
+    }, function() {
+      return modelOutputState.KE;
+    });
+
+    model.defineOutput('potentialEnergy', {
+      label: "Potential Energy",
+      unitType: 'energy',
+      format: '.4g'
+    }, function() {
+      return modelOutputState.PE;
+    });
+
+    model.defineOutput('totalEnergy', {
+      label: "Total Energy",
+      unitType: 'energy',
+      format: '.4g'
+    }, function() {
+      return modelOutputState.KE + modelOutputState.PE;
+    });
+
+    model.defineOutput('temperature', {
+      label: "Temperature",
+      unitType: 'temperature',
+      format: 'f'
+    }, function() {
+      return modelOutputState.temperature;
+    });
+
     updateAllOutputProperties();
 
     return model;

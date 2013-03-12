@@ -1,11 +1,12 @@
 {
   "type": "md2d",
-  "width": 4,
-  "height": 2.5,
+  "width": 5,
+  "height": 3,
+  "unitsScheme": "md2d",
   "lennardJonesForces": true,
   "coulombForces": false,
   "temperatureControl": false,
-  "gravitationalField": 8e-8,
+  "gravitationalField": 9.8e-8,
   "timeStep": 5,
   "dielectricConstant": 1,
   "realisticDielectricEffect": true,
@@ -32,7 +33,6 @@
     "images": [],
     "imageMapping": {},
     "textBoxes": [],
-    "fitToParent": false,
     "xlabel": false,
     "ylabel": false,
     "xunits": false,
@@ -57,10 +57,10 @@
   "pairwiseLJProperties": [],
   "elements": {
     "mass": [
-      10000,
+      3.96,
       480,
       480,
-      480,
+      0.25,
       600
     ],
     "sigma": [
@@ -87,12 +87,12 @@
   },
   "atoms": {
     "x": [
-      2.0983337914425557,
-      1.4797126782800976
+      2.5,
+      3.2071067811865475
     ],
     "y": [
-      2.2873570869161206,
-      1.224242900038729
+      2.75,
+      2.042893219
     ],
     "vx": [
       0,
@@ -127,10 +127,10 @@
       1
     ],
     "length": [
-      1.23
+      1
     ],
     "strength": [
-      50000
+      1
     ],
     "type": [
       105

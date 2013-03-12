@@ -59,6 +59,7 @@ A live version of the readme is always available here:
       </li>
       <li><a href="#linux-ubuntu">Linux (Ubuntu)</a>        <ul>
           <li><a href="#nodejs-and-npm-and-couchdb">nodejs and npm and couchdb</a></li>
+          <li><a href="#known-problems-with-linux-during-lab-build-process">Known problems with Linux during Lab build process</a></li>
         </ul>
       </li>
       <li><a href="#use-git-to-create-a-local-clone-of-the-lab-repository">Use git to create a local clone of the Lab repository.</a></li>
@@ -531,6 +532,35 @@ configuration samples:</p>
 <pre><code>cp config/config.sample.yml config/config.yml
 cp server/config/couchdb.sample.yml server/config/couchdb.yml
 </code></pre>
+
+<h4 id="known-problems-with-linux-during-lab-build-process">Known problems with Linux during Lab build process</h4>
+
+<ul>
+  <li>
+    <p>D3.js build process fails:</p>
+
+    <pre><code>  locale: Cannot set LC_ALL to default locale: No such file or directory
+</code></pre>
+
+    <p>Solution:</p>
+
+    <pre><code>  $ sudo locale-gen en_US
+</code></pre>
+  </li>
+  <li>
+    <p>D3.js build process fails:</p>
+
+    <pre><code>  make[1]: /usr/lib/nodejs:/usr/share/javascript/uglify-js/bin/uglifyjs: Command not found
+</code></pre>
+
+    <p>Workaround:</p>
+
+    <pre><code>  $ unset NODE_PATH
+</code></pre>
+
+    <p>and try to build the project again.</p>
+  </li>
+</ul>
 
 <h3 id="use-git-to-create-a-local-clone-of-the-lab-repository">Use git to create a local clone of the Lab repository.</h3>
 

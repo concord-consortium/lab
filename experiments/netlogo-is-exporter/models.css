@@ -3,7 +3,7 @@
 .top { width: auto; }
 
 #export {
-  margin: 0.5em;
+  margin: 1em 2.5em;
   padding: 0.5em; }
 
 #exported-data {
@@ -51,9 +51,17 @@
   padding: 0.5em 1em;
   height: 40em; }
 
-.CodeMirror-scroll {
-  height: 43em;
-  overflow: auto; }
+.CodeMirror {
+  background: #efefef;
+  margin: 0.7em 0.5em;
+  height: 45em; }
+
+div.CodeMirror span.CodeMirror-matchingbracket {
+  color: #0d0;
+  font-weight: bold; }
+div.CodeMirror span.CodeMirror-nonmatchingbracket {
+  color: #f22;
+  font-weight:: normal; }
 
 .interactive-top {
   position: relative; }

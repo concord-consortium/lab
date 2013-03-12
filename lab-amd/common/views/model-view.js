@@ -1,4 +1,4 @@
-/*global $ model_player define: false, d3: false */
+/*global $, model_player, define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   PTA View Container
@@ -7,6 +7,7 @@
 define(function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
+      console               = require('common/console'),
       PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
@@ -16,7 +17,6 @@ define(function (require) {
         // Public API object to be returned.
     var api = {},
         renderer,
-        containers = {},
         $el,
         node,
         emsize,
@@ -27,13 +27,18 @@ define(function (require) {
         padding, size, modelSize,
         playbackXPos, playbackYPos,
 
-        // Basic scaling function, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
+        // Basic scaling functions for positio, it transforms model units to "pixels".
+        // Use it for positions of objects rendered inside the view.
         model2px,
-        // Inverted scaling function transforming model units to "pixels".
-        // Use it for Y coordinates, as model coordinate system has (0, 0) point
-        // in lower left corner, but SVG has (0, 0) point in upper left corner.
+
+        // Inverted scaling function for position transforming model units to "pixels".
+        // Use it for Y coordinates, as Y axis in model coordinate system increases
+        // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
+
+        // Basic scaling function for size, it transforms model units to "pixels".
+        // Use it for dimensions of objects rendered inside the view.
+        modelSize2px,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
@@ -44,6 +49,8 @@ define(function (require) {
         imageContainerTop,
         textContainerBelow,
         textContainerTop,
+
+        clickHandler,
 
         offsetLeft, offsetTop;
 
@@ -91,6 +98,10 @@ define(function (require) {
     function scale() {
       var modelWidth = model.get('width'),
           modelHeight = model.get('height'),
+          modelMinX = model.get('minX'),
+          modelMinY = model.get('minY'),
+          modelMaxX = model.get('maxX'),
+          modelMaxY = model.get('maxY'),
           aspectRatio = modelWidth / modelHeight,
           width, height;
 
@@ -110,7 +121,11 @@ define(function (require) {
       // Model size in model units.
       modelSize = {
         "width":  modelWidth,
-        "height": modelHeight
+        "height": modelHeight,
+        "minX": modelMinX,
+        "minY": modelMinY,
+        "maxX": modelMaxX,
+        "maxY": modelMaxY
       };
 
       offsetTop  = node.offsetTop + padding.top;
@@ -132,15 +147,21 @@ define(function (require) {
 
       playbackYPos = cy - 42 * emsize;
 
-      // Basic model2px scaling function.
+      // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
-          .domain([0, modelSize.width])
+          .domain([modelSize.minX, modelSize.maxX])
           .range([0, size.width]);
 
-      // Inverted model2px scaling function (for y-coordinates, inverted domain).
+      // Inverted model2px scaling function for position (for y-coordinates, inverted domain).
       model2pxInv = d3.scale.linear()
-          .domain([modelSize.height, 0])
+          .domain([modelSize.maxY, modelSize.minY])
           .range([0, size.height]);
+
+      // Basic modelSize2px scaling function for size.
+      modelSize2px = function (sizeX) {
+        return model2px(modelMinX + sizeX);
+      };
+
     }
 
     function redraw() {
@@ -348,8 +369,7 @@ define(function (require) {
         imageContainerTop    = vis.append("g").attr("class", "image-container-top");
         textContainerTop     = vis.append("g").attr("class", "text-container-top");
 
-        containers = {
-          node: node,
+        api.containers = {
           gridContainer:        gridContainer,
           imageContainerBelow:  imageContainerBelow,
           textContainerBelow:   textContainerBelow,
@@ -390,7 +410,7 @@ define(function (require) {
     }
 
     function setupPlaybackControls() {
-      d3.select('.model-controller').remove();
+      vis1.select('.model-controller').remove();
       switch (model.get("controlButtons")) {
         case "play":
           playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
@@ -410,33 +430,22 @@ define(function (require) {
     // *** Main Renderer functions ***
     //
 
-    //
-    // init
-    //
-    // Called when Model View Container is created.
-    //
     function init() {
-      // render model container ... the chrome around the model
-      renderContainer();
-      setupPlaybackControls();
+      // Setup model view state.
+      clickHandler = {};
 
       // dynamically add modelUrl as a model property so the renderer
       // can find resources on paths relative to the model
       model.url = modelUrl;
 
-      // Add a pos() function to containers so the model renderer can more easily
-      // manipulate absolutely positioned dom elements it may create or manage
-      containers.pos = function() {
-        return  mainContainer.node().parentElement.getBoundingClientRect();
-      }
-
       // create a model renderer ... if one hasn't already been created
       if (!renderer) {
-        renderer = new Renderer(model, containers, model2px, model2pxInv);
+        renderer = new Renderer(api, model);
       } else {
-        renderer.reset(model, containers, model2px, model2pxInv);
+        renderer.reset(model);
       }
 
+      // Register listeners.
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits"],
@@ -455,17 +464,20 @@ define(function (require) {
     //
     function repaint() {
       setupBackground();
-      renderer.repaint(model2px, model2pxInv);
+      renderer.repaint(model2px, model2pxInv, modelSize2px);
+      api.updateClickHandlers();
     }
 
     api = {
-      update: null,
       $el: null,
+      node: null,
+      update: null,
+      containers: null,
       scale: scale,
       setFocus: setFocus,
       resize: function() {
-        processOptions();
-        init();
+        renderContainer();
+        setupPlaybackControls();
         repaint();
       },
       getHeightForWidth: function (width) {
@@ -485,6 +497,8 @@ define(function (require) {
       },
       reset: function(newModelUrl, newModel) {
         processOptions(newModelUrl, newModel);
+        renderContainer();
+        setupPlaybackControls();
         init();
         repaint();
       },
@@ -498,6 +512,56 @@ define(function (require) {
       model2pxInv: function(val) {
         // See comments for model2px.
         return model2pxInv(val);
+      },
+      modelSize2px: function(val) {
+        // See comments for model2px.
+        return modelSize2px(val);
+      },
+      pos: function() {
+        // Add a pos() function so the model renderer can more easily
+        // manipulate absolutely positioned dom elements it may create or
+        // manage.
+        return  mainContainer.node().parentElement.getBoundingClientRect();
+      },
+      /**
+       * Sets custom click handler.
+       *
+       * @param {string}   selector Selector string defining clickable objects.
+       * @param {Function} callback Custom click handler. It will be called
+       *                            when object is clicked with (x, y, d, i) arguments:
+       *                              x - x coordinate in model units,
+       *                              y - y coordinate in model units,
+       *                              d - data associated with a given object (can be undefined!),
+       *                              i - ID of clicked object (usually its value makes sense if d is defined).
+       */
+      setClickHandler: function (selector, callback) {
+        clickHandler[selector] = callback;
+        api.updateClickHandlers();
+      },
+      /**
+       * Applies all custom callback to objects matching selector
+       * Note that this function should be called each time when possibly
+       * clickable object is added or repainted!
+       */
+      updateClickHandlers: function () {
+        var selector;
+
+        function getClickHandler (callback) {
+          return function (d, i) {
+            // Get current coordinates relative to the plot area!
+            var coords = d3.mouse(plot.node()),
+                x = model2px.invert(coords[0]),
+                y = model2pxInv.invert(coords[1]);
+            console.log("[view] click at (" + x.toFixed(3) + ", " + y.toFixed(3) + ")");
+            callback(x, y, d, i);
+          };
+        }
+
+        for (selector in clickHandler) {
+          if (clickHandler.hasOwnProperty(selector)) {
+            vis.selectAll(selector).on("click", getClickHandler(clickHandler[selector]));
+          }
+        }
       }
     };
 
@@ -517,11 +581,14 @@ define(function (require) {
     node = $el[0];
 
     processOptions();
+    renderContainer();
+    setupPlaybackControls();
     init();
 
     // Extend Public withExport initialized object to initialized objects
     api.update = renderer.update;
     api.$el = $el;
+    api.node = node;
 
     return api;
   };

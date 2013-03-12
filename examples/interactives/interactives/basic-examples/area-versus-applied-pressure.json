@@ -16,13 +16,13 @@
   "outputs": [
     {
       "name": "area",
-      "units": "nm²",
+      "unitAbbreviation": "nm²",
       "label": "Area",
       "value": "return getObstacleProperties(0).x * get('height');"
     },
     {
       "name": "pressureTimesArea",
-      "units": "picoNewton * nm",
+      "unitAbbreviation": "pN⋅nm",
       "label": "Pressure Times Area",
       "value": "return get('pressure') * get('area');"
     }
@@ -31,7 +31,7 @@
     {
       "name": "pressure",
       "label": "Pressure",
-      "units": "picoNewton / nm",
+      "unitAbbreviation": "pN/nm",
       "onChange": ["var MW_FORCE_UNITS_PER_PICONEWTON = 6.02e-7,",
                    "    height = getObstacleProperties(0).height,",
                    "    mass   = getObstacleProperties(0).mass,",
@@ -59,18 +59,21 @@
       ],
       "steps": 7,
       "title": "Pressure (picoNewton / nm)",
-      "property": "pressure"
+      "property": "pressure",
+      "width": "15em"
     },
     {
       "type": "numericOutput",
       "id": "area-display",
       "property": "area",
+      "orientation": "vertical",
       "displayValue": "return format('1.1f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "pressure-times-area-display",
       "property": "pressureTimesArea",
+      "orientation": "vertical",
       "displayValue": "return format('1f')(value)"
     }
   ]

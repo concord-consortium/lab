@@ -22,8 +22,8 @@
     },
     {
       "type": "checkbox",
-      "id": "show-interactions",
-      "text": "Show Interactions",
+      "id": "show-attractions",
+      "text": "Show attractions",
       "property": "showVDWLines"
     },
     {
@@ -44,7 +44,7 @@
       "mark-two-atoms",
       "trace-atom",
       "untrace-atom",
-      "show-interactions"
+      "show-attractions"
     ]
   }
 }

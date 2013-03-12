@@ -14,6 +14,7 @@ define(function (require) {
       ButtonController        = require('common/controllers/button-controller'),
       CheckboxController      = require('common/controllers/checkbox-controller'),
       TextController          = require('common/controllers/text-controller'),
+      ImageController         = require('common/controllers/image-controller'),
       RadioController         = require('common/controllers/radio-controller'),
       SliderController        = require('common/controllers/slider-controller'),
       PulldownController      = require('common/controllers/pulldown-controller'),
@@ -21,6 +22,11 @@ define(function (require) {
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
 
+      // Helper function which just provides banner definition.
+      setupBanner             = require('common/controllers/setup-banner'),
+      AboutDialog             = require('common/controllers/about-dialog'),
+      ShareDialog             = require('common/controllers/share-dialog'),
+      CreditsDialog           = require('common/controllers/credits-dialog'),
       SemanticLayout          = require('common/layout/semantic-layout'),
       templates               = require('common/layout/templates'),
 
@@ -43,9 +49,9 @@ define(function (require) {
       // # getViewContainer()    - function returning a jQuery object containing
       //                           DOM elements of the component.
       // # modelLoadedCallback() - optional function taking no arguments, a callback
-      //                           which should be called when the model is loaded.
+      //                           which is called when the model is loaded.
       // # resize()              - optional function taking no arguments, a callback
-      //                           which will be called by the layout algorithm when component's container
+      //                           which is called by the layout algorithm when component's container
       //                           dimensions are changed. This lets component to adjust itself to the
       //                           new container dimensions.
       //
@@ -55,6 +61,7 @@ define(function (require) {
       // Please see: src/sass/lab/_interactive-component.sass to check what this CSS class defines.
       ComponentConstructor = {
         'text':          TextController,
+        'image':         ImageController,
         'button':        ButtonController,
         'checkbox':      CheckboxController,
         'pulldown':      PulldownController,
@@ -66,9 +73,7 @@ define(function (require) {
         'numericOutput': NumericOutputController
       };
 
-  return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle, resizeCallbacks) {
-
-    modelLoadedCallbacks = modelLoadedCallbacks || [];
+  return function interactivesController(interactive, viewSelector) {
 
     var controller = {},
         modelController,
@@ -78,6 +83,8 @@ define(function (require) {
         propertiesListeners = [],
         componentCallbacks = [],
         onLoadScripts = [],
+        resizeCallbacks = [],
+        modelLoadedCallbacks = [],
 
         // Hash of instantiated components.
         // Key   - component ID.
@@ -101,6 +108,11 @@ define(function (require) {
 
         // Doesn't currently have any public methods, but probably will.
         parentMessageAPI,
+
+        // Dialogs which can be shown using banner.
+        aboutDialog,
+        shareDialog,
+        creditsDialog,
 
         semanticLayout;
 
@@ -133,7 +145,6 @@ define(function (require) {
       } else {
         interactiveViewOptions = { controlButtons: 'play' };
       }
-      interactiveViewOptions.fitToParent = !layoutStyle;
 
       onLoadScripts = [];
       if (modelDefinition.onLoad) {
@@ -165,43 +176,13 @@ define(function (require) {
           // also be sure to get notified when the underlying model changes
           modelController.on('modelReset', modelLoaded);
           controller.modelController = modelController;
-          // Finally, it's possible to setup layout.
-          // Layout requires that model controller is availalbe and initialized,
-          // that's why we have to setup it here and not e.g. in loadInteractive.
-          setupLayout();
           // Setup model and notify observers that model was loaded.
           modelLoaded(modelConfig);
         }
-      }
-
-      function setupLayout() {
-        var template, layout, fontScale;
-
-        if (interactive.template) {
-          if (typeof interactive.template === "string") {
-            template = templates[interactive.template];
-          } else {
-            template = interactive.template;
-          }
-        }
-        // The authored definition of which components go in which container.
-        layout = interactive.layout;
-        // Font scale which affect whole interactive container.
-        fontScale = interactive.fontScale;
-
-        semanticLayout.setupInteractive(template, layout, componentByID, modelController, fontScale);
-
+        // Setup model in layout.
+        semanticLayout.setupModel(modelController);
         // Finally, layout interactive.
         semanticLayout.layoutInteractive();
-
-        // We are rendering in embeddable mode if only element on page
-        // so resize when window resizes.
-        if (onlyElementOnPage()) {
-          $(window).unbind('resize');
-          $(window).on('resize', function() {
-            controller.resize();
-          });
-        }
       }
 
       function createModelController(type, modelUrl, modelConfig) {
@@ -217,6 +198,45 @@ define(function (require) {
           scriptingAPI.extend(modelController.ScriptingAPI);
           scriptingAPI.exposeScriptingAPI();
         }
+      }
+    }
+
+    function setupLayout() {
+      var template, layout, components, fontScale, banner;
+
+      if (typeof interactive.template === "string") {
+        template = templates[interactive.template];
+      } else {
+        template = interactive.template;
+      }
+
+      // The authored definition of which components go in which container.
+      layout = interactive.layout;
+      // Font scale which affect whole interactive container.
+      fontScale = interactive.fontScale;
+
+      // Banner hash containing components, layout containers and layout deinition
+      // (components location). Keep it in a separate structure, because we do not
+      // expect these objects to be serialized!
+      banner = setupBanner(interactive, creditsDialog, aboutDialog, shareDialog);
+      // Note that all of these operations create a new object.
+      // So interactive definition specified by the author won't be affected.
+      // This is important for serialization correctness.
+      template = banner.template.concat(template);
+      layout = $.extend({}, layout, banner.layout);
+      components = $.extend({}, componentByID, banner.components);
+
+      // Setup layout using both author components and components
+      // created automatically in this controller.
+      semanticLayout.initialize(template, layout, components, fontScale);
+
+      // We are rendering in embeddable mode if only element on page
+      // so resize when window resizes.
+      if (onlyElementOnPage()) {
+        $(window).unbind('resize');
+        $(window).on('resize', function() {
+          controller.resize();
+        });
       }
     }
 
@@ -243,7 +263,9 @@ define(function (require) {
 
       // Register component callback if it is available.
       if (comp.modelLoadedCallback) {
-        componentCallbacks.push(comp.modelLoadedCallback);
+        // $.proxy ensures that callback will be always executed
+        // in the context of correct object ('this' binding).
+        componentCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
       }
     }
 
@@ -265,8 +287,8 @@ define(function (require) {
     function modelLoaded() {
       var i, listener;
 
-      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
+      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
       // to exist during its definition.
       setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
@@ -393,10 +415,8 @@ define(function (require) {
 
       @param newInteractive
         hash representing the interactive specification
-      @param viewSelector
-        jQuery selector that finds the element to put the interactive view into
     */
-    function loadInteractive(newInteractive, viewSelector) {
+    function loadInteractive(newInteractive) {
       var componentJsons,
           i, len;
 
@@ -444,6 +464,9 @@ define(function (require) {
           });
         }
       }
+
+      // When all components are created, we can initialize semantic layout.
+      setupLayout();
     }
 
     /**
@@ -483,13 +506,19 @@ define(function (require) {
             case "basic":
               model.defineOutput(output.name, {
                 label: output.label,
-                units: output.units
+                unitType: output.unitType,
+                unitName: output.unitName,
+                unitPluralName: output.unitPluralName,
+                unitAbbreviation: output.unitAbbreviation
               }, scriptingAPI.makeFunctionInScriptContext(getStringFromArray(output.value)));
               break;
             case "filtered":
               model.defineFilteredOutput(output.name, {
                 label: output.label,
-                units: output.units
+                unitType: output.unitType,
+                unitName: output.unitName,
+                unitPluralName: output.unitPluralName,
+                unitAbbreviation: output.unitAbbreviation
               }, output.property, output.type, output.period);
               break;
           }
@@ -522,7 +551,10 @@ define(function (require) {
         // Define parameter using modeler.
         model.defineParameter(parameter.name, {
           label: parameter.label,
-          units: parameter.units
+          unitType: parameter.unitType,
+          unitName: parameter.unitName,
+          unitPluralName: parameter.unitPluralName,
+          unitAbbreviation: parameter.unitAbbreviation
         }, onChangeFunc);
 
         if (parameter.initialValue !== undefined) {
@@ -559,14 +591,36 @@ define(function (require) {
         var i;
 
         semanticLayout.layoutInteractive();
-        // Call application controller (application.js) resizeCallbacks if there are any.
-        // Currently this is used for the Share pane generated <iframe> content.
-        // TODO: make a model dialog component and treat the links at the top as
-        // componments in the layout. New designs may put these links at the bottom ... etc
+        // TODO: use events!
         for(i = 0; i < resizeCallbacks.length; i++) {
-          if (resizeCallbacks[i].resize !== undefined) {
-            resizeCallbacks[i].resize();
+          resizeCallbacks[i]();
+        }
+      },
+      /**
+       * Adds an event listener for the specified type.
+       * Supported events are: "resize" and "modelLoaded".
+       *
+       * @param {string} type Event type ("resize" or "modelLoaded").
+       * @param  {function|array} callback Callback function or an array of functions.
+       */
+      on: function (type, callback) {
+        if (typeof callback === "function") {
+          callback = [callback];
+        } else if ($.isArray(callback)) {
+          if (callback.some(function (cb) { return typeof cb !== 'function'; })) {
+            throw new Error("Invalid callback, must be an array of functions.");
           }
+        } else {
+          throw new Error("Invalid callback, must be a function or array of functions.");
+        }
+
+        switch(type) {
+          case "resize":
+            resizeCallbacks = resizeCallbacks.concat(callback);
+            break;
+          case "modelLoaded":
+            modelLoadedCallbacks = modelLoadedCallbacks.concat(callback);
+            break;
         }
       },
       /**
@@ -647,8 +701,14 @@ define(function (require) {
     // Select interactive container.
     // TODO: controller rather should create it itself to follow pattern of other components.
     $interactiveContainer = $(viewSelector);
+    // add container to API
+    controller.interactiveContainer = $interactiveContainer;
     // Initialize semantic layout.
     semanticLayout = new SemanticLayout($interactiveContainer);
+    creditsDialog = new CreditsDialog();
+    aboutDialog = new AboutDialog();
+    shareDialog = new ShareDialog();
+    controller.on("resize", $.proxy(shareDialog.updateIframeSize, shareDialog));
     // Run this when controller is created.
     loadInteractive(interactive, viewSelector);
 

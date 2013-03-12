@@ -7,7 +7,7 @@
   "models": [
     {
       "id": "pendulum1$0",
-      "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/pendulum1$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }
@@ -17,7 +17,7 @@
     {
       "name":  "currentAngle",
       "label": "Current Angle",
-      "units": "°",
+      "unitAbbreviation": "°",
       "value": [
           "var pivotAtom = getAtomProperties(0),",
               "swingingAtom = getAtomProperties(1),",
@@ -38,21 +38,21 @@
     {
       "name": "startingLength",
       "label": "Length",
-      "units": "m",
+      "unitAbbreviation": "m",
       "onChange": "var len = value/1.5, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
       "initialValue": 1.5
     },
     {
       "name": "startingAngle",
       "label": "Starting Angle",
-      "units": "°",
+      "unitAbbreviation": "°",
       "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
       "initialValue": 45
     },
     {
       "name": "ballMass",
       "label": "Mass",
-      "units": "g",
+      "unitAbbreviation": "g",
       "onChange": "var mass = value*12; setElementProperties(3, { mass: mass });",
       "initialValue": 150
     },
@@ -159,7 +159,7 @@
       "id": "current-angle-output1",
       "property": "currentAngle",
       "label": "Current Angle",
-      "units": "&deg;",
+      "unitAbbreviation": "&deg;",
       "displayValue": "return format('f')(value)"
     },
     {

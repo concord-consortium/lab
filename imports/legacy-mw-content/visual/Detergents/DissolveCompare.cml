@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Detergent model</page_title>
+<text>Like dissolves like
+  
+We saw that oil, a nonpolar substance, fails to mix with water, a polar substance. What about polar/polar mixtures, and nonpolar/nonpolar mixtures?
+
+Click &quot;Run&quot; to play these simulations. Then click &quot;Remove barriers&quot; to observe how these substances behave when mixed together. What happens?
+
+			Polar/polar	                                                                                                                                    Nonpolar/nonplar
+  
+                                                                   
+       
+             
+
+
+ 
+
+</text>
+<section start="0" end="578">
+<paragraph start="0" end="20">
+<Alignment>1</Alignment>
+<content start="0" end="19">
+<size>36</size><bold>true</bold><family>Helvetica</family></content>
+
+<content start="19" end="20">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="20" end="23">
+<Alignment>1</Alignment>
+<content start="20" end="22">
+<bold>true</bold></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="171">
+<Alignment>1</Alignment>
+<content start="23" end="42">
+<size>14</size><family>Helvetica</family></content>
+
+<content start="42" end="50">
+<size>14</size><italic>true</italic><family>Helvetica</family></content>
+
+<content start="50" end="89">
+<size>14</size><family>Helvetica</family></content>
+
+<content start="89" end="94">
+<size>14</size><italic>true</italic><family>Helvetica</family></content>
+
+<content start="94" end="171">
+<size>14</size><family>Helvetica</family></content>
+
+</paragraph>
+<paragraph start="171" end="172">
+<Alignment>1</Alignment>
+<content start="171" end="172">
+<size>14</size><family>Helvetica</family></content>
+
+</paragraph>
+<paragraph start="172" end="314">
+<Alignment>1</Alignment>
+<content start="172" end="314">
+<size>14</size><family>Helvetica</family></content>
+
+</paragraph>
+<paragraph start="314" end="315">
+<Alignment>1</Alignment>
+<content start="314" end="315">
+</content>
+
+</paragraph>
+<paragraph start="315" end="479">
+<Alignment>1</Alignment>
+<content start="315" end="329">
+<size>16</size><bold>true</bold></content>
+
+<content start="329" end="462">
+<bold>true</bold></content>
+
+<content start="462" end="478">
+<size>16</size><bold>true</bold></content>
+
+<content start="478" end="479">
+</content>
+
+</paragraph>
+<paragraph start="479" end="482">
+<Alignment>1</Alignment>
+<content start="479" end="480">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>DissolveCompare$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="480" end="481">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>DissolveCompare$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="481" end="482">
+</content>
+
+</paragraph>
+<paragraph start="482" end="550">
+<content start="482" end="550">
+</content>
+
+</paragraph>
+<paragraph start="550" end="558">
+<Alignment>1</Alignment>
+<content start="550" end="551">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<width>80</width><height>60</height>
+<border>None</border>
+<opaque>false</opaque>
+<script>script:mw:1:run;
+script:mw:2:run;</script>
+<action>Script</action></component></content>
+
+<content start="551" end="553">
+</content>
+
+<content start="553" end="554">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Pause</title>
+<tooltip>Pause</tooltip>
+<width>75</width><height>60</height>
+<opaque>false</opaque>
+<script>script:mw:1:stop;
+script:mw:2:stop;</script>
+<action>Script</action></component></content>
+
+<content start="554" end="556">
+</content>
+
+<content start="556" end="557">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<width>75</width><height>60</height>
+<opaque>false</opaque>
+<script>script:mw:1:reset;
+script:mw:2:reset;</script>
+<action>Script</action></component></content>
+
+<content start="557" end="558">
+</content>
+
+</paragraph>
+<paragraph start="558" end="572">
+<Alignment>1</Alignment>
+<content start="558" end="565">
+</content>
+
+<content start="565" end="566">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Remove barriers</title>
+<tooltip>Remove barriers</tooltip>
+<width>120</width><height>60</height>
+<border>None</border>
+<opaque>false</opaque>
+<script>script:mw:1:select obstacle 0; remove;
+script:mw:2:select obstacle 0; remove;</script>
+<action>Script</action></component></content>
+
+<content start="566" end="572">
+</content>
+
+</paragraph>
+<paragraph start="572" end="573">
+<Alignment>1</Alignment>
+<content start="572" end="573">
+</content>
+
+</paragraph>
+<paragraph start="573" end="574">
+<Alignment>1</Alignment>
+<content start="573" end="574">
+</content>
+
+</paragraph>
+<paragraph start="574" end="576">
+<Alignment>1</Alignment>
+<content start="574" end="575">
+<icon>PolaritySolubility.png</icon></content>
+
+<content start="575" end="576">
+</content>
+
+</paragraph>
+<paragraph start="576" end="577">
+<content start="576" end="577">
+</content>
+
+</paragraph>
+<paragraph start="577" end="578">
+</paragraph>
+</section>
+</document>

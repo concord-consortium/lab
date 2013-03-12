@@ -1,6 +1,6 @@
 (function() {
 /**
- * almond 0.1.2 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
+ * almond 0.2.5 Copyright (c) 2011-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/almond for details
  */
@@ -11,12 +11,17 @@
 
 var requirejs, require, define;
 (function (undef) {
-    var defined = {},
+    var main, req, makeMap, handlers,
+        defined = {},
         waiting = {},
         config = {},
         defining = {},
-        aps = [].slice,
-        main, req;
+        hasOwn = Object.prototype.hasOwnProperty,
+        aps = [].slice;
+
+    function hasProp(obj, prop) {
+        return hasOwn.call(obj, prop);
+    }
 
     /**
      * Given a relative module name, like ./something, normalize it to
@@ -27,11 +32,11 @@ var requirejs, require, define;
      * @returns {String} normalized name
      */
     function normalize(name, baseName) {
-        var baseParts = baseName && baseName.split("/"),
+        var nameParts, nameSegment, mapValue, foundMap,
+            foundI, foundStarMap, starI, i, j, part,
+            baseParts = baseName && baseName.split("/"),
             map = config.map,
-            starMap = (map && map['*']) || {},
-            nameParts, nameSegment, mapValue, foundMap,
-            foundI, foundStarMap, starI, i, j, part;
+            starMap = (map && map['*']) || {};
 
         //Adjust any relative paths.
         if (name && name.charAt(0) === ".") {
@@ -49,7 +54,8 @@ var requirejs, require, define;
                 name = baseParts.concat(name.split("/"));
 
                 //start trimDots
-                for (i = 0; (part = name[i]); i++) {
+                for (i = 0; i < name.length; i += 1) {
+                    part = name[i];
                     if (part === ".") {
                         name.splice(i, 1);
                         i -= 1;
@@ -61,7 +67,7 @@ var requirejs, require, define;
                             //no path mapping for a path starting with '..'.
                             //This can still fail, but catches the most reasonable
                             //uses of ..
-                            return true;
+                            break;
                         } else if (i > 0) {
                             name.splice(i - 1, 2);
                             i -= 2;
@@ -71,6 +77,10 @@ var requirejs, require, define;
                 //end trimDots
 
                 name = name.join("/");
+            } else if (name.indexOf('./') === 0) {
+                // No baseName, so this is ID is resolved relative
+                // to baseUrl, pull off the leading dot.
+                name = name.substring(2);
             }
         }
 
@@ -150,17 +160,30 @@ var requirejs, require, define;
     }
 
     function callDep(name) {
-        if (waiting.hasOwnProperty(name)) {
+        if (hasProp(waiting, name)) {
             var args = waiting[name];
             delete waiting[name];
             defining[name] = true;
             main.apply(undef, args);
         }
 
-        if (!defined.hasOwnProperty(name)) {
+        if (!hasProp(defined, name) && !hasProp(defining, name)) {
             throw new Error('No ' + name);
         }
         return defined[name];
+    }
+
+    //Turns a plugin!resource to [plugin, resource]
+    //with the plugin being undefined if the name
+    //did not have a plugin prefix.
+    function splitPrefix(name) {
+        var prefix,
+            index = name ? name.indexOf('!') : -1;
+        if (index > -1) {
+            prefix = name.substring(0, index);
+            name = name.substring(index + 1, name.length);
+        }
+        return [prefix, name];
     }
 
     /**
@@ -168,16 +191,20 @@ var requirejs, require, define;
      * for normalization if necessary. Grabs a ref to plugin
      * too, as an optimization.
      */
-    function makeMap(name, relName) {
-        var prefix, plugin,
-            index = name.indexOf('!');
+    makeMap = function (name, relName) {
+        var plugin,
+            parts = splitPrefix(name),
+            prefix = parts[0];
 
-        if (index !== -1) {
-            prefix = normalize(name.slice(0, index), relName);
-            name = name.slice(index + 1);
+        name = parts[1];
+
+        if (prefix) {
+            prefix = normalize(prefix, relName);
             plugin = callDep(prefix);
+        }
 
-            //Normalize according
+        //Normalize according
+        if (prefix) {
             if (plugin && plugin.normalize) {
                 name = plugin.normalize(name, makeNormalize(relName));
             } else {
@@ -185,15 +212,22 @@ var requirejs, require, define;
             }
         } else {
             name = normalize(name, relName);
+            parts = splitPrefix(name);
+            prefix = parts[0];
+            name = parts[1];
+            if (prefix) {
+                plugin = callDep(prefix);
+            }
         }
 
         //Using ridiculous property names for space reasons
         return {
             f: prefix ? prefix + '!' + name : name, //fullName
             n: name,
+            pr: prefix,
             p: plugin
         };
-    }
+    };
 
     function makeConfig(name) {
         return function () {
@@ -201,10 +235,32 @@ var requirejs, require, define;
         };
     }
 
+    handlers = {
+        require: function (name) {
+            return makeRequire(name);
+        },
+        exports: function (name) {
+            var e = defined[name];
+            if (typeof e !== 'undefined') {
+                return e;
+            } else {
+                return (defined[name] = {});
+            }
+        },
+        module: function (name) {
+            return {
+                id: name,
+                uri: '',
+                exports: defined[name],
+                config: makeConfig(name)
+            };
+        }
+    };
+
     main = function (name, deps, callback, relName) {
-        var args = [],
-            usingExports,
-            cjsModule, depName, ret, map, i;
+        var cjsModule, depName, ret, map, i,
+            args = [],
+            usingExports;
 
         //Use name if no relName
         relName = relName || name;
@@ -216,31 +272,28 @@ var requirejs, require, define;
             //values to the callback.
             //Default to [require, exports, module] if no deps
             deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
-            for (i = 0; i < deps.length; i++) {
+            for (i = 0; i < deps.length; i += 1) {
                 map = makeMap(deps[i], relName);
                 depName = map.f;
 
                 //Fast path CommonJS standard dependencies.
                 if (depName === "require") {
-                    args[i] = makeRequire(name);
+                    args[i] = handlers.require(name);
                 } else if (depName === "exports") {
                     //CommonJS module spec 1.1
-                    args[i] = defined[name] = {};
+                    args[i] = handlers.exports(name);
                     usingExports = true;
                 } else if (depName === "module") {
                     //CommonJS module spec 1.1
-                    cjsModule = args[i] = {
-                        id: name,
-                        uri: '',
-                        exports: defined[name],
-                        config: makeConfig(name)
-                    };
-                } else if (defined.hasOwnProperty(depName) || waiting.hasOwnProperty(depName)) {
+                    cjsModule = args[i] = handlers.module(name);
+                } else if (hasProp(defined, depName) ||
+                           hasProp(waiting, depName) ||
+                           hasProp(defining, depName)) {
                     args[i] = callDep(depName);
                 } else if (map.p) {
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
-                } else if (!defining[depName]) {
+                } else {
                     throw new Error(name + ' missing ' + depName);
                 }
             }
@@ -252,7 +305,7 @@ var requirejs, require, define;
                 //favor that over return value and exports. After that,
                 //favor a non-undefined return value over exports use.
                 if (cjsModule && cjsModule.exports !== undef &&
-                    cjsModule.exports !== defined[name]) {
+                        cjsModule.exports !== defined[name]) {
                     defined[name] = cjsModule.exports;
                 } else if (ret !== undef || !usingExports) {
                     //Use the return value from the function.
@@ -266,8 +319,12 @@ var requirejs, require, define;
         }
     };
 
-    requirejs = require = req = function (deps, callback, relName, forceSync) {
+    requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
         if (typeof deps === "string") {
+            if (handlers[deps]) {
+                //callback in this case is really relName
+                return handlers[deps](callback);
+            }
             //Just return the module wanted. In this scenario, the
             //deps arg is the module name, and second arg (if passed)
             //is just the relName.
@@ -290,13 +347,26 @@ var requirejs, require, define;
         //Support require(['a'])
         callback = callback || function () {};
 
+        //If relName is a function, it is an errback handler,
+        //so remove it.
+        if (typeof relName === 'function') {
+            relName = forceSync;
+            forceSync = alt;
+        }
+
         //Simulate async callback;
         if (forceSync) {
             main(undef, deps, callback, relName);
         } else {
+            //Using a non-zero value because of concern for what old browsers
+            //do, and latest browsers "upgrade" to 4 if lower value is used:
+            //http://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#dom-windowtimers-settimeout:
+            //If want a value immediately, use require('id') instead -- something
+            //that works in almond on the global level, but not guaranteed and
+            //unlikely to work in other AMD implementations.
             setTimeout(function () {
                 main(undef, deps, callback, relName);
-            }, 15);
+            }, 4);
         }
 
         return req;
@@ -308,6 +378,9 @@ var requirejs, require, define;
      */
     req.config = function (cfg) {
         config = cfg;
+        if (config.deps) {
+            req(config.deps, config.callback);
+        }
         return req;
     };
 
@@ -322,7 +395,9 @@ var requirejs, require, define;
             deps = [];
         }
 
-        waiting[name] = [name, deps, callback];
+        if (!hasProp(defined, name) && !hasProp(waiting, name)) {
+            waiting[name] = [name, deps, callback];
+        }
     };
 
     define.amd = {
@@ -338,16 +413,16 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "8eb530d7a2c2ff4e3fb52ba09d7550f97c44525e",
-        "short_sha":      "8eb530d7",
-        "url":            "https://github.com/concord-consortium/lab/commit/8eb530d7",
+        "sha":           "3d4db3cba1037f79ed47f5088562685e071cedf9",
+        "short_sha":      "3d4db3cb",
+        "url":            "https://github.com/concord-consortium/lab/commit/3d4db3cb",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-03-01 14:53:52 -0500",
-        "short_message": "bump d3:bubble-default-on-mousedown branch",
-        "message":       "bump d3:bubble-default-on-mousedown branch\n\n[#45403519], [#45233971]\n\nfixes for touch and simplification for previous FF fixes"
+        "date":          "2013-03-12 15:52:22 -0400",
+        "short_message": "Interactive Sampler: remove frame borders",
+        "message":       "Interactive Sampler: remove frame borders\n\nNot needed with recent Interactive frame design work."
       },
-      "dirty": false
+      "dirty": true
     }
   };
 });
@@ -385,6 +460,8 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
   "actualRoot": "",
+  "hostName": "lab.concord.org",
+  "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
   "logging": true,
   "tracing": false,
   "authoring": false
@@ -760,7 +837,8 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
 
           svg = elem.append("svg")
               .attr("width",  cx)
-              .attr("height", cy);
+              .attr("height", cy)
+              .attr("class", "graph");
 
           vis = svg.append("g")
                 .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -1083,7 +1161,7 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
         d3.select('body').style("cursor", "move");
         if (d3.event.altKey) {
           if (d3.event.shiftKey && options.addData) {
-            p = d3.svg.mouse(vis.node());
+            p = d3.mouse(vis.node());
             var newpoint = [];
             newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
             newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
@@ -1096,7 +1174,7 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
             selected = newpoint;
             update();
           } else {
-            p = d3.svg.mouse(vis[0][0]);
+            p = d3.mouse(vis.node());
             downx = xScale.invert(p[0]);
             downy = yScale.invert(p[1]);
             dragged = false;
@@ -1109,14 +1187,14 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
       function xaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
       function yaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downy = yScale.invert(p[1]);
       }
 
@@ -1128,7 +1206,7 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
       }
 
       function mousemove() {
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
 
         d3.event.preventDefault();
         if (dragged && options.dataChange) {
@@ -1627,7 +1705,15 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         ds,
         circleCursorStyle,
         displayProperties,
-        emsize, strokeWidth,
+        fontSizeInPixels,
+        halfFontSizeInPixels,
+        quarterFontSizeInPixels,
+        titleFontSizeInPixels,
+        axisFontSizeInPixels,
+        xlabelFontSizeInPixels,
+        ylabelFontSizeInPixels,
+        yAxisNumberWidth,
+        strokeWidth,
         scaleFactor,
         sizeType = {
           category: "medium",
@@ -1651,6 +1737,8 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         cplot = {},
 
         default_options = {
+          responsiveLayout: false,
+          fontScaleRelativeToParent: true,
           title   : "graph",
           xlabel  : "x-axis",
           ylabel  : "y-axis",
@@ -1694,31 +1782,59 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
     }
 
     function calculateSizeType() {
-      if(cx <= sizeType.icon) {
-        sizeType.category = 'icon';
-        sizeType.value = 0;
-      } else if (cx <= sizeType.tiny) {
-        sizeType.category = 'tiny';
-        sizeType.value = 1;
-      } else if (cx <= sizeType.small) {
-        sizeType.category = 'small';
-        sizeType.value = 2;
-      } else if (cx <= sizeType.medium) {
-        sizeType.category = 'medium';
-        sizeType.value = 3;
-      } else if (cx <= sizeType.large) {
+      if (options.responsiveLayout) {
+        if(cx <= sizeType.icon) {
+          sizeType.category = 'icon';
+          sizeType.value = 0;
+        } else if (cx <= sizeType.tiny) {
+          sizeType.category = 'tiny';
+          sizeType.value = 1;
+        } else if (cx <= sizeType.small) {
+          sizeType.category = 'small';
+          sizeType.value = 2;
+        } else if (cx <= sizeType.medium) {
+          sizeType.category = 'medium';
+          sizeType.value = 3;
+        } else if (cx <= sizeType.large) {
+          sizeType.category = 'large';
+          sizeType.value = 4;
+        } else {
+          sizeType.category = 'extralarge';
+          sizeType.value = 5;
+        }
+      } else {
         sizeType.category = 'large';
         sizeType.value = 4;
-      } else {
-        sizeType.category = 'extralarge';
-        sizeType.value = 5;
       }
+    }
+
+    function numberWidthUsingFormatter(formatter, number) {
+      var testSVG,
+          testText,
+          width;
+
+      testSVG = elem.append("svg")
+        .attr("width",  cx)
+        .attr("height", cy)
+        .attr("class", "graph");
+
+      testText = testSVG.append('g')
+        .append("text")
+          .attr("class", "axis")
+          .attr("x", -fontSizeInPixels/4 + "px")
+          .attr("dy", ".35em")
+          .attr("text-anchor", "end")
+          .text(d3.format(formatter)(number));
+
+      width = testText.node().getBBox().width;
+      testSVG.remove();
+      return width;
     }
 
     function scale(w, h) {
       if (!w && !h) {
-        cx = elem.property("clientWidth");
-        cy = elem.property("clientHeight");
+        cx = Math.max(elem.property("clientWidth"), 32);
+        cy = Math.max(elem.property("clientHeight"), 32);
       } else {
         cx = w;
         node.style.width =  cx +"px";
@@ -1733,7 +1849,115 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
       calculateSizeType();
-      emsize = parseFloat($(idOrElement).css('font-size')) / 10;
+    }
+
+    function calculateLayout() {
+      scale();
+
+      fontSizeInPixels = parseFloat($(node).css("font-size"));
+
+      if (!options.fontScaleRelativeToParent) {
+        $(node).css("font-size", 0.5 + sizeType.value/6 + 'em');
+      }
+
+      fontSizeInPixels = parseFloat($(node).css("font-size"));
+
+      halfFontSizeInPixels = fontSizeInPixels/2;
+      quarterFontSizeInPixels = fontSizeInPixels/4;
+
+      yAxisNumberWidth = Math.max(numberWidthUsingFormatter(options.yFormatter, options.ymax)*1.5,
+                                  numberWidthUsingFormatter(options.yFormatter, options.ymin)*1.5);
+
+      if (svg === undefined) {
+        titleFontSizeInPixels =  fontSizeInPixels;
+        axisFontSizeInPixels =   fontSizeInPixels;
+        xlabelFontSizeInPixels = fontSizeInPixels;
+        ylabelFontSizeInPixels = fontSizeInPixels;
+      } else {
+        titleFontSizeInPixels =  parseFloat($("svg.graph text.title").css("font-size"));
+        axisFontSizeInPixels =   parseFloat($("svg.graph text.axis").css("font-size"));
+        xlabelFontSizeInPixels = parseFloat($("svg.graph text.xlabel").css("font-size"));
+        ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
+      }
+
+      switch(sizeType.value) {
+        case 0:         // tiny
+        padding = {
+         "top":    fontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": fontSizeInPixels,
+         "left":   fontSizeInPixels
+        };
+        break;
+
+        case 1:         // small
+        padding = {
+         "top":    fontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": fontSizeInPixels,
+         "left":   fontSizeInPixels
+        };
+        break;
+
+        case 2:         // medium
+        padding = {
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": axisFontSizeInPixels*1.25,
+         "left":   yAxisNumberWidth
+        };
+        break;
+
+        case 3:         // large
+        padding = {
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":                   fontSizeInPixels,
+         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels : yAxisNumberWidth
+        };
+        break;
+
+        default:         // extralarge
+        padding = {
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":                   fontSizeInPixels,
+         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels : yAxisNumberWidth
+        };
+        break;
+      }
+
+      if (sizeType.value > 2 ) {
+        padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * fontSizeInPixels;
+      } else {
+        titles = [titles[0]];
+      }
+
+      size = {
+        "width":  cx - padding.left - padding.right,
+        "height": cy - padding.top  - padding.bottom
+      };
+
+      xScale = d3.scale[options.xscale]()
+        .domain([options.xmin, options.xmax])
+        .range([0, size.width]);
+
+      if (options.xscale === "pow") {
+        xScale.exponent(options.xscaleExponent);
+      }
+
+      yScale = d3.scale[options.yscale]()
+        .domain([options.ymin, options.ymax]).nice()
+        .range([size.height, 0]).nice();
+
+      if (options.yscale === "pow") {
+        yScale.exponent(options.yscaleExponent);
+      }
+
+      line = d3.svg.line()
+            .x(function(d, i) { return xScale(points[i].x ); })
+            .y(function(d, i) { return yScale(points[i].y); });
+
     }
 
     function initialize(idOrElement, opts, message) {
@@ -1776,53 +2000,6 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
 
       pointArray = [];
 
-      switch(sizeType.value) {
-        case 0:
-        padding = {
-         "top":    4,
-         "right":  4,
-         "bottom": 4,
-         "left":   4
-        };
-        break;
-
-        case 1:
-        padding = {
-         "top":    8,
-         "right":  8,
-         "bottom": 8,
-         "left":   8
-        };
-        break;
-
-        case 2:
-        padding = {
-         "top":    options.title  ? 25 : 15,
-         "right":  15,
-         "bottom": 20,
-         "left":   30
-        };
-        break;
-
-        case 3:
-        padding = {
-         "top":    options.title  ? 30 : 20,
-         "right":                   30,
-         "bottom": options.xlabel ? 60 : 10,
-         "left":   options.ylabel ? 70 : 45
-        };
-        break;
-
-        default:
-        padding = {
-         "top":    options.title  ? 40 : 20,
-         "right":                   30,
-         "bottom": options.xlabel ? 60 : 10,
-         "left":   options.ylabel ? 70 : 45
-        };
-        break;
-      }
-
       if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
         for (var i = 0; i < options.dataset.length; i++) {
           pointArray.push(indexedData(options.dataset[i], 0, sample));
@@ -1840,39 +2017,8 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       }
       titles.reverse();
 
-      if (sizeType.value > 2 ) {
-        padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * emsize * 22;
-      } else {
-        titles = [titles[0]];
-      }
-
-      size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
-      };
-
-      xScale = d3.scale[options.xscale]()
-        .domain([options.xmin, options.xmax])
-        .range([0, size.width]);
-
-      if (options.xscale === "pow") {
-        xScale.exponent(options.xscaleExponent);
-      }
-
-      yScale = d3.scale[options.yscale]()
-        .domain([options.ymin, options.ymax]).nice()
-        .range([size.height, 0]).nice();
-
-      if (options.yscale === "pow") {
-        yScale.exponent(options.yscaleExponent);
-      }
-
       fx = d3.format(options.xFormatter);
       fy = d3.format(options.yFormatter);
-
-      line = d3.svg.line()
-            .x(function(d, i) { return xScale(points[i].x ); })
-            .y(function(d, i) { return yScale(points[i].y); });
 
       // drag axis logic
       downx = Math.NaN;
@@ -1902,13 +2048,14 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
     }
 
     function graph() {
-      scale();
+      calculateLayout();
 
       if (svg === undefined) {
 
         svg = elem.append("svg")
             .attr("width",  cx)
-            .attr("height", cy);
+            .attr("height", cy)
+            .attr("class", "graph");
 
         vis = svg.append("g")
               .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -1946,10 +2093,9 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             .data(titles, function(d) { return d; });
           title.enter().append("text")
               .attr("class", "title")
-              .style("font-size", sizeType.value/3.2 * 100 + "%")
               .text(function(d) { return d; })
               .attr("x", size.width/2)
-              .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })
+              .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; })
               .style("text-anchor","middle");
         }
 
@@ -1957,12 +2103,11 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
        if (options.xlabel && sizeType.value > 2) {
           xlabel = vis.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.6 * 100 + "%")
               .attr("class", "xlabel")
               .text(options.xlabel)
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy","2.4em")
+              .attr("dy", axisFontSizeInPixels*2 + "px")
               .style("text-anchor","middle");
         }
 
@@ -1970,11 +2115,10 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         if (options.ylabel && sizeType.value > 2) {
           ylabel = vis.append("g").append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.6 * 100 + "%")
               .attr("class", "ylabel")
               .text( options.ylabel)
               .style("text-anchor","middle")
-              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
         }
 
         notification = vis.append("text")
@@ -2081,9 +2225,8 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         if (sizeType.value > 1) {
           gxe.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.7 * 100 + "%")
               .attr("y", size.height)
-              .attr("dy", "1em")
+              .attr("dy", axisFontSizeInPixels + "px")
               .attr("text-anchor", "middle")
               .style("cursor", "ew-resize")
               .text(fx)
@@ -2113,8 +2256,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         if (sizeType.value > 1) {
           gye.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.7 * 100 + "%")
-              .attr("x", -3)
+              .attr("x", -axisFontSizeInPixels/4 + "px")
               .attr("dy", ".35em")
               .attr("text-anchor", "end")
               .style("cursor", "ns-resize")
@@ -2171,7 +2313,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         d3.event.preventDefault();
         plot.style("cursor", "move");
         if (d3.event.altKey) {
-          var p = d3.svg.mouse(vis[0][0]);
+          var p = d3.mouse(vis.node());
           downx = xScale.invert(p[0]);
           downy = yScale.invert(p[1]);
           dragged = false;
@@ -2182,14 +2324,14 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       function xaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
       function yaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downy = yScale.invert(p[1]);
       }
 
@@ -2202,7 +2344,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       // ------------------------------------------------------------
 
       function mousemove() {
-        var p = d3.svg.mouse(vis[0][0]),
+        var p = d3.mouse(vis.node()),
             changex, changey, new_domain,
             t = d3.event.changedTouches;
 
@@ -2675,6 +2817,8 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         graph.initialize();
       }
       graph();
+      // and then render again using actual size of SVG text elements are
+      graph();
       return graph;
     };
 
@@ -2685,7 +2829,11 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       return graph;
     };
 
-    if (node) { graph(); }
+    if (node) {
+      graph();
+      // and then render again using actual size of SVG text elements are
+      graph();
+    }
 
     return graph;
   };
@@ -3898,11 +4046,12 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
 
 define("underscore", (function (global) {
     return function () {
-        return global._;
-    }
+        var ret, fn;
+        return ret || global._;
+    };
 }(this)));
 
-//     Backbone.js 0.9.2
+//     Backbone.js 0.9.10
 
 //     (c) 2010-2012 Jeremy Ashkenas, DocumentCloud Inc.
 //     Backbone may be freely distributed under the MIT license.
@@ -3923,10 +4072,10 @@ define("underscore", (function (global) {
   var previousBackbone = root.Backbone;
 
   // Create a local reference to array methods.
-  var ArrayProto = Array.prototype;
-  var push = ArrayProto.push;
-  var slice = ArrayProto.slice;
-  var splice = ArrayProto.splice;
+  var array = [];
+  var push = array.push;
+  var slice = array.slice;
+  var splice = array.splice;
 
   // The top-level namespace. All public Backbone classes and modules will
   // be attached to this. Exported for both CommonJS and the browser.
@@ -3938,7 +4087,7 @@ define("underscore", (function (global) {
   }
 
   // Current version of the library. Keep in sync with `package.json`.
-  Backbone.VERSION = '0.9.2';
+  Backbone.VERSION = '0.9.10';
 
   // Require Underscore, if we're on the server, and it's not already present.
   var _ = root._;
@@ -3968,12 +4117,49 @@ define("underscore", (function (global) {
   // Backbone.Events
   // ---------------
 
-  // Regular expression used to split event strings
+  // Regular expression used to split event strings.
   var eventSplitter = /\s+/;
 
+  // Implement fancy features of the Events API such as multiple event
+  // names `"change blur"` and jQuery-style event maps `{change: action}`
+  // in terms of the existing API.
+  var eventsApi = function(obj, action, name, rest) {
+    if (!name) return true;
+    if (typeof name === 'object') {
+      for (var key in name) {
+        obj[action].apply(obj, [key, name[key]].concat(rest));
+      }
+    } else if (eventSplitter.test(name)) {
+      var names = name.split(eventSplitter);
+      for (var i = 0, l = names.length; i < l; i++) {
+        obj[action].apply(obj, [names[i]].concat(rest));
+      }
+    } else {
+      return true;
+    }
+  };
+
+  // Optimized internal dispatch function for triggering events. Tries to
+  // keep the usual cases speedy (most Backbone events have 3 arguments).
+  var triggerEvents = function(events, args) {
+    var ev, i = -1, l = events.length;
+    switch (args.length) {
+    case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx);
+    return;
+    case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0]);
+    return;
+    case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0], args[1]);
+    return;
+    case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0], args[1], args[2]);
+    return;
+    default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
+    }
+  };
+
   // A module that can be mixed in to *any object* in order to provide it with
-  // custom events. You may bind with `on` or remove with `off` callback functions
-  // to an event; `trigger`-ing an event fires all callbacks in succession.
+  // custom events. You may bind with `on` or remove with `off` callback
+  // functions to an event; `trigger`-ing an event fires all callbacks in
+  // succession.
   //
   //     var object = {};
   //     _.extend(object, Backbone.Events);
@@ -3982,49 +4168,59 @@ define("underscore", (function (global) {
   //
   var Events = Backbone.Events = {
 
-    // Bind one or more space separated events, `events`, to a `callback`
-    // function. Passing `"all"` will bind the callback to all events fired.
-    on: function(events, callback, context) {
-      var calls, event, list;
-      if (!callback) return this;
-
-      events = events.split(eventSplitter);
-      calls = this._callbacks || (this._callbacks = {});
-
-      while (event = events.shift()) {
-        list = calls[event] || (calls[event] = []);
-        list.push(callback, context);
-      }
-
+    // Bind one or more space separated events, or an events map,
+    // to a `callback` function. Passing `"all"` will bind the callback to
+    // all events fired.
+    on: function(name, callback, context) {
+      if (!(eventsApi(this, 'on', name, [callback, context]) && callback)) return this;
+      this._events || (this._events = {});
+      var list = this._events[name] || (this._events[name] = []);
+      list.push({callback: callback, context: context, ctx: context || this});
       return this;
     },
 
-    // Remove one or many callbacks. If `context` is null, removes all callbacks
-    // with that function. If `callback` is null, removes all callbacks for the
-    // event. If `events` is null, removes all bound callbacks for all events.
-    off: function(events, callback, context) {
-      var event, calls, list, i;
+    // Bind events to only be triggered a single time. After the first time
+    // the callback is invoked, it will be removed.
+    once: function(name, callback, context) {
+      if (!(eventsApi(this, 'once', name, [callback, context]) && callback)) return this;
+      var self = this;
+      var once = _.once(function() {
+        self.off(name, once);
+        callback.apply(this, arguments);
+      });
+      once._callback = callback;
+      this.on(name, once, context);
+      return this;
+    },
 
-      // No events, or removing *all* events.
-      if (!(calls = this._callbacks)) return this;
-      if (!(events || callback || context)) {
-        delete this._callbacks;
+    // Remove one or many callbacks. If `context` is null, removes all
+    // callbacks with that function. If `callback` is null, removes all
+    // callbacks for the event. If `name` is null, removes all bound
+    // callbacks for all events.
+    off: function(name, callback, context) {
+      var list, ev, events, names, i, l, j, k;
+      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
+      if (!name && !callback && !context) {
+        this._events = {};
         return this;
       }
 
-      events = events ? events.split(eventSplitter) : _.keys(calls);
-
-      // Loop through the callback list, splicing where appropriate.
-      while (event = events.shift()) {
-        if (!(list = calls[event]) || !(callback || context)) {
-          delete calls[event];
-          continue;
-        }
-
-        for (i = list.length - 2; i >= 0; i -= 2) {
-          if (!(callback && list[i] !== callback || context && list[i + 1] !== context)) {
-            list.splice(i, 2);
+      names = name ? [name] : _.keys(this._events);
+      for (i = 0, l = names.length; i < l; i++) {
+        name = names[i];
+        if (list = this._events[name]) {
+          events = [];
+          if (callback || context) {
+            for (j = 0, k = list.length; j < k; j++) {
+              ev = list[j];
+              if ((callback && callback !== ev.callback &&
+                               callback !== ev.callback._callback) ||
+                  (context && context !== ev.context)) {
+                events.push(ev);
+              }
+            }
           }
+          this._events[name] = events;
         }
       }
 
@@ -4035,50 +4231,53 @@ define("underscore", (function (global) {
     // passed the same arguments as `trigger` is, apart from the event name
     // (unless you're listening on `"all"`, which will cause your callback to
     // receive the true name of the event as the first argument).
-    trigger: function(events) {
-      var event, calls, list, i, length, args, all, rest;
-      if (!(calls = this._callbacks)) return this;
+    trigger: function(name) {
+      if (!this._events) return this;
+      var args = slice.call(arguments, 1);
+      if (!eventsApi(this, 'trigger', name, args)) return this;
+      var events = this._events[name];
+      var allEvents = this._events.all;
+      if (events) triggerEvents(events, args);
+      if (allEvents) triggerEvents(allEvents, arguments);
+      return this;
+    },
 
-      rest = [];
-      events = events.split(eventSplitter);
+    // An inversion-of-control version of `on`. Tell *this* object to listen to
+    // an event in another object ... keeping track of what it's listening to.
+    listenTo: function(obj, name, callback) {
+      var listeners = this._listeners || (this._listeners = {});
+      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
+      listeners[id] = obj;
+      obj.on(name, typeof name === 'object' ? this : callback, this);
+      return this;
+    },
 
-      // Fill up `rest` with the callback arguments.  Since we're only copying
-      // the tail of `arguments`, a loop is much faster than Array#slice.
-      for (i = 1, length = arguments.length; i < length; i++) {
-        rest[i - 1] = arguments[i];
-      }
-
-      // For each event, walk through the list of callbacks twice, first to
-      // trigger the event, then to trigger any `"all"` callbacks.
-      while (event = events.shift()) {
-        // Copy callback lists to prevent modification.
-        if (all = calls.all) all = all.slice();
-        if (list = calls[event]) list = list.slice();
-
-        // Execute event callbacks.
-        if (list) {
-          for (i = 0, length = list.length; i < length; i += 2) {
-            list[i].apply(list[i + 1] || this, rest);
-          }
+    // Tell this object to stop listening to either specific events ... or
+    // to every object it's currently listening to.
+    stopListening: function(obj, name, callback) {
+      var listeners = this._listeners;
+      if (!listeners) return;
+      if (obj) {
+        obj.off(name, typeof name === 'object' ? this : callback, this);
+        if (!name && !callback) delete listeners[obj._listenerId];
+      } else {
+        if (typeof name === 'object') callback = this;
+        for (var id in listeners) {
+          listeners[id].off(name, callback, this);
         }
-
-        // Execute "all" callbacks.
-        if (all) {
-          args = [event].concat(rest);
-          for (i = 0, length = all.length; i < length; i += 2) {
-            all[i].apply(all[i + 1] || this, args);
-          }
-        }
+        this._listeners = {};
       }
-
       return this;
     }
-
   };
 
   // Aliases for backwards compatibility.
   Events.bind   = Events.on;
   Events.unbind = Events.off;
+
+  // Allow the `Backbone` object to serve as a global event bus, for folks who
+  // want global "pubsub" in a convenient place.
+  _.extend(Backbone, Events);
 
   // Backbone.Model
   // --------------
@@ -4088,23 +4287,15 @@ define("underscore", (function (global) {
   var Model = Backbone.Model = function(attributes, options) {
     var defaults;
     var attrs = attributes || {};
-    if (options && options.collection) this.collection = options.collection;
-    this.attributes = {};
-    this._escapedAttributes = {};
     this.cid = _.uniqueId('c');
-    this.changed = {};
-    this._changes = {};
-    this._pending = {};
-    if (options && options.parse) attrs = this.parse(attrs);
+    this.attributes = {};
+    if (options && options.collection) this.collection = options.collection;
+    if (options && options.parse) attrs = this.parse(attrs, options) || {};
     if (defaults = _.result(this, 'defaults')) {
-      attrs = _.extend({}, defaults, attrs);
+      attrs = _.defaults({}, attrs, defaults);
     }
-    this.set(attrs, {silent: true});
-    // Reset change tracking.
+    this.set(attrs, options);
     this.changed = {};
-    this._changes = {};
-    this._pending = {};
-    this._previousAttributes = _.clone(this.attributes);
     this.initialize.apply(this, arguments);
   };
 
@@ -4113,18 +4304,6 @@ define("underscore", (function (global) {
 
     // A hash of attributes whose current and previous value differ.
     changed: null,
-
-    // A hash of attributes that have changed since the last time `change`
-    // was called.
-    _changes: null,
-
-    // A hash of attributes that have changed since the last `change` event
-    // began.
-    _pending: null,
-
-    // A hash of attributes with the current model state to determine if
-    // a `change` should be recorded within a nested `change` block.
-    _changing : null,
 
     // The default name for the JSON `id` attribute is `"id"`. MongoDB and
     // CouchDB users may want to set this to `"_id"`.
@@ -4151,10 +4330,7 @@ define("underscore", (function (global) {
 
     // Get the HTML-escaped value of an attribute.
     escape: function(attr) {
-      var html;
-      if (html = this._escapedAttributes[attr]) return html;
-      var val = this.get(attr);
-      return this._escapedAttributes[attr] = _.escape(val == null ? '' : '' + val);
+      return _.escape(this.get(attr));
     },
 
     // Returns `true` if the attribute contains a value that is not null
@@ -4163,244 +4339,87 @@ define("underscore", (function (global) {
       return this.get(attr) != null;
     },
 
+    // ----------------------------------------------------------------------
+
     // Set a hash of model attributes on the object, firing `"change"` unless
     // you choose to silence it.
     set: function(key, val, options) {
-      var attr, attrs;
+      var attr, attrs, unset, changes, silent, changing, prev, current;
       if (key == null) return this;
 
       // Handle both `"key", value` and `{key: value}` -style arguments.
-      if (_.isObject(key)) {
+      if (typeof key === 'object') {
         attrs = key;
         options = val;
       } else {
         (attrs = {})[key] = val;
       }
 
-      // Extract attributes and options.
-      var silent = options && options.silent;
-      var unset = options && options.unset;
-      if (attrs instanceof Model) attrs = attrs.attributes;
-      if (unset) for (attr in attrs) attrs[attr] = void 0;
+      options || (options = {});
 
       // Run validation.
       if (!this._validate(attrs, options)) return false;
 
+      // Extract attributes and options.
+      unset           = options.unset;
+      silent          = options.silent;
+      changes         = [];
+      changing        = this._changing;
+      this._changing  = true;
+
+      if (!changing) {
+        this._previousAttributes = _.clone(this.attributes);
+        this.changed = {};
+      }
+      current = this.attributes, prev = this._previousAttributes;
+
       // Check for changes of `id`.
       if (this.idAttribute in attrs) this.id = attrs[this.idAttribute];
 
-      var changing = this._changing;
-      var now = this.attributes;
-      var escaped = this._escapedAttributes;
-      var prev = this._previousAttributes || {};
-
-      // For each `set` attribute...
+      // For each `set` attribute, update or delete the current value.
       for (attr in attrs) {
         val = attrs[attr];
-
-        // If the new and current value differ, record the change.
-        if (!_.isEqual(now[attr], val) || (unset && _.has(now, attr))) {
-          delete escaped[attr];
-          this._changes[attr] = true;
-        }
-
-        // Update or delete the current value.
-        unset ? delete now[attr] : now[attr] = val;
-
-        // If the new and previous value differ, record the change.  If not,
-        // then remove changes for this attribute.
-        if (!_.isEqual(prev[attr], val) || (_.has(now, attr) !== _.has(prev, attr))) {
+        if (!_.isEqual(current[attr], val)) changes.push(attr);
+        if (!_.isEqual(prev[attr], val)) {
           this.changed[attr] = val;
-          if (!silent) this._pending[attr] = true;
         } else {
           delete this.changed[attr];
-          delete this._pending[attr];
-          if (!changing) delete this._changes[attr];
         }
-
-        if (changing && _.isEqual(now[attr], changing[attr])) delete this._changes[attr];
+        unset ? delete current[attr] : current[attr] = val;
       }
 
-      // Fire the `"change"` events.
-      if (!silent) this.change(options);
+      // Trigger all relevant attribute changes.
+      if (!silent) {
+        if (changes.length) this._pending = true;
+        for (var i = 0, l = changes.length; i < l; i++) {
+          this.trigger('change:' + changes[i], this, current[changes[i]], options);
+        }
+      }
+
+      if (changing) return this;
+      if (!silent) {
+        while (this._pending) {
+          this._pending = false;
+          this.trigger('change', this, options);
+        }
+      }
+      this._pending = false;
+      this._changing = false;
       return this;
     },
 
     // Remove an attribute from the model, firing `"change"` unless you choose
     // to silence it. `unset` is a noop if the attribute doesn't exist.
     unset: function(attr, options) {
-      options = _.extend({}, options, {unset: true});
-      return this.set(attr, null, options);
+      return this.set(attr, void 0, _.extend({}, options, {unset: true}));
     },
 
     // Clear all attributes on the model, firing `"change"` unless you choose
     // to silence it.
     clear: function(options) {
-      options = _.extend({}, options, {unset: true});
-      return this.set(_.clone(this.attributes), options);
-    },
-
-    // Fetch the model from the server. If the server's representation of the
-    // model differs from its current attributes, they will be overriden,
-    // triggering a `"change"` event.
-    fetch: function(options) {
-      options = options ? _.clone(options) : {};
-      var model = this;
-      var success = options.success;
-      options.success = function(resp, status, xhr) {
-        if (!model.set(model.parse(resp, xhr), options)) return false;
-        if (success) success(model, resp, options);
-      };
-      return this.sync('read', this, options);
-    },
-
-    // Set a hash of model attributes, and sync the model to the server.
-    // If the server returns an attributes hash that differs, the model's
-    // state will be `set` again.
-    save: function(key, val, options) {
-      var attrs, current, done;
-
-      // Handle both `"key", value` and `{key: value}` -style arguments.
-      if (key == null || _.isObject(key)) {
-        attrs = key;
-        options = val;
-      } else if (key != null) {
-        (attrs = {})[key] = val;
-      }
-      options = options ? _.clone(options) : {};
-
-      // If we're "wait"-ing to set changed attributes, validate early.
-      if (options.wait) {
-        if (!this._validate(attrs, options)) return false;
-        current = _.clone(this.attributes);
-      }
-
-      // Regular saves `set` attributes before persisting to the server.
-      var silentOptions = _.extend({}, options, {silent: true});
-      if (attrs && !this.set(attrs, options.wait ? silentOptions : options)) {
-        return false;
-      }
-
-      // Do not persist invalid models.
-      if (!attrs && !this._validate(null, options)) return false;
-
-      // After a successful server-side save, the client is (optionally)
-      // updated with the server-side state.
-      var model = this;
-      var success = options.success;
-      options.success = function(resp, status, xhr) {
-        done = true;
-        var serverAttrs = model.parse(resp, xhr);
-        if (options.wait) serverAttrs = _.extend(attrs || {}, serverAttrs);
-        if (!model.set(serverAttrs, options)) return false;
-        if (success) success(model, resp, options);
-      };
-
-      // Finish configuring and sending the Ajax request.
-      var xhr = this.sync(this.isNew() ? 'create' : 'update', this, options);
-
-      // When using `wait`, reset attributes to original values unless
-      // `success` has been called already.
-      if (!done && options.wait) {
-        this.clear(silentOptions);
-        this.set(current, silentOptions);
-      }
-
-      return xhr;
-    },
-
-    // Destroy this model on the server if it was already persisted.
-    // Optimistically removes the model from its collection, if it has one.
-    // If `wait: true` is passed, waits for the server to respond before removal.
-    destroy: function(options) {
-      options = options ? _.clone(options) : {};
-      var model = this;
-      var success = options.success;
-
-      var destroy = function() {
-        model.trigger('destroy', model, model.collection, options);
-      };
-
-      options.success = function(resp) {
-        if (options.wait || model.isNew()) destroy();
-        if (success) success(model, resp, options);
-      };
-
-      if (this.isNew()) {
-        options.success();
-        return false;
-      }
-
-      var xhr = this.sync('delete', this, options);
-      if (!options.wait) destroy();
-      return xhr;
-    },
-
-    // Default URL for the model's representation on the server -- if you're
-    // using Backbone's restful methods, override this to change the endpoint
-    // that will be called.
-    url: function() {
-      var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
-      if (this.isNew()) return base;
-      return base + (base.charAt(base.length - 1) === '/' ? '' : '/') + encodeURIComponent(this.id);
-    },
-
-    // **parse** converts a response into the hash of attributes to be `set` on
-    // the model. The default implementation is just to pass the response along.
-    parse: function(resp, xhr) {
-      return resp;
-    },
-
-    // Create a new model with identical attributes to this one.
-    clone: function() {
-      return new this.constructor(this.attributes);
-    },
-
-    // A model is new if it has never been saved to the server, and lacks an id.
-    isNew: function() {
-      return this.id == null;
-    },
-
-    // Call this method to manually fire a `"change"` event for this model and
-    // a `"change:attribute"` event for each changed attribute.
-    // Calling this will cause all objects observing the model to update.
-    change: function(options) {
-      var changing = this._changing;
-      var current = this._changing = {};
-
-      // Silent changes become pending changes.
-      for (var attr in this._changes) this._pending[attr] = true;
-
-      // Trigger 'change:attr' for any new or silent changes.
-      var changes = this._changes;
-      this._changes = {};
-
-      // Set the correct state for this._changing values
-      var triggers = [];
-      for (var attr in changes) {
-        current[attr] = this.get(attr);
-        triggers.push(attr);
-      }
-
-      for (var i=0, l=triggers.length; i < l; i++) {
-        this.trigger('change:' + triggers[i], this, current[triggers[i]], options);
-      }
-      if (changing) return this;
-
-      // Continue firing `"change"` events while there are pending changes.
-      while (!_.isEmpty(this._pending)) {
-        this._pending = {};
-        this.trigger('change', this, options);
-        // Pending and silent changes still remain.
-        for (var attr in this.changed) {
-          if (this._pending[attr] || this._changes[attr]) continue;
-          delete this.changed[attr];
-        }
-        this._previousAttributes = _.clone(this.attributes);
-      }
-
-      this._changing = null;
-      return this;
+      var attrs = {};
+      for (var key in this.attributes) attrs[key] = void 0;
+      return this.set(attrs, _.extend({}, options, {unset: true}));
     },
 
     // Determine if the model has changed since the last `"change"` event.
@@ -4418,7 +4437,8 @@ define("underscore", (function (global) {
     // determining if there *would be* a change.
     changedAttributes: function(diff) {
       if (!diff) return this.hasChanged() ? _.clone(this.changed) : false;
-      var val, changed = false, old = this._previousAttributes;
+      var val, changed = false;
+      var old = this._changing ? this._previousAttributes : this.attributes;
       for (var attr in diff) {
         if (_.isEqual(old[attr], (val = diff[attr]))) continue;
         (changed || (changed = {}))[attr] = val;
@@ -4439,22 +4459,141 @@ define("underscore", (function (global) {
       return _.clone(this._previousAttributes);
     },
 
-    // Check if the model is currently in a valid state. It's only possible to
-    // get into an *invalid* state if you're using silent changes.
+    // ---------------------------------------------------------------------
+
+    // Fetch the model from the server. If the server's representation of the
+    // model differs from its current attributes, they will be overriden,
+    // triggering a `"change"` event.
+    fetch: function(options) {
+      options = options ? _.clone(options) : {};
+      if (options.parse === void 0) options.parse = true;
+      var success = options.success;
+      options.success = function(model, resp, options) {
+        if (!model.set(model.parse(resp, options), options)) return false;
+        if (success) success(model, resp, options);
+      };
+      return this.sync('read', this, options);
+    },
+
+    // Set a hash of model attributes, and sync the model to the server.
+    // If the server returns an attributes hash that differs, the model's
+    // state will be `set` again.
+    save: function(key, val, options) {
+      var attrs, success, method, xhr, attributes = this.attributes;
+
+      // Handle both `"key", value` and `{key: value}` -style arguments.
+      if (key == null || typeof key === 'object') {
+        attrs = key;
+        options = val;
+      } else {
+        (attrs = {})[key] = val;
+      }
+
+      // If we're not waiting and attributes exist, save acts as `set(attr).save(null, opts)`.
+      if (attrs && (!options || !options.wait) && !this.set(attrs, options)) return false;
+
+      options = _.extend({validate: true}, options);
+
+      // Do not persist invalid models.
+      if (!this._validate(attrs, options)) return false;
+
+      // Set temporary attributes if `{wait: true}`.
+      if (attrs && options.wait) {
+        this.attributes = _.extend({}, attributes, attrs);
+      }
+
+      // After a successful server-side save, the client is (optionally)
+      // updated with the server-side state.
+      if (options.parse === void 0) options.parse = true;
+      success = options.success;
+      options.success = function(model, resp, options) {
+        // Ensure attributes are restored during synchronous saves.
+        model.attributes = attributes;
+        var serverAttrs = model.parse(resp, options);
+        if (options.wait) serverAttrs = _.extend(attrs || {}, serverAttrs);
+        if (_.isObject(serverAttrs) && !model.set(serverAttrs, options)) {
+          return false;
+        }
+        if (success) success(model, resp, options);
+      };
+
+      // Finish configuring and sending the Ajax request.
+      method = this.isNew() ? 'create' : (options.patch ? 'patch' : 'update');
+      if (method === 'patch') options.attrs = attrs;
+      xhr = this.sync(method, this, options);
+
+      // Restore attributes.
+      if (attrs && options.wait) this.attributes = attributes;
+
+      return xhr;
+    },
+
+    // Destroy this model on the server if it was already persisted.
+    // Optimistically removes the model from its collection, if it has one.
+    // If `wait: true` is passed, waits for the server to respond before removal.
+    destroy: function(options) {
+      options = options ? _.clone(options) : {};
+      var model = this;
+      var success = options.success;
+
+      var destroy = function() {
+        model.trigger('destroy', model, model.collection, options);
+      };
+
+      options.success = function(model, resp, options) {
+        if (options.wait || model.isNew()) destroy();
+        if (success) success(model, resp, options);
+      };
+
+      if (this.isNew()) {
+        options.success(this, null, options);
+        return false;
+      }
+
+      var xhr = this.sync('delete', this, options);
+      if (!options.wait) destroy();
+      return xhr;
+    },
+
+    // Default URL for the model's representation on the server -- if you're
+    // using Backbone's restful methods, override this to change the endpoint
+    // that will be called.
+    url: function() {
+      var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
+      if (this.isNew()) return base;
+      return base + (base.charAt(base.length - 1) === '/' ? '' : '/') + encodeURIComponent(this.id);
+    },
+
+    // **parse** converts a response into the hash of attributes to be `set` on
+    // the model. The default implementation is just to pass the response along.
+    parse: function(resp, options) {
+      return resp;
+    },
+
+    // Create a new model with identical attributes to this one.
+    clone: function() {
+      return new this.constructor(this.attributes);
+    },
+
+    // A model is new if it has never been saved to the server, and lacks an id.
+    isNew: function() {
+      return this.id == null;
+    },
+
+    // Check if the model is currently in a valid state.
     isValid: function(options) {
       return !this.validate || !this.validate(this.attributes, options);
     },
 
     // Run validation against the next complete set of model attributes,
-    // returning `true` if all is well. If a specific `error` callback has
-    // been passed, call that instead of firing the general `"error"` event.
+    // returning `true` if all is well. Otherwise, fire a general
+    // `"error"` event and call the error callback, if specified.
     _validate: function(attrs, options) {
-      if (options && options.silent || !this.validate) return true;
+      if (!options.validate || !this.validate) return true;
       attrs = _.extend({}, this.attributes, attrs);
-      var error = this.validate(attrs, options);
+      var error = this.validationError = this.validate(attrs, options) || null;
       if (!error) return true;
-      if (options && options.error) options.error(this, error, options);
-      this.trigger('error', this, error, options);
+      this.trigger('invalid', this, error, options || {});
       return false;
     }
 
@@ -4470,12 +4609,10 @@ define("underscore", (function (global) {
     options || (options = {});
     if (options.model) this.model = options.model;
     if (options.comparator !== void 0) this.comparator = options.comparator;
+    this.models = [];
     this._reset();
     this.initialize.apply(this, arguments);
-    if (models) {
-      if (options.parse) models = this.parse(models);
-      this.reset(models, {silent: true, parse: options.parse});
-    }
+    if (models) this.reset(models, _.extend({silent: true}, options));
   };
 
   // Define the Collection's inheritable methods.
@@ -4500,71 +4637,81 @@ define("underscore", (function (global) {
       return Backbone.sync.apply(this, arguments);
     },
 
-    // Add a model, or list of models to the set. Pass **silent** to avoid
-    // firing the `add` event for every new model.
+    // Add a model, or list of models to the set.
     add: function(models, options) {
-      var i, args, length, model, existing;
-      var at = options && options.at;
       models = _.isArray(models) ? models.slice() : [models];
+      options || (options = {});
+      var i, l, model, attrs, existing, doSort, add, at, sort, sortAttr;
+      add = [];
+      at = options.at;
+      sort = this.comparator && (at == null) && options.sort != false;
+      sortAttr = _.isString(this.comparator) ? this.comparator : null;
 
-      // Begin by turning bare objects into model references, and preventing
-      // invalid models from being added.
-      for (i = 0, length = models.length; i < length; i++) {
-        if (models[i] = this._prepareModel(models[i], options)) continue;
-        throw new Error("Can't add an invalid model to a collection");
-      }
-
-      for (i = models.length - 1; i >= 0; i--) {
-        model = models[i];
-        existing = model.id != null && this._byId[model.id];
-
-        // If a duplicate is found, splice it out and optionally merge it into
-        // the existing model.
-        if (existing || this._byCid[model.cid]) {
-          if (options && options.merge && existing) {
-            existing.set(model, options);
-          }
-          models.splice(i, 1);
+      // Turn bare objects into model references, and prevent invalid models
+      // from being added.
+      for (i = 0, l = models.length; i < l; i++) {
+        if (!(model = this._prepareModel(attrs = models[i], options))) {
+          this.trigger('invalid', this, attrs, options);
           continue;
         }
+
+        // If a duplicate is found, prevent it from being added and
+        // optionally merge it into the existing model.
+        if (existing = this.get(model)) {
+          if (options.merge) {
+            existing.set(attrs === model ? model.attributes : attrs, options);
+            if (sort && !doSort && existing.hasChanged(sortAttr)) doSort = true;
+          }
+          continue;
+        }
+
+        // This is a new model, push it to the `add` list.
+        add.push(model);
 
         // Listen to added models' events, and index models for lookup by
         // `id` and by `cid`.
         model.on('all', this._onModelEvent, this);
-        this._byCid[model.cid] = model;
+        this._byId[model.cid] = model;
         if (model.id != null) this._byId[model.id] = model;
       }
 
-      // Update `length` and splice in new models.
-      this.length += models.length;
-      args = [at != null ? at : this.models.length, 0];
-      push.apply(args, models);
-      splice.apply(this.models, args);
+      // See if sorting is needed, update `length` and splice in new models.
+      if (add.length) {
+        if (sort) doSort = true;
+        this.length += add.length;
+        if (at != null) {
+          splice.apply(this.models, [at, 0].concat(add));
+        } else {
+          push.apply(this.models, add);
+        }
+      }
 
-      // Sort the collection if appropriate.
-      if (this.comparator && at == null) this.sort({silent: true});
+      // Silently sort the collection if appropriate.
+      if (doSort) this.sort({silent: true});
 
-      if (options && options.silent) return this;
+      if (options.silent) return this;
 
       // Trigger `add` events.
-      while (model = models.shift()) {
-        model.trigger('add', model, this, options);
+      for (i = 0, l = add.length; i < l; i++) {
+        (model = add[i]).trigger('add', model, this, options);
       }
+
+      // Trigger `sort` if the collection was sorted.
+      if (doSort) this.trigger('sort', this, options);
 
       return this;
     },
 
-    // Remove a model, or a list of models from the set. Pass silent to avoid
-    // firing the `remove` event for every model removed.
+    // Remove a model, or a list of models from the set.
     remove: function(models, options) {
-      var i, l, index, model;
-      options || (options = {});
       models = _.isArray(models) ? models.slice() : [models];
+      options || (options = {});
+      var i, l, index, model;
       for (i = 0, l = models.length; i < l; i++) {
-        model = this.getByCid(models[i]) || this.get(models[i]);
+        model = this.get(models[i]);
         if (!model) continue;
         delete this._byId[model.id];
-        delete this._byCid[model.cid];
+        delete this._byId[model.cid];
         index = this.indexOf(model);
         this.models.splice(index, 1);
         this.length--;
@@ -4580,7 +4727,7 @@ define("underscore", (function (global) {
     // Add a model to the end of the collection.
     push: function(model, options) {
       model = this._prepareModel(model, options);
-      this.add(model, options);
+      this.add(model, _.extend({at: this.length}, options));
       return model;
     },
 
@@ -4611,14 +4758,10 @@ define("underscore", (function (global) {
     },
 
     // Get a model from the set by id.
-    get: function(id) {
-      if (id == null) return void 0;
-      return this._byId[id.id != null ? id.id : id];
-    },
-
-    // Get a model from the set by client id.
-    getByCid: function(cid) {
-      return cid && this._byCid[cid.cid || cid];
+    get: function(obj) {
+      if (obj == null) return void 0;
+      this._idAttr || (this._idAttr = this.model.prototype.idAttribute);
+      return this._byId[obj.id || obj.cid || obj[this._idAttr] || obj];
     },
 
     // Get the model at the given index.
@@ -4644,14 +4787,16 @@ define("underscore", (function (global) {
       if (!this.comparator) {
         throw new Error('Cannot sort a set without a comparator');
       }
+      options || (options = {});
 
+      // Run sort based on type of `comparator`.
       if (_.isString(this.comparator) || this.comparator.length === 1) {
         this.models = this.sortBy(this.comparator, this);
       } else {
         this.models.sort(_.bind(this.comparator, this));
       }
 
-      if (!options || !options.silent) this.trigger('reset', this, options);
+      if (!options.silent) this.trigger('sort', this, options);
       return this;
     },
 
@@ -4660,29 +4805,68 @@ define("underscore", (function (global) {
       return _.invoke(this.models, 'get', attr);
     },
 
+    // Smartly update a collection with a change set of models, adding,
+    // removing, and merging as necessary.
+    update: function(models, options) {
+      options = _.extend({add: true, merge: true, remove: true}, options);
+      if (options.parse) models = this.parse(models, options);
+      var model, i, l, existing;
+      var add = [], remove = [], modelMap = {};
+
+      // Allow a single model (or no argument) to be passed.
+      if (!_.isArray(models)) models = models ? [models] : [];
+
+      // Proxy to `add` for this case, no need to iterate...
+      if (options.add && !options.remove) return this.add(models, options);
+
+      // Determine which models to add and merge, and which to remove.
+      for (i = 0, l = models.length; i < l; i++) {
+        model = models[i];
+        existing = this.get(model);
+        if (options.remove && existing) modelMap[existing.cid] = true;
+        if ((options.add && !existing) || (options.merge && existing)) {
+          add.push(model);
+        }
+      }
+      if (options.remove) {
+        for (i = 0, l = this.models.length; i < l; i++) {
+          model = this.models[i];
+          if (!modelMap[model.cid]) remove.push(model);
+        }
+      }
+
+      // Remove models (if applicable) before we add and merge the rest.
+      if (remove.length) this.remove(remove, options);
+      if (add.length) this.add(add, options);
+      return this;
+    },
+
     // When you have more items than you want to add or remove individually,
     // you can reset the entire set with a new list of models, without firing
     // any `add` or `remove` events. Fires `reset` when finished.
     reset: function(models, options) {
+      options || (options = {});
+      if (options.parse) models = this.parse(models, options);
       for (var i = 0, l = this.models.length; i < l; i++) {
         this._removeReference(this.models[i]);
       }
+      options.previousModels = this.models.slice();
       this._reset();
       if (models) this.add(models, _.extend({silent: true}, options));
-      if (!options || !options.silent) this.trigger('reset', this, options);
+      if (!options.silent) this.trigger('reset', this, options);
       return this;
     },
 
     // Fetch the default set of models for this collection, resetting the
-    // collection when they arrive. If `add: true` is passed, appends the
-    // models to the collection instead of resetting.
+    // collection when they arrive. If `update: true` is passed, the response
+    // data will be passed through the `update` method instead of `reset`.
     fetch: function(options) {
       options = options ? _.clone(options) : {};
       if (options.parse === void 0) options.parse = true;
-      var collection = this;
       var success = options.success;
-      options.success = function(resp, status, xhr) {
-        collection[options.add ? 'add' : 'reset'](collection.parse(resp, xhr), options);
+      options.success = function(collection, resp, options) {
+        var method = options.update ? 'update' : 'reset';
+        collection[method](resp, options);
         if (success) success(collection, resp, options);
       };
       return this.sync('read', this, options);
@@ -4692,11 +4876,10 @@ define("underscore", (function (global) {
     // collection immediately, unless `wait: true` is passed, in which case we
     // wait for the server to agree.
     create: function(model, options) {
-      var collection = this;
       options = options ? _.clone(options) : {};
-      model = this._prepareModel(model, options);
-      if (!model) return false;
-      if (!options.wait) collection.add(model, options);
+      if (!(model = this._prepareModel(model, options))) return false;
+      if (!options.wait) this.add(model, options);
+      var collection = this;
       var success = options.success;
       options.success = function(model, resp, options) {
         if (options.wait) collection.add(model, options);
@@ -4708,7 +4891,7 @@ define("underscore", (function (global) {
 
     // **parse** converts a response into a list of models to be added to the
     // collection. The default implementation is just to pass it through.
-    parse: function(resp, xhr) {
+    parse: function(resp, options) {
       return resp;
     },
 
@@ -4717,19 +4900,11 @@ define("underscore", (function (global) {
       return new this.constructor(this.models);
     },
 
-    // Proxy to _'s chain. Can't be proxied the same way the rest of the
-    // underscore methods are proxied because it relies on the underscore
-    // constructor.
-    chain: function() {
-      return _(this.models).chain();
-    },
-
     // Reset all internal state. Called when the collection is reset.
-    _reset: function(options) {
+    _reset: function() {
       this.length = 0;
-      this.models = [];
+      this.models.length = 0;
       this._byId  = {};
-      this._byCid = {};
     },
 
     // Prepare a model or hash of attributes to be added to this collection.
@@ -4741,7 +4916,7 @@ define("underscore", (function (global) {
       options || (options = {});
       options.collection = this;
       var model = new this.model(attrs, options);
-      if (!model._validate(model.attributes, options)) return false;
+      if (!model._validate(attrs, options)) return false;
       return model;
     },
 
@@ -4763,6 +4938,14 @@ define("underscore", (function (global) {
         if (model.id != null) this._byId[model.id] = model;
       }
       this.trigger.apply(this, arguments);
+    },
+
+    sortedIndex: function (model, value, context) {
+      value || (value = this.comparator);
+      var iterator = _.isFunction(value) ? value : function(model) {
+        return model.get(value);
+      };
+      return _.sortedIndex(this.models, model, iterator, context);
     }
 
   });
@@ -4771,9 +4954,9 @@ define("underscore", (function (global) {
   var methods = ['forEach', 'each', 'map', 'collect', 'reduce', 'foldl',
     'inject', 'reduceRight', 'foldr', 'find', 'detect', 'filter', 'select',
     'reject', 'every', 'all', 'some', 'any', 'include', 'contains', 'invoke',
-    'max', 'min', 'sortedIndex', 'toArray', 'size', 'first', 'head', 'take',
-    'initial', 'rest', 'tail', 'last', 'without', 'indexOf', 'shuffle',
-    'lastIndexOf', 'isEmpty'];
+    'max', 'min', 'toArray', 'size', 'first', 'head', 'take', 'initial', 'rest',
+    'tail', 'drop', 'last', 'without', 'indexOf', 'shuffle', 'lastIndexOf',
+    'isEmpty', 'chain'];
 
   // Mix in each Underscore method as a proxy to `Collection#models`.
   _.each(methods, function(method) {
@@ -4812,9 +4995,9 @@ define("underscore", (function (global) {
   // Cached regular expressions for matching named param parts and splatted
   // parts of route strings.
   var optionalParam = /\((.*?)\)/g;
-  var namedParam    = /:\w+/g;
+  var namedParam    = /(\(\?)?:\w+/g;
   var splatParam    = /\*\w+/g;
-  var escapeRegExp  = /[-{}[\]+?.,\\^$|#\s]/g;
+  var escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 
   // Set up all inheritable **Backbone.Router** properties and methods.
   _.extend(Router.prototype, Events, {
@@ -4836,6 +5019,7 @@ define("underscore", (function (global) {
         var args = this._extractParameters(route, fragment);
         callback && callback.apply(this, args);
         this.trigger.apply(this, ['route:' + name].concat(args));
+        this.trigger('route', name, args);
         Backbone.history.trigger('route', this, name, args);
       }, this));
       return this;
@@ -4863,7 +5047,9 @@ define("underscore", (function (global) {
     _routeToRegExp: function(route) {
       route = route.replace(escapeRegExp, '\\$&')
                    .replace(optionalParam, '(?:$1)?')
-                   .replace(namedParam, '([^\/]+)')
+                   .replace(namedParam, function(match, optional){
+                     return optional ? match : '([^\/]+)';
+                   })
                    .replace(splatParam, '(.*?)');
       return new RegExp('^' + route + '$');
     },
@@ -4885,15 +5071,15 @@ define("underscore", (function (global) {
     this.handlers = [];
     _.bindAll(this, 'checkUrl');
 
-    // #1653 - Ensure that `History` can be used outside of the browser.
+    // Ensure that `History` can be used outside of the browser.
     if (typeof window !== 'undefined') {
       this.location = window.location;
       this.history = window.history;
     }
   };
 
-  // Cached regex for cleaning leading hashes and slashes.
-  var routeStripper = /^[#\/]|\s+$/;
+  // Cached regex for stripping a leading hash/slash and trailing space.
+  var routeStripper = /^[#\/]|\s+$/g;
 
   // Cached regex for stripping leading and trailing slashes.
   var rootStripper = /^\/+|\/+$/g;
@@ -4933,7 +5119,7 @@ define("underscore", (function (global) {
           fragment = this.getHash();
         }
       }
-      return decodeURIComponent(fragment.replace(routeStripper, ''));
+      return fragment.replace(routeStripper, '');
     },
 
     // Start the hash change handling, returning `true` if the current URL matches
@@ -4964,9 +5150,9 @@ define("underscore", (function (global) {
       // Depending on whether we're using pushState or hashes, and whether
       // 'onhashchange' is supported, determine how we check the URL state.
       if (this._hasPushState) {
-        Backbone.$(window).bind('popstate', this.checkUrl);
+        Backbone.$(window).on('popstate', this.checkUrl);
       } else if (this._wantsHashChange && ('onhashchange' in window) && !oldIE) {
-        Backbone.$(window).bind('hashchange', this.checkUrl);
+        Backbone.$(window).on('hashchange', this.checkUrl);
       } else if (this._wantsHashChange) {
         this._checkUrlInterval = setInterval(this.checkUrl, this.interval);
       }
@@ -4998,7 +5184,7 @@ define("underscore", (function (global) {
     // Disable Backbone.history, perhaps temporarily. Not useful in a real app,
     // but possibly useful for unit testing Routers.
     stop: function() {
-      Backbone.$(window).unbind('popstate', this.checkUrl).unbind('hashchange', this.checkUrl);
+      Backbone.$(window).off('popstate', this.checkUrl).off('hashchange', this.checkUrl);
       clearInterval(this._checkUrlInterval);
       History.started = false;
     },
@@ -5081,7 +5267,7 @@ define("underscore", (function (global) {
         var href = location.href.replace(/(javascript:|#).*$/, '');
         location.replace(href + '#' + fragment);
       } else {
-        // #1649 - Some browsers require that `hash` contains a leading #.
+        // Some browsers require that `hash` contains a leading #.
         location.hash = '#' + fragment;
       }
     }
@@ -5108,7 +5294,7 @@ define("underscore", (function (global) {
   var delegateEventSplitter = /^(\S+)\s*(.*)$/;
 
   // List of view options to be merged as properties.
-  var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName'];
+  var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events'];
 
   // Set up all inheritable **Backbone.View** properties and methods.
   _.extend(View.prototype, Events, {
@@ -5133,33 +5319,12 @@ define("underscore", (function (global) {
       return this;
     },
 
-    // Clean up references to this view in order to prevent latent effects and
-    // memory leaks.
-    dispose: function() {
-      this.undelegateEvents();
-      if (this.model && this.model.off) this.model.off(null, null, this);
-      if (this.collection && this.collection.off) this.collection.off(null, null, this);
-      return this;
-    },
-
-    // Remove this view from the DOM. Note that the view isn't present in the
-    // DOM by default, so calling this method may be a no-op.
+    // Remove this view by taking the element out of the DOM, and removing any
+    // applicable Backbone.Events listeners.
     remove: function() {
-      this.dispose();
       this.$el.remove();
+      this.stopListening();
       return this;
-    },
-
-    // For small amounts of DOM Elements, where a full-blown template isn't
-    // needed, use **make** to manufacture elements, one at a time.
-    //
-    //     var el = this.make('li', {'class': 'row'}, this.model.escape('title'));
-    //
-    make: function(tagName, attributes, content) {
-      var el = document.createElement(tagName);
-      if (attributes) Backbone.$(el).attr(attributes);
-      if (content != null) Backbone.$(el).html(content);
-      return el;
     },
 
     // Change the view's element (`this.el` property), including event
@@ -5199,9 +5364,9 @@ define("underscore", (function (global) {
         method = _.bind(method, this);
         eventName += '.delegateEvents' + this.cid;
         if (selector === '') {
-          this.$el.bind(eventName, method);
+          this.$el.on(eventName, method);
         } else {
-          this.$el.delegate(selector, eventName, method);
+          this.$el.on(eventName, selector, method);
         }
       }
     },
@@ -5210,14 +5375,14 @@ define("underscore", (function (global) {
     // You usually don't need to use this, but may wish to if you have multiple
     // Backbone views attached to the same DOM element.
     undelegateEvents: function() {
-      this.$el.unbind('.delegateEvents' + this.cid);
+      this.$el.off('.delegateEvents' + this.cid);
     },
 
     // Performs the initial configuration of a View with a set of options.
     // Keys with special meaning *(model, collection, id, className)*, are
     // attached directly to the view.
     _configure: function(options) {
-      if (this.options) options = _.extend({}, this.options, options);
+      if (this.options) options = _.extend({}, _.result(this, 'options'), options);
       _.extend(this, _.pick(options, viewOptions));
       this.options = options;
     },
@@ -5231,7 +5396,8 @@ define("underscore", (function (global) {
         var attrs = _.extend({}, _.result(this, 'attributes'));
         if (this.id) attrs.id = _.result(this, 'id');
         if (this.className) attrs['class'] = _.result(this, 'className');
-        this.setElement(this.make(_.result(this, 'tagName'), attrs), false);
+        var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
+        this.setElement($el, false);
       } else {
         this.setElement(_.result(this, 'el'), false);
       }
@@ -5246,6 +5412,7 @@ define("underscore", (function (global) {
   var methodMap = {
     'create': 'POST',
     'update': 'PUT',
+    'patch':  'PATCH',
     'delete': 'DELETE',
     'read':   'GET'
   };
@@ -5283,9 +5450,9 @@ define("underscore", (function (global) {
     }
 
     // Ensure that we have the appropriate request data.
-    if (!options.data && model && (method === 'create' || method === 'update')) {
+    if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
       params.contentType = 'application/json';
-      params.data = JSON.stringify(model);
+      params.data = JSON.stringify(options.attrs || model.toJSON(options));
     }
 
     // For older servers, emulate JSON by encoding the request into an HTML-form.
@@ -5296,7 +5463,7 @@ define("underscore", (function (global) {
 
     // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
     // And an `X-HTTP-Method-Override` header.
-    if (options.emulateHTTP && (type === 'PUT' || type === 'DELETE')) {
+    if (options.emulateHTTP && (type === 'PUT' || type === 'DELETE' || type === 'PATCH')) {
       params.type = 'POST';
       if (options.emulateJSON) params.data._method = type;
       var beforeSend = options.beforeSend;
@@ -5312,19 +5479,21 @@ define("underscore", (function (global) {
     }
 
     var success = options.success;
-    options.success = function(resp, status, xhr) {
-      if (success) success(resp, status, xhr);
+    options.success = function(resp) {
+      if (success) success(model, resp, options);
       model.trigger('sync', model, resp, options);
     };
 
     var error = options.error;
-    options.error = function(xhr, status, thrown) {
+    options.error = function(xhr) {
       if (error) error(model, xhr, options);
       model.trigger('error', model, xhr, options);
     };
 
     // Make the request, allowing the user to override any Ajax options.
-    return Backbone.ajax(_.extend(params, options));
+    var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
+    model.trigger('request', model, xhr, options);
+    return xhr;
   };
 
   // Set the default implementation of `Backbone.ajax` to proxy through to `$`.
@@ -5348,7 +5517,7 @@ define("underscore", (function (global) {
     if (protoProps && _.has(protoProps, 'constructor')) {
       child = protoProps.constructor;
     } else {
-      child = function(){ parent.apply(this, arguments); };
+      child = function(){ return parent.apply(this, arguments); };
     }
 
     // Add static properties to the constructor function, if supplied.
@@ -5383,8 +5552,9 @@ define("underscore", (function (global) {
 
 define("backbone", ["underscore"], (function (global) {
     return function () {
-        return global.Backbone;
-    }
+        var ret, fn;
+        return ret || global.Backbone;
+    };
 }(this)));
 
 /*global define */

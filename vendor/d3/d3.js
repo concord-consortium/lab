@@ -3712,14 +3712,14 @@ d3 = function() {
     }
     function mousedown() {
       var target = this, event_ = event.of(target, arguments), eventTarget = d3.event.target, touchId = d3.event.touches ? d3.event.changedTouches[0].identifier : null, offset, origin_ = point(), moved = 0;
-      var w = d3.select(d3_window).on(touchId != null ? "touchmove.drag-" + touchId : "mousemove.drag", dragmove).on(touchId != null ? "touchend.drag-" + touchId : "mouseup.drag", dragend, true);
-      if (origin) {
+      var w = d3.select(d3_window).on(touchId != null ? "touchend.drag-" + touchId : "mouseup.drag", dragend, true);
+      var doc = d3.select(d3_document).on(touchId != null ? "touchmove.drag-" + touchId : "mousemove.drag", dragmove);
+      if (origin && origin()) {
         offset = origin.apply(target, arguments);
         offset = [ offset.x - origin_[0], offset.y - origin_[1] ];
       } else {
         offset = [ 0, 0 ];
       }
-      if (touchId == null) d3_eventCancel();
       event_({
         type: "dragstart"
       });
@@ -3749,13 +3749,14 @@ d3 = function() {
         });
         if (moved) {
           d3_eventCancel();
-          if (d3.event.target === eventTarget) w.on("click.drag", click, true);
+          if (d3.event.target === eventTarget) doc.on("click.drag", click, true);
         }
-        w.on(touchId != null ? "touchmove.drag-" + touchId : "mousemove.drag", null).on(touchId != null ? "touchend.drag-" + touchId : "mouseup.drag", null);
+        w.on(touchId != null ? "touchend.drag-" + touchId : "mouseup.drag", null);
+        doc.on(touchId != null ? "touchmove.drag-" + touchId : "mousemove.drag", null);
       }
       function click() {
         d3_eventCancel();
-        w.on("click.drag", null);
+        doc.on("click.drag", null);
       }
     }
     drag.origin = function(x) {

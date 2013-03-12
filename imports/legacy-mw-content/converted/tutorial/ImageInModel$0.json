@@ -2,6 +2,7 @@
   "type": "md2d",
   "width": 4.88,
   "height": 3.88,
+  "unitsScheme": "md2d",
   "lennardJonesForces": true,
   "coulombForces": true,
   "temperatureControl": false,
@@ -98,7 +99,6 @@
         "hostIndex": 2
       }
     ],
-    "fitToParent": false,
     "xlabel": false,
     "ylabel": false,
     "xunits": false,

@@ -2,6 +2,7 @@
   "type": "md2d",
   "width": 4.5,
   "height": 3.5,
+  "unitsScheme": "md2d",
   "lennardJonesForces": true,
   "coulombForces": true,
   "temperatureControl": false,
@@ -47,7 +48,6 @@
         "color": "rgb(102,102,0)"
       }
     ],
-    "fitToParent": false,
     "xlabel": false,
     "ylabel": false,
     "xunits": false,

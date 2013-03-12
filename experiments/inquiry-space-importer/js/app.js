@@ -634,6 +634,7 @@ ISImporter.appController = new ISImporter.Object({
   },
 
   start: function() {
+    this.logAction('started');
     this.started = true;
     this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.start();
@@ -661,6 +662,7 @@ ISImporter.appController = new ISImporter.Object({
 
   reset: function() {
     if (this.taring) return;
+    this.logAction('reset');
     this.currentApplet.removeListener('data', this.appletDataListener);
     this.rawDataset = this.getNewRawDataset();
     this.dataset.setDataPoints();   // perhaps this should be a 'clear' convenience method
@@ -718,6 +720,8 @@ ISImporter.appController = new ISImporter.Object({
         label,
         metadata = [];
 
+    this.logAction('exported');
+
     if (this.selecting) {
       data = this.dataset.getSelectedDataPoints();
     } else {
@@ -739,6 +743,36 @@ ISImporter.appController = new ISImporter.Object({
     this.hide(this.$cancelButton);
     this.enable(this.$resetButton);
     this.enable(this.$selectButton);
+  },
+
+  logAction: function(action) {
+    var logString,
+        len,
+        label,
+        value,
+        labels = [],
+        values = [],
+        i;
+
+    for (i = 1, len = this.getMetadataItemCount(); i <= len; i++) {
+      label = this.getMetadataLabel(i);
+      if (label && label.length > 0) {
+        labels.push(label);
+        values.push(this.getMetadataValue(i));
+      }
+    }
+
+    logString = "User " + action + " " + this.sensor.title + " sensor. ";
+    logString += "Per-run Settings and Data: ";
+    logString += JSON.stringify({
+      action: action,
+      type: "sensor",
+      sensorType: this.sensor.title,
+      fields: labels,
+      values: values
+    });
+
+    ISImporter.DGExporter.logAction(logString);
   },
 
   select: function() {

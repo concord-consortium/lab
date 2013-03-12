@@ -4,7 +4,7 @@
   "subtitle": "There are four large invisible atoms near the center. These also participate in the molecular dynamics model.",
   "about": [
     "This model defines 8 atoms. There are four larger yellow atoms initially defined as invisible closer to the center. These are surrounded by four smaller purple atoms further away from the center.",
-    "After starting the model the smaller purple atoms will start showing visible interactions with the invisible atoms at 7900 fs.",
+    "After starting the model the smaller purple atoms will start showing visible attractions with the invisible atoms at 7900 fs.",
     "You can enable or disable visibility of the larger yellow atoms using the pull-down menu selection"
   ],
   "models": [

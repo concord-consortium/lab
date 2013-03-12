@@ -1,6 +1,6 @@
 (function() {
 /**
- * almond 0.1.2 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
+ * almond 0.2.5 Copyright (c) 2011-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/almond for details
  */
@@ -11,12 +11,17 @@
 
 var requirejs, require, define;
 (function (undef) {
-    var defined = {},
+    var main, req, makeMap, handlers,
+        defined = {},
         waiting = {},
         config = {},
         defining = {},
-        aps = [].slice,
-        main, req;
+        hasOwn = Object.prototype.hasOwnProperty,
+        aps = [].slice;
+
+    function hasProp(obj, prop) {
+        return hasOwn.call(obj, prop);
+    }
 
     /**
      * Given a relative module name, like ./something, normalize it to
@@ -27,11 +32,11 @@ var requirejs, require, define;
      * @returns {String} normalized name
      */
     function normalize(name, baseName) {
-        var baseParts = baseName && baseName.split("/"),
+        var nameParts, nameSegment, mapValue, foundMap,
+            foundI, foundStarMap, starI, i, j, part,
+            baseParts = baseName && baseName.split("/"),
             map = config.map,
-            starMap = (map && map['*']) || {},
-            nameParts, nameSegment, mapValue, foundMap,
-            foundI, foundStarMap, starI, i, j, part;
+            starMap = (map && map['*']) || {};
 
         //Adjust any relative paths.
         if (name && name.charAt(0) === ".") {
@@ -49,7 +54,8 @@ var requirejs, require, define;
                 name = baseParts.concat(name.split("/"));
 
                 //start trimDots
-                for (i = 0; (part = name[i]); i++) {
+                for (i = 0; i < name.length; i += 1) {
+                    part = name[i];
                     if (part === ".") {
                         name.splice(i, 1);
                         i -= 1;
@@ -61,7 +67,7 @@ var requirejs, require, define;
                             //no path mapping for a path starting with '..'.
                             //This can still fail, but catches the most reasonable
                             //uses of ..
-                            return true;
+                            break;
                         } else if (i > 0) {
                             name.splice(i - 1, 2);
                             i -= 2;
@@ -71,6 +77,10 @@ var requirejs, require, define;
                 //end trimDots
 
                 name = name.join("/");
+            } else if (name.indexOf('./') === 0) {
+                // No baseName, so this is ID is resolved relative
+                // to baseUrl, pull off the leading dot.
+                name = name.substring(2);
             }
         }
 
@@ -150,17 +160,30 @@ var requirejs, require, define;
     }
 
     function callDep(name) {
-        if (waiting.hasOwnProperty(name)) {
+        if (hasProp(waiting, name)) {
             var args = waiting[name];
             delete waiting[name];
             defining[name] = true;
             main.apply(undef, args);
         }
 
-        if (!defined.hasOwnProperty(name)) {
+        if (!hasProp(defined, name) && !hasProp(defining, name)) {
             throw new Error('No ' + name);
         }
         return defined[name];
+    }
+
+    //Turns a plugin!resource to [plugin, resource]
+    //with the plugin being undefined if the name
+    //did not have a plugin prefix.
+    function splitPrefix(name) {
+        var prefix,
+            index = name ? name.indexOf('!') : -1;
+        if (index > -1) {
+            prefix = name.substring(0, index);
+            name = name.substring(index + 1, name.length);
+        }
+        return [prefix, name];
     }
 
     /**
@@ -168,16 +191,20 @@ var requirejs, require, define;
      * for normalization if necessary. Grabs a ref to plugin
      * too, as an optimization.
      */
-    function makeMap(name, relName) {
-        var prefix, plugin,
-            index = name.indexOf('!');
+    makeMap = function (name, relName) {
+        var plugin,
+            parts = splitPrefix(name),
+            prefix = parts[0];
 
-        if (index !== -1) {
-            prefix = normalize(name.slice(0, index), relName);
-            name = name.slice(index + 1);
+        name = parts[1];
+
+        if (prefix) {
+            prefix = normalize(prefix, relName);
             plugin = callDep(prefix);
+        }
 
-            //Normalize according
+        //Normalize according
+        if (prefix) {
             if (plugin && plugin.normalize) {
                 name = plugin.normalize(name, makeNormalize(relName));
             } else {
@@ -185,15 +212,22 @@ var requirejs, require, define;
             }
         } else {
             name = normalize(name, relName);
+            parts = splitPrefix(name);
+            prefix = parts[0];
+            name = parts[1];
+            if (prefix) {
+                plugin = callDep(prefix);
+            }
         }
 
         //Using ridiculous property names for space reasons
         return {
             f: prefix ? prefix + '!' + name : name, //fullName
             n: name,
+            pr: prefix,
             p: plugin
         };
-    }
+    };
 
     function makeConfig(name) {
         return function () {
@@ -201,10 +235,32 @@ var requirejs, require, define;
         };
     }
 
+    handlers = {
+        require: function (name) {
+            return makeRequire(name);
+        },
+        exports: function (name) {
+            var e = defined[name];
+            if (typeof e !== 'undefined') {
+                return e;
+            } else {
+                return (defined[name] = {});
+            }
+        },
+        module: function (name) {
+            return {
+                id: name,
+                uri: '',
+                exports: defined[name],
+                config: makeConfig(name)
+            };
+        }
+    };
+
     main = function (name, deps, callback, relName) {
-        var args = [],
-            usingExports,
-            cjsModule, depName, ret, map, i;
+        var cjsModule, depName, ret, map, i,
+            args = [],
+            usingExports;
 
         //Use name if no relName
         relName = relName || name;
@@ -216,31 +272,28 @@ var requirejs, require, define;
             //values to the callback.
             //Default to [require, exports, module] if no deps
             deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
-            for (i = 0; i < deps.length; i++) {
+            for (i = 0; i < deps.length; i += 1) {
                 map = makeMap(deps[i], relName);
                 depName = map.f;
 
                 //Fast path CommonJS standard dependencies.
                 if (depName === "require") {
-                    args[i] = makeRequire(name);
+                    args[i] = handlers.require(name);
                 } else if (depName === "exports") {
                     //CommonJS module spec 1.1
-                    args[i] = defined[name] = {};
+                    args[i] = handlers.exports(name);
                     usingExports = true;
                 } else if (depName === "module") {
                     //CommonJS module spec 1.1
-                    cjsModule = args[i] = {
-                        id: name,
-                        uri: '',
-                        exports: defined[name],
-                        config: makeConfig(name)
-                    };
-                } else if (defined.hasOwnProperty(depName) || waiting.hasOwnProperty(depName)) {
+                    cjsModule = args[i] = handlers.module(name);
+                } else if (hasProp(defined, depName) ||
+                           hasProp(waiting, depName) ||
+                           hasProp(defining, depName)) {
                     args[i] = callDep(depName);
                 } else if (map.p) {
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
-                } else if (!defining[depName]) {
+                } else {
                     throw new Error(name + ' missing ' + depName);
                 }
             }
@@ -252,7 +305,7 @@ var requirejs, require, define;
                 //favor that over return value and exports. After that,
                 //favor a non-undefined return value over exports use.
                 if (cjsModule && cjsModule.exports !== undef &&
-                    cjsModule.exports !== defined[name]) {
+                        cjsModule.exports !== defined[name]) {
                     defined[name] = cjsModule.exports;
                 } else if (ret !== undef || !usingExports) {
                     //Use the return value from the function.
@@ -266,8 +319,12 @@ var requirejs, require, define;
         }
     };
 
-    requirejs = require = req = function (deps, callback, relName, forceSync) {
+    requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
         if (typeof deps === "string") {
+            if (handlers[deps]) {
+                //callback in this case is really relName
+                return handlers[deps](callback);
+            }
             //Just return the module wanted. In this scenario, the
             //deps arg is the module name, and second arg (if passed)
             //is just the relName.
@@ -290,13 +347,26 @@ var requirejs, require, define;
         //Support require(['a'])
         callback = callback || function () {};
 
+        //If relName is a function, it is an errback handler,
+        //so remove it.
+        if (typeof relName === 'function') {
+            relName = forceSync;
+            forceSync = alt;
+        }
+
         //Simulate async callback;
         if (forceSync) {
             main(undef, deps, callback, relName);
         } else {
+            //Using a non-zero value because of concern for what old browsers
+            //do, and latest browsers "upgrade" to 4 if lower value is used:
+            //http://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#dom-windowtimers-settimeout:
+            //If want a value immediately, use require('id') instead -- something
+            //that works in almond on the global level, but not guaranteed and
+            //unlikely to work in other AMD implementations.
             setTimeout(function () {
                 main(undef, deps, callback, relName);
-            }, 15);
+            }, 4);
         }
 
         return req;
@@ -308,6 +378,9 @@ var requirejs, require, define;
      */
     req.config = function (cfg) {
         config = cfg;
+        if (config.deps) {
+            req(config.deps, config.callback);
+        }
         return req;
     };
 
@@ -322,7 +395,9 @@ var requirejs, require, define;
             deps = [];
         }
 
-        waiting[name] = [name, deps, callback];
+        if (!hasProp(defined, name) && !hasProp(waiting, name)) {
+            waiting[name] = [name, deps, callback];
+        }
     };
 
     define.amd = {
@@ -338,16 +413,16 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "8eb530d7a2c2ff4e3fb52ba09d7550f97c44525e",
-        "short_sha":      "8eb530d7",
-        "url":            "https://github.com/concord-consortium/lab/commit/8eb530d7",
+        "sha":           "3d4db3cba1037f79ed47f5088562685e071cedf9",
+        "short_sha":      "3d4db3cb",
+        "url":            "https://github.com/concord-consortium/lab/commit/3d4db3cb",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-03-01 14:53:52 -0500",
-        "short_message": "bump d3:bubble-default-on-mousedown branch",
-        "message":       "bump d3:bubble-default-on-mousedown branch\n\n[#45403519], [#45233971]\n\nfixes for touch and simplification for previous FF fixes"
+        "date":          "2013-03-12 15:52:22 -0400",
+        "short_message": "Interactive Sampler: remove frame borders",
+        "message":       "Interactive Sampler: remove frame borders\n\nNot needed with recent Interactive frame design work."
       },
-      "dirty": false
+      "dirty": true
     }
   };
 });
@@ -385,6 +460,8 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
   "actualRoot": "",
+  "hostName": "lab.concord.org",
+  "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
   "logging": true,
   "tracing": false,
   "authoring": false
@@ -933,7 +1010,10 @@ define('common/controllers/interactive-metadata',[],function() {
       onChange: {},
       // Optional description.
       label: {},
-      units: {}
+      unitType: {},
+      unitName: {},
+      unitPluralName: {},
+      unitAbbreviation: {}
     },
 
     output: {
@@ -945,7 +1025,10 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       // Optional description.
       label: {},
-      units: {}
+      unitType: {},
+      unitName: {},
+      unitPluralName: {},
+      unitAbbreviation: {}
     },
 
     filteredOutput: {
@@ -966,7 +1049,10 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       // Optional description.
       label: {},
-      units: {}
+      unitType: {},
+      unitName: {},
+      unitPluralName: {},
+      unitAbbreviation: {}
     },
 
     exports: {
@@ -1009,6 +1095,29 @@ define('common/controllers/interactive-metadata',[],function() {
       }
     },
 
+    image: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      src: {
+        // Absolute path should start with http(s)://
+        // Relative path is relative to model URL.
+        defaultValue: ""
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      }
+    },
+
     button: {
       id: {
         required: true
@@ -1023,10 +1132,10 @@ define('common/controllers/interactive-metadata',[],function() {
         defaultValue: ""
       },
       width: {
-        defaultValue: "auto"
+        defaultValue: ""
       },
       height: {
-        defaultValue: "auto"
+        defaultValue: ""
       }
     },
 
@@ -1039,6 +1148,15 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       text: {
         defaultValue: ""
+      },
+      textOn: {
+        defaultValue: "right"
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
       },
       property: {
         conflictsWith: ["initialValue"]
@@ -1079,7 +1197,7 @@ define('common/controllers/interactive-metadata',[],function() {
         defaultValue: "12em"
       },
       height: {
-        defaultValue: "3.75em"
+        defaultValue: "3.65em"
       },
       displayValue: {},
       // Use "property" OR "action" + "initialValue".
@@ -1104,6 +1222,13 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       type: {
         required: true
+      },
+      label: {
+        defaultValue: ""
+      },
+      labelOn: {
+        // Other option is "left".
+        defaultValue: "top"
       },
       options: {
         defaultValue: []
@@ -1145,6 +1270,13 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       orientation: {
         defaultValue: "vertical"
+      },
+      label: {
+        defaultValue: ""
+      },
+      labelOn: {
+        // Other option is "left".
+        defaultValue: "top"
       },
       options: {
         defaultValue: []
@@ -1189,6 +1321,15 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       units: {
         defaultValue: ""
+      },
+      orientation: {
+        defaultValue: "horizontal"
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
       },
       property: {},
       displayValue: {}
@@ -2673,11 +2814,12 @@ define('common/validator',['require','arrays'],function(require) {
 
 define("underscore", (function (global) {
     return function () {
-        return global._;
-    }
+        var ret, fn;
+        return ret || global._;
+    };
 }(this)));
 
-//     Backbone.js 0.9.2
+//     Backbone.js 0.9.10
 
 //     (c) 2010-2012 Jeremy Ashkenas, DocumentCloud Inc.
 //     Backbone may be freely distributed under the MIT license.
@@ -2698,10 +2840,10 @@ define("underscore", (function (global) {
   var previousBackbone = root.Backbone;
 
   // Create a local reference to array methods.
-  var ArrayProto = Array.prototype;
-  var push = ArrayProto.push;
-  var slice = ArrayProto.slice;
-  var splice = ArrayProto.splice;
+  var array = [];
+  var push = array.push;
+  var slice = array.slice;
+  var splice = array.splice;
 
   // The top-level namespace. All public Backbone classes and modules will
   // be attached to this. Exported for both CommonJS and the browser.
@@ -2713,7 +2855,7 @@ define("underscore", (function (global) {
   }
 
   // Current version of the library. Keep in sync with `package.json`.
-  Backbone.VERSION = '0.9.2';
+  Backbone.VERSION = '0.9.10';
 
   // Require Underscore, if we're on the server, and it's not already present.
   var _ = root._;
@@ -2743,12 +2885,49 @@ define("underscore", (function (global) {
   // Backbone.Events
   // ---------------
 
-  // Regular expression used to split event strings
+  // Regular expression used to split event strings.
   var eventSplitter = /\s+/;
 
+  // Implement fancy features of the Events API such as multiple event
+  // names `"change blur"` and jQuery-style event maps `{change: action}`
+  // in terms of the existing API.
+  var eventsApi = function(obj, action, name, rest) {
+    if (!name) return true;
+    if (typeof name === 'object') {
+      for (var key in name) {
+        obj[action].apply(obj, [key, name[key]].concat(rest));
+      }
+    } else if (eventSplitter.test(name)) {
+      var names = name.split(eventSplitter);
+      for (var i = 0, l = names.length; i < l; i++) {
+        obj[action].apply(obj, [names[i]].concat(rest));
+      }
+    } else {
+      return true;
+    }
+  };
+
+  // Optimized internal dispatch function for triggering events. Tries to
+  // keep the usual cases speedy (most Backbone events have 3 arguments).
+  var triggerEvents = function(events, args) {
+    var ev, i = -1, l = events.length;
+    switch (args.length) {
+    case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx);
+    return;
+    case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0]);
+    return;
+    case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0], args[1]);
+    return;
+    case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0], args[1], args[2]);
+    return;
+    default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
+    }
+  };
+
   // A module that can be mixed in to *any object* in order to provide it with
-  // custom events. You may bind with `on` or remove with `off` callback functions
-  // to an event; `trigger`-ing an event fires all callbacks in succession.
+  // custom events. You may bind with `on` or remove with `off` callback
+  // functions to an event; `trigger`-ing an event fires all callbacks in
+  // succession.
   //
   //     var object = {};
   //     _.extend(object, Backbone.Events);
@@ -2757,49 +2936,59 @@ define("underscore", (function (global) {
   //
   var Events = Backbone.Events = {
 
-    // Bind one or more space separated events, `events`, to a `callback`
-    // function. Passing `"all"` will bind the callback to all events fired.
-    on: function(events, callback, context) {
-      var calls, event, list;
-      if (!callback) return this;
-
-      events = events.split(eventSplitter);
-      calls = this._callbacks || (this._callbacks = {});
-
-      while (event = events.shift()) {
-        list = calls[event] || (calls[event] = []);
-        list.push(callback, context);
-      }
-
+    // Bind one or more space separated events, or an events map,
+    // to a `callback` function. Passing `"all"` will bind the callback to
+    // all events fired.
+    on: function(name, callback, context) {
+      if (!(eventsApi(this, 'on', name, [callback, context]) && callback)) return this;
+      this._events || (this._events = {});
+      var list = this._events[name] || (this._events[name] = []);
+      list.push({callback: callback, context: context, ctx: context || this});
       return this;
     },
 
-    // Remove one or many callbacks. If `context` is null, removes all callbacks
-    // with that function. If `callback` is null, removes all callbacks for the
-    // event. If `events` is null, removes all bound callbacks for all events.
-    off: function(events, callback, context) {
-      var event, calls, list, i;
+    // Bind events to only be triggered a single time. After the first time
+    // the callback is invoked, it will be removed.
+    once: function(name, callback, context) {
+      if (!(eventsApi(this, 'once', name, [callback, context]) && callback)) return this;
+      var self = this;
+      var once = _.once(function() {
+        self.off(name, once);
+        callback.apply(this, arguments);
+      });
+      once._callback = callback;
+      this.on(name, once, context);
+      return this;
+    },
 
-      // No events, or removing *all* events.
-      if (!(calls = this._callbacks)) return this;
-      if (!(events || callback || context)) {
-        delete this._callbacks;
+    // Remove one or many callbacks. If `context` is null, removes all
+    // callbacks with that function. If `callback` is null, removes all
+    // callbacks for the event. If `name` is null, removes all bound
+    // callbacks for all events.
+    off: function(name, callback, context) {
+      var list, ev, events, names, i, l, j, k;
+      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
+      if (!name && !callback && !context) {
+        this._events = {};
         return this;
       }
 
-      events = events ? events.split(eventSplitter) : _.keys(calls);
-
-      // Loop through the callback list, splicing where appropriate.
-      while (event = events.shift()) {
-        if (!(list = calls[event]) || !(callback || context)) {
-          delete calls[event];
-          continue;
-        }
-
-        for (i = list.length - 2; i >= 0; i -= 2) {
-          if (!(callback && list[i] !== callback || context && list[i + 1] !== context)) {
-            list.splice(i, 2);
+      names = name ? [name] : _.keys(this._events);
+      for (i = 0, l = names.length; i < l; i++) {
+        name = names[i];
+        if (list = this._events[name]) {
+          events = [];
+          if (callback || context) {
+            for (j = 0, k = list.length; j < k; j++) {
+              ev = list[j];
+              if ((callback && callback !== ev.callback &&
+                               callback !== ev.callback._callback) ||
+                  (context && context !== ev.context)) {
+                events.push(ev);
+              }
+            }
           }
+          this._events[name] = events;
         }
       }
 
@@ -2810,50 +2999,53 @@ define("underscore", (function (global) {
     // passed the same arguments as `trigger` is, apart from the event name
     // (unless you're listening on `"all"`, which will cause your callback to
     // receive the true name of the event as the first argument).
-    trigger: function(events) {
-      var event, calls, list, i, length, args, all, rest;
-      if (!(calls = this._callbacks)) return this;
+    trigger: function(name) {
+      if (!this._events) return this;
+      var args = slice.call(arguments, 1);
+      if (!eventsApi(this, 'trigger', name, args)) return this;
+      var events = this._events[name];
+      var allEvents = this._events.all;
+      if (events) triggerEvents(events, args);
+      if (allEvents) triggerEvents(allEvents, arguments);
+      return this;
+    },
 
-      rest = [];
-      events = events.split(eventSplitter);
+    // An inversion-of-control version of `on`. Tell *this* object to listen to
+    // an event in another object ... keeping track of what it's listening to.
+    listenTo: function(obj, name, callback) {
+      var listeners = this._listeners || (this._listeners = {});
+      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
+      listeners[id] = obj;
+      obj.on(name, typeof name === 'object' ? this : callback, this);
+      return this;
+    },
 
-      // Fill up `rest` with the callback arguments.  Since we're only copying
-      // the tail of `arguments`, a loop is much faster than Array#slice.
-      for (i = 1, length = arguments.length; i < length; i++) {
-        rest[i - 1] = arguments[i];
-      }
-
-      // For each event, walk through the list of callbacks twice, first to
-      // trigger the event, then to trigger any `"all"` callbacks.
-      while (event = events.shift()) {
-        // Copy callback lists to prevent modification.
-        if (all = calls.all) all = all.slice();
-        if (list = calls[event]) list = list.slice();
-
-        // Execute event callbacks.
-        if (list) {
-          for (i = 0, length = list.length; i < length; i += 2) {
-            list[i].apply(list[i + 1] || this, rest);
-          }
+    // Tell this object to stop listening to either specific events ... or
+    // to every object it's currently listening to.
+    stopListening: function(obj, name, callback) {
+      var listeners = this._listeners;
+      if (!listeners) return;
+      if (obj) {
+        obj.off(name, typeof name === 'object' ? this : callback, this);
+        if (!name && !callback) delete listeners[obj._listenerId];
+      } else {
+        if (typeof name === 'object') callback = this;
+        for (var id in listeners) {
+          listeners[id].off(name, callback, this);
         }
-
-        // Execute "all" callbacks.
-        if (all) {
-          args = [event].concat(rest);
-          for (i = 0, length = all.length; i < length; i += 2) {
-            all[i].apply(all[i + 1] || this, args);
-          }
-        }
+        this._listeners = {};
       }
-
       return this;
     }
-
   };
 
   // Aliases for backwards compatibility.
   Events.bind   = Events.on;
   Events.unbind = Events.off;
+
+  // Allow the `Backbone` object to serve as a global event bus, for folks who
+  // want global "pubsub" in a convenient place.
+  _.extend(Backbone, Events);
 
   // Backbone.Model
   // --------------
@@ -2863,23 +3055,15 @@ define("underscore", (function (global) {
   var Model = Backbone.Model = function(attributes, options) {
     var defaults;
     var attrs = attributes || {};
-    if (options && options.collection) this.collection = options.collection;
-    this.attributes = {};
-    this._escapedAttributes = {};
     this.cid = _.uniqueId('c');
-    this.changed = {};
-    this._changes = {};
-    this._pending = {};
-    if (options && options.parse) attrs = this.parse(attrs);
+    this.attributes = {};
+    if (options && options.collection) this.collection = options.collection;
+    if (options && options.parse) attrs = this.parse(attrs, options) || {};
     if (defaults = _.result(this, 'defaults')) {
-      attrs = _.extend({}, defaults, attrs);
+      attrs = _.defaults({}, attrs, defaults);
     }
-    this.set(attrs, {silent: true});
-    // Reset change tracking.
+    this.set(attrs, options);
     this.changed = {};
-    this._changes = {};
-    this._pending = {};
-    this._previousAttributes = _.clone(this.attributes);
     this.initialize.apply(this, arguments);
   };
 
@@ -2888,18 +3072,6 @@ define("underscore", (function (global) {
 
     // A hash of attributes whose current and previous value differ.
     changed: null,
-
-    // A hash of attributes that have changed since the last time `change`
-    // was called.
-    _changes: null,
-
-    // A hash of attributes that have changed since the last `change` event
-    // began.
-    _pending: null,
-
-    // A hash of attributes with the current model state to determine if
-    // a `change` should be recorded within a nested `change` block.
-    _changing : null,
 
     // The default name for the JSON `id` attribute is `"id"`. MongoDB and
     // CouchDB users may want to set this to `"_id"`.
@@ -2926,10 +3098,7 @@ define("underscore", (function (global) {
 
     // Get the HTML-escaped value of an attribute.
     escape: function(attr) {
-      var html;
-      if (html = this._escapedAttributes[attr]) return html;
-      var val = this.get(attr);
-      return this._escapedAttributes[attr] = _.escape(val == null ? '' : '' + val);
+      return _.escape(this.get(attr));
     },
 
     // Returns `true` if the attribute contains a value that is not null
@@ -2938,244 +3107,87 @@ define("underscore", (function (global) {
       return this.get(attr) != null;
     },
 
+    // ----------------------------------------------------------------------
+
     // Set a hash of model attributes on the object, firing `"change"` unless
     // you choose to silence it.
     set: function(key, val, options) {
-      var attr, attrs;
+      var attr, attrs, unset, changes, silent, changing, prev, current;
       if (key == null) return this;
 
       // Handle both `"key", value` and `{key: value}` -style arguments.
-      if (_.isObject(key)) {
+      if (typeof key === 'object') {
         attrs = key;
         options = val;
       } else {
         (attrs = {})[key] = val;
       }
 
-      // Extract attributes and options.
-      var silent = options && options.silent;
-      var unset = options && options.unset;
-      if (attrs instanceof Model) attrs = attrs.attributes;
-      if (unset) for (attr in attrs) attrs[attr] = void 0;
+      options || (options = {});
 
       // Run validation.
       if (!this._validate(attrs, options)) return false;
 
+      // Extract attributes and options.
+      unset           = options.unset;
+      silent          = options.silent;
+      changes         = [];
+      changing        = this._changing;
+      this._changing  = true;
+
+      if (!changing) {
+        this._previousAttributes = _.clone(this.attributes);
+        this.changed = {};
+      }
+      current = this.attributes, prev = this._previousAttributes;
+
       // Check for changes of `id`.
       if (this.idAttribute in attrs) this.id = attrs[this.idAttribute];
 
-      var changing = this._changing;
-      var now = this.attributes;
-      var escaped = this._escapedAttributes;
-      var prev = this._previousAttributes || {};
-
-      // For each `set` attribute...
+      // For each `set` attribute, update or delete the current value.
       for (attr in attrs) {
         val = attrs[attr];
-
-        // If the new and current value differ, record the change.
-        if (!_.isEqual(now[attr], val) || (unset && _.has(now, attr))) {
-          delete escaped[attr];
-          this._changes[attr] = true;
-        }
-
-        // Update or delete the current value.
-        unset ? delete now[attr] : now[attr] = val;
-
-        // If the new and previous value differ, record the change.  If not,
-        // then remove changes for this attribute.
-        if (!_.isEqual(prev[attr], val) || (_.has(now, attr) !== _.has(prev, attr))) {
+        if (!_.isEqual(current[attr], val)) changes.push(attr);
+        if (!_.isEqual(prev[attr], val)) {
           this.changed[attr] = val;
-          if (!silent) this._pending[attr] = true;
         } else {
           delete this.changed[attr];
-          delete this._pending[attr];
-          if (!changing) delete this._changes[attr];
         }
-
-        if (changing && _.isEqual(now[attr], changing[attr])) delete this._changes[attr];
+        unset ? delete current[attr] : current[attr] = val;
       }
 
-      // Fire the `"change"` events.
-      if (!silent) this.change(options);
+      // Trigger all relevant attribute changes.
+      if (!silent) {
+        if (changes.length) this._pending = true;
+        for (var i = 0, l = changes.length; i < l; i++) {
+          this.trigger('change:' + changes[i], this, current[changes[i]], options);
+        }
+      }
+
+      if (changing) return this;
+      if (!silent) {
+        while (this._pending) {
+          this._pending = false;
+          this.trigger('change', this, options);
+        }
+      }
+      this._pending = false;
+      this._changing = false;
       return this;
     },
 
     // Remove an attribute from the model, firing `"change"` unless you choose
     // to silence it. `unset` is a noop if the attribute doesn't exist.
     unset: function(attr, options) {
-      options = _.extend({}, options, {unset: true});
-      return this.set(attr, null, options);
+      return this.set(attr, void 0, _.extend({}, options, {unset: true}));
     },
 
     // Clear all attributes on the model, firing `"change"` unless you choose
     // to silence it.
     clear: function(options) {
-      options = _.extend({}, options, {unset: true});
-      return this.set(_.clone(this.attributes), options);
-    },
-
-    // Fetch the model from the server. If the server's representation of the
-    // model differs from its current attributes, they will be overriden,
-    // triggering a `"change"` event.
-    fetch: function(options) {
-      options = options ? _.clone(options) : {};
-      var model = this;
-      var success = options.success;
-      options.success = function(resp, status, xhr) {
-        if (!model.set(model.parse(resp, xhr), options)) return false;
-        if (success) success(model, resp, options);
-      };
-      return this.sync('read', this, options);
-    },
-
-    // Set a hash of model attributes, and sync the model to the server.
-    // If the server returns an attributes hash that differs, the model's
-    // state will be `set` again.
-    save: function(key, val, options) {
-      var attrs, current, done;
-
-      // Handle both `"key", value` and `{key: value}` -style arguments.
-      if (key == null || _.isObject(key)) {
-        attrs = key;
-        options = val;
-      } else if (key != null) {
-        (attrs = {})[key] = val;
-      }
-      options = options ? _.clone(options) : {};
-
-      // If we're "wait"-ing to set changed attributes, validate early.
-      if (options.wait) {
-        if (!this._validate(attrs, options)) return false;
-        current = _.clone(this.attributes);
-      }
-
-      // Regular saves `set` attributes before persisting to the server.
-      var silentOptions = _.extend({}, options, {silent: true});
-      if (attrs && !this.set(attrs, options.wait ? silentOptions : options)) {
-        return false;
-      }
-
-      // Do not persist invalid models.
-      if (!attrs && !this._validate(null, options)) return false;
-
-      // After a successful server-side save, the client is (optionally)
-      // updated with the server-side state.
-      var model = this;
-      var success = options.success;
-      options.success = function(resp, status, xhr) {
-        done = true;
-        var serverAttrs = model.parse(resp, xhr);
-        if (options.wait) serverAttrs = _.extend(attrs || {}, serverAttrs);
-        if (!model.set(serverAttrs, options)) return false;
-        if (success) success(model, resp, options);
-      };
-
-      // Finish configuring and sending the Ajax request.
-      var xhr = this.sync(this.isNew() ? 'create' : 'update', this, options);
-
-      // When using `wait`, reset attributes to original values unless
-      // `success` has been called already.
-      if (!done && options.wait) {
-        this.clear(silentOptions);
-        this.set(current, silentOptions);
-      }
-
-      return xhr;
-    },
-
-    // Destroy this model on the server if it was already persisted.
-    // Optimistically removes the model from its collection, if it has one.
-    // If `wait: true` is passed, waits for the server to respond before removal.
-    destroy: function(options) {
-      options = options ? _.clone(options) : {};
-      var model = this;
-      var success = options.success;
-
-      var destroy = function() {
-        model.trigger('destroy', model, model.collection, options);
-      };
-
-      options.success = function(resp) {
-        if (options.wait || model.isNew()) destroy();
-        if (success) success(model, resp, options);
-      };
-
-      if (this.isNew()) {
-        options.success();
-        return false;
-      }
-
-      var xhr = this.sync('delete', this, options);
-      if (!options.wait) destroy();
-      return xhr;
-    },
-
-    // Default URL for the model's representation on the server -- if you're
-    // using Backbone's restful methods, override this to change the endpoint
-    // that will be called.
-    url: function() {
-      var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
-      if (this.isNew()) return base;
-      return base + (base.charAt(base.length - 1) === '/' ? '' : '/') + encodeURIComponent(this.id);
-    },
-
-    // **parse** converts a response into the hash of attributes to be `set` on
-    // the model. The default implementation is just to pass the response along.
-    parse: function(resp, xhr) {
-      return resp;
-    },
-
-    // Create a new model with identical attributes to this one.
-    clone: function() {
-      return new this.constructor(this.attributes);
-    },
-
-    // A model is new if it has never been saved to the server, and lacks an id.
-    isNew: function() {
-      return this.id == null;
-    },
-
-    // Call this method to manually fire a `"change"` event for this model and
-    // a `"change:attribute"` event for each changed attribute.
-    // Calling this will cause all objects observing the model to update.
-    change: function(options) {
-      var changing = this._changing;
-      var current = this._changing = {};
-
-      // Silent changes become pending changes.
-      for (var attr in this._changes) this._pending[attr] = true;
-
-      // Trigger 'change:attr' for any new or silent changes.
-      var changes = this._changes;
-      this._changes = {};
-
-      // Set the correct state for this._changing values
-      var triggers = [];
-      for (var attr in changes) {
-        current[attr] = this.get(attr);
-        triggers.push(attr);
-      }
-
-      for (var i=0, l=triggers.length; i < l; i++) {
-        this.trigger('change:' + triggers[i], this, current[triggers[i]], options);
-      }
-      if (changing) return this;
-
-      // Continue firing `"change"` events while there are pending changes.
-      while (!_.isEmpty(this._pending)) {
-        this._pending = {};
-        this.trigger('change', this, options);
-        // Pending and silent changes still remain.
-        for (var attr in this.changed) {
-          if (this._pending[attr] || this._changes[attr]) continue;
-          delete this.changed[attr];
-        }
-        this._previousAttributes = _.clone(this.attributes);
-      }
-
-      this._changing = null;
-      return this;
+      var attrs = {};
+      for (var key in this.attributes) attrs[key] = void 0;
+      return this.set(attrs, _.extend({}, options, {unset: true}));
     },
 
     // Determine if the model has changed since the last `"change"` event.
@@ -3193,7 +3205,8 @@ define("underscore", (function (global) {
     // determining if there *would be* a change.
     changedAttributes: function(diff) {
       if (!diff) return this.hasChanged() ? _.clone(this.changed) : false;
-      var val, changed = false, old = this._previousAttributes;
+      var val, changed = false;
+      var old = this._changing ? this._previousAttributes : this.attributes;
       for (var attr in diff) {
         if (_.isEqual(old[attr], (val = diff[attr]))) continue;
         (changed || (changed = {}))[attr] = val;
@@ -3214,22 +3227,141 @@ define("underscore", (function (global) {
       return _.clone(this._previousAttributes);
     },
 
-    // Check if the model is currently in a valid state. It's only possible to
-    // get into an *invalid* state if you're using silent changes.
+    // ---------------------------------------------------------------------
+
+    // Fetch the model from the server. If the server's representation of the
+    // model differs from its current attributes, they will be overriden,
+    // triggering a `"change"` event.
+    fetch: function(options) {
+      options = options ? _.clone(options) : {};
+      if (options.parse === void 0) options.parse = true;
+      var success = options.success;
+      options.success = function(model, resp, options) {
+        if (!model.set(model.parse(resp, options), options)) return false;
+        if (success) success(model, resp, options);
+      };
+      return this.sync('read', this, options);
+    },
+
+    // Set a hash of model attributes, and sync the model to the server.
+    // If the server returns an attributes hash that differs, the model's
+    // state will be `set` again.
+    save: function(key, val, options) {
+      var attrs, success, method, xhr, attributes = this.attributes;
+
+      // Handle both `"key", value` and `{key: value}` -style arguments.
+      if (key == null || typeof key === 'object') {
+        attrs = key;
+        options = val;
+      } else {
+        (attrs = {})[key] = val;
+      }
+
+      // If we're not waiting and attributes exist, save acts as `set(attr).save(null, opts)`.
+      if (attrs && (!options || !options.wait) && !this.set(attrs, options)) return false;
+
+      options = _.extend({validate: true}, options);
+
+      // Do not persist invalid models.
+      if (!this._validate(attrs, options)) return false;
+
+      // Set temporary attributes if `{wait: true}`.
+      if (attrs && options.wait) {
+        this.attributes = _.extend({}, attributes, attrs);
+      }
+
+      // After a successful server-side save, the client is (optionally)
+      // updated with the server-side state.
+      if (options.parse === void 0) options.parse = true;
+      success = options.success;
+      options.success = function(model, resp, options) {
+        // Ensure attributes are restored during synchronous saves.
+        model.attributes = attributes;
+        var serverAttrs = model.parse(resp, options);
+        if (options.wait) serverAttrs = _.extend(attrs || {}, serverAttrs);
+        if (_.isObject(serverAttrs) && !model.set(serverAttrs, options)) {
+          return false;
+        }
+        if (success) success(model, resp, options);
+      };
+
+      // Finish configuring and sending the Ajax request.
+      method = this.isNew() ? 'create' : (options.patch ? 'patch' : 'update');
+      if (method === 'patch') options.attrs = attrs;
+      xhr = this.sync(method, this, options);
+
+      // Restore attributes.
+      if (attrs && options.wait) this.attributes = attributes;
+
+      return xhr;
+    },
+
+    // Destroy this model on the server if it was already persisted.
+    // Optimistically removes the model from its collection, if it has one.
+    // If `wait: true` is passed, waits for the server to respond before removal.
+    destroy: function(options) {
+      options = options ? _.clone(options) : {};
+      var model = this;
+      var success = options.success;
+
+      var destroy = function() {
+        model.trigger('destroy', model, model.collection, options);
+      };
+
+      options.success = function(model, resp, options) {
+        if (options.wait || model.isNew()) destroy();
+        if (success) success(model, resp, options);
+      };
+
+      if (this.isNew()) {
+        options.success(this, null, options);
+        return false;
+      }
+
+      var xhr = this.sync('delete', this, options);
+      if (!options.wait) destroy();
+      return xhr;
+    },
+
+    // Default URL for the model's representation on the server -- if you're
+    // using Backbone's restful methods, override this to change the endpoint
+    // that will be called.
+    url: function() {
+      var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
+      if (this.isNew()) return base;
+      return base + (base.charAt(base.length - 1) === '/' ? '' : '/') + encodeURIComponent(this.id);
+    },
+
+    // **parse** converts a response into the hash of attributes to be `set` on
+    // the model. The default implementation is just to pass the response along.
+    parse: function(resp, options) {
+      return resp;
+    },
+
+    // Create a new model with identical attributes to this one.
+    clone: function() {
+      return new this.constructor(this.attributes);
+    },
+
+    // A model is new if it has never been saved to the server, and lacks an id.
+    isNew: function() {
+      return this.id == null;
+    },
+
+    // Check if the model is currently in a valid state.
     isValid: function(options) {
       return !this.validate || !this.validate(this.attributes, options);
     },
 
     // Run validation against the next complete set of model attributes,
-    // returning `true` if all is well. If a specific `error` callback has
-    // been passed, call that instead of firing the general `"error"` event.
+    // returning `true` if all is well. Otherwise, fire a general
+    // `"error"` event and call the error callback, if specified.
     _validate: function(attrs, options) {
-      if (options && options.silent || !this.validate) return true;
+      if (!options.validate || !this.validate) return true;
       attrs = _.extend({}, this.attributes, attrs);
-      var error = this.validate(attrs, options);
+      var error = this.validationError = this.validate(attrs, options) || null;
       if (!error) return true;
-      if (options && options.error) options.error(this, error, options);
-      this.trigger('error', this, error, options);
+      this.trigger('invalid', this, error, options || {});
       return false;
     }
 
@@ -3245,12 +3377,10 @@ define("underscore", (function (global) {
     options || (options = {});
     if (options.model) this.model = options.model;
     if (options.comparator !== void 0) this.comparator = options.comparator;
+    this.models = [];
     this._reset();
     this.initialize.apply(this, arguments);
-    if (models) {
-      if (options.parse) models = this.parse(models);
-      this.reset(models, {silent: true, parse: options.parse});
-    }
+    if (models) this.reset(models, _.extend({silent: true}, options));
   };
 
   // Define the Collection's inheritable methods.
@@ -3275,71 +3405,81 @@ define("underscore", (function (global) {
       return Backbone.sync.apply(this, arguments);
     },
 
-    // Add a model, or list of models to the set. Pass **silent** to avoid
-    // firing the `add` event for every new model.
+    // Add a model, or list of models to the set.
     add: function(models, options) {
-      var i, args, length, model, existing;
-      var at = options && options.at;
       models = _.isArray(models) ? models.slice() : [models];
+      options || (options = {});
+      var i, l, model, attrs, existing, doSort, add, at, sort, sortAttr;
+      add = [];
+      at = options.at;
+      sort = this.comparator && (at == null) && options.sort != false;
+      sortAttr = _.isString(this.comparator) ? this.comparator : null;
 
-      // Begin by turning bare objects into model references, and preventing
-      // invalid models from being added.
-      for (i = 0, length = models.length; i < length; i++) {
-        if (models[i] = this._prepareModel(models[i], options)) continue;
-        throw new Error("Can't add an invalid model to a collection");
-      }
-
-      for (i = models.length - 1; i >= 0; i--) {
-        model = models[i];
-        existing = model.id != null && this._byId[model.id];
-
-        // If a duplicate is found, splice it out and optionally merge it into
-        // the existing model.
-        if (existing || this._byCid[model.cid]) {
-          if (options && options.merge && existing) {
-            existing.set(model, options);
-          }
-          models.splice(i, 1);
+      // Turn bare objects into model references, and prevent invalid models
+      // from being added.
+      for (i = 0, l = models.length; i < l; i++) {
+        if (!(model = this._prepareModel(attrs = models[i], options))) {
+          this.trigger('invalid', this, attrs, options);
           continue;
         }
+
+        // If a duplicate is found, prevent it from being added and
+        // optionally merge it into the existing model.
+        if (existing = this.get(model)) {
+          if (options.merge) {
+            existing.set(attrs === model ? model.attributes : attrs, options);
+            if (sort && !doSort && existing.hasChanged(sortAttr)) doSort = true;
+          }
+          continue;
+        }
+
+        // This is a new model, push it to the `add` list.
+        add.push(model);
 
         // Listen to added models' events, and index models for lookup by
         // `id` and by `cid`.
         model.on('all', this._onModelEvent, this);
-        this._byCid[model.cid] = model;
+        this._byId[model.cid] = model;
         if (model.id != null) this._byId[model.id] = model;
       }
 
-      // Update `length` and splice in new models.
-      this.length += models.length;
-      args = [at != null ? at : this.models.length, 0];
-      push.apply(args, models);
-      splice.apply(this.models, args);
+      // See if sorting is needed, update `length` and splice in new models.
+      if (add.length) {
+        if (sort) doSort = true;
+        this.length += add.length;
+        if (at != null) {
+          splice.apply(this.models, [at, 0].concat(add));
+        } else {
+          push.apply(this.models, add);
+        }
+      }
 
-      // Sort the collection if appropriate.
-      if (this.comparator && at == null) this.sort({silent: true});
+      // Silently sort the collection if appropriate.
+      if (doSort) this.sort({silent: true});
 
-      if (options && options.silent) return this;
+      if (options.silent) return this;
 
       // Trigger `add` events.
-      while (model = models.shift()) {
-        model.trigger('add', model, this, options);
+      for (i = 0, l = add.length; i < l; i++) {
+        (model = add[i]).trigger('add', model, this, options);
       }
+
+      // Trigger `sort` if the collection was sorted.
+      if (doSort) this.trigger('sort', this, options);
 
       return this;
     },
 
-    // Remove a model, or a list of models from the set. Pass silent to avoid
-    // firing the `remove` event for every model removed.
+    // Remove a model, or a list of models from the set.
     remove: function(models, options) {
-      var i, l, index, model;
-      options || (options = {});
       models = _.isArray(models) ? models.slice() : [models];
+      options || (options = {});
+      var i, l, index, model;
       for (i = 0, l = models.length; i < l; i++) {
-        model = this.getByCid(models[i]) || this.get(models[i]);
+        model = this.get(models[i]);
         if (!model) continue;
         delete this._byId[model.id];
-        delete this._byCid[model.cid];
+        delete this._byId[model.cid];
         index = this.indexOf(model);
         this.models.splice(index, 1);
         this.length--;
@@ -3355,7 +3495,7 @@ define("underscore", (function (global) {
     // Add a model to the end of the collection.
     push: function(model, options) {
       model = this._prepareModel(model, options);
-      this.add(model, options);
+      this.add(model, _.extend({at: this.length}, options));
       return model;
     },
 
@@ -3386,14 +3526,10 @@ define("underscore", (function (global) {
     },
 
     // Get a model from the set by id.
-    get: function(id) {
-      if (id == null) return void 0;
-      return this._byId[id.id != null ? id.id : id];
-    },
-
-    // Get a model from the set by client id.
-    getByCid: function(cid) {
-      return cid && this._byCid[cid.cid || cid];
+    get: function(obj) {
+      if (obj == null) return void 0;
+      this._idAttr || (this._idAttr = this.model.prototype.idAttribute);
+      return this._byId[obj.id || obj.cid || obj[this._idAttr] || obj];
     },
 
     // Get the model at the given index.
@@ -3419,14 +3555,16 @@ define("underscore", (function (global) {
       if (!this.comparator) {
         throw new Error('Cannot sort a set without a comparator');
       }
+      options || (options = {});
 
+      // Run sort based on type of `comparator`.
       if (_.isString(this.comparator) || this.comparator.length === 1) {
         this.models = this.sortBy(this.comparator, this);
       } else {
         this.models.sort(_.bind(this.comparator, this));
       }
 
-      if (!options || !options.silent) this.trigger('reset', this, options);
+      if (!options.silent) this.trigger('sort', this, options);
       return this;
     },
 
@@ -3435,29 +3573,68 @@ define("underscore", (function (global) {
       return _.invoke(this.models, 'get', attr);
     },
 
+    // Smartly update a collection with a change set of models, adding,
+    // removing, and merging as necessary.
+    update: function(models, options) {
+      options = _.extend({add: true, merge: true, remove: true}, options);
+      if (options.parse) models = this.parse(models, options);
+      var model, i, l, existing;
+      var add = [], remove = [], modelMap = {};
+
+      // Allow a single model (or no argument) to be passed.
+      if (!_.isArray(models)) models = models ? [models] : [];
+
+      // Proxy to `add` for this case, no need to iterate...
+      if (options.add && !options.remove) return this.add(models, options);
+
+      // Determine which models to add and merge, and which to remove.
+      for (i = 0, l = models.length; i < l; i++) {
+        model = models[i];
+        existing = this.get(model);
+        if (options.remove && existing) modelMap[existing.cid] = true;
+        if ((options.add && !existing) || (options.merge && existing)) {
+          add.push(model);
+        }
+      }
+      if (options.remove) {
+        for (i = 0, l = this.models.length; i < l; i++) {
+          model = this.models[i];
+          if (!modelMap[model.cid]) remove.push(model);
+        }
+      }
+
+      // Remove models (if applicable) before we add and merge the rest.
+      if (remove.length) this.remove(remove, options);
+      if (add.length) this.add(add, options);
+      return this;
+    },
+
     // When you have more items than you want to add or remove individually,
     // you can reset the entire set with a new list of models, without firing
     // any `add` or `remove` events. Fires `reset` when finished.
     reset: function(models, options) {
+      options || (options = {});
+      if (options.parse) models = this.parse(models, options);
       for (var i = 0, l = this.models.length; i < l; i++) {
         this._removeReference(this.models[i]);
       }
+      options.previousModels = this.models.slice();
       this._reset();
       if (models) this.add(models, _.extend({silent: true}, options));
-      if (!options || !options.silent) this.trigger('reset', this, options);
+      if (!options.silent) this.trigger('reset', this, options);
       return this;
     },
 
     // Fetch the default set of models for this collection, resetting the
-    // collection when they arrive. If `add: true` is passed, appends the
-    // models to the collection instead of resetting.
+    // collection when they arrive. If `update: true` is passed, the response
+    // data will be passed through the `update` method instead of `reset`.
     fetch: function(options) {
       options = options ? _.clone(options) : {};
       if (options.parse === void 0) options.parse = true;
-      var collection = this;
       var success = options.success;
-      options.success = function(resp, status, xhr) {
-        collection[options.add ? 'add' : 'reset'](collection.parse(resp, xhr), options);
+      options.success = function(collection, resp, options) {
+        var method = options.update ? 'update' : 'reset';
+        collection[method](resp, options);
         if (success) success(collection, resp, options);
       };
       return this.sync('read', this, options);
@@ -3467,11 +3644,10 @@ define("underscore", (function (global) {
     // collection immediately, unless `wait: true` is passed, in which case we
     // wait for the server to agree.
     create: function(model, options) {
-      var collection = this;
       options = options ? _.clone(options) : {};
-      model = this._prepareModel(model, options);
-      if (!model) return false;
-      if (!options.wait) collection.add(model, options);
+      if (!(model = this._prepareModel(model, options))) return false;
+      if (!options.wait) this.add(model, options);
+      var collection = this;
       var success = options.success;
       options.success = function(model, resp, options) {
         if (options.wait) collection.add(model, options);
@@ -3483,7 +3659,7 @@ define("underscore", (function (global) {
 
     // **parse** converts a response into a list of models to be added to the
     // collection. The default implementation is just to pass it through.
-    parse: function(resp, xhr) {
+    parse: function(resp, options) {
       return resp;
     },
 
@@ -3492,19 +3668,11 @@ define("underscore", (function (global) {
       return new this.constructor(this.models);
     },
 
-    // Proxy to _'s chain. Can't be proxied the same way the rest of the
-    // underscore methods are proxied because it relies on the underscore
-    // constructor.
-    chain: function() {
-      return _(this.models).chain();
-    },
-
     // Reset all internal state. Called when the collection is reset.
-    _reset: function(options) {
+    _reset: function() {
       this.length = 0;
-      this.models = [];
+      this.models.length = 0;
       this._byId  = {};
-      this._byCid = {};
     },
 
     // Prepare a model or hash of attributes to be added to this collection.
@@ -3516,7 +3684,7 @@ define("underscore", (function (global) {
       options || (options = {});
       options.collection = this;
       var model = new this.model(attrs, options);
-      if (!model._validate(model.attributes, options)) return false;
+      if (!model._validate(attrs, options)) return false;
       return model;
     },
 
@@ -3538,6 +3706,14 @@ define("underscore", (function (global) {
         if (model.id != null) this._byId[model.id] = model;
       }
       this.trigger.apply(this, arguments);
+    },
+
+    sortedIndex: function (model, value, context) {
+      value || (value = this.comparator);
+      var iterator = _.isFunction(value) ? value : function(model) {
+        return model.get(value);
+      };
+      return _.sortedIndex(this.models, model, iterator, context);
     }
 
   });
@@ -3546,9 +3722,9 @@ define("underscore", (function (global) {
   var methods = ['forEach', 'each', 'map', 'collect', 'reduce', 'foldl',
     'inject', 'reduceRight', 'foldr', 'find', 'detect', 'filter', 'select',
     'reject', 'every', 'all', 'some', 'any', 'include', 'contains', 'invoke',
-    'max', 'min', 'sortedIndex', 'toArray', 'size', 'first', 'head', 'take',
-    'initial', 'rest', 'tail', 'last', 'without', 'indexOf', 'shuffle',
-    'lastIndexOf', 'isEmpty'];
+    'max', 'min', 'toArray', 'size', 'first', 'head', 'take', 'initial', 'rest',
+    'tail', 'drop', 'last', 'without', 'indexOf', 'shuffle', 'lastIndexOf',
+    'isEmpty', 'chain'];
 
   // Mix in each Underscore method as a proxy to `Collection#models`.
   _.each(methods, function(method) {
@@ -3587,9 +3763,9 @@ define("underscore", (function (global) {
   // Cached regular expressions for matching named param parts and splatted
   // parts of route strings.
   var optionalParam = /\((.*?)\)/g;
-  var namedParam    = /:\w+/g;
+  var namedParam    = /(\(\?)?:\w+/g;
   var splatParam    = /\*\w+/g;
-  var escapeRegExp  = /[-{}[\]+?.,\\^$|#\s]/g;
+  var escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 
   // Set up all inheritable **Backbone.Router** properties and methods.
   _.extend(Router.prototype, Events, {
@@ -3611,6 +3787,7 @@ define("underscore", (function (global) {
         var args = this._extractParameters(route, fragment);
         callback && callback.apply(this, args);
         this.trigger.apply(this, ['route:' + name].concat(args));
+        this.trigger('route', name, args);
         Backbone.history.trigger('route', this, name, args);
       }, this));
       return this;
@@ -3638,7 +3815,9 @@ define("underscore", (function (global) {
     _routeToRegExp: function(route) {
       route = route.replace(escapeRegExp, '\\$&')
                    .replace(optionalParam, '(?:$1)?')
-                   .replace(namedParam, '([^\/]+)')
+                   .replace(namedParam, function(match, optional){
+                     return optional ? match : '([^\/]+)';
+                   })
                    .replace(splatParam, '(.*?)');
       return new RegExp('^' + route + '$');
     },
@@ -3660,15 +3839,15 @@ define("underscore", (function (global) {
     this.handlers = [];
     _.bindAll(this, 'checkUrl');
 
-    // #1653 - Ensure that `History` can be used outside of the browser.
+    // Ensure that `History` can be used outside of the browser.
     if (typeof window !== 'undefined') {
       this.location = window.location;
       this.history = window.history;
     }
   };
 
-  // Cached regex for cleaning leading hashes and slashes.
-  var routeStripper = /^[#\/]|\s+$/;
+  // Cached regex for stripping a leading hash/slash and trailing space.
+  var routeStripper = /^[#\/]|\s+$/g;
 
   // Cached regex for stripping leading and trailing slashes.
   var rootStripper = /^\/+|\/+$/g;
@@ -3708,7 +3887,7 @@ define("underscore", (function (global) {
           fragment = this.getHash();
         }
       }
-      return decodeURIComponent(fragment.replace(routeStripper, ''));
+      return fragment.replace(routeStripper, '');
     },
 
     // Start the hash change handling, returning `true` if the current URL matches
@@ -3739,9 +3918,9 @@ define("underscore", (function (global) {
       // Depending on whether we're using pushState or hashes, and whether
       // 'onhashchange' is supported, determine how we check the URL state.
       if (this._hasPushState) {
-        Backbone.$(window).bind('popstate', this.checkUrl);
+        Backbone.$(window).on('popstate', this.checkUrl);
       } else if (this._wantsHashChange && ('onhashchange' in window) && !oldIE) {
-        Backbone.$(window).bind('hashchange', this.checkUrl);
+        Backbone.$(window).on('hashchange', this.checkUrl);
       } else if (this._wantsHashChange) {
         this._checkUrlInterval = setInterval(this.checkUrl, this.interval);
       }
@@ -3773,7 +3952,7 @@ define("underscore", (function (global) {
     // Disable Backbone.history, perhaps temporarily. Not useful in a real app,
     // but possibly useful for unit testing Routers.
     stop: function() {
-      Backbone.$(window).unbind('popstate', this.checkUrl).unbind('hashchange', this.checkUrl);
+      Backbone.$(window).off('popstate', this.checkUrl).off('hashchange', this.checkUrl);
       clearInterval(this._checkUrlInterval);
       History.started = false;
     },
@@ -3856,7 +4035,7 @@ define("underscore", (function (global) {
         var href = location.href.replace(/(javascript:|#).*$/, '');
         location.replace(href + '#' + fragment);
       } else {
-        // #1649 - Some browsers require that `hash` contains a leading #.
+        // Some browsers require that `hash` contains a leading #.
         location.hash = '#' + fragment;
       }
     }
@@ -3883,7 +4062,7 @@ define("underscore", (function (global) {
   var delegateEventSplitter = /^(\S+)\s*(.*)$/;
 
   // List of view options to be merged as properties.
-  var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName'];
+  var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events'];
 
   // Set up all inheritable **Backbone.View** properties and methods.
   _.extend(View.prototype, Events, {
@@ -3908,33 +4087,12 @@ define("underscore", (function (global) {
       return this;
     },
 
-    // Clean up references to this view in order to prevent latent effects and
-    // memory leaks.
-    dispose: function() {
-      this.undelegateEvents();
-      if (this.model && this.model.off) this.model.off(null, null, this);
-      if (this.collection && this.collection.off) this.collection.off(null, null, this);
-      return this;
-    },
-
-    // Remove this view from the DOM. Note that the view isn't present in the
-    // DOM by default, so calling this method may be a no-op.
+    // Remove this view by taking the element out of the DOM, and removing any
+    // applicable Backbone.Events listeners.
     remove: function() {
-      this.dispose();
       this.$el.remove();
+      this.stopListening();
       return this;
-    },
-
-    // For small amounts of DOM Elements, where a full-blown template isn't
-    // needed, use **make** to manufacture elements, one at a time.
-    //
-    //     var el = this.make('li', {'class': 'row'}, this.model.escape('title'));
-    //
-    make: function(tagName, attributes, content) {
-      var el = document.createElement(tagName);
-      if (attributes) Backbone.$(el).attr(attributes);
-      if (content != null) Backbone.$(el).html(content);
-      return el;
     },
 
     // Change the view's element (`this.el` property), including event
@@ -3974,9 +4132,9 @@ define("underscore", (function (global) {
         method = _.bind(method, this);
         eventName += '.delegateEvents' + this.cid;
         if (selector === '') {
-          this.$el.bind(eventName, method);
+          this.$el.on(eventName, method);
         } else {
-          this.$el.delegate(selector, eventName, method);
+          this.$el.on(eventName, selector, method);
         }
       }
     },
@@ -3985,14 +4143,14 @@ define("underscore", (function (global) {
     // You usually don't need to use this, but may wish to if you have multiple
     // Backbone views attached to the same DOM element.
     undelegateEvents: function() {
-      this.$el.unbind('.delegateEvents' + this.cid);
+      this.$el.off('.delegateEvents' + this.cid);
     },
 
     // Performs the initial configuration of a View with a set of options.
     // Keys with special meaning *(model, collection, id, className)*, are
     // attached directly to the view.
     _configure: function(options) {
-      if (this.options) options = _.extend({}, this.options, options);
+      if (this.options) options = _.extend({}, _.result(this, 'options'), options);
       _.extend(this, _.pick(options, viewOptions));
       this.options = options;
     },
@@ -4006,7 +4164,8 @@ define("underscore", (function (global) {
         var attrs = _.extend({}, _.result(this, 'attributes'));
         if (this.id) attrs.id = _.result(this, 'id');
         if (this.className) attrs['class'] = _.result(this, 'className');
-        this.setElement(this.make(_.result(this, 'tagName'), attrs), false);
+        var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
+        this.setElement($el, false);
       } else {
         this.setElement(_.result(this, 'el'), false);
       }
@@ -4021,6 +4180,7 @@ define("underscore", (function (global) {
   var methodMap = {
     'create': 'POST',
     'update': 'PUT',
+    'patch':  'PATCH',
     'delete': 'DELETE',
     'read':   'GET'
   };
@@ -4058,9 +4218,9 @@ define("underscore", (function (global) {
     }
 
     // Ensure that we have the appropriate request data.
-    if (!options.data && model && (method === 'create' || method === 'update')) {
+    if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
       params.contentType = 'application/json';
-      params.data = JSON.stringify(model);
+      params.data = JSON.stringify(options.attrs || model.toJSON(options));
     }
 
     // For older servers, emulate JSON by encoding the request into an HTML-form.
@@ -4071,7 +4231,7 @@ define("underscore", (function (global) {
 
     // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
     // And an `X-HTTP-Method-Override` header.
-    if (options.emulateHTTP && (type === 'PUT' || type === 'DELETE')) {
+    if (options.emulateHTTP && (type === 'PUT' || type === 'DELETE' || type === 'PATCH')) {
       params.type = 'POST';
       if (options.emulateJSON) params.data._method = type;
       var beforeSend = options.beforeSend;
@@ -4087,19 +4247,21 @@ define("underscore", (function (global) {
     }
 
     var success = options.success;
-    options.success = function(resp, status, xhr) {
-      if (success) success(resp, status, xhr);
+    options.success = function(resp) {
+      if (success) success(model, resp, options);
       model.trigger('sync', model, resp, options);
     };
 
     var error = options.error;
-    options.error = function(xhr, status, thrown) {
+    options.error = function(xhr) {
       if (error) error(model, xhr, options);
       model.trigger('error', model, xhr, options);
     };
 
     // Make the request, allowing the user to override any Ajax options.
-    return Backbone.ajax(_.extend(params, options));
+    var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
+    model.trigger('request', model, xhr, options);
+    return xhr;
   };
 
   // Set the default implementation of `Backbone.ajax` to proxy through to `$`.
@@ -4123,7 +4285,7 @@ define("underscore", (function (global) {
     if (protoProps && _.has(protoProps, 'constructor')) {
       child = protoProps.constructor;
     } else {
-      child = function(){ parent.apply(this, arguments); };
+      child = function(){ return parent.apply(this, arguments); };
     }
 
     // Add static properties to the constructor function, if supplied.
@@ -4158,8 +4320,9 @@ define("underscore", (function (global) {
 
 define("backbone", ["underscore"], (function (global) {
     return function () {
-        return global.Backbone;
-    }
+        var ret, fn;
+        return ret || global.Backbone;
+    };
 }(this)));
 
 /*global define */
@@ -4674,7 +4837,15 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         ds,
         circleCursorStyle,
         displayProperties,
-        emsize, strokeWidth,
+        fontSizeInPixels,
+        halfFontSizeInPixels,
+        quarterFontSizeInPixels,
+        titleFontSizeInPixels,
+        axisFontSizeInPixels,
+        xlabelFontSizeInPixels,
+        ylabelFontSizeInPixels,
+        yAxisNumberWidth,
+        strokeWidth,
         scaleFactor,
         sizeType = {
           category: "medium",
@@ -4698,6 +4869,8 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         cplot = {},
 
         default_options = {
+          responsiveLayout: false,
+          fontScaleRelativeToParent: true,
           title   : "graph",
           xlabel  : "x-axis",
           ylabel  : "y-axis",
@@ -4741,31 +4914,59 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
     }
 
     function calculateSizeType() {
-      if(cx <= sizeType.icon) {
-        sizeType.category = 'icon';
-        sizeType.value = 0;
-      } else if (cx <= sizeType.tiny) {
-        sizeType.category = 'tiny';
-        sizeType.value = 1;
-      } else if (cx <= sizeType.small) {
-        sizeType.category = 'small';
-        sizeType.value = 2;
-      } else if (cx <= sizeType.medium) {
-        sizeType.category = 'medium';
-        sizeType.value = 3;
-      } else if (cx <= sizeType.large) {
+      if (options.responsiveLayout) {
+        if(cx <= sizeType.icon) {
+          sizeType.category = 'icon';
+          sizeType.value = 0;
+        } else if (cx <= sizeType.tiny) {
+          sizeType.category = 'tiny';
+          sizeType.value = 1;
+        } else if (cx <= sizeType.small) {
+          sizeType.category = 'small';
+          sizeType.value = 2;
+        } else if (cx <= sizeType.medium) {
+          sizeType.category = 'medium';
+          sizeType.value = 3;
+        } else if (cx <= sizeType.large) {
+          sizeType.category = 'large';
+          sizeType.value = 4;
+        } else {
+          sizeType.category = 'extralarge';
+          sizeType.value = 5;
+        }
+      } else {
         sizeType.category = 'large';
         sizeType.value = 4;
-      } else {
-        sizeType.category = 'extralarge';
-        sizeType.value = 5;
       }
+    }
+
+    function numberWidthUsingFormatter(formatter, number) {
+      var testSVG,
+          testText,
+          width;
+
+      testSVG = elem.append("svg")
+        .attr("width",  cx)
+        .attr("height", cy)
+        .attr("class", "graph");
+
+      testText = testSVG.append('g')
+        .append("text")
+          .attr("class", "axis")
+          .attr("x", -fontSizeInPixels/4 + "px")
+          .attr("dy", ".35em")
+          .attr("text-anchor", "end")
+          .text(d3.format(formatter)(number));
+
+      width = testText.node().getBBox().width;
+      testSVG.remove();
+      return width;
     }
 
     function scale(w, h) {
       if (!w && !h) {
-        cx = elem.property("clientWidth");
-        cy = elem.property("clientHeight");
+        cx = Math.max(elem.property("clientWidth"), 32);
+        cy = Math.max(elem.property("clientHeight"), 32);
       } else {
         cx = w;
         node.style.width =  cx +"px";
@@ -4780,7 +4981,115 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
       calculateSizeType();
-      emsize = parseFloat($(idOrElement).css('font-size')) / 10;
+    }
+
+    function calculateLayout() {
+      scale();
+
+      fontSizeInPixels = parseFloat($(node).css("font-size"));
+
+      if (!options.fontScaleRelativeToParent) {
+        $(node).css("font-size", 0.5 + sizeType.value/6 + 'em');
+      }
+
+      fontSizeInPixels = parseFloat($(node).css("font-size"));
+
+      halfFontSizeInPixels = fontSizeInPixels/2;
+      quarterFontSizeInPixels = fontSizeInPixels/4;
+
+      yAxisNumberWidth = Math.max(numberWidthUsingFormatter(options.yFormatter, options.ymax)*1.5,
+                                  numberWidthUsingFormatter(options.yFormatter, options.ymin)*1.5);
+
+      if (svg === undefined) {
+        titleFontSizeInPixels =  fontSizeInPixels;
+        axisFontSizeInPixels =   fontSizeInPixels;
+        xlabelFontSizeInPixels = fontSizeInPixels;
+        ylabelFontSizeInPixels = fontSizeInPixels;
+      } else {
+        titleFontSizeInPixels =  parseFloat($("svg.graph text.title").css("font-size"));
+        axisFontSizeInPixels =   parseFloat($("svg.graph text.axis").css("font-size"));
+        xlabelFontSizeInPixels = parseFloat($("svg.graph text.xlabel").css("font-size"));
+        ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
+      }
+
+      switch(sizeType.value) {
+        case 0:         // tiny
+        padding = {
+         "top":    fontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": fontSizeInPixels,
+         "left":   fontSizeInPixels
+        };
+        break;
+
+        case 1:         // small
+        padding = {
+         "top":    fontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": fontSizeInPixels,
+         "left":   fontSizeInPixels
+        };
+        break;
+
+        case 2:         // medium
+        padding = {
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": axisFontSizeInPixels*1.25,
+         "left":   yAxisNumberWidth
+        };
+        break;
+
+        case 3:         // large
+        padding = {
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":                   fontSizeInPixels,
+         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels : yAxisNumberWidth
+        };
+        break;
+
+        default:         // extralarge
+        padding = {
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":                   fontSizeInPixels,
+         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels : yAxisNumberWidth
+        };
+        break;
+      }
+
+      if (sizeType.value > 2 ) {
+        padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * fontSizeInPixels;
+      } else {
+        titles = [titles[0]];
+      }
+
+      size = {
+        "width":  cx - padding.left - padding.right,
+        "height": cy - padding.top  - padding.bottom
+      };
+
+      xScale = d3.scale[options.xscale]()
+        .domain([options.xmin, options.xmax])
+        .range([0, size.width]);
+
+      if (options.xscale === "pow") {
+        xScale.exponent(options.xscaleExponent);
+      }
+
+      yScale = d3.scale[options.yscale]()
+        .domain([options.ymin, options.ymax]).nice()
+        .range([size.height, 0]).nice();
+
+      if (options.yscale === "pow") {
+        yScale.exponent(options.yscaleExponent);
+      }
+
+      line = d3.svg.line()
+            .x(function(d, i) { return xScale(points[i].x ); })
+            .y(function(d, i) { return yScale(points[i].y); });
+
     }
 
     function initialize(idOrElement, opts, message) {
@@ -4823,53 +5132,6 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
 
       pointArray = [];
 
-      switch(sizeType.value) {
-        case 0:
-        padding = {
-         "top":    4,
-         "right":  4,
-         "bottom": 4,
-         "left":   4
-        };
-        break;
-
-        case 1:
-        padding = {
-         "top":    8,
-         "right":  8,
-         "bottom": 8,
-         "left":   8
-        };
-        break;
-
-        case 2:
-        padding = {
-         "top":    options.title  ? 25 : 15,
-         "right":  15,
-         "bottom": 20,
-         "left":   30
-        };
-        break;
-
-        case 3:
-        padding = {
-         "top":    options.title  ? 30 : 20,
-         "right":                   30,
-         "bottom": options.xlabel ? 60 : 10,
-         "left":   options.ylabel ? 70 : 45
-        };
-        break;
-
-        default:
-        padding = {
-         "top":    options.title  ? 40 : 20,
-         "right":                   30,
-         "bottom": options.xlabel ? 60 : 10,
-         "left":   options.ylabel ? 70 : 45
-        };
-        break;
-      }
-
       if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
         for (var i = 0; i < options.dataset.length; i++) {
           pointArray.push(indexedData(options.dataset[i], 0, sample));
@@ -4887,39 +5149,8 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       }
       titles.reverse();
 
-      if (sizeType.value > 2 ) {
-        padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * emsize * 22;
-      } else {
-        titles = [titles[0]];
-      }
-
-      size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
-      };
-
-      xScale = d3.scale[options.xscale]()
-        .domain([options.xmin, options.xmax])
-        .range([0, size.width]);
-
-      if (options.xscale === "pow") {
-        xScale.exponent(options.xscaleExponent);
-      }
-
-      yScale = d3.scale[options.yscale]()
-        .domain([options.ymin, options.ymax]).nice()
-        .range([size.height, 0]).nice();
-
-      if (options.yscale === "pow") {
-        yScale.exponent(options.yscaleExponent);
-      }
-
       fx = d3.format(options.xFormatter);
       fy = d3.format(options.yFormatter);
-
-      line = d3.svg.line()
-            .x(function(d, i) { return xScale(points[i].x ); })
-            .y(function(d, i) { return yScale(points[i].y); });
 
       // drag axis logic
       downx = Math.NaN;
@@ -4949,13 +5180,14 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
     }
 
     function graph() {
-      scale();
+      calculateLayout();
 
       if (svg === undefined) {
 
         svg = elem.append("svg")
             .attr("width",  cx)
-            .attr("height", cy);
+            .attr("height", cy)
+            .attr("class", "graph");
 
         vis = svg.append("g")
               .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -4993,10 +5225,9 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             .data(titles, function(d) { return d; });
           title.enter().append("text")
               .attr("class", "title")
-              .style("font-size", sizeType.value/3.2 * 100 + "%")
               .text(function(d) { return d; })
               .attr("x", size.width/2)
-              .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })
+              .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; })
               .style("text-anchor","middle");
         }
 
@@ -5004,12 +5235,11 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
        if (options.xlabel && sizeType.value > 2) {
           xlabel = vis.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.6 * 100 + "%")
               .attr("class", "xlabel")
               .text(options.xlabel)
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy","2.4em")
+              .attr("dy", axisFontSizeInPixels*2 + "px")
               .style("text-anchor","middle");
         }
 
@@ -5017,11 +5247,10 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         if (options.ylabel && sizeType.value > 2) {
           ylabel = vis.append("g").append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.6 * 100 + "%")
               .attr("class", "ylabel")
               .text( options.ylabel)
               .style("text-anchor","middle")
-              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
         }
 
         notification = vis.append("text")
@@ -5128,9 +5357,8 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         if (sizeType.value > 1) {
           gxe.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.7 * 100 + "%")
               .attr("y", size.height)
-              .attr("dy", "1em")
+              .attr("dy", axisFontSizeInPixels + "px")
               .attr("text-anchor", "middle")
               .style("cursor", "ew-resize")
               .text(fx)
@@ -5160,8 +5388,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         if (sizeType.value > 1) {
           gye.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.7 * 100 + "%")
-              .attr("x", -3)
+              .attr("x", -axisFontSizeInPixels/4 + "px")
               .attr("dy", ".35em")
               .attr("text-anchor", "end")
               .style("cursor", "ns-resize")
@@ -5218,7 +5445,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         d3.event.preventDefault();
         plot.style("cursor", "move");
         if (d3.event.altKey) {
-          var p = d3.svg.mouse(vis[0][0]);
+          var p = d3.mouse(vis.node());
           downx = xScale.invert(p[0]);
           downy = yScale.invert(p[1]);
           dragged = false;
@@ -5229,14 +5456,14 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       function xaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
       function yaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downy = yScale.invert(p[1]);
       }
 
@@ -5249,7 +5476,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       // ------------------------------------------------------------
 
       function mousemove() {
-        var p = d3.svg.mouse(vis[0][0]),
+        var p = d3.mouse(vis.node()),
             changex, changey, new_domain,
             t = d3.event.changedTouches;
 
@@ -5722,6 +5949,8 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         graph.initialize();
       }
       graph();
+      // and then render again using actual size of SVG text elements are
+      graph();
       return graph;
     };
 
@@ -5732,7 +5961,11 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       return graph;
     };
 
-    if (node) { graph(); }
+    if (node) {
+      graph();
+      // and then render again using actual size of SVG text elements are
+      graph();
+    }
 
     return graph;
   };
@@ -5765,7 +5998,10 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
         yFormatter: 'yFormatter',
         lines: 'lines',
         bars: 'bars'
-      };
+      },
+
+  graphControllerCount = 0;
+
 
   return function graphController(component) {
     var // HTML element containing view
@@ -5773,14 +6009,16 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
         grapher,
         controller,
         properties,
-        data = [];
+        data = [],
+        namespace = "graphController" + (++graphControllerCount);
 
     /**
-      Returns the time interval that elapses between succeessive data points, in picoseconds. (The
-      current implementation of the grapher requires this knowledge.)
+      Returns the time interval that elapses between succeessive data points, same units as model's
+      displayTime property. (e.g, for MD2D model, picoseconds.) The current implementation of the
+      grapher requires this knowledge.
     */
     function getSamplePeriod() {
-      return model.get('timeStepsPerTick') * model.get('timeStep') / 1000;
+      return model.get('displayTimePerTick');
     }
 
     /**
@@ -5878,21 +6116,21 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
 
     function registerModelListeners() {
       // Namespace listeners to '.graphController' so we can eventually remove them all at once
-      model.on('tick.graphController', appendDataPoint);
-      model.on('stepBack.graphController', redrawCurrentStepPointer);
-      model.on('stepForward.graphController', redrawCurrentStepPointer);
-      model.on('seek.graphController', redrawCurrentStepPointer);
-      model.on('reset.graphController', function() {
+      model.on('tick.'+namespace, appendDataPoint);
+      model.on('stepBack.'+namespace, redrawCurrentStepPointer);
+      model.on('stepForward.'+namespace, redrawCurrentStepPointer);
+      model.on('seek.'+namespace, redrawCurrentStepPointer);
+      model.on('reset.'+namespace, function() {
         resetGrapher();
         resetData();
       });
-      model.on('play.pressureGraph', function() {
+      model.on('play.'+namespace, function() {
         if (grapher.number_of_points() && model.stepCounter() < grapher.number_of_points()) {
           removeDataAfterStepPointer();
         }
         grapher.show_canvas();
       });
-      model.on('invalidation.graphController', removeDataAfterStepPointer);
+      model.on('invalidation.'+namespace, removeDataAfterStepPointer);
 
       // As an imperfect hack (really the grapher should allow us to pass the correct x-axis value)
       // we reset the graph if a model property change changes the time interval between ticks
@@ -6134,8 +6372,7 @@ define('import-export/dg-exporter',['require','common/console'],function(require
       this.doCommand('createCases', {
         collection: this.childCollectionName,
         values: timeSeriesData,
-        parent: parentCase.caseID,
-        log: false
+        parent: parentCase.caseID
       });
 
       // Step 6. Close the case.
@@ -6155,6 +6392,15 @@ define('import-export/dg-exporter',['require','common/console'],function(require
         type: 'DG.TableView',
         log: false
       });
+    },
+
+    /**
+      Call any time to log an event to DataGames
+    */
+    logAction: function(logString) {
+      this.doCommand('logAction', {
+        formatStr: logString
+      });
     }
   };
 });
@@ -6168,7 +6414,7 @@ define('common/controllers/export-controller',['require','import-export/dg-expor
 
   var ExportController = function exportController(spec) {
     var perRun  = (spec.perRun || []).slice(),
-        perTick = ['timeInPs'].concat(spec.perTick.slice()),
+        perTick = ['displayTime'].concat(spec.perTick.slice()),
         perTickValues,
         controller;
 
@@ -6194,27 +6440,61 @@ define('common/controllers/export-controller',['require','import-export/dg-expor
       perTickValues.length = model.stepCounter() + 1;
     }
 
+    function logAction(action) {
+      var logString,
+          perRunPropertyLabels = [],
+          perRunPropertyValues = [],
+          i;
+
+      for (i = 0; i < perRun.length; i++) {
+        perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
+        perRunPropertyValues[i] = model.get(perRun[i]);
+      }
+
+      logString = "User " + action + " model. ";
+      logString += "Per-run Settings and Data: ";
+      logString += JSON.stringify({
+        action: action,
+        type: "model",
+        fields: perRunPropertyLabels,
+        values: perRunPropertyValues
+      });
+
+      dgExporter.logAction(logString);
+    }
+
     function registerModelListeners() {
       // Namespace listeners to '.exportController' so we can eventually remove them all at once
       model.on('tick.exportController', appendDataPoint);
       model.on('reset.exportController', resetData);
       model.on('play.exportController', removeDataAfterStepPointer);
       model.on('invalidation.exportController', removeDataAfterStepPointer);
+
+      model.on('play.exportController', function() {
+        logAction('started');
+      });
+
+      model.on('willReset.exportController', function() {
+        logAction('reset');
+      });
+
     }
 
     function getLabelForProperty(property) {
-      var desc = model.getPropertyDescription(property),
-          ret = "";
+      var desc  = model.getPropertyDescription(property),
+          label = desc.getLabel(),
+          units = desc.getUnitAbbreviation(),
+          ret   = "";
 
-      if (desc.label && desc.label.length > 0) {
-        ret += desc.label;
+      if (label.length > 0) {
+        ret += label;
       } else {
         ret += property;
       }
 
-      if (desc.units && desc.units.length > 0) {
+      if (units && units.length > 0) {
         ret += " (";
-        ret += desc.units;
+        ret += units;
         ret += ")";
       }
       return ret;
@@ -6223,14 +6503,6 @@ define('common/controllers/export-controller',['require','import-export/dg-expor
     return controller = {
 
       modelLoadedCallback: function() {
-        // Show time in picoseconds by default b/c ps are the time unit used by the standard graph.
-        model.defineOutput('timeInPs', {
-          label: "Time",
-          units: "ps"
-        }, function() {
-          return model.get('time')/1000;
-        });
-
         // put per-run parameters before per-run outputs
         function is(type) {
           return function(p) { return model.getPropertyType(p) === type; };
@@ -6246,6 +6518,8 @@ define('common/controllers/export-controller',['require','import-export/dg-expor
             perRunPropertyValues = [],
             perTickLabels = [],
             i;
+
+        logAction('exported');
 
         for (i = 0; i < perRun.length; i++) {
           perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
@@ -6270,9 +6544,11 @@ define('common/controllers/export-controller',['require','import-export/dg-expor
 
   return ExportController;
 });
-/*global d3 $ define model alert */
+/*global d3, $, define, model */
 
-define('common/controllers/scripting-api',['require'],function (require) {
+define('common/controllers/scripting-api',['require','common/alert'],function (require) {
+
+  var alert = require('common/alert');
 
   //
   // Define the scripting API used by 'action' scripts on interactive elements.
@@ -6363,6 +6639,107 @@ define('common/controllers/scripting-api',['require'],function (require) {
           });
         },
 
+        /**
+         * Performs a user-defined script at any given time.
+         *
+         * callAt(t, ...) guarantees that script will be executed, but not necessarily
+         * at exactly chosen time (as this can be impossible due to simulation settings).
+         * User scripts cannot interrupt the model "tick", the most inner integration loop.
+         * e.g. callAt(23, ...) in MD2D model context will be executed at time 50,
+         * if timeStepsPerTick = 50 and timeStep = 1.
+         *
+         * callAt action will only occur the first time the model reaches the specified time,
+         * but not after the model is scrubbed forward and backward (using tick history).
+         *
+         * @param  {number} time     Time defined in model native time unit (e.g. fs for MD2D).
+         * @param  {function} action Function containing user-defined script.
+         */
+        callAt: function callAt(time, action) {
+          var actionTimeout = {
+            time: time,
+            action: action,
+            check: function() {
+              if (model.get("time") >= this.time) {
+                this.action();
+                // Optimization - when function was once executed, replace
+                // check with empty function.
+                // removePropertiesListener() method could be useful, but it
+                // isn't available yet.
+                this.check = function () {};
+              }
+            }
+          };
+          model.addPropertiesListener("time", function () {
+            actionTimeout.check();
+          });
+        },
+
+        /**
+         * Performs a user-defined script repeatedly, with a fixed time delay
+         * between each call.
+         *
+         * callEvery(t, ...) guarantees that script will be executed *correct number of times*,
+         * but not necessarily at exactly chosen intervals (as this can be impossible due to
+         * simulation settings). User scripts cannot interrupt the model "tick", the most
+         * inner integration loop.
+         * e.g. callEvery(23, ...) in MD2D model context will be executed *twice* at time 50,
+         * if timeStepsPerTick = 50 and timeStep = 1.
+         *
+         * callEvery action for time N * interval (for any integer N >= 1) will only be called
+         * the first time the model time exceeds N * interval time. After the model is scrubbed
+         * forward and backward using (using tick history), action *won't* be called again.
+         *
+         * @param {number}   interval Interval on how often to execute the script,
+         *                            defined in model native time unit (e.g. fs for MD2D).
+         * @param {function} action   Function containing user-defined script.
+         */
+        callEvery: function callEvery(interval, action) {
+          var actionInterval = {
+            lastCall: 0,
+            interval: interval,
+            action: action,
+            execute: function() {
+              var time = model.get("time");
+              while (time - this.lastCall >= this.interval) {
+                this.action();
+                this.lastCall += this.interval;
+              }
+            }
+          };
+          model.addPropertiesListener("time", function () {
+            actionInterval.execute();
+          });
+        },
+
+        /**
+         * Sets a custom click handler for objects of a given type.
+         * Basic type which is always supported is "plot". It is empty
+         * area of a model. Various models can support different clickable
+         * types. Please see the model documentation to check what
+         * other object types are supported.
+         *
+         * Behind the scenes this functions uses class selector. So you can
+         * also inspect SVG image and check what is class of interesting
+         * object and try to use it.
+         *
+         * MD2D specific notes:
+         * Supported types: "plot", "atom", "obstacle", "image", "textBox".
+         * TODO: move it to MD2D related docs in the future.
+         *
+         * @param {string}   type     Name of the type of clickable objects.
+         * @param {Function} callback Custom click handler. It will be called
+         *                            when object is clicked with (x, y, d, i) arguments:
+         *                              x - x coordinate in model units,
+         *                              y - y coordinate in model units,
+         *                              d - data associated with a given object (can be undefined!),
+         *                              i - ID of clicked object (usually its value makes sense if d is defined).
+         */
+        onClick: function onClick(type, callback) {
+          // Append '.' to make API simpler.
+          // So authors can just specify onClick("atom", ...) instead of class selectors.
+          interactivesController.getModelController().modelContainer.setClickHandler("." + type, callback);
+        },
+
         start: function start() {
           model.start();
         },
@@ -6398,10 +6775,10 @@ define('common/controllers/scripting-api',['require'],function (require) {
 
         Math: Math,
 
-        // prevent us from overwriting window.undefined
-        undefined: undefined,
+        // Rrevent us from overwriting window.undefined.
+        "undefined": undefined,
 
-        // rudimentary debugging functionality
+        // Rudimentary debugging functionality. Use Lab alert helper function.
         alert: alert,
 
         console: window.console !== null ? window.console : {
@@ -6427,7 +6804,7 @@ define('common/controllers/scripting-api',['require'],function (require) {
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        jQuery.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
+        $.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
       },
 
       /**
@@ -6591,7 +6968,7 @@ define('common/controllers/button-controller',['common/controllers/interactive-m
   };
 });
 
-/*global define $ model */
+/*global define, $, model */
 
 define('common/controllers/checkbox-controller',['common/controllers/interactive-metadata','common/validator'],function () {
 
@@ -6603,22 +6980,40 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
         onClickScript,
         initialValue,
         $checkbox,
+        $fakeCheckable,
         $label,
         $element,
-        controller,
+        controller;
 
-        // Updates checkbox using model property. Used in modelLoadedCallback.
-        // Make sure that this function is only called when:
-        // a) model is loaded,
-        // b) checkbox is bound to some property.
-        updateCheckbox = function () {
-          var value = model.get(propertyName);
-          if (value) {
-            $checkbox.attr('checked', true);
-          } else {
-            $checkbox.attr('checked', false);
-          }
-        };
+    // Updates checkbox using model property. Used in modelLoadedCallback.
+    // Make sure that this function is only called when:
+    // a) model is loaded,
+    // b) checkbox is bound to some property.
+    function updateCheckbox () {
+      setCheckbox(model.get(propertyName));
+    }
+
+    function setCheckbox(value) {
+      if (value) {
+        $checkbox.attr('checked', 'checked');
+        $fakeCheckable.addClass('checked');
+      } else {
+        $checkbox.removeAttr('checked');
+        $fakeCheckable.removeClass('checked');
+      }
+    }
+
+    function customClickEvent (e) {
+      e.preventDefault();
+
+      if ($checkbox.attr('checked') !== undefined) {
+        setCheckbox(false);
+      } else {
+        setCheckbox(true);
+      }
+      // Trigger change event!
+      $checkbox.trigger('change');
+    }
 
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.checkbox, component);
@@ -6626,13 +7021,36 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
     onClickScript = component.onClick;
     initialValue  = component.initialValue;
 
+    $label = $('<label>').append('<span>' + component.text + '</span>');
+    $label.attr('for', component.id);
     $checkbox = $('<input type="checkbox">').attr('id', component.id);
-    $label = $('<label>').append(component.text).append($checkbox);
-    $element = $('<div>').append($label);
+    $fakeCheckable = $('<div class="fakeCheckable">');
+    // Hide native input, use fake checkable.
+    $checkbox.css("display", "none");
+
+    // default is to have label on right of checkbox
+    if (component.textOn === "left") {
+      $element = $('<div>').append($label).append($checkbox).append($fakeCheckable.addClass("right"));
+    } else {
+      $element = $('<div>').append($checkbox).append($fakeCheckable).append($label);
+    }
+
     // Append class to the most outer container.
     $element.addClass("interactive-checkbox");
     // Each interactive component has to have class "component".
     $element.addClass("component");
+
+    // Ensure that custom div (used for styling) is clickable.
+    $fakeCheckable.on('touchstart click', customClickEvent);
+    // Label also requires custom event handler to ensure that click updates
+    // fake clickable element too.
+    $label.on('touchstart click', customClickEvent);
+
+    // Custom dimensions.
+    $element.css({
+      width: component.width,
+      height: component.height
+    });
 
     // Process onClick script if it is defined.
     if (onClickScript) {
@@ -6640,8 +7058,8 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
       onClickScript = scriptingAPI.makeFunctionInScriptContext('value', onClickScript);
     }
 
-    // Register handler for click event.
-    $checkbox.click(function () {
+    // Register handler for change event.
+    $checkbox.on('change', function () {
       var value = false,
           propObj;
       // $(this) will contain a reference to the checkbox.
@@ -6674,7 +7092,8 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
           updateCheckbox();
         }
         else if (initialValue !== undefined) {
-          $checkbox.attr('checked', initialValue);
+          setCheckbox(initialValue);
+          onClickScript(initialValue);
         }
       },
 
@@ -6704,7 +7123,7 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
 
 /*global define, $ */
 
-define('common/controllers/text-controller',['common/controllers/interactive-metadata','common/validator'],function () {
+define('common/controllers/text-controller',['require','common/controllers/interactive-metadata','common/validator'],function (require) {
 
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
@@ -6734,7 +7153,13 @@ define('common/controllers/text-controller',['common/controllers/interactive-met
       $text.addClass(component.style);
       // Process optional onClick script.
       if (component.onClick) {
-        onClickFunction = scriptingAPI.makeFunctionInScriptContext(component.onClick);
+        if (typeof component.onClick !== "function") {
+          // Create function from the string or array of strings.
+          onClickFunction = scriptingAPI.makeFunctionInScriptContext(component.onClick);
+        } else {
+          // Just assign ready function.
+          onClickFunction = component.onClick;
+        }
         $text.on("click", onClickFunction);
         // Also add a special class indicating that this text node is a clickable.
         $text.addClass("clickable");
@@ -6769,7 +7194,185 @@ define('common/controllers/text-controller',['common/controllers/interactive-met
   };
 });
 
-/*global define $ model */
+/*global define: false */
+/**
+ * Inherit the prototype methods from one constructor into another.
+ *
+ * Usage:
+ * function ParentClass(a, b) { }
+ * ParentClass.prototype.foo = function(a) { }
+ *
+ * function ChildClass(a, b, c) {
+ *   goog.base(this, a, b);
+ * }
+ *
+ * inherit(ChildClass, ParentClass);
+ *
+ * var child = new ChildClass('a', 'b', 'see');
+ * child.foo(); // works
+ *
+ * In addition, a superclass' implementation of a method can be invoked
+ * as follows:
+ *
+ * ChildClass.prototype.foo = function(a) {
+ *   ChildClass.superClass.foo.call(this, a);
+ *   // other code
+ * };
+ *
+ * @param {Function} Child Child class.
+ * @param {Function} Parent Parent class.
+ */
+define('common/inherit',[],function() {
+  return function inherit(Child, Parent) {
+    function F() {}
+    F.prototype = Parent.prototype;
+    Child.prototype = new F();
+    Child.superClass = Parent.prototype;
+    Child.prototype.constructor = Child;
+  };
+});
+
+/*global define, $ */
+
+define('common/controllers/interactive-component',['require','common/controllers/interactive-metadata','common/validator'],function (require) {
+
+  var metadata  = require('common/controllers/interactive-metadata'),
+      validator = require('common/validator');
+
+  /**
+   * Basic class for all interactive components.
+   *
+   * @constructor
+   * @param {string} type Component type, should match definition in interactive metadata.
+   * @param {Object} component Component JSON definition.
+   */
+  function InteractiveComponent(type, component) {
+    var onClickFunction;
+
+    /**
+     * Validated component definition.
+     * @type {Object}
+     */
+    this.component = validator.validateCompleteness(metadata[type], component);
+    /**
+     * The most outer element. Subclasses should append content to this element.
+     * @type {jQuery}
+     */
+    this.$element = $('<div>').attr("id", component.id).addClass("component");
+
+    // Optionally setup dimensions of the most outer component.
+    // Only when metadata and component JSON specifies width and height
+    // properties.
+    if (this.component.width) {
+      this.$element.css("width", this.component.width);
+    }
+    if (this.component.height) {
+      this.$element.css("height", this.component.height);
+    }
+    if (this.component.onClick) {
+      if (typeof this.component.onClick !== "function") {
+        // Create function from the string or array of strings.
+        onClickFunction = scriptingAPI.makeFunctionInScriptContext(this.component.onClick);
+      } else {
+        // Just assign ready function.
+        onClickFunction = this.component.onClick;
+      }
+      this.$element.on("click", onClickFunction);
+      // Also add a special class indicating that this text node is a clickable.
+      this.$element.addClass("clickable");
+    }
+  }
+
+  /**
+   * @return {jQuery} The most outer element.
+   */
+  InteractiveComponent.prototype.getViewContainer = function() {
+    return this.$element;
+  };
+
+  /**
+   * @return {Object} Serialized component definition.
+   */
+  InteractiveComponent.prototype.serialize = function() {
+    return this.component;
+  };
+
+  return InteractiveComponent;
+});
+
+/*global define, $ */
+
+define('common/controllers/image-controller',['require','lab.config','common/inherit','common/controllers/interactive-component'],function (require) {
+
+  var labConfig            = require('lab.config'),
+      inherit              = require('common/inherit'),
+      InteractiveComponent = require('common/controllers/interactive-component'),
+
+      externalUrl  = /^https?:\/\//i,
+      resourcesUrl = /^\/resources\//i;
+
+  /**
+   * Image controller.
+   *
+   * @constructor
+   * @extends InteractiveComponent
+   * @param {Object} component Component JSON definition.
+   * @param {ScriptingAPI} scriptingAPI
+   * @param {InteractiveController} controller
+   */
+  function ImageController(component, scriptingAPI, controller) {
+    // Call super constructor.
+    InteractiveComponent.call(this, "image", component);
+
+    /** @private */
+    this._controller = controller;
+    /** @private */
+    this._$img = $("<img>");
+    /** @private */
+    this._externalUrl = externalUrl.test(this.component.src) || resourcesUrl.test(this.component.src);
+
+    if (this._externalUrl) {
+      // If URL is external, we can setup it just once.
+      this._$img.attr("src", this.component.src);
+    }
+
+    // When a dimension is different from "auto",
+    // ensure that image fits its parent container.
+    if (this.component.width !== "auto") {
+      this._$img.css("width", "100%");
+    }
+    if (this.component.height !== "auto") {
+      this._$img.css("height", "100%");
+    }
+    this._$img.appendTo(this.$element);
+  }
+  inherit(ImageController, InteractiveComponent);
+
+  /**
+   * Implements optional callback supported by Interactive Controller.
+   */
+  ImageController.prototype.modelLoadedCallback = function() {
+    var src, modelUrl;
+    // It's necessary to update path only if its relative (as it's relative to
+    // model file).
+    if (!this._externalUrl) {
+      src = this.component.src;
+      // Relative path should be relative to the model definition file, to
+      // follow pattern used for images inside model container.
+      // TODO: not sure if it makes sense for the Interactive images. When web
+      // application is ready, probably it will be changed anyway.
+      modelUrl = this._controller.getModelController().modelUrl;
+      // Remove <model-name>.json from url.
+      modelUrl = modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
+      src = labConfig.actualRoot + modelUrl + src;
+      this._$img.attr("src", src);
+    }
+  };
+
+  return ImageController;
+});
+
+/*global define, $, model */
 
 define('common/controllers/radio-controller',['common/controllers/interactive-metadata','common/validator'],function () {
 
@@ -6780,11 +7383,13 @@ define('common/controllers/radio-controller',['common/controllers/interactive-me
         // Public API.
     var controller,
         // DOM elements.
-        $div, $option, $span,
+        $div, $span,
         // Options definitions from component JSON definition.
         options,
         // List of jQuery objects wrapping <input type="radio"> elements.
-        $options = [];
+        $options = [],
+        // List of jQuery objects wrapping <div> used for radio styling.
+        $fakeCheckables = [];
 
     // Updates radio using model property. Used in modelLoadedCallback.
     // Make sure that this function is only called when:
@@ -6797,14 +7402,47 @@ define('common/controllers/radio-controller',['common/controllers/interactive-me
       for (i = 0, len = options.length; i < len; i++) {
         if (options[i].value === value) {
           $options[i].attr("checked", true);
+          $fakeCheckables[i].addClass('checked');
         } else {
           $options[i].removeAttr("checked");
+          $fakeCheckables[i].removeClass('checked');
         }
       }
     }
 
+    function customClickEvent (e) {
+      var $clickedParent = $(this).closest('span'),
+          $input = $clickedParent.find('input'),
+          $fakeCheckable = $clickedParent.find('.fakeCheckable'),
+          i, len;
+
+      e.preventDefault();
+
+      if ($input.attr("disabled") !== undefined) {
+        // Do nothing when option is disabled.
+        return;
+      }
+
+      for (i = 0, len = $options.length; i < len; i++) {
+        $options[i].removeAttr('checked');
+        $fakeCheckables[i].removeClass('checked');
+      }
+
+      if ($input.attr('checked') !== undefined) {
+        $input.removeAttr('checked');
+        $fakeCheckable.removeClass('checked');
+      } else {
+        $input.attr('checked', 'checked');
+        $fakeCheckable.addClass('checked');
+      }
+
+      // Trigger change event!
+      $input.trigger('change');
+    }
+
     function initialize() {
-      var i, len, option;
+      var $option, $fakeCheckable, $label,
+          option, i, len;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.radio, component);
@@ -6822,24 +7460,49 @@ define('common/controllers/radio-controller',['common/controllers/interactive-me
       // Add class defining component orientation - "horizontal" or "vertical".
       $div.addClass(component.orientation);
 
+      if (component.label) {
+        $label = $("<span>").text(component.label);
+        $label.addClass("label");
+        $label.addClass(component.labelOn === "top" ? "on-top" : "on-left");
+        $div.append($label);
+      }
+
       // Create options (<input type="radio">)
       for (i = 0, len = options.length; i < len; i++) {
         option = options[i];
         $option = $('<input>')
           .attr('type', "radio")
-          .attr('name', component.id);
+          .attr('name', component.id)
+          .attr('id', component.id + '-' + i);
         $options.push($option);
+
+        $label = $('<label>')
+          .attr("for", component.id + '-' + i)
+          .text(option.text);
+
+        $fakeCheckable = $('<div class="fakeCheckable">');
+        $fakeCheckables.push($fakeCheckable);
 
         if (option.disabled) {
           $option.attr("disabled", option.disabled);
+          $fakeCheckable.addClass("disabled");
         }
         if (option.selected) {
           $option.attr("checked", option.selected);
+          $fakeCheckable.addClass("checked");
         }
         $span = $('<span>')
+          .addClass('option')
           .append($option)
-          .append(option.text);
+          .append($fakeCheckable)
+          .append($label);
         $div.append($span);
+
+        // Ensure that custom div (used for styling) is clickable.
+        $fakeCheckable.on('touchstart click', customClickEvent);
+        // Label also requires custom event handler to ensure that click updates
+        // fake clickable element too.
+        $label.on('touchstart click', customClickEvent);
 
         $option.change((function(option) {
           return function() {
@@ -6900,7 +7563,7 @@ define('common/controllers/radio-controller',['common/controllers/interactive-me
   };
 });
 
-/*global define $ model*/
+/*global define, $, model*/
 
 define('common/controllers/slider-controller',['common/controllers/interactive-metadata','common/validator'],function () {
 
@@ -6963,21 +7626,17 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
       },
 
       resize: function () {
-        var remainingHeight;
+        var emSize = parseFloat($sliderHandle.css("font-size")),
+            remainingHeight;
         // Apply custom width and height settings.
         // In fact width can be applied only once during initialization, because
         // it doesn't need any calculations when container size is changed.
         // However, to keep resizing in one place both width and height
         // adjustment are performed in this method.
-        // Also not that we set dimensions of the $container, not $slider.
+        // Also not that we set dimensions of the most outer container, not slider.
         // Slider itself will always follow dimensions of container DIV.
         // We have to do it that way to ensure that labels refer correct dimensions.
-        if (!/%$/.test(component.width)) {
-          $container.css("width", component.width);
-        } else {
-          $elem.css("width", component.width);
-          $container.css("width", "100%");
-        }
+        $elem.css("width", component.width);
         // Height calculation is more complex, calculate dynamically
         // available height for slider itself.
         // Note that component.height refers to the height of the
@@ -6988,6 +7647,8 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
           remainingHeight -= $label.outerHeight(true);
         }
         $container.css("height", remainingHeight);
+        // Handle also requires dynamic styling.
+        $sliderHandle.css("height", remainingHeight + emSize * 0.4);
       },
 
       // Returns serialized component definition.
@@ -7088,7 +7749,25 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
   };
 });
 
-/*global define $ model*/
+/*global require, define, $, model */
+
+$.fn.measure = function(fn, selector, parent) {
+  var el, selection, result;
+  el = $(this).clone(false);
+  el.css({
+    visibility: 'hidden',
+    position: 'absolute'
+  });
+  el.appendTo(parent);
+  if (selector) {
+    selection = el.find(selector);
+  } else {
+    selection = el;
+  }
+  result = fn.apply(selection);
+  el.remove();
+  return result;
+};
 
 define('common/controllers/pulldown-controller',['common/controllers/interactive-metadata','common/validator'],function () {
 
@@ -7099,7 +7778,7 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
         // Public API.
     var controller,
         // DOM elements.
-        $pulldown, $option,
+        $wrapper, $pulldown, $option,
         // Options definitions from component JSON definition.
         options,
         // List of jQuery objects wrapping <select> elements.
@@ -7117,7 +7796,9 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
     }
 
     function initialize() {
-      var i, len, option;
+      var parent = interactivesController.interactiveContainer,
+          $label, ulWidth, arrowWidth, boxWidth,
+          i, len, option;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.pulldown, component);
@@ -7127,9 +7808,7 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
         options[i] = validator.validateCompleteness(metadata.pulldownOption, options[i]);
       }
 
-      $pulldown = $('<select>').attr('id', component.id);
-      // Each interactive component has to have class "component".
-      $pulldown.addClass("component");
+      $pulldown = $('<select>');
 
       for (i = 0, len = options.length; i < len; i++) {
         option = options[i];
@@ -7160,6 +7839,56 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
           model.set(component.property, options[index].value);
         }
       });
+
+      $wrapper = $('<div>')
+        .attr('id', component.id)
+        .addClass("interactive-pulldown")
+        .addClass("component");
+
+      if (component.label) {
+        $label = $("<span>").text(component.label);
+        $label.addClass("label");
+        $label.addClass(component.labelOn === "top" ? "on-top" : "on-left");
+        $wrapper.append($label);
+      }
+
+      // Add $pulldown to a wrapping div. This way $pulldown.selectBoxIt() will create
+      // a selectBox element which will also be in the span, and then we can return
+      // this element to be embedded in the interactive
+      $wrapper.append($pulldown);
+
+      $pulldown.selectBoxIt();
+
+      $wrapper.find(".selectboxit").css("width", "auto");
+      $wrapper.find(".selectboxit-text").css("max-width", "none");
+
+      // SelectBoxIt assumes that all select boxes are always going to have a width
+      // set in CSS (default 220px). This doesn't work for us, as we don't know how
+      // wide the content is going to be. Instead we have to measure the needed width
+      // of the internal ul list, and use that to define the width of the select box.
+      //
+      // This issue has been raised in SelectBoxIt:
+      // https://github.com/gfranko/jquery.selectBoxIt.js/issues/129
+      //
+      // However, this is still problematic because we haven't added the element to
+      // the page yet. This $().measure function allows us to embed the element hidden
+      // on the page first to allow us to check the required width.
+      ulWidth    = $wrapper.measure(function(){ return this.width(); }, "ul", parent );
+      arrowWidth = $wrapper.measure(function(){ return this.width(); }, ".selectboxit-arrow-container", parent );
+
+      // ems for a given pixel size
+      function pxToEm(input) {
+        var emSize = parseFloat(parent.css("font-size"));
+        return (input / emSize);
+      }
+
+      boxWidth = (pxToEm(ulWidth+arrowWidth)+0.3)+"em";
+
+      $wrapper.find(".selectboxit").css("width", boxWidth);
+      $wrapper.find(".selectboxit-text").css("max-width", pxToEm(ulWidth)+"em");
+
+      // set hidden select box dimensions too, for mobile devices
+      $wrapper.find(".selectboxit-container select").css({width: boxWidth, height: "100%"});
     }
 
     // Public API.
@@ -7176,7 +7905,7 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
 
       // Returns view container.
       getViewContainer: function () {
-        return $pulldown;
+        return $wrapper;
       },
 
       // Returns serialized component definition.
@@ -7258,6 +7987,15 @@ define('common/controllers/numeric-output-controller',['common/controllers/inter
     // Each interactive component has to have class "component".
     $numericOutput.addClass("component");
 
+    // Add class defining component orientation - "horizontal" or "vertical".
+    $numericOutput.addClass(component.orientation);
+
+    // Custom dimensions.
+    $numericOutput.css({
+      width: component.width,
+      height: component.height
+    });
+
     if (displayValue) {
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
     }
@@ -7269,8 +8007,8 @@ define('common/controllers/numeric-output-controller',['common/controllers/inter
         if (propertyName) {
           propertyDescription = model.getPropertyDescription(propertyName);
           if (propertyDescription) {
-            if (!label) { $label.html(propertyDescription.label); }
-            if (!units) { $units.html(propertyDescription.units); }
+            if (!label) { $label.html(propertyDescription.getLabel()); }
+            if (!units) { $units.html(propertyDescription.getUnitAbbreviation()); }
           }
           renderValue();
           model.addPropertiesListener([propertyName], renderValue);
@@ -7722,7 +8460,7 @@ define('cs',['coffee-script'], function (CoffeeScript) {
       };
 
       Thermometer.prototype.redraw = function() {
-        return this.thermometer_fill.height("" + (this.scaled_value() * this.dom_element.height()) + "px");
+        return this.thermometer_fill.css("height", (this.scaled_value() * 100) + "%");
       };
 
       return Thermometer;
@@ -7855,6 +8593,1312 @@ define('common/controllers/thermometer-controller',['require','cs!common/compone
   };
 });
 
+/*global define */
+
+define('common/controllers/setup-banner',['lab.config','common/controllers/text-controller','common/controllers/image-controller'],function () {
+
+  var labConfig       = require('lab.config'),
+      TextController  = require('common/controllers/text-controller'),
+      ImageController = require('common/controllers/image-controller');
+
+  /**
+   * Returns a hash containing:
+   *  - components,
+   *  - containers,
+   *  - layout definition (components location).
+   * All these things are used to build the interactive banner.
+   *
+   * @param {Object} interactive Interactive JSON definition.
+   * @param {CreditsDialog} creditsDialog
+   * @param {AboutDialog} aboutDialog
+   * @param {ShareDialog} shareDialog
+   */
+  return function setupBanner(interactive, creditsDialog, aboutDialog, shareDialog) {
+    var components = {},
+        template = [],
+        layout = {},
+        // About link visible if there is about section or subtitle.
+        haveAboutText = interactive.about || interactive.subtitle;
+
+    template.push({
+      "id": "top-bar",
+      "top": "0",
+      "left": "0",
+      "width": "container.width",
+      "height": "banner-right.height",
+      "aboveOthers": true
+    });
+
+    template.push({
+      "id": "bottom-bar",
+      "bottom": "container.height",
+      "left": "0",
+      "width": "container.width",
+      "height": "banner-bottom-left.height",
+      "belowOthers": true
+    });
+
+    function createLinkInContainer(link, container) {
+      components[link.id] = new TextController(link);
+      template.push(container);
+      layout[container.id] = [link.id];
+    }
+
+    function createImageInContainer(image, container) {
+      components[image.id] = new ImageController(image);
+      template.push(container);
+      layout[container.id] = [image.id];
+    }
+
+    // Define about link only if "about" or "subtitle" section is available.
+    aboutDialog.update(interactive);
+    createLinkInContainer(
+    {
+      "type": "text",
+      "id": "about-link",
+      "text": "About",
+      "style": "header",
+      "onClick": function () { if (haveAboutText) {aboutDialog.open()} else {creditsDialog.open()}}
+    },
+    {
+      "id": "banner-right",
+      "top": "0",
+      "right": "interactive.width",
+      "padding-left": "1em",
+      "padding-right": "1em",
+      "align": "right",
+      "aboveOthers": true
+    });
+
+    // Define sharing link only if sharing is enabled.
+    // Note that due to layout limitations, banner-middle container
+    // has to be defined *after* banner-right container which is used
+    // in its specification!
+    if (labConfig.sharing) {
+      shareDialog.update(interactive);
+      createLinkInContainer(
+      {
+        "type": "text",
+        "id": "share-link",
+        "text": "Share",
+        "style": "header",
+        "onClick": function () { shareDialog.open(); }
+      },
+      {
+        "id": "banner-middle",
+        "top": "0",
+        // "banner-right" can be undefined, so check it.
+        "right": "banner-right.left",
+        "padding-right": "1em",
+        "align": "right",
+        "aboveOthers": true
+      });
+    }
+
+    // bottom bar
+    creditsDialog.update(interactive);
+    createImageInContainer(
+    {
+      "type": "image",
+      "id": "credits-link",
+      "height": "2.5em",
+      "src": "/resources/layout/cc-logo.png",
+      "onClick": function () { creditsDialog.open(); }
+    },
+    {
+      "id": "banner-bottom-left",
+      "bottom": "container.height",
+      "left": "0",
+      "align": "left",
+      "belowOthers": true
+    });
+
+    return {
+      components: components,
+      template: template,
+      layout: layout
+    };
+  };
+});
+
+/*global define, $ */
+
+define('common/controllers/basic-dialog',[],function () {
+
+  var defOptions = {
+    autoOpen: false,
+    dialogClass: "interactive-dialog",
+    // Ensure that font is being scaled dynamically!
+    appendTo: "#responsive-content",
+    width: "80%"
+  };
+
+  /**
+   * Simple wrapper around the jQuery UI Dialog,
+   * which provides useful defaults and simple interface.
+   *
+   * @constructor
+   * @param {Object} options jQuery UI Dialog options.
+   */
+  function BasicDialog(options) {
+    /**
+     * Basic dialog elements.
+     * @type {jQuery}
+     */
+    this.$element = $('<div>');
+    // Create jQuery UI Dialog.
+    this.$element.dialog($.extend({}, defOptions, options));
+  }
+
+  /**
+   * Opens the dialog.
+   */
+  BasicDialog.prototype.open = function() {
+    this.$element.dialog("open");
+  };
+
+  /**
+   * Sets jQuery UI Dialog option.
+   *
+   * @param {string} key
+   * @param {Object} value
+   */
+  BasicDialog.prototype.set = function(key, value) {
+    this.$element.dialog("option", key, value);
+  };
+
+  /**
+   * Sets content of the dialog.
+   *
+   * @param {jQuery|DOM|string} $content Any value that can be accepted by the jQuery constructor.
+   */
+  BasicDialog.prototype.setContent = function ($content) {
+    this.$element.empty();
+    // Not very pretty, but probably the simplest and most reliable way to
+    // disable autofocus in jQuery UI dialogs. See:
+    // http://jqueryui.com/upgrade-guide/1.10/#added-ability-to-specify-which-element-to-focus-on-open
+    this.$element.append('<input type="hidden" autofocus="autofocus" />');
+    this.$element.append($content);
+  };
+
+  return BasicDialog;
+});
+
+/*global define, $ */
+define('common/controllers/about-dialog',['require','arrays','common/inherit','common/controllers/basic-dialog'],function (require) {
+
+  var arrays      = require('arrays'),
+      inherit     = require('common/inherit'),
+      BasicDialog = require('common/controllers/basic-dialog');
+
+  /**
+   * About Dialog. Inherits from Basic Dialog.
+   *
+   * @constructor
+   */
+  function AboutDialog() {
+    BasicDialog.call(this, {dialogClass: "about-dialog"});
+  }
+  inherit(AboutDialog, BasicDialog);
+
+  /**
+   * Updates dialog content using interactive JSON definition.
+   *
+   * @param {Object} interactive Interactive JSON definition.
+   */
+  AboutDialog.prototype.update = function(interactive) {
+    var $aboutContent = $("<div>"),
+        about;
+
+    this.set("title", "About: " + interactive.title);
+
+    if (interactive.subtitle) {
+      $aboutContent.append("<p>" + interactive.subtitle + "</p>");
+    }
+    about = arrays.isArray(interactive.about) ? interactive.about : [interactive.about];
+    $.each(about, function(idx, val) {
+      $aboutContent.append("<p>" + val + "</p>");
+    });
+
+    this.setContent($aboutContent);
+  };
+
+  return AboutDialog;
+});
+
+/*!
+ * mustache.js - Logic-less {{mustache}} templates with JavaScript
+ * http://github.com/janl/mustache.js
+ */
+
+/*global define: false*/
+
+(function (root, factory) {
+  if (typeof exports === "object" && exports) {
+    module.exports = factory; // CommonJS
+  } else if (typeof define === "function" && define.amd) {
+    define('mustache',factory); // AMD
+  } else {
+    root.Mustache = factory; // <script>
+  }
+}(this, (function () {
+
+  var exports = {};
+
+  exports.name = "mustache.js";
+  exports.version = "0.7.2";
+  exports.tags = ["{{", "}}"];
+
+  exports.Scanner = Scanner;
+  exports.Context = Context;
+  exports.Writer = Writer;
+
+  var whiteRe = /\s*/;
+  var spaceRe = /\s+/;
+  var nonSpaceRe = /\S/;
+  var eqRe = /\s*=/;
+  var curlyRe = /\s*\}/;
+  var tagRe = /#|\^|\/|>|\{|&|=|!/;
+
+  // Workaround for https://issues.apache.org/jira/browse/COUCHDB-577
+  // See https://github.com/janl/mustache.js/issues/189
+  function testRe(re, string) {
+    return RegExp.prototype.test.call(re, string);
+  }
+
+  function isWhitespace(string) {
+    return !testRe(nonSpaceRe, string);
+  }
+
+  var isArray = Array.isArray || function (obj) {
+    return Object.prototype.toString.call(obj) === "[object Array]";
+  };
+
+  function escapeRe(string) {
+    return string.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+  }
+
+  var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+  };
+
+  function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+      return entityMap[s];
+    });
+  }
+
+  // Export the escaping function so that the user may override it.
+  // See https://github.com/janl/mustache.js/issues/244
+  exports.escape = escapeHtml;
+
+  function Scanner(string) {
+    this.string = string;
+    this.tail = string;
+    this.pos = 0;
+  }
+
+  /**
+   * Returns `true` if the tail is empty (end of string).
+   */
+  Scanner.prototype.eos = function () {
+    return this.tail === "";
+  };
+
+  /**
+   * Tries to match the given regular expression at the current position.
+   * Returns the matched text if it can match, the empty string otherwise.
+   */
+  Scanner.prototype.scan = function (re) {
+    var match = this.tail.match(re);
+
+    if (match && match.index === 0) {
+      this.tail = this.tail.substring(match[0].length);
+      this.pos += match[0].length;
+      return match[0];
+    }
+
+    return "";
+  };
+
+  /**
+   * Skips all text until the given regular expression can be matched. Returns
+   * the skipped string, which is the entire tail if no match can be made.
+   */
+  Scanner.prototype.scanUntil = function (re) {
+    var match, pos = this.tail.search(re);
+
+    switch (pos) {
+    case -1:
+      match = this.tail;
+      this.pos += this.tail.length;
+      this.tail = "";
+      break;
+    case 0:
+      match = "";
+      break;
+    default:
+      match = this.tail.substring(0, pos);
+      this.tail = this.tail.substring(pos);
+      this.pos += pos;
+    }
+
+    return match;
+  };
+
+  function Context(view, parent) {
+    this.view = view;
+    this.parent = parent;
+    this.clearCache();
+  }
+
+  Context.make = function (view) {
+    return (view instanceof Context) ? view : new Context(view);
+  };
+
+  Context.prototype.clearCache = function () {
+    this._cache = {};
+  };
+
+  Context.prototype.push = function (view) {
+    return new Context(view, this);
+  };
+
+  Context.prototype.lookup = function (name) {
+    var value = this._cache[name];
+
+    if (!value) {
+      if (name === ".") {
+        value = this.view;
+      } else {
+        var context = this;
+
+        while (context) {
+          if (name.indexOf(".") > 0) {
+            var names = name.split("."), i = 0;
+
+            value = context.view;
+
+            while (value && i < names.length) {
+              value = value[names[i++]];
+            }
+          } else {
+            value = context.view[name];
+          }
+
+          if (value != null) {
+            break;
+          }
+
+          context = context.parent;
+        }
+      }
+
+      this._cache[name] = value;
+    }
+
+    if (typeof value === "function") {
+      value = value.call(this.view);
+    }
+
+    return value;
+  };
+
+  function Writer() {
+    this.clearCache();
+  }
+
+  Writer.prototype.clearCache = function () {
+    this._cache = {};
+    this._partialCache = {};
+  };
+
+  Writer.prototype.compile = function (template, tags) {
+    var fn = this._cache[template];
+
+    if (!fn) {
+      var tokens = exports.parse(template, tags);
+      fn = this._cache[template] = this.compileTokens(tokens, template);
+    }
+
+    return fn;
+  };
+
+  Writer.prototype.compilePartial = function (name, template, tags) {
+    var fn = this.compile(template, tags);
+    this._partialCache[name] = fn;
+    return fn;
+  };
+
+  Writer.prototype.compileTokens = function (tokens, template) {
+    var fn = compileTokens(tokens);
+    var self = this;
+
+    return function (view, partials) {
+      if (partials) {
+        if (typeof partials === "function") {
+          self._loadPartial = partials;
+        } else {
+          for (var name in partials) {
+            self.compilePartial(name, partials[name]);
+          }
+        }
+      }
+
+      return fn(self, Context.make(view), template);
+    };
+  };
+
+  Writer.prototype.render = function (template, view, partials) {
+    return this.compile(template)(view, partials);
+  };
+
+  Writer.prototype._section = function (name, context, text, callback) {
+    var value = context.lookup(name);
+
+    switch (typeof value) {
+    case "object":
+      if (isArray(value)) {
+        var buffer = "";
+
+        for (var i = 0, len = value.length; i < len; ++i) {
+          buffer += callback(this, context.push(value[i]));
+        }
+
+        return buffer;
+      }
+
+      return value ? callback(this, context.push(value)) : "";
+    case "function":
+      var self = this;
+      var scopedRender = function (template) {
+        return self.render(template, context);
+      };
+
+      var result = value.call(context.view, text, scopedRender);
+      return result != null ? result : "";
+    default:
+      if (value) {
+        return callback(this, context);
+      }
+    }
+
+    return "";
+  };
+
+  Writer.prototype._inverted = function (name, context, callback) {
+    var value = context.lookup(name);
+
+    // Use JavaScript's definition of falsy. Include empty arrays.
+    // See https://github.com/janl/mustache.js/issues/186
+    if (!value || (isArray(value) && value.length === 0)) {
+      return callback(this, context);
+    }
+
+    return "";
+  };
+
+  Writer.prototype._partial = function (name, context) {
+    if (!(name in this._partialCache) && this._loadPartial) {
+      this.compilePartial(name, this._loadPartial(name));
+    }
+
+    var fn = this._partialCache[name];
+
+    return fn ? fn(context) : "";
+  };
+
+  Writer.prototype._name = function (name, context) {
+    var value = context.lookup(name);
+
+    if (typeof value === "function") {
+      value = value.call(context.view);
+    }
+
+    return (value == null) ? "" : String(value);
+  };
+
+  Writer.prototype._escaped = function (name, context) {
+    return exports.escape(this._name(name, context));
+  };
+
+  /**
+   * Low-level function that compiles the given `tokens` into a function
+   * that accepts three arguments: a Writer, a Context, and the template.
+   */
+  function compileTokens(tokens) {
+    var subRenders = {};
+
+    function subRender(i, tokens, template) {
+      if (!subRenders[i]) {
+        var fn = compileTokens(tokens);
+        subRenders[i] = function (writer, context) {
+          return fn(writer, context, template);
+        };
+      }
+
+      return subRenders[i];
+    }
+
+    return function (writer, context, template) {
+      var buffer = "";
+      var token, sectionText;
+
+      for (var i = 0, len = tokens.length; i < len; ++i) {
+        token = tokens[i];
+
+        switch (token[0]) {
+        case "#":
+          sectionText = template.slice(token[3], token[5]);
+          buffer += writer._section(token[1], context, sectionText, subRender(i, token[4], template));
+          break;
+        case "^":
+          buffer += writer._inverted(token[1], context, subRender(i, token[4], template));
+          break;
+        case ">":
+          buffer += writer._partial(token[1], context);
+          break;
+        case "&":
+          buffer += writer._name(token[1], context);
+          break;
+        case "name":
+          buffer += writer._escaped(token[1], context);
+          break;
+        case "text":
+          buffer += token[1];
+          break;
+        }
+      }
+
+      return buffer;
+    };
+  }
+
+  /**
+   * Forms the given array of `tokens` into a nested tree structure where
+   * tokens that represent a section have two additional items: 1) an array of
+   * all tokens that appear in that section and 2) the index in the original
+   * template that represents the end of that section.
+   */
+  function nestTokens(tokens) {
+    var tree = [];
+    var collector = tree;
+    var sections = [];
+
+    var token;
+    for (var i = 0, len = tokens.length; i < len; ++i) {
+      token = tokens[i];
+      switch (token[0]) {
+      case '#':
+      case '^':
+        sections.push(token);
+        collector.push(token);
+        collector = token[4] = [];
+        break;
+      case '/':
+        var section = sections.pop();
+        section[5] = token[2];
+        collector = sections.length > 0 ? sections[sections.length - 1][4] : tree;
+        break;
+      default:
+        collector.push(token);
+      }
+    }
+
+    return tree;
+  }
+
+  /**
+   * Combines the values of consecutive text tokens in the given `tokens` array
+   * to a single token.
+   */
+  function squashTokens(tokens) {
+    var squashedTokens = [];
+
+    var token, lastToken;
+    for (var i = 0, len = tokens.length; i < len; ++i) {
+      token = tokens[i];
+      if (token[0] === 'text' && lastToken && lastToken[0] === 'text') {
+        lastToken[1] += token[1];
+        lastToken[3] = token[3];
+      } else {
+        lastToken = token;
+        squashedTokens.push(token);
+      }
+    }
+
+    return squashedTokens;
+  }
+
+  function escapeTags(tags) {
+    return [
+      new RegExp(escapeRe(tags[0]) + "\\s*"),
+      new RegExp("\\s*" + escapeRe(tags[1]))
+    ];
+  }
+
+  /**
+   * Breaks up the given `template` string into a tree of token objects. If
+   * `tags` is given here it must be an array with two string values: the
+   * opening and closing tags used in the template (e.g. ["<%", "%>"]). Of
+   * course, the default is to use mustaches (i.e. Mustache.tags).
+   */
+  exports.parse = function (template, tags) {
+    template = template || '';
+    tags = tags || exports.tags;
+
+    if (typeof tags === 'string') tags = tags.split(spaceRe);
+    if (tags.length !== 2) {
+      throw new Error('Invalid tags: ' + tags.join(', '));
+    }
+
+    var tagRes = escapeTags(tags);
+    var scanner = new Scanner(template);
+
+    var sections = [];     // Stack to hold section tokens
+    var tokens = [];       // Buffer to hold the tokens
+    var spaces = [];       // Indices of whitespace tokens on the current line
+    var hasTag = false;    // Is there a {{tag}} on the current line?
+    var nonSpace = false;  // Is there a non-space char on the current line?
+
+    // Strips all whitespace tokens array for the current line
+    // if there was a {{#tag}} on it and otherwise only space.
+    function stripSpace() {
+      if (hasTag && !nonSpace) {
+        while (spaces.length) {
+          tokens.splice(spaces.pop(), 1);
+        }
+      } else {
+        spaces = [];
+      }
+
+      hasTag = false;
+      nonSpace = false;
+    }
+
+    var start, type, value, chr;
+    while (!scanner.eos()) {
+      start = scanner.pos;
+      value = scanner.scanUntil(tagRes[0]);
+
+      if (value) {
+        for (var i = 0, len = value.length; i < len; ++i) {
+          chr = value.charAt(i);
+
+          if (isWhitespace(chr)) {
+            spaces.push(tokens.length);
+          } else {
+            nonSpace = true;
+          }
+
+          tokens.push(["text", chr, start, start + 1]);
+          start += 1;
+
+          if (chr === "\n") {
+            stripSpace(); // Check for whitespace on the current line.
+          }
+        }
+      }
+
+      start = scanner.pos;
+
+      // Match the opening tag.
+      if (!scanner.scan(tagRes[0])) {
+        break;
+      }
+
+      hasTag = true;
+      type = scanner.scan(tagRe) || "name";
+
+      // Skip any whitespace between tag and value.
+      scanner.scan(whiteRe);
+
+      // Extract the tag value.
+      if (type === "=") {
+        value = scanner.scanUntil(eqRe);
+        scanner.scan(eqRe);
+        scanner.scanUntil(tagRes[1]);
+      } else if (type === "{") {
+        var closeRe = new RegExp("\\s*" + escapeRe("}" + tags[1]));
+        value = scanner.scanUntil(closeRe);
+        scanner.scan(curlyRe);
+        scanner.scanUntil(tagRes[1]);
+        type = "&";
+      } else {
+        value = scanner.scanUntil(tagRes[1]);
+      }
+
+      // Match the closing tag.
+      if (!scanner.scan(tagRes[1])) {
+        throw new Error('Unclosed tag at ' + scanner.pos);
+      }
+
+      // Check section nesting.
+      if (type === '/') {
+        if (sections.length === 0) {
+          throw new Error('Unopened section "' + value + '" at ' + start);
+        }
+
+        var section = sections.pop();
+
+        if (section[1] !== value) {
+          throw new Error('Unclosed section "' + section[1] + '" at ' + start);
+        }
+      }
+
+      var token = [type, value, start, scanner.pos];
+      tokens.push(token);
+
+      if (type === '#' || type === '^') {
+        sections.push(token);
+      } else if (type === "name" || type === "{" || type === "&") {
+        nonSpace = true;
+      } else if (type === "=") {
+        // Set the tags for the next time around.
+        tags = value.split(spaceRe);
+
+        if (tags.length !== 2) {
+          throw new Error('Invalid tags at ' + start + ': ' + tags.join(', '));
+        }
+
+        tagRes = escapeTags(tags);
+      }
+    }
+
+    // Make sure there are no open sections when we're done.
+    var section = sections.pop();
+    if (section) {
+      throw new Error('Unclosed section "' + section[1] + '" at ' + scanner.pos);
+    }
+
+    return nestTokens(squashTokens(tokens));
+  };
+
+  // The high-level clearCache, compile, compilePartial, and render functions
+  // use this default writer.
+  var _writer = new Writer();
+
+  /**
+   * Clears all cached templates and partials in the default writer.
+   */
+  exports.clearCache = function () {
+    return _writer.clearCache();
+  };
+
+  /**
+   * Compiles the given `template` to a reusable function using the default
+   * writer.
+   */
+  exports.compile = function (template, tags) {
+    return _writer.compile(template, tags);
+  };
+
+  /**
+   * Compiles the partial with the given `name` and `template` to a reusable
+   * function using the default writer.
+   */
+  exports.compilePartial = function (name, template, tags) {
+    return _writer.compilePartial(name, template, tags);
+  };
+
+  /**
+   * Compiles the given array of tokens (the output of a parse) to a reusable
+   * function using the default writer.
+   */
+  exports.compileTokens = function (tokens, template) {
+    return _writer.compileTokens(tokens, template);
+  };
+
+  /**
+   * Renders the `template` with the given `view` and `partials` using the
+   * default writer.
+   */
+  exports.render = function (template, view, partials) {
+    return _writer.render(template, view, partials);
+  };
+
+  // This is here for backwards compatibility with 0.4.x.
+  exports.to_html = function (template, view, partials, send) {
+    var result = exports.render(template, view, partials);
+
+    if (typeof send === "function") {
+      send(result);
+    } else {
+      return result;
+    }
+  };
+
+  return exports;
+
+}())));
+
+/**
+ * @license RequireJS text 2.0.2 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/requirejs/text for details
+ */
+/*jslint regexp: true */
+/*global require: false, XMLHttpRequest: false, ActiveXObject: false,
+  define: false, window: false, process: false, Packages: false,
+  java: false, location: false */
+
+define('text',['module'], function (module) {
+    'use strict';
+
+    var text, fs,
+        progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
+        xmlRegExp = /^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im,
+        bodyRegExp = /<body[^>]*>\s*([\s\S]+)\s*<\/body>/im,
+        hasLocation = typeof location !== 'undefined' && location.href,
+        defaultProtocol = hasLocation && location.protocol && location.protocol.replace(/\:/, ''),
+        defaultHostName = hasLocation && location.hostname,
+        defaultPort = hasLocation && (location.port || undefined),
+        buildMap = [],
+        masterConfig = (module.config && module.config()) || {};
+
+    text = {
+        version: '2.0.2',
+
+        strip: function (content) {
+            //Strips <?xml ...?> declarations so that external SVG and XML
+            //documents can be added to a document without worry. Also, if the string
+            //is an HTML document, only the part inside the body tag is returned.
+            if (content) {
+                content = content.replace(xmlRegExp, "");
+                var matches = content.match(bodyRegExp);
+                if (matches) {
+                    content = matches[1];
+                }
+            } else {
+                content = "";
+            }
+            return content;
+        },
+
+        jsEscape: function (content) {
+            return content.replace(/(['\\])/g, '\\$1')
+                .replace(/[\f]/g, "\\f")
+                .replace(/[\b]/g, "\\b")
+                .replace(/[\n]/g, "\\n")
+                .replace(/[\t]/g, "\\t")
+                .replace(/[\r]/g, "\\r")
+                .replace(/[\u2028]/g, "\\u2028")
+                .replace(/[\u2029]/g, "\\u2029");
+        },
+
+        createXhr: masterConfig.createXhr || function () {
+            //Would love to dump the ActiveX crap in here. Need IE 6 to die first.
+            var xhr, i, progId;
+            if (typeof XMLHttpRequest !== "undefined") {
+                return new XMLHttpRequest();
+            } else if (typeof ActiveXObject !== "undefined") {
+                for (i = 0; i < 3; i += 1) {
+                    progId = progIds[i];
+                    try {
+                        xhr = new ActiveXObject(progId);
+                    } catch (e) {}
+
+                    if (xhr) {
+                        progIds = [progId];  // so faster next time
+                        break;
+                    }
+                }
+            }
+
+            return xhr;
+        },
+
+        /**
+         * Parses a resource name into its component parts. Resource names
+         * look like: module/name.ext!strip, where the !strip part is
+         * optional.
+         * @param {String} name the resource name
+         * @returns {Object} with properties "moduleName", "ext" and "strip"
+         * where strip is a boolean.
+         */
+        parseName: function (name) {
+            var strip = false, index = name.indexOf("."),
+                modName = name.substring(0, index),
+                ext = name.substring(index + 1, name.length);
+
+            index = ext.indexOf("!");
+            if (index !== -1) {
+                //Pull off the strip arg.
+                strip = ext.substring(index + 1, ext.length);
+                strip = strip === "strip";
+                ext = ext.substring(0, index);
+            }
+
+            return {
+                moduleName: modName,
+                ext: ext,
+                strip: strip
+            };
+        },
+
+        xdRegExp: /^((\w+)\:)?\/\/([^\/\\]+)/,
+
+        /**
+         * Is an URL on another domain. Only works for browser use, returns
+         * false in non-browser environments. Only used to know if an
+         * optimized .js version of a text resource should be loaded
+         * instead.
+         * @param {String} url
+         * @returns Boolean
+         */
+        useXhr: function (url, protocol, hostname, port) {
+            var uProtocol, uHostName, uPort,
+                match = text.xdRegExp.exec(url);
+            if (!match) {
+                return true;
+            }
+            uProtocol = match[2];
+            uHostName = match[3];
+
+            uHostName = uHostName.split(':');
+            uPort = uHostName[1];
+            uHostName = uHostName[0];
+
+            return (!uProtocol || uProtocol === protocol) &&
+                   (!uHostName || uHostName.toLowerCase() === hostname.toLowerCase()) &&
+                   ((!uPort && !uHostName) || uPort === port);
+        },
+
+        finishLoad: function (name, strip, content, onLoad) {
+            content = strip ? text.strip(content) : content;
+            if (masterConfig.isBuild) {
+                buildMap[name] = content;
+            }
+            onLoad(content);
+        },
+
+        load: function (name, req, onLoad, config) {
+            //Name has format: some.module.filext!strip
+            //The strip part is optional.
+            //if strip is present, then that means only get the string contents
+            //inside a body tag in an HTML string. For XML/SVG content it means
+            //removing the <?xml ...?> declarations so the content can be inserted
+            //into the current doc without problems.
+
+            // Do not bother with the work if a build and text will
+            // not be inlined.
+            if (config.isBuild && !config.inlineText) {
+                onLoad();
+                return;
+            }
+
+            masterConfig.isBuild = config.isBuild;
+
+            var parsed = text.parseName(name),
+                nonStripName = parsed.moduleName + '.' + parsed.ext,
+                url = req.toUrl(nonStripName),
+                useXhr = (masterConfig.useXhr) ||
+                         text.useXhr;
+
+            //Load the text. Use XHR if possible and in a browser.
+            if (!hasLocation || useXhr(url, defaultProtocol, defaultHostName, defaultPort)) {
+                text.get(url, function (content) {
+                    text.finishLoad(name, parsed.strip, content, onLoad);
+                }, function (err) {
+                    if (onLoad.error) {
+                        onLoad.error(err);
+                    }
+                });
+            } else {
+                //Need to fetch the resource across domains. Assume
+                //the resource has been optimized into a JS module. Fetch
+                //by the module name + extension, but do not include the
+                //!strip part to avoid file system issues.
+                req([nonStripName], function (content) {
+                    text.finishLoad(parsed.moduleName + '.' + parsed.ext,
+                                    parsed.strip, content, onLoad);
+                });
+            }
+        },
+
+        write: function (pluginName, moduleName, write, config) {
+            if (buildMap.hasOwnProperty(moduleName)) {
+                var content = text.jsEscape(buildMap[moduleName]);
+                write.asModule(pluginName + "!" + moduleName,
+                               "define(function () { return '" +
+                                   content +
+                               "';});\n");
+            }
+        },
+
+        writeFile: function (pluginName, moduleName, req, write, config) {
+            var parsed = text.parseName(moduleName),
+                nonStripName = parsed.moduleName + '.' + parsed.ext,
+                //Use a '.js' file name so that it indicates it is a
+                //script that can be loaded across domains.
+                fileName = req.toUrl(parsed.moduleName + '.' +
+                                     parsed.ext) + '.js';
+
+            //Leverage own load() method to load plugin value, but only
+            //write out values that do not have the strip argument,
+            //to avoid any potential issues with ! in file names.
+            text.load(nonStripName, req, function (value) {
+                //Use own write() method to construct full module value.
+                //But need to create shell that translates writeFile's
+                //write() to the right interface.
+                var textWrite = function (contents) {
+                    return write(fileName, contents);
+                };
+                textWrite.asModule = function (moduleName, contents) {
+                    return write.asModule(moduleName, fileName, contents);
+                };
+
+                text.write(pluginName, nonStripName, textWrite, config);
+            }, config);
+        }
+    };
+
+    if (typeof process !== "undefined" &&
+             process.versions &&
+             !!process.versions.node) {
+        //Using special require.nodeRequire, something added by r.js.
+        fs = require.nodeRequire('fs');
+
+        text.get = function (url, callback) {
+            var file = fs.readFileSync(url, 'utf8');
+            //Remove BOM (Byte Mark Order) from utf8 files if it is there.
+            if (file.indexOf('\uFEFF') === 0) {
+                file = file.substring(1);
+            }
+            callback(file);
+        };
+    } else if (typeof Packages !== 'undefined' && typeof java !== 'undefined') {
+        //Why Java, why is this so awkward?
+        text.get = function (url, callback) {
+            var stringBuffer, line,
+                encoding = "utf-8",
+                file = new java.io.File(url),
+                lineSeparator = java.lang.System.getProperty("line.separator"),
+                input = new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(file), encoding)),
+                content = '';
+            try {
+                stringBuffer = new java.lang.StringBuffer();
+                line = input.readLine();
+
+                // Byte Order Mark (BOM) - The Unicode Standard, version 3.0, page 324
+                // http://www.unicode.org/faq/utf_bom.html
+
+                // Note that when we use utf-8, the BOM should appear as "EF BB BF", but it doesn't due to this bug in the JDK:
+                // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4508058
+                if (line && line.length() && line.charAt(0) === 0xfeff) {
+                    // Eat the BOM, since we've already found the encoding on this file,
+                    // and we plan to concatenating this buffer with others; the BOM should
+                    // only appear at the top of a file.
+                    line = line.substring(1);
+                }
+
+                stringBuffer.append(line);
+
+                while ((line = input.readLine()) !== null) {
+                    stringBuffer.append(lineSeparator);
+                    stringBuffer.append(line);
+                }
+                //Make sure we return a JavaScript string and not a Java string.
+                content = String(stringBuffer.toString()); //String
+            } finally {
+                input.close();
+            }
+            callback(content);
+        };
+    } else if (text.createXhr()) {
+        text.get = function (url, callback, errback) {
+            var xhr = text.createXhr();
+            xhr.open('GET', url, true);
+
+            //Allow overrides specified in config
+            if (masterConfig.onXhr) {
+                masterConfig.onXhr(xhr, url);
+            }
+
+            xhr.onreadystatechange = function (evt) {
+                var status, err;
+                //Do not explicitly handle errors, those should be
+                //visible via console output in the browser.
+                if (xhr.readyState === 4) {
+                    status = xhr.status;
+                    if (status > 399 && status < 600) {
+                        //An http 4xx or 5xx error. Signal an error.
+                        err = new Error(url + ' HTTP status: ' + status);
+                        err.xhr = xhr;
+                        errback(err);
+                    } else {
+                        callback(xhr.responseText);
+                    }
+                }
+            };
+            xhr.send(null);
+        };
+    }
+
+    return text;
+});
+
+define('text!common/controllers/share-dialog.tpl',[],function () { return '<div>\n  <h2>\n    Paste this\n    <a class=\'opens-in-new-window\' href=\'{{embeddableSharingUrl}}\' target=\'_blank\'>link</a>\n    in email or IM.\n  </h2>\n  <textarea>{{embeddableSharingUrl}}</textarea>\n  <h2>Paste HTML to embed in website or blog.</h2>\n  <p>Select Size:\n    <select id=\'iframe-size\'>\n      <option value=\'smaller\'>30% smaller</option>\n      <option selected value=\'actual\'>actual</option>\n      <option value=\'larger\'>50% larger</option>\n    </select>\n  </p>\n  <textarea id=\'share-iframe-content\'></textarea>\n  {{> copyright}}\n</div>\n';});
+
+define('text!common/controllers/copyright.tpl',[],function () { return '<div class="copyright-section"><strong>Copyright © 2013&nbsp;</strong><a class="opens-in-new-window" href="http://concord.org" id="share-license-link" target="_blank">The Concord Consortium</a>. All rights reserved. The software is licensed under&nbsp;<a class="opens-in-new-window" href="http://opensource.org/licenses/BSD-2-Clause" id="share-license-link" target="_blank">Simplified BSD</a>, <a class="opens-in-new-window" href="http://opensource.org/licenses/MIT" id="share-license-link" target="_blank">MIT</a> or <a class="opens-in-new-window" href="http://opensource.org/licenses/Apache-2.0" id="share-license-link" target="_blank">Apache 2.0</a> licenses. Please provide attribution to the Concord Consortium and the URL&nbsp;<a class="opens-in-new-window" href="http://concord.org/" id="share-license-link" target="_blank">http://concord.org</a>.</div>';});
+
+/*global define, $ */
+define('common/controllers/share-dialog',['require','lab.config','mustache','common/inherit','common/controllers/basic-dialog','text!common/controllers/share-dialog.tpl','text!common/controllers/copyright.tpl'],function (require) {
+
+  var labConfig      = require('lab.config'),
+      mustache       = require('mustache'),
+      inherit        = require('common/inherit'),
+      BasicDialog    = require('common/controllers/basic-dialog'),
+      shareDialogTpl = require('text!common/controllers/share-dialog.tpl'),
+      copyrightTpl   = require('text!common/controllers/copyright.tpl'),
+
+      location = document.location,
+
+      // A tiny template, so define it inline and compile immediately.
+      iframeTpl = mustache.compile('<iframe width="{{width}}px" height="{{height}}px" ' +
+        'frameborder="no" scrolling="no" src="{{{embeddableSharingUrl}}}"></iframe>');
+
+  /**
+   * Share Dialog. Inherits from Basic Dialog.
+   *
+   * @constructor
+   * @param {Object} interactive Interactive JSON definition.
+   * @param {InteractivesController} interactivesController
+   */
+  function ShareDialog() {
+    var hash           = location.hash,
+        origin         = location.href.match(/(.*?\/\/.*?)\//)[1],
+        embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
+
+    BasicDialog.call(this, {dialogClass: "share-dialog"});
+
+    /** @private */
+    this._view = {};
+
+    if (labConfig.homeForSharing) {
+      this._view.embeddableSharingUrl = labConfig.homeForSharing + labConfig.homeEmbeddablePath + hash;
+    } else {
+      this._view.embeddableSharingUrl = origin + embeddablePath + hash;
+    }
+
+    this.setContent(mustache.render(shareDialogTpl, this._view, {copyright: copyrightTpl}));
+
+    /** @private */
+    this._$interactiveContainer = $("#responsive-content");
+    /** @private */
+    this._$iframeSize = this.$element.find("#iframe-size");
+    /** @private */
+    this._$iframeContent = this.$element.find("#share-iframe-content");
+
+    this._$iframeSize.on('change', $.proxy(this.updateIframeSize, this));
+    this.updateIframeSize();
+  }
+  inherit(ShareDialog, BasicDialog);
+
+  /**
+   * Updates size of the Interactive iframe in the share dialog.
+   */
+  ShareDialog.prototype.updateIframeSize = function () {
+    var actualWidth = this._$interactiveContainer.innerWidth(),
+        actualHeight = this._$interactiveContainer.innerHeight(),
+        sizeChoice = this._$iframeSize.val();
+
+    switch(sizeChoice) {
+    case "smaller":
+      this._view.width = Math.floor(actualWidth * 0.7);
+      this._view.height = Math.floor(actualHeight  * 0.7);
+      break;
+    case "larger":
+      this._view.width = Math.floor(actualWidth * 1.5);
+      this._view.height = Math.floor(actualHeight  * 1.5);
+      break;
+    default:
+      this._view.width = actualWidth;
+      this._view.height = actualHeight;
+      break;
+    }
+
+    this._$iframeContent.val(iframeTpl(this._view));
+  };
+
+  /**
+   * Updates dialog content using interactive JSON definition.
+   *
+   * @param {Object} interactive Interactive JSON definition.
+   */
+  ShareDialog.prototype.update = function(interactive) {
+    this.set("title", "Credits: " + interactive.title);
+  };
+
+  return ShareDialog;
+});
+
+define('text!common/controllers/credits-dialog.tpl',[],function () { return '<div>\n  <p>\n    This interactive was created by the <a href="{{concordUrl}}" target="_blank">Concord Consortium</a>\n    using our <a href="{{nextGenUrl}}" target="_blank">Next-Generation Molecular Workbench</a> software,\n    with funding by a grant from <a href="http://www.google.org/" target="_blank">Google.org</a>.\n   </p>\n   {{#showShareable}}\n   <p>\n      Find a <a href="{{interactiveCreditsUrl}}" class="opens-in-new-window" target="_blank">shareable version</a>\n      of this interactive along with dozens of other open-source interactives for science, math and engineering at\n      <a href="{{concordUrl}}" class="opens-in-new-window" target="_blank">concord.org</a>.\n    </p>\n    {{/showShareable}}\n  {{> copyright}}\n</div>\n';});
+
+/*global define */
+define('common/controllers/credits-dialog',['require','lab.config','mustache','common/inherit','common/controllers/basic-dialog','text!common/controllers/credits-dialog.tpl','text!common/controllers/copyright.tpl'],function (require) {
+
+  var labConfig        = require('lab.config'),
+      mustache         = require('mustache'),
+      inherit          = require('common/inherit'),
+      BasicDialog      = require('common/controllers/basic-dialog'),
+      creditsDialogTpl = require('text!common/controllers/credits-dialog.tpl'),
+      copyrightTpl     = require('text!common/controllers/copyright.tpl');
+
+  /**
+   * Credits Dialog. Inherits from Basic Dialog.
+   *
+   * @constructor
+   */
+  function CreditsDialog() {
+    BasicDialog.call(this, {dialogClass: "credits-dialog"});
+  }
+  inherit(CreditsDialog, BasicDialog);
+
+  /**
+   * Updates dialog content using interactive JSON definition.
+   *
+   * @param {Object} interactive Interactive JSON definition.
+   */
+  CreditsDialog.prototype.update = function(interactive) {
+    var view = {
+          concordUrl: 'http://concord.org',
+          nextGenUrl: 'http://mw.concord.org/nextgen/'
+        },
+        hash = document.location.hash,
+        utmString;
+
+    this.set("title", "Credits: " + interactive.title);
+
+    if (labConfig.homeForSharing) {
+      view.interactiveCreditsUrl = labConfig.homeForSharing + labConfig.homeEmbeddablePath + hash;
+    } else {
+      view.interactiveCreditsUrl = labConfig.home + labConfig.homeEmbeddablePath + hash;
+    }
+
+    if (labConfig.utmCampaign) {
+      utmString = "utm_source=" + encodeURIComponent(interactive.title.replace(/ /gi,"+")) +
+        "&utm_medium=embedded_interactive&utm_campaign=" + labConfig.utmCampaign;
+      view.concordUrl += "?" + utmString;
+      view.nextGenUrl += "?" + utmString;
+      view.interactiveCreditsUrl += "&" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + labConfig.utmCampaign);
+    }
+
+    if (!labConfig.sharing) {
+      view.showShareable = true;
+    }
+
+    this.setContent(mustache.render(creditsDialogTpl, view, {copyright: copyrightTpl}));
+  };
+
+  return CreditsDialog;
+});
+
 /*global define: false */
 // ------------------------------------------------------------
 //
@@ -7883,13 +9927,15 @@ define('common/layout/semantic-layout-config',[],function () {
     /**
       Canonical dimensions of the interactive, they decide about font size.
       (canoncicalFontSize * fontScale) em is used for the interactive which fits this container:
-      98% because 2% is reserved for left and right padding (see: src/sass/_semantic-layout.sass).
+      600 * 98% because 2% is reserved for left and right padding (see: src/sass/_semantic-layout.sass).
     */
     canonicalInteractiveWidth: 600 * 0.98,
     /**
-      94% because 5% is reserved for banner with credits, about and share links (see: src/sass/_semantic-layout.sass).
+      420 - 1% * 600 because 1% is reserved bottom padding (see: src/sass/_semantic-layout.sass).
+      Note that we can't just use 420 * 0.99, because in CSS padding defined in percentages
+      *always* refers to the container width (not height event if it's bottom or top padding).
     */
-    canonicalInteractiveHeight: 420 * 0.94,
+    canonicalInteractiveHeight: 420 - 0.01 * 600,
     /**
       Colors used to mark layout containers in the authoring mode.
     */
@@ -7915,21 +9961,24 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       alert        = require('common/alert');
 
   return function SemanticLayout($interactiveContainer) {
-
+        // Public API.
     var layout,
 
-        containers,
-        componentLocations,
-        components,
+        // Array of containers specifications.
+        containerSpecList,
+        // Hash containing content of container for a given container ID.
+        containersContent,
+        // Hash of component controllers.
+        componentByID,
         modelController,
         fontScale,
 
+        // Container specifications by ID.
+        containerSpecByID,
+        // Container jQuery objects by ID.
+        $containerByID,
+        // Model container jQuery object.
         $modelContainer,
-        $containers,
-
-        modelWidth = layoutConfig.minModelWidth,
-        modelTop = 0,
-        modelLeft = 0,
 
         // Interactive dimensions which fits canonical dimensions.
         // So, basic dimensions are <= canonical dimensions.
@@ -7946,7 +9995,28 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
 
         // Dimensions of the container.
         availableWidth,
-        availableHeight;
+        availableHeight,
+
+        // Amount to inset the model and components from the top left
+        padding = 10,
+
+        // Most important variables.
+        // In fact they define state of the layout.
+        modelWidth,
+        modelTop,
+        modelLeft,
+        topBoundary,
+        leftBoundary,
+        bottomBarWidth;
+
+    function reset() {
+      modelWidth = layoutConfig.minModelWidth;
+      modelTop = 0;
+      modelLeft = 0;
+      topBoundary = 0;
+      leftBoundary = 0;
+      bottomBarWidth = 0;
+    }
 
     function getDimensionOfContainer($container, dim) {
       var position = $container.position();
@@ -7976,6 +10046,8 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       } else {
         containerScale = availableWidth / basicInteractiveWidth;
       }
+
+      padding = containerScale * 10;
 
       font = layoutConfig.canonicalFontSize * fontScale * containerScale;
 
@@ -8009,9 +10081,9 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         }
       }
 
-      for (i = 0, len = containers.length; i < len; i++) {
-        $container = $containers[containers[i].id];
-        if (containers[i].width === undefined) {
+      for (i = 0, len = containerSpecList.length; i < len; i++) {
+        $container = $containerByID[containerSpecList[i].id];
+        if (containerSpecList[i].width === undefined) {
           // Set min-width only for containers, which DO NOT specify
           // "width" explicitly in their definitions.
           maxMinWidth = -Infinity;
@@ -8019,8 +10091,8 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
           $container.children().each(setRowMinWidth);
           $container.css("min-width", maxMinWidth);
         }
-        if (containers[i]["min-width"] !== undefined) {
-          $container.css("min-width", containers[i]["min-width"]);
+        if (containerSpecList[i]["min-width"] !== undefined) {
+          $container.css("min-width", containerSpecList[i]["min-width"]);
         }
       }
     }
@@ -8029,9 +10101,9 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       var colors = layoutConfig.containerColors,
           id, i, len;
 
-      for (i = 0, len = containers.length; i < len; i++) {
-        id = containers[i].id;
-        $containers[id].css("background", labConfig.authoring ? colors[i % colors.length] : "");
+      for (i = 0, len = containerSpecList.length; i < len; i++) {
+        id = containerSpecList[i].id;
+        $containerByID[id].css("background", labConfig.authoring ? colors[i % colors.length] : "");
       }
     }
 
@@ -8041,57 +10113,60 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       // Cleanup interactive container.
       $interactiveContainer.empty();
 
-      $containers = {};
+      $containerByID = {};
+      containerSpecByID = {};
 
-      $modelContainer = modelController.getViewContainer();
-      $modelContainer.css({
-        "display": "inline-block",
-        "position": "absolute"
-      });
-      $modelContainer.appendTo($interactiveContainer);
-      $containers.model = $modelContainer;
-
-      for (i = 0, ii = containers.length; i < ii; i++) {
-        container = containers[i];
+      for (i = 0, ii = containerSpecList.length; i < ii; i++) {
+        container = containerSpecList[i];
         id = container.id;
-        $containers[id] = $("<div id='" + id + "'>").appendTo($interactiveContainer);
-        $containers[id].css({
+        containerSpecByID[id] = container;
+        $containerByID[id] = $("<div id='" + id + "'>").appendTo($interactiveContainer);
+        $containerByID[id].css({
           "display": "inline-block",
-          "position": "absolute"
+          "position": "absolute",
+          "z-index": "1"
         });
 
         for (prop in container) {
           if (!container.hasOwnProperty(prop)) continue;
           // Add any padding-* properties directly to the container's style.
           if (/^padding-/.test(prop)) {
-            $containers[id].css(prop, container[prop]);
+            $containerByID[id].css(prop, container[prop]);
           }
           // Support also "align" property.
-          if (prop === "align") {
-            $containers[id].css("text-align", container[prop]);
+          else if (prop === "align") {
+            $containerByID[id].css("text-align", container[prop]);
+          }
+          else if (prop === "fontScale") {
+            $containerByID[id].css("font-size", container[prop] + "em");
           }
         }
       }
     }
 
     function placeComponentsInContainers() {
-      var id, container, divContents, items,
+      var id, containerID, divContents, items,
           $row, $rows, $containerComponents,
           lastContainer, comps, errMsg,
           i, ii, j, jj, k, kk;
 
-      comps = $.extend({}, components);
+      comps = $.extend({}, componentByID);
 
-      for (i = 0, ii = containers.length; i<ii; i++) {
-        container = containers[i];
-        if (componentLocations) {
-          divContents = componentLocations[container.id];
+      for (containerID in containersContent) {
+        if (!containersContent.hasOwnProperty(containerID)) continue;
+
+        if (!$containerByID[containerID]) {
+          // Inform an author and skip this container.
+          errMsg = "Incorrect layout definition - '" + containerID + "' container does not exist.";
+          alert(errMsg);
+          continue;
         }
-        if (!divContents) continue;
+
+        divContents = containersContent[containerID];
 
         if (!arrays.isArray(divContents)) {
           // Inform an author and skip this container.
-          errMsg = "Incorrect layout definition for '" + container.id + "' container. It should specify " +
+          errMsg = "Incorrect layout definition for '" + containerID + "' container. It should specify " +
                    "an array of components or an array of arrays of components (multiple rows).";
           alert(errMsg);
           continue;
@@ -8104,14 +10179,14 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
 
         for (j = 0, jj = divContents.length; j < jj; j++) {
           items = divContents[j];
-          $row = $('<div class="interactive-' + container.id + '-row"/>');
+          $row = $('<div class="interactive-row"/>');
           // Each row should have width 100% of its parent container.
           $row.css("width", "100%");
           // When there is only one row, ensure that it fills whole container.
           if (jj === 1) {
             $row.css("height", "100%");
           }
-          $containers[container.id].append($row);
+          $containerByID[containerID].append($row);
           for (k = 0, kk = items.length; k < kk; k++) {
             id = items[k];
             if (comps[id] === undefined) {
@@ -8126,12 +10201,12 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       }
 
       // Add any remaining components to "bottom" or last container.
-      lastContainer = getObject(containers, "bottom") || containers[containers.length-1];
-      $rows = $containers[lastContainer.id].children();
+      lastContainer = containerSpecByID.bottom || containerSpecList[containerSpecList.length-1];
+      $rows = $containerByID[lastContainer.id].children();
       $row = $rows.last();
       if (!$row.length) {
-        $row = $('<div class="interactive-' + container.id + '-row"/>');
-        $containers[container.id].append($row);
+        $row = $('<div class="interactive-row"/>');
+        $containerByID[lastContainer.id].append($row);
       }
       for (id in comps) {
         if (!comps.hasOwnProperty(id)) continue;
@@ -8141,9 +10216,9 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       // When there are multiple components in a container, ensure that there
       // is spacing between them.
       // See src/sass/lab/_semantic-layout.sass for .component-spacing class definition.
-      for (i = 0, ii = containers.length; i < ii; i++) {
+      for (i = 0, ii = containerSpecList.length; i < ii; i++) {
         // First children() call returns rows, second one components.
-        $containerComponents = $containers[containers[i].id].children().children();
+        $containerComponents = $containerByID[containerSpecList[i].id].children().children();
         if ($containerComponents.length > 1) {
           $containerComponents.addClass("component-spacing");
         }
@@ -8152,7 +10227,7 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
 
     function positionContainers() {
       var container, $container,
-          left, top, right, bottom, i, ii;
+          left, top, right, bottom, height, i, ii, id;
 
       $modelContainer.css({
         width:  modelWidth,
@@ -8161,9 +10236,9 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         top:    modelTop
       });
 
-      for (i = 0, ii = containers.length; i<ii; i++) {
-        container = containers[i];
-        $container = $containers[container.id];
+      for (i = 0, ii = containerSpecList.length; i<ii; i++) {
+        container = containerSpecList[i];
+        $container = $containerByID[container.id];
 
         if (!container.left && !container.right) {
           container.left = "0";
@@ -8196,6 +10271,37 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
           top = bottom - $container.outerHeight();
           $container.css("top", top);
         }
+
+        // Containers with "aboveOthers" property should be treated in a special
+        // way. It's a group of absolutely positioned containers, which is always
+        // placed above other containers. So, in fact they define topBoundary
+        // for other components.
+        if (container.aboveOthers) {
+          bottom = getDimensionOfContainer($container, "bottom") + padding;
+          if (bottom > topBoundary) {
+            topBoundary = bottom;
+          }
+        }
+        if (container.belowOthers) {
+          height = getDimensionOfContainer($container, "height");
+          if (height > bottomBarWidth) {
+            bottomBarWidth = height;
+          }
+        }
+      }
+
+      leftBoundary = padding;
+
+      // Shift typical containers (aboveOther == false) according to the top boundary.
+      for (id in $containerByID) {
+        if (!$containerByID.hasOwnProperty(id)) continue;
+        if (containerSpecByID[id] && containerSpecByID[id].aboveOthers) continue;
+        if (containerSpecByID[id] && containerSpecByID[id].belowOthers) continue;
+        $container = $containerByID[id];
+        top = getDimensionOfContainer($container, "top");
+        $container.css("top", top + topBoundary);
+        left = getDimensionOfContainer($container, "left");
+        $container.css("left", left + leftBoundary);
       }
     }
 
@@ -8209,10 +10315,11 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
           id, $container,
           right, bottom, top, left, ratio;
 
-      // Calculate boundaries of the interactive.
-      for (id in $containers) {
-        if (!$containers.hasOwnProperty(id)) continue;
-        $container = $containers[id];
+      for (id in $containerByID) {
+        if (!$containerByID.hasOwnProperty(id)) continue;
+        if (containerSpecByID[id] && containerSpecByID[id].aboveOthers) continue;
+        if (containerSpecByID[id] && containerSpecByID[id].belowOthers) continue;
+        $container = $containerByID[id];
         right = getDimensionOfContainer($container, "right");
         if (right > maxX) {
           maxX = right;
@@ -8234,15 +10341,15 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       // TODO: this is quite naive approach.
       // It should be changed to some fitness function defining quality of the layout.
       // Using current algorithm, very often we follow some local minima.
-      if ((maxX <= availableWidth && maxY <= availableHeight) &&
-          (availableWidth - maxX < 1 || availableHeight - maxY < 1) &&
-          (minX < 1 && minY < 1)) {
+      if ((maxX <= availableWidth && maxY <= (availableHeight-bottomBarWidth)) &&
+          (Math.abs(availableWidth - maxX) < 1 || Math.abs((availableHeight-bottomBarWidth) - maxY) < 1) &&
+          (Math.abs(minX - leftBoundary) < 1 && Math.abs(minY - topBoundary) < 1)) {
         // Perfect solution found!
         // (TODO: not so perfect, see above)
         return true;
       }
 
-      ratio = Math.min(availableWidth / maxX, availableHeight / maxY);
+      ratio = Math.min(availableWidth / maxX, (availableHeight-bottomBarWidth) / maxY);
       if (!isNaN(ratio)) {
         modelWidth = modelWidth * ratio;
       }
@@ -8250,8 +10357,8 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         modelWidth = layoutConfig.minModelWidth;
       }
 
-      modelLeft -= minX;
-      modelTop -= minY;
+      modelLeft -= minX - leftBoundary;
+      modelTop -= minY - topBoundary;
 
       return false;
     }
@@ -8260,7 +10367,7 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
     function parseDimension(dim) {
       var vars, i, ii, value;
 
-      if (typeof dim === "number" || /^[0-9]+(em)?$/.test(dim)) {
+      if (typeof dim === "number" || /^[0-9]+\.?[0-9]*(em)?$/.test(dim)) {
         return dim;
       }
 
@@ -8283,21 +10390,17 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
     // Parses a container's dimension, such as "model.height".
     function getDimension(dim) {
       switch(dim) {
-        case "interactive.width":
+        case "container.width":
           return availableWidth;
+        case "container.height":
+          return availableHeight + padding;
+        case "interactive.width":
+          return availableWidth - padding;
         case "interactive.height":
-          return availableHeight;
+          return availableHeight - (padding*2) - bottomBarWidth;
         default:
           dim = dim.split(".");
-          return getDimensionOfContainer($containers[dim[0]], dim[1]);
-      }
-    }
-
-    function getObject(arr, id) {
-      for (var i = 0, ii = arr.length; i<ii; i++) {
-        if (arr[i].id === id) {
-          return arr[i];
-        }
+          return getDimensionOfContainer($containerByID[dim[0]], dim[1]);
       }
     }
 
@@ -8310,23 +10413,29 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
           maxY = -Infinity,
           id, $container, val;
 
+      reset();
       availableWidth = canonicalInteractiveWidth;
-      availableHeight = canonicalInteractiveHeight;
+      availableHeight = canonicalInteractiveHeight - bottomBarWidth - padding;
+      modelWidth = availableWidth;
+
       // Set basic interactive dimensions to default values to ensure that default font will be used.
       basicInteractiveWidth = canonicalInteractiveWidth;
       basicInteractiveHeight = canonicalInteractiveHeight;
+
       // Set font size to ensure that "fontScale" and "canonicalFontSize" are taken into account.
       setFontSize();
       setMinDimensions();
-      modelWidth = availableWidth;
+
       positionContainers();
       while (--redraws > 0 && !resizeModelContainer()) {
         positionContainers();
       }
 
-      for (id in $containers) {
-        if (!$containers.hasOwnProperty(id)) continue;
-        $container = $containers[id];
+      console.log('[layout] aspect ratio calc: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
+
+      for (id in $containerByID) {
+        if (!$containerByID.hasOwnProperty(id)) continue;
+        $container = $containerByID[id];
         val = getDimensionOfContainer($container, "right");
         if (val > maxX) {
           maxX = val;
@@ -8350,46 +10459,88 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
     // Public API.
     layout = {
       /**
-        Setups interactive layout. Cleanups interactive container, creates new containers and places
-        components inside them.
-
-        This method should be called each time when at least one of the following objects is changed:
-          - layout template,
-          - component locations,
-          - components,
-          - model controller,
-          - font scale.
-
-        @param {array} newContainer List of layout containers.
-        @param {Object} newComponentLocations Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
-        @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
-        @param {ModelController} newModelController Model Controller object.
-        @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
-      */
-      setupInteractive: function(newContainers, newComponentLocations, newComponents, newModelController, newFontScale) {
-        containers = newContainers;
-        componentLocations = newComponentLocations;
-        components = newComponents;
-        modelController = newModelController;
+       * Setups interactive layout. Cleanups interactive container, creates new containers and places
+       * components inside them.
+       *
+       * This method should be called each time when at least one of the following objects is changed:
+       *  - layout template,
+       *  - component locations,
+       *  - components,
+       *  - model controller,
+       *  - font scale.
+       *
+       * @param {array} newContainers List of layout containers.
+       * @param {Object} newContainersContent Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
+       * @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
+       *
+       * @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
+       */
+      initialize: function(newContainers, newContainersContent, newComponents, newFontScale) {
+        containerSpecList = newContainers;
+        containersContent = newContainersContent;
+        componentByID = newComponents;
         fontScale = newFontScale;
 
         createContainers();
         placeComponentsInContainers();
-        calcInteractiveAspectRatio();
+        // Clear previous aspect ratio, as new components
+        // can completely change it.
+        interactiveAspectRatio = null;
       },
 
       /**
-        Layouts interactive. Adjusts size of the model container to ensure that all components are inside the
-        interactive container and all available space is used in the best way.
-      */
+       * Setups model controller, as well as model container provided by it.
+       * Model Controller should implement getViewVontainer() method.
+       * Always call this function after initialize()!
+       *
+       * @param {ModelController} newModelController Model Controller object.
+       */
+      setupModel: function (newModelController) {
+        modelController = newModelController;
+        // Clear previous aspect ratio, as new model
+        // can completely change it.
+        interactiveAspectRatio = null;
+
+        if ($containerByID.model) {
+          if ($containerByID.model === modelController.getViewContainer()) {
+            // Do nothing, the valid model container is already inside interactive container.
+            return;
+          }
+          // If there is an old model container, remove it.
+          $containerByID.model.remove();
+        }
+
+        $modelContainer = modelController.getViewContainer();
+        $modelContainer.css({
+          "display": "inline-block",
+          "position": "absolute",
+          "z-index": "0"
+        });
+        $modelContainer.appendTo($interactiveContainer);
+        $containerByID.model = $modelContainer;
+      },
+
+      /**
+       * Layouts interactive. Adjusts size of the model container to ensure that all components are inside the
+       * interactive container and all available space is used in the best way.
+       */
       layoutInteractive: function () {
         var redraws = layoutConfig.iterationsLimit,
             id;
 
         console.time('[layout] update');
 
+        if (!interactiveAspectRatio) {
+          // Calculate aspect ratio when it's needed.
+          // Adding a new component or model change can invalidate current
+          // aspect ratio.
+          calcInteractiveAspectRatio();
+        }
+
+        reset();
         availableWidth  = $interactiveContainer.width();
-        availableHeight = $interactiveContainer.height();
+        availableHeight = $interactiveContainer.height() - bottomBarWidth - padding;
+        modelWidth = availableWidth; // optimization
 
         // 0. Set font size of the interactive-container based on its size.
         setFontSize();
@@ -8400,7 +10551,6 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         setMinDimensions();
 
         // 2. Calculate optimal layout.
-        modelWidth = availableWidth;
         positionContainers();
         while (--redraws > 0 && !resizeModelContainer()) {
           positionContainers();
@@ -8409,9 +10559,9 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
 
         // 3. Notify components that their containers have new sizes.
         modelController.resize();
-        for (id in components) {
-          if (components.hasOwnProperty(id) && components[id].resize !== undefined) {
-            components[id].resize();
+        for (id in componentByID) {
+          if (componentByID.hasOwnProperty(id) && componentByID[id].resize !== undefined) {
+            componentByID[id].resize();
           }
         }
 
@@ -8544,17 +10694,8 @@ define('common/layout/templates',[],function () {
 
 }).call(this);
 
-/*global
+/*global define, DEVELOPMENT, $, d3, alert, model: true, model_player: true */
 
-  define
-  DEVELOPMENT
-  $
-  d3
-  alert
-  model: true
-  model_player: true
-*/
-/*jslint onevar: true*/
 define('common/controllers/model-controller',['require','arrays','cs!common/components/model_player'],function (require) {
   // Dependencies.
   var arrays            = require('arrays'),
@@ -8570,10 +10711,6 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
         // Options after processing performed by processOptions().
         modelOptions,
         viewOptions,
-
-        benchmarks,
-
-        modelContainer,
 
         // We pass this object to the "ModelPlayer" to intercept messages for the model
         // instead of allowing the ModelPlayer to talk to the model directly.
@@ -8597,7 +10734,7 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
             if (model.reset) {
               model.reset();
             }
-            reload(modelUrl, modelConfig);
+            reload(controller.modelUrl, modelConfig);
           },
 
           is_stopped: function() {
@@ -8613,7 +10750,7 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
       //
       // ------------------------------------------------------------
       function tickHandler() {
-        modelContainer.update();
+        controller.modelContainer.update();
       }
 
 
@@ -8668,7 +10805,7 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
       //
 
       function setupBenchmarks() {
-        benchmarks = new Benchmarks(controller);
+        controller.benchmarks = new Benchmarks(controller);
       }
 
       // ------------------------------------------------------------
@@ -8701,15 +10838,15 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
         model_player.forward = function() {
           model.stepForward();
           if (!model.isNewStep()) {
-            modelContainer.update();
+            controller.modelContainer.update();
           }
         };
         model_player.back = function() {
           model.stepBack();
-          modelContainer.update();
+          controller.modelContainer.update();
         };
 
-        modelContainer = new ModelContainer(modelUrl, model);
+        controller.modelContainer = new ModelContainer(controller.modelUrl, model);
       }
 
       function resetModelPlayer() {
@@ -8719,7 +10856,7 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
         // reset player and container view for model
         //
         // ------------------------------------------------------------
-        modelContainer.reset(modelUrl, model);
+        controller.modelContainer.reset(controller.modelUrl, model);
       }
 
       /**
@@ -8727,7 +10864,7 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
         arguments will simply reload the current model.
       */
       function reload(newModelUrl, newModelConfig, newInteractiveViewConfig, newInteractiveModelConfig) {
-        modelUrl = newModelUrl || modelUrl;
+        controller.modelUrl = newModelUrl || controller.modelUrl;
         modelConfig = newModelConfig || modelConfig;
         interactiveViewConfig = newInteractiveViewConfig || interactiveViewConfig;
         interactiveModelConfig = newInteractiveModelConfig || interactiveModelConfig;
@@ -8737,16 +10874,50 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
       }
 
       function repaint() {
-        modelContainer.repaint();
+        controller.modelContainer.repaint();
       }
 
       function resize() {
-        modelContainer.resize();
+        controller.modelContainer.resize();
       }
 
       function state() {
         return model.serialize();
       }
+
+      // ------------------------------------------------------------
+      //
+      // Public methods
+      //
+      // ------------------------------------------------------------
+
+      controller.on = function(type, listener) {
+        dispatch.on(type, listener);
+      };
+
+      controller.getViewContainer = function () {
+        return controller.modelContainer.$el;
+      };
+
+      controller.getHeightForWidth = function (width) {
+        return controller.modelContainer.getHeightForWidth(width);
+      };
+
+      controller.reload = reload;
+      controller.repaint = repaint;
+      controller.resize = resize;
+      controller.state = state;
+      controller.ScriptingAPI = ScriptingAPI;
+
+      // ------------------------------------------------------------
+      //
+      // Public variables
+      //
+      // ------------------------------------------------------------
+      controller.modelContainer = null;
+      controller.benchmarks = null;
+      controller.type = Model.type;
+      controller.modelUrl = modelUrl;
 
       // ------------------------------------------------------------
       //
@@ -8768,33 +10939,6 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
       setupBenchmarks();
       setupModelPlayer();
       dispatch.modelReset();
-
-      // ------------------------------------------------------------
-      //
-      // Public methods
-      //
-      // ------------------------------------------------------------
-
-      controller.on = function(type, listener) {
-        dispatch.on(type, listener);
-      };
-
-      controller.getViewContainer = function () {
-        return modelContainer.$el;
-      };
-
-      controller.getHeightForWidth = function (width) {
-        return modelContainer.getHeightForWidth(width);
-      };
-
-      controller.reload = reload;
-      controller.repaint = repaint;
-      controller.resize = resize;
-      controller.modelContainer = modelContainer;
-      controller.state = state;
-      controller.benchmarks = benchmarks;
-      controller.type = Model.type;
-      controller.ScriptingAPI = ScriptingAPI;
 
       return controller;
   };
@@ -10070,13 +12214,34 @@ define('md2d/models/metadata',[],function() {
         defaultValue: "md2d",
         immutable: true
       },
+      minX: {
+        defaultValue: 0,
+        serialize: false
+      },
+      maxX: {
+        defaultValue: 10,
+        serialize: false
+      },
+      minY: {
+        defaultValue: 0,
+        serialize: false
+      },
+      maxY: {
+        defaultValue: 10,
+        serialize: false
+      },
       width: {
         defaultValue: 10,
+        unitType: "length",
         immutable: true
       },
       height: {
         defaultValue: 10,
+        unitType: "length",
         immutable: true
+      },
+      unitsScheme: {
+        defaultValue: "md2d"
       },
       lennardJonesForces: {
         defaultValue: true
@@ -10088,16 +12253,19 @@ define('md2d/models/metadata',[],function() {
         defaultValue: false
       },
       targetTemperature: {
-        defaultValue: 300
+        defaultValue: 300,
+        unitType: "temperature"
       },
       modelSampleRate: {
         defaultValue: "default"
       },
       gravitationalField: {
-        defaultValue: false
+        defaultValue: false,
+        unitType: "acceleration"
       },
       timeStep: {
-        defaultValue: 1
+        defaultValue: 1,
+        unitType: "time"
       },
       dielectricConstant: {
         defaultValue: 1
@@ -10125,7 +12293,8 @@ define('md2d/models/metadata',[],function() {
         defaultValue: 4
       },
       additionalSolventForceThreshold: {
-        defaultValue: 10
+        defaultValue: 10,
+        unitType: "length"
       },
       polarAAEpsilon: {
         defaultValue: -2
@@ -10187,9 +12356,6 @@ define('md2d/models/metadata',[],function() {
       textBoxes: {
         defaultValue: []
       },
-      fitToParent: {
-        defaultValue: false
-      },
       xlabel: {
         defaultValue: false
       },
@@ -10239,34 +12405,42 @@ define('md2d/models/metadata',[],function() {
     atom: {
       // Required properties:
       x: {
-        required: true
+        required: true,
+        unitType: "length"
       },
       y: {
-        required: true
+        required: true,
+        unitType: "length"
       },
       // Optional properties:
       element: {
         defaultValue: 0
       },
       vx: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "velocity"
       },
       vy: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "velocity"
       },
       ax: {
         defaultValue: 0,
+        unitType: "acceleration",
         serialize: false
       },
       ay: {
         defaultValue: 0,
+        unitType: "acceleration",
         serialize: false
       },
       charge: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "charge"
       },
       friction: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "dampingCoefficient"
       },
       visible: {
         defaultValue: 1
@@ -10283,33 +12457,41 @@ define('md2d/models/metadata',[],function() {
       // Read-only values, can be set only by engine:
       radius: {
         readOnly: true,
+        unitType: "length",
         serialize: false
       },
       px: {
         readOnly: true,
+        unitType: "momentum",
         serialize: false
       },
       py: {
         readOnly: true,
+        unitType: "momentum",
         serialize: false
       },
       speed: {
         readOnly: true,
+        unitType: "velocity",
         serialize: false
       }
     },
 
     element: {
       mass: {
-        defaultValue: 120
+        defaultValue: 120,
+        unitType: "mass"
       },
       sigma: {
-        defaultValue: 0.3
+        defaultValue: 0.3,
+        unitType: "length"
       },
       epsilon: {
-        defaultValue: -0.1
+        defaultValue: -0.1,
+        unitType: "energy"
       },
       radius: {
+        unitType: "length",
         readOnly: true,
         serialize: false
       },
@@ -10326,46 +12508,58 @@ define('md2d/models/metadata',[],function() {
         defaultValue: 0
       },
       sigma: {
+        unitType: "length"
       },
       epsilon: {
+        unitType: "energy"
       }
     },
 
     obstacle: {
       // Required properties:
       width: {
+        unitType: "length",
         required: true
       },
       height: {
+        unitType: "length",
         required: true
       },
       // Optional properties:
       x: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       },
       y: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       },
       mass: {
-        defaultValue: Infinity
+        defaultValue: Infinity,
+        unitType: "mass"
       },
       vx: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "velocity"
       },
       vy: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "velocity"
       },
-      // External horizontal force, per mass unit.
+      // External horizontal force, per mass unit (i.e., despite the name it's an acceleration)
       externalFx: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "acceleration"
       },
       // External vertical force, per mass unit.
       externalFy: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "accleration"
       },
-      // Damping force, per mass unit.
+      // Damping coefficient per mass unit (= acceleration / velocity = 1 / time)
       friction: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "inverseTime"
       },
       // Pressure probe, west side.
       westProbe: {
@@ -10373,6 +12567,7 @@ define('md2d/models/metadata',[],function() {
       },
       // Final value of pressure in Bars.
       westProbeValue: {
+        unitType: "pressure",
         readOnly: true,
         serialize: false
       },
@@ -10382,6 +12577,7 @@ define('md2d/models/metadata',[],function() {
       },
       // Final value of pressure in Bars.
       northProbeValue: {
+        unitType: "pressure",
         readOnly: true,
         serialize: false
       },
@@ -10391,6 +12587,7 @@ define('md2d/models/metadata',[],function() {
       },
       // Final value of pressure in Bars.
       eastProbeValue: {
+        unitType: "pressure",
         readOnly: true,
         serialize: false
       },
@@ -10400,6 +12597,7 @@ define('md2d/models/metadata',[],function() {
       },
       // Final value of pressure in Bars.
       southProbeValue: {
+        unitType: "pressure",
         readOnly: true,
         serialize: false
       },
@@ -10426,9 +12624,11 @@ define('md2d/models/metadata',[],function() {
         defaultValue: 0
       },
       length: {
+        unitType: "length",
         required: true
       },
       strength: {
+        unitType: "stiffness",
         required: true
       },
       type: {
@@ -10447,9 +12647,11 @@ define('md2d/models/metadata',[],function() {
         defaultValue: 0
       },
       strength: {
+        unitType: "rotationalStiffness",
         required: true
       },
       angle: {
+        unitType: "angle",
         required: true
       }
     },
@@ -10459,13 +12661,16 @@ define('md2d/models/metadata',[],function() {
         required: true
       },
       k: {
-        defaultValue: 2000
+        defaultValue: 2000,
+        unitType: "stiffness"
       },
       x0: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       },
       y0: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       }
     },
 
@@ -10509,10 +12714,12 @@ define('md2d/models/metadata',[],function() {
         defaultValue: ""
       },
       x: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       },
       y: {
-        defaultValue: 0
+        defaultValue: 0,
+        unitType: "length"
       },
       layer: {
         defaultValue: 1
@@ -11336,6 +13543,12 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
 
         // System dimensions as [x, y] in nanometers. Default value can be changed until particles are created.
         size = [10, 10],
+
+        // System dimensions as minX, minY, maxX, maxY. Default value can be changed until turles are created.
+        minX =  0,
+        minY =  0,
+        maxX = 10,
+        maxY = 10,
 
         // Viscosity of the medium of the model
         viscosity,
@@ -12505,7 +14718,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             // radian
             angle = angularBondAngle[i];
 
-            // eV/radian^2
+            // (eV/nm * nm) / radian
             k = angularBondStrength[i];
 
             // Calculate angle (theta) between two vectors:
@@ -13180,20 +15393,22 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         time = t;
       },
 
-      setSize: function(v) {
+      setDimensions: function(v) {
         // NB. We may want to create a simple state diagram for the md engine (as well as for the 'modeler' defined in
         // lab.molecules.js)
         if (sizeHasBeenInitialized) {
           throw new Error("The molecular model's size has already been set, and cannot be reset.");
         }
-        var width  = (v[0] && v[0] > 0) ? v[0] : 10,
-            height = (v[1] && v[1] > 0) ? v[1] : 10;
-        size = [width, height];
+        minX = v[0];
+        minY = v[1];
+        maxX = v[2];
+        maxY = v[3];
+        size = [maxX - minX, maxY - minY];
         sizeHasBeenInitialized = true;
       },
 
-      getSize: function() {
-        return [size[0], size[1]];
+      getDimensions: function() {
+        return [minX, minY, maxX, maxY];
       },
 
       getLJCalculator: function() {
@@ -14297,6 +16512,40 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         }
       },
 
+      getRadialBondsForAtom: function(index) {
+        var rbonds = [],
+            i,
+            i1,
+            i2;
+
+        for (i = 0; i < N_radialBonds; i++) {
+          i1 = radialBondAtom1Index[i];
+          i2 = radialBondAtom2Index[i];
+          if (index == i1 || index == i2) {
+            rbonds.push(i);
+          }
+        }
+        return rbonds;
+      },
+
+      getAngularBondsForAtom: function(index) {
+        var abonds = [],
+            i,
+            i1,
+            i2,
+            i3;
+
+        for (i = 0; i < N_angularBonds; i++) {
+          i1 = angularBondAtom1Index[i];
+          i2 = angularBondAtom2Index[i];
+          i3 = angularBondAtom3Index[i];
+          if (index == i1 || index == i2 || index == i3) {
+            abonds.push(i);
+          }
+        }
+        return abonds;
+      },
+
       // Total mass of all particles in the system, in Dalton (atomic mass units).
       getTotalMass: function() {
         var totalMass = 0, i;
@@ -14815,14 +17064,14 @@ define('common/models/tick-history',[],function() {
       // save model input properties
       for (i = 0; i < modelState.input.length; i++) {
         prop = modelState.input[i];
-        destination.input[prop] = model.get(prop);
+        destination.input[prop] = modelState.getRawPropertyValue(prop);
       }
 
       // save model parameters
       parameters = modelState.parameters;
       for (name in parameters) {
         if (parameters.hasOwnProperty(name) && parameters[name].isDefined) {
-          destination.parameters[name] = model.get(name);
+          destination.parameters[name] = modelState.getRawPropertyValue(name);
         }
       }
 
@@ -15207,10 +17456,480 @@ define('common/models/tick-history',[],function() {
 
 }).call(this);
 
+/*global define d3 */
+/*jshint eqnull:true boss:true */
+
+define('md2d/models/property-description',['require','underscore'],function(require) {
+
+  var _ = require('underscore');
+
+  function isUndefined(val) {
+    return typeof val === 'undefined';
+  }
+
+  function PropertyDescription(unitDefinition, descriptionHash) {
+    var u;
+
+    this._descriptionHash = descriptionHash;
+    this._label = descriptionHash.label || "";
+
+    if (descriptionHash.unitType) {
+      if ( !(u = unitDefinition.units[descriptionHash.unitType]) ) {
+        throw new Error("PropertyDescription: couldn't find unitType " + descriptionHash.unitType + " in the supplied units definition.");
+      }
+      this._unitType         = descriptionHash.unitType;
+      this._unitName         = u.name;
+      this._unitPluralName   = u.pluralName;
+      this._unitAbbreviation = u.abbreviation;
+    }
+
+    // allow overriding the unit properties, or specifying custom ones for which there is no
+    // current unit definition.
+    if (descriptionHash.unitName) this._unitName = descriptionHash.unitName;
+    if (descriptionHash.unitPluralName) this._unitPluralName = descriptionHash.unitPluralName;
+    if (descriptionHash.unitAbbreviation) this._unitAbbreviation = descriptionHash.unitAbbreviation;
+
+    this.setFormat(descriptionHash.format || 'g');
+  }
+
+  PropertyDescription.prototype.getHash = function() {
+    return _.extend(
+      _.reject({
+          unitName:         this.getUnitName(),
+          unitPluralName:   this.getUnitPluralName(),
+          unitAbbreviation: this.getUnitAbbreviation()
+        }, isUndefined),
+      this._descriptionHash);
+  };
+
+  PropertyDescription.prototype.getLabel = function() {
+    return this._label;
+  };
+
+  PropertyDescription.prototype.getUnitType = function() {
+    return this._unitType;
+  };
+
+  PropertyDescription.prototype.getUnitName = function() {
+    return this._unitName;
+  };
+
+  PropertyDescription.prototype.getUnitPluralName = function() {
+    return this._unitPluralName;
+  };
+
+  PropertyDescription.prototype.getUnitAbbreviation = function() {
+    return this._unitAbbreviation;
+  };
+
+  PropertyDescription.prototype.setFormat = function(s) {
+    this._formatter = d3.format(s);
+  };
+
+  PropertyDescription.prototype.format = function(val, opts) {
+    opts = opts || {};
+
+    var formatter,
+        formattedVal,
+        plural,
+        abbreviated = true;
+
+    if (opts.format) {
+      if (opts.format === this._lastFormat) {
+        formatter = this._lastFormatter;
+      } else {
+        formatter = d3.format(opts.format);
+        this._lastFormat = opts.format;
+        this._lastFormatter = formatter;
+      }
+    } else {
+      formatter = this._formatter;
+    }
+
+    formattedVal = formatter(val);
+
+    if (opts && opts.abbreviated != null) abbreviated = opts.abbreviated;
+
+    if (abbreviated) {
+      return formattedVal + " " + this._unitAbbreviation;
+    }
+
+    plural = parseFloat(formattedVal) !== 1;
+    return formattedVal + " " + (plural ? this._unitPluralName : this._unitName);
+  };
+
+  return PropertyDescription;
+});
+
+/*global define: false */
+
+// Definitions of the default MD2D units. Every model property exposed by md2d/models/modeler.js is
+// in one of the unit types below.
+
+// This particular set of definitions is for reference and for generating the correct labels on
+// output properties; it's not used for computation. Unit conversions that need to happen during
+// calculations in the MD2D engine itself are "baked in" using the engine's internal constants and
+// units module 'md2d/models/engine/constants/index.js')
+
+// Additionally, since we don't yet offer user-facing methods which do unit conversions (e.g.,
+// allowing a property setter to accept an argument containing a value and a unit) there is no
+// need for quantitative information in this definition.
+
+define('md2d/models/unit-definitions/md2d',[],function() {
+  return {
+    name: "md2d",
+    translated: false,
+    units: {
+
+      length: {
+        name: "nanometer",
+        pluralName: "nanometers",
+        abbreviation: "nm"
+      },
+
+      // Internally, we've referred to "Dalton" but amu is probably more common. Dalton is
+      // officially more correct but it still seems mostly to be used for protein masses, etc.
+      mass: {
+        name: "atomic mass unit",
+        pluralName: "atomic mass units",
+        abbreviation: "amu"
+      },
+
+      time: {
+        name: "femtosecond",
+        pluralName: "femtoseconds",
+        abbreviation: "fs",
+        displayValue: {
+          unitsPerBaseUnit: 1e-3,
+          pluralName: "picoseconds",
+          name: "picosecond",
+          abbreviation: "ps"
+        }
+      },
+
+      // For unclear reasons, Classic MW scales the damping coefficient of obstacles linearly with
+      // the obstacle's mass, so the acceleration due to friction is a constant times the velocity:
+      //   a(friction) = -cv
+      // For compatibility, MD2D does the same.
+      // The units of the constant c (called "obstacle friction") are therefore 1 / time.
+      inverseTime: {
+        name: "1/femtosecond",
+        pluralName: "1/femtoseconds",
+        abbreviation: "1/fs"
+      },
+
+      velocity: {
+        name: "nanometer per femtosecond",
+        pluralName: "nanometers per second",
+        abbreviation: "nm/s"
+      },
+
+      acceleration: {
+        name: "nanometer per femtosecond squared",
+        pluralName: "nanometers per femtosecond squared",
+        abbreviation: "nm/fs²"
+      },
+
+      momentum: {
+        name: "amu nanometer per femtosecond",
+        pluralName: "amu nanometers per femtosecond",
+        abbreviation: "amu⋅nm/fs"
+      },
+
+      // Forces haven't typically been exposed to Classic MW users in a quantitative way, and indeed
+      // they aren't yet exposed in Next Gen MW, so MD2D doesn't try to translate the
+      // (computationally convenient) amu nm/fs² to "user friendly" units. That said, Classic MW
+      // could be said to use eV/nm implicitly, since spring constants are in eV/nm².
+      force: {
+        name: "amu nanometer per femtosecond squared",
+        pluralName: "amu nanometers per femtosecond squared",
+        abbreviation: "amu⋅nm/fs²"
+      },
+
+      energy: {
+        name: "electron volt",
+        pluralName: "electron volts",
+        abbreviation: "eV"
+      },
+
+      // force / velocity = mass / time; given the composite force unit we use, this is much simpler
+      // to write as amu/fs than anything else.
+      dampingCoefficient: {
+        name: "amu per femtosecond",
+        pluralName: "amu per femtoseconds",
+        abbreviation: "amu/fs"
+      },
+
+      // aka spring constant (= eV/nm per nm)
+      stiffness: {
+        name: "electron volt per nanometer squared",
+        pluralName: "electron volts per nanometer squared",
+        abbreviation: "eV/nm²"
+      },
+
+      // aka torsional spring constant.
+      // Dimensions are torque / angle = force (eV/nm) x lever arm (nm) / angle (radians). This is
+      // dimensionally equivalent to energy / angle (eV/radians) but the interpretation of force x
+      // distance is different for energy than it is for torque.
+      rotationalStiffness: {
+        name: "electron volt per radian",
+        pluralName: "electron volts per radian",
+        abbreviation: "eV/rad"
+      },
+
+      charge: {
+        name: "elementary charge",
+        pluralName: "elementary charges",
+        abbreviation: "e"
+      },
+
+      temperature: {
+        // Not "degrees Kelvin", just "Kelvin".
+        name: "Kelvin",
+        // Not "Kelvins", just "Kelvin".
+        pluralName: "Kelvin",
+        abbreviation: "K"
+      },
+
+      pressure: {
+        name: "bar",
+        // e.g., "50 bar"
+        pluralName: "bar",
+        abbreviation: "bar"
+      },
+
+      angle: {
+        name: "radian",
+        pluralName: "radians",
+        abbreviation: "rad"
+      }
+    }
+  };
+});
+
+/*global define: false */
+
+// Definitions of the MKS units used for macroscopic models. We simulate macroscopic models by
+// declaring that some value in (microscopic) MD2D units actually represents one macroscopic-scale
+// unit of the same type, e.g., we choose 1 nm (a value of 1 in any MD2D property that has unitType
+// "length") to represent 1 m.
+//
+// Such microscopic:macroscopic ratios as 1nm:1m can only be freely chosen for three unit types:
+// length, mass, and time. The remaining unit ratios are computed by the UnitsTranslation module.
+// See http://lab.dev.concord.org/doc/models/md2d/macroscopic-units/ for an overview of the
+// calculations.
+//
+// In order to compute these ratios, the UnitsTranslation requires two pieces of
+// data about each unit:
+//
+// (1) for mass, length, and time only, the "representationInMD2DUnits" property, which tells
+//     how many MD2D units of the same type represent 1 macroscopic unit.
+// (2) for each unit type, the "valueInSIUnits" property, which tells the value of that unit in
+//     SI units. This is required, for example, if we wanted to have a unit system that represented
+//     acceleration in g (multiples of Earth gravity.) We can automatically translate from the MD2D
+//     system of units (nm/fs²) to SI/MKS, but without further information relating the value of 1g
+//     to units of m/s² we cannot translate MD2D units to g.
+//
+// Additionally, angle, pressure, and temperature are not included below. That is because angle
+// units require no translation, and temperature, while nominally applicable to macroscale models,
+// is computed from kinetic energy in a way that is not really applicable to, e.g., a macroscopic
+// mass-spring model. Moreover pressure units in Classic MW are somewhat fake, and we don't really
+// anticipate trying to compute the pressure exerted by a box of bouncing macroscopic balls.
+
+define('md2d/models/unit-definitions/mks',[],function() {
+  return {
+    name: "mks",
+    translated: true,
+    units: {
+
+      length: {
+        name: "meter",
+        pluralName: "meters",
+        abbreviation: "m",
+        representationInMD2DUnits: 1,
+        valueInSIUnits: 1
+      },
+
+      mass: {
+        name: "kilogram",
+        pluralName: "kilograms",
+        abbreviation: "kg",
+        representationInMD2DUnits: 1,
+        valueInSIUnits: 1
+      },
+
+      time: {
+        name: "second",
+        pluralName: "seconds",
+        abbreviation: "s",
+        representationInMD2DUnits: 1e4,
+        valueInSIUnits: 1
+      },
+
+      inverseTime: {
+        name: "1/second",
+        pluralName: "1/seconds",
+        abbreviation: "1/s",
+        valueInSIUnits: 1
+      },
+
+      velocity: {
+        name: "meter per second",
+        pluralName: "meters per second",
+        abbreviation: "m/s",
+        valueInSIUnits: 1
+      },
+
+      acceleration: {
+        name: "meter per second squared",
+        pluralName: "meters per second squared",
+        abbreviation: "m/s²",
+        valueInSIUnits: 1
+      },
+
+      force: {
+        name: "Newton",
+        pluralName: "Newtons",
+        abbreviation: "N",
+        valueInSIUnits: 1
+      },
+
+      energy: {
+        name: "Joule",
+        pluralName: "Joules",
+        abbreviation: "J",
+        valueInSIUnits: 1
+      },
+
+      dampingCoefficient: {
+        name: "Newton second per meter",
+        pluralName: "Newton seconds per meter",
+        abbreviation: "N⋅s/m",
+        valueInSIUnits: 1
+      },
+
+      // aka spring constant
+      stiffness: {
+        name: "Newton per meter",
+        pluralName: "Newtons per meter",
+        abbreviation: "N/m",
+        valueInSIUnits: 1
+      },
+
+      // aka torsional spring constant
+      rotationalStiffness: {
+        name: "Newton-meter per radian",
+        pluralName: "Newton-meters per radian",
+        abbreviation: "N⋅m/rad",
+        valueInSIUnits: 1
+      },
+
+      charge: {
+        name: "Coulomb",
+        pluralName: "Coulombs",
+        abbreviation: "C",
+        valueInSIUnits: 1
+      }
+    }
+  };
+});
+
+/*global define*/
+
+define('md2d/models/unit-definitions/index',['require','md2d/models/unit-definitions/md2d','md2d/models/unit-definitions/mks','underscore'],function(require) {
+  var defs = {
+        md2d: require('md2d/models/unit-definitions/md2d'),
+        mks: require('md2d/models/unit-definitions/mks')
+      },
+      _ = require('underscore');
+
+  return {
+    get: function(name) {
+      var ret;
+      if (name === 'md2d') return defs.md2d;
+
+      // For any unit type not in defs[name].units (e.g., temperature does not need to be redefined
+      // in MKS), fall back to the MD2D unit definition.
+      ret = _.extend({}, defs[name]);
+      ret.units = _.extend({}, defs.md2d.units, defs[name].units);
+      return ret;
+    }
+  };
+});
+
+/*global define*/
+/*jshint eqnull: true*/
+
+define('md2d/models/units-translation',['require','underscore','md2d/models/engine/constants/index','md2d/models/engine/potentials/coulomb'],function(require) {
+
+  var _ = require('underscore'),
+      constants = require('md2d/models/engine/constants/index'),
+      coulomb = require('md2d/models/engine/potentials/coulomb'),
+      COULOMB_CONSTANT = constants.COULOMB_CONSTANT.as(constants.unit.METERS_PER_FARAD),
+      baseUnitTypes = ['length', 'mass', 'time'];
+
+  return function UnitsTranslation(unitsDefinition) {
+
+    var // multiply MD2D-units value by this to get the value in SI units
+        siFactor = {},
+
+        // multiply MD2D-units value by this to get the value in translated (macroscopic) units
+        factor = {},
+
+        force;
+
+        _.each(baseUnitTypes, function (unitType) {
+          var u = unitsDefinition.units[unitType];
+          siFactor[unitType] = u.valueInSIUnits / u.representationInMD2DUnits;
+        });
+
+        siFactor.inverseTime = 1 / siFactor.time;
+        siFactor.velocity = siFactor.length / siFactor.time;
+        siFactor.acceleration = siFactor.velocity / siFactor.time;
+        siFactor.force = siFactor.mass * siFactor.acceleration;
+
+        // The factor should first convert an MD2D value, which is in *eV*, to amu nm/fs^2:
+        siFactor.energy = constants.ratio(constants.unit.MW_ENERGY_UNIT, { per: constants.unit.EV });
+        // Then it should convert amu/fs^2 to N and nm to m, yielding Joules:
+        siFactor.energy *= siFactor.force * siFactor.length;
+
+        siFactor.dampingCoefficient = siFactor.force / siFactor.velocity;
+        // stiffness is eV/nm^2; convert eV -> J and 1/nm^2 -> 1/m^2 (yielding N/m)
+        siFactor.stiffness = siFactor.energy / siFactor.length / siFactor.length;
+        // rotational stiffness is in eV/rad; convert eV -> N⋅m -- no need to convert radians
+        siFactor.rotationalStiffness = siFactor.energy / siFactor.length;
+
+       // Force between charge +1 and -1, 1 distance unit apart, with dielectric constant 1
+       force = coulomb.force(1, -1, 1, 1);
+       // See disdcussion at http://lab.dev.concord.org/doc/models/md2d/macroscopic-units/
+       siFactor.charge = Math.sqrt(force * siFactor.force * siFactor.length * siFactor.length / COULOMB_CONSTANT);
+
+      _.each(_.keys(siFactor), function(unitType) {
+        factor[unitType] = siFactor[unitType] / unitsDefinition.units[unitType].valueInSIUnits;
+      });
+
+      return {
+        translateToMD2DUnits: function(translatedUnitsValue, unitType) {
+          if (factor[unitType] == null) {
+            return translatedUnitsValue;
+          }
+          return translatedUnitsValue / factor[unitType];
+        },
+
+        translateFromMD2DUnits: function(md2dUnitsValue, unitType) {
+          if (factor[unitType] == null) {
+            return md2dUnitsValue;
+          }
+          return md2dUnitsValue * factor[unitType];
+        }
+      };
+   };
+});
+
 /*global define: false, d3: false, $: false */
 /*jslint onevar: true devel:true eqnull: true boss: true */
 
-define('md2d/models/modeler',['require','arrays','common/console','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','cs!md2d/models/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/constants/units','underscore'],function(require) {
+define('md2d/models/modeler',['require','arrays','common/console','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','cs!md2d/models/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/constants/units','md2d/models/property-description','md2d/models/unit-definitions/index','md2d/models/units-translation','underscore'],function(require) {
   // Dependencies.
   var arrays               = require('arrays'),
       console              = require('common/console'),
@@ -15224,6 +17943,9 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       aminoacids           = require('md2d/models/aminoacids-props'),
       aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
       units                = require('md2d/models/engine/constants/units'),
+      PropertyDescription  = require('md2d/models/property-description'),
+      unitDefinitions      = require('md2d/models/unit-definitions/index'),
+      UnitsTranslation     = require('md2d/models/units-translation'),
       _ = require('underscore');
 
   return function Model(initialProperties) {
@@ -15232,7 +17954,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     this.constructor.type = "md2d";
 
     var model = {},
-        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
+        dispatch = d3.dispatch("tick", "play", "stop", "reset", "willReset", "stepForward", "stepBack",
                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
                                "removeAngularBond", "invalidation", "textBoxesChanged"),
         VDWLinesCutoffMap = {
@@ -15300,6 +18022,9 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
         // If this is true, output properties will not be recalculated on changes
         supressInvalidatingChangeHooks = false,
+
+        // Invalidating change hooks might between others
+        invalidatingChangeHookNestingLevel = 0,
 
         properties = {
           /**
@@ -15449,8 +18174,23 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
         // are stored in outputsByName object, as filtered output is just extension of normal output.
         filteredOutputsByName = {},
 
+        // Whewther to suppress caching of output properties. Should only be needed between
+        // invalidatingChangePreHook and invalidatingChangePostHook
+        suppressOutputPropertyCaching = false,
+
         // The currently-defined parameters.
-        parametersByName = {};
+        parametersByName = {},
+
+        // Unit types for all the properties that can be accessed using model.set/model.get
+        mainPropertyUnitTypes,
+
+        // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
+        // model; default value is 'md2d')
+        unitsDefinition,
+
+        // Object that translates between 'native' md2d units and the units defined
+        // by unitsDefinition.
+        unitsTranslation;
 
     function notifyPropertyListeners(listeners) {
       listeners = _.uniq(listeners);
@@ -15485,6 +18225,8 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     /**
       Restores a set of "input" properties, notifying their listeners of only those properties which
       changed, and only after the whole set of properties has been updated.
+
+      Expects a hash "raw", untranslated values as returned by getRawPropertyValue
     */
     function restoreProperties(savedProperties) {
       var property,
@@ -15522,7 +18264,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
       for (parameterName in savedParameters) {
         if (savedParameters.hasOwnProperty(parameterName)) {
-          // restore the property value if it was different or not defined in the current time step
+          // restore the property value if it was dispfferent or not defined in the current time step
           if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
             properties[parameterName] = savedParameters[parameterName];
             parametersByName[parameterName].isDefined = true;
@@ -15549,7 +18291,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
-      var timeStep = model.get('timeStep'),
+      var timeStep = getRawPropertyValue('timeStep'),   // Definitely need *untranslated* value!
           // Save number of radial bonds in engine before integration,
           // as integration can create new disulfide bonds. This is the
           // only type of objects which can be created by the engine autmatically.
@@ -15601,6 +18343,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       return (ave ? 1/ave*1000: 0);
     }
 
+    /* This setter for internal use uses "raw", untranslated property values only. */
     function set_properties(hash) {
       var property, propsChanged = [];
       for (property in hash) {
@@ -15621,6 +18364,42 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
         }
       }
       notifyPropertyListenersOfEvents(propsChanged);
+    }
+
+    // Returns the "raw" (untranslated) version of property 'name'. Used to provide privileged
+    // access to internal representation of properties to, e.g., TickHistory.
+    function getRawPropertyValue(name) {
+      return properties[name];
+    }
+
+    // Returns a copy of 'obj' with value replaced by fn(key, value) for every (key, value) pair.
+    // (Underscore doesn't do this: https://github.com/documentcloud/underscore/issues/220)
+    function mapValues(obj, fn) {
+      obj = _.extend({}, obj);
+      for (var k in obj) {
+        if (obj.hasOwnProperty(k)) obj[k] = fn(k, obj[k]);
+      }
+      return obj;
+    }
+
+    // Modifies a properties hash which has translated units to have MD2D units. Leaves properties
+    // without a unitType (or with an unrecognized unitType) unmodified.
+    // Returns 'properties' unmodified (not a copy) if there is no units translation in effect.
+    function translateToMD2DUnits(properties, metadata) {
+      if (!unitsTranslation) return properties;
+      return mapValues(properties, function(key, value) {
+        return unitsTranslation.translateToMD2DUnits(value, metadata[key] && metadata[key].unitType);
+      });
+    }
+
+    // Modifies a properties hash which has MD2D units to have translated units. Leaves properties
+    // without a unitType (or with an unrecognized unitType) unmodified.
+    // Returns 'properties' unmodified (not a copy) if there is no units translation in effect.
+    function translateFromMD2DUnits(properties, metadata) {
+      if (!unitsTranslation) return properties;
+      return mapValues(properties, function(key, value) {
+        return unitsTranslation.translateFromMD2DUnits(value, metadata[key] && metadata[key].unitType);
+      });
     }
 
     /**
@@ -15668,6 +18447,12 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       }
     }
 
+    // FIXME
+    //
+    // Instead of requiring balanced calls to "PreHooks" and "PostHooks", we should instead accept a
+    // callback containing actions to perform in between the pre and post actions. That would be a
+    // better way of ensuring that pre and post hooks are always balanced.
+
     /**
       ALWAYS CALL THIS FUNCTION before any change to model state outside a model step
       (i.e., outside a tick, seek, stepForward, stepBack)
@@ -15677,8 +18462,11 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     */
     function invalidatingChangePreHook() {
       if (supressInvalidatingChangeHooks) return;
+      invalidatingChangeHookNestingLevel++;
 
       storeOutputPropertiesBeforeChange();
+      deleteOutputPropertyCachedValues();
+      suppressOutputPropertyCaching = true;
     }
 
     /**
@@ -15686,10 +18474,23 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     */
     function invalidatingChangePostHook() {
       if (supressInvalidatingChangeHooks) return;
+      invalidatingChangeHookNestingLevel--;
 
+      if (invalidatingChangeHookNestingLevel === 0) {
+        suppressOutputPropertyCaching = false;
+      }
       updateOutputPropertiesAfterChange();
       if (tickHistory) tickHistory.invalidateFollowingState();
       dispatch.invalidation();
+    }
+
+    function deleteOutputPropertyCachedValues() {
+      var i, output;
+
+      for (i = 0; i < outputNames.length; i++) {
+        output = outputsByName[outputNames[i]];
+        output.hasCachedValue = false;
+      }
     }
 
     /**
@@ -15728,13 +18529,6 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
       readModelState();
 
-      // Mark _all_ cached values invalid ... we're not going to be checking the values of the
-      // unobserved properties, so we have to assume their value changed.
-      for (i = 0; i < outputNames.length; i++) {
-        output = outputsByName[outputNames[i]];
-        output.hasCachedValue = false;
-      }
-
       // Update all filtered outputs.
       // Note that this have to be performed after invalidation of all outputs
       // (as filtered output can filter another output).
@@ -15749,9 +18543,11 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
         output = outputsByName[outputName];
 
         if ((l = listeners[outputName]) && l.length > 0) {
-          // Though we invalidated all cached values above, nevertheless some outputs may have been
-          // computed & cached during a previous pass through this loop, as a side effect of the
-          // calculation of some other property. Therefore we can respect hasCachedValue here.
+          // Though we invalidated all cached values in the invalidatingChangePreHook, and
+          // suppressed caching until the invalidatingChangePostHook, nevertheless some outputs may
+          // have been computed & cached during a previous pass through this loop, as a side effect
+          // of the calculation of some other property. Therefore we can respect hasCachedValue
+          // here.
           if (!output.hasCachedValue) {
             output.cachedValue = output.calculate();
             output.hasCachedValue = true;
@@ -16002,12 +18798,25 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     };
 
     /**
+      Initialize minX, minYm, maxX, maxY from width and height
+      MD2D assumes that minX and minY = 0
+    */
+    model.initializeDimensions = function () {
+      model.set({
+        minX: 0,
+        maxX: model.get('width'),
+        minY: 0,
+        maxY: model.get('height')
+      });
+    };
+
+    /**
       Creates a new md2d engine and leaves it in 'engine'.
     */
     model.initializeEngine = function () {
       engine = md2d.createEngine();
 
-      engine.setSize([model.get('width'), model.get('height')]);
+      engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
       engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
       engine.useCoulombInteraction(model.get('coulombForces'));
       engine.useThermostat(model.get('temperatureControl'));
@@ -16087,6 +18896,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       left in whatever grid the engine's initialization leaves them in.
     */
     model.createNewAtoms = function(config) {
+      model.initializeDimensions();
       model.initializeEngine();
       model.createElements(editableElements);
       model.createAtoms(config);
@@ -16110,6 +18920,8 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
             supressCheck: true
           },
           i, num, prop, atomProps;
+
+      dispatch.willReset();
 
       // Start batch process
       model.startBatch();
@@ -16261,8 +19073,11 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     };
 
     model.reset = function() {
+      dispatch.willReset();
+      invalidatingChangePreHook();
       model.resetTime();
       tickHistory.restoreInitialState();
+      invalidatingChangePostHook();
       dispatch.reset();
     };
 
@@ -16289,7 +19104,10 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       if (el == null) el = randomElement();
       if (charge == null) charge = 0;
 
-      var size   = model.size(),
+      var width = model.get('width'),
+          height = model.get('height'),
+          minX = model.get('minX'),
+          minY = model.get('minY'),
           radius = engine.getRadiusOfElement(el),
           x,
           y,
@@ -16299,8 +19117,8 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           maxTries = 10;
 
       do {
-        x = Math.random() * size[0] - 2*radius;
-        y = Math.random() * size[1] - 2*radius;
+        x = minX + Math.random() * width - 2*radius;
+        y = minY + Math.random() * height - 2*radius;
 
         // findMinimimuPELocation will return false if minimization doesn't converge, in which case
         // try again from a different x, y
@@ -16326,7 +19144,10 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       silent = true disables this check.
     */
     model.addAtom = function(props, options) {
-      var size = model.size(),
+      var minX = model.get('minX'),
+          minY = model.get('minY'),
+          maxX = model.get('maxX'),
+          maxY = model.get('maxY'),
           radius;
 
       options = options || {};
@@ -16336,10 +19157,10 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
       // As a convenience to script authors, bump the atom within bounds
       radius = engine.getRadiusOfElement(props.element);
-      if (props.x < radius) props.x = radius;
-      if (props.x > size[0] - radius) props.x = size[0] - radius;
-      if (props.y < radius) props.y = radius;
-      if (props.y > size[1] - radius) props.y = size[1] - radius;
+      if (props.x < (minX + radius)) props.x = minX + radius;
+      if (props.x > (maxX - radius)) props.x = maxX - radius;
+      if (props.y < (minY + radius)) props.y = minY + radius;
+      if (props.y > (maxY - radius)) props.y = maxY - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
       if (!options.supressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
@@ -16568,7 +19389,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       }
 
       invalidatingChangePreHook();
-      engine.setAtomProperties(i, props);
+      engine.setAtomProperties(i, translateToMD2DUnits(props, metadata.atom));
       invalidatingChangePostHook();
       return true;
     };
@@ -16582,7 +19403,19 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           props[propName] = atoms[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, atomMetaData);
+    };
+
+    model.getRadialBondsForAtom = function(i) {
+      return engine.getRadialBondsForAtom(i);
+    };
+
+    model.getAngularBondsForAtom = function(i) {
+      return engine.getAngularBondsForAtom(i);
+    };
+
+    model.getMoleculeAtoms = function(i) {
+      return engine.getMoleculeAtoms(i);
     };
 
     model.setElementProperties = function(i, props) {
@@ -16592,7 +19425,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
         throw new Error("Elements: elements with ID " + i + " cannot be edited, as they define amino acids.");
       }
       invalidatingChangePreHook();
-      engine.setElementProperties(i, props);
+      engine.setElementProperties(i, translateToMD2DUnits(props, metadata.element));
       invalidatingChangePostHook();
     };
 
@@ -16605,14 +19438,14 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           props[propName] = elements[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, elementMetaData);
     };
 
     model.setObstacleProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.obstacle, props);
       invalidatingChangePreHook();
-      engine.setObstacleProperties(i, props);
+      engine.setObstacleProperties(i, translateToMD2DUnits(props, metadata.obstacle));
       invalidatingChangePostHook();
     };
 
@@ -16625,14 +19458,14 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           props[propName] = obstacles[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, obstacleMetaData);
     };
 
     model.setRadialBondProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.radialBond, props);
       invalidatingChangePreHook();
-      engine.setRadialBondProperties(i, props);
+      engine.setRadialBondProperties(i, translateToMD2DUnits(props, metadata.radialBond));
       invalidatingChangePostHook();
     };
 
@@ -16645,14 +19478,14 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           props[propName] = radialBonds[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, radialBondMetaData);
     };
 
     model.setRestraintProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.restraint, props);
       invalidatingChangePreHook();
-      engine.setRestraintProperties(i, props);
+      engine.setRestraintProperties(i, translateToMD2DUnits(props, metadata.restraint));
       invalidatingChangePostHook();
     };
 
@@ -16665,14 +19498,14 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           props[propName] = restraints[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, restraintMetaData);
     };
 
     model.setAngularBondProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.angularBond, props);
       invalidatingChangePreHook();
-      engine.setAngularBondProperties(i, props);
+      engine.setAngularBondProperties(i, translateToMD2DUnits(props, metadata.angularBond));
       invalidatingChangePostHook();
     };
 
@@ -16685,7 +19518,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           props[propName] = angularBonds[propName][i];
         }
       }
-      return props;
+      return translateFromMD2DUnits(props, angularBondMetaData);
     };
 
     model.setSolvent = function (solventName) {
@@ -16710,6 +19543,10 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     */
     model.addSpringForce = function(atomIndex, x, y, springConstant) {
       if (springConstant == null) springConstant = 500;
+
+      if (unitsTranslation) {
+        springConstant = unitsTranslation.translateToMD2DUnits(springConstant, 'stiffness');
+      }
       return engine.addSpringForce(atomIndex, x, y, springConstant);
     };
 
@@ -16828,6 +19665,8 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       return radialBondResults;
     };
 
+    // FIXME. Should be deprecated or just outright removed and replaced by an output property
+    // 'numberOfAtoms'.
     model.get_num_atoms = function(f) {
       return engine.getNumberOfAtoms(f);
     };
@@ -16836,18 +19675,22 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       return obstacles;
     };
 
+    // FIXME. Should be an output property.
     model.getNumberOfElements = function () {
       return engine.getNumberOfElements();
     };
 
+    // FIXME. Should be an output property.
     model.getNumberOfObstacles = function () {
       return engine.getNumberOfObstacles();
     };
 
+    // FIXME. Should be an output property.
     model.getNumberOfRadialBonds = function () {
       return engine.getNumberOfRadialBonds();
     };
 
+    // FIXME. Should be an output property.
     model.getNumberOfAngularBonds = function () {
       return engine.getNumberOfAngularBonds();
     };
@@ -17082,21 +19925,23 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     };
 
     model.ave_ke = function() {
+      // NB this old/low-level method doesn't get units translation applied.
+      // (Use model.get('kineticEnergy') / model.get('numAtoms')
       return modelOutputState.KE / model.get_num_atoms();
     };
 
     model.ave_pe = function() {
+      // NB this old/low-level method doesn't get units translation applied.
       return modelOutputState.PE / model.get_num_atoms();
     };
 
     model.speed = function() {
+      // NB this old/low-level method doesn't get units translation applied.
       return average_speed();
     };
 
-    model.size = function(x) {
-      if (!arguments.length) return engine.getSize();
-      engine.setSize(x);
-      return model;
+    model.dimensions = function() {
+      return engine.getDimensions();
     };
 
     model.set = function(key, val) {
@@ -17116,21 +19961,44 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       validator.validate(metadata.viewOptions, hash);
 
       if (engine) invalidatingChangePreHook();
-      set_properties(hash);
+      set_properties(translateToMD2DUnits(hash, mainPropertyUnitTypes));
       if (engine) invalidatingChangePostHook();
     };
 
     model.get = function(property) {
-      var output;
+      var output,
+          ret;
 
-      if (properties.hasOwnProperty(property)) return properties[property];
-
-      if (output = outputsByName[property]) {
-        if (output.hasCachedValue) return output.cachedValue;
-        output.hasCachedValue = true;
-        output.cachedValue = output.calculate();
-        return output.cachedValue;
+      if (properties.hasOwnProperty(property)) {
+        ret = properties[property];
+      } else if (output = outputsByName[property]) {
+        if (suppressOutputPropertyCaching) {
+          ret = output.calculate();
+        } else {
+          if (!output.hasCachedValue) {
+            output.hasCachedValue = true;
+            output.cachedValue = output.calculate();
+          }
+          ret = output.cachedValue;
+        }
       }
+
+      // translateFromMD2DUnits function defined above works on hashes, not individual values, so
+      // use the method from unitsTranslation instead.
+      if (unitsTranslation && mainPropertyUnitTypes[property]) {
+        ret = unitsTranslation.translateFromMD2DUnits(ret, mainPropertyUnitTypes[property].unitType);
+      }
+      return ret;
+    };
+
+    model.format = function(property, opts) {
+      opts = opts || {};
+
+      var desc = model.getPropertyDescription(property);
+      if (desc) {
+        return desc.format(model.get(property), opts);
+      }
+      return d3.format(opts.format || 'g')(model.get(property));
     };
 
     /**
@@ -17173,10 +20041,15 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
       `calculate` should be a no-arg function which should calculate the property value.
     */
-    model.defineOutput = function(name, description, calculate) {
+    model.defineOutput = function(name, descriptionHash, calculate) {
       outputNames.push(name);
+
+      mainPropertyUnitTypes[name] = {
+        unitType: descriptionHash.unitType
+      };
+
       outputsByName[name] = {
-        description: description,
+        description: new PropertyDescription(unitsDefinition, descriptionHash),
         calculate: calculate,
         hasCachedValue: false,
         // Used to keep track of whether this property changed as a side effect of some other change
@@ -17279,11 +20152,20 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
       parameters are updated by the tick history.
     */
-    model.defineParameter = function(name, description, setter) {
+    model.defineParameter = function(name, descriptionHash, setter) {
       parametersByName[name] = {
-        description: description,
+        description: new PropertyDescription(unitsDefinition, descriptionHash),
         setter: setter,
         isDefined: false
+      };
+
+      // Regardless of the type of unit represented by the parameter, do NOT automatically convert
+      // it to MD2D units in the set method. That is because the set method on the parameter will
+      // also call 'setter', and any native model properties set by 'setter' will be translated.
+      // If the parameter value were also translated in the set method, translations would happen
+      // twice!
+      mainPropertyUnitTypes[name] = {
+        unitType: "untranslated"
       };
 
       properties['set_'+name] = function(value) {
@@ -17308,7 +20190,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     model.getPropertyDescription = function(name) {
       var property = outputsByName[name] || parametersByName[name];
       if (property) {
-        return _.extend({}, property.description);
+        return property.description;
       }
     };
 
@@ -17435,43 +20317,6 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     // Friction parameter temporarily applied to the live-dragged atom.
     model.LIVE_DRAG_FRICTION = 10;
 
-    // Define some default output properties.
-    model.defineOutput('time', {
-      label: "Time",
-      units: "fs"
-    }, function() {
-      return modelOutputState.time;
-    });
-
-    model.defineOutput('kineticEnergy', {
-      label: "Kinetic Energy",
-      units: "eV"
-    }, function() {
-      return modelOutputState.KE;
-    });
-
-    model.defineOutput('potentialEnergy', {
-      label: "Potential Energy",
-      units: "eV"
-    }, function() {
-      return modelOutputState.PE;
-    });
-
-    model.defineOutput('totalEnergy', {
-      label: "Total Energy",
-      units: "eV"
-    }, function() {
-      return modelOutputState.KE + modelOutputState.PE;
-    });
-
-    model.defineOutput('temperature', {
-      label: "Temperature",
-      units: "K"
-    }, function() {
-      return modelOutputState.temperature;
-    });
-
-
     // Set the regular, main properties.
     // Note that validation process will return hash without all properties which are
     // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
@@ -17479,6 +20324,9 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
     // Set the model view options.
     set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
+
+    // initialize minX, minYm, maxX, maxY from model width and height
+    model.initializeDimensions();
 
     // Setup engine object.
     model.initializeEngine();
@@ -17537,6 +20385,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
         "viscosity",
         "gravitationalField"
       ],
+      getRawPropertyValue: getRawPropertyValue,
       restoreProperties: restoreProperties,
       parameters: parametersByName,
       restoreParameters: restoreParameters,
@@ -17544,6 +20393,116 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     }, model, defaultMaxTickHistory);
 
     newStep = true;
+
+    // Set up units scheme.
+    unitsDefinition = unitDefinitions.get(model.get('unitsScheme'));
+
+    // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
+    // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
+    // the relationships between these ratios set up so that the calculations reamin physically
+    // consistent.
+    if (model.get('unitsScheme') !== 'md2d') {
+      unitsTranslation = new UnitsTranslation(unitsDefinition);
+    }
+
+    // set up types of all properties before any third-party calls to set/get
+    mainPropertyUnitTypes = {};
+    _.each(metadata.mainProperties, function(value, key) {
+      if (value.unitType) {
+        mainPropertyUnitTypes[key] = {
+          unitType: value.unitType
+        };
+      }
+    });
+
+    // Define some default output properties.
+    model.defineOutput('time', {
+      label: "Time",
+      unitType: 'time',
+      format: 'f'
+    }, function() {
+      return modelOutputState.time;
+    });
+
+    // Confusing detail for review: setting 'unitType' here will cause the return value of the
+    // output function to be translated to macroscopic units, however, the function takes
+    // macroscopic units as input. Therefore we must not set 'unitType'.
+    model.defineOutput('timePerTick', {
+      label: "Model time per tick",
+      unitName:         unitsDefinition.units.time.name,
+      unitPluralName:   unitsDefinition.units.time.pluralName,
+      unitAbbreviation: unitsDefinition.units.time.abbreviation,
+      format: 'f'
+    }, function() {
+      return model.get('timeStep') * model.get('timeStepsPerTick');
+    });
+
+    (function() {
+      var displayTimeUnits;
+
+      // Allow units definition to declare a "Display time"; specifically, let MD2D units definition
+      // define a "displayValue" section in the time unit that returns ps instead of fs.
+
+      if (unitsDefinition.units.time.displayValue) {
+        displayTimeUnits = unitsDefinition.units.time.displayValue;
+      } else {
+        displayTimeUnits = _.extend({}, unitsDefinition.units.time);
+        displayTimeUnits.unitsPerBaseUnit = 1;
+      }
+
+      model.defineOutput('displayTime', {
+        label: "Time",
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.abbreviation,
+        format: '.3f'
+      }, function() {
+        return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
+      });
+
+      model.defineOutput('displayTimePerTick', {
+        label: "Model time per tick",
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.abbreviation,
+        format: '.3f'
+      }, function() {
+        return model.get('timePerTick') * displayTimeUnits.unitsPerBaseUnit;
+      });
+    }());
+
+    model.defineOutput('kineticEnergy', {
+      label: "Kinetic Energy",
+      unitType: 'energy',
+      format: '.4g'
+    }, function() {
+      return modelOutputState.KE;
+    });
+
+    model.defineOutput('potentialEnergy', {
+      label: "Potential Energy",
+      unitType: 'energy',
+      format: '.4g'
+    }, function() {
+      return modelOutputState.PE;
+    });
+
+    model.defineOutput('totalEnergy', {
+      label: "Total Energy",
+      unitType: 'energy',
+      format: '.4g'
+    }, function() {
+      return modelOutputState.KE + modelOutputState.PE;
+    });
+
+    model.defineOutput('temperature', {
+      label: "Temperature",
+      unitType: 'temperature',
+      format: 'f'
+    }, function() {
+      return modelOutputState.temperature;
+    });
+
     updateAllOutputProperties();
 
     return model;
@@ -17986,15 +20945,16 @@ define('common/views/gradients',['require'],function (require) {
   return publicAPI;
 });
 
-/*global $ model_player define: false, d3: false */
+/*global $, model_player, define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   PTA View Container
 //
 // ------------------------------------------------------------
-define('common/views/model-view',['require','lab.config','cs!common/components/play_reset_svg','cs!common/components/play_only_svg','cs!common/components/playback_svg','common/views/gradients'],function (require) {
+define('common/views/model-view',['require','lab.config','common/console','cs!common/components/play_reset_svg','cs!common/components/play_only_svg','cs!common/components/playback_svg','common/views/gradients'],function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
+      console               = require('common/console'),
       PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
@@ -18004,7 +20964,6 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
         // Public API object to be returned.
     var api = {},
         renderer,
-        containers = {},
         $el,
         node,
         emsize,
@@ -18015,13 +20974,18 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
         padding, size, modelSize,
         playbackXPos, playbackYPos,
 
-        // Basic scaling function, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
+        // Basic scaling functions for positio, it transforms model units to "pixels".
+        // Use it for positions of objects rendered inside the view.
         model2px,
-        // Inverted scaling function transforming model units to "pixels".
-        // Use it for Y coordinates, as model coordinate system has (0, 0) point
-        // in lower left corner, but SVG has (0, 0) point in upper left corner.
+
+        // Inverted scaling function for position transforming model units to "pixels".
+        // Use it for Y coordinates, as Y axis in model coordinate system increases
+        // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
+
+        // Basic scaling function for size, it transforms model units to "pixels".
+        // Use it for dimensions of objects rendered inside the view.
+        modelSize2px,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
@@ -18032,6 +20996,8 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
         imageContainerTop,
         textContainerBelow,
         textContainerTop,
+
+        clickHandler,
 
         offsetLeft, offsetTop;
 
@@ -18079,6 +21045,10 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
     function scale() {
       var modelWidth = model.get('width'),
           modelHeight = model.get('height'),
+          modelMinX = model.get('minX'),
+          modelMinY = model.get('minY'),
+          modelMaxX = model.get('maxX'),
+          modelMaxY = model.get('maxY'),
           aspectRatio = modelWidth / modelHeight,
           width, height;
 
@@ -18098,7 +21068,11 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
       // Model size in model units.
       modelSize = {
         "width":  modelWidth,
-        "height": modelHeight
+        "height": modelHeight,
+        "minX": modelMinX,
+        "minY": modelMinY,
+        "maxX": modelMaxX,
+        "maxY": modelMaxY
       };
 
       offsetTop  = node.offsetTop + padding.top;
@@ -18120,15 +21094,21 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
 
       playbackYPos = cy - 42 * emsize;
 
-      // Basic model2px scaling function.
+      // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
-          .domain([0, modelSize.width])
+          .domain([modelSize.minX, modelSize.maxX])
           .range([0, size.width]);
 
-      // Inverted model2px scaling function (for y-coordinates, inverted domain).
+      // Inverted model2px scaling function for position (for y-coordinates, inverted domain).
       model2pxInv = d3.scale.linear()
-          .domain([modelSize.height, 0])
+          .domain([modelSize.maxY, modelSize.minY])
           .range([0, size.height]);
+
+      // Basic modelSize2px scaling function for size.
+      modelSize2px = function (sizeX) {
+        return model2px(modelMinX + sizeX);
+      };
+
     }
 
     function redraw() {
@@ -18336,8 +21316,7 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
         imageContainerTop    = vis.append("g").attr("class", "image-container-top");
         textContainerTop     = vis.append("g").attr("class", "text-container-top");
 
-        containers = {
-          node: node,
+        api.containers = {
           gridContainer:        gridContainer,
           imageContainerBelow:  imageContainerBelow,
           textContainerBelow:   textContainerBelow,
@@ -18378,7 +21357,7 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
     }
 
     function setupPlaybackControls() {
-      d3.select('.model-controller').remove();
+      vis1.select('.model-controller').remove();
       switch (model.get("controlButtons")) {
         case "play":
           playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
@@ -18398,33 +21377,22 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
     // *** Main Renderer functions ***
     //
 
-    //
-    // init
-    //
-    // Called when Model View Container is created.
-    //
     function init() {
-      // render model container ... the chrome around the model
-      renderContainer();
-      setupPlaybackControls();
+      // Setup model view state.
+      clickHandler = {};
 
       // dynamically add modelUrl as a model property so the renderer
       // can find resources on paths relative to the model
       model.url = modelUrl;
 
-      // Add a pos() function to containers so the model renderer can more easily
-      // manipulate absolutely positioned dom elements it may create or manage
-      containers.pos = function() {
-        return  mainContainer.node().parentElement.getBoundingClientRect();
-      }
-
       // create a model renderer ... if one hasn't already been created
       if (!renderer) {
-        renderer = new Renderer(model, containers, model2px, model2pxInv);
+        renderer = new Renderer(api, model);
       } else {
-        renderer.reset(model, containers, model2px, model2pxInv);
+        renderer.reset(model);
       }
 
+      // Register listeners.
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits"],
@@ -18443,17 +21411,20 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
     //
     function repaint() {
       setupBackground();
-      renderer.repaint(model2px, model2pxInv);
+      renderer.repaint(model2px, model2pxInv, modelSize2px);
+      api.updateClickHandlers();
     }
 
     api = {
-      update: null,
       $el: null,
+      node: null,
+      update: null,
+      containers: null,
       scale: scale,
       setFocus: setFocus,
       resize: function() {
-        processOptions();
-        init();
+        renderContainer();
+        setupPlaybackControls();
         repaint();
       },
       getHeightForWidth: function (width) {
@@ -18473,6 +21444,8 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
       },
       reset: function(newModelUrl, newModel) {
         processOptions(newModelUrl, newModel);
+        renderContainer();
+        setupPlaybackControls();
         init();
         repaint();
       },
@@ -18486,6 +21459,56 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
       model2pxInv: function(val) {
         // See comments for model2px.
         return model2pxInv(val);
+      },
+      modelSize2px: function(val) {
+        // See comments for model2px.
+        return modelSize2px(val);
+      },
+      pos: function() {
+        // Add a pos() function so the model renderer can more easily
+        // manipulate absolutely positioned dom elements it may create or
+        // manage.
+        return  mainContainer.node().parentElement.getBoundingClientRect();
+      },
+      /**
+       * Sets custom click handler.
+       *
+       * @param {string}   selector Selector string defining clickable objects.
+       * @param {Function} callback Custom click handler. It will be called
+       *                            when object is clicked with (x, y, d, i) arguments:
+       *                              x - x coordinate in model units,
+       *                              y - y coordinate in model units,
+       *                              d - data associated with a given object (can be undefined!),
+       *                              i - ID of clicked object (usually its value makes sense if d is defined).
+       */
+      setClickHandler: function (selector, callback) {
+        clickHandler[selector] = callback;
+        api.updateClickHandlers();
+      },
+      /**
+       * Applies all custom callback to objects matching selector
+       * Note that this function should be called each time when possibly
+       * clickable object is added or repainted!
+       */
+      updateClickHandlers: function () {
+        var selector;
+
+        function getClickHandler (callback) {
+          return function (d, i) {
+            // Get current coordinates relative to the plot area!
+            var coords = d3.mouse(plot.node()),
+                x = model2px.invert(coords[0]),
+                y = model2pxInv.invert(coords[1]);
+            console.log("[view] click at (" + x.toFixed(3) + ", " + y.toFixed(3) + ")");
+            callback(x, y, d, i);
+          };
+        }
+
+        for (selector in clickHandler) {
+          if (clickHandler.hasOwnProperty(selector)) {
+            vis.selectAll(selector).on("click", getClickHandler(clickHandler[selector]));
+          }
+        }
       }
     };
 
@@ -18505,11 +21528,14 @@ define('common/views/model-view',['require','lab.config','cs!common/components/p
     node = $el[0];
 
     processOptions();
+    renderContainer();
+    setupPlaybackControls();
     init();
 
     // Extend Public withExport initialized object to initialized objects
     api.update = renderer.update;
     api.$el = $el;
+    api.node = node;
 
     return api;
   };
@@ -19416,15 +22442,16 @@ define('md2d/views/genetic-renderer',['require'],function (require) {
 
 }).call(this);
 
-/*global $ alert define: false, d3: false Image */
+/*global $, define: false, d3: false, Image */
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
 //
 // ------------------------------------------------------------
-define('md2d/views/renderer',['require','lab.config','common/console','common/benchmark/benchmark','cs!md2d/views/aminoacid-context-menu','md2d/views/genetic-renderer','cs!common/layout/wrap-svg-text','common/views/gradients'],function (require) {
+define('md2d/views/renderer',['require','lab.config','common/alert','common/console','common/benchmark/benchmark','cs!md2d/views/aminoacid-context-menu','md2d/views/genetic-renderer','cs!common/layout/wrap-svg-text','common/views/gradients'],function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
+      alert                 = require('common/alert'),
       console               = require('common/console'),
       benchmark             = require('common/benchmark/benchmark'),
       amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
@@ -19444,7 +22471,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
         DISULPHIDE_BOND : 109
       };
 
-  return function MD2DView(model, containers, model2px, model2pxInv) {
+  return function MD2DView(modelView, model) {
         // Public API object to be returned.
     var api = {},
 
@@ -19458,14 +22485,27 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
         modelHeight,
         aspectRatio,
 
+        // Basic scaling functions for position, it transforms model units to "pixels".
+        // Use it for positions of objects rendered inside the view.
+        model2px,
+
+        // Inverted scaling function for position transforming model units to "pixels".
+        // Use it for Y coordinates, as Y axis in model coordinate system increases
+        // from bottom to top, while but SVG has increases from top to bottom
+        model2pxInv,
+
+        // Basic scaling function for size, it transforms model units to "pixels".
+        // Use it for dimensions of objects rendered inside the view.
+        modelSize2px,
+
         // "Containers" - SVG g elements used to position layers of the final visualization.
-        mainContainer        = containers.mainContainer,
-        radialBondsContainer = containers.radialBondsContainer,
-        VDWLinesContainer    = containers.VDWLinesContainer,
-        imageContainerBelow  = containers.imageContainerBelow,
-        imageContainerTop    = containers.imageContainerTop,
-        textContainerBelow   = containers.textContainerBelow,
-        textContainerTop     = containers.textContainerTop,
+        mainContainer,
+        radialBondsContainer,
+        VDWLinesContainer,
+        imageContainerBelow,
+        imageContainerTop,
+        textContainerBelow,
+        textContainerTop,
 
         dragOrigin,
 
@@ -19482,16 +22522,16 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
         // Array which defines a gradient assigned to a given particle.
         gradientNameForParticle = [],
 
-        atomTooltipOn,
+        atomTooltipOn = false,
 
         particle, label, labelEnter,
-        moleculeDiv, moleculeDivPre,
+        atomToolTip, atomToolTipPre,
 
         // for model clock
         timeLabel,
         modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
-        timeSuffix = " (ps)",
+        timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")",
 
         radialBonds,
         radialBondResults,
@@ -19537,7 +22577,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
 
 
     function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('time')/1000) + timeSuffix;
+      return timePrefix + modelTimeFormatter(model.get('displayTime')) + timeSuffix;
     }
 
     function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
@@ -19702,7 +22742,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
     function createSymbolImages() {
       var xMargin = "1%";
       // only add these images if they don't already exist
-      if ($("#heat-bath").length === 0) {
+      if (mainContainer.select("#heat-bath").empty()) {
         // Heat bath key image.
         mainContainer.append("image")
             .attr({
@@ -19714,7 +22754,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
               "xlink:href": "../../resources/heatbath.gif"
             });
       }
-      if ($("#ke-gradient").length === 0) {
+      if (mainContainer.select("#ke-gradient").empty()) {
         // Kinetic Energy Shading gradient image.
         mainContainer.append("image")
             .attr({
@@ -19767,7 +22807,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
     }
 
     function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
+      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return modelSize2px(d.radius); });
     }
 
     /**
@@ -19777,11 +22817,11 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
     function particleEnter() {
       particle.enter().append("circle")
           .attr({
-            "class": function (d) { return d.isAminoAcid() ? "draggable amino-acid" : "draggable"; },
-            "r":  function(d) { return model2px(d.radius); },
+            "class": function (d) { return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable"; },
+            "r":  function(d) { return modelSize2px(d.radius); },
             "cx": function(d) { return model2px(d.x); },
             "cy": function(d) { return model2pxInv(d.y); },
-            "fill-opacity": function(d) { return d.visible; },
+            "fill-opacity": function(d) { return d.visible ? 1 : 0; },
             "fill": function (d, i) { return gradientNameForParticle[i]; }
           })
           .on("mousedown", moleculeMouseDown)
@@ -19811,7 +22851,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
         .attr({
           "class": "atomTrace",
           "d": getAtomTracePath,
-          "stroke-width": model2px(0.01),
+          "stroke-width": modelSize2px(0.01),
           "stroke": atomTraceColor,
           "fill": "none",
           "stroke-dasharray": "6, 6"
@@ -19833,8 +22873,8 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
           "class": "obstacle-shape",
           "x": 0,
           "y": 0,
-          "width": function(d, i) {return model2px(obstacles.width[i]); },
-          "height": function(d, i) {return model2px(obstacles.height[i]); },
+          "width": function(d, i) {return modelSize2px(obstacles.width[i]); },
+          "height": function(d, i) {return modelSize2px(obstacles.height[i]); },
           "fill": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; },
           "stroke-width": function(d, i) { return obstacles.visible[i] ? 0.2 : 0.0; },
           "stroke": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; }
@@ -19869,9 +22909,15 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
               "class": "obstacle-force-hor",
               "d": function (d) {
                 if (obsFx < 0)
-                  return "M " + model2px(obsWidth + vecLen + space) + "," + model2px(d) + " L " + model2px(obsWidth + space) + "," + model2px(d);
+                  return "M " + modelSize2px(obsWidth + vecLen + space) +
+                              "," + modelSize2px(d) +
+                              " L " + modelSize2px(obsWidth + space) +
+                              "," + modelSize2px(d);
                 else
-                  return "M " + model2px(-vecLen - space) + "," + model2px(d) + " L " + model2px(-space) + "," + model2px(d);
+                  return "M " + modelSize2px(-vecLen - space) +
+                              "," + modelSize2px(d) +
+                              " L " + modelSize2px(-space) +
+                              "," + modelSize2px(d);
               }
             });
         }
@@ -19885,9 +22931,15 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
               "class": "obstacle-force-vert",
               "d": function (d) {
                 if (obsFy < 0)
-                  return "M " + model2px(d) + "," + model2px(-vecLen - space) + " L " + model2px(d) + "," + model2px(-space);
+                  return "M " + modelSize2px(d) +
+                              "," + modelSize2px(-vecLen - space) +
+                              " L " + modelSize2px(d) +
+                              "," + modelSize2px(-space);
                 else
-                  return "M " + model2px(d) + "," + model2px(obsHeight + vecLen + space) + " L " + model2px(d) + "," + model2px(obsHeight + space);
+                  return "M " + modelSize2px(d) +
+                              "," + modelSize2px(obsHeight + vecLen + space) +
+                              " L " + modelSize2px(d) +
+                              "," + modelSize2px(obsHeight + space);
               }
             });
         }
@@ -19895,7 +22947,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
             "marker-end": "url(#Triangle-"+ FORCE_STR +")",
-            "stroke-width": model2px(forceVectorWidth),
+            "stroke-width": modelSize2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
           });
@@ -19908,9 +22960,9 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
             "d": function (d) { return findPoints(d,1); },
             "stroke-width": function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + model2px(0.005);
+                return Math.log(d.strength) / 4 + modelSize2px(0.005);
               } else {
-                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom1Color,
@@ -19926,9 +22978,9 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
             "d": function (d) { return findPoints(d,2); },
             "stroke-width": function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + model2px(0.005);
+                return Math.log(d.strength) / 4 + modelSize2px(0.005);
               } else {
-                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom2Color,
@@ -19969,7 +23021,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
       dy = y2 - y1;
 
       strength = d.strength;
-      length = Math.sqrt(dx*dx + dy*dy) / model2px(0.01);
+      length = Math.sqrt(dx*dx + dy*dy) / modelSize2px(0.01);
 
       numTurns = Math.floor(d.length * 24);
       springDiameter = length / numTurns;
@@ -19981,10 +23033,10 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
       cosThetaSpikes = costheta * numTurns;
       sinThetaSpikes = sintheta * numTurns;
 
-      radius_x1 = model2px(modelResults[d.atom1].radius) * costheta;
-      radius_x2 = model2px(modelResults[d.atom2].radius) * costheta;
-      radius_y1 = model2px(modelResults[d.atom1].radius) * sintheta;
-      radius_y2 = model2px(modelResults[d.atom2].radius) * sintheta;
+      radius_x1 = modelSize2px(modelResults[d.atom1].radius) * costheta;
+      radius_x2 = modelSize2px(modelResults[d.atom2].radius) * costheta;
+      radius_y1 = modelSize2px(modelResults[d.atom1].radius) * sintheta;
+      radius_y2 = modelSize2px(modelResults[d.atom2].radius) * sintheta;
       radiusFactorX = radius_x1 - radius_x2;
       radiusFactorY = radius_y1 - radius_y2;
 
@@ -20016,8 +23068,8 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
     }
 
     function vdwLinesEnter() {
-      var strokeWidth = model2px(0.02),
-          strokeDasharray = model2px(0.03) + " " + model2px(0.02);
+      var strokeWidth = modelSize2px(0.02),
+          strokeDasharray = modelSize2px(0.03) + " " + modelSize2px(0.02);
       // update existing lines
       vdwLines.attr({
         "x1": function(d) { return model2px(modelResults[d[0]].x); },
@@ -20077,8 +23129,8 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
             // to images. We can assume that their pixel dimensions are
             // in 0.1A also. So convert them to nm (* 0.01).
             imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
-            img_width = model2px(imageSizes[i][0]);
-            img_height = model2px(imageSizes[i][1]);
+            img_width = modelSize2px(imageSizes[i][0]);
+            img_height = modelSize2px(imageSizes[i][1]);
 
             coords = getImageCoords(i);
 
@@ -20121,9 +23173,10 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
           updateText;
 
       updateText = function (layerNum) {
-        var layer = layers[layerNum - 1];
-
-        layerTextBoxes = textBoxes.filter(function(t) { return t.layer == layerNum; });
+        var layer = layers[layerNum - 1],
+            layerTextBoxes = textBoxes.filter(function (t) {
+              return t.layer === layerNum;
+            });
 
         layer.selectAll("g.textBoxWrapper rect")
           .data(layerTextBoxes.filter( function(d) { return d.frame; } ))
@@ -20151,7 +23204,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
 
       textBoxes = model.get('textBoxes');
 
-      size = model.size();
+      size = [ model.get('width'), model.get('height') ];
 
       layers = [textContainerTop, textContainerBelow];
 
@@ -20162,7 +23215,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
 
         layer.selectAll("g.textBoxWrapper").remove();
 
-        layerTextBoxes = textBoxes.filter(function(t) { return t.layer == layerNum; });
+        layerTextBoxes = textBoxes.filter(function(t) { return t.layer === layerNum; });
 
         selection = layer.selectAll("g.textBoxWrapper")
           .data(layerTextBoxes);
@@ -20179,8 +23232,8 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
             },
             "width": 0,
             "height": 0,
-            "rx": function(d)  { return d.frame == "rounded rectangle" ? 8  : 0; },
-            "ry": function(d)  { return d.frame == "rounded rectangle" ? 10 : 0; },
+            "rx": function(d)  { return d.frame === "rounded rectangle" ? 8  : 0; },
+            "ry": function(d)  { return d.frame === "rounded rectangle" ? 10 : 0; },
             "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
             "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
           });
@@ -20190,12 +23243,12 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
             "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
             "x-data": function(d,i) { return getTextBoxCoords(d,i)[0]; },
             "y": function(d,i)      { return getTextBoxCoords(d,i)[1]; },
-            "width-data": function(d) { return model2px(d.width); },
-            "width":  model2px(size[0]),
-            "height": model2px(size[1]),
+            "width-data": function(d) { return modelSize2px(d.width); },
+            "width":  modelSize2px(size[0]),
+            "height": modelSize2px(size[1]),
             "xml:space": "preserve",
             "font-family": "'Open Sans', sans-serif",
-            "font-size": model2px(0.12),
+            "font-size": modelSize2px(0.12),
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
             "text-anchor": function(d) {
@@ -20225,7 +23278,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
         var text  = this.getAttributeNS(null, "text-data"),
             x     = this.getAttributeNS(null, "x-data"),
             width = this.getAttributeNS(null, "width-data") || -1,
-            dy    = model2px(0.16),
+            dy    = modelSize2px(0.16),
             hasHost = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
             result, frame, dx;
@@ -20238,8 +23291,8 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
 
         if (this.parentNode.childElementCount > 1) {
           frame = this.parentNode.childNodes[0];
-          frame.setAttributeNS(null, "width", result.width + model2px(0.2));
-          frame.setAttributeNS(null, "height", (result.lines * dy) + model2px(0.06));
+          frame.setAttributeNS(null, "width", result.width + modelSize2px(0.2));
+          frame.setAttributeNS(null, "height", (result.lines * dy) + modelSize2px(0.06));
         }
 
         // center all hosted labels simply by tweaking the g.transform
@@ -20277,15 +23330,6 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
       updateParticleRadius();
 
       particleEnter();
-      // Hack to make dragging atoms work in FF.
-      // The second of two closely-space clicks generates a dragstart
-      // event in FF which causes atom dragging to not work until
-      // after a subsequent click in the model not on an atom.
-      //
-      // I'm not sure why this needs to be a dragstart listener
-      // on the document and not for example just on the atoms
-      // or SVG group container they are a part of.
-      document.ondragstart = function() { return false; };
 
       label = mainContainer.selectAll("g.label")
           .data(modelResults);
@@ -20307,27 +23351,27 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
         if (model.get("atomNumbers")) {
           selection.append("text")
             .text(d.idx)
-            .style("font-size", model2px(1.4 * d.radius) + "px");
+            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
         }
         else if (useThreeLetterCode && d.label) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.label)
             .attr("class", "shadow")
-            .style("font-size", model2px(d.radius) + "px");
+            .style("font-size", modelSize2px(d.radius) + "px");
           selection.append("text")
             .text(d.label)
-            .style("font-size", model2px(d.radius) + "px");
+            .style("font-size", modelSize2px(d.radius) + "px");
         }
         else if (!useThreeLetterCode && d.symbol) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.symbol)
             .attr("class", "shadow")
-            .style("font-size", model2px(1.4 * d.radius) + "px");
+            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
           selection.append("text")
             .text(d.symbol)
-            .style("font-size", model2px(1.4 * d.radius) + "px");
+            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
         }
         else if (showChargeSymbols) {
           if (d.charge > 0){
@@ -20339,7 +23383,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
           }
           selection.append("text")
             .text(txtValue)
-            .style("font-size", model2px(1.6 * d.radius) + "px");
+            .style("font-size", modelSize2px(1.6 * d.radius) + "px");
         }
         // Set common attributes for labels (+ shadows).
         txtSelection = selection.selectAll("text");
@@ -20365,7 +23409,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
         selection.select("text.shadow")
           .style({
             "stroke": "#fff",
-            "stroke-width": 0.15 * model2px(d.radius),
+            "stroke-width": 0.15 * modelSize2px(d.radius),
             "stroke-opacity": 0.7
           });
       });
@@ -20457,22 +23501,22 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
 
     function setFocus() {
       if (model.get("enableKeyboardHandlers")) {
-        containers.node.focus();
+        modelView.node.focus();
       }
     }
 
     function moleculeMouseOver(d, i) {
-      if (model.get("enableAtomTooltips")) {
+      if (model.get("enableAtomTooltips") && (atomTooltipOn === false)) {
         renderAtomTooltip(i);
       }
     }
 
     function moleculeMouseDown(d, i) {
-      containers.node.focus();
+      modelView.node.focus();
       if (model.get("enableAtomTooltips")) {
         if (atomTooltipOn !== false) {
-          moleculeDiv.style("opacity", 1e-6);
-          moleculeDiv.style("display", "none");
+          atomToolTip.style("opacity", 1e-6);
+          atomToolTip.style("display", "none");
           atomTooltipOn = false;
         } else {
           if (d3.event.shiftKey) {
@@ -20486,16 +23530,20 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
     }
 
     function renderAtomTooltip(i) {
-      moleculeDiv
+      var pos = modelView.pos(),
+          left = pos.left + model2px(modelResults[i].x),
+          top  = pos.top +  model2pxInv(modelResults[i].y);
+
+      atomToolTip
             .style("opacity", 1.0)
             .style("display", "inline")
             .style("background", "rgba(100%, 100%, 100%, 0.7)")
-            .style("left", model2px(modelResults[i].x) + 60 + "px")
-            .style("top",  model2pxInv(modelResults[i].y) + 30 + "px")
+            .style("left", left + "px")
+            .style("top",  top + "px")
             .style("zIndex", 100)
             .transition().duration(250);
 
-      moleculeDivPre.text(
+      atomToolTipPre.text(
           "atom: " + i + "\n" +
           "time: " + modelTimeLabel() + "\n" +
           "speed: " + d3.format("+6.3e")(modelResults[i].speed) + "\n" +
@@ -20508,7 +23556,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
 
     function moleculeMouseOut() {
       if (!atomTooltipOn && atomTooltipOn !== 0) {
-        moleculeDiv.style("opacity", 1e-6).style("zIndex" -1);
+        atomToolTip.style("opacity", 1e-6).style("zIndex" -1);
       }
     }
 
@@ -20577,7 +23625,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
           y_pos = model2pxInv(d.y),
           path = "M "+x_pos+","+y_pos,
           scale = velocityVectorLength * 100;
-      return path + " L "+(x_pos + model2px(d.vx*scale))+","+(y_pos - model2px(d.vy*scale));
+      return path + " L "+(x_pos + modelSize2px(d.vx*scale))+","+(y_pos - modelSize2px(d.vy*scale));
     }
 
     function getForceVectorPath(d) {
@@ -20586,15 +23634,15 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
           mass  = d.mass,
           scale = forceVectorLength * 100,
           path  = "M "+x_pos+","+y_pos;
-      return path + " L "+(x_pos + model2px(d.ax*mass*scale))+","+(y_pos - model2px(d.ay*mass*scale));
+      return path + " L "+(x_pos + modelSize2px(d.ax*mass*scale))+","+(y_pos - modelSize2px(d.ay*mass*scale));
     }
 
     function getVelVectorWidth(d) {
-      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? model2px(velocityVectorWidth) : 0;
+      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? modelSize2px(velocityVectorWidth) : 0;
     }
 
     function getForceVectorWidth(d) {
-      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? model2px(forceVectorWidth) : 0;
+      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? modelSize2px(forceVectorWidth) : 0;
     }
 
     function updateVectors(vector, pathFunc, widthFunc) {
@@ -20667,7 +23715,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
     }
 
     function updateImageAttachment(){
-      var numImages, imglayer, coords, i;
+      var numImages, imglayer, container, coords, i;
       numImages= imageProp.length;
       for(i = 0; i < numImages; i++) {
         if (!imageSizes || !imageSizes[i]) continue;
@@ -20764,21 +23812,37 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
       }
     }
 
-    function setupTooTips() {
-      if ( moleculeDiv === undefined) {
-        moleculeDiv = d3.select("body").append("div")
+    function setupToolTips() {
+      var mc = d3.select("#model-container");
+      if ( atomToolTip === undefined && !mc.empty()) {
+        atomToolTip = mc.append("div")
             .attr("class", "tooltip")
             .style("opacity", 1e-6);
-        moleculeDivPre = moleculeDiv.append("pre");
+        atomToolTipPre = atomToolTip.append("pre");
       }
     }
 
     function setupClock() {
-      var clockColor = d3.lab(model.get("backgroundColor"));
-      // This ensures that color will be visible on background.
-      // Decide between white and black usingL value of background color in LAB space.
-      clockColor.l = clockColor.l > 50 ? 0 : 100;
-      clockColor.a = clockColor.b = 0;
+      var bg = parseColor(model.get("backgroundColor")),
+          // Calculate luminance in YIQ color space.
+          luminance = (bg.r * 299 + bg.g * 587 + bg.b * 114) / 1000,
+          // This ensures that color will be visible on background.
+          // This simple algorithm is described here:
+          // http://www.w3.org/TR/AERT#color-contrast
+          clockColor = luminance >= 128 ? 'black' : 'white';
+
+      function parseColor(color) {
+        // d3.rgb is handy, however it cannor parse RGBA colors, which are sometimes
+        // used in Next Gen MW (e.g. during MML->JSON conversion).
+        // Use it regexp to parse rgba if it's necessary.
+        var rgba = color.match(/rgba\(([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)/i);
+        if (rgba !== null) {
+          return d3.rgb(rgba[1], rgba[2], rgba[3]);
+        } else {
+          return d3.rgb(color);
+        }
+      }
+
       // Add model time display.
       mainContainer.selectAll('.modelTimeLabel').remove();
       // Update clock status.
@@ -20791,7 +23855,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
           .attr("x", model2px(0) + 3)
           .attr("y", model2pxInv(0) - 3)
           .attr("text-anchor", "start")
-          .attr("fill", clockColor.rgb());
+          .attr("fill", clockColor);
       }
     }
 
@@ -20804,7 +23868,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
 
       if (b.browser === "Firefox" && b.version >= "18") {
         $firefoxWarningPane = $("#firefox-warning-pane");
-        pos = containers.pos();
+        pos = modelView.pos();
         top  = pos.bottom - $firefoxWarningPane.height();
         left = pos.right - $firefoxWarningPane.width();
         $firefoxWarningPane.css({
@@ -20859,13 +23923,19 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
     // Called when Renderer is created.
     //
     function init() {
-      mainContainer        = containers.mainContainer,
-      radialBondsContainer = containers.radialBondsContainer,
-      VDWLinesContainer    = containers.VDWLinesContainer,
-      imageContainerBelow  = containers.imageContainerBelow,
-      imageContainerTop    = containers.imageContainerTop,
-      textContainerBelow   = containers.textContainerBelow,
-      textContainerTop     = containers.textContainerTop,
+      // Assign shortcuts, as these variables / functions shouldn't
+      // change.
+      mainContainer        = modelView.containers.mainContainer,
+      radialBondsContainer = modelView.containers.radialBondsContainer,
+      VDWLinesContainer    = modelView.containers.VDWLinesContainer,
+      imageContainerBelow  = modelView.containers.imageContainerBelow,
+      imageContainerTop    = modelView.containers.imageContainerTop,
+      textContainerBelow   = modelView.containers.textContainerBelow,
+      textContainerTop     = modelView.containers.textContainerTop,
+
+      model2px = modelView.model2px;
+      model2pxInv = modelView.model2pxInv;
+      modelSize2px = modelView.modelSize2px;
 
       modelResults  = model.get_results();
       modelElements = model.get_elements();
@@ -20873,7 +23943,6 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
       modelHeight   = model.get('height');
       aspectRatio   = modelWidth / modelHeight;
 
-      setupTooTips();
       setupRendererOptions();
 
       // Subscribe for model events.
@@ -20888,14 +23957,23 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
         "showClock", "backgroundColor"],
           repaint);
 
-      model.on('addAtom', repaint);
-      model.on('removeAtom', repaint);
-      model.on('addRadialBond', setupRadialBonds);
-      model.on('removeRadialBond', setupRadialBonds);
-      model.on('textBoxesChanged', drawTextBoxes);
+
+      function redrawClickableObjects (redrawOperation) {
+        return function () {
+          redrawOperation();
+          // All objects where repainted (probably removed and added again), so
+          // it's necessary to apply click handlers again.
+          modelView.updateClickHandlers();
+        };
+      }
+
+      model.on('addAtom', redrawClickableObjects(repaint));
+      model.on('removeAtom', redrawClickableObjects(repaint));
+      model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
+      model.on('removeRadialBond', redrawClickableObjects(setupRadialBonds));
+      model.on('textBoxesChanged', redrawClickableObjects(drawTextBoxes));
 
       setupFirefoxWarning();
-
     }
 
     //
@@ -20903,11 +23981,8 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
     //
     // Call when model is reset or reloaded.
     //
-    function reset(mod, cont, m2px, m2pxInv) {
-      model = mod;
-      containers = cont;
-      model2px = m2px;
-      model2pxInv = m2pxInv;
+    function reset(newModel) {
+      model = newModel;
       init();
     }
 
@@ -20915,15 +23990,16 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
     // MD2D Renderer: repaint
     //
     // Call when container being rendered into changes size, in that case
-    // pass in new D3 scales for model2pcx transformations.
+    // pass in new D3 scales for model2px transformations.
     //
-    // Also call when the number of objects changes suc that the conatiner
+    // Also call when the number of objects changes such that the container
     // must be setup again.
     //
-    function repaint(m2px, m2pxInv) {
+    function repaint(m2px, m2pxInv, mSize2px) {
       if (arguments.length) {
         model2px = m2px;
         model2pxInv = m2pxInv;
+        modelSize2px = mSize2px;
       }
       setupObstacles();
       setupVdwPairs();
@@ -20937,6 +24013,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
       drawImageAttachment();
       drawTextBoxes();
       setupClock();
+      setupToolTips();
       setupFirefoxWarning();
     }
 
@@ -20999,18 +24076,7 @@ define('md2d/views/renderer',['require','lab.config','common/console','common/be
       // Expose private methods.
       update: update,
       repaint: repaint,
-      reset: reset,
-      model2px: function(val) {
-        // Note that we shouldn't just do:
-        // api.nm2px = nm2px;
-        // as nm2px local variable can be reinitialized
-        // many times due container rescaling process.
-        return model2px(val);
-      },
-      model2pxInv: function(val) {
-        // See comments for nm2px.
-        return model2pxInv(val);
-      }
+      reset: reset
     };
 
     // Initialization.
@@ -21334,6 +24400,30 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
         return model.getAtomProperties(i);
       },
 
+      /**
+        Returns an array consisting of radial bonds indices for the atom
+        e.g. getRadialBondsForAtom(5) --> [2]
+      */
+      getRadialBondsForAtom: function getRadialBondsForAtom(i) {
+        return model.getRadialBondsForAtom(i);
+      },
+
+      /**
+        Returns an array consisting of the angular bonds indices for the atom
+        e.g. getAngularBondsForAtom(5) --> [6, 8]
+      */
+      getAngularBondsForAtom: function getAngularBondsForAtom(i) {
+        return model.getAngularBondsForAtom(i);
+      },
+
+      /**
+        Returns all atoms in the same molecule as atom i
+        (not including i itself)
+      */
+      getMoleculeAtoms: function getMoleculeAtoms(i) {
+        return model.getMoleculeAtoms(i);
+      },
+
       setElementProperties: function setElementProperties(i, props) {
         model.setElementProperties(i, props);
         api.repaintIfReady();
@@ -21642,14 +24732,13 @@ define('md2d/benchmarks/benchmarks',['require'],function (require) {
           model.start();
           setTimeout(function() {
             model.stop();
-            var start = model.get('time');
+            var startCounter = model.stepCounter();
             setTimeout(function() {
               // actual fps calculation
               model.start();
               setTimeout(function() {
                 model.stop();
-                var elapsedModelTime = model.get('time') - start;
-                done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
+                done( (model.stepCounter() - startCounter) / 2 );
               }, 2000);
             }, 100);
           }, 1000);
@@ -21690,7 +24779,7 @@ define('md2d/controllers/controller',['require','common/controllers/model-contro
 
 /*global define, model, $ */
 
-define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller'],function (require) {
+define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller'],function (require) {
   // Dependencies.
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
@@ -21704,6 +24793,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       ButtonController        = require('common/controllers/button-controller'),
       CheckboxController      = require('common/controllers/checkbox-controller'),
       TextController          = require('common/controllers/text-controller'),
+      ImageController         = require('common/controllers/image-controller'),
       RadioController         = require('common/controllers/radio-controller'),
       SliderController        = require('common/controllers/slider-controller'),
       PulldownController      = require('common/controllers/pulldown-controller'),
@@ -21711,6 +24801,11 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
 
+      // Helper function which just provides banner definition.
+      setupBanner             = require('common/controllers/setup-banner'),
+      AboutDialog             = require('common/controllers/about-dialog'),
+      ShareDialog             = require('common/controllers/share-dialog'),
+      CreditsDialog           = require('common/controllers/credits-dialog'),
       SemanticLayout          = require('common/layout/semantic-layout'),
       templates               = require('common/layout/templates'),
 
@@ -21733,9 +24828,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       // # getViewContainer()    - function returning a jQuery object containing
       //                           DOM elements of the component.
       // # modelLoadedCallback() - optional function taking no arguments, a callback
-      //                           which should be called when the model is loaded.
+      //                           which is called when the model is loaded.
       // # resize()              - optional function taking no arguments, a callback
-      //                           which will be called by the layout algorithm when component's container
+      //                           which is called by the layout algorithm when component's container
       //                           dimensions are changed. This lets component to adjust itself to the
       //                           new container dimensions.
       //
@@ -21745,6 +24840,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       // Please see: src/sass/lab/_interactive-component.sass to check what this CSS class defines.
       ComponentConstructor = {
         'text':          TextController,
+        'image':         ImageController,
         'button':        ButtonController,
         'checkbox':      CheckboxController,
         'pulldown':      PulldownController,
@@ -21756,9 +24852,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         'numericOutput': NumericOutputController
       };
 
-  return function interactivesController(interactive, viewSelector, modelLoadedCallbacks, layoutStyle, resizeCallbacks) {
-
-    modelLoadedCallbacks = modelLoadedCallbacks || [];
+  return function interactivesController(interactive, viewSelector) {
 
     var controller = {},
         modelController,
@@ -21768,6 +24862,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         propertiesListeners = [],
         componentCallbacks = [],
         onLoadScripts = [],
+        resizeCallbacks = [],
+        modelLoadedCallbacks = [],
 
         // Hash of instantiated components.
         // Key   - component ID.
@@ -21791,6 +24887,11 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
 
         // Doesn't currently have any public methods, but probably will.
         parentMessageAPI,
+
+        // Dialogs which can be shown using banner.
+        aboutDialog,
+        shareDialog,
+        creditsDialog,
 
         semanticLayout;
 
@@ -21823,7 +24924,6 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       } else {
         interactiveViewOptions = { controlButtons: 'play' };
       }
-      interactiveViewOptions.fitToParent = !layoutStyle;
 
       onLoadScripts = [];
       if (modelDefinition.onLoad) {
@@ -21855,43 +24955,13 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           // also be sure to get notified when the underlying model changes
           modelController.on('modelReset', modelLoaded);
           controller.modelController = modelController;
-          // Finally, it's possible to setup layout.
-          // Layout requires that model controller is availalbe and initialized,
-          // that's why we have to setup it here and not e.g. in loadInteractive.
-          setupLayout();
           // Setup model and notify observers that model was loaded.
           modelLoaded(modelConfig);
         }
-      }
-
-      function setupLayout() {
-        var template, layout, fontScale;
-
-        if (interactive.template) {
-          if (typeof interactive.template === "string") {
-            template = templates[interactive.template];
-          } else {
-            template = interactive.template;
-          }
-        }
-        // The authored definition of which components go in which container.
-        layout = interactive.layout;
-        // Font scale which affect whole interactive container.
-        fontScale = interactive.fontScale;
-
-        semanticLayout.setupInteractive(template, layout, componentByID, modelController, fontScale);
-
+        // Setup model in layout.
+        semanticLayout.setupModel(modelController);
         // Finally, layout interactive.
         semanticLayout.layoutInteractive();
-
-        // We are rendering in embeddable mode if only element on page
-        // so resize when window resizes.
-        if (onlyElementOnPage()) {
-          $(window).unbind('resize');
-          $(window).on('resize', function() {
-            controller.resize();
-          });
-        }
       }
 
       function createModelController(type, modelUrl, modelConfig) {
@@ -21907,6 +24977,45 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           scriptingAPI.extend(modelController.ScriptingAPI);
           scriptingAPI.exposeScriptingAPI();
         }
+      }
+    }
+
+    function setupLayout() {
+      var template, layout, components, fontScale, banner;
+
+      if (typeof interactive.template === "string") {
+        template = templates[interactive.template];
+      } else {
+        template = interactive.template;
+      }
+
+      // The authored definition of which components go in which container.
+      layout = interactive.layout;
+      // Font scale which affect whole interactive container.
+      fontScale = interactive.fontScale;
+
+      // Banner hash containing components, layout containers and layout deinition
+      // (components location). Keep it in a separate structure, because we do not
+      // expect these objects to be serialized!
+      banner = setupBanner(interactive, creditsDialog, aboutDialog, shareDialog);
+      // Note that all of these operations create a new object.
+      // So interactive definition specified by the author won't be affected.
+      // This is important for serialization correctness.
+      template = banner.template.concat(template);
+      layout = $.extend({}, layout, banner.layout);
+      components = $.extend({}, componentByID, banner.components);
+
+      // Setup layout using both author components and components
+      // created automatically in this controller.
+      semanticLayout.initialize(template, layout, components, fontScale);
+
+      // We are rendering in embeddable mode if only element on page
+      // so resize when window resizes.
+      if (onlyElementOnPage()) {
+        $(window).unbind('resize');
+        $(window).on('resize', function() {
+          controller.resize();
+        });
       }
     }
 
@@ -21933,7 +25042,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
 
       // Register component callback if it is available.
       if (comp.modelLoadedCallback) {
-        componentCallbacks.push(comp.modelLoadedCallback);
+        // $.proxy ensures that callback will be always executed
+        // in the context of correct object ('this' binding).
+        componentCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
       }
     }
 
@@ -21955,8 +25066,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
     function modelLoaded() {
       var i, listener;
 
-      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
+      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
       // to exist during its definition.
       setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
@@ -22083,10 +25194,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
 
       @param newInteractive
         hash representing the interactive specification
-      @param viewSelector
-        jQuery selector that finds the element to put the interactive view into
     */
-    function loadInteractive(newInteractive, viewSelector) {
+    function loadInteractive(newInteractive) {
       var componentJsons,
           i, len;
 
@@ -22134,6 +25243,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           });
         }
       }
+
+      // When all components are created, we can initialize semantic layout.
+      setupLayout();
     }
 
     /**
@@ -22173,13 +25285,19 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
             case "basic":
               model.defineOutput(output.name, {
                 label: output.label,
-                units: output.units
+                unitType: output.unitType,
+                unitName: output.unitName,
+                unitPluralName: output.unitPluralName,
+                unitAbbreviation: output.unitAbbreviation
               }, scriptingAPI.makeFunctionInScriptContext(getStringFromArray(output.value)));
               break;
             case "filtered":
               model.defineFilteredOutput(output.name, {
                 label: output.label,
-                units: output.units
+                unitType: output.unitType,
+                unitName: output.unitName,
+                unitPluralName: output.unitPluralName,
+                unitAbbreviation: output.unitAbbreviation
               }, output.property, output.type, output.period);
               break;
           }
@@ -22212,7 +25330,10 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         // Define parameter using modeler.
         model.defineParameter(parameter.name, {
           label: parameter.label,
-          units: parameter.units
+          unitType: parameter.unitType,
+          unitName: parameter.unitName,
+          unitPluralName: parameter.unitPluralName,
+          unitAbbreviation: parameter.unitAbbreviation
         }, onChangeFunc);
 
         if (parameter.initialValue !== undefined) {
@@ -22249,14 +25370,36 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         var i;
 
         semanticLayout.layoutInteractive();
-        // Call application controller (application.js) resizeCallbacks if there are any.
-        // Currently this is used for the Share pane generated <iframe> content.
-        // TODO: make a model dialog component and treat the links at the top as
-        // componments in the layout. New designs may put these links at the bottom ... etc
+        // TODO: use events!
         for(i = 0; i < resizeCallbacks.length; i++) {
-          if (resizeCallbacks[i].resize !== undefined) {
-            resizeCallbacks[i].resize();
+          resizeCallbacks[i]();
+        }
+      },
+      /**
+       * Adds an event listener for the specified type.
+       * Supported events are: "resize" and "modelLoaded".
+       *
+       * @param {string} type Event type ("resize" or "modelLoaded").
+       * @param  {function|array} callback Callback function or an array of functions.
+       */
+      on: function (type, callback) {
+        if (typeof callback === "function") {
+          callback = [callback];
+        } else if ($.isArray(callback)) {
+          if (callback.some(function (cb) { return typeof cb !== 'function'; })) {
+            throw new Error("Invalid callback, must be an array of functions.");
           }
+        } else {
+          throw new Error("Invalid callback, must be a function or array of functions.");
+        }
+
+        switch(type) {
+          case "resize":
+            resizeCallbacks = resizeCallbacks.concat(callback);
+            break;
+          case "modelLoaded":
+            modelLoadedCallbacks = modelLoadedCallbacks.concat(callback);
+            break;
         }
       },
       /**
@@ -22337,8 +25480,14 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
     // Select interactive container.
     // TODO: controller rather should create it itself to follow pattern of other components.
     $interactiveContainer = $(viewSelector);
+    // add container to API
+    controller.interactiveContainer = $interactiveContainer;
     // Initialize semantic layout.
     semanticLayout = new SemanticLayout($interactiveContainer);
+    creditsDialog = new CreditsDialog();
+    aboutDialog = new AboutDialog();
+    shareDialog = new ShareDialog();
+    controller.on("resize", $.proxy(shareDialog.updateIframeSize, shareDialog));
     // Run this when controller is created.
     loadInteractive(interactive, viewSelector);
 
@@ -22692,7 +25841,8 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
 
           svg = elem.append("svg")
               .attr("width",  cx)
-              .attr("height", cy);
+              .attr("height", cy)
+              .attr("class", "graph");
 
           vis = svg.append("g")
                 .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -23015,7 +26165,7 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
         d3.select('body').style("cursor", "move");
         if (d3.event.altKey) {
           if (d3.event.shiftKey && options.addData) {
-            p = d3.svg.mouse(vis.node());
+            p = d3.mouse(vis.node());
             var newpoint = [];
             newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
             newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
@@ -23028,7 +26178,7 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
             selected = newpoint;
             update();
           } else {
-            p = d3.svg.mouse(vis[0][0]);
+            p = d3.mouse(vis.node());
             downx = xScale.invert(p[0]);
             downy = yScale.invert(p[1]);
             dragged = false;
@@ -23041,14 +26191,14 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
       function xaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
       function yaxis_drag(d) {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
         downy = yScale.invert(p[1]);
       }
 
@@ -23060,7 +26210,7 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
       }
 
       function mousemove() {
-        var p = d3.svg.mouse(vis[0][0]);
+        var p = d3.mouse(vis.node());
 
         d3.event.preventDefault();
         if (dragged && options.dataChange) {

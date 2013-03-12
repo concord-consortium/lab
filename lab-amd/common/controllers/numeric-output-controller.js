@@ -50,6 +50,15 @@ define(function () {
     // Each interactive component has to have class "component".
     $numericOutput.addClass("component");
 
+    // Add class defining component orientation - "horizontal" or "vertical".
+    $numericOutput.addClass(component.orientation);
+
+    // Custom dimensions.
+    $numericOutput.css({
+      width: component.width,
+      height: component.height
+    });
+
     if (displayValue) {
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
     }
@@ -61,8 +70,8 @@ define(function () {
         if (propertyName) {
           propertyDescription = model.getPropertyDescription(propertyName);
           if (propertyDescription) {
-            if (!label) { $label.html(propertyDescription.label); }
-            if (!units) { $units.html(propertyDescription.units); }
+            if (!label) { $label.html(propertyDescription.getLabel()); }
+            if (!units) { $units.html(propertyDescription.getUnitAbbreviation()); }
           }
           renderValue();
           model.addPropertiesListener([propertyName], renderValue);

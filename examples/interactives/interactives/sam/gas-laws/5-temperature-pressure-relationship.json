@@ -25,7 +25,7 @@
   "outputs": [
     {
       "name": "pressureProbeInstantaneous",
-      "units": "Bar",
+      "unitType": "pressure",
       "label": "Pressure Gauge",
       "value": [
         "return getObstacleProperties(0).westProbeValue;"
@@ -35,7 +35,7 @@
   "filteredOutputs": [
     {
       "name": "pressureProbeFiltered",
-      "units": "Bar",
+      "unitType": "pressure",
       "label": "Pressure Gauge",
       "property": "pressureProbeInstantaneous",
       "type": "RunningAverage",

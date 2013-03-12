@@ -17,7 +17,6 @@
     {
       "name":  "numObstacles",
       "label": "Number of Obstacles",
-      "units": "",
       "value": [
           "return getNumberOfObstacles();"
       ]

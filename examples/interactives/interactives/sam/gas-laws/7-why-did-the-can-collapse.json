@@ -2,7 +2,6 @@
   "title": "Pressure Equilibrium",
   "publicationStatus": "public",
   "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
-  "fontScale": 0.8,
   "about": [
     "There are gases on both sides of a moveable barrier (piston), which stays in the same place (more or less) when you run the model because the gas pressure on the piston is in equilibrium.",
     "Add purple gas molecules and watch what happens to the piston. Reset the model. Now add yellow gas molecules. What happens to the piston?",
@@ -32,20 +31,35 @@
   ],
   "outputs": [
     {
-      "name": "avgSpeed",
-      "units": "nm/fs?",
-      "label": "area",
+      "name": "purpleAtoms",
+      "value": "return getNumberOfAtoms('element[i] == 3');"
+    },
+    {
+      "name": "yellowAtoms",
+      "value": "return getNumberOfAtoms('element[i] == 1');"
+    },
+    {
+      "name": "vxMean",
+      "unitType": "velocity",
       "value": [
-        "var avgVx = 0;",
-        "var avgVy = 0;",
+        "var vxSum = 0;",
         "var atomNum = getNumberOfAtoms();",
         "for (var i = 0; i < atomNum; i++) {",
-        "  avgVx += Math.abs(getAtomProperties(i).vx);",
-        "  avgVy += Math.abs(getAtomProperties(i).vy);",
+        "  vxSum += Math.abs(getAtomProperties(i).vx);",
         "}",
-        "avgVx /= atomNum;",
-        "avgVy /= atomNum;",
-        "return { 'avgVx' : avgVx, 'avgVy': avgVy};"
+        "return vxSum / atomNum;"
+     ]
+    },
+    {
+      "name": "vyMean",
+      "unitType": "velocity",
+      "value": [
+        "var vySum = 0;",
+        "var atomNum = getNumberOfAtoms();",
+        "for (var i = 0; i < atomNum; i++) {",
+        "  vySum += Math.abs(getAtomProperties(i).vy);",
+        "}",
+        "return vySum / atomNum;"
      ]
     }
   ],
@@ -57,29 +71,76 @@
       "property": "showVelocityVectors"
     },
     {
+      "type": "numericOutput",
+      "id": "purple-atoms",
+      "property": "purpleAtoms"
+    },
+    {
+      "type": "numericOutput",
+      "id": "yellow-atoms",
+      "property": "yellowAtoms"
+    },
+    {
+      "type": "text",
+      "id": "purple-label",
+      "text": "Purple Atoms",
+      "width": "6em"
+    },
+    {
+      "type": "text",
+      "id": "yellow-label",
+      "text": "Yellow Atoms",
+      "width": "6em"
+    },
+    {
       "type": "button",
       "id": "add-inside",
-      "text": "Add Purple Molecule",
+      "text": "Add",
+      "width": "6em",
       "action": [
-        "var elemNum = 3;",
-        "var maxX = getObstacleProperties(0).x - getElementProperties(elemNum).sigma;",
-        "addAtom({ element: elemNum, x: maxX * Math.random()  , y: get('height') * Math.random(), vx: get('avgSpeed').avgVx, vy: get('avgSpeed').avgVy});"
+        "var elemNum = 3, sigma = getElementProperties(elemNum).sigma, obsX = getObstacleProperties(0).x;",
+        "var obsRight = obsX + getObstacleProperties(0).width;",
+        "if (obsX < 2 * sigma) {",
+        "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "    if (getAtomProperties(i).x < obsRight + 3 * sigma) {",
+        "      setAtomProperties(i, {x: obsRight + 3 * sigma});",
+        "    }",
+        "  }",
+        "  obsX = 2 * sigma;",
+        "  setObstacleProperties(0, {x: obsX});",
+        "  minimizeEnergy();",
+        "}",
+        "var maxX = obsX - sigma;",
+        "addAtom({ element: elemNum, x: maxX * Math.random()  , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});"
       ]
     },
     {
       "type": "button",
       "id": "add-outside",
-      "text": "Add Yellow Molecule",
+      "text": "Add",
+      "width": "6em",
       "action": [
-        "var elemNum = 1;",
-        "var minX = getObstacleProperties(0).x + getObstacleProperties(0).width + getElementProperties(elemNum).sigma;",
-        "addAtom({ element: elemNum, x: (get('width') - minX) * Math.random() + minX , y: get('height') * Math.random(), vx: get('avgSpeed').avgVx, vy: get('avgSpeed').avgVy});"
+        "var elemNum = 1, sigma = getElementProperties(elemNum).sigma, obsX = getObstacleProperties(0).x;",
+        "var obsWidth = getObstacleProperties(0).width, width = get('width');",
+        "if (obsX + obsWidth > width - 2 * sigma) {",
+        "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "    if (getAtomProperties(i).x > obsX - 3 * sigma) {",
+        "      setAtomProperties(i, {x: obsX - 3 * sigma});",
+        "    }",
+        "  }",
+        "  obsX = width - 2 * sigma - obsWidth;",
+        "  setObstacleProperties(0, {x: obsX});",
+        "  minimizeEnergy();",
+        "}",
+        "var minX = obsX + obsWidth + sigma;",
+        "addAtom({ element: elemNum, x: (get('width') - minX) * Math.random() + minX , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});"
       ]
     },
     {
       "type": "button",
       "id": "remove-inside",
-      "text": "Remove Purple Molecule",
+      "text": "Remove",
+      "width": "6em",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  if (getAtomProperties(i).x < getObstacleProperties(0).x) {",
@@ -92,7 +153,8 @@
     {
       "type": "button",
       "id": "remove-outside",
-      "text": "Remove Yellow Molecule",
+      "text": "Remove",
+      "width": "6em",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  if (getAtomProperties(i).x > (getObstacleProperties(0).x + getObstacleProperties(0).width)) {",
@@ -105,7 +167,8 @@
     {
       "type": "button",
       "id": "heat-inside",
-      "text": "Heat Purple Gas",
+      "text": "Heat",
+      "width": "6em",
       "action": [
         "if (get('temperature') < 10000) {",
         "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -124,7 +187,8 @@
     {
       "type": "button",
       "id": "heat-outside",
-      "text": "Heat Yellow Gas",
+      "text": "Heat",
+      "width": "6em",
       "action": [
         "if (get('temperature') < 10000) {",
         "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -143,7 +207,8 @@
     {
       "type": "button",
       "id": "cool-inside",
-      "text": "Cool Purple Gas",
+      "text": "Cool",
+      "width": "6em",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  var atom = getAtomProperties(i);",
@@ -157,7 +222,8 @@
     {
       "type": "button",
       "id": "cool-outside",
-      "text": "Cool Yellow Gas",
+      "text": "Cool",
+      "width": "6em",
       "action": [
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  var atom = getAtomProperties(i);",
@@ -170,10 +236,46 @@
     }
   ],
   "layout": {
-    "bottom": [
-      ["add-inside","remove-inside","heat-inside","cool-inside"],
-      ["add-outside","remove-outside","heat-outside","cool-outside"],
-      ["show-velocity"]
-    ]
-  }
+    "left": [
+      ["purple-label"],
+      ["purple-atoms"],
+      ["add-inside"],
+      ["remove-inside"],
+      ["heat-inside"],
+      ["cool-inside"]
+    ],
+    "right": [
+      ["yellow-label"],
+      ["yellow-atoms"],
+      ["add-outside"],
+      ["remove-outside"],
+      ["heat-outside"],
+      ["cool-outside"]
+    ],
+    "bottom": [ "show-velocity" ]
+  },
+  "template": [
+    {
+      "id": "left",
+      "top": "3em",
+      "right": "model.left",
+      "align": "center",
+      "fontScale": 0.8
+    },
+    {
+      "id": "right",
+      "top": "3em",
+      "left": "model.right",
+      "align": "center",
+      "fontScale": 0.8
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center",
+      "padding-top": "0.5em"
+    }
+  ]
 }

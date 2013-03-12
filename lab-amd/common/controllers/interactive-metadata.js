@@ -98,7 +98,10 @@ define(function() {
       onChange: {},
       // Optional description.
       label: {},
-      units: {}
+      unitType: {},
+      unitName: {},
+      unitPluralName: {},
+      unitAbbreviation: {}
     },
 
     output: {
@@ -110,7 +113,10 @@ define(function() {
       },
       // Optional description.
       label: {},
-      units: {}
+      unitType: {},
+      unitName: {},
+      unitPluralName: {},
+      unitAbbreviation: {}
     },
 
     filteredOutput: {
@@ -131,7 +137,10 @@ define(function() {
       },
       // Optional description.
       label: {},
-      units: {}
+      unitType: {},
+      unitName: {},
+      unitPluralName: {},
+      unitAbbreviation: {}
     },
 
     exports: {
@@ -174,6 +183,29 @@ define(function() {
       }
     },
 
+    image: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      src: {
+        // Absolute path should start with http(s)://
+        // Relative path is relative to model URL.
+        defaultValue: ""
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      }
+    },
+
     button: {
       id: {
         required: true
@@ -188,10 +220,10 @@ define(function() {
         defaultValue: ""
       },
       width: {
-        defaultValue: "auto"
+        defaultValue: ""
       },
       height: {
-        defaultValue: "auto"
+        defaultValue: ""
       }
     },
 
@@ -204,6 +236,15 @@ define(function() {
       },
       text: {
         defaultValue: ""
+      },
+      textOn: {
+        defaultValue: "right"
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
       },
       property: {
         conflictsWith: ["initialValue"]
@@ -244,7 +285,7 @@ define(function() {
         defaultValue: "12em"
       },
       height: {
-        defaultValue: "3.75em"
+        defaultValue: "3.65em"
       },
       displayValue: {},
       // Use "property" OR "action" + "initialValue".
@@ -269,6 +310,13 @@ define(function() {
       },
       type: {
         required: true
+      },
+      label: {
+        defaultValue: ""
+      },
+      labelOn: {
+        // Other option is "left".
+        defaultValue: "top"
       },
       options: {
         defaultValue: []
@@ -310,6 +358,13 @@ define(function() {
       },
       orientation: {
         defaultValue: "vertical"
+      },
+      label: {
+        defaultValue: ""
+      },
+      labelOn: {
+        // Other option is "left".
+        defaultValue: "top"
       },
       options: {
         defaultValue: []
@@ -354,6 +409,15 @@ define(function() {
       },
       units: {
         defaultValue: ""
+      },
+      orientation: {
+        defaultValue: "horizontal"
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
       },
       property: {},
       displayValue: {}

@@ -14,7 +14,6 @@ AUTHORING = false;
       origin,
       embeddablePath,
       embeddableUrl,
-      embeddableSharingUrl,
       interactiveDescriptions,
       interactives,
       groups,
@@ -31,6 +30,7 @@ AUTHORING = false;
 
       $updateInteractiveButton = $("#update-interactive-button"),
       $saveInteractiveButton = $("#save-interactive-button"),
+      $saveModelButton = $("#save-model-button"),
       $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
@@ -40,43 +40,22 @@ AUTHORING = false;
       $autoFormatModelJsonButton = $("#autoformat-model-json-button"),
       $modelTextArea = $("#model-text-area"),
 
-      $creditsLink = $("#credits-link"),
-      $creditsPane = $("#credits-pane"),
-      $creditsPaneClose = $('#credits-pane-close'),
-
-      $aboutLink = $("#about-link"),
-      $aboutPane = $("#about-pane"),
-      $aboutPaneClose = $('#about-pane-close'),
-
-      $shareLink = $("#share-link"),
-      $sharePane = $("#share-pane"),
-      $shareContent = $("#share-content"),
-      $sharePaneClose = $('#share-pane-close'),
-      $shareIframeContent = $("#share-iframe-content"),
-      $shareSelectIframeSize = $("#share-select-iframe-size"),
-
       $editor = $("#editor"),
-      $editorExtrasItem = $("editor.extras-item"),
       $showEditor = $("#show-editor"),
       $editorContent = $("#editor-content"),
 
-      $modelEditor = $("#model-editor"),
       $showModelEditor = $("#show-model-editor"),
       $modelEditorContent = $("#model-editor-content"),
 
-      $benchmarksExtrasItem = $("benchmarks.extras-item"),
       $showBenchmarks = $("#show-benchmarks"),
       $benchmarksContent = $("#benchmarks-content"),
       $runBenchmarksButton = $("#run-benchmarks-button"),
-      benchmarksToRun,
 
-      $modelEnergyGraphExtrasItem = $("model-energy-graph.extras-item"),
       $showModelEnergyGraph = $("#show-model-energy-graph"),
       $modelEnergyGraphContent = $("#model-energy-graph-content"),
       modelEnergyGraph,
       modelEnergyData = [],
 
-      $modelDatatableExtrasItem = $("model-datatable.extras-item"),
       $showModelDatatable = $("#show-model-datatable"),
       $modelDatatableContent = $("#model-datatable-content"),
       $modelDatatableResults = $("#model-datatable-results"),
@@ -86,25 +65,28 @@ AUTHORING = false;
       $nextInteractive = $("#next-interactive"),
 
       applicationCallbacks,
-      resizeCallbacks,
       editor,
       modelEditor,
       controller,
       indent = 2,
-      foldFunc,
       interactiveUrl,
       interactive,
+      interactiveRemote,
+      modelRemote,
       hash,
       jsonModelPath, contentItems, mmlPath,
-      viewType,
       interactivesPromise,
       buttonHandlersAdded = false,
-      modelButtonHandlersAdded = false,
-
-      copyrightDiv = '<div id="share-license"><strong>Copyright © 2013&nbsp;</strong><a class="opens-in-new-window" href="http://concord.org" id="share-license-link" target="_blank">The Concord Consortium</a>. All rights reserved. The software is licensed under&nbsp;<a class="opens-in-new-window" href="http://opensource.org/licenses/BSD-2-Clause" id="share-license-link" target="_blank">Simplified BSD</a>, <a class="opens-in-new-window" href="http://opensource.org/licenses/MIT" id="share-license-link" target="_blank">MIT</a> or <a class="opens-in-new-window" href="http://opensource.org/licenses/Apache-2.0" id="share-license-link" target="_blank">Apache 2.0</a> licenses. Please provide attribution to the Concord Consortium and the URL&nbsp;<a class="opens-in-new-window" href="http://concord.org/" id="share-license-link" target="_blank">http://concord.org</a>.</div>';
+      interactiveRemoteKeys = ['id', 'from_import', 'groupKey', 'path'],
+      modelRemoteKeys = ['id', 'from_import', 'location'],
+      modelButtonHandlersAdded = false;
 
   function isEmbeddablePage() {
     return ($selectInteractive.length === 0);
+  }
+
+  function isStaticPage() {
+    return !(document.location.pathname.match(/^\/interactives.*/));
   }
 
   if (!isEmbeddablePage()) {
@@ -114,7 +96,7 @@ AUTHORING = false;
       if (typeof results === 'string') {
         results = JSON.parse(results);
       }
-       interactiveDescriptions = results;
+      interactiveDescriptions = results;
     });
 
     // TODO: some of the Deferred, ajax call have no error handlers?
@@ -134,7 +116,7 @@ AUTHORING = false;
         // the first group returned from the server
         var firstGroupPath = interactiveDescriptions.groups[0].path;
         var firstInteractive = _.find(interactiveDescriptions.interactives, function(interactive){
-          return interactive.groupKey == firstGroupPath;
+          return interactive.groupKey === firstGroupPath;
         });
         document.location.hash = firstInteractive.path;
       });
@@ -147,7 +129,8 @@ AUTHORING = false;
 
     $.get(interactiveUrl).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
-      interactive = results;
+      interactiveRemote = results;
+      interactive = _.omit(interactiveRemote, interactiveRemoteKeys);
 
       if (interactive.title) {
         document.title = interactive.title;
@@ -162,14 +145,10 @@ AUTHORING = false;
       } else {
         // else we are being embedded ...
         if ($editor.length) {
-          viewType = 'interactive-author-iframe';
           applicationCallbacks = [setupEmbeddableAuthorPage];
-        } else {
-          viewType = 'interactive-iframe';
         }
       }
 
-      resizeCallbacks = [setupSharePane];
       interactiveDefinitionLoaded.resolve();
     });
   }
@@ -195,7 +174,10 @@ AUTHORING = false;
     }
 
     if(!onFullIFramePage()) {
-      controller = controllers.interactivesController(interactive, '#interactive-container', applicationCallbacks, viewType, resizeCallbacks);
+      controller = controllers.interactivesController(interactive, '#interactive-container');
+      if (_.isArray(applicationCallbacks) && applicationCallbacks.length > 0) {
+        controller.on("modelLoaded", applicationCallbacks);
+      }
     }
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
@@ -203,9 +185,6 @@ AUTHORING = false;
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
     embeddableUrl = origin + embeddablePath + hash;
 
-    setupCreditsPane();
-    setupAboutPane();
-    setupSharePane();
     if(onFullIFramePage()) {
       applicationCallbacks[0]();
     }
@@ -216,138 +195,6 @@ AUTHORING = false;
       location.reload();
     }
   });
-
-  function setupCreditsPane() {
-    var interactiveCreditsUrl,
-        newWindow,
-        titleString,
-        concordUrl, nextGenUrl,
-        concordLink, nextGenLink,
-        interactiveCreditsLink, googleOrgLink,
-        utmString,
-        $creditsContent = $('#credits-content');
-
-    $creditsLink.click(function() {
-      $creditsPane.show(100);
-    });
-    $creditsPaneClose.click(function() {
-      $creditsPane.hide(100);
-    });
-    $creditsPane.draggable({ handle: "#credits-pane-banner" });
-    $("#credits-pane-title").text("Credits: " + interactive.title);
-
-    concordUrl = 'http://concord.org';
-    nextGenUrl = 'http://mw.concord.org/nextgen/';
-    interactiveCreditsUrl = Lab.config.home + Lab.config.homeEmbeddablePath + hash;
-    if (Lab.config.homeForSharing) {
-      interactiveCreditsUrl = Lab.config.homeForSharing + Lab.config.homeEmbeddablePath + hash;
-    }
-    newWindow = " class='opens-in-new-window' target='_blank";
-    utmString = "utm_source=" + encodeURIComponent(interactive.title.replace(/ /gi,"+")) + "&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign;
-
-    if (Lab.config.utmCampaign) {
-      concordUrl += "?" + utmString;
-      nextGenUrl += "?" + utmString;
-      interactiveCreditsUrl += "&" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + Lab.config.utmCampaign);
-    }
-
-    concordLink = "<a href='" + concordUrl + "'" + newWindow + "'>Concord Consortium</a>";
-    nextGenLink = "<a href='" + nextGenUrl + "'" + newWindow + "'>Next-Generation Molecular Workbench</a>";
-    interactiveCreditsLink = "<a href='" + "'" + interactiveCreditsUrl + newWindow + "'>shareable version</a>";
-    googleOrgLink = "<a href='http://www.google.org/' " + newWindow + "'>Google.org</a>";
-    $creditsContent.append('<p>This interactive was created by the ' + concordLink + ' using our ' + nextGenLink + ' software, with funding by a grant from ' + googleOrgLink + '.</p>');
-    if (!Lab.config.sharing) {
-
-      $creditsContent.append('<p>Find a <a href=' + interactiveCreditsUrl +
-        ' class="opens-in-new-window" target="_blank">shareable version</a> of this interactive along with dozens of other open-source interactives for science, math and engineering at <a href="' +
-        concordUrl + '" class="opens-in-new-window" target="_blank">concord.org</a>.</p>');
-    }
-    $creditsContent.append(copyrightDiv);
-  }
-
-  function setupAboutPane() {
-    var about = interactive.about,
-        $aboutContent = $('#about-content');
-
-    if (interactive.subtitle || about) {
-      $aboutLink.click(function() {
-        $aboutPane.show(100);
-      });
-      $aboutPaneClose.click(function() {
-        $aboutPane.hide(100);
-      });
-      $aboutPane.draggable({ handle: "#about-pane-banner" });
-      $("#about-pane-title").text("About: " + interactive.title);
-
-      if (interactive.subtitle) {
-        $aboutContent.append('<p>' + interactive.subtitle + '</p>');
-      }
-
-      if (Object.prototype.toString.call(interactive.about) !== "[object Array]") {
-        about = [about];
-      }
-      _.each(about, function(p) {
-        $aboutContent.append('<p>' + p + '</p>');
-      });
-    } else {
-      $aboutLink.hide();
-    }
-  }
-
-  function setupSharePane() {
-    embeddableSharingUrl = embeddableUrl;
-    if (Lab.config.sharing) {
-      if (Lab.config.homeForSharing) {
-        embeddableSharingUrl = Lab.config.homeForSharing + Lab.config.homeEmbeddablePath + hash;
-      }
-      $shareLink.show();
-      $shareLink.click(function() {
-        $sharePane.show(100);
-      });
-      $sharePaneClose.click(function() {
-        $sharePane.hide(100);
-      });
-      $shareSelectIframeSize.change(updateShareIframeContent);
-      $sharePane.draggable({ handle: "#share-pane-banner" });
-      $("#share-pane-title").text("Share: " + interactive.title);
-      $("#share-embeddable-link").attr("href", embeddableSharingUrl);
-      $('#share-embeddable-link-content').val(embeddableSharingUrl);
-      updateShareIframeContent();
-      $shareContent.append(copyrightDiv);
-    } else {
-      $shareLink.hide();
-      return;
-    }
-  }
-
-  function updateShareIframeContent() {
-    var actualWidth, actualHeight,
-        sizeAttributes = "",
-        sizeChoice = $shareSelectIframeSize.val(),
-        notEmbedded = $selectInteractive.length;
-
-    if (notEmbedded) {
-      actualWidth = $content.width();
-      actualHeight = $content.height();
-    } else {
-      actualWidth = $(document).width();
-      actualHeight = $(document).height();
-    }
-    switch(sizeChoice) {
-      case "actual":
-      sizeAttributes = 'width="' + actualWidth + 'px" height="' + actualHeight + 'px"';
-      break;
-      case "smaller":
-      sizeAttributes = 'width="' + Math.floor(actualWidth * 0.7) + 'px" height="' + Math.floor(actualHeight  * 0.7) + 'px"';
-      break;
-      case "larger":
-      sizeAttributes = 'width="' + Math.floor(actualWidth * 1.5) + 'px" height="' + Math.floor(actualHeight  * 1.5) + 'px"';
-      break;
-    }
-    $shareIframeContent.val('<iframe ' + sizeAttributes + ' frameborder="no" scrolling="no" src="' + embeddableSharingUrl + '"></iframe>');
-  }
-
-  setupSharePane.resize = updateShareIframeContent;
 
   //
   // The following functions are only used when rendering the
@@ -468,7 +315,7 @@ AUTHORING = false;
   }
 
   function setupFullPage() {
-    interactivesPromise.done(function(results) {
+    interactivesPromise.done(function() {
 
       restoreOptionsFromCookie();
       setupSelectList();
@@ -532,6 +379,7 @@ AUTHORING = false;
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
     jsonModelPath = interactive.models[0].url;
+    $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
 
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
@@ -555,7 +403,7 @@ AUTHORING = false;
               "width": 600,
               "height":400
             },
-            "url": "DataGames/Games/concord-lab" + "/examples/interactives/embeddable.html#" +  interactiveUrl
+            "url": Lab.config.dataGamesProxyPrefix + "examples/interactives/embeddable.html#" +  interactiveUrl
           }],
           dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
       return encodeURI(dgUrl);
@@ -614,7 +462,9 @@ AUTHORING = false;
 
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
     }
-    setupCopySaveInteractive();
+    if(!isStaticPage()) {
+      setupCopySaveInteractive();
+    }
   }
 
   function setupIframeListenerFor(iframe) {
@@ -687,34 +537,50 @@ AUTHORING = false;
 
   function remoteSaveInteractive(interactiveTitle, interactiveState){
     var httpMethod = 'POST',
-    url = '/interactives';
+        url = '/interactives',
+        newInteractiveState,
+        interactiveJSON;
 
-    // if (interactive['from_import']) {
-    //   $saveInteractiveButton.text("Save As");
-    // }else {
-    //   httpMethod = 'PUT';
-    //   url = url + '/' + interactive.id;
-    // }
-
-    newInteractiveState = jQuery.extend(true, {}, interactiveState);
+    if(!interactiveRemote.from_import) {
+      httpMethod = 'PUT';
+      url = '/interactives/' + interactiveRemote.id;
+    }
+    // create an interactive to POST/PUT
+    // merge the, possibly updated, interactive with the interactive last 
+    // loaded from the webapp.
+    newInteractiveState = jQuery.extend(true, interactiveRemote, interactiveState);
     newInteractiveState['title'] = interactiveTitle;
     // get the group from the current interactive
-    newInteractiveState['groupKey'] = interactive['groupKey'];
+    newInteractiveState['groupKey'] = interactiveRemote.groupKey;
+    newInteractiveState.from_import = false;
     interactiveJSON = {'interactive': newInteractiveState};
 
-    jQuery.ajax({
+    $.ajax({
       type: httpMethod,
       url: url,
       data: JSON.stringify(interactiveJSON),
       success: function(results) {
         if (typeof results === 'string') results = JSON.parse(results);
-        interactive = results;
+        interactiveRemote = results;
+        interactive = _.omit(interactiveRemote, interactiveRemoteKeys);
+
+
+        if(onFullPage()) {
+          controller.loadInteractive(interactive, '#interactive-container');
+        } else {
+          iframePhone.post({ type:'loadInteractive', data:interactive  });
+          $interactiveTitle.text(interactive.title);
+          $('#interactive-subtitle').text(interactive.subtitle);
+        }
 
         if (interactive.title) {
           document.title = interactive.title;
         }
 
-        document.location.hash = interactive.path;
+        document.location.hash = interactiveRemote.path
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert("Error: "+ textStatus + " : " + errorThrown)
       },
       dataType: "json",
       contentType: "application/json",
@@ -723,66 +589,91 @@ AUTHORING = false;
 
   }
 
-  function getInteractiveState(interactiveTitle){
+  function remoteSaveModel(modelState){
+    var modelJSON = {'md2d': modelState};
 
-    if(onFullPage()) {
-      interactiveState = controller.serialize();
-      remoteSaveInteractive(interactiveTitle, interactiveState);
-      editor.setValue(JSON.stringify(interactiveState, null, indent));
-    } else {
-      iframePhone.post({ type:'getInteractiveState' });
-      iframePhone.addListener('interactiveState', function(message) {
-        // this needs to be in the callback for the postMessage to
-        // the iframe.
-        remoteSaveInteractive(interactiveTitle, message);
-        editor.setValue(JSON.stringify(message, null, indent));
-      });
-    }
+    jQuery.ajax({
+      type: 'PUT',
+      url: '/models/md2ds/' + modelRemote.id,
+      data: JSON.stringify(modelJSON),
+      success: function(results) {
+        if (typeof results === 'string') results = JSON.parse(results);
+        modelRemote = results;
+        md2dModel = _.omit(modelRemote, modelRemoteKeys);
+
+        if(onFullPage()) {
+            controller.loadModel(modelRemote.id, md2dModel);
+        } else {
+          iframePhone.post({ type:'loadModel', data: { modelId: modelRemote.id, modelObject: md2dModel } });
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert("Error: "+ textStatus + " : " + errorThrown)
+      },
+      dataType: "json",
+      contentType: "application/json",
+      processData: false
+    });
+
   }
 
   function setupCopySaveInteractive() {
+    $saveInteractiveButton.show();
 
-    if (interactive['from_import']) {
-      $saveInteractiveButton.text("Save As");
+    if (interactiveRemote.from_import) {
+      // Copying an imported interactive
+      $saveInteractiveButton.text("Save As ...");
+      $(".save-interactive-form").dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+          "Save": function() {
+            var interactiveTitle = $(".save-interactive-title").val();
+            $(this).dialog("close");
+            interactiveState = JSON.parse(editor.getValue());
+            remoteSaveInteractive(interactiveTitle, interactiveState);
+            editor.setValue(JSON.stringify(interactiveState, null, indent));
+          },
+          "Cancel": function() {
+            $(this).dialog("close");
+          }
+        }
+      });
+      
     }else {
+      // Saving an Interactive
       $saveInteractiveButton.text("Save");
     }
 
-    $(".save-interactive-form").dialog({
-      autoOpen: false,
-      modal: true,
-      buttons: {
-        "Save": function() {
-          var interactiveTitle = $(".save-interactive-title").val();
-          $(this).dialog("close");
-          getInteractiveState(interactiveTitle);
-        },
-        "Cancel": function() {
-          $(this).dialog("close");
-        }
+    $saveInteractiveButton.on('click', function() {
+      if (interactiveRemote.from_import) {
+        // Prompt for the name of Interactive that will be a 
+        // copy of the exisiting imported interactive
+        $('.save-interactive-form').dialog("open");
+      } else {
+        interactiveState = JSON.parse(editor.getValue());
+        remoteSaveInteractive(interactive['title'], interactiveState);
+        editor.setValue(JSON.stringify(interactiveState, null, indent));
       }
     });
+  }
 
-    $saveInteractiveButton.on('click', function() {
-      var interactiveState, newInteractiveState, interactiveJSON;
+  function setupSaveModel(md2dModel) {
+    if (modelRemote.from_import) {
+      // if model is imported than it can only be copied
+      // by copying the interactive that contains it.
+      $saveModelButton.hide();
+      return;
+    }else {
+      $saveModelButton.show();
+      $saveModelButton.text("Save");
+    }
 
-      $('.save-interactive-form').dialog("open");
-
-
-      // try {
-      //   // warn user
-
-      //   } catch (e) {
-      //     alert("Interactive JSON syntax error: " + e.message);
-      //     throw new Error("Interactive JSON syntax error: " + e.message);
-      //   }
-
-        if(onFullPage()) {
-          controller.loadInteractive(interactive, '#interactive-container');
-        } else {
-          iframePhone.post({ type:'loadInteractive', data:interactive  });
-        }
-      });
+    $saveModelButton.on('click', function() {
+      modelState = JSON.parse(modelEditor.getValue());
+      remoteSaveModel(modelState);
+      modelEditor.setValue(JSON.stringify(modelState, null, indent));
+    });
   }
 
   // Setup and enable next and previous Interactive buttons
@@ -821,7 +712,6 @@ AUTHORING = false;
 
   function updateNextPreviousInteractiveStatus() {
     var $options = $selectInteractive.find("option:enabled"),
-        $selection = $options.filter(":selected"),
         index = $options.index($options.filter(":selected"));
 
     if (index === 0) {
@@ -837,14 +727,17 @@ AUTHORING = false;
   // Interactive Code Editor
   //
   function setupCodeEditor() {
+    var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
-    foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     if (!editor) {
       editor = CodeMirror.fromTextArea($interactiveTextArea.get(0), {
         mode: { name: "javascript", json: true },
         indentUnit: indent,
         lineNumbers: true,
         lineWrapping: false,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        collapseRange: true,
         onGutterClick: foldFunc
       });
     }
@@ -862,6 +755,8 @@ AUTHORING = false;
           controller.loadInteractive(interactive, '#interactive-container');
         } else {
           iframePhone.post({ type:'loadInteractive', data:interactive  });
+          $interactiveTitle.text(interactive.title);
+          $('#interactive-subtitle').text(interactive.subtitle);
         }
       });
 
@@ -896,11 +791,12 @@ AUTHORING = false;
   // Model Code Editor
   //
   function setupModelCodeEditor() {
+    var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     $.get(Lab.config.actualRoot + interactive.models[0].url).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
-      var md2dModel = results;
+      modelRemote = results;
+      var md2dModel = _.omit(modelRemote, modelRemoteKeys);
       $modelTextArea.text(JSON.stringify(md2dModel, null, indent));
-      foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
       if (!modelEditor) {
         modelEditor = CodeMirror.fromTextArea($modelTextArea.get(0), {
           mode: { name: "javascript", json: true },
@@ -912,6 +808,11 @@ AUTHORING = false;
       }
       if (!modelButtonHandlersAdded) {
         modelButtonHandlersAdded = true;
+
+        if (!isStaticPage()){
+          !setupSaveModel(md2dModel);
+        }
+
         $updateModelButton.on('click', function() {
           try {
             md2dModel = JSON.parse(modelEditor.getValue());
@@ -1006,7 +907,7 @@ AUTHORING = false;
   function setupEnergyGraph(_model) {
     if (!modelEnergyGraph) {
       // if (_model) {
-        renderModelEnergyGraph();
+      renderModelEnergyGraph();
       // }
     }
 
@@ -1116,7 +1017,6 @@ AUTHORING = false;
     }
 
     $showModelEnergyGraph.change(function() {
-      var options;
       if (this.checked) {
         addEventListeners();
         $modelEnergyGraphContent.show(100);
@@ -1229,7 +1129,6 @@ AUTHORING = false;
         i_formatter = d3.format(" 2d"),
         charge_formatter = d3.format(" 1.1f"),
         f2_formatter = d3.format(" 1.2f"),
-        r_formatter = d3.format(" 3.3r  "),
         f_formatter = d3.format(" 3.3f  "),
         e_formatter = d3.format(" 3.3e  "),
         formatters = [f_formatter, f_formatter, e_formatter,
@@ -1239,10 +1138,6 @@ AUTHORING = false;
 
     atoms.length = nodes.x.length;
     reset = reset || false;
-
-    function table_is_empty() {
-      return $modelDatatableResults.find("<tr>").length === 0;
-    }
 
     function add_row($el, kind, rownum) {
       var $row = $("<tr>");

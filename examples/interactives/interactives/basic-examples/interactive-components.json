@@ -144,6 +144,7 @@
       "type": "slider",
       "id": "temperature-property-slider",
       "title": "Temperature (set via property link)",
+      "width": "18em",
       "min": 1,
       "max": 3000,
       "steps": 30,
@@ -167,6 +168,7 @@
       "type": "slider",
       "id": "temperature-action-slider",
       "title": "Temperature (set via action)",
+      "width": "18em",
       "min": 1,
       "max": 3000,
       "steps": 30,
@@ -203,6 +205,30 @@
       "id": "text-link",
       "text": "Clickable Text (it starts the simulation)",
       "onClick": "start();"
+    },
+    {
+      "type": "text",
+      "id": "abs-path-label",
+      "width": "12em",
+      "text": "Image with absolute URL:"
+    },
+    {
+      "type": "text",
+      "id": "rel-path-label",
+      "width": "12em",
+      "text": "Image with relative URL (relative to model URL!):"
+    },
+    {
+      "type": "image",
+      "id": "image-relative-path",
+      "height": "3em",
+      "src": "oilWaterComp.png"
+    },
+    {
+      "type": "image",
+      "id": "image-absolute-path",
+      "width": "10em",
+      "src": "http://lab.concord.org/resources/layout/cc-logo.png"
     }
   ],
   "layout": {
@@ -223,6 +249,12 @@
         "text-header",
         "text-basic",
         "text-link"
+      ],
+      [
+        "abs-path-label", "image-absolute-path"
+      ],
+      [
+        "rel-path-label", "image-relative-path"
       ]
     ],
     "right": [
@@ -247,6 +279,7 @@
       "id": "bottom",
       "top": "model.bottom",
       "width": "interactive.width",
+      "padding-top": "0.5em",
       "padding-bottom": "1em"
     }
   ]

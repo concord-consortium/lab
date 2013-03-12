@@ -2580,14 +2580,78 @@ modelList = [
     ]
   },
   {
+    "section": "visual/Detergents",
+    "content": [
+      {
+        "name": "DissolveCompare-1",
+        "path": "visual/Detergents/",
+        "cml": "visual/Detergents/DissolveCompare.cml",
+        "mml": "visual/Detergents/DissolveCompare$0.mml",
+        "json": "converted/visual/Detergents/DissolveCompare$0.json"
+      },
+      {
+        "name": "DissolveCompare-2",
+        "path": "visual/Detergents/",
+        "cml": "visual/Detergents/DissolveCompare.cml",
+        "mml": "visual/Detergents/DissolveCompare$1.mml",
+        "json": "converted/visual/Detergents/DissolveCompare$1.json"
+      },
+      {
+        "name": "MoveMolecules2",
+        "path": "visual/Detergents/",
+        "cml": "visual/Detergents/MoveMolecules2.cml",
+        "mml": "visual/Detergents/MoveMolecules2$0.mml",
+        "json": "converted/visual/Detergents/MoveMolecules2$0.json"
+      },
+      {
+        "name": "OilWater2",
+        "path": "visual/Detergents/",
+        "cml": "visual/Detergents/OilWater2.cml",
+        "mml": "visual/Detergents/OilWater2$0.mml",
+        "json": "converted/visual/Detergents/OilWater2$0.json"
+      }
+    ]
+  },
+  {
+    "section": "visual/ChemicalReactions",
+    "content": [
+      {
+        "name": "hydrogen1newcolors",
+        "path": "visual/ChemicalReactions/",
+        "cml": "visual/ChemicalReactions/hydrogen1newcolors.cml",
+        "mml": "visual/ChemicalReactions/hydrogen1newcolors$0.mml",
+        "json": "converted/visual/ChemicalReactions/hydrogen1newcolors$0.json"
+      }
+    ]
+  },
+  {
+    "section": "visual/PlateTectonics",
+    "content": [
+      {
+        "name": "thermalexpansion-custom",
+        "path": "visual/PlateTectonics/",
+        "cml": "visual/PlateTectonics/thermalexpansion-custom.cml",
+        "mml": "visual/PlateTectonics/thermalexpansion-custom$0.mml",
+        "json": "converted/visual/PlateTectonics/thermalexpansion-custom$0.json"
+      }
+    ]
+  },
+  {
     "section": "inquiry-space",
     "content": [
       {
-        "name": "pendulum",
+        "name": "pendulum-1",
         "path": "inquiry-space/",
         "cml": "inquiry-space/pendulum/pendulum1.cml",
         "mml": "inquiry-space/pendulum/pendulum1$0.mml",
         "json": "converted/inquiry-space/pendulum/pendulum1$0.json"
+      },
+      {
+        "name": "pendulum-2",
+        "path": "inquiry-space/",
+        "cml": "inquiry-space/pendulum/pendulum1.cml",
+        "mml": "inquiry-space/pendulum/spring-mass$0.mml",
+        "json": "converted/inquiry-space/pendulum/spring-mass$0.json"
       }
     ]
   },
@@ -2907,6 +2971,13 @@ modelList = [
         "cml": "conversion-and-physics-examples/one-radial-bond_different_elements.cml",
         "mml": "conversion-and-physics-examples/one-radial-bond_different_elements$0.mml",
         "json": "converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json"
+      },
+      {
+        "name": "pendulum1",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/pendulum1.cml",
+        "mml": "conversion-and-physics-examples/pendulum1$0.mml",
+        "json": "converted/conversion-and-physics-examples/pendulum1$0.json"
       },
       {
         "name": "point-restraint",

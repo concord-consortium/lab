@@ -1,4 +1,4 @@
-/*global define $ model */
+/*global define, $, model */
 
 define(function () {
 
@@ -9,11 +9,13 @@ define(function () {
         // Public API.
     var controller,
         // DOM elements.
-        $div, $option, $span,
+        $div, $span,
         // Options definitions from component JSON definition.
         options,
         // List of jQuery objects wrapping <input type="radio"> elements.
-        $options = [];
+        $options = [],
+        // List of jQuery objects wrapping <div> used for radio styling.
+        $fakeCheckables = [];
 
     // Updates radio using model property. Used in modelLoadedCallback.
     // Make sure that this function is only called when:
@@ -26,14 +28,47 @@ define(function () {
       for (i = 0, len = options.length; i < len; i++) {
         if (options[i].value === value) {
           $options[i].attr("checked", true);
+          $fakeCheckables[i].addClass('checked');
         } else {
           $options[i].removeAttr("checked");
+          $fakeCheckables[i].removeClass('checked');
         }
       }
     }
 
+    function customClickEvent (e) {
+      var $clickedParent = $(this).closest('span'),
+          $input = $clickedParent.find('input'),
+          $fakeCheckable = $clickedParent.find('.fakeCheckable'),
+          i, len;
+
+      e.preventDefault();
+
+      if ($input.attr("disabled") !== undefined) {
+        // Do nothing when option is disabled.
+        return;
+      }
+
+      for (i = 0, len = $options.length; i < len; i++) {
+        $options[i].removeAttr('checked');
+        $fakeCheckables[i].removeClass('checked');
+      }
+
+      if ($input.attr('checked') !== undefined) {
+        $input.removeAttr('checked');
+        $fakeCheckable.removeClass('checked');
+      } else {
+        $input.attr('checked', 'checked');
+        $fakeCheckable.addClass('checked');
+      }
+
+      // Trigger change event!
+      $input.trigger('change');
+    }
+
     function initialize() {
-      var i, len, option;
+      var $option, $fakeCheckable, $label,
+          option, i, len;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.radio, component);
@@ -51,24 +86,49 @@ define(function () {
       // Add class defining component orientation - "horizontal" or "vertical".
       $div.addClass(component.orientation);
 
+      if (component.label) {
+        $label = $("<span>").text(component.label);
+        $label.addClass("label");
+        $label.addClass(component.labelOn === "top" ? "on-top" : "on-left");
+        $div.append($label);
+      }
+
       // Create options (<input type="radio">)
       for (i = 0, len = options.length; i < len; i++) {
         option = options[i];
         $option = $('<input>')
           .attr('type', "radio")
-          .attr('name', component.id);
+          .attr('name', component.id)
+          .attr('id', component.id + '-' + i);
         $options.push($option);
+
+        $label = $('<label>')
+          .attr("for", component.id + '-' + i)
+          .text(option.text);
+
+        $fakeCheckable = $('<div class="fakeCheckable">');
+        $fakeCheckables.push($fakeCheckable);
 
         if (option.disabled) {
           $option.attr("disabled", option.disabled);
+          $fakeCheckable.addClass("disabled");
         }
         if (option.selected) {
           $option.attr("checked", option.selected);
+          $fakeCheckable.addClass("checked");
         }
         $span = $('<span>')
+          .addClass('option')
           .append($option)
-          .append(option.text);
+          .append($fakeCheckable)
+          .append($label);
         $div.append($span);
+
+        // Ensure that custom div (used for styling) is clickable.
+        $fakeCheckable.on('touchstart click', customClickEvent);
+        // Label also requires custom event handler to ensure that click updates
+        // fake clickable element too.
+        $label.on('touchstart click', customClickEvent);
 
         $option.change((function(option) {
           return function() {

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>How hydrogen combustion happens</page_title>
+<text>Model hydrogen combustion
+This model shows how hydrogen and oxygen burn to form water. The equation for this reaction is:
+2H2 + O2 &#10145; 2H2O
+
+    
+                                                         
+ 
+
+</text>
+<section start="0" end="206">
+<paragraph start="0" end="26">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="25">
+<bold>true</bold><size>16</size></content>
+
+<content start="25" end="26">
+<bold>true</bold><size>14</size></content>
+
+</paragraph>
+<paragraph start="26" end="122">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="26" end="121">
+<size>14</size></content>
+
+<content start="121" end="122">
+<bold>true</bold><size>17</size></content>
+
+</paragraph>
+<paragraph start="122" end="138">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="122" end="124">
+<bold>true</bold><size>17</size></content>
+
+<content start="124" end="125">
+<bold>true</bold><size>11</size></content>
+
+<content start="125" end="129">
+<bold>true</bold><size>17</size></content>
+
+<content start="129" end="130">
+<bold>true</bold><size>11</size></content>
+
+<content start="130" end="135">
+<bold>true</bold><size>17</size></content>
+
+<content start="135" end="136">
+<bold>true</bold><size>11</size></content>
+
+<content start="136" end="138">
+<bold>true</bold><size>17</size></content>
+
+</paragraph>
+<paragraph start="138" end="139">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="138" end="139">
+<bold>true</bold><size>17</size></content>
+
+</paragraph>
+<paragraph start="139" end="144">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="139" end="140">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>270.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style2 { font-family: Verdana, Arial, Helvetica, sans-serif }
+        .style1 { font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p style=&quot;margin-top: 0&quot;&gt;
+      &lt;span class=&quot;style1&quot;&gt;Instructions:&lt;/span&gt;
+    &lt;/p&gt;
+    &lt;ol class=&quot;style2&quot;&gt;
+      &lt;li&gt;
+        Run the model.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Click &amp;quot;Spark&amp;quot; to initiate the reaction.
+      &lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;!--&lt;img width=&quot;240&quot; src=&quot;hydrogencombustionkey.png&quot; height=&quot;143&quot;&gt;--&gt;
+    &lt;img src=&quot;hydrogencombustionkey.png&quot;&gt;
+    &lt;br&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="140" end="141">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>hydrogen1newcolors$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="141" end="142">
+</content>
+
+<content start="142" end="143">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<timeseries>Kinetic Energy/Particle</timeseries>
+<description>temperature</description>
+<multiplier>23.0</multiplier>
+<max_fraction_digits>0</max_fraction_digits>
+<max_integer_digits>2</max_integer_digits>
+<width>90</width>
+<height>250</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-10000</fgcolor>
+<minimum>0.0</minimum>
+<maximum>30.0</maximum>
+<value>0.8789707086980343</value>
+</component></content>
+
+<content start="143" end="144">
+</content>
+
+</paragraph>
+<paragraph start="144" end="202">
+<LeftIndent>8.0</LeftIndent>
+<SpaceBelow>15.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="144" end="194">
+</content>
+
+<content start="194" end="195">
+<component><class>org.concord.modeler.PageButton</class>
+<title>run</title>
+<tooltip>run the model</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<script>run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="195" end="196">
+<component><class>org.concord.modeler.PageButton</class>
+<title>stop</title>
+<tooltip>stop the model</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="196" end="197">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<disabled_at_script>true</disabled_at_script>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="197" end="200">
+</content>
+
+<content start="200" end="201">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Spark</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<script>stop;
+define %molecule int(rand()*%number_of_molecules);
+define %atom1 0;
+set %atom1 atomOfMolecule(%molecule,0);
+define %atom2 0;
+set %atom2 atomOfMolecule(%molecule,1);
+while ((%atom[%atom1].id != 1) or (%atom[%atom1].ry &lt; 10) or (%atom[%atom1].rx &gt; 30));
+print id: %atom[%atom1].id    x: %atom[%atom1].rx   y: %atom[%atom1].ry;
+	set %molecule int(rand()*%number_of_molecules);
+	set %atom1 atomOfMolecule(%molecule,0);
+endwhile;
+set %atom2 atomOfMolecule(%molecule,1);
+define %bond 0;
+set %bond whichrbond(%atom1,%atom2);
+define %sparkX 0;
+set %sparkX (%atom[%atom1].rx+%atom[%atom2].rx)/2;
+define %sparkY 0;
+set %sparkY (%atom[%atom1].ry+%atom[%atom2].ry)/2;
+add image spark.gif (%sparkX, &quot;%sparkY-4.3&quot;); //make point of spark appear at bond.
+select image none;
+select molecule %molecule;
+set visible off;
+delay 0.25;
+set visible on;
+delay 0.25;
+set visible off;
+delay 0.25;
+set visible on;
+delay 0.25;
+select image all;
+remove;
+select rbond %bond;
+remove;
+set atom[%atom1].vx -4000; // set the two radicals to fly off in opposite directions
+set atom[%atom2].vx 4000;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="201" end="202">
+</content>
+
+</paragraph>
+<paragraph start="202" end="204">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="202" end="203">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>760.0</width>
+<height>120.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style2 { font-family: Verdana, Arial, Helvetica, sans-serif }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p style=&quot;margin-top: 0&quot; class=&quot;style2&quot;&gt;
+      &lt;b&gt;Questions to consider while running the model:&lt;/b&gt;
+    &lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li class=&quot;style2&quot;&gt;
+        Does this reaction produce water molecules?
+      &lt;/li&gt;
+      &lt;li class=&quot;style2&quot;&gt;
+        Why is the spark needed to start the reaction? What is its purpose?
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-f0f10</bgcolor>
+</component></content>
+
+<content start="203" end="204">
+</content>
+
+</paragraph>
+<paragraph start="204" end="205">
+<content start="204" end="205">
+</content>
+
+</paragraph>
+<paragraph start="205" end="206">
+</paragraph>
+</section>
+</document>

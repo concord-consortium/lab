@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Density vs. temperature</page_title>
+<text>1. Start the simulation by clicking &quot;Run.&quot;
+2. Add the heat source (cup of hot water) beneath the container of water.
+3. Observe what happens to the molecules.
+4. Remove the heat source and observe what happens.
+5. Record your observations in the next two reflection notes.
+
+     
+
+   
+  
+
+ 
+
+
+
+
+
+</text>
+<section start="0" end="297">
+<paragraph start="0" end="43">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="117">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="43" end="117">
+</content>
+
+</paragraph>
+<paragraph start="117" end="159">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="117" end="159">
+</content>
+
+</paragraph>
+<paragraph start="159" end="211">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="159" end="211">
+</content>
+
+</paragraph>
+<paragraph start="211" end="273">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="211" end="273">
+</content>
+
+</paragraph>
+<paragraph start="273" end="274">
+<content start="273" end="274">
+</content>
+
+</paragraph>
+<paragraph start="274" end="280">
+<Alignment>1</Alignment>
+<content start="274" end="275">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>thermalexpansion-custom$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="275" end="278">
+</content>
+
+<content start="278" end="279">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle</timeseries>
+<description>Temperature</description>
+<datatype>2</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<average>true</average>
+<multiplier>100.0</multiplier>
+<width>50</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>4</major_tick>
+<nstep>8</nstep>
+<label>false</label>
+<title>true</title>
+<fgcolor>-10000</fgcolor>
+<minimum>0.0</minimum>
+<maximum>400.0</maximum>
+<value>43.12500059604645</value>
+</component></content>
+
+<content start="279" end="280">
+</content>
+
+</paragraph>
+<paragraph start="280" end="281">
+<Alignment>1</Alignment>
+<content start="280" end="281">
+</content>
+
+</paragraph>
+<paragraph start="281" end="285">
+<Alignment>1</Alignment>
+<content start="281" end="282">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="282" end="283">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="283" end="284">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="284" end="285">
+</content>
+
+</paragraph>
+<paragraph start="285" end="288">
+<Alignment>1</Alignment>
+<content start="285" end="286">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Add cup of hot water</title>
+<width>180</width><height>29</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set heatbath 45000;
+</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="286" end="287">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove cup of hot water</title>
+<width>180</width><height>29</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set heatbath 5000;
+</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="287" end="288">
+</content>
+
+</paragraph>
+<paragraph start="288" end="289">
+<Alignment>1</Alignment>
+<content start="288" end="289">
+</content>
+
+</paragraph>
+<paragraph start="289" end="291">
+<Alignment>1</Alignment>
+<content start="289" end="291">
+</content>
+
+</paragraph>
+<paragraph start="291" end="292">
+<Alignment>1</Alignment>
+<content start="291" end="292">
+</content>
+
+</paragraph>
+<paragraph start="292" end="293">
+<Alignment>1</Alignment>
+<content start="292" end="293">
+<family>Book Antiqua</family><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="293" end="294">
+<Alignment>1</Alignment>
+<content start="293" end="294">
+</content>
+
+</paragraph>
+<paragraph start="294" end="295">
+<content start="294" end="295">
+</content>
+
+</paragraph>
+<paragraph start="295" end="296">
+<content start="295" end="296">
+</content>
+
+</paragraph>
+<paragraph start="296" end="297">
+</paragraph>
+</section>
+</document>

@@ -8,8 +8,7 @@
       "id": "metalforcesimple$0",
       "url": "/imports/legacy-mw-content/converted/visual/Recycling/metalforcesimple$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
-        "modelTimeLabel": true
+        "controlButtons": "play_reset_step"
       }
     }
   ],
@@ -43,5 +42,14 @@
     "bottom": [
       "force-buttons"
     ]
-  }
+  },
+  "template":[
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
 }

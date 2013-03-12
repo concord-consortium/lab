@@ -13,15 +13,20 @@
     <script src='../../vendor/jquery-ui/jquery-ui.min.js' type='text/javascript'></script>
     <script src='../../vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' type='text/javascript'></script>
     <script src='../../vendor/jquery-context-menu/jquery.contextMenu.js' type='text/javascript'></script>
+    <script src='../../vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js' type='text/javascript'></script>
     <script src='../../vendor/tinysort/jquery.tinysort.js' type='text/javascript'></script>
     <!-- / %script{:src => "../../vendor/science.js/science.v1.js", :type => "text/javascript"} -->
     <script src='../../vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
     <link href='../../vendor/codemirror/lib/codemirror.css' rel='stylesheet' type='text/css'>
     <script src='../../vendor/codemirror/mode/javascript/javascript.js' type='text/javascript'></script>
-    <script src='../../vendor/codemirror/lib/util/foldcode.js' type='text/javascript'></script>
-    <script src='../../vendor/codemirror/lib/util/formatting.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/addon/fold/foldcode.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/addon/fold/collapserange.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/addon/format/formatting.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/addon/edit/matchbrackets.js' type='text/javascript'></script>
+    <script src='../../vendor/codemirror/addon/edit/closebrackets.js' type='text/javascript'></script>
     <link href='../../vendor/jquery-ui/jquery-ui.css' rel='stylesheet' type='text/css'>
     <link href='../../vendor/jquery-context-menu/jquery.contextMenu.css' rel='stylesheet' type='text/css'>
+    <link href='../../vendor/jquery-selectBoxIt/jquery.selectBoxIt.css' rel='stylesheet' type='text/css'>
     <link href='interactives.css' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css'>
     
@@ -97,17 +102,6 @@
     </div>
     <div class='standard-interactive-layout' id='content'>
       <div id='responsive-content'>
-        <div id='content-banner'>
-          <div id='credits'>
-            <div class='link' id='credits-link'>The Concord Consortium</div>
-          </div>
-          <div id='about'>
-            <div class='link' id='about-link'>About</div>
-          </div>
-          <div id='share'>
-            <div class='link' id='share-link'>Share</div>
-          </div>
-        </div>
         <div id='interactive-container'></div>
         <div id='firefox-warning-pane'>
           <p>
@@ -147,6 +141,7 @@
           </div>
           <div class='extras-item-content' id='model-editor-content'>
             <div class='extras-item-controls'>
+              <button id='save-model-button'>Save</button>
               <button id='update-model-button'>Update Model</button>
               <button id='update-json-from-model-button'>Update JSON from Model</button>
               <a class='opens-in-new-window' href='' id='json-model-link' target='_blank'>Model JSON</a>
@@ -200,44 +195,8 @@
         </li>
       </ul>
     </div>
-  </body>
-  <div id='credits-pane'>
-    <div id='credits-pane-banner'>
-      <span id='credits-pane-title'>About</span>
-      <div id='credits-pane-close'>X</div>
-    </div>
-    <div id='credits-content'></div>
-  </div>
-  <div id='about-pane'>
-    <div id='about-pane-banner'>
-      <span id='about-pane-title'>About</span>
-      <div id='about-pane-close'>X</div>
-    </div>
-    <div id='about-content'></div>
-  </div>
-  <div id='share-pane'>
-    <div id='share-pane-banner'>
-      <span id='share-pane-title'>Share</span>
-      <div id='share-pane-close'>X</div>
-    </div>
-    <div id='share-content'>
-      <p>
-        Paste this
-        <a class='opens-in-new-window' href='embeddable.html' id='share-embeddable-link' target='_blank'>link</a>
-        in email or IM.
-      </p>
-      <textarea id='share-embeddable-link-content'></textarea>
-      <p>Paste HTML to embed in website or blog.</p>
-      <div id='share-iframe-form'>Select Size:
-      <select id='share-select-iframe-size'>
-        <option value='smaller'>30% smaller</option>
-        <option selected value='actual'>actual</option>
-        <option value='larger'>50% larger</option>
-      </select>
-      <textarea id='share-iframe-content'></textarea></div>
-    </div>
     <script src='../../lab/lab.js' type='text/javascript'></script>
     <script src='../../imports/legacy-mw-content/model-list.js' type='text/javascript'></script>
     <script src='application.js' type='text/javascript'></script>
-  </div>
+  </body>
 </html>

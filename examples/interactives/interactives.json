@@ -33,6 +33,21 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Atom Data Table",
+      "path": "interactives/basic-examples/atom-data-table.json",
+      "groupKey": "basic-examples",
+      "subtitle": "One way to display a table of atom properties.",
+      "about": [
+        "There are three parts in this Interactive that work togerther to create the atom data table example.",
+        "1. Separate outputs are created for each datum to be represented in the table. The result is that the name values for these outputs can later be used for any component that can accept a model property.",
+        "2. numericOutput compnents are created for each of the output properties. All the numericOutput components are given the same width in 'ems'.",
+        "3. text components are created to make the row and column labels. The text components are given widths to match the rest of the values in that column.",
+        "The performance of this manual method for creating a table is not as high as if we made a custom table component.",
+        "atomToolTips are enabled in this Interactive, hover over an atom to display a tooltip, shift-click on an atom to make that tooltip persistent."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Atom Tracing",
       "path": "interactives/basic-examples/atom-tracing.json",
       "groupKey": "basic-examples",
@@ -57,6 +72,16 @@
       "subtitle": "",
       "about": "",
       "publicationStatus": "draft"
+    },
+    {
+      "title": "callAt and callEvery Demo",
+      "path": "interactives/basic-examples/callat-callevery.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Use an callAt() to perform a script at any given time. Use callEvery() to perform a script repeatedly.",
+      "about": [
+        "Changes in the model property: temperatureControl are monitored with an onPropertyChange() script."
+      ],
+      "publicationStatus": "public"
     },
     {
       "title": "Empty Model",
@@ -116,6 +141,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "onClick Demo",
+      "path": "interactives/basic-examples/on-click.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Use onClick() to add a click listener to a specified type of objects.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "onPropertyChange Demo",
       "path": "interactives/basic-examples/on-property-change.json",
       "groupKey": "basic-examples",
@@ -154,7 +187,7 @@
       "path": "interactives/basic-examples/pulling-uncharged-atoms.json",
       "groupKey": "basic-examples",
       "subtitle": "Atoms can dragged to new positions, try pulling the red one a bit to the right and letting go. This model starts running when loaded.",
-      "about": "These atoms are uncharged and have a van der Waals attraction. Pull one a short distance away and it will move back towards the other. However pull them far enough apart and they won't move back together.",
+      "about": "These atoms are uncharged and have a Van der Waals attraction. Pull one a short distance away and it will move back towards the other. However pull them far enough apart and they won't move back together.",
       "publicationStatus": "public"
     },
     {
@@ -399,14 +432,6 @@
       "publicationStatus": "public"
     },
     {
-      "title": "Gravitational Fields",
-      "path": "interactives/conversion-tests/gravitational-field-test.json",
-      "groupKey": "conversion-tests",
-      "subtitle": "",
-      "about": "",
-      "publicationStatus": "public"
-    },
-    {
       "title": "Image Layers",
       "path": "interactives/conversion-tests/image-layers.json",
       "groupKey": "conversion-tests",
@@ -541,7 +566,7 @@
       "subtitle": "There are four large invisible atoms near the center. These also participate in the molecular dynamics model.",
       "about": [
         "This model defines 8 atoms. There are four larger yellow atoms initially defined as invisible closer to the center. These are surrounded by four smaller purple atoms further away from the center.",
-        "After starting the model the smaller purple atoms will start showing visible interactions with the invisible atoms at 7900 fs.",
+        "After starting the model the smaller purple atoms will start showing visible attractions with the invisible atoms at 7900 fs.",
         "You can enable or disable visibility of the larger yellow atoms using the pull-down menu selection"
       ],
       "publicationStatus": "public"
@@ -702,18 +727,6 @@
       "publicationStatus": "public"
     },
     {
-      "title": "Pressure Equilibrium (new layout)",
-      "path": "interactives/sam/gas-laws/7-why-did-the-can-collapse-new-layout.json",
-      "groupKey": "sam/gas-laws",
-      "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
-      "about": [
-        "There are gases on both sides of a moveable barrier (piston), which stays in the same place (more or less) when you run the model because the gas pressure on the piston is in equilibrium.",
-        "Add purple gas molecules and watch what happens to the piston. Reset the model. Now add yellow gas molecules. What happens to the piston?",
-        "Try heating or cooling the gas molecules. Explain the change in equilibrium with each change. Which has a greater effect on equilibrium -- changing the number of gas molecules or changing the temperature? Why?"
-      ],
-      "publicationStatus": "draft"
-    },
-    {
       "title": "Pressure Equilibrium",
       "path": "interactives/sam/gas-laws/7-why-did-the-can-collapse.json",
       "groupKey": "sam/gas-laws",
@@ -872,8 +885,8 @@
       "groupKey": "samples",
       "subtitle": "Explore Coulomb and Intermolecular Attractions",
       "about": [
-        "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions) and van der Waals forces (an additional attractive force between all atoms).",
-        "What kinds of patterns tend to form with charged and neutral atoms? How does changing the van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
+        "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions) and Van der Waals forces (an additional attractive force between all atoms).",
+        "What kinds of patterns tend to form with charged and neutral atoms? How does changing the Van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
       ],
       "publicationStatus": "sample"
     },
@@ -883,8 +896,8 @@
       "groupKey": "samples",
       "subtitle": "Explore Coulomb and Intermolecular Attractions",
       "about": [
-        "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions) and van der Waals forces (an additional attractive force between all atoms).",
-        "What kinds of patterns tend to form with charged and neutral atoms? How does changing the van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
+        "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions) and Van der Waals forces (an additional attractive force between all atoms).",
+        "What kinds of patterns tend to form with charged and neutral atoms? How does changing the Van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
       ],
       "publicationStatus": "sample"
     },
@@ -912,6 +925,46 @@
       "title": "Microbuoyancy measured by gauges",
       "path": "interactives/tutorial/microscopic-buoyancy.json",
       "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Hydrogen Combustion",
+      "path": "interactives/visual/chemical-reactions/1-hydrogen1newcolors.json",
+      "groupKey": "visual/chemical-reactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Oil and Water 2",
+      "path": "interactives/visual/detergents/1-oil-water2.json",
+      "groupKey": "visual/detergents",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Dissolve Compare",
+      "path": "interactives/visual/detergents/2-dissolve-compare.json",
+      "groupKey": "visual/detergents",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Move Molecules",
+      "path": "interactives/visual/detergents/3-move-molecules.json",
+      "groupKey": "visual/detergents",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Thermal Expansion",
+      "path": "interactives/visual/plate-tectonics/1-thermal-expansion.json",
+      "groupKey": "visual/plate-tectonics",
       "subtitle": "",
       "about": "",
       "publicationStatus": "draft"
@@ -988,6 +1041,21 @@
     {
       "path": "visual/recycling",
       "name": "VISUAL: Recycling",
+      "category": "Curriculum"
+    },
+    {
+      "path": "visual/detergents",
+      "name": "VISUAL: Detergents",
+      "category": "Curriculum"
+    },
+    {
+      "path": "visual/chemical-reactions",
+      "name": "VISUAL: Chemical Reactions",
+      "category": "Curriculum"
+    },
+    {
+      "path": "visual/plate-tectonics",
+      "name": "VISUAL: Plate Techtonics",
       "category": "Curriculum"
     },
     {

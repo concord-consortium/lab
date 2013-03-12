@@ -4,16 +4,16 @@ define(function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "8eb530d7a2c2ff4e3fb52ba09d7550f97c44525e",
-        "short_sha":      "8eb530d7",
-        "url":            "https://github.com/concord-consortium/lab/commit/8eb530d7",
+        "sha":           "3d4db3cba1037f79ed47f5088562685e071cedf9",
+        "short_sha":      "3d4db3cb",
+        "url":            "https://github.com/concord-consortium/lab/commit/3d4db3cb",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-03-01 14:53:52 -0500",
-        "short_message": "bump d3:bubble-default-on-mousedown branch",
-        "message":       "bump d3:bubble-default-on-mousedown branch\n\n[#45403519], [#45233971]\n\nfixes for touch and simplification for previous FF fixes"
+        "date":          "2013-03-12 15:52:22 -0400",
+        "short_message": "Interactive Sampler: remove frame borders",
+        "message":       "Interactive Sampler: remove frame borders\n\nNot needed with recent Interactive frame design work."
       },
-      "dirty": false
+      "dirty": true
     }
   };
 });

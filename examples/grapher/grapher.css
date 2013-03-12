@@ -1,11 +1,14 @@
 #content {
   margin-left: 2em; }
 
-.title {
+svg.graph text.title {
   font-size: 1.3em; }
-
-.axis {
-  font-size: 1.1em; }
+svg.graph text.axis {
+  font-size: 1.2em; }
+svg.graph text.ylabel {
+  font-size: 1em; }
+svg.graph text.xlabel {
+  font-size: 1em; }
 
 circle, .line {
   fill: none;

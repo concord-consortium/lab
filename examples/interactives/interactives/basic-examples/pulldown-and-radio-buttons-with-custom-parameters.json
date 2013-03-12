@@ -7,7 +7,7 @@
   "models": [
     {
       "id": "pendulum1$0",
-      "url": "/imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/pendulum1$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "velocityVectors": {
@@ -49,6 +49,7 @@
       "id": "gravity-slider",
       "min": 0.1,
       "max": 4,
+      "width": "14em",
       "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
@@ -68,6 +69,8 @@
       "type": "pulldown",
       "id": "length-pulldown",
       "property": "startingLength",
+      "label": "Starting Length",
+      "labelOn": "top",
       "options": [
         {
           "text": "Starting Length ...",
@@ -104,6 +107,8 @@
       "id": "angle-buttons",
       "orientation": "horizontal",
       "property": "startingAngle",
+      "label": "Starting Angle",
+      "labelOn": "top",
       "options": [
         {
           "text": "45",
@@ -124,6 +129,7 @@
       "id": "mass-slider",
       "min": 10,
       "max": 500,
+      "width": "14em",
       "displayValue": "return format('f')(value)",
       "labels": [
         {
@@ -144,6 +150,7 @@
       "id": "friction-slider",
       "min": 0,
       "max": 1,
+      "width": "14em",
       "displayValue": "return format('1.1f')(value)",
       "labels": [
         {
@@ -163,12 +170,14 @@
       "type": "checkbox",
       "id": "ke-shading",
       "text": "KE Shading",
+      "width": "14em",
       "property": "keShading"
     },
     {
       "type": "checkbox",
       "id": "velocity-vectors",
       "text": "Velocity Vectors",
+      "width": "14em",
       "property": "showVelocityVectors"
     },
     {

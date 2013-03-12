@@ -34,7 +34,7 @@
   "parameters": [
     {
       "name": "volume",
-      "units": "nm^2",
+      "unitAbbreviation": "nm²",
       "label": "area",
       "initialValue": 3,
       "onChange": [
@@ -60,7 +60,7 @@
   "outputs": [
     {
       "name": "pressureProbeInstantaneous",
-      "units": "Bar",
+      "unitType": "pressure",
       "label": "Pressure Gauge",
       "value": [
         "return getObstacleProperties(0).westProbeValue;"
@@ -70,7 +70,7 @@
   "filteredOutputs": [
     {
       "name": "pressureProbeFiltered",
-      "units": "Bar",
+      "unitType": "pressure",
       "label": "Pressure Gauge",
       "property": "pressureProbeInstantaneous",
       "type": "RunningAverage",
@@ -94,7 +94,6 @@
       "type": "numericOutput",
       "id": "current-volume",
       "label": "Volume of Gas",
-      "units": " ",
       "property": "volume",
       "displayValue": "return format('1.2f')(value)"
     },

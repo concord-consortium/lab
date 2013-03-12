@@ -217,27 +217,20 @@ var ROOT = "/experiments",
   // Interactive Code Editor
   //
   function setupCodeEditor() {
+    var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     $exportedData.text("");
-    foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     if (!editor) {
       editor = CodeMirror.fromTextArea(exportedData, {
         mode: { name: "javascript", json: true },
         indentUnit: indent,
         lineNumbers: true,
-        lineWrapping: false
+        lineWrapping: false,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        collapseRange: true,
+        onGutterClick: foldFunc
       });
     }
-    editor.on("gutterClick", foldFunc);
-  }
-
-  function autoFormatEditorContent(ed) {
-    var cursorStart = ed.getCursor("start"),
-        cursorEnd = ed.getCursor("end"),
-        lastLine = ed.lineCount(),
-        viewPort = ed.getViewport();
-    ed.autoFormatRange({ ch:0, line: 0 }, { ch:0, line: lastLine });
-    ed.setSelection(cursorStart, cursorEnd);
-    ed.scrollIntoView({ ch:0, line: viewPort.from });
   }
 
   // startButtonStatusCallback();

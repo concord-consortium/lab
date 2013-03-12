@@ -10,6 +10,8 @@ define(function (require) {
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
   "actualRoot": "",
+  "hostName": "lab.concord.org",
+  "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
   "logging": true,
   "tracing": false,
   "authoring": false

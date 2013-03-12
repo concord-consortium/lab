@@ -1,6 +1,8 @@
-/*global d3 $ define model alert */
+/*global d3, $, define, model */
 
 define(function (require) {
+
+  var alert = require('common/alert');
 
   //
   // Define the scripting API used by 'action' scripts on interactive elements.
@@ -91,6 +93,107 @@ define(function (require) {
           });
         },
 
+        /**
+         * Performs a user-defined script at any given time.
+         *
+         * callAt(t, ...) guarantees that script will be executed, but not necessarily
+         * at exactly chosen time (as this can be impossible due to simulation settings).
+         * User scripts cannot interrupt the model "tick", the most inner integration loop.
+         * e.g. callAt(23, ...) in MD2D model context will be executed at time 50,
+         * if timeStepsPerTick = 50 and timeStep = 1.
+         *
+         * callAt action will only occur the first time the model reaches the specified time,
+         * but not after the model is scrubbed forward and backward (using tick history).
+         *
+         * @param  {number} time     Time defined in model native time unit (e.g. fs for MD2D).
+         * @param  {function} action Function containing user-defined script.
+         */
+        callAt: function callAt(time, action) {
+          var actionTimeout = {
+            time: time,
+            action: action,
+            check: function() {
+              if (model.get("time") >= this.time) {
+                this.action();
+                // Optimization - when function was once executed, replace
+                // check with empty function.
+                // removePropertiesListener() method could be useful, but it
+                // isn't available yet.
+                this.check = function () {};
+              }
+            }
+          };
+          model.addPropertiesListener("time", function () {
+            actionTimeout.check();
+          });
+        },
+
+        /**
+         * Performs a user-defined script repeatedly, with a fixed time delay
+         * between each call.
+         *
+         * callEvery(t, ...) guarantees that script will be executed *correct number of times*,
+         * but not necessarily at exactly chosen intervals (as this can be impossible due to
+         * simulation settings). User scripts cannot interrupt the model "tick", the most
+         * inner integration loop.
+         * e.g. callEvery(23, ...) in MD2D model context will be executed *twice* at time 50,
+         * if timeStepsPerTick = 50 and timeStep = 1.
+         *
+         * callEvery action for time N * interval (for any integer N >= 1) will only be called
+         * the first time the model time exceeds N * interval time. After the model is scrubbed
+         * forward and backward using (using tick history), action *won't* be called again.
+         *
+         * @param {number}   interval Interval on how often to execute the script,
+         *                            defined in model native time unit (e.g. fs for MD2D).
+         * @param {function} action   Function containing user-defined script.
+         */
+        callEvery: function callEvery(interval, action) {
+          var actionInterval = {
+            lastCall: 0,
+            interval: interval,
+            action: action,
+            execute: function() {
+              var time = model.get("time");
+              while (time - this.lastCall >= this.interval) {
+                this.action();
+                this.lastCall += this.interval;
+              }
+            }
+          };
+          model.addPropertiesListener("time", function () {
+            actionInterval.execute();
+          });
+        },
+
+        /**
+         * Sets a custom click handler for objects of a given type.
+         * Basic type which is always supported is "plot". It is empty
+         * area of a model. Various models can support different clickable
+         * types. Please see the model documentation to check what
+         * other object types are supported.
+         *
+         * Behind the scenes this functions uses class selector. So you can
+         * also inspect SVG image and check what is class of interesting
+         * object and try to use it.
+         *
+         * MD2D specific notes:
+         * Supported types: "plot", "atom", "obstacle", "image", "textBox".
+         * TODO: move it to MD2D related docs in the future.
+         *
+         * @param {string}   type     Name of the type of clickable objects.
+         * @param {Function} callback Custom click handler. It will be called
+         *                            when object is clicked with (x, y, d, i) arguments:
+         *                              x - x coordinate in model units,
+         *                              y - y coordinate in model units,
+         *                              d - data associated with a given object (can be undefined!),
+         *                              i - ID of clicked object (usually its value makes sense if d is defined).
+         */
+        onClick: function onClick(type, callback) {
+          // Append '.' to make API simpler.
+          // So authors can just specify onClick("atom", ...) instead of class selectors.
+          interactivesController.getModelController().modelContainer.setClickHandler("." + type, callback);
+        },
+
         start: function start() {
           model.start();
         },
@@ -126,10 +229,10 @@ define(function (require) {
 
         Math: Math,
 
-        // prevent us from overwriting window.undefined
-        undefined: undefined,
+        // Rrevent us from overwriting window.undefined.
+        "undefined": undefined,
 
-        // rudimentary debugging functionality
+        // Rudimentary debugging functionality. Use Lab alert helper function.
         alert: alert,
 
         console: window.console !== null ? window.console : {
@@ -155,7 +258,7 @@ define(function (require) {
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        jQuery.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
+        $.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
       },
 
       /**

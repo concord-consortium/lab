@@ -18,7 +18,7 @@
   "outputs": [
     {
       "name": "volume",
-      "units": "nm?",
+      "unitAbbreviation": "nm?",
       "label": "area",
       "value": [
         "return getObstacleProperties(0).x * 2;"
@@ -35,6 +35,8 @@
           "action": [
             "var opt = {supressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
+            "/* Ensure that available volume is enough for 100 molecules. */",
+            "if (obsX < 1) { obsX = 1; setObstacleProperties(0, {x: obsX}); }",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
             "while (getNumberOfAtoms() < 120) {",
@@ -51,6 +53,8 @@
           "action": [
             "var opt = {supressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
+            "/* Ensure that available volume is enough for 100 molecules. */",
+            "if (obsX < 1) { obsX = 1; setObstacleProperties(0, {x: obsX}); }",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
             "while (getNumberOfAtoms() < 100) {",
