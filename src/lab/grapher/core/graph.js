@@ -1,4 +1,4 @@
-/*globals define, d3, $ */
+/*global define, d3, $ self */
 
 define(function (require) {
   // Dependencies.
@@ -17,7 +17,7 @@ define(function (require) {
         ty = function(d) { return "translate(0," + yScale(d) + ")"; },
         fx, fy,
         svg, vis, plot, viewbox,
-        title, xlabel, ylabel, xtic, ytic,
+        title, xlabel, ylabel,
         notification,
         padding, size,
         xScale, yScale, line,
@@ -25,7 +25,6 @@ define(function (require) {
         cubicEase = d3.ease('cubic'),
         ds,
         circleCursorStyle,
-        displayProperties,
         fontSizeInPixels,
         halfFontSizeInPixels,
         quarterFontSizeInPixels,
@@ -36,7 +35,6 @@ define(function (require) {
         xAxisNumberWidth,
         yAxisNumberWidth,
         strokeWidth,
-        scaleFactor,
         sizeType = {
           category: "medium",
           value: 3,
@@ -552,7 +550,7 @@ define(function (require) {
         if (options.xlabel && sizeType.value > 1) {
           xlabel
               .attr("x", size.width/2)
-              .attr("dy", axisFontSizeInPixels*2 + "px")
+              .attr("dy", axisFontSizeInPixels*2 + "px");
         }
 
         if (options.ylabel && sizeType.value > 1) {
@@ -638,8 +636,8 @@ define(function (require) {
               .attr("text-anchor", "middle")
               .style("cursor", "ew-resize")
               .text(fx)
-              .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+              .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
               .on("mousedown.drag",  xaxisDrag)
               .on("touchstart.drag", xaxisDrag);
         }
@@ -680,8 +678,8 @@ define(function (require) {
               .attr("text-anchor", "end")
               .style("cursor", "ns-resize")
               .text(fy)
-              .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+              .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
               .on("mousedown.drag",  yaxisDrag)
               .on("touchstart.drag", yaxisDrag);
         }
@@ -708,27 +706,29 @@ define(function (require) {
       function realTimeUpdate(currentSample) {
         updateCanvas(currentSample);
 
-        if (graph.selectablePoints) {
-          var circle = vis.selectAll("circle")
-              .data(points, function(d) { return d; });
+        // old code saved for reference:
 
-          circle.enter().append("circle")
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return x(d.x); })
-              .attr("cy",    function(d) { return y(d.y); })
-              .attr("r", 1.0)
-              .on("mousedown", function(d) {
-                selected = dragged = d;
-                update();
-              });
+        // if (graph.selectablePoints) {
+        //   var circle = vis.selectAll("circle")
+        //       .data(points, function(d) { return d; });
 
-          circle
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return x(d.x); })
-              .attr("cy",    function(d) { return y(d.y); });
+        //   circle.enter().append("circle")
+        //       .attr("class", function(d) { return d === selected ? "selected" : null; })
+        //       .attr("cx",    function(d) { return x(d.x); })
+        //       .attr("cy",    function(d) { return y(d.y); })
+        //       .attr("r", 1.0)
+        //       .on("mousedown", function(d) {
+        //         selected = dragged = d;
+        //         update();
+        //       });
 
-          circle.exit().remove();
-        }
+        //   circle
+        //       .attr("class", function(d) { return d === selected ? "selected" : null; })
+        //       .attr("cx",    function(d) { return x(d.x); })
+        //       .attr("cy",    function(d) { return y(d.y); });
+
+        //   circle.exit().remove();
+        // }
 
         if (d3.event && d3.event.keyCode) {
           d3.event.preventDefault();
@@ -787,36 +787,38 @@ define(function (require) {
       //
       // ------------------------------------------------------------
 
-      function updateSample(currentSample) {
-        updateCanvas(currentSample);
+      // currently unused:
 
-        if (graph.selectablePoints) {
-          var circle = vis.selectAll("circle")
-              .data(points, function(d) { return d; });
+      // function updateSample(currentSample) {
+      //   updateCanvas(currentSample);
 
-          circle.enter().append("circle")
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return x(d.x); })
-              .attr("cy",    function(d) { return y(d.y); })
-              .attr("r", 1.0)
-              .on("mousedown", function(d) {
-                selected = dragged = d;
-                update();
-              });
+      //   if (graph.selectablePoints) {
+      //     var circle = vis.selectAll("circle")
+      //         .data(points, function(d) { return d; });
 
-          circle
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return x(d.x); })
-              .attr("cy",    function(d) { return y(d.y); });
+      //     circle.enter().append("circle")
+      //         .attr("class", function(d) { return d === selected ? "selected" : null; })
+      //         .attr("cx",    function(d) { return x(d.x); })
+      //         .attr("cy",    function(d) { return y(d.y); })
+      //         .attr("r", 1.0)
+      //         .on("mousedown", function(d) {
+      //           selected = dragged = d;
+      //           update();
+      //         });
 
-          circle.exit().remove();
-        }
+      //     circle
+      //         .attr("class", function(d) { return d === selected ? "selected" : null; })
+      //         .attr("cx",    function(d) { return x(d.x); })
+      //         .attr("cy",    function(d) { return y(d.y); });
 
-        if (d3.event && d3.event.keyCode) {
-          d3.event.preventDefault();
-          d3.event.stopPropagation();
-        }
-      }
+      //     circle.exit().remove();
+      //   }
+
+      //   if (d3.event && d3.event.keyCode) {
+      //     d3.event.preventDefault();
+      //     d3.event.stopPropagation();
+      //   }
+      // }
 
       function plotDrag() {
         if (options.realTime) {
@@ -868,14 +870,14 @@ define(function (require) {
         }
       }
 
-      function xaxisDrag(d) {
+      function xaxisDrag() {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
         var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
-      function yaxisDrag(d) {
+      function yaxisDrag() {
         document.onselectstart = function() { return false; };
         d3.event.preventDefault();
         var p = d3.mouse(vis.node());
@@ -898,9 +900,8 @@ define(function (require) {
       // ------------------------------------------------------------
 
       function mousemove() {
-        var p = d3.mouse(vis.node()),
-            changex, changey, new_domain,
-            t = d3.event.changedTouches;
+        var p = d3.mouse(vis.node());
+        // t = d3.event.changedTouches;
 
         document.onselectstart = function() { return true; };
         d3.event.preventDefault();
@@ -943,11 +944,10 @@ define(function (require) {
       }
 
       function updateOrRescale(currentSample) {
-        var i,
-            domain = xScale.domain(),
+        var domain = xScale.domain(),
             xAxisStart = Math.round(domain[0]/sample),
-            xAxisEnd = Math.round(domain[1]/sample),
-            start = Math.max(0, xAxisStart),
+            // xAxisEnd = Math.round(domain[1]/sample),
+            // start = Math.max(0, xAxisStart),
             xextent = domain[1] - domain[0],
             shiftPoint = xextent * 0.9,
             currentExtent;
@@ -985,7 +985,8 @@ define(function (require) {
           }
         } else {
           if (shiftingX) {
-            if (shiftingX = ds()) {
+            shiftingX = ds();
+            if (shiftingX) {
               redraw();
             } else {
               update();
@@ -1044,11 +1045,16 @@ define(function (require) {
           ylabel.style("display", "none");
         }
       }
-      graph.margin = function(_) {
-        if (!arguments.length) return margin;
-        margin = _;
-        return graph;
-      };
+
+      // REMOVE
+      // 'margin' variable is undefined
+      // It is defined, but otherwise unused, in Lab.grapher.graph as of b1eeea703
+      // (12 March 2013)
+      // graph.margin = function(_) {
+      //   if (!arguments.length) return margin;
+      //   margin = _;
+      //   return graph;
+      // };
 
       graph.xmin = function(_) {
         if (!arguments.length) return options.xmin;
@@ -1127,17 +1133,19 @@ define(function (require) {
         return graph;
       };
 
-      graph.x = function(_) {
-        if (!arguments.length) return xValue;
-        xValue = _;
-        return graph;
-      };
+      // REMOVE?
+      // xValue doesn't appear to be used for anything as of b1eeea70, 3/12/13
+      // graph.x = function(_) {
+      //   if (!arguments.length) return xValue;
+      //   xValue = _;
+      //   return graph;
+      // };
 
-      graph.y = function(_) {
-        if (!arguments.length) return yValue;
-        yValue = _;
-        return graph;
-      };
+      // graph.y = function(_) {
+      //   if (!arguments.length) return yValue;
+      //   yValue = _;
+      //   return graph;
+      // };
 
       graph.elem = function(_) {
         if (!arguments.length) return elem;
@@ -1330,11 +1338,11 @@ define(function (require) {
 
       function add_data(newdata) {
         if (!arguments.length) return points;
-        var domain = xScale.domain(),
-            xextent = domain[1] - domain[0],
-            shift = xextent * 0.8,
-            ds,
-            i;
+        var i;
+           // domain = xScale.domain(),
+            // xextent = domain[1] - domain[0],
+            //shift = xextent * 0.8,
+            // ds,
         if (newdata instanceof Array && newdata.length > 0) {
           if (newdata[0] instanceof Array) {
             for(i = 0; i < newdata.length; i++) {
@@ -1350,7 +1358,7 @@ define(function (require) {
         }
         updateOrRescale();
         return graph;
-      };
+      }
 
 
       // ------------------------------------------------------------
@@ -1364,8 +1372,7 @@ define(function (require) {
         markedPoint = false;
         var index = points.length,
             lengthX = index * sample,
-            point = { x: lengthX, y: p },
-            newx, newy;
+            point = { x: lengthX, y: p };
         points.push(point);
       }
 
@@ -1457,26 +1464,31 @@ define(function (require) {
         updateOrRescale();
       }
 
-      function change_xaxis(xmax) {
-        x = d3.scale[options.xscale]()
-            .domain([0, xmax])
-            .range([0, size.width]);
-        graph.xmax = xmax;
-        x_tics_scale = d3.scale[options.xscale]()
-            .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
-            .range([0, size.width]);
-        update();
-        redraw();
-      }
+      // REMOVE
+      // unused in b1eeea703
+      // function change_xaxis(xmax) {
+      //   x = d3.scale[options.xscale]()
+      //       .domain([0, xmax])
+      //       .range([0, size.width]);
+      //   graph.xmax = xmax;
 
-      function change_yaxis(ymax) {
-        y = d3.scale[options.yscale]()
-            .domain([ymax, 0])
-            .range([0, size.height]);
-        graph.ymax = ymax;
-        update();
-        redraw();
-      }
+      //   x_tics_scale = d3.scale[options.xscale]()
+      //       .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
+      //       .range([0, size.width]);
+      //   update();
+      //   redraw();
+      // }
+
+      // REMOVE
+      // unused in b1eeea703
+      // function change_yaxis(ymax) {
+      //   y = d3.scale[options.yscale]()
+      //       .domain([ymax, 0])
+      //       .range([0, size.height]);
+      //   graph.ymax = ymax;
+      //   update();
+      //   redraw();
+      // }
 
       function clearCanvas() {
         gcanvas.width = gcanvas.width;
@@ -1505,8 +1517,10 @@ define(function (require) {
             pointsLength = pointArray[0].length,
             numberOfLines = pointArray.length,
             xAxisStart = Math.round(xScale.domain()[0]/sample),
-            xAxisEnd = Math.round(xScale.domain()[1]/sample),
-            start = Math.max(0, xAxisStart);
+            // xAxisEnd = Math.round(xScale.domain()[1]/sample),
+            start = Math.max(0, xAxisStart),
+            lengthX,
+            px;
 
 
         if (typeof currentSample === 'undefined') {
@@ -1712,11 +1726,13 @@ define(function (require) {
       graph.clearCanvas = clearCanvas;
       graph.updateCanvas = updateCanvas;
       graph.showMarker = showMarker;
-      
+
       graph.add_data = add_data;
 
-      graph.change_xaxis = change_xaxis;
-      graph.change_yaxis = change_yaxis;
+      // REMOVE
+      // Unused in b1eeea703
+      // graph.change_xaxis = change_xaxis;
+      // graph.change_yaxis = change_yaxis;
     }
 
     graph.getXDomain = function () {
