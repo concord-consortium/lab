@@ -39,19 +39,18 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
     [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 11. [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
 12. [dsp.js](https://github.com/corbanbrook/dsp.js): [MIT](http://www.opensource.org/licenses/MIT)
-13. [lightgl.js](https://github.com/evanw/lightgl.js): [MIT](http://www.opensource.org/licenses/MIT)
-14. [requirejs](https://github.com/jrburke/requirejs): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+13. [requirejs](https://github.com/jrburke/requirejs): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-15. [almond](https://github.com/jrburke/almond): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+14. [almond](https://github.com/jrburke/almond): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-16. [text](https://github.com/requirejs/text): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+15. [text](https://github.com/requirejs/text): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-17. [domReady](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+16. [domReady](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-18. [require-cs](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+17. [require-cs](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-19. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)
-20. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
+18. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)
+19. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
     Codemirror2 includes a number of modules from third parties. All of the modules are licensed under either the MIT or BSD
     license except for the following which are excluded during the Make process where resources from `src/vendor/` are
     generated and copied to `server/public/vendor/`.
@@ -77,14 +76,14 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
     11.  src/vendor/codemirror2/theme/xq-dark.css: MIT
     12.  src/vendor/codemirror2/lib/util/foldcode.js: MIT
 
-21. [jQuery UI Touch Punch](http://http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+20. [jQuery UI Touch Punch](http://http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-22. [jQuery Context Menu](http://medialize.github.com/jQuery-contextMenu/): dual-licensed under
+21. [jQuery Context Menu](http://medialize.github.com/jQuery-contextMenu/): dual-licensed under
     [MIT](http://www.opensource.org/licenses/MIT) and [GPL v3.0](http://opensource.org/licenses/GPL-3.0).
-23. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
-24. [underscore](https://github.com/documentcloud/underscore): [MIT](http://www.opensource.org/licenses/MIT)
-25. [postMessage structured clone detection](https://gist.github.com/4583494): [MIT](http://www.opensource.org/licenses/MIT)
-26.  [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
+22. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
+23. [underscore](https://github.com/documentcloud/underscore): [MIT](http://www.opensource.org/licenses/MIT)
+24. [postMessage structured clone detection](https://gist.github.com/4583494): [MIT](http://www.opensource.org/licenses/MIT)
+25. [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
 
 The Sass mixins in the directories: `src/sass/bourbon` and `src/sass/neat` are used to produce some
 of the CSS used in the Lab project and are distributed under the MIT license.
