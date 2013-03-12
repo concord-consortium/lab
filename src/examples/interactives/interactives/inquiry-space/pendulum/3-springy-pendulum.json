@@ -12,8 +12,6 @@
         "controlButtons": "play_reset_step",
         "gridLines": true,
         "showClock": true,
-        "xunits": true,
-        "yunits": true,
         "velocityVectors": {
           "length": 10
         }
@@ -289,8 +287,8 @@
     {
       "type": "graph",
       "id": "pendulumGraph",
-      "title": "Pendulum Angle (°)",
-      "xlabel": "Time  (s)",
+      "title": false,
+      "xlabel": false,
       "ylabel": "Angle (°)",
       "ymin": -100,
       "ymax": 100,
@@ -305,8 +303,8 @@
     {
       "type": "graph",
       "id": "distanceFromEquilibriumGraph",
-      "title": "Distance From Equilibrium (m)",
-      "xlabel": "Time (s)",
+      "title": false,
+      "xlabel": false,
       "ylabel": "Distance (m)",
       "ymin": -0.6,
       "ymax": 0.6,
@@ -331,22 +329,20 @@
       [
         "gravity-slider",
         "length-slider",
-        "angle-slider"
+        "angle-slider",
+        "velocity-vectors"
       ],
       [
         "mass-slider",
         "spring-constant-slider",
-        "damping-slider"
+        "damping-slider",
+        "ke-shading"
       ],
       [
         "equilibrium-display",
         "displacement-display",
         "current-angle-display"
       ]
-    ],
-    "bottom-right": [
-      [ "velocity-vectors" ],
-      [ "ke-shading" ]
     ]
   },
   "template": [
@@ -357,8 +353,8 @@
       "height": "model.height * 0.5",
       "padding-left": "1em",
       "padding-bottom": "0.5em",
-      "width": "model.width * 0.7",
-      "min-width": "6em"
+      "width": "model.width * 1.0",
+      "min-width": "model.width * 0.8"
     },
     {
       "id": "right-lower",
@@ -366,22 +362,14 @@
       "top": "right-upper.bottom",
       "height": "model.height * 0.5",
       "padding-left": "1em",
-      "width": "model.width * 0.7",
-      "min-width": "6em"
+      "width": "model.width * 1.0",
+      "min-width": "model.width * 0.8"
     },
     {
       "id": "bottom",
       "top": "model.bottom",
       "width": "interactive.width",
       "padding-top": "0.5em"
-    },
-    {
-      "id": "bottom-right",
-      "top": "model.bottom",
-      "left": "model.right",
-      "width": "right-lower.width",
-      "padding-top": "1.0em",
-      "align": "right"
     }
   ]
 }
