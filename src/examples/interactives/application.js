@@ -779,6 +779,8 @@ AUTHORING = false;
           // make a copy of this interactive
           remoteSaveInteractive(interactiveState, true);
           editor.setValue(JSON.stringify(interactiveState, null, indent));
+          $saveInteractiveButton.removeAttr('disabled');
+          $saveAsInteractiveButton.removeAttr('disabled');
         },
         "Cancel": function() {
           $(this).dialog("close");
@@ -796,6 +798,9 @@ AUTHORING = false;
       // update this interactive, false = don't copy this interactive.
       remoteSaveInteractive(interactiveState, false);
       editor.setValue(JSON.stringify(interactiveState, null, indent));
+      $saveInteractiveButton.removeAttr('disabled');
+      $saveAsInteractiveButton.removeAttr('disabled');
+
     });
 
     // Error dialog for creating/updating interactives
@@ -886,6 +891,7 @@ AUTHORING = false;
   function setupCodeEditor() {
     var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
+
     if (!editor) {
       editor = CodeMirror.fromTextArea($interactiveTextArea.get(0), {
         mode: { name: "javascript", json: true },
@@ -897,6 +903,18 @@ AUTHORING = false;
         collapseRange: true,
         onGutterClick: foldFunc
       });
+
+      if (!isStaticPage()){
+        // disable save, save as button when interactive json has changed
+        editor.on('change', function(instance, changeObj){
+          if (!editor.isClean() && 
+              (!$saveInteractiveButton.attr('disabled') || 
+               !$saveAsInteractiveButton.attr('disabled')) ){
+            $saveInteractiveButton.attr('disabled', 'disabled');
+            $saveAsInteractiveButton.attr('disabled', 'disabled');
+          }
+        });
+      }
     }
 
     if (!buttonHandlersAdded) {
@@ -904,6 +922,8 @@ AUTHORING = false;
       $updateInteractiveButton.on('click', function() {
         try {
           interactive = JSON.parse(editor.getValue());
+          $saveInteractiveButton.removeAttr('disabled');
+          $saveAsInteractiveButton.removeAttr('disabled');
         } catch (e) {
           alert("Interactive JSON syntax error: " + e.message);
           throw new Error("Interactive JSON syntax error: " + e.message);
