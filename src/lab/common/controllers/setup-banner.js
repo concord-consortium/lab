@@ -2,8 +2,9 @@
 
 define(function () {
 
-  var labConfig      = require('lab.config'),
-      TextController = require('common/controllers/text-controller');
+  var labConfig       = require('lab.config'),
+      TextController  = require('common/controllers/text-controller'),
+      ImageController = require('common/controllers/image-controller');
 
   /**
    * Returns a hash containing:
@@ -48,22 +49,11 @@ define(function () {
       layout[container.id] = [link.id];
     }
 
-    creditsDialog.update(interactive);
-    createLinkInContainer(
-    {
-      "type": "text",
-      "id": "credits-link",
-      "text": "The Concord Consortium",
-      "style": "header",
-      "onClick": function () { creditsDialog.open(); }
-    },
-    {
-      "id": "banner-bottom-left",
-      "bottom": "container.height",
-      "left": "0",
-      "align": "left",
-      "belowOthers": true
-    });
+    function createImageInContainer(image, container) {
+      components[image.id] = new ImageController(image);
+      template.push(container);
+      layout[container.id] = [image.id];
+    }
 
     // Define about link only if "about" or "subtitle" section is available.
     aboutDialog.update(interactive);
@@ -109,6 +99,24 @@ define(function () {
         "aboveOthers": true
       });
     }
+
+    // bottom bar
+    creditsDialog.update(interactive);
+    createImageInContainer(
+    {
+      "type": "image",
+      "id": "credits-link",
+      "height": "2.5em",
+      "src": "/resources/layout/cc-logo.png",
+      "onClick": function () { creditsDialog.open(); }
+    },
+    {
+      "id": "banner-bottom-left",
+      "bottom": "container.height",
+      "left": "0",
+      "align": "left",
+      "belowOthers": true
+    });
 
     return {
       components: components,
