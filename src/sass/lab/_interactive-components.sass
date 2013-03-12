@@ -25,11 +25,8 @@
   -o-user-select: none
   user-select: none
 
-// Interactive select and button are typical select / button
-// DOM elements with 'component' class.
-select.component
-  font-size: 1em
-
+// Interactive button is typical button
+// DOM element with 'component' class.
 button.component
   @include linear-gradient(#fafafa, #c2c2c2, $fallback: #eee)
   font-size: 1em
@@ -95,6 +92,18 @@ button.component
     @include icon-bg("../../resources/upstatement/unchecked.svg", center, 100%)
     &.checked
       @include icon-bg("../../resources/upstatement/checked.svg", center, 100%)
+
+.interactive-pulldown
+  font-size: 1em
+  .label, .selectboxit-container
+    // Align vertically select box and label.
+    vertical-align: middle
+  .label
+    font-size: 1.1em
+    &.on-left
+      margin-right: 0.4em
+    &.on-top
+      display: block
 
 .interactive-checkbox
   font-size: 1em

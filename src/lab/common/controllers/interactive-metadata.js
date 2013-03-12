@@ -308,6 +308,13 @@ define(function() {
       type: {
         required: true
       },
+      label: {
+        defaultValue: ""
+      },
+      labelOn: {
+        // Other option is "top".
+        defaultValue: "left"
+      },
       options: {
         defaultValue: []
       },

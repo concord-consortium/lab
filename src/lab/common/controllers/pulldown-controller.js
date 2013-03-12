@@ -1,4 +1,4 @@
-/*global require define $ model*/
+/*global require, define, $, model */
 
 $.fn.measure = function(fn, selector, parent) {
   var el, selection, result;
@@ -45,9 +45,9 @@ define(function () {
     }
 
     function initialize() {
-      var i, len, option,
-          parent = interactivesController.interactiveContainer,
-          ulWidth, arrowWidth, boxWidth;
+      var parent = interactivesController.interactiveContainer,
+          $label, ulWidth, arrowWidth, boxWidth,
+          i, len, option;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.pulldown, component);
@@ -89,13 +89,22 @@ define(function () {
         }
       });
 
-      // Add $pulldown to a wrapping span. This way $pulldown.selectBoxIt() will create
+      $wrapper = $('<div>')
+        .attr('id', component.id)
+        .addClass("interactive-pulldown")
+        .addClass("component");
+
+      if (component.label) {
+        $label = $("<span>").text(component.label);
+        $label.addClass("label");
+        $label.addClass(component.labelOn === "top" ? "on-top" : "on-left");
+        $wrapper.append($label);
+      }
+
+      // Add $pulldown to a wrapping div. This way $pulldown.selectBoxIt() will create
       // a selectBox element which will also be in the span, and then we can return
       // this element to be embedded in the interactive
-      $wrapper = $('<span>')
-        .attr('id', component.id)
-        .addClass("component")
-        .append($pulldown);
+      $wrapper.append($pulldown);
 
       $pulldown.selectBoxIt();
 
