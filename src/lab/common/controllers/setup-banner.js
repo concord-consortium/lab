@@ -22,7 +22,7 @@ define(function () {
         template = [],
         layout = {},
         // About link visible if there is about section or subtitle.
-        aboutVisible = interactive.about || interactive.subtitle;
+        haveAboutText = interactive.about || interactive.subtitle;
 
     template.push({
       "id": "top-bar",
@@ -66,26 +66,24 @@ define(function () {
     });
 
     // Define about link only if "about" or "subtitle" section is available.
-    if (aboutVisible) {
-      aboutDialog.update(interactive);
-      createLinkInContainer(
-      {
-        "type": "text",
-        "id": "about-link",
-        "text": "About",
-        "style": "header",
-        "onClick": function () { aboutDialog.open(); }
-      },
-      {
-        "id": "banner-right",
-        "top": "0",
-        "right": "interactive.width",
-        "padding-left": "1em",
-        "padding-right": "1em",
-        "align": "right",
-        "aboveOthers": true
-      });
-    }
+    aboutDialog.update(interactive);
+    createLinkInContainer(
+    {
+      "type": "text",
+      "id": "about-link",
+      "text": "About",
+      "style": "header",
+      "onClick": function () { if (haveAboutText) {aboutDialog.open()} else {creditsDialog.open()}}
+    },
+    {
+      "id": "banner-right",
+      "top": "0",
+      "right": "interactive.width",
+      "padding-left": "1em",
+      "padding-right": "1em",
+      "align": "right",
+      "aboveOthers": true
+    });
 
     // Define sharing link only if sharing is enabled.
     // Note that due to layout limitations, banner-middle container
@@ -105,7 +103,7 @@ define(function () {
         "id": "banner-middle",
         "top": "0",
         // "banner-right" can be undefined, so check it.
-        "right": aboutVisible ? "banner-right.left" : "interactive.width",
+        "right": "banner-right.left",
         "padding-right": "1em",
         "align": "right",
         "aboveOthers": true
