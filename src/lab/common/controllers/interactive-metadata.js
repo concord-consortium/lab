@@ -466,6 +466,12 @@ define(function() {
       type: {
         required: true
       },
+      realTime: {
+        defaultValue: true
+      },
+      fontScaleRelativeToParent: {
+        defaultValue: true
+      },
       properties: {
         defaultValue: []
       },
@@ -496,10 +502,10 @@ define(function() {
       ymax: {
         defaultValue: 10
       },
-      xTicCount: {
+      xTickCount: {
         defaultValue: 10
       },
-      yTicCount: {
+      yTickCount: {
         defaultValue: 10
       },
       xscaleExponent: {

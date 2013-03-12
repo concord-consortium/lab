@@ -324,7 +324,7 @@ ISImporter.GraphController = defineClass({
   },
 
   initGraph: function() {
-    this.graph = Lab.grapher.graph(this.element, {
+    this.graph = Lab.grapher.Graph(this.element, {
       title       : this.title,
       xlabel      : this.xLabel,
       xmin        : 0,

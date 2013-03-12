@@ -2,7 +2,7 @@
 /*jslint boss: true eqnull: true*/
 
 define(function (require) {
-  var RealTimeGraph = require('grapher/core/real-time-graph'),
+  var Graph = require('grapher/core/graph'),
       metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator'),
 
@@ -11,14 +11,16 @@ define(function (require) {
       // internal implementation detail (the grapher options format).
       grapherOptionForComponentSpecProperty = {
         title: 'title',
+        realTime: 'realTime',
+        fontScaleRelativeToParent: 'fontScaleRelativeToParent',
         xlabel: 'xlabel',
         xmin: 'xmin',
         xmax: 'xmax',
         ylabel: 'ylabel',
         ymin: 'ymin',
         ymax: 'ymax',
-        xTicCount: 'xTicCount',
-        yTicCount: 'yTicCount',
+        xTickCount: 'xTickCount',
+        yTickCount: 'yTickCount',
         xscaleExponent: 'xscaleExponent',
         yscaleExponent: 'yscaleExponent',
         xFormatter: 'xFormatter',
@@ -91,7 +93,7 @@ define(function (require) {
       for (i = 0; i < dataPoint.length; i++) {
         data[i] = [dataPoint[i]];
       }
-      grapher.new_data(data);
+      grapher.newRealTimeData(data);
     }
 
     /**
@@ -107,7 +109,7 @@ define(function (require) {
       }
       // The grapher considers each individual (property, time) pair to be a "point", and therefore
       // considers the set of properties at any 1 time (what we consider a "point") to be "points".
-      grapher.add_points(dataPoint);
+      grapher.addRealTimePoints(dataPoint);
     }
 
     /**
@@ -121,7 +123,7 @@ define(function (require) {
         // Account for initial data, which corresponds to stepCounter == 0
         data[i].length = model.stepCounter() + 1;
       }
-      grapher.new_data(data);
+      grapher.newRealTimeData(data);
     }
 
     /**
@@ -155,7 +157,7 @@ define(function (require) {
         if (grapher.number_of_points() && model.stepCounter() < grapher.number_of_points()) {
           removeDataAfterStepPointer();
         }
-        grapher.show_canvas();
+        grapher.showCanvas();
       });
       model.on('invalidation.'+namespace, removeDataAfterStepPointer);
 
@@ -193,7 +195,7 @@ define(function (require) {
         if (grapher) {
           resetGrapher();
         } else {
-          grapher = new RealTimeGraph($container[0], getOptions());
+          grapher = new Graph($container[0], getOptions());
         }
         resetData();
         registerModelListeners();

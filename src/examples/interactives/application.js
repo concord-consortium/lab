@@ -1051,7 +1051,7 @@ AUTHORING = false;
         modelEnergyGraph.reset('#model-energy-graph-chart', options);
       }
       else {
-        modelEnergyGraph = Lab.grapher.realTimeGraph('#model-energy-graph-chart', options);
+        modelEnergyGraph = Lab.grapher.Graph('#model-energy-graph-chart', options);
       }
       addEventListeners();
     }

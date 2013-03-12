@@ -10,6 +10,7 @@ var graph,
     stopStreaming = false,
     selectSize = document.getElementById('select-size'),
     selectData = document.getElementById('select-data'),
+    responsiveLayout = document.getElementById('responsive-layout'),
     DEFAULT_GRAPH = "earth-surface-temperature",
     hash = document.location.hash || "#" + DEFAULT_GRAPH,
     interactive_url = hash.substr(1, hash.length);
@@ -48,16 +49,21 @@ function selectDataHandler() {
   hash = "#" + interactive_url;
   document.location.hash = hash;
   if (!graph) {
-    graph = Lab.grapher.graph('#chart');
+    graph = Lab.grapher.Graph('#chart');
   }
   switch(selectData.value) {
     case "fake":
-    graph.reset({ points: "fake" });
+    graph.reset('#chart', {
+      points: "fake",
+      responsiveLayout: responsiveLayout.checked,
+      fontScaleRelativeToParent: false
+    });
     break;
 
     case "stair-steps":
-    graph.reset({
+    graph.reset('#chart', {
       title:  "Stair-Step Data",
+      responsiveLayout: responsiveLayout.checked,
       xlabel: "Distance",
       ylabel: "Height",
       xmax:   14,
@@ -82,7 +88,9 @@ function selectDataHandler() {
       var surface_temperatures = data.global_temperatures.temperature_anomolies.map(function(e) {
           return [e[0], e[1] + data.global_temperatures.global_surface_temperature_1961_1990];
         });
-      graph.reset({
+      graph.reset('#chart', {
+        responsiveLayout: responsiveLayout.checked,
+        fontScaleRelativeToParent: false,
         title:  "Earth's Surface Temperature: years 500-2009",
         xlabel: "Year",
         ylabel: "Degrees C",
@@ -90,6 +98,7 @@ function selectDataHandler() {
         xmin:   500,
         ymax:   15,
         ymin:   13,
+        yFormatter: "3.1f",
         circleRadius: false,
         dataChange: false,
         points: surface_temperatures
@@ -100,8 +109,9 @@ function selectDataHandler() {
     case "world-population":
     d3.json("data/world-population.json", function(data) {
       var worldPopulation = data.worldPopulation.data;
-      graph.reset({
+      graph.reset('#chart', {
         title:  "World Population, Historical and Projected: 10,000 BCE to 2050",
+        responsiveLayout: responsiveLayout.checked,
         xlabel: "Year",
         ylabel: "Population (Millions)",
         xmax:   2500,
@@ -118,7 +128,7 @@ function selectDataHandler() {
     case "world-population-semi-log":
     d3.json("data/world-population.json", function(data) {
       var worldPopulation = data.worldPopulation.data;
-      graph.reset({
+      graph.reset('#chart', {
         title:  "World Population, Historical and Projected: 10,000 BCE to 2050 (semi-log)",
         xlabel: "Year",
         ylabel: "Population (Millions)",
@@ -140,7 +150,7 @@ function selectDataHandler() {
       var data = d3.csv.parseRows(text);
       data.length = 5000;
       var random_walk = data.map(function(e) { return [e[1], e[2]]; });
-      graph.reset({
+      graph.reset('#chart', {
         title:  [
                   "Constrained random walk of center of mass of Lab molecular simulation",
                   "(L-J forces only; 50 atoms; no thermostat; initial temperature = \"5\")"
@@ -161,7 +171,7 @@ function selectDataHandler() {
 
     case "streaming":
     var maxtime = 20;
-    graph.reset({
+    graph.reset('#chart', {
       title:  "Sin Waves",
       xlabel: "Time",
       ylabel: "Amplitude",
@@ -201,6 +211,7 @@ function selectDataHandler() {
 }
 
 selectData.onchange = selectDataHandler;
+responsiveLayout.onchange = selectDataHandler;
 selectDataHandler();
 
 $(window).bind('hashchange', function () {

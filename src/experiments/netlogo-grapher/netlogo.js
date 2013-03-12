@@ -107,7 +107,7 @@ netlogo.AppletGrapher.prototype.createGraphs = function(graphConfigs) {
     $chart.height((this.modelConfig.size.height+90)/graphConfigs.length);
     $(this.graphList).append($chart);
     graphs.push({
-      "graph": Lab.grapher.graph("#chart" + i, gconfig.graphOptions),
+      "graph": Lab.grapher.Graph("#chart" + i, gconfig.graphOptions),
       "dataArray": [],
       "graphVariables": gconfig.graphVariables
     });
