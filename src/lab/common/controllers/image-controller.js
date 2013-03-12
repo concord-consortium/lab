@@ -6,7 +6,8 @@ define(function (require) {
       inherit              = require('common/inherit'),
       InteractiveComponent = require('common/controllers/interactive-component'),
 
-      externalUrl = /^https?:\/\//i;
+      externalUrl  = /^https?:\/\//i,
+      resourcesUrl = /^\/resources\//i;
 
   /**
    * Image controller.
@@ -26,7 +27,7 @@ define(function (require) {
     /** @private */
     this._$img = $("<img>");
     /** @private */
-    this._externalUrl = externalUrl.test(this.component.src);
+    this._externalUrl = externalUrl.test(this.component.src) || resourcesUrl.test(this.component.src);
 
     if (this._externalUrl) {
       // If URL is external, we can setup it just once.
