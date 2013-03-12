@@ -33,6 +33,15 @@ define(function () {
       "aboveOthers": true
     });
 
+    template.push({
+      "id": "bottom-bar",
+      "bottom": "container.height",
+      "left": "0",
+      "width": "container.width",
+      "height": "banner-bottom-left.height",
+      "belowOthers": true
+    });
+
     function createLinkInContainer(link, container) {
       components[link.id] = new TextController(link);
       template.push(container);
@@ -49,11 +58,11 @@ define(function () {
       "onClick": function () { creditsDialog.open(); }
     },
     {
-      "id": "banner-left",
-      "top": "0",
+      "id": "banner-bottom-left",
+      "bottom": "container.height",
       "left": "0",
       "align": "left",
-      "aboveOthers": true
+      "belowOthers": true
     });
 
     // Define about link only if "about" or "subtitle" section is available.

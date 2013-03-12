@@ -59,7 +59,8 @@ define(function (require) {
         modelTop,
         modelLeft,
         topBoundary,
-        leftBoundary;
+        leftBoundary,
+        bottomBarWidth;
 
     function reset() {
       modelWidth = layoutConfig.minModelWidth;
@@ -67,6 +68,7 @@ define(function (require) {
       modelLeft = 0;
       topBoundary = 0;
       leftBoundary = 0;
+      bottomBarWidth = 0;
     }
 
     function getDimensionOfContainer($container, dim) {
@@ -278,7 +280,7 @@ define(function (require) {
 
     function positionContainers() {
       var container, $container,
-          left, top, right, bottom, i, ii, id;
+          left, top, right, bottom, height, i, ii, id;
 
       $modelContainer.css({
         width:  modelWidth,
@@ -333,6 +335,12 @@ define(function (require) {
             topBoundary = bottom;
           }
         }
+        if (container.belowOthers) {
+          height = getDimensionOfContainer($container, "height");
+          if (height > bottomBarWidth) {
+            bottomBarWidth = height;
+          }
+        }
       }
 
       leftBoundary = padding;
@@ -341,6 +349,7 @@ define(function (require) {
       for (id in $containerByID) {
         if (!$containerByID.hasOwnProperty(id)) continue;
         if (containerSpecByID[id] && containerSpecByID[id].aboveOthers) continue;
+        if (containerSpecByID[id] && containerSpecByID[id].belowOthers) continue;
         $container = $containerByID[id];
         top = getDimensionOfContainer($container, "top");
         $container.css("top", top + topBoundary);
@@ -362,6 +371,7 @@ define(function (require) {
       for (id in $containerByID) {
         if (!$containerByID.hasOwnProperty(id)) continue;
         if (containerSpecByID[id] && containerSpecByID[id].aboveOthers) continue;
+        if (containerSpecByID[id] && containerSpecByID[id].belowOthers) continue;
         $container = $containerByID[id];
         right = getDimensionOfContainer($container, "right");
         if (right > maxX) {
@@ -384,15 +394,15 @@ define(function (require) {
       // TODO: this is quite naive approach.
       // It should be changed to some fitness function defining quality of the layout.
       // Using current algorithm, very often we follow some local minima.
-      if ((maxX <= availableWidth && maxY <= availableHeight) &&
-          (Math.abs(availableWidth - maxX) < 1 || Math.abs(availableHeight - maxY) < 1) &&
+      if ((maxX <= availableWidth && maxY <= (availableHeight-bottomBarWidth)) &&
+          (Math.abs(availableWidth - maxX) < 1 || Math.abs((availableHeight-bottomBarWidth) - maxY) < 1) &&
           (Math.abs(minX - leftBoundary) < 1 && Math.abs(minY - topBoundary) < 1)) {
         // Perfect solution found!
         // (TODO: not so perfect, see above)
         return true;
       }
 
-      ratio = Math.min(availableWidth / maxX, availableHeight / maxY);
+      ratio = Math.min(availableWidth / maxX, (availableHeight-bottomBarWidth) / maxY);
       if (!isNaN(ratio)) {
         modelWidth = modelWidth * ratio;
       }
@@ -435,10 +445,12 @@ define(function (require) {
       switch(dim) {
         case "container.width":
           return availableWidth;
+        case "container.height":
+          return availableHeight;
         case "interactive.width":
           return availableWidth - padding;
         case "interactive.height":
-          return availableHeight - padding;
+          return availableHeight - padding - bottomBarWidth;
         default:
           dim = dim.split(".");
           return getDimensionOfContainer($containerByID[dim[0]], dim[1]);
@@ -456,7 +468,7 @@ define(function (require) {
 
       reset();
       availableWidth = canonicalInteractiveWidth;
-      availableHeight = canonicalInteractiveHeight;
+      availableHeight = canonicalInteractiveHeight - bottomBarWidth;
       modelWidth = availableWidth;
 
       // Set basic interactive dimensions to default values to ensure that default font will be used.
@@ -580,7 +592,7 @@ define(function (require) {
 
         reset();
         availableWidth  = $interactiveContainer.width();
-        availableHeight = $interactiveContainer.height();
+        availableHeight = $interactiveContainer.height() - bottomBarWidth;
         modelWidth = availableWidth; // optimization
 
         // 0. Set font size of the interactive-container based on its size.
