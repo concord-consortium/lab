@@ -312,8 +312,8 @@ define(function() {
         defaultValue: ""
       },
       labelOn: {
-        // Other option is "top".
-        defaultValue: "left"
+        // Other option is "left".
+        defaultValue: "top"
       },
       options: {
         defaultValue: []
