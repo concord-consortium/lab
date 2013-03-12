@@ -305,7 +305,7 @@
       "id": "distanceFromEquilibriumGraph",
       "title": false,
       "xlabel": false,
-      "ylabel": "Distance (m)",
+      "ylabel": "Equilibrium Dist. (m)",
       "ymin": -0.6,
       "ymax": 0.6,
       "xmax": 10,
@@ -352,6 +352,7 @@
       "left": "model.right",
       "height": "model.height * 0.5",
       "padding-left": "1em",
+      "padding-right": "0.5em",
       "padding-bottom": "0.5em",
       "width": "model.width * 1.0",
       "min-width": "model.width * 0.8"
@@ -362,6 +363,7 @@
       "top": "right-upper.bottom",
       "height": "model.height * 0.5",
       "padding-left": "1em",
+      "padding-right": "0.5em",
       "width": "model.width * 1.0",
       "min-width": "model.width * 0.8"
     },
