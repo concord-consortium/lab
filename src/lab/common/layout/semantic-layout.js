@@ -178,8 +178,11 @@ define(function (require) {
             $containerByID[id].css(prop, container[prop]);
           }
           // Support also "align" property.
-          if (prop === "align") {
+          else if (prop === "align") {
             $containerByID[id].css("text-align", container[prop]);
+          }
+          else if (prop === "fontScale") {
+            $containerByID[id].css("font-size", container[prop] + "em");
           }
         }
       }
