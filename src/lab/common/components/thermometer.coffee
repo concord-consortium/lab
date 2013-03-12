@@ -20,4 +20,4 @@ define (require) ->
       @redraw()
 
     redraw: ->
-      @thermometer_fill.height("#{@scaled_value() * @dom_element.height()}px")
+      @thermometer_fill.css "height", (@scaled_value() * 100) + "%"
