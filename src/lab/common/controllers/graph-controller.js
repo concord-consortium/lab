@@ -25,7 +25,10 @@ define(function (require) {
         yFormatter: 'yFormatter',
         lines: 'lines',
         bars: 'bars'
-      };
+      },
+
+  graphControllerCount = 0;
+
 
   return function graphController(component) {
     var // HTML element containing view
@@ -33,7 +36,8 @@ define(function (require) {
         grapher,
         controller,
         properties,
-        data = [];
+        data = [],
+        namespace = "graphController" + (++graphControllerCount);
 
     /**
       Returns the time interval that elapses between succeessive data points, same units as model's
@@ -139,21 +143,21 @@ define(function (require) {
 
     function registerModelListeners() {
       // Namespace listeners to '.graphController' so we can eventually remove them all at once
-      model.on('tick.graphController', appendDataPoint);
-      model.on('stepBack.graphController', redrawCurrentStepPointer);
-      model.on('stepForward.graphController', redrawCurrentStepPointer);
-      model.on('seek.graphController', redrawCurrentStepPointer);
-      model.on('reset.graphController', function() {
+      model.on('tick.'+namespace, appendDataPoint);
+      model.on('stepBack.'+namespace, redrawCurrentStepPointer);
+      model.on('stepForward.'+namespace, redrawCurrentStepPointer);
+      model.on('seek.'+namespace, redrawCurrentStepPointer);
+      model.on('reset.'+namespace, function() {
         resetGrapher();
         resetData();
       });
-      model.on('play.pressureGraph', function() {
+      model.on('play.'+namespace, function() {
         if (grapher.number_of_points() && model.stepCounter() < grapher.number_of_points()) {
           removeDataAfterStepPointer();
         }
         grapher.show_canvas();
       });
-      model.on('invalidation.graphController', removeDataAfterStepPointer);
+      model.on('invalidation.'+namespace, removeDataAfterStepPointer);
 
       // As an imperfect hack (really the grapher should allow us to pass the correct x-axis value)
       // we reset the graph if a model property change changes the time interval between ticks
