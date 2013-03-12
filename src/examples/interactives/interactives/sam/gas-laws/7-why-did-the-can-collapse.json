@@ -2,7 +2,6 @@
   "title": "Pressure Equilibrium",
   "publicationStatus": "public",
   "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
-  "fontScale": 0.8,
   "about": [
     "There are gases on both sides of a moveable barrier (piston), which stays in the same place (more or less) when you run the model because the gas pressure on the piston is in equilibrium.",
     "Add purple gas molecules and watch what happens to the piston. Reset the model. Now add yellow gas molecules. What happens to the piston?",
@@ -260,13 +259,15 @@
       "id": "left",
       "top": "3em",
       "right": "model.left",
-      "align": "center"
+      "align": "center",
+      "fontScale": 0.8
     },
     {
       "id": "right",
       "top": "3em",
       "left": "model.right",
-      "align": "center"
+      "align": "center",
+      "fontScale": 0.8
     },
     {
       "id": "bottom",
