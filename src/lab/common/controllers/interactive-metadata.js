@@ -200,6 +200,9 @@ define(function() {
       },
       height: {
         defaultValue: "auto"
+      },
+      onClick: {
+        // Script executed on user click, optional.
       }
     },
 

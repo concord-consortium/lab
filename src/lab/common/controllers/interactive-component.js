@@ -13,6 +13,8 @@ define(function (require) {
    * @param {Object} component Component JSON definition.
    */
   function InteractiveComponent(type, component) {
+    var onClickFunction;
+
     /**
      * Validated component definition.
      * @type {Object}
@@ -32,6 +34,18 @@ define(function (require) {
     }
     if (this.component.height) {
       this.$element.css("height", this.component.height);
+    }
+    if (this.component.onClick) {
+      if (typeof this.component.onClick !== "function") {
+        // Create function from the string or array of strings.
+        onClickFunction = scriptingAPI.makeFunctionInScriptContext(this.component.onClick);
+      } else {
+        // Just assign ready function.
+        onClickFunction = this.component.onClick;
+      }
+      this.$element.on("click", onClickFunction);
+      // Also add a special class indicating that this text node is a clickable.
+      this.$element.addClass("clickable");
     }
   }
 
