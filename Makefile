@@ -117,7 +117,6 @@ clean:
 	-$(MAKE) submodule-update || $(MAKE) submodule-update-tags
 	rm -f src/vendor/jquery/dist/jquery*.js
 	rm -f src/vendor/jquery-ui/dist/jquery-ui*.js
-	rm -f src/vendor/lightgl.js/lightgl.js
 	rm -f src/vendor/d3/d3*.js
 
 .PHONY: submodule-update
@@ -312,7 +311,6 @@ server/public/vendor: \
 	server/public/vendor/fonts \
 	server/public/vendor/codemirror \
 	server/public/vendor/dsp.js \
-	server/public/vendor/lightgl.js \
 	server/public/vendor/requirejs \
 	server/public/vendor/text \
 	server/public/vendor/domReady \
@@ -323,12 +321,6 @@ server/public/vendor/dsp.js:
 	cp src/vendor/dsp.js/dsp.js server/public/vendor/dsp.js
 	cp src/vendor/dsp.js/LICENSE server/public/vendor/dsp.js/LICENSE
 	cp src/vendor/dsp.js/README server/public/vendor/dsp.js/README
-
-server/public/vendor/lightgl.js: src/vendor/lightgl.js/lightgl.js
-	mkdir -p server/public/vendor/lightgl.js
-	cp src/vendor/lightgl.js/lightgl.js server/public/vendor/lightgl.js
-	cp src/vendor/lightgl.js/LICENSE server/public/vendor/lightgl.js/LICENSE
-	cp src/vendor/lightgl.js/README.md server/public/vendor/lightgl.js/README.md
 
 server/public/vendor/d3: src/vendor/d3/d3.js
 	mkdir -p server/public/vendor/d3
@@ -460,9 +452,6 @@ server/public/vendor/codemirror:
 
 server/public/favicon.ico:
 	cp -f src/favicon.ico server/public/favicon.ico
-
-src/vendor/lightgl.js/lightgl.js:
-	cd src/vendor/lightgl.js; python build.py
 
 src/vendor/jquery/dist/jquery.min.js: src/vendor/jquery
 	cd src/vendor/jquery; npm install; \
