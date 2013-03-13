@@ -61,6 +61,23 @@ sensor.AppletGrapher.prototype.StartAppletInitializationTimer = function() {
   window.setTimeout (function()  { self.InitSensorInterface(); }, 250);
 };
 
+sensor.AppletGrapher.prototype.EnumerateSensors = function() {
+  var sensors = this.applet.getAttachedSensors(this.sensorConfig.deviceType);
+  var text = "";
+  if (sensors !== null && sensors.length > 0) {
+    text += "(";
+    for (var i = 0; i < sensors.length; i++) {
+      var name = sensors[i].getName();
+      if (name === null) {
+        name = this.applet.getTypeConstantName(sensors[i].getType());
+      }
+      text += name + ", ";
+    }
+    text = text.substr(0,text.length-2) + ")";
+  }
+  return text;
+};
+
 // Wait until the applet is loaded and initialized before enabling
 // the data collection buttons.
 sensor.AppletGrapher.prototype.InitSensorInterface = function() {
@@ -85,7 +102,7 @@ sensor.AppletGrapher.prototype.InitSensorInterface = function() {
   var connectStatus = document.getElementById("connect-status");
   if(self.applet_ready && self.applet.isInterfaceConnected(self.sensorConfig.deviceType)) {
     console.log("Applet was ready");
-    connectStatus.innerHTML = "Device connected!";
+    connectStatus.innerHTML = "Device connected! " + self.EnumerateSensors();
     var sensor, sensorReq;
     var sensors = [];
     for (var i = 0; i < self.sensorConfig.sensors.length; i++) {
