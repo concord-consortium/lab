@@ -96,9 +96,12 @@
     {
       "type": "graph",
       "id": "propertiesGraph",
-      "title": "Effective Dielectric Constant vs Distance Between Particles",
+      "title": [
+                  "Effective Dielectric Constant vs",
+                  "Distance Between Particles"
+                ],
       "xlabel": "time [ps]",
-      "ylabel": "RED: distance [nm], GREEN: effective dielectric const [unitless]",
+      "ylabel": "RED: distance [nm], GREEN: dielectric constant",
       "xmin": 0,
       "xmax": 20,
       "ymin": 0,
