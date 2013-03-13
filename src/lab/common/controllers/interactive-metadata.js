@@ -224,6 +224,9 @@ define(function() {
       },
       classes: {
         defaultValue: []
+      },
+      tooltip: {
+        // Optional tooltip text
       }
     },
 

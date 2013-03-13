@@ -55,6 +55,11 @@ define(function (require) {
     if (this.component.classes && this.component.classes.length) {
       this.$element.addClass(this.component.classes.join(" "))
     }
+
+    // optionally add tooltip as title text
+    if (this.component.tooltip) {
+      this.$element.attr("title", this.component.tooltip)
+    }
   }
 
   /**

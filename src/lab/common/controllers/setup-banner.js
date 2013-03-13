@@ -145,6 +145,7 @@ define(function () {
         "height": "2.5em",
         "width": "2.5em",
         "classes": ["fullscreen"],
+        "tooltip": "Open interactive in full-screen mode",
         "onClick": function () {
           requestFullscreenMethod.call(body);
         }
