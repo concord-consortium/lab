@@ -31,8 +31,7 @@ class InteractivesController < ApplicationController
     @interactive = Interactive.new(params[:interactive])
     @interactive.group = group
 
-    interactive_model = create_interactive_model
-    @interactive.interactive_models << interactive_model
+    create_interactive_models(@interactive, params[:interactive], params[:interactive][:models])
     
     if @interactive.save
       render({
@@ -83,18 +82,26 @@ class InteractivesController < ApplicationController
 
   end
 
-  def create_interactive_model
-    interactive_model = InteractiveModel.new(:viewOptions => params[:interactive][:models].first[:viewOptions],
-                                             :parameters => params[:interactive][:parameters],
-                                             :outputs => params[:interactive][:outputs],
-                                             :filteredOutputs => params[:interactive][:filteredOutputs])
-    interactive_model.md2d = create_model
+  def create_interactive_models(interactive, interactive_hash, models_hash)
+    models_hash.each do |model_hash|
+      interactive_model = create_interactive_model(model_hash, interactive_hash)
+      interactive.interactive_models << interactive_model      
+    end
+  end
+
+  def create_interactive_model(model_hash, interactive_hash)
+    interactive_model = InteractiveModel.new(:viewOptions => model_hash[:viewOptions],
+                                             :parameters => interactive_hash[:parameters],
+                                             :outputs => interactive_hash[:outputs],
+                                             :filteredOutputs => interactive_hash[:filteredOutputs])
+    interactive_model.md2d = create_model(model_hash[:url])
     interactive_model.save!
     interactive_model
   end
 
-  def create_model
-    orig_model_url = params[:interactive][:models].first[:url]
+  
+  def create_model(orig_model_url)
+    # orig_model_url = params[:interactive][:models].first[:url]
     model_id = orig_model_url.split('/').last.gsub('.json','')
     old_model = Models::Md2d.find(model_id)
     old_model.clone! do |m|
