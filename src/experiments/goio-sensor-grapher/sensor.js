@@ -82,9 +82,10 @@ sensor.AppletGrapher.prototype.InitSensorInterface = function() {
   } catch (e) {
     // Do nothing--we'll try again in the next timer interval.
   }
-
-  if(self.applet_ready) {
+  var connectStatus = document.getElementById("connect-status");
+  if(self.applet_ready && self.applet.isInterfaceConnected(self.sensorConfig.deviceType)) {
     console.log("Applet was ready");
+    connectStatus.innerHTML = "Device connected!";
     var sensor, sensorReq;
     var sensors = [];
     for (var i = 0; i < self.sensorConfig.sensors.length; i++) {
@@ -100,14 +101,21 @@ sensor.AppletGrapher.prototype.InitSensorInterface = function() {
       }
       sensors.push(sensorReq);
     }
-    self.applet.initSensorInterface(self.listener_str, self.sensorConfig.deviceType, sensors)
+    self.applet.initSensorInterface(self.listener_str, self.sensorConfig.deviceType, sensors);
     self.startButton.className = "active";
     if(self.appletInitializationTimer) {
-      clearInterval(self.appletPoller);
-      self.appletPoller = false;
+      clearInterval(self.appletInitializationTimer);
+      self.appletInitializationTimer = false;
     }
     if (typeof this.appletReadyCallback === 'function') {
       this.appletReadyCallback();
+    }
+  } else if (self.applet_ready) {
+    // The applet is ready, but the device is not connected
+    connectStatus.innerHTML = "Device not connected!";
+    self.startButton.className = "inactive";
+    if(!self.appletInitializationTimer) {
+      self.appletInitializationTimer = window.setInterval(function() { self.InitSensorInterface(); }, 1000);
     }
   } else {
     self.startButton.className = "inactive";
