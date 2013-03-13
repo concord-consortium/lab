@@ -8,6 +8,10 @@ define(function() {
         defaultValue: "md2d",
         immutable: true
       },
+      imagePath: {
+        defaultValue: "",
+        immutable: true
+      },
       minX: {
         defaultValue: 0,
         serialize: false
