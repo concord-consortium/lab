@@ -50,6 +50,12 @@ define(function (require) {
         textContainerBelow,
         textContainerTop,
 
+        // we can ask the view to render the playback controls to some other container
+        useExternalPlaybackContainer = false,
+        playbackContainer,
+
+        preexistingControls,
+
         clickHandler,
 
         offsetLeft, offsetTop;
@@ -88,10 +94,8 @@ define(function (require) {
         padding.left += (15  * emsize);
       }
 
-      if (model.get("controlButtons")) {
+      if (model.get("controlButtons") && !useExternalPlaybackContainer) {
         padding.bottom += (40  * emsize);
-      } else {
-        padding.bottom += (15  * emsize);
       }
     }
 
@@ -131,21 +135,26 @@ define(function (require) {
       offsetTop  = node.offsetTop + padding.top;
       offsetLeft = node.offsetLeft + padding.left;
 
-      switch (model.get("controlButtons")) {
-        case "play":
-          playbackXPos = padding.left + (size.width - (75 * emsize))/2;
-          break;
-        case "play_reset":
-          playbackXPos = padding.left + (size.width - (140 * emsize))/2;
-          break;
-        case "play_reset_step":
-          playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-          break;
-        default:
-          playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-      }
+      if (!useExternalPlaybackContainer) {
+        switch (model.get("controlButtons")) {
+          case "play":
+            playbackXPos = padding.left + (size.width - (75 * emsize))/2;
+            break;
+          case "play_reset":
+            playbackXPos = padding.left + (size.width - (140 * emsize))/2;
+            break;
+          case "play_reset_step":
+            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
+            break;
+          default:
+            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
+        }
 
-      playbackYPos = cy - 42 * emsize;
+        playbackYPos = cy - 42 * emsize;
+      } else {
+        playbackXPos = 0;
+        playbackYPos = 0;
+      }
 
       // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
@@ -382,6 +391,8 @@ define(function (require) {
 
         setupKeyboardHandler();
         createGradients();
+
+        playbackContainer = vis1;
       } else {
         // TODO: ?? what g, why is it here?
         vis.selectAll("g.x").remove();
@@ -410,20 +421,21 @@ define(function (require) {
     }
 
     function setupPlaybackControls() {
-      vis1.select('.model-controller').remove();
+      if (preexistingControls) preexistingControls.remove();
       switch (model.get("controlButtons")) {
         case "play":
-          playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          playbackComponent = new PlayOnlyComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
           break;
         case "play_reset":
-          playbackComponent = new PlayResetComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          playbackComponent = new PlayResetComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
           break;
         case "play_reset_step":
-          playbackComponent = new PlaybackComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          playbackComponent = new PlaybackComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
           break;
         default:
           playbackComponent = null;
       }
+      preexistingControls = playbackContainer.select('.model-controller')
     }
 
     //
@@ -491,6 +503,10 @@ define(function (require) {
         width = width - padding.left - padding.right;
         height = width / aspectRatio;
         return height + padding.top  + padding.bottom;
+      },
+      setPlaybackContainer: function(svgPlaybackContainer) {
+        useExternalPlaybackContainer = true;
+        playbackContainer = svgPlaybackContainer;
       },
       repaint: function() {
         repaint();

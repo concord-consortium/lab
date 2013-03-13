@@ -207,6 +207,10 @@ define(function (require) {
         return controller.modelContainer.getHeightForWidth(width);
       };
 
+      controller.setPlaybackContainer = function (svgPlaybackContainer) {
+        return controller.modelContainer.setPlaybackContainer(svgPlaybackContainer);
+      }
+
       controller.reload = reload;
       controller.repaint = repaint;
       controller.resize = resize;
