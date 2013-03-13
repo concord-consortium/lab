@@ -20,6 +20,7 @@ define(function (require) {
         $el,
         node,
         emsize,
+        fontSizeInPixels,
         imagePath,
         vis1, vis, plot,
         playbackComponent,
@@ -68,16 +69,18 @@ define(function (require) {
       }
     }
 
+    function getFontSizeInPixels() {
+      return parseFloat($el.css('font-size')) || 18;
+    }
+
     // Padding is based on the calculated font-size used for the model view container.
     function updatePadding() {
-      emsize = $el.css('font-size');
-      // Remove "px", convert to number.
-      emsize = Number(emsize.substring(0, emsize.length - 2));
+      fontSizeInPixels = getFontSizeInPixels();
       // Convert value to "em", using 18px as a basic font size.
       // It doesn't have to reflect true 1em value in current context.
       // It just means, that we assume that for 18px font-size,
       // padding and playback have scale 1.
-      emsize /= 18;
+      emsize = fontSizeInPixels / 18;
 
       padding = {
          "top":    0 * emsize,
@@ -86,16 +89,15 @@ define(function (require) {
          "left":   0 * emsize
       };
 
-      if (model.get("xunits")) {
-        padding.bottom += (15  * emsize);
-      }
-
-      if (model.get("yunits")) {
-        padding.left += (15  * emsize);
+      if (model.get("xunits") || model.get("yunits")) {
+        padding.bottom += (fontSizeInPixels * 1.5);
+        padding.left +=   (fontSizeInPixels * 2);
+        padding.top +=    (fontSizeInPixels/2);
+        padding.right +=  (fontSizeInPixels/2);
       }
 
       if (model.get("controlButtons") && !useExternalPlaybackContainer) {
-        padding.bottom += (40  * emsize);
+        padding.bottom += (fontSizeInPixels * 2.5);
       }
     }
 
@@ -119,9 +121,15 @@ define(function (require) {
 
       // Plot size in px.
       size = {
+        "width":  cx - padding.left - padding.right,
+        "height": cy - padding.top  - padding.bottom
+      };
+
+      size = {
         "width":  width,
         "height": height
       };
+
       // Model size in model units.
       modelSize = {
         "width":  modelWidth,
@@ -435,7 +443,7 @@ define(function (require) {
         default:
           playbackComponent = null;
       }
-      preexistingControls = playbackContainer.select('.model-controller')
+      preexistingControls = playbackContainer.select('.model-controller');
     }
 
     //
@@ -487,6 +495,7 @@ define(function (require) {
       containers: null,
       scale: scale,
       setFocus: setFocus,
+      getFontSizeInPixels: getFontSizeInPixels,
       resize: function() {
         renderContainer();
         setupPlaybackControls();

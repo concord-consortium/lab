@@ -83,6 +83,8 @@ define(function (require) {
         particle, label, labelEnter,
         atomToolTip, atomToolTipPre,
 
+        fontSizeInPixels,
+
         // for model clock
         timeLabel,
         modelTimeFormatter = d3.format("5.1f"),
@@ -1408,8 +1410,8 @@ define(function (require) {
           .attr("class", "modelTimeLabel")
           .text(modelTimeLabel())
           // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
-          .attr("x", model2px(0) + 3)
-          .attr("y", model2pxInv(0) - 3)
+          .attr("x", model2px(0) + fontSizeInPixels/3)
+          .attr("y", model2pxInv(0) - fontSizeInPixels/3)
           .attr("text-anchor", "start")
           .attr("fill", clockColor);
       }
@@ -1557,6 +1559,8 @@ define(function (require) {
         model2pxInv = m2pxInv;
         modelSize2px = mSize2px;
       }
+      fontSizeInPixels = modelView.getFontSizeInPixels();
+
       setupObstacles();
       setupVdwPairs();
       setupColorsOfParticles();
