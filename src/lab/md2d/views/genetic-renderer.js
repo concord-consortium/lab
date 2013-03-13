@@ -6,11 +6,13 @@ define(function (require) {
     var api,
         model2px,
         model2pxInv,
+        modelSize2px,
 
         init = function() {
           // Save shortcuts.
           model2px = parentView.model2px;
           model2pxInv = parentView.model2pxInv;
+          modelSize2px = parentView.modelSize2px;
           // Redraw DNA / mRNA on every genetic properties change.
           model.getGeneticProperties().on("change", api.setup);
         },
@@ -43,7 +45,7 @@ define(function (require) {
               "dy": dy
             })
             .style({
-                "stroke-width": model2px(0.01),
+                "stroke-width": modelSize2px(0.01),
                 "font-size": fontSize
             });
 
@@ -82,8 +84,8 @@ define(function (require) {
           "transform": "translate(" + model2px(props.x) + "," + model2pxInv(props.y) + ")"
         });
 
-        fontSize = model2px(props.height);
-        dx = model2px(props.width);
+        fontSize = modelSize2px(props.height);
+        dx = modelSize2px(props.width);
 
         // DNA code on sense strand.
         renderText(dnaGElement, props.DNA, fontSize, dx, -fontSize);

@@ -1632,7 +1632,10 @@ define(function (require) {
       // Expose private methods.
       update: update,
       repaint: repaint,
-      reset: reset
+      reset: reset,
+      model2px: modelView.model2px,
+      model2pxInv: modelView.model2pxInv,
+      modelSize2px: modelView.modelSize2px
     };
 
     // Initialization.
