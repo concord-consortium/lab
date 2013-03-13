@@ -25,6 +25,7 @@ module Presenters
           p.add('from_import')
           p.add('id')
           p.set('location', self.json_path)
+          p.add('imagePath')
           p.add('height')
           p.add('width')
           p.add('lennardJonesForces')
@@ -62,7 +63,6 @@ module Presenters
           p.set('url', self.json_path)
         end
       end
-
 
       def json_path
         self.url_helper.models_md2d_url(md2d, :host => self.hostname, :format => :json)

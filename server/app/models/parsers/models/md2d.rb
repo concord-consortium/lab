@@ -19,6 +19,7 @@ module Parsers
         end
         self.generate_local_ref_id
         self.generate_couch_doc_id(url)
+        self.generate_image_path(url)
         update_db
       end
 
@@ -27,6 +28,16 @@ module Parsers
         # when importing, the 'id' is often a non-unique id.
         # this short id is for local references in interactives
         self.data_hash['local_ref_id'] = self.data_hash.delete('id')
+      end
+
+      # NOTE: The imagePath is only set on import for now. We
+      # may want this to be set in the in the model's that we
+      # are importing in the future. For example, the images
+      # may be in a server/public/resource subdir or served by the
+      # asset pipeline.
+      def generate_image_path(url)
+        return if url.blank?
+        self.data_hash['imagePath'] = url.gsub(/^\//, '').match(/.*\//)[0];
       end
 
       def generate_couch_doc_id(url)

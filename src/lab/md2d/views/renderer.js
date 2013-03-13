@@ -114,6 +114,7 @@ define(function (require) {
         forceVector,
         imageProp,
         imageMapping,
+        modelImageMapping,
         imageSizes = [],
         textBoxes,
         imagePath,
@@ -1454,7 +1455,11 @@ define(function (require) {
     function setupRendererOptions() {
       imageProp = model.get("images");
       imageMapping = model.get("imageMapping");
-      if (model.url) {
+      modelImagePath = model.get('imagePath');
+      if (modelImagePath) {
+        imagePath = labConfig.actualRoot + modelImagePath;
+      }
+      else if (model.url) {
         imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
       }
 
