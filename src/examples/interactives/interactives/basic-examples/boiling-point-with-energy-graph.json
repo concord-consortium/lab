@@ -1,6 +1,6 @@
 {
   "title": "Boiling Point with Energy Graph",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "",
   "about": "",
   "models": [
@@ -50,36 +50,43 @@
     }
   ],
   "layout": {
-    "right-graph": [ "propertiesGraph" ],
-    "right-output": [ "temperature-output" ],
+    "right": [
+      "propertiesGraph"
+    ],
     "bottom": [
       "heat",
       "cool"
+    ],
+    "bottom-right": [
+      "temperature-output"
     ]
   },
   "template": [
     {
-      "id": "right-graph",
+      "id": "right",
+      "top": "model.top",
       "left": "model.right",
-      "height": "model.height * 0.8",
-      "width": "model.height",
-      "padding-left": "1em"
-    },
-    {
-      "id": "right-output",
-      "left": "model.right",
-      "top": "right-graph.bottom",
-      "align": "center",
-      "height": "3em",
-      "width": "model.height",
+      "height": "model.height",
       "padding-left": "1em",
-      "padding-top": "0.5em"
+      "padding-right": "0.5em",
+      "width": "model.width",
+      "min-width": "6em"
     },
     {
       "id": "bottom",
       "top": "model.bottom",
+      "left": "model.left",
       "width": "model.width",
-      "padding-bottom": "1em"
+      "padding-top": "0.5em",
+      "align": "center"
+    },
+    {
+      "id": "bottom-right",
+      "top": "model.bottom",
+      "left": "right.left",
+      "width": "right.width",
+      "padding-top": "0.5em",
+      "align": "center"
     }
   ]
 }
