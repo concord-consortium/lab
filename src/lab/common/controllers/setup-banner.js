@@ -4,7 +4,8 @@ define(function () {
 
   var labConfig       = require('lab.config'),
       TextController  = require('common/controllers/text-controller'),
-      ImageController = require('common/controllers/image-controller');
+      ImageController = require('common/controllers/image-controller'),
+      DivController   = require('common/controllers/div-controller');
 
   /**
    * Returns a hash containing:
@@ -23,7 +24,8 @@ define(function () {
         template = [],
         layout = {},
         // About link visible if there is about section or subtitle.
-        haveAboutText = interactive.about || interactive.subtitle;
+        haveAboutText = interactive.about || interactive.subtitle,
+        body, requestFullscreenMethod;
 
     template.push({
       "id": "top-bar",
@@ -43,21 +45,25 @@ define(function () {
       "belowOthers": true
     });
 
-    function createLinkInContainer(link, container) {
-      components[link.id] = new TextController(link);
-      template.push(container);
-      layout[container.id] = [link.id];
-    }
+    function createElementInContainer(element, container, type) {
+      var controller;
 
-    function createImageInContainer(image, container) {
-      components[image.id] = new ImageController(image);
+      if (element.type === "text") {
+        controller = TextController;
+      } else if (element.type === "image") {
+        controller = ImageController;
+      } else if (element.type === "div") {
+        controller = DivController;
+      }
+
+      components[element.id] = new controller(element);
       template.push(container);
-      layout[container.id] = [image.id];
+      layout[container.id] = [element.id];
     }
 
     // Define about link only if "about" or "subtitle" section is available.
     aboutDialog.update(interactive);
-    createLinkInContainer(
+    createElementInContainer(
     {
       "type": "text",
       "id": "about-link",
@@ -81,7 +87,7 @@ define(function () {
     // in its specification!
     if (labConfig.sharing) {
       shareDialog.update(interactive);
-      createLinkInContainer(
+      createElementInContainer(
       {
         "type": "text",
         "id": "share-link",
@@ -102,7 +108,7 @@ define(function () {
 
     // bottom bar
     creditsDialog.update(interactive);
-    createImageInContainer(
+    createElementInContainer(
     {
       "type": "image",
       "id": "credits-link",
@@ -117,6 +123,41 @@ define(function () {
       "align": "left",
       "belowOthers": true
     });
+
+    // see if we can go fullscreen. If we can, add a fullscreen button.
+    // Note: This requires iframe to be embedded with 'allowfullscreen=true' (and
+    // browser-specific variants). If iframe is not embedded with this property, button
+    // will show but will not work. It is not clear whether we can find out at this moment
+    // whether iframe was embedded appropriately.
+    body = document.body;
+
+    requestFullscreenMethod =
+         body.requestFullScreen
+      || body.webkitRequestFullScreen
+      || body.mozRequestFullScreen
+      || body.msRequestFullScreen
+
+    if (requestFullscreenMethod) {
+      createElementInContainer(
+      {
+        "type": "div",
+        "id": "fullsize-link",
+        "height": "2.5em",
+        "width": "2.5em",
+        "classes": ["fullscreen"],
+        "onClick": function () {
+          requestFullscreenMethod.call(body);
+        }
+      },
+      {
+        "id": "banner-bottom-middle",
+        "bottom": "container.height",
+        "left": "banner-bottom-left.right",
+        "align": "left",
+        "padding-left": "1em",
+        "belowOthers": true
+      });
+    }
 
     template.push({
       "id": "interactive-playback-container",

@@ -450,7 +450,7 @@ AUTHORING = false;
           $iframe;
 
       $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>');
-      $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+      $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="' + embeddableUrl + '"></iframe>');
 
       $content.append($iframeWrapper);
       $("#responsive-content").hide();
@@ -546,7 +546,7 @@ AUTHORING = false;
       url = '/interactives/' + interactiveRemote.id;
     }
     // create an interactive to POST/PUT
-    // merge the, possibly updated, interactive with the interactive last 
+    // merge the, possibly updated, interactive with the interactive last
     // loaded from the webapp.
     newInteractiveState = jQuery.extend(true, interactiveRemote, interactiveState);
     newInteractiveState['title'] = interactiveTitle;
@@ -639,7 +639,7 @@ AUTHORING = false;
           }
         }
       });
-      
+
     }else {
       // Saving an Interactive
       $saveInteractiveButton.text("Save");
@@ -647,7 +647,7 @@ AUTHORING = false;
 
     $saveInteractiveButton.on('click', function() {
       if (interactiveRemote.from_import) {
-        // Prompt for the name of Interactive that will be a 
+        // Prompt for the name of Interactive that will be a
         // copy of the exisiting imported interactive
         $('.save-interactive-form').dialog("open");
       } else {
