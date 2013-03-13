@@ -147,6 +147,10 @@ body {
   margin: 0 auto;
   background-image: url("../images/farmer.png");
   font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 header h1 {
