@@ -3,7 +3,10 @@
 define(function (require) {
   // Dependencies.
   var axis = require('grapher/core/axis'),
-      registerKeyboardHandler = require('grapher/core/register-keyboard-handler');
+      registerKeyboardHandler = require('grapher/core/register-keyboard-handler'),
+      tooltips = {
+        autoscale: "Show all data (autoscale)"
+      };
 
 
   return function Graph(idOrElement, options, message) {
@@ -420,7 +423,11 @@ define(function (require) {
     }
 
     function createButtonLayer() {
-      var buttonLayer = $('<div><a class="graph-autoscale-button"><i class="icon-picture"></i></a></div>')
+      var buttonLayer = $('<div>' +
+                          '  <a class="graph-autoscale-button" title="' + tooltips.autoscale + '">' +
+                          '    <i class="icon-picture"></i>' +
+                          '  </a>' +
+                          '</div>')
             .appendTo($(elem.node()))
             .addClass('graph-button-layer');
 
