@@ -420,7 +420,7 @@ define(function (require) {
     }
 
     function createButtonLayer() {
-      var buttonLayer = $('<div><a class="graph-autoscale-button"><i class="icon-picture"></i> A</a></div>')
+      var buttonLayer = $('<div><a class="graph-autoscale-button"><i class="icon-picture"></i></a></div>')
             .appendTo($(elem.node()))
             .addClass('graph-button-layer');
 
