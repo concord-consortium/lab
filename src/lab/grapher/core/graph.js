@@ -1039,6 +1039,67 @@ define(function (require) {
         }
       }
 
+      /**
+        If there are more than 1 data points, scale the x axis to contain all x values,
+        and scale the y axis so that the y values lie in the middle 80% of the visible y range.
+
+        Then nice() the x and y scales (which means that the x and y domains will likely expand
+        somewhat).
+      */
+      graph.autoscale = function() {
+        var i,
+            len,
+            point,
+            x,
+            y,
+            xmin = Infinity,
+            xmax = -Infinity,
+            ymin = Infinity,
+            ymax = -Infinity,
+            transform,
+            pow;
+
+        if (points.length < 2) return;
+
+        for (i = 0, len = points.length; i < len; i++){
+          point = points[i];
+          x = point.length ? point[0] : point.x;
+          y = point.length ? point[1] : point.y;
+
+          if (x < xmin) xmin = x;
+          if (x > xmax) xmax = x;
+          if (y < ymin) ymin = y;
+          if (y > ymax) ymax = y;
+        }
+
+        // Like Math.pow but returns a value with the same sign as x: pow(-1, 0.5) -> -1
+        pow = function(x, exponent) {
+          return x < 0 ? -Math.pow(-x, exponent) : Math.pow(x, exponent);
+        };
+
+        // convert ymin, ymax to a linear scale, and set 'transform' to the function that
+        // converts the new min, max to the relevant scale.
+        switch (options.yscale) {
+          case 'linear':
+            transform = function(x) { return x; };
+            break;
+          case 'log':
+            ymin = Math.log(ymin) / Math.log(10);
+            ymax = Math.log(ymax) / Math.log(10);
+            transform = function(x) { return Math.pow(10, x); };
+            break;
+          case 'pow':
+            ymin = pow(ymin, options.yscaleExponent);
+            ymax = pow(ymax, options.yscaleExponent);
+            transform = function(x) { return pow(x, 1/options.yscaleExponent); };
+            break;
+        }
+
+        xScale.domain([xmin, xmax]).nice();
+        yScale.domain([transform(ymin - 0.1*(ymax-ymin)), transform(ymax + 0.1*(ymax-ymin))]).nice();
+        redraw();
+      };
+
       // REMOVE
       // 'margin' variable is undefined
       // It is defined, but otherwise unused, in Lab.grapher.graph as of b1eeea703
