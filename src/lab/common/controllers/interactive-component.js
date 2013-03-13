@@ -11,8 +11,9 @@ define(function (require) {
    * @constructor
    * @param {string} type Component type, should match definition in interactive metadata.
    * @param {Object} component Component JSON definition.
+   * @param {ScriptingAPI} scriptingAPI
    */
-  function InteractiveComponent(type, component) {
+  function InteractiveComponent(type, component, scriptingAPI) {
     var onClickFunction;
 
     /**
