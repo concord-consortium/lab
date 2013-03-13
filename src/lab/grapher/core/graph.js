@@ -44,8 +44,8 @@ define(function (require) {
           medium: 960,
           large: 1920
         },
-        downx = Math.NaN,
-        downy = Math.NaN,
+        downx = NaN,
+        downy = NaN,
         dragged = null,
         selected = null,
         titles = [],
@@ -391,8 +391,8 @@ define(function (require) {
       fy = d3.format(options.yFormatter);
 
       // drag axis logic
-      downx = Math.NaN;
-      downy = Math.NaN;
+      downx = NaN;
+      downy = NaN;
       dragged = null;
     }
 
@@ -923,11 +923,11 @@ define(function (require) {
         document.onselectstart = function() { return true; };
         if (!isNaN(downx)) {
           redraw();
-          downx = Math.NaN;
+          downx = NaN;
         }
         if (!isNaN(downy)) {
           redraw();
-          downy = Math.NaN;
+          downy = NaN;
         }
         dragged = null;
       }
