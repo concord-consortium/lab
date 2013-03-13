@@ -498,13 +498,6 @@ define(function (require) {
               .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
         }
 
-        notification = vis.append("text")
-            .attr("class", "graph-notification")
-            .text(message)
-            .attr("x", size.width/2)
-            .attr("y", size.height/2)
-            .style("text-anchor","middle");
-
         d3.select(node)
             .on("mousemove.drag", mousemove)
             .on("touchmove.drag", mousemove)
