@@ -434,17 +434,16 @@ define('lab.config',['require','common/actual-root'],function (require) {
       publicAPI;
   publicAPI = {
   "sharing": true,
+  "logging": true,
+  "tracing": false,
   "home": "http://lab.concord.org",
-  "homeForSharing": "http://lab.concord.org",
   "homeInteractivePath": "/examples/interactives/interactive.html",
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
-  "actualRoot": "",
   "hostName": "lab.concord.org",
   "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
-  "logging": true,
-  "tracing": false,
-  "authoring": false
+  "authoring": false,
+  "actualRoot": ""
 };
   publicAPI.actualRoot = actualRoot;
   return publicAPI;

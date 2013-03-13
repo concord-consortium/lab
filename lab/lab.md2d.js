@@ -434,17 +434,16 @@ define('lab.config',['require','common/actual-root'],function (require) {
       publicAPI;
   publicAPI = {
   "sharing": true,
+  "logging": true,
+  "tracing": false,
   "home": "http://lab.concord.org",
-  "homeForSharing": "http://lab.concord.org",
   "homeInteractivePath": "/examples/interactives/interactive.html",
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
-  "actualRoot": "",
   "hostName": "lab.concord.org",
   "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
-  "logging": true,
-  "tracing": false,
-  "authoring": false
+  "authoring": false,
+  "actualRoot": ""
 };
   publicAPI.actualRoot = actualRoot;
   return publicAPI;
@@ -7231,7 +7230,7 @@ define('common/controllers/interactive-component',['require','common/controllers
   return InteractiveComponent;
 });
 
-/*global define, $ */
+/*global Lab, define, $ */
 
 define('common/controllers/image-controller',['require','lab.config','common/inherit','common/controllers/interactive-component'],function (require) {
 
@@ -7240,7 +7239,8 @@ define('common/controllers/image-controller',['require','lab.config','common/inh
       InteractiveComponent = require('common/controllers/interactive-component'),
 
       externalUrl  = /^https?:\/\//i,
-      resourcesUrl = /^\/resources\//i;
+      // any url starting with "{resources}/..." will be directed to public/resources
+      resourcesUrl = /^{resources}\//i;
 
   /**
    * Image controller.
@@ -7252,6 +7252,8 @@ define('common/controllers/image-controller',['require','lab.config','common/inh
    * @param {InteractiveController} controller
    */
   function ImageController(component, scriptingAPI, controller) {
+    var root = typeof Lab !== "undefined" ? Lab.config.actualRoot : "";
+
     // Call super constructor.
     InteractiveComponent.call(this, "image", component);
 
@@ -7260,11 +7262,14 @@ define('common/controllers/image-controller',['require','lab.config','common/inh
     /** @private */
     this._$img = $("<img>");
     /** @private */
-    this._externalUrl = externalUrl.test(this.component.src) || resourcesUrl.test(this.component.src);
+    this._externalUrl = externalUrl.test(this.component.src);
+    this._resourcesUrl = resourcesUrl.test(this.component.src);
 
     if (this._externalUrl) {
       // If URL is external, we can setup it just once.
       this._$img.attr("src", this.component.src);
+    } else if (this._resourcesUrl) {
+      this._$img.attr("src", this.component.src.replace(resourcesUrl, root + "/resources/"));
     }
 
     // When a dimension is different from "auto",
@@ -8465,7 +8470,7 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
       "type": "image",
       "id": "credits-link",
       "height": "2.5em",
-      "src": "/resources/layout/cc-logo.png",
+      "src": "{resources}/layout/cc-logo.png",
       "onClick": function () { creditsDialog.open(); }
     },
     {

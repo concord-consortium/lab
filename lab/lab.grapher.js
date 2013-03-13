@@ -413,16 +413,16 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "3d4db3cba1037f79ed47f5088562685e071cedf9",
-        "short_sha":      "3d4db3cb",
-        "url":            "https://github.com/concord-consortium/lab/commit/3d4db3cb",
-        "author":        "Stephen Bannasch",
-        "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-03-12 15:52:22 -0400",
-        "short_message": "Interactive Sampler: remove frame borders",
-        "message":       "Interactive Sampler: remove frame borders\n\nNot needed with recent Interactive frame design work."
+        "sha":           "8f59c315ea565bd7b4dd3498c1e06ed6a68f4976",
+        "short_sha":      "8f59c315",
+        "url":            "https://github.com/concord-consortium/lab/commit/8f59c315",
+        "author":        "Sam Fentress",
+        "email":         "sfentress@concord.org",
+        "date":          "2013-03-12 19:59:33 -0400",
+        "short_message": "Fix relative reference to &quot;/resources&quot; in image urls.",
+        "message":       "Fix relative reference to &quot;/resources&quot; in image urls.\n\nUse Lab.config.actualRoot to get actual root, and use\nmore specific &quot;{resources}/&quot; pattern to specify files\nlocated in public/resources, so we don&#x27;t break any models\nwith a nested resources directory.\n\nNot sure why &quot;Lab&quot; may be undefined in Mocha tests."
       },
-      "dirty": true
+      "dirty": false
     }
   };
 });
@@ -454,17 +454,16 @@ define('lab.config',['require','common/actual-root'],function (require) {
       publicAPI;
   publicAPI = {
   "sharing": true,
+  "logging": true,
+  "tracing": false,
   "home": "http://lab.concord.org",
-  "homeForSharing": "http://lab.concord.org",
   "homeInteractivePath": "/examples/interactives/interactive.html",
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
-  "actualRoot": "",
   "hostName": "lab.concord.org",
   "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
-  "logging": true,
-  "tracing": false,
-  "authoring": false
+  "authoring": false,
+  "actualRoot": ""
 };
   publicAPI.actualRoot = actualRoot;
   return publicAPI;
