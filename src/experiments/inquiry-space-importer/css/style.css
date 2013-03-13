@@ -209,6 +209,7 @@ header h1 {
 #graph {
   height: 15.4em;
   margin-top: 0.5em;
+  position: relative;
 }
 
 #metadata-fields {
