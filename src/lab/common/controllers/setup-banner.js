@@ -118,6 +118,15 @@ define(function () {
       "belowOthers": true
     });
 
+    template.push({
+      "id": "interactive-playback-container",
+      "bottom": "container.height",
+      "left": "container.width/2 - interactive-playback-container.width/2",
+      "width": "12em",
+      "height": "banner-bottom-left.height",
+      "belowOthers": true
+    });
+
     return {
       components: components,
       template: template,
