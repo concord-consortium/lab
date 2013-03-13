@@ -31,7 +31,7 @@
   "outputs": [
     {
       "name": "volume",
-      "unitAbbreviation": "nm?",
+      "unitAbbreviation": "nm²",
       "label": "area",
       "value": [
         "return getObstacleProperties(0).x * 2;"
