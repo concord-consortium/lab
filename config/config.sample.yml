@@ -13,6 +13,7 @@
   :homeEmbeddablePath: /examples/interactives/embeddable.html
   :actualRoot: ""
   :utmCampaign:
+  :fontface: Lato
 :google_analytics:
   :account_id:
 # password and alias for Java siging certificate.

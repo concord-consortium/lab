@@ -9,7 +9,7 @@ MARKDOWN_COMPILER = bin/kramdown
 VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs ./node_modules/.bin/vows --isolate --dot-matrix
 MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs node_modules/.bin/mocha --reporter dot
 EXAMPLES_LAB_DIR = ./examples/lab
-SASS_COMPILER = bin/sass -I src
+SASS_COMPILER = bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb
 R_OPTIMIZER = ./node_modules/.bin/r.js
 GENERATE_INTERACTIVE_INDEX = ruby src/helpers/examples/interactives/process-interactives.rb
 

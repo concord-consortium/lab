@@ -25,6 +25,7 @@ rescue Errno::ENOENT
   raise msg
 end
 
+# setup partial for Google Analytics
 if CONFIG[:google_analytics] && CONFIG[:google_analytics][:account_id]
   ANALYTICS = <<-HEREDOC
   <script type="text/javascript">
@@ -47,4 +48,22 @@ if CONFIG[:google_analytics] && CONFIG[:google_analytics][:account_id]
   HEREDOC
 else
   ANALYTICS = ""
+end
+
+# setup partial for fontface
+if CONFIG[:jsconfig] && CONFIG[:jsconfig][:fontface]
+  FONTFACE = CONFIG[:jsconfig][:fontface]
+else
+  FONTFACE = 'Open Sans'
+end
+
+FONTFACE_LINK = case @fontface
+when "Lato"
+  <<-HEREDOC
+<link href='http://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,400,400italic,700' rel='stylesheet' type='text/css'>
+  HEREDOC
+else          # default is "Open Sans"
+  <<-HEREDOC
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css'>
+  HEREDOC
 end

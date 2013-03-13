@@ -38,7 +38,7 @@ end
 
 guard 'shell' do
 
-  watch(/(script\/generate.*)|(config\/config\.yml)/) do |match|
+  watch(/(script\/(generate.*|setup.rb))|(config\/config\.yml)/) do |match|
     puts "re-generating version and config information ..."
     command("make src")
   end

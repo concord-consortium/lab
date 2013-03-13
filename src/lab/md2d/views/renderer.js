@@ -803,7 +803,7 @@ define(function (require) {
             "width":  modelSize2px(size[0]),
             "height": modelSize2px(size[1]),
             "xml:space": "preserve",
-            "font-family": "'Open Sans', sans-serif",
+            "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": modelSize2px(0.12),
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
