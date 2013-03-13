@@ -1,6 +1,9 @@
 // Styles for various elements managed by model view and MD2D renderer,
 // which don't have to be styled dynamically.
 #model-container
+  background: $component-background-color
+  &:focus
+    outline: $focus-outline-color solid 0.2em
   @include user-select(none)
   // Radial bonds.
   .radialbond1, .radialbond2

@@ -13,9 +13,9 @@
   position: relative
   border-radius: 10px
   // Old browsers
-  background-color: #c7e7de
+  background-color: $interactive-container-background
   $experimental-support-for-svg: true
-  @include background-image(radial-gradient(center, ellipse cover,  #c7e7de 12%,#72c3c8 100%))
+  @include background-image(radial-gradient(center, ellipse cover,  $interactive-container-background 12%,$interactive-container-background-gradient-destination 100%))
 
 .component-spacing
   margin: 0.3em 0.5em
