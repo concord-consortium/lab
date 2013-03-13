@@ -22,6 +22,11 @@ ready ...
 
 HEREDOC
 
+def delete_css
+  puts "re-generating all css resources ..."
+  command("find server/public \! -path 'server/public/vendor*' -name '*.css' | xargs rm -f")
+end
+
 guard 'sass', :input => 'src/examples', :output => 'server/public/examples', :all_on_start => false, :load_paths => ['src']
 guard 'sass', :input => 'src/doc',      :output => 'server/public/doc',      :all_on_start => false, :load_paths => ['src']
 
@@ -40,7 +45,8 @@ guard 'shell' do
 
   watch(/(script\/(generate.*|setup.rb))|(config\/config\.yml)/) do |match|
     puts "re-generating version and config information ..."
-    command("make src")
+    delete_css
+    command("make")
   end
 
   watch(/(^src\/lab\/.+)|(^src\/modules\/.+)/) do |match|
@@ -79,8 +85,7 @@ guard 'shell' do
 
   watch(/(^src\/sass\/.+)/) do |match|
     puts match[0]
-    puts "re-generating all css resources because sass mixin updated ..."
-    command("find server/public \! -path 'server/public/vendor*' -name '*.css' | xargs rm -f")
+    delete_css
     command("make")
   end
 
