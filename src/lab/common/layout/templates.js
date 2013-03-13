@@ -33,6 +33,7 @@ define(function () {
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em",
+        "padding-right": "0.5em",
         "width": "model.width / 4",
         "min-width": "6em"
       },
@@ -55,6 +56,7 @@ define(function () {
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em",
+        "padding-right": "0.5em",
         "width": "model.width",
         "min-width": "6em"
       },
