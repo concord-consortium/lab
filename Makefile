@@ -96,6 +96,7 @@ src: \
 	$(INTERACTIVE_FILES) \
 	server/public/examples/interactives/interactives.json \
 	server/public/index.css \
+	server/public/grapher.css \
 	server/public/lab-amd
 
 .PHONY: jnlp-all
@@ -502,6 +503,11 @@ server/public/%.css: src/%.css
 
 server/public/index.css:
 	$(SASS_COMPILER) src/index.sass server/public/index.css
+
+server/public/grapher.css: src/grapher.sass \
+	src/sass/lab/_colors.sass \
+	src/sass/lab/_grapher.sass
+	$(SASS_COMPILER) src/grapher.sass server/public/grapher.css
 
 server/public/examples/%.css: %.sass
 	$(SASS_COMPILER) $< $@
