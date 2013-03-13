@@ -5,7 +5,7 @@ var vows      = require("vows"),
     assert    = require("assert"),
     requirejs = helpers.getRequireJS(),
 
-    graph = requirejs('grapher/core/real-time-graph'),
+    graph = requirejs('grapher/core/graph'),
 
     suite = vows.describe("grapher/graph-selection");
 

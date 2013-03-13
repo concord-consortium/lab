@@ -6,7 +6,8 @@ define(function (require) {
     numberWidthUsingFormatter: function (elem, cx, cy, fontSizeInPixels, formatter, number) {
       var testSVG,
           testText,
-          width;
+          width,
+          node;
 
       testSVG = elem.append("svg")
         .attr("width",  cx)
@@ -21,7 +22,16 @@ define(function (require) {
           .attr("text-anchor", "end")
           .text(d3.format(formatter)(number));
 
-      width = testText.node().getBBox().width;
+      node = testText.node();
+
+      // This code is sometimes called by tests that use d3's jsdom-based mock SVG DOm, which
+      // doesn't implement getBBox.
+      if (node.getBBox) {
+        width = testText.node().getBBox().width;
+      } else {
+        width = 0;
+      }
+
       testSVG.remove();
       return width;
     },

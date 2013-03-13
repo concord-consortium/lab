@@ -111,7 +111,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
           modelChanged: function() {}
         };
       },
-      RealTimeGraph = function() {
+      Graph = function() {
         return {
           new_data: function() {},
           add_points: function() {},
@@ -144,7 +144,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
         };
       };
   // Mock dependencies.
-  requirejs.define('grapher/core/real-time-graph', [], function() { return RealTimeGraph; });
+  requirejs.define('grapher/core/graph', [], function() { return Graph; });
   requirejs.define('grapher/bar-graph/bar-graph-view', [], function() { return BarGraphView; });
   requirejs.define('md2d/views/renderer', [], function() { return Renderer; });
   requirejs.define('common/layout/semantic-layout', [], function() { return SemanticLayout; });
