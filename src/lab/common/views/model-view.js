@@ -80,10 +80,10 @@ define(function (require) {
       emsize /= 18;
 
       padding = {
-         "top":    10 * emsize,
-         "right":  10 * emsize,
-         "bottom": 10 * emsize,
-         "left":   10 * emsize
+         "top":    0 * emsize,
+         "right":  0 * emsize,
+         "bottom": 0 * emsize,
+         "left":   0 * emsize
       };
 
       if (model.get("xunits")) {
