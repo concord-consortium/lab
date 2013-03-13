@@ -17,6 +17,7 @@ define(function (require) {
         ty = function(d) { return "translate(0," + yScale(d) + ")"; },
         fx, fy,
         svg, vis, plot, viewbox,
+        buttonLayer,
         title, xlabel, ylabel,
         notification,
         padding, size,
@@ -57,6 +58,7 @@ define(function (require) {
         cplot = {},
 
         default_options = {
+          showButtons:    true,
           responsiveLayout: false,
           fontScaleRelativeToParent: true,
           realTime:       false,
@@ -417,6 +419,38 @@ define(function (require) {
       }
     }
 
+    function createButtonLayer() {
+      var buttonLayer = $('<div><a class="graph-autoscale-button"><i class="icon-picture"></i> A</a></div>')
+            .appendTo($(elem.node()))
+            .addClass('graph-button-layer');
+
+      buttonLayer.find('a.graph-autoscale-button').on('click', function() { graph.autoscale(); });
+      return buttonLayer;
+    }
+
+    function resizeButtonLayer() {
+      var rect = plot.node(),
+          rectTop,
+          rectLeft,
+          rectWidth,
+          layerWidth;
+
+      // Make safe for jsdom based tests
+      if (!rect.getCTM || !rect.width.baseVal ) {
+        return;
+      }
+
+      rectTop = rect.getCTM().f;
+      rectLeft = rect.getCTM().e;
+      rectWidth = rect.width.baseVal.value;
+      layerWidth = buttonLayer.width();
+
+      buttonLayer.css({
+        top: rectTop + 5,
+        left: rectLeft + rectWidth - layerWidth - 5
+      });
+    }
+
     function graph() {
       calculateLayout();
 
@@ -561,6 +595,11 @@ define(function (require) {
         if (options.realTime) {
           resizeCanvas();
         }
+      }
+
+      if (options.showButtons) {
+        if (!buttonLayer) buttonLayer = createButtonLayer();
+        resizeButtonLayer();
       }
 
       redraw();
