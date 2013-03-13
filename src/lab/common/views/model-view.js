@@ -161,7 +161,7 @@ define(function (require) {
         playbackYPos = cy - 42 * emsize;
       } else {
         playbackXPos = 0;
-        playbackYPos = 0;
+        playbackYPos = fontSizeInPixels/6;
       }
 
       // Basic model2px scaling function for position.
