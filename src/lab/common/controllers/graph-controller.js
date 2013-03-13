@@ -176,7 +176,7 @@ define(function (require) {
     component = validator.validateCompleteness(metadata.graph, component);
     // The list of properties we are being asked to graph.
     properties = component.properties.slice();
-    $container = $('<div>').attr('id', component.id).addClass('properties-graph');
+    $container = $('<div>').attr('id', component.id).addClass('graph');
     // Each interactive component has to have class "component".
     $container.addClass("component");
     // Apply custom width and height settings.
