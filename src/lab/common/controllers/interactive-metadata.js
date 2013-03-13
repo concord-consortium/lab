@@ -203,6 +203,27 @@ define(function() {
       },
       onClick: {
         // Script executed on user click, optional.
+      },
+    },
+
+    div: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      },
+      classes: {
+        defaultValue: []
       }
     },
 

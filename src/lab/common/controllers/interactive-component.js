@@ -35,6 +35,9 @@ define(function (require) {
     if (this.component.height) {
       this.$element.css("height", this.component.height);
     }
+
+    // optionally add onClick handler. If components such as buttons and sliders
+    // start inheriting from InteractiveComponent, we should think further on this.
     if (this.component.onClick) {
       if (typeof this.component.onClick !== "function") {
         // Create function from the string or array of strings.
@@ -46,6 +49,11 @@ define(function (require) {
       this.$element.on("click", onClickFunction);
       // Also add a special class indicating that this text node is a clickable.
       this.$element.addClass("clickable");
+    }
+
+    // optionally add new css classes
+    if (this.component.classes && this.component.classes.length) {
+      this.$element.addClass(this.component.classes.join(" "))
     }
   }
 

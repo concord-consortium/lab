@@ -21,6 +21,7 @@ define(function (require) {
       NumericOutputController = require('common/controllers/numeric-output-controller'),
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
+      DivController           = require('common/controllers/div-controller'),
 
       // Helper function which just provides banner definition.
       setupBanner             = require('common/controllers/setup-banner'),
@@ -70,7 +71,8 @@ define(function (require) {
         'barGraph':      BarGraphController,
         'graph':         GraphController,
         'slider':        SliderController,
-        'numericOutput': NumericOutputController
+        'numericOutput': NumericOutputController,
+        'div':           DivController
       };
 
   return function interactivesController(interactive, viewSelector) {
