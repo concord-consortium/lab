@@ -38,14 +38,17 @@ define(function () {
 
     // Setup view.
     $label  = $('<span class="label"></span>');
+    $output = $('<span class="output"></span>');
     $number = $('<span class="value"></span>');
     $units  = $('<span class="units"></span>');
     if (label) { $label.html(label); }
     if (units) { $units.html(units); }
     $numericOutput = $('<div class="numeric-output">').attr('id', component.id)
         .append($label)
-        .append($number)
-        .append($units);
+        .append($output
+          .append($number)
+          .append($units)
+        );
 
     // Each interactive component has to have class "component".
     $numericOutput.addClass("component");

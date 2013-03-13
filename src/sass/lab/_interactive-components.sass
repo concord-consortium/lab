@@ -143,6 +143,11 @@ button.component
       bottom: 0.22197em
 
 .numeric-output
+  padding: 0.3em 0.2em 0.3em 0.7em
+  span.output
+    background-color: white
+    border-radius: 0.4em
+    padding: 0.15em 0 0.15em 0
   span.label
     display: inline-block
     padding-right: 0.5em
@@ -152,9 +157,6 @@ button.component
     min-width: 3em
     text-align: right
     font-weight: 600
-    border-bottom-style: dotted
-    border-color: Grey
-    border-width: 1px
   span.units
     display: inline-block
     padding-left: 0.2em
@@ -166,6 +168,7 @@ button.component
   &.vertical
     vertical-align: top
     span.label
+      padding-bottom: 0.2em
       display: block
 
 .interactive-slider
