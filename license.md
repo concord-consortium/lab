@@ -85,12 +85,15 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
 24. [postMessage structured clone detection](https://gist.github.com/4583494): [MIT](http://www.opensource.org/licenses/MIT)
 25. [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
 
-In addition there are two fontface directories in `src/vendor/fonts` that are distributed
+In addition there are three fontface directories in `src/vendor/fonts` that are distributed
 under compatible open source licenses:
 
 1.  [Open Sans](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
 2.  [Lato](http://www.google.com/webfonts/specimen/Lato): [SIL Open Font License 1.1](http://opensource.org/licenses/OFL-1.1)
-
+3.  [Font Awesome](http://fortawesome.github.com/Font-Awesome/):
+    * The Font Awesome font is licensed under the [SIL Open Font License](http://scripts.sil.org/OFL)
+    * Font Awesome CSS, LESS, and SASS files are licensed under the [MIT License](http://opensource.org/licenses/mit-license.html)
+    * The Font Awesome pictograms are licensed under the [CC BY 3.0 License](http://creativecommons.org/licenses/by/3.0/). Attribution of author Dave Gandy <dave@davegandy.com> is not required but is appreciated.
 
 The Sass mixins in the directories: `src/sass/bourbon` and `src/sass/neat` are used to produce some
 of the CSS used in the Lab project and are distributed under the MIT license.
