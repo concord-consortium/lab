@@ -171,6 +171,15 @@ define(function (require) {
       calculateSizeType();
     }
 
+    function updateScaleOptions() {
+      var xdomain = xScale.domain(),
+          ydomain = yScale.domain();
+      options.xmax = xdomain[1];
+      options.xmin = xdomain[0];
+      options.ymax = ydomain[1];
+      options.ymin = ydomain[0];
+    }
+
     function calculateLayout() {
       scale();
 
@@ -333,7 +342,24 @@ define(function (require) {
     // Initialize
     //
     function initialize(idOrElement, opts, mesg) {
-      initializeLayout(idOrElement, opts, mesg);
+      if (opts || !options) {
+        options = setupOptions(opts);
+      }
+
+      initializeLayout(idOrElement, mesg);
+
+      options.xrange = options.xmax - options.xmin;
+      options.yrange = options.ymax - options.ymin;
+
+      if (Object.prototype.toString.call(options.title) === "[object Array]") {
+        titles = options.title;
+      } else {
+        titles = [options.title];
+      }
+      titles.reverse();
+
+      fx = d3.format(options.xFormatter);
+      fy = d3.format(options.yFormatter);
 
       // use local variable for access speed in add_point()
       sample = options.sample;
@@ -363,7 +389,7 @@ define(function (require) {
       setCurrentSample(points.length-1);
     }
 
-    function initializeLayout(idOrElement, opts, mesg) {
+    function initializeLayout(idOrElement, mesg) {
       if (idOrElement) {
         // d3.select works both for element ID (e.g. "#grapher")
         // and for DOM element.
@@ -371,10 +397,6 @@ define(function (require) {
         node = elem.node();
         cx = elem.property("clientWidth");
         cy = elem.property("clientHeight");
-      }
-
-      if (opts || !options) {
-        options = setupOptions(opts);
       }
 
       if (mesg) {
@@ -398,19 +420,6 @@ define(function (require) {
       }
 
       scale();
-
-      options.xrange = options.xmax - options.xmin;
-      options.yrange = options.ymax - options.ymin;
-
-      if (Object.prototype.toString.call(options.title) === "[object Array]") {
-        titles = options.title;
-      } else {
-        titles = [options.title];
-      }
-      titles.reverse();
-
-      fx = d3.format(options.xFormatter);
-      fy = d3.format(options.yFormatter);
 
       // drag axis logic
       downx = NaN;
@@ -965,12 +974,14 @@ define(function (require) {
         d3.event.preventDefault();
         if (dragged && options.dataChange) {
           dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+          updateScaleOptions();
           update();
         }
 
         if (!isNaN(downx)) {
           d3.select('body').style("cursor", "ew-resize");
           xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+          updateScaleOptions();
           redraw();
           d3.event.stopPropagation();
         }
@@ -978,6 +989,7 @@ define(function (require) {
         if (!isNaN(downy)) {
           d3.select('body').style("cursor", "ns-resize");
           yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+          updateScaleOptions();
           redraw();
           d3.event.stopPropagation();
         }
@@ -1192,6 +1204,7 @@ define(function (require) {
 
         xScale.domain([xmin, xmax]).nice();
         yScale.domain([transform(ymin - 0.1*(ymax-ymin)), transform(ymax + 0.1*(ymax-ymin))]).nice();
+        updateScaleOptions();
         redraw();
       };
 
