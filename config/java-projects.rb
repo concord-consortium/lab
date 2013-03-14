@@ -36,8 +36,8 @@ MW_ANT_BUILD = "ant clean; ant dist2"
 
 PROJECT_LIST = {
   'sensor'         => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/sensor/sensor-1.0-20121114.175203-22.jar',
-                        :version => '1.0-20121114.175203-22',
+                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/sensor/sensor-1.0-20130314.171142-32.jar',
+                        :version => '1.0-20130314.171142-32',
                         :path => 'org/concord/sensor',
                         :sign => true },
 
@@ -50,20 +50,20 @@ PROJECT_LIST = {
                         :sign => true },
 
   'sensor-vernier' => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/sensor-vernier/sensor-vernier-1.0-20121109.222028-21.jar',
-                        :version => '1.0-20121109.222028-21',
+                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/sensor-vernier/sensor-vernier-1.0-20130314.171142-33.jar',
+                        :version => '1.0-20130314.171142-33',
                         :path => 'org/concord/sensor/sensor-vernier',
                         :sign => true },
 
   'goio-jna'       => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/goio-jna/goio-jna-1.0-20121109.222028-22.jar',
-                        :version => '1.0-20121109.222028-22',
+                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/goio-jna/goio-jna-1.0-20130314.171142-34.jar',
+                        :version => '1.0-20130314.171142-34',
                         :path => 'org/concord/sensor/goio-jna',
                         :sign => true },
 
   'labquest-jna'   => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/labquest-jna/labquest-jna-1.0-20121114.213045-24.jar',
-                        :version => '1.0-20121114.213045-24',
+                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/labquest-jna/labquest-jna-1.0-20130314.171142-33.jar',
+                        :version => '1.0-20130314.171142-33',
                         :path => 'org/concord/sensor/labquest-jna',
                         :sign => true },
 
