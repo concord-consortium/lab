@@ -68,7 +68,6 @@ define(function () {
       "type": "text",
       "id": "about-link",
       "text": "About",
-      "style": "header",
       "onClick": function () { if (haveAboutText) {aboutDialog.open()} else {creditsDialog.open()}}
     },
     {
@@ -92,7 +91,6 @@ define(function () {
         "type": "text",
         "id": "share-link",
         "text": "Share",
-        "style": "header",
         "onClick": function () { shareDialog.open(); }
       },
       {
