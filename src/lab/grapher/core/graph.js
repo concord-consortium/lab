@@ -55,6 +55,7 @@ define(function (require) {
         titles = [],
 
         points, pointArray,
+        currentSample,
         markedPoint, marker,
         sample,
         gcanvas, gctx,
@@ -318,6 +319,16 @@ define(function (require) {
       return pnts;
     }
 
+    function setCurrentSample(samplePoint) {
+      if (typeof samplePoint === "number") {
+        currentSample = samplePoint;
+      }
+      if (typeof currentSample !== "number") {
+        currentSample = points.length-1;
+      }
+      return currentSample;
+    }
+
     //
     // Initialize
     //
@@ -349,6 +360,7 @@ define(function (require) {
           pointArray = [points];
         }
       }
+      setCurrentSample(points.length-1);
     }
 
     function initializeLayout(idOrElement, opts, mesg) {
@@ -739,7 +751,8 @@ define(function (require) {
       //
       // ------------------------------------------------------------
 
-      function update(currentSample) {
+      function update(samplePoint) {
+        setCurrentSample(samplePoint);
         if (options.realTime) {
           realTimeUpdate(currentSample);
         } else {
@@ -747,7 +760,8 @@ define(function (require) {
         }
       }
 
-      function realTimeUpdate(currentSample) {
+      function realTimeUpdate(samplePoint) {
+        setCurrentSample(samplePoint);
         updateCanvas(currentSample);
 
         // old code saved for reference:
@@ -987,7 +1001,9 @@ define(function (require) {
         markedPoint = { x: points[index].x, y: points[index].y };
       }
 
-      function updateOrRescale(currentSample) {
+      // samplePoint is optional argument
+      function updateOrRescale(samplePoint) {
+        setCurrentSample(samplePoint);
         if (options.realTime) {
           updateOrRescaleRealTime(currentSample);
         } else {
@@ -995,7 +1011,8 @@ define(function (require) {
         }
       }
 
-      function updateOrRescaleRealTime(currentSample) {
+      // samplePoint is optional argument
+      function updateOrRescaleRealTime(samplePoint) {
         var i,
             domain = xScale.domain(),
             xAxisStart = Math.round(domain[0]/sample),
@@ -1005,9 +1022,7 @@ define(function (require) {
             shiftPoint = xextent * 0.9,
             currentExtent;
 
-         if (typeof currentSample !== "number") {
-           currentSample = points.length;
-         }
+         setCurrentSample(samplePoint);
          currentExtent = currentSample * sample;
          if (shiftingX) {
            shiftingX = ds();
@@ -1065,7 +1080,7 @@ define(function (require) {
             shiftPoint = xextent * 0.8;
 
         if (shiftingX) {
-          shiftingX = ds()
+          shiftingX = ds();
           if (shiftingX) {
             redraw();
           } else {
@@ -1541,6 +1556,7 @@ define(function (require) {
           points = pointArray[i];
           _realTimeAddPoint(pnts[i]);
         }
+        setCurrentSample(points.length-1);
         updateOrRescale();
       }
 
@@ -1556,9 +1572,9 @@ define(function (require) {
           points = indexedData(options.dataset, 0, sample);
           pointArray = [points];
         }
-        updateOrRescale(Math.max(points.length-1, 0));
+        setCurrentSample(points.length-1);
+        updateOrRescale();
       }
-
 
       // function addRealTimePoints(pnts) {
       //   for (var i = 0; i < pointArray.length; i++) {
@@ -1642,8 +1658,8 @@ define(function (require) {
       }
 
       // update real-time canvas line graph
-      function updateCanvas(currentSample) {
-        var i, index, py, samplePoint, pointStop,
+      function updateCanvas(samplePoint) {
+        var i, index, py, pointStop,
             yOrigin = yScale(0.00001),
             lines = options.lines,
             bars = options.bars,
@@ -1657,15 +1673,7 @@ define(function (require) {
             px;
 
 
-        if (typeof currentSample === 'undefined') {
-          samplePoint = pointsLength;
-        } else {
-          if (currentSample === pointsLength-1) {
-            samplePoint = pointsLength-1;
-          } else {
-            samplePoint = currentSample;
-          }
-        }
+        setCurrentSample(samplePoint);
         clearCanvas();
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         if (points.length === 0 || xAxisStart >= points.length) { return; }
