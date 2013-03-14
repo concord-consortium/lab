@@ -85,6 +85,7 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
 24. [postMessage structured clone detection](https://gist.github.com/4583494): [MIT](http://www.opensource.org/licenses/MIT)
 25. [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
 26. [mustache](https://github.com/janl/mustache.js): [MIT](http://www.opensource.org/licenses/MIT)
+27. [markdown-js](https://github.com/evilstreak/markdown-js): [MIT](http://www.opensource.org/licenses/MIT)
 
 In addition there are three fontface directories in `src/vendor/fonts` that are distributed
 under compatible open source licenses:
