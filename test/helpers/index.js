@@ -114,7 +114,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
       Graph = function() {
         return {
           new_data: function() {},
-          add_points: function() {},
+          addPoints: function() {},
           updateOrRescale: function() {},
           showMarker: function() {},
           reset: function() {},

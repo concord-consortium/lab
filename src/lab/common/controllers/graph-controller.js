@@ -109,7 +109,7 @@ define(function (require) {
       }
       // The grapher considers each individual (property, time) pair to be a "point", and therefore
       // considers the set of properties at any 1 time (what we consider a "point") to be "points".
-      grapher.addRealTimePoints(dataPoint);
+      grapher.addPoints(dataPoint);
     }
 
     /**

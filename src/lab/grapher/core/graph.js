@@ -735,9 +735,9 @@ define(function (require) {
       //
       // ------------------------------------------------------------
 
-      function update() {
+      function update(currentSample) {
         if (options.realTime) {
-          realTimeUpdate();
+          realTimeUpdate(currentSample);
         } else {
           regularUpdate();
         }
@@ -984,66 +984,57 @@ define(function (require) {
       }
 
       function updateOrRescale(currentSample) {
-        var domain = xScale.domain(),
+        if (options.realTime) {
+          updateOrRescaleRealTime(currentSample);
+        } else {
+          updateOrRescaleRegular();
+        }
+      }
+
+      function updateOrRescaleRealTime(currentSample) {
+        var i,
+            domain = xScale.domain(),
             xAxisStart = Math.round(domain[0]/sample),
-            // xAxisEnd = Math.round(domain[1]/sample),
-            // start = Math.max(0, xAxisStart),
+            xAxisEnd = Math.round(domain[1]/sample),
+            start = Math.max(0, xAxisStart),
             xextent = domain[1] - domain[0],
             shiftPoint = xextent * 0.9,
             currentExtent;
 
-        if (options.realTime) {
-          if (typeof currentSample !== "number") {
-            currentSample = points.length;
-          }
-          currentExtent = currentSample * sample;
-          if (shiftingX) {
-            shiftingX = ds();
+         if (typeof currentSample !== "number") {
+           currentSample = points.length;
+         }
+         currentExtent = currentSample * sample;
+         if (shiftingX) {
+           shiftingX = ds();
             if (shiftingX) {
-              redraw();
-            } else {
-              update(currentSample);
-            }
+            redraw();
           } else {
-            if (currentExtent > domain[0] + shiftPoint) {
-              ds = shiftXDomain(shiftPoint*0.9, options.axisShift);
-              shiftingX = ds();
-              redraw();
-            } else if ( currentExtent < domain[1] - shiftPoint &&
-              currentSample < points.length &&
-              xAxisStart > 0) {
-                ds = shiftXDomain(shiftPoint*0.9, options.axisShift, -1);
-                shiftingX = ds();
-                redraw();
-              } else if (currentExtent < domain[0]) {
-                ds = shiftXDomain(shiftPoint*0.1, 1, -1);
-                shiftingX = ds();
-                redraw();
-            } else {
-              update(currentSample);
-            }
+            update(currentSample);
           }
         } else {
-          if (shiftingX) {
+          if (currentExtent > domain[0] + shiftPoint) {
+            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
             shiftingX = ds();
-            if (shiftingX) {
-              redraw();
-            } else {
-              update();
-            }
+            redraw();
+          } else if ( currentExtent < domain[1] - shiftPoint &&
+                      currentSample < points.length &&
+                      xAxisStart > 0) {
+            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
+            shiftingX = ds();
+            redraw();
+          } else if (currentExtent < domain[0]) {
+            ds = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
+            shiftingX = ds();
+            redraw();
+
           } else {
-            if (points[points.length-1][0] > domain[0] + shiftPoint) {
-              ds = shiftXDomain(shiftPoint*0.75, options.axisShift);
-              shiftingX = ds();
-              redraw();
-            } else {
-              update();
-            }
+            update(currentSample);
           }
         }
       }
 
-      function shiftXDomain(shift, steps, direction) {
+      function shiftXDomainRealTime(shift, steps, direction) {
         var d0 = xScale.domain()[0],
             d1 = xScale.domain()[1],
             increment = 1/steps,
@@ -1060,6 +1051,43 @@ define(function (require) {
             xScale.domain([d0 - factor, d1 - factor]);
             return xScale.domain()[0] > (d0 - shift);
           }
+        };
+      }
+
+      function updateOrRescaleRegular() {
+        var i,
+            domain = xScale.domain(),
+            xextent = domain[1] - domain[0],
+            shiftPoint = xextent * 0.8;
+
+        if (shiftingX) {
+          if (shiftingX = ds()) {
+            redraw();
+          } else {
+            update();
+          }
+        } else {
+          if (points[points.length-1][0] > domain[0] + shiftPoint) {
+            ds = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
+            shiftingX = ds();
+            redraw();
+          } else {
+            update();
+          }
+        }
+      }
+
+      function shiftXDomainRegular(shift, steps) {
+        var d0 = xScale.domain()[0],
+            d1 = xScale.domain()[1],
+            increment = 1/steps,
+            index = 0;
+        return function() {
+          var factor;
+          index += increment;
+          factor = shift * cubicEase(index);
+          xScale.domain([ d0 + factor, d1 + factor]);
+          return xScale.domain()[0] < (d0 + shift);
         };
       }
 
@@ -1503,7 +1531,7 @@ define(function (require) {
         gctx.stroke();
       }
 
-      function add_points(pnts) {
+      function addPoints(pnts) {
         for (var i = 0; i < pointArray.length; i++) {
           points = pointArray[i];
           _realTimeAddPoint(pnts[i]);
@@ -1819,7 +1847,7 @@ define(function (require) {
       graph.number_of_points = number_of_points;
       graph.newRealTimeData = newRealTimeData;
       graph.add_point = add_point;
-      graph.add_points = add_points;
+      graph.addPoints = addPoints;
       graph.addRealTimePoints = addRealTimePoints;
       graph.initializeCanvas = initializeCanvas;
       graph.showCanvas = showCanvas;
