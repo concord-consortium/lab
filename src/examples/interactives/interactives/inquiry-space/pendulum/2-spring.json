@@ -227,7 +227,8 @@
       "xmax": 10,
       "yFormatter": "1.1f",
       "xTickCount": 5,
-      "xFormatter": "f",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "currentDisplacement"
       ]

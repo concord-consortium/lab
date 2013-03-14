@@ -214,7 +214,8 @@
       "ymax": 100,
       "xmax": 10,
       "xTickCount": 5,
-      "xFormatter": "f",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "currentAngle"
       ]

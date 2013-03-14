@@ -295,7 +295,8 @@
       "xmax": 10,
       "xTickCount": 5,
       "yTickCount": 4,
-      "xFormatter": "f",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "currentAngle"
       ]
@@ -309,10 +310,10 @@
       "ymin": -0.6,
       "ymax": 0.6,
       "xmax": 10,
-      "yFormatter": "1.1f",
       "yTickCount": 4,
       "xTickCount": 5,
-      "xFormatter": "f",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "currentDisplacement"
       ]
