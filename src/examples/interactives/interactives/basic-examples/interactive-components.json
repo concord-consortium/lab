@@ -197,8 +197,7 @@
     {
       "type": "text",
       "id": "text-header",
-      "style": "header",
-      "text": "Header"
+      "text": "#Header#"
     },
     {
       "type": "text",

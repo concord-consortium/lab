@@ -38,8 +38,7 @@
     {
       "type": "text",
       "id": "axes-label",
-      "text": "Axes",
-      "style": "header"
+      "text": "#Axes#"
     },
     {
       "type": "checkbox",

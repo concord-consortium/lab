@@ -105,57 +105,49 @@
       "type": "text",
       "id": "x-label",
       "text": "X",
-      "width": "4em",
-      "style": "header"
+      "width": "4em"
     },
     {
       "type": "text",
       "id": "y-label",
       "text": "Y",
-      "width": "4em",
-      "style": "header"
+      "width": "4em"
     },
     {
       "type": "text",
       "id": "speed-label",
       "text": "Speed",
-      "width": "4em",
-      "style": "header"
+      "width": "4em"
     },
     {
       "type": "text",
       "id": "atoms-label",
       "text": "Atoms",
-      "width": "4em",
-      "style": "header"
+      "width": "4em"
     },
     {
       "type": "text",
       "id": "atom0-label",
       "text": "0",
-      "width": "6em",
-      "style": "header"
+      "width": "6em"
     },
     {
       "type": "text",
       "id": "atom1-label",
       "text": "1",
-      "width": "6em",
-      "style": "header"
+      "width": "6em"
     },
     {
       "type": "text",
       "id": "atom2-label",
       "text": "2",
-      "width": "6em",
-      "style": "header"
+      "width": "6em"
     },
     {
       "type": "text",
       "id": "atom3-label",
       "text": "3",
-      "width": "6em",
-      "style": "header"
+      "width": "6em"
     },
     {
       "type": "numericOutput",
@@ -244,8 +236,7 @@
     {
       "type": "text",
       "id": "axes-label",
-      "text": "Axes",
-      "style": "header"
+      "text": "#Axes#"
     },
     {
       "type": "checkbox",
@@ -308,7 +299,6 @@
   "template": [
     {
       "id": "right",
-      "top": "2em",
       "left": "model.right",
       "padding-left": "1em",
       "padding-right": "2em",
