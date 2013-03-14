@@ -475,6 +475,8 @@
         graph.reset("#graph", sensorConfig.graphOptions, appletLoadingStr);
         d3.selectAll(".sensorbuttons").remove();
         appletContainer.innerHTML = sensorConfig.appletString;
+        var status = document.getElementById("connect-status");
+        status.innerHTML = "";
         applet = document.getElementById("sensor-applet");
         applet_grapher = new sensor.AppletGrapher(applet, vis, graph, sensorConfig.sensor, sensorConfig.graphOptions.sample, "applet_grapher.JsListener()", graph.notify);
       }
