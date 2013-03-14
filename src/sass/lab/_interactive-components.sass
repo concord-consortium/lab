@@ -47,20 +47,28 @@ button.component
     border-bottom: 1px solid #888
 
 .interactive-text
-  p
-    // Ensure that there are no margins added by the user agent styles.
+  &.clickable
+    color: #048
+  // Typography (interactive text supports markdown):
+  *
+    margin: 0.2em 0
+  img
     margin: 0
-    padding: 0
-    // Notify users that this is a clickable text (link).
-    &.clickable
-      color: #048
-      cursor: pointer
-      opacity: 1.0
-    &.basic
-      font-size: 1em
-    &.header
-      font-size: 1.3em
-      font-weight: 600
+  h1, h2, h3, h4, h5, h6
+    color: #444
+    font-weight: bold
+  h1
+    font-size: 1.5em
+  h2
+    font-size: 1.4em
+  h3
+    font-size: 1.3em
+  h4
+    font-size: 1.2em
+  h5
+    font-size: 1.1em
+  h6
+    font-size: 1em
 
 .interactive-radio
   font-size: 1em

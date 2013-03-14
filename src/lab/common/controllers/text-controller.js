@@ -16,6 +16,7 @@ define(function (require) {
 
   /**
    * Text controller.
+   * It supports markdown (syntax: http://daringfireball.net/projects/markdown/syntax).
    *
    * @constructor
    * @extends InteractiveComponent
