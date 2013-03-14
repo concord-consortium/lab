@@ -9,13 +9,16 @@ class Interactive < BaseDataObject
   property :staticExamplePath,   String
   property :path,                String
   property :about,               String
-
+  property :template,            String
+  property :fontScale,           Float,   :default => 1.0
+  
   property :layout,              Object
+  property :exports,             Object
   property :components,         [Object]
   property :outputs,            [Object]
   property :filteredOutputs,    [Object]
   property :parameters,         [Object]
-
+  
   validates_uniqueness_of :title, :scope => :group_id, :message => "has already been taken in this group"
   validates_presence_of :title
   validates_presence_of :path
