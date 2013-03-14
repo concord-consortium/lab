@@ -75,8 +75,8 @@ define(function (require) {
           yTickCount:      10,
           xscaleExponent:  0.5,
           yscaleExponent:  0.5,
-          xFormatter:      "3.2r",
-          yFormatter:      "3.2r",
+          xFormatter:      ".2s",
+          yFormatter:      ".2s",
           axisShift:       10,
           xmax:            10,
           xmin:            0,
@@ -171,7 +171,19 @@ define(function (require) {
       calculateSizeType();
     }
 
-    function updateScaleOptions() {
+    // Update the x-scale.
+    function updateXScale() {
+      xScale.domain([options.xmin, options.xmax])
+            .range([0, size.width]);
+    }
+
+    // Update the y-scale.
+    function updateYScale() {
+      yScale.domain([options.ymin, options.ymax])
+            .range([size.height, 0]);
+    }
+
+    function persistScaleChangesToOptions() {
       var xdomain = xScale.domain(),
           ydomain = yScale.domain();
       options.xmax = xdomain[1];
@@ -293,18 +305,6 @@ define(function (require) {
           .x(function(d, i) { return xScale(points[i][0]); })
           .y(function(d, i) { return yScale(points[i][1]); });
 
-    }
-
-    // Update the x-scale.
-    function updateXScale() {
-      xScale.domain([options.xmin, options.xmax])
-            .range([0, size.width]);
-    }
-
-    // Update the y-scale.
-    function updateYScale() {
-      yScale.domain([options.ymin, options.ymax])
-            .range([size.height, 0]);
     }
 
     // ------------------------------------------------------------
@@ -974,14 +974,14 @@ define(function (require) {
         d3.event.preventDefault();
         if (dragged && options.dataChange) {
           dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
-          updateScaleOptions();
+          persistScaleChangesToOptions();
           update();
         }
 
         if (!isNaN(downx)) {
           d3.select('body').style("cursor", "ew-resize");
           xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
-          updateScaleOptions();
+          persistScaleChangesToOptions();
           redraw();
           d3.event.stopPropagation();
         }
@@ -989,7 +989,7 @@ define(function (require) {
         if (!isNaN(downy)) {
           d3.select('body').style("cursor", "ns-resize");
           yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
-          updateScaleOptions();
+          persistScaleChangesToOptions();
           redraw();
           d3.event.stopPropagation();
         }
@@ -1077,9 +1077,11 @@ define(function (require) {
           factor = shift * cubicEase(index);
           if (direction > 0) {
             xScale.domain([d0 + factor, d1 + factor]);
+            persistScaleChangesToOptions();
             return xScale.domain()[0] < (d0 + shift);
           } else {
             xScale.domain([d0 - factor, d1 - factor]);
+            persistScaleChangesToOptions();
             return xScale.domain()[0] > (d0 - shift);
           }
         };
@@ -1119,6 +1121,7 @@ define(function (require) {
           index += increment;
           factor = shift * cubicEase(index);
           xScale.domain([ d0 + factor, d1 + factor]);
+          persistScaleChangesToOptions();
           return xScale.domain()[0] < (d0 + shift);
         };
       }
@@ -1204,7 +1207,7 @@ define(function (require) {
 
         xScale.domain([xmin, xmax]).nice();
         yScale.domain([transform(ymin - 0.1*(ymax-ymin)), transform(ymax + 0.1*(ymax-ymin))]).nice();
-        updateScaleOptions();
+        persistScaleChangesToOptions();
         redraw();
       };
 
