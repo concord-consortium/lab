@@ -584,6 +584,7 @@ define(function (require) {
         if (options.xlabel && sizeType.value > 1) {
           xlabel
               .attr("x", size.width/2)
+              .attr("y", size.height)
               .attr("dy", axisFontSizeInPixels*2 + "px");
         }
 
