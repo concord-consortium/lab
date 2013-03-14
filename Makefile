@@ -99,6 +99,11 @@ src: \
 	server/public/grapher.css \
 	server/public/lab-amd
 
+.PHONY: import-interactives
+import-interactives:
+	cd server; RAILS_ENV=production bundle exec rake app:import:built_interactives
+	touch server/tmp/restart.txt
+
 .PHONY: jnlp-all
 jnlp-all: clean-jnlp \
 	server/public/jnlp
