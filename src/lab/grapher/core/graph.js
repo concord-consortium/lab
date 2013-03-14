@@ -322,52 +322,17 @@ define(function (require) {
     // Initialize
     //
     function initialize(idOrElement, opts, mesg) {
-      if (idOrElement) {
-        // d3.select works both for element ID (e.g. "#grapher")
-        // and for DOM element.
-        elem = d3.select(idOrElement);
-        node = elem.node();
-        cx = elem.property("clientWidth");
-        cy = elem.property("clientHeight");
-      }
+      initializeLayout(idOrElement, opts, mesg);
 
-      if (opts || !options) {
-        options = setupOptions(opts);
-      }
+      // use local variable for access speed in add_point()
+      sample = options.sample;
+
+      strokeWidth = options.strokeWidth;
 
       points = options.points;
       if (points === "fake") {
         points = fakeDataPoints();
       }
-
-      if (mesg) {
-        message = mesg;
-      }
-
-      if (svg !== undefined) {
-        svg.remove();
-        svg = undefined;
-      }
-
-      if (gcanvas !== undefined) {
-        $(gcanvas).remove();
-        gcanvas = undefined;
-      }
-
-      // use local variable for access speed in add_point()
-      sample = options.sample;
-      strokeWidth = options.strokeWidth;
-
-      if (options.dataChange) {
-        circleCursorStyle = "ns-resize";
-      } else {
-        circleCursorStyle = "crosshair";
-      }
-
-      scale();
-
-      options.xrange = options.xmax - options.xmin;
-      options.yrange = options.ymax - options.ymin;
 
       // In realTime mode the grapher expects either an array if arrays of dependent data.
       // The sample variable sets the interval spacing between data samples.
@@ -384,6 +349,46 @@ define(function (require) {
           pointArray = [points];
         }
       }
+    }
+
+    function initializeLayout(idOrElement, opts, mesg) {
+      if (idOrElement) {
+        // d3.select works both for element ID (e.g. "#grapher")
+        // and for DOM element.
+        elem = d3.select(idOrElement);
+        node = elem.node();
+        cx = elem.property("clientWidth");
+        cy = elem.property("clientHeight");
+      }
+
+      if (opts || !options) {
+        options = setupOptions(opts);
+      }
+
+      if (mesg) {
+        message = mesg;
+      }
+
+      if (svg !== undefined) {
+        svg.remove();
+        svg = undefined;
+      }
+
+      if (gcanvas !== undefined) {
+        $(gcanvas).remove();
+        gcanvas = undefined;
+      }
+
+      if (options.dataChange) {
+        circleCursorStyle = "ns-resize";
+      } else {
+        circleCursorStyle = "crosshair";
+      }
+
+      scale();
+
+      options.xrange = options.xmax - options.xmin;
+      options.yrange = options.ymax - options.ymin;
 
       if (Object.prototype.toString.call(options.title) === "[object Array]") {
         titles = options.title;
@@ -400,7 +405,6 @@ define(function (require) {
       downy = NaN;
       dragged = null;
     }
-
 
     function indexedData(dataset, initial_index, sample) {
       var i = 0,
@@ -1061,7 +1065,8 @@ define(function (require) {
             shiftPoint = xextent * 0.8;
 
         if (shiftingX) {
-          if (shiftingX = ds()) {
+          shiftingX = ds()
+          if (shiftingX) {
             redraw();
           } else {
             update();
@@ -1539,14 +1544,13 @@ define(function (require) {
         updateOrRescale();
       }
 
-
-      function addRealTimePoints(pnts) {
-        for (var i = 0; i < pointArray.length; i++) {
-          points = pointArray[i];
-          setStrokeColor(i);
-          add_canvas_point(pnts[i]);
-        }
-      }
+      // function addRealTimePoints(pnts) {
+      //   for (var i = 0; i < pointArray.length; i++) {
+      //     points = pointArray[i];
+      //     setStrokeColor(i);
+      //     add_canvas_point(pnts[i]);
+      //   }
+      // }
 
       function setStrokeColor(i, afterSamplePoint) {
         var opacity = afterSamplePoint ? 0.4 : 1.0;
@@ -1817,6 +1821,7 @@ define(function (require) {
       graph.updateOrRescale = updateOrRescale;
       graph.redraw = redraw;
       graph.initialize = initialize;
+      graph.initializeLayout = initializeLayout;
       graph.notify = notify;
       graph.updateXScale = updateXScale;
       graph.updateYScale = updateYScale;
@@ -1848,7 +1853,7 @@ define(function (require) {
       graph.newRealTimeData = newRealTimeData;
       graph.add_point = add_point;
       graph.addPoints = addPoints;
-      graph.addRealTimePoints = addRealTimePoints;
+      // graph.addRealTimePoints = addRealTimePoints;
       graph.initializeCanvas = initializeCanvas;
       graph.showCanvas = showCanvas;
       graph.hideCanvas = hideCanvas;
@@ -1886,7 +1891,7 @@ define(function (require) {
 
     graph.resize = function(w, h) {
       graph.scale(w, h);
-      graph.initialize();
+      graph.initializeLayout();
       graph();
       return graph;
     };

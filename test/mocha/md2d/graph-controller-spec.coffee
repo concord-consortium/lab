@@ -8,7 +8,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
   mock =
     Graph: ->
       newRealTimeData:   sinon.spy()
-      addRealTimePoints: sinon.spy()
+      addPoints:         sinon.spy()
       updateOrRescale:   sinon.spy()
       showMarker:        sinon.spy()
       reset:             sinon.spy()
@@ -125,19 +125,19 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
         describe "after 1 model tick", ->
           beforeEach ->
-            grapher.addRealTimePoints.reset()
+            grapher.addPoints.reset()
             grapher.newRealTimeData.reset()
             model.tick()
 
           it "should not call grapher.newRealTimeData", ->
             grapher.newRealTimeData.callCount.should.equal 0
 
-          it "should call grapher.addRealTimePoints", ->
-            grapher.addRealTimePoints.callCount.should.equal 1
+          it "should call grapher.addPoints", ->
+            grapher.addPoints.callCount.should.equal 1
 
-          describe "the argument to addRealTimePoints", ->
+          describe "the argument to addPoints", ->
             it "should be an array with the new value of each of component.properties", ->
-              dataPoint = grapher.addRealTimePoints.getCall(0).args[0]
+              dataPoint = grapher.addPoints.getCall(0).args[0]
               dataPoint.should.eql [model.get('potentialEnergy'), model.get('kineticEnergy')]
 
         describe "after 2 model ticks", ->
@@ -235,13 +235,13 @@ helpers.withIsolatedRequireJS (requirejs) ->
             expectedData.push [model.get('potentialEnergy'), model.get('kineticEnergy')]
             model.tick()
             model.stepBack()
-            grapher.addRealTimePoints.reset()
+            grapher.addPoints.reset()
             grapher.newRealTimeData.reset()
             # This should invalidate the third data point (corresponding to stepCounter == 2)
             model.set gravitationalField: 1
 
-          it "should not call grapher.addRealTimePoints", ->
-            grapher.addRealTimePoints.callCount.should.equal 0
+          it "should not call grapher.addPoints", ->
+            grapher.addPoints.callCount.should.equal 0
 
           it "should call grapher.newRealTimeData", ->
             grapher.newRealTimeData.callCount.should.equal 1
