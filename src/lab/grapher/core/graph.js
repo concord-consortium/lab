@@ -1544,6 +1544,22 @@ define(function (require) {
         updateOrRescale();
       }
 
+      function newRealTimeData(d) {
+        var i;
+        pointArray = [];
+        if (Object.prototype.toString.call(d) === "[object Array]") {
+          for (i = 0; i < d.length; i++) {
+            points = indexedData(d[i], 0, sample);
+            pointArray.push(points);
+          }
+        } else {
+          points = indexedData(options.dataset, 0, sample);
+          pointArray = [points];
+        }
+        updateOrRescale(Math.max(points.length-1, 0));
+      }
+
+
       // function addRealTimePoints(pnts) {
       //   for (var i = 0; i < pointArray.length; i++) {
       //     points = pointArray[i];
@@ -1580,21 +1596,6 @@ define(function (require) {
             gctx.fillStyle = "rgba(44,0,160," + opacity + ")";
             break;
         }
-      }
-
-      function newRealTimeData(d) {
-        var i;
-        pointArray = [];
-        if (Object.prototype.toString.call(d) === "[object Array]") {
-          for (i = 0; i < d.length; i++) {
-            points = indexedData(d[i], 0, sample);
-            pointArray.push(points);
-          }
-        } else {
-          points = indexedData(options.dataset, 0, sample);
-          pointArray = [points];
-        }
-        updateOrRescale();
       }
 
       // REMOVE
