@@ -1,72 +1,36 @@
-/*global define, $ */
+/*global define */
 
 define(function (require) {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+  var markdown             = require('markdown'),
+      inherit              = require('common/inherit'),
+      InteractiveComponent = require('common/controllers/interactive-component');
 
-  return function TextController(component, scriptingAPI) {
-        // Public API.
-    var controller,
-        // The most outer DIV containing whole component.
-        $element,
-        // <p> element with text content.
-        $text,
-        // Custom "onClick" script.
-        onClickFunction;
+  // These lines aren't joke... Markdown library in node.js environment
+  // provides a different namespace than in the browser (one level higher).
+  // So, in node.js go one level deeper to ensure that we use the same API in
+  // both divorcements and automated tests work fine.
+  if (markdown.markdown) {
+    markdown = markdown.markdown;
+  }
 
-    function initialize() {
-      // Validate component definition, use validated copy of the properties.
-      component = validator.validateCompleteness(metadata.text, component);
-      $element = $("<div>").attr("id", component.id);
-      // Append class to the most outer container.
-      $element.addClass("interactive-text");
-      // Each interactive component has to have class "component".
-      $element.addClass("component");
-      // Append text content.
-      $text = $("<p>").text(component.text).appendTo($element);
-      // Add class defining style of the component ("basic" and "header" values supported,
-      // please see: sass/lab/_interactice-components.sass).
-      $text.addClass(component.style);
-      // Process optional onClick script.
-      if (component.onClick) {
-        if (typeof component.onClick !== "function") {
-          // Create function from the string or array of strings.
-          onClickFunction = scriptingAPI.makeFunctionInScriptContext(component.onClick);
-        } else {
-          // Just assign ready function.
-          onClickFunction = component.onClick;
-        }
-        $text.on("click", onClickFunction);
-        // Also add a special class indicating that this text node is a clickable.
-        $text.addClass("clickable");
-      }
-      // Apply custom width and height.
-      $element.css({
-        width: component.width,
-        height: component.height
-      });
-    }
+  /**
+   * Text controller.
+   *
+   * @constructor
+   * @extends InteractiveComponent
+   * @param {Object} component Component JSON definition.
+   * @param {ScriptingAPI} scriptingAPI
+   */
+  function TextController(component, scriptingAPI) {
+    // Call super constructor.
+    InteractiveComponent.call(this, "text", component, scriptingAPI);
+    // Setup custom class.
+    this.$element.addClass("interactive-text");
+    // Use markdown to parse the 'text' content.
+    this.$element.append(markdown.toHTML(this.component.text));
+  }
+  inherit(TextController, InteractiveComponent);
 
-    // Public API.
-    controller = {
-      // modelLoadedCallback is optional and unnecessary for this component.
-      // modelLoadedCallback: function () {
-      // },
-
-      getViewContainer: function () {
-        return $element;
-      },
-
-      // Returns serialized component definition.
-      serialize: function () {
-        return $.extend(true, {}, component);
-      }
-    };
-
-    initialize();
-
-    // Return Public API object.
-    return controller;
-  };
+  return TextController;
 });
