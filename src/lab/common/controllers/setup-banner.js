@@ -151,9 +151,9 @@ define(function () {
         }
       },
       {
-        "id": "banner-bottom-middle",
+        "id": "banner-bottom-right",
         "bottom": "container.height",
-        "left": "banner-bottom-left.right",
+        "right": "container.width",
         "align": "left",
         "padding-left": "1em",
         "belowOthers": true
