@@ -108,10 +108,12 @@ define(function () {
     creditsDialog.update(interactive);
     createElementInContainer(
     {
-      "type": "image",
+      "type": "div",
       "id": "credits-link",
       "height": "2.5em",
-      "src": "{resources}/layout/cc-logo.png",
+      "width": "8.1em",
+      "classes": ["credits"],
+      "tooltip": "Credits",
       "onClick": function () { creditsDialog.open(); }
     },
     {

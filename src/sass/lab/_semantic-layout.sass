@@ -53,3 +53,12 @@
 .fullscreen
   @include icon-bg("../../resources/layout/fullscreen.svg", center, 100%)
   background-size: 95%
+  &:hover
+    @include icon-bg("../../resources/layout/fullscreen-dark.svg", center, 100%)
+
+.credits
+  background: url("../../resources/layout/cc-logo.png") no-repeat
+  background-size: 90%
+  background-position: 0.3em 0.2em
+  &:hover
+    background-image: url("../../resources/layout/cc-logo-dark.png")
