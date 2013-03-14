@@ -1031,7 +1031,7 @@ define(function (require) {
             xAxisEnd = Math.round(domain[1]/sample),
             start = Math.max(0, xAxisStart),
             xextent = domain[1] - domain[0],
-            shiftPoint = xextent * 0.9,
+            shiftPoint = xextent * 0.95,
             currentExtent;
 
          setCurrentSample(samplePoint);
@@ -1206,7 +1206,7 @@ define(function (require) {
         }
 
         xScale.domain([xmin, xmax]).nice();
-        yScale.domain([transform(ymin - 0.1*(ymax-ymin)), transform(ymax + 0.1*(ymax-ymin))]).nice();
+        yScale.domain([transform(ymin - 0.15*(ymax-ymin)), transform(ymax + 0.15*(ymax-ymin))]).nice();
         persistScaleChangesToOptions();
         redraw();
       };
@@ -1588,6 +1588,7 @@ define(function (require) {
           points = indexedData(options.dataset, 0, sample);
           pointArray = [points];
         }
+        shiftingX = false;
         setCurrentSample(points.length-1);
         updateOrRescale();
       }
