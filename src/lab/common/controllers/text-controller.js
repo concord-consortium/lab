@@ -6,14 +6,6 @@ define(function (require) {
       inherit              = require('common/inherit'),
       InteractiveComponent = require('common/controllers/interactive-component');
 
-  // These lines aren't joke... Markdown library in node.js environment
-  // provides a different namespace than in the browser (one level higher).
-  // So, in node.js go one level deeper to ensure that we use the same API in
-  // both divorcements and automated tests work fine.
-  if (markdown.markdown) {
-    markdown = markdown.markdown;
-  }
-
   /**
    * Text controller.
    * It supports markdown (syntax: http://daringfireball.net/projects/markdown/syntax).

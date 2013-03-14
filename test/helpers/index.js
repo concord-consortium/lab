@@ -53,7 +53,8 @@ exports.getRequireJS = function() {
 
   var documentBackup,
       config,
-      requirejs;
+      requirejs,
+      markdown;
 
   // Workaround for new RequireJS version.
   // When document is defined, RequireJS will assume
@@ -72,6 +73,13 @@ exports.getRequireJS = function() {
   if (typeof documentBackup !== 'undefined') {
     document = documentBackup;
   }
+
+  // Markdown library in node.js environment provides a different namespace
+  // than in the browser (one level higher). So, in node.js go one level
+  // deeper to ensure that we use the same API in both environments and
+  // automated tests work fine.
+  markdown = require('markdown');
+  requirejs.define('markdown', [], function() { return markdown.markdown; });
 
   return requirejs;
 };
