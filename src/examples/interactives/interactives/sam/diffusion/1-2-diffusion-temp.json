@@ -1,0 +1,90 @@
+{
+  "title": "Diffusion Temperature",
+  "publicationStatus": "draft",
+  "subtitle": "A drop of dye spreading out in water.",
+  "about": "Click in the model to drop a small amount of dye and observe how it diffuses through the water.",
+  "models": [
+    {
+      "id": "model1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/DiffusionTemp/DiffusionBarrier$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "waterDyeKey.png": "waterDyeKey.svg"
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "tracedAtom",
+      "initialValue": -99,
+      "onChange": ""
+    },
+    {
+      "name": "wasMarked",
+      "initialValue": 0,
+      "onChange": ""
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "remove-obstacle",
+      "text": "Remove Barrier",
+      "action" : [
+        "if (getNumberOfObstacles() > 0) { removeObstacle(0); start(); }",
+        "else { stop(); reset(); }"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 100,
+      "max": 1000,
+      "labels": [
+        {
+          "value": 100,
+          "label": "100 K"
+        },
+        {
+          "value": 1000,
+          "label": "1000 K"
+        }
+      ],
+      "steps": 100,
+      "title": "Temperature",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": 100,
+      "max": 1000
+    }
+  ],
+  "layout": {
+    "under-model": [
+      "remove-obstacle","temperature-slider"
+    ],
+    "right-buffer": [
+      "thermometer"
+    ]
+  },
+  "template": [
+    {
+      "id": "under-model",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "0.25em",
+      "align": "center"
+    },
+    {
+      "id": "right-buffer",
+      "left": "model.right",
+      "width": "16em",
+      "height": "model.height"
+    }
+  ]
+}
