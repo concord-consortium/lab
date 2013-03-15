@@ -32,7 +32,7 @@ define(function () {
       "top": "0",
       "left": "0",
       "width": "container.width",
-      "height": "banner-right.height",
+      "height": "2.5em",
       "aboveOthers": true
     });
 
@@ -41,7 +41,7 @@ define(function () {
       "bottom": "container.height",
       "left": "0",
       "width": "container.width",
-      "height": "banner-bottom-left.height",
+      "height": "2.5em",
       "belowOthers": true
     });
 
