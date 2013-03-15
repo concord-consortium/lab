@@ -91,13 +91,13 @@ define(function (require) {
     }
 
     function setFontSize() {
-      var containerAspectRatio = availableWidth / availableHeight,
+      var containerAspectRatio = $interactiveContainer.width() / $interactiveContainer.height(),
           containerScale, font;
 
       if (interactiveAspectRatio <= containerAspectRatio) {
-        containerScale = availableHeight / basicInteractiveHeight;
+        containerScale = $interactiveContainer.height() / basicInteractiveHeight;
       } else {
-        containerScale = availableWidth / basicInteractiveWidth;
+        containerScale = $interactiveContainer.width() / basicInteractiveWidth;
       }
 
       padding = containerScale * 10;
