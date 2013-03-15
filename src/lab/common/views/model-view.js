@@ -482,6 +482,15 @@ define(function (require) {
       preexistingControls = playbackContainer.select('.model-controller');
     }
 
+    function removeClickHandlers() {
+      var selector;
+      for (selector in clickHandler) {
+        if (clickHandler.hasOwnProperty(selector)) {
+          vis.selectAll(selector).on("click.custom", null);
+        }
+      }
+    }
+
     //
     // *** Main Renderer functions ***
     //
@@ -557,6 +566,7 @@ define(function (require) {
         repaint();
       },
       reset: function(newModelUrl, newModel) {
+        removeClickHandlers();
         processOptions(newModelUrl, newModel);
         renderContainer();
         setupPlaybackControls();
@@ -620,7 +630,9 @@ define(function (require) {
 
         for (selector in clickHandler) {
           if (clickHandler.hasOwnProperty(selector)) {
-            vis.selectAll(selector).on("click", getClickHandler(clickHandler[selector]));
+            // Use 'custom' namespace to don't overwrite other click handlers which
+            // can be added by default.
+            vis.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
           }
         }
       }
