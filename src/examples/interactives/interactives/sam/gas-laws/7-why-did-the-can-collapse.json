@@ -98,19 +98,8 @@
       "text": "Add",
       "width": "6em",
       "action": [
-        "var elemNum = 3, sigma = getElementProperties(elemNum).sigma, obsX = getObstacleProperties(0).x;",
-        "var obsRight = obsX + getObstacleProperties(0).width;",
-        "if (obsX < 2 * sigma) {",
-        "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
-        "    if (getAtomProperties(i).x < obsRight + 3 * sigma) {",
-        "      setAtomProperties(i, {x: obsRight + 3 * sigma});",
-        "    }",
-        "  }",
-        "  obsX = 2 * sigma;",
-        "  setObstacleProperties(0, {x: obsX});",
-        "  minimizeEnergy();",
-        "}",
-        "var maxX = obsX - sigma;",
+        "var elemNum = 3;",
+        "var maxX = getObstacleProperties(0).x - getElementProperties(elemNum).sigma;",
         "addAtom({ element: elemNum, x: maxX * Math.random()  , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});"
       ]
     },
@@ -120,19 +109,8 @@
       "text": "Add",
       "width": "6em",
       "action": [
-        "var elemNum = 1, sigma = getElementProperties(elemNum).sigma, obsX = getObstacleProperties(0).x;",
-        "var obsWidth = getObstacleProperties(0).width, width = get('width');",
-        "if (obsX + obsWidth > width - 2 * sigma) {",
-        "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
-        "    if (getAtomProperties(i).x > obsX - 3 * sigma) {",
-        "      setAtomProperties(i, {x: obsX - 3 * sigma});",
-        "    }",
-        "  }",
-        "  obsX = width - 2 * sigma - obsWidth;",
-        "  setObstacleProperties(0, {x: obsX});",
-        "  minimizeEnergy();",
-        "}",
-        "var minX = obsX + obsWidth + sigma;",
+        "var elemNum = 1;",
+        "var minX = getObstacleProperties(0).x + getObstacleProperties(0).width + getElementProperties(elemNum).sigma;",
         "addAtom({ element: elemNum, x: (get('width') - minX) * Math.random() + minX , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});"
       ]
     },
@@ -142,11 +120,12 @@
       "text": "Remove",
       "width": "6em",
       "action": [
+        "var firstFound = false;",
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  if (getAtomProperties(i).x < getObstacleProperties(0).x) {",
-        "     removeAtom(i);",
-        "     break;",
-        "   }",
+        "    if (!firstFound) { firstFound = true; }",
+        "    else { removeAtom(i); break; }",
+        "  }",
         "}"
       ]
     },
@@ -156,11 +135,12 @@
       "text": "Remove",
       "width": "6em",
       "action": [
+        "var firstFound = false;",
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
         "  if (getAtomProperties(i).x > (getObstacleProperties(0).x + getObstacleProperties(0).width)) {",
-        "     removeAtom(i);",
-        "     break;",
-        "   }",
+        "    if (!firstFound) { firstFound = true; }",
+        "    else { removeAtom(i); break; }",
+        "  }",
         "}"
       ]
     },
