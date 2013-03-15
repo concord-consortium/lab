@@ -90,10 +90,15 @@ define(function (require) {
       };
 
       if (model.get("xunits") || model.get("yunits")) {
-        padding.bottom += (fontSizeInPixels * 1.5);
-        padding.left +=   (fontSizeInPixels * 2);
+        padding.bottom += (fontSizeInPixels * 1.2);
+        padding.left +=   (fontSizeInPixels * 1.3);
         padding.top +=    (fontSizeInPixels/2);
         padding.right +=  (fontSizeInPixels/2);
+      }
+
+      if (model.get("xlabel") || model.get("ylabel")) {
+        padding.bottom += (fontSizeInPixels * 0.8);
+        padding.left +=   (fontSizeInPixels * 0.8);
       }
 
       if (model.get("controlButtons") && !useExternalPlaybackContainer) {
@@ -186,7 +191,8 @@ define(function (require) {
           ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
           stroke = function(d) { return d ? "#ccc" : "#666"; },
           fx = model2px.tickFormat(5),
-          fy = model2pxInv.tickFormat(5);
+          fy = model2pxInv.tickFormat(5),
+          lengthUnits = model.getUnitDefinition('length');
 
       if (d3.event && d3.event.transform) {
           d3.event.transform(model2px, model2pxInv);
@@ -213,14 +219,30 @@ define(function (require) {
         gxe.selectAll("line").remove();
       }
 
+      // x-axis units
       if (model.get("xunits")) {
         gxe.append("text")
+            .attr("class", "xunits")
             .attr("y", size.height)
-            .attr("dy", "1.25em")
+            .attr("dy", fontSizeInPixels*0.8 + "px")
             .attr("text-anchor", "middle")
             .text(fx);
       } else {
-        gxe.select("text").remove();
+        gxe.select("text.xunits").remove();
+      }
+
+      // x-axis label
+      if (model.get("xlabel")) {
+        vis.append("text")
+            .attr("class", "axis")
+            .attr("class", "xlabel")
+            .text(lengthUnits.pluralName)
+            .attr("x", size.width/2)
+            .attr("y", size.height)
+            .attr("dy", fontSizeInPixels*1.6 + "px")
+            .style("text-anchor","middle");
+      } else {
+        vis.select("text.xlabel").remove();
       }
 
       gx.exit().remove();
@@ -248,14 +270,28 @@ define(function (require) {
         gye.selectAll("line").remove();
       }
 
+      // y-axis units
       if (model.get("yunits")) {
         gye.append("text")
-            .attr("x", "-0.15em")
-            .attr("dy", "0.30em")
+            .attr("class", "yunits")
+            .attr("x", "-0.3em")
+            .attr("dy", fontSizeInPixels/6 + "px")
             .attr("text-anchor", "end")
             .text(fy);
       } else {
-        gye.select("text").remove();
+        gxe.select("text.yunits").remove();
+      }
+
+      // y-axis label
+      if (model.get("ylabel")) {
+        vis.append("g").append("text")
+            .attr("class", "axis")
+            .attr("class", "ylabel")
+            .text(lengthUnits.pluralName)
+            .style("text-anchor","middle")
+            .attr("transform","translate(" + -fontSizeInPixels*1.6 + " " + size.height/2+") rotate(-90)");
+      } else {
+        vis.select("text.ylabel").remove();
       }
 
       gy.exit().remove();
@@ -468,7 +504,7 @@ define(function (require) {
       // Register listeners.
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
-      model.addPropertiesListener(["gridLines", "xunits", "yunits"],
+      model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel" ],
         function() {
           renderContainer();
           setupPlaybackControls();
