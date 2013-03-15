@@ -1,4 +1,4 @@
-/*global define */
+/*global define, $ */
 
 define(function (require) {
 
@@ -16,6 +16,7 @@ define(function (require) {
    * @param {ScriptingAPI} scriptingAPI
    */
   function TextController(component, scriptingAPI) {
+    var text, $element;
     // Call super constructor.
     InteractiveComponent.call(this, "text", component, scriptingAPI);
     // Setup custom class.
@@ -23,7 +24,11 @@ define(function (require) {
     // Ensure that common typography for markdown-generated content is used.
     this.$element.addClass("markdown-typography");
     // Use markdown to parse the 'text' content.
-    this.$element.append(markdown.toHTML(this.component.text));
+    text = $.isArray(this.component.text) ? this.component.text : [this.component.text];
+    $element = this.$element;
+    $.each(text, function (idx, val) {
+      $element.append(markdown.toHTML(val));
+    });
   }
   inherit(TextController, InteractiveComponent);
 
