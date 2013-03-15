@@ -1,8 +1,8 @@
 {
   "title": "Diffusion Temperature",
   "publicationStatus": "draft",
-  "subtitle": "A drop of dye spreading out in water.",
-  "about": "Click in the model to drop a small amount of dye and observe how it diffuses through the water.",
+  "subtitle": "How does temperature affect the rate of diffusion?",
+  "about": "Click remove barrier to begin measuring how long it takes for the blue molecules to diffuse across the container.",
   "models": [
     {
       "id": "model1",
@@ -12,7 +12,19 @@
         "imageMapping": {
           "waterDyeKey.png": "waterDyeKey.svg"
         }
-      }
+      },
+      "modelOptions": {
+        "unitsScheme": "mks"
+      },
+      "onLoad": [
+        "start();",
+        "onPropertyChange('time', function(t) {",
+        "  var atoms = atomsWithin(6.9,1.96,0.1,1.96);",
+        "  for( var i = 0; i < atoms.length; i++ ) {",
+        "    if (getAtomProperties(atoms[i]).element == 0) { stop(); }",
+        "  }",
+        "});"
+      ]
     }
   ],
   "parameters": [
@@ -25,6 +37,11 @@
       "name": "wasMarked",
       "initialValue": 0,
       "onChange": ""
+    },
+    {
+      "name": "timeBarrierRemoved",
+      "initialValue": 0,
+      "onChange": ""
     }
   ],
   "components": [
@@ -33,8 +50,15 @@
       "id": "remove-obstacle",
       "text": "Remove Barrier",
       "action" : [
-        "if (getNumberOfObstacles() > 0) { removeObstacle(0); start(); }",
-        "else { stop(); reset(); }"
+        "if (getNumberOfObstacles() > 0) { removeObstacle(0); set('timeBarrierRemoved', get('time')); }"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset-barrier",
+      "text": "reset",
+      "action" : [
+        "reset();"
       ]
     },
     {
@@ -61,11 +85,17 @@
       "id": "thermometer",
       "min": 100,
       "max": 1000
+    },
+    {
+      "type": "numericOutput",
+      "id": "model-time",
+      "property": "time",
+      "displayValue": "return format('1.3f')(value - get('timeBarrierRemoved'))"
     }
   ],
   "layout": {
     "under-model": [
-      "remove-obstacle","temperature-slider"
+      "remove-obstacle","reset-barrier","temperature-slider","model-time"
     ],
     "right-buffer": [
       "thermometer"
@@ -83,7 +113,6 @@
     {
       "id": "right-buffer",
       "left": "model.right",
-      "width": "16em",
       "height": "model.height"
     }
   ]
