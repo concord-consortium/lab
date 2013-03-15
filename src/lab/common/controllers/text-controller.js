@@ -20,6 +20,8 @@ define(function (require) {
     InteractiveComponent.call(this, "text", component, scriptingAPI);
     // Setup custom class.
     this.$element.addClass("interactive-text");
+    // Ensure that common typography for markdown-generated content is used.
+    this.$element.addClass("markdown-typography");
     // Use markdown to parse the 'text' content.
     this.$element.append(markdown.toHTML(this.component.text));
   }
