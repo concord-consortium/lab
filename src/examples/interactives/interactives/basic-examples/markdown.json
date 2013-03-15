@@ -1,7 +1,18 @@
 {
   "title": "Markdown Demo",
   "publicationStatus": "public",
-  "subtitle": "Use markdown syntax to format text in text components.",
+  "subtitle": "Use markdown syntax to format content of text components and about dialogs.",
+  "about": [
+    "*Markdown* can be also used in this dialog:",
+    "#Heading 1#\n##Heading 2##\n###Heading 3####\n",
+    "First paragraph. *Emphasis*.",
+    "Second paragraph. **Strong**.",
+    "Horizontal rule:\n- - -",
+    "* An item in a bulleted list\n    * A subitem, indented with 4 spaces\n",
+    "Inline image: ![Alt text](/resources/heatbath.gif \"CC logo\")",
+    "Inline [link](http://daringfireball.net/projects/markdown/syntax \"Markdown Syntax\") pointing to Markdown Syntax description."
+
+  ],
   "models": [
     {
       "id": "simple-gas$0",
