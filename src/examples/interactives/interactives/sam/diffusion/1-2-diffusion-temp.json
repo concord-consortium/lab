@@ -109,7 +109,7 @@
       "type": "numericOutput",
       "id": "model-time",
       "property": "time",
-      "displayValue": "return format('1.3f')(get('experimentTime'))"
+      "displayValue": "return format('1.1f')(get('experimentTime'))"
     }
   ],
   "layout": {
