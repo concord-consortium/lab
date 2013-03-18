@@ -23,6 +23,7 @@
         "  for( var i = 0; i < atoms.length; i++ ) {",
         "    if (getAtomProperties(atoms[i]).element == 0) { stop(); }",
         "  }",
+        "  set('experimentTime', get('experimentRunning') ? t - get('timeBarrierRemoved') : 0)",
         "});"
       ]
     }
@@ -42,6 +43,16 @@
       "name": "timeBarrierRemoved",
       "initialValue": 0,
       "onChange": ""
+    },
+    {
+      "name": "experimentRunning",
+      "initialValue": false,
+      "onChange": ""
+    },
+    {
+      "name": "experimentTime",
+      "initialValue": 0,
+      "onChange": ""
     }
   ],
   "components": [
@@ -50,13 +61,17 @@
       "id": "remove-obstacle",
       "text": "Remove Barrier",
       "action" : [
-        "if (getNumberOfObstacles() > 0) { removeObstacle(0); set('timeBarrierRemoved', get('time')); }"
+        "if (getNumberOfObstacles() > 0) { ",
+        "  removeObstacle(0); ",
+        "  set('timeBarrierRemoved', get('time'));",
+        "  set('experimentRunning', true)",
+        "}"
       ]
     },
     {
       "type": "button",
       "id": "reset-barrier",
-      "text": "reset",
+      "text": "Reset Experiment",
       "action" : [
         "reset();"
       ]
@@ -65,18 +80,22 @@
       "type": "slider",
       "id": "temperature-slider",
       "min": 100,
-      "max": 1000,
+      "max": 5000,
       "labels": [
         {
           "value": 100,
-          "label": "100 K"
+          "label": "Low"
         },
         {
-          "value": 1000,
-          "label": "1000 K"
+          "value": 2450,
+          "label": "Medium"
+        },
+        {
+          "value": 5000,
+          "label": "High"
         }
       ],
-      "steps": 100,
+      "steps": 1175,
       "title": "Temperature",
       "property": "targetTemperature"
     },
@@ -84,18 +103,19 @@
       "type": "thermometer",
       "id": "thermometer",
       "min": 100,
-      "max": 1000
+      "max": 5000
     },
     {
       "type": "numericOutput",
       "id": "model-time",
       "property": "time",
-      "displayValue": "return format('1.3f')(value - get('timeBarrierRemoved'))"
+      "displayValue": "return format('1.3f')(get('experimentTime'))"
     }
   ],
   "layout": {
     "under-model": [
-      "remove-obstacle","reset-barrier","temperature-slider","model-time"
+      ["temperature-slider","model-time"],
+      ["remove-obstacle","reset-barrier"]
     ],
     "right-buffer": [
       "thermometer"
