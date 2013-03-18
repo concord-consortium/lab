@@ -11,7 +11,7 @@
   @include fill-parent
   height: 100%
   position: relative
-  border-radius: 10px
+  border-radius: 0.5em
   // Old browsers
   background-color: $interactive-container-background
   $experimental-support-for-svg: true
@@ -22,33 +22,30 @@
 
 #top-bar
   background-color: white
-  padding: 1.2em 0.7em 1.2em 0.7em
   border-top: 1px lightgrey solid
   border-left: 1px lightgrey solid
   border-right: 1px lightgrey solid
-  border-top-left-radius: 10px
-  border-top-right-radius: 10px
+  border-top-left-radius: 0.5em
+  border-top-right-radius: 0.5em
 
 #bottom-bar
   background-color: white
-  padding: 1.2em 0.7em 1.2em 0.7em
   border-bottom: 1px lightgrey solid
   border-left: 1px lightgrey solid
   border-right: 1px lightgrey solid
-  border-bottom-left-radius: 10px
-  border-bottom-right-radius: 10px
+  border-bottom-left-radius: 0.5em
+  border-bottom-right-radius: 0.5em
 
 #credits-link
-  padding: 0.2em 0 0.2em 0.5em
+  padding: 0.2em 0 0.2em 0.8em
 
 #about-link, #share-link
-  font-size: 1.3em
   color: gray
   &:hover
     color: black
   p
-    margin: 0
-    padding: 0.45em
+    margin: 0em
+    padding: 0em
 
 .fullscreen
   @include icon-bg("../../resources/layout/fullscreen.svg", center, 90%)

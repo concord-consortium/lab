@@ -5,7 +5,10 @@ define(function () {
   var labConfig       = require('lab.config'),
       TextController  = require('common/controllers/text-controller'),
       ImageController = require('common/controllers/image-controller'),
-      DivController   = require('common/controllers/div-controller');
+      DivController   = require('common/controllers/div-controller'),
+      topBarHeight    = 1.5,
+      topBarFontScale = topBarHeight*0.65,
+      topBarVerticalPadding = topBarHeight/10;
 
   /**
    * Returns a hash containing:
@@ -31,8 +34,10 @@ define(function () {
       "id": "top-bar",
       "top": "0",
       "left": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
       "width": "container.width",
-      "height": "2.5em",
       "aboveOthers": true
     });
 
@@ -72,10 +77,14 @@ define(function () {
     },
     {
       "id": "banner-right",
+      "fontScale": topBarFontScale,
       "top": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
       "right": "interactive.width",
       "padding-left": "1em",
-      "padding-right": "1em",
+      "padding-right": "0.75em",
       "align": "right",
       "aboveOthers": true
     });
@@ -95,7 +104,11 @@ define(function () {
       },
       {
         "id": "banner-middle",
+        "fontScale": topBarFontScale,
         "top": "0",
+        "height": topBarHeight + "em",
+        "padding-top": topBarVerticalPadding + "em",
+        "padding-bottom": topBarVerticalPadding + "em",
         // "banner-right" can be undefined, so check it.
         "right": "banner-right.left",
         "padding-right": "1em",
