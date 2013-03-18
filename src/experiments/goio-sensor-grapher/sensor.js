@@ -65,13 +65,19 @@ sensor.AppletGrapher.prototype.EnumerateSensors = function() {
   var sensors = this.applet.getAttachedSensors(this.sensorConfig.deviceType);
   var text = "";
   if (sensors !== null && sensors.length > 0) {
+    var values = [];
+    try {
+      values = this.applet.getAttachedSensorsValues(this.sensorConfig.deviceType);
+    } catch(e) {
+      console.log("problem enumeratingSensors getting values " + e);
+    }
     text += "(";
     for (var i = 0; i < sensors.length; i++) {
       var name = sensors[i].getName();
       if (name === null) {
         name = this.applet.getTypeConstantName(sensors[i].getType());
       }
-      text += name + ", ";
+      text += name + " [ " + values[i].toFixed(2) + " ], ";
     }
     text = text.substr(0,text.length-2) + ")";
   }
