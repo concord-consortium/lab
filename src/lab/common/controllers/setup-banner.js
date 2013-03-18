@@ -133,6 +133,7 @@ define(function () {
       "id": "banner-bottom-left",
       "bottom": "container.height",
       "left": "0",
+      "padding-left": "0.3em",
       "align": "left",
       "belowOthers": true
     });
