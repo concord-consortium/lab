@@ -626,7 +626,16 @@ define(function (require) {
     }
 
     function springStrokeWidth(d) {
-      return (1 + Math.log(1+d.strength*5000)) * 0.5;
+      return 1.25;
+      // The following code is intended to use a thicker stroke-width when
+      // the spring constant is larger ... but to work properly in models with
+      // both MD2D and MKS units schemes the model would need to supply
+      // an apprpriately scaled default spring constant.
+      // For example in the Spring and Mass Interactive which uses an MKS unit
+      // scheme the spring constant is varied between 0.001 and 0.003 ... while in
+      // the Comparing Dipole atom-pulling Interactive that uses an MD2D unit
+      // scheme the spring constant is 10.
+      // return (1 + Math.log(1+d.strength*1000)) * 0.25;
     }
 
     function vdwLinesEnter() {
