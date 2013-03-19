@@ -454,7 +454,8 @@ define(function (require) {
                           '  </a>' +
                           '</div>')
             .appendTo($(elem.node()))
-            .addClass('graph-button-layer');
+            .addClass('graph-button-layer')
+            .css('z-index', 101);
 
       buttonLayer.find('a.graph-autoscale-button').on('click', function() { graph.autoscale(); });
       return buttonLayer;
