@@ -9,9 +9,9 @@ class Interactive < BaseDataObject
   property :staticExamplePath,   String
   property :path,                String
   property :about,               String
-  property :template,            String
   property :fontScale,           Float,   :default => 1.0
   
+  property :template,            Object
   property :layout,              Object
   property :exports,             Object
   property :components,         [Object]
