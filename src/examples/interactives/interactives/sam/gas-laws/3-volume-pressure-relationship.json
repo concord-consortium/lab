@@ -102,7 +102,7 @@
       "id": "bar-graph",
       "options": {
         "minValue": 0,
-        "maxValue": 2,
+        "maxValue": 8,
         "title": "Pressure (Bar)"
       },
       "property": "pressureProbeFiltered"
