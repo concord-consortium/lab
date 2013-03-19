@@ -1,4 +1,4 @@
-/*global define, model, $ */
+/*global define, model, $, setTimeout, document, window */
 
 define(function (require) {
   // Dependencies.
@@ -204,7 +204,7 @@ define(function (require) {
     }
 
     function setupLayout() {
-      var template, layout, components, fontScale, banner;
+      var template, layout, components, fontScale, banner, resizeAfterFullscreen;
 
       if (typeof interactive.template === "string") {
         template = templates[interactive.template];
@@ -240,6 +240,19 @@ define(function (require) {
           controller.resize();
         });
       }
+
+      // in all cases, call resize when entering and existing fullscreen
+      resizeAfterFullscreen = function() {
+        // need to call twice, as safari requires two attempts before it has
+        // the correct dimensions.
+        controller.resize();
+        setTimeout(controller.resize, 50);
+      }
+      document.addEventListener("fullscreenchange", resizeAfterFullscreen, false);
+
+      document.addEventListener("mozfullscreenchange", resizeAfterFullscreen, false);
+
+      document.addEventListener("webkitfullscreenchange", resizeAfterFullscreen, false);
     }
 
     function createComponent(component) {
