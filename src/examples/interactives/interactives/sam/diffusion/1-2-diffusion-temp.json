@@ -95,7 +95,7 @@
           "label": "High"
         }
       ],
-      "steps": 1175,
+      "steps": 2,
       "title": "Temperature",
       "property": "targetTemperature"
     },

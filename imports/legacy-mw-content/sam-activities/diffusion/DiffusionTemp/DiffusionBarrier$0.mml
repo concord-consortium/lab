@@ -350,7 +350,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1363374336000</long> 
+     <long>1363700473000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -359,11 +359,11 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>61602</long> 
+    <long>61801</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/wsd/Desktop</string> 
+    <string>/Users/wsd/cc/lab/imports/legacy-mw-content/sam-activities/diffusion/DiffusionTemp</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -407,6 +407,9 @@
      <int>255</int> 
     </object> 
    </void> 
+  </void> 
+  <void property="showClock"> 
+   <boolean>false</boolean> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
