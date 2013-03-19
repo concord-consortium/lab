@@ -518,7 +518,7 @@ define(function (require) {
             "d": function (d) { return findPoints(d,1); },
             "stroke-width": function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + modelSize2px(0.005);
+                return springStrokeWidth(d);
               } else {
                 return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
@@ -536,7 +536,7 @@ define(function (require) {
             "d": function (d) { return findPoints(d,2); },
             "stroke-width": function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + modelSize2px(0.005);
+                return springStrokeWidth(d);
               } else {
                 return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
@@ -623,6 +623,10 @@ define(function (require) {
 
     function isSpringBond(d){
       return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
+    }
+
+    function springStrokeWidth(d) {
+      return (1 + Math.log(1+d.strength*5000)) * 0.5;
     }
 
     function vdwLinesEnter() {
