@@ -4,7 +4,19 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'webmock/rspec'
+require  'rake'
 
+require 'capybara/poltergeist'
+Capybara.javascript_driver = :poltergeist
+Capybara.register_driver :poltergeist do |app|
+  options = {
+    :js_errors => false,
+    # :phantomjs_options => ['--debug=yes', '--load-images=no', '--ignore-ssl-errors=yes'],
+    :inspector => 'open'
+    #:inspector => true
+  }
+  Capybara::Poltergeist::Driver.new(app, options)
+end
 
 # by default, all web connections are disabled.
 WebMock.disable_net_connect!(:allow_localhost => true)
@@ -13,22 +25,32 @@ WebMock.disable_net_connect!(:allow_localhost => true)
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-TEST_CONFIG = YAML.load_file("#{Rails.root}/config/couchdb.yml")["test"]
+CONFIG = YAML.load_file("#{Rails.root}/config/couchdb.yml")
+DEV_CONFIG = CONFIG['development']
+TEST_CONFIG = CONFIG['test']
 COUCHHOST = "#{TEST_CONFIG['protocol']}://#{TEST_CONFIG['host']}:#{TEST_CONFIG['port']}"
-TESTDB    = "#{TEST_CONFIG['prefix']}_#{TEST_CONFIG['suffix']}"
+TESTDB_NAME    = "#{TEST_CONFIG['prefix']}_#{TEST_CONFIG['suffix']}"
+DEVDB_NAME    = "#{DEV_CONFIG['prefix']}_#{DEV_CONFIG['suffix']}"
 TEST_SERVER = CouchRest.new(COUCHHOST)
-TEST_SERVER.default_database = TESTDB
-DB = TEST_SERVER.database(TESTDB)
+TEST_SERVER.default_database = TESTDB_NAME
+TEST_DB = TEST_SERVER.database(TESTDB_NAME)
+DEV_DB = TEST_SERVER.database(DEVDB_NAME)
 
 RSpec.configure do |config|
 
   config.include FactoryGirl::Syntax::Methods
-  
-  config.before(:each) { reset_test_db! }
+
+  config.before(:each) {
+    reset_test_db!
+    # binding.pry
+    # replicate development DB to the test DB
+    DEV_DB.replicate_to(TEST_DB)
+    # %x{ curl  -d '{"source":"lab_development","target":"lab_test"}' -H 'Content-type: application/json' -X POST http://127.0.0.1:5984/_replicate }
+  }
 
   config.after(:each) do
     cr = TEST_SERVER
-    test_dbs = cr.databases.select { |db| db =~ /^#{TESTDB}/ }
+    test_dbs = cr.databases.select { |db| db =~ /^#{TESTDB_NAME}/ }
     test_dbs.each do |db|
       cr.database(db).delete! rescue nil
     end
@@ -63,8 +85,8 @@ RSpec.configure do |config|
 end
 
 def reset_test_db!
-  DB.recreate! rescue nil 
+  TEST_DB.recreate! rescue nil
   # Reset the Design Cache
   Thread.current[:couchrest_design_cache] = {}
-  DB
+  TEST_DB
 end
