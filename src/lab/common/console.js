@@ -15,6 +15,7 @@ define(function (require) {
     console = {};
     if (window) window.console = console;
   }
+
   // Assign shortcut.
   cons = console;
   // Make sure that every method is defined.
@@ -30,6 +31,22 @@ define(function (require) {
     cons.time = emptyFunction;
   if (cons.timeEnd === undefined)
     cons.timeEnd = emptyFunction;
+
+  // Make sure that every method has access to an 'apply' method
+  // This is a hack for IE9 and IE10 when using the built-in developer tools.
+  // See: http://stackoverflow.com/questions/5472938/does-ie9-support-console-log-and-is-it-a-real-function
+  if (cons.log.apply === undefined)
+    cons.log = Function.prototype.bind.call(console.log, console);
+  if (cons.info.apply === undefined)
+    cons.info = Function.prototype.bind.call(console.info, console);
+  if (cons.warn.apply === undefined)
+    cons.warn = Function.prototype.bind.call(console.warn, console);
+  if (cons.error.apply === undefined)
+    cons.error = Function.prototype.bind.call(console.error, console);
+  if (cons.time.apply === undefined)
+    cons.time = Function.prototype.bind.call(console.time, console);
+  if (cons.timeEnd.apply === undefined)
+    cons.timeEnd = Function.prototype.bind.call(console.timeEnd, console);
 
   publicAPI = {
     log: function () {
