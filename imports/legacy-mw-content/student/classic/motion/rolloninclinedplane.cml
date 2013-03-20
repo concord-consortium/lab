@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Rolling down on an inclined plane</page_title>
+<text>Rolling down on an inclined plane
+ </text>
+<section start="0" end="36">
+<paragraph start="0" end="34">
+<Alignment>1</Alignment>
+<content start="0" end="33">
+<size>15</size><bold>true</bold><family>Trebuchet MS</family></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="36">
+<Alignment>1</Alignment>
+<content start="34" end="35">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>rolloninclinedplane$0.mml</resource><menubar>false</menubar></component></content>
+
+</paragraph>
+</section>
+</document>

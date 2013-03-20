@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Peaucellier-Lipkin Linkage</page_title>
+<text>Robotics See Hoekens Linkage.
+  </text>
+<section start="0" end="33">
+<paragraph start="0" end="30">
+<content start="0" end="9">
+<family>Trebuchet MS</family><size>16</size><bold>true</bold></content>
+
+<content start="9" end="13">
+<family>Trebuchet MS</family></content>
+
+<content start="13" end="28">
+<family>Trebuchet MS</family><href>hoekens.cml</href></content>
+
+<content start="28" end="29">
+<family>Trebuchet MS</family></content>
+
+<content start="29" end="30">
+<family>Trebuchet MS</family><size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="30" end="33">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+</content>
+
+<content start="31" end="32">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>peaucellier$0.mml</resource><menubar>false</menubar></component></content>
+
+</paragraph>
+</section>
+</document>

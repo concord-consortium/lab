@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Bean Machine experiment</page_title>
+<text>Simulating the Bean Machine Experiment
+
+The bean machine, also known as the Galton board, is a device to demonstrate the normal distribution in statistics. This page shows a simulation of this experiment. The following options are available for changing the simulation conditions.
+
+ 
+ 
+ 
+
+The next page shows another design of Galton&apos;s board.</text>
+<section start="0" end="343">
+<paragraph start="0" end="39">
+<Alignment>1</Alignment>
+<content start="0" end="38">
+<family>Trebuchet MS</family><size>16</size><bold>true</bold></content>
+
+<content start="38" end="39">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<content start="39" end="40">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="40" end="281">
+<LeftIndent>20.0</LeftIndent>
+<content start="40" end="280">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="280" end="281">
+</content>
+
+</paragraph>
+<paragraph start="281" end="282">
+<Alignment>1</Alignment>
+<content start="281" end="282">
+</content>
+
+</paragraph>
+<paragraph start="282" end="284">
+<Alignment>1</Alignment>
+<content start="282" end="283">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Execute MW script</action>
+<script>{option=&quot;Default&quot;, script=&quot;set %option 0;set %max 360;&quot;}
+{option=&quot;Drop beans from two close locations&quot;, script=&quot;set %option 1;set %max 360;&quot;}
+{option=&quot;Drop beans from two not-so-close locations&quot;, script=&quot;set %option 2;set %max 400;&quot;}
+{option=&quot;Drop beans from two distant locations&quot;, script=&quot;set %option 3;set %max 400;&quot;}
+</script>
+<disabled_at_run>true</disabled_at_run>
+</component></content>
+
+<content start="283" end="284">
+</content>
+
+</paragraph>
+<paragraph start="284" end="286">
+<Alignment>1</Alignment>
+<content start="284" end="285">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>galtonboard$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="285" end="286">
+</content>
+
+</paragraph>
+<paragraph start="286" end="288">
+<Alignment>1</Alignment>
+<content start="286" end="287">
+<component><class>org.concord.modeler.PageFunctionGraph</class>
+<width>500</width><height>300</height><opaque>false</opaque>
+<border>None</border>
+<function><expression>exp(-x^2)*4</expression>
+<color>-98ddd5</color><weight>3.0</weight><style>0</style><datapoint>100</datapoint></function><function><expression>exp(-(x-1)^2)*2+exp(-(x+1)^2)*2</expression>
+<color>-557b90</color><weight>3.0</weight><style>0</style><datapoint>100</datapoint></function><function><expression>exp(-(x-.5)^2)*2+exp(-(x+.5)^2)*2</expression>
+<color>-642de1</color><weight>3.0</weight><style>0</style><datapoint>100</datapoint></function><function><expression>exp(-(x-2)^2)*2+exp(-(x+2)^2)*2</expression>
+<color>-454102</color><weight>3.0</weight><style>0</style><datapoint>100</datapoint></function><axis_x_min>-2.8993053</axis_x_min><axis_x_max>3.0055935</axis_x_max><axis_y_min>-0.47548828</axis_y_min><axis_y_max>5.429411</axis_y_max></component></content>
+
+<content start="287" end="288">
+</content>
+
+</paragraph>
+<paragraph start="288" end="289">
+<content start="288" end="289">
+</content>
+
+</paragraph>
+<paragraph start="289" end="343">
+<LeftIndent>20.0</LeftIndent>
+<content start="289" end="309">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="309" end="341">
+<href>galtonboard2.cml</href><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="341" end="342">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+</section>
+</document>

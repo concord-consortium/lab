@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Chebyshev Linkage</page_title>
+<text>Robotics See Hoekens Linkage |  Watt Linkage.
+ </text>
+<section start="0" end="48">
+<paragraph start="0" end="46">
+<content start="0" end="9">
+<family>Trebuchet MS</family><size>16</size><bold>true</bold></content>
+
+<content start="9" end="13">
+<family>Trebuchet MS</family></content>
+
+<content start="13" end="28">
+<href>hoekens.cml</href><family>Trebuchet MS</family></content>
+
+<content start="28" end="31">
+</content>
+
+<content start="31" end="32">
+<family>Trebuchet MS</family></content>
+
+<content start="32" end="44">
+<href>watt.cml</href><family>Trebuchet MS</family></content>
+
+<content start="44" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="48">
+<Alignment>1</Alignment>
+<content start="46" end="47">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>chebyshev$0.mml</resource><menubar>false</menubar></component></content>
+
+</paragraph>
+</section>
+</document>

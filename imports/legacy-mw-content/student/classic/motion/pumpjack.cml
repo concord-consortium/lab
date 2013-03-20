@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Nodding Donkey</page_title>
+<text>Nodding Donkey (Pump Jack)
+
+ </text>
+<section start="0" end="30">
+<paragraph start="0" end="27">
+<Alignment>1</Alignment>
+<content start="0" end="26">
+<bold>true</bold><family>Trebuchet MS</family><size>15</size></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="30">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pumpjack$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+</paragraph>
+</section>
+</document>

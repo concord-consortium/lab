@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Moving down on a rough inclined plane</page_title>
+<text>Moving down on a rough inclined plane
+
+ 
+ 
+Instruction: This is a simulation of a mass moving down in a rough inclined plane.</text>
+<section start="0" end="126">
+<paragraph start="0" end="38">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="37">
+<bold>true</bold><size>15</size></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="41">
+<Alignment>1</Alignment>
+<content start="39" end="40">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>inclinedplane$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="43">
+<Alignment>1</Alignment>
+<content start="41" end="42">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>580.0</value>
+<minimum>100.0</minimum>
+<maximum>1100.0</maximum>
+<nstep>50</nstep>
+<title>Mass</title>
+<width>400</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;100.0&quot;, label=&quot;Small&quot;}{value=&quot;1100.0&quot;, label=&quot;Large&quot;}</labeltable>
+<change>Element Ck: Mass</change>
+</component></content>
+
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="126">
+<LeftIndent>6.0</LeftIndent>
+<content start="43" end="125">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

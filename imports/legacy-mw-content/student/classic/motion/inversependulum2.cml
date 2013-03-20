@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>An inverse pendulum on an oscillatory base: an interactive study</page_title>
+<text>An inverse pendulum on an oscillatory base: an interactive study
+
+Instruction: Before you change a parameter, please press the reset button (the first button on the tool bar below the view window) first, and then adjust a parameter using one of the sliders on the right. The slider titled with &quot;Perturbation (vx)&quot; sets the initial horizontal velocity of the pendulum&apos;s ball. The slider titled with &quot;Amplitude&quot; sets the amplitude of the oscillation. The slider titled with &quot;Frequency&quot; sets the frequency of the osciallation.
+
+    </text>
+<section start="0" end="530">
+<paragraph start="0" end="65">
+<Alignment>1</Alignment>
+<content start="0" end="64">
+<bold>true</bold><family>Trebuchet MS</family><size>16</size></content>
+
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="65" end="66">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="66" end="524">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="66" end="524">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="524" end="525">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="524" end="525">
+</content>
+
+</paragraph>
+<paragraph start="525" end="530">
+<Alignment>1</Alignment>
+<content start="525" end="526">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>inversependulum2$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="526" end="527">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>10.0</value>
+<minimum>1.0</minimum>
+<maximum>10.0</maximum>
+<nstep>18</nstep>
+<title>Frequency</title>
+<width>100</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;High&quot;}{value=&quot;1.0&quot;, label=&quot;Low&quot;}</labeltable>
+<script>set atom[1].restraint %val*100;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="527" end="528">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>10.0</value>
+<minimum>1.0</minimum>
+<maximum>10.0</maximum>
+<nstep>18</nstep>
+<title>Amplitude</title>
+<width>100</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;High&quot;}{value=&quot;1.0&quot;, label=&quot;Low&quot;}</labeltable>
+<script>set atom[1].ry 17-%val*0.1;
+set atom[0].ry 3.4-%val*0.1;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="528" end="529">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>3.5</value>
+<minimum>1.0</minimum>
+<maximum>10.0</maximum>
+<nstep>18</nstep>
+<title>Perturbation (vx)</title>
+<width>100</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;High&quot;}{value=&quot;1.0&quot;, label=&quot;Low&quot;}</labeltable>
+<script>set atom[0].vx %val*500;</script>
+<change>Execute MW script</change>
+</component></content>
+
+</paragraph>
+</section>
+</document>

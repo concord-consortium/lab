@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Centrifugal reaction force</page_title>
+<text>
+Centrifugal reaction force
+
+  
+      
+Stopping the ball when it reaches the upper half of the circular track will cause it to fall off, 
+because of the lack of the centrifugal reaction force, which is proportional to the square of speed.</text>
+<section start="0" end="239">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="28">
+<Alignment>1</Alignment>
+<content start="1" end="27">
+<family>Trebuchet MS</family><bold>true</bold><size>16</size></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="32">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>360.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    If the ball at the bottom starts with a speed that is high enough, it can 
+    pass the highest point of the circular track without falling down, as if 
+    some kind of force were holding it onto the track. This effect is called 
+    the centrifugal reaction force.
+
+    &lt;p&gt;
+      In fact, you may experience the centrifugal reaction force every day --- 
+      it is the force that you feel when the vehicle you are riding makes a 
+      turn.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="30" end="31">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>centrifugal$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="39">
+<Alignment>1</Alignment>
+<content start="32" end="33">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>5.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>20</nstep>
+<title>Set the initial speed when the ball is at the bottom</title>
+<width>320</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<script>set atom[%ball].vx 500+%val*200;
+set atom[%ball].vy 0;
+set atom[%ball].rx 20;
+set atom[%ball].ry 21.5;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="36" end="37">
+</content>
+
+<content start="37" end="38">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop the ball</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set atom[%ball].vx 0;
+set atom[%ball].vy 0;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="138">
+<Alignment>1</Alignment>
+<content start="39" end="138">
+</content>
+
+</paragraph>
+<paragraph start="138" end="239">
+<Alignment>1</Alignment>
+<content start="138" end="238">
+</content>
+
+</paragraph>
+</section>
+</document>

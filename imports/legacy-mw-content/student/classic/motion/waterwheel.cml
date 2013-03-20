@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>An overshot water wheel</page_title>
+<text>An overshot water wheel
+
+ 
+
+See: an undershot water wheel
+
+</text>
+<section start="0" end="60">
+<paragraph start="0" end="24">
+<Alignment>1</Alignment>
+<content start="0" end="23">
+<bold>true</bold><family>Trebuchet MS</family><size>16</size></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="27">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>waterwheel$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="58">
+<Alignment>1</Alignment>
+<content start="28" end="33">
+<family>Trebuchet MS</family><size>14</size></content>
+
+<content start="33" end="57">
+<family>Trebuchet MS</family><size>14</size><href>undershotwaterwheel.cml</href></content>
+
+<content start="57" end="58">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="58" end="59">
+<Alignment>1</Alignment>
+<content start="58" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="60">
+</paragraph>
+</section>
+</document>

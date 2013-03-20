@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Drafting mechanism</page_title>
+<text>Drafting mechanism
+ </text>
+<section start="0" end="21">
+<paragraph start="0" end="19">
+<Alignment>1</Alignment>
+<content start="0" end="18">
+<bold>true</bold><family>Trebuchet MS</family><size>16</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="21">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>draftingmachine$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+</paragraph>
+</section>
+</document>

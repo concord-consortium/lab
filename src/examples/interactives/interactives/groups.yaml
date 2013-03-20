@@ -55,7 +55,11 @@
   :category: Tests
 
 - :path: student/classic/pendulum
-  :name: "Classic Java MW Examples"
+  :name: "Classic Java MW Examples: Pendulum"
+  :category: Examples
+
+- :path: student/classic/motion
+  :name: "Classic Java MW Examples: Motion"
   :category: Examples
 
 - :path: tutorial

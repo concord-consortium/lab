@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A simulation of a more complex Galton board</page_title>
+<text>
+  </text>
+<section start="0" end="4">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="4">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>320.0</width>
+<height>540.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;h2&gt;
+      A simulation of a more complex Galton board
+    &lt;/h2&gt;
+    &lt;p&gt;
+      Galton had a more complex design that is less well-known. The design 
+      involves another array of pins that are placed under the original array. 
+      The second array of pins will further randomize the motion of the balls.
+    &lt;/p&gt;
+    &lt;p&gt;
+      But does it affect the bell shape of the distribution? If it does, how? 
+      This simulation shows this.
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;input name=&quot;Withdraw barrier&quot; value=&quot;Withdraw barrier&quot; script=&quot;script:mw2d:1:select obstacle 26;remove;&quot; alt=&quot;tooltip&quot; type=&quot;submit&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="3">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>galtonboard2$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+</paragraph>
+</section>
+</document>
