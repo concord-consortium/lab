@@ -277,6 +277,12 @@ ISImporter.GraphController = defineClass({
   graph: null,
   dataset: null,
 
+  // Some reasonable initial values
+  xMin: 0,
+  xMax: 20,
+  yMin: 0,
+  yMax: 2,
+
   setTitle: function(title) {
     this.title = title;
     this.graph.title(title);
@@ -327,11 +333,11 @@ ISImporter.GraphController = defineClass({
     this.graph = Lab.grapher.Graph(this.element, {
       title       : this.title,
       xlabel      : this.xLabel,
-      xmin        : 0,
-      xmax        : 20,
+      xmin        : this.xMin,
+      xmax        : this.xMax,
       ylabel      : this.yLabel,
-      ymin        : 0,
-      ymax        : 2,
+      ymin        : this.yMin,
+      ymax        : this.yMax,
       points      : [],
       circleRadius: false,
       dataChange  : false
@@ -345,7 +351,19 @@ ISImporter.GraphController = defineClass({
     this.graph.notify('');
   },
 
+  /* User interactions with the Lab grapher may change the displayed graph bounds (xmin, xmax, ymin,
+     ymax) without notifying us. This restores the graph bounds to the last programmatically-set
+     bounds, e.g., the default bounds for the currently selected sensor.
+  */
+  restoreLastSavedGraphBounds: function() {
+    this.graph.xmin(this.xMin);
+    this.graph.xmax(this.xMax);
+    this.graph.ymin(this.yMin);
+    this.graph.ymax(this.yMax);
+  },
+
   resetGraph: function() {
+    this.restoreLastSavedGraphBounds();
     this.graph.reset();
   },
 
@@ -673,6 +691,7 @@ ISImporter.appController = new ISImporter.Object({
     this.disable(this.$resetButton);
     this.disable(this.$selectButton);
     this.disable(this.$exportButton);
+    ISImporter.graphController.resetGraph();
   },
 
   tare: function() {
