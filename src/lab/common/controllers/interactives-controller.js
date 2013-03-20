@@ -203,6 +203,56 @@ define(function (require) {
       }
     }
 
+    // ------------------------------------------------------------
+    //
+    // Handle keyboard shortcuts for model operation ...
+    // events routed through model_player object.
+    //
+    // ------------------------------------------------------------
+
+    function setupModelPlayerKeyboardHandler() {
+      if (modelController && !modelController.enableKeyboardHandlers()) return;
+      $interactiveContainer.keydown(function(event) {
+        var keycode = event.keycode || event.which;
+        switch(keycode) {
+          case 13:                 // return
+          event.preventDefault();
+          if (!model_player.isPlaying()) {
+            model_player.play();
+          }
+          break;
+
+          case 32:                 // space
+          event.preventDefault();
+          if (model_player.isPlaying()) {
+            model_player.stop();
+          } else {
+            model_player.play();
+          }
+          break;
+
+          case 37:                 // left-arrow
+          event.preventDefault();
+          if (model_player.isPlaying()) {
+            model_player.stop();
+          } else {
+            model_player.back();
+          }
+          break;
+
+          case 39:                 // right-arrow
+          event.preventDefault();
+          if (model_player.isPlaying()) {
+            model_player.stop();
+          } else {
+            model_player.forward();
+          }
+          break;
+        }
+      });
+      $interactiveContainer.focus();
+    }
+
     function setupLayout() {
       var template, layout, components, fontScale, banner, resizeAfterFullscreen;
 
@@ -247,7 +297,7 @@ define(function (require) {
         // the correct dimensions.
         controller.resize();
         setTimeout(controller.resize, 50);
-      }
+      };
       document.addEventListener("fullscreenchange", resizeAfterFullscreen, false);
 
       document.addEventListener("mozfullscreenchange", resizeAfterFullscreen, false);
@@ -482,6 +532,8 @@ define(function (require) {
 
       // When all components are created, we can initialize semantic layout.
       setupLayout();
+      // and setup model player keyboard handlers (if enabled)
+      setupModelPlayerKeyboardHandler();
     }
 
     /**

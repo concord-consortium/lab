@@ -13,7 +13,7 @@ define(function (require) {
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
       gradients             = require('common/views/gradients');
 
-  return function ModelView(modelUrl, model, Renderer) {
+  return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
         // Public API object to be returned.
     var api = {},
         renderer,
@@ -333,54 +333,6 @@ define(function (require) {
       }
     }
 
-    // ------------------------------------------------------------
-    //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function setupKeyboardHandler() {
-      if (!model.get("enableKeyboardHandlers")) return;
-      $(node).keydown(function(event) {
-        var keycode = event.keycode || event.which;
-        switch(keycode) {
-          case 13:                 // return
-          event.preventDefault();
-          if (!model_player.isPlaying()) {
-            model_player.play();
-          }
-          break;
-
-          case 32:                 // space
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.play();
-          }
-          break;
-
-          case 37:                 // left-arrow
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.back();
-          }
-          break;
-
-          case 39:                 // right-arrow
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.forward();
-          }
-          break;
-        }
-      });
-    }
-
     function renderContainer() {
       // Update cx, cy, size and modelSize variables.
       scale();
@@ -433,7 +385,6 @@ define(function (require) {
           textContainerTop:     textContainerTop
         };
 
-        setupKeyboardHandler();
         createGradients();
 
         playbackContainer = vis1;
@@ -643,7 +594,8 @@ define(function (require) {
     $el = $("<div>")
       .attr({
         "id": "model-container",
-        "class": "container"
+        "class": "container",
+        "tabindex": getNextTabIndex
       })
       // Set initial dimensions.
       .css({

@@ -211,6 +211,10 @@ define(function (require) {
         return controller.modelContainer.setPlaybackContainer(svgPlaybackContainer);
       }
 
+      controller.enableKeyboardHandlers = function () {
+        return model.get("enableKeyboardHandlers");
+      }
+
       controller.reload = reload;
       controller.repaint = repaint;
       controller.resize = resize;
