@@ -54,6 +54,19 @@
   &:hover
     @include icon-bg("../../resources/layout/fullscreen-dark.svg", center, 90%)
 
+body:-moz-full-screen .fullscreen
+  @include icon-bg("../../resources/layout/fullscreen-exit.svg", center, 90%)
+  &:hover
+    @include icon-bg("../../resources/layout/fullscreen-exit-dark.svg", center, 90%)
+body:-webkit-full-screen .fullscreen
+  @include icon-bg("../../resources/layout/fullscreen-exit.svg", center, 90%)
+  &:hover
+    @include icon-bg("../../resources/layout/fullscreen-exit-dark.svg", center, 90%)
+body:fullscreen .fullscreen
+  @include icon-bg("../../resources/layout/fullscreen-exit.svg", center, 90%)
+  &:hover
+    @include icon-bg("../../resources/layout/fullscreen-exit-dark.svg", center, 90%)
+
 .credits
   background: url("../../resources/layout/cc-logo.png") no-repeat
   background-size: 80%
