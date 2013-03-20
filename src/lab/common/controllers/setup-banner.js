@@ -151,6 +151,19 @@ define(function () {
       || body.mozRequestFullScreen
       || body.msRequestFullScreen
 
+    document.cancelFullscreenMethod =
+         document.cancelFullScreen
+      || document.webkitCancelFullScreen
+      || document.mozCancelFullScreen
+      || document.msCancelFullScreen
+
+    isFullscreen = function() {
+      // this doesn't yet exist in Safari
+      return document.fullscreenElement
+          || document.webkitFullscreenElement
+          || document.mozFullScreenElement;
+    }
+
     if (requestFullscreenMethod) {
       createElementInContainer(
       {
@@ -161,7 +174,11 @@ define(function () {
         "classes": ["fullscreen"],
         "tooltip": "Open interactive in full-screen mode",
         "onClick": function () {
-          requestFullscreenMethod.call(body);
+          if (!isFullscreen()) {
+            requestFullscreenMethod.call(body);
+          } else {
+            document.cancelFullscreenMethod();
+          }
         }
       },
       {
