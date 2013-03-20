@@ -159,9 +159,13 @@ define(function () {
 
     isFullscreen = function() {
       // this doesn't yet exist in Safari
-      return document.fullscreenElement
+      if (document.fullscreenElement
           || document.webkitFullscreenElement
-          || document.mozFullScreenElement;
+          || document.mozFullScreenElement) {
+        return true;
+      }
+      // annoying hack to check Safari
+      return ~$(".fullscreen").css("background-image").indexOf("exit")
     }
 
     if (requestFullscreenMethod) {
