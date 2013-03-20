@@ -32,7 +32,7 @@ define(function (require) {
   graphControllerCount = 0;
 
 
-  return function graphController(component) {
+  return function graphController(component, scriptingAPI, interactivesController) {
     var // HTML element containing view
         $container,
         grapher,
@@ -195,7 +195,7 @@ define(function (require) {
         if (grapher) {
           resetGrapher();
         } else {
-          grapher = new Graph($container[0], getOptions());
+          grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
         }
         resetData();
         registerModelListeners();

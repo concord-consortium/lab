@@ -21,6 +21,12 @@ helpers.withIsolatedRequireJS (requirejs) ->
   GraphController = requirejs 'common/controllers/graph-controller'
   Model           = requirejs 'md2d/models/modeler'
 
+  interactivesController =
+    getNextTabIndex: ->
+      1
+
+  scriptingAPI = ->
+
   getComponentSpec = ->
     id: 'graphContainerId'
     type: 'graph'
@@ -32,7 +38,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
       should.exist GraphController
 
     it "should act as a constructor that accepts the component spec as its argument", ->
-      controller = new GraphController getComponentSpec()
+      controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController
       should.exist controller
 
     describe "A GraphController instance", ->
@@ -40,7 +46,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
       beforeEach ->
         global.model = new Model simpleModel
-        controller = new GraphController getComponentSpec()
+        controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController
 
       it "should have a getViewContainer method", ->
         controller.should.have.property 'getViewContainer'
@@ -291,7 +297,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
     describe "handling of graph configuration options in component spec", ->
       grapherOptionsForComponentSpec = (componentSpec) ->
-        controller = new GraphController componentSpec
+        controller = new GraphController componentSpec, scriptingAPI, interactivesController
         sinon.spy mock, 'Graph'
         controller.modelLoadedCallback()
         options = mock.Graph.getCall(0).args[1]

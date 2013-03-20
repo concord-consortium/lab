@@ -5,14 +5,16 @@ define(function () {
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
 
-  return function ButtonController(component, scriptingAPI) {
+  return function ButtonController(component, scriptingAPI, interactivesController) {
     var $button,
         controller;
 
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.button, component);
 
-    $button = $('<button>').attr('id', component.id).html(component.text);
+    $button = $('<button>')
+        .attr('tabindex', interactivesController.getNextTabIndex())
+        .attr('id', component.id).html(component.text);
     // Each interactive component has to have class "component".
     $button.addClass("component");
 

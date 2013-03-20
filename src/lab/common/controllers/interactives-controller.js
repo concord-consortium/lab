@@ -116,8 +116,17 @@ define(function (require) {
         shareDialog,
         creditsDialog,
 
-        semanticLayout;
+        semanticLayout,
+        getNextTabIndex;
 
+
+    // simple tabindex support, also exposed via api.getNextTabIndex()
+    getNextTabIndex = (function () {
+      var tabIndex = -1;
+      return function() {
+        return tabIndex++;
+      };
+    });
 
     function getModel(modelId) {
       if (modelsHash[modelId]) {
@@ -192,7 +201,7 @@ define(function (require) {
         var modelType = type || "md2d";
         switch(modelType) {
           case "md2d":
-          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
+          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
           break;
         }
         // Extending universal Interactive scriptingAPI with model-specific scripting API
@@ -650,6 +659,9 @@ define(function (require) {
       pushOnLoadScript: function (callback) {
         onLoadScripts.push(callback);
       },
+
+      getNextTabIndex: getNextTabIndex,
+
       /**
         Notifies interactive controller that the dimensions of its container have changed.
         It triggers the layout algorithm again.
