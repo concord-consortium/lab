@@ -3,15 +3,15 @@
 define(function (require) {
   // Dependencies.
   var axis = require('grapher/core/axis'),
-      registerKeyboardHandler = require('grapher/core/register-keyboard-handler'),
       tooltips = {
         autoscale: "Show all data (autoscale)"
       };
 
 
-  return function Graph(idOrElement, options, message) {
+  return function Graph(idOrElement, options, message, tabindex) {
     var elem,
         node,
+        $node,
         cx,
         cy,
 
@@ -59,6 +59,7 @@ define(function (require) {
         markedPoint, marker,
         sample,
         gcanvas, gctx,
+        canvasFillStyle = "rgba(255,255,255, 0.0)",
         cplot = {},
 
         default_options = {
@@ -195,13 +196,13 @@ define(function (require) {
     function calculateLayout() {
       scale();
 
-      fontSizeInPixels = parseFloat($(node).css("font-size"));
+      fontSizeInPixels = parseFloat($node.css("font-size"));
 
       if (!options.fontScaleRelativeToParent) {
-        $(node).css("font-size", 0.5 + sizeType.value/6 + 'em');
+        $node.css("font-size", 0.5 + sizeType.value/6 + 'em');
       }
 
-      fontSizeInPixels = parseFloat($(node).css("font-size"));
+      fontSizeInPixels = parseFloat($node.css("font-size"));
 
       halfFontSizeInPixels = fontSizeInPixels/2;
       quarterFontSizeInPixels = fontSizeInPixels/4;
@@ -395,6 +396,7 @@ define(function (require) {
         // and for DOM element.
         elem = d3.select(idOrElement);
         node = elem.node();
+        $node = $(node);
         cx = elem.property("clientWidth");
         cy = elem.property("clientHeight");
       }
@@ -493,6 +495,7 @@ define(function (require) {
             .attr("width",  cx)
             .attr("height", cy)
             .attr("class", "graph");
+            // .attr("tabindex", tabindex || 0);
 
         vis = svg.append("g")
               .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -650,25 +653,6 @@ define(function (require) {
           notification.text(mesg);
         } else {
           notification.text('');
-        }
-      }
-
-      function keydown() {
-        if (!selected) return;
-        switch (d3.event.keyCode) {
-          case 8:   // backspace
-          case 46:  // delete
-          if (options.dataChange) {
-            var i = points.indexOf(selected);
-            points.splice(i, 1);
-            selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
-            update();
-          }
-          if (d3.event && d3.event.keyCode) {
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-          }
-          break;
         }
       }
 
@@ -911,7 +895,6 @@ define(function (require) {
       function regularPlotDrag() {
         var p;
         d3.event.preventDefault();
-        registerKeyboardHandler(keydown);
         d3.select('body').style("cursor", "move");
         if (d3.event.altKey) {
           if (d3.event.shiftKey && options.addData) {
@@ -938,23 +921,28 @@ define(function (require) {
         }
       }
 
+      function falseFunction() {
+        return false;
+      }
+
       function xaxisDrag() {
-        document.onselectstart = function() { return false; };
+        document.onselectstart = falseFunction;
         d3.event.preventDefault();
         var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
       function yaxisDrag() {
-        document.onselectstart = function() { return false; };
         d3.event.preventDefault();
+        document.onselectstart = falseFunction;
         var p = d3.mouse(vis.node());
         downy = yScale.invert(p[1]);
       }
 
       function dataPointDrag(d) {
-        registerKeyboardHandler(keydown);
-        document.onselectstart = function() { return false; };
+        svg.node().focus();
+        d3.event.preventDefault();
+        document.onselectstart = falseFunction;
         selected = dragged = d;
         update();
       }
@@ -1660,7 +1648,7 @@ define(function (require) {
 
       function clearCanvas() {
         gcanvas.width = gcanvas.width;
-        gctx.fillStyle = "rgba(0,255,0, 0.05)";
+        gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
       }
@@ -1834,10 +1822,37 @@ define(function (require) {
         gctx = gcanvas.getContext( '2d' );
         gctx.globalCompositeOperation = "source-over";
         gctx.lineWidth = 1;
-        gctx.fillStyle = "rgba(0,255,0, 0.05)";
+        gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, canvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
-        gcanvas.style.border = 'solid 1px red';
+      }
+
+      // ------------------------------------------------------------
+      //
+      // Keyboard Handling
+      //
+      // ------------------------------------------------------------
+
+      function registerKeyboardHandler() {
+        svg.node().addEventListener("keydown", function (evt) {
+          if (!selected) return false;
+          if (evt.type == "keydown") {
+            switch (evt.keyCode) {
+              case 8:   // backspace
+              case 46:  // delete
+              if (options.dataChange) {
+                var i = points.indexOf(selected);
+                points.splice(i, 1);
+                selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
+                update();
+              }
+              evt.preventDefault();
+              evt.stopPropagation();
+              break;
+            }
+            evt.preventDefault();
+          }
+        });
       }
 
       // make these private variables and functions available
@@ -1852,6 +1867,7 @@ define(function (require) {
       graph.notify = notify;
       graph.updateXScale = updateXScale;
       graph.updateYScale = updateYScale;
+      graph.registerKeyboardHandler = registerKeyboardHandler;
 
       /**
         Read only getter for the d3 selection referencing the DOM elements containing the d3
@@ -1913,6 +1929,7 @@ define(function (require) {
       graph();
       // and then render again using actual size of SVG text elements are
       graph();
+      graph.registerKeyboardHandler();
       return graph;
     };
 
