@@ -14,9 +14,13 @@ module Presenters
 
     def runtime_properties
       HashProperties.new(self.interactive_model).hash_value { |p|
-        #p.all()
         p.merge(self.md2d_props)
+        p.add('onLoad')
         p.add('viewOptions')
+        p.add('parameters')
+        p.add('modelOptions')
+        p.add('outputs')
+        p.add('filteredOutputs')
       }
     end
 

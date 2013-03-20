@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Round Trip parsing" do
 
-  describe "parsing a known interactive" do
+  describe "parsing a simple interactive, (one-atom)" do
 
     let(:interactive_file){ "interactives/basic-examples/one-atom.json" }
     let(:interactive_path){ sample_file_path interactive_file      }
@@ -29,7 +29,7 @@ describe "Round Trip parsing" do
       model_raw_hash
     end
 
-    it "should have matching interactive hash" do
+    it "should generate the correct representation" do
       interactive = Parsers::Interactive.new(interactive_path,{'path' => "one-atom.json"}).parse()
       presenter   = Presenters::Interactive.new(interactive)
       props = presenter.runtime_properties
@@ -81,4 +81,61 @@ describe "Round Trip parsing" do
     end
   end
 
+  describe "parsing a more complex interactive (pendulum)" do
+    let(:pendulum_interactive_path){ sample_file_path '/interactives/inquiry-space/1-pendulum.json' }
+
+    it "should generate the correct representation" do
+      interactive = Parsers::Interactive.new(pendulum_interactive_path,{'path' => "1-pendulum.json"}).parse()
+      presenter   = Presenters::Interactive.new(interactive)
+      # props is hash that will be the representation of the interactive.
+      # it's converted to json and returned to the client via the API/ rails controller
+      
+      # This representation will include the properties of all model definitions embedded in the
+      # definition of this interactive.
+      props = presenter.runtime_properties
+      
+      props.should include({
+        "about" => "",
+        "publicationStatus" => "public",
+        "subtitle" => "",
+        "fontScale" => 0.8,
+        "title" => "Pendulum"
+      })
+
+      props['models'].should include({
+                                       "id" => "pendulum1$0",
+                                       "type" => "md2d",
+                                       "url" => "http://localhost:3000/models/md2ds/models_md2d_pendulum1_0.json",
+                                       "viewOptions" => {
+                                         "controlButtons" => "play_reset_step",
+                                         "gridLines" => true,
+                                         "showClock" => true,
+                                         "velocityVectors" => {
+                                           "length" => 10
+                                         }
+                                       },
+                                       "modelOptions" => {
+                                         "unitsScheme" =>  "mks",
+                                         "timeStepsPerTick" => 167,
+                                         "timeStep" =>  1,
+                                         "modelSampleRate" => 60
+                                       },
+                                       "onLoad"=> [
+                                                   "function resetAngle() {",
+                                                   "  set({startingAngle: get('startingAngle')});",
+                                                   "}",
+                                                   "function stopMotion() {",
+                                                   "  stop();",
+                                                   "  setAtomProperties(1, { vx: 0, vy: 0 });",
+                                                   "}",
+                                                   "onPropertyChange('rodLength', resetAngle);",
+                                                   "onPropertyChange('ballMass', resetAngle);",
+                                                   "onPropertyChange('gravitationalField', resetAngle);",
+                                                   "onPropertyChange('damping', resetAngle);",
+                                                   "onPropertyChange('startingAngle', stopMotion);"
+                                                  ]
+                                     })
+    end
+  end
+  
 end
