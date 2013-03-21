@@ -62,10 +62,27 @@ describe Parsers::Base do
   end
   
   describe "#update_from_uri!" do
-    subject { Parsers::Base.new(uri).update_from_uri!}
+    let!(:parser_base_instance) { Parsers::Base.new(uri) }
+    subject { parser_base_instance.update_from_uri!}
+
     before :each do
-      stub_endpoint_with_data(uri,json)
+      @response = stub_endpoint_with_data(uri,json)
     end
+
+    it "should set the correct uri remote helper class" do
+      parser_base_instance.uri_helper.class.should == UriHelper::Remote
+    end
+
+    it "should return correct json from the remote request" do
+      parser_base_instance.uri_helper.read.should == json
+    end
+
+    it "should set the data hash from the remote request" do
+      parser_base_instance.update_from_json!(parser_base_instance.uri_helper.read)
+      parser_base_instance.data_hash.should == data_hash
+    end
+
+    # pretty the same as above test
     its(:data_hash){ should == data_hash }
   end
 
