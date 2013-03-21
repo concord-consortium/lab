@@ -1,0 +1,15 @@
+{
+  "title": "Interactive with invalid model reference",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "does-not-exist",
+      "url": "/imports/legacy-mw-content/converted/this-model-does-not-exist.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    }
+  ]
+}
