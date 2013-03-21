@@ -167,23 +167,7 @@ sensor.AppletGrapher.prototype.JsListener = function() {
           newdata = [data[0]];
           self.time += this.sampleInterval;
         }
-        self.graph.add_points(newdata);
-      }
-    },
-    // called whenever meta data about the data stream changes, data is an array of floats
-    dataStreamEvent: function(type, count, data) {
-      if (type === 1000) {
-        newdata = [];
-        if (count > 1) {
-          for(i= 0; i < count; i++) {
-            newdata.push(data[i]);
-            self.time += this.sampleInterval;
-          }
-        } else {
-          newdata = [data[0]];
-          self.time += this.sampleInterval;
-        }
-        self.graph.add_points(newdata);
+        self.graph.addPoints(newdata);
       }
     },
     sensorsReady: function() {
