@@ -1,4 +1,4 @@
-/*global define */
+/*global define, $ */
 
 define(function () {
 
@@ -50,30 +50,35 @@ define(function () {
       "belowOthers": true
     });
 
-    function createElementInContainer(element, container, type) {
-      var controller;
+    function createElementInContainer(element, container) {
+      var Controller;
 
       if (element.type === "text") {
-        controller = TextController;
+        Controller = TextController;
       } else if (element.type === "image") {
-        controller = ImageController;
+        Controller = ImageController;
       } else if (element.type === "div") {
-        controller = DivController;
+        Controller = DivController;
       }
 
-      components[element.id] = new controller(element);
+      components[element.id] = new Controller(element);
       template.push(container);
       layout[container.id] = [element.id];
     }
 
     // Define about link only if "about" or "subtitle" section is available.
     aboutDialog.update(interactive);
-    createElementInContainer(
-    {
+    createElementInContainer({
       "type": "text",
       "id": "about-link",
       "text": "About",
-      "onClick": function () { if (haveAboutText) {aboutDialog.open()} else {creditsDialog.open()}}
+      "onClick": function () {
+        if (haveAboutText) {
+          aboutDialog.open();
+        } else {
+          creditsDialog.open();
+        }
+      }
     },
     {
       "id": "banner-right",
@@ -146,26 +151,26 @@ define(function () {
     body = document.body;
 
     requestFullscreenMethod =
-         body.requestFullScreen
-      || body.webkitRequestFullScreen
-      || body.mozRequestFullScreen
-      || body.msRequestFullScreen
+         body.requestFullScreen ||
+         body.webkitRequestFullScreen ||
+         body.mozRequestFullScreen ||
+         body.msRequestFullScreen;
 
     document.cancelFullscreenMethod =
-         document.cancelFullScreen
-      || document.webkitCancelFullScreen
-      || document.mozCancelFullScreen
-      || document.msCancelFullScreen
+         document.cancelFullScreen ||
+         document.webkitCancelFullScreen ||
+         document.mozCancelFullScreen ||
+         document.msCancelFullScreen;
 
-    isFullscreen = function() {
+    function isFullscreen() {
       // this doesn't yet exist in Safari
-      if (document.fullscreenElement
-          || document.webkitFullscreenElement
-          || document.mozFullScreenElement) {
+      if (document.fullscreenElement||
+          document.webkitFullscreenElement ||
+          document.mozFullScreenElement) {
         return true;
       }
       // annoying hack to check Safari
-      return ~$(".fullscreen").css("background-image").indexOf("exit")
+      return ~$(".fullscreen").css("background-image").indexOf("exit");
     }
 
     if (requestFullscreenMethod) {
