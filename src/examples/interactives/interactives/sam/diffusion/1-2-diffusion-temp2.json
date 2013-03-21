@@ -1,0 +1,145 @@
+{
+  "title": "Diffusion Temperature",
+  "publicationStatus": "draft",
+  "subtitle": "How does temperature affect the rate of diffusion?",
+  "about": "Click remove barrier to begin measuring how long it takes for the blue molecules to diffuse across the container.",
+  "models": [
+    {
+      "id": "model1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/DiffusionTemp/DiffusionBarrier$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "waterDyeKey.png": "waterDyeKey.svg"
+        }
+      },
+      "modelOptions": {
+        "unitsScheme": "mks"
+      },
+      "onLoad": [
+        "start();",
+        "onPropertyChange('time', function(t) {",
+        "  var atoms = atomsWithin(6.9,1.96,0.1,1.96);",
+        "  for( var i = 0; i < atoms.length; i++ ) {",
+        "    if (getAtomProperties(atoms[i]).element == 0) { stop(); }",
+        "  }",
+        "});"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "barrierPresent",
+      "unitAbbreviation": "",
+      "label": "Barrier",
+      "value": "return getNumberOfObstacles() > 0;"
+    },
+    {
+      "name": "experimentTime",
+      "unitAbbreviation": "s",
+      "label": "Experiment Time",
+      "value": [
+        "if (model.get('barrierPresent')) {",
+        "  return 0;",
+        "} else {",
+        "  return get('time') - get('timeBarrierRemoved');",
+        "}"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "tracedAtom",
+      "initialValue": -99,
+      "onChange": ""
+    },
+    {
+      "name": "wasMarked",
+      "initialValue": 0,
+      "onChange": ""
+    },
+    {
+      "name": "timeBarrierRemoved",
+      "onChange": "set('timeBarrierRemoved', value);",
+      "initialValue": 0
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "reset-barrier",
+      "text": "reset",
+      "action" : [
+        "reset();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "remove-obstacle",
+      "text": "Remove Barrier",
+      "action" : [
+        "if (!model.get('barrierPresent')) { removeObstacle(0); set('timeBarrierRemoved', get('time')); }"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 100,
+      "max": 10000,
+      "labels": [
+        {
+          "value": 100,
+          "label": "100"
+        },
+        {
+          "value": 10000,
+          "label": "10000 K"
+        }
+      ],
+      "steps": 100,
+      "title": "Temperature",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": 100,
+      "max": 10000
+    },
+    {
+      "type": "numericOutput",
+      "id": "model-temperature",
+      "property": "temperature",
+      "displayValue": "return format('1.1f')(value - get('timeBarrierRemoved'))"
+    },
+    {
+      "type": "numericOutput",
+      "id": "experiment-time-output",
+      "property": "experimentTime",
+      "displayValue": "return format('1.1f')(value - get('timeBarrierRemoved'))"
+    }
+  ],
+  "layout": {
+    "under-model": [
+      "reset-barrier","remove-obstacle","temperature-slider","experiment-time-output"
+    ],
+    "right-buffer": [
+      "thermometer"
+    ]
+  },
+  "template": [
+    {
+      "id": "under-model",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "0.25em",
+      "align": "center"
+    },
+    {
+      "id": "right-buffer",
+      "left": "model.right",
+      "height": "model.height"
+    }
+  ]
+}
