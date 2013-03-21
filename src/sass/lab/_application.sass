@@ -29,11 +29,9 @@
   margin-top: 1em
   font-size: 0.8em
 
-#firefox-warning-pane
+.warning-pane
   display: none
   position: absolute
-  font-size: 1em
-  width: auto
   opacity: 0.8
   color: $model-warning-color
   background-color: $model-warning-background
@@ -44,6 +42,10 @@
   padding: 0em
   &:hover
     opacity: 1.0
+
+#firefox-warning-pane
+  font-size: 1em
+  width: auto
   p
     margin: 0.2em 0.5em
     a
@@ -51,6 +53,12 @@
       &:hover
         color: lighten( $model-warning-color, 10% )
         font-weight: 600
+
+#model-not-found-pane
+  font-size: 1.2em
+  width: 80%
+  left: 10%
+  padding: 0.5em
 
 // TODO: Main Lab interactives aren't using it.
 // Check where it's used, move or remove it.

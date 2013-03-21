@@ -154,6 +154,15 @@ AUTHORING = false;
       }
 
       interactiveDefinitionLoaded.resolve();
+    })
+    .fail(function() {
+      var $modelNotFoundPane = $("#model-not-found-pane");
+      $modelNotFoundPane.find("#model-id").text(hash.substr(1));
+      $modelNotFoundPane.css({
+        display: "inline",
+        top: "20%",
+        'z-index': 100
+      });
     });
   }
 

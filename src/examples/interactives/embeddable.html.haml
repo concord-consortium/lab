@@ -23,9 +23,18 @@
     #responsive-content
       #interactive-container{:tabindex => 0}
 
-      #firefox-warning-pane
+      #firefox-warning-pane.warning-pane
         %p
           %a(href='http://blog.concord.org/serious-performance-regression-in-firefox-18-and-newer' class='opens-in-new-window' target='_blank') Firefox v18+ performance issue ...
+      #model-not-found-pane.warning-pane
+        %h2 Oops!
+        %p
+          We couldn't find a model with the id "<span id="model-id"></span>."
+          It's possible that the model has moved.
+        %p
+          Try going to our
+          %a(href='http://mw.concord.org/nextgen/interactives/') Next-Generation Molecular Workbench Activities page
+          to explore all our models.
 
     %script{:src => "../../lab/lab.js", :type => "text/javascript"}
     %script{:src => "application.js", :type => "text/javascript"}
