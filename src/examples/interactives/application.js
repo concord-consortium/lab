@@ -64,6 +64,8 @@ AUTHORING = false;
       $previousInteractive = $("#previous-interactive"),
       $nextInteractive = $("#next-interactive"),
 
+      $serializedControls = $("#header *.serialize"),
+
       applicationCallbacks,
       editor,
       modelEditor,
@@ -364,27 +366,30 @@ AUTHORING = false;
     if (cookie) {
       str = cookie[1].split(";")[0];
       settings = str.split('&').map(function (i) { return i.split('='); });
-      $("#interactive-controls input").each(function(i, el) {
+      $serializedControls.each(function(i, el) {
         var match = _.find(settings, function(e) { return e[0] === el.id; }, this);
-        if (match && el.id === match[0]) {
-          el.checked = true;
-        } else {
-          el.checked = false;
-        }
-      });
-      $("#interactive-controls select").each(function(i, el) {
-        var match = _.find(settings, function(e) {
-          return e[0] === el.name;
-        }, this);
-        if (match) {
-          $(el).val(match[1]);
+        switch(el.tagName) {
+          case "INPUT":
+          if (match && el.id === match[0]) {
+            el.checked = true;
+          } else {
+            el.checked = false;
+          }
+          break;
+          case "SELECT":
+          if (match) {
+            $(el).val(match[1]);
+          }
+          break;
         }
       });
     }
   }
 
   function saveOptionsToCookie() {
-    document.cookie = "lab-interactive-options=" + $("#interactive-controls").serialize() + " ; max-age=" + 30*60*60*24;
+    var cookie;
+    cookie = $serializedControls.serialize() + " ; max-age=" + 30*60*60*24;
+    document.cookie = "lab-interactive-options=" + cookie;
   }
 
   function finishSetupFullPage() {
@@ -605,10 +610,10 @@ AUTHORING = false;
           document.title = interactive.title;
         }
 
-        document.location.hash = interactiveRemote.path
+        document.location.hash = interactiveRemote.path;
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        alert("Error: "+ textStatus + " : " + errorThrown)
+        alert("Error: "+ textStatus + " : " + errorThrown);
       },
       dataType: "json",
       contentType: "application/json",
@@ -636,7 +641,7 @@ AUTHORING = false;
         }
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        alert("Error: "+ textStatus + " : " + errorThrown)
+        alert("Error: "+ textStatus + " : " + errorThrown);
       },
       dataType: "json",
       contentType: "application/json",

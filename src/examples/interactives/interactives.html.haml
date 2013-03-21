@@ -47,13 +47,13 @@
       .row
         %span.title select Interactive:
         %select#select-interactive
-        #render-controls.controls
+        %form#render-controls.controls
           %span.title render in:
           %label{:for => 'render-in-iframe'}
             iframe
-            %input#render-in-iframe{:type => :checkbox, :name => 'render-in-iframe', :checked => 'checked'}
+            %input#render-in-iframe.serialize{:type => :checkbox, :name => 'render-in-iframe', :checked => 'checked'}
           %span.title size:
-          %select#select-interactive-size{:name => "size"}
+          %select#select-interactive-size.serialize{:name => "select-interactive-size"}
             %option{:value => "tiny"} tiny
             %option{:value => "small"} small
             %option{:value => "medium"} medium
@@ -65,27 +65,27 @@
             %span.title categories:
             %label{:for => 'curriculum-filter'}
               Curriculum
-              %input#curriculum-filter{:type => :checkbox, :name => 'curriculum-filter', :checked => 'checked'}
+              %input#curriculum-filter.serialize{:type => :checkbox, :name => 'curriculum-filter', :checked => 'checked'}
             %label{:for => 'examples-filter'}
               Examples
-              %input#examples-filter{:type => :checkbox, :name => 'examples-filter'}
+              %input#examples-filter.serialize{:type => :checkbox, :name => 'examples-filter'}
             %label{:for => 'tests-filter'}
               Tests
-              %input#tests-filter{:type => :checkbox, :name => 'tests-filter'}
+              %input#tests-filter.serialize{:type => :checkbox, :name => 'tests-filter'}
             %label{:for => 'benchmarks-filter'}
               Benchmarks
-              %input#benchmarks-filter{:type => :checkbox, :name => 'benchmarks-filter'}
+              %input#benchmarks-filter.serialize{:type => :checkbox, :name => 'benchmarks-filter'}
 
             %span.title publication status:
             %label{:for => 'public'}
               Public
-              %input#public{:type => :checkbox, :name => 'public', :checked => "checked"}
+              %input#public.serialize{:type => :checkbox, :name => 'public', :checked => "checked"}
             %label{:for => 'draft'}
               Draft*
-              %input#draft{:type => :checkbox, :name => 'draft'}
+              %input#draft.serialize{:type => :checkbox, :name => 'draft'}
             %label{:for => 'broken'}
               Broken**
-              %input#broken{:type => :checkbox, :name => 'broken'}
+              %input#broken.serialize{:type => :checkbox, :name => 'broken'}
 
     #interactive-header
       #interactive-forward-back
