@@ -74,7 +74,11 @@ AUTHORING = false;
       interactiveRemote,
       modelRemote,
       hash,
+
       jsonModelPath, contentItems, mmlPath,
+      $jsonModelLink = $("#json-model-link"),
+      $mmlModelLink = $("#mml-model-link"),
+
       interactivesPromise,
       buttonHandlersAdded = false,
       interactiveRemoteKeys = ['id', 'from_import', 'groupKey', 'path'],
@@ -309,7 +313,7 @@ AUTHORING = false;
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
 
     jsonModelPath = interactive.models[0].url;
-    $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
+    $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
 
     setupCodeEditor();
   }
@@ -367,8 +371,8 @@ AUTHORING = false;
   }
 
   function finishSetupFullPage() {
-    var java_mw_href,
-        java_mw_link = $("#java-mw-link"),
+    var javaMWhref,
+        $javaMWlink = $("#java-mw-link"),
         origin;
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
@@ -379,20 +383,27 @@ AUTHORING = false;
     $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
 
     jsonModelPath = interactive.models[0].url;
-    $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
+    $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
 
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
-    mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml");
-    contentItems = getObjects(modelList, "mml", mmlPath);
+    // also updates link to original MML in Model Editor
+    mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "/imports/legacy-mw-content/").replace(".json", ".mml");
+    contentItems = getObjects(modelList, "mml", mmlPath.replace("/imports/legacy-mw-content/", ""));
     if (contentItems.length > 0) {
-      java_mw_href = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
+      javaMWhref = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
                       origin + Lab.config.actualRoot + "/imports/legacy-mw-content/" + contentItems[0].cml;
-      java_mw_link.attr("href", java_mw_href);
+      $javaMWlink.attr("href", javaMWhref);
+      $javaMWlink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
+      $mmlModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);
+      $mmlModelLink.attr("title", "View original Java Molecular Workbench MML file");
     } else {
-      java_mw_link.removeAttr("href");
-      java_mw_link.attr("title", "Java MW link not available for this interactive");
-      java_mw_link.addClass("na");
+      $javaMWlink.removeAttr("href");
+      $javaMWlink.attr("title", "Java Web Start link not available for this interactive");
+      $javaMWlink.addClass("na");
+      $mmlModelLink.removeAttr("href");
+      $mmlModelLink.attr("title", "Java Molecular Workbench MML file not available for this model");
+      $javaMWlink.addClass("na");
     }
 
     // construct link to DataGames embeddable version of Interactive
