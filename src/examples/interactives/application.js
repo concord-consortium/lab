@@ -394,7 +394,9 @@ AUTHORING = false;
 
   function finishSetupFullPage() {
     var javaMWhref,
+        $embeddableLink = $("#embeddable-link"),
         $javaMWlink = $("#java-mw-link"),
+        $dataGamesLink = $("#datagames-link"),
         origin;
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
@@ -402,7 +404,8 @@ AUTHORING = false;
     setupNextPreviousInteractive();
 
     // construct link to embeddable version of Interactive
-    $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
+    $embeddableLink.attr("href", function(i, href) { return href + hash; });
+    $embeddableLink.attr("title", "Open this Interactive in a new page suitable for embedding.");
 
     jsonModelPath = interactive.models[0].url;
     $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
@@ -429,7 +432,7 @@ AUTHORING = false;
     }
 
     // construct link to DataGames embeddable version of Interactive
-    $("#datagames-link").attr("href", function() {
+    $dataGamesLink.attr("href", function() {
       var dgPayload = [{
             "name": $selectInteractive.find("option:selected").text(),
             "dimensions": {
@@ -441,6 +444,7 @@ AUTHORING = false;
           dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
       return encodeURI(dgUrl);
     });
+    $dataGamesLink.attr("title", "Run this Interactive inside DataGames");
     setupExtras();
   }
 
