@@ -133,6 +133,19 @@ AUTHORING = false;
   if (hash) {
     interactiveUrl = hash.substr(1, hash.length);
 
+    // Use the presense of selectInteractive as a proxy indicating that the
+    // rest of the elements on the non-iframe-embeddable version of the page
+    // are present and should be setup.
+    if ($selectInteractive.length) {
+      AUTHORING = true;
+      applicationCallbacks = [setupFullPage];
+    } else {
+      // else we are being embedded ...
+      if ($editor.length) {
+        applicationCallbacks = [setupEmbeddableAuthorPage];
+      }
+    }
+
     $.get(interactiveUrl).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
       interactiveRemote = results;
@@ -142,29 +155,56 @@ AUTHORING = false;
         document.title = interactive.title;
       }
 
-      // Use the presense of selectInteractive as a proxy indicating that the
-      // rest of the elements on the non-iframe-embeddable version of the page
-      // are present and should be setup.
-      if ($selectInteractive.length) {
-        AUTHORING = true;
-        applicationCallbacks = [setupFullPage];
-      } else {
-        // else we are being embedded ...
-        if ($editor.length) {
-          applicationCallbacks = [setupEmbeddableAuthorPage];
-        }
-      }
-
       interactiveDefinitionLoaded.resolve();
     })
     .fail(function() {
-      var $modelNotFoundPane = $("#model-not-found-pane");
-      $modelNotFoundPane.find("#model-id").text(hash.substr(1));
-      $modelNotFoundPane.css({
-        display: "inline",
-        top: "20%",
-        'z-index': 100
-      });
+      document.title = "Interactive not found";
+      interactive = {
+        "title": "Interactive not found",
+        "publicationStatus": "broken",
+        "subtitle": "Can't find: " + hash.substr(1),
+        "about": "",
+        "models": [
+          {
+            "id": "empty-model",
+            "model": {
+              "type": "md2d"
+            },
+            "viewOptions": {
+              "controlButtons": "",
+              "showClock": false
+            }
+          }
+        ],
+        "components": [
+          {
+            "type": "text",
+            "id": "interactive-not-found",
+            "text": [
+              "##Oops!",
+              "We couldn't find a model with the id:",
+              "`" + hash.substr(1) + "`",
+              "It's possible that the model has moved.",
+              "Try going to our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/) to explore all our models."
+            ]
+          }
+        ],
+        "layout": {
+          "right": [ "interactive-not-found" ]
+        },
+        "template": [
+          {
+            "id": "right",
+            "top": "model.top",
+            "left": "model.right",
+            "height": "model.height",
+            "width": "model.width*1.5",
+            "padding-right": "1em",
+            "padding-left": "1em"
+          }
+        ]
+      };
+      interactiveDefinitionLoaded.resolve();
     });
   }
 
