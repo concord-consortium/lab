@@ -6,6 +6,7 @@ ignore %r{(bin|node_modules)}
 FIRESASS = false
 
 require "./script/setup.rb"
+require "./src/helpers/sass/lab_fontface.rb"
 
 def command(cmd)
   puts cmd
