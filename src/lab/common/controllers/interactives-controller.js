@@ -175,6 +175,28 @@ define(function (require) {
             // Deal with the servers that return the json as text/plain
             modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
             finishWithLoadedModel(modelDefinition.url, modelConfig);
+          }).fail(function() {
+            modelConfig = {
+              "type": "md2d",
+              "width": 2.5,
+              "height": 2.5,
+              "viewOptions": {
+                "backgroundColor": "rgba(225,239,222,255)",
+                  "showClock": false,
+                "textBoxes": [
+                  {
+                    "text": "Model " + modelDefinition.url + " could not be loaded",
+                    "x": 0.25,
+                    "y": 1.25,
+                    "width": 2,
+                    "layer": 1,
+                    "frame": "rounded rectangle",
+                    "backgroundColor": "rgb(232,231,231)"
+                  }
+                ]
+              }
+            };
+            finishWithLoadedModel(modelDefinition.url, modelConfig);
           });
         } else {
           modelConfig = modelDefinition.model;
