@@ -68,13 +68,16 @@ define(function() {
     },
 
     model: {
-      // Definition of a model. Note that it is *NOT* a physical model options hash.
-      // It includes a URL to physical model options.
+      // Definition of a model.
+      // Can include either a URL to model definition or model options hash..
       id: {
         required: true
       },
       url: {
-        required: true
+        conflictsWith: ["model"]
+      },
+      model: {
+        conflictsWith: ["url"]
       },
       // Optional "onLoad" script.
       onLoad: {},

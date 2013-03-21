@@ -170,13 +170,16 @@ define(function (require) {
       if (modelConfig) {
         finishWithLoadedModel(modelDefinition.url, modelConfig);
       } else {
-        $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
-
-          // Deal with the servers that return the json as text/plain
-          modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
-
-          finishWithLoadedModel(modelDefinition.url, modelConfig);
-        });
+        if (modelDefinition.url) {
+          $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
+            // Deal with the servers that return the json as text/plain
+            modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
+            finishWithLoadedModel(modelDefinition.url, modelConfig);
+          });
+        } else {
+          modelConfig = modelDefinition.model;
+          finishWithLoadedModel("", modelConfig);
+        }
       }
 
       function finishWithLoadedModel(modelUrl, modelConfig) {
@@ -505,9 +508,6 @@ define(function (require) {
         modelsHash[models[i].id] = models[i];
       }
 
-      // Load first model.
-      loadModel(models[0].id);
-
       // Prepare interactive components.
       componentJsons = interactive.components || [];
 
@@ -541,6 +541,18 @@ define(function (require) {
 
       // When all components are created, we can initialize semantic layout.
       setupLayout();
+
+      // FIXME: I moved this after setupLayout() on the previous line
+      // when I added the possiblity of including the model definition in the model
+      // section of the Interactive. We were counting on the ajax get operation taking
+      // long enough to not occur until after setupLayout() finished.
+      //
+      // But ... there is a performance issue, it makes sense to start the ajax request
+      // for the model definition as soon as the Interactive Controller can.
+      //
+      // Load first model
+      loadModel(models[0].id);
+
       // and setup model player keyboard handlers (if enabled)
       setupModelPlayerKeyboardHandler();
     }
