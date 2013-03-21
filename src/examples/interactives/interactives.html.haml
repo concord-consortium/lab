@@ -33,18 +33,31 @@
     #header
       %a#logo{:href => "http://www.concord.org/"}
         %img{:src => "../../resources/layout/cc-logo.png"}/
-      %h1<
-        %a(href='../..')> Lab
-        \:
-        %a(href="") Next Generation MW Interactive Browser
-
       .row
-        %span.title select Interactive:
-        %select#select-interactive
+        %h1<
+          %a(href='../..')> Lab
+          \:
+          %a(href="") Next Generation MW Interactive Browser
+
         %span.title additional links:
         %a#embeddable-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} Embeddable
         %a#java-mw-link{:href => "../../imports/legacy-mw-content/converted/", :class => "opens-in-new-window"} Java MW
         %a#datagames-link{:href => "embeddable.html", :class => "opens-in-new-window", :target => "_blank"} DataGames
+
+      .row
+        %span.title select Interactive:
+        %select#select-interactive
+        #render-controls.controls
+          %span.title render in:
+          %label{:for => 'render-in-iframe'}
+            iframe
+            %input#render-in-iframe{:type => :checkbox, :name => 'render-in-iframe', :checked => 'checked'}
+          %span.title size:
+          %select#select-interactive-size{:name => "size"}
+            %option{:value => "tiny"} tiny
+            %option{:value => "small"} small
+            %option{:value => "medium"} medium
+            %option{:value => "large", :selected => "selected"} large
 
       .row
         %form#interactive-controls
@@ -70,17 +83,9 @@
             %label{:for => 'draft'}
               Draft*
               %input#draft{:type => :checkbox, :name => 'draft'}
-          #render-controls.controls
-            %span.title render in:
-            %label{:for => 'render-in-iframe'}
-              iframe
-              %input#render-in-iframe{:type => :checkbox, :name => 'render-in-iframe', :checked => 'checked'}
-            %span.title size:
-            %select#select-interactive-size{:name => "size"}
-              %option{:value => "tiny"} tiny
-              %option{:value => "small"} small
-              %option{:value => "medium"} medium
-              %option{:value => "large", :selected => "selected"} large
+            %label{:for => 'broken'}
+              Broken**
+              %input#broken{:type => :checkbox, :name => 'broken'}
 
     #interactive-header
       #interactive-forward-back

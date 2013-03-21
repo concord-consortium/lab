@@ -277,19 +277,27 @@ AUTHORING = false;
     _.each(groups, function (group) {
       var publicFilter = $("#public").is(':checked'),
           draftFilter = $("#draft").is(':checked'),
+          brokenFilter = $("#broken").is(':checked'),
           interactiveGroup = interactives.filter(function (interactive) {
             if (interactive.groupKey !== group.path) return false;
             if (interactive.publicationStatus === 'sample') return true;
             if (publicFilter && interactive.publicationStatus === 'public') return true;
             if (draftFilter && interactive.publicationStatus === 'draft') return true;
+            if (brokenFilter && interactive.publicationStatus === 'broken') return true;
           }),
           $optgroup = $("<optgroup>").attr('label', group.name);
       interactiveGroup.forEach(function (interactive) {
         var title;
-        if (interactive.publicationStatus === 'draft') {
+        switch(interactive.publicationStatus) {
+          case "draft":
           title = "* " + interactive.title;
-        } else {
+          break;
+          case "broken":
+          title = "** " + interactive.title;
+          break;
+          default:
           title = interactive.title;
+          break;
         }
         $optgroup.append($("<option>")
           .attr('value', interactive.path)
