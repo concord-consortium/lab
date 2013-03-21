@@ -1,5 +1,5 @@
 {
-  "title": "Explore model integration time step, period, and sample rate",
+  "title": "Model integration time step, period, and sample rate",
   "publicationStatus": "public",
   "subtitle": "Model parameters controlling the integration time step, period, and sample rate can be customized.",
   "about": [
