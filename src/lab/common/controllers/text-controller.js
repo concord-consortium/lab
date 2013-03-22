@@ -16,7 +16,8 @@ define(function (require) {
    * @param {ScriptingAPI} scriptingAPI
    */
   function TextController(component, scriptingAPI) {
-    var text, $element;
+    var text, $element, html,
+        openInNewWindow = 'class="opens-in-new-window" target="blank"';
     // Call super constructor.
     InteractiveComponent.call(this, "text", component, scriptingAPI);
     // Setup custom class.
@@ -27,7 +28,9 @@ define(function (require) {
     text = $.isArray(this.component.text) ? this.component.text : [this.component.text];
     $element = this.$element;
     $.each(text, function (idx, val) {
-      $element.append(markdown.toHTML(val));
+      html = markdown.toHTML(val);
+      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">")
+      $element.append(html);
     });
   }
   inherit(TextController, InteractiveComponent);
