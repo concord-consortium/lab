@@ -116,10 +116,15 @@ describe Parsers::Base do
 
   context ".new('no_such_file.json')" do
     subject { Parsers::Base.new(sample_file_path('no_such_file.json'))}
-    it "#update_from_uri! with a non-existing file will raise an exception" do
-      expect do
-        subject.update_from_uri!
-      end.to raise_error(Errno::ENOENT)
+
+    it "#update_from_uri! with a non-existing file will *NOT* raise an exception" do
+      # And it will display a WARNING to stdout
+      capture_stdout do
+        expect do
+          subject.update_from_uri!
+        end.to_not raise_error
+      end.should =~ /WARNING: Could not find/
     end
   end
+
 end

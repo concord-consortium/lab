@@ -17,8 +17,13 @@ module Parsers
     def parse
       self.update_from_uri!();
       self.parse_collection('groups', self.groups, self.group_parser)
+      remove_broken_interactives
       self.parse_collection('interactives', self.interactives, self.interactive_parser)
       return self
+    end
+
+    def remove_broken_interactives
+      self.data_hash['interactives'].reject!{ |i| i['publicationStatus'] == 'broken'}
     end
   end
 end
