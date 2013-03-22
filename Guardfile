@@ -6,7 +6,6 @@ ignore %r{(bin|node_modules)}
 FIRESASS = false
 
 require "./script/setup.rb"
-require "./src/helpers/sass/lab_fontface.rb"
 
 def command(cmd)
   puts cmd
@@ -30,6 +29,8 @@ end
 
 guard 'sass', :input => 'src/examples', :output => 'server/public/examples', :all_on_start => false, :load_paths => ['src']
 guard 'sass', :input => 'src/doc',      :output => 'server/public/doc',      :all_on_start => false, :load_paths => ['src']
+
+require "./src/helpers/sass/lab_fontface.rb"
 
 guard 'coffeescript', :input => 'src/examples', :output => 'server/public/examples', :all_on_start => false
 guard 'coffeescript', :input => 'src/doc',      :output => 'server/public/doc', :all_on_start => false
