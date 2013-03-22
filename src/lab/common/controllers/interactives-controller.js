@@ -215,6 +215,9 @@ define(function (require) {
           // Setup model and notify observers that model was loaded.
           modelLoaded(modelConfig);
         }
+        // and setup model player keyboard handlers (if enabled)
+        setupModelPlayerKeyboardHandler();
+
         // Setup model in layout.
         semanticLayout.setupModel(modelController);
         // Finally, layout interactive.
@@ -245,46 +248,47 @@ define(function (require) {
     // ------------------------------------------------------------
 
     function setupModelPlayerKeyboardHandler() {
-      if (modelController && !modelController.enableKeyboardHandlers()) return;
-      $interactiveContainer.keydown(function(event) {
-        var keycode = event.keycode || event.which;
-        switch(keycode) {
-          case 13:                 // return
-          event.preventDefault();
-          if (!model_player.isPlaying()) {
-            model_player.play();
-          }
-          break;
+      if (modelController && modelController.enableKeyboardHandlers()) {
+        $interactiveContainer.keydown(function(event) {
+          var keycode = event.keycode || event.which;
+          switch(keycode) {
+            case 13:                 // return
+            event.preventDefault();
+            if (!model_player.isPlaying()) {
+              model_player.play();
+            }
+            break;
 
-          case 32:                 // space
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.play();
-          }
-          break;
+            case 32:                 // space
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.play();
+            }
+            break;
 
-          case 37:                 // left-arrow
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.back();
-          }
-          break;
+            case 37:                 // left-arrow
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.back();
+            }
+            break;
 
-          case 39:                 // right-arrow
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.forward();
+            case 39:                 // right-arrow
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.forward();
+            }
+            break;
           }
-          break;
-        }
-      });
-      $interactiveContainer.focus();
+        });
+        $interactiveContainer.focus();
+      }
     }
 
     function setupLayout() {
@@ -574,9 +578,6 @@ define(function (require) {
       //
       // Load first model
       loadModel(models[0].id);
-
-      // and setup model player keyboard handlers (if enabled)
-      setupModelPlayerKeyboardHandler();
     }
 
     /**
