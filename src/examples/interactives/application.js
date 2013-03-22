@@ -161,8 +161,9 @@ AUTHORING = false;
       document.title = "Interactive not found";
       interactive = {
         "title": "Interactive not found",
-        "subtitle": "Couldn't find Interactive definition: `" + hash.substr(1) + "`",
+        "subtitle": "Couldn't load Interactive definition",
         "about": [
+          "Problem loading: [" + hash.substr(1) + "](" + interactiveUrl + ")",
           "Either the definition for this Interactive has moved, been deleted or there have been network problems.",
           "It would be good to report this issue"
         ],
@@ -190,7 +191,7 @@ AUTHORING = false;
             "text": [
               "#Oops!",
               "###We couldn't find Interactive definition:",
-              "`" + hash.substr(1) + "`",
+              "[" + hash.substr(1) + "](" + interactiveUrl + ")",
               "###It's possible that the Interactive has moved.",
               "Try going to our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/) to explore all our models."
             ]
