@@ -162,16 +162,20 @@ AUTHORING = false;
       interactive = {
         "title": "Interactive not found",
         "publicationStatus": "broken",
+        "fontScale": 1.3,
         "subtitle": "Can't find: " + hash.substr(1),
         "about": "",
         "models": [
           {
             "id": "empty-model",
             "model": {
-              "type": "md2d"
+              "type": "md2d",
+              "width": 5,
+              "height": 3
             },
             "viewOptions": {
               "controlButtons": "",
+              "backgroundColor": "rgba(245,200,200,255)",
               "showClock": false
             }
           }
@@ -181,24 +185,46 @@ AUTHORING = false;
             "type": "text",
             "id": "interactive-not-found",
             "text": [
-              "##Oops!",
-              "We couldn't find a model with the id:",
+              "#Oops!",
+              "###We couldn't find a model with the id:",
               "`" + hash.substr(1) + "`",
-              "It's possible that the model has moved.",
+              "###It's possible that the model has moved.",
               "Try going to our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/) to explore all our models."
             ]
           }
         ],
         "layout": {
-          "right": [ "interactive-not-found" ]
+          "error": [ "interactive-not-found" ]
         },
         "template": [
           {
+            "id": "top",
+            "bottom": "model.top",
+            "height": "1em"
+          },
+          {
+            "id": "bottom",
+            "top": "model.bottom",
+            "height": "1em"
+          },
+          {
             "id": "right",
-            "top": "model.top",
             "left": "model.right",
+            "width": "1em"
+          },
+          {
+            "id": "left",
+            "right": "model.left",
+            "width": "1em"
+          },
+          {
+            "id": "error",
+            "top": "model.top",
+            "left": "model.left",
             "height": "model.height",
-            "width": "model.width*1.5",
+            "width": "model.width",
+            "padding-top": "0.5em",
+            "padding-bottom": "0.5em",
             "padding-right": "1em",
             "padding-left": "1em"
           }
