@@ -17,6 +17,7 @@
         "unitsScheme": "mks"
       },
       "onLoad": [
+        "set('targetTemperature',500);",
         "start();",
         "onPropertyChange('time', function(t) {",
         "  var atoms = atomsWithin(6.9,1.96,0.1,1.96);",
@@ -51,8 +52,18 @@
     },
     {
       "name": "experimentTime",
+      "label": "Experiment Time",
+      "unitType": "time",
       "initialValue": 0,
       "onChange": ""
+    },
+    {
+      "name": "selectedTemperature",
+      "initialValue": 1,
+      "onChange": [
+        "var targets = [50, 500, 5000];",
+        "set('targetTemperature', targets[value]);"
+      ]
     }
   ],
   "components": [
@@ -79,61 +90,48 @@
     {
       "type": "slider",
       "id": "temperature-slider",
-      "min": 100,
-      "max": 5000,
+      "min": 0,
+      "max": 2,
       "labels": [
         {
-          "value": 100,
+          "value": 0,
           "label": "Low"
         },
         {
-          "value": 2450,
+          "value": 1,
           "label": "Medium"
         },
         {
-          "value": 5000,
+          "value": 2,
           "label": "High"
         }
       ],
       "steps": 2,
       "title": "Temperature",
-      "property": "targetTemperature"
+      "property": "selectedTemperature"
     },
     {
       "type": "thermometer",
       "id": "thermometer",
-      "min": 100,
-      "max": 5000
-    },
-    {
-      "type": "numericOutput",
-      "id": "model-time",
-      "property": "time",
-      "displayValue": "return format('1.1f')(get('experimentTime'))"
-    }
-  ],
-  "layout": {
-    "under-model": [
-      ["temperature-slider","model-time"],
-      ["remove-obstacle","reset-barrier"]
-    ],
-    "right-buffer": [
-      "thermometer"
-    ]
-  },
-  "template": [
-    {
-      "id": "under-model",
-      "top": "model.bottom",
-      "left": "model.left",
-      "width": "model.width",
-      "padding-top": "0.25em",
+      "min": 10,
+      "max": 6000,
+      "width": "15%",
       "align": "center"
     },
     {
-      "id": "right-buffer",
-      "left": "model.right",
-      "height": "model.height"
+      "type": "numericOutput",
+      "id": "experiment-time",
+      "property": "experimentTime",
+      "displayValue": "return format('1.1f')(value)"
     }
-  ]
+  ],
+  "layout": {
+    "bottom": [
+      ["temperature-slider","experiment-time"],
+      ["remove-obstacle","reset-barrier"]
+    ],
+    "right": [
+      "thermometer"
+    ]
+  }
 }
