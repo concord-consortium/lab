@@ -560,8 +560,9 @@ ISImporter.appController = new ISImporter.Object({
       if (length > 0) {
         text = ISImporter.fixed(self.dataset.getDataPoints()[length-1], 1);
       } else {
-        text = '';
-        self.$realtimeDisplayUnits.hide();
+        text = self.$realtimeDisplayValue.text();
+        // text = '';
+        // self.$realtimeDisplayUnits.hide();
       }
       self.$realtimeDisplayValue.text(text);
     });
@@ -651,11 +652,31 @@ ISImporter.appController = new ISImporter.Object({
     this.currentAppletReady = true;
     this.enable(this.$startButton);
     if (this.sensor.tareable) this.enable(this.$tareButton);
+    // Read the current sensor value and inject it into the display
+    // TODO Poll and update this every second while we're not collecting and not errored out
+    this.readSingleValue();
+    var _this = this;
+    this.singleValueTimerId = setInterval(function() {_this.readSingleValue();}, 1000);
+  },
+
+  singleValueTimerId: null,
+  readSingleValue: function() {
+    try {
+      var values = this.currentApplet.appletInstance.getConfiguredSensorsValues(this.currentApplet.deviceType);
+      this.$realtimeDisplayValue.text(values[0].toFixed(1));
+      this.$realtimeDisplayUnits.show();
+    } catch(e) {
+      // console.log("problem enumeratingSensors " + e);
+    }
   },
 
   start: function() {
     this.logAction('started');
     this.started = true;
+    if (this.singleValueTimerId) {
+      clearInterval(this.singleValueTimerId);
+      this.singleValueTimerId = null;
+    }
     this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.start();
     this.disable(this.$startButton);
@@ -671,13 +692,16 @@ ISImporter.appController = new ISImporter.Object({
     this.enable(this.$tareButton);
     this.enable(this.$resetButton);
 
-    this.$realtimeDisplayValue.text('');
-    this.$realtimeDisplayUnits.hide();
+    // this.$realtimeDisplayValue.text('');
+    // this.$realtimeDisplayUnits.hide();
 
     if (this.dataset.getLength() > 0) {
       this.enable(this.$exportButton);
       this.enable(this.$selectButton);
     }
+
+    var _this = this;
+    this.singleValueTimerId = setInterval(function() {_this.readSingleValue();}, 1000);
   },
 
   reset: function() {
