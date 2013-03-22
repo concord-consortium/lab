@@ -49,7 +49,8 @@ ISImporter.sensors = {
     title: "Distance",
     maxReading: 3,
     readingUnits: "m",
-    samplesPerSecond: 10,
+    samplesPerSecond: 20,
+    downsampleRate: 2,
     maxSeconds: 20
   },
 
@@ -97,8 +98,8 @@ ISImporter.sensors = {
     readingUnits: "N",
     minReading: -50,
     maxReading: 50,
-    samplesPerSecond: 100,
-    downsampleRate: 10,
+    samplesPerSecond: 20,
+    downsampleRate: 2,
     maxSeconds: 10
   },
 
@@ -162,7 +163,8 @@ ISImporter.sensors = {
     title: "Distance",
     maxReading: 3,
     readingUnits: "m",
-    samplesPerSecond: 10,
+    samplesPerSecond: 20,
+    downsampleRate: 2,
     maxSeconds: 20
   },
 
@@ -210,8 +212,8 @@ ISImporter.sensors = {
     readingUnits: "N",
     minReading: -50,
     maxReading: 50,
-    samplesPerSecond: 100,
-    downsampleRate: 10,
+    samplesPerSecond: 20,
+    downsampleRate: 2,
     maxSeconds: 10
   },
 
