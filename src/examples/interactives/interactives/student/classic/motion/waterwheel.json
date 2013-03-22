@@ -1,12 +1,12 @@
 {
-  "title": "Dainty Walker",
+  "title": "waterwheel",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
   "models": [
     {
-      "id": "rolloninclinedplane$0",
-      "url": "/imports/legacy-mw-content/converted/student/classic/motion/daintywalker$0.json",
+      "id": "waterwheel$0",
+      "url": "/imports/legacy-mw-content/converted/student/classic/motion/waterwheel$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

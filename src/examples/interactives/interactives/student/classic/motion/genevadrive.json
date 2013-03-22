@@ -1,12 +1,12 @@
 {
-  "title": "Cantilever Beam",
+  "title": "genevadrive",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
   "models": [
     {
-      "id": "rolloninclinedplane$0",
-      "url": "/imports/legacy-mw-content/converted/student/classic/motion/cantileverbeam$0.json",
+      "id": "genevadrive$0",
+      "url": "/imports/legacy-mw-content/converted/student/classic/motion/genevadrive$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

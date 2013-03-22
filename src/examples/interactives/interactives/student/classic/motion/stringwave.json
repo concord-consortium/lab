@@ -1,12 +1,12 @@
 {
-  "title": "Inclined Plane",
+  "title": "stringwave",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
   "models": [
     {
-      "id": "rolloninclinedplane$0",
-      "url": "/imports/legacy-mw-content/converted/student/classic/motion/inclinedplane$0.json",
+      "id": "stringwave$0",
+      "url": "/imports/legacy-mw-content/converted/student/classic/motion/stringwave$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
