@@ -222,7 +222,41 @@ define(function (require) {
                 ]
               }
             };
+            if (!interactive.components) {
+              interactive.components = [];
+            }
+            interactive.components.push({
+              "type": "text",
+              "id": "model-not-found",
+              "text": [
+                "#Oops!",
+                "###We couldn't find Model definition:",
+                "[" + modelDefinition.id + "](" + modelDefinition.url + ")",
+                "###It's possible that the Model has moved.",
+                "Try going to our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/) to explore all our models."
+              ]
+            });
+            if (!interactive.layout) {
+              interactive.layout = {};
+            }
+            interactive.layout.error = [ "model-not-found" ];
+            if (typeof interactive.template === "string") {
+              interactive.template = templates[interactive.template];
+            }
+            interactive.template.push({
+              "id": "error",
+              "top": "model.top",
+              "left": "model.left",
+              "height": "model.height",
+              "width": "model.width",
+              "padding-top": "0.5em",
+              "padding-bottom": "0.5em",
+              "padding-right": "1em",
+              "padding-left": "1em"
+            });
+            createComponent(interactive.components[interactive.components.length-1]);
             finishWithLoadedModel(modelDefinition.url, modelConfig);
+            updateLayout();
           });
         } else {
           modelConfig = modelDefinition.model;
@@ -306,7 +340,7 @@ define(function (require) {
         // set default model type to "md2d"
         var modelType = type || "md2d";
 
-        if (ModelControllerFor[modelType] == null) {
+        if (ModelControllerFor[modelType] === null) {
           throw new Error("Couldn't understand modelType '" + modelType + "'!");
         }
 
@@ -433,6 +467,30 @@ define(function (require) {
       document.addEventListener("mozfullscreenchange", resizeAfterFullscreen, false);
 
       document.addEventListener("webkitfullscreenchange", resizeAfterFullscreen, false);
+    }
+
+    function updateLayout() {
+      var template, layout, components, fontScale;
+
+      template = interactive.template;
+      // Banner hash containing components, layout containers and layout deinition
+      // (components location). Keep it in a separate structure, because we do not
+      // expect these objects to be serialized!
+      banner = setupBanner(scriptingAPI, interactive, creditsDialog, aboutDialog, shareDialog);
+      // Note that all of these operations create a new object.
+      // So interactive definition specified by the author won't be affected.
+      // This is important for serialization correctness.
+      template = banner.template.concat(template);
+
+      // The authored definition of which components go in which container.
+      layout = interactive.layout;
+      components = $.extend({}, componentByID, banner.components);
+      // Font scale which affect whole interactive container.
+      fontScale = interactive.fontScale;
+
+      // Setup layout using both author components and components
+      // created automatically in this controller.
+      semanticLayout.initialize(template, layout, components, fontScale);
     }
 
     function createComponent(component) {
