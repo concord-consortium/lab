@@ -161,10 +161,13 @@ AUTHORING = false;
       document.title = "Interactive not found";
       interactive = {
         "title": "Interactive not found",
+        "subtitle": "Couldn't find Interactive definition: `" + hash.substr(1) + "`",
+        "about": [
+          "Either the definition for this Interactive has moved, been deleted or there have been network problems.",
+          "It would be good to report this issue"
+        ],
         "publicationStatus": "broken",
         "fontScale": 1.3,
-        "subtitle": "Can't find: " + hash.substr(1),
-        "about": "",
         "models": [
           {
             "id": "empty-model",
@@ -186,9 +189,9 @@ AUTHORING = false;
             "id": "interactive-not-found",
             "text": [
               "#Oops!",
-              "###We couldn't find a model with the id:",
+              "###We couldn't find Interactive definition:",
               "`" + hash.substr(1) + "`",
-              "###It's possible that the model has moved.",
+              "###It's possible that the Interactive has moved.",
               "Try going to our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/) to explore all our models."
             ]
           }
