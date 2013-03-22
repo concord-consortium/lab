@@ -179,15 +179,15 @@ define(function (require) {
             modelConfig = {
               "type": "md2d",
               "width": 2.5,
-              "height": 2.5,
+              "height": 1.5,
               "viewOptions": {
-                "backgroundColor": "rgba(225,239,222,255)",
-                  "showClock": false,
+                "backgroundColor": "rgba(245,200,200,255)",
+                "showClock": false,
                 "textBoxes": [
                   {
-                    "text": "Model " + modelDefinition.url + " could not be loaded",
+                    "text": "Model could not be loaded: " + modelDefinition.url,
                     "x": 0.25,
-                    "y": 1.25,
+                    "y": 1.0,
                     "width": 2,
                     "layer": 1,
                     "frame": "rounded rectangle",
