@@ -46,11 +46,11 @@ module Parsers
       if self.uri_helper
         begin
           json_string = self.uri_helper.read
-          self.update_from_json!(json_string)          
+          self.update_from_json!(json_string)
         rescue Errno::ENOENT => e
           puts "WARNING: Could not find #{self.data_hash['url']}"
         end
-      end 
+      end
       return self
     end
 

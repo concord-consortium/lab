@@ -114,7 +114,7 @@ define(function (require) {
         forceVector,
         imageProp,
         imageMapping,
-        modelImageMapping,
+        modelImagePath,
         imageSizes = [],
         textBoxes,
         imagePath,

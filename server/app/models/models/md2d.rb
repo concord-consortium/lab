@@ -7,7 +7,7 @@ module Models
     property :url,                  String
     property :local_ref_id,         String
     property :imagePath,            String
-    
+
     # these are all in the generated models
     property :height,                           Float
     property :width,                            Float

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Parsers::InteractiveList do
 
   context "#update_from_uri!" do
-    
+
     subject do
       parser = Parsers::InteractiveList.new(File.join(Rails.root,"public","examples","interactives","interactives.json"))
       parser.update_from_uri!
@@ -12,7 +12,7 @@ describe Parsers::InteractiveList do
     # TODO: parse the interactive for the correct number of interactives for each
     # publicationState by reading the interactives.json file directory.
     # grep '"publicationStatus": "broken"' interactives.json | wc -l
-    
+
     it "should have a large set of interactives" do
       subject.data_hash['interactives'].size.should > 300
     end

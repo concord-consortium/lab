@@ -77,7 +77,7 @@ describe "Round Trip parsing" do
       interactive = Parsers::Interactive.new(interactive_path,  {'path' => "one-atom.json"}).parse()
       interactive.interactive_models.each do |im|
         presenter   = Presenters::Models::Md2d.new(im.md2d)
-        presenter.runtime_properties.should == model_hash        
+        presenter.runtime_properties.should == model_hash
       end
     end
   end

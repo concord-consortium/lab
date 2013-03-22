@@ -6,7 +6,7 @@ describe Parsers::Base do
   end
 
   context ".new" do
-    
+
     it "#parse" do
       # simply returns it's internal data hash
       subject.parse.should == {"from_import" => true}
@@ -29,7 +29,7 @@ describe Parsers::Base do
     end
 
     it "#update_from_hash!({:foo =>'bar'})" do
-      subject.update_from_hash!({'foo' => 'bar'}).parse.should == {"from_import" => true, 'foo' => 'bar'}      
+      subject.update_from_hash!({'foo' => 'bar'}).parse.should == {"from_import" => true, 'foo' => 'bar'}
     end
 
     it "#update_from_hash!(nil) should raise an exception" do
@@ -37,7 +37,7 @@ describe Parsers::Base do
         subject.update_from_hash!(nil)
       end.to raise_error(ArgumentError)
     end
-    
+
     it "#update_from_json!('{\"foo\":\"bar\"'})" do
       subject.update_from_json!("{\"foo\":\"bar\"}").parse.should == {"from_import" => true, 'foo' => 'bar'}
     end
@@ -87,7 +87,7 @@ describe Parsers::Base do
       expect do
         subject.parse_entity({'foo' => 'bar'}, Parsers::Interactive).should == {"from_import"=>true, "foo"=>"bar"}
       end.to_not raise_error(ArgumentError)
-      # This may raise an expection from the Parser::Interactive 
+      # This may raise an expection from the Parser::Interactive
     end
 
     it "#parse_entity({'foo' => 'bar'}, nil) should raise an exception" do
@@ -110,7 +110,7 @@ describe Parsers::Base do
       collection.first.name.should == "Basic Interactive Examples"
       collection.first.path.should == "basic-examples"
       collection.first.category.should == "Examples"
-      
+
     end
   end
 
