@@ -23,18 +23,24 @@ define(function (require) {
    */
   AboutDialog.prototype.update = function(interactive) {
     var $aboutContent = $("<div>"),
-        about;
+        about,
+        html,
+        openInNewWindow = 'class="opens-in-new-window" target="blank"';
 
     this.set("title", "About: " + interactive.title);
 
     // Ensure that common typography for markdown-generated content is used.
     $aboutContent.addClass("markdown-typography");
     if (interactive.subtitle) {
-      $aboutContent.append(markdown.toHTML(interactive.subtitle));
+      html = markdown.toHTML(interactive.subtitle);
+      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+      $aboutContent.append(html);
     }
     about = arrays.isArray(interactive.about) ? interactive.about : [interactive.about];
     $.each(about, function(idx, val) {
-      $aboutContent.append(markdown.toHTML(val));
+      html = markdown.toHTML(val);
+      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+      $aboutContent.append(html);
     });
 
     this.setContent($aboutContent);
