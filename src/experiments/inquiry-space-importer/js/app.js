@@ -592,6 +592,54 @@ ISImporter.appController = new ISImporter.Object({
     this.currentApplet.on('sensorReady', function() {
       self.sensorAppletReady();
     });
+    this.currentApplet.on('deviceUnplugged', function() {
+      self.stop();
+      if (self.singleValueTimerId) {
+        clearInterval(self.singleValueTimerId);
+        self.singleValueTimerId = null;
+      }
+      $('#dialog-confirm-content').text("No sensor device is connected! Please connect your device and click OK to try again, or Cancel to stop trying.");
+      $('#dialog-confirm').attr('title', "No sensor device found!");
+      $('#dialog-confirm').dialog({
+        resizable: false,
+        height: 300,
+        width: 400,
+        modal: true,
+        buttons: {
+          "OK": function() {
+            $(this).dialog("close");
+            self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+          },
+          "Cancel": function() {
+            $(this).dialog("close");
+          }
+        }
+      });
+    });
+    this.currentApplet.on('sensorUnplugged', function() {
+      self.stop();
+      if (self.singleValueTimerId) {
+        clearInterval(self.singleValueTimerId);
+        self.singleValueTimerId = null;
+      }
+      $('#dialog-confirm-content').text("No sensor is connected! Please connect your sensor and click OK to try again, or Cancel to stop trying.");
+      $('#dialog-confirm').attr('title', "No sensor found!");
+      $('#dialog-confirm').dialog({
+        resizable: false,
+        height: 300,
+        width: 400,
+        modal: true,
+        buttons: {
+          "OK": function() {
+            $(this).dialog("close");
+            self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+          },
+          "Cancel": function() {
+            $(this).dialog("close");
+          }
+        }
+      });
+    });
 
     this.dataset = new ISImporter.Dataset();
     this.rawDataset = this.getNewRawDataset();
@@ -663,8 +711,10 @@ ISImporter.appController = new ISImporter.Object({
   readSingleValue: function() {
     try {
       var values = this.currentApplet.appletInstance.getConfiguredSensorsValues(this.currentApplet.deviceType);
-      this.$realtimeDisplayValue.text(values[0].toFixed(1));
-      this.$realtimeDisplayUnits.show();
+      if (values != null) {
+        this.$realtimeDisplayValue.text(values[0].toFixed(1));
+        this.$realtimeDisplayUnits.show();
+      }
     } catch(e) {
       // console.log("problem enumeratingSensors " + e);
     }
@@ -674,7 +724,7 @@ ISImporter.appController = new ISImporter.Object({
     this.logAction('started');
     this.started = true;
     if (this.singleValueTimerId) {
-      clearInterval(this.singleValueTimerId);
+      window.clearInterval(this.singleValueTimerId);
       this.singleValueTimerId = null;
     }
     this.currentApplet.on('data', this.appletDataListener);
@@ -701,7 +751,9 @@ ISImporter.appController = new ISImporter.Object({
     }
 
     var _this = this;
-    this.singleValueTimerId = setInterval(function() {_this.readSingleValue();}, 1000);
+    if (this.singleValueTimerId === null) {
+      this.singleValueTimerId = window.setInterval(function() {_this.readSingleValue();}, 1000);
+    }
   },
 
   reset: function() {

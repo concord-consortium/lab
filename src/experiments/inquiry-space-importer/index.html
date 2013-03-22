@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="../../grapher.css">
 	<link rel="stylesheet" href="../../vendor/fonts/Font-Awesome/css/font-awesome.css">
+	<link rel="stylesheet" href="../../vendor/jquery-ui/jquery-ui.min.css">
 
 	<script src="../../vendor/modernizr/modernizr.js"></script>
 </head>
@@ -83,12 +84,16 @@
 		</form>
   </div>
 
+  <div id="dialog-confirm" title="Unable to load the applet!" style="display: none;">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span><span id="dialog-confirm-content">Check to see if Java is enabled in your browser. Click OK to try again, or Cancel to stop trying.</span></p>
+  </div>
 </div>
 
 <footer>
 </footer>
 
 <script src="../../vendor/jquery/jquery.min.js"></script>
+<script src="../../vendor/jquery-ui/jquery-ui.min.js"></script>
 <script src="../../vendor/d3/d3.min.js"></script>
 <script src="js/lab.layout-shim.js"></script>
 <script src="../../lab/lab.grapher.js"></script>
