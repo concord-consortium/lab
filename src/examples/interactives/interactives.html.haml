@@ -92,6 +92,7 @@
         %span#previous-interactive.arrow previous
         %span#next-interactive.arrow next
       #interactive-title
+    #interactive-error-dialog
     #content.standard-interactive-layout
       #responsive-content
         #interactive-container{:tabindex => 0}
@@ -110,9 +111,14 @@
             .extras-item-controls
               .save-interactive-form
                 %form
-                  %label{:for => "save-interactive-title"} Save
-                  %input.save-interactive-title#text#ui-widget-content#ui-corner-all{:type => "text"}
+                  %p
+                    %label{:for => "save-interactive-title"} Interactive Title
+                    %input.save-interactive-title#text#ui-widget-content#ui-corner-all{:type => "text"}
+                  %p
+                    %label{:for => "select-interactive-groups"} Select the Interactive Group
+                    %select#select-interactive-groups
               %button#save-interactive-button Save
+              %button#save-as-interactive-button Save As
               %button#update-interactive-button Update Interactive
               %button#update-json-from-interactive-button Update JSON from Interactive
               %button.right#autoformat-interactive-json-button AutoFormat

@@ -25,15 +25,18 @@ AUTHORING = false;
       $interactiveTitle = $("#interactive-title"),
 
       $selectInteractive = $("#select-interactive"),
+      $selectInteractiveGroups = $("#select-interactive-groups"),
 
       $selectInteractiveSize = $("#select-interactive-size"),
 
       $updateInteractiveButton = $("#update-interactive-button"),
       $saveInteractiveButton = $("#save-interactive-button"),
+      $saveAsInteractiveButton = $("#save-as-interactive-button"),
       $saveModelButton = $("#save-model-button"),
       $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
+      $interactiveErrorDialog = $("#interactive-error-dialog"),
 
       $updateModelButton = $("#update-model-button"),
       $updateJsonFromModelButton = $("#update-json-from-model-button"),
@@ -409,6 +412,7 @@ AUTHORING = false;
       restoreOptionsFromCookie();
       setupSelectList();
       $("#select-filters input").click(setupSelectList);
+      $("#select-filters input").click(setupSelectGroups);
       $("#render-controls input").click(function() {
         saveOptionsToCookie();
         location.reload();
@@ -638,13 +642,14 @@ AUTHORING = false;
     return iframePhone;
   }
 
-  function remoteSaveInteractive(interactiveTitle, interactiveState){
+  function remoteSaveInteractive(interactiveState, copyInteractive){
     var httpMethod = 'POST',
         url = '/interactives',
         newInteractiveState,
         interactiveJSON;
 
-    if(!interactiveRemote.from_import) {
+    if(!copyInteractive) {
+      // updating an interactive
       httpMethod = 'PUT';
       url = '/interactives/' + interactiveRemote.id;
     }
@@ -652,9 +657,6 @@ AUTHORING = false;
     // merge the, possibly updated, interactive with the interactive last
     // loaded from the webapp.
     newInteractiveState = jQuery.extend(true, interactiveRemote, interactiveState);
-    newInteractiveState['title'] = interactiveTitle;
-    // get the group from the current interactive
-    newInteractiveState['groupKey'] = interactiveRemote.groupKey;
     newInteractiveState.from_import = false;
     interactiveJSON = {'interactive': newInteractiveState};
 
@@ -683,7 +685,13 @@ AUTHORING = false;
         document.location.hash = interactiveRemote.path;
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        alert("Error: "+ textStatus + " : " + errorThrown);
+        var updateErrors = JSON.parse(jqXHR.responseText);
+        $interactiveErrorDialog.html("<ul></ul>");
+        for(key in updateErrors){
+          $interactiveErrorDialog.find('ul').append("<li>" + key + " " + updateErrors[key] + "</li>");          
+        }
+
+        $interactiveErrorDialog.dialog("open");
       },
       dataType: "json",
       contentType: "application/json",
@@ -720,43 +728,90 @@ AUTHORING = false;
 
   }
 
-  function setupCopySaveInteractive() {
-    $saveInteractiveButton.show();
+  function setupSelectGroups(){
 
-    if (interactiveRemote.from_import) {
-      // Copying an imported interactive
-      $saveInteractiveButton.text("Save As ...");
-      $(".save-interactive-form").dialog({
-        autoOpen: false,
-        modal: true,
-        buttons: {
-          "Save": function() {
-            var interactiveTitle = $(".save-interactive-title").val();
-            $(this).dialog("close");
-            interactiveState = JSON.parse(editor.getValue());
-            remoteSaveInteractive(interactiveTitle, interactiveState);
-            editor.setValue(JSON.stringify(interactiveState, null, indent));
-          },
-          "Cancel": function() {
-            $(this).dialog("close");
-          }
-        }
+    $selectInteractiveGroups.empty();
+    _.each(groups, function(group) {
+      var publicFilter = $("#public").is(':checked'),
+      draftFilter = $("#draft").is(':checked'),
+      interactiveGroups = interactives.filter(function (interactive) {
+        if (interactive.groupKey !== group.path) return false;
+        if (interactive.publicationStatus === 'sample') return true;
+        if (publicFilter && interactive.publicationStatus === 'public') return true;
+        if (draftFilter && interactive.publicationStatus === 'draft') return true;
       });
+      
+      $selectInteractiveGroups.append($("<option>")
+                                      .attr('value', group.id)
+                                      .text(group.name));
 
-    }else {
-      // Saving an Interactive
-      $saveInteractiveButton.text("Save");
+    });
+    $selectInteractiveGroups.val(interactiveRemote.groupKey).attr('selected', true);
+  }
+
+  function setupCopySaveInteractive() {
+    $saveAsInteractiveButton.show();
+
+    if (!interactiveRemote.from_import) {
+      $saveInteractiveButton.show();
     }
 
-    $saveInteractiveButton.on('click', function() {
-      if (interactiveRemote.from_import) {
-        // Prompt for the name of Interactive that will be a
-        // copy of the exisiting imported interactive
+    // setup the Save As dialog to make a copy of an interactive
+    setupSelectGroups();
+    $(".save-interactive-form").dialog({
+      autoOpen: false,
+      modal: true,
+      width: 'auto',
+      buttons: {
+        "Save": function() {
+          // from the dialog
+          var interactiveTitle = $(".save-interactive-title").val();
+          var interactiveGroup = $("#select-interactive-groups").val();
+          $(this).dialog("close");
+          interactiveState = JSON.parse(editor.getValue());
+          interactiveState.title = interactiveTitle;
+          interactiveState.groupKey = interactiveGroup;
+
+          // make a copy of this interactive
+          remoteSaveInteractive(interactiveState, true);
+          editor.setValue(JSON.stringify(interactiveState, null, indent));
+          $saveInteractiveButton.removeAttr('disabled');
+          $saveAsInteractiveButton.removeAttr('disabled');
+        },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $saveAsInteractiveButton.on('click', function() {
         $('.save-interactive-form').dialog("open");
-      } else {
-        interactiveState = JSON.parse(editor.getValue());
-        remoteSaveInteractive(interactive['title'], interactiveState);
-        editor.setValue(JSON.stringify(interactiveState, null, indent));
+    });
+
+    $saveInteractiveButton.on('click', function() {      
+      interactiveState = JSON.parse(editor.getValue());
+      interactiveState.title = interactive.title;
+      // update this interactive, false = don't copy this interactive.
+      remoteSaveInteractive(interactiveState, false);
+      editor.setValue(JSON.stringify(interactiveState, null, indent));
+      $saveInteractiveButton.removeAttr('disabled');
+      $saveAsInteractiveButton.removeAttr('disabled');
+
+    });
+
+    // Error dialog for creating/updating interactives
+    $interactiveErrorDialog.dialog({
+      modal: true,
+      autoOpen: false,
+      title: "Interactive Error",
+      resizable: false,
+      dialogClass: "error",
+      heigth: 300,
+      width: 300,
+      buttons: {
+        "OK": function() {
+          $(this).dialog("close");
+        }
       }
     });
   }
@@ -832,6 +887,7 @@ AUTHORING = false;
   function setupCodeEditor() {
     var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
+
     if (!editor) {
       editor = CodeMirror.fromTextArea($interactiveTextArea.get(0), {
         mode: { name: "javascript", json: true },
@@ -843,6 +899,18 @@ AUTHORING = false;
         collapseRange: true,
         onGutterClick: foldFunc
       });
+
+      if (!isStaticPage()){
+        // disable save, save as button when interactive json has changed
+        editor.on('change', function(instance, changeObj){
+          if (!editor.isClean() && 
+              (!$saveInteractiveButton.attr('disabled') || 
+               !$saveAsInteractiveButton.attr('disabled')) ){
+            $saveInteractiveButton.attr('disabled', 'disabled');
+            $saveAsInteractiveButton.attr('disabled', 'disabled');
+          }
+        });
+      }
     }
 
     if (!buttonHandlersAdded) {
@@ -850,6 +918,8 @@ AUTHORING = false;
       $updateInteractiveButton.on('click', function() {
         try {
           interactive = JSON.parse(editor.getValue());
+          $saveInteractiveButton.removeAttr('disabled');
+          $saveAsInteractiveButton.removeAttr('disabled');
         } catch (e) {
           alert("Interactive JSON syntax error: " + e.message);
           throw new Error("Interactive JSON syntax error: " + e.message);
