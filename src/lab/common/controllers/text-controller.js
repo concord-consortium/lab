@@ -16,7 +16,7 @@ define(function (require) {
    * @param {ScriptingAPI} scriptingAPI
    */
   function TextController(component, scriptingAPI) {
-    var text, $element, html,
+    var text, $element, content, html,
         openInNewWindow = 'class="opens-in-new-window" target="blank"';
     // Call super constructor.
     InteractiveComponent.call(this, "text", component, scriptingAPI);
@@ -27,11 +27,13 @@ define(function (require) {
     // Use markdown to parse the 'text' content.
     text = $.isArray(this.component.text) ? this.component.text : [this.component.text];
     $element = this.$element;
+    content = "";
     $.each(text, function (idx, val) {
-      html = markdown.toHTML(val);
-      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">")
-      $element.append(html);
+      content += val + "\n";
     });
+    html = markdown.toHTML(content);
+    html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+    $element.append(html);
   }
   inherit(TextController, InteractiveComponent);
 

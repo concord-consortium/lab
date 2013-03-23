@@ -24,6 +24,7 @@ define(function (require) {
   AboutDialog.prototype.update = function(interactive) {
     var $aboutContent = $("<div>"),
         about,
+        content,
         html,
         openInNewWindow = 'class="opens-in-new-window" target="blank"';
 
@@ -37,11 +38,13 @@ define(function (require) {
       $aboutContent.append(html);
     }
     about = arrays.isArray(interactive.about) ? interactive.about : [interactive.about];
+    content = "";
     $.each(about, function(idx, val) {
-      html = markdown.toHTML(val);
-      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
-      $aboutContent.append(html);
+      content += val + "\n";
     });
+    html = markdown.toHTML(content);
+    html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+    $aboutContent.append(html);
 
     this.setContent($aboutContent);
   };
