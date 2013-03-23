@@ -4,7 +4,10 @@
   "subtitle": "A very simple interactive with polar molecules on the left and non-polar molecules on the right.",
   "about":  [
     "All matter is attracted to all other matter. How does this work?",
-    "This interactive shows polar molecules (with charges) and non-polar molecules in a container with each other. Drag molecules around to see how they are attracted to each other. Dotted lines indicate intermolecular attractions."
+    "",
+    "This interactive shows polar molecules (with charges) and non-polar molecules in a",
+    "container with each other. Drag molecules around to see how they are attracted to",
+    "each other. Dotted lines indicate intermolecular attractions."
   ],
   "models": [
     {

@@ -3,8 +3,11 @@
   "publicationStatus": "draft",
   "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
   "about": [
-    "This version of 'Oil and Water' is an experimental adaptation for slower computers amd browsers. Try the Performance Tuning selections for: **Regular**, **Slow Computer**, or **Tablet**.",
-    "Changing this selection sets the timeStep, timeStepsPerTick or modelSampleRate model parameters. See **[simulation-stepping](../../readme.html#md2d-simulation-stepping)** for more details."
+    "This version of 'Oil and Water' is an experimental adaptation for slower computers amd browsers.",
+    "Try the Performance Tuning selections for: **Regular**, **Slow Computer**, or **Tablet**.",
+    "",
+    "Changing this selection sets the timeStep, timeStepsPerTick or modelSampleRate model parameters.",
+    "See **[simulation-stepping](../../readme.html#md2d-simulation-stepping)** in readme for more details."
   ],
   "fontScale": 0.8,
   "models": [

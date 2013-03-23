@@ -35,7 +35,6 @@
       "label": "Model Width",
       "value": "return get('width');"
     }
-    
   ],
   "components": [
     {

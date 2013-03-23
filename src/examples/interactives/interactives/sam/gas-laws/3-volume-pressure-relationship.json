@@ -4,7 +4,10 @@
   "subtitle": "Explore how the volume of a gas affects pressure.",
   "about": [
     "Gases can be compressed into smaller volumes. How does compressing a gas affect its pressure?",
-    "Run the model, then change the volume of the containers and observe the change in pressure. The moving wall converts the effect of molecular collisions into pressure and acts as a pressure gauge. What happens to the pressure when the volume changes?"
+    "",
+    "Run the model, then change the volume of the containers and observe the change in pressure.",
+    "The moving wall converts the effect of molecular collisions into pressure and acts as a pressure gauge.",
+    "What happens to the pressure when the volume changes?"
   ],
   "models": [
     {
