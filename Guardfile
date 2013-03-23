@@ -92,7 +92,7 @@ guard 'shell' do
   end
 
   watch "src/index.sass" do
-    command("bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb src/index.sass server/public/index.css")
+    command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/index.sass server/public/index.css")
   end
 
   watch "src/readme.scss" do
