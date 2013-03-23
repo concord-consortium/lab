@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Epitrochoid</page_title>
+<text>
+  </text>
+<section start="0" end="4">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="4">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>300.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Trebuchet MS&quot;&gt;
+    An epitrochoid is a roulette traced by a point attached to a circle 
+    rolling around the outside of a fixed circle, where the point is some 
+    distance away from the center of the exterior circle.&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;br&gt;&lt;input alt=&quot;tooltip&quot; value=&quot;Run&quot; selfscript=&quot;enablecomponent 0 false;enablecomponent 1 true;&quot; script=&quot;script:mw2d:1:run;&quot; type=&quot;submit&quot; name=&quot;button name&quot;&gt;&lt;input alt=&quot;tooltip&quot; value=&quot;Stop&quot; selfscript=&quot;enablecomponent 0 true;enablecomponent 1 false;&quot; script=&quot;script:mw2d:1:stop;&quot; type=&quot;submit&quot; name=&quot;button name&quot;&gt;&lt;input alt=&quot;tooltip&quot; value=&quot;Reset&quot; selfscript=&quot;enablecomponent 0 true;enablecomponent 1 false;&quot; script=&quot;script:mw2d:1:reset;&quot; type=&quot;submit&quot; name=&quot;button name&quot;&gt;&lt;br&gt;&lt;br&gt;See: 
+    &lt;a href=&quot;hypocycloid.cml&quot;&gt;hypocycloid&lt;/a&gt;.
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="3">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>epitrochoid$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>An inverted pendulum on an oscillatory base</page_title>
+<text>An inverted pendulum on an oscillatory base
+
+An inverted pendulum is a vertical inversion of a normal pendulum. Unlike a normal pendulum, an inverted pendulum is inherently unstable. A way to make it remain upright under perturbation is to attach it to an oscillatory base. If the oscillation is strictly vertical, its frequency is high enough, and its amplitude is large enough, the inverted pendulum can be stablized. (The motion is described by the Mathieu equation.)
+
+Instruction: Before you change a parameter, please press the reset button (the first button on the tool bar below the view window) first, and then adjust a parameter using one of the sliders on the right. The slider titled with &quot;Perturbation (vx)&quot; sets the initial horizontal velocity of the pendulum&apos;s ball. The slider titled with &quot;Amplitude&quot; sets the amplitude of the oscillation. The slider titled with &quot;Frequency&quot; sets the frequency of the osciallation.
+
+    
+
+How about double inverted pendulum?
+Can there exist similar phenomena at the molecular level? See the inverted dipole.
+
+</text>
+<section start="0" end="1058">
+<paragraph start="0" end="44">
+<Alignment>1</Alignment>
+<content start="0" end="43">
+<bold>true</bold><family>Trebuchet MS</family><size>16</size></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<content start="44" end="45">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="45" end="471">
+<RightIndent>50.0</RightIndent>
+<LeftIndent>50.0</LeftIndent>
+<content start="45" end="471">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="471" end="472">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<content start="471" end="472">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="472" end="930">
+<RightIndent>50.0</RightIndent>
+<LeftIndent>50.0</LeftIndent>
+<content start="472" end="930">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="930" end="931">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<content start="930" end="931">
+</content>
+
+</paragraph>
+<paragraph start="931" end="936">
+<Alignment>1</Alignment>
+<content start="931" end="932">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>inversependulum$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="932" end="933">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>10.0</value>
+<minimum>1.0</minimum>
+<maximum>10.0</maximum>
+<nstep>18</nstep>
+<title>Frequency</title>
+<width>100</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;High&quot;}{value=&quot;1.0&quot;, label=&quot;Low&quot;}</labeltable>
+<script>set atom[1].restraint %val*100;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="933" end="934">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>10.0</value>
+<minimum>1.0</minimum>
+<maximum>10.0</maximum>
+<nstep>18</nstep>
+<title>Amplitude</title>
+<width>100</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;High&quot;}{value=&quot;1.0&quot;, label=&quot;Low&quot;}</labeltable>
+<script>set atom[1].ry 17-%val*0.1;
+set atom[0].ry 3.4-%val*0.1;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="934" end="935">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>3.5</value>
+<minimum>1.0</minimum>
+<maximum>10.0</maximum>
+<nstep>18</nstep>
+<title>Perturbation (vx)</title>
+<width>100</width>
+<height>80</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;High&quot;}{value=&quot;1.0&quot;, label=&quot;Low&quot;}</labeltable>
+<script>set atom[0].vx %val*500;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="935" end="936">
+</content>
+
+</paragraph>
+<paragraph start="936" end="937">
+<content start="936" end="937">
+</content>
+
+</paragraph>
+<paragraph start="937" end="973">
+<Alignment>1</Alignment>
+<content start="937" end="947">
+<family>Trebuchet MS</family></content>
+
+<content start="947" end="971">
+<family>Trebuchet MS</family><href>inverteddoublependulum.cml</href></content>
+
+<content start="971" end="973">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="973" end="1056">
+<Alignment>1</Alignment>
+<content start="973" end="1035">
+<family>Trebuchet MS</family></content>
+
+<content start="1035" end="1054">
+<family>Trebuchet MS</family><href>../../electrostatics/inversedipole.cml</href></content>
+
+<content start="1054" end="1056">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1056" end="1057">
+<content start="1056" end="1057">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1057" end="1058">
+</paragraph>
+</section>
+</document>

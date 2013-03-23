@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Momentum conservation</page_title>
+<text>
+Conservation of momentum
+
+   </text>
+<section start="0" end="31">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<bold>true</bold><size>16</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1" end="26">
+<Alignment>1</Alignment>
+<content start="1" end="25">
+<bold>true</bold><size>16</size><family>Trebuchet MS</family></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="31">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>400.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Trebuchet MS&quot;&gt;
+    The law of conservation of momentum is a fundamental law of nature, which 
+    states that the total momentum of a closed system of objects (which has no 
+    interactions with external agents) is constant. One of the consequences of 
+    this is that the centre of mass of any system of objects will always 
+    continue with the same velocity unless acted on by a force outside the 
+    system. The simulation on the right shows that swinging a pendulum hung on 
+    a cart cannot cause the whole system to move along horizontally.&lt;br&gt;&lt;br&gt;Note 
+    that this simulation shows the bending effect of the cantilever beam and 
+    the supporting post.&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;br&gt;&lt;input value=&quot;Run&quot; name=&quot;button name&quot; selfscript=&quot;enablecomponent 0 false;enablecomponent 1 true;&quot; script=&quot;script:mw2d:1:run;&quot; alt=&quot;tooltip&quot; type=&quot;submit&quot;&gt;&lt;input name=&quot;button name&quot; value=&quot;Stop&quot; selfscript=&quot;enablecomponent 0 true;enablecomponent 1 false;&quot; script=&quot;script:mw2d:1:stop;&quot; alt=&quot;tooltip&quot; type=&quot;submit&quot;&gt;&lt;input name=&quot;button name&quot; value=&quot;Reset&quot; selfscript=&quot;enablecomponent 0 true;enablecomponent 1 false;&quot; script=&quot;script:mw2d:1:reset;&quot; alt=&quot;tooltip&quot; type=&quot;submit&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="28" end="29">
+</content>
+
+<content start="29" end="30">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>momentumconservation$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+</paragraph>
+</section>
+</document>

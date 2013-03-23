@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Longitudinal wave in springs</page_title>
+<text>Longitudinal waves in springs
+  
+
+   </text>
+<section start="0" end="38">
+<paragraph start="0" end="30">
+<Alignment>1</Alignment>
+<content start="0" end="29">
+<family>Trebuchet MS</family><bold>true</bold><size>16</size></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="33">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>longitudinalwavespring$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-ffff01" style="0" width="1.0" symbol="0" size="4" spacing="5">Vx: 14Nt</time_series_y1>
+<time_series_y2 color="-10000" style="1" width="1.0" symbol="0" size="4" spacing="5">Vx: 3Pl</time_series_y2>
+<width>300</width>
+<height>250</height>
+<axis_x_title>Time</axis_x_title>
+<axis_y_title>Speed</axis_y_title>
+<legend_x>220</legend_x>
+<legend_y>70</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="38">
+<Alignment>1</Alignment>
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="36" end="37">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

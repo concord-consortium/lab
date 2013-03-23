@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "f596aaec6a15b43300a957e9b3f8b696b0da4716",
-        "short_sha":      "f596aaec",
-        "url":            "https://github.com/concord-consortium/lab/commit/f596aaec",
+        "sha":           "71d0e13b62d6e93b82bbd742d92b1f4f502f5057",
+        "short_sha":      "71d0e13b",
+        "url":            "https://github.com/concord-consortium/lab/commit/71d0e13b",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-03-22 21:56:55 -0400",
-        "short_message": "changing metadata.js =&gt; update expected-json fixtures",
-        "message":       "changing metadata.js =&gt; update expected-json fixtures\n\nmetadata.js for MD2D was changed in ef797bb42e2d\n\nWhen changes occur in metadata.js normally the expected-json\nfixtures need to be updated.\n\nTest failures were thrown by the Mocha tests:\n\nThe serialized object does not match the original object used to create the MD2D mode"
+        "date":          "2013-03-23 09:51:59 -0400",
+        "short_message": "server/public/fonts/Font-Awesome: remove .git folder",
+        "message":       "server/public/fonts/Font-Awesome: remove .git folder\n\n[#46761159]\n\nWhen copying resources to server/public make sure that\nthe .git modulars that deify the original folder as a\ngit submodule do not end up in server/public.\n\nNot only does it add unnecessarily to the static distribution size\nthe presence of the .git folder prevents the gh-pages.rb script\nfrom completing when it tries to add the new files to the gh-pages\nbranch:\n\n$ git add .\nfatal: Not a git repository: vendor/fonts/Font-Awesome/../../../../.git/modules/src/vendor/fonts/Font-Awesome\n\nproblem introduced in: 643b854d"
       },
       "dirty": false
     }

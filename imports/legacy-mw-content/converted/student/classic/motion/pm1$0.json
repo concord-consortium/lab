@@ -1,0 +1,195 @@
+{
+  "type": "md2d",
+  "imagePath": "",
+  "width": 5,
+  "height": 2.5,
+  "unitsScheme": "md2d",
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "gravitationalField": 0.0000011200000166893005,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1.5,
+  "timeStepsPerTick": 50,
+  "viewOptions": {
+    "backgroundColor": "#eeeeee",
+    "showClock": true,
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": true,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "soccer.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "Atom",
+        "imageLayer": 1,
+        "imageX": 0.25,
+        "imageY": 0.42
+      },
+      {
+        "imageUri": "table.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 2.36,
+        "imageY": 0.46
+      }
+    ],
+    "imageMapping": {},
+    "textBoxes": [
+      {
+        "text": "Let's kick the soccer ball.",
+        "x": 2.35,
+        "y": 2.37,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(255,192,0)"
+      }
+    ],
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 3.1
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      120,
+      240,
+      360,
+      480,
+      600
+    ],
+    "sigma": [
+      0.07,
+      0.14,
+      0.21,
+      0.28,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -855310,
+      -9066941,
+      -9092186,
+      -2539040,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      0.42
+    ],
+    "y": [
+      0.25
+    ],
+    "vx": [
+      0.00028000000000000003
+    ],
+    "vy": [
+      0.0017200000000000002
+    ],
+    "charge": [
+      0
+    ],
+    "friction": [
+      0
+    ],
+    "element": [
+      3
+    ],
+    "pinned": [
+      0
+    ]
+  },
+  "obstacles": {
+    "x": [
+      2.33
+    ],
+    "y": [
+      0.050000000000000044
+    ],
+    "vx": [
+      0
+    ],
+    "vy": [
+      0
+    ],
+    "externalFx": [
+      0
+    ],
+    "externalFy": [
+      0
+    ],
+    "friction": [
+      0
+    ],
+    "height": [
+      0.35
+    ],
+    "width": [
+      1.02
+    ],
+    "mass": [
+      "Infinity"
+    ],
+    "westProbe": [
+      false
+    ],
+    "northProbe": [
+      false
+    ],
+    "eastProbe": [
+      false
+    ],
+    "southProbe": [
+      false
+    ],
+    "color": [
+      [
+        255,
+        192,
+        0
+      ]
+    ],
+    "visible": [
+      false
+    ]
+  }
+}

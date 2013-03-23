@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Bohr&apos;s atomic model</page_title>
+<text>Bohr&apos;s atomic model
+
+ 
+      
+Instruction: The nucleus, which is represented by a cluster of blue and red balls (protons and neutrons), has a positive charge and is fixed at the center. The electron has charge -1e. The size of electron relative to neucleus is exaggerated here to make the electron visible. The two interacts with each other through Coulombic potential, which is inversely proportional to their distance. In order for the electron to circle around the nucleus, its velocity must be within a certain range. If the speed is too high, the Coulombic force may not be able to hold the electron in the orbit --- it will escape. If the speed is too low, it will fall into the nucleus. Four stable orbits are set up in this activity.
+
+You may also pull the slider to experiment the dependence of the shape of orbit on the speed. You may reset the electron to an orbit before pulling the slider.
+
+A small challenge: Find the right velocity that can produce the familiar symbol for atomic energy, as is shown in the following image:
+
+  
+If you do not find the correct parameter, click this link to go to a model that has been set up.
+
+Note that Bohr made the revolutionary assumption that the electron can only take orbitals with discrete energies (quantized energy levels), which we do not plan to go any further from here now. 
+
+Although this model is related to atomic theory, it can also be used as a template model for learning motion of objects in central force field. For example, the motion of a satellite is similar to what this model shows.</text>
+<section start="0" end="1557">
+<paragraph start="0" end="20">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="19">
+<size>15</size><bold>true</bold></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="23">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>bohr$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="30">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Level 1</title>
+<tooltip>Level 1</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1122546565310</groupid>
+<script>//set electron
+set atom[1].rx 20;
+set atom[1].ry 10.3;
+set atom[1].vx 2200;
+set atom[1].vy 0;
+//set nucleus
+set atom[0].rx 20;
+set atom[0].ry 14.3;
+set atom[0].vx 0;
+set atom[0].vy 0;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Level 2</title>
+<tooltip>Level 2</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1122546565310</groupid>
+<script>//set electron
+set atom[1].rx 20;
+set atom[1].ry 8.3;
+set atom[1].vx 1800;
+set atom[1].vy 0;
+//set nucleus
+set atom[0].rx 20;
+set atom[0].ry 14.3;
+set atom[0].vx 0;
+set atom[0].vy 0;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Level 3</title>
+<tooltip>Level 3</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1122546565310</groupid>
+<script>//set electron
+set atom[1].rx 20;
+set atom[1].ry 6.3;
+set atom[1].vx 1550;
+set atom[1].vy 0;
+//set nucleus
+set atom[0].rx 20;
+set atom[0].ry 14.3;
+set atom[0].vx 0;
+set atom[0].vy 0;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Level 4</title>
+<tooltip>Level 4</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1122546565310</groupid>
+<script>//set electron
+set atom[1].rx 20;
+set atom[1].ry 4.3;
+set atom[1].vx 1380;
+set atom[1].vy 0;
+//set nucleus
+set atom[0].rx 20;
+set atom[0].ry 14.3;
+set atom[0].vx 0;
+set atom[0].vy 0;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Force Vector</title>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Force Vector</action>
+</component></content>
+
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>50</nstep>
+<title>Twist orbit</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Collapsed&quot;}{value=&quot;0.0&quot;, label=&quot;Stable&quot;}</labeltable>
+<script>set atom[1].vx &quot;1380-%val*50&quot;;
+set atom[1].vy 0;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="742">
+<LeftIndent>6.0</LeftIndent>
+<content start="30" end="41">
+<size>11</size><bold>true</bold></content>
+
+<content start="41" end="742">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="742" end="743">
+<LeftIndent>6.0</LeftIndent>
+<content start="742" end="743">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="743" end="903">
+<LeftIndent>6.0</LeftIndent>
+<content start="743" end="902">
+<size>11</size></content>
+
+<content start="902" end="903">
+</content>
+
+</paragraph>
+<paragraph start="903" end="904">
+<content start="903" end="904">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="904" end="1039">
+<LeftIndent>6.0</LeftIndent>
+<content start="904" end="1039">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1039" end="1040">
+<LeftIndent>6.0</LeftIndent>
+<content start="1039" end="1040">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1040" end="1043">
+<Alignment>1</Alignment>
+<content start="1040" end="1041">
+</content>
+
+<content start="1041" end="1042">
+<icon>orbital.jpg</icon></content>
+
+<content start="1042" end="1043">
+</content>
+
+</paragraph>
+<paragraph start="1043" end="1140">
+<Alignment>1</Alignment>
+<content start="1043" end="1091">
+<size>11</size></content>
+
+<content start="1091" end="1100">
+<size>11</size><href>pattern.cml</href></content>
+
+<content start="1100" end="1139">
+<size>11</size></content>
+
+<content start="1139" end="1140">
+<size>15</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1140" end="1141">
+<content start="1140" end="1141">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1141" end="1336">
+<LeftIndent>6.0</LeftIndent>
+<content start="1141" end="1336">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1336" end="1337">
+<LeftIndent>6.0</LeftIndent>
+<content start="1336" end="1337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1337" end="1557">
+<LeftIndent>6.0</LeftIndent>
+<content start="1337" end="1556">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

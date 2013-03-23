@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>A virtual experiment on projectile motion</page_title>
+<text>A virtual experiment on projectile motion
+
+ 
+   
+Instruction: Under construction.</text>
+<section start="0" end="82">
+<paragraph start="0" end="42">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="41">
+<bold>true</bold><size>20</size><family>Book Antiqua</family></content>
+
+<content start="41" end="42">
+<bold>true</bold><size>18</size><family>Microsoft Sans Serif</family></content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<content start="42" end="43">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="43" end="45">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+<size>18</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pm1$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="44" end="45">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="45" end="49">
+<Alignment>1</Alignment>
+<content start="45" end="46">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.014000000208616257</value>
+<minimum>0.0</minimum>
+<maximum>0.05000000074505806</maximum>
+<nstep>50</nstep>
+<title>Gravitational acceleration</title>
+<tooltip>Change the gravitational acceleration</tooltip>
+<width>280</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.10000000149011612&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Gravitational Field</change>
+</component></content>
+
+<content start="46" end="47">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Air resistance</title>
+<tooltip>Air resistance</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom 0;
+damp 0.1;
+select atom none;</script>
+<script2>select atom 0;
+damp 0;
+select atom none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="47" end="48">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>1.4</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>50</nstep>
+<title>Initial velocity</title>
+<tooltip>Set the initial velocity</tooltip>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Horizontal&quot;}{value=&quot;0.0&quot;, label=&quot;Vertical&quot;}</labeltable>
+<script>set atom[0].vx &quot;%val*200&quot;;
+set atom[0].vy &quot;(%val-10)*200&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="82">
+<LeftIndent>6.0</LeftIndent>
+<content start="49" end="81">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Water pump</page_title>
+<text>Water pump
+ 
+Note: This simulaton assumes that the pump is perfectly sealed, hence the siphon effect lasts long.</text>
+<section start="0" end="113">
+<paragraph start="0" end="11">
+<Alignment>1</Alignment>
+<content start="0" end="10">
+<bold>true</bold><family>Trebuchet MS</family><size>16</size></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>waterpump$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="113">
+<Alignment>1</Alignment>
+<content start="13" end="112">
+</content>
+
+</paragraph>
+</section>
+</document>

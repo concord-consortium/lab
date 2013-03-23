@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Dainty walker</page_title>
+<text>The dainty walker
+
+This is a replica of the famous dainty walker originally created by the Soda Constructor. 
+Watch how it steps up and down.
+
+ 
+
+      </text>
+<section start="0" end="153">
+<paragraph start="0" end="18">
+<Alignment>1</Alignment>
+<content start="0" end="17">
+<size>20</size><family>Century Gothic</family><bold>true</bold></content>
+
+<content start="17" end="18">
+<size>16</size><family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>1</Alignment>
+<content start="18" end="19">
+<size>16</size><family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="19" end="110">
+<Alignment>1</Alignment>
+<content start="19" end="40">
+<family>Century Gothic</family><size>14</size></content>
+
+<content start="40" end="64">
+<family>Century Gothic</family><href>http://sodaplay.com/creators/ed/items/daintywalker</href><size>14</size></content>
+
+<content start="64" end="110">
+<family>Century Gothic</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="110" end="142">
+<Alignment>1</Alignment>
+<content start="110" end="141">
+<family>Century Gothic</family><size>14</size></content>
+
+<content start="141" end="142">
+</content>
+
+</paragraph>
+<paragraph start="142" end="143">
+<Alignment>1</Alignment>
+<content start="142" end="143">
+</content>
+
+</paragraph>
+<paragraph start="143" end="145">
+<Alignment>1</Alignment>
+<content start="143" end="144">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>daintywalker$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="144" end="145">
+</content>
+
+</paragraph>
+<paragraph start="145" end="146">
+<Alignment>1</Alignment>
+<content start="145" end="146">
+</content>
+
+</paragraph>
+<paragraph start="146" end="153">
+<Alignment>1</Alignment>
+<content start="146" end="147">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Move right</title>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1215455640115</groupid>
+<script>// right leg
+set rbond[12].phase 90;
+set rbond[18].phase 180;
+set rbond[13].phase 270;
+set rbond[14].phase 0;
+
+// left leg
+set rbond[15].phase 90;
+set rbond[19].phase 180;
+set rbond[16].phase 270;
+set rbond[17].phase 0;
+
+set %flag 0;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="147" end="148">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Move left</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1215455640115</groupid>
+<script>// right leg
+set rbond[12].phase 0;
+set rbond[18].phase 270;
+set rbond[13].phase 180;
+set rbond[14].phase 90;
+
+// left leg
+set rbond[15].phase 0;
+set rbond[19].phase 270;
+set rbond[16].phase 180;
+set rbond[17].phase 90;
+
+set %flag 0;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="148" end="149">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Move back and forth</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1215455640115</groupid>
+<script>set %flag 1;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="149" end="150">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.10000000223517418</value>
+<minimum>0.05000000074505806</minimum>
+<maximum>0.550000011920929</maximum>
+<nstep>10</nstep>
+<title>Surface Stickiness</title>
+<tooltip>Surface stickiness</tooltip>
+<width>160</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.05000000111758709&quot;, label=&quot;Least sticky&quot;}{value=&quot;0.550000012293458&quot;, label=&quot;Most sticky&quot;}</labeltable>
+<change>Element Pl: Epsilon</change>
+</component></content>
+
+<content start="150" end="151">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>5.0</value>
+<minimum>2.0</minimum>
+<maximum>12.0</maximum>
+<nstep>10</nstep>
+<title>Muscle strength</title>
+<width>160</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;2.0&quot;, label=&quot;Weakest&quot;}{value=&quot;12.0&quot;, label=&quot;Strongest&quot;}</labeltable>
+<script>define %i 12;
+while(%i &lt; 20);
+  set rbond[%i].amplitude %val*20;
+  ++%i;
+endwhile;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="151" end="152">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show legs in spring style</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>define %i 12;
+while(%i &lt; 20);
+  set rbond[%i].style SHORT_SPRING_STYLE;
+  ++%i;
+endwhile;</script>
+<script2>define %i 12;
+while(%i &lt; 20);
+  set rbond[%i].style STANDARD_STICK_STYLE;
+  ++%i;
+endwhile;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>
