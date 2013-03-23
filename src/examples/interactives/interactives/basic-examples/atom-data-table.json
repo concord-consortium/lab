@@ -3,7 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "One way to display a table of atom properties.",
   "about": [
-    "There are three parts in this Interactive that work togerther to create the atom data table example.",
+    "There are three parts in this Interactive that work together to create the atom data table example.",
     "",
     "1. Separate outputs are created for each datum to be represented in the table. The result is that the name values for these outputs can later be used for any component that can accept a model property.",
     "2. numericOutput compnents are created for each of the output properties. All the numericOutput components are given the same width in 'ems'.",
