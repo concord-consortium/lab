@@ -18,7 +18,10 @@ exports.withModel = function(model, continuation) {
   var doneCallback, stub;
 
   stub = sinon.stub($, 'get').returns({
-    done: function(callback) { doneCallback = callback; }
+      done: function(callback) {
+        doneCallback = callback;
+        return { fail: function(){ } };
+      }
   });
 
   continuation();
